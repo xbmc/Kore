@@ -13,7 +13,9 @@
 #/.idea/libraries
 
 # Local configuration file (sdk path, etc)
-*.properties
+gradle.properties
+local.properties
+app/keystore.properties
 
 # Keystores
 *.keystore
