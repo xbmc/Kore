@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources>
+    <attr name="appTextColorPrimary" format="reference|color" />
+    <attr name="appTextColorSecondary" format="reference|color" />
+
+    <attr name="textColorOverPrimary" format="reference|color" />
+
+    <attr name="colorAccentLight" format="reference|color" />
+
+    <attr name="contentBackgroundColor" format="reference|color" />
+    <attr name="appCardBackgroundColor" format="reference|color" />
+    <attr name="buttonBarBackgroundColor" format="reference|color" />
+
+    <attr name="fabColorNormal" format="reference|color" />
+    <attr name="fabColorPressed" format="reference|color" />
+
+    <attr name="separatorColor" format="reference|color" />
+
+	<attr name="drawerBackgroundColor" format="reference|color" />
+
+    <!-- Icons -->
+	<attr name="iconHosts" format="reference" />
+	<attr name="iconRemote" format="reference" />
+    <attr name="iconRemoteToolbar" format="reference" />
+	<attr name="iconMovies" format="reference" />
+	<attr name="iconTvShows" format="reference" />
+	<attr name="iconMusic" format="reference" />
+	<attr name="iconPicture" format="reference" />
+    <attr name="iconHome" format="reference" />
+    <attr name="iconAddons" format="reference" />
+
+    <attr name="iconNew" format="reference" />
+    <attr name="iconNewToolbar" format="reference" />
+    <attr name="iconOnOff" format="reference" />
+    <attr name="iconOnOffToolbar" format="reference" />
+    <attr name="iconKeyboard" format="reference" />
+
+    <attr name="iconSettings" format="reference" />
+
+    <attr name="iconPlay" format="reference" />
+    <attr name="iconPause" format="reference" />
+    <attr name="iconStop" format="reference" />
+    <attr name="iconFastForward" format="reference" />
+    <attr name="iconRewind" format="reference" />
+    <attr name="iconNext" format="reference" />
+    <attr name="iconPrevious" format="reference" />
+
+    <attr name="iconInfo" format="reference" />
+    <attr name="iconBack" format="reference" />
+    <attr name="iconMenu" format="reference" />
+    <attr name="iconCodec" format="reference" />
+
+    <attr name="iconLeft" format="reference" />
+    <attr name="iconRight" format="reference" />
+    <attr name="iconUp" format="reference" />
+    <attr name="iconDown" format="reference" />
+    <attr name="iconSelect" format="reference" />
+
+    <attr name="iconVolumeUp" format="reference" />
+    <attr name="iconVolumeDown" format="reference" />
+    <attr name="iconRepeat" format="reference" />
+    <attr name="iconRepeatOne" format="reference" />
+    <attr name="iconShuffle" format="reference" />
+    <attr name="iconVolumeMute" format="reference" />
+
+    <attr name="iconSubtitles" format="reference" />
+
+    <attr name="iconOverflow" format="reference" />
+
+    <attr name="iconAddToQueue" format="reference" />
+    <attr name="iconInfoWWW" format="reference" />
+    <attr name="iconSeen" format="reference" />
+
+    <attr name="iconCollapse" format="reference" />
+    <attr name="iconExpand" format="reference" />
+
+    <attr name="iconSearch" format="reference" />
+    <attr name="iconSearchToolbar" format="reference" />
+
+    <attr name="iconDownload" format="reference" />
+
+    <attr name="iconChevronLeft" format="reference" />
+    <attr name="iconChevronRight" format="reference" />
+
+</resources>

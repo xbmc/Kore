@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources>
+    <dimen name="wizard_title">216dp</dimen>
+
+    <dimen name="remote_icon_size">144dp</dimen>
+
+    <dimen name="remote_poster_width">110dp</dimen>
+    <dimen name="remote_poster_height">162dp</dimen>
+
+    <dimen name="now_playing_poster_width">140dp</dimen>
+    <dimen name="now_playing_poster_height">200dp</dimen>
+    <dimen name="now_playing_poster_margin_top">140dp</dimen>
+    <dimen name="now_playing_art_height">324dp</dimen>
+
+    <dimen name="media_title_margin_top">324dp</dimen>
+    <dimen name="poster_width_plus_padding">172dp</dimen>
+
+    <dimen name="default_grid_column_width">250dp</dimen>
+
+    <dimen name="playlist_art_width">68dp</dimen>
+    <dimen name="playlist_art_heigth">86dp</dimen>
+
+    <dimen name="movielist_art_width">82dp</dimen>
+    <dimen name="movielist_art_heigth">124dp</dimen>
+
+    <dimen name="tvshowlist_art_width">82dp</dimen>
+    <dimen name="tvshowlist_art_heigth">124dp</dimen>
+
+    <dimen name="seasonlist_art_width">82dp</dimen>
+    <dimen name="seasonlist_art_heigth">124dp</dimen>
+
+    <dimen name="episodelist_art_width">134dp</dimen>
+    <dimen name="episodelist_art_heigth">76dp</dimen>
+
+    <dimen name="artistlist_art_width">88dp</dimen>
+    <dimen name="artistlist_art_heigth">88dp</dimen>
+
+    <dimen name="albumlist_art_width">88dp</dimen>
+    <dimen name="albumlist_art_heigth">88dp</dimen>
+
+    <dimen name="albumdetail_poster_width">136dp</dimen>
+    <dimen name="albumdetail_poster_heigth">136dp</dimen>
+
+    <dimen name="audiogenrelist_art_width">88dp</dimen>
+    <dimen name="audiogenrelist_art_heigth">88dp</dimen>
+
+    <dimen name="musicvideolist_art_width">88dp</dimen>
+    <dimen name="musicvideolist_art_heigth">88dp</dimen>
+
+    <dimen name="musicvideodetail_poster_width">146dp</dimen>
+    <dimen name="musicvideodetail_poster_heigth">146dp</dimen>
+
+    <dimen name="addonlist_art_width">88dp</dimen>
+    <dimen name="addonlist_art_heigth">88dp</dimen>
+
+    <dimen name="addondetail_poster_width">146dp</dimen>
+    <dimen name="addondetail_poster_heigth">146dp</dimen>
+
+</resources>

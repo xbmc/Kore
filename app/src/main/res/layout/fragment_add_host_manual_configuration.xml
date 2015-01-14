@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/wizard_title"/>
+
+            <TextView
+                android:id="@android:id/title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/wizard_title"
+                style="@style/WizardTitle"
+                android:text="@string/wizard_manual_configuration" />
+
+            <TextView
+                android:id="@android:id/message"
+                style="@style/WizardMessage"
+                android:layout_height="wrap_content"
+                android:layout_below="@android:id/title"
+
+                android:text="@string/wizard_manual_configuration_message"/>
+
+            <EditText
+                android:id="@+id/xbmc_name"
+                style="@style/TextAppearance.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@android:id/message"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+
+                android:inputType="textNoSuggestions"
+                android:hint="@string/wizard_xbmc_name"/>
+
+            <EditText
+                android:id="@+id/xbmc_http_port"
+                style="@style/TextAppearance.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/xbmc_name"
+                android:layout_alignRight="@id/xbmc_name"
+
+                android:inputType="number"
+                android:ems="4"
+                android:hint="@string/wizard_xbmc_port"/>
+
+            <EditText
+                android:id="@+id/xbmc_ip_address"
+                style="@style/TextAppearance.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/xbmc_http_port"
+                android:layout_alignLeft="@id/xbmc_name"
+                android:layout_toLeftOf="@id/xbmc_http_port"
+
+                android:inputType="textNoSuggestions"
+                android:hint="@string/wizard_xbmc_ip"/>
+
+            <EditText
+                android:id="@+id/xbmc_username"
+                style="@style/TextAppearance.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/xbmc_ip_address"
+                android:layout_alignLeft="@id/xbmc_name"
+                android:layout_alignRight="@id/xbmc_name"
+
+                android:inputType="textNoSuggestions"
+                android:hint="@string/wizard_xbmc_username"/>
+
+            <EditText
+                android:id="@+id/xbmc_password"
+                style="@style/TextAppearance.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/xbmc_username"
+                android:layout_alignLeft="@id/xbmc_name"
+                android:layout_alignRight="@id/xbmc_name"
+
+                android:inputType="textPassword"
+                android:hint="@string/wizard_xbmc_password"/>
+
+            <TextView
+                android:id="@android:id/text1"
+                style="@style/WizardMessage"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/xbmc_password"
+                android:layout_marginTop="16dp"
+                android:text="@string/wizard_manual_configuration_message_advanced"/>
+            <EditText
+                android:id="@+id/xbmc_tcp_port"
+                style="@style/TextAppearance.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@android:id/text1"
+                android:layout_marginTop="8dp"
+                android:layout_alignLeft="@id/xbmc_name"
+                android:layout_alignRight="@id/xbmc_name"
+
+                android:inputType="number"
+                android:ems="4"
+                android:hint="@string/wizard_xbmc_tcp_port"/>
+
+            <EditText
+                android:id="@+id/xbmc_wol_port"
+                style="@style/TextAppearance.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/xbmc_tcp_port"
+                android:layout_alignRight="@id/xbmc_tcp_port"
+                android:inputType="number"
+                android:ems="6"
+                android:hint="@string/wizard_xbmc_wol_port"/>
+
+            <EditText
+                android:id="@+id/xbmc_mac_address"
+                style="@style/TextAppearance.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/xbmc_wol_port"
+                android:layout_alignLeft="@id/xbmc_tcp_port"
+                android:layout_toLeftOf="@id/xbmc_wol_port"
+                android:inputType="text"
+                android:hint="@string/wizard_xbmc_mac_address"/>
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/separator"
+        style="@style/DefaultDividerH"/>
+
+    <include layout="@layout/wizard_button_bar"
+             android:id="@+id/button_bar"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
+</LinearLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources>
+	<color name="dark_background">#ff121314</color>
+    <color name="light_background">#ffeeeeee</color>
+    <!--<color name="blue_grey_background">#ff212b30</color>-->
+    <color name="blue_grey_background">#ff192227</color>
+
+    <!--<color name="accent_default">@color/light_green_A700</color>-->
+    <color name="accent_default">@color/orange_A400</color>
+
+    <color name="white">#ffffffff</color>
+    <color name="white_dim_50pct">#88ffffff</color>
+
+    <color name="black_dim_87pct">#de000000</color>
+    <color name="black_dim_54pct">#8a000000</color>
+
+    <color name="dark_content_background">#ff222326</color>
+    <!--<color name="dark_content_background_dim_70pct">#b4222326</color>-->
+    <!--<color name="dark_content_background">#ff323232</color>-->
+    <color name="dark_content_background_dim_70pct">#b4323232</color>
+
+    <color name="light_content_background">#ffffffff</color>
+    <color name="light_content_background_dim_70pct">#b4ffffff</color>
+
+    <color name="blue_grey_content_background">#ff263238</color>
+    <color name="blue_grey_content_background_dim_70pct">#b4263238</color>
+
+    <color name="dark_separator">#ff505050</color>
+    <color name="light_separator">#ffafafaf</color>
+
+    <!-- Drawer colors -->
+	<color name="dark_drawer_background">@color/dark_content_background</color>
+    <color name="light_drawer_background">@color/light_content_background</color>
+    <color name="blue_grey_drawer_background">@color/blue_grey_content_background</color>
+
+    <color name="host_status_connecting">#ffff8800</color>
+    <color name="host_status_available">#ff669900</color>
+    <color name="host_status_unavailable">#ffcc0000</color>
+
+    <color name="solarized_base03">#ff002b36</color>
+    <color name="solarized_base02">#ff073642</color>
+    <color name="solarized_base01">#ff586e75</color>
+    <color name="solarized_base00">#ff657b83</color>
+    <color name="solarized_base0">#ff839496</color>
+    <color name="solarized_base1">#ff93a1a1</color>
+    <color name="solarized_base2">#ffeee8d5</color>
+    <color name="solarized_base3">#fffdf6e3</color>
+    <color name="solarized_yellow">#ffb58900</color>
+    <color name="solarized_orange">#ffcb4b16</color>
+    <color name="solarized_red">#ffdc322f</color>
+    <color name="solarized_magenta">#ffd33682</color>
+    <color name="solarized_violet">#ff6c71c4</color>
+    <color name="solarized_blue">#ff268bd2</color>
+    <color name="solarized_cyan">#ff2aa198</color>
+    <color name="solarized_green">#ff859900</color>
+
+    <color name="solarized_base03_dim70pct">#b4002b36</color>
+    <color name="solarized_base02_dim70pct">#b4073642</color>
+    <color name="solarized_base3_dim70pct">#b4fdf6e3</color>
+    <color name="solarized_base2_dim70pct">#b4eee8d5</color>
+
+    <color name="solarized_orange_dark">#ffc73a00</color>
+
+</resources>

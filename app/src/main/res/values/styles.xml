@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+<!-- Text styles -->
+	<style name="TextAppearance">
+        <item name="android:textColor">?attr/appTextColorPrimary</item>
+	</style>
+
+    <style name="TextAppearance.NavDrawerItem" parent="TextAppearance.AppCompat.Body1">
+	</style>
+
+	<!--<style name="ActionBarThemeLight" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
+        <!--<item name="colorControlNormal">@color/white</item>-->
+	<!--</style>-->
+
+    <style name="Widget"/>
+
+    <style name="Widget.Button">
+    </style>
+
+    <style name="Widget.Button.Borderless">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+    </style>
+
+    <style name="Widget.GridView">
+        <item name="android:columnWidth">@dimen/default_grid_column_width</item>
+        <item name="android:numColumns">auto_fit</item>
+        <item name="android:stretchMode">columnWidth</item>
+        <item name="android:horizontalSpacing">@dimen/default_grid_horizontal_spacing</item>
+        <item name="android:verticalSpacing">@dimen/default_grid_vertical_spacing</item>
+        <item name="android:fastScrollEnabled">true</item>
+    </style>
+
+    <style name="DefaultDividerH">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?attr/separatorColor</item>
+    </style>
+
+    <style name="DefaultDividerV">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">?attr/separatorColor</item>
+    </style>
+
+    <style name="WizardTitle">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+        <item name="android:textColor">?attr/textColorOverPrimary</item>
+        <item name="android:gravity">left|bottom</item>
+        <item name="android:paddingBottom">@dimen/large_padding</item>
+        <item name="android:paddingLeft">@dimen/large_padding</item>
+        <item name="android:paddingRight">@dimen/large_padding</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="WizardMessage">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:gravity">left</item>
+        <item name="android:padding">@dimen/large_padding</item>
+    </style>
+
+    <style name="TextAppearance.EditText" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:gravity">left</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <!-- PagerSlidingTabStrip -->
+    <style name="TabStrip">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="pstsDividerColor">@android:color/transparent</item>
+        <item name="pstsIndicatorColor">@color/white</item>
+        <!--<item name="pstsTabPaddingLeftRight">32dp</item>-->
+        <!--<item name="pstsTabBackground">?attr/systemBarsTopColor</item>-->
+        <item name="pstsUnderlineColor">@color/white_dim_50pct</item>
+        <item name="pstsUnderlineHeight">0dp</item>
+        <item name="pstsIndicatorHeight">2dp</item>
+        <item name="pstsShouldExpand">false</item>
+        <item name="pstsTextAllCaps">true</item>
+    </style>
+
+    <style name="ViewPagerIndicator">
+        <item name="fillColor">?attr/appTextColorPrimary</item>
+        <item name="strokeColor">?attr/appTextColorSecondary</item>
+        <item name="pageColor">?attr/appTextColorSecondary</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="radius">3dp</item>
+        <item name="centered">true</item>
+        <item name="circleGapWidth">6dp</item>
+    </style>
+
+    <style name="ButtonBar">
+        <item name="android:background">?attr/buttonBarBackgroundColor</item>
+    </style>
+
+    <style name="ButtonBar.Bottom">
+        <!--<item name="android:background">?attr/systemBarsBottomColor</item>-->
+    </style>
+
+    <style name="TextAppearance.Media">
+        <item name="android:gravity">left</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextAppearance.Media.Remote">
+        <item name="android:paddingLeft">@dimen/remote_content_hmargin</item>
+        <item name="android:paddingRight">@dimen/remote_content_hmargin</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextAppearance.Media.Remote.Title">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
+        <item name="android:paddingTop">@dimen/default_padding</item>
+        <item name="android:paddingBottom">@dimen/small_padding</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TextAppearance.Media.Remote.Details">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="TextAppearance.Media.Title">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
+        <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:paddingBottom">@dimen/small_padding</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="TextAppearance.Media.Subtitle">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:paddingBottom">@dimen/small_padding</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="TextAppearance.Media.SmallDetails">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TextAppearance.Media.Rating">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="android:textColor">?attr/appTextColorPrimary</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TextAppearance.Media.Cast">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="android:paddingLeft">@dimen/small_padding</item>
+        <item name="android:paddingRight">@dimen/small_padding</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TextAppearance.Media.Info">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:textColor">?attr/appTextColorPrimary</item>
+        <item name="android:paddingTop">@dimen/default_padding</item>
+        <item name="android:paddingBottom">@dimen/default_padding</item>
+    </style>
+
+    <style name="TextAppearance.Media.Progress">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">@dimen/small_padding</item>
+        <item name="android:paddingRight">@dimen/small_padding</item>
+        <item name="android:minEms">3</item>
+    </style>
+
+    <style name="TextAppearance.Playlist">
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextAppearance.Playlist.Title">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingTop">@dimen/small_padding</item>
+    </style>
+
+    <style name="TextAppearance.Playlist.Details">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:paddingBottom">@dimen/small_padding</item>
+    </style>
+
+    <style name="TextAppearance.Medialist">
+        <item name="android:paddingLeft">@dimen/large_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextAppearance.Medialist.Title">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingTop">@dimen/small_padding</item>
+    </style>
+
+    <style name="TextAppearance.Medialist.Details">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:maxLines">2</item>
+        <!--<item name="android:paddingBottom">4dp</item>-->
+    </style>
+
+    <style name="TextAppearance.Medialist.OtherInfo">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <!--<item name="android:textSize">@dimen/text_size_small</item>-->
+        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingBottom">@dimen/small_padding</item>
+    </style>
+
+    <style name="TextAppearance.HostName">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
+        <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:textColor">?attr/appTextColorPrimary</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TextAppearance.HostDetails">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
+        <item name="android:paddingBottom">@dimen/small_padding</item>
+        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="TextAppearance.Info">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TextAppearance.Info.Title">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextAppearance.Info.Details">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <!--<item name="android:maxLines">2</item>-->
+        <item name="android:ellipsize">end</item>
+    </style>
+</resources>
+

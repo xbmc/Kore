@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.syncedsynapse.kore2"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 2
+        versionName "0.9.0"
+
+        buildConfigField("String", "IAP_KEY", "\"${rootProject.property("IAP_KEY")}\"")
+    }
+
+    signingConfigs {
+        release {
+            def Properties keyProps = new Properties()
+            keyProps.load(new FileInputStream(file('keystore.properties')))
+
+            storeFile file(keyProps["store"])
+            keyAlias keyProps["alias"]
+            storePassword keyProps["storePass"]
+            keyPassword keyProps["pass"]
+        }
+    }
+
+    buildTypes {
+//        debug {
+//            minifyEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:cardview-v7:21.0.0'
+
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.2'
+    compile 'com.jakewharton:butterknife:5.1.2'
+    compile 'com.squareup.picasso:picasso:2.4.0'
+    compile 'de.greenrobot:eventbus:2.2.1'
+    compile 'javax.jmdns:jmdns:3.4.1'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.melnykov:floatingactionbutton:1.1.0'
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}

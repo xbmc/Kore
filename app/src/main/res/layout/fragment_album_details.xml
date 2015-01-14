@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/art"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/now_playing_art_height"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@string/thumbnail"
+        android:scaleType="centerCrop"/>
+
+    <com.melnykov.fab.ObservableScrollView
+        android:id="@+id/media_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true">
+
+        <!-- Album details information -->
+        <RelativeLayout
+            android:id="@+id/media_panel_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/remote_content_hmargin"
+            android:layout_marginRight="@dimen/remote_content_hmargin"
+            android:transitionGroup="true">
+            <TextView
+                android:id="@+id/media_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/media_title_margin_top"
+                style="@style/TextAppearance.Media.Title"
+                android:paddingLeft="@dimen/poster_width_plus_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:background="?attr/contentBackgroundColor"/>
+            <TextView
+                android:id="@+id/media_undertitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Media.Subtitle"
+                android:paddingLeft="@dimen/poster_width_plus_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:layout_below="@id/media_title"
+                android:background="?attr/contentBackgroundColor"/>
+
+            <ImageView
+                android:id="@+id/poster"
+                android:layout_width="@dimen/albumdetail_poster_width"
+                android:layout_height="@dimen/albumdetail_poster_heigth"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:layout_alignBottom="@id/media_undertitle"
+                android:contentDescription="@string/poster"
+                android:scaleType="centerCrop"/>
+
+            <!-- Media actions buttons -->
+            <LinearLayout
+                android:id="@+id/media_actions_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonbar_height"
+                android:layout_below="@id/media_undertitle"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:orientation="horizontal"
+                style="@style/ButtonBar"
+                android:background="?attr/contentBackgroundColor">
+                <!--<ImageButton-->
+                    <!--android:id="@+id/play"-->
+                    <!--android:layout_width="@dimen/buttonbar_button_width"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--style="@style/Widget.Button.Borderless"-->
+                    <!--android:src="?attr/iconPlay"-->
+                    <!--android:contentDescription="@string/play"/>-->
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
+                <ImageButton
+                    android:id="@+id/add_to_playlist"
+                    android:layout_width="@dimen/buttonbar_button_width"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconAddToQueue"
+                    android:contentDescription="@string/add_to_playlist"/>
+                <ImageButton
+                    android:id="@+id/download"
+                    android:layout_width="@dimen/buttonbar_button_width"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconDownload"
+                    android:contentDescription="@string/download"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/media_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/media_actions_bar"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:background="?attr/contentBackgroundColor">
+                <TextView
+                    android:id="@+id/year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    style="@style/TextAppearance.Media.SmallDetails"/>
+                <!--<TextView-->
+                    <!--android:id="@+id/genres"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@id/year"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_alignWithParentIfMissing="true"-->
+                    <!--style="@style/TextAppearance.Media.SmallDetails"/>-->
+
+                <TextView
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    style="@style/TextAppearance.Media.SmallDetails"
+                    android:textColor="?attr/appTextColorPrimary"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/max_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/rating"
+                    android:layout_toRightOf="@id/rating"
+                    android:layout_toLeftOf="@id/year"
+                    style="@style/TextAppearance.Media.SmallDetails"
+                    android:text="@string/max_rating_music"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/media_description_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/media_details"
+                android:orientation="vertical"
+                android:background="?attr/contentBackgroundColor">
+                <TextView
+                    android:id="@+id/media_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Media.Info"
+                    android:paddingLeft="@dimen/default_padding"
+                    android:paddingRight="@dimen/default_padding"
+                    android:maxLines="@integer/description_max_lines"
+                    android:ellipsize="@null"/>
+                <ImageView
+                    android:id="@+id/show_all"
+                    android:layout_width="@dimen/small_icon_size"
+                    android:layout_height="@dimen/small_icon_size"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="@dimen/small_padding"
+                    android:layout_marginRight="@dimen/small_padding"
+                    android:layout_marginEnd="@dimen/small_padding"
+                    android:src="?attr/iconExpand"
+                    android:background="?android:attr/selectableItemBackground"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/media_description_container"
+                style="@style/DefaultDividerH"/>
+
+            <LinearLayout
+                android:id="@+id/song_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/separator"
+                android:layout_marginTop="@dimen/default_padding"
+                android:orientation="vertical"/>
+
+        </RelativeLayout>
+    </com.melnykov.fab.ObservableScrollView>
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_marginRight="@dimen/double_padding"
+        android:src="@drawable/ic_play_arrow_white_24dp"
+        app:fab_colorNormal="?attr/fabColorNormal"
+        app:fab_colorPressed="?attr/fabColorPressed"/>
+
+</RelativeLayout>

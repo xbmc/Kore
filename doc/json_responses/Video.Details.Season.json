@@ -1,0 +1,44 @@
+{ "id" : 203,
+  "jsonrpc" : "2.0",
+  "result" : { "limits" : { "end" : 2,
+          "start" : 0,
+          "total" : 2
+        },
+      "seasons" : [
+      { "art" : { "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f81189-2.jpg/",
+                "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f81189-2-9.jpg/",
+                "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f81189-g21.jpg/",
+                "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f81189-61.jpg/",
+                "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f81189-22.jpg/"
+              },
+            "episode" : 13,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f81189-61.jpg/",
+            "label" : "Season 2",
+            "playcount" : 0,
+            "season" : 2,
+            "seasonid" : 26,
+            "showtitle" : "Breaking Bad",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f81189-2-9.jpg/",
+            "tvshowid" : 4,
+            "watchedepisodes" : 2
+          },
+          { "art" : { "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f81189-3.jpg/",
+                "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f81189-3-7.jpg/",
+                "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f81189-g21.jpg/",
+                "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f81189-61.jpg/",
+                "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f81189-22.jpg/"
+              },
+            "episode" : 13,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f81189-61.jpg/",
+            "label" : "Season 3",
+            "playcount" : 0,
+            "season" : 3,
+            "seasonid" : 27,
+            "showtitle" : "Breaking Bad",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f81189-3-7.jpg/",
+            "tvshowid" : 4,
+            "watchedepisodes" : 0
+          }
+        ]
+    }
+}
