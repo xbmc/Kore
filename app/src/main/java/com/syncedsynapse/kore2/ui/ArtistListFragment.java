@@ -275,12 +275,6 @@ public class ArtistListFragment extends Fragment
         adapter.swapCursor(cursor);
         // To prevent the empty text from appearing on the first load, set it now
         emptyView.setText(getString(R.string.no_artists_found_refresh));
-        emptyView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
     }
 
     /** {@inheritDoc} */

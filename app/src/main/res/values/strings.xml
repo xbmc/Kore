@@ -190,14 +190,14 @@
     <string name="playlist_empty">Playlist empty</string>
     <string name="clear_playlist">Clear playlist</string>
 
-    <string name="no_movies_found_refresh">No movies found\n\nTap to refresh</string>
-    <string name="no_tvshows_found_refresh">No TV Shows found\n\nTap to refresh</string>
+    <string name="no_movies_found_refresh">No movies found\n\nSwipe down to refresh</string>
+    <string name="no_tvshows_found_refresh">No TV Shows found\n\nSwipe down to refresh</string>
     <string name="no_episodes_found">No episodes found</string>
-    <string name="no_artists_found_refresh">No artists found\n\nTap to refresh</string>
-    <string name="no_albums_found_refresh">No albums found\n\nTap to refresh</string>
-    <string name="no_genres_found_refresh">No genres found\n\nTap to refresh</string>
-    <string name="no_addons_found_refresh">No addons found or not connected\n\nTap to refresh</string>
-    <string name="no_music_videos_found_refresh">No videos found\n\nTap to refresh</string>
+    <string name="no_artists_found_refresh">No artists found\n\nSwipe down to refresh</string>
+    <string name="no_albums_found_refresh">No albums found\n\nSwipe down to refresh</string>
+    <string name="no_genres_found_refresh">No genres found\n\nSwipe down to refresh</string>
+    <string name="no_addons_found_refresh">No addons found or not connected\n\nSwipe down to refresh</string>
+    <string name="no_music_videos_found_refresh">No videos found\n\nSwipe down to refresh</string>
     <string name="pull_to_refresh">Pull to refresh</string>
 
     <string name="minutes_abbrev">%1$s min</string>

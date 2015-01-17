@@ -228,6 +228,7 @@ public class TVShowListFragment extends Fragment
     @Override
     public void onRefresh() {
         if (hostInfo != null) {
+            LogUtils.LOGD(TAG, "Starting onRefresh");
             // Make sure we're showing the refresh
             swipeRefreshLayout.setRefreshing(true);
             // Start the syncing process
@@ -306,12 +307,6 @@ public class TVShowListFragment extends Fragment
         adapter.swapCursor(cursor);
         // To prevent the empty text from appearing on the first load, set it now
         emptyView.setText(getString(R.string.no_tvshows_found_refresh));
-        emptyView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
     }
 
     /** {@inheritDoc} */
