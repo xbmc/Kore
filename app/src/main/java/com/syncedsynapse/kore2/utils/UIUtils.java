@@ -15,13 +15,18 @@
  */
 package com.syncedsynapse.kore2.utils;
 
+import android.animation.Animator;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -34,6 +39,7 @@ import com.syncedsynapse.kore2.host.HostInfo;
 import com.syncedsynapse.kore2.host.HostManager;
 import com.syncedsynapse.kore2.jsonrpc.type.GlobalType;
 import com.syncedsynapse.kore2.jsonrpc.type.VideoType;
+import com.syncedsynapse.kore2.ui.RemoteActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -354,6 +360,51 @@ public class UIUtils {
                 return R.style.SolarizedDarkTheme;
             default:
                 return R.style.NightTheme;
+        }
+    }
+
+    /**
+     * Launches the remote activity, performing a circular reveal animation if
+     * Lollipop or later
+     *
+     * @param context Context
+     * @param centerX Center X of the animation
+     * @param centerY Center Y of the animation
+     * @param exitTransitionView View to reveal. Should occupy the whole screen and
+     *                           be invisible before calling this
+     */
+    @TargetApi(21)
+    public static void switchToRemoteWithAnimation(final Context context,
+                                                   int centerX, int centerY,
+                                                   final View exitTransitionView) {
+        final Intent launchIntent = new Intent(context, RemoteActivity.class);
+        if (Utils.isLollipopOrLater()) {
+            // Show the animation
+            int endRadius = Math.max(exitTransitionView.getHeight(), exitTransitionView.getWidth());
+            Animator exitAnim = ViewAnimationUtils.createCircularReveal(exitTransitionView,
+                    centerX, centerY, 0, endRadius);
+
+            exitAnim.setDuration(200);
+            exitAnim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {}
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    // Launch remote activity
+                    context.startActivity(launchIntent);
+                }
+
+                @Override public void onAnimationCancel(Animator animation) {}
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {}
+            });
+            exitTransitionView.setVisibility(View.VISIBLE);
+            exitAnim.start();
+        } else {
+            // No animation show, just launch the remote
+            context.startActivity(launchIntent);
         }
     }
 }

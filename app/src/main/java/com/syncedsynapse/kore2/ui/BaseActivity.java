@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 
+import com.syncedsynapse.kore2.Settings;
 import com.syncedsynapse.kore2.utils.UIUtils;
 
 /**
@@ -31,8 +32,7 @@ public class BaseActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         setTheme(UIUtils.getThemeResourceId(
-                prefs.getString(SettingsFragment.KEY_PREF_THEME,
-                        SettingsFragment.DEFAULT_PREF_THEME)));
+                prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
         super.onCreate(savedInstanceState);
 	}
 

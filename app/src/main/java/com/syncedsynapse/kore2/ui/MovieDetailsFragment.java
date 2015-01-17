@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -107,9 +108,9 @@ public class MovieDetailsFragment extends Fragment
 
     @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
+    @InjectView(R.id.exit_transition_view) View exitTransitionView;
     // Buttons
     @InjectView(R.id.fab) ImageButton fabButton;
-
     @InjectView(R.id.add_to_playlist) ImageButton addToPlaylistButton;
     @InjectView(R.id.go_to_imdb) ImageButton imdbButton;
     @InjectView(R.id.download) ImageButton downloadButton;
@@ -210,6 +211,8 @@ public class MovieDetailsFragment extends Fragment
     @Override
     public void onResume() {
         bus.register(this);
+        // Force the exit view to invisible
+        exitTransitionView.setVisibility(View.INVISIBLE);
         super.onResume();
     }
 
@@ -338,7 +341,16 @@ public class MovieDetailsFragment extends Fragment
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSucess(String result) {
-                // Do nothing, play should be starting
+                // Check whether we should switch to the remote
+                boolean switchToRemote = PreferenceManager
+                        .getDefaultSharedPreferences(getActivity())
+                        .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
+                                Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
+                if (switchToRemote) {
+                    int cx = (fabButton.getLeft() + fabButton.getRight()) / 2;
+                    int cy = (fabButton.getTop() + fabButton.getBottom()) / 2;
+                    UIUtils.switchToRemoteWithAnimation(getActivity(), cx, cy, exitTransitionView);
+                }
             }
 
             @Override

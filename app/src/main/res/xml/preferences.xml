@@ -29,6 +29,11 @@
         android:entryValues="@array/themes_values_array"
         android:defaultValue="0"/>
 
+    <CheckBoxPreference
+        android:key="pref_switch_to_remote_after_media_start"
+        android:title="@string/switch_to_remote"
+        android:defaultValue="true"/>
+
     <Preference
         android:key="pref_about"
         android:title="@string/about"/>

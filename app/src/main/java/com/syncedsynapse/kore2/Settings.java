@@ -22,7 +22,7 @@ import android.text.format.DateUtils;
 import com.syncedsynapse.kore2.utils.LogUtils;
 
 /**
- * Singleton that holds the settings of the app.
+ * Singleton that holds the settings of the app, that are not stored in the default shared preferences
  *
  * Interfaces with {@link android.content.SharedPreferences} to load/store these preferences.
  */
@@ -52,7 +52,22 @@ public class Settings {
     // Default values
     private static final int DEFAULT_MAX_CAST_PICTURES = 12;
 
-	// Singleton instance
+    /**
+     * Default Shared Preferences keys.
+     * These settings are automatically managed by the Preferences mechanism.
+     * Make sure these are the same as in preferences.xml
+     */
+    public static final String KEY_PREF_THEME = "pref_theme";
+    public static final String KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START =
+            "pref_switch_to_remote_after_media_start";
+    public static final String KEY_PREF_ABOUT = "pref_about";
+    public static final String KEY_PREF_COFFEE = "pref_coffee";
+
+    public static final String DEFAULT_PREF_THEME = "0";
+    public static final boolean DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = true;
+
+
+    // Singleton instance
 	private static Settings instance = null;
 	private Context context;
 

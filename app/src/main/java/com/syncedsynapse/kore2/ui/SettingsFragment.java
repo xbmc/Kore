@@ -46,14 +46,6 @@ public class SettingsFragment extends PreferenceFragment
     public static final String COFFEE_SKU = "coffee";
     public static final int COFFEE_RC = 1001;
 
-    /**
-     * Preferences keys. Make sure these are the same as in preferences.xml
-     */
-    public static final String KEY_PREF_THEME = "pref_theme";
-    public static final String KEY_PREF_ABOUT = "pref_about";
-    public static final String KEY_PREF_COFFEE = "pref_coffee";
-    public static final String DEFAULT_PREF_THEME = "0";
-
     // Billing helper
     private IabHelper mBillingHelper;
 
@@ -97,7 +89,7 @@ public class SettingsFragment extends PreferenceFragment
         // Update summaries
         setupPreferences(mSettings.hasBoughtCoffee);
 
-        if (key.equals(KEY_PREF_THEME)) {
+        if (key.equals(Settings.KEY_PREF_THEME)) {
             //String newTheme = sharedPreferences.getString(key, DEFAULT_PREF_THEME);
 
             // restart to apply new theme (actually build an entirely new task stack)
@@ -118,7 +110,7 @@ public class SettingsFragment extends PreferenceFragment
         LogUtils.LOGD(TAG, "Setting up preferences. Has bought coffee? " + hasBoughtCoffee);
 
         // Coffee upgrade
-        final Preference coffeePref = findPreference(KEY_PREF_COFFEE);
+        final Preference coffeePref = findPreference(Settings.KEY_PREF_COFFEE);
         if (coffeePref != null) {
             if (hasBoughtCoffee) {
                 if (settings.showThanksForCofeeMessage) {
@@ -150,7 +142,7 @@ public class SettingsFragment extends PreferenceFragment
         }
 
         // Theme preferences
-        ListPreference themePref = (ListPreference)findPreference(KEY_PREF_THEME);
+        ListPreference themePref = (ListPreference)findPreference(Settings.KEY_PREF_THEME);
         if (hasBoughtCoffee) {
             themePref.setEnabled(true);
             themePref.setSummary(themePref.getEntry());
@@ -166,7 +158,7 @@ public class SettingsFragment extends PreferenceFragment
                     getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException exc) {
         }
-        Preference aboutPreference = findPreference(KEY_PREF_ABOUT);
+        Preference aboutPreference = findPreference(Settings.KEY_PREF_ABOUT);
         aboutPreference.setSummary(nameAndVersion);
         aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -202,7 +194,7 @@ public class SettingsFragment extends PreferenceFragment
                     mSettings.save();
 
                     // Lock upgrade preference
-                    Preference coffeePreference = findPreference(KEY_PREF_COFFEE);
+                    Preference coffeePreference = findPreference(Settings.KEY_PREF_COFFEE);
                     coffeePreference.setEnabled(false);
                     coffeePreference.setSummary(getResources().getString(R.string.error_setting_up_billing, result.getMessage()));
 

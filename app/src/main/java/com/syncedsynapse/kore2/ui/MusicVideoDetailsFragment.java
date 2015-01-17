@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -45,6 +46,7 @@ import android.widget.Toast;
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import com.syncedsynapse.kore2.R;
+import com.syncedsynapse.kore2.Settings;
 import com.syncedsynapse.kore2.host.HostInfo;
 import com.syncedsynapse.kore2.host.HostManager;
 import com.syncedsynapse.kore2.jsonrpc.ApiCallback;
@@ -100,6 +102,7 @@ public class MusicVideoDetailsFragment extends Fragment
 
     @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
+    @InjectView(R.id.exit_transition_view) View exitTransitionView;
     // Buttons
     @InjectView(R.id.fab) ImageButton fabButton;
     @InjectView(R.id.add_to_playlist) ImageButton addToPlaylistButton;
@@ -190,6 +193,8 @@ public class MusicVideoDetailsFragment extends Fragment
     @Override
     public void onResume() {
         bus.register(this);
+        // Force the exit view to invisible
+        exitTransitionView.setVisibility(View.INVISIBLE);
         super.onResume();
     }
 
@@ -295,7 +300,16 @@ public class MusicVideoDetailsFragment extends Fragment
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSucess(String result) {
-                // Do nothing
+                // Check whether we should switch to the remote
+                boolean switchToRemote = PreferenceManager
+                        .getDefaultSharedPreferences(getActivity())
+                        .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
+                                Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
+                if (switchToRemote) {
+                    int cx = (fabButton.getLeft() + fabButton.getRight()) / 2;
+                    int cy = (fabButton.getTop() + fabButton.getBottom()) / 2;
+                    UIUtils.switchToRemoteWithAnimation(getActivity(), cx, cy, exitTransitionView);
+                }
             }
 
             @Override

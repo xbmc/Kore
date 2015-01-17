@@ -25,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.syncedsynapse.kore2.R;
+import com.syncedsynapse.kore2.Settings;
 import com.syncedsynapse.kore2.utils.LogUtils;
 import com.syncedsynapse.kore2.utils.UIUtils;
 
@@ -40,8 +41,8 @@ public class SettingsActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         setTheme(UIUtils.getThemeResourceId(
-                prefs.getString(SettingsFragment.KEY_PREF_THEME,
-                        SettingsFragment.DEFAULT_PREF_THEME)));
+                prefs.getString(Settings.KEY_PREF_THEME,
+                        Settings.DEFAULT_PREF_THEME)));
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);

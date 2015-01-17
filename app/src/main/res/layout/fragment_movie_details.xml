@@ -285,4 +285,12 @@
         android:src="@drawable/ic_play_arrow_white_24dp"
         app:fab_colorNormal="?attr/fabColorNormal"
         app:fab_colorPressed="?attr/fabColorPressed"/>
+
+    <!-- View that will be shown with the circularReveal when user presses the FAB -->
+    <View
+        android:id="@+id/exit_transition_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/fabColorNormal"
+        android:visibility="invisible"/>
 </RelativeLayout>

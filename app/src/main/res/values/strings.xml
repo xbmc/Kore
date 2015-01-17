@@ -257,6 +257,9 @@
     <string name="theme_solarized">Solarized</string>
     <string name="theme_solarized_dark">Solarized Dark</string>
 
+    <string name="switch_to_remote">Switch to remote after media start</string>
+
+
     <string name="about">About</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2015 Synced Synapse.<br><br>
