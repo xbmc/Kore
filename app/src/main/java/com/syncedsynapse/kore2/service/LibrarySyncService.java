@@ -275,7 +275,9 @@ public class LibrarySyncService extends Service {
                     .post(new MediaSyncEvent(currentSyncItem.getSyncType(),
                             currentSyncItem.getSyncExtras(),
                             MediaSyncEvent.STATUS_FAIL, errorCode, description));
-            syncService.stopSelf(serviceStartId);
+            // Keep syncing till the end
+            nextSync();
+            //syncService.stopSelf(serviceStartId);
         }
     }
 
