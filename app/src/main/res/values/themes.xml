@@ -20,7 +20,7 @@
 	<style name="NightTheme" parent="Theme.AppCompat.NoActionBar">
 
 		<item name="android:colorBackground">@color/dark_background</item>
-        <!--<item name="android:windowBackground">@color/color_background</item>-->
+        <item name="android:windowBackground">@color/dark_background</item>
         <!--<item name="android:windowActionBarOverlay">true</item>-->
 
         <!-- Set AppCompat’s color theming attrs -->
@@ -134,6 +134,7 @@
     <style name="DayTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="android:colorBackground">@color/light_background</item>
+        <item name="android:windowBackground">@color/light_background</item>
 
         <!-- Set AppCompat’s color theming attrs -->
         <item name="colorPrimary">@color/deep_orange_500</item>
@@ -236,6 +237,7 @@
     <!-- Blue Grey theme. -->
     <style name="MistTheme" parent="NightTheme">
         <item name="android:colorBackground">@color/blue_grey_background</item>
+        <item name="android:windowBackground">@color/blue_grey_background</item>
 
         <!-- Set AppCompat’s color theming attrs -->
         <!--<item name="colorPrimary">@color/light_blue_700</item>-->
@@ -257,6 +259,7 @@
     <!-- Solarized Light theme. -->
     <style name="SolarizedLightTheme" parent="DayTheme">
         <item name="android:colorBackground">@color/solarized_base2</item>
+        <item name="android:windowBackground">@color/solarized_base2</item>
 
         <!-- Set AppCompat’s color theming attrs -->
         <item name="colorPrimary">@color/solarized_orange</item>
