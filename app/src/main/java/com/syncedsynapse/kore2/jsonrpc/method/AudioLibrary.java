@@ -22,6 +22,7 @@ import com.syncedsynapse.kore2.jsonrpc.ApiException;
 import com.syncedsynapse.kore2.jsonrpc.ApiMethod;
 import com.syncedsynapse.kore2.jsonrpc.type.AudioType;
 import com.syncedsynapse.kore2.jsonrpc.type.LibraryType;
+import com.syncedsynapse.kore2.jsonrpc.type.ListType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +103,23 @@ public class AudioLibrary {
             addParameterToRequest("properties", properties);
         }
 
+        /**
+         * Retrieve all artists with limits
+         *
+         * @param limits Limits to retrieve. See {@link ListType.Limits}
+         * @param albumartistsonly Whether or not to include artists only appearing in
+         *                         compilations. If the parameter is not passed or is passed as
+         *                         null the GUI setting will be used
+         * @param properties Properties to retrieve. See {@link AudioType.FieldsArtists} for a
+         *                   list of accepted values
+         */
+        public GetArtists(ListType.Limits limits, boolean albumartistsonly, String... properties) {
+            super();
+            addParameterToRequest("limits", limits);
+            addParameterToRequest("albumartistsonly", albumartistsonly);
+            addParameterToRequest("properties", properties);
+        }
+
         @Override
         public String getMethodName() {
             return METHOD_NAME;
@@ -135,13 +153,26 @@ public class AudioLibrary {
         private final static String LIST_NODE = "albums";
 
         /**
-         * Retrieve all albums from specified artist or genre
+         * Retrieve all albums
          *
          * @param properties Properties to retrieve. See {@link AudioType.FieldsAlbum} for a
          *                   list of accepted values
          */
         public GetAlbums(String... properties) {
             super();
+            addParameterToRequest("properties", properties);
+        }
+
+        /**
+         * Retrieve all albums with limits
+         *
+         * @param limits Limits to retrieve. See {@link ListType.Limits}
+         * @param properties Properties to retrieve. See {@link AudioType.FieldsAlbum} for a
+         *                   list of accepted values
+         */
+        public GetAlbums(ListType.Limits limits, String... properties) {
+            super();
+            addParameterToRequest("limits", limits);
             addParameterToRequest("properties", properties);
         }
 
@@ -219,13 +250,26 @@ public class AudioLibrary {
         private final static String LIST_NODE = "songs";
 
         /**
-         * Retrieve all songs from specified album, artist or genre
+         * Retrieve all songs
          *
          * @param properties Properties to retrieve. See {@link AudioType.FieldsSong} for a
          *                   list of accepted values
          */
         public GetSongs(String... properties) {
             super();
+            addParameterToRequest("properties", properties);
+        }
+
+        /**
+         * Retrieve all songs with limits
+         *
+         * @param limits Limits to retrieve. See {@link ListType.Limits}
+         * @param properties Properties to retrieve. See {@link AudioType.FieldsSong} for a
+         *                   list of accepted values
+         */
+        public GetSongs(ListType.Limits limits, String... properties) {
+            super();
+            addParameterToRequest("limits", limits);
             addParameterToRequest("properties", properties);
         }
 

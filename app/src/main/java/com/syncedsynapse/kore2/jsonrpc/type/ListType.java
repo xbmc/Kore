@@ -16,6 +16,8 @@
 package com.syncedsynapse.kore2.jsonrpc.type;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.syncedsynapse.kore2.utils.JsonUtils;
 
 import java.util.List;
@@ -309,6 +311,33 @@ public class ListType {
             starttime = JsonUtils.stringFromJsonNode(node, STARTTIME, null);
         }
     }
+
+    /**
+     * List.Limits
+     */
+    public static class Limits
+            implements ApiParameter {
+        public static final String START = "start";
+        public static final String END = "end";
+
+        protected static final ObjectMapper objectMapper = new ObjectMapper();
+
+        public final int start;
+        public final int end;
+
+        public Limits(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+
+        public JsonNode toJsonNode() {
+            final ObjectNode node = objectMapper.createObjectNode();
+            node.put(START, start);
+            node.put(END, end);
+            return node;
+        }
+    }
+
 
     /**
      * Enums for List.Fields.All

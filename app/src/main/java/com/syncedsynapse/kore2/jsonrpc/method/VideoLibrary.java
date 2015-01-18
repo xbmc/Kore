@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.syncedsynapse.kore2.jsonrpc.ApiException;
 import com.syncedsynapse.kore2.jsonrpc.ApiMethod;
+import com.syncedsynapse.kore2.jsonrpc.type.ListType;
 import com.syncedsynapse.kore2.jsonrpc.type.VideoType;
 
 import java.util.ArrayList;
@@ -87,7 +88,8 @@ public class VideoLibrary {
         private final static String LIST_NODE = "movies";
 
         /**
-         * Retrieve all movies
+         * Retrieve all movies, without limits
+         * Caution, this can break in large libraries
          *
          * @param properties Properties to retrieve. See {@link VideoType.FieldsMovie} for a list of
          *                   accepted values
@@ -95,6 +97,19 @@ public class VideoLibrary {
         public GetMovies(String... properties) {
             super();
             addParameterToRequest("properties", properties);
+        }
+
+        /**
+         * Retrieve all movies, with limits
+         *
+         * @param limits Limits to retrieve. See {@link ListType.Limits}
+         * @param properties Properties to retrieve. See {@link VideoType.FieldsMovie} for a list of
+         *                   accepted values
+         */
+        public GetMovies(ListType.Limits limits, String... properties) {
+            super();
+            addParameterToRequest("properties", properties);
+            addParameterToRequest("limits", limits);
         }
 
         @Override
@@ -199,6 +214,19 @@ public class VideoLibrary {
         public GetTVShows(String... properties) {
             super();
             addParameterToRequest("properties", properties);
+        }
+
+        /**
+         * Retrieve all tv shows, with limits
+         *
+         * @param limits Limits to retrieve. See {@link ListType.Limits}
+         * @param properties Properties to retrieve. See {@link VideoType.FieldsMovie} for a list of
+         *                   accepted values
+         */
+        public GetTVShows(ListType.Limits limits, String... properties) {
+            super();
+            addParameterToRequest("properties", properties);
+            addParameterToRequest("limits", limits);
         }
 
         @Override
