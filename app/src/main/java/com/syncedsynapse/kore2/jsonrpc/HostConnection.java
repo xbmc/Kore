@@ -49,8 +49,6 @@ import java.util.concurrent.Executors;
 public class HostConnection {
 	public static final String TAG = LogUtils.makeLogTag(HostConnection.class);
 
-	private static final int TIMEOUT = 5000; // ns
-
 	/**
 	 * Communicate via TCP
 	 */
@@ -136,13 +134,32 @@ public class HostConnection {
 
     private ExecutorService executorService;
 
+    private final int connectionTimeout;
+
+    private static final int DEFAULT_TIMEOUT = 10000; // ms
+
+    /**
+     * Creates a new host connection
+     * @param hostInfo Host info object
+     */
     public HostConnection(final HostInfo hostInfo) {
-		this.hostInfo = hostInfo;
+        this(hostInfo, DEFAULT_TIMEOUT);
+	}
+
+    /**
+     * Creates a new host connection
+     * @param hostInfo Host info object
+     * @param connectionTimeout Connection timeout in ms
+     */
+    public HostConnection(final HostInfo hostInfo, int connectionTimeout) {
+        this.hostInfo = hostInfo;
         // Start with the default host protocol
         this.protocol = hostInfo.getProtocol();
         // Create a single threaded executor
         this.executorService = Executors.newSingleThreadExecutor();
-	}
+        // Set timeout
+        this.connectionTimeout = connectionTimeout;
+    }
 
     /**
      * Returns this connection protocol
@@ -339,8 +356,8 @@ public class HostConnection {
 //			LogUtils.LOGD(TAG, "Opening HTTP connection.");
 			HttpURLConnection connection = (HttpURLConnection) new URL(hostInfo.getJsonRpcHttpEndpoint()).openConnection();
 			connection.setRequestMethod("POST");
-			connection.setConnectTimeout(TIMEOUT);
-			connection.setReadTimeout(TIMEOUT);
+			connection.setConnectTimeout(connectionTimeout);
+			//connection.setReadTimeout(connectionTimeout);
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
@@ -518,7 +535,7 @@ public class HostConnection {
 			Socket socket = new Socket();
 			final InetSocketAddress address = new InetSocketAddress(hostInfo.getAddress(), hostInfo.getTcpPort());
 			socket.setSoTimeout(0); // No read timeout. Read should block
-			socket.connect(address, TIMEOUT);
+			socket.connect(address, connectionTimeout);
 
 			return socket;
 		} catch (SocketException e) {
