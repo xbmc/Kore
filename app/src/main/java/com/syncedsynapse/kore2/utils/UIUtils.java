@@ -138,11 +138,10 @@ public class UIUtils {
 
         char charAvatar = TextUtils.isEmpty(stringAvatar) ?
                           ' ' : stringAvatar.charAt(0);
-        avatarColorsIdx = Math.max(
-                Character.getNumericValue(stringAvatar.charAt(0)) +
-                Character.getNumericValue(stringAvatar.charAt(stringAvatar.length() - 1)) +
-                stringAvatar.length(), 0) %
-                          characterAvatarColors.length();
+        avatarColorsIdx = TextUtils.isEmpty(stringAvatar) ? 0 :
+                Math.max(Character.getNumericValue(stringAvatar.charAt(0)) +
+                        Character.getNumericValue(stringAvatar.charAt(stringAvatar.length() - 1)) +
+                        stringAvatar.length(), 0) % characterAvatarColors.length();
         int color = characterAvatarColors.getColor(avatarColorsIdx, 0xff000000);
         CharacterDrawable avatarDrawable = new CharacterDrawable(charAvatar, color);
 
