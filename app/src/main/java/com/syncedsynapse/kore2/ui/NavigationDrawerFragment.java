@@ -271,8 +271,10 @@ public class NavigationDrawerFragment extends Fragment {
             return ACTIVITY_MUSIC;
         else if (activity instanceof AddonsActivity)
             return ACTIVITY_ADDONS;
+        else if (activity instanceof SettingsActivity)
+            return ACTIVITY_SETTINGS;
 
-        return -1;
+        return ACTIVITY_HOSTS;
     }
 
     /**
