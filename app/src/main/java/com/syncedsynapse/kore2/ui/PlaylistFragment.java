@@ -382,11 +382,13 @@ public class PlaylistFragment extends Fragment
         getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
             public void onSucess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
+                if (!isAdded()) return;
                 getPlaylistItems(getActivePlayerResult, getItemResult, result);
             }
 
             @Override
             public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
                 // Oops
                 displayErrorGettingPlaylistMessage(description);
             }
@@ -434,6 +436,7 @@ public class PlaylistFragment extends Fragment
             getItems.execute(hostManager.getConnection(), new ApiCallback<List<ListType.ItemsAll>>() {
                 @Override
                 public void onSucess(List<ListType.ItemsAll> result) {
+                    if (!isAdded()) return;
                     // Ok, we've got all the info, save and display playlist
                     lastGetPlaylistItemsResult = result;
                     displayPlaylist(getItemResult, result);
@@ -441,6 +444,7 @@ public class PlaylistFragment extends Fragment
 
                 @Override
                 public void onError(int errorCode, String description) {
+                    if (!isAdded()) return;
                     // Oops
                     displayErrorGettingPlaylistMessage(description);
                 }

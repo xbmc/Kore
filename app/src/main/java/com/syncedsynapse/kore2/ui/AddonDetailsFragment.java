@@ -155,16 +155,16 @@ public class AddonDetailsFragment extends Fragment {
         action.execute(hostManager.getConnection(), new ApiCallback<AddonType.Details>() {
             @Override
             public void onSucess(AddonType.Details result) {
+                if (!isAdded()) return;
                 displayAddonDetails(result);
             }
 
             @Override
             public void onError(int errorCode, String description) {
-                if (isAdded()) {
-                    Toast.makeText(getActivity(),
-                            String.format(getString(R.string.error_getting_addon_info), description),
-                            Toast.LENGTH_SHORT).show();
-                }
+                if (!isAdded()) return;
+                Toast.makeText(getActivity(),
+                        String.format(getString(R.string.error_getting_addon_info), description),
+                        Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
     }
@@ -199,6 +199,7 @@ public class AddonDetailsFragment extends Fragment {
 
             @Override
             public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
                      .show();
@@ -213,21 +214,19 @@ public class AddonDetailsFragment extends Fragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSucess(String result) {
-                if (isAdded()) {
-                    int messageResId = (!isEnabled) ? R.string.addon_enabled : R.string.addon_disabled;
-                    Toast.makeText(getActivity(), messageResId, Toast.LENGTH_SHORT).show();
-                    setupEnableButton(!isEnabled);
-                }
+                if (!isAdded()) return;
+                int messageResId = (!isEnabled) ? R.string.addon_enabled : R.string.addon_disabled;
+                Toast.makeText(getActivity(), messageResId, Toast.LENGTH_SHORT).show();
+                setupEnableButton(!isEnabled);
             }
 
             @Override
             public void onError(int errorCode, String description) {
-                if (isAdded()) {
-                    Toast.makeText(getActivity(),
-                            String.format(getString(R.string.general_error_executing_action), description),
-                            Toast.LENGTH_SHORT)
-                         .show();
-                }
+                if (!isAdded()) return;
+                Toast.makeText(getActivity(),
+                        String.format(getString(R.string.general_error_executing_action), description),
+                        Toast.LENGTH_SHORT)
+                        .show();
             }
         }, callbackHandler);
     }

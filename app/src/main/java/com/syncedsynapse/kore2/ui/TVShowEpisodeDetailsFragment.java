@@ -334,6 +334,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSucess(String result) {
+                if (!isAdded()) return;
                 // Check whether we should switch to the remote
                 boolean switchToRemote = PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
@@ -348,6 +349,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
 
             @Override
             public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
                      .show();
@@ -362,6 +364,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
         getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
             public void onSucess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
+                if (!isAdded()) return;
                 // Ok, loop through the playlists, looking for the video one
                 int videoPlaylistId = -1;
                 for (PlaylistType.GetPlaylistsReturnType playlist : result) {
@@ -378,6 +381,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
                     action.execute(hostManager.getConnection(), new ApiCallback<String>() {
                         @Override
                         public void onSucess(String result) {
+                            if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
                                  .show();
@@ -385,12 +389,14 @@ public class TVShowEpisodeDetailsFragment extends Fragment
 
                         @Override
                         public void onError(int errorCode, String description) {
+                            if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
                                  .show();
                         }
                     }, callbackHandler);
                 } else {
+                    if (!isAdded()) return;
                     Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
                          .show();
                 }
@@ -417,8 +423,8 @@ public class TVShowEpisodeDetailsFragment extends Fragment
             @Override
             public void onSucess(String result) {
                 // Force a refresh, but don't show a message
-                if (isAdded())
-                    startSync(true);
+                if (!isAdded()) return;
+                startSync(true);
             }
 
             @Override

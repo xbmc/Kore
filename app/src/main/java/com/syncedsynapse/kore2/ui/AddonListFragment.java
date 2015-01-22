@@ -183,6 +183,8 @@ public class AddonListFragment extends Fragment
         action.execute(hostManager.getConnection(), new ApiCallback<List<AddonType.Details>>() {
             @Override
             public void onSucess(List<AddonType.Details> result) {
+                if (!isAdded()) return;
+
                 adapter.clear();
                 for (AddonType.Details addon : result) {
                     if (addon.type.equals(AddonType.Types.UNKNOWN) ||
@@ -203,14 +205,14 @@ public class AddonListFragment extends Fragment
 
             @Override
             public void onError(int errorCode, String description) {
-                if (isAdded()) {
-                    // To prevent the empty text from appearing on the first load, set it now
-                    emptyView.setText(getString(R.string.no_addons_found_refresh));
-                    Toast.makeText(getActivity(),
-                            String.format(getString(R.string.error_getting_addon_info), description),
-                            Toast.LENGTH_SHORT).show();
-                    swipeRefreshLayout.setRefreshing(false);
-                }
+                if (!isAdded()) return;
+
+                // To prevent the empty text from appearing on the first load, set it now
+                emptyView.setText(getString(R.string.no_addons_found_refresh));
+                Toast.makeText(getActivity(),
+                        String.format(getString(R.string.error_getting_addon_info), description),
+                        Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
             }
         }, callbackHandler);
     }

@@ -228,7 +228,7 @@ public class SettingsFragment extends PreferenceFragment
 
                         // update UI accordingly
                         mSettings.hasBoughtCoffee = hasUpgrade;
-                        setupPreferences(mSettings.hasBoughtCoffee);
+                        if (isAdded()) setupPreferences(mSettings.hasBoughtCoffee);
                         mSettings.save();
                     }
                 });

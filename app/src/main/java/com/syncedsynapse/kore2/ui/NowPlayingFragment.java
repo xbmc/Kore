@@ -245,6 +245,7 @@ public class NowPlayingFragment extends Fragment
     private ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
         @Override
         public void onSucess(Integer result) {
+            if (!isAdded()) return;
             UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result);
         }
 
@@ -311,6 +312,7 @@ public class NowPlayingFragment extends Fragment
         action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
             @Override
             public void onSucess(Boolean result) {
+                if (!isAdded()) return;
                 if (result) {
                     Resources.Theme theme = getActivity().getTheme();
                     TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
@@ -324,9 +326,7 @@ public class NowPlayingFragment extends Fragment
             }
 
             @Override
-            public void onError(int errorCode, String description) {
-
-            }
+            public void onError(int errorCode, String description) { }
         }, callbackHandler);
     }
 
@@ -336,6 +336,7 @@ public class NowPlayingFragment extends Fragment
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSucess(String result) {
+                if (!isAdded()) return;
                 // Force a refresh
                 hostConnectionObserver.forceRefreshResults();
             }
@@ -351,6 +352,7 @@ public class NowPlayingFragment extends Fragment
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSucess(String result) {
+                if (!isAdded()) return;
                 hostConnectionObserver.forceRefreshResults();
             }
 
@@ -445,6 +447,7 @@ public class NowPlayingFragment extends Fragment
                         getProperties.execute(hostManager.getConnection(), new ApiCallback<ApplicationType.PropertyValue>() {
                             @Override
                             public void onSucess(ApplicationType.PropertyValue result) {
+                                if (!isAdded()) return;
                                 // Ok, we've got a version, decide which method to call
                                 if (result.version.major < 13) {
                                     showDownloadSubtitlesPreGotham();
@@ -455,6 +458,7 @@ public class NowPlayingFragment extends Fragment
 
                             @Override
                             public void onError(int errorCode, String description) {
+                                if (!isAdded()) return;
                                 // Something went wrong
                                 Toast.makeText(getActivity(),
                                         String.format(getString(R.string.error_getting_properties), description),
@@ -481,12 +485,14 @@ public class NowPlayingFragment extends Fragment
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSucess(String result) {
+                if (!isAdded()) return;
                 // Notify enclosing activity to switch panels
                 nowPlayingListener.SwitchToRemotePanel();
             }
 
             @Override
             public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_executing_subtitles), description),
                         Toast.LENGTH_SHORT).show();
