@@ -18,6 +18,7 @@ package com.syncedsynapse.kore2.ui;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 import com.syncedsynapse.kore2.R;
 import com.syncedsynapse.kore2.host.HostConnectionObserver;
 import com.syncedsynapse.kore2.host.HostManager;
+import com.syncedsynapse.kore2.jsonrpc.ApiCallback;
 import com.syncedsynapse.kore2.jsonrpc.method.*;
 import com.syncedsynapse.kore2.jsonrpc.method.System;
 import com.syncedsynapse.kore2.jsonrpc.type.ListType;
@@ -171,11 +173,46 @@ public class RemoteActivity extends HostConnectionActivity
                         SendTextDialogFragment.newInstance(getString(R.string.send_text));
                 dialog.show(getSupportFragmentManager(), null);
                 return true;
+            case R.id.clean_video_library:
+                VideoLibrary.Clean actionCleanVideo = new VideoLibrary.Clean();
+                actionCleanVideo.execute(hostManager.getConnection(), null, null);
+                return true;
+            case R.id.clean_audio_library:
+                AudioLibrary.Clean actionCleanAudio = new AudioLibrary.Clean();
+                actionCleanAudio.execute(hostManager.getConnection(), null, null);
+                return true;
+            case R.id.update_video_library:
+                VideoLibrary.Scan actionScanVideo = new VideoLibrary.Scan();
+                actionScanVideo.execute(hostManager.getConnection(), null, null);
+                return true;
+            case R.id.update_audio_library:
+                AudioLibrary.Scan actionScanAudio = new AudioLibrary.Scan();
+                actionScanAudio.execute(hostManager.getConnection(), null, null);
+                return true;
 			default:
 				break;
 		}
 
 		return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Issue commands to update the Audio and Video libraries, sequentially
+     */
+    private void updateLibraries() {
+        final Handler callbackHandler = new Handler();
+        VideoLibrary.Scan actionScanVideo = new VideoLibrary.Scan();
+        actionScanVideo.execute(hostManager.getConnection(), new ApiCallback<String>() {
+            @Override
+            public void onSucess(String result) {
+                // Great, now update the Audio library
+                AudioLibrary.Scan actionScanAudio = new AudioLibrary.Scan();
+                actionScanAudio.execute(hostManager.getConnection(), null, callbackHandler);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) { }
+        }, callbackHandler);
     }
 
     /**
@@ -326,4 +363,5 @@ public class RemoteActivity extends HostConnectionActivity
     public void SwitchToRemotePanel() {
         viewPager.setCurrentItem(1);
     }
+
 }

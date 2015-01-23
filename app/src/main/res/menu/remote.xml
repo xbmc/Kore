@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_on_off"
         android:title="@string/power"
         android:icon="?attr/iconOnOffToolbar"
@@ -23,17 +23,39 @@
         app:showAsAction="always">
         <menu>
             <item android:id="@+id/action_wake_up"
-                  android:title="@string/wake_up" />
+                android:title="@string/wake_up" />
             <item android:id="@+id/action_quit"
-                  android:title="@string/quit" />
+                android:title="@string/quit" />
             <item android:id="@+id/action_suspend"
-                  android:title="@string/suspend" />
+                android:title="@string/suspend" />
             <item android:id="@+id/action_shutdown"
-                  android:title="@string/shutdown" />
+                android:title="@string/shutdown" />
         </menu>
     </item>
     <item android:id="@+id/send_text"
-          android:title="@string/send_text"
-          android:orderInCategory="2"
-          app:showAsAction="never"/>
+        android:title="@string/send_text"
+        android:orderInCategory="2"
+        app:showAsAction="never"/>
+    <item android:title="@string/library_actions"
+        android:orderInCategory="3"
+        app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/update_video_library"
+                android:title="@string/update_video_library"
+                android:orderInCategory="1"
+                app:showAsAction="never"/>
+            <item android:id="@+id/clean_video_library"
+                android:title="@string/clean_video_library"
+                android:orderInCategory="2"
+                app:showAsAction="never"/>
+            <item android:id="@+id/update_audio_library"
+                android:title="@string/update_audio_library"
+                android:orderInCategory="3"
+                app:showAsAction="never"/>
+            <item android:id="@+id/clean_audio_library"
+                android:title="@string/clean_audio_library"
+                android:orderInCategory="4"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
 </menu>
