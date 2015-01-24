@@ -50,6 +50,12 @@
     <string name="text_to_send">Texte à envoyer</string>
     <string name="finish_after_send">Terminer après l\'envoi</string>
 
+    <string name="library_actions">Maintenance de la bibliothèque</string>
+    <string name="clean_video_library">Nettoyer la bibliothèque vidéo</string>
+    <string name="clean_audio_library">Nettoyer la bibliothèque audio</string>
+    <string name="update_video_library">Mettre à jour la bibliothèque vidéo</string>
+    <string name="update_audio_library">Mettre à jour la bibliothèque audio</string>
+
     <string name="connected_to">Connecté à %1$s</string>
     <string name="connecting">Connexion en cours\u2026</string>
     <string name="connecting_to">Connexion à %1$s (%2$s)\u2026</string>
