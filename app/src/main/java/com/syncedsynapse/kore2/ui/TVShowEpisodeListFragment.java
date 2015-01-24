@@ -333,6 +333,18 @@ public class TVShowEpisodeListFragment extends Fragment
                     // apply the filters to the episodes list)
                     seasonsEpisodesListView.collapseGroup(0);
                     seasonsEpisodesListView.expandGroup(0);
+                } else if (cursor.getCount() > 0) {
+                    // Expand the first season that has unseen episodes
+                    cursor.moveToFirst();
+                    do {
+                        int unwatched = cursor.getInt(SeasonsListQuery.EPISODE) - cursor.getInt(SeasonsListQuery.WATCHEDEPISODES);
+                        if (unwatched > 0) {
+                            LogUtils.LOGD(TAG, "Expanding group: " + cursor.getPosition());
+                            seasonsEpisodesListView.collapseGroup(cursor.getPosition());
+                            seasonsEpisodesListView.expandGroup(cursor.getPosition());
+                            break;
+                        }
+                    } while (cursor.moveToNext());
                 }
                 // To prevent the empty text from appearing on the first load, set it now
                 emptyView.setText(getString(R.string.no_episodes_found));
