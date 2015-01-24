@@ -745,7 +745,9 @@ public class NowPlayingFragment extends Fragment
             mediaPoster.setVisibility(View.VISIBLE);
             int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
             int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
-            UIUtils.loadImageIntoImageview(hostManager, poster, mediaPoster, posterWidth, posterHeight);
+            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                    poster, title,
+                    mediaPoster, posterWidth, posterHeight);
             UIUtils.loadImageIntoImageview(hostManager, art, mediaArt, displayMetrics.widthPixels, artHeight);
 
             // Reset padding

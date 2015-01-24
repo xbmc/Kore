@@ -382,8 +382,9 @@ public class RemoteFragment extends Fragment
         nowPlayingTitle.setText(title);
         nowPlayingDetails.setText(underTitle);
 
-        UIUtils.loadImageIntoImageview(hostManager, thumbnailUrl, thumbnail,
-                thumbnail.getWidth(), thumbnail.getHeight());
+        UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                thumbnailUrl, title,
+                thumbnail, thumbnail.getWidth(), thumbnail.getHeight());
     }
 
     /**

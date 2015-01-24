@@ -652,7 +652,9 @@ public class PlaylistFragment extends Fragment
 
             int artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
             int artHeigth = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
-            UIUtils.loadImageIntoImageview(hostManager, artUrl, viewHolder.art, artWidth, artHeigth);
+            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                    artUrl, title,
+                    viewHolder.art, artWidth, artHeigth);
 
             // For the popupmenu
             viewHolder.contextMenu.setTag(position);
