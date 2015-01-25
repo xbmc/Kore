@@ -34,8 +34,11 @@ import com.syncedsynapse.kore2.R;
 import com.syncedsynapse.kore2.host.HostConnectionObserver;
 import com.syncedsynapse.kore2.host.HostManager;
 import com.syncedsynapse.kore2.jsonrpc.ApiCallback;
-import com.syncedsynapse.kore2.jsonrpc.method.*;
+import com.syncedsynapse.kore2.jsonrpc.method.Application;
+import com.syncedsynapse.kore2.jsonrpc.method.AudioLibrary;
+import com.syncedsynapse.kore2.jsonrpc.method.Input;
 import com.syncedsynapse.kore2.jsonrpc.method.System;
+import com.syncedsynapse.kore2.jsonrpc.method.VideoLibrary;
 import com.syncedsynapse.kore2.jsonrpc.type.ListType;
 import com.syncedsynapse.kore2.jsonrpc.type.PlayerType;
 import com.syncedsynapse.kore2.ui.hosts.AddHostActivity;
@@ -172,6 +175,11 @@ public class RemoteActivity extends HostConnectionActivity
                 SendTextDialogFragment dialog =
                         SendTextDialogFragment.newInstance(getString(R.string.send_text));
                 dialog.show(getSupportFragmentManager(), null);
+                return true;
+            case R.id.toggle_fullscreen:
+//                GUI.SetFullscreen actionSetFullscreen = new GUI.SetFullscreen();
+                Input.ExecuteAction actionSetFullscreen = new Input.ExecuteAction(Input.ExecuteAction.TOGGLEFULLSCREEN);
+                actionSetFullscreen.execute(hostManager.getConnection(), null, null);
                 return true;
             case R.id.clean_video_library:
                 VideoLibrary.Clean actionCleanVideo = new VideoLibrary.Clean();

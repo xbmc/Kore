@@ -18,6 +18,7 @@ package com.syncedsynapse.kore2.jsonrpc.method;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.syncedsynapse.kore2.jsonrpc.ApiException;
 import com.syncedsynapse.kore2.jsonrpc.ApiMethod;
+import com.syncedsynapse.kore2.utils.JsonUtils;
 
 /**
  * All JSON RPC methods in GUI.*
@@ -178,6 +179,29 @@ public class GUI {
         @Override
         public String resultFromJson(ObjectNode jsonObject) throws ApiException {
             return jsonObject.get(RESULT_NODE).textValue();
+        }
+    }
+
+    /**
+     * Toggle fullscreen/GUI
+     */
+    public static final class SetFullscreen extends ApiMethod<Boolean> {
+        public final static String METHOD_NAME = "GUI.SetFullscreen";
+
+        /**
+         * Toggle fullscreen/GUI
+         */
+        public SetFullscreen() {
+            super();
+            addParameterToRequest("fullscreen", "toggle");
+        }
+
+        @Override
+        public String getMethodName() { return METHOD_NAME; }
+
+        @Override
+        public Boolean resultFromJson(ObjectNode jsonObject) throws ApiException {
+            return JsonUtils.booleanFromJsonNode(jsonObject, RESULT_NODE);
         }
     }
 

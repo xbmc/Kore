@@ -58,4 +58,8 @@
                 app:showAsAction="never"/>
         </menu>
     </item>
+    <item android:id="@+id/toggle_fullscreen"
+        android:title="@string/toggle_fullscreen"
+        android:orderInCategory="4"
+        app:showAsAction="never"/>
 </menu>
