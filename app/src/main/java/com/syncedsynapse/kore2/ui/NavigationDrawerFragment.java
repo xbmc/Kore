@@ -293,6 +293,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     }
     private void selectItem(DrawerItem item, int position) {
+        if (item.type == DrawerItem.TYPE_DIVIDER) return;
+
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
         }
