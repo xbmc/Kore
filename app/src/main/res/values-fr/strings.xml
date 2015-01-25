@@ -73,11 +73,11 @@
     Recherche en cours de centres multimédia sur votre réseau local\u2026<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
-    Je n\ai pas trouvé de centre multimédia sur votre réseau.<br/>Si vous avez besoin d\'aide pour le configurer, consultez <a href="http://syncedsynapse.com/kore/kore-faq/>ceci</a>.<br/><br/>
+    Je n\'ai pas trouvé de centre multimédia sur votre réseau.<br/>Si vous avez besoin d\'aide pour le configurer, consultez <a href="http://syncedsynapse.com/kore/kore-faq/>ceci</a>.<br/><br/>
     Appuyez sur <i>Recherche</i> pour une nouvelle recherche ou <i>Suivant</i> pour configurer manuellement.
     ]]></string>
     <string name="wizard_search_host_found"><![CDATA[
-    J\'ai trouvé ces centres multimédia sur votre réseau.<br/><br/>Sélectionnez-en un à ajouter ou appuyez sur <i>Suivant</i> pour en ajouter un nouveau manuellement.
+    J\'ai trouvé ce(s) centre(s) multimédia sur votre réseau.<br/><br/>Sélectionnez-en un à ajouter ou appuyez sur <i>Suivant</i> pour en ajouter un nouveau manuellement.
     ]]></string>
     <string name="searching">Recherche en cours\u2026</string>
     <string name="no_xbmc_found">Aucun centre multimédia trouvé</string>
