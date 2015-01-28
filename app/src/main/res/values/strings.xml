@@ -279,7 +279,7 @@
 
     <!-- String for coffee -->
     <string name="buy_me_coffee">Buy me a coffee</string>
-    <string name="expresso_please">Expresso, please. Thanks!</string>
+    <string name="expresso_please">Espresso, please. Thanks!</string>
     <string name="thanks_for_coffe">Thanks for the coffee!</string>
     <string name="remove_coffee_message">Tap to hide this setting</string>
     <string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>
