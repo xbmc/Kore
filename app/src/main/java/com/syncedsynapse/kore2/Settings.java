@@ -33,8 +33,8 @@ public class Settings {
      * The update interval for the records in the DB. If the last update is older than this value
      * a refresh will be triggered. Aplicable to TV Shows and Movies.
      */
-    public static final long DB_UPDATE_INTERVAL = 12 * DateUtils.HOUR_IN_MILLIS;
-//    public static final long DB_UPDATE_INTERVAL = DateUtils.MINUTE_IN_MILLIS;
+//    public static final long DB_UPDATE_INTERVAL = 12 * DateUtils.HOUR_IN_MILLIS;
+    public static final long DB_UPDATE_INTERVAL = 5 * DateUtils.MINUTE_IN_MILLIS;
 
 	// Constants for Shared Preferences
 	private static final String SETTINGS_KEY = "SETTINGS_SHARED_PREFS";
