@@ -455,4 +455,47 @@ public class MediaDatabase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Tables.MUSIC_VIDEOS);
 		onCreate(db);
 	}
+
+    /**
+     * Tokens to move from prefix to suffix when sorting titles
+     *
+     * TODO: Extract from host's advancedsettings.xml - sortTokens if available via JSONAPI
+     */
+    private static String[] commonTokens = {"The", /* "An", "A" */};
+
+    /**
+     * Given column create SQLite column expression to convert any sortTokens prefixes to suffixes
+     *
+     * eg.column = "title", commonTokens = {"The", "An", "A"};
+     *
+     *      (
+     *          CASE
+     *              WHEN title LIKE 'The %' THEN SUBSTR(title,5) || ', The'
+     *              WHEN title LIKE 'An %'  THEN SUBSTR(title,4) || ', An'
+     *              WHEN title LIKE 'A %'   THEN SUBSTR(title,3) || ', A'
+     *              ELSE title
+     *          END
+     *      )
+     *
+     * This allows it to be used in SQL where a column expression is expected ( SELECT, ORDER BY )
+     */
+    public static String sortCommonTokens(String column) {
+        StringBuilder order = new StringBuilder();
+
+        order.append(" (CASE ");
+
+        // Create WHEN for each token, eg 'The Dog' would become 'Dog, The'
+        for (String token: commonTokens) {
+            order.append(
+                 " WHEN " + column + " LIKE '" + token + " %'" +
+                 " THEN SUBSTR(" + column + "," + String.valueOf(token.length() + 2) + ")" +
+                 " || ', " + token + "' "
+            );
+        }
+
+        order.append(" ELSE " + column + " END) ");
+
+        return order.toString();
+    }
 }
+

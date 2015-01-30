@@ -50,6 +50,7 @@ import com.syncedsynapse.kore2.host.HostManager;
 import com.syncedsynapse.kore2.jsonrpc.ApiException;
 import com.syncedsynapse.kore2.jsonrpc.event.MediaSyncEvent;
 import com.syncedsynapse.kore2.provider.MediaContract;
+import com.syncedsynapse.kore2.provider.MediaDatabase;
 import com.syncedsynapse.kore2.service.LibrarySyncService;
 import com.syncedsynapse.kore2.utils.LogUtils;
 import com.syncedsynapse.kore2.utils.UIUtils;
@@ -286,7 +287,7 @@ public class MusicVideoListFragment extends Fragment
                 MediaContract.MusicVideos.GENRES,
         };
 
-        String SORT = MediaContract.MusicVideos.TITLE + " ASC";
+        String SORT = MediaDatabase.sortCommonTokens(MediaContract.MusicVideos.TITLE) + " ASC";
 
         final int ID = 0;
         final int MUSICVIDEOID = 1;

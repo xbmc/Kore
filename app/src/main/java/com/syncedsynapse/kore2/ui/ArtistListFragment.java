@@ -50,6 +50,7 @@ import com.syncedsynapse.kore2.host.HostManager;
 import com.syncedsynapse.kore2.jsonrpc.ApiException;
 import com.syncedsynapse.kore2.jsonrpc.event.MediaSyncEvent;
 import com.syncedsynapse.kore2.provider.MediaContract;
+import com.syncedsynapse.kore2.provider.MediaDatabase;
 import com.syncedsynapse.kore2.service.LibrarySyncService;
 import com.syncedsynapse.kore2.utils.LogUtils;
 import com.syncedsynapse.kore2.utils.UIUtils;
@@ -295,7 +296,7 @@ public class ArtistListFragment extends Fragment
                 MediaContract.Movies.THUMBNAIL,
         };
 
-        String SORT = MediaContract.Artists.ARTIST + " ASC";
+        String SORT = MediaDatabase.sortCommonTokens(MediaContract.Artists.ARTIST) + " ASC";
 
         final int ID = 0;
         final int ARTISTID = 1;
