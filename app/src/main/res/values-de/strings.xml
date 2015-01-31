@@ -63,7 +63,7 @@
     <string name="connecting_to">Verbinden mit %1$s (%2$s)…</string>
 
     <!-- String used in add host wizard -->
-    <string name="wizard_welcome">Wilkommen</string>
+    <string name="wizard_welcome">Willkommen</string>
     <string name="wizard_welcome_message"><![CDATA[
     Fügen Sie zuerst ein Media Center hinzu. Vergewissern Sie sich, dass ihr Kodi/XBMC läuft, konfiguriert ist und sich in einem Netzwerk mit ihrem Gerät befindet.<br/><br/>
     <a href="http://syncedsynapse.com/kore/kore-faq/>Hier</a> können Sie Hilfe beim Konfigurieren bekommen.<br/><br/>
@@ -103,7 +103,7 @@
     <string name="wizard_connecting_to_xbmc_message">Bitte warten Sie während die Verbindung zum Media Center aufgebaut wird…</string>
 
     <string name="wizard_empty_authentication">Kodi/XBMC verlangt eine Authentifizierung.\nBitte geben Sie Benutzername und Passwort an.</string>
-    <string name="wizard_incorrect_authentication">Falscher Benutzername und/oder falsches Passwort .\nBite überprüfen Sie ihre Eingaben.</string>
+    <string name="wizard_incorrect_authentication">Falscher Benutzername und/oder falsches Passwort .\nBitte überprüfen Sie ihre Eingaben.</string>
     <string name="wizard_success_connecting">Mit Kodi/XBMC verbunden.</string>
     <string name="wizard_error_connecting">Konnte keine Verbindung mit Kodi/XBMC herstellen.\nBitte überprüfen Sie ihre Konfiguration.</string>
 
@@ -193,7 +193,7 @@
     <string name="cast_list_text">%1$s als %2$s</string>
 
     <string name="general_error_executing_action">Fehler beim Ausführen der Aktion: %1$s</string>
-    <string name="error_getting_playlist">Fehler beim holen der Wiedergabeliste</string>
+    <string name="error_getting_playlist">Fehler beim Holen der Wiedergabeliste</string>
     <string name="error_message">Fehlermeldung: %1$s</string>
     <string name="playlist_empty">Wiedergabeliste leer</string>
     <string name="clear_playlist">Wiedergabeliste leeren</string>
@@ -285,7 +285,7 @@
     <string name="buy_coffee_to_unlock_themes">Bitte kaufen Sie mir einen Kaffee um mehr Themen freizuschalten</string>
 
     <string name="error_setting_up_billing">Google Play Bezahlungs-Service konnte nicht konfiguriert werden:\n%s</string>
-    <string name="error_querying_inventory">Fehler beim Überprüfung.</string>
+    <string name="error_querying_inventory">Fehler bei Überprüfung.</string>
     <string name="error_during_purchased">Ein Fehler trat beim Kauf auf.</string>
     <string name="purchase_thanks">Danke für ihre Unterstützung!</string>
 
