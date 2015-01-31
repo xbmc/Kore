@@ -190,7 +190,7 @@
     <string name="studio">Filmstudio:</string>
     <string name="cast">Besetzung</string>
     <string name="additional_cast">Zusätzliche Besetzung</string>
-    <string name="cast_list_text">%1$s und %2$s</string>
+    <string name="cast_list_text">%1$s als %2$s</string>
 
     <string name="general_error_executing_action">Fehler beim Ausführen der Aktion: %1$s</string>
     <string name="error_getting_playlist">Fehler beim holen der Wiedergabeliste</string>
