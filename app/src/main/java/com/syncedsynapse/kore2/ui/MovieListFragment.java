@@ -51,6 +51,7 @@ import com.syncedsynapse.kore2.host.HostManager;
 import com.syncedsynapse.kore2.jsonrpc.ApiException;
 import com.syncedsynapse.kore2.jsonrpc.event.MediaSyncEvent;
 import com.syncedsynapse.kore2.provider.MediaContract;
+import com.syncedsynapse.kore2.provider.MediaDatabase;
 import com.syncedsynapse.kore2.service.LibrarySyncService;
 import com.syncedsynapse.kore2.utils.LogUtils;
 import com.syncedsynapse.kore2.utils.UIUtils;
@@ -335,7 +336,7 @@ public class MovieListFragment extends Fragment
                 MediaContract.Movies.TAGLINE,
         };
 
-        String SORT = MediaContract.Movies.TITLE + " ASC";
+        String SORT = MediaDatabase.sortCommonTokens(MediaContract.Movies.TITLE) + " ASC";
 
         final int ID = 0;
         final int MOVIEID = 1;
