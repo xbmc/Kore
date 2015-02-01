@@ -256,6 +256,10 @@
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Hide watched</string>
+    <string name="sort_order">Sort</string>
+    <string name="sort_by_name">By name</string>
+    <string name="sort_by_date_added">By date added</string>
+    <string name="ignore_prefixes">Ignore prefixes</string>
 
     <!-- Preferences strings -->
     <string name="theme">Theme</string>

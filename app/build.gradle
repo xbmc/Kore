@@ -39,6 +39,11 @@ android {
         }
     }
 
+    lintOptions {
+        // Too much trouble keeping all translations in sync
+        disable 'MissingTranslation'
+    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'

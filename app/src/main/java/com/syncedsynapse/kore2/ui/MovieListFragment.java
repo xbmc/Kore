@@ -18,10 +18,12 @@ package com.syncedsynapse.kore2.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -180,24 +182,58 @@ public class MovieListFragment extends Fragment
         searchView.setQueryHint(getString(R.string.action_search_movies));
 
         // Setup filters
-        MenuItem hideWatched = menu.findItem(R.id.action_hide_watched);
-        Settings settings = Settings.getInstance(getActivity());
-        hideWatched.setChecked(settings.moviesFilterHideWatched);
+        MenuItem hideWatched = menu.findItem(R.id.action_hide_watched),
+                ignoreArticles = menu.findItem(R.id.action_ignore_prefixes),
+                sortByName = menu.findItem(R.id.action_sort_by_name),
+                sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED));
+        ignoreArticles.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, Settings.DEFAULT_PREF_MOVIES_IGNORE_PREFIXES));
+
+        int sortOrder = preferences.getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
+        switch (sortOrder) {
+            case Settings.SORT_BY_DATE_ADDED:
+                sortByDateAdded.setChecked(true);
+                break;
+            default:
+                sortByName.setChecked(true);
+                break;
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         switch (item.getItemId()) {
             case R.id.action_hide_watched:
-                if (item.isChecked())
-                    item.setChecked(false);
-                else
-                    item.setChecked(true);
-                Settings settings = Settings.getInstance(getActivity());
-                settings.moviesFilterHideWatched = item.isChecked();
-                settings.save();
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                        .putBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, item.isChecked())
+                        .apply();
+                getLoaderManager().restartLoader(LOADER_MOVIES, null, this);
+                break;
+            case R.id.action_ignore_prefixes:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                        .putBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, item.isChecked())
+                        .apply();
+                getLoaderManager().restartLoader(LOADER_MOVIES, null, this);
+                break;
+            case R.id.action_sort_by_name:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_NAME)
+                        .apply();
+                getLoaderManager().restartLoader(LOADER_MOVIES, null, this);
+                break;
+            case R.id.action_sort_by_date_added:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
+                        .apply();
                 getLoaderManager().restartLoader(LOADER_MOVIES, null, this);
                 break;
             default:
@@ -294,16 +330,29 @@ public class MovieListFragment extends Fragment
             selectionArgs = new String[] {"%" + searchFilter + "%"};
         }
 
-        Settings settings = Settings.getInstance(getActivity());
-        if (settings.moviesFilterHideWatched) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if (preferences.getBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED)) {
             if (selection.length() != 0)
                 selection.append(" AND ");
             selection.append(MediaContract.MoviesColumns.PLAYCOUNT)
                      .append("=0");
         }
 
+        String sortOrderStr;
+        int sortOrder = preferences.getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
+        if (sortOrder == Settings.SORT_BY_DATE_ADDED) {
+            sortOrderStr = MovieListQuery.SORT_BY_DATE_ADDED;
+        } else {
+            // Sort by name
+            if (preferences.getBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, Settings.DEFAULT_PREF_MOVIES_IGNORE_PREFIXES)) {
+                sortOrderStr = MovieListQuery.SORT_BY_NAME_IGNORE_ARTICLES;
+            } else {
+                sortOrderStr = MovieListQuery.SORT_BY_NAME;
+            }
+        }
+
         return new CursorLoader(getActivity(), uri,
-                MovieListQuery.PROJECTION, selection.toString(), selectionArgs, MovieListQuery.SORT);
+                MovieListQuery.PROJECTION, selection.toString(), selectionArgs, sortOrderStr);
     }
 
     /** {@inheritDoc} */
@@ -336,7 +385,9 @@ public class MovieListFragment extends Fragment
                 MediaContract.Movies.TAGLINE,
         };
 
-        String SORT = MediaDatabase.sortCommonTokens(MediaContract.Movies.TITLE) + " ASC";
+        String SORT_BY_NAME = MediaContract.Movies.TITLE + " ASC";
+        String SORT_BY_DATE_ADDED = MediaContract.Movies.DATEADDED + " DESC";
+        String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.Movies.TITLE) + " ASC";
 
         final int ID = 0;
         final int MOVIEID = 1;

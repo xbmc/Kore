@@ -17,7 +17,6 @@ package com.syncedsynapse.kore2.utils;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -223,7 +222,7 @@ public class UIUtils {
         int imageHeight = (int)(imageWidth * 1.2);
 
         List<VideoType.Cast> noPicturesCastList = new ArrayList<VideoType.Cast>();
-        int maxCastPictures = Settings.getInstance(context).maxCastPictures;
+        int maxCastPictures = Settings.DEFAULT_MAX_CAST_PICTURES;
         int currentPictureNumber = 0;
         for (int i = 0; i < castList.size(); i++) {
             VideoType.Cast actor = castList.get(i);

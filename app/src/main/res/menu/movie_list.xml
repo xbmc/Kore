@@ -24,8 +24,32 @@
         android:queryHint="@string/action_search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
+    <item
+        android:title="@string/sort_order"
+        app:showAsAction="never">
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/action_sort_by_name"
+                    android:title="@string/sort_by_name"
+                    app:showAsAction="never"/>
+                <item
+                    android:id="@+id/action_sort_by_date_added"
+                    android:title="@string/sort_by_date_added"
+                    app:showAsAction="never"/>
+            </group>
+            <group
+                android:checkableBehavior="all">
+                <item
+                    android:id="@+id/action_ignore_prefixes"
+                    android:title="@string/ignore_prefixes"
+                    app:showAsAction="never"/>
+            </group>
+        </menu>
+    </item>
+
     <group
-        android:id="@+id/group_filter"
         android:checkableBehavior="all">
         <item
             android:id="@+id/action_hide_watched"
