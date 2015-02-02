@@ -105,26 +105,32 @@ public class HostListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long itemId) {
                 HostInfoRow clickedHostRow = hostInfoRows.get(position);
 
-                switch (clickedHostRow.status) {
-                    case HostInfoRow.HOST_STATUS_CONNECTING:
-                        // Jsut switch the host
-                        hostManager.switchHost(clickedHostRow.hostInfo);
-                        break;
-                    case HostInfoRow.HOST_STATUS_AVAILABLE:
-                        // Set the clicked host active
-                        hostManager.switchHost(clickedHostRow.hostInfo);
-                        Intent intent = new Intent(context, RemoteActivity.class)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        context.startActivity(intent);
-                        break;
-                    case HostInfoRow.HOST_STATUS_UNAVAILABLE:
-                        hostManager.switchHost(clickedHostRow.hostInfo);
-                        // Check host status again
-                        clickedHostRow.status = HostInfoRow.HOST_STATUS_CONNECTING;
-                        adapter.notifyDataSetChanged();
-                        updateHostStatus(clickedHostRow);
-                        break;
-                }
+                // Set the clicked host active
+                hostManager.switchHost(clickedHostRow.hostInfo);
+                Intent intent = new Intent(context, RemoteActivity.class);
+                context.startActivity(intent);
+
+
+//                switch (clickedHostRow.status) {
+//                    case HostInfoRow.HOST_STATUS_CONNECTING:
+//                        // Jsut switch the host
+//                        hostManager.switchHost(clickedHostRow.hostInfo);
+//                        break;
+//                    case HostInfoRow.HOST_STATUS_AVAILABLE:
+//                        // Set the clicked host active
+//                        hostManager.switchHost(clickedHostRow.hostInfo);
+//                        Intent intent = new Intent(context, RemoteActivity.class)
+//                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        context.startActivity(intent);
+//                        break;
+//                    case HostInfoRow.HOST_STATUS_UNAVAILABLE:
+//                        hostManager.switchHost(clickedHostRow.hostInfo);
+//                        // Check host status again
+//                        clickedHostRow.status = HostInfoRow.HOST_STATUS_CONNECTING;
+//                        adapter.notifyDataSetChanged();
+//                        updateHostStatus(clickedHostRow);
+//                        break;
+//                }
             }
         });
 

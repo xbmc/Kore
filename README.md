@@ -34,7 +34,7 @@ Credits
 **Translations**
 - French - Kowalski
 - Bulgarian - NEOhidra
-
+- German - jonas2515
 
 Links
 -----

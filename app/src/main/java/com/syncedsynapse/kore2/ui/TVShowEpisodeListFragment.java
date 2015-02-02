@@ -18,11 +18,13 @@ package com.syncedsynapse.kore2.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -193,9 +195,9 @@ public class TVShowEpisodeListFragment extends Fragment
         inflater.inflate(R.menu.tvshow_episode_list, menu);
 
         // Setup filters
-        Settings settings = Settings.getInstance(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         menu.findItem(R.id.action_hide_watched)
-            .setChecked(settings.tvshowEpisodesFilterHideWatched);
+            .setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED));
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -204,13 +206,11 @@ public class TVShowEpisodeListFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_hide_watched:
-                if (item.isChecked())
-                    item.setChecked(false);
-                else
-                    item.setChecked(true);
-                Settings settings = Settings.getInstance(getActivity());
-                settings.tvshowEpisodesFilterHideWatched = item.isChecked();
-                settings.save();
+                item.setChecked(!item.isChecked());
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                preferences.edit()
+                        .putBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, item.isChecked())
+                        .apply();
                 getLoaderManager().restartLoader(LOADER_SEASONS, null, this);
                 break;
             default:
@@ -288,14 +288,16 @@ public class TVShowEpisodeListFragment extends Fragment
 
         Uri uri;
         StringBuilder selection = new StringBuilder();
-        Settings settings = Settings.getInstance(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        boolean tvshowEpisodesFilterHideWatched =
+                preferences.getBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED);
         switch (id) {
             case LOADER_SEASONS:
                 // Load seasons
                 uri = MediaContract.Seasons.buildTVShowSeasonsListUri(hostInfo.getId(), tvshowId);
 
                 // Filters
-                if (settings.tvshowEpisodesFilterHideWatched) {
+                if (tvshowEpisodesFilterHideWatched) {
                     selection.append(MediaContract.SeasonsColumns.WATCHEDEPISODES)
                              .append("!=")
                              .append(MediaContract.SeasonsColumns.EPISODE);
@@ -309,7 +311,7 @@ public class TVShowEpisodeListFragment extends Fragment
                 uri = MediaContract.Episodes.buildTVShowSeasonEpisodesListUri(hostInfo.getId(), tvshowId, season);
 
                 // Filters
-                if (settings.tvshowEpisodesFilterHideWatched) {
+                if (tvshowEpisodesFilterHideWatched) {
                     selection.append(MediaContract.EpisodesColumns.PLAYCOUNT)
                              .append("=0");
                 }

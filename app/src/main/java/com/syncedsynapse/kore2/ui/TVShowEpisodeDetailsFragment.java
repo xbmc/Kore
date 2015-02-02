@@ -296,7 +296,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
 //            case LOADER_CAST:
 //                uri = MediaContract.MovieCast.buildMovieCastListUri(hostInfo.getId(), episodeId);
 //                return new CursorLoader(getActivity(), uri,
-//                        MovieCastListQuery.PROJECTION, null, null, MovieCastListQuery.SORT);
+//                        MovieCastListQuery.PROJECTION, null, null, MovieCastListQuery.SORT_BY_NAME_IGNORE_ARTICLES);
             default:
                 return null;
         }
@@ -645,7 +645,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
 //                MediaContract.MovieCast.THUMBNAIL,
 //        };
 //
-//        String SORT = MediaContract.MovieCast.ORDER + " ASC";
+//        String SORT_BY_NAME_IGNORE_ARTICLES = MediaContract.MovieCast.ORDER + " ASC";
 //
 //        final int ID = 0;
 //        final int NAME = 1;
