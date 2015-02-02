@@ -86,16 +86,16 @@
     <string name="wizard_manual_configuration_message">Geben Sie ihre Media Center Konfiguration ein:</string>
     <string name="wizard_manual_configuration_message_advanced">Erweiterte Konfiguration (leer lassen für Standardwerte)</string>
     <string name="wizard_xbmc_name">Name des Media Center</string>
-    <string name="wizard_xbmc_ip">Addresse</string>
+    <string name="wizard_xbmc_ip">Adresse</string>
     <string name="wizard_xbmc_port">Port</string>
     <string name="wizard_xbmc_username">Benutzername</string>
     <string name="wizard_xbmc_password">Passwort</string>
     <string name="wizard_xbmc_tcp_port">TCP Port (9090)</string>
-    <string name="wizard_xbmc_mac_address">MAC Addresse</string>
+    <string name="wizard_xbmc_mac_address">MAC Adresse</string>
     <string name="wizard_xbmc_wol_port">WoL Port (9)</string>
 
     <string name="wizard_no_name_specified">Bitte geben Sie einen Namen für das Media Center ein.</string>
-    <string name="wizard_no_address_specified">Bitte geben Sie die IP-Addresse des Media Center an.</string>
+    <string name="wizard_no_address_specified">Bitte geben Sie die IP-Adresse des Media Center an.</string>
     <string name="wizard_invalid_http_port_specified">Bitte geben Sie einen gültigen HTTP Port an.</string>
     <string name="wizard_invalid_tcp_port_specified">Bitte geben Sie einen gültigen TCP Port an.</string>
 
@@ -208,7 +208,7 @@
     <string name="no_music_videos_found_refresh">Keine Videos gefunden\n\nZum Aktualisieren herunterziehen</string>
     <string name="pull_to_refresh">Zum Aktualisieren ziehen</string>
 
-    <string name="minutes_abbrev">%1$s Min</string>
+    <string name="minutes_abbrev">%1$s Min.</string>
     <string name="sync_successful">Synchronisation erfolgreich</string>
     <string name="error_while_syncing">Ein Fehler trat bei der Synchronisation auf: %1$s</string>
 
@@ -245,7 +245,7 @@
     <string name="genres">Genres</string>
     <string name="music_videos">Videos</string>
 
-    <string name="no_files_to_download">Keine Dateien zum Laden.</string>
+    <string name="no_files_to_download">Keine Dateien zum Herunterladen.</string>
     <string name="error_getting_file_information">Konnte keine Informationen bekommen um die Datei %1$s herunterzuladen.</string>
 
     <string name="author">Ersteller:</string>
@@ -256,6 +256,10 @@
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Gesehene verbergen</string>
+    <string name="sort_order">Sortierung</string>
+    <string name="sort_by_name">Nach Name</string>
+    <string name="sort_by_date_added">Nach Hinzufügungsdatum</string>
+    <string name="ignore_prefixes">Präfixe ignorieren</string>
 
     <!-- Preferences strings -->
     <string name="theme">Thema</string>
@@ -284,7 +288,7 @@
     <string name="remove_coffee_message">Hier tippen um diesen Eintrag zu verbergen</string>
     <string name="buy_coffee_to_unlock_themes">Bitte kaufen Sie mir einen Kaffee um mehr Themen freizuschalten</string>
 
-    <string name="error_setting_up_billing">Google Play Bezahlungs-Service konnte nicht konfiguriert werden:\n%s</string>
+    <string name="error_setting_up_billing">Google Play Bezahlservice konnte nicht konfiguriert werden:\n%s</string>
     <string name="error_querying_inventory">Fehler bei Überprüfung.</string>
     <string name="error_during_purchased">Ein Fehler trat beim Kauf auf.</string>
     <string name="purchase_thanks">Danke für ihre Unterstützung!</string>
