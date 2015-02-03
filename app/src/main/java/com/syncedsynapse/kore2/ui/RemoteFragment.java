@@ -142,7 +142,7 @@ public class RemoteFragment extends Fragment
         setupNoRepeatButton(backButton, new Input.Back());
         setupNoRepeatButton(infoButton, new Input.ExecuteAction(Input.ExecuteAction.INFO));
         setupNoRepeatButton(osdButton, new Input.ExecuteAction(Input.ExecuteAction.OSD));
-        setupNoRepeatButton(codecInfoButton, new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
+        setupContextualNoRepeatButton(codecInfoButton, new Input.ExecuteAction(Input.ExecuteAction.CODECINFO), new Input.ContextMenu());
 
 //        // Padd main content view to account for bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), root, false, false, true);
@@ -204,6 +204,20 @@ public class RemoteFragment extends Fragment
                     }
                 }, buttonInAnim, buttonOutAnim));
     }
+
+    private void setupContextualNoRepeatButton(View button, final ApiMethod<String> actionPlaying, final ApiMethod<String> actionNotPlaying) {
+        button.setOnTouchListener(new RepeatListener(-1, -1,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (isNowPlaying())
+                            actionPlaying.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+                        else
+                            actionNotPlaying.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+                    }
+                }, buttonInAnim, buttonOutAnim));
+    }
+
 
     /**
      * Default callback for methods that don't return anything
@@ -385,6 +399,13 @@ public class RemoteFragment extends Fragment
         UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                 thumbnailUrl, title,
                 thumbnail, thumbnail.getWidth(), thumbnail.getHeight());
+    }
+
+    /**
+     * Returns true if media is loaded (playing or paused)
+     */
+    private boolean isNowPlaying() {
+        return mediaPanel.getVisibility() == View.VISIBLE;
     }
 
     /**
