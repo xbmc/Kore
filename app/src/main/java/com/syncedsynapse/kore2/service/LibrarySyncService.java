@@ -1168,7 +1168,16 @@ public class LibrarySyncService extends Service {
             action.execute(hostConnection, new ApiCallback<List<AudioType.DetailsSong>>() {
                 @Override
                 public void onSucess(List<AudioType.DetailsSong> result) {
-                    allResults.addAll(result);
+                    ContentValues songValuesBatch[] = new ContentValues[result.size()];
+
+                    for (int i = 0; i < result.size(); i++) {
+                        AudioType.DetailsSong song = result.get(i);
+                        songValuesBatch[i] = SyncUtils.contentValuesFromSong(hostId, song);
+                    }
+
+                    // Insert the songs
+                    contentResolver.bulkInsert(MediaContract.Songs.CONTENT_URI, songValuesBatch);
+
                     if (result.size() == LIMIT_SYNC_SONGS) {
                         // Max limit returned, there may be some more
                         LogUtils.LOGD(TAG, "chainCallSyncSongs: More results on media center, recursing.");
@@ -1177,17 +1186,6 @@ public class LibrarySyncService extends Service {
                     } else {
                         // Ok, we have all the songs, insert them
                         LogUtils.LOGD(TAG, "chainCallSyncSongs: Got all results, continuing");
-
-                        ContentValues songValuesBatch[] = new ContentValues[allResults.size()];
-
-                        for (int i = 0; i < allResults.size(); i++) {
-                            AudioType.DetailsSong song = allResults.get(i);
-                            songValuesBatch[i] = SyncUtils.contentValuesFromSong(hostId, song);
-                        }
-
-                        // Insert the songs
-                        contentResolver.bulkInsert(MediaContract.Songs.CONTENT_URI, songValuesBatch);
-
                         orchestrator.syncItemFinished();
                     }
                 }
