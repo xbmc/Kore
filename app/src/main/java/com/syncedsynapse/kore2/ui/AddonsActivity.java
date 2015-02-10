@@ -35,7 +35,7 @@ import com.syncedsynapse.kore2.utils.Utils;
  * Controls the presentation of Addons information (list, details)
  * All the information is presented by specific fragments
  */
-public class AddonsActivity extends HostConnectionActivity
+public class AddonsActivity extends BaseActivity
         implements AddonListFragment.OnAddonSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(AddonsActivity.class);
 

@@ -51,7 +51,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class RemoteActivity extends HostConnectionActivity
+public class RemoteActivity extends BaseActivity
         implements HostConnectionObserver.PlayerEventsObserver,
         NowPlayingFragment.NowPlayingListener,
         SendTextDialogFragment.SendTextDialogListener {

@@ -35,7 +35,7 @@ import com.syncedsynapse.kore2.utils.Utils;
  * Controls the presentation of Movies information (list, details)
  * All the information is presented by specific fragments
  */
-public class MoviesActivity extends HostConnectionActivity
+public class MoviesActivity extends BaseActivity
         implements MovieListFragment.OnMovieSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(MoviesActivity.class);
 
