@@ -35,6 +35,7 @@ Credits
 - French - Kowalski
 - Bulgarian - NEOhidra
 - German - jonas2515
+- Italian - Enrico Strocchi
 
 Links
 -----
