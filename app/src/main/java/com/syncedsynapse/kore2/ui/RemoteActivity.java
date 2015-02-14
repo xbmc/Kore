@@ -24,6 +24,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
@@ -39,6 +40,7 @@ import com.syncedsynapse.kore2.jsonrpc.method.AudioLibrary;
 import com.syncedsynapse.kore2.jsonrpc.method.Input;
 import com.syncedsynapse.kore2.jsonrpc.method.System;
 import com.syncedsynapse.kore2.jsonrpc.method.VideoLibrary;
+import com.syncedsynapse.kore2.jsonrpc.type.GlobalType;
 import com.syncedsynapse.kore2.jsonrpc.type.ListType;
 import com.syncedsynapse.kore2.jsonrpc.type.PlayerType;
 import com.syncedsynapse.kore2.ui.hosts.AddHostActivity;
@@ -137,6 +139,29 @@ public class RemoteActivity extends BaseActivity
         super.onPause();
         hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
+    }
+
+    /**
+     * Override hardware volume keys and send to Kodi
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int action = event.getAction();
+        int keyCode = event.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                if (action == KeyEvent.ACTION_DOWN) {
+                    new Application.SetVolume(GlobalType.IncrementDecrement.INCREMENT).execute(hostManager.getConnection(), null, null);
+                }
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                if (action == KeyEvent.ACTION_DOWN) {
+                    new Application.SetVolume(GlobalType.IncrementDecrement.DECREMENT).execute(hostManager.getConnection(), null, null);
+                }
+                return true;
+            default:
+                return super.dispatchKeyEvent(event);
+        }
     }
 
     @Override
