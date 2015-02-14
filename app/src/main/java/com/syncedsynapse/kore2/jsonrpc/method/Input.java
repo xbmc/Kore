@@ -349,6 +349,27 @@ public class Input {
     }
 
     /**
+     * Open context menu
+     */
+    public static final class ContextMenu extends ApiMethod<String> {
+        public final static String METHOD_NAME = "Input.ContextMenu";
+        /**
+         * Open context menu
+         */
+        public ContextMenu() {
+            super();
+        }
+
+        @Override
+        public String getMethodName() { return METHOD_NAME; }
+
+        @Override
+        public String resultFromJson(ObjectNode jsonObject) throws ApiException {
+            return jsonObject.get(RESULT_NODE).textValue();
+        }
+    }
+
+    /**
      * Select in GUI
      */
     public static final class Select extends ApiMethod<String> {
