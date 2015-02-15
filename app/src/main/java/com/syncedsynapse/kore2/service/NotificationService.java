@@ -23,6 +23,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -30,13 +32,17 @@ import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.syncedsynapse.kore2.R;
 import com.syncedsynapse.kore2.host.HostConnectionObserver;
 import com.syncedsynapse.kore2.host.HostManager;
 import com.syncedsynapse.kore2.jsonrpc.type.ListType;
 import com.syncedsynapse.kore2.jsonrpc.type.PlayerType;
 import com.syncedsynapse.kore2.ui.RemoteActivity;
+import com.syncedsynapse.kore2.utils.CharacterDrawable;
 import com.syncedsynapse.kore2.utils.LogUtils;
+import com.syncedsynapse.kore2.utils.UIUtils;
 import com.syncedsynapse.kore2.utils.Utils;
 
 /**
@@ -162,11 +168,14 @@ public class NotificationService extends Service
         stopSelf();
     }
 
+    // Picasso target that will be used to load images
+    private static Target picassoTarget = null;
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void buildNotification(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                    PlayerType.PropertyValue getPropertiesResult,
                                    ListType.ItemsAll getItemResult) {
-        String title, underTitle, poster;
+        final String title, underTitle, poster;
         int smallIcon, playPauseIcon, rewindIcon, ffIcon;
 
         boolean isVideo = ((getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
@@ -229,7 +238,7 @@ public class NotificationService extends Service
         }
 
         // Setup the collpased and expanded notifications
-        RemoteViews collapsedRV = new RemoteViews(this.getPackageName(), R.layout.notification_colapsed);
+        final RemoteViews collapsedRV = new RemoteViews(this.getPackageName(), R.layout.notification_colapsed);
         collapsedRV.setImageViewResource(R.id.rewind, rewindIcon);
         collapsedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingItent);
         collapsedRV.setImageViewResource(R.id.play, playPauseIcon);
@@ -239,7 +248,7 @@ public class NotificationService extends Service
         collapsedRV.setTextViewText(R.id.title, title);
         collapsedRV.setTextViewText(R.id.text2, underTitle);
 
-        RemoteViews expandedRV = new RemoteViews(this.getPackageName(), R.layout.notification_expanded);
+        final RemoteViews expandedRV = new RemoteViews(this.getPackageName(), R.layout.notification_expanded);
         expandedRV.setImageViewResource(R.id.rewind, rewindIcon);
         expandedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingItent);
         expandedRV.setImageViewResource(R.id.play, playPauseIcon);
@@ -248,7 +257,7 @@ public class NotificationService extends Service
         expandedRV.setOnClickPendingIntent(R.id.fast_forward, ffPendingItent);
         expandedRV.setTextViewText(R.id.title, title);
         expandedRV.setTextViewText(R.id.text2, underTitle);
-        int expandedIconResId;
+        final int expandedIconResId;
         if (isVideo) {
             expandedIconResId = R.id.icon_slim;
             expandedRV.setViewVisibility(R.id.icon_slim, View.VISIBLE);
@@ -261,7 +270,7 @@ public class NotificationService extends Service
 
         // Build the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        Notification notification = builder
+        final Notification notification = builder
                 .setSmallIcon(smallIcon)
                 .setShowWhen(false)
                 .setOngoing(true)
@@ -271,30 +280,66 @@ public class NotificationService extends Service
                 .setContent(collapsedRV)
                 .build();
 
-        // Load images. Use the same dimensions as the remote to hit the cache both times
+        // This is a convoluted way of loading the image and showing the
+        // notification, but it's what works with Picasso and is efficient.
+        // Here's what's going on:
+        //
+        // 1. The image is loaded asynchronously into a Target, and only after
+        // it is loaded is the notification shown. Using targets is a lot more
+        // efficient than letting Picasso load it directly into the
+        // notification imageview, which causes a lot of flickering
+        //
+        // 2. The target needs to be static, because Picasso only keeps a weak
+        // reference to it, so we need to keed a strong reference and reset it
+        // to null when we're done. We also need to check if it is not null in
+        // case a previous request hasn't finished yet.
+        //
+        // 3. We can only show the notification after the bitmap is loaded into
+        // the target, so it is done in the callback
+        //
+        // 4. We specifically resize the image to the same dimensions used in
+        // the remote, so that Picasso reuses it in the remote and here from the cache
         Resources resources = this.getResources();
-        int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
-        int posterHeight = isVideo?
+        final int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
+        final int posterHeight = isVideo?
                 resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height):
                 posterWidth;
+        if (picassoTarget == null ) {
+            picassoTarget = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    showNotification(bitmap);
+                }
 
-        HostManager hostManager = HostManager.getInstance(this);
-        hostManager.getPicasso()
-                .load(hostManager.getHostInfo().getImageUrl(poster))
-                .resize(posterWidth, posterHeight)
-                .into(collapsedRV, R.id.icon, NOTIFICATION_ID, notification);
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+                    CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(NotificationService.this, title);
+                    showNotification(Utils.drawableToBitmap(avatarDrawable, posterWidth, posterHeight));
+                }
 
-        if (Utils.isJellybeanOrLater()) {
-            notification.bigContentView = expandedRV;
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) { }
+
+                private void showNotification(Bitmap bitmap) {
+                    collapsedRV.setImageViewBitmap(R.id.icon, bitmap);
+                    if (Utils.isJellybeanOrLater()) {
+                        notification.bigContentView = expandedRV;
+                        expandedRV.setImageViewBitmap(expandedIconResId, bitmap);
+                    }
+
+                    NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(NOTIFICATION_ID, notification);
+                    picassoTarget = null;
+                }
+            };
+
+            // Load the image
+            HostManager hostManager = HostManager.getInstance(this);
             hostManager.getPicasso()
                     .load(hostManager.getHostInfo().getImageUrl(poster))
                     .resize(posterWidth, posterHeight)
-                    .into(expandedRV, expandedIconResId, NOTIFICATION_ID, notification);
+                    .into(picassoTarget);
         }
-
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, notification);
-
     }
 
     private PendingIntent buildActionPendingIntent(int playerId, String action) {
