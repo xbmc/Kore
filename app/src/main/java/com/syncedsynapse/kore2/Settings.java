@@ -50,50 +50,63 @@ public class Settings {
     // Maximum pictures to show on cast list (-1 to show all)
     public static final int DEFAULT_MAX_CAST_PICTURES = 12;
 
+    // Sort orders
+    public static final int SORT_BY_NAME = 0,
+            SORT_BY_DATE_ADDED = 1;
+
     /**
-     * Default Shared Preferences keys.
+     * Preferences keys.
      * These settings are automatically managed by the Preferences mechanism.
      * Make sure these are the same as in preferences.xml
      */
+
+    // Theme
     public static final String KEY_PREF_THEME = "pref_theme";
-    public static final String KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START =
-            "pref_switch_to_remote_after_media_start";
-    public static final String KEY_PREF_SHOW_NOTIFICATION =
-            "pref_show_notification";
+    public static final String DEFAULT_PREF_THEME = "0";
+
+    // Switch to remote
+    public static final String KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = "pref_switch_to_remote_after_media_start";
+    public static final boolean DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = true;
+
+    // Show notifications
+    public static final String KEY_PREF_SHOW_NOTIFICATION = "pref_show_notification";
+    public static final boolean DEFAULT_PREF_SHOW_NOTIFICATION = false;
+
+    // Other keys used in preferences.xml
     public static final String KEY_PREF_ABOUT = "pref_about";
     public static final String KEY_PREF_COFFEE = "pref_coffee";
 
     // Filter watched movies on movie list
     public static final String KEY_PREF_MOVIES_FILTER_HIDE_WATCHED = "movies_filter_hide_watched";
+    public static final boolean DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED = false;
+
     // Sort order on movies
     public static final String KEY_PREF_MOVIES_SORT_ORDER = "movies_sort_order";
+    public static final int DEFAULT_PREF_MOVIES_SORT_ORDER = SORT_BY_NAME;
+
     // Ignore articles on movie sorting
     public static final String KEY_PREF_MOVIES_IGNORE_PREFIXES = "movies_ignore_prefixes";
+    public static final boolean DEFAULT_PREF_MOVIES_IGNORE_PREFIXES = false;
 
     // Filter watched tv shows on tvshow list
     public static final String KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED = "tvshows_filter_hide_watched";
-    public static final String KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED = "tvshow_episodes_filter_hide_watched";
-    // Sort order on tv shows
-    public static final String KEY_PREF_TVSHOWS_SORT_ORDER = "tvshows_sort_order";
-    // Ignore articles on tv show sorting
-    public static final String KEY_PREF_TVSHOWS_IGNORE_PREFIXES = "tvshows_ignore_prefixes";
-
-    // Defaults for the preferences
-    public static final String DEFAULT_PREF_THEME = "0";
-    public static final boolean DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = true;
-    public static final boolean DEFAULT_PREF_SHOW_NOTIFICATION = false;
-    public static final boolean DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED = false;
     public static final boolean DEFAULT_PREF_TVSHOWS_FILTER_HIDE_WATCHED = false;
+
+    // Filter watched episodes on episodes list
+    public static final String KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED = "tvshow_episodes_filter_hide_watched";
     public static final boolean DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED = false;
 
-    // Sort orders
-    public static final int SORT_BY_NAME = 0,
-            SORT_BY_DATE_ADDED = 1;
-    public static final int DEFAULT_PREF_MOVIES_SORT_ORDER = SORT_BY_NAME;
+    // Sort order on tv shows
+    public static final String KEY_PREF_TVSHOWS_SORT_ORDER = "tvshows_sort_order";
     public static final int DEFAULT_PREF_TVSHOWS_SORT_ORDER = SORT_BY_NAME;
 
-    public static final boolean DEFAULT_PREF_MOVIES_IGNORE_PREFIXES = false;
+    // Ignore articles on tv show sorting
+    public static final String KEY_PREF_TVSHOWS_IGNORE_PREFIXES = "tvshows_ignore_prefixes";
     public static final boolean DEFAULT_PREF_TVSHOWS_IGNORE_PREFIXES = false;
+
+    // Use hardware volume keys to control volume
+    public static final String KEY_PREF_USE_HARDWARE_VOLUME_KEYS = "pref_use_hardware_volume_keys";
+    public static final boolean DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS = true;
 
 
     // Singleton instance

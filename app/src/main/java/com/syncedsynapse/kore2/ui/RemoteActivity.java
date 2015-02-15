@@ -148,22 +148,29 @@ public class RemoteActivity extends BaseActivity
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        int action = event.getAction();
-        int keyCode = event.getKeyCode();
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                if (action == KeyEvent.ACTION_DOWN) {
-                    new Application.SetVolume(GlobalType.IncrementDecrement.INCREMENT).execute(hostManager.getConnection(), null, null);
-                }
-                return true;
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                if (action == KeyEvent.ACTION_DOWN) {
-                    new Application.SetVolume(GlobalType.IncrementDecrement.DECREMENT).execute(hostManager.getConnection(), null, null);
-                }
-                return true;
-            default:
-                return super.dispatchKeyEvent(event);
+        // Check whether we should intercept this
+        boolean useVolumeKeys = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+                        Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+        if (useVolumeKeys) {
+            int action = event.getAction();
+            int keyCode = event.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        new Application.SetVolume(GlobalType.IncrementDecrement.INCREMENT).execute(hostManager.getConnection(), null, null);
+                    }
+                    return true;
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        new Application.SetVolume(GlobalType.IncrementDecrement.DECREMENT).execute(hostManager.getConnection(), null, null);
+                    }
+                    return true;
+            }
         }
+
+        return super.dispatchKeyEvent(event);
     }
 
     @Override

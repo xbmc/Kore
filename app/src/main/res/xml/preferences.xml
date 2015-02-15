@@ -37,6 +37,11 @@
     <CheckBoxPreference
         android:key="pref_show_notification"
         android:title="@string/show_notification"
+        android:defaultValue="false"/>
+
+    <CheckBoxPreference
+        android:key="pref_use_hardware_volume_keys"
+        android:title="@string/use_hardware_volume_keys"
         android:defaultValue="true"/>
 
     <Preference

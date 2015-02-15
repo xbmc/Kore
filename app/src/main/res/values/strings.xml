@@ -271,6 +271,7 @@
 
     <string name="switch_to_remote">Switch to remote after media start</string>
     <string name="show_notification">Show notification while playing</string>
+    <string name="use_hardware_volume_keys">Use volume keys to control volume</string>
 
     <string name="about">About</string>
     <string name="about_desc"><![CDATA[
