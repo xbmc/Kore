@@ -58,6 +58,8 @@ public class Settings {
     public static final String KEY_PREF_THEME = "pref_theme";
     public static final String KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START =
             "pref_switch_to_remote_after_media_start";
+    public static final String KEY_PREF_SHOW_NOTIFICATION =
+            "pref_show_notification";
     public static final String KEY_PREF_ABOUT = "pref_about";
     public static final String KEY_PREF_COFFEE = "pref_coffee";
 
@@ -79,6 +81,7 @@ public class Settings {
     // Defaults for the preferences
     public static final String DEFAULT_PREF_THEME = "0";
     public static final boolean DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = true;
+    public static final boolean DEFAULT_PREF_SHOW_NOTIFICATION = false;
     public static final boolean DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED = false;
     public static final boolean DEFAULT_PREF_TVSHOWS_FILTER_HIDE_WATCHED = false;
     public static final boolean DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED = false;

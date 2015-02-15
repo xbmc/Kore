@@ -22,8 +22,8 @@ import android.net.Uri;
 
 import com.squareup.picasso.Picasso;
 import com.syncedsynapse.kore2.Settings;
-import com.syncedsynapse.kore2.provider.MediaContract;
 import com.syncedsynapse.kore2.jsonrpc.HostConnection;
+import com.syncedsynapse.kore2.provider.MediaContract;
 import com.syncedsynapse.kore2.utils.BasicAuthPicassoDownloader;
 import com.syncedsynapse.kore2.utils.LogUtils;
 
@@ -375,7 +375,7 @@ public class HostManager {
      */
     private void releaseCurrentHost() {
         if (currentHostConnectionObserver != null) {
-            currentHostConnectionObserver.unregisterAllObservers();
+            currentHostConnectionObserver.stopObserving();
             currentHostConnectionObserver = null;
         }
 

@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.syncedsynapse.kore2.R;
+import com.syncedsynapse.kore2.Settings;
 import com.syncedsynapse.kore2.host.HostConnectionObserver;
 import com.syncedsynapse.kore2.host.HostManager;
 import com.syncedsynapse.kore2.jsonrpc.ApiCallback;
@@ -43,6 +44,7 @@ import com.syncedsynapse.kore2.jsonrpc.method.VideoLibrary;
 import com.syncedsynapse.kore2.jsonrpc.type.GlobalType;
 import com.syncedsynapse.kore2.jsonrpc.type.ListType;
 import com.syncedsynapse.kore2.jsonrpc.type.PlayerType;
+import com.syncedsynapse.kore2.service.NotificationService;
 import com.syncedsynapse.kore2.ui.hosts.AddHostActivity;
 import com.syncedsynapse.kore2.ui.views.CirclePageIndicator;
 import com.syncedsynapse.kore2.utils.LogUtils;
@@ -129,9 +131,9 @@ public class RemoteActivity extends BaseActivity
     public void onResume() {
         super.onResume();
         hostConnectionObserver = hostManager.getHostConnectionObserver();
-        hostConnectionObserver.registerPlayerObserver(this);
-        // Get last result
-        hostConnectionObserver.replyWithLastResult(this);
+        hostConnectionObserver.registerPlayerObserver(this, true);
+        // Force a refresh, mainly to update the time elapsed on the fragments
+        hostConnectionObserver.forceRefreshResults();
     }
 
     @Override
@@ -298,7 +300,7 @@ public class RemoteActivity extends BaseActivity
 
     /**
      * Sets or clear the image background
-     * @param url
+     * @param url Image url
      */
     private void setImageViewBackground(String url) {
         if (url != null) {
@@ -356,6 +358,16 @@ public class RemoteActivity extends BaseActivity
             setImageViewBackground(imageUrl);
         }
         lastImageUrl = imageUrl;
+
+        // Check whether we should show a notification
+        boolean showNotification = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION, Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
+        if (showNotification) {
+            // Let's start the notification service
+            LogUtils.LOGD(TAG, "Starting notification service");
+            startService(new Intent(this, NotificationService.class));
+        }
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
@@ -389,6 +401,8 @@ public class RemoteActivity extends BaseActivity
                 SendTextDialogFragment.newInstance(title);
         dialog.show(getSupportFragmentManager(), null);
     }
+
+    public void observerOnStopObserving() {}
 
     /**
      * Now playing fragment listener
