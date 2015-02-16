@@ -144,15 +144,12 @@ public class PlaylistFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         // We have options
         setHasOptionsMenu(true);
-        // Get last result from host observer, so that we update the UI accordingly
-        // One of the PlayerEventsObserver callbacks will be called if there's a result available
-        hostConnectionObserver.replyWithLastResult(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        hostConnectionObserver.registerPlayerObserver(this);
+        hostConnectionObserver.registerPlayerObserver(this, true);
     }
 
     @Override
@@ -369,6 +366,7 @@ public class PlaylistFragment extends Fragment
 
     // Ignore this
     public void inputOnInputRequested(String title, String type, String value) {}
+    public void observerOnStopObserving() {}
 
     /**
      * Starts the call chain to display the playlist

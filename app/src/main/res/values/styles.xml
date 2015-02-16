@@ -66,7 +66,7 @@
         <item name="android:paddingBottom">@dimen/large_padding</item>
         <item name="android:paddingLeft">@dimen/large_padding</item>
         <item name="android:paddingRight">@dimen/large_padding</item>
-        <item name="android:maxLines">1</item>
+        <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -281,6 +281,21 @@
         <item name="android:paddingBottom">16dp</item>
         <!--<item name="android:maxLines">2</item>-->
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextAppearance.Notification">
+    </style>
+
+    <style name="TextAppearance.Notification.Title">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="android:textColor">@color/primary_text_default_material_dark</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="TextAppearance.Notification.Details">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 </resources>
 

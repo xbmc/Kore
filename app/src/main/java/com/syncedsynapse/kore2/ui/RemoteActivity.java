@@ -24,6 +24,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
@@ -31,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.syncedsynapse.kore2.R;
+import com.syncedsynapse.kore2.Settings;
 import com.syncedsynapse.kore2.host.HostConnectionObserver;
 import com.syncedsynapse.kore2.host.HostManager;
 import com.syncedsynapse.kore2.jsonrpc.ApiCallback;
@@ -39,8 +41,10 @@ import com.syncedsynapse.kore2.jsonrpc.method.AudioLibrary;
 import com.syncedsynapse.kore2.jsonrpc.method.Input;
 import com.syncedsynapse.kore2.jsonrpc.method.System;
 import com.syncedsynapse.kore2.jsonrpc.method.VideoLibrary;
+import com.syncedsynapse.kore2.jsonrpc.type.GlobalType;
 import com.syncedsynapse.kore2.jsonrpc.type.ListType;
 import com.syncedsynapse.kore2.jsonrpc.type.PlayerType;
+import com.syncedsynapse.kore2.service.NotificationService;
 import com.syncedsynapse.kore2.ui.hosts.AddHostActivity;
 import com.syncedsynapse.kore2.ui.views.CirclePageIndicator;
 import com.syncedsynapse.kore2.utils.LogUtils;
@@ -51,7 +55,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class RemoteActivity extends HostConnectionActivity
+public class RemoteActivity extends BaseActivity
         implements HostConnectionObserver.PlayerEventsObserver,
         NowPlayingFragment.NowPlayingListener,
         SendTextDialogFragment.SendTextDialogListener {
@@ -127,9 +131,9 @@ public class RemoteActivity extends HostConnectionActivity
     public void onResume() {
         super.onResume();
         hostConnectionObserver = hostManager.getHostConnectionObserver();
-        hostConnectionObserver.registerPlayerObserver(this);
-        // Get last result
-        hostConnectionObserver.replyWithLastResult(this);
+        hostConnectionObserver.registerPlayerObserver(this, true);
+        // Force a refresh, mainly to update the time elapsed on the fragments
+        hostConnectionObserver.forceRefreshResults();
     }
 
     @Override
@@ -137,6 +141,36 @@ public class RemoteActivity extends HostConnectionActivity
         super.onPause();
         hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
+    }
+
+    /**
+     * Override hardware volume keys and send to Kodi
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Check whether we should intercept this
+        boolean useVolumeKeys = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+                        Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+        if (useVolumeKeys) {
+            int action = event.getAction();
+            int keyCode = event.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        new Application.SetVolume(GlobalType.IncrementDecrement.INCREMENT).execute(hostManager.getConnection(), null, null);
+                    }
+                    return true;
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        new Application.SetVolume(GlobalType.IncrementDecrement.DECREMENT).execute(hostManager.getConnection(), null, null);
+                    }
+                    return true;
+            }
+        }
+
+        return super.dispatchKeyEvent(event);
     }
 
     @Override
@@ -273,7 +307,7 @@ public class RemoteActivity extends HostConnectionActivity
 
     /**
      * Sets or clear the image background
-     * @param url
+     * @param url Image url
      */
     private void setImageViewBackground(String url) {
         if (url != null) {
@@ -331,6 +365,16 @@ public class RemoteActivity extends HostConnectionActivity
             setImageViewBackground(imageUrl);
         }
         lastImageUrl = imageUrl;
+
+        // Check whether we should show a notification
+        boolean showNotification = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION, Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
+        if (showNotification) {
+            // Let's start the notification service
+            LogUtils.LOGD(TAG, "Starting notification service");
+            startService(new Intent(this, NotificationService.class));
+        }
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
@@ -364,6 +408,8 @@ public class RemoteActivity extends HostConnectionActivity
                 SendTextDialogFragment.newInstance(title);
         dialog.show(getSupportFragmentManager(), null);
     }
+
+    public void observerOnStopObserving() {}
 
     /**
      * Now playing fragment listener

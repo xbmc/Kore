@@ -42,6 +42,10 @@
         <!-- Services -->
         <service android:name="com.syncedsynapse.kore2.service.LibrarySyncService"
             android:exported="false"/>
+        <service android:name="com.syncedsynapse.kore2.service.NotificationService"
+            android:exported="false"/>
+        <service android:name="com.syncedsynapse.kore2.service.IntentActionsService"
+            android:exported="false"/>
 
     </application>
 

@@ -107,6 +107,11 @@ public class HostConnectionObserver
          * Notifies that XBMC has requested input
          */
         public void inputOnInputRequested(String title, String type, String value);
+
+        /**
+         * Notifies the observer that it this is stopping
+         */
+        public void observerOnStopObserving();
     }
 
     /**
@@ -191,13 +196,15 @@ public class HostConnectionObserver
      * Registers a new observer that will be notified about player events
      * @param observer Observer
      */
-    public synchronized void registerPlayerObserver(PlayerEventsObserver observer) {
+    public void registerPlayerObserver(PlayerEventsObserver observer, boolean replyImmediately) {
         if (this.connection == null)
             return;
 
         // Save this observer and a new handle to notify him
         playerEventsObservers.add(observer);
 //        observerHandlerMap.put(observer, new Handler());
+
+        if (replyImmediately) replyWithLastResult(observer);
 
         if (playerEventsObservers.size() == 1) {
             // If this is the first observer, start checking through HTTP or register us
@@ -218,8 +225,7 @@ public class HostConnectionObserver
      * Unregisters a previously registered observer
      * @param observer Observer to unregister
      */
-    public synchronized void unregisterPlayerObserver(PlayerEventsObserver observer) {
-        // Remove this observer and its associated handler
+    public void unregisterPlayerObserver(PlayerEventsObserver observer) {
         playerEventsObservers.remove(observer);
 //        observerHandlerMap.remove(observer);
 
@@ -244,8 +250,10 @@ public class HostConnectionObserver
     /**
      * Unregisters all observers
      */
-    public void unregisterAllObservers() {
-//        observerHandlerMap.clear();
+    public void stopObserving() {
+        for (final PlayerEventsObserver observer : playerEventsObservers)
+            observer.observerOnStopObserving();
+
         playerEventsObservers.clear();
 
         if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
@@ -293,25 +301,33 @@ public class HostConnectionObserver
      * The {@link HostConnection.SystemNotificationsObserver} interface methods
      */
     public void onQuit(System.OnQuit notification) {
-        for (final PlayerEventsObserver observer : playerEventsObservers) {
+        // Copy list to prevent ConcurrentModificationExceptions
+        List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
+        for (final PlayerEventsObserver observer : allObservers) {
             observer.systemOnQuit();
         }
     }
 
     public void onRestart(System.OnRestart notification) {
-        for (final PlayerEventsObserver observer : playerEventsObservers) {
+        // Copy list to prevent ConcurrentModificationExceptions
+        List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
+        for (final PlayerEventsObserver observer : allObservers) {
             observer.systemOnQuit();
         }
     }
 
     public void onSleep(System.OnSleep notification) {
-        for (final PlayerEventsObserver observer : playerEventsObservers) {
+        // Copy list to prevent ConcurrentModificationExceptions
+        List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
+        for (final PlayerEventsObserver observer : allObservers) {
             observer.systemOnQuit();
         }
     }
 
     public void onInputRequested(Input.OnInputRequested notification) {
-        for (final PlayerEventsObserver observer : playerEventsObservers) {
+        // Copy list to prevent ConcurrentModificationExceptions
+        List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
+        for (final PlayerEventsObserver observer : allObservers) {
             observer.inputOnInputRequested(notification.title, notification.type, notification.value);
         }
     }
@@ -467,7 +483,9 @@ public class HostConnectionObserver
             lastErrorCode = errorCode;
             lastErrorDescription = description;
             forceReply = false;
-            for (final PlayerEventsObserver observer : observers) {
+            // Copy list to prevent ConcurrentModificationExceptions
+            List<PlayerEventsObserver> allObservers = new ArrayList<>(observers);
+            for (final PlayerEventsObserver observer : allObservers) {
                 notifyConnectionError(errorCode, description, observer);
             }
         }
@@ -503,7 +521,9 @@ public class HostConnectionObserver
             (lastCallResult != PlayerEventsObserver.PLAYER_IS_STOPPED)) {
             lastCallResult = PlayerEventsObserver.PLAYER_IS_STOPPED;
             forceReply = false;
-            for (final PlayerEventsObserver observer : observers) {
+            // Copy list to prevent ConcurrentModificationExceptions
+            List<PlayerEventsObserver> allObservers = new ArrayList<>(observers);
+            for (final PlayerEventsObserver observer : allObservers) {
                 notifyNothingIsPlaying(observer);
             }
         }
@@ -543,7 +563,9 @@ public class HostConnectionObserver
             lastGetPropertiesResult = getPropertiesResult;
             lastGetItemResult = getItemResult;
             forceReply = false;
-            for (final PlayerEventsObserver observer : observers) {
+            // Copy list to prevent ConcurrentModificationExceptions
+            List<PlayerEventsObserver> allObservers = new ArrayList<>(observers);
+            for (final PlayerEventsObserver observer : allObservers) {
                 notifySomethingIsPlaying(getActivePlayersResult, getPropertiesResult, getItemResult, observer);
             }
         }

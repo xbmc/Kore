@@ -15,7 +15,7 @@
  */
 package com.syncedsynapse.kore2.jsonrpc;
 
-import android.os.*;
+import android.os.Handler;
 import android.os.Process;
 import android.util.Base64;
 
@@ -24,7 +24,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.syncedsynapse.kore2.host.HostInfo;
-import com.syncedsynapse.kore2.jsonrpc.notification.*;
+import com.syncedsynapse.kore2.jsonrpc.notification.Input;
+import com.syncedsynapse.kore2.jsonrpc.notification.Player;
 import com.syncedsynapse.kore2.jsonrpc.notification.System;
 import com.syncedsynapse.kore2.utils.LogUtils;
 
@@ -37,7 +38,6 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.ProtocolException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
@@ -134,31 +134,33 @@ public class HostConnection {
 
     private ExecutorService executorService;
 
-    private final int connectionTimeout;
+    private final int connectTimeout;
 
-    private static final int DEFAULT_TIMEOUT = 10000; // ms
+    private static final int DEFAULT_CONNECT_TIMEOUT = 5000; // ms
+
+    private static final int TCP_READ_TIMEOUT = 30000; // ms
 
     /**
      * Creates a new host connection
      * @param hostInfo Host info object
      */
     public HostConnection(final HostInfo hostInfo) {
-        this(hostInfo, DEFAULT_TIMEOUT);
+        this(hostInfo, DEFAULT_CONNECT_TIMEOUT);
 	}
 
     /**
      * Creates a new host connection
      * @param hostInfo Host info object
-     * @param connectionTimeout Connection timeout in ms
+     * @param connectTimeout Connection timeout in ms
      */
-    public HostConnection(final HostInfo hostInfo, int connectionTimeout) {
+    public HostConnection(final HostInfo hostInfo, int connectTimeout) {
         this.hostInfo = hostInfo;
         // Start with the default host protocol
         this.protocol = hostInfo.getProtocol();
         // Create a single threaded executor
         this.executorService = Executors.newSingleThreadExecutor();
         // Set timeout
-        this.connectionTimeout = connectionTimeout;
+        this.connectTimeout = connectTimeout;
     }
 
     /**
@@ -356,8 +358,8 @@ public class HostConnection {
 //			LogUtils.LOGD(TAG, "Opening HTTP connection.");
 			HttpURLConnection connection = (HttpURLConnection) new URL(hostInfo.getJsonRpcHttpEndpoint()).openConnection();
 			connection.setRequestMethod("POST");
-			connection.setConnectTimeout(connectionTimeout);
-			//connection.setReadTimeout(connectionTimeout);
+			connection.setConnectTimeout(connectTimeout);
+			//connection.setReadTimeout(connectTimeout);
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
@@ -482,10 +484,6 @@ public class HostConnection {
 	 */
 	private <T> void executeThroughTcp(final ApiMethod<T> method, final ApiCallback<T> callback,
 									   final Handler handler) {
-
-		// TODO: We're going to create a background listener thread.
-		// Also create a thread that periodically checks if the connection should be shutdown
-		// based on not having activity. Use android timer or Thread.sleep
         String methodId = String.valueOf(method.getId());
 		try {
 			// Save this method/callback for later response
@@ -534,13 +532,11 @@ public class HostConnection {
 
 			Socket socket = new Socket();
 			final InetSocketAddress address = new InetSocketAddress(hostInfo.getAddress(), hostInfo.getTcpPort());
-			socket.setSoTimeout(0); // No read timeout. Read should block
-			socket.connect(address, connectionTimeout);
+            // We're setting a read timeout on the socket, so no need to explicitly close it
+			socket.setSoTimeout(TCP_READ_TIMEOUT);
+			socket.connect(address, connectTimeout);
 
 			return socket;
-		} catch (SocketException e) {
-			LogUtils.LOGW(TAG, "Failed to open TCP connection to host: " + hostInfo.getAddress());
-			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_CONNECTING, e);
 		} catch (IOException e) {
 			LogUtils.LOGW(TAG, "Failed to open TCP connection to host: " + hostInfo.getAddress());
 			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_CONNECTING, e);

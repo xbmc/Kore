@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--<LinearLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/status_bar_latest_event_content"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:background="@color/background_floating_material_dark">-->
+
+    <!--<ImageView android:id="@+id/icon_square"-->
+        <!--android:layout_width="@dimen/notification_expanded_art_default_height"-->
+        <!--android:layout_height="@dimen/notification_expanded_art_default_height"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:contentDescription="@string/poster"-->
+        <!--android:visibility="gone"/>-->
+    <!--<ImageView android:id="@+id/icon_slim"-->
+        <!--android:layout_width="@dimen/notification_expanded_art_slim_width"-->
+        <!--android:layout_height="@dimen/notification_expanded_art_default_height"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:contentDescription="@string/poster"-->
+        <!--android:visibility="gone"/>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_gravity="fill_vertical"-->
+        <!--android:minHeight="@dimen/notification_expanded_height"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingTop="@dimen/small_padding"-->
+            <!--android:layout_marginLeft="12dp"-->
+            <!--android:layout_marginStart="12dp"-->
+            <!--android:layout_marginRight="12dp"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:textAppearance="@style/TextAppearance.Notification.Title"-->
+            <!--android:singleLine="true"-->
+            <!--android:ellipsize="marquee"-->
+            <!--android:fadingEdge="horizontal"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/text2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_marginLeft="12dp"-->
+            <!--android:layout_marginStart="12dp"-->
+            <!--android:layout_marginRight="12dp"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:textAppearance="@style/TextAppearance.Notification.Details"-->
+            <!--android:maxLines="2"-->
+            <!--android:fadingEdge="horizontal"-->
+            <!--android:ellipsize="marquee"/>-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:id="@+id/action_divider"-->
+            <!--android:background="#29ffffff"/>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/media_actions"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/default_icon_size"-->
+            <!--android:layout_marginStart="12dp"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layoutDirection="ltr">-->
+
+            <!--<ImageButton-->
+                <!--android:id="@+id/rewind"-->
+                <!--style="@style/Widget.Button.Borderless"-->
+                <!--android:layout_width="@dimen/default_icon_size"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="2dp"-->
+                <!--android:layout_marginRight="2dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:contentDescription="@string/rewind"/>-->
+            <!--<ImageButton-->
+                <!--android:id="@+id/play"-->
+                <!--style="@style/Widget.Button.Borderless"-->
+                <!--android:layout_width="@dimen/default_icon_size"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="2dp"-->
+                <!--android:layout_marginRight="2dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:contentDescription="@string/play"/>-->
+            <!--<ImageButton-->
+                <!--android:id="@+id/fast_forward"-->
+                <!--style="@style/Widget.Button.Borderless"-->
+                <!--android:layout_width="@dimen/default_icon_size"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="2dp"-->
+                <!--android:layout_marginRight="2dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:contentDescription="@string/fast_forward"/>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+<!--</LinearLayout>-->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/status_bar_latest_event_content"
+    android:layout_width="match_parent"
+    android:layout_height="128dp"
+    android:background="@color/background_floating_material_dark">
+
+    <FrameLayout
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView android:id="@+id/icon_square"
+            android:layout_width="@dimen/notification_expanded_art_default_height"
+            android:layout_height="@dimen/notification_expanded_art_default_height"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/poster"
+            android:visibility="gone"/>
+        <ImageView android:id="@+id/icon_slim"
+            android:layout_width="@dimen/notification_expanded_art_slim_width"
+            android:layout_height="@dimen/notification_expanded_art_default_height"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/poster"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_toRightOf="@id/icon"
+        android:layout_toEndOf="@id/icon"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/small_padding"
+            android:textAppearance="@style/TextAppearance.Notification.Title"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"/>
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Notification.Details"
+            android:maxLines="2"
+            android:fadingEdge="horizontal"
+            android:ellipsize="marquee"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/media_actions"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_icon_size"
+        android:layout_toRightOf="@id/icon"
+        android:layout_toEndOf="@id/icon"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="horizontal"
+        android:layoutDirection="ltr">
+
+        <ImageButton
+            android:id="@+id/rewind"
+            style="@style/Widget.Button.Borderless"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <ImageButton
+            android:id="@+id/play"
+            style="@style/Widget.Button.Borderless"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <ImageButton
+            android:id="@+id/fast_forward"
+            style="@style/Widget.Button.Borderless"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_toRightOf="@id/icon"
+        android:layout_toEndOf="@id/icon"
+        android:layout_above="@id/media_actions"
+        android:id="@+id/action_divider"
+        android:background="#29ffffff"/>
+</RelativeLayout>

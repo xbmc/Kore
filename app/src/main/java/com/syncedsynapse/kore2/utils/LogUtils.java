@@ -16,11 +16,9 @@
 
 package com.syncedsynapse.kore2.utils;
 
-import com.syncedsynapse.kore2.BuildConfig;
-import com.syncedsynapse.kore2.host.HostConnectionObserver;
-import com.syncedsynapse.kore2.jsonrpc.HostConnection;
-
 import android.util.Log;
+
+import com.syncedsynapse.kore2.BuildConfig;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +31,8 @@ public class LogUtils {
 
     // TODO: Remove this later
     private static final List<String> doNotLogTags = Arrays.asList(
-            HostConnection.TAG,
-            HostConnectionObserver.TAG
+//            HostConnection.TAG
+//            HostConnectionObserver.TAG
     );
 
     public static String makeLogTag(String str) {

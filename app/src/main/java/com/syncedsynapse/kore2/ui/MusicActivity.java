@@ -34,7 +34,7 @@ import com.syncedsynapse.kore2.utils.Utils;
  * Controls the presentation of Music information (list, details)
  * All the information is presented by specific fragments
  */
-public class MusicActivity extends HostConnectionActivity
+public class MusicActivity extends BaseActivity
         implements ArtistListFragment.OnArtistSelectedListener,
         AlbumListFragment.OnAlbumSelectedListener,
         AudioGenresListFragment.OnAudioGenreSelectedListener,

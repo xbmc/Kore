@@ -129,22 +129,8 @@ public class UIUtils {
             String imageUrl, String stringAvatar,
             ImageView imageView,
             int imageWidth, int imageHeight) {
-        // Load character avatar
-        if (characterAvatarColors == null) {
-            characterAvatarColors = context.getResources()
-                                           .obtainTypedArray(R.array.character_avatar_colors);
-        }
 
-        char charAvatar = TextUtils.isEmpty(stringAvatar) ?
-                          ' ' : stringAvatar.charAt(0);
-        avatarColorsIdx = TextUtils.isEmpty(stringAvatar) ? 0 :
-                Math.max(Character.getNumericValue(stringAvatar.charAt(0)) +
-                        Character.getNumericValue(stringAvatar.charAt(stringAvatar.length() - 1)) +
-                        stringAvatar.length(), 0) % characterAvatarColors.length();
-        int color = characterAvatarColors.getColor(avatarColorsIdx, 0xff000000);
-        CharacterDrawable avatarDrawable = new CharacterDrawable(charAvatar, color);
-
-//            avatarColorsIdx = randomGenerator.nextInt(characterAvatarColors.length());
+        CharacterDrawable avatarDrawable = getCharacterAvatar(context, stringAvatar);
         if (TextUtils.isEmpty(imageUrl)) {
             imageView.setImageDrawable(avatarDrawable);
             return;
@@ -164,6 +150,31 @@ public class UIUtils {
                        .centerCrop()
                        .into(imageView);
         }
+    }
+
+    /**
+     * Returns a CharacterDrawable that is suitable to use as an avatar
+     * @param context Context
+     * @param str String to use to create the avatar
+     * @return Character avatar to use in a image view
+     */
+    public static CharacterDrawable getCharacterAvatar(Context context, String str) {
+        // Load character avatar
+        if (characterAvatarColors == null) {
+            characterAvatarColors = context
+                    .getResources()
+                    .obtainTypedArray(R.array.character_avatar_colors);
+        }
+
+        char charAvatar = TextUtils.isEmpty(str) ?
+                ' ' : str.charAt(0);
+        avatarColorsIdx = TextUtils.isEmpty(str) ? 0 :
+                Math.max(Character.getNumericValue(str.charAt(0)) +
+                        Character.getNumericValue(str.charAt(str.length() - 1)) +
+                        str.length(), 0) % characterAvatarColors.length();
+        int color = characterAvatarColors.getColor(avatarColorsIdx, 0xff000000);
+//            avatarColorsIdx = randomGenerator.nextInt(characterAvatarColors.length());
+        return new CharacterDrawable(charAvatar, color);
     }
 
     /**
