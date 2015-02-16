@@ -181,12 +181,24 @@ public class HostFragmentManualConfiguration extends Fragment {
     private void testConnection() {
         String xbmcName = xbmcNameEditText.getText().toString();
         String xbmcAddress = xbmcIpAddressEditText.getText().toString();
+
+        int xbmcHttpPort;
         String aux = xbmcHttpPortEditText.getText().toString();
-        int xbmcHttpPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_HTTP_PORT : Integer.valueOf(aux);
+        try {
+            xbmcHttpPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_HTTP_PORT : Integer.valueOf(aux);
+        } catch (NumberFormatException exc) {
+            xbmcHttpPort = -1;
+        }
+
         String xbmcUsername = xbmcUsernameEditText.getText().toString();
         String xbmcPassword = xbmcPasswordEditText.getText().toString();
         aux = xbmcTcpPortEditText.getText().toString();
-        int xbmcTcpPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_TCP_PORT : Integer.valueOf(aux);
+        int xbmcTcpPort;
+        try {
+            xbmcTcpPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_TCP_PORT : Integer.valueOf(aux);
+        } catch (NumberFormatException exc) {
+            xbmcTcpPort = -1;
+        }
 
         String macAddress = xbmcMacAddressEditText.getText().toString();
         aux = xbmcWolPortEditText.getText().toString();
