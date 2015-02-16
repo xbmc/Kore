@@ -153,19 +153,19 @@
         android:gravity="center_horizontal">
 
         <ImageView
-            android:id="@+id/codec_info"
+            android:id="@+id/context"
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:src="?attr/iconCodec"
+            android:src="?attr/iconContext"
             android:contentDescription="@string/codec_info"/>
         <ImageView
             android:id="@+id/up"
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
-            android:layout_toRightOf="@id/codec_info"
-            android:layout_alignTop="@id/codec_info"
+            android:layout_toRightOf="@id/context"
+            android:layout_alignTop="@id/context"
             android:src="?attr/iconUp"
             android:contentDescription="@string/up"/>
         <ImageView
@@ -173,7 +173,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/up"
-            android:layout_alignTop="@id/codec_info"
+            android:layout_alignTop="@id/context"
             android:src="?attr/iconInfo"
             android:contentDescription="@string/info"/>
 
@@ -181,7 +181,7 @@
             android:id="@+id/left"
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
-            android:layout_below="@id/codec_info"
+            android:layout_below="@id/context"
             android:src="?attr/iconLeft"
             android:contentDescription="@string/left"/>
         <ImageView

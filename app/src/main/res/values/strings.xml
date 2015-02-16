@@ -138,6 +138,7 @@
     <string name="select">Select</string>
     <string name="info">Info</string>
     <string name="codec_info">Codec</string>
+    <string name="context">Context</string>
     <string name="osd">Menu</string>
     <string name="back">Back</string>
 

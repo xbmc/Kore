@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -102,7 +103,7 @@ public class RemoteFragment extends Fragment
     @InjectView(R.id.down) ImageView downButton;
     @InjectView(R.id.back) ImageView backButton;
     @InjectView(R.id.info) ImageView infoButton;
-    @InjectView(R.id.codec_info) ImageView codecInfoButton;
+    @InjectView(R.id.context) ImageView contextButton;
     @InjectView(R.id.osd) ImageView osdButton;
 
     @InjectView(R.id.art) ImageView thumbnail;
@@ -115,6 +116,8 @@ public class RemoteFragment extends Fragment
 
     private Animation buttonInAnim;
     private Animation buttonOutAnim;
+    // Touch listener that provides touch feedbacl
+    private View.OnTouchListener feedbackTouckListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,6 +127,23 @@ public class RemoteFragment extends Fragment
 
         buttonInAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_in);
         buttonOutAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_out);
+
+        feedbackTouckListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonInAnim.setFillAfter(true);
+                        v.startAnimation(buttonInAnim);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        v.startAnimation(buttonOutAnim);
+                        break;
+                }
+                return false;
+            }
+        };
     }
 
     @Override
@@ -137,12 +157,13 @@ public class RemoteFragment extends Fragment
         setupRepeatButton(upButton, new Input.Up());
         setupRepeatButton(downButton, new Input.Down());
 
-        setupNoRepeatButton(selectButton, new Input.Select());
-
-        setupNoRepeatButton(backButton, new Input.Back());
-        setupNoRepeatButton(infoButton, new Input.ExecuteAction(Input.ExecuteAction.INFO));
-        setupNoRepeatButton(osdButton, new Input.ExecuteAction(Input.ExecuteAction.OSD));
-        setupNoRepeatButton(codecInfoButton, new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
+        setupNoRepeatButton(selectButton, new Input.Select(), null);
+        setupNoRepeatButton(backButton, new Input.Back(), null);
+        setupNoRepeatButton(infoButton,
+                new Input.ExecuteAction(Input.ExecuteAction.INFO),
+                new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
+        setupNoRepeatButton(osdButton, new Input.ExecuteAction(Input.ExecuteAction.OSD), null);
+        setupNoRepeatButton(contextButton, new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU), null);
 
 //        // Padd main content view to account for bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), root, false, false, true);
@@ -192,14 +213,28 @@ public class RemoteFragment extends Fragment
                 }, buttonInAnim, buttonOutAnim));
     }
 
-    private void setupNoRepeatButton(View button, final ApiMethod<String> action) {
-        button.setOnTouchListener(new RepeatListener(-1, -1,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-                    }
-                }, buttonInAnim, buttonOutAnim));
+    private void setupNoRepeatButton(View button,
+                                     final ApiMethod<String> clickAction,
+                                     final ApiMethod<String> longClickAction) {
+        // Set animation
+        button.setOnTouchListener(feedbackTouckListener);
+        if (clickAction != null) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+                }
+            });
+        }
+        if (longClickAction != null) {
+            button.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    longClickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+                    return true;
+                }
+            });
+        }
     }
 
     /**
