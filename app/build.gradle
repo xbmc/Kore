@@ -8,8 +8,8 @@ android {
         applicationId "com.syncedsynapse.kore2"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 6
-        versionName "1.0.1"
+        versionCode 7
+        versionName "1.1.0"
 
         buildConfigField("String", "IAP_KEY", "\"${rootProject.property("IAP_KEY")}\"")
     }
