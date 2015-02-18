@@ -48,6 +48,7 @@ import com.syncedsynapse.kore2.jsonrpc.HostConnection;
 import com.syncedsynapse.kore2.jsonrpc.method.Addons;
 import com.syncedsynapse.kore2.jsonrpc.method.Application;
 import com.syncedsynapse.kore2.jsonrpc.method.GUI;
+import com.syncedsynapse.kore2.jsonrpc.method.Input;
 import com.syncedsynapse.kore2.jsonrpc.method.Player;
 import com.syncedsynapse.kore2.jsonrpc.type.ApplicationType;
 import com.syncedsynapse.kore2.jsonrpc.type.GlobalType;
@@ -372,44 +373,48 @@ public class NowPlayingFragment extends Fragment
     private PopupMenu.OnMenuItemClickListener overflowMenuClickListener = new PopupMenu.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
+            int selectedItem = -1;
             switch (item.getItemId()) {
                 case R.id.audiostreams:
+                    final int MIN_AUDIO_OPTIONS = 1;
                     // Setup audiostream select dialog
-                    if (availableAudioStreams != null) {
-                        String[] audiostreams = new String[availableAudioStreams.size()];
-                        int selectedItem = -1;
+                    String[] audiostreams = new String[(availableAudioStreams != null) ?
+                            availableAudioStreams.size() + MIN_AUDIO_OPTIONS : MIN_AUDIO_OPTIONS];
 
+                    audiostreams[0] = getString(R.string.audio_sync);
+
+                    if (availableAudioStreams != null) {
                         for (int i = 0; i < availableAudioStreams.size(); i++) {
                             PlayerType.AudioStream current = availableAudioStreams.get(i);
-                            audiostreams[i] = TextUtils.isEmpty(current.language) ?
+                            audiostreams[i + MIN_AUDIO_OPTIONS] = TextUtils.isEmpty(current.language) ?
                                     current.name : current.language + " | " + current.name;
                             if (current.index == currentAudiostreamIndex) {
-                                selectedItem = i;
+                                selectedItem = i + MIN_AUDIO_OPTIONS;
                             }
                         }
 
                         GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
                                 SELECT_AUDIOSTREAM, getString(R.string.audiostreams), audiostreams, selectedItem);
                         dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
-                    } else {
-                        Toast.makeText(getActivity(), R.string.no_audiostream, Toast.LENGTH_SHORT).show();
                     }
                     return true;
                 case R.id.subtitles:
                     // Setup subtitles select dialog
-                    String[] subtitles = new String[(availableSubtitles != null) ? availableSubtitles.size() + 2 : 2];
-                    int selectedItem = -1;
+                    final int MIN_SUBTITLE_OPTIONS = 3;
+                    String[] subtitles = new String[(availableSubtitles != null) ?
+                            availableSubtitles.size() + MIN_SUBTITLE_OPTIONS : MIN_SUBTITLE_OPTIONS];
 
                     subtitles[0] = getString(R.string.download_subtitle);
-                    subtitles[1] = getString(R.string.none);
+                    subtitles[1] = getString(R.string.subtitle_sync);
+                    subtitles[2] = getString(R.string.none);
 
                     if (availableSubtitles != null) {
                         for (int i = 0; i < availableSubtitles.size(); i++) {
                             PlayerType.Subtitle current = availableSubtitles.get(i);
-                            subtitles[i + 2] = TextUtils.isEmpty(current.language) ?
+                            subtitles[i + MIN_SUBTITLE_OPTIONS] = TextUtils.isEmpty(current.language) ?
                                     current.name : current.language + " | " + current.name;
                             if (current.index == currentSubtitleIndex) {
-                                selectedItem = i + 2;
+                                selectedItem = i + MIN_SUBTITLE_OPTIONS;
                             }
                         }
                     }
@@ -431,12 +436,31 @@ public class NowPlayingFragment extends Fragment
     public void onDialogSelect(int token, int which) {
         switch (token) {
             case SELECT_AUDIOSTREAM:
-                Player.SetAudioStream setAudioStream = new Player.SetAudioStream(currentActivePlayerId, which);
-                setAudioStream.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                // 0 is to sync audio, other is for a specific audiostream
+                switch (which) {
+                    case 0:
+                        Input.ExecuteAction syncAudioAction = new Input.ExecuteAction(Input.ExecuteAction.AUDIODELAY);
+                        syncAudioAction.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                            @Override
+                            public void onSucess(String result) {
+                                if (!isAdded()) return;
+                                // Notify enclosing activity to switch panels
+                                nowPlayingListener.SwitchToRemotePanel();
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String description) { }
+                        }, callbackHandler);
+                        break;
+                    default:
+                        Player.SetAudioStream setAudioStream = new Player.SetAudioStream(currentActivePlayerId, which - 1);
+                        setAudioStream.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                        break;
+                }
                 break;
             case SELECT_SUBTITLES:
                 Player.SetSubtitle setSubtitle;
-                // 0 is to download subtitles, 1 is for none, other is for a specific subtitle index
+                // 0 is to download subtitles, 1 is for sync, 2 is for none, other is for a specific subtitle index
                 switch (which) {
                     case 0:
                         // Download subtitles. First check host version to see which method to call
@@ -464,6 +488,20 @@ public class NowPlayingFragment extends Fragment
                         }, callbackHandler);
                         break;
                     case 1:
+                        Input.ExecuteAction syncSubtitleAction = new Input.ExecuteAction(Input.ExecuteAction.SUBTITLEDELAY);
+                        syncSubtitleAction.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                            @Override
+                            public void onSucess(String result) {
+                                if (!isAdded()) return;
+                                // Notify enclosing activity to switch panels
+                                nowPlayingListener.SwitchToRemotePanel();
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String description) { }
+                        }, callbackHandler);
+                        break;
+                    case 2:
                         setSubtitle = new Player.SetSubtitle(currentActivePlayerId, Player.SetSubtitle.OFF, true);
                         setSubtitle.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
                         break;

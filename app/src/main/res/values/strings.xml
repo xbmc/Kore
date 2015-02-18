@@ -130,6 +130,8 @@
     <string name="no_audiostream">No audiostream available</string>
     <string name="download_subtitle">Download subtitles</string>
     <string name="none">None</string>
+    <string name="audio_sync">Sync audio</string>
+    <string name="subtitle_sync">Sync subtitles</string>
 
     <string name="left">Left</string>
     <string name="right">Right</string>
