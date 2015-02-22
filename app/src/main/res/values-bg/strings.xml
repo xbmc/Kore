@@ -100,7 +100,7 @@
     <string name="wizard_invalid_tcp_port_specified">Моля, въведете TCP порт за медийния център, за да бъде открит.</string>
 
     <string name="wizard_connecting_to_xbmc_title">Свързване към %1$s…</string>
-    <string name="wizard_connecting_to_xbmc_message">Моля, изчакате докато връзката се тества…</string>
+    <string name="wizard_connecting_to_xbmc_message">Моля, изчакайте докато връзката се тества…</string>
 
     <string name="wizard_empty_authentication">Kodi/XBMC изисква оторизиране.\nМоля, въведете потребител и парола.</string>
     <string name="wizard_incorrect_authentication">Грешно потребителско име и/или парола.\nПроверете настройките.</string>
