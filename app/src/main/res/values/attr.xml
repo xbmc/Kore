@@ -63,7 +63,7 @@
     <attr name="iconInfo" format="reference" />
     <attr name="iconBack" format="reference" />
     <attr name="iconMenu" format="reference" />
-    <attr name="iconCodec" format="reference" />
+    <attr name="iconContext" format="reference" />
 
     <attr name="iconLeft" format="reference" />
     <attr name="iconRight" format="reference" />

@@ -614,33 +614,39 @@ public class PlaylistFragment extends Fragment
             // Differentiate between media
             String title, details, artUrl;
             int duration;
-            if (item.type.equals(ListType.ItemsAll.TYPE_MOVIE)) {
-                title = item.title;
-                details = item.tagline;
-                artUrl = item.thumbnail;
-                duration = item.runtime;
-            } else if (item.type.equals(ListType.ItemsAll.TYPE_EPISODE)) {
-                title = item.title;
-                String season = String.format(getString(R.string.season_episode_abbrev), item.season, item.episode);
-                details = String.format("%s | %s", item.showtitle, season);
-                artUrl = item.art.poster;
-                duration = item.runtime;
-            } else if (item.type.equals(ListType.ItemsAll.TYPE_SONG)) {
-                title = item.title;
-                details = item.displayartist + " | " + item.album;
-                artUrl = item.thumbnail;
-                duration = item.duration;
-            } else if (item.type.equals(ListType.ItemsAll.TYPE_MUSIC_VIDEO)) {
-                title = item.title;
-                details = Utils.listStringConcat(item.artist, ", ") + " | " + item.album;
-                artUrl = item.thumbnail;
-                duration = item.runtime;
-            } else {
-                // Don't yet recognize this type
-                title = item.label;
-                details = item.type;
-                artUrl = item.thumbnail;
-                duration = item.runtime;
+            switch (item.type) {
+                case ListType.ItemsAll.TYPE_MOVIE:
+                    title = item.title;
+                    details = item.tagline;
+                    artUrl = item.thumbnail;
+                    duration = item.runtime;
+                    break;
+                case ListType.ItemsAll.TYPE_EPISODE:
+                    title = item.title;
+                    String season = String.format(getString(R.string.season_episode_abbrev), item.season, item.episode);
+                    details = String.format("%s | %s", item.showtitle, season);
+                    artUrl = item.art.poster;
+                    duration = item.runtime;
+                    break;
+                case ListType.ItemsAll.TYPE_SONG:
+                    title = item.title;
+                    details = item.displayartist + " | " + item.album;
+                    artUrl = item.thumbnail;
+                    duration = item.duration;
+                    break;
+                case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
+                    title = item.title;
+                    details = Utils.listStringConcat(item.artist, ", ") + " | " + item.album;
+                    artUrl = item.thumbnail;
+                    duration = item.runtime;
+                    break;
+                default:
+                    // Don't yet recognize this type
+                    title = item.label;
+                    details = item.type;
+                    artUrl = item.thumbnail;
+                    duration = item.runtime;
+                    break;
             }
 
             viewHolder.title.setText(title);
@@ -649,10 +655,20 @@ public class PlaylistFragment extends Fragment
             viewHolder.position = position;
 
             int artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
-            int artHeigth = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
+            int artHeight = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
+
+            // If not video, change aspect ration of poster to a square
+            boolean isVideo = (item.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
+                    (item.type.equals(ListType.ItemsAll.TYPE_EPISODE));
+            if (!isVideo) {
+                ViewGroup.LayoutParams layoutParams = viewHolder.art.getLayoutParams();
+                layoutParams.width = layoutParams.height;
+                viewHolder.art.setLayoutParams(layoutParams);
+                artWidth = artHeight;
+            }
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                     artUrl, title,
-                    viewHolder.art, artWidth, artHeigth);
+                    viewHolder.art, artWidth, artHeight);
 
             // For the popupmenu
             viewHolder.contextMenu.setTag(position);

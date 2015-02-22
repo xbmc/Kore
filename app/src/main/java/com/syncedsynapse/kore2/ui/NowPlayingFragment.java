@@ -600,78 +600,84 @@ public class NowPlayingFragment extends Fragment
                 descriptionPlot, votes, maxRating;
         double rating;
 
-        if (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) {
-            switchToPanel(R.id.media_panel);
+        switch (getItemResult.type) {
+            case ListType.ItemsAll.TYPE_MOVIE:
+                switchToPanel(R.id.media_panel);
 
-            title = getItemResult.title;
-            underTitle = getItemResult.tagline;
-            art = getItemResult.fanart;
-            poster = getItemResult.thumbnail;
+                title = getItemResult.title;
+                underTitle = getItemResult.tagline;
+                art = getItemResult.fanart;
+                poster = getItemResult.thumbnail;
 
-            genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
-            year = String.format("%d", getItemResult.year);
-            descriptionPlot = getItemResult.plot;
-            rating = getItemResult.rating;
-            maxRating = getString(R.string.max_rating_video);
-            votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
-        } else if (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE)) {
-            switchToPanel(R.id.media_panel);
+                genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
+                year = String.format("%d", getItemResult.year);
+                descriptionPlot = getItemResult.plot;
+                rating = getItemResult.rating;
+                maxRating = getString(R.string.max_rating_video);
+                votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
+                break;
+            case ListType.ItemsAll.TYPE_EPISODE:
+                switchToPanel(R.id.media_panel);
 
-            title = getItemResult.title;
-            underTitle = getItemResult.showtitle;
-            art = getItemResult.thumbnail;
-            poster = getItemResult.art.poster;
+                title = getItemResult.title;
+                underTitle = getItemResult.showtitle;
+                art = getItemResult.thumbnail;
+                poster = getItemResult.art.poster;
 
-            genreSeason = String.format(getString(R.string.season_episode), getItemResult.season, getItemResult.episode);
-            year = getItemResult.premiered;
-            descriptionPlot = getItemResult.plot;
-            rating = getItemResult.rating;
-            maxRating = getString(R.string.max_rating_video);
-            votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
-        } else if (getItemResult.type.equals(ListType.ItemsAll.TYPE_SONG)) {
-            switchToPanel(R.id.media_panel);
+                genreSeason = String.format(getString(R.string.season_episode), getItemResult.season, getItemResult.episode);
+                year = getItemResult.premiered;
+                descriptionPlot = getItemResult.plot;
+                rating = getItemResult.rating;
+                maxRating = getString(R.string.max_rating_video);
+                votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
+                break;
+            case ListType.ItemsAll.TYPE_SONG:
+                switchToPanel(R.id.media_panel);
 
-            title = getItemResult.title;
-            underTitle = getItemResult.displayartist + " \n" + getItemResult.album;
-            art = getItemResult.fanart;
-            poster = getItemResult.thumbnail;
+                title = getItemResult.title;
+                underTitle = getItemResult.displayartist + " | " + getItemResult.album;
+                art = getItemResult.fanart;
+                poster = getItemResult.thumbnail;
 
-            genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
-            year = String.format("%d", getItemResult.year);
-            descriptionPlot = getItemResult.description;
-            rating = getItemResult.rating;
-            maxRating = getString(R.string.max_rating_music);
-            votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
-        } else if (getItemResult.type.equals(ListType.ItemsAll.TYPE_MUSIC_VIDEO)) {
-            switchToPanel(R.id.media_panel);
+                genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
+                year = String.format("%d", getItemResult.year);
+                descriptionPlot = getItemResult.description;
+                rating = getItemResult.rating;
+                maxRating = getString(R.string.max_rating_music);
+                votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
+                break;
+            case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
+                switchToPanel(R.id.media_panel);
 
-            title = getItemResult.title;
-            underTitle = Utils.listStringConcat(getItemResult.artist, ", ")
-                    + " \n" + getItemResult.album;
-            art = getItemResult.fanart;
-            poster = getItemResult.thumbnail;
+                title = getItemResult.title;
+                underTitle = Utils.listStringConcat(getItemResult.artist, ", ")
+                        + " | " + getItemResult.album;
+                art = getItemResult.fanart;
+                poster = getItemResult.thumbnail;
 
-            genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
-            year = String.format("%d", getItemResult.year);
-            descriptionPlot = getItemResult.plot;
-            rating = 0;
-            maxRating = null;
-            votes = null;
-        } else {
-            // Other type, just present basic info
-            switchToPanel(R.id.media_panel);
+                genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
+                year = String.format("%d", getItemResult.year);
+                descriptionPlot = getItemResult.plot;
+                rating = 0;
+                maxRating = null;
+                votes = null;
+                break;
+            default:
+                // Other type, just present basic info
+                switchToPanel(R.id.media_panel);
 
-            title = getItemResult.label;
-            underTitle = "";
-            art = getItemResult.fanart;
-            poster = getItemResult.thumbnail;
+                title = getItemResult.label;
+                underTitle = "";
+                art = getItemResult.fanart;
+                poster = getItemResult.thumbnail;
 
-            genreSeason = null;
-            year = null;
-            descriptionPlot = null;
-            rating = 0;
-            maxRating = null;
-            votes = null;
+                genreSeason = null;
+                year = null;
+                descriptionPlot = null;
+                rating = 0;
+                maxRating = null;
+                votes = null;
+                break;
         }
 
         mediaTitle.setText(title);
@@ -743,6 +749,17 @@ public class NowPlayingFragment extends Fragment
             mediaPoster.setVisibility(View.VISIBLE);
             int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
             int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
+
+            // If not video, change aspect ration of poster to a square
+            boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
+                    (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE));
+            if (!isVideo) {
+                ViewGroup.LayoutParams layoutParams = mediaPoster.getLayoutParams();
+                layoutParams.height = layoutParams.width;
+                mediaPoster.setLayoutParams(layoutParams);
+                posterHeight = posterWidth;
+            }
+
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                     poster, title,
                     mediaPoster, posterWidth, posterHeight);

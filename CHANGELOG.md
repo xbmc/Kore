@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+Version 1.1.0
+-------------
+- Replace Codec button with Context button on remote. Codec info is now available through a long click on Info button
+- Added now playing notification
+- Use hardware volume keys to control volume
+- Italian translation (by Enrico Strocchi)
+- Improved music library sync
+- Visual tweaks
+
 Version 1.0.1
 -------------
 - Fixed bug with In-app purchase key that was crashing Settings screen

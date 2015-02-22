@@ -198,13 +198,13 @@ public class NotificationService extends Service
                 break;
             case ListType.ItemsAll.TYPE_SONG:
                 title = getItemResult.title;
-                underTitle = getItemResult.displayartist + " - " + getItemResult.album;
+                underTitle = getItemResult.displayartist + " | " + getItemResult.album;
                 poster = getItemResult.thumbnail;
                 smallIcon = R.drawable.ic_headset_white_24dp;
                 break;
             case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
                 title = getItemResult.title;
-                underTitle = Utils.listStringConcat(getItemResult.artist, ", ") + " - " + getItemResult.album;
+                underTitle = Utils.listStringConcat(getItemResult.artist, ", ") + " | " + getItemResult.album;
                 poster = getItemResult.thumbnail;
                 smallIcon = R.drawable.ic_headset_white_24dp;
                 break;
