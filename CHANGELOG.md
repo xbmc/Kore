@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+Version 1.1
+-----------
+- Brazilian Portuguese translation (by Rafael Rosário @rafaelricado)
+
+
 Version 1.1.0
 -------------
 - Replace Codec button with Context button on remote. Codec info is now available through a long click on Info button

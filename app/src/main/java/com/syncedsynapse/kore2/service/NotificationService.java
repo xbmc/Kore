@@ -91,7 +91,7 @@ public class NotificationService extends Service
         // If we are already initialized and the same host, exit
         if (mHostConnectionObserver == connectionObserver) {
             LogUtils.LOGD(TAG, "Already initialized");
-            return START_NOT_STICKY;
+            return START_STICKY;
         }
 
         // If there's a change in hosts, unregister from the previous one
@@ -104,7 +104,7 @@ public class NotificationService extends Service
         mHostConnectionObserver.registerPlayerObserver(this, true);
 
         // If we get killed, after returning from here, don't restart
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
@@ -113,6 +113,14 @@ public class NotificationService extends Service
         return null;
     }
 
+    @Override
+    public void onTaskRemoved (Intent rootIntent) {
+        // Gracefully stop
+        removeNotification();
+        LogUtils.LOGD(TAG, "Shutting down notification service - Task removed");
+        mHostConnectionObserver.unregisterPlayerObserver(this);
+        stopSelf();
+    }
 
     /**
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
