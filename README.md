@@ -11,12 +11,6 @@ Building
 
 Git pull should get you almost all you need, as long as you have a working [Android build system][4]
 
-You'll need to create the following files:
-
-1. `gradle.properties`, with the value `IAP_KEY` set to something (this is used for the in-app purchase).
-2. `app/keystore.properties` with the values `store`, `alias`, `pass`, `storePass` set. This is for signing the release build. Alternatively, comment the `signingConfigs` in `app/build.gradle`.
-
-
 Credits
 -------
 
