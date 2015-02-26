@@ -11,20 +11,19 @@ android {
         versionCode 7
         versionName "1.1.0"
 
-        buildConfigField("String", "IAP_KEY", "\"${rootProject.property("IAP_KEY")}\"")
-    }
-
-    signingConfigs {
-        release {
-            def Properties keyProps = new Properties()
-            keyProps.load(new FileInputStream(file('keystore.properties')))
-
-            storeFile file(keyProps["store"])
-            keyAlias keyProps["alias"]
-            storePassword keyProps["storePass"]
-            keyPassword keyProps["pass"]
+        if(rootProject.hasProperty("IAP_KEY")) {
+            buildConfigField("String", "IAP_KEY", "\"${rootProject.property("IAP_KEY")}\"")
+        } else {
+            buildConfigField("String", "IAP_KEY", "\"\"")
         }
+
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    signingConfigs { release }
 
     buildTypes {
 //        debug {
@@ -67,4 +66,17 @@ dependencies {
     compile 'com.melnykov:floatingactionbutton:1.1.0'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+File propFile = file('signing.properties');
+if (propFile.exists()) {
+    def Properties props = new Properties()
+    props.load(new FileInputStream(propFile))
+
+    android.signingConfigs.release.storeFile = file(props['store'])
+    android.signingConfigs.release.storePassword = props['storePass']
+    android.signingConfigs.release.keyAlias = props['alias']
+    android.signingConfigs.release.keyPassword = props['pass']
+} else {
+    android.buildTypes.release.signingConfig = null
 }
