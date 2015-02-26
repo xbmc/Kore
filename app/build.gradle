@@ -18,17 +18,7 @@ android {
         abortOnError false
     }
 
-    signingConfigs {
-        release {
-            def Properties keyProps = new Properties()
-            keyProps.load(new FileInputStream(file('keystore.properties')))
-
-            storeFile file(keyProps["store"])
-            keyAlias keyProps["alias"]
-            storePassword keyProps["storePass"]
-            keyPassword keyProps["pass"]
-        }
-    }
+    signingConfigs { release }
 
     buildTypes {
 //        debug {
@@ -71,4 +61,17 @@ dependencies {
     compile 'com.melnykov:floatingactionbutton:1.1.0'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+File propFile = file('signing.properties');
+if (propFile.exists()) {
+    def Properties props = new Properties()
+    props.load(new FileInputStream(propFile))
+
+    android.signingConfigs.release.storeFile = file(props['store'])
+    android.signingConfigs.release.storePassword = props['storePass']
+    android.signingConfigs.release.keyAlias = props['alias']
+    android.signingConfigs.release.keyPassword = props['pass']
+} else {
+    android.buildTypes.release.signingConfig = null
 }
