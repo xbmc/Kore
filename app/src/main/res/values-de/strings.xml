@@ -138,12 +138,13 @@
     <string name="select">Auswählen</string>
     <string name="info">Info</string>
     <string name="codec_info">Codec</string>
+    <string name="context">Kontext</string>
     <string name="osd">Menü</string>
     <string name="back">Zurück</string>
 
     <string name="previous">Vorheriger</string>
-    <string name="next">Nächster</string>
-    <string name="finish">Beendet</string>
+    <string name="next">Weiter</string>
+    <string name="finish">Fertig</string>
     <string name="test_connection">Verbindungstest</string>
     <string name="search_again">Erneut Suchen</string>
 
@@ -270,7 +271,8 @@
     <string name="theme_solarized_dark">Solarized dunkel</string>
 
     <string name="switch_to_remote">Nach dem Abspielen eines Mediums zur Fernbedienung wechseln</string>
-
+    <string name="show_notification">Nachricht mit aktueller Wiedergabe anzeigen</string>
+    <string name="use_hardware_volume_keys">Lautstärketasten verwenden</string>
 
     <string name="about">Über</string>
     <string name="about_desc"><![CDATA[
