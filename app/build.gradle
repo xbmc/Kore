@@ -14,6 +14,10 @@ android {
         buildConfigField("String", "IAP_KEY", "\"${rootProject.property("IAP_KEY")}\"")
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     signingConfigs {
         release {
             def Properties keyProps = new Properties()
