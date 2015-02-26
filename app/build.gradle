@@ -11,7 +11,12 @@ android {
         versionCode 7
         versionName "1.1.0"
 
-        buildConfigField("String", "IAP_KEY", "\"${rootProject.property("IAP_KEY")}\"")
+        if(rootProject.hasProperty("IAP_KEY")) {
+            buildConfigField("String", "IAP_KEY", "\"${rootProject.property("IAP_KEY")}\"")
+        } else {
+            buildConfigField("String", "IAP_KEY", "\"\"")
+        }
+
     }
 
     lintOptions {
