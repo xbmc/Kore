@@ -107,7 +107,6 @@
 
             <!-- Media control buttons -->
             <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/media_control_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/buttonbar_height"
