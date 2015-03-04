@@ -19,7 +19,7 @@
   <string name="app_name">Kore</string>
   <string name="settings">Configurações</string>
   <string name="action_options">Opções</string>
-  <string name="loading">Carregando...</string>
+  <string name="loading">Carregando…</string>
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
   <string name="xbmc_media_center">Media Center</string>
@@ -48,8 +48,8 @@
   <string name="update_audio_library">Actualizar biblioteca de música</string>
   <string name="toggle_fullscreen">Mudar modo de ecrã</string>
   <string name="connected_to">Conectado ao %1$s</string>
-  <string name="connecting">Conectando...</string>
-  <string name="connecting_to">Conectando-se ao %1$s (%2$s)...</string>
+  <string name="connecting">Conectando…</string>
+  <string name="connecting_to">Conectando-se ao %1$s (%2$s)…</string>
   <string name="wizard_welcome">Bem-Vindo</string>
   <string name="wizard_welcome_message"><![CDATA[Vamos começar adicionando um Media Center. Certifique-se que seu Kodi/XBMC está aberto, configurado corretamente e na mesma rede do seu dispositivo. <br/> <br/>     Você pode obter ajuda configurando-o <a href="http://syncedsynapse.com/kore/kore-faq/>aqui</a>. <br/> <br/>     Quando estiver pronto, pressione <b><i>Avançar</i></b>.     ]]></string>
   <string name="wizard_search_message"><![CDATA[
@@ -75,7 +75,7 @@
   <string name="wizard_no_address_specified">Por favor, especifique o endereço deste centro de mídia, então pode localizá-lo.</string>
   <string name="wizard_invalid_http_port_specified">Por favor, especifique uma porta HTTP válida para este centro de mídia, então pode localizá-lo.</string>
   <string name="wizard_invalid_tcp_port_specified">Por favor, especifique uma porta TCP válida para este centro de mídia, então pode localizá-lo.</string>
-  <string name="wizard_connecting_to_xbmc_title">Conectando-se ao %1$s...</string>
+  <string name="wizard_connecting_to_xbmc_title">Conectando-se ao %1$s…</string>
   <string name="wizard_connecting_to_xbmc_message">Por favor espere enquanto testo a ligação ao seu Media Center&#8230;</string>
   <string name="wizard_empty_authentication">O seu Kodi/XBMC requer autenticação. \n Por favor especifique o usuário e senha.</string>
   <string name="wizard_incorrect_authentication">Usuário e/ou senha  errada. \nPor favor verifique as suas credenciais.</string>
@@ -157,7 +157,7 @@
   <string name="no_tvshows_found_refresh">Nenhum Seriado de TV encontrado\n\nPuxe para baixo para atualizar</string>
   <string name="no_episodes_found">Nenhum episódio encontrado</string>
   <string name="no_artists_found_refresh">Nenhum artista foi encontrado\n\nPuxe para baixo para atualizar</string>
-  <string name="no_albums_found_refresh">Nenhum album foi encontrado\n\nPuxe para baixo para atualizar</string>
+  <string name="no_albums_found_refresh">Nenhum álbum foi encontrado\n\nPuxe para baixo para atualizar</string>
   <string name="no_genres_found_refresh">Nenhum género encontrado\n\nPuxe para baixo para atualizar</string>
   <string name="no_addons_found_refresh">Nenhuma extensão foi encontrada\n\nPuxe para baixo para atualizar</string>
   <string name="no_music_videos_found_refresh">Nenhum vídeo foi encontrado\n\nPuxe para baixo para atualizar</string>
@@ -168,7 +168,7 @@
   <string name="action_search">Pesquisar</string>
   <string name="action_search_movies">Pesquisar filmes</string>
   <string name="action_search_tvshows">Pesquisa de Seriados de TV</string>
-  <string name="action_search_albums">Pesquisar albuns</string>
+  <string name="action_search_albums">Pesquisar álbuns</string>
   <string name="action_search_artists">Pesquisar artistas</string>
   <string name="action_search_genres">Pesquisar géneros</string>
   <string name="action_search_music_videos">Pesquisar vídeos</string>

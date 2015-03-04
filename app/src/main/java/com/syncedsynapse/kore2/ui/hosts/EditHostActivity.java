@@ -15,10 +15,10 @@
  */
 package com.syncedsynapse.kore2.ui.hosts;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -107,7 +107,7 @@ public class EditHostActivity extends BaseActivity implements
     }
 
     private void setupActionBar() {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.edit_xbmc);
             TypedArray styledAttrs = getTheme().obtainStyledAttributes(new int[] {R.attr.iconHosts});

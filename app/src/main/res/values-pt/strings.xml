@@ -158,7 +158,7 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
   <string name="no_tvshows_found_refresh">Nenhum programa de TV encontrado\n\nPuxe para baixo para actualizar</string>
   <string name="no_episodes_found">Nenhum episódio encontrado</string>
   <string name="no_artists_found_refresh">Nenhum artista encontrado\n\nPuxe para baixo para actualizar</string>
-  <string name="no_albums_found_refresh">Nenhum album encontrado\n\nPuxe para baixo para actualizar</string>
+  <string name="no_albums_found_refresh">Nenhum álbum encontrado\n\nPuxe para baixo para actualizar</string>
   <string name="no_genres_found_refresh">Nenhum género encontrado\n\nPuxe para baixo para actualizar</string>
   <string name="no_addons_found_refresh">Nenhuma extensão encontrada\n\nPuxe para baixo para actualizar</string>
   <string name="no_music_videos_found_refresh">Nenhum vídeo encontrado\n\nPuxe para baixo para actualizar</string>
@@ -169,7 +169,7 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
   <string name="action_search">Pesquisa</string>
   <string name="action_search_movies">Pesquisar filmes</string>
   <string name="action_search_tvshows">Pesquisar programas de TV</string>
-  <string name="action_search_albums">Pesquisar albuns</string>
+  <string name="action_search_albums">Pesquisar álbuns</string>
   <string name="action_search_artists">Pesquisar artistas</string>
   <string name="action_search_genres">Pesquisar géneros</string>
   <string name="action_search_music_videos">Pesquisar vídeos</string>

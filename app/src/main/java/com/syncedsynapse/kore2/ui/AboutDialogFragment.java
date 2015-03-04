@@ -26,6 +26,7 @@ public class AboutDialogFragment
         extends DialogFragment {
 
     @Override
+    @SuppressWarnings("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

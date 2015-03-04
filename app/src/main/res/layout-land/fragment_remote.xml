@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -29,17 +29,20 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/remote_page_indicator_height"
         android:layout_marginLeft="@dimen/remote_content_hmargin"
-        android:layout_marginRight="@dimen/remote_content_hmargin">
+        android:layout_marginRight="@dimen/remote_content_hmargin"
+        tools:ignore="InconsistentLayout">
         <!--android:background="?attr/cardBackground">-->
 
         <TextView
             android:id="@+id/info_title"
-            style="@style/TextAppearance.Info.Title"/>
+            style="@style/TextAppearance.Info.Title"
+            tools:ignore="InconsistentLayout"/>
 
         <TextView
             android:id="@+id/info_message"
             style="@style/TextAppearance.Info.Details"
-            android:layout_below="@id/info_title"/>
+            android:layout_below="@id/info_title"
+            tools:ignore="InconsistentLayout"/>
     </RelativeLayout>
 
     <RelativeLayout

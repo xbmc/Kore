@@ -20,7 +20,7 @@
         android:title="@string/power"
         android:icon="?attr/iconOnOffToolbar"
         android:orderInCategory="1"
-        app:showAsAction="always">
+        app:showAsAction="ifRoom">
         <menu>
             <item android:id="@+id/action_wake_up"
                 android:title="@string/wake_up" />

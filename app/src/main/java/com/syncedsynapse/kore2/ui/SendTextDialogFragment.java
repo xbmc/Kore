@@ -95,6 +95,7 @@ public class SendTextDialogFragment extends DialogFragment {
      * @return Created dialog
      */
     @Override
+    @SuppressWarnings("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
