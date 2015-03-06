@@ -3,19 +3,17 @@ Kore - Kodi/XBMC remote for Android
 
 GitHub repository for the [Kore][1] Android app.
 
-Kore is a simple and easy to use Kodi/XBMC remote.
+Kore is a simple and easy to use [Kodi][5] remote.
 
 
 Building
 ---------
 
-Git pull should get you almost everything you need, as long as you have a working [Android build system][4]
+Git pull should get you everything you need, as long as you have a working [Android build system][4]
 
 
 Credits
 -------
-
-[Team Kodi][5] for making an awesome media center.
 
 **Libraries used**
 - [Jackson](https://github.com/FasterXML/jackson)
