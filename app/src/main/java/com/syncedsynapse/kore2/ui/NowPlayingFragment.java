@@ -827,8 +827,12 @@ public class NowPlayingFragment extends Fragment
 //        UIUtils.loadImageIntoImageview(hostManager, art, mediaArt);
 
         // Continue for videos
-        if (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE) ||
-            getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) {
+//        if (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE) ||
+//            getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) {
+        // TODO: change this check to the commeted out one when jsonrpc returns the correct type
+//        if (getPropertiesResult.type.equals(PlayerType.PropertyValue.TYPE_VIDEO)) {
+        if ((getPropertiesResult.audiostreams != null) &&
+                (getPropertiesResult.audiostreams.size() > 0)) {
             overflowButton.setVisibility(View.VISIBLE);
             videoCastList.setVisibility(View.VISIBLE);
             videoAdditionalCastTitle.setVisibility(View.VISIBLE);
