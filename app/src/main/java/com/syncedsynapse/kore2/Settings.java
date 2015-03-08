@@ -41,11 +41,6 @@ public class Settings {
 
     // Tags to save the values
 	private static final String CURRENT_HOST_ID = "CURRENT_HOST_ID";
-    private static final String TVSHOWS_FILTER_HIDE_WATCHED = "TVSHOWS_FILTER_HIDE_WATCHED";
-    private static final String TVSHOW_EPISODES_FILTER_HIDE_WATCHED = "TVSHOW_EPISODES_FILTER_HIDE_WATCHED";
-
-    private static final String SHOW_THANKS_FOR_COFFEE_MESSAGE = "SHOW_THANKS_FOR_COFFEE_MESSAGE";
-    private static final String HAS_BOUGHT_COFFEE = "HAS_BOUGHT_COFFEE";
 
     // Maximum pictures to show on cast list (-1 to show all)
     public static final int DEFAULT_MAX_CAST_PICTURES = 12;
@@ -74,7 +69,6 @@ public class Settings {
 
     // Other keys used in preferences.xml
     public static final String KEY_PREF_ABOUT = "pref_about";
-    public static final String KEY_PREF_COFFEE = "pref_coffee";
 
     // Filter watched movies on movie list
     public static final String KEY_PREF_MOVIES_FILTER_HIDE_WATCHED = "movies_filter_hide_watched";
@@ -118,16 +112,6 @@ public class Settings {
      */
 	public int currentHostId;
 
-    /**
-     * Show the thanks for coffee message
-     */
-    public boolean showThanksForCofeeMessage;
-
-    /**
-     * Local variable to save the last state of the coffe purchase
-     */
-    public boolean hasBoughtCoffee;
-
 	/**
 	 * Protected singleton constructor. Loads all the preferences
 	 * @param context App context
@@ -138,8 +122,6 @@ public class Settings {
 		SharedPreferences preferences = context.getSharedPreferences(SETTINGS_KEY, Context.MODE_PRIVATE);
 
 		currentHostId = preferences.getInt(CURRENT_HOST_ID, -1);
-        showThanksForCofeeMessage = preferences.getBoolean(SHOW_THANKS_FOR_COFFEE_MESSAGE, true);
-        hasBoughtCoffee = preferences.getBoolean(HAS_BOUGHT_COFFEE, false);
     }
 
     /**
@@ -161,8 +143,6 @@ public class Settings {
 		SharedPreferences.Editor editor = preferences.edit();
 
 		editor.putInt(CURRENT_HOST_ID, currentHostId);
-        editor.putBoolean(SHOW_THANKS_FOR_COFFEE_MESSAGE, showThanksForCofeeMessage);
-        editor.putBoolean(HAS_BOUGHT_COFFEE, hasBoughtCoffee);
 		editor.apply();
 	}
 }

@@ -70,23 +70,4 @@ public class SettingsActivity extends ActionBarActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * This is kind of an Hack...
-     * The settings fragment launches the purchase workflow, which calls
-     * startIntentSenderForResult on this activity, which, when finished calls
-     * this onActivityResult.
-     * Wee need to pass this to the fragment, so it can update itself
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Pass on the activity result to the fragment
-        if (!settingsFragment.onPurchaseWorkflowFinish(requestCode, resultCode, data)) {
-            // not handled, so handle it ourselves
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-        else {
-            LogUtils.LOGD(TAG, "onActivityResult handled by IABUtil.");
-        }
-    }
 }

@@ -16,11 +16,6 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
-        android:key="pref_coffee"
-        android:title="@string/buy_me_coffee"
-        android:summary="@string/expresso_please"/>
-
     <ListPreference
         android:key="pref_theme"
         android:title="@string/theme"

@@ -283,16 +283,16 @@
         folgen Sie Kores <b><a href="https://plus.google.com/u/0/communities/110340113064213296333">Google+ Community</a></b>
     ]]></string>
 
-    <!-- String for coffee -->
-    <string name="buy_me_coffee">Kaufen Sie mir einen Kaffee</string>
-    <string name="expresso_please">Espresso, bitte. Danke!</string>
-    <string name="thanks_for_coffe">Danke für den Kaffee!</string>
-    <string name="remove_coffee_message">Hier tippen um diesen Eintrag zu verbergen</string>
-    <string name="buy_coffee_to_unlock_themes">Bitte kaufen Sie mir einen Kaffee um mehr Themen freizuschalten</string>
+    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
+    <!--<string name="buy_me_coffee">Kaufen Sie mir einen Kaffee</string>-->
+    <!--<string name="expresso_please">Espresso, bitte. Danke!</string>-->
+    <!--<string name="thanks_for_coffe">Danke für den Kaffee!</string>-->
+    <!--<string name="remove_coffee_message">Hier tippen um diesen Eintrag zu verbergen</string>-->
+    <!--<string name="buy_coffee_to_unlock_themes">Bitte kaufen Sie mir einen Kaffee um mehr Themen freizuschalten</string>-->
 
-    <string name="error_setting_up_billing">Google Play Bezahlservice konnte nicht konfiguriert werden:\n%s</string>
-    <string name="error_querying_inventory">Fehler bei Überprüfung.</string>
-    <string name="error_during_purchased">Ein Fehler trat beim Kauf auf.</string>
-    <string name="purchase_thanks">Danke für ihre Unterstützung!</string>
+    <!--<string name="error_setting_up_billing">Google Play Bezahlservice konnte nicht konfiguriert werden:\n%s</string>-->
+    <!--<string name="error_querying_inventory">Fehler bei Überprüfung.</string>-->
+    <!--<string name="error_during_purchased">Ein Fehler trat beim Kauf auf.</string>-->
+    <!--<string name="purchase_thanks">Danke für ihre Unterstützung!</string>-->
 
 </resources>

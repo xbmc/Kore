@@ -281,16 +281,16 @@
         segui Kore <b><a href="https://plus.google.com/u/0/communities/110340113064213296333">Google+ Community</a></b>
     ]]></string>
 
-    <!-- String for coffee -->
-    <string name="buy_me_coffee">Offrimi un caffè</string>
-    <string name="expresso_please">Un espresso, per favore. Grazie!</string>
-    <string name="thanks_for_coffe">Grazie per il caffè!</string>
-    <string name="remove_coffee_message">Premi per nascondere questa impostazione</string>
-    <string name="buy_coffee_to_unlock_themes">Per favore offrimi un caffè per sbloccare più temi</string>
+    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
+    <!--<string name="buy_me_coffee">Offrimi un caffè</string>-->
+    <!--<string name="expresso_please">Un espresso, per favore. Grazie!</string>-->
+    <!--<string name="thanks_for_coffe">Grazie per il caffè!</string>-->
+    <!--<string name="remove_coffee_message">Premi per nascondere questa impostazione</string>-->
+    <!--<string name="buy_coffee_to_unlock_themes">Per favore offrimi un caffè per sbloccare più temi</string>-->
 
-    <string name="error_setting_up_billing">Non risco ad accedere al Google Play Billing Service:\n%s</string>
-    <string name="error_querying_inventory">Errore durante l\'interrogazione dell\'inventario.</string>
-    <string name="error_during_purchased">Si è un errore durante l\'acquisto.</string>
-    <string name="purchase_thanks">Grazie per il tuo supporto!</string>
+    <!--<string name="error_setting_up_billing">Non risco ad accedere al Google Play Billing Service:\n%s</string>-->
+    <!--<string name="error_querying_inventory">Errore durante l\'interrogazione dell\'inventario.</string>-->
+    <!--<string name="error_during_purchased">Si è un errore durante l\'acquisto.</string>-->
+    <!--<string name="purchase_thanks">Grazie per il tuo supporto!</string>-->
 
 </resources>

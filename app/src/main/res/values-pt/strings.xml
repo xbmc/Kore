@@ -212,13 +212,15 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
 Por favor classifique-nos na <b><a href="market://details?id=com.syncedsynapse.kore2">Googgle Play</a></b><br><br>
 
 Se necessitar de ajuda, visite a <b><a href="http://syncedsynapse.com/kore/kore-faq/">FAQ</a></b> ou adira à <b><a href="https://plus.google.com/u/0/communities/110340113064213296333">Comunidade Google+</a></b> do Kore.]]></string>
-  <string name="buy_me_coffee">Oferecer um café</string>
-  <string name="expresso_please">Expresso, por favor. Obrigado!</string>
-  <string name="thanks_for_coffe">Obrigado pelo café!</string>
-  <string name="remove_coffee_message">Pressione para ocultar esta configuração</string>
-  <string name="buy_coffee_to_unlock_themes">Por favor ofereça-me um café para desbloquear os temas</string>
-  <string name="error_setting_up_billing">Não consegui configurar o serviço de facturação Google: \n%s</string>
-  <string name="error_querying_inventory">Erro ao consultar inventário.</string>
-  <string name="error_during_purchased">Ocorreu um erro durante a compra.</string>
-  <string name="purchase_thanks">Obrigado pelo apoio!</string>
+
+  <!--<string name="buy_me_coffee">Oferecer um café</string>-->
+  <!--<string name="expresso_please">Expresso, por favor. Obrigado!</string>-->
+  <!--<string name="thanks_for_coffe">Obrigado pelo café!</string>-->
+  <!--<string name="remove_coffee_message">Pressione para ocultar esta configuração</string>-->
+  <!--<string name="buy_coffee_to_unlock_themes">Por favor ofereça-me um café para desbloquear os temas</string>-->
+  <!--<string name="error_setting_up_billing">Não consegui configurar o serviço de facturação Google: \n%s</string>-->
+  <!--<string name="error_querying_inventory">Erro ao consultar inventário.</string>-->
+  <!--<string name="error_during_purchased">Ocorreu um erro durante a compra.</string>-->
+  <!--<string name="purchase_thanks">Obrigado pelo apoio!</string>-->
+
 </resources>
