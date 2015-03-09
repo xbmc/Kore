@@ -51,6 +51,7 @@
             android:layout_marginBottom="@dimen/remote_content_hmargin"
             android:choiceMode="singleChoice"
             style="@style/Widget.GridView"
+            android:listSelector="@drawable/selector"
             android:layout_below="@id/search_host_message"/>
 
         <ProgressBar
