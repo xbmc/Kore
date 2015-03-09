@@ -725,7 +725,9 @@ public class HostConnection {
 
                 if (methodCallInfo != null) {
                     try {
+                        @SuppressWarnings("unchecked")
                         final T result = (T) methodCallInfo.method.resultFromJson(jsonResponse);
+                        @SuppressWarnings("unchecked")
                         final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
 
                         if ((methodCallInfo.handler != null) && (callback != null)) {
@@ -755,6 +757,7 @@ public class HostConnection {
                 // Send error back to client
                 final MethodCallInfo<?> methodCallInfo = clientCallbacks.get(methodId);
                 if (methodCallInfo != null) {
+                    @SuppressWarnings("unchecked")
                     final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
 
                     if ((methodCallInfo.handler != null) && (callback != null)) {
@@ -771,6 +774,7 @@ public class HostConnection {
                 // Notify all pending clients, it might be an error for them
                 for (String id : clientCallbacks.keySet()) {
                     final MethodCallInfo<?> methodCallInfo = clientCallbacks.get(id);
+                    @SuppressWarnings("unchecked")
                     final ApiCallback<T> callback = (ApiCallback<T>)methodCallInfo.callback;
 
                     if ((methodCallInfo.handler != null) && (callback != null)) {

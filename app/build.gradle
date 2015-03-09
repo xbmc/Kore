@@ -48,6 +48,14 @@ android {
         disable 'MissingTranslation'
     }
 
+//    allprojects {
+//        gradle.projectsEvaluated {
+//            tasks.withType(JavaCompile) {
+//                options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+//            }
+//        }
+//    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
