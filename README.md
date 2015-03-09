@@ -56,7 +56,7 @@ License
     limitations under the License.
 
 
-[1]: https://play.google.com/store/apps/details?id=com.syncedsynapse.kore2
+[1]: https://play.google.com/store/apps/details?id=org.xbmc.kore
 [2]: http://syncedsynapse.com/kore/
 [3]: https://plus.google.com/u/0/communities/110340113064213296333
 [4]: http://developer.android.com/sdk/installing/studio-build.html

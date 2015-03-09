@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.syncedsynapse.kore2">
+    package="org.xbmc.kore">
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -16,7 +16,7 @@
 
         <!-- Activities -->
         <activity
-            android:name="com.syncedsynapse.kore2.ui.RemoteActivity"
+            android:name="org.xbmc.kore.ui.RemoteActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,27 +24,27 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.syncedsynapse.kore2.ui.hosts.HostManagerActivity"/>
-        <activity android:name="com.syncedsynapse.kore2.ui.hosts.AddHostActivity"/>
-        <activity android:name="com.syncedsynapse.kore2.ui.hosts.EditHostActivity"/>
-        <activity android:name="com.syncedsynapse.kore2.ui.MoviesActivity"/>
-        <activity android:name="com.syncedsynapse.kore2.ui.TVShowsActivity"/>
-        <activity android:name="com.syncedsynapse.kore2.ui.MusicActivity"/>
-        <activity android:name="com.syncedsynapse.kore2.ui.AddonsActivity"/>
-        <activity android:name="com.syncedsynapse.kore2.ui.SettingsActivity"/>
+        <activity android:name="org.xbmc.kore.ui.hosts.HostManagerActivity"/>
+        <activity android:name="org.xbmc.kore.ui.hosts.AddHostActivity"/>
+        <activity android:name="org.xbmc.kore.ui.hosts.EditHostActivity"/>
+        <activity android:name="org.xbmc.kore.ui.MoviesActivity"/>
+        <activity android:name="org.xbmc.kore.ui.TVShowsActivity"/>
+        <activity android:name="org.xbmc.kore.ui.MusicActivity"/>
+        <activity android:name="org.xbmc.kore.ui.AddonsActivity"/>
+        <activity android:name="org.xbmc.kore.ui.SettingsActivity"/>
 
         <!-- Providers -->
         <provider
-            android:name="com.syncedsynapse.kore2.provider.MediaProvider"
-            android:authorities="com.syncedsynapse.kore2.provider"
+            android:name="org.xbmc.kore.provider.MediaProvider"
+            android:authorities="org.xbmc.kore.provider"
             android:exported="false"/>
 
         <!-- Services -->
-        <service android:name="com.syncedsynapse.kore2.service.LibrarySyncService"
+        <service android:name="org.xbmc.kore.service.LibrarySyncService"
             android:exported="false"/>
-        <service android:name="com.syncedsynapse.kore2.service.NotificationService"
+        <service android:name="org.xbmc.kore.service.NotificationService"
             android:exported="false"/>
-        <service android:name="com.syncedsynapse.kore2.service.IntentActionsService"
+        <service android:name="org.xbmc.kore.service.IntentActionsService"
             android:exported="false"/>
 
     </application>

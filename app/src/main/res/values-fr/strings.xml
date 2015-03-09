@@ -272,7 +272,7 @@
     <string name="about">À propos</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2015 Synced Synapse.<br><br>
-        Évaluez-nous sur <b><a href="market://details?id=com.syncedsynapse.kore2">Google Play</a></b><br><br>
+        Évaluez-nous sur <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
         Si vous avez besoin d\'aide, consultez la <b><a href="http://syncedsynapse.com/kore/kore-faq/">FAQ</a></b> ou
         rejoignez la <b><a href="https://plus.google.com/u/0/communities/110340113064213296333">Communauté Google+</a></b> de Kore

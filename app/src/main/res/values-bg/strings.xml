@@ -271,7 +271,7 @@
     <string name="about">За приложението</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2015 Synced Synapse.<br><br>
-        Моля, оценете ни в <b><a href="market://details?id=com.syncedsynapse.kore2">Google Play</a></b><br><br>
+        Моля, оценете ни в <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
         Ако се нуждаете от помощ прочетете <b><a href="http://syncedsynapse.com/kore/kore-faq/">ЧЗВ</a></b> или
         следвайте общността на Kore в <b><a href="https://plus.google.com/u/0/communities/110340113064213296333">Google+ Community</a></b>
