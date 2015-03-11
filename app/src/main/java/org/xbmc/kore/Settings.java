@@ -15,32 +15,18 @@
  */
 package org.xbmc.kore;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.format.DateUtils;
 
-import org.xbmc.kore.utils.LogUtils;
-
 /**
- * Singleton that holds the settings of the app, that are not stored in the default shared preferences
- *
- * Interfaces with {@link android.content.SharedPreferences} to load/store these preferences.
+ * Interface that contains various constants and the keys for settings stored in shared preferences
  */
-public class Settings {
-	private static final String TAG = LogUtils.makeLogTag(Settings.class);
-
+public interface Settings {
     /**
      * The update interval for the records in the DB. If the last update is older than this value
-     * a refresh will be triggered. Aplicable to TV Shows and Movies.
+     * a refresh will be triggered. Applicable to TV Shows and Movies.
      */
 //    public static final long DB_UPDATE_INTERVAL = 12 * DateUtils.HOUR_IN_MILLIS;
     public static final long DB_UPDATE_INTERVAL = 5 * DateUtils.MINUTE_IN_MILLIS;
-
-	// Constants for Shared Preferences
-	private static final String SETTINGS_KEY = "SETTINGS_SHARED_PREFS";
-
-    // Tags to save the values
-	private static final String CURRENT_HOST_ID = "CURRENT_HOST_ID";
 
     // Maximum pictures to show on cast list (-1 to show all)
     public static final int DEFAULT_MAX_CAST_PICTURES = 12;
@@ -51,7 +37,7 @@ public class Settings {
 
     /**
      * Preferences keys.
-     * These settings are automatically managed by the Preferences mechanism.
+     * Some of these settings are automatically managed by the Preferences mechanism.
      * Make sure these are the same as in preferences.xml
      */
 
@@ -82,7 +68,7 @@ public class Settings {
     public static final String KEY_PREF_MOVIES_IGNORE_PREFIXES = "movies_ignore_prefixes";
     public static final boolean DEFAULT_PREF_MOVIES_IGNORE_PREFIXES = false;
 
-    // Filter watched tv shows on tvshow list
+    // Filter watched tv shows on tvshows list
     public static final String KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED = "tvshows_filter_hide_watched";
     public static final boolean DEFAULT_PREF_TVSHOWS_FILTER_HIDE_WATCHED = false;
 
@@ -102,47 +88,7 @@ public class Settings {
     public static final String KEY_PREF_USE_HARDWARE_VOLUME_KEYS = "pref_use_hardware_volume_keys";
     public static final boolean DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS = true;
 
-
-    // Singleton instance
-	private static Settings instance = null;
-	private Context context;
-
-    /**
-     * Current saved host id
-     */
-	public int currentHostId;
-
-	/**
-	 * Protected singleton constructor. Loads all the preferences
-	 * @param context App context
-	 */
-	protected Settings(Context context) {
-		this.context = context.getApplicationContext();
-
-		SharedPreferences preferences = context.getSharedPreferences(SETTINGS_KEY, Context.MODE_PRIVATE);
-
-		currentHostId = preferences.getInt(CURRENT_HOST_ID, -1);
-    }
-
-    /**
-     * Returns the singleton {@link Settings} object.
-	 * @param context App context
-	 * @return Singleton instance
-	 */
-	public static Settings getInstance(Context context) {
-		if (instance == null)
-			instance = new Settings(context);
-		return instance;
-	}
-
-	/**
-	 * Save the current values in {@link android.content.SharedPreferences}
-	 */
-	public void save() {
-		SharedPreferences preferences = context.getSharedPreferences(SETTINGS_KEY, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = preferences.edit();
-
-		editor.putInt(CURRENT_HOST_ID, currentHostId);
-		editor.apply();
-	}
+    // Current host id
+    public static final String KEY_PREF_CURRENT_HOST_ID = "current_host_id";
+    public static final int DEFAULT_PREF_CURRENT_HOST_ID = -1;
 }

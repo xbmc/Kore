@@ -36,19 +36,12 @@ public class SettingsFragment extends PreferenceFragment
 
     private static final String TAG = LogUtils.makeLogTag(SettingsFragment.class);
 
-    public static final String COFFEE_SKU = "coffee";
-    public static final int COFFEE_RC = 1001;
-
-    private Settings mSettings;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
-
-        mSettings = Settings.getInstance(getActivity());
 
         setupPreferences();
     }
@@ -88,8 +81,6 @@ public class SettingsFragment extends PreferenceFragment
      * Sets up the preferences state and summaries
      */
     private void setupPreferences() {
-        final Settings settings = Settings.getInstance(getActivity());
-
         // Theme preferences
         ListPreference themePref = (ListPreference)findPreference(Settings.KEY_PREF_THEME);
         themePref.setSummary(themePref.getEntry());

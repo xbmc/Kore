@@ -17,8 +17,10 @@ package org.xbmc.kore.host;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 
 import com.squareup.picasso.Picasso;
 import org.xbmc.kore.Settings;
@@ -143,19 +145,23 @@ public class HostManager {
 	 */
 	public HostInfo getHostInfo() {
         if (currentHostInfo == null) {
-            Settings settings = Settings.getInstance(context);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            int currentHostId = prefs.getInt(Settings.KEY_PREF_CURRENT_HOST_ID, Settings.DEFAULT_PREF_CURRENT_HOST_ID);
+
             ArrayList<HostInfo> hosts = getHosts();
 
             // No host selected. Check if there are hosts configured and default to the first one
-            if (settings.currentHostId == -1) {
+            if (currentHostId == -1) {
                 if (hosts.size() > 0) {
                     currentHostInfo = hosts.get(0);
-                    settings.currentHostId = currentHostInfo.getId();
-                    settings.save();
+                    currentHostId = currentHostInfo.getId();
+                    prefs.edit()
+                            .putInt(Settings.KEY_PREF_CURRENT_HOST_ID, currentHostId)
+                            .apply();
                 }
             } else {
                 for (HostInfo host : hosts) {
-                    if (host.getId() == settings.currentHostId) {
+                    if (host.getId() == currentHostId) {
                         currentHostInfo = host;
                         break;
                     }
@@ -221,9 +227,10 @@ public class HostManager {
 
         currentHostInfo = hostInfo;
         if (currentHostInfo != null) {
-            Settings settings = Settings.getInstance(context);
-            settings.currentHostId = currentHostInfo.getId();
-            settings.save();
+            PreferenceManager.getDefaultSharedPreferences(context)
+                    .edit()
+                    .putInt(Settings.KEY_PREF_CURRENT_HOST_ID, currentHostInfo.getId())
+                    .apply();
         }
 	}
 
