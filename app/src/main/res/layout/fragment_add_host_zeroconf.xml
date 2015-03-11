@@ -45,14 +45,16 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/remote_content_hmargin"
-            android:layout_marginRight="@dimen/remote_content_hmargin"
-            android:layout_marginTop="@dimen/remote_content_hmargin"
-            android:layout_marginBottom="@dimen/remote_content_hmargin"
-            android:choiceMode="singleChoice"
-            style="@style/Widget.GridView"
-            android:listSelector="@drawable/selector"
-            android:layout_below="@id/search_host_message"/>
+            android:layout_below="@id/search_host_message"
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingRight="@dimen/small_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingBottom="@dimen/default_padding"
+            android:clipToPadding="false"
+            android:choiceMode="none"
+            android:listSelector="?attr/selectableItemBackground"
+            android:drawSelectorOnTop="true"
+            style="@style/Widget.GridView"/>
 
         <ProgressBar
             android:id="@+id/progress_bar"
