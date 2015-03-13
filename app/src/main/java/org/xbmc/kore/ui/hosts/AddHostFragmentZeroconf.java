@@ -33,6 +33,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
@@ -258,8 +259,15 @@ public class AddHostFragmentZeroconf extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long itemId) {
                 ServiceInfo selectedServiceInfo = serviceInfos[position];
 
+                String[] addresses = selectedServiceInfo.getHostAddresses();
+                if (addresses.length == 0) {
+                    // Couldn't get any address
+                    Toast.makeText(getActivity(), R.string.wizard_zeroconf_cant_connect_no_host_address, Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
                 String hostName = selectedServiceInfo.getName();
-                String hostAddress = selectedServiceInfo.getHostAddresses()[0];
+                String hostAddress = addresses[0];
                 int hostHttpPort = selectedServiceInfo.getPort();
                 HostInfo selectedHostInfo = new HostInfo(hostName, hostAddress, hostHttpPort,
                         HostInfo.DEFAULT_TCP_PORT, null, null);
@@ -288,10 +296,13 @@ public class AddHostFragmentZeroconf extends Fragment {
             final ServiceInfo item = this.getItem(position);
             ((TextView)convertView.findViewById(R.id.host_name)).setText(item.getName());
             String[] addresses = item.getHostAddresses();
+            String hostAddress;
             if (addresses.length > 0) {
-                String hostAddress = addresses[0] + ":" + item.getPort();
-                ((TextView) convertView.findViewById(R.id.host_address)).setText(hostAddress);
+                hostAddress = addresses[0] + ":" + item.getPort();
+            } else {
+                hostAddress = getString(R.string.wizard_zeroconf_no_host_address);
             }
+            ((TextView) convertView.findViewById(R.id.host_address)).setText(hostAddress);
 
             ImageView statusIndicator = (ImageView)convertView.findViewById(R.id.status_indicator);
             int statusColor = getActivity().getResources().getColor(R.color.host_status_available);

@@ -114,6 +114,9 @@
     Press <b><i>Finish</i></b> to start using the remote.
     ]]></string>
 
+    <string name="wizard_zeroconf_no_host_address">Couldn\'t get this media center address!</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Can\'t connect to this media center because i wasn\'t able to discover its address.</string>
+
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
