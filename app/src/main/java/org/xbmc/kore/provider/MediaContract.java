@@ -70,9 +70,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_HOSTS).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_HOSTS;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_HOSTS;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_HOSTS;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_HOSTS;
 
         /** Build {@link Uri} for requested {@link #_ID}. */
         public static Uri buildHostUri(long hostId) {
@@ -136,9 +136,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIES).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_MOVIES;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_MOVIES;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_MOVIES;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_MOVIES;
 
         /** Build {@link Uri} for movies list. */
         public static Uri buildMoviesListUri(long hostId) {
@@ -188,9 +188,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE_CAST).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_MOVIE_CAST;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_MOVIE_CAST;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_MOVIE_CAST;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_MOVIE_CAST;
 
         /** Build {@link Uri} for requested {@link #_ID}. */
         public static Uri buildMovieCastListUri(long hostId, long movieId) {
@@ -230,9 +230,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_TVSHOWS).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_TVSHOWS;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_TVSHOWS;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_TVSHOWS;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_TVSHOWS;
 
         /** Build {@link Uri} for tvshows list. */
         public static Uri buildTVShowsListUri(long hostId) {
@@ -280,9 +280,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_TVSHOW_CAST).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_TVSHOW_CAST;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_TVSHOW_CAST;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_TVSHOW_CAST;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_TVSHOW_CAST;
 
         /** Build {@link Uri} for requested {@link #_ID}. */
         public static Uri buildTVShowCastListUri(long hostId, long tvshowId) {
@@ -314,9 +314,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_SEASONS).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_SEASONS;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_SEASONS;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_SEASONS;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_SEASONS;
 
 
         /** Build {@link Uri} for requested {@link #_ID}. */
@@ -385,9 +385,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_EPISODES).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_EPISODES;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_EPISODES;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_EPISODES;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_EPISODES;
 
         /** Build {@link Uri} for tvshows list. */
         public static Uri buildTVShowEpisodesListUri(long hostId, long tvshowId) {
@@ -458,9 +458,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ARTISTS).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_ARTISTS;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_ARTISTS;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_ARTISTS;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_ARTISTS;
 
         /** Build {@link Uri} for artists list. */
         public static Uri buildArtistsListUri(long hostId) {
@@ -512,9 +512,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ALBUMS).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_ALBUMS;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_ALBUMS;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_ALBUMS;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_ALBUMS;
 
         /** Build {@link Uri} for albums list. */
         public static Uri buildAlbumsListUri(long hostId) {
@@ -581,9 +581,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_SONGS).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_SONGS;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_SONGS;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_SONGS;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_SONGS;
 
         /** Build {@link Uri} for albums list. */
         public static Uri buildSongsListUri(long hostId, long albumId) {
@@ -627,9 +627,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_AUDIO_GENRES).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_AUDIO_GENRES;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_AUDIO_GENRES;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_AUDIO_GENRES;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_AUDIO_GENRES;
 
         /** Build {@link Uri} for genres list. */
         public static Uri buildAudioGenresListUri(long hostId) {
@@ -670,7 +670,7 @@ public class MediaContract {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ALBUM_ARTISTS).build();
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_ALBUM_ARTISTS;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_ALBUM_ARTISTS;
 
         /** Build {@link Uri} for requested {@link #_ID}. */
         public static Uri buildAlbumsForArtistListUri(long hostId, long artistId) {
@@ -700,7 +700,7 @@ public class MediaContract {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ALBUM_GENRES).build();
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_ALBUM_GENRES;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_ALBUM_GENRES;
 
         /** Build {@link Uri} for requested {@link #_ID}. */
         public static Uri buildAlbumsForGenreListUri(long hostId, long genreId) {
@@ -773,9 +773,9 @@ public class MediaContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_MUSIC_VIDEOS).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.syncedsynapse." + PATH_MUSIC_VIDEOS;
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_MUSIC_VIDEOS;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.syncedsynapse." + PATH_MUSIC_VIDEOS;
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_MUSIC_VIDEOS;
 
         /** Build {@link Uri} for music videos list. */
         public static Uri buildMusicVideosListUri(long hostId) {
