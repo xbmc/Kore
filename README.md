@@ -3,13 +3,17 @@ Kore - Kodi/XBMC remote for Android
 
 GitHub repository for the [Kore][1] Android app.
 
-Kore is a simple and easy to use [Kodi][5] remote.
+Kore is the official remote for [Kodi](http://kodi.tv/), and aims to be a simple and easy to use  remote.
 
 
 Building
 ---------
 
-Git pull should get you everything you need, as long as you have a working [Android build system][4]
+1. Make sure you have a working [Android build system](http://developer.android.com/sdk/installing/studio-build.html);
+2. The version of Android SDK and Build Tools needed is specified in app/build.gradle. Make sure you have them installed;
+3. Install the version of [Android support library](http://developer.android.com/tools/support-library/setup.html) that is specified in app/gradle (dependencies section);
+4. Git pull
+5. Gradle should be able to fetch all the other needed libraries.
 
 
 Credits
@@ -33,15 +37,15 @@ Credits
 Links
 -----
 
-- [Website][2]
+- [Kodi forum thread](http://forum.kodi.tv/forumdisplay.php?fid=129)
 - [Google Play][1]
-- [Google+ community][3]
+- [Google+ community](https://plus.google.com/communities/115506510322045554124)
 
 
 License
 -------
 
-    Copyright 2014 Synced Synapse
+    Copyright 2015 XBMC Foundation
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -57,7 +61,3 @@ License
 
 
 [1]: https://play.google.com/store/apps/details?id=org.xbmc.kore
-[2]: http://syncedsynapse.com/kore/
-[3]: https://plus.google.com/u/0/communities/110340113064213296333
-[4]: http://developer.android.com/sdk/installing/studio-build.html
-[5]: http://kodi.tv/

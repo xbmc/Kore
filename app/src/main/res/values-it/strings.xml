@@ -274,11 +274,10 @@
 
     <string name="about">About</string>
     <string name="about_desc"><![CDATA[
-        \u00A9 2015 Synced Synapse.<br><br>
+        \u00A9 2015 XBMC Foundation.<br><br>
         Per favore votaci su <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
-        Se ti serve aiuto, controlla le <b><a href="http://syncedsynapse.com/kore/kore-faq/">FAQ</a></b> o
-        segui Kore <b><a href="https://plus.google.com/u/0/communities/110340113064213296333">Google+ Community</a></b>
+        Se ti serve aiuto, controlla le <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">FAQ</a></b>
     ]]></string>
 
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
