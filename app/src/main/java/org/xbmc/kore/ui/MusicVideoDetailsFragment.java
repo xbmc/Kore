@@ -299,7 +299,7 @@ public class MusicVideoDetailsFragment extends Fragment
         Player.Open action = new Player.Open(item);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 if (!isAdded()) return;
                 // Check whether we should switch to the remote
                 boolean switchToRemote = PreferenceManager
@@ -329,7 +329,7 @@ public class MusicVideoDetailsFragment extends Fragment
 
         getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
-            public void onSucess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
+            public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
                 if (!isAdded()) return;
                 // Ok, loop through the playlists, looking for the video one
                 int videoPlaylistId = -1;
@@ -346,7 +346,7 @@ public class MusicVideoDetailsFragment extends Fragment
                     Playlist.Add action = new Playlist.Add(videoPlaylistId, item);
                     action.execute(hostManager.getConnection(), new ApiCallback<String>() {
                         @Override
-                        public void onSucess(String result) {
+                        public void onSuccess(String result) {
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)

@@ -154,7 +154,7 @@ public class AddonDetailsFragment extends Fragment {
         Addons.GetAddonDetails action = new Addons.GetAddonDetails(addonId, properties);
         action.execute(hostManager.getConnection(), new ApiCallback<AddonType.Details>() {
             @Override
-            public void onSucess(AddonType.Details result) {
+            public void onSuccess(AddonType.Details result) {
                 if (!isAdded()) return;
                 displayAddonDetails(result);
             }
@@ -193,7 +193,7 @@ public class AddonDetailsFragment extends Fragment {
         Addons.ExecuteAddon action = new Addons.ExecuteAddon(addonId);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 // Do nothing
             }
 
@@ -213,7 +213,7 @@ public class AddonDetailsFragment extends Fragment {
         Addons.SetAddonEnabled action = new Addons.SetAddonEnabled(addonId, !isEnabled);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 if (!isAdded()) return;
                 int messageResId = (!isEnabled) ? R.string.addon_enabled : R.string.addon_disabled;
                 Toast.makeText(getActivity(), messageResId, Toast.LENGTH_SHORT).show();

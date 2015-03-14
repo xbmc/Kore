@@ -17,11 +17,13 @@ package org.xbmc.kore.jsonrpc.type;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.xbmc.kore.utils.JsonUtils;
+import org.xbmc.kore.utils.LogUtils;
 
 /**
  * Return types for methods in Files.*
  */
 public class FilesType {
+    private static final String TAG = LogUtils.makeLogTag(FilesType.class);
     /**
      * GetActivePlayers return type
      */
@@ -43,6 +45,43 @@ public class FilesType {
 
             JsonNode details =  node.get(DETAILS);
             path = JsonUtils.stringFromJsonNode(details, PATH);
+        }
+    }
+
+    /**
+     * DanhDroid
+     */
+    public static final class FileLocation {
+        public final static String LABEL = "label";
+        public final static String FILE_PATH = "file";
+        public final static String FILE_TYPE = "file_type";
+        public final static String DIRECTORY = "directory";
+
+        public final String label;
+        public final String path;
+        public final boolean isDirectory;
+        private boolean isRoot;
+
+        public FileLocation(JsonNode node) {
+            label = JsonUtils.stringFromJsonNode(node,LABEL);
+            path = JsonUtils.stringFromJsonNode(node,FILE_PATH);
+            if (node.has(FILE_TYPE)) {
+                isDirectory = JsonUtils.stringFromJsonNode(node,FILE_TYPE).equalsIgnoreCase(DIRECTORY);
+            }
+            else {
+                isDirectory = path.endsWith("/") || path.endsWith("\\");
+            }
+            LogUtils.LOGD(TAG, "FilesType.FilesType: label = " + label + ", path = " + path + ", directory = " + isDirectory);
+        }
+
+        public boolean isRootDir() { return this.isRoot; }
+        public void setRootDir(boolean root) { this.isRoot = root; }
+
+        public FileLocation(String label, String path, boolean isDir) {
+            this.label = label;
+            this.path = path;
+            this.isDirectory = isDir;
+            this.isRoot = false;
         }
     }
 }

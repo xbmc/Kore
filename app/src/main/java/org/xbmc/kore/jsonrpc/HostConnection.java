@@ -275,9 +275,10 @@ public class HostConnection {
 	private <T> void executeThroughHTTP(final ApiMethod<T> method, final ApiCallback<T> callback,
 										final Handler handler) {
 		String jsonRequest = method.toJsonString();
+        LogUtils.LOGD(TAG, "send jsonRequest = " + jsonRequest);
 		try {
 			HttpURLConnection connection = openHttpConnection(hostInfo);
-			sendHttpRequest(connection, jsonRequest);
+		    sendHttpRequest(connection, jsonRequest);
 			// Read response and convert it
 			final T result = method.resultFromJson(parseJsonResponse(readHttpResponse(connection)));
 
@@ -285,7 +286,7 @@ public class HostConnection {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        callback.onSucess(result);
+                        callback.onSuccess(result);
                     }
                 });
             }
@@ -328,7 +329,7 @@ public class HostConnection {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        callback.onSucess(result);
+                        callback.onSuccess(result);
                     }
                 });
             }
@@ -391,8 +392,8 @@ public class HostConnection {
 	 * @throws ApiException
 	 */
 	private void sendHttpRequest(HttpURLConnection connection, String request) throws ApiException {
+        LogUtils.LOGD(TAG, "Sending request via HTTP: " + request);
 		try {
-            LogUtils.LOGD(TAG, "Sending request via HTTP: " + request);
 			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
 			out.write(request);
 			out.flush();
@@ -454,7 +455,7 @@ public class HostConnection {
 	 * @throws ApiException
 	 */
 	private ObjectNode parseJsonResponse(String response) throws ApiException {
-//		LogUtils.LOGD(TAG, "Parsing JSON response");
+		LogUtils.LOGD(TAG, "parseJsonResponse: response = " + response);
 		try {
 			ObjectNode jsonResponse = (ObjectNode) objectMapper.readTree(response);
 
@@ -485,7 +486,8 @@ public class HostConnection {
 	private <T> void executeThroughTcp(final ApiMethod<T> method, final ApiCallback<T> callback,
 									   final Handler handler) {
         String methodId = String.valueOf(method.getId());
-		try {
+        LogUtils.LOGD(TAG, "executeThroughTcp() methodId = " + methodId);
+	    try {
 			// Save this method/callback for later response
             // Check if a method with this id is already running and raise an error if so
             synchronized (clientCallbacks) {
@@ -527,8 +529,9 @@ public class HostConnection {
 	 * @throws ApiException
 	 */
 	private Socket openTcpConnection(HostInfo hostInfo) throws ApiException {
+        LogUtils.LOGD(TAG, "Opening TCP connection on host: " + hostInfo.getAddress());
 		try {
-			LogUtils.LOGD(TAG, "Opening TCP connection on host: " + hostInfo.getAddress());
+
 
 			Socket socket = new Socket();
 			final InetSocketAddress address = new InetSocketAddress(hostInfo.getAddress(), hostInfo.getTcpPort());
@@ -551,8 +554,8 @@ public class HostConnection {
 	 * @throws ApiException
 	 */
 	private void sendTcpRequest(Socket socket, String request) throws ApiException {
+        LogUtils.LOGD(TAG, "Sending request via TCP: " + request);
 		try {
-			LogUtils.LOGD(TAG, "Sending request via TCP: " + request);
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			writer.write(request);
 			writer.flush();
@@ -578,8 +581,8 @@ public class HostConnection {
 					JsonParser jsonParser = objectMapper.getFactory().createParser(socket.getInputStream());
 					ObjectNode jsonResponse;
 					while ((jsonResponse = objectMapper.readTree(jsonParser)) != null) {
-                        LogUtils.LOGD(TAG, "Read from socket: " + jsonResponse.toString());
-//                        LogUtils.LOGD_FULL(TAG, "Read from socket: " + jsonResponse.toString());
+                        //LogUtils.LOGD(TAG, "Read from socket: " + jsonResponse.toString());
+                        LogUtils.LOGD_FULL(TAG, "Read from socket: " + jsonResponse.toString());
 						handleTcpResponse(jsonResponse);
 					}
 				} catch (JsonProcessingException e) {
@@ -714,7 +717,7 @@ public class HostConnection {
 			LogUtils.LOGD(TAG, "Got a notification: " + jsonResponse.get("method").textValue());
 		} else {
 			String methodId = jsonResponse.get(ApiMethod.ID_NODE).asText();
-
+                        LogUtils.LOGD(TAG, "handleTcpResponse(): methodId = " + methodId);
 			if (jsonResponse.has(ApiMethod.ERROR_NODE)) {
 				// Error response
 				callErrorCallback(methodId, new ApiException(ApiException.API_ERROR, jsonResponse));
@@ -734,7 +737,7 @@ public class HostConnection {
                             methodCallInfo.handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    callback.onSucess(result);
+                                    callback.onSuccess(result);
                                 }
                             });
                         }
@@ -796,7 +799,8 @@ public class HostConnection {
 	 * This method should always be called if the protocoll used is TCP, so we can shutdown gracefully
 	 */
     public void disconnect() {
-		if (protocol == PROTOCOL_HTTP)
+        LogUtils.LOGD(TAG, "disconnect(): ");
+	if (protocol == PROTOCOL_HTTP)
 			return;
 
 		try {
