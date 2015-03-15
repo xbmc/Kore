@@ -367,6 +367,12 @@ public class NowPlayingFragment extends Fragment
         popup.show();
     }
 
+
+    // Number of explicitly added options for audio and subtitles (to subtract from the
+    // number of audiostreams and subtitles returned by Kodi)
+    static final int ADDED_AUDIO_OPTIONS = 1;
+    static final int ADDED_SUBTITLE_OPTIONS = 3;
+
     /**
      * Overflow menu
      */
@@ -376,20 +382,19 @@ public class NowPlayingFragment extends Fragment
             int selectedItem = -1;
             switch (item.getItemId()) {
                 case R.id.audiostreams:
-                    final int MIN_AUDIO_OPTIONS = 1;
                     // Setup audiostream select dialog
                     String[] audiostreams = new String[(availableAudioStreams != null) ?
-                            availableAudioStreams.size() + MIN_AUDIO_OPTIONS : MIN_AUDIO_OPTIONS];
+                            availableAudioStreams.size() + ADDED_AUDIO_OPTIONS : ADDED_AUDIO_OPTIONS];
 
                     audiostreams[0] = getString(R.string.audio_sync);
 
                     if (availableAudioStreams != null) {
                         for (int i = 0; i < availableAudioStreams.size(); i++) {
                             PlayerType.AudioStream current = availableAudioStreams.get(i);
-                            audiostreams[i + MIN_AUDIO_OPTIONS] = TextUtils.isEmpty(current.language) ?
+                            audiostreams[i + ADDED_AUDIO_OPTIONS] = TextUtils.isEmpty(current.language) ?
                                     current.name : current.language + " | " + current.name;
                             if (current.index == currentAudiostreamIndex) {
-                                selectedItem = i + MIN_AUDIO_OPTIONS;
+                                selectedItem = i + ADDED_AUDIO_OPTIONS;
                             }
                         }
 
@@ -400,9 +405,8 @@ public class NowPlayingFragment extends Fragment
                     return true;
                 case R.id.subtitles:
                     // Setup subtitles select dialog
-                    final int MIN_SUBTITLE_OPTIONS = 3;
                     String[] subtitles = new String[(availableSubtitles != null) ?
-                            availableSubtitles.size() + MIN_SUBTITLE_OPTIONS : MIN_SUBTITLE_OPTIONS];
+                            availableSubtitles.size() + ADDED_SUBTITLE_OPTIONS : ADDED_SUBTITLE_OPTIONS];
 
                     subtitles[0] = getString(R.string.download_subtitle);
                     subtitles[1] = getString(R.string.subtitle_sync);
@@ -411,10 +415,10 @@ public class NowPlayingFragment extends Fragment
                     if (availableSubtitles != null) {
                         for (int i = 0; i < availableSubtitles.size(); i++) {
                             PlayerType.Subtitle current = availableSubtitles.get(i);
-                            subtitles[i + MIN_SUBTITLE_OPTIONS] = TextUtils.isEmpty(current.language) ?
+                            subtitles[i + ADDED_SUBTITLE_OPTIONS] = TextUtils.isEmpty(current.language) ?
                                     current.name : current.language + " | " + current.name;
                             if (current.index == currentSubtitleIndex) {
-                                selectedItem = i + MIN_SUBTITLE_OPTIONS;
+                                selectedItem = i + ADDED_SUBTITLE_OPTIONS;
                             }
                         }
                     }
@@ -453,7 +457,7 @@ public class NowPlayingFragment extends Fragment
                         }, callbackHandler);
                         break;
                     default:
-                        Player.SetAudioStream setAudioStream = new Player.SetAudioStream(currentActivePlayerId, which - 1);
+                        Player.SetAudioStream setAudioStream = new Player.SetAudioStream(currentActivePlayerId, which - ADDED_AUDIO_OPTIONS);
                         setAudioStream.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
                         break;
                 }
@@ -506,7 +510,7 @@ public class NowPlayingFragment extends Fragment
                         setSubtitle.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
                         break;
                     default:
-                        setSubtitle = new Player.SetSubtitle(currentActivePlayerId, which - 2, true);
+                        setSubtitle = new Player.SetSubtitle(currentActivePlayerId, which - ADDED_SUBTITLE_OPTIONS, true);
                         setSubtitle.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
                         break;
                 }
