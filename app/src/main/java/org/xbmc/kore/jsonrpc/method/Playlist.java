@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.ApiMethod;
+import org.xbmc.kore.jsonrpc.type.FilesType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType.GetPlaylistsReturnType;
@@ -159,6 +160,19 @@ public class Playlist {
         public Add(int playlistId, PlaylistType.Item item) {
             super();
             addParameterToRequest("playlistid", playlistId);
+            addParameterToRequest("item", item);
+        }
+
+        /**
+         * Add the media specified by fl.path to the selected playlist
+         * @param playlistId selected playlistId
+         * @param fl  filelocation of the media to add
+         */
+        public Add(int playlistId, FilesType.FileLocation fl) {
+            super();
+            addParameterToRequest("playlistid", playlistId);
+            final ObjectNode item = objectMapper.createObjectNode();
+            item.put("file", fl.path);
             addParameterToRequest("item", item);
         }
 

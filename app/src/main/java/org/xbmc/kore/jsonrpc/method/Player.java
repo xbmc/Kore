@@ -457,6 +457,30 @@ public class Player {
             addParameterToRequest("item", playlistItem.toJsonNode());
         }
 
+        /**
+         * Start playing with the specified filename
+         * @param media_uri location (full path name) of the media to open
+         */
+
+        public Open(String media_uri) {
+            super();
+            PlayerType.Item item = new PlayerType.Item(media_uri);
+            PlayerType.ResumeMode resumeMode = new PlayerType.ResumeMode(true);
+            addParameterToRequest("item", item.toJsonNode());
+            addParameterToRequest("options",resumeMode.toJsonNode());
+        }
+
+        /**
+         * Select the active player
+         * @param playlistId playlist ID to select
+         */
+        public Open(int playlistId) {
+            super();
+            final ObjectNode item = objectMapper.createObjectNode();
+            item.put("playlistid", playlistId);
+            addParameterToRequest("item", item);
+        }
+
         @Override
         public String getMethodName() { return METHOD_NAME; }
 
