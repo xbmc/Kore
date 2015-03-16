@@ -182,7 +182,7 @@ public class AddonListFragment extends Fragment
         Addons.GetAddons action = new Addons.GetAddons(properties);
         action.execute(hostManager.getConnection(), new ApiCallback<List<AddonType.Details>>() {
             @Override
-            public void onSucess(List<AddonType.Details> result) {
+            public void onSuccess(List<AddonType.Details> result) {
                 if (!isAdded()) return;
 
                 adapter.clear();

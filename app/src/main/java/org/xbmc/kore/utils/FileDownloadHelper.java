@@ -274,7 +274,7 @@ public class FileDownloadHelper {
         JSONRPC.Ping action = new JSONRPC.Ping();
         action.execute(httpHostConnection, new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 // Ok, continue, iterate through the song list and launch a download for each
                 final DownloadManager downloadManager = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -307,7 +307,7 @@ public class FileDownloadHelper {
         JSONRPC.Ping action = new JSONRPC.Ping();
         action.execute(httpHostConnection, new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 // Ok, continue, iterate through the song list and launch a download for each
                 final DownloadManager downloadManager = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -354,7 +354,7 @@ public class FileDownloadHelper {
         Files.PrepareDownload action = new Files.PrepareDownload(mediaInfo.fileName);
         action.execute(httpHostConnection, new ApiCallback<FilesType.PrepareDownloadReturnType>() {
             @Override
-            public void onSucess(FilesType.PrepareDownloadReturnType result) {
+            public void onSuccess(FilesType.PrepareDownloadReturnType result) {
                 // If the file exists and it's to be overwritten, delete it,
                 // as the DownloadManager always creates a new name
                 if (fileHandlingMode == OVERWRITE_FILES) {

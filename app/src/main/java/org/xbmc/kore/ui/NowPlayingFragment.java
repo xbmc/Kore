@@ -242,7 +242,7 @@ public class NowPlayingFragment extends Fragment
      */
     private ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
         @Override
-        public void onSucess(Integer result) {
+        public void onSuccess(Integer result) {
             if (!isAdded()) return;
             UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result);
         }
@@ -309,7 +309,7 @@ public class NowPlayingFragment extends Fragment
         Application.SetMute action = new Application.SetMute();
         action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
             @Override
-            public void onSucess(Boolean result) {
+            public void onSuccess(Boolean result) {
                 if (!isAdded()) return;
                 if (result) {
                     Resources.Theme theme = getActivity().getTheme();
@@ -333,7 +333,7 @@ public class NowPlayingFragment extends Fragment
         Player.SetShuffle action = new Player.SetShuffle(currentActivePlayerId);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 if (!isAdded()) return;
                 // Force a refresh
                 hostConnectionObserver.forceRefreshResults();
@@ -349,7 +349,7 @@ public class NowPlayingFragment extends Fragment
         Player.SetRepeat action = new Player.SetRepeat(currentActivePlayerId, PlayerType.Repeat.CYCLE);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 if (!isAdded()) return;
                 hostConnectionObserver.forceRefreshResults();
             }
@@ -446,7 +446,7 @@ public class NowPlayingFragment extends Fragment
                         Input.ExecuteAction syncAudioAction = new Input.ExecuteAction(Input.ExecuteAction.AUDIODELAY);
                         syncAudioAction.execute(hostManager.getConnection(), new ApiCallback<String>() {
                             @Override
-                            public void onSucess(String result) {
+                            public void onSuccess(String result) {
                                 if (!isAdded()) return;
                                 // Notify enclosing activity to switch panels
                                 nowPlayingListener.SwitchToRemotePanel();
@@ -471,7 +471,7 @@ public class NowPlayingFragment extends Fragment
                         Application.GetProperties getProperties = new Application.GetProperties(Application.GetProperties.VERSION);
                         getProperties.execute(hostManager.getConnection(), new ApiCallback<ApplicationType.PropertyValue>() {
                             @Override
-                            public void onSucess(ApplicationType.PropertyValue result) {
+                            public void onSuccess(ApplicationType.PropertyValue result) {
                                 if (!isAdded()) return;
                                 // Ok, we've got a version, decide which method to call
                                 if (result.version.major < 13) {
@@ -495,7 +495,7 @@ public class NowPlayingFragment extends Fragment
                         Input.ExecuteAction syncSubtitleAction = new Input.ExecuteAction(Input.ExecuteAction.SUBTITLEDELAY);
                         syncSubtitleAction.execute(hostManager.getConnection(), new ApiCallback<String>() {
                             @Override
-                            public void onSucess(String result) {
+                            public void onSuccess(String result) {
                                 if (!isAdded()) return;
                                 // Notify enclosing activity to switch panels
                                 nowPlayingListener.SwitchToRemotePanel();
@@ -523,7 +523,7 @@ public class NowPlayingFragment extends Fragment
         Addons.ExecuteAddon action = new Addons.ExecuteAddon(Addons.ExecuteAddon.ADDON_SUBTITLES);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 if (!isAdded()) return;
                 // Notify enclosing activity to switch panels
                 nowPlayingListener.SwitchToRemotePanel();
@@ -554,7 +554,7 @@ public class NowPlayingFragment extends Fragment
         LogUtils.LOGD(TAG, "Activating subtitles window.");
         action.execute(httpHostConnection, new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 LogUtils.LOGD(TAG, "Sucessfully activated subtitles window.");
             }
 
@@ -974,7 +974,7 @@ public class NowPlayingFragment extends Fragment
             Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
             seekAction.execute(hostManager.getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
                 @Override
-                public void onSucess(PlayerType.SeekReturnType result) {
+                public void onSuccess(PlayerType.SeekReturnType result) {
                     // Ignore
                 }
 
