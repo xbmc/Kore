@@ -257,7 +257,7 @@ public class HostFragmentManualConfiguration extends Fragment {
         final JSONRPC.Ping httpPing = new JSONRPC.Ping();
         httpPing.execute(hostConnection, new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 LogUtils.LOGD(TAG, "Successfully connected to new host through HTTP.");
                 // Great, we managed to connect through HTTP, let's check it's version
                 chainCallCheckTcpConnection(hostConnection, hostInfo);
@@ -277,7 +277,7 @@ public class HostFragmentManualConfiguration extends Fragment {
         hostConnection.setProtocol(HostConnection.PROTOCOL_TCP);
         tcpPing.execute(hostConnection, new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 // Great, we managed to connect through HTTP and TCP
                 hostConnection.disconnect();
                 LogUtils.LOGD(TAG, "Successfully connected to new host through TCP.");

@@ -48,13 +48,15 @@ public class MusicListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_music_list, container, false);
         ButterKnife.inject(this, root);
-
+        // DanhDroid add file browsing
+        Bundle mediaFileListArgs = new Bundle();
+        mediaFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, MediaFileListFragment.MUSIC_MEDIA_TYPE);
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
                 .addTab(ArtistListFragment.class, getArguments(), R.string.artists, 1)
                 .addTab(AlbumListFragment.class, getArguments(), R.string.albums, 2)
                 .addTab(AudioGenresListFragment.class, getArguments(), R.string.genres, 3)
-                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 4);
-
+                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 4)
+                .addTab(MediaFileListFragment.class, mediaFileListArgs, R.string.media_file_list, 5);
         viewPager.setAdapter(tabsAdapter);
         pagerTabStrip.setViewPager(viewPager);
 

@@ -219,7 +219,7 @@ public class PlaylistFragment extends Fragment
 //     */
 //    private ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
 //        @Override
-//        public void onSucess(Integer result) {
+//        public void onSuccess(Integer result) {
 //            UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result);
 //        }
 //
@@ -379,7 +379,7 @@ public class PlaylistFragment extends Fragment
         Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
         getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
-            public void onSucess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
+            public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
                 if (!isAdded()) return;
                 getPlaylistItems(getActivePlayerResult, getItemResult, result);
             }
@@ -433,7 +433,7 @@ public class PlaylistFragment extends Fragment
             Playlist.GetItems getItems = new Playlist.GetItems(playlistId, propertiesToGet);
             getItems.execute(hostManager.getConnection(), new ApiCallback<List<ListType.ItemsAll>>() {
                 @Override
-                public void onSucess(List<ListType.ItemsAll> result) {
+                public void onSuccess(List<ListType.ItemsAll> result) {
                     if (!isAdded()) return;
                     // Ok, we've got all the info, save and display playlist
                     lastGetPlaylistItemsResult = result;

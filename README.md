@@ -1,3 +1,17 @@
+==========================================================================================================
+
+This is a fork of the official Kodi/XBMC remote for Android.
+
+I love this remote, but it does not have the movies/music directory browser that I use exclusive on my
+Raspberry Pi 2 OSMC box so I decided to add this feature into Kore. Hopefully, this feature will propagate
+back to the main source tree sometimes in the future.
+
+DanhDroid
+
+2015/03/14
+
+==========================================================================================================
+
 Kore - Kodi/XBMC remote for Android
 -----------------------------------
 

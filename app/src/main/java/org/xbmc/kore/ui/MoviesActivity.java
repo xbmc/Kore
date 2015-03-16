@@ -36,7 +36,7 @@ import org.xbmc.kore.utils.Utils;
  * All the information is presented by specific fragments
  */
 public class MoviesActivity extends BaseActivity
-        implements MovieListFragment.OnMovieSelectedListener {
+        implements MovieFragment.OnMovieSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(MoviesActivity.class);
 
     public static final String MOVIEID = "movie_id";

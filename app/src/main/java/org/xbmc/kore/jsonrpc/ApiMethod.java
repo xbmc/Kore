@@ -269,7 +269,7 @@ public abstract class ApiMethod<T> {
 
         return new ApiCallback<T>() {
             @Override
-            public void onSucess(T result) {
+            public void onSuccess(T result) {
             }
 
             @Override

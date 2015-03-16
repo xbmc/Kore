@@ -154,4 +154,20 @@ public class Utils {
 
         return bitmap;
     }
+
+    /**
+     * DanhDroid
+     * return the path of the parent based on path
+     * @param path
+     * @return path of the parent
+     */
+    public static String getParentDirectory(final String path) {
+        String p = path;
+        if (path.endsWith("/") || path.endsWith("\\")) {
+            p = path.substring(0, path.length() - 1);
+        }
+        p = p.substring(0, p.lastIndexOf("/"));
+        p = p +"/";
+        return p;
+    }
 }

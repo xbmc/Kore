@@ -404,7 +404,7 @@ public class LibrarySyncService extends Service {
                         new VideoLibrary.GetMovieDetails(movieId, properties);
                 action.execute(hostConnection, new ApiCallback<VideoType.DetailsMovie>() {
                     @Override
-                    public void onSucess(VideoType.DetailsMovie result) {
+                    public void onSuccess(VideoType.DetailsMovie result) {
                         deleteMovies(contentResolver, hostId, movieId);
                         List<VideoType.DetailsMovie> movies = new ArrayList<VideoType.DetailsMovie>(1);
                         movies.add(result);
@@ -438,7 +438,7 @@ public class LibrarySyncService extends Service {
             VideoLibrary.GetMovies action = new VideoLibrary.GetMovies(limits, properties);
             action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsMovie>>() {
                 @Override
-                public void onSucess(List<VideoType.DetailsMovie> result) {
+                public void onSuccess(List<VideoType.DetailsMovie> result) {
                     if (startIdx == 0) {
                         // First call, delete movies from DB
                         deleteMovies(contentResolver, hostId, -1);
@@ -603,7 +603,7 @@ public class LibrarySyncService extends Service {
                         new VideoLibrary.GetTVShowDetails(tvshowId, getTVShowsProperties);
                 action.execute(hostConnection, new ApiCallback<VideoType.DetailsTVShow>() {
                     @Override
-                    public void onSucess(VideoType.DetailsTVShow result) {
+                    public void onSuccess(VideoType.DetailsTVShow result) {
                         deleteTVShows(contentResolver, hostId, tvshowId);
                         List<VideoType.DetailsTVShow> tvShows = new ArrayList<>(1);
                         tvShows.add(result);
@@ -638,7 +638,7 @@ public class LibrarySyncService extends Service {
             VideoLibrary.GetTVShows action = new VideoLibrary.GetTVShows(limits, getTVShowsProperties);
             action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsTVShow>>() {
                 @Override
-                public void onSucess(List<VideoType.DetailsTVShow> result) {
+                public void onSuccess(List<VideoType.DetailsTVShow> result) {
                     allResults.addAll(result);
                     if (result.size() == LIMIT_SYNC_TVSHOWS) {
                         // Max limit returned, there may be some more movies
@@ -759,7 +759,7 @@ public class LibrarySyncService extends Service {
                 VideoLibrary.GetSeasons action = new VideoLibrary.GetSeasons(tvShow.tvshowid, seasonsProperties);
                 action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsSeason>>() {
                     @Override
-                    public void onSucess(List<VideoType.DetailsSeason> result) {
+                    public void onSuccess(List<VideoType.DetailsSeason> result) {
                         ContentValues seasonsValuesBatch[] = new ContentValues[result.size()];
                         int totalWatchedEpisodes = 0;
                         for (int i = 0; i < result.size(); i++) {
@@ -847,7 +847,7 @@ public class LibrarySyncService extends Service {
                 VideoLibrary.GetEpisodes action = new VideoLibrary.GetEpisodes(tvShow.tvshowid, getEpisodesProperties);
                 action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsEpisode>>() {
                     @Override
-                    public void onSucess(List<VideoType.DetailsEpisode> result) {
+                    public void onSuccess(List<VideoType.DetailsEpisode> result) {
                         ContentValues episodesValuesBatch[] = new ContentValues[result.size()];
                         for (int i = 0; i < result.size(); i++) {
                             VideoType.DetailsEpisode episode = result.get(i);
@@ -937,7 +937,7 @@ public class LibrarySyncService extends Service {
             AudioLibrary.GetArtists action = new AudioLibrary.GetArtists(limits, true, getArtistsProperties);
             action.execute(hostConnection, new ApiCallback<List<AudioType.DetailsArtist>>() {
                 @Override
-                public void onSucess(List<AudioType.DetailsArtist> result) {
+                public void onSuccess(List<AudioType.DetailsArtist> result) {
                     if (result == null) result = new ArrayList<>(0); // Safeguard
                     // First delete all music info
                     if (startIdx == 0) deleteMusicInfo(contentResolver, hostId);
@@ -1005,7 +1005,7 @@ public class LibrarySyncService extends Service {
             AudioLibrary.GetGenres action = new AudioLibrary.GetGenres(getGenresProperties);
             action.execute(hostConnection, new ApiCallback<List<LibraryType.DetailsGenre>>() {
                 @Override
-                public void onSucess(List<LibraryType.DetailsGenre> result) {
+                public void onSuccess(List<LibraryType.DetailsGenre> result) {
                     if (result == null) result = new ArrayList<>(0); // Safeguard
                     ContentValues genresValuesBatch[] = new ContentValues[result.size()];
 
@@ -1056,7 +1056,7 @@ public class LibrarySyncService extends Service {
             AudioLibrary.GetAlbums action = new AudioLibrary.GetAlbums(limits, getAlbumsProperties);
             action.execute(hostConnection, new ApiCallback<List<AudioType.DetailsAlbum>>() {
                 @Override
-                public void onSucess(List<AudioType.DetailsAlbum> result) {
+                public void onSuccess(List<AudioType.DetailsAlbum> result) {
                     if (result == null) result = new ArrayList<>(0); // Safeguard
                     // Insert the partial results
                     ContentValues albumValuesBatch[] = new ContentValues[result.size()];
@@ -1154,7 +1154,7 @@ public class LibrarySyncService extends Service {
             AudioLibrary.GetSongs action = new AudioLibrary.GetSongs(limits, getSongsProperties);
             action.execute(hostConnection, new ApiCallback<List<AudioType.DetailsSong>>() {
                 @Override
-                public void onSucess(List<AudioType.DetailsSong> result) {
+                public void onSuccess(List<AudioType.DetailsSong> result) {
                     if (result == null) result = new ArrayList<>(0); // Safeguard
                     // Save partial results to DB
                     ContentValues songValuesBatch[] = new ContentValues[result.size()];
@@ -1242,7 +1242,7 @@ public class LibrarySyncService extends Service {
             VideoLibrary.GetMusicVideos action = new VideoLibrary.GetMusicVideos(properties);
             action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsMusicVideo>>() {
                 @Override
-                public void onSucess(List<VideoType.DetailsMusicVideo> result) {
+                public void onSuccess(List<VideoType.DetailsMusicVideo> result) {
                     deleteMusicVideos(contentResolver, hostId);
                     insertMusicVideos(orchestrator, contentResolver, result);
                 }
