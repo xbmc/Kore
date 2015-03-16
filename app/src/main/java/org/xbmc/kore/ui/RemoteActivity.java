@@ -246,7 +246,7 @@ public class RemoteActivity extends BaseActivity
         VideoLibrary.Scan actionScanVideo = new VideoLibrary.Scan();
         actionScanVideo.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 // Great, now update the Audio library
                 AudioLibrary.Scan actionScanAudio = new AudioLibrary.Scan();
                 actionScanAudio.execute(hostManager.getConnection(), null, callbackHandler);

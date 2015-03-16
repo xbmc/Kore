@@ -172,7 +172,7 @@ public class HostListFragment extends Fragment {
         JSONRPC.Ping ping = new JSONRPC.Ping();
         ping.execute(hostConnection, new ApiCallback<String>() {
             @Override
-            public void onSucess(String result) {
+            public void onSuccess(String result) {
                 hostInfoRow.status = HostInfoRow.HOST_STATUS_AVAILABLE;
                 hostConnection.disconnect();
                 if (adapter != null)

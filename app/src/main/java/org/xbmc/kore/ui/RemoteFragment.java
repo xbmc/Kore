@@ -301,7 +301,7 @@ public class RemoteFragment extends Fragment
      */
     private ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
         @Override
-        public void onSucess(Integer result) {
+        public void onSuccess(Integer result) {
             if (!isAdded()) return;
             UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result);
         }

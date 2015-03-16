@@ -285,7 +285,7 @@ public class HostConnection {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        callback.onSucess(result);
+                        callback.onSuccess(result);
                     }
                 });
             }
@@ -328,7 +328,7 @@ public class HostConnection {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        callback.onSucess(result);
+                        callback.onSuccess(result);
                     }
                 });
             }
@@ -734,7 +734,7 @@ public class HostConnection {
                             methodCallInfo.handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    callback.onSucess(result);
+                                    callback.onSuccess(result);
                                 }
                             });
                         }

@@ -20,7 +20,7 @@ package org.xbmc.kore.jsonrpc;
  * When executing a method in JSON RPC, through
  * {@link HostConnection#execute(ApiMethod, ApiCallback, android.os.Handler)},
  * an object implementing this interface should be provided, to call after receiving the response
- * from XBMC. Depending on the response {@link ApiCallback#onSucess(Object)} or {@link
+ * from XBMC. Depending on the response {@link ApiCallback#onSuccess(Object)} or {@link
  * ApiCallback#onError(int, String)} will be called.
  * * @param <T> Result type
  */
@@ -30,7 +30,7 @@ public interface ApiCallback<T> {
      * Callback that will be called after a sucessfull reponse from the XBMC JSON RPC method
      * @param result The result that was obtained and sucessfully parsed from XBMC
      */
-	public abstract void onSucess(T result);
+	public abstract void onSuccess(T result);
 
     /**
      * Calllback that will be called when an error occurs executing the method on XBMC.

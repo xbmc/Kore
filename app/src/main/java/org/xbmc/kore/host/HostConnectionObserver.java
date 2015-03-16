@@ -156,7 +156,7 @@ public class HostConnectionObserver
             JSONRPC.Ping ping = new JSONRPC.Ping();
             ping.execute(connection, new ApiCallback<String>() {
                 @Override
-                public void onSucess(String result) {
+                public void onSuccess(String result) {
                     // Ok, we've got a ping, if we were in a error or uninitialized state, update
                     if ((lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
                         (lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR)) {
@@ -350,7 +350,7 @@ public class HostConnectionObserver
         Player.GetActivePlayers getActivePlayers = new Player.GetActivePlayers();
         getActivePlayers.execute(connection, new ApiCallback<ArrayList<PlayerType.GetActivePlayersReturnType>>() {
             @Override
-            public void onSucess(ArrayList<PlayerType.GetActivePlayersReturnType> result) {
+            public void onSuccess(ArrayList<PlayerType.GetActivePlayersReturnType> result) {
                 if (result.isEmpty()) {
                     LogUtils.LOGD(TAG, "Nothing is playing");
                     notifyNothingIsPlaying(playerEventsObservers);
@@ -390,7 +390,7 @@ public class HostConnectionObserver
         Player.GetProperties getProperties = new Player.GetProperties(getActivePlayersResult.playerid, propertiesToGet);
         getProperties.execute(connection, new ApiCallback<PlayerType.PropertyValue>() {
             @Override
-            public void onSucess(PlayerType.PropertyValue result) {
+            public void onSuccess(PlayerType.PropertyValue result) {
                 chainCallGetItem(getActivePlayersResult, result);
             }
 
@@ -452,7 +452,7 @@ public class HostConnectionObserver
         Player.GetItem getItem = new Player.GetItem(getActivePlayersResult.playerid, propertiesToGet);
         getItem.execute(connection, new ApiCallback<ListType.ItemsAll>() {
             @Override
-            public void onSucess(ListType.ItemsAll result) {
+            public void onSuccess(ListType.ItemsAll result) {
                 // Ok, now we got a result
                 notifySomethingIsPlaying(getActivePlayersResult, getPropertiesResult, result, playerEventsObservers);
             }
