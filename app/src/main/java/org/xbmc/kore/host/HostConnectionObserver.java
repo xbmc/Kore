@@ -385,6 +385,7 @@ public class HostConnectionObserver
                 PlayerType.PropertyName.CURRENTSUBTITLE,
                 PlayerType.PropertyName.AUDIOSTREAMS,
                 PlayerType.PropertyName.SUBTITLES,
+                PlayerType.PropertyName.PLAYLISTID,
         };
 
         Player.GetProperties getProperties = new Player.GetProperties(getActivePlayersResult.playerid, propertiesToGet);

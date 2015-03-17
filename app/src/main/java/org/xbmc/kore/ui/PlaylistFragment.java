@@ -205,7 +205,7 @@ public class PlaylistFragment extends Fragment
     private void forceRefreshPlaylist() {
         // If we are playing something, refresh playlist
         if ((lastCallResult == PLAYER_IS_PLAYING) || (lastCallResult == PLAYER_IS_PAUSED)) {
-            setupPlaylistInfo(lastGetActivePlayerResult, lastGetItemResult);
+            setupPlaylistInfo(lastGetActivePlayerResult, lastGetPropertiesResult, lastGetItemResult);
         }
     }
 
@@ -273,6 +273,7 @@ public class PlaylistFragment extends Fragment
     private int lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
     private ListType.ItemsAll lastGetItemResult = null;
     private PlayerType.GetActivePlayersReturnType lastGetActivePlayerResult;
+    private PlayerType.PropertyValue lastGetPropertiesResult;
     private List<ListType.ItemsAll> lastGetPlaylistItemsResult = null;
 
     /**
@@ -286,7 +287,7 @@ public class PlaylistFragment extends Fragment
                 (currentActivePlayerId != getActivePlayerResult.playerid) ||
                 (lastGetItemResult.id != getItemResult.id)) {
             // Check if something is different, and only if so, start the chain calls
-            setupPlaylistInfo(getActivePlayerResult, getItemResult);
+            setupPlaylistInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
             currentActivePlayerId = getActivePlayerResult.playerid;
         } else {
             // Hopefully nothing changed, so just use the last results
@@ -298,6 +299,7 @@ public class PlaylistFragment extends Fragment
         // Save results
         lastCallResult = PLAYER_IS_PLAYING;
         lastGetActivePlayerResult = getActivePlayerResult;
+        lastGetPropertiesResult = getPropertiesResult;
         lastGetItemResult = getItemResult;
     }
 
@@ -308,7 +310,7 @@ public class PlaylistFragment extends Fragment
                 (lastCallResult != PlayerEventsObserver.PLAYER_IS_PLAYING) ||
                 (currentActivePlayerId != getActivePlayerResult.playerid) ||
                 (lastGetItemResult.id != getItemResult.id)) {
-            setupPlaylistInfo(getActivePlayerResult, getItemResult);
+            setupPlaylistInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
             currentActivePlayerId = getActivePlayerResult.playerid;
         } else {
             // Hopefully nothing changed, so just use the last results
@@ -319,6 +321,7 @@ public class PlaylistFragment extends Fragment
 
         lastCallResult = PLAYER_IS_PAUSED;
         lastGetActivePlayerResult = getActivePlayerResult;
+        lastGetPropertiesResult = getPropertiesResult;
         lastGetItemResult = getItemResult;
     }
 
@@ -370,43 +373,14 @@ public class PlaylistFragment extends Fragment
 
     /**
      * Starts the call chain to display the playlist
-     * @param getActivePlayerResult Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetActivePlayers}
      */
     private void setupPlaylistInfo(final PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+                                   final PlayerType.PropertyValue getPropertiesResult,
                                    final ListType.ItemsAll getItemResult) {
 
-        // Call GetPlaylists followed by GetItems
-        Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
-        getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
-            @Override
-            public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
-                if (!isAdded()) return;
-                getPlaylistItems(getActivePlayerResult, getItemResult, result);
-            }
+        currentPlaylistId = getPropertiesResult.playlistid;
 
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                // Oops
-                displayErrorGettingPlaylistMessage(description);
-            }
-        }, callbackHandler);
-    }
-
-    private void getPlaylistItems(final PlayerType.GetActivePlayersReturnType getActivePlayersResult,
-                                  final ListType.ItemsAll getItemResult,
-                                  final ArrayList<PlaylistType.GetPlaylistsReturnType> getPlaylistsResult) {
-        // Get the playlist id for the type of media thats playing
-        int playlistId = -1;
-        for (int i = 0; i < getPlaylistsResult.size(); i++) {
-            if (getPlaylistsResult.get(i).type.equals(getActivePlayersResult.type)) {
-                playlistId = getPlaylistsResult.get(i).playlistid;
-                break;
-            }
-        }
-        currentPlaylistId = playlistId;
-
-        if (playlistId == -1) {
+        if (currentPlaylistId == -1) {
             // Couldn't find a playlist of the same type, just report empty
             displayEmptyPlaylistMessage();
         } else {
@@ -430,7 +404,7 @@ public class PlaylistFragment extends Fragment
                     ListType.FieldsAll.DURATION,
                     ListType.FieldsAll.RUNTIME,
             };
-            Playlist.GetItems getItems = new Playlist.GetItems(playlistId, propertiesToGet);
+            Playlist.GetItems getItems = new Playlist.GetItems(currentPlaylistId, propertiesToGet);
             getItems.execute(hostManager.getConnection(), new ApiCallback<List<ListType.ItemsAll>>() {
                 @Override
                 public void onSuccess(List<ListType.ItemsAll> result) {
@@ -488,7 +462,7 @@ public class PlaylistFragment extends Fragment
 
     /**
      * Displays an error on the info panel
-     * @param details
+     * @param details Details message
      */
     private void displayErrorGettingPlaylistMessage(String details) {
         switchToPanel(R.id.info_panel);
@@ -554,7 +528,7 @@ public class PlaylistFragment extends Fragment
          * Manually set the items on the adapter
          * Calls notifyDataSetChanged()
          *
-         * @param playlistItems
+         * @param playlistItems Items
          */
         public void setPlaylistItems(List<ListType.ItemsAll> playlistItems) {
             this.playlistItems = playlistItems;
