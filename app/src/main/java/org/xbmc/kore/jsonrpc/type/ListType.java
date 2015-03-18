@@ -430,5 +430,79 @@ public class ListType {
                 LOCKED, CHANNELNUMBER, STARTTIME, ENDTIME
         };
     }
+    public static class ItemFile extends ItemBase {
+        public static final String FILETYPE = "filetype";
+        public static final String DIRECTORY = "directory";
+        public final String filetype;
 
+        public ItemFile(JsonNode node) {
+            super(node);
+            filetype = JsonUtils.stringFromJsonNode(node, FILETYPE, null);
+        }
+    }
+
+    public static class Sort implements ApiParameter {
+        public static final String SORT_METHOD_NONE = "none";
+        public static final String SORT_METHOD_LABEL = "label";
+        public static final String SORT_METHOD_DATE = "date";
+        public static final String SORT_METHOD_SIZE = "size";
+        public static final String SORT_METHOD_FILE = "file";
+        public static final String SORT_METHOD_PATH = "path";
+        public static final String SORT_METHOD_DRIVETYPE = "drivetype";
+        public static final String SORT_METHOD_TYPE = "title";
+        public static final String SORT_METHOD_TRACK = "track";
+        public static final String SORT_METHOD_TIME = "time";
+        public static final String SORT_METHOD_ARTIST = "artist";
+        public static final String SORT_METHOD_ALBUM = "album";
+        public static final String SORT_METHOD_ALBUMTYPE = "albumtype";
+        public static final String SORT_METHOD_GENRE = "genre";
+        public static final String SORT_METHOD_COUNTRY = "country";
+        public static final String SORT_METHOD_YEAR = "year";
+        public static final String SORT_METHOD_RATING = "rating";
+        public static final String SORT_METHOD_VOTES = "votes";
+        public static final String SORT_METHOD_TOP250 = "top250";
+        public static final String SORT_METHOD_PROGRAMCOUNT = "programcount";
+        public static final String SORT_METHOD_PLAYLIST = "playlist";
+        public static final String SORT_METHOD_EPISODE = "episode";
+        public static final String SORT_METHOD_SEASON = "season";
+        public static final String SORT_METHOD_TOTALEPISODES = "totalepisodes";
+        public static final String SORT_METHOD_WATCHEDEPISODES = "watchedepisodes";
+        public static final String SORT_METHOD_TVSHOWSTATUS = "tvshowstatus";
+        public static final String SORT_METHOD_TVSHOWTITLE = "tvshowtitle";
+        public static final String SORT_METHOD_SORTTITLE = "sorttitle";
+        public static final String SORT_METHOD_PRODUCTIONCODE = "productioncode";
+        public static final String SORT_METHOD_MPAA = "mpaa";
+        public static final String SORT_METHOD_STUDIO = "studio";
+        public static final String SORT_METHOD_DATEADDED = "dateadded";
+        public static final String SORT_METHOD_LASTPLAYED = "lastplayed";
+        public static final String SORT_METHOD_PLAYCOUNT = "playcount";
+        public static final String SORT_METHOD_LISTENERS = "listeners";
+        public static final String SORT_METHOD_BITRATE = "bitrate";
+        public static final String SORT_METHOD_RANDOM = "random";
+
+        static final String METHOD = "method";
+        static final String IGNORE_ARTICLE = "ignorearticle";
+        static final String ORDER = "order";
+        static final String ASCENDING_ORDER = "ascending";
+        static final String DESCENDING_ORDER = "descending";
+
+        protected static final ObjectMapper objectMapper = new ObjectMapper();
+        public final boolean ignore_article;
+        public final boolean ascending_order;
+        public final String sort_method;
+
+        public Sort(String method, boolean ascending, boolean ignore_article) {
+            this.sort_method = method;
+            this.ascending_order = ascending;
+            this.ignore_article = ignore_article;
+        }
+
+        public JsonNode toJsonNode() {
+            final ObjectNode node = objectMapper.createObjectNode();
+            node.put(ORDER, ascending_order ? ASCENDING_ORDER : DESCENDING_ORDER);
+            node.put(IGNORE_ARTICLE, ignore_article);
+            node.put(METHOD, sort_method);
+            return node;
+        }
+    }
 }

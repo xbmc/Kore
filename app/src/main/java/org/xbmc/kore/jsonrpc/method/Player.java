@@ -458,19 +458,6 @@ public class Player {
         }
 
         /**
-         * Start playing with the specified filename
-         * @param media_uri location (full path name) of the media to open
-         */
-
-        public Open(String media_uri) {
-            super();
-            PlayerType.Item item = new PlayerType.Item(media_uri);
-            PlayerType.ResumeMode resumeMode = new PlayerType.ResumeMode(true);
-            addParameterToRequest("item", item.toJsonNode());
-            addParameterToRequest("options",resumeMode.toJsonNode());
-        }
-
-        /**
          * Select the active player
          * @param playlistId playlist ID to select
          */

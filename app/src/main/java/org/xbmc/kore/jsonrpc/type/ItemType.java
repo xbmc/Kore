@@ -37,4 +37,22 @@ public class ItemType {
                 label = null;
         }
     }
+
+    /**
+     * Item.Details.Source
+     */
+    public static class Source extends DetailsBase {
+        public static final String FILE = "file";
+
+        public final String file;
+
+        public Source(JsonNode node) {
+            super(node);
+            JsonNode fileNode = node.get(FILE);
+            if (fileNode != null)
+                file = fileNode.asText();
+            else
+                file = null;
+        }
+    }
 }

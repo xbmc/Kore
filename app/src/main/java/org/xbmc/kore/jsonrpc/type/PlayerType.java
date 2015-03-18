@@ -328,46 +328,4 @@ public class PlayerType {
 
         public final String CYCLE = "cycle";
     }
-
-    /**
-     * Player.Open type
-     */
-
-    public static final class ResumeMode implements ApiParameter {
-        private static final String RESUME_MODE = "resume";
-        public final boolean resume_mode;
-
-        protected static final ObjectMapper objectMapper = new ObjectMapper();
-        public ResumeMode(boolean resume) {
-            this.resume_mode = resume;
-        }
-        public JsonNode toJsonNode() {
-            final ObjectNode node = objectMapper.createObjectNode();
-            node.put(RESUME_MODE, resume_mode);
-            return node;
-        }
-    }
-
-    /**
-     * PlayerType.Item
-     */
-    public static class Item implements ApiParameter {
-
-        protected static final ObjectMapper objectMapper = new ObjectMapper();
-
-        public final String uri;
-        /**
-         * Constructors
-         */
-        public Item(String uri) {
-            this.uri = uri;
-        }
-
-        @Override
-        public JsonNode toJsonNode() {
-            final ObjectNode node = objectMapper.createObjectNode();
-            node.put("file", uri);
-            return node;
-        }
-    }
 }

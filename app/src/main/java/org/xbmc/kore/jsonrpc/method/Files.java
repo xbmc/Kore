@@ -21,7 +21,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.type.FilesType;
-import org.xbmc.kore.jsonrpc.type.SortType;
+import org.xbmc.kore.jsonrpc.type.ItemType;
+import org.xbmc.kore.jsonrpc.type.ListType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,17 +55,13 @@ public class Files {
             return  new FilesType.PrepareDownloadReturnType(jsonObject.get(RESULT_NODE));
         }
     }
-
     /**
      * Files.GetSources command
      */
-    public static final class GetSources extends ApiMethod<List<FilesType.FileLocation>> {
+    public static final class GetSources extends ApiMethod<List<ItemType.Source>> {
         public final static String METHOD_NAME = "Files.GetSources";
-        public final static String LIST_NODE = "sources";
+        public final static String SOURCE_NODE = "sources";
 
-        /**
-         * Provides a way to download a given file (e.g. providing an URL to the real file location)
-         */
         public GetSources(String mediaType) {
             super();
             addParameterToRequest("media", mediaType);
@@ -74,17 +71,17 @@ public class Files {
         public String getMethodName() { return METHOD_NAME; }
 
         @Override
-        public List<FilesType.FileLocation> resultFromJson(ObjectNode jsonObject) throws ApiException {
-             JsonNode resultNode = jsonObject.get(RESULT_NODE);
-            ArrayNode items = resultNode.has(LIST_NODE) ?
-                    (ArrayNode)resultNode.get(LIST_NODE) : null;
+        public List<ItemType.Source> resultFromJson(ObjectNode jsonObject) throws ApiException {
+            JsonNode resultNode = jsonObject.get(RESULT_NODE);
+            ArrayNode items = resultNode.has(SOURCE_NODE) ?
+                    (ArrayNode) resultNode.get(SOURCE_NODE) : null;
             if (items == null) {
-                return new ArrayList<FilesType.FileLocation>(0);
+                return new ArrayList<ItemType.Source>(0);
             }
-            ArrayList<FilesType.FileLocation> result = new ArrayList<FilesType.FileLocation>(items.size());
+            ArrayList<ItemType.Source> result = new ArrayList<ItemType.Source>(items.size());
 
             for (JsonNode item : items) {
-                result.add(new FilesType.FileLocation(item));
+                result.add(new ItemType.Source(item));
             }
             return result;
         }
@@ -93,17 +90,14 @@ public class Files {
     /**
      * Files.GetDirectory command
      */
-    public static final class GetDirectory extends ApiMethod<List<FilesType.FileLocation>> {
+    public static final class GetDirectory extends ApiMethod<List<ListType.ItemFile>> {
         public final static String METHOD_NAME = "Files.GetDirectory";
         public final static String SORT_NODE = "sort";
-        public final static String LIST_NODE = "files";
+        public final static String FILE_NODE = "files";
 
-        /**
-         * Provides a way to download a given file (e.g. providing an URL to the real file location)
-         */
-        public GetDirectory(String path, SortType.Sort sort_params) {
+        public GetDirectory(String path, ListType.Sort sort_params) {
             super();
-            addParameterToRequest("media", LIST_NODE);
+            addParameterToRequest("media", FILE_NODE);
             addParameterToRequest("directory", path);
             addParameterToRequest(SORT_NODE, sort_params.toJsonNode());
         }
@@ -112,20 +106,19 @@ public class Files {
         public String getMethodName() { return METHOD_NAME; }
 
         @Override
-        public List<FilesType.FileLocation> resultFromJson(ObjectNode jsonObject) throws ApiException {
+        public List<ListType.ItemFile> resultFromJson(ObjectNode jsonObject) throws ApiException {
 
             JsonNode resultNode = jsonObject.get(RESULT_NODE);
-            ArrayNode items = resultNode.has(LIST_NODE) ?
-                    (ArrayNode)resultNode.get(LIST_NODE) : null;
+            ArrayNode items = resultNode.has(FILE_NODE) ?
+                    (ArrayNode) resultNode.get(FILE_NODE) : null;
             if (items == null) {
-                return new ArrayList<FilesType.FileLocation>(0);
+                return new ArrayList<ListType.ItemFile>(0);
             }
-            ArrayList<FilesType.FileLocation> result = new ArrayList<FilesType.FileLocation>(items.size());
-
+            ArrayList<ListType.ItemFile> result = new ArrayList<ListType.ItemFile>(items.size());
             for (JsonNode item : items) {
-                result.add(new FilesType.FileLocation(item));
+                result.add(new ListType.ItemFile(item));
             }
             return result;
         }
     }
-}
+ }
