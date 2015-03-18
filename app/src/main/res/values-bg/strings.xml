@@ -38,9 +38,9 @@
     <string name="add_xbmc">Добавяне на медиен център</string>
 
     <string name="xbmc_quit">Медийният център се затваря.</string>
-    <string name="wol_sent">До медийният център е изпратен сигнал за събуждане.</string>
+    <string name="wol_sent">До медийния център е изпратен сигнал за събуждане.</string>
 
-    <string name="power">Изключи…</string>
+    <string name="power">Изключи...</string>
     <string name="quit">Изход</string>
     <string name="suspend">Суспендиране</string>
     <string name="shutdown">Изключване</string>
@@ -138,6 +138,7 @@
     <string name="select">Избор</string>
     <string name="info">Информация</string>
     <string name="codec_info">Кодек</string>
+    <string name="context">Контекст</string>
     <string name="osd">Меню</string>
     <string name="back">Назад</string>
 
@@ -167,7 +168,7 @@
     <string name="remote">Дистанционно</string>
     <string name="playlist">Плейлист</string>
 
-    <string name="season_episode_abbrev">s%1$02de%2$02d</string>
+    <string name="season_episode_abbrev">с%1$02е%2$02d</string>
     <string name="season_episode">Сезон %1$02d | Епизод %2$02d</string>
     <string name="season_number">Сезон %1$02d</string>
     <string name="episode_number">%1$d</string>
@@ -176,7 +177,7 @@
     <string name="max_rating_video">/10</string>
     <string name="max_rating_music">/5</string>
 
-    <string name="fanart">Фанарт</string>
+    <string name="fanart">Фен-арт</string>
     <string name="poster">Постер</string>
     <string name="thumbnail">Миниатюра</string>
 
@@ -256,7 +257,11 @@
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Без гледаните</string>
-
+    <string name="sort_order">Сортирай по</string>
+    <string name="sort_by_name">име</string>
+    <string name="sort_by_date_added">дата на добавяне</string>
+    <string name="ignore_prefixes">Игнорирай представките</string>
+	
     <!-- Preferences strings -->
     <string name="theme">Тема</string>
     <string name="theme_night">Нощ</string>
@@ -266,7 +271,8 @@
     <string name="theme_solarized_dark">Соларизирана (Тъмна)</string>
 
     <string name="switch_to_remote">Към дистанционното след стартиране</string>
-
+    <string name="show_notification">Показвай известия и при възпроизвеждане</string>
+    <string name="use_hardware_volume_keys">Контрол на звука с клавишите за сила за звука</string>
 
     <string name="about">За приложението</string>
     <string name="about_desc"><![CDATA[
