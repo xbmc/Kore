@@ -38,6 +38,7 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
+import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
@@ -211,8 +212,8 @@ public class RemoteActivity extends BaseActivity
                 dialog.show(getSupportFragmentManager(), null);
                 return true;
             case R.id.toggle_fullscreen:
-//                GUI.SetFullscreen actionSetFullscreen = new GUI.SetFullscreen();
-                Input.ExecuteAction actionSetFullscreen = new Input.ExecuteAction(Input.ExecuteAction.TOGGLEFULLSCREEN);
+                GUI.SetFullscreen actionSetFullscreen = new GUI.SetFullscreen();
+//                Input.ExecuteAction actionSetFullscreen = new Input.ExecuteAction(Input.ExecuteAction.TOGGLEFULLSCREEN);
                 actionSetFullscreen.execute(hostManager.getConnection(), null, null);
                 return true;
             case R.id.clean_video_library:
