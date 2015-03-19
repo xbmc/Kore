@@ -43,6 +43,7 @@
 	<attr name="iconPicture" format="reference" />
     <attr name="iconHome" format="reference" />
     <attr name="iconAddons" format="reference" />
+    <attr name="iconFiles" format="reference" />
 
     <attr name="iconNew" format="reference" />
     <attr name="iconNewToolbar" format="reference" />

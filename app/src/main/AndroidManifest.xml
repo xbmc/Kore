@@ -31,6 +31,7 @@
         <activity android:name="org.xbmc.kore.ui.MusicActivity"/>
         <activity android:name="org.xbmc.kore.ui.AddonsActivity"/>
         <activity android:name="org.xbmc.kore.ui.SettingsActivity"/>
+        <activity android:name="org.xbmc.kore.ui.FileActivity"/>
 
         <!-- Providers -->
         <provider

@@ -33,6 +33,9 @@
 	<string name="music">Music</string>
 	<string name="pictures">Pictures</string>
     <string name="addons">Addons</string>
+    <string name="files">Files</string>
+    <string name="video">Video</string>
+    <string name="file_browser">File Browser</string>
 
     <string name="no_xbmc_configured">No media center configured</string>
     <string name="add_xbmc">Add Media Center</string>
@@ -159,6 +162,9 @@
     <string name="edit_xbmc">Edit media center</string>
     <string name="delete_xbmc">Delete media center</string>
     <string name="delete_xbmc_confirm">Are you sure you want to delete this media center?</string>
+    <string name="queue_file">Queue</string>
+    <string name="play_file">Play</string>
+    <string name="play_from_here">Play From Here</string>
 
     <string name="connecting_to_xbmc">Connecting…</string>
     <string name="unable_to_connect_to_xbmc">Unable to connect to media center</string>
@@ -191,6 +197,14 @@
     <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\nError message: %1$s.</string>
     <string name="error_getting_addon_info">Couldn\'t get Addon information.\nError message:
         %1$s.</string>
+   <string name="error_getting_source_info">Couldn\'t browse files.\nError message:
+        %1$s.</string>
+    <string name="error_play_media_file">Couldn\'t play media file.\nError message:
+        %1$s.</string>
+    <string name="error_queue_media_file">Couldn\'t queue media file.\nError message:
+        %1$s.</string>
+     <string name="error_get_active_player">Couldn\'t get active player.\nError message:
+        %1$s.</string>
 
     <string name="directors">Directors:</string>
     <string name="studio">Studio:</string>
@@ -203,6 +217,7 @@
     <string name="error_message">Error message: %1$s</string>
     <string name="playlist_empty">Playlist empty</string>
     <string name="clear_playlist">Clear playlist</string>
+    <string name="source_empty">Media source empty</string>
 
     <string name="no_movies_found_refresh">No movies found\n\nSwipe down to refresh</string>
     <string name="no_tvshows_found_refresh">No TV Shows found\n\nSwipe down to refresh</string>
