@@ -430,17 +430,39 @@ public class ListType {
                 LOCKED, CHANNELNUMBER, STARTTIME, ENDTIME
         };
     }
+
+    /**
+     * List.Item.File
+     */
     public static class ItemFile extends ItemBase {
+        public static final String FILE = "file";
         public static final String FILETYPE = "filetype";
-        public static final String DIRECTORY = "directory";
+        public static final String LASTMODIFIED = "lastmodified";
+        public static final String MIMETYPE = "mimetype";
+        public static final String SIZE = "size";
+
+        public static final String FILETYPE_FILE = "file";
+        public static final String FILETYPE_DIRECTORY = "directory";
+
+        public final String file;
         public final String filetype;
+        public final String lastmodified;
+        public final String mimetype;
+        public final int size;
 
         public ItemFile(JsonNode node) {
             super(node);
+            file = JsonUtils.stringFromJsonNode(node, FILE, null);
             filetype = JsonUtils.stringFromJsonNode(node, FILETYPE, null);
+            lastmodified = JsonUtils.stringFromJsonNode(node, LASTMODIFIED, null);
+            mimetype = JsonUtils.stringFromJsonNode(node, MIMETYPE, null);
+            size = JsonUtils.intFromJsonNode(node, SIZE, 0);
         }
     }
 
+    /**
+     * List.Sort
+     */
     public static class Sort implements ApiParameter {
         public static final String SORT_METHOD_NONE = "none";
         public static final String SORT_METHOD_LABEL = "label";
