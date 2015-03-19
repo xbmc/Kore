@@ -55,6 +55,21 @@ public class Files {
             return  new FilesType.PrepareDownloadReturnType(jsonObject.get(RESULT_NODE));
         }
     }
+
+    /**
+     * Enums for File.Media
+     */
+    public interface Media {
+        public final static String VIDEO = "video";
+        public final static String MUSIC = "music";
+        public final static String PICTURES = "pictures";
+        public final static String FILES =  "files";
+        public final static String PROGRAMS =  "programs";
+        public final static String[] allValues = new String[] {
+                VIDEO, MUSIC, PICTURES, FILES, PROGRAMS
+        };
+    }
+
     /**
      * Files.GetSources command
      */
@@ -62,6 +77,11 @@ public class Files {
         public final static String METHOD_NAME = "Files.GetSources";
         public final static String SOURCE_NODE = "sources";
 
+        /**
+         *
+         * @param mediaType  See {@link Files.Media} for a
+         *                   list of accepted values
+         */
         public GetSources(String mediaType) {
             super();
             addParameterToRequest("media", mediaType);
@@ -95,9 +115,13 @@ public class Files {
         public final static String SORT_NODE = "sort";
         public final static String FILE_NODE = "files";
 
+        /**
+         * Get the directory content
+         * @param path          full path name
+         * @param sort_params   sorting criteria
+         */
         public GetDirectory(String path, ListType.Sort sort_params) {
             super();
-            addParameterToRequest("media", FILE_NODE);
             addParameterToRequest("directory", path);
             addParameterToRequest(SORT_NODE, sort_params.toJsonNode());
         }
