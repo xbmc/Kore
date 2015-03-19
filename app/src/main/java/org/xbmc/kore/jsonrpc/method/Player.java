@@ -457,6 +457,17 @@ public class Player {
             addParameterToRequest("item", playlistItem.toJsonNode());
         }
 
+        /**
+         * Select the active player
+         * @param playlistId playlist ID to select
+         */
+        public Open(int playlistId) {
+            super();
+            final ObjectNode item = objectMapper.createObjectNode();
+            item.put("playlistid", playlistId);
+            addParameterToRequest("item", item);
+        }
+
         @Override
         public String getMethodName() { return METHOD_NAME; }
 

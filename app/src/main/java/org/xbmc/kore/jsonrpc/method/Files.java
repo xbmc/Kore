@@ -15,10 +15,17 @@
  */
 package org.xbmc.kore.jsonrpc.method;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.type.FilesType;
+import org.xbmc.kore.jsonrpc.type.ItemType;
+import org.xbmc.kore.jsonrpc.type.ListType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * All JSON RPC methods in Files.*
@@ -48,4 +55,94 @@ public class Files {
             return  new FilesType.PrepareDownloadReturnType(jsonObject.get(RESULT_NODE));
         }
     }
-}
+
+    /**
+     * Enums for File.Media
+     */
+    public interface Media {
+        public final static String VIDEO = "video";
+        public final static String MUSIC = "music";
+        public final static String PICTURES = "pictures";
+        public final static String FILES =  "files";
+        public final static String PROGRAMS =  "programs";
+        public final static String[] allValues = new String[] {
+                VIDEO, MUSIC, PICTURES, FILES, PROGRAMS
+        };
+    }
+
+    /**
+     * Files.GetSources command
+     */
+    public static final class GetSources extends ApiMethod<List<ItemType.Source>> {
+        public final static String METHOD_NAME = "Files.GetSources";
+        public final static String SOURCE_NODE = "sources";
+
+        /**
+         *
+         * @param mediaType  See {@link Files.Media} for a
+         *                   list of accepted values
+         */
+        public GetSources(String mediaType) {
+            super();
+            addParameterToRequest("media", mediaType);
+        }
+
+        @Override
+        public String getMethodName() { return METHOD_NAME; }
+
+        @Override
+        public List<ItemType.Source> resultFromJson(ObjectNode jsonObject) throws ApiException {
+            JsonNode resultNode = jsonObject.get(RESULT_NODE);
+            ArrayNode items = resultNode.has(SOURCE_NODE) ?
+                    (ArrayNode) resultNode.get(SOURCE_NODE) : null;
+            if (items == null) {
+                return new ArrayList<ItemType.Source>(0);
+            }
+            ArrayList<ItemType.Source> result = new ArrayList<ItemType.Source>(items.size());
+
+            for (JsonNode item : items) {
+                result.add(new ItemType.Source(item));
+            }
+            return result;
+        }
+    }
+
+    /**
+     * Files.GetDirectory command
+     */
+    public static final class GetDirectory extends ApiMethod<List<ListType.ItemFile>> {
+        public final static String METHOD_NAME = "Files.GetDirectory";
+        public final static String SORT_NODE = "sort";
+        public final static String FILE_NODE = "files";
+
+        /**
+         * Get the directory content
+         * @param path          full path name
+         * @param sort_params   sorting criteria
+         */
+        public GetDirectory(String path, ListType.Sort sort_params) {
+            super();
+            addParameterToRequest("directory", path);
+            addParameterToRequest(SORT_NODE, sort_params.toJsonNode());
+        }
+
+        @Override
+        public String getMethodName() { return METHOD_NAME; }
+
+        @Override
+        public List<ListType.ItemFile> resultFromJson(ObjectNode jsonObject) throws ApiException {
+
+            JsonNode resultNode = jsonObject.get(RESULT_NODE);
+            ArrayNode items = resultNode.has(FILE_NODE) ?
+                    (ArrayNode) resultNode.get(FILE_NODE) : null;
+            if (items == null) {
+                return new ArrayList<ListType.ItemFile>(0);
+            }
+            ArrayList<ListType.ItemFile> result = new ArrayList<ListType.ItemFile>(items.size());
+            for (JsonNode item : items) {
+                result.add(new ListType.ItemFile(item));
+            }
+            return result;
+        }
+    }
+ }
