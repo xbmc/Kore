@@ -300,6 +300,12 @@ public class AlbumDetailsFragment extends Fragment
             return;
         }
 
+        DialogInterface.OnClickListener noopClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) { }
+                };
+
         // Check if the directory exists and whether to overwrite it
         File file = new File(songInfoList.get(0).getAbsoluteDirectoryPath());
         if (file.exists()) {
@@ -324,18 +330,23 @@ public class AlbumDetailsFragment extends Fragment
                                             callbackHandler);
                                 }
                             })
-                    .setNegativeButton(android.R.string.cancel,
+                    .setNegativeButton(android.R.string.cancel, noopClickListener)
+                    .show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.download)
+                    .setMessage(R.string.confirm_album_download)
+                    .setPositiveButton(android.R.string.ok,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // Nothing to do
+                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                            songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                            callbackHandler);
                                 }
                             })
+                    .setNegativeButton(android.R.string.cancel, noopClickListener)
                     .show();
-        } else {
-            FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                    songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                    callbackHandler);
         }
     }
 

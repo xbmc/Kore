@@ -460,6 +460,12 @@ public class MovieDetailsFragment extends Fragment
             return;
         }
 
+        DialogInterface.OnClickListener noopClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) { }
+                };
+
         // Check if the directory exists and whether to overwrite it
         File file = new File(movieDownloadInfo.getAbsoluteFilePath());
         if (file.exists()) {
@@ -484,18 +490,24 @@ public class MovieDetailsFragment extends Fragment
                                            callbackHandler);
                                }
                            })
-                   .setNegativeButton(android.R.string.cancel,
-                           new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   // Nothing to do
-                               }
-                           })
+                   .setNegativeButton(android.R.string.cancel, noopClickListener)
                    .show();
         } else {
-            FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                    movieDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                    callbackHandler);
+            // Confirm that the user really wants to download the file
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.download)
+                    .setMessage(R.string.confirm_movie_download)
+                    .setPositiveButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                            movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                            callbackHandler);
+                                }
+                            })
+                    .setNegativeButton(android.R.string.cancel, noopClickListener)
+                    .show();
         }
     }
 

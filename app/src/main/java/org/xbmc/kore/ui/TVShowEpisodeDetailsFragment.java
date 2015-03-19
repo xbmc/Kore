@@ -444,6 +444,12 @@ public class TVShowEpisodeDetailsFragment extends Fragment
             return;
         }
 
+        DialogInterface.OnClickListener noopClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) { }
+                };
+
         // Check if the directory exists and whether to overwrite it
         File file = new File(tvshowDownloadInfo.getAbsoluteFilePath());
         if (file.exists()) {
@@ -468,18 +474,24 @@ public class TVShowEpisodeDetailsFragment extends Fragment
                                            callbackHandler);
                                }
                            })
-                   .setNegativeButton(android.R.string.cancel,
-                           new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   // Nothing to do
-                               }
-                           })
+                   .setNegativeButton(android.R.string.cancel, noopClickListener)
                    .show();
         } else {
-            FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                    tvshowDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                    callbackHandler);
+            // Confirm that the user really wants to download the file
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.download)
+                    .setMessage(R.string.confirm_episode_download)
+                    .setPositiveButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                            tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                            callbackHandler);
+                                }
+                            })
+                    .setNegativeButton(android.R.string.cancel, noopClickListener)
+                    .show();
         }
     }
 
