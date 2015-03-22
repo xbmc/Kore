@@ -442,7 +442,7 @@ public class ListType {
         public static final String SIZE = "size";
 
         public static final String FILETYPE_FILE = "file";
-        public static final String DIRECTORY = "directory";
+        public static final String FILETYPE_DIRECTORY = "directory";
 
         public final String file;
         public final String filetype;

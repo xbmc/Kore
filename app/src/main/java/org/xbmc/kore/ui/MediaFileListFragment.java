@@ -56,7 +56,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
- * Created by danhdroid on 3/14/15.
+ * Presents a list of files of different types (Video/Music)
  */
 public class MediaFileListFragment extends Fragment {
 
@@ -69,11 +69,13 @@ public class MediaFileListFragment extends Fragment {
      * Handler on which to post RPC callbacks
      */
     private Handler callbackHandler = new Handler();
+
     String mediaType = Files.Media.MUSIC;
     String parentDirectory = null;
     int playlistId = MUSIC_PLAYLISTID;             // this is the ID of the music player
     private MediaFileListAdapter adapter = null;
     boolean browseRootAlready = false;
+
     ArrayList<FileLocation> rootFileLocation = new ArrayList<FileLocation>();
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
 
@@ -99,7 +101,7 @@ public class MediaFileListFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            mediaType = getArguments().getString(MEDIA_TYPE, Files.Media.MUSIC);
+            mediaType = args.getString(MEDIA_TYPE, Files.Media.MUSIC);
             if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
                 playlistId = VIDEO_PLAYLISTID;
             }
@@ -122,8 +124,7 @@ public class MediaFileListFragment extends Fragment {
                         else {
                             browsingSourceForFolders();
                         }
-                    }
-                    else {
+                    } else {
                         browseFolderForFiles(f);
                     }
                 }
@@ -168,13 +169,14 @@ public class MediaFileListFragment extends Fragment {
                     fl.setRootDir(true);
                     rootFileLocation.add(fl);
                 }
+
                 browseRootAlready = true;
                 adapter.setFilelistItems(rootFileLocation);
                 if (rootFileLocation.size() == 0) {
                     displayEmptyListMessage();
-                }
-                else
+                } else {
                     switchToPanel(R.id.playlist);
+                }
             }
 
             @Override
@@ -207,23 +209,22 @@ public class MediaFileListFragment extends Fragment {
             if (rootPath != null) {
                 parentDirectory = rootPath;
                 item.setRootDir(true);
-            }
-            else
+            } else {
                 parentDirectory = getParentDirectory(item.file);
+            }
         }
         Files.GetDirectory action = new Files.GetDirectory(item.file, new ListType.Sort(ListType.Sort.SORT_METHOD_LABEL, true, true));
         action.execute(hostManager.getConnection(), new ApiCallback<List<ListType.ItemFile>>() {
             @Override
             public void onSuccess(List<ListType.ItemFile> result) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
                 // insert the parent directory as the first item in the list
                 FileLocation fl = new FileLocation("..", parentDirectory, true);
                 fl.setRootDir(item.isRootDir());
                 ArrayList<FileLocation> flList = new ArrayList<FileLocation>();
                 flList.add(0, fl);
                 for (ListType.ItemFile i : result) {
-                    flList.add(new FileLocation(i.label, i.file, i.filetype.equalsIgnoreCase(ListType.ItemFile.DIRECTORY)));
+                    flList.add(new FileLocation(i.label, i.file, i.filetype.equalsIgnoreCase(ListType.ItemFile.FILETYPE_DIRECTORY)));
                 }
                 adapter.setFilelistItems(flList);
                 browseRootAlready = false;
@@ -231,8 +232,7 @@ public class MediaFileListFragment extends Fragment {
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_getting_source_info), description),
                         Toast.LENGTH_SHORT).show();
@@ -248,8 +248,8 @@ public class MediaFileListFragment extends Fragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result ) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
+
                 while (mediaQueueFileLocation.size() > 0) {
                     queueMediaFile(mediaQueueFileLocation.poll());
                 }
@@ -257,8 +257,8 @@ public class MediaFileListFragment extends Fragment {
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
+
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_play_media_file), description),
                         Toast.LENGTH_SHORT).show();
@@ -274,15 +274,15 @@ public class MediaFileListFragment extends Fragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result ) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
+
                 startPlayingIfNoActivePlayers();
             }
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
+
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_queue_media_file), description),
                         Toast.LENGTH_SHORT).show();
@@ -296,8 +296,8 @@ public class MediaFileListFragment extends Fragment {
         action.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlayerType.GetActivePlayersReturnType>>() {
             @Override
             public void onSuccess(ArrayList<PlayerType.GetActivePlayersReturnType> result ) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
+
                 // find out if any player is running. If it is not, start one
                 if (result.size() == 0) {
                     startPlaying(playlistId);
@@ -306,8 +306,8 @@ public class MediaFileListFragment extends Fragment {
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
+
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_get_active_player), description),
                         Toast.LENGTH_SHORT).show();
@@ -321,14 +321,13 @@ public class MediaFileListFragment extends Fragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result ) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
             }
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!isAdded())
-                    return;
+                if (!isAdded()) return;
+
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_play_media_file), description),
                         Toast.LENGTH_SHORT).show();
@@ -347,10 +346,12 @@ public class MediaFileListFragment extends Fragment {
         if (path.contains("\\")) {
             pathSymbol = "\\";          // windows style
         }
+
         // if path ends with /, remove it before removing the directory name
         if (path.endsWith(pathSymbol)) {
             p = path.substring(0, path.length() - 1);
         }
+
         p = p.substring(0, p.lastIndexOf(pathSymbol));
         p = p + pathSymbol;            // add it back to make it look like path
         return p;
@@ -408,7 +409,6 @@ public class MediaFileListFragment extends Fragment {
                                         playMediaFile(loc.file);
                                         return true;
                                     case R.id.action_play_from_this_item:
-                                    {
                                         mediaQueueFileLocation.clear();
                                         FileLocation fl;
                                         for (int i = position + 1; i < fileLocationItems.size(); i++) {
@@ -421,8 +421,7 @@ public class MediaFileListFragment extends Fragment {
                                         // the selected on last so the it does not lose its place in the queue
                                         mediaQueueFileLocation.add(loc);
                                         playMediaFile(loc.file);
-                                    }
-                                    return true;
+                                        return true;
                                 }
                                 return false;
                             }
@@ -450,12 +449,12 @@ public class MediaFileListFragment extends Fragment {
             this.fileLocationItems = items;
             notifyDataSetChanged();
         }
+
         @Override
         public int getCount() {
             if (fileLocationItems == null) {
                 return 0;
-            }
-            else {
+            } else {
                 return fileLocationItems.size();
             }
         }
@@ -464,8 +463,7 @@ public class MediaFileListFragment extends Fragment {
         public FileLocation getItem(int position) {
             if (fileLocationItems == null) {
                 return null;
-            }
-            else {
+            } else {
                 return fileLocationItems.get(position);
             }
         }
@@ -505,8 +503,7 @@ public class MediaFileListFragment extends Fragment {
             if (fileLocation.isDirectory) {
                 viewHolder.title.setText(fileLocation.label);
                 viewHolder.detail.setText("");
-            }
-            else {
+            } else {
                 viewHolder.title.setText("");
                 viewHolder.detail.setText(fileLocation.label);
             }
@@ -525,8 +522,7 @@ public class MediaFileListFragment extends Fragment {
             // For the popup menu
             if (fileLocation.isDirectory) {
                 viewHolder.contextMenu.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 viewHolder.contextMenu.setVisibility(View.VISIBLE);
                 viewHolder.contextMenu.setTag(position);
                 viewHolder.contextMenu.setOnClickListener(itemMenuClickListener);
