@@ -65,8 +65,9 @@ public class NavigationDrawerFragment extends Fragment {
             ACTIVITY_MOVIES = 2,
             ACTIVITY_TVSHOWS = 3,
             ACTIVITY_MUSIC = 4,
-            ACTIVITY_ADDONS = 5,
-            ACTIVITY_SETTINGS = 6;
+            ACTIVITY_FILES = 5,
+            ACTIVITY_ADDONS = 6,
+            ACTIVITY_SETTINGS = 7;
 
     // The current selected item id (based on the activity)
     private static int selectedItemId = -1;
@@ -125,6 +126,7 @@ public class NavigationDrawerFragment extends Fragment {
                 R.attr.iconMovies,
                 R.attr.iconTvShows,
                 R.attr.iconMusic,
+                R.attr.iconFiles,
                 R.attr.iconAddons,
                 R.attr.iconSettings,
         });
@@ -147,6 +149,9 @@ public class NavigationDrawerFragment extends Fragment {
                 new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MUSIC,
                         getString(R.string.music),
                         styledAttributes.getResourceId(ACTIVITY_MUSIC, 0)),
+                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,
+                        getString(R.string.files),
+                        styledAttributes.getResourceId(ACTIVITY_FILES, 0)),
                 new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_ADDONS,
                         getString(R.string.addons),
                         styledAttributes.getResourceId(ACTIVITY_ADDONS, 0)),
@@ -269,6 +274,8 @@ public class NavigationDrawerFragment extends Fragment {
             return ACTIVITY_TVSHOWS;
         else if (activity instanceof MusicActivity)
             return ACTIVITY_MUSIC;
+        else if (activity instanceof FileActivity)
+            return ACTIVITY_FILES;
         else if (activity instanceof AddonsActivity)
             return ACTIVITY_ADDONS;
         else if (activity instanceof SettingsActivity)
@@ -287,6 +294,7 @@ public class NavigationDrawerFragment extends Fragment {
         activityItemIdMap.put(ACTIVITY_REMOTE, RemoteActivity.class);
         activityItemIdMap.put(ACTIVITY_MOVIES, MoviesActivity.class);
         activityItemIdMap.put(ACTIVITY_MUSIC, MusicActivity.class);
+        activityItemIdMap.put(ACTIVITY_FILES, FileActivity.class);
         activityItemIdMap.put(ACTIVITY_TVSHOWS, TVShowsActivity.class);
         activityItemIdMap.put(ACTIVITY_ADDONS, AddonsActivity.class);
         activityItemIdMap.put(ACTIVITY_SETTINGS, SettingsActivity.class);
