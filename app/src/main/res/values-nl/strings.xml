@@ -235,13 +235,13 @@
         Als je hulp nodig hebt kijk dan bij <b><a href="http://syncedsynapse.com/kore/kore-faq/">FAQ</a></b> of
         wordt lid van Kore\'s <b><a href="https://plus.google.com/u/0/communities/110340113064213296333">Google+ Community</a></b>
     ]]></string>
-  <string name="buy_me_coffee">Koop me een kopje koffie</string>
-  <string name="expresso_please">Espresso a.u.b. Bedankt!</string>
-  <string name="thanks_for_coffe">Bedankt voor de koffie!</string>
-  <string name="remove_coffee_message">Klik om deze instelling te verbergen</string>
-  <string name="buy_coffee_to_unlock_themes">Koop me a.u.b. een kopje koffie om meer thema\'s te ontgrendelen</string>
-  <string name="error_setting_up_billing">Kon Google Play Billing Service niet instellen:\n%s</string>
-  <string name="error_querying_inventory">Failed to query inventory.</string>
-  <string name="error_during_purchased">Er is een fout opgetreden tijdens de aankoop.</string>
-  <string name="purchase_thanks">Bedankt voor je steun!</string>
+  <!--<string name="buy_me_coffee">Koop me een kopje koffie</string>-->
+  <!--<string name="expresso_please">Espresso a.u.b. Bedankt!</string>-->
+  <!--<string name="thanks_for_coffe">Bedankt voor de koffie!</string>-->
+  <!--<string name="remove_coffee_message">Klik om deze instelling te verbergen</string>-->
+  <!--<string name="buy_coffee_to_unlock_themes">Koop me a.u.b. een kopje koffie om meer thema\'s te ontgrendelen</string>-->
+  <!--<string name="error_setting_up_billing">Kon Google Play Billing Service niet instellen:\n%s</string>-->
+  <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
+  <!--<string name="error_during_purchased">Er is een fout opgetreden tijdens de aankoop.</string>-->
+  <!--<string name="purchase_thanks">Bedankt voor je steun!</string>-->
 </resources>
