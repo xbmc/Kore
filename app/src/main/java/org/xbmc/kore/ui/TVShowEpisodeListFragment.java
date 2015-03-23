@@ -53,6 +53,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -372,7 +373,12 @@ public class TVShowEpisodeListFragment extends Fragment
                 // Check if the group cursor is set before setting the children cursor
                 // Somehow, when poping the back stack, the children cursor are reloaded first...
                 if (adapter.getCursor() != null) {
-                    adapter.setChildrenCursor(cursorLoader.getId(), null);
+                    try {
+                        adapter.setChildrenCursor(cursorLoader.getId(), null);
+                    } catch (NullPointerException exc) {
+                        // Errrr... Adapter expired?
+                        LogUtils.LOGW(TAG, "Adapter expired.");
+                    }
                 }
                 break;
         }
