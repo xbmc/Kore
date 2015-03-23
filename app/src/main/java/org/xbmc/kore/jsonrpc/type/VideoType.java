@@ -18,6 +18,7 @@ package org.xbmc.kore.jsonrpc.type;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.xbmc.kore.utils.JsonUtils;
+import org.xbmc.kore.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.List;
  * Types from Video.*
  */
 public class VideoType {
+    private static final String TAG = LogUtils.makeLogTag(VideoType.class);
 
     public static class Cast {
         public static final String NAME = "name";
@@ -57,7 +59,13 @@ public class VideoType {
                 return new ArrayList<Cast>(0);
             }
 
-            ArrayNode arrayNode = (ArrayNode) node.get(key);
+            JsonNode castNode = node.get(key);
+            if (!castNode.isArray()) {
+                LogUtils.LOGD(TAG, "Cast node isn't an array, it's a: " + castNode.getNodeType());
+                return new ArrayList<Cast>(0);
+            }
+
+            ArrayNode arrayNode = (ArrayNode) castNode;
             ArrayList<Cast> castList = new ArrayList<Cast>(arrayNode.size());
             for (JsonNode innerNode : arrayNode) {
                 castList.add(new Cast(innerNode));
