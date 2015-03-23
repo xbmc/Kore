@@ -209,7 +209,8 @@ public class AddonDetailsFragment extends Fragment {
 
     @OnClick(R.id.enable_disable)
     public void onEnabledClicked(View v) {
-        final Boolean isEnabled = (Boolean)v.getTag();
+        final Boolean isEnabled = (v.getTag() == null)? false : (Boolean)v.getTag();
+
         Addons.SetAddonEnabled action = new Addons.SetAddonEnabled(addonId, !isEnabled);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
