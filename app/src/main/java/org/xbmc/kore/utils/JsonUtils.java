@@ -83,10 +83,17 @@ public class JsonUtils {
         JsonNode value = node.get(key);
         if (value == null) return new ArrayList<String>(0);
 
-        ArrayNode arrayNode = (ArrayNode)value;
-        ArrayList<String> result = new ArrayList<String>(arrayNode.size());
-        for (JsonNode innerNode : arrayNode) {
-            result.add(innerNode.textValue());
+        ArrayList<String> result;
+        if (value.isArray()) {
+            ArrayNode arrayNode = (ArrayNode) value;
+            result = new ArrayList<String>(arrayNode.size());
+            for (JsonNode innerNode : arrayNode) {
+                result.add(innerNode.textValue());
+            }
+        } else {
+            // This isn't exactly what we're expecting, but we can return the text value
+            result = new ArrayList<String>(1);
+            result.add(value.textValue());
         }
         return result;
     }
@@ -96,10 +103,16 @@ public class JsonUtils {
         JsonNode value = node.get(key);
         if (value == null) return new ArrayList<Integer>(0);
 
-        ArrayNode arrayNode = (ArrayNode)value;
-        ArrayList<Integer> result = new ArrayList<Integer>(arrayNode.size());
-        for (JsonNode innerNode : arrayNode) {
-            result.add(innerNode.asInt());
+        ArrayList<Integer> result;
+        if (value.isArray()) {
+            ArrayNode arrayNode = (ArrayNode) value;
+            result = new ArrayList<Integer>(arrayNode.size());
+            for (JsonNode innerNode : arrayNode) {
+                result.add(innerNode.asInt());
+            }
+        } else {
+            result = new ArrayList<Integer>(1);
+            result.add(value.asInt());
         }
         return result;
     }
