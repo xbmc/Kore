@@ -116,13 +116,31 @@ public class Files {
         public final static String FILE_NODE = "files";
 
         /**
-         * Get the directory content
-         * @param path          full path name
+         * Get the directories and files in the given directory
+         * @param directory          full path name
          * @param sort_params   sorting criteria
          */
-        public GetDirectory(String path, ListType.Sort sort_params) {
+        public GetDirectory(String directory, ListType.Sort sort_params) {
             super();
-            addParameterToRequest("directory", path);
+            addParameterToRequest("directory", directory);
+            addParameterToRequest(SORT_NODE, sort_params.toJsonNode());
+        }
+
+        /**
+         * Get the directories and files in the given directory
+         * @param directory Full path name
+         * @param media Type of media to retrieve.
+         *              See {@link Files.Media} for a list of accepted values
+         * @param sort_params Sorting criteria
+         * @param properties Properties to retrieve.
+         *                   See {@link org.xbmc.kore.jsonrpc.type.ListType.FieldsFiles}
+         *                   constants for a list of accepted values
+         */
+        public GetDirectory(String directory, String media, ListType.Sort sort_params, String... properties) {
+            super();
+            addParameterToRequest("directory", directory);
+            addParameterToRequest("media", media);
+            addParameterToRequest("properties", properties);
             addParameterToRequest(SORT_NODE, sort_params.toJsonNode());
         }
 

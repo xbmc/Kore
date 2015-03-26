@@ -432,6 +432,93 @@ public class ListType {
     }
 
     /**
+     * Enums for List.Fields.Files
+     */
+    public interface FieldsFiles {
+        // We are ignoring Item.Fields.Base as it seems to have nothing useful
+        public final String TITLE = "title";
+        public final String ARTIST = "artist";
+        public final String ALBUMARTIST = "albumartist";
+        public final String GENRE = "genre";
+        public final String YEAR = "year";
+        public final String RATING = "rating";
+        public final String ALBUM = "album";
+        public final String TRACK = "track";
+        public final String DURATION = "duration";
+        public final String COMMENT = "comment";
+        public final String LYRICS = "lyrics";
+        public final String MUSICBRAINZTRACKID = "musicbrainztrackid";
+        public final String MUSICBRAINZARTISTID = "musicbrainzartistid";
+        public final String MUSICBRAINZALBUMID = "musicbrainzalbumid";
+        public final String MUSICBRAINZALBUMARTISTID = "musicbrainzalbumartistid";
+        public final String PLAYCOUNT = "playcount";
+        public final String FANART = "fanart";
+        public final String DIRECTOR = "director";
+        public final String TRAILER = "trailer";
+        public final String TAGLINE = "tagline";
+        public final String PLOT = "plot";
+        public final String PLOTOUTLINE = "plotoutline";
+        public final String ORIGINALTITLE = "originaltitle";
+        public final String LASTPLAYED = "lastplayed";
+        public final String WRITER = "writer";
+        public final String STUDIO = "studio";
+        public final String MPAA = "mpaa";
+        public final String CAST = "cast";
+        public final String COUNTRY = "country";
+        public final String IMDBNUMBER = "imdbnumber";
+        public final String PREMIERED = "premiered";
+        public final String PRODUCTIONCODE = "productioncode";
+        public final String RUNTIME = "runtime";
+        public final String SET = "set";
+        public final String SHOWLINK = "showlink";
+        public final String STREAMDETAILS = "streamdetails";
+        public final String TOP250 = "top250";
+        public final String VOTES = "votes";
+        public final String FIRSTAIRED = "firstaired";
+        public final String SEASON = "season";
+        public final String EPISODE = "episode";
+        public final String SHOWTITLE = "showtitle";
+        public final String THUMBNAIL = "thumbnail";
+        public final String FILE = "file";
+        public final String RESUME = "resume";
+        public final String ARTISTID = "artistid";
+        public final String ALBUMID = "albumid";
+        public final String TVSHOWID = "tvshowid";
+        public final String SETID = "setid";
+        public final String WATCHEDEPISODES = "watchedepisodes";
+        public final String DISC = "disc";
+        public final String TAG = "tag";
+        public final String ART = "art";
+        public final String GENREID = "genreid";
+        public final String DISPLAYARTIST = "displayartist";
+        public final String ALBUMARTISTID = "albumartistid";
+        public final String DESCRIPTION = "description";
+        public final String THEME = "theme";
+        public final String MOOD = "mood";
+        public final String STYLE = "style";
+        public final String ALBUMLABEL = "albumlabel";
+        public final String SORTTITLE = "sorttitle";
+        public final String EPISODEGUIDE = "episodeguide";
+        public final String UNIQUEID = "uniqueid";
+        public final String DATEADDED = "dateadded";
+        public final String SIZE = "size";
+        public final String LASTMODIFIED = "lastmodified";
+        public final String MIMETYPE = "mimetype";
+
+        public final String[] allValues = new String[] {
+                TITLE, ARTIST, ALBUMARTIST, GENRE, YEAR, RATING, ALBUM, TRACK, DURATION, COMMENT,
+                LYRICS, MUSICBRAINZTRACKID, MUSICBRAINZARTISTID, MUSICBRAINZALBUMID,
+                MUSICBRAINZALBUMARTISTID, PLAYCOUNT, FANART, DIRECTOR, TRAILER, TAGLINE, PLOT,
+                PLOTOUTLINE, ORIGINALTITLE, LASTPLAYED, WRITER, STUDIO, MPAA, CAST, COUNTRY,
+                IMDBNUMBER, PREMIERED, PRODUCTIONCODE, RUNTIME, SET, SHOWLINK, STREAMDETAILS,
+                TOP250, VOTES, FIRSTAIRED, SEASON, EPISODE, SHOWTITLE, THUMBNAIL, FILE, RESUME,
+                ARTISTID, ALBUMID, TVSHOWID, SETID, WATCHEDEPISODES, DISC, TAG, ART, GENREID,
+                DISPLAYARTIST, ALBUMARTISTID, DESCRIPTION, THEME, MOOD, STYLE, ALBUMLABEL,
+                SORTTITLE, EPISODEGUIDE, UNIQUEID, DATEADDED, SIZE, LASTMODIFIED, MIMETYPE
+        };
+    }
+
+    /**
      * List.Item.File
      */
     public static class ItemFile extends ItemBase {
