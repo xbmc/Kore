@@ -36,6 +36,17 @@ public class FileActivity extends BaseActivity {
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
+    public interface OnBackPressedListener {
+        void onBackPressed();
+        boolean currentPageAtRootDirectory();
+    }
+
+    OnBackPressedListener fragmentBackListener;
+
+    public void setBackPressedListener(OnBackPressedListener listener) {
+        fragmentBackListener = listener;
+    }
+
     @TargetApi(21)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +100,19 @@ public class FileActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // tell fragment to move up one directory
+        if (fragmentBackListener != null) {
+            if (!fragmentBackListener.currentPageAtRootDirectory())
+                fragmentBackListener.onBackPressed();
+            else
+                // already at the root level of the current page
+                super.onBackPressed();
+        }
+
     }
 
     private void setupActionBar(String title) {

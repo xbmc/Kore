@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -32,15 +33,11 @@ import butterknife.InjectView;
 /**
  * Created by danhdroid on 3/18/15.
  */
-public class FileListFragment extends Fragment {
+public class FileListFragment extends Fragment
+        implements FileActivity.OnBackPressedListener {
 
     @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
     @InjectView(R.id.pager) ViewPager viewPager;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,9 +48,12 @@ public class FileListFragment extends Fragment {
         videoFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.VIDEO);
         Bundle musicFileListArgs = new Bundle();
         musicFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.MUSIC);
+        Bundle pictureFileListArgs = new Bundle();
+        pictureFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.PICTURES);
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
                 .addTab(MediaFileListFragment.class, videoFileListArgs, R.string.video, 1)
-                .addTab(MediaFileListFragment.class, musicFileListArgs, R.string.music, 2);
+                .addTab(MediaFileListFragment.class, musicFileListArgs, R.string.music, 2)
+                .addTab(MediaFileListFragment.class, pictureFileListArgs, R.string.pictures, 3);
         viewPager.setAdapter(tabsAdapter);
         pagerTabStrip.setViewPager(viewPager);
         return root;
@@ -64,5 +64,42 @@ public class FileListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(false);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            FileActivity listenerActivity = (FileActivity) activity;
+            listenerActivity.setBackPressedListener(this);
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " unable to register BackPressedListener");
+        }
+    }
+
+    MediaFileListFragment findFragmentByPosition(int position) {
+        String tag = "android:switcher:" + viewPager.getId() + ":" + position;
+        return (MediaFileListFragment) getChildFragmentManager().findFragmentByTag(tag);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // tell current fragment to move up one directory
+
+        MediaFileListFragment curPage = findFragmentByPosition(viewPager.getCurrentItem() + 1);
+        if (curPage != null) {
+            // based on the current position cast the page to the correct
+            // class and call the method
+            curPage.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean currentPageAtRootDirectory() {
+        MediaFileListFragment curPage = findFragmentByPosition(viewPager.getCurrentItem() + 1);
+        if (curPage != null) {
+            return curPage.atRootDirectory();
+        }
+        return true;
     }
 }
