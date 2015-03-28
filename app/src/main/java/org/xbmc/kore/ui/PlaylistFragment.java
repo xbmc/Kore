@@ -513,6 +513,8 @@ public class PlaylistFragment extends Fragment
          * The playlist items
          */
         List<ListType.ItemsAll> playlistItems;
+        int artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
+        int artHeight = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
 
         public PlayListAdapter(List<ListType.ItemsAll> playlistItems) {
             super();
@@ -520,8 +522,7 @@ public class PlaylistFragment extends Fragment
         }
 
         public PlayListAdapter() {
-            super();
-            this.playlistItems = null;
+            this(null);
         }
 
         /**
@@ -627,9 +628,6 @@ public class PlaylistFragment extends Fragment
             viewHolder.details.setText(details);
             viewHolder.duration.setText((duration > 0) ? UIUtils.formatTime(duration) : "");
             viewHolder.position = position;
-
-            int artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
-            int artHeight = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
 
             // If not video, change aspect ration of poster to a square
             boolean isVideo = (item.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
