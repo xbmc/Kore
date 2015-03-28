@@ -35,6 +35,10 @@ public class ListType {
         public static final String TYPE_EPISODE = "episode";
         public static final String TYPE_SONG = "song";
         public static final String TYPE_MUSIC_VIDEO = "musicvideo";
+        public static final String TYPE_UNKNOWN = "unknown";
+        public static final String TYPE_PICTURE = "picture";
+        public static final String TYPE_CHANNEL = "channel";
+        public static final String TYPE_ALBUM = "album";
 
         // From List.Item.Base
         public static final String ALBUM = "album";

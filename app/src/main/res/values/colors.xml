@@ -29,9 +29,9 @@
     <color name="black_dim_87pct">#de000000</color>
     <color name="black_dim_54pct">#8a000000</color>
 
-    <color name="dark_content_background">#ff222326</color>
+    <!--<color name="dark_content_background">#ff222326</color>-->
     <!--<color name="dark_content_background_dim_70pct">#b4222326</color>-->
-    <!--<color name="dark_content_background">#ff323232</color>-->
+    <color name="dark_content_background">#ff323232</color>
     <color name="dark_content_background_dim_70pct">#b4323232</color>
 
     <color name="light_content_background">#ffffffff</color>

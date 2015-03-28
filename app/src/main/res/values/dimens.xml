@@ -115,6 +115,9 @@
     <dimen name="addondetail_poster_width">112dp</dimen>
     <dimen name="addondetail_poster_heigth">112dp</dimen>
 
+    <dimen name="filelist_art_width">56dp</dimen>
+    <dimen name="filelist_art_heigth">72dp</dimen>
+
     <!-- Notification -->
     <dimen name="notification_height">64dp</dimen>
     <dimen name="notification_expanded_height">128dp</dimen>
