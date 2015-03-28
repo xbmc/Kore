@@ -18,10 +18,10 @@ package org.xbmc.kore.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,10 +59,14 @@ import butterknife.InjectView;
  * Presents a list of files of different types (Video/Music)
  */
 public class MediaFileListFragment extends Fragment {
-
     public static final String MEDIA_TYPE = "mediaType";
+    public static final String PATH_CONTENTS = "pathContents";
+    public static final String ROOT_PATH_CONTENTS = "rootPathContents";
+    public static final String ROOT_VISITED = "rootVisited";
+    private static final String ADDON_SOURCE = "addons:";
     private static final int MUSIC_PLAYLISTID = 0;
     private static final int VIDEO_PLAYLISTID = 1;
+    private static final int PICTURE_PLAYLISTID = 2;
 
     private HostManager hostManager;
     /**
@@ -92,18 +96,28 @@ public class MediaFileListFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(MEDIA_TYPE, mediaType);
+        try {
+            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList) adapter.getFileItemList());
+        } catch (NullPointerException npe) {
+            // adapter is null probably nothing was save in bundle because the directory is empty
+            // ignore this so that the empty message would display later on
+        }
+        outState.putParcelableArrayList(ROOT_PATH_CONTENTS, rootFileLocation);
+        outState.putBoolean(ROOT_VISITED, browseRootAlready);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         Bundle args = getArguments();
         if (args != null) {
             mediaType = args.getString(MEDIA_TYPE, Files.Media.MUSIC);
             if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
                 playlistId = VIDEO_PLAYLISTID;
+            } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
+                playlistId = PICTURE_PLAYLISTID;
             }
         }
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_playlist, container, false);
@@ -113,45 +127,66 @@ public class MediaFileListFragment extends Fragment {
         folderGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FileLocation f = adapter.getItem(position);
-                // if selection is a directory, browse the the level below
-                if (f.isDirectory) {
-                    // a directory - store the path of this directory so that we can reverse travel if
-                    // we want to
-                    if (f.isRootDir()) {
-                        if (browseRootAlready)
-                            browseFolderForFiles(f);
-                        else {
-                            browsingSourceForFolders();
-                        }
-                    } else {
-                        browseFolderForFiles(f);
-                    }
-                }
+                handleDirectoryBrowsing(adapter.getItem(position));
             }
         });
 
         adapter = new MediaFileListAdapter(getActivity(), R.layout.grid_item_playlist);
         folderGridView.setAdapter(adapter);
+        if (savedInstanceState != null) {
+            mediaType = savedInstanceState.getString(MEDIA_TYPE);
+            //currentPath = savedInstanceState.getString(CURRENT_PATH);
+            if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
+                playlistId = VIDEO_PLAYLISTID;
+            } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
+                playlistId = PICTURE_PLAYLISTID;
+            }
+            ArrayList<FileLocation> list = savedInstanceState.getParcelableArrayList(PATH_CONTENTS);
+            rootFileLocation = savedInstanceState.getParcelableArrayList(ROOT_PATH_CONTENTS);
+            browseRootAlready = savedInstanceState.getBoolean(ROOT_VISITED);
+            adapter.setFilelistItems(list);
+            if ((list == null) || (list.size() == 0)) {
+                displayEmptyListMessage();
+            } else {
+                switchToPanel(R.id.playlist);
+            }
+        }
+        else {
+            browsingSourceForFolders();
+        }
         return root;
     }
 
+    void handleDirectoryBrowsing(FileLocation f) {
+        // if selection is a directory, browse the the level below
+        if (f.isDirectory) {
+            // a directory - store the path of this directory so that we can reverse travel if
+            // we want to
+            if (f.isRootDir()) {
+                if (browseRootAlready)
+                    browseFolderForFiles(f);
+                else {
+                    browsingSourceForFolders();
+                }
+            } else {
+                browseFolderForFiles(f);
+            }
+        }
+    }
 
-    @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onBackPressed() {
+        handleDirectoryBrowsing(adapter.getItem(0));
+    }
+
+    public boolean atRootDirectory() {
         if (adapter.getCount() == 0)
-            browsingSourceForFolders();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+            return true;
+        FileLocation fl = adapter.getItem(0);
+        if (fl == null)
+            return true;
+        else
+            // if we still see "..", it is not the real root directory
+            return fl.isRootDir() && (fl.label.contentEquals("..") == false);
     }
 
     private void browsingSourceForFolders() {
@@ -165,9 +200,11 @@ public class MediaFileListFragment extends Fragment {
                 rootFileLocation.clear();
                 FileLocation fl;
                 for (ItemType.Source item : result) {
-                    fl = new FileLocation(item.label, item.file, true);
-                    fl.setRootDir(true);
-                    rootFileLocation.add(fl);
+                    if (!item.file.contains(ADDON_SOURCE)) {
+                        fl = new FileLocation(item.label, item.file, true);
+                        fl.setRootDir(true);
+                        rootFileLocation.add(fl);
+                    }
                 }
 
                 browseRootAlready = true;
@@ -450,6 +487,12 @@ public class MediaFileListFragment extends Fragment {
             notifyDataSetChanged();
         }
 
+        public List<FileLocation> getFileItemList() {
+            if (fileLocationItems == null)
+                return new ArrayList<FileLocation>();
+            return new ArrayList<FileLocation>(fileLocationItems);
+        }
+
         @Override
         public int getCount() {
             if (fileLocationItems == null) {
@@ -546,7 +589,7 @@ public class MediaFileListFragment extends Fragment {
         int position;
     }
 
-    public class FileLocation {
+    public class FileLocation implements Parcelable {
         public final String label;
         public final String file;
         public final boolean isDirectory;
@@ -562,6 +605,34 @@ public class MediaFileListFragment extends Fragment {
             this.isDirectory = isDir;
             this.isRoot = false;
         }
+
+        private FileLocation(Parcel in) {
+            this.label = in.readString();
+            this.file = in.readString();
+            this.isDirectory = (in.readInt() != 0);
+            this.isRoot = (in.readInt() != 0);
+        }
+
+        public int describeContents() {
+            return 0;
+        }
+
+        public void writeToParcel(Parcel out, int flags) {
+            out.writeString(label);
+            out.writeString(file);
+            out.writeInt(isDirectory ? 1 : 0);
+            out.writeInt(isRoot ? 1 : 0);
+        }
+
+        public final Parcelable.Creator<FileLocation> CREATOR = new Parcelable.Creator<FileLocation>() {
+            public FileLocation createFromParcel(Parcel in) {
+                return new FileLocation(in);
+            }
+
+            public FileLocation[] newArray(int size) {
+                return new FileLocation[size];
+            }
+        };
     }
 }
 
