@@ -250,7 +250,17 @@ public class MediaFileListFragment extends Fragment {
                 parentDirectory = getParentDirectory(item.file);
             }
         }
-        Files.GetDirectory action = new Files.GetDirectory(item.file, new ListType.Sort(ListType.Sort.SORT_METHOD_LABEL, true, true));
+        String[] properties = new String[] {
+                ListType.FieldsFiles.FILE, ListType.FieldsFiles.MIMETYPE, ListType.FieldsFiles.TITLE,
+                ListType.FieldsFiles.SIZE,  ListType.FieldsFiles.THUMBNAIL, ListType.FieldsFiles.FANART,
+                ListType.FieldsFiles.ALBUM, ListType.FieldsFiles.ARTIST, ListType.FieldsFiles.TRACK,
+                ListType.FieldsFiles.SHOWTITLE, ListType.FieldsFiles.SEASON, ListType.FieldsFiles.EPISODE,
+                ListType.FieldsFiles.YEAR, ListType.FieldsFiles.DURATION
+        };
+        // note: using the properly list above, kodi would filter out the correct mediatype based on MIMETYPE. The size of the file
+        // is also returned, but thumbnail and other properties are blanked
+        Files.GetDirectory action = new Files.GetDirectory(item.file, mediaType,
+                            new ListType.Sort(ListType.Sort.SORT_METHOD_LABEL, true, true), properties);
         action.execute(hostManager.getConnection(), new ApiCallback<List<ListType.ItemFile>>() {
             @Override
             public void onSuccess(List<ListType.ItemFile> result) {
