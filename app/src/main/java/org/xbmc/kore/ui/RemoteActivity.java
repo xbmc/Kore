@@ -201,6 +201,11 @@ public class RemoteActivity extends BaseActivity
                 // Fire and forget
                 actionSuspend.execute(hostManager.getConnection(), null, null);
                 return true;
+            case R.id.action_reboot:
+                System.Reboot actionReboot = new System.Reboot();
+                // Fire and forget
+                actionReboot.execute(hostManager.getConnection(), null, null);
+                return true;
             case R.id.action_shutdown:
                 System.Shutdown actionShutdown = new System.Shutdown();
                 // Fire and forget

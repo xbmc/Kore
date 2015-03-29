@@ -46,6 +46,7 @@
     <string name="power">Power</string>
     <string name="quit">Quit</string>
     <string name="suspend">Suspend</string>
+    <string name="reboot">Reboot</string>
     <string name="shutdown">Shutdown</string>
 
     <string name="send">Send</string>

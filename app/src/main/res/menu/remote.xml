@@ -28,6 +28,8 @@
                 android:title="@string/quit" />
             <item android:id="@+id/action_suspend"
                 android:title="@string/suspend" />
+            <item android:id="@+id/action_reboot"
+                android:title="@string/reboot" />
             <item android:id="@+id/action_shutdown"
                 android:title="@string/shutdown" />
         </menu>

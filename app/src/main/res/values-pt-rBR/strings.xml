@@ -36,6 +36,7 @@
   <string name="power">Energia</string>
   <string name="quit">Sair</string>
   <string name="suspend">Suspender</string>
+    <string name="reboot">Reiniciar</string>
   <string name="shutdown">Desligar</string>
   <string name="send">Enviar</string>
   <string name="send_text">Enviar texto para media center</string>

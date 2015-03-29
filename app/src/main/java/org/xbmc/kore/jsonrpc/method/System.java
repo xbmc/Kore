@@ -72,4 +72,28 @@ public class System {
         }
     }
 
+    /**
+     * Reboots the system running XBMC
+     */
+    public static final class Reboot extends ApiMethod<String> {
+        public final static String METHOD_NAME = "System.Reboot";
+
+        /**
+         * Reboots the system running XBMC
+         */
+        public Reboot() {
+            super();
+        }
+
+        @Override
+        public String getMethodName() {
+            return METHOD_NAME;
+        }
+
+        @Override
+        public String resultFromJson(ObjectNode jsonObject) throws ApiException {
+            return jsonObject.get(RESULT_NODE).textValue();
+        }
+    }
+
 }
