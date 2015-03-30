@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,6 +89,7 @@ public class MediaFileListFragment extends Fragment {
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
 
     @InjectView(R.id.list) GridView folderGridView;
+    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(android.R.id.empty) TextView emptyView;
 
     public static MediaFileListFragment newInstance(final String media) {
@@ -127,6 +129,7 @@ public class MediaFileListFragment extends Fragment {
         ButterKnife.inject(this, root);
 
         hostManager = HostManager.getInstance(getActivity());
+        swipeRefreshLayout.setEnabled(false);
 
         emptyView.setOnClickListener(new View.OnClickListener() {
             @Override
