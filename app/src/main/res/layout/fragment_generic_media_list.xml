@@ -22,24 +22,18 @@
 
     <include layout="@layout/empty_view"/>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipe_refresh_layout"
+    <GridView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <GridView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/small_padding"
-            android:paddingRight="@dimen/small_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingBottom="@dimen/default_padding"
-            android:clipToPadding="false"
-            android:choiceMode="none"
-            android:listSelector="?attr/selectableItemBackground"
-            android:drawSelectorOnTop="true"
-            style="@style/Widget.GridView"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/small_padding"
+        android:paddingRight="@dimen/small_padding"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/default_padding"
+        android:clipToPadding="false"
+        android:choiceMode="none"
+        android:listSelector="?attr/selectableItemBackground"
+        android:drawSelectorOnTop="true"
+        style="@style/Widget.GridView"/>
 
 </FrameLayout>

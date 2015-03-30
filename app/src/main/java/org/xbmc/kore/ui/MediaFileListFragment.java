@@ -22,7 +22,6 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,8 +60,7 @@ import butterknife.InjectView;
 /**
  * Presents a list of files of different types (Video/Music)
  */
-public class MediaFileListFragment extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener {
+public class MediaFileListFragment extends Fragment {
     private static final String TAG = LogUtils.makeLogTag(MediaFileListFragment.class);
 
     public static final String MEDIA_TYPE = "mediaType";
@@ -90,7 +88,6 @@ public class MediaFileListFragment extends Fragment
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
 
     @InjectView(R.id.list) GridView folderGridView;
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(android.R.id.empty) TextView emptyView;
 
     public static MediaFileListFragment newInstance(final String media) {
@@ -131,19 +128,17 @@ public class MediaFileListFragment extends Fragment
 
         hostManager = HostManager.getInstance(getActivity());
 
-        swipeRefreshLayout.setOnRefreshListener(this);
-
         emptyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onRefresh();
+                browseSources();
             }
         });
         folderGridView.setEmptyView(emptyView);
         folderGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                handleDirectoryBrowsing(adapter.getItem(position));
+                handleFileSelect(adapter.getItem(position));
             }
         });
 
@@ -165,30 +160,33 @@ public class MediaFileListFragment extends Fragment
             adapter.setFilelistItems(list);
         }
         else {
-            browsingSourceForFolders();
+            browseSources();
         }
         return root;
     }
 
-    void handleDirectoryBrowsing(FileLocation f) {
+    void handleFileSelect(FileLocation f) {
         // if selection is a directory, browse the the level below
         if (f.isDirectory) {
             // a directory - store the path of this directory so that we can reverse travel if
             // we want to
             if (f.isRootDir()) {
                 if (browseRootAlready)
-                    browseFolderForFiles(f);
+                    browseDirectory(f);
                 else {
-                    browsingSourceForFolders();
+                    browseSources();
                 }
             } else {
-                browseFolderForFiles(f);
+                browseDirectory(f);
             }
+        } else {
+            playMediaFile(f.file);
         }
     }
 
     public void onBackPressed() {
-        handleDirectoryBrowsing(adapter.getItem(0));
+        // Emulate a click on ..
+        handleFileSelect(adapter.getItem(0));
     }
 
     public boolean atRootDirectory() {
@@ -202,20 +200,10 @@ public class MediaFileListFragment extends Fragment
             return fl.isRootDir() && (fl.title.contentEquals("..") == false);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void onRefresh () {
-        if (hostManager.getHostInfo() != null) {
-            // TODO: This will reset the position to the root. We should keep the user where he is
-            browsingSourceForFolders();
-        } else {
-            swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                    .show();
-        }
-    }
-
-    private void browsingSourceForFolders() {
+    /**
+     * Gets and presents the list of media sources
+     */
+    private void browseSources() {
         Files.GetSources action = new Files.GetSources(mediaType);
         action.execute(hostManager.getConnection(), new ApiCallback<List<ItemType.Source>>() {
             @Override
@@ -236,12 +224,12 @@ public class MediaFileListFragment extends Fragment
                 browseRootAlready = true;
                 emptyView.setText(getString(R.string.source_empty));
                 adapter.setFilelistItems(rootFileLocation);
-                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
+
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_getting_source_info), description),
                         Toast.LENGTH_SHORT).show();
@@ -249,27 +237,30 @@ public class MediaFileListFragment extends Fragment
         }, callbackHandler);
     }
 
-    private void browseFolderForFiles(final FileLocation item) {
-        if (item.isRootDir()) {
+    /**
+     * Gets and presents the files of the specified directory
+     * @param dir Directory to browse
+     */
+    private void browseDirectory(final FileLocation dir) {
+        if (dir.isRootDir()) {
             // this is a root directory
-            parentDirectory = item.file;
-        }
-        else {
+            parentDirectory = dir.file;
+        } else {
             // check to make sure that this is not our root path
             String rootPath = null;
             String path;
             for (FileLocation fl : rootFileLocation) {
                 path = fl.file;
-                if (item.file.contentEquals(path))    {
+                if (dir.file.contentEquals(path))    {
                     rootPath = fl.file;
                     break;
                 }
             }
             if (rootPath != null) {
                 parentDirectory = rootPath;
-                item.setRootDir(true);
+                dir.setRootDir(true);
             } else {
-                parentDirectory = getParentDirectory(item.file);
+                parentDirectory = getParentDirectory(dir.file);
             }
         }
 
@@ -309,7 +300,7 @@ public class MediaFileListFragment extends Fragment
                 ListType.FieldsFiles.SIZE, ListType.FieldsFiles.LASTMODIFIED, ListType.FieldsFiles.MIMETYPE
         };
 
-        Files.GetDirectory action = new Files.GetDirectory(item.file,
+        Files.GetDirectory action = new Files.GetDirectory(dir.file,
                 mediaType,
                 new ListType.Sort(ListType.Sort.SORT_METHOD_LABEL, true, true),
                 properties);
@@ -322,7 +313,7 @@ public class MediaFileListFragment extends Fragment
 
                 // insert the parent directory as the first item in the list
                 FileLocation fl = new FileLocation("..", parentDirectory, true);
-                fl.setRootDir(item.isRootDir());
+                fl.setRootDir(dir.isRootDir());
                 flList.add(0, fl);
 
                 for (ListType.ItemFile i : result) {
@@ -350,7 +341,7 @@ public class MediaFileListFragment extends Fragment
         Player.Open action = new Player.Open(item);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
-            public void onSuccess(String result ) {
+            public void onSuccess(String result) {
                 if (!isAdded()) return;
 
                 while (mediaQueueFileLocation.size() > 0) {
