@@ -52,7 +52,7 @@
     <dimen name="view_pager_indicator_height">12dp</dimen>
 
     <dimen name="remote_page_indicator_height">24dp</dimen>
-    <dimen name="remote_content_hmargin">16dp</dimen>
+    <dimen name="remote_content_hmargin">8dp</dimen>
 
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
@@ -69,7 +69,7 @@
     <dimen name="now_playing_art_height">216dp</dimen>
 
     <dimen name="media_title_margin_top">216dp</dimen>
-    <dimen name="poster_width_plus_padding">136dp</dimen>
+    <dimen name="poster_width_plus_padding">144dp</dimen>
 
     <dimen name="default_grid_column_width">250dp</dimen>
     <!-- Smaller spacing because cardview compat adds padding -->

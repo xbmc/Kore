@@ -123,8 +123,8 @@
     </style>
 
     <style name="TextAppearance.Media.Remote">
-        <item name="android:paddingLeft">@dimen/remote_content_hmargin</item>
-        <item name="android:paddingRight">@dimen/remote_content_hmargin</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/small_padding</item>
         <item name="android:ellipsize">end</item>
     </style>
 
