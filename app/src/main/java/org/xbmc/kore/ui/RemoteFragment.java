@@ -15,6 +15,15 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.BitmapFactory;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -165,6 +174,8 @@ public class RemoteFragment extends Fragment
         setupNoRepeatButton(osdButton, new Input.ExecuteAction(Input.ExecuteAction.OSD), null);
         setupNoRepeatButton(contextButton, new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU), null);
 
+        adjustRemoteButtons();
+
 //        // Padd main content view to account for bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), root, false, false, true);
 
@@ -184,6 +195,44 @@ public class RemoteFragment extends Fragment
 //        Input.Select action = new Input.Select();
 //        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
 //    }
+
+    @TargetApi(21)
+    private void adjustRemoteButtons() {
+        Resources.Theme theme = getActivity().getTheme();
+        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
+                R.attr.remoteButtonColorFilter,
+                R.attr.contentBackgroundColor});
+//                R.attr.remoteBackgroundColorFilter});
+        int remoteButtonsColor =  styledAttributes.getColor(0, R.color.white),
+                remoteBackgroundColor = styledAttributes.getColor(1, R.color.dark_content_background_dim_70pct);
+        styledAttributes.recycle();
+
+        leftButton.setColorFilter(remoteButtonsColor);
+        rightButton.setColorFilter(remoteButtonsColor);
+        upButton.setColorFilter(remoteButtonsColor);
+        downButton.setColorFilter(remoteButtonsColor);
+
+        selectButton.setColorFilter(remoteButtonsColor);
+        backButton.setColorFilter(remoteButtonsColor);
+        infoButton.setColorFilter(remoteButtonsColor);
+        osdButton.setColorFilter(remoteButtonsColor);
+        contextButton.setColorFilter(remoteButtonsColor);
+
+
+        // On ICS the remote background isn't shown as the tinting isn't supported
+        //int backgroundResourceId = R.drawable.remote_background_square_black_alpha;
+        int backgroundResourceId = R.drawable.remote_background_square_black;
+        if (Utils.isLollipopOrLater()) {
+            remotePanel.setBackgroundTintList(ColorStateList.valueOf(remoteBackgroundColor));
+            remotePanel.setBackgroundResource(backgroundResourceId);
+        } else if (Utils.isJellybeanOrLater()) {
+            BitmapDrawable background = new BitmapDrawable(getResources(),
+                    BitmapFactory.decodeResource(getResources(), backgroundResourceId));
+            background.setColorFilter(new PorterDuffColorFilter(remoteBackgroundColor, PorterDuff.Mode.SRC_IN));
+            remotePanel.setBackground(background);
+        }
+    }
+
 
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {

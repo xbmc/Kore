@@ -33,6 +33,9 @@
 
 	<attr name="drawerBackgroundColor" format="reference|color" />
 
+    <attr name="remoteButtonColorFilter" format="reference|color" />
+    <!--<attr name="remoteBackgroundColorFilter" format="reference|color" />-->
+
     <!-- Icons -->
 	<attr name="iconHosts" format="reference" />
 	<attr name="iconRemote" format="reference" />

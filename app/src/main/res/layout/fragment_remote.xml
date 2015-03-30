@@ -38,13 +38,15 @@
             android:layout_height="@dimen/remote_poster_height"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/poster"/>
 
         <LinearLayout
             android:id="@+id/media_button_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_icon_size"
             android:layout_toRightOf="@id/art"
+            android:layout_toEndOf="@id/art"
             android:layout_alignBottom="@id/art"
             android:orientation="horizontal"
             style="@style/ButtonBar"
@@ -80,6 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/art"
+            android:layout_toEndOf="@id/art"
             android:layout_alignTop="@id/art"
             style="@style/TextAppearance.Media.Remote.Title"
             android:background="?attr/contentBackgroundColor"/>
@@ -88,6 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/art"
+            android:layout_toEndOf="@id/art"
             android:layout_below="@id/title"
             android:layout_above="@id/media_button_bar"
             style="@style/TextAppearance.Media.Remote.Details"
@@ -146,11 +150,12 @@
 
     <RelativeLayout
         android:id="@+id/remote"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/button_bar"
-        android:layout_marginBottom="@dimen/small_padding"
-        android:gravity="center_horizontal">
+        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_centerHorizontal="true">
+        <!--android:background="?attr/contentBackgroundColor"-->
 
         <ImageView
             android:id="@+id/context"
@@ -165,6 +170,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/context"
+            android:layout_toEndOf="@id/context"
             android:layout_alignTop="@id/context"
             android:src="?attr/iconUp"
             android:contentDescription="@string/up"/>
@@ -173,6 +179,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/up"
+            android:layout_toEndOf="@id/up"
             android:layout_alignTop="@id/context"
             android:src="?attr/iconInfo"
             android:contentDescription="@string/info"/>
@@ -189,6 +196,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/left"
+            android:layout_toEndOf="@id/left"
             android:layout_alignTop="@id/left"
             android:src="?attr/iconSelect"
             android:contentDescription="@string/select"/>
@@ -197,6 +205,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/select"
+            android:layout_toEndOf="@id/select"
             android:layout_alignTop="@id/left"
             android:src="?attr/iconRight"
             android:contentDescription="@string/right"/>
@@ -213,6 +222,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/back"
+            android:layout_toEndOf="@id/back"
             android:layout_alignTop="@id/back"
             android:src="?attr/iconDown"
             android:contentDescription="@string/down"/>

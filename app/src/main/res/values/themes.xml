@@ -65,6 +65,9 @@
 
         <item name="separatorColor">@color/dark_separator</item>
 
+        <item name="remoteButtonColorFilter">@color/white</item>
+        <!--<item name="remoteBackgroundColorFilter">@color/dark_content_background</item>-->
+
         <!-- Icons -->
         <item name="iconInfo">@drawable/remote_info_white</item>
         <item name="iconBack">@drawable/remote_back_white</item>
@@ -170,17 +173,30 @@
 
         <item name="separatorColor">@color/light_separator</item>
 
-        <!-- Icons -->
-        <item name="iconInfo">@drawable/remote_info_black</item>
-        <item name="iconBack">@drawable/remote_back_black</item>
-        <item name="iconMenu">@drawable/remote_menu_black</item>
-        <item name="iconContext">@drawable/remote_context_black</item>
+        <item name="remoteButtonColorFilter">@color/black_dim_54pct</item>
+        <!--<item name="remoteBackgroundColorFilter">@color/light_content_background</item>-->
 
-        <item name="iconLeft">@drawable/remote_left_black</item>
-        <item name="iconRight">@drawable/remote_right_black</item>
-        <item name="iconUp">@drawable/remote_up_black</item>
-        <item name="iconDown">@drawable/remote_down_black</item>
-        <item name="iconSelect">@drawable/remote_select_black</item>
+        <!-- Icons, same for all themes, will be colored dynamically -->
+        <item name="iconInfo">@drawable/remote_info_white</item>
+        <item name="iconBack">@drawable/remote_back_white</item>
+        <item name="iconMenu">@drawable/remote_menu_white</item>
+        <item name="iconContext">@drawable/remote_context_white</item>
+
+        <item name="iconLeft">@drawable/remote_left_white</item>
+        <item name="iconRight">@drawable/remote_right_white</item>
+        <item name="iconUp">@drawable/remote_up_white</item>
+        <item name="iconDown">@drawable/remote_down_white</item>
+        <item name="iconSelect">@drawable/remote_select_white</item>
+        <!--<item name="iconInfo">@drawable/remote_info_black</item>-->
+        <!--<item name="iconBack">@drawable/remote_back_black</item>-->
+        <!--<item name="iconMenu">@drawable/remote_menu_black</item>-->
+        <!--<item name="iconContext">@drawable/remote_context_black</item>-->
+
+        <!--<item name="iconLeft">@drawable/remote_left_black</item>-->
+        <!--<item name="iconRight">@drawable/remote_right_black</item>-->
+        <!--<item name="iconUp">@drawable/remote_up_black</item>-->
+        <!--<item name="iconDown">@drawable/remote_down_black</item>-->
+        <!--<item name="iconSelect">@drawable/remote_select_black</item>-->
 
         <item name="iconHosts">@drawable/ic_phonelink_black_24dp</item>
         <item name="iconRemote">@drawable/ic_games_black_24dp</item>
@@ -255,6 +271,7 @@
         <!-- Color for the Navigation Drawer -->
         <item name="drawerBackgroundColor">@color/blue_grey_drawer_background</item>
 
+        <!--<item name="remoteBackgroundColorFilter">@color/blue_grey_content_background</item>-->
         <!--<item name="separatorColor">@color/dark_separator</item>-->
     </style>
 
@@ -278,6 +295,7 @@
         <item name="appTextColorPrimary">@color/solarized_base01</item>
         <item name="appTextColorSecondary">@color/solarized_base0</item>
 
+        <!--<item name="remoteBackgroundColorFilter">@color/solarized_base3</item>-->
         <!--<item name="separatorColor">@color/dark_separator</item>-->
     </style>
 

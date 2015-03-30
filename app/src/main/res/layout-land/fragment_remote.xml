@@ -19,7 +19,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <!-- For when nothing is playing or something not recognized is playing -->
     <RelativeLayout
@@ -69,6 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/art"
             android:layout_alignLeft="@id/art"
+            android:layout_alignStart="@id/art"
             style="@style/TextAppearance.Media.Remote.Title"
             android:background="?attr/contentBackgroundColor"/>
         <TextView
@@ -77,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_alignLeft="@id/title"
+            android:layout_alignStart="@id/title"
             style="@style/TextAppearance.Media.Remote.Details"
             android:background="?attr/contentBackgroundColor"/>
         <LinearLayout
@@ -85,6 +88,7 @@
             android:layout_height="@dimen/default_icon_size"
             android:layout_below="@id/details"
             android:layout_alignLeft="@id/details"
+            android:layout_alignStart="@id/details"
             android:orientation="horizontal"
             style="@style/ButtonBar"
             android:background="?attr/contentBackgroundColor">
@@ -120,7 +124,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/remote_content_hmargin"
-        android:paddingTop="@dimen/remote_page_indicator_height"
+        android:layout_marginEnd="@dimen/remote_content_hmargin"
+        android:layout_marginTop="@dimen/remote_page_indicator_height"
         android:gravity="center_horizontal">
 
         <ImageView
@@ -136,6 +141,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/context"
+            android:layout_toEndOf="@id/context"
             android:layout_alignTop="@id/context"
             android:src="?attr/iconUp"
             android:contentDescription="@string/up"/>
@@ -144,6 +150,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/up"
+            android:layout_toEndOf="@id/up"
             android:layout_alignTop="@id/context"
             android:src="?attr/iconInfo"
             android:contentDescription="@string/info"/>
@@ -160,6 +167,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/left"
+            android:layout_toEndOf="@id/left"
             android:layout_alignTop="@id/left"
             android:src="?attr/iconSelect"
             android:contentDescription="@string/select"/>
@@ -168,6 +176,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/select"
+            android:layout_toEndOf="@id/select"
             android:layout_alignTop="@id/left"
             android:src="?attr/iconRight"
             android:contentDescription="@string/right"/>
@@ -184,6 +193,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/back"
+            android:layout_toEndOf="@id/back"
             android:layout_alignTop="@id/back"
             android:src="?attr/iconDown"
             android:contentDescription="@string/down"/>
@@ -192,6 +202,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/down"
+            android:layout_toEndOf="@id/down"
             android:layout_alignTop="@id/back"
             android:src="?attr/iconMenu"
             android:contentDescription="@string/osd"/>
