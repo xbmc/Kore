@@ -21,7 +21,10 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 /**
  * Various utilities related to networking
@@ -137,7 +140,32 @@ public class NetUtils {
             InetAddress address = InetAddress.getByName(hostAddress);
             DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, port);
             DatagramSocket socket = new DatagramSocket();
+            LogUtils.LOGD(TAG, "Sending WoL to " + address.getHostAddress() + ":" + port);
             socket.send(packet);
+
+            // Piece of code apprehended from here:  http://stackoverflow.com/a/29017289
+            // Check all the existing interfaces that can be broadcasted to
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+
+                if (networkInterface.isLoopback())
+                    continue; // Don't want to broadcast to the loopback interface
+
+                for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+                    InetAddress broadcast = interfaceAddress.getBroadcast();
+                    // Android seems smart enough to set to null broadcast to
+                    //  the external mobile network. It makes sense since Android
+                    //  silently drop UDP broadcasts involving external mobile network.
+                    // Automatically skip IPv6 as it has broadcast IP null
+                    if (broadcast != null) {
+                        LogUtils.LOGD(TAG, "Sending WoL broadcast to " + broadcast.getHostAddress() + ":" + port);
+                        // Broadcasts WOL Magic Packet to every possible broadcast address
+                        packet = new DatagramPacket(bytes, bytes.length, broadcast, port);
+                        socket.send(packet);
+                    }
+                }
+            }
             socket.close();
         } catch (IOException e) {
             LogUtils.LOGD(TAG, "Exception while sending magic packet.", e);
