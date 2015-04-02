@@ -125,8 +125,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/remote_content_hmargin"
         android:layout_marginEnd="@dimen/remote_content_hmargin"
-        android:layout_marginTop="@dimen/remote_page_indicator_height"
-        android:gravity="center_horizontal">
+        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_gravity="bottom">
 
         <ImageView
             android:id="@+id/context"
