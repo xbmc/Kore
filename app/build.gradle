@@ -8,8 +8,8 @@ android {
         applicationId "org.xbmc.kore"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 9
-        versionName "1.2.1"
+        versionCode 10
+        versionName "1.3.0"
     }
 
     File keystoreFile = file('keystore.properties')
