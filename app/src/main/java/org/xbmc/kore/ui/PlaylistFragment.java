@@ -18,6 +18,7 @@ package org.xbmc.kore.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -617,7 +618,7 @@ public class PlaylistFragment extends Fragment
                     break;
                 default:
                     // Don't yet recognize this type
-                    title = item.label;
+                    title = TextUtils.isEmpty(item.label)? item.file : item.label;
                     details = item.type;
                     artUrl = item.thumbnail;
                     duration = item.runtime;

@@ -554,11 +554,12 @@ public class HostConnectionObserver
         int currentCallResult = (getPropertiesResult.speed == 0) ?
                 PlayerEventsObserver.PLAYER_IS_PAUSED : PlayerEventsObserver.PLAYER_IS_PLAYING;
         if (forceReply ||
-            (lastCallResult != currentCallResult) ||
-            (lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
-            (lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
-            (!lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat)) ||
-            (lastGetItemResult.id != getItemResult.id)) {
+                (lastCallResult != currentCallResult) ||
+                (lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
+                (lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
+                (!lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat)) ||
+                (lastGetItemResult.id != getItemResult.id) ||
+                (!lastGetItemResult.label.equals(getItemResult.label))) {
             lastCallResult = currentCallResult;
             lastGetActivePlayerResult = getActivePlayersResult;
             lastGetPropertiesResult = getPropertiesResult;

@@ -17,6 +17,7 @@ package org.xbmc.kore.ui;
 
 import android.content.Intent;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -40,17 +41,27 @@ import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Input;
+import org.xbmc.kore.jsonrpc.method.Player;
+import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
+import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.NotificationService;
 import org.xbmc.kore.ui.hosts.AddHostActivity;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.jsonrpcCommonCalls;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -120,6 +131,9 @@ public class RemoteActivity extends BaseActivity
 
         setupActionBar();
 
+        // If we should start playing something
+        handleStartIntent(getIntent());
+
 //        // Setup system bars and content padding
 //        setupSystemBarsColors();
 //        // Set the padding of views.
@@ -160,12 +174,16 @@ public class RemoteActivity extends BaseActivity
             switch (keyCode) {
                 case KeyEvent.KEYCODE_VOLUME_UP:
                     if (action == KeyEvent.ACTION_DOWN) {
-                        new Application.SetVolume(GlobalType.IncrementDecrement.INCREMENT).execute(hostManager.getConnection(), null, null);
+                        new Application
+                                .SetVolume(GlobalType.IncrementDecrement.INCREMENT)
+                                .execute(hostManager.getConnection(), null, null);
                     }
                     return true;
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
                     if (action == KeyEvent.ACTION_DOWN) {
-                        new Application.SetVolume(GlobalType.IncrementDecrement.DECREMENT).execute(hostManager.getConnection(), null, null);
+                        new Application
+                                .SetVolume(GlobalType.IncrementDecrement.DECREMENT)
+                                .execute(hostManager.getConnection(), null, null);
                     }
                     return true;
             }
@@ -296,6 +314,101 @@ public class RemoteActivity extends BaseActivity
             }
         }
     }
+
+    /**
+     * Handles the intent that started this activity, namely to start playing something on Kodi
+     * @param intent Start intent for the activity
+     */
+    private void handleStartIntent(Intent intent) {
+        final String action = intent.getAction();
+        // Check action
+        if ((action == null) || !action.equals(Intent.ACTION_SEND)) return;
+
+        // Get the URI, which is stored in Extras
+        final Uri youTubeUri = getYouTubeUri(intent.getStringExtra(Intent.EXTRA_TEXT));
+        if (youTubeUri == null) return;
+
+        final String videoId = getYouTubeVideoId(youTubeUri);
+        if (videoId == null) return;
+
+        String kodiAddonUrl = "plugin://plugin.video.youtube/?path=/root/search&action=play_video&videoid="
+                + videoId;
+
+        queueMediaFile(VIDEO_PLAYLISTID, kodiAddonUrl, new Handler());
+    }
+
+    private static final int VIDEO_PLAYLISTID = 1;
+
+    private void queueMediaFile(final int playlistId, final String file, final Handler callbackHandler) {
+        PlaylistType.Item item = new PlaylistType.Item();
+        item.file = file;
+        Playlist.Add action = new Playlist.Add(playlistId, item);
+        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String result ) {
+                jsonrpcCommonCalls.startPlaylistIfNoActivePlayers(RemoteActivity.this, playlistId, callbackHandler);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                Toast.makeText(RemoteActivity.this,
+                        String.format(getString(R.string.error_queue_media_file), description),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, callbackHandler);
+
+    }
+
+
+
+    /**
+     * Returns the YouTube Uri that the YouTube app passes in EXTRA_TEXT
+     * YouTube sends something like: [Video title]: [YouTube URL] so we need
+     * to get the second part
+     *
+     * @param extraText EXTRA_TEXT passed in the intent
+     * @return Uri present in extraText if present
+     */
+    private Uri getYouTubeUri(String extraText) {
+        if (extraText == null) return null;
+
+        for (String word : extraText.split(" ")) {
+            if (word.startsWith("http://") || word.startsWith("https://")) {
+                try {
+                    URL validUri = new URL(word);
+                    return Uri.parse(word);
+                } catch (MalformedURLException exc) {
+                    LogUtils.LOGD(TAG, "Got a malformed URL in an intent: " + word);
+                    return null;
+                }
+
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the youtube video ID from its URL
+     *
+     * @param playuri Youtube URL
+     * @return Youtube Video ID
+     */
+    private String getYouTubeVideoId(Uri playuri) {
+        if (playuri.getHost().endsWith("youtube.com") || playuri.getHost().endsWith("youtu.be")) {
+            // We'll need to get the v= parameter from the URL
+            final Pattern pattern =
+                    Pattern.compile("(?:https?:\\/\\/)?(?:www\\.)?youtu(?:.be\\/|be\\.com\\/watch\\?v=)([\\w-]{11})",
+                            Pattern.CASE_INSENSITIVE);
+//			final Pattern pattern = Pattern.compile("^http(:?s)?:\\/\\/(?:www\\.)?(?:youtube\\.com|youtu\\.be)\\/watch\\?(?=.*v=([\\w-]+))(?:\\S+)?$", Pattern.CASE_INSENSITIVE);
+//			final Pattern pattern = Pattern.compile(".*v=([a-z0-9_\\-]+)(?:&.)*", Pattern.CASE_INSENSITIVE);
+            final Matcher matcher = pattern.matcher(playuri.toString());
+            if (matcher.matches()) {
+                return matcher.group(1);
+            }
+        }
+        return null;
+    }
+
 
     // Default page change listener, that doesn't scroll images
     ViewPager.OnPageChangeListener defaultOnPageChangeListener = new ViewPager.OnPageChangeListener() {

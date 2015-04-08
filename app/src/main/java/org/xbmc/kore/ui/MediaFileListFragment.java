@@ -49,6 +49,7 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
+import org.xbmc.kore.utils.jsonrpcCommonCalls;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -345,8 +346,6 @@ public class MediaFileListFragment extends Fragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                if (!isAdded()) return;
-
                 while (mediaQueueFileLocation.size() > 0) {
                     queueMediaFile(mediaQueueFileLocation.poll());
                 }
@@ -355,13 +354,11 @@ public class MediaFileListFragment extends Fragment {
             @Override
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
-
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_play_media_file), description),
                         Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
-
     }
 
     private void queueMediaFile(final FileLocation loc) {
@@ -371,65 +368,18 @@ public class MediaFileListFragment extends Fragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result ) {
-                if (!isAdded()) return;
-
-                startPlayingIfNoActivePlayers();
+                jsonrpcCommonCalls.startPlaylistIfNoActivePlayers(getActivity(), playlistId, callbackHandler);
             }
 
             @Override
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
-
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_queue_media_file), description),
                         Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
 
-    }
-
-    private void startPlayingIfNoActivePlayers() {
-        Player.GetActivePlayers action = new Player.GetActivePlayers();
-        action.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlayerType.GetActivePlayersReturnType>>() {
-            @Override
-            public void onSuccess(ArrayList<PlayerType.GetActivePlayersReturnType> result ) {
-                if (!isAdded()) return;
-
-                // find out if any player is running. If it is not, start one
-                if (result.size() == 0) {
-                    startPlaying(playlistId);
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-
-                Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_get_active_player), description),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }, callbackHandler);
-
-    }
-
-    private void startPlaying(int playlistID) {
-        Player.Open action = new Player.Open(playlistID);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result ) {
-                if (!isAdded()) return;
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-
-                Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_play_media_file), description),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }, callbackHandler);
     }
 
     /**

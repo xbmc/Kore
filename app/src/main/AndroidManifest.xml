@@ -21,6 +21,14 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- Intent filter for sharing from youtube player -->
+            <intent-filter android:label="@string/play_on_kodi">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+
         </activity>
 
         <activity android:name="org.xbmc.kore.ui.hosts.HostManagerActivity"/>

@@ -714,8 +714,8 @@ public class NowPlayingFragment extends Fragment
                 poster = getItemResult.thumbnail;
 
                 genreSeason = null;
-                year = null;
-                descriptionPlot = null;
+                year = getItemResult.premiered;
+                descriptionPlot = removeYouTubeMarkup(getItemResult.plot);
                 rating = 0;
                 maxRating = null;
                 votes = null;
@@ -887,6 +887,17 @@ public class NowPlayingFragment extends Fragment
                 mediaArt.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    /**
+     * Removes some markup that appears on the plot for youtube videos
+     *
+     * @param plot Plot as returned by youtube plugin
+     * @return Plot without markup
+     */
+    private String removeYouTubeMarkup(String plot) {
+        if (plot == null) return null;
+        return plot.replaceAll("\\[.*\\]", "");
     }
 
     private int mediaTotalTime = 0,
