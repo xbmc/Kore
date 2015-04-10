@@ -203,7 +203,7 @@ public class PlaylistFragment extends Fragment
 //        return super.onContextItemSelected(item);
 //    }
 
-    private void forceRefreshPlaylist() {
+    public void forceRefreshPlaylist() {
         // If we are playing something, refresh playlist
         if ((lastCallResult == PLAYER_IS_PLAYING) || (lastCallResult == PLAYER_IS_PAUSED)) {
             setupPlaylistInfo(lastGetActivePlayerResult, lastGetPropertiesResult, lastGetItemResult);

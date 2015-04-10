@@ -25,6 +25,11 @@ import org.xbmc.kore.utils.JsonUtils;
  */
 public class PlaylistType {
 
+    // Playlist types
+    public static final int MUSIC_PLAYLISTID = 0;
+    public static final int VIDEO_PLAYLISTID = 1;
+    public static final int PICTURE_PLAYLISTID = 2;
+
     /**
      * GetPlaylists return type
      */

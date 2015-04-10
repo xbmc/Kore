@@ -37,6 +37,7 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.method.GUI;
@@ -55,7 +56,6 @@ import org.xbmc.kore.ui.views.CirclePageIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.jsonrpcCommonCalls;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -331,22 +331,85 @@ public class RemoteActivity extends BaseActivity
         final String videoId = getYouTubeVideoId(youTubeUri);
         if (videoId == null) return;
 
-        String kodiAddonUrl = "plugin://plugin.video.youtube/?path=/root/search&action=play_video&videoid="
+        final String kodiAddonUrl = "plugin://plugin.video.youtube/?path=/root/search&action=play_video&videoid="
                 + videoId;
 
-        queueMediaFile(VIDEO_PLAYLISTID, kodiAddonUrl, new Handler());
+        // Check if any video player is active and play or queue the file depending on that
+        final HostConnection connection = hostManager.getConnection();
+        final Handler callbackHandler = new Handler();
+        Player.GetActivePlayers getActivePlayers = new Player.GetActivePlayers();
+        getActivePlayers.execute(connection, new ApiCallback<ArrayList<PlayerType.GetActivePlayersReturnType>>() {
+            @Override
+            public void onSuccess(ArrayList<PlayerType.GetActivePlayersReturnType> result) {
+                boolean videoIsPlaying = false;
+
+                for (PlayerType.GetActivePlayersReturnType player : result) {
+                    if (player.type.equals(PlayerType.GetActivePlayersReturnType.VIDEO))
+                        videoIsPlaying = true;
+                }
+
+                if (videoIsPlaying) {
+                    LogUtils.LOGD(TAG, "Video is playing");
+                    queueMediaFile(kodiAddonUrl, connection, callbackHandler);
+                } else {
+                    LogUtils.LOGD(TAG, "Nothing is playing");
+                    playMediaFile(kodiAddonUrl, connection, callbackHandler);
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                LogUtils.LOGD(TAG, "Couldn't get active player when handling start intent.");
+                Toast.makeText(RemoteActivity.this,
+                        String.format(getString(R.string.error_get_active_player), description),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, callbackHandler);
     }
 
-    private static final int VIDEO_PLAYLISTID = 1;
-
-    private void queueMediaFile(final int playlistId, final String file, final Handler callbackHandler) {
+    /**
+     * Plays the given media file
+     * @param file File to play
+     * @param connection Host connection
+     * @param callbackHandler Handler to use for posting callbacks
+     */
+    private void playMediaFile(final String file, final HostConnection connection, final Handler callbackHandler) {
         PlaylistType.Item item = new PlaylistType.Item();
         item.file = file;
-        Playlist.Add action = new Playlist.Add(playlistId, item);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+        Player.Open action = new Player.Open(item);
+        action.execute(connection, new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String result ) { }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                Toast.makeText(RemoteActivity.this,
+                        String.format(getString(R.string.error_play_media_file), description),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, callbackHandler);
+    }
+
+    /**
+     * Queues the given media file
+     * @param file File to play
+     * @param connection Host connection
+     * @param callbackHandler Handler to use for posting callbacks
+     */
+    private void queueMediaFile(final String file, final HostConnection connection, final Handler callbackHandler) {
+        PlaylistType.Item item = new PlaylistType.Item();
+        item.file = file;
+        Playlist.Add action = new Playlist.Add(PlaylistType.VIDEO_PLAYLISTID, item);
+        action.execute(connection, new ApiCallback<String>() {
             @Override
             public void onSuccess(String result ) {
-                jsonrpcCommonCalls.startPlaylistIfNoActivePlayers(RemoteActivity.this, playlistId, callbackHandler);
+                // Force a refresh of the playlist fragment
+                String tag = "android:switcher:" + viewPager.getId() + ":" + 3;
+                PlaylistFragment playlistFragment = (PlaylistFragment)getSupportFragmentManager()
+                        .findFragmentByTag(tag);
+                if (playlistFragment != null) {
+                    playlistFragment.forceRefreshPlaylist();
+                }
             }
 
             @Override
@@ -356,9 +419,7 @@ public class RemoteActivity extends BaseActivity
                         Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
-
     }
-
 
 
     /**

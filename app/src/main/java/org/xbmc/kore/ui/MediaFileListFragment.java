@@ -39,6 +39,7 @@ import android.widget.Toast;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Files;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
@@ -49,7 +50,6 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
-import org.xbmc.kore.utils.jsonrpcCommonCalls;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -70,9 +70,6 @@ public class MediaFileListFragment extends Fragment {
     public static final String ROOT_PATH_CONTENTS = "rootPathContents";
     public static final String ROOT_VISITED = "rootVisited";
     private static final String ADDON_SOURCE = "addons:";
-    private static final int MUSIC_PLAYLISTID = 0;
-    private static final int VIDEO_PLAYLISTID = 1;
-    private static final int PICTURE_PLAYLISTID = 2;
 
     private HostManager hostManager;
     /**
@@ -82,7 +79,7 @@ public class MediaFileListFragment extends Fragment {
 
     String mediaType = Files.Media.MUSIC;
     String parentDirectory = null;
-    int playlistId = MUSIC_PLAYLISTID;             // this is the ID of the music player
+    int playlistId = PlaylistType.MUSIC_PLAYLISTID;             // this is the ID of the music player
     private MediaFileListAdapter adapter = null;
     boolean browseRootAlready = false;
 
@@ -121,9 +118,9 @@ public class MediaFileListFragment extends Fragment {
         if (args != null) {
             mediaType = args.getString(MEDIA_TYPE, Files.Media.MUSIC);
             if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
-                playlistId = VIDEO_PLAYLISTID;
+                playlistId = PlaylistType.VIDEO_PLAYLISTID;
             } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
-                playlistId = PICTURE_PLAYLISTID;
+                playlistId = PlaylistType.PICTURE_PLAYLISTID;
             }
         }
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
@@ -154,9 +151,9 @@ public class MediaFileListFragment extends Fragment {
             mediaType = savedInstanceState.getString(MEDIA_TYPE);
             //currentPath = savedInstanceState.getString(CURRENT_PATH);
             if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
-                playlistId = VIDEO_PLAYLISTID;
+                playlistId = PlaylistType.VIDEO_PLAYLISTID;
             } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
-                playlistId = PICTURE_PLAYLISTID;
+                playlistId = PlaylistType.PICTURE_PLAYLISTID;
             }
             ArrayList<FileLocation> list = savedInstanceState.getParcelableArrayList(PATH_CONTENTS);
             rootFileLocation = savedInstanceState.getParcelableArrayList(ROOT_PATH_CONTENTS);
@@ -339,6 +336,10 @@ public class MediaFileListFragment extends Fragment {
 
     }
 
+    /**
+     * Starts playing the given media file
+     * @param filename Filename to start playing
+     */
     private void playMediaFile(final String filename) {
         PlaylistType.Item item = new PlaylistType.Item();
         item.file = filename;
@@ -347,7 +348,7 @@ public class MediaFileListFragment extends Fragment {
             @Override
             public void onSuccess(String result) {
                 while (mediaQueueFileLocation.size() > 0) {
-                    queueMediaFile(mediaQueueFileLocation.poll());
+                    queueMediaFile(mediaQueueFileLocation.poll().file);
                 }
             }
 
@@ -361,14 +362,19 @@ public class MediaFileListFragment extends Fragment {
         }, callbackHandler);
     }
 
-    private void queueMediaFile(final FileLocation loc) {
+    /**
+     * Queues the given media file on the active playlist, and starts it if nothing is playing
+     * @param filename File to queue
+     */
+    private void queueMediaFile(final String filename) {
+        final HostConnection connection = hostManager.getConnection();
         PlaylistType.Item item = new PlaylistType.Item();
-        item.file = loc.file;
+        item.file = filename;
         Playlist.Add action = new Playlist.Add(playlistId, item);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+        action.execute(connection, new ApiCallback<String>() {
             @Override
             public void onSuccess(String result ) {
-                jsonrpcCommonCalls.startPlaylistIfNoActivePlayers(getActivity(), playlistId, callbackHandler);
+                startPlaylistIfNoActivePlayers(connection, playlistId, callbackHandler);
             }
 
             @Override
@@ -376,6 +382,47 @@ public class MediaFileListFragment extends Fragment {
                 if (!isAdded()) return;
                 Toast.makeText(getActivity(),
                         String.format(getString(R.string.error_queue_media_file), description),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, callbackHandler);
+    }
+
+    /**
+     * Starts a playlist if no active players are playing
+     * @param connection Host connection
+     * @param playlistId PlaylistId to start
+     * @param callbackHandler Handler on which to post method callbacks
+     */
+    private void startPlaylistIfNoActivePlayers(final HostConnection connection,
+                                                final int playlistId,
+                                                final Handler callbackHandler) {
+        Player.GetActivePlayers action = new Player.GetActivePlayers();
+        action.execute(connection, new ApiCallback<ArrayList<PlayerType.GetActivePlayersReturnType>>() {
+            @Override
+            public void onSuccess(ArrayList<PlayerType.GetActivePlayersReturnType> result ) {
+                // find out if any player is running. If it is not, start one
+                if (result.isEmpty()) {
+                    Player.Open action = new Player.Open(playlistId);
+                    action.execute(connection, new ApiCallback<String>() {
+                        @Override
+                        public void onSuccess(String result) { }
+
+                        @Override
+                        public void onError(int errorCode, String description) {
+                            if (!isAdded()) return;
+                            Toast.makeText(getActivity(),
+                                    String.format(getString(R.string.error_play_media_file), description),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }, callbackHandler);
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
+                Toast.makeText(getActivity(),
+                        String.format(getString(R.string.error_get_active_player), description),
                         Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
@@ -428,7 +475,7 @@ public class MediaFileListFragment extends Fragment {
 
                                 switch (item.getItemId()) {
                                     case R.id.action_queue_item:
-                                        queueMediaFile(loc);
+                                        queueMediaFile(loc.file);
                                         return true;
                                     case R.id.action_play_item:
                                         playMediaFile(loc.file);
