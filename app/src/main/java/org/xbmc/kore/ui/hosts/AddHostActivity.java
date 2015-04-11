@@ -120,6 +120,8 @@ public class AddHostActivity extends BaseActivity
                     hostInfo.getUsername());
             args.putString(HostFragmentManualConfiguration.HOST_PASSWORD,
                     hostInfo.getPassword());
+            args.putInt(HostFragmentManualConfiguration.HOST_PROTOCOL,
+                    hostInfo.getProtocol());
             // Ignore Mac Address and Wol Port
 
             // Send this fragment straight to test

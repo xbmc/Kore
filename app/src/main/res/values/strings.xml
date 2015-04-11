@@ -97,6 +97,7 @@
     <string name="wizard_xbmc_tcp_port">TCP port (9090)</string>
     <string name="wizard_xbmc_mac_address">MAC address</string>
     <string name="wizard_xbmc_wol_port">WoL port (9)</string>
+    <string name="wizard_xbmc_use_tcp">Use TCP</string>
 
     <string name="wizard_no_name_specified">Please specify a name for this media center, so you can identify it later.</string>
     <string name="wizard_no_address_specified">Please specify the address of this media center, so I can locate it.</string>

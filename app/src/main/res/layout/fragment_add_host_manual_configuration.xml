@@ -115,19 +115,27 @@
                 android:layout_below="@+id/xbmc_password"
                 android:layout_marginTop="16dp"
                 android:text="@string/wizard_manual_configuration_message_advanced"/>
+
             <EditText
                 android:id="@+id/xbmc_tcp_port"
                 style="@style/TextAppearance.EditText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/text1"
                 android:layout_marginTop="8dp"
-                android:layout_alignLeft="@id/xbmc_name"
                 android:layout_alignRight="@id/xbmc_name"
-
                 android:inputType="number"
-                android:ems="4"
+                android:ems="7"
                 android:hint="@string/wizard_xbmc_tcp_port"/>
+
+            <CheckBox
+                android:id="@+id/xbmc_use_tcp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/xbmc_tcp_port"
+                android:layout_alignLeft="@id/xbmc_name"
+                android:layout_toLeftOf="@id/xbmc_tcp_port"
+                android:text="@string/wizard_xbmc_use_tcp"/>
 
             <EditText
                 android:id="@+id/xbmc_wol_port"
@@ -135,9 +143,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/xbmc_tcp_port"
+                android:layout_alignLeft="@id/xbmc_tcp_port"
                 android:layout_alignRight="@id/xbmc_tcp_port"
                 android:inputType="number"
-                android:ems="6"
                 android:hint="@string/wizard_xbmc_wol_port"/>
 
             <EditText
@@ -146,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/xbmc_wol_port"
-                android:layout_alignLeft="@id/xbmc_tcp_port"
+                android:layout_alignLeft="@id/xbmc_name"
                 android:layout_toLeftOf="@id/xbmc_wol_port"
                 android:inputType="text"
                 android:hint="@string/wizard_xbmc_mac_address"/>

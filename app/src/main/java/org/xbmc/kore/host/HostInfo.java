@@ -114,7 +114,7 @@ public class HostInfo {
 
 	/**
 	 * Auxiliary constructor for HTTP protocol.
-	 * This constructoor should only be used to test connections. It doesn't represent an
+	 * This constructor should only be used to test connections. It doesn't represent an
 	 * instance of the host in the database.
 	 *
 	 * @param name Friendly name of the host
@@ -123,8 +123,9 @@ public class HostInfo {
 	 * @param username Username for basic auth
 	 * @param password Password for basic auth
 	 */
-	public HostInfo(String name, String address, int httpPort, int tcpPort, String username, String password) {
-		this(-1, name, address, HostConnection.PROTOCOL_TCP, httpPort, tcpPort, username,
+	public HostInfo(String name, String address, int protocol, int httpPort,
+                    int tcpPort, String username, String password) {
+        this(-1, name, address, protocol, httpPort, tcpPort, username,
                 password, null, DEFAULT_WOL_PORT);
 	}
 

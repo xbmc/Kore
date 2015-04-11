@@ -70,6 +70,8 @@ public class EditHostActivity extends BaseActivity implements
                             selectedHostInfo.getUsername());
                     args.putString(HostFragmentManualConfiguration.HOST_PASSWORD,
                             selectedHostInfo.getPassword());
+                    args.putInt(HostFragmentManualConfiguration.HOST_PROTOCOL,
+                            selectedHostInfo.getProtocol());
                     args.putString(HostFragmentManualConfiguration.HOST_MAC_ADDRESS,
                             selectedHostInfo.getMacAddress());
                     args.putInt(HostFragmentManualConfiguration.HOST_WOL_PORT,

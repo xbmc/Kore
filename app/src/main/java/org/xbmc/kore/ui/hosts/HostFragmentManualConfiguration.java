@@ -26,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -59,7 +61,8 @@ public class HostFragmentManualConfiguration extends Fragment {
             HOST_USERNAME = PREFIX + ".host_username",
             HOST_PASSWORD = PREFIX + ".host_password",
             HOST_MAC_ADDRESS = PREFIX + ".host_mac_address",
-            HOST_WOL_PORT = PREFIX + ".host_wol_port";
+            HOST_WOL_PORT = PREFIX + ".host_wol_port",
+            HOST_PROTOCOL = PREFIX + ".host_protocol";
     public static final String GO_STRAIGHT_TO_TEST = PREFIX + ".go_straight_to_test";
 
     /**
@@ -82,6 +85,7 @@ public class HostFragmentManualConfiguration extends Fragment {
     @InjectView(R.id.xbmc_password) EditText xbmcPasswordEditText;
     @InjectView(R.id.xbmc_mac_address) EditText xbmcMacAddressEditText;
     @InjectView(R.id.xbmc_wol_port) EditText xbmcWolPortEditText;
+    @InjectView(R.id.xbmc_use_tcp) CheckBox xbmcUseTcpCheckbox;
 
     // Handler for callbacks
     final Handler handler = new Handler();
@@ -91,6 +95,15 @@ public class HostFragmentManualConfiguration extends Fragment {
         View root = inflater.inflate(R.layout.fragment_add_host_manual_configuration, container, false);
         ButterKnife.inject(this, root);
 
+        // By default, use TCP
+        xbmcUseTcpCheckbox.setChecked(true);
+        xbmcUseTcpCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                xbmcTcpPortEditText.setEnabled(isChecked);
+            }
+        });
+
         // Check if we were given a host info
         String hostName = getArguments().getString(HOST_NAME);
         String hostAddress = getArguments().getString(HOST_ADDRESS);
@@ -98,6 +111,7 @@ public class HostFragmentManualConfiguration extends Fragment {
         int hostTcpPort = getArguments().getInt(HOST_TCP_PORT, HostInfo.DEFAULT_TCP_PORT);
         String hostUsername = getArguments().getString(HOST_USERNAME);
         String hostPassword = getArguments().getString(HOST_PASSWORD);
+        int hostProtocol = getArguments().getInt(HOST_PROTOCOL, HostConnection.PROTOCOL_TCP);
         String hostMacAddress = getArguments().getString(HOST_MAC_ADDRESS);
         int hostWolPort = getArguments().getInt(HOST_WOL_PORT, HostInfo.DEFAULT_WOL_PORT);
 
@@ -109,6 +123,10 @@ public class HostFragmentManualConfiguration extends Fragment {
                 xbmcUsernameEditText.setText(hostUsername);
             if (!TextUtils.isEmpty(hostPassword))
                 xbmcPasswordEditText.setText(hostPassword);
+
+            xbmcUseTcpCheckbox.setChecked(!(hostProtocol == HostConnection.PROTOCOL_HTTP));
+            xbmcTcpPortEditText.setEnabled(xbmcUseTcpCheckbox.isChecked());
+
             if (hostTcpPort != HostInfo.DEFAULT_TCP_PORT)
                 xbmcTcpPortEditText.setText(String.valueOf(hostTcpPort));
             if (!TextUtils.isEmpty(hostMacAddress))
@@ -200,6 +218,8 @@ public class HostFragmentManualConfiguration extends Fragment {
             xbmcTcpPort = -1;
         }
 
+        int xbmcProtocol = xbmcUseTcpCheckbox.isChecked()? HostConnection.PROTOCOL_TCP : HostConnection.PROTOCOL_HTTP;
+
         String macAddress = xbmcMacAddressEditText.getText().toString();
         aux = xbmcWolPortEditText.getText().toString();
         int xbmcWolPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_WOL_PORT : Integer.valueOf(aux);
@@ -230,9 +250,8 @@ public class HostFragmentManualConfiguration extends Fragment {
             xbmcPassword = null;
 
         // Ok, let's try to ping the host
-        final HostInfo checkedHostInfo = new HostInfo(xbmcName, xbmcAddress,
-                xbmcHttpPort, xbmcTcpPort,
-                xbmcUsername, xbmcPassword);
+        final HostInfo checkedHostInfo = new HostInfo(xbmcName, xbmcAddress, xbmcProtocol,
+                xbmcHttpPort, xbmcTcpPort, xbmcUsername, xbmcPassword);
         checkedHostInfo.setMacAddress(macAddress);
         checkedHostInfo.setWolPort(xbmcWolPort);
 
@@ -259,8 +278,14 @@ public class HostFragmentManualConfiguration extends Fragment {
             @Override
             public void onSuccess(String result) {
                 LogUtils.LOGD(TAG, "Successfully connected to new host through HTTP.");
-                // Great, we managed to connect through HTTP, let's check it's version
-                chainCallCheckTcpConnection(hostConnection, hostInfo);
+                // Great, we managed to connect through HTTP, let's check through tcp
+                if (hostInfo.getProtocol() == HostConnection.PROTOCOL_TCP) {
+                    chainCallCheckTcpConnection(hostConnection, hostInfo);
+                } else {
+                    // We're done
+                    hostConnection.disconnect();
+                    hostConnectionChecked(hostInfo);
+                }
             }
 
             @Override
@@ -279,19 +304,19 @@ public class HostFragmentManualConfiguration extends Fragment {
             @Override
             public void onSuccess(String result) {
                 // Great, we managed to connect through HTTP and TCP
-                hostConnection.disconnect();
                 LogUtils.LOGD(TAG, "Successfully connected to new host through TCP.");
+                hostConnection.disconnect();
                 // Notify connection checked through TCP
-                hostConnectionChecked(hostInfo, HostConnection.PROTOCOL_TCP);
+                hostConnectionChecked(hostInfo);
             }
 
             @Override
             public void onError(int errorCode, String description) {
                 // We only managed to connect through HTTP, revert checkedHostInfo to use HTTP
-                hostConnection.disconnect();
                 LogUtils.LOGD(TAG, "Couldn't connect to host through TCP. Message: " + description);
-                // Notify connection checked through TCP
-                hostConnectionChecked(hostInfo, HostConnection.PROTOCOL_HTTP);
+                hostConnection.disconnect();
+                hostInfo.setProtocol(HostConnection.PROTOCOL_HTTP);
+                hostConnectionChecked(hostInfo);
             }
         }, handler);
     }
@@ -301,8 +326,7 @@ public class HostFragmentManualConfiguration extends Fragment {
      * with it
      * @param hostInfo {@link HostInfo} to add
      */
-    private void hostConnectionChecked(final HostInfo hostInfo, int protocol) {
-        hostInfo.setProtocol(protocol);
+    private void hostConnectionChecked(final HostInfo hostInfo) {
         // Let's get the MAC Address, if we don't have one
         if (TextUtils.isEmpty(hostInfo.getMacAddress())) {
             new Thread(new Runnable() {
