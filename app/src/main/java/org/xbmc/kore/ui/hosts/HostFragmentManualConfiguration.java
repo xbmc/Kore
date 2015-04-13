@@ -222,7 +222,13 @@ public class HostFragmentManualConfiguration extends Fragment {
 
         String macAddress = xbmcMacAddressEditText.getText().toString();
         aux = xbmcWolPortEditText.getText().toString();
-        int xbmcWolPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_WOL_PORT : Integer.valueOf(aux);
+
+        int xbmcWolPort = HostInfo.DEFAULT_WOL_PORT;
+        try {
+            xbmcWolPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_WOL_PORT : Integer.valueOf(aux);
+        } catch (NumberFormatException exc) {
+            // Ignoring this exception and keeping WoL port at the default value
+        }
 
         // Check Xbmc name and address
         if (TextUtils.isEmpty(xbmcName)) {
