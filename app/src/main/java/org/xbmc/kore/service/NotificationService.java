@@ -118,7 +118,9 @@ public class NotificationService extends Service
         // Gracefully stop
         removeNotification();
         LogUtils.LOGD(TAG, "Shutting down notification service - Task removed");
-        mHostConnectionObserver.unregisterPlayerObserver(this);
+        if (mHostConnectionObserver != null) {
+            mHostConnectionObserver.unregisterPlayerObserver(this);
+        }
         stopSelf();
     }
 
@@ -142,7 +144,9 @@ public class NotificationService extends Service
         removeNotification();
         // Stop service
         LogUtils.LOGD(TAG, "Shutting down notification service - Player stopped");
-        mHostConnectionObserver.unregisterPlayerObserver(this);
+        if (mHostConnectionObserver != null) {
+            mHostConnectionObserver.unregisterPlayerObserver(this);
+        }
         stopSelf();
     }
 
@@ -154,7 +158,9 @@ public class NotificationService extends Service
         removeNotification();
         // Stop service
         LogUtils.LOGD(TAG, "Shutting down notification service - Connection error");
-        mHostConnectionObserver.unregisterPlayerObserver(this);
+        if (mHostConnectionObserver != null) {
+            mHostConnectionObserver.unregisterPlayerObserver(this);
+        }
         stopSelf();
     }
 
@@ -162,7 +168,9 @@ public class NotificationService extends Service
         removeNotification();
         // Stop service
         LogUtils.LOGD(TAG, "Shutting down notification service - System quit");
-        mHostConnectionObserver.unregisterPlayerObserver(this);
+        if (mHostConnectionObserver != null) {
+            mHostConnectionObserver.unregisterPlayerObserver(this);
+        }
         stopSelf();
     }
 
