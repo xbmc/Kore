@@ -114,6 +114,7 @@ public class HostManager {
                                    .query(MediaContract.Hosts.CONTENT_URI,
                                            MediaContract.Hosts.ALL_COLUMNS,
                                            null, null, null);
+            if (cursor == null) return hosts;
 
             if (cursor.getCount() > 0) {
                 while (cursor.moveToNext()) {
