@@ -446,7 +446,9 @@ public class MediaFileListFragment extends Fragment {
             p = path.substring(0, path.length() - 1);
         }
 
-        p = p.substring(0, p.lastIndexOf(pathSymbol));
+        if (p.lastIndexOf(pathSymbol) != -1) {
+            p = p.substring(0, p.lastIndexOf(pathSymbol));
+        }
         p = p + pathSymbol;            // add it back to make it look like path
         return p;
     }
