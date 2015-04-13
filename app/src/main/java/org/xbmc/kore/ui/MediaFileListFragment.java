@@ -722,7 +722,7 @@ public class MediaFileListFragment extends Fragment {
             out.writeString(artUrl);
         }
 
-        public final Parcelable.Creator<FileLocation> CREATOR = new Parcelable.Creator<FileLocation>() {
+        public static final Parcelable.Creator<FileLocation> CREATOR = new Parcelable.Creator<FileLocation>() {
             public FileLocation createFromParcel(Parcel in) {
                 return new FileLocation(in);
             }
