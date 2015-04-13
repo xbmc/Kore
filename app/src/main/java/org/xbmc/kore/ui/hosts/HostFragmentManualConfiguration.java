@@ -343,16 +343,20 @@ public class HostFragmentManualConfiguration extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
-                            listener.onHostManualConfigurationNext(hostInfo);
+                            if (isAdded()) {
+                                progressDialog.dismiss();
+                                listener.onHostManualConfigurationNext(hostInfo);
+                            }
                         }
                     });
                 }
             }).start();
         } else {
             // Mac address was supplied
-            progressDialog.dismiss();
-            listener.onHostManualConfigurationNext(hostInfo);
+            if (isAdded()) {
+                progressDialog.dismiss();
+                listener.onHostManualConfigurationNext(hostInfo);
+            }
         }
     }
 
@@ -362,6 +366,8 @@ public class HostFragmentManualConfiguration extends Fragment {
      * @param description Description
      */
     private void hostConnectionError(int errorCode, String description) {
+        if (!isAdded()) return;
+
         progressDialog.dismiss();
         LogUtils.LOGD(TAG, "An error occurred during connection testint. Message: " + description);
         switch (errorCode) {
