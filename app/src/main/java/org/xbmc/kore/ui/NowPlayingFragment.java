@@ -652,7 +652,7 @@ public class NowPlayingFragment extends Fragment
                 poster = getItemResult.thumbnail;
 
                 genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
-                year = String.format("%d", getItemResult.year);
+                year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
                 descriptionPlot = getItemResult.plot;
                 rating = getItemResult.rating;
                 maxRating = getString(R.string.max_rating_video);
@@ -682,7 +682,7 @@ public class NowPlayingFragment extends Fragment
                 poster = getItemResult.thumbnail;
 
                 genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
-                year = String.format("%d", getItemResult.year);
+                year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
                 descriptionPlot = getItemResult.description;
                 rating = getItemResult.rating;
                 maxRating = getString(R.string.max_rating_music);
@@ -698,7 +698,7 @@ public class NowPlayingFragment extends Fragment
                 poster = getItemResult.thumbnail;
 
                 genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
-                year = String.format("%d", getItemResult.year);
+                year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
                 descriptionPlot = getItemResult.plot;
                 rating = 0;
                 maxRating = null;
