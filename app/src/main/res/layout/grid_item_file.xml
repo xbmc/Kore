@@ -45,13 +45,13 @@
             style="@style/TextAppearance.Medialist.OtherInfo"/>
         <ImageView
             android:id="@+id/list_context_menu"
-            android:layout_width="@dimen/medium_icon_size"
-            android:layout_height="@dimen/medium_icon_size"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
             android:layout_alignTop="@id/art"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:background="?android:attr/selectableItemBackground"
-            android:padding="4dp"
+            android:padding="@dimen/default_icon_padding"
             android:src="?attr/iconOverflow"
             android:contentDescription="@string/action_options"/>
 

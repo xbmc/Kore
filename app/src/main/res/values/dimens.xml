@@ -77,7 +77,7 @@
     <dimen name="default_grid_vertical_spacing">0dp</dimen>
 
     <dimen name="playlist_art_width">56dp</dimen>
-    <dimen name="playlist_art_heigth">72dp</dimen>
+    <dimen name="playlist_art_heigth">78dp</dimen>
 
     <dimen name="movielist_art_width">68dp</dimen>
     <dimen name="movielist_art_heigth">104dp</dimen>
@@ -115,8 +115,8 @@
     <dimen name="addondetail_poster_width">112dp</dimen>
     <dimen name="addondetail_poster_heigth">112dp</dimen>
 
-    <dimen name="filelist_art_width">56dp</dimen>
-    <dimen name="filelist_art_heigth">72dp</dimen>
+    <dimen name="filelist_art_width">52dp</dimen>
+    <dimen name="filelist_art_heigth">76dp</dimen>
 
     <!-- Notification -->
     <dimen name="notification_height">64dp</dimen>
