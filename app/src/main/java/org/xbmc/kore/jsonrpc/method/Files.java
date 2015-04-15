@@ -149,13 +149,12 @@ public class Files {
 
         @Override
         public List<ListType.ItemFile> resultFromJson(ObjectNode jsonObject) throws ApiException {
-
-            JsonNode resultNode = jsonObject.get(RESULT_NODE);
-            ArrayNode items = resultNode.has(FILE_NODE) ?
-                    (ArrayNode) resultNode.get(FILE_NODE) : null;
-            if (items == null) {
+            JsonNode fileNode = jsonObject.get(RESULT_NODE)
+                    .get(FILE_NODE);
+            if (fileNode == null || fileNode.isNull()) {
                 return new ArrayList<ListType.ItemFile>(0);
             }
+            ArrayNode items = (ArrayNode) fileNode;
             ArrayList<ListType.ItemFile> result = new ArrayList<ListType.ItemFile>(items.size());
             for (JsonNode item : items) {
                 result.add(new ListType.ItemFile(item));
