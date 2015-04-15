@@ -205,6 +205,7 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:ellipsize">middle</item>
     </style>
 
     <style name="TextAppearance.Playlist.Details">
@@ -224,6 +225,7 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:ellipsize">middle</item>
     </style>
 
     <style name="TextAppearance.Medialist.Details">
