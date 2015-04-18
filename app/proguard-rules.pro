@@ -15,6 +15,9 @@
 # Picasso
 -dontwarn com.squareup.okhttp.**
 
+# okio via OkHttp
+-dontwarn okio.**
+
 # Butterknife
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }

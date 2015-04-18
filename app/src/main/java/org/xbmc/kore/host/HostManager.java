@@ -21,14 +21,26 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Base64;
 
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+
+import org.xbmc.kore.BuildConfig;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.utils.BasicAuthPicassoDownloader;
+import org.xbmc.kore.utils.BasicAuthUrlConnectionDownloader;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.NetUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -195,9 +207,40 @@ public class HostManager {
         if (currentPicasso == null) {
             currentHostInfo = getHostInfo();
             if (currentHostInfo != null) {
+//                currentPicasso = new Picasso.Builder(context)
+//                        .downloader(new BasicAuthUrlConnectionDownloader(context,
+//                                currentHostInfo.getUsername(), currentHostInfo.getPassword()))
+//                        .indicatorsEnabled(BuildConfig.DEBUG)
+//                        .build();
+
+                // Http client should already handle authentication
+                OkHttpClient picassoClient = getConnection().getOkHttpClient().clone();
+
+//                OkHttpClient picassoClient = new OkHttpClient();
+//                // Set authentication on the client
+//                if (!TextUtils.isEmpty(currentHostInfo.getUsername())) {
+//                    picassoClient.interceptors().add(new Interceptor() {
+//                        @Override
+//                        public Response intercept(Chain chain) throws IOException {
+//
+//                            String creds = currentHostInfo.getUsername() + ":" + currentHostInfo.getPassword();
+//                            Request newRequest = chain.request().newBuilder()
+//                                    .addHeader("Authorization",
+//                                            "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP))
+//                                    .build();
+//                            return chain.proceed(newRequest);
+//                        }
+//                    });
+//                }
+
+                // Set cache
+                File cacheDir = NetUtils.createDefaultCacheDir(context);
+                long cacheSize = NetUtils.calculateDiskCacheSize(cacheDir);
+                picassoClient.setCache(new com.squareup.okhttp.Cache(cacheDir,cacheSize));
+
                 currentPicasso = new Picasso.Builder(context)
-                        .downloader(new BasicAuthPicassoDownloader(context,
-                                currentHostInfo.getUsername(), currentHostInfo.getPassword()))
+                        .downloader(new OkHttpDownloader(picassoClient))
+//                        .indicatorsEnabled(BuildConfig.DEBUG)
                         .build();
             }
         }

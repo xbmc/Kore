@@ -17,31 +17,36 @@ package org.xbmc.kore.jsonrpc;
 
 import android.os.Handler;
 import android.os.Process;
-import android.util.Base64;
+import android.text.TextUtils;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.squareup.okhttp.Authenticator;
+import com.squareup.okhttp.Credentials;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.Player;
 import org.xbmc.kore.jsonrpc.notification.System;
 import org.xbmc.kore.utils.LogUtils;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
-import java.net.ProtocolException;
+import java.net.Proxy;
 import java.net.Socket;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class responsible for communicating with the host.
@@ -139,6 +144,18 @@ public class HostConnection {
     private static final int DEFAULT_CONNECT_TIMEOUT = 5000; // ms
 
     private static final int TCP_READ_TIMEOUT = 30000; // ms
+
+    /**
+     * OkHttpClient. Make sure it is initialized, by calling {@link #getOkHttpClient()}
+     */
+    private OkHttpClient httpClient = null;
+    private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json");
+
+    /**
+     * Workaround for connection issues with Kodi. If we get a protocol exception,
+     * disable conn pooling (disable keep-alive) and try again
+     */
+    private boolean disableConnectionPooling = false;
 
     /**
      * Creates a new host connection
@@ -258,7 +275,8 @@ public class HostConnection {
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 if (protocol == PROTOCOL_HTTP) {
-                    executeThroughHTTP(method, callback, handler);
+//                    executeThroughHttp(method, callback, handler);
+                    executeThroughOkHttp(method, callback, handler);
                 } else {
                     executeThroughTcp(method, callback, handler);
                 }
@@ -269,60 +287,154 @@ public class HostConnection {
 		//new Thread(command).start();
 	}
 
-	/**
-	 * Sends the JSON RPC request through HTTP
-	 */
-	private <T> void executeThroughHTTP(final ApiMethod<T> method, final ApiCallback<T> callback,
-										final Handler handler) {
-		String jsonRequest = method.toJsonString();
-		try {
-			HttpURLConnection connection = openHttpConnection(hostInfo);
-			sendHttpRequest(connection, jsonRequest);
-			// Read response and convert it
-			final T result = method.resultFromJson(parseJsonResponse(readHttpResponse(connection)));
-
-            if ((handler != null) && (callback != null)) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onSuccess(result);
-                    }
-                });
-            }
-		} catch (final ApiException e) {
-			// Got an error, call error handler
-
-            if ((handler != null) && (callback != null)) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onError(e.getCode(), e.getMessage());
-                    }
-                });
-            }
-		}
-	}
+//	/**
+//	 * Sends the JSON RPC request through HTTP
+//	 */
+//	private <T> void executeThroughHttp(final ApiMethod<T> method, final ApiCallback<T> callback,
+//                                        final Handler handler) {
+//		String jsonRequest = method.toJsonString();
+//		try {
+//			HttpURLConnection connection = openHttpConnection(hostInfo);
+//			sendHttpRequest(connection, jsonRequest);
+//			// Read response and convert it
+//			final T result = method.resultFromJson(parseJsonResponse(readHttpResponse(connection)));
+//
+//            if ((handler != null) && (callback != null)) {
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        callback.onSuccess(result);
+//                    }
+//                });
+//            }
+//		} catch (final ApiException e) {
+//			// Got an error, call error handler
+//
+//            if ((handler != null) && (callback != null)) {
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        callback.onError(e.getCode(), e.getMessage());
+//                    }
+//                });
+//            }
+//		}
+//	}
+//
+//    /**
+//	 * Auxiliary method to open a HTTP connection.
+//	 * This method calls connect() so that any errors are cathced
+//	 * @param hostInfo Host info
+//	 * @return Connection set up
+//	 * @throws ApiException
+//	 */
+//	private HttpURLConnection openHttpConnection(HostInfo hostInfo) throws ApiException {
+//		try {
+////			LogUtils.LOGD(TAG, "Opening HTTP connection.");
+//			HttpURLConnection connection = (HttpURLConnection) new URL(hostInfo.getJsonRpcHttpEndpoint()).openConnection();
+//			connection.setRequestMethod("POST");
+//			connection.setConnectTimeout(connectTimeout);
+//			//connection.setReadTimeout(connectTimeout);
+//			connection.setRequestProperty("Content-Type", "application/json");
+//			connection.setDoOutput(true);
+//
+//			// http basic authorization
+//			if ((hostInfo.getUsername() != null) && !hostInfo.getUsername().isEmpty() &&
+//				(hostInfo.getPassword() != null) && !hostInfo.getPassword().isEmpty()) {
+//				final String token = Base64.encodeToString((hostInfo.getUsername() + ":" +
+//					hostInfo.getPassword()).getBytes(), Base64.DEFAULT);
+//				connection.setRequestProperty("Authorization", "Basic " + token);
+//			}
+//
+//			// Check the connection
+//			connection.connect();
+//			return connection;
+//		} catch (ProtocolException e) {
+//			// Won't try to catch this
+//			LogUtils.LOGE(TAG, "Got protocol exception while opening HTTP connection.", e);
+//			throw new RuntimeException(e);
+//		} catch (IOException e) {
+//			LogUtils.LOGW(TAG, "Failed to open HTTP connection.", e);
+//			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_CONNECTING, e);
+//		}
+//	}
+//
+//	/**
+//	 * Send an HTTP POST request
+//	 * @param connection Open connection
+//	 * @param request Request to send
+//	 * @throws ApiException
+//	 */
+//	private void sendHttpRequest(HttpURLConnection connection, String request) throws ApiException {
+//		try {
+//            LogUtils.LOGD(TAG, "Sending request via HTTP: " + request);
+//			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+//			out.write(request);
+//			out.flush();
+//			out.close();
+//		} catch (IOException e) {
+//			LogUtils.LOGW(TAG, "Failed to send HTTP request.", e);
+//			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
+//		}
+//	}
+//
+//	/**
+//	 * Reads the response from the server
+//	 * @param connection Connection
+//	 * @return Response read
+//	 * @throws ApiException
+//	 */
+//	private String readHttpResponse(HttpURLConnection connection) throws ApiException {
+//		try {
+////			LogUtils.LOGD(TAG, "Reading HTTP response.");
+//			int responseCode = connection.getResponseCode();
+//
+//			switch (responseCode) {
+//				case 200:
+//					// All ok, read response
+//					BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//					StringBuilder response = new StringBuilder();
+//					String inputLine;
+//					while ((inputLine = in.readLine()) != null)
+//						response.append(inputLine);
+//					in.close();
+//					LogUtils.LOGD(TAG, "HTTP response: " + response.toString());
+//					return response.toString();
+//				case 401:
+//					LogUtils.LOGD(TAG, "HTTP response read error. Got a 401.");
+//					throw new ApiException(ApiException.HTTP_RESPONSE_CODE_UNAUTHORIZED,
+//						"Server returned response code: " + responseCode);
+//				case 404:
+//					LogUtils.LOGD(TAG, "HTTP response read error. Got a 404.");
+//					throw new ApiException(ApiException.HTTP_RESPONSE_CODE_NOT_FOUND,
+//						"Server returned response code: " + responseCode);
+//				default:
+//					LogUtils.LOGD(TAG, "HTTP response read error. Got: " + responseCode);
+//					throw new ApiException(ApiException.HTTP_RESPONSE_CODE_UNKNOWN,
+//						"Server returned response code: " + responseCode);
+//			}
+//		} catch (IOException e) {
+//			LogUtils.LOGW(TAG, "Failed to read HTTP response.", e);
+//			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_READING_RESPONSE, e);
+//		}
+//	}
 
     /**
-     * Sends the JSON RPC request through HTTP, and calls the callback with the raw response,
-     * not parsed into the internal representation.
-     * Useful for sync methods that don't want to incur the overhead of constructing the
-     * internal objects.
-     *
-     * @param method Method object that represents the method too call
-     * @param callback {@link ApiCallback} to post the response to. This will be the raw
-     * {@link ObjectNode} received
-     * @param handler {@link Handler} to invoke callbacks on
-     * @param <T> Method return type
+     * Sends the JSON RPC request through HTTP (using OkHttp library)
      */
-    public <T> void executeRaw(final ApiMethod<T> method, final ApiCallback<ObjectNode> callback,
-                                     final Handler handler) {
+    private <T> void executeThroughOkHttp(final ApiMethod<T> method, final ApiCallback<T> callback,
+                                          final Handler handler) {
+        OkHttpClient client = getOkHttpClient();
         String jsonRequest = method.toJsonString();
+
         try {
-            HttpURLConnection connection = openHttpConnection(hostInfo);
-            sendHttpRequest(connection, jsonRequest);
-            // Read response and convert it
-            final ObjectNode result = parseJsonResponse(readHttpResponse(connection));
+            Request request = new Request.Builder()
+                    .url(hostInfo.getJsonRpcHttpEndpoint())
+                    .post(RequestBody.create(MEDIA_TYPE_JSON, jsonRequest))
+                    .build();
+
+            Response response = sendOkHttpRequest(request);
+            final T result = method.resultFromJson(parseJsonResponse(handleOkHttpResponse(response)));
 
             if ((handler != null) && (callback != null)) {
                 handler.post(new Runnable() {
@@ -345,107 +457,85 @@ public class HostConnection {
         }
     }
 
+    /**
+     * Initializes this class OkHttpClient
+     */
+    public OkHttpClient getOkHttpClient() {
+        if (httpClient == null) {
+            httpClient = new OkHttpClient();
+            httpClient.setConnectTimeout(connectTimeout, TimeUnit.MILLISECONDS);
+
+            httpClient.setAuthenticator(new Authenticator() {
+                @Override
+                public Request authenticate(Proxy proxy, Response response) throws IOException {
+                    if (TextUtils.isEmpty(hostInfo.getUsername()))
+                        return null;
+
+                    String credential = Credentials.basic(hostInfo.getUsername(), hostInfo.getPassword());
+                    return response.request().newBuilder().header("Authorization", credential).build();
+                }
+
+                @Override
+                public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
+                    return null;
+                }
+            });
+        }
+        return httpClient;
+    }
 
     /**
-	 * Auxiliary method to open a HTTP connection.
-	 * This method calls connect() so that any errors are cathced
-	 * @param hostInfo Host info
-	 * @return Connection set up
-	 * @throws ApiException
-	 */
-	private HttpURLConnection openHttpConnection(HostInfo hostInfo) throws ApiException {
-		try {
-//			LogUtils.LOGD(TAG, "Opening HTTP connection.");
-			HttpURLConnection connection = (HttpURLConnection) new URL(hostInfo.getJsonRpcHttpEndpoint()).openConnection();
-			connection.setRequestMethod("POST");
-			connection.setConnectTimeout(connectTimeout);
-			//connection.setReadTimeout(connectTimeout);
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setDoOutput(true);
+     * Send an OkHttp POST request
+     * @param request Request to send
+     * @throws ApiException
+     */
+    private Response sendOkHttpRequest(Request request) throws ApiException {
+        try {
+            LogUtils.LOGD(TAG, "Sending request via OkHttp: " + request.body());
+            return httpClient.newCall(request).execute();
+        } catch (IOException e) {
+            LogUtils.LOGW(TAG, "Failed to send OkHttp request.", e);
+            throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
+        }
+    }
 
-			// http basic authorization
-			if ((hostInfo.getUsername() != null) && !hostInfo.getUsername().isEmpty() &&
-				(hostInfo.getPassword() != null) && !hostInfo.getPassword().isEmpty()) {
-				final String token = Base64.encodeToString((hostInfo.getUsername() + ":" +
-					hostInfo.getPassword()).getBytes(), Base64.DEFAULT);
-				connection.setRequestProperty("Authorization", "Basic " + token);
-			}
-
-			// Check the connection
-			connection.connect();
-			return connection;
-		} catch (ProtocolException e) {
-			// Won't try to catch this
-			LogUtils.LOGE(TAG, "Got protocol exception while opening HTTP connection.", e);
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			LogUtils.LOGW(TAG, "Failed to open HTTP connection.", e);
-			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_CONNECTING, e);
-		}
-	}
-
-	/**
-	 * Send an HTTP POST request
-	 * @param connection Open connection
-	 * @param request Request to send
-	 * @throws ApiException
-	 */
-	private void sendHttpRequest(HttpURLConnection connection, String request) throws ApiException {
-		try {
-            LogUtils.LOGD(TAG, "Sending request via HTTP: " + request);
-			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-			out.write(request);
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			LogUtils.LOGW(TAG, "Failed to send HTTP request.", e);
-			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
-		}
-
-	}
-
-	/**
-	 * Reads the response from the server
-	 * @param connection Connection
-	 * @return Response read
-	 * @throws ApiException
-	 */
-	private String readHttpResponse(HttpURLConnection connection) throws ApiException {
-		try {
+    /**
+     * Reads the response from the server
+     * @param response Response from OkHttp
+     * @return Response body string
+     * @throws ApiException
+     */
+    private String handleOkHttpResponse(Response response) throws ApiException {
+        try {
 //			LogUtils.LOGD(TAG, "Reading HTTP response.");
-			int responseCode = connection.getResponseCode();
+            int responseCode = response.code();
 
-			switch (responseCode) {
-				case 200:
-					// All ok, read response
-					BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-					StringBuilder response = new StringBuilder();
-					String inputLine;
-					while ((inputLine = in.readLine()) != null)
-						response.append(inputLine);
-					in.close();
-					LogUtils.LOGD(TAG, "HTTP response: " + response.toString());
-					return response.toString();
-				case 401:
-					LogUtils.LOGD(TAG, "HTTP response read error. Got a 401.");
-					throw new ApiException(ApiException.HTTP_RESPONSE_CODE_UNAUTHORIZED,
-						"Server returned response code: " + responseCode);
-				case 404:
-					LogUtils.LOGD(TAG, "HTTP response read error. Got a 404.");
-					throw new ApiException(ApiException.HTTP_RESPONSE_CODE_NOT_FOUND,
-						"Server returned response code: " + responseCode);
-				default:
-					LogUtils.LOGD(TAG, "HTTP response read error. Got: " + responseCode);
-					throw new ApiException(ApiException.HTTP_RESPONSE_CODE_UNKNOWN,
-						"Server returned response code: " + responseCode);
-			}
-		} catch (IOException e) {
-			LogUtils.LOGW(TAG, "Failed to read HTTP response.", e);
-			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_READING_RESPONSE, e);
-		}
-	}
+            switch (responseCode) {
+                case 200:
+                    // All ok, read response
+                    String res = response.body().string();
+                    response.body().close();
+                    return res;
+                case 401:
+                    LogUtils.LOGD(TAG, "HTTP response read error. Got a 401: " + response);
+                    throw new ApiException(ApiException.HTTP_RESPONSE_CODE_UNAUTHORIZED,
+                            "Server returned response code: " + response);
+                case 404:
+                    LogUtils.LOGD(TAG, "HTTP response read error. Got a 404: " + response);
+                    throw new ApiException(ApiException.HTTP_RESPONSE_CODE_NOT_FOUND,
+                            "Server returned response code: " + response);
+                default:
+                    LogUtils.LOGD(TAG, "HTTP response read error. Got: " + response);
+                    throw new ApiException(ApiException.HTTP_RESPONSE_CODE_UNKNOWN,
+                            "Server returned response code: " + response);
+            }
+        } catch (IOException e) {
+            LogUtils.LOGW(TAG, "Failed to read HTTP response.", e);
+            throw new ApiException(ApiException.IO_EXCEPTION_WHILE_READING_RESPONSE, e);
+        }
+    }
 
-	/**
+    /**
 	 * Parses the JSON response from the server.
 	 * If it is a valid result returns the JSON {@link com.fasterxml.jackson.databind.node.ObjectNode} that represents it.
 	 * If it is an error (contains the error tag), returns an {@link ApiException} with the info.
@@ -793,7 +883,7 @@ public class HostConnection {
 
 	/**
 	 * Cleans up used resources.
-	 * This method should always be called if the protocoll used is TCP, so we can shutdown gracefully
+	 * This method should always be called if the protocol used is TCP, so we can shutdown gracefully
 	 */
     public void disconnect() {
 		if (protocol == PROTOCOL_HTTP)

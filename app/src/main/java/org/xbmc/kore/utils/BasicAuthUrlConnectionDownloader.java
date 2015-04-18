@@ -25,18 +25,18 @@ import java.net.HttpURLConnection;
 /**
  * Picasso Downloader that sets basic authentication in the headers
  */
-public class BasicAuthPicassoDownloader extends UrlConnectionDownloader {
+public class BasicAuthUrlConnectionDownloader extends UrlConnectionDownloader {
 
     protected final String username;
     protected final String password;
 
-    public BasicAuthPicassoDownloader(android.content.Context context) {
+    public BasicAuthUrlConnectionDownloader(android.content.Context context) {
         super(context);
         this.username = null;
         this.password = null;
     }
 
-    public BasicAuthPicassoDownloader(android.content.Context context, String username, String password) {
+    public BasicAuthUrlConnectionDownloader(android.content.Context context, String username, String password) {
         super(context);
         this.username = username;
         this.password = password;

@@ -72,7 +72,8 @@ dependencies {
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.4.2'
     compile 'com.jakewharton:butterknife:5.1.2'
-    compile 'com.squareup.picasso:picasso:2.4.0'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.greenrobot:eventbus:2.2.1'
     compile 'javax.jmdns:jmdns:3.4.1'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
