@@ -29,6 +29,16 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
 
+            <!-- Intent filter for sharing youtube URLs -->
+            <intent-filter android:label="@string/play_on_kodi">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="youtube.com"/>
+                <data android:scheme="http" android:host="m.youtube.com"/>
+                <data android:scheme="http" android:host="www.youtube.com"/>
+            </intent-filter>
+
         </activity>
 
         <activity android:name="org.xbmc.kore.ui.hosts.HostManagerActivity"/>

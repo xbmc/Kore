@@ -321,12 +321,22 @@ public class RemoteActivity extends BaseActivity
      */
     private void handleStartIntent(Intent intent) {
         final String action = intent.getAction();
+        LogUtils.LOGD(TAG, "Action: " + action);
+        LogUtils.LOGD(TAG, "Data: " + intent.getData());
         // Check action
-        if ((action == null) || !action.equals(Intent.ACTION_SEND)) return;
+        if ((action == null) ||
+                !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_VIEW)))
+            return;
 
-        // Get the URI, which is stored in Extras
-        final Uri youTubeUri = getYouTubeUri(intent.getStringExtra(Intent.EXTRA_TEXT));
-        if (youTubeUri == null) return;
+        Uri youTubeUri = null;
+        if (action.equals(Intent.ACTION_SEND)) {
+            // Get the URI, which is stored in Extras
+            youTubeUri = getYouTubeUri(intent.getStringExtra(Intent.EXTRA_TEXT));
+            if (youTubeUri == null) return;
+        } else if (action.equals(Intent.ACTION_VIEW)) {
+            if (intent.getData() == null) return;
+            youTubeUri = Uri.parse(intent.getData().toString());
+        }
 
         final String videoId = getYouTubeVideoId(youTubeUri);
         if (videoId == null) return;
