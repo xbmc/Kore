@@ -432,7 +432,7 @@ public class HostConnection {
                     .url(hostInfo.getJsonRpcHttpEndpoint())
                     .post(RequestBody.create(MEDIA_TYPE_JSON, jsonRequest))
                     .build();
-
+            LogUtils.LOGD(TAG, "Sending request via OkHttp: " + jsonRequest);
             Response response = sendOkHttpRequest(request);
             final T result = method.resultFromJson(parseJsonResponse(handleOkHttpResponse(response)));
 
@@ -491,7 +491,6 @@ public class HostConnection {
      */
     private Response sendOkHttpRequest(Request request) throws ApiException {
         try {
-            LogUtils.LOGD(TAG, "Sending request via OkHttp: " + request.body());
             return httpClient.newCall(request).execute();
         } catch (IOException e) {
             LogUtils.LOGW(TAG, "Failed to send OkHttp request.", e);
@@ -515,22 +514,23 @@ public class HostConnection {
                     // All ok, read response
                     String res = response.body().string();
                     response.body().close();
+					LogUtils.LOGD(TAG, "OkHTTP response: " + res);
                     return res;
                 case 401:
-                    LogUtils.LOGD(TAG, "HTTP response read error. Got a 401: " + response);
+                    LogUtils.LOGD(TAG, "OkHTTP response read error. Got a 401: " + response);
                     throw new ApiException(ApiException.HTTP_RESPONSE_CODE_UNAUTHORIZED,
                             "Server returned response code: " + response);
                 case 404:
-                    LogUtils.LOGD(TAG, "HTTP response read error. Got a 404: " + response);
+                    LogUtils.LOGD(TAG, "OkHTTP response read error. Got a 404: " + response);
                     throw new ApiException(ApiException.HTTP_RESPONSE_CODE_NOT_FOUND,
                             "Server returned response code: " + response);
                 default:
-                    LogUtils.LOGD(TAG, "HTTP response read error. Got: " + response);
+                    LogUtils.LOGD(TAG, "OkHTTP response read error. Got: " + response);
                     throw new ApiException(ApiException.HTTP_RESPONSE_CODE_UNKNOWN,
                             "Server returned response code: " + response);
             }
         } catch (IOException e) {
-            LogUtils.LOGW(TAG, "Failed to read HTTP response.", e);
+            LogUtils.LOGW(TAG, "Failed to read OkHTTP response.", e);
             throw new ApiException(ApiException.IO_EXCEPTION_WHILE_READING_RESPONSE, e);
         }
     }

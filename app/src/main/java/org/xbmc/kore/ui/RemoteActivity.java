@@ -321,8 +321,6 @@ public class RemoteActivity extends BaseActivity
      */
     private void handleStartIntent(Intent intent) {
         final String action = intent.getAction();
-        LogUtils.LOGD(TAG, "Action: " + action);
-        LogUtils.LOGD(TAG, "Data: " + intent.getData());
         // Check action
         if ((action == null) ||
                 !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_VIEW)))
