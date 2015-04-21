@@ -41,6 +41,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
+import java.net.ProtocolException;
 import java.net.Proxy;
 import java.net.Socket;
 import java.util.HashMap;
@@ -150,12 +151,6 @@ public class HostConnection {
      */
     private OkHttpClient httpClient = null;
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json");
-
-    /**
-     * Workaround for connection issues with Kodi. If we get a protocol exception,
-     * disable conn pooling (disable keep-alive) and try again
-     */
-    private boolean disableConnectionPooling = false;
 
     /**
      * Creates a new host connection
@@ -433,7 +428,7 @@ public class HostConnection {
                     .post(RequestBody.create(MEDIA_TYPE_JSON, jsonRequest))
                     .build();
             LogUtils.LOGD(TAG, "Sending request via OkHttp: " + jsonRequest);
-            Response response = sendOkHttpRequest(request);
+            Response response = sendOkHttpRequest(client, request);
             final T result = method.resultFromJson(parseJsonResponse(handleOkHttpResponse(response)));
 
             if ((handler != null) && (callback != null)) {
@@ -484,14 +479,29 @@ public class HostConnection {
         return httpClient;
     }
 
+    // Hack to circumvent a Protocol Exception that occurs when the server returns bogus Status Line
+    // http://forum.kodi.tv/showthread.php?tid=224288
+    private OkHttpClient getNewOkHttpClientNoKeepAlive() {
+        java.lang.System.setProperty("http.keepAlive", "false");
+        httpClient = null;
+        return getOkHttpClient();
+    }
+
     /**
      * Send an OkHttp POST request
      * @param request Request to send
      * @throws ApiException
      */
-    private Response sendOkHttpRequest(Request request) throws ApiException {
+    private Response sendOkHttpRequest(final OkHttpClient client, final Request request) throws ApiException {
         try {
-            return httpClient.newCall(request).execute();
+            return client.newCall(request).execute();
+        } catch (ProtocolException e) {
+            LogUtils.LOGW(TAG, "Got a Protocol Exception when trying to send OkHttp request. " +
+                            "Trying again without connection pooling to try to circunvent this", e);
+            // Hack to circumvent a Protocol Exception that occurs when the server returns bogus Status Line
+            // http://forum.kodi.tv/showthread.php?tid=224288
+            httpClient = getNewOkHttpClientNoKeepAlive();
+            throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
         } catch (IOException e) {
             LogUtils.LOGW(TAG, "Failed to send OkHttp request.", e);
             throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
