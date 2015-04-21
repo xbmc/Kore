@@ -97,6 +97,7 @@
     <string name="wizard_xbmc_tcp_port">TCP Port (9090)</string>
     <string name="wizard_xbmc_mac_address">MAC Adresse</string>
     <string name="wizard_xbmc_wol_port">WoL Port (9)</string>
+    <string name="wizard_xbmc_use_tcp">TCP verwenden</string>
 
     <string name="wizard_no_name_specified">Bitte geben Sie einen Namen für das Media Center ein.</string>
     <string name="wizard_no_address_specified">Bitte geben Sie die IP-Adresse des Media Center an.</string>
@@ -251,11 +252,11 @@
     <string name="download">Herunterladen</string>
 
     <string name="confirm_movie_download">Wollen Sie diesen Film herunterladen?\nDer Film wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
-    <string name="confirm_episode_download">Wollen Sie diese Episode herunterladen?\nDie Episode wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
+    <string name="confirm_episode_download">Wollen Sie diese Folge herunterladen?\nDie Folge wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
     <string name="confirm_album_download">Wollen Sie dieses Album herunterladen?\nDas Album wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
 
     <string name="download_file_exists">Datei existiert bereits.\nÜberschreiben oder unter neuem Namen speichern?</string>
-    <string name="download_dir_exists">Download Ordner existiert bereits.\nBei Konflikten überschreiben oder unter neuem Namen speichern?</string>
+    <string name="download_dir_exists">Download Ordner existiert bereits.\nBei Dateikonflikten überschreiben oder unter neuem Namen speichern?</string>
     <string name="overwrite">Überschreiben</string>
     <string name="download_with_new_name">Neuer Name</string>
     <string name="download_file_description">Heruntergeladen von meinem Media Center</string>
@@ -318,5 +319,7 @@
     <!--<string name="error_querying_inventory">Fehler bei Überprüfung.</string>-->
     <!--<string name="error_during_purchased">Ein Fehler trat beim Kauf auf.</string>-->
     <!--<string name="purchase_thanks">Danke für ihre Unterstützung!</string>-->
+
+    <string name="play_on_kodi">Mit Kodi abspielen</string>
 
 </resources>
