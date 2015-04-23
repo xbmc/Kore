@@ -103,7 +103,7 @@ public class MediaFileListFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString(MEDIA_TYPE, mediaType);
         try {
-            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList) adapter.getFileItemList());
+            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList<FileLocation>)adapter.getFileItemList());
         } catch (NullPointerException npe) {
             // adapter is null probably nothing was save in bundle because the directory is empty
             // ignore this so that the empty message would display later on
