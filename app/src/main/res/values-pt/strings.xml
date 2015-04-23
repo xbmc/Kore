@@ -215,8 +215,34 @@ Por favor classifique-nos na <b><a href="market://details?id=org.xbmc.kore">Goog
 
 Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
 ]]></string>
+    <string name="audio_sync">Simcronizar audio</string>
+    <string name="confirm_album_download">Tem a certeza que pretende transferir este álbum?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
+    <string name="confirm_episode_download">Tem a certeza que pretende transferir este episódio?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
+    <string name="confirm_movie_download">Tem a certeza que pretende transferir este filme?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
+    <string name="context">Contexto</string>
+    <string name="error_get_active_player">Não foi possível obter o que está a ser reproduzido.\n Mensagem:  %1$s.</string>
+    <string name="error_getting_source_info">Não foi possível navegar no sistema de ficheiros.\n Mensagem:  %1$s.</string>
+    <string name="error_play_media_file">Não foi possível reproduzir o ficheiro.\n Mensagem:  %1$s.</string>
+    <string name="error_queue_media_file">Não foi possível colocar o ficheiro na fila.\n Mensagem:  %1$s.</string>
+    <string name="file_browser">Ficheiros</string>
+    <string name="files">Ficheiros</string>
+    <string name="ignore_prefixes">Ignorar prefixos</string>
+    <string name="play_file">Reproduzir</string>
+    <string name="play_from_here">Reproduzir a partir daqui</string>
+    <string name="play_on_kodi">Reproduzir no Kodi</string>
+    <string name="queue_file">Colocar na fila</string>
+    <string name="show_notification">Mostrar notificações</string>
+    <string name="sort_by_date_added">Por data adicionada</string>
+    <string name="sort_by_name">Por nome</string>
+    <string name="sort_order">Ordenar</string>
+    <string name="source_empty">Fonte sem items</string>
+    <string name="subtitle_sync">Sincronizar legendas</string>
+    <string name="use_hardware_volume_keys">Usar teclas de volume para controlar o volume</string>
+    <string name="wizard_xbmc_use_tcp">Usar TCP</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Não foi possível descobrir o endereço deste centro multimédia.</string>
+    <string name="wizard_zeroconf_no_host_address">Não foi possível descobrir o endereço deste centro multimédia.</string>
 
-  <!--<string name="buy_me_coffee">Oferecer um café</string>-->
+    <!--<string name="buy_me_coffee">Oferecer um café</string>-->
   <!--<string name="expresso_please">Expresso, por favor. Obrigado!</string>-->
   <!--<string name="thanks_for_coffe">Obrigado pelo café!</string>-->
   <!--<string name="remove_coffee_message">Pressione para ocultar esta configuração</string>-->
