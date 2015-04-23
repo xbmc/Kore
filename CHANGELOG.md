@@ -1,6 +1,27 @@
 Changelog
 ---------
 
+Version 1.4.0
+-------------
+- Added support for sharing from youtube app to Kodi
+- Visual tweaks
+- Bug fixes
+
+Version 1.3.0
+-------------
+- Remote redesign
+- File browsing
+- Fix Wake on Lan issues
+- Bug fixes
+
+Version 1.2.1
+-------------
+- Fix subtitle selection
+
+Version 1.2.0
+-------------
+- Prepare for Official Remote status
+
 Version 1.1
 -----------
 - Brazilian Portuguese translation (by Rafael Rosário @rafaelricado)
