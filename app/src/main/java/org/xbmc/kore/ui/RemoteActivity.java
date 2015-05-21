@@ -132,7 +132,6 @@ public class RemoteActivity extends BaseActivity
         setupActionBar();
 
         // If we should start playing something
-        handleStartIntent(getIntent());
 
 //        // Setup system bars and content padding
 //        setupSystemBarsColors();
@@ -140,6 +139,12 @@ public class RemoteActivity extends BaseActivity
 //        // Only set top and right, to allow bottom to overlap in each fragment
 //        UIUtils.setPaddingForSystemBars(this, viewPager, true, true, false);
 //        UIUtils.setPaddingForSystemBars(this, pageIndicator, true, true, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        handleStartIntent(getIntent());
     }
 
     @Override
@@ -339,8 +344,9 @@ public class RemoteActivity extends BaseActivity
         final String videoId = getYouTubeVideoId(youTubeUri);
         if (videoId == null) return;
 
-        final String kodiAddonUrl = "plugin://plugin.video.youtube/?path=/root/search&action=play_video&videoid="
-                + videoId;
+//        final String kodiAddonUrl = "plugin://plugin.video.youtube/?path=/root/search&action=play_video&videoid="
+//                + videoId;
+        final String kodiAddonUrl = "plugin://plugin.video.youtube/play/?video_id=" + videoId;
 
         // Check if any video player is active and play or queue the file depending on that
         final HostConnection connection = hostManager.getConnection();
@@ -356,13 +362,7 @@ public class RemoteActivity extends BaseActivity
                         videoIsPlaying = true;
                 }
 
-                if (videoIsPlaying) {
-                    LogUtils.LOGD(TAG, "Video is playing");
-                    queueMediaFile(kodiAddonUrl, connection, callbackHandler);
-                } else {
-                    LogUtils.LOGD(TAG, "Nothing is playing");
-                    playMediaFile(kodiAddonUrl, connection, callbackHandler);
-                }
+                queueMediaFile(kodiAddonUrl, !videoIsPlaying, connection, callbackHandler);
             }
 
             @Override
@@ -376,41 +376,36 @@ public class RemoteActivity extends BaseActivity
     }
 
     /**
-     * Plays the given media file
+     * Queues the given media file and optionally starts the playlist
      * @param file File to play
+     * @param startPlaylist Whether to start playing the playlist after add
      * @param connection Host connection
      * @param callbackHandler Handler to use for posting callbacks
      */
-    private void playMediaFile(final String file, final HostConnection connection, final Handler callbackHandler) {
-        PlaylistType.Item item = new PlaylistType.Item();
-        item.file = file;
-        Player.Open action = new Player.Open(item);
-        action.execute(connection, new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result ) { }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                Toast.makeText(RemoteActivity.this,
-                        String.format(getString(R.string.error_play_media_file), description),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }, callbackHandler);
-    }
-
-    /**
-     * Queues the given media file
-     * @param file File to play
-     * @param connection Host connection
-     * @param callbackHandler Handler to use for posting callbacks
-     */
-    private void queueMediaFile(final String file, final HostConnection connection, final Handler callbackHandler) {
+    private void queueMediaFile(final String file, final boolean startPlaylist,
+                                final HostConnection connection, final Handler callbackHandler) {
         PlaylistType.Item item = new PlaylistType.Item();
         item.file = file;
         Playlist.Add action = new Playlist.Add(PlaylistType.VIDEO_PLAYLISTID, item);
         action.execute(connection, new ApiCallback<String>() {
             @Override
             public void onSuccess(String result ) {
+                if (startPlaylist) {
+                    Player.Open action = new Player.Open(PlaylistType.VIDEO_PLAYLISTID);
+                    action.execute(connection, new ApiCallback<String>() {
+                        @Override
+                        public void onSuccess(String result) {
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String description) {
+                            Toast.makeText(RemoteActivity.this,
+                                    String.format(getString(R.string.error_play_media_file), description),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }, callbackHandler);
+                }
+
                 // Force a refresh of the playlist fragment
                 String tag = "android:switcher:" + viewPager.getId() + ":" + 3;
                 PlaylistFragment playlistFragment = (PlaylistFragment)getSupportFragmentManager()
@@ -466,7 +461,7 @@ public class RemoteActivity extends BaseActivity
         if (playuri.getHost().endsWith("youtube.com") || playuri.getHost().endsWith("youtu.be")) {
             // We'll need to get the v= parameter from the URL
             final Pattern pattern =
-                    Pattern.compile("(?:https?:\\/\\/)?(?:www\\.)?youtu(?:.be\\/|be\\.com\\/watch\\?v=)([\\w-]{11})",
+                    Pattern.compile("(?:https?:\\/\\/)?(?:www\\.|m\\.)?youtu(?:.be\\/|be\\.com\\/watch\\?v=)([\\w-]+)",
                             Pattern.CASE_INSENSITIVE);
 //			final Pattern pattern = Pattern.compile("^http(:?s)?:\\/\\/(?:www\\.)?(?:youtube\\.com|youtu\\.be)\\/watch\\?(?=.*v=([\\w-]+))(?:\\S+)?$", Pattern.CASE_INSENSITIVE);
 //			final Pattern pattern = Pattern.compile(".*v=([a-z0-9_\\-]+)(?:&.)*", Pattern.CASE_INSENSITIVE);
