@@ -571,6 +571,25 @@ public class HostConnectionObserver
                 notifySomethingIsPlaying(getActivePlayersResult, getPropertiesResult, getItemResult, observer);
             }
         }
+
+        // Workaround for when playing has started but time info isn't updated yet.
+        // See https://github.com/xbmc/Kore/issues/78#issuecomment-104148064
+        // If the playing time returned is 0sec, we'll schedule another check
+        // to give Kodi some time to report the correct playing time
+        if ((currentCallResult == PlayerEventsObserver.PLAYER_IS_PLAYING) &&
+            (connection.getProtocol() == HostConnection.PROTOCOL_TCP) &&
+            (getPropertiesResult.time.ToSeconds() == 0)) {
+            LogUtils.LOGD(TAG, "Scheduling new call to check what's playing.");
+            final int RECHECK_INTERVAL = 3000;
+            checkerHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    forceReply = true;
+                    checkWhatsPlaying();
+                }
+            }, RECHECK_INTERVAL);
+        }
+
     }
 
     /**

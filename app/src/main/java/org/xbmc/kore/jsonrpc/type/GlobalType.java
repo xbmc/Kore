@@ -43,6 +43,14 @@ public class GlobalType {
             minutes = JsonUtils.intFromJsonNode(node, MINUTES, 0);
             seconds = JsonUtils.intFromJsonNode(node, SECONDS, 0);
         }
+
+        /**
+         * Returns the seconds from midnight that this time object represents
+         * @return Seconds from midnight
+         */
+        public int ToSeconds() {
+            return hours * 3600 + minutes * 60 + seconds;
+        }
     }
 
     /**

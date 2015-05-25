@@ -72,7 +72,6 @@ public class NotificationService extends Service
         // We do not create any thread because all the works is supposed to
         // be done on the main thread, so that the connection observer
         // can be shared with the app, and notify it on the UI thread
-        LogUtils.LOGD(TAG, "onCreate");
 
         // Create the intent to start the remote when the user taps the notification
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -359,7 +358,6 @@ public class NotificationService extends Service
     }
 
     private PendingIntent buildActionPendingIntent(int playerId, String action) {
-        LogUtils.LOGD(TAG, "Build action: " + action);
         Intent intent = new Intent(this, IntentActionsService.class)
                 .setAction(action)
                 .putExtra(IntentActionsService.EXTRA_PLAYER_ID, playerId);
