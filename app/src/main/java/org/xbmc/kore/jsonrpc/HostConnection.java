@@ -41,6 +41,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.Proxy;
 import java.net.Socket;
@@ -504,6 +505,10 @@ public class HostConnection {
             throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
         } catch (IOException e) {
             LogUtils.LOGW(TAG, "Failed to send OkHttp request.", e);
+            throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
+        } catch (RuntimeException e) {
+            // Seems like OkHttp throws a RuntimeException when it gets a malformed URL
+            LogUtils.LOGW(TAG, "Got a Runtime exception when sending OkHttp request. Probably a malformed URL.", e);
             throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
         }
     }
