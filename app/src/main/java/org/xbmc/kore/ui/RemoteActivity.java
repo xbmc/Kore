@@ -348,7 +348,7 @@ public class RemoteActivity extends BaseActivity
 //                + videoId;
         final String kodiAddonUrl = "plugin://plugin.video.youtube/play/?video_id=" + videoId;
 
-        // Check if any video player is active and play or queue the file depending on that
+        // Check if any video player is active and clear the playlist before queuing if so
         final HostConnection connection = hostManager.getConnection();
         final Handler callbackHandler = new Handler();
         Player.GetActivePlayers getActivePlayers = new Player.GetActivePlayers();
@@ -362,7 +362,12 @@ public class RemoteActivity extends BaseActivity
                         videoIsPlaying = true;
                 }
 
-                queueMediaFile(kodiAddonUrl, !videoIsPlaying, connection, callbackHandler);
+                if (!videoIsPlaying) {
+                    // Clear the playlist
+                    clearPlaylistAndQueueFile(kodiAddonUrl, connection, callbackHandler);
+                } else {
+                    queueFile(kodiAddonUrl, false, connection, callbackHandler);
+                }
             }
 
             @Override
@@ -376,14 +381,41 @@ public class RemoteActivity extends BaseActivity
     }
 
     /**
+     * Clears Kodi's playlist, queues the given media file and starts the playlist
+     * @param file File to play
+     * @param connection Host connection
+     * @param callbackHandler Handler to use for posting callbacks
+     */
+    private void clearPlaylistAndQueueFile(final String file,
+                                           final HostConnection connection, final Handler callbackHandler) {
+        LogUtils.LOGD(TAG, "Clearing video playlist");
+        Playlist.Clear action = new Playlist.Clear(PlaylistType.VIDEO_PLAYLISTID);
+        action.execute(connection, new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                // Now queue and start the file
+                queueFile(file, true, connection, callbackHandler);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                Toast.makeText(RemoteActivity.this,
+                               String.format(getString(R.string.error_queue_media_file), description),
+                               Toast.LENGTH_SHORT).show();
+            }
+        }, callbackHandler);
+    }
+
+    /**
      * Queues the given media file and optionally starts the playlist
      * @param file File to play
      * @param startPlaylist Whether to start playing the playlist after add
      * @param connection Host connection
      * @param callbackHandler Handler to use for posting callbacks
      */
-    private void queueMediaFile(final String file, final boolean startPlaylist,
-                                final HostConnection connection, final Handler callbackHandler) {
+    private void queueFile(final String file, final boolean startPlaylist,
+                           final HostConnection connection, final Handler callbackHandler) {
+        LogUtils.LOGD(TAG, "Queing file");
         PlaylistType.Item item = new PlaylistType.Item();
         item.file = file;
         Playlist.Add action = new Playlist.Add(PlaylistType.VIDEO_PLAYLISTID, item);
