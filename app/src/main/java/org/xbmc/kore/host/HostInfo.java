@@ -44,7 +44,12 @@ public class HostInfo {
      */
     public static final int DEFAULT_WOL_PORT = 9;
 
-    /**
+	/**
+	 * Default EventServer port for Kodi
+	 */
+	public static final int DEFAULT_EVENT_SERVER_PORT = 9777;
+
+	/**
 	 * Internal id of the host
 	 */
 	private int id;
@@ -60,6 +65,7 @@ public class HostInfo {
 	private String address;
 	private int httpPort;
 	private int tcpPort;
+	private int eventServerPort;
 
     /**
 	 * Authentication information
@@ -107,6 +113,8 @@ public class HostInfo {
 		this.password = password;
         this.macAddress = macAddress;
         this.wolPort = wolPort;
+
+		this.eventServerPort = DEFAULT_EVENT_SERVER_PORT;
 
         // For performance reasons
         this.auxImageHttpAddress = getHttpURL() + "/image/";
@@ -177,7 +185,11 @@ public class HostInfo {
 		return protocol;
 	}
 
-    /**
+	public int getEventServerPort() {
+		return eventServerPort;
+	}
+
+	/**
      * Overrides the protocol for this host info
      * @param protocol Protocol
      */
