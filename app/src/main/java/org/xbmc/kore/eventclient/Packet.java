@@ -17,6 +17,7 @@
  */
 
 package org.xbmc.kore.eventclient;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -179,7 +180,8 @@ public abstract class Packet {
 	 */
 	public int getNumPackets()
 	{
-		return (int)((payload.length + (MAX_PAYLOAD_SIZE - 1)) / MAX_PAYLOAD_SIZE);
+//		return (payload.length + (MAX_PAYLOAD_SIZE - 1)) / MAX_PAYLOAD_SIZE;
+		return 1 + Math.max(payload.length - 1, 0) / MAX_PAYLOAD_SIZE;
 	}
 	
 	/**
@@ -218,15 +220,14 @@ public abstract class Packet {
 	 */
 	private byte[] getUDPMessage(int seq)
 	{
-		int maxseq = (int)((payload.length + (MAX_PAYLOAD_SIZE - 1)) / MAX_PAYLOAD_SIZE);
+		int maxseq = getNumPackets();
 		if(seq > maxseq)
 			return null;
 		
 		short actpayloadsize;
 		
 		if(seq == maxseq)
-			actpayloadsize = (short)(payload.length%MAX_PAYLOAD_SIZE);
-			
+			actpayloadsize = (short)((payload.length - 1) % MAX_PAYLOAD_SIZE + 1);
 		else
 			actpayloadsize = (short)MAX_PAYLOAD_SIZE;
 
@@ -248,7 +249,6 @@ public abstract class Packet {
 	{
 		int maxseq = getNumPackets();
 		DatagramSocket s = new DatagramSocket();
-		
 		// For each Packet in Sequence...
 		for(int seq=1;seq<=maxseq;seq++)
 		{
