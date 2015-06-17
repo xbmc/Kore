@@ -27,6 +27,17 @@ package org.xbmc.kore.eventclient;
  * @author Team XBMC
  */
 public final class ButtonCodes {
+	/**
+	 * "KB" => standard keyboard map ( <keyboard> section )
+	 * "XG" => xbox gamepad map ( <gamepad> section )
+	 * "R1" => xbox remote map ( <remote> section )
+	 * "R2" => xbox universal remote map ( <universalremote> section )
+	 * "LI:devicename" => LIRC remote map where 'devicename' is the actual device's name
+	 */
+	public static final String MAP_KEYBOARD = "KB";
+	public static final String MAP_GAMEPAD = "XG";
+	public static final String MAP_REMOTE = "R1";
+	public static final String MAP_UNIVERSAL_REMOTE = "R2";
 
 	public static final String REMOTE_LEFT = "left";
 	public static final String REMOTE_RIGHT = "right";
