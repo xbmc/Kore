@@ -44,8 +44,7 @@ public class EventServerConnection {
      * Host to connect too
      */
     private final HostInfo hostInfo;
-    private final InetAddress hostInetAddress;
-    private boolean isConnected = false;
+    private InetAddress hostInetAddress = null;
 
     // Handler on which packets will be posted, to send them asynchronously
     private Handler commHandler = null;
@@ -56,32 +55,31 @@ public class EventServerConnection {
         @Override
         public void run() {
             LogUtils.LOGD(TAG, "Pinging EventServer");
-            try {
-                packetPING.send(hostInetAddress, hostInfo.getEventServerPort());
-            } catch (IOException exc) {
-                LogUtils.LOGD(TAG, "Got an IOException when sending a PING Packet to Kodi's EventServer");
+            if (hostInetAddress != null) {
+                try {
+                    packetPING.send(hostInetAddress, hostInfo.getEventServerPort());
+                } catch (IOException exc) {
+                    LogUtils.LOGD(TAG, "Got an IOException when sending a PING Packet to Kodi's EventServer");
+                }
             }
             commHandler.postDelayed(this, PING_INTERVAL);
         }
     };
 
     /**
-     * Constructor. Starts the thread that keeps the connection alive. Make sure to call quit() when done.
-     * @param hostInfo Host to connect to
-     * @throws UnknownHostException
+     * Interface to notify users if the connection was sucessfull
      */
-    public EventServerConnection(final HostInfo hostInfo) throws UnknownHostException{
-        this.hostInfo = hostInfo;
-        hostInetAddress = InetAddress.getByName(hostInfo.getAddress());
-
-        startEventClient();
+    public interface EventServerConnectionCallback {
+        void OnConnect(boolean success);
     }
 
     /**
-     * Creates the HandlerThread that will be used to post packets, establishes a connection with EventServer
-     * (sends HELO packet) and starts the ping thread
+     * Constructor. Starts the thread that keeps the connection alive. Make sure to call quit() when done.
+     * @param hostInfo Host to connect to
      */
-    private void startEventClient() {
+    public EventServerConnection(final HostInfo hostInfo, final EventServerConnectionCallback callback) {
+        this.hostInfo = hostInfo;
+
         LogUtils.LOGD(TAG, "Starting EventServer Thread");
         // Handler thread that will keep pinging and send the requests to Kodi
         handlerThread = new HandlerThread("EventServerConnection", Process.THREAD_PRIORITY_DEFAULT);
@@ -90,28 +88,27 @@ public class EventServerConnection {
         // Get the HandlerThread's Looper and use it for our Handler
         commHandler = new Handler(handlerThread.getLooper());
 
+        // Now, get the host InetAddress in the background
+        commHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    hostInetAddress = InetAddress.getByName(hostInfo.getAddress());
+                } catch (UnknownHostException exc) {
+                    LogUtils.LOGD(TAG, "Got an UnknownHostException, disabling EventServer");
+                    hostInetAddress = null;
+                }
+                callback.OnConnect(hostInetAddress != null);
+            }
+        });
+
         // Send Hello Packet
-//        commHandler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                PacketHELO p;
-//                p = new PacketHELO(DEVICE_NAME);
-//                try {
-//                    p.send(hostInetAddress, hostInfo.getEventServerPort());
-//                } catch (IOException exc) {
-//                    // We are ignoring this one... Not sure if a good idea, but we're not on the UI thread
-//                    LogUtils.LOGD(TAG, "Got an IOException when sending a HELO Packet to Kodi's EventServer");
-//                }
-//
-//                // Start pinging
-//                commHandler.postDelayed(pingRunnable, PING_INTERVAL);
-//            }
-//        });
+//        sendPacket(new PacketHELO(DEVICE_NAME));
+
         // Start pinging
         commHandler.postDelayed(pingRunnable, PING_INTERVAL);
-
-        isConnected = true;
     }
+
 
     /**
      * Stops the HandlerThread that is being used to send packets to Kodi
@@ -124,7 +121,6 @@ public class EventServerConnection {
         } else {
             handlerThread.quit();
         }
-        isConnected = false;
     }
 
     /**
@@ -133,7 +129,7 @@ public class EventServerConnection {
      * @param p Packet to send
      */
     public void sendPacket(final Packet p) {
-        if (!isConnected) {
+        if (!handlerThread.isAlive() || (hostInetAddress == null)) {
             return;
         }
 

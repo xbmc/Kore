@@ -177,15 +177,15 @@ public class RemoteFragment extends Fragment
             setupEventServerButton(rightButton, ButtonCodes.REMOTE_RIGHT);
             setupEventServerButton(upButton, ButtonCodes.REMOTE_UP);
             setupEventServerButton(downButton, ButtonCodes.REMOTE_DOWN);
-            setupEventServerButton(selectButton, ButtonCodes.REMOTE_SELECT);
+            //setupEventServerButton(selectButton, ButtonCodes.REMOTE_SELECT);
         } else {
             // Otherwise, use json-rpc
             setupRepeatButton(leftButton, new Input.Left());
             setupRepeatButton(rightButton, new Input.Right());
             setupRepeatButton(upButton, new Input.Up());
             setupRepeatButton(downButton, new Input.Down());
-            setupDefaultButton(selectButton, new Input.Select(), null);
         }
+        setupDefaultButton(selectButton, new Input.Select(), null);
 
         // Other buttons
         setupDefaultButton(backButton, new Input.Back(), null);
@@ -269,12 +269,17 @@ public class RemoteFragment extends Fragment
     }
 
     private void createEventServerConnection() {
-        try {
-            eventServerConnection = new EventServerConnection(hostManager.getHostInfo());
-        } catch (UnknownHostException exc) {
-            LogUtils.LOGD(TAG, "Got an UnknownHostException, disabling EventServer");
-            eventServerConnection = null;
-        }
+        eventServerConnection = new EventServerConnection(
+                hostManager.getHostInfo(),
+                new EventServerConnection.EventServerConnectionCallback() {
+                    @Override
+                    public void OnConnect(boolean success) {
+                        if (!success) {
+                            LogUtils.LOGD(TAG, "Couldnt setup EventServer, disabling it");
+                            eventServerConnection = null;
+                        }
+                    }
+                });
     }
 
     private void setupRepeatButton(View button, final ApiMethod<String> action) {
@@ -312,39 +317,52 @@ public class RemoteFragment extends Fragment
     }
 
     private void setupEventServerButton(View button, final String action) {
-        short amount = 0;
-        byte axis = 0;
-        final Packet packetDown =
-                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, true, true, false, amount, axis);
-        final Packet packetUp =
-                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, false, false, false, amount, axis);
-
-        // Set animation and packet
-        button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        buttonInAnim.setFillAfter(true);
-                        v.startAnimation(buttonInAnim);
-                        eventServerConnection.sendPacket(packetDown);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        v.startAnimation(buttonOutAnim);
-                        eventServerConnection.sendPacket(packetUp);
-                        break;
-                }
-                return false;
-            }
-        });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Nothing to do
-            }
-        });
+        final Packet packet =
+                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, false, true, true, (short)0, (byte)0);
+        button.setOnTouchListener(new RepeatListener(UIUtils.initialButtonRepeatInterval, UIUtils.buttonRepeatInterval,
+                                                     new View.OnClickListener() {
+                                                         @Override
+                                                         public void onClick(View v) {
+                                                             eventServerConnection.sendPacket(packet);
+                                                         }
+                                                     }, buttonInAnim, buttonOutAnim));
     }
+
+
+//    private void setupEventServerButton(View button, final String action) {
+//        short amount = 0;
+//        byte axis = 0;
+//        final Packet packetDown =
+//                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, true, true, false, amount, axis);
+//        final Packet packetUp =
+//                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, false, false, false, amount, axis);
+//
+//        // Set animation and packet
+//        button.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        buttonInAnim.setFillAfter(true);
+//                        v.startAnimation(buttonInAnim);
+//                        eventServerConnection.sendPacket(packetDown);
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                    case MotionEvent.ACTION_CANCEL:
+//                        v.startAnimation(buttonOutAnim);
+//                        eventServerConnection.sendPacket(packetUp);
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Nothing to do
+//            }
+//        });
+//    }
 
     /**
      * Default callback for methods that don't return anything
