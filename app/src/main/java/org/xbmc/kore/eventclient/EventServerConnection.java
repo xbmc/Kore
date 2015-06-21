@@ -21,6 +21,10 @@ import android.os.*;
 import android.os.Process;
 
 import org.xbmc.kore.host.HostInfo;
+import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.jsonrpc.method.Application;
+import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
 
@@ -67,10 +71,10 @@ public class EventServerConnection {
     };
 
     /**
-     * Interface to notify users if the connection was sucessfull
+     * Interface to notify users if the connection was successful
      */
     public interface EventServerConnectionCallback {
-        void OnConnect(boolean success);
+        void OnConnectResult(boolean success);
     }
 
     /**
@@ -98,12 +102,9 @@ public class EventServerConnection {
                     LogUtils.LOGD(TAG, "Got an UnknownHostException, disabling EventServer");
                     hostInetAddress = null;
                 }
-                callback.OnConnect(hostInetAddress != null);
+                callback.OnConnectResult(hostInetAddress != null);
             }
         });
-
-        // Send Hello Packet
-//        sendPacket(new PacketHELO(DEVICE_NAME));
 
         // Start pinging
         commHandler.postDelayed(pingRunnable, PING_INTERVAL);
@@ -113,14 +114,9 @@ public class EventServerConnection {
     /**
      * Stops the HandlerThread that is being used to send packets to Kodi
      */
-    @SuppressLint("NewApi")
     public void quit() {
         LogUtils.LOGD(TAG, "Quiting EventServer handler thread");
-        if (Utils.isJellybeanMR2OrLater()) {
-            handlerThread.quitSafely();
-        } else {
-            handlerThread.quit();
-        }
+        quitHandlerThread(handlerThread);
     }
 
     /**
@@ -145,5 +141,138 @@ public class EventServerConnection {
                 }
             }
         });
+    }
+
+    /**
+     * Establishes a connection to the EventServer and reports the result
+     * @param hostInfo Host to connect to
+     * @param callerCallback Callback on which to post the result
+     * @param callerHandler Handler on which to post the callback call
+     */
+    public static void testEventServerConnection(final HostInfo hostInfo,
+                                                 final EventServerConnectionCallback callerCallback,
+                                                 final Handler callerHandler) {
+        final HandlerThread auxThread = new HandlerThread("EventServerConnectionTest", Process.THREAD_PRIORITY_DEFAULT);
+        auxThread.start();
+
+        // Get the HandlerThread's Looper and use it for our Handler
+        final Handler auxHandler = new Handler(auxThread.getLooper());
+
+        auxHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                // Get the InetAddress
+                final InetAddress hostInetAddress;
+                try {
+                    hostInetAddress = InetAddress.getByName(hostInfo.getAddress());
+                } catch (UnknownHostException exc) {
+                    LogUtils.LOGD(TAG, "Couldn't get host InetAddress");
+                    reportTestResult(callerHandler, callerCallback, false);
+                    quitHandlerThread(auxThread);
+                    return;
+                }
+
+                // Send a HELO packet
+                Packet p = new PacketHELO(DEVICE_NAME);
+                try {
+                    p.send(hostInetAddress, hostInfo.getEventServerPort());
+                } catch (IOException exc) {
+                    LogUtils.LOGD(TAG, "Couldn't send HELO packet to host");
+                    reportTestResult(callerHandler, callerCallback, false);
+                    quitHandlerThread(auxThread);
+                    return;
+                }
+
+                // The previous checks don't really test the connection, as this is UDP. Apart from checking if
+                // any HostUnreachable ICMP message is returned (which may or may not happen), there's no direct way
+                // to check if the messages were delivered, so the solution is to force something to happen on
+                // Kodi and them read Kodi's state to check if it was applied.
+                // We are going to get the mute status of Kodi via jsonrpc, change it via EventServer and check if
+                // it was changed via jsonrpc, reverting it back afterwards
+                final HostConnection auxHostConnection = new HostConnection(
+                        new HostInfo(hostInfo.getName(), hostInfo.getAddress(),
+                                     HostConnection.PROTOCOL_HTTP, hostInfo.getHttpPort(), hostInfo.getTcpPort(),
+                                     hostInfo.getUsername(), hostInfo.getPassword(), false, 0));
+                final Application.GetProperties action = new Application.GetProperties(Application.GetProperties.MUTED);
+                final Packet mutePacket = new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_MUTE,
+                                                           false, true, true, (short) 0, (byte) 0);
+
+                // Get the initial mute status
+                action.execute(auxHostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
+                    @Override
+                    public void onSuccess(ApplicationType.PropertyValue result) {
+                        final boolean initialMuteStatus = result.muted;
+                        // Switch mute status
+                        try {
+                            mutePacket.send(hostInetAddress, hostInfo.getEventServerPort());
+                        } catch (IOException exc) {
+                            LogUtils.LOGD(TAG, "Couldn't send first MUTE packet to host");
+                            reportTestResult(callerHandler, callerCallback, false);
+                            quitHandlerThread(auxThread);
+                            return;
+                        }
+
+                        // Sleep a while to make sure the previous command was executed
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException exc) {
+                            // Ignore
+                        }
+
+                        // Now get the new status and compare
+                        action.execute(auxHostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
+                            @Override
+                            public void onSuccess(ApplicationType.PropertyValue result) {
+                                // Report result (mute status is different)
+                                reportTestResult(callerHandler, callerCallback, initialMuteStatus != result.muted);
+
+                                // Revert mute status
+                                try {
+                                    mutePacket.send(hostInetAddress, hostInfo.getEventServerPort());
+                                } catch (IOException exc) {
+                                    LogUtils.LOGD(TAG, "Couldn't revert MUTE status");
+                                }
+                                quitHandlerThread(auxThread);
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String description) {
+                                LogUtils.LOGD(TAG, "Got an error on Application.GetProperties: " + description);
+                                reportTestResult(callerHandler, callerCallback, false);
+                                quitHandlerThread(auxThread);
+                            }
+                        }, auxHandler);
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String description) {
+                        LogUtils.LOGD(TAG, "Got an error on Application.GetProperties: " + description);
+                        reportTestResult(callerHandler, callerCallback, false);
+                        quitHandlerThread(auxThread);
+                    }
+                }, auxHandler);
+            }
+        });
+
+    }
+
+    private static void reportTestResult(final Handler callerHandler,
+                                         final EventServerConnectionCallback callback,
+                                         final boolean result) {
+        callerHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.OnConnectResult(result);
+            }
+        });
+    }
+
+    @SuppressLint("NewApi")
+    private static void quitHandlerThread(HandlerThread handlerThread) {
+        if (Utils.isJellybeanMR2OrLater()) {
+            handlerThread.quitSafely();
+        } else {
+            handlerThread.quit();
+        }
     }
 }

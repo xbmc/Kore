@@ -54,15 +54,17 @@ public class MediaContract {
      * Columns for table HOSTS
      */
     public interface HostsColumns {
-        public final static String NAME = "name";
-        public final static String ADDRESS = "address";
-        public final static String PROTOCOL = "protocol";
-        public final static String HTTP_PORT = "http_port";
-        public final static String TCP_PORT = "tcp_port";
-        public final static String USERNAME = "username";
-        public final static String PASSWORD = "password";
-        public final static String MAC_ADDRESS = "mac_address";
-        public final static String WOL_PORT = "wol_port";
+        String NAME = "name";
+        String ADDRESS = "address";
+        String PROTOCOL = "protocol";
+        String HTTP_PORT = "http_port";
+        String TCP_PORT = "tcp_port";
+        String USERNAME = "username";
+        String PASSWORD = "password";
+        String MAC_ADDRESS = "mac_address";
+        String WOL_PORT = "wol_port";
+        String USE_EVENT_SERVER = "use_event_server";
+        String EVENT_SERVER_PORT = "event_server_port";
     }
 
     public static class Hosts implements BaseColumns, SyncColumns, HostsColumns {
@@ -86,7 +88,7 @@ public class MediaContract {
 
         public final static String[] ALL_COLUMNS = {
                 _ID, UPDATED, NAME, ADDRESS, PROTOCOL, HTTP_PORT, TCP_PORT, USERNAME, PASSWORD,
-                MAC_ADDRESS, WOL_PORT
+                MAC_ADDRESS, WOL_PORT, USE_EVENT_SERVER, EVENT_SERVER_PORT
         };
     }
 
@@ -95,40 +97,40 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + MOVIEID
      */
     public interface MoviesColumns {
-        public final static String HOST_ID = "host_id";
-        public final static String MOVIEID = "movieid";
+        String HOST_ID = "host_id";
+        String MOVIEID = "movieid";
 
-        public final static String FANART = "fanart";
-        public final static String THUMBNAIL = "thumbnail";
-        public final static String PLAYCOUNT = "playcount";
-        public final static String TITLE = "title";
-        public final static String FILE = "file";
-        public final static String PLOT = "plot";
-        public final static String DIRECTOR = "director";
-        public final static String RUNTIME = "runtime";
-        public final static String AUDIO_CHANNELS = "audio_channels";
-        public final static String AUDIO_CODEC = "audio_coded";
-        public final static String AUDIO_LANGUAGE = "audio_language";
-        public final static String SUBTITLES_LANGUAGES = "subtitles_languages";
-        public static final String VIDEO_ASPECT = "video_aspect";
-        public static final String VIDEO_CODEC = "video_codec";
-        public static final String VIDEO_HEIGHT = "video_height";
-        public static final String VIDEO_WIDTH = "video_width";
-        public static final String COUNTRIES = "countries";
-        public static final String GENRES = "genres";
-        public static final String IMDBNUMBER = "imdbnumber";
-        public static final String MPAA = "mpaa";
-        public static final String RATING = "rating";
-        public static final String SET = "movie_set";
-        public static final String SETID = "setid";
-        public static final String STUDIOS = "studios";
-        public static final String TAGLINE = "tagline";
-        public static final String TOP250 = "top250";
-        public static final String TRAILER = "trailer";
-        public static final String VOTES = "votes";
-        public static final String WRITERS = "writers";
-        public static final String YEAR = "year";
-        public static final String DATEADDED = "dateadded";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String PLAYCOUNT = "playcount";
+        String TITLE = "title";
+        String FILE = "file";
+        String PLOT = "plot";
+        String DIRECTOR = "director";
+        String RUNTIME = "runtime";
+        String AUDIO_CHANNELS = "audio_channels";
+        String AUDIO_CODEC = "audio_coded";
+        String AUDIO_LANGUAGE = "audio_language";
+        String SUBTITLES_LANGUAGES = "subtitles_languages";
+        String VIDEO_ASPECT = "video_aspect";
+        String VIDEO_CODEC = "video_codec";
+        String VIDEO_HEIGHT = "video_height";
+        String VIDEO_WIDTH = "video_width";
+        String COUNTRIES = "countries";
+        String GENRES = "genres";
+        String IMDBNUMBER = "imdbnumber";
+        String MPAA = "mpaa";
+        String RATING = "rating";
+        String SET = "movie_set";
+        String SETID = "setid";
+        String STUDIOS = "studios";
+        String TAGLINE = "tagline";
+        String TOP250 = "top250";
+        String TRAILER = "trailer";
+        String VOTES = "votes";
+        String WRITERS = "writers";
+        String YEAR = "year";
+        String DATEADDED = "dateadded";
     }
 
     public static class Movies implements BaseColumns, SyncColumns, MoviesColumns {
@@ -174,13 +176,13 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + MOVIEID + NAME
      */
     public interface MovieCastColumns {
-        public final static String HOST_ID = "host_id";
-        public final static String MOVIEID = "movieid";
-        public final static String NAME = "name";
+        String HOST_ID = "host_id";
+        String MOVIEID = "movieid";
+        String NAME = "name";
 
-        public final static String ORDER = "cast_order";
-        public final static String ROLE = "role";
-        public final static String THUMBNAIL = "thumbnail";
+        String ORDER = "cast_order";
+        String ROLE = "role";
+        String THUMBNAIL = "thumbnail";
     }
 
     public static class MovieCast implements BaseColumns, SyncColumns, MovieCastColumns {
@@ -205,24 +207,24 @@ public class MediaContract {
      * For XBMC reference use HOST_ID + TVSHOWID
      */
     public interface TVShowsColumns {
-        public final static String HOST_ID = "host_id";
-        public final static String TVSHOWID = "tvshowid";
+        String HOST_ID = "host_id";
+        String TVSHOWID = "tvshowid";
 
-        public static final String FANART = "fanart";
-        public static final String THUMBNAIL = "thumbnail";
-        public static final String PLAYCOUNT = "playcount";
-        public static final String TITLE = "title";
-        public static final String DATEADDED = "dateadded";
-        public static final String FILE = "file";
-        public static final String PLOT = "plot";
-        public static final String EPISODE = "episode";
-        public static final String IMDBNUMBER = "imdbnumber";
-        public static final String MPAA = "mpaa";
-        public static final String PREMIERED = "premiered";
-        public static final String RATING = "rating";
-        public static final String STUDIO = "studio";
-        public static final String WATCHEDEPISODES = "watchedepisodes";
-        public static final String GENRES = "genres";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String PLAYCOUNT = "playcount";
+        String TITLE = "title";
+        String DATEADDED = "dateadded";
+        String FILE = "file";
+        String PLOT = "plot";
+        String EPISODE = "episode";
+        String IMDBNUMBER = "imdbnumber";
+        String MPAA = "mpaa";
+        String PREMIERED = "premiered";
+        String RATING = "rating";
+        String STUDIO = "studio";
+        String WATCHEDEPISODES = "watchedepisodes";
+        String GENRES = "genres";
     }
 
     public static class TVShows implements BaseColumns, SyncColumns, TVShowsColumns {
@@ -266,13 +268,13 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + TVSHOWID + NAME
      */
     public interface TVShowCastColumns {
-        public final static String HOST_ID = "host_id";
-        public final static String TVSHOWID = "tvshowid";
-        public final static String NAME = "name";
+        String HOST_ID = "host_id";
+        String TVSHOWID = "tvshowid";
+        String NAME = "name";
 
-        public final static String ORDER = "cast_order";
-        public final static String ROLE = "role";
-        public final static String THUMBNAIL = "thumbnail";
+        String ORDER = "cast_order";
+        String ROLE = "role";
+        String THUMBNAIL = "thumbnail";
     }
 
     public static class TVShowCast implements BaseColumns, SyncColumns, TVShowCastColumns {
@@ -297,16 +299,16 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + TVSHOWID + SEASON
      */
     public interface SeasonsColumns {
-       public final static String HOST_ID = "host_id";
-        public final static String TVSHOWID = "tvshowid";
-        public static final String SEASON = "season";
+       String HOST_ID = "host_id";
+        String TVSHOWID = "tvshowid";
+        String SEASON = "season";
 
-        public static final String LABEL = "label";
-        public static final String FANART = "fanart";
-        public static final String THUMBNAIL = "thumbnail";
-        public static final String EPISODE = "episode";
-        public static final String SHOWTITLE = "showtitle";
-        public static final String WATCHEDEPISODES = "watchedepisodes";
+        String LABEL = "label";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String EPISODE = "episode";
+        String SHOWTITLE = "showtitle";
+        String WATCHEDEPISODES = "watchedepisodes";
     }
 
     public static class Seasons implements BaseColumns, SyncColumns, SeasonsColumns {
@@ -350,34 +352,34 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + EPISODEID
      */
     public interface EpisodesColumns {
-        public final static String HOST_ID = "host_id";
-        public static final String EPISODEID = "episodeid";
+        String HOST_ID = "host_id";
+        String EPISODEID = "episodeid";
 
-        public final static String TVSHOWID = "tvshowid";
-        public static final String SEASON = "season";
-        public static final String EPISODE = "episode";
+        String TVSHOWID = "tvshowid";
+        String SEASON = "season";
+        String EPISODE = "episode";
 
-        public static final String FANART = "fanart";
-        public static final String THUMBNAIL = "thumbnail";
-        public static final String PLAYCOUNT = "playcount";
-        public static final String TITLE = "title";
-        public static final String DATEADDED = "dateadded";
-        public static final String FILE = "file";
-        public static final String PLOT = "plot";
-        public static final String DIRECTOR = "director";
-        public static final String RUNTIME = "runtime";
-        public static final String FIRSTAIRED = "firstaired";
-        public static final String RATING = "rating";
-        public static final String SHOWTITLE = "showtitle";
-        public static final String WRITER = "writer";
-        public final static String AUDIO_CHANNELS = "audio_channels";
-        public final static String AUDIO_CODEC = "audio_coded";
-        public final static String AUDIO_LANGUAGE = "audio_language";
-        public final static String SUBTITLES_LANGUAGES = "subtitles_languages";
-        public static final String VIDEO_ASPECT = "video_aspect";
-        public static final String VIDEO_CODEC = "video_codec";
-        public static final String VIDEO_HEIGHT = "video_height";
-        public static final String VIDEO_WIDTH = "video_width";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String PLAYCOUNT = "playcount";
+        String TITLE = "title";
+        String DATEADDED = "dateadded";
+        String FILE = "file";
+        String PLOT = "plot";
+        String DIRECTOR = "director";
+        String RUNTIME = "runtime";
+        String FIRSTAIRED = "firstaired";
+        String RATING = "rating";
+        String SHOWTITLE = "showtitle";
+        String WRITER = "writer";
+        String AUDIO_CHANNELS = "audio_channels";
+        String AUDIO_CODEC = "audio_coded";
+        String AUDIO_LANGUAGE = "audio_language";
+        String SUBTITLES_LANGUAGES = "subtitles_languages";
+        String VIDEO_ASPECT = "video_aspect";
+        String VIDEO_CODEC = "video_codec";
+        String VIDEO_HEIGHT = "video_height";
+        String VIDEO_WIDTH = "video_width";
     }
 
     public static class Episodes implements BaseColumns, SyncColumns, EpisodesColumns {
@@ -443,14 +445,14 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + ARTISTID
      */
     public interface ArtistsColumns {
-        public final static String HOST_ID = "host_id";
-        public static final String ARTISTID = "artistid";
+        String HOST_ID = "host_id";
+        String ARTISTID = "artistid";
 
-        public static final String ARTIST = "artist";
-        public final String DESCRIPTION = "description";
-        public final String GENRE = "genre";
-        public final String FANART = "fanart";
-        public final String THUMBNAIL = "thumbnail";
+        String ARTIST = "artist";
+        String DESCRIPTION = "description";
+        String GENRE = "genre";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
     }
 
     public static class Artists implements BaseColumns, SyncColumns, ArtistsColumns {
@@ -492,19 +494,19 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + ALBUMID
      */
     public interface AlbumsColumns {
-        public final static String HOST_ID = "host_id";
-        public static final String ALBUMID = "albumid";
+        String HOST_ID = "host_id";
+        String ALBUMID = "albumid";
 
-        public static final String FANART = "fanart";
-        public static final String THUMBNAIL = "thumbnail";
-        public static final String DISPLAYARTIST = "displayartist";
-        public static final String RATING = "rating";
-        public static final String TITLE = "title";
-        public static final String YEAR = "year";
-        public static final String ALBUMLABEL = "albumlabel";
-        public static final String DESCRIPTION = "description";
-        public static final String PLAYCOUNT = "playcount";
-        public static final String GENRE = "genre";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String DISPLAYARTIST = "displayartist";
+        String RATING = "rating";
+        String TITLE = "title";
+        String YEAR = "year";
+        String ALBUMLABEL = "albumlabel";
+        String DESCRIPTION = "description";
+        String PLAYCOUNT = "playcount";
+        String GENRE = "genre";
     }
 
     public static class Albums implements BaseColumns, SyncColumns, AlbumsColumns {
@@ -565,15 +567,15 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + ALBUMID + SONGID
      */
     public interface SongsColumns {
-        public final static String HOST_ID = "host_id";
-        public static final String ALBUMID = "albumid";
-        public static final String SONGID = "songid";
+        String HOST_ID = "host_id";
+        String ALBUMID = "albumid";
+        String SONGID = "songid";
 
-        public static final String DURATION = "duration";
-        public static final String THUMBNAIL = "thumbnail";
-        public static final String FILE = "file";
-        public static final String TRACK = "track";
-        public static final String TITLE = "title";
+        String DURATION = "duration";
+        String THUMBNAIL = "thumbnail";
+        String FILE = "file";
+        String TRACK = "track";
+        String TITLE = "title";
     }
 
     public static class Songs implements BaseColumns, SyncColumns, SongsColumns {
@@ -615,11 +617,11 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + GENREID
      */
     public interface AudioGenresColumns {
-        public final static String HOST_ID = "host_id";
-        public static final String GENREID = "genreid";
+        String HOST_ID = "host_id";
+        String GENREID = "genreid";
 
-        public static final String THUMBNAIL = "thumbnail";
-        public static final String TITLE = "title";
+        String THUMBNAIL = "thumbnail";
+        String TITLE = "title";
     }
 
     public static class AudioGenres implements BaseColumns, SyncColumns, AudioGenresColumns {
@@ -661,9 +663,9 @@ public class MediaContract {
      * All Other IDs refer to XBMC Ids, not Internal ones
      */
     public interface AlbumArtistsColumns {
-        public final static String HOST_ID = "host_id";
-        public static final String ALBUMID = "albumid";
-        public static final String ARTISTID = "artistid";
+        String HOST_ID = "host_id";
+        String ALBUMID = "albumid";
+        String ARTISTID = "artistid";
     }
 
     public static class AlbumArtists implements BaseColumns, AlbumArtistsColumns {
@@ -691,9 +693,9 @@ public class MediaContract {
      * All Other IDs refer to XBMC Ids, not Internal ones
      */
     public interface AlbumGenresColumns {
-        public final static String HOST_ID = "host_id";
-        public static final String ALBUMID = "albumid";
-        public static final String GENREID = "genreid";
+        String HOST_ID = "host_id";
+        String ALBUMID = "albumid";
+        String GENREID = "genreid";
     }
 
     public static class AlbumGenres implements BaseColumns, AlbumGenresColumns {
@@ -721,51 +723,51 @@ public class MediaContract {
      * For XBMC reference/unique key use HOST_ID + MUSICVIDEOID
      */
     public interface MusicVideosColumns {
-        public final static String HOST_ID = "host_id";
-        public final static String MUSICVIDEOID = "musicvideoid";
+        String HOST_ID = "host_id";
+        String MUSICVIDEOID = "musicvideoid";
 
         // ItemType.DetailsBase
-        //public static final String LABEL = "label";
+        //String LABEL = "label";
 
         // MediaType.DetailsBase
-        public static final String FANART = "fanart";
-        public static final String THUMBNAIL = "thumbnail";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
 
         // DetailsBase
-        //public static final String ART = "art";
-        public static final String PLAYCOUNT = "playcount";
+        //String ART = "art";
+        String PLAYCOUNT = "playcount";
 
         // DetailsMedia
-        public static final String TITLE = "title";
+        String TITLE = "title";
 
         // DetailsItem
-        //public static final String DATEADDED = "dateadded";
-        public static final String FILE = "file";
-        //public static final String LASTPLAYED = "lastplayed";
-        public static final String PLOT = "plot";
+        //String DATEADDED = "dateadded";
+        String FILE = "file";
+        //String LASTPLAYED = "lastplayed";
+        String PLOT = "plot";
 
         // DetailsFile
-        public static final String DIRECTOR = "director";
-        //public static final String RESUME = "resume";
-        public static final String RUNTIME = "runtime";
-        //public static final String STREAMDETAILS = "streamdetails";
-        public final static String AUDIO_CHANNELS = "audio_channels";
-        public final static String AUDIO_CODEC = "audio_coded";
-        public final static String AUDIO_LANGUAGE = "audio_language";
-        public final static String SUBTITLES_LANGUAGES = "subtitles_languages";
-        public static final String VIDEO_ASPECT = "video_aspect";
-        public static final String VIDEO_CODEC = "video_codec";
-        public static final String VIDEO_HEIGHT = "video_height";
-        public static final String VIDEO_WIDTH = "video_width";
+        String DIRECTOR = "director";
+        //String RESUME = "resume";
+        String RUNTIME = "runtime";
+        //String STREAMDETAILS = "streamdetails";
+        String AUDIO_CHANNELS = "audio_channels";
+        String AUDIO_CODEC = "audio_coded";
+        String AUDIO_LANGUAGE = "audio_language";
+        String SUBTITLES_LANGUAGES = "subtitles_languages";
+        String VIDEO_ASPECT = "video_aspect";
+        String VIDEO_CODEC = "video_codec";
+        String VIDEO_HEIGHT = "video_height";
+        String VIDEO_WIDTH = "video_width";
 
         // MusicVideo
-        public static final String ALBUM = "album";
-        public static final String ARTIST = "artist";
-        public static final String GENRES = "genre";
-        public static final String STUDIOS = "studio";
-        public static final String TAG = "tag";
-        public static final String TRACK = "track";
-        public static final String YEAR = "year";
+        String ALBUM = "album";
+        String ARTIST = "artist";
+        String GENRES = "genre";
+        String STUDIOS = "studio";
+        String TAG = "tag";
+        String TRACK = "track";
+        String YEAR = "year";
     }
 
     public static class MusicVideos implements BaseColumns, SyncColumns, MusicVideosColumns {

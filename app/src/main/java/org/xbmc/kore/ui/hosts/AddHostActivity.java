@@ -108,21 +108,16 @@ public class AddHostActivity extends BaseActivity
 
         Bundle args = new Bundle();
         if (hostInfo != null) {
-            args.putString(HostFragmentManualConfiguration.HOST_NAME,
-                    hostInfo.getName());
-            args.putString(HostFragmentManualConfiguration.HOST_ADDRESS,
-                    hostInfo.getAddress());
-            args.putInt(HostFragmentManualConfiguration.HOST_HTTP_PORT,
-                    hostInfo.getHttpPort());
-            args.putInt(HostFragmentManualConfiguration.HOST_TCP_PORT,
-                    hostInfo.getTcpPort());
-            args.putString(HostFragmentManualConfiguration.HOST_USERNAME,
-                    hostInfo.getUsername());
-            args.putString(HostFragmentManualConfiguration.HOST_PASSWORD,
-                    hostInfo.getPassword());
-            args.putInt(HostFragmentManualConfiguration.HOST_PROTOCOL,
-                    hostInfo.getProtocol());
+            args.putString(HostFragmentManualConfiguration.HOST_NAME, hostInfo.getName());
+            args.putString(HostFragmentManualConfiguration.HOST_ADDRESS, hostInfo.getAddress());
+            args.putInt(HostFragmentManualConfiguration.HOST_HTTP_PORT, hostInfo.getHttpPort());
+            args.putInt(HostFragmentManualConfiguration.HOST_TCP_PORT, hostInfo.getTcpPort());
+            args.putString(HostFragmentManualConfiguration.HOST_USERNAME, hostInfo.getUsername());
+            args.putString(HostFragmentManualConfiguration.HOST_PASSWORD, hostInfo.getPassword());
+            args.putInt(HostFragmentManualConfiguration.HOST_PROTOCOL, hostInfo.getProtocol());
             // Ignore Mac Address and Wol Port
+            args.putBoolean(HostFragmentManualConfiguration.HOST_USE_EVENT_SERVER, hostInfo.getUseEventServer());
+            args.putInt(HostFragmentManualConfiguration.HOST_EVENT_SERVER_PORT, hostInfo.getEventServerPort());
 
             // Send this fragment straight to test
             args.putBoolean(HostFragmentManualConfiguration.GO_STRAIGHT_TO_TEST, true);

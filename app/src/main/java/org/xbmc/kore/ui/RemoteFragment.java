@@ -171,7 +171,8 @@ public class RemoteFragment extends Fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_remote, container, false);
         ButterKnife.inject(this, root);
 
-        if (eventServerConnection != null) {
+        if (hostManager.getHostInfo().getUseEventServer() &&
+            (eventServerConnection != null)) {
             // Setup d-pad to use EventServer
             setupEventServerButton(leftButton, ButtonCodes.REMOTE_LEFT);
             setupEventServerButton(rightButton, ButtonCodes.REMOTE_RIGHT);
@@ -273,7 +274,7 @@ public class RemoteFragment extends Fragment
                 hostManager.getHostInfo(),
                 new EventServerConnection.EventServerConnectionCallback() {
                     @Override
-                    public void OnConnect(boolean success) {
+                    public void OnConnectResult(boolean success) {
                         if (!success) {
                             LogUtils.LOGD(TAG, "Couldnt setup EventServer, disabling it");
                             eventServerConnection = null;

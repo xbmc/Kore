@@ -65,6 +65,8 @@ public class HostInfo {
 	private String address;
 	private int httpPort;
 	private int tcpPort;
+
+    private boolean useEventServer;
 	private int eventServerPort;
 
     /**
@@ -99,7 +101,8 @@ public class HostInfo {
 	 * @param password Password for basic auth
 	 */
 	public HostInfo(int id, String name, String address, int protocol, int httpPort, int tcpPort,
-					String username, String password, String macAddress, int wolPort) {
+					String username, String password, String macAddress, int wolPort,
+                    boolean useEventServer, int eventServerPort) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
@@ -114,7 +117,8 @@ public class HostInfo {
         this.macAddress = macAddress;
         this.wolPort = wolPort;
 
-		this.eventServerPort = DEFAULT_EVENT_SERVER_PORT;
+        this.useEventServer = useEventServer;
+		this.eventServerPort = eventServerPort;
 
         // For performance reasons
         this.auxImageHttpAddress = getHttpURL() + "/image/";
@@ -132,12 +136,13 @@ public class HostInfo {
 	 * @param password Password for basic auth
 	 */
 	public HostInfo(String name, String address, int protocol, int httpPort,
-                    int tcpPort, String username, String password) {
+                    int tcpPort, String username, String password,
+                    boolean useEventServer, int eventServerPort) {
         this(-1, name, address, protocol, httpPort, tcpPort, username,
-                password, null, DEFAULT_WOL_PORT);
+                password, null, DEFAULT_WOL_PORT, useEventServer, eventServerPort);
 	}
 
-	public int getId() {
+    public int getId() {
 		return id;
 	}
 
@@ -185,6 +190,10 @@ public class HostInfo {
 		return protocol;
 	}
 
+    public boolean getUseEventServer() {
+        return useEventServer;
+    }
+
 	public int getEventServerPort() {
 		return eventServerPort;
 	}
@@ -198,6 +207,14 @@ public class HostInfo {
             throw new IllegalArgumentException("Invalid protocol specified.");
         }
         this.protocol = protocol;
+    }
+
+    /**
+     * Overrides the use of EventServer
+     * @param useEventServer Whether to use EventServer
+     */
+    public void setUseEventServer(boolean useEventServer) {
+        this.useEventServer = useEventServer;
     }
 
     /**

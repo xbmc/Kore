@@ -20,6 +20,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,6 +33,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
+import org.xbmc.kore.eventclient.EventServerConnection;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiException;
@@ -62,7 +65,9 @@ public class HostFragmentManualConfiguration extends Fragment {
             HOST_PASSWORD = PREFIX + ".host_password",
             HOST_MAC_ADDRESS = PREFIX + ".host_mac_address",
             HOST_WOL_PORT = PREFIX + ".host_wol_port",
-            HOST_PROTOCOL = PREFIX + ".host_protocol";
+            HOST_PROTOCOL = PREFIX + ".host_protocol",
+            HOST_USE_EVENT_SERVER = PREFIX + ".host_use_event_server",
+            HOST_EVENT_SERVER_PORT = PREFIX + ".host_event_server_port";
     public static final String GO_STRAIGHT_TO_TEST = PREFIX + ".go_straight_to_test";
 
     /**
@@ -86,6 +91,8 @@ public class HostFragmentManualConfiguration extends Fragment {
     @InjectView(R.id.xbmc_mac_address) EditText xbmcMacAddressEditText;
     @InjectView(R.id.xbmc_wol_port) EditText xbmcWolPortEditText;
     @InjectView(R.id.xbmc_use_tcp) CheckBox xbmcUseTcpCheckbox;
+    @InjectView(R.id.xbmc_use_event_server) CheckBox xbmcUseEventServerCheckbox;
+    @InjectView(R.id.xbmc_event_server_port) EditText xbmcEventServerPortEditText;
 
     // Handler for callbacks
     final Handler handler = new Handler();
@@ -104,6 +111,13 @@ public class HostFragmentManualConfiguration extends Fragment {
             }
         });
 
+        xbmcUseEventServerCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                xbmcEventServerPortEditText.setEnabled(isChecked);
+            }
+        });
+
         // Check if we were given a host info
         String hostName = getArguments().getString(HOST_NAME);
         String hostAddress = getArguments().getString(HOST_ADDRESS);
@@ -114,6 +128,8 @@ public class HostFragmentManualConfiguration extends Fragment {
         int hostProtocol = getArguments().getInt(HOST_PROTOCOL, HostConnection.PROTOCOL_TCP);
         String hostMacAddress = getArguments().getString(HOST_MAC_ADDRESS);
         int hostWolPort = getArguments().getInt(HOST_WOL_PORT, HostInfo.DEFAULT_WOL_PORT);
+        boolean hostUseEventServer = getArguments().getBoolean(HOST_USE_EVENT_SERVER, true);
+        int hostEventServerPort = getArguments().getInt(HOST_EVENT_SERVER_PORT, HostInfo.DEFAULT_EVENT_SERVER_PORT);
 
         if (hostAddress != null) {
             xbmcNameEditText.setText(hostName);
@@ -133,6 +149,11 @@ public class HostFragmentManualConfiguration extends Fragment {
                 xbmcMacAddressEditText.setText(hostMacAddress);
             if (hostWolPort != HostInfo.DEFAULT_WOL_PORT)
                 xbmcWolPortEditText.setText(String.valueOf(hostWolPort));
+
+            xbmcUseEventServerCheckbox.setChecked(hostUseEventServer);
+            xbmcEventServerPortEditText.setEnabled(xbmcUseEventServerCheckbox.isChecked());
+            if (hostEventServerPort != HostInfo.DEFAULT_EVENT_SERVER_PORT)
+                xbmcEventServerPortEditText.setText(String.valueOf(hostEventServerPort));
         }
 
         return root;
@@ -230,6 +251,15 @@ public class HostFragmentManualConfiguration extends Fragment {
             // Ignoring this exception and keeping WoL port at the default value
         }
 
+        boolean xbmcUseEventServer = xbmcUseEventServerCheckbox.isChecked();
+        aux = xbmcEventServerPortEditText.getText().toString();
+        int xbmcEventServerPort;
+        try {
+            xbmcEventServerPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_EVENT_SERVER_PORT : Integer.valueOf(aux);
+        } catch (NumberFormatException exc) {
+            xbmcEventServerPort = -1;
+        }
+
         // Check Xbmc name and address
         if (TextUtils.isEmpty(xbmcName)) {
             Toast.makeText(getActivity(), R.string.wizard_no_name_specified, Toast.LENGTH_SHORT).show();
@@ -247,6 +277,10 @@ public class HostFragmentManualConfiguration extends Fragment {
             Toast.makeText(getActivity(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
             xbmcTcpPortEditText.requestFocus();
             return;
+        } else if (xbmcEventServerPort <= 0) {
+            Toast.makeText(getActivity(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
+            xbmcEventServerPortEditText.requestFocus();
+            return;
         }
 
         // If username or password empty, set it to null
@@ -257,7 +291,9 @@ public class HostFragmentManualConfiguration extends Fragment {
 
         // Ok, let's try to ping the host
         final HostInfo checkedHostInfo = new HostInfo(xbmcName, xbmcAddress, xbmcProtocol,
-                xbmcHttpPort, xbmcTcpPort, xbmcUsername, xbmcPassword);
+                                                      xbmcHttpPort, xbmcTcpPort,
+                                                      xbmcUsername, xbmcPassword,
+                                                      xbmcUseEventServer, xbmcEventServerPort);
         checkedHostInfo.setMacAddress(macAddress);
         checkedHostInfo.setWolPort(xbmcWolPort);
 
@@ -288,9 +324,9 @@ public class HostFragmentManualConfiguration extends Fragment {
                 if (hostInfo.getProtocol() == HostConnection.PROTOCOL_TCP) {
                     chainCallCheckTcpConnection(hostConnection, hostInfo);
                 } else {
-                    // We're done
+                    // No TCP, check EventServer
                     hostConnection.disconnect();
-                    hostConnectionChecked(hostInfo);
+                    chainCallCheckEventServerConnection(hostInfo);
                 }
             }
 
@@ -312,8 +348,8 @@ public class HostFragmentManualConfiguration extends Fragment {
                 // Great, we managed to connect through HTTP and TCP
                 LogUtils.LOGD(TAG, "Successfully connected to new host through TCP.");
                 hostConnection.disconnect();
-                // Notify connection checked through TCP
-                hostConnectionChecked(hostInfo);
+                // Check EventServer
+                chainCallCheckEventServerConnection(hostInfo);
             }
 
             @Override
@@ -322,9 +358,37 @@ public class HostFragmentManualConfiguration extends Fragment {
                 LogUtils.LOGD(TAG, "Couldn't connect to host through TCP. Message: " + description);
                 hostConnection.disconnect();
                 hostInfo.setProtocol(HostConnection.PROTOCOL_HTTP);
-                hostConnectionChecked(hostInfo);
+                // Check EventServer
+                chainCallCheckEventServerConnection(hostInfo);
             }
         }, handler);
+    }
+
+    private void chainCallCheckEventServerConnection(final HostInfo hostInfo) {
+        if (hostInfo.getUseEventServer()) {
+            EventServerConnection.testEventServerConnection(
+                    hostInfo,
+                    new EventServerConnection.EventServerConnectionCallback() {
+                        @Override
+                        public void OnConnectResult(boolean success) {
+
+                            LogUtils.LOGD(TAG, "Check ES connection: " + success);
+                            if (success) {
+                                hostConnectionChecked(hostInfo);
+                            } else {
+                                hostInfo.setUseEventServer(false);
+                                hostConnectionChecked(hostInfo);
+                            }
+                        }
+                    },
+                    handler);
+        } else {
+            hostConnectionChecked(hostInfo);
+        }
+        PreferenceManager.getDefaultSharedPreferences(getActivity())
+                         .edit()
+                         .putBoolean(Settings.KEY_PREF_CHECKED_EVENT_SERVER_CONNECTION, true)
+                         .apply();
     }
 
     /**

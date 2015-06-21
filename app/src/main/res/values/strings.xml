@@ -98,11 +98,14 @@
     <string name="wizard_xbmc_mac_address">MAC address</string>
     <string name="wizard_xbmc_wol_port">WoL port (9)</string>
     <string name="wizard_xbmc_use_tcp">Use TCP</string>
+    <string name="wizard_xbmc_event_server_port">ES Port (9777)</string>
+    <string name="wizard_xbmc_use_event_server">Use EventServer</string>
 
     <string name="wizard_no_name_specified">Please specify a name for this media center, so you can identify it later.</string>
     <string name="wizard_no_address_specified">Please specify the address of this media center, so I can locate it.</string>
-    <string name="wizard_invalid_http_port_specified">Please specify a valid HTTP port for this media center, so I can locate it.</string>
-    <string name="wizard_invalid_tcp_port_specified">Please specify a valid TCP port for this media center, so I can locate it.</string>
+    <string name="wizard_invalid_http_port_specified">Please specify a valid HTTP port for this media center.</string>
+    <string name="wizard_invalid_tcp_port_specified">Please specify a valid TCP port for this media center.</string>
+    <string name="wizard_invalid_es_port_specified">Please specify a valid EventServer port for this media center.</string>
 
     <string name="wizard_connecting_to_xbmc_title">Connecting to %1$s…</string>
     <string name="wizard_connecting_to_xbmc_message">Please wait while I try to connect to your media center…</string>
