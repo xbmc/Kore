@@ -20,6 +20,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.utils.LogUtils;
 
 
@@ -30,31 +31,32 @@ public class MediaDatabase extends SQLiteOpenHelper {
 	private static final String TAG = LogUtils.makeLogTag(MediaDatabase.class);
 
 	private static final String DB_NAME = "xbmc.sqlite";
-	private static final int DB_VERSION = 4;
+    private static final int DB_VERSION_PRE_EVENT_SERVER = 4,
+            DB_VERSION = 5;
 
 	/**
 	 * Tables exposed
 	 */
 	public interface Tables {
-		public final static String HOSTS = "hosts";
-        public final static String MOVIES = "movies";
-        public final static String MOVIE_CAST = "movie_cast";
-        public final static String TVSHOWS = "tvshows";
-        public final static String TVSHOWS_CAST = "tvshows_cast";
-        public final static String SEASONS = "seasons";
-        public final static String EPISODES = "episodes";
-        public final static String ARTISTS = "artists";
-        public final static String ALBUMS = "albums";
-        public final static String SONGS = "songs";
-        public final static String AUDIO_GENRES = "audio_genres";
-        public final static String ALBUM_ARTISTS = "album_artists";
-        public final static String ALBUM_GENRES = "album_genres";
-        public final static String MUSIC_VIDEOS = "music_videos";
+		String HOSTS = "hosts";
+        String MOVIES = "movies";
+        String MOVIE_CAST = "movie_cast";
+        String TVSHOWS = "tvshows";
+        String TVSHOWS_CAST = "tvshows_cast";
+        String SEASONS = "seasons";
+        String EPISODES = "episodes";
+        String ARTISTS = "artists";
+        String ALBUMS = "albums";
+        String SONGS = "songs";
+        String AUDIO_GENRES = "audio_genres";
+        String ALBUM_ARTISTS = "album_artists";
+        String ALBUM_GENRES = "album_genres";
+        String MUSIC_VIDEOS = "music_videos";
 
         /**
          * Join to get Albums for an Artist
          */
-        public final static String ALBUMS_FOR_ARTIST_JOIN =
+        String ALBUMS_FOR_ARTIST_JOIN =
                 ALBUM_ARTISTS + " JOIN " + ALBUMS + " ON " +
                 ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID + "=" + ALBUMS + "." + MediaContract.Albums.HOST_ID +
                 " AND " +
@@ -63,7 +65,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
         /**
          * Join to get Artists for an Album
          */
-        public final static String ARTISTS_FOR_ALBUM_JOIN =
+        String ARTISTS_FOR_ALBUM_JOIN =
                 ALBUM_ARTISTS + " JOIN " + ARTISTS + " ON " +
                 ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID + "=" + ARTISTS + "." + MediaContract.Artists.HOST_ID +
                 " AND " +
@@ -72,7 +74,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
         /**
          * Join to get Album for a Genre
          */
-        public final static String ALBUMS_FOR_GENRE_JOIN =
+        String ALBUMS_FOR_GENRE_JOIN =
                 ALBUM_GENRES + " JOIN " + ALBUMS + " ON " +
                 ALBUM_GENRES + "." + MediaContract.AlbumGenres.HOST_ID + "=" + ALBUMS + "." + MediaContract.Albums.HOST_ID +
                 " AND " +
@@ -81,7 +83,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
         /**
          * Join to get Genres for an Album
          */
-        public final static String GENRES_FOR_ALBUM_JOIN =
+        String GENRES_FOR_ALBUM_JOIN =
                 ALBUM_GENRES + " JOIN " + AUDIO_GENRES + " ON " +
                 ALBUM_GENRES + "." + MediaContract.AlbumGenres.HOST_ID + "=" + AUDIO_GENRES + "." + MediaContract.AudioGenres.HOST_ID +
                 " AND " +
@@ -89,13 +91,13 @@ public class MediaDatabase extends SQLiteOpenHelper {
 	}
 
     private interface References {
-        final static String HOST_ID =
+        String HOST_ID =
                 "REFERENCES " + Tables.HOSTS + "(" + BaseColumns._ID + ")";
-        final static String ALBUMID =
+        String ALBUMID =
                 "REFERENCES " + Tables.ALBUMS + "(" + MediaContract.AlbumsColumns.ALBUMID + ")";
-        final static String ARTISTID =
+        String ARTISTID =
                 "REFERENCES " + Tables.ARTISTS + "(" + MediaContract.ArtistsColumns.ARTISTID + ")";
-        final static String GENREID =
+        String GENREID =
                 "REFERENCES " + Tables.AUDIO_GENRES + "(" + MediaContract.AudioGenresColumns.GENREID + ")";
     }
 
@@ -108,17 +110,19 @@ public class MediaDatabase extends SQLiteOpenHelper {
 
         // Hosts
         db.execSQL("CREATE TABLE " + Tables.HOSTS + "(" +
-                        BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        MediaContract.SyncColumns.UPDATED + " INTEGER NOT NULL," +
-                        MediaContract.HostsColumns.NAME + " TEXT, " +
-                        MediaContract.HostsColumns.ADDRESS + " TEXT, " +
-                        MediaContract.HostsColumns.PROTOCOL + " INTEGER, " +
-                        MediaContract.HostsColumns.HTTP_PORT + " INTEGER, " +
-                        MediaContract.HostsColumns.TCP_PORT + " INTEGER, " +
-                        MediaContract.HostsColumns.USERNAME + " TEXT, " +
-                        MediaContract.HostsColumns.PASSWORD + " TEXT, " +
-                        MediaContract.HostsColumns.MAC_ADDRESS + " TEXT, " +
-                        MediaContract.HostsColumns.WOL_PORT + " INTEGER)"
+                   BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                   MediaContract.SyncColumns.UPDATED + " INTEGER NOT NULL," +
+                   MediaContract.HostsColumns.NAME + " TEXT, " +
+                   MediaContract.HostsColumns.ADDRESS + " TEXT, " +
+                   MediaContract.HostsColumns.PROTOCOL + " INTEGER, " +
+                   MediaContract.HostsColumns.HTTP_PORT + " INTEGER, " +
+                   MediaContract.HostsColumns.TCP_PORT + " INTEGER, " +
+                   MediaContract.HostsColumns.USERNAME + " TEXT, " +
+                   MediaContract.HostsColumns.PASSWORD + " TEXT, " +
+                   MediaContract.HostsColumns.MAC_ADDRESS + " TEXT, " +
+                   MediaContract.HostsColumns.WOL_PORT + " INTEGER, " +
+                   MediaContract.HostsColumns.USE_EVENT_SERVER + " INTEGER, " +
+                   MediaContract.HostsColumns.EVENT_SERVER_PORT + " INTEGER)"
 		);
 
         // Movies
@@ -438,7 +442,20 @@ public class MediaDatabase extends SQLiteOpenHelper {
 
     @Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// For now just drop old tables and recreate
+
+        switch (oldVersion) {
+            case DB_VERSION_PRE_EVENT_SERVER:
+                // Add USE_EVENT_SERVER and EVENT_SERVER_PORT columns to HOSTS table
+                db.execSQL("ALTER TABLE " + Tables.HOSTS +
+                           " ADD COLUMN " + MediaContract.HostsColumns.USE_EVENT_SERVER +
+                           " INTEGER DEFAULT 1;");
+                db.execSQL("ALTER TABLE " + Tables.HOSTS +
+                           " ADD COLUMN " + MediaContract.HostsColumns.EVENT_SERVER_PORT +
+                           " INTEGER DEFAULT " + HostInfo.DEFAULT_EVENT_SERVER_PORT + ";");
+        }
+	}
+
+    private void resetDb(SQLiteDatabase db) {
 		db.execSQL("DROP TABLE IF EXISTS " + Tables.HOSTS);
         db.execSQL("DROP TABLE IF EXISTS " + Tables.MOVIES);
         db.execSQL("DROP TABLE IF EXISTS " + Tables.MOVIE_CAST);
@@ -454,7 +471,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Tables.ALBUM_GENRES);
         db.execSQL("DROP TABLE IF EXISTS " + Tables.MUSIC_VIDEOS);
 		onCreate(db);
-	}
+    }
 
     /**
      * Tokens to move from prefix to suffix when sorting titles

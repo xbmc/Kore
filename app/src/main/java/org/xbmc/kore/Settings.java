@@ -91,4 +91,8 @@ public interface Settings {
     // Current host id
     public static final String KEY_PREF_CURRENT_HOST_ID = "current_host_id";
     public static final int DEFAULT_PREF_CURRENT_HOST_ID = -1;
+
+    public static final String KEY_PREF_CHECKED_EVENT_SERVER_CONNECTION = "checked_event_server_connection";
+    public static final boolean DEFAULT_PREF_CHECKED_EVENT_SERVER_CONNECTION = false;
+
 }

@@ -26,6 +26,7 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.ui.BaseActivity;
+import org.xbmc.kore.utils.LogUtils;
 
 /**
  * Edits a host
@@ -61,21 +62,25 @@ public class EditHostActivity extends BaseActivity implements
                     args.putString(HostFragmentManualConfiguration.HOST_NAME,
                             selectedHostInfo.getName());
                     args.putString(HostFragmentManualConfiguration.HOST_ADDRESS,
-                            selectedHostInfo.getAddress());
+                                   selectedHostInfo.getAddress());
                     args.putInt(HostFragmentManualConfiguration.HOST_HTTP_PORT,
-                            selectedHostInfo.getHttpPort());
+                                selectedHostInfo.getHttpPort());
                     args.putInt(HostFragmentManualConfiguration.HOST_TCP_PORT,
-                            selectedHostInfo.getTcpPort());
+                                selectedHostInfo.getTcpPort());
                     args.putString(HostFragmentManualConfiguration.HOST_USERNAME,
-                            selectedHostInfo.getUsername());
+                                   selectedHostInfo.getUsername());
                     args.putString(HostFragmentManualConfiguration.HOST_PASSWORD,
-                            selectedHostInfo.getPassword());
+                                   selectedHostInfo.getPassword());
                     args.putInt(HostFragmentManualConfiguration.HOST_PROTOCOL,
-                            selectedHostInfo.getProtocol());
+                                selectedHostInfo.getProtocol());
                     args.putString(HostFragmentManualConfiguration.HOST_MAC_ADDRESS,
-                            selectedHostInfo.getMacAddress());
+                                   selectedHostInfo.getMacAddress());
                     args.putInt(HostFragmentManualConfiguration.HOST_WOL_PORT,
-                            selectedHostInfo.getWolPort());
+                                selectedHostInfo.getWolPort());
+                    args.putBoolean(HostFragmentManualConfiguration.HOST_USE_EVENT_SERVER,
+                                    selectedHostInfo.getUseEventServer());
+                    args.putInt(HostFragmentManualConfiguration.HOST_EVENT_SERVER_PORT,
+                                    selectedHostInfo.getEventServerPort());
                     editFragment.setArguments(args);
                 }
             }

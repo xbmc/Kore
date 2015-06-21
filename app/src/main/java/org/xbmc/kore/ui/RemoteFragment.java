@@ -20,13 +20,13 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +40,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.eventclient.ButtonCodes;
+import org.xbmc.kore.eventclient.EventServerConnection;
+import org.xbmc.kore.eventclient.Packet;
+import org.xbmc.kore.eventclient.PacketBUTTON;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -55,6 +59,8 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.RepeatListener;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
+
+import java.net.UnknownHostException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -128,6 +134,9 @@ public class RemoteFragment extends Fragment
     // Touch listener that provides touch feedbacl
     private View.OnTouchListener feedbackTouckListener;
 
+    // EventServer connection
+    private EventServerConnection eventServerConnection = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +145,8 @@ public class RemoteFragment extends Fragment
 
         buttonInAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_in);
         buttonOutAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_out);
+
+        createEventServerConnection();
 
         feedbackTouckListener = new View.OnTouchListener() {
             @Override
@@ -160,19 +171,30 @@ public class RemoteFragment extends Fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_remote, container, false);
         ButterKnife.inject(this, root);
 
-        // Setup repeat buttons
-        setupRepeatButton(leftButton, new Input.Left());
-        setupRepeatButton(rightButton, new Input.Right());
-        setupRepeatButton(upButton, new Input.Up());
-        setupRepeatButton(downButton, new Input.Down());
+        if (hostManager.getHostInfo().getUseEventServer() &&
+            (eventServerConnection != null)) {
+            // Setup d-pad to use EventServer
+            setupEventServerButton(leftButton, ButtonCodes.REMOTE_LEFT);
+            setupEventServerButton(rightButton, ButtonCodes.REMOTE_RIGHT);
+            setupEventServerButton(upButton, ButtonCodes.REMOTE_UP);
+            setupEventServerButton(downButton, ButtonCodes.REMOTE_DOWN);
+            //setupEventServerButton(selectButton, ButtonCodes.REMOTE_SELECT);
+        } else {
+            // Otherwise, use json-rpc
+            setupRepeatButton(leftButton, new Input.Left());
+            setupRepeatButton(rightButton, new Input.Right());
+            setupRepeatButton(upButton, new Input.Up());
+            setupRepeatButton(downButton, new Input.Down());
+        }
+        setupDefaultButton(selectButton, new Input.Select(), null);
 
-        setupNoRepeatButton(selectButton, new Input.Select(), null);
-        setupNoRepeatButton(backButton, new Input.Back(), null);
-        setupNoRepeatButton(infoButton,
-                new Input.ExecuteAction(Input.ExecuteAction.INFO),
-                new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
-        setupNoRepeatButton(osdButton, new Input.ExecuteAction(Input.ExecuteAction.OSD), null);
-        setupNoRepeatButton(contextButton, new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU), null);
+        // Other buttons
+        setupDefaultButton(backButton, new Input.Back(), null);
+        setupDefaultButton(infoButton,
+                           new Input.ExecuteAction(Input.ExecuteAction.INFO),
+                           new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
+        setupDefaultButton(osdButton, new Input.ExecuteAction(Input.ExecuteAction.OSD), null);
+        setupDefaultButton(contextButton, new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU), null);
 
         adjustRemoteButtons();
 
@@ -184,17 +206,6 @@ public class RemoteFragment extends Fragment
 
         return root;
     }
-
-//    /**
-//     * Select button callback
-//     * @param v Clicked view
-//     */
-//    @OnClick(R.id.select)
-//    public void onSelectClicked(View v) {
-//        v.startAnimation(buttonInOutAnim);
-//        Input.Select action = new Input.Select();
-//        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-//    }
 
     @TargetApi(21)
     private void adjustRemoteButtons() {
@@ -244,27 +255,47 @@ public class RemoteFragment extends Fragment
     public void onResume() {
         super.onResume();
         hostConnectionObserver.registerPlayerObserver(this, true);
+        if (eventServerConnection == null)
+            createEventServerConnection();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         hostConnectionObserver.unregisterPlayerObserver(this);
+        if (eventServerConnection != null) {
+            eventServerConnection.quit();
+            eventServerConnection = null;
+        }
+    }
+
+    private void createEventServerConnection() {
+        eventServerConnection = new EventServerConnection(
+                hostManager.getHostInfo(),
+                new EventServerConnection.EventServerConnectionCallback() {
+                    @Override
+                    public void OnConnectResult(boolean success) {
+                        if (!success) {
+                            LogUtils.LOGD(TAG, "Couldnt setup EventServer, disabling it");
+                            eventServerConnection = null;
+                        }
+                    }
+                });
     }
 
     private void setupRepeatButton(View button, final ApiMethod<String> action) {
         button.setOnTouchListener(new RepeatListener(UIUtils.initialButtonRepeatInterval, UIUtils.buttonRepeatInterval,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-                    }
-                }, buttonInAnim, buttonOutAnim));
+                                                     new View.OnClickListener() {
+                                                         @Override
+                                                         public void onClick(View v) {
+                                                             action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+                                                         }
+                                                     }, buttonInAnim, buttonOutAnim));
     }
 
-    private void setupNoRepeatButton(View button,
-                                     final ApiMethod<String> clickAction,
-                                     final ApiMethod<String> longClickAction) {
+    private void setupDefaultButton(View button,
+                                    final ApiMethod<String> clickAction,
+                                    final ApiMethod<String> longClickAction) {
         // Set animation
         button.setOnTouchListener(feedbackTouckListener);
         if (clickAction != null) {
@@ -285,6 +316,54 @@ public class RemoteFragment extends Fragment
             });
         }
     }
+
+    private void setupEventServerButton(View button, final String action) {
+        final Packet packet =
+                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, false, true, true, (short)0, (byte)0);
+        button.setOnTouchListener(new RepeatListener(UIUtils.initialButtonRepeatInterval, UIUtils.buttonRepeatInterval,
+                                                     new View.OnClickListener() {
+                                                         @Override
+                                                         public void onClick(View v) {
+                                                             eventServerConnection.sendPacket(packet);
+                                                         }
+                                                     }, buttonInAnim, buttonOutAnim));
+    }
+
+
+//    private void setupEventServerButton(View button, final String action) {
+//        short amount = 0;
+//        byte axis = 0;
+//        final Packet packetDown =
+//                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, true, true, false, amount, axis);
+//        final Packet packetUp =
+//                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, false, false, false, amount, axis);
+//
+//        // Set animation and packet
+//        button.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        buttonInAnim.setFillAfter(true);
+//                        v.startAnimation(buttonInAnim);
+//                        eventServerConnection.sendPacket(packetDown);
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                    case MotionEvent.ACTION_CANCEL:
+//                        v.startAnimation(buttonOutAnim);
+//                        eventServerConnection.sendPacket(packetUp);
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Nothing to do
+//            }
+//        });
+//    }
 
     /**
      * Default callback for methods that don't return anything

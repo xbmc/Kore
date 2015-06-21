@@ -142,9 +142,11 @@ public class HostManager {
                     String password = cursor.getString(idx++);
                     String macAddress = cursor.getString(idx++);
                     int wolPort = cursor.getInt(idx++);
+                    boolean useEventServer = (cursor.getInt(idx++) != 0);
+                    int eventServerPort = cursor.getInt(idx++);
 
                     hosts.add(new HostInfo(id, name, address, protocol, httpPort, tcpPort,
-                            username, password, macAddress, wolPort));
+                            username, password, macAddress, wolPort, useEventServer, eventServerPort));
                 }
             }
             cursor.close();
@@ -307,9 +309,10 @@ public class HostManager {
      */
     public HostInfo addHost(HostInfo hostInfo) {
         return addHost(hostInfo.getName(), hostInfo.getAddress(), hostInfo.getProtocol(),
-                hostInfo.getHttpPort(), hostInfo.getTcpPort(),
-                hostInfo.getUsername(), hostInfo.getPassword(),
-                hostInfo.getMacAddress(), hostInfo.getWolPort());
+                       hostInfo.getHttpPort(), hostInfo.getTcpPort(),
+                       hostInfo.getUsername(), hostInfo.getPassword(),
+                       hostInfo.getMacAddress(), hostInfo.getWolPort(),
+                       hostInfo.getUseEventServer(), hostInfo.getEventServerPort());
     }
 
 
@@ -325,7 +328,8 @@ public class HostManager {
 	 * @return Newly created {@link org.xbmc.kore.host.HostInfo}
 	 */
 	public HostInfo addHost(String name, String address, int protocol, int httpPort, int tcpPort,
-						   String username, String password, String macAddress, int wolPort) {
+						   String username, String password, String macAddress, int wolPort,
+                            boolean useEventServer, int eventServerPort) {
 
 		ContentValues values = new ContentValues();
 		values.put(MediaContract.HostsColumns.NAME, name);
@@ -337,6 +341,8 @@ public class HostManager {
 		values.put(MediaContract.HostsColumns.PASSWORD, password);
         values.put(MediaContract.HostsColumns.MAC_ADDRESS, macAddress);
         values.put(MediaContract.HostsColumns.WOL_PORT, wolPort);
+        values.put(MediaContract.HostsColumns.USE_EVENT_SERVER, useEventServer);
+        values.put(MediaContract.HostsColumns.EVENT_SERVER_PORT, eventServerPort);
 
         Uri newUri = context.getContentResolver()
                             .insert(MediaContract.Hosts.CONTENT_URI, values);
@@ -371,6 +377,8 @@ public class HostManager {
         values.put(MediaContract.HostsColumns.PASSWORD, newHostInfo.getPassword());
         values.put(MediaContract.HostsColumns.MAC_ADDRESS, newHostInfo.getMacAddress());
         values.put(MediaContract.HostsColumns.WOL_PORT, newHostInfo.getWolPort());
+        values.put(MediaContract.HostsColumns.USE_EVENT_SERVER, newHostInfo.getUseEventServer());
+        values.put(MediaContract.HostsColumns.EVENT_SERVER_PORT, newHostInfo.getEventServerPort());
 
         context.getContentResolver()
                .update(MediaContract.Hosts.buildHostUri(hostId), values, null, null);
