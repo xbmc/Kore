@@ -126,6 +126,7 @@ public class RemoteFragment extends Fragment
     @InjectView(R.id.details) TextView nowPlayingDetails;
 
     @InjectView(R.id.play) ImageButton playButton;
+    @InjectView(R.id.stop) ImageButton stopButton;
     @InjectView(R.id.rewind) ImageButton rewindButton;
     @InjectView(R.id.fast_forward) ImageButton fastForwardButton;
 
@@ -422,6 +423,12 @@ public class RemoteFragment extends Fragment
     public void onPlayClicked(View v) {
         Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
+    }
+
+    @OnClick(R.id.stop)
+    public void onStopClicked(View v) {
+        Player.Stop action = new Player.Stop(currentActivePlayerId);
+        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
     /**
