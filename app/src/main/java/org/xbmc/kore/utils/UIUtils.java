@@ -194,6 +194,9 @@ public class UIUtils {
         return new CharacterDrawable(charAvatar, color);
     }
 
+    static boolean playPauseIconsLoaded = false;
+    static int iconPauseResId = R.drawable.ic_pause_white_24dp,
+            iconPlayResId = R.drawable.ic_play_arrow_white_24dp;
     /**
      * Sets play/pause button icon on a ImageView, based on speed
      * @param context Activity
@@ -201,14 +204,16 @@ public class UIUtils {
      * @param speed Current player speed
      */
     public static void setPlayPauseButtonIcon(Context context, ImageView view, int speed) {
-        int resAttrId = (speed == 1) ? R.attr.iconPause : R.attr.iconPlay;
-        int defaultResourceId = (speed == 1) ?
-                                R.drawable.ic_pause_white_24dp :
-                                R.drawable.ic_play_arrow_white_24dp;
 
-        TypedArray styledAttributes = context.obtainStyledAttributes(new int[]{resAttrId});
-        view.setImageResource(styledAttributes.getResourceId(0, defaultResourceId));
-        styledAttributes.recycle();
+        if (!playPauseIconsLoaded) {
+            TypedArray styledAttributes = context.obtainStyledAttributes(new int[]{iconPauseResId, iconPlayResId});
+            iconPauseResId = styledAttributes.getResourceId(0, R.drawable.ic_pause_white_24dp);
+            iconPlayResId = styledAttributes.getResourceId(1, R.drawable.ic_play_arrow_white_24dp);
+            styledAttributes.recycle();
+            playPauseIconsLoaded = true;
+        }
+
+        view.setImageResource((speed == 1) ? iconPauseResId: iconPlayResId);
     }
 
     /**
