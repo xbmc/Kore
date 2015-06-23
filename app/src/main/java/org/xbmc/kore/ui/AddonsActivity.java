@@ -154,6 +154,8 @@ public class AddonsActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) return;
+        actionBar.setDisplayHomeAsUpEnabled(true);
         if (addonTitle != null) {
             navigationDrawerFragment.setDrawerIndicatorEnabled(false);
             actionBar.setTitle(addonTitle);

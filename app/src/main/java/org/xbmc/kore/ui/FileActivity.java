@@ -120,6 +120,8 @@ public class FileActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) return;
+        actionBar.setDisplayHomeAsUpEnabled(true);
         navigationDrawerFragment.setDrawerIndicatorEnabled(true);
         actionBar.setTitle(title);
 

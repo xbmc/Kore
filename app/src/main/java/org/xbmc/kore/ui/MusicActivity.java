@@ -213,6 +213,8 @@ public class MusicActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) return;
+        actionBar.setDisplayHomeAsUpEnabled(true);
         if (albumTitle != null) {
             navigationDrawerFragment.setDrawerIndicatorEnabled(false);
             actionBar.setTitle(albumTitle);

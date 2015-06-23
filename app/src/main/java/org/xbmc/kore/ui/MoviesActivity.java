@@ -154,6 +154,8 @@ public class MoviesActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) return;
+        actionBar.setDisplayHomeAsUpEnabled(true);
         if (movieTitle != null) {
             navigationDrawerFragment.setDrawerIndicatorEnabled(false);
             actionBar.setTitle(movieTitle);
