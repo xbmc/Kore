@@ -33,12 +33,15 @@
     <!--<color name="dark_content_background_dim_70pct">#b4222326</color>-->
     <color name="dark_content_background">#ff323232</color>
     <color name="dark_content_background_dim_70pct">#b4323232</color>
+    <color name="dark_selected_content_background">#ff505050</color>
 
     <color name="light_content_background">#ffffffff</color>
     <color name="light_content_background_dim_70pct">#b4ffffff</color>
+    <color name="light_selected_content_background">#ffd1d1d1</color>
 
     <color name="blue_grey_content_background">#ff263238</color>
     <color name="blue_grey_content_background_dim_70pct">#b4263238</color>
+    <color name="blue_grey_selected_content_background">#ff43575d</color>
 
     <color name="dark_separator">#ff505050</color>
     <color name="light_separator">#ffafafaf</color>

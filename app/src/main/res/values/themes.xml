@@ -57,6 +57,7 @@
 
         <item name="contentBackgroundColor">@color/dark_content_background_dim_70pct</item>
         <item name="appCardBackgroundColor">@color/dark_content_background</item>
+        <item name="appSelectedCardBackgroundColor">@color/dark_selected_content_background</item>
         <!--<item name="myCardBackgroundDrawable">@drawable/card_background_dark</item>-->
         <item name="buttonBarBackgroundColor">@color/dark_content_background_dim_70pct</item>
 
@@ -165,6 +166,7 @@
 
         <item name="contentBackgroundColor">@color/light_content_background_dim_70pct</item>
         <item name="appCardBackgroundColor">@color/light_content_background</item>
+        <item name="appSelectedCardBackgroundColor">@color/light_selected_content_background</item>
         <!--<item name="myCardBackgroundDrawable">@drawable/card_background_light</item>-->
         <item name="buttonBarBackgroundColor">@color/light_content_background_dim_70pct</item>
 
@@ -266,6 +268,7 @@
 
         <item name="contentBackgroundColor">@color/blue_grey_content_background_dim_70pct</item>
         <item name="appCardBackgroundColor">@color/blue_grey_content_background</item>
+        <item name="appSelectedCardBackgroundColor">@color/blue_grey_selected_content_background</item>
         <item name="buttonBarBackgroundColor">@color/blue_grey_content_background_dim_70pct</item>
 
         <!-- Color for the Navigation Drawer -->
@@ -287,6 +290,7 @@
 
         <item name="contentBackgroundColor">@color/solarized_base3_dim70pct</item>
         <item name="appCardBackgroundColor">@color/solarized_base3</item>
+        <item name="appSelectedCardBackgroundColor">@color/white</item>
         <item name="buttonBarBackgroundColor">@color/solarized_base3_dim70pct</item>
 
         <!-- Color for the Navigation Drawer -->
@@ -311,6 +315,7 @@
         <item name="contentBackgroundColor">@color/solarized_base02_dim70pct</item>
         <item name="appCardBackgroundColor">@color/solarized_base02</item>
         <item name="buttonBarBackgroundColor">@color/solarized_base02_dim70pct</item>
+        <item name="appSelectedCardBackgroundColor">@color/solarized_base01</item>
 
         <!-- Color for the Navigation Drawer -->
         <item name="drawerBackgroundColor">@color/solarized_base02</item>

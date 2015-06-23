@@ -24,6 +24,7 @@
 
     <attr name="contentBackgroundColor" format="reference|color" />
     <attr name="appCardBackgroundColor" format="reference|color" />
+    <attr name="appSelectedCardBackgroundColor" format="reference|color" />
     <attr name="buttonBarBackgroundColor" format="reference|color" />
 
     <attr name="fabColorNormal" format="reference|color" />

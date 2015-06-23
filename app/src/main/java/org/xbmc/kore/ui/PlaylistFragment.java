@@ -15,9 +15,12 @@
  */
 package org.xbmc.kore.ui;
 
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -440,6 +443,7 @@ public class PlaylistFragment extends Fragment
             if ((playlistItems.get(i).id == getItemResult.id) &&
                 (playlistItems.get(i).type.equals(getItemResult.type))) {
                 playlistGridView.setItemChecked(i, true);
+                playlistGridView.setSelection(i);
             }
         }
     }
@@ -517,9 +521,19 @@ public class PlaylistFragment extends Fragment
         int artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
         int artHeight = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
 
+        int cardBackgroundColor, selectedCardBackgroundColor;
+
         public PlayListAdapter(List<ListType.ItemsAll> playlistItems) {
             super();
             this.playlistItems = playlistItems;
+
+            Resources.Theme theme = getActivity().getTheme();
+            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
+                    R.attr.appCardBackgroundColor,
+                    R.attr.appSelectedCardBackgroundColor});
+            cardBackgroundColor = styledAttributes.getColor(0, R.color.dark_content_background);
+            selectedCardBackgroundColor = styledAttributes.getColor(1, R.color.dark_selected_content_background);
+            styledAttributes.recycle();
         }
 
         public PlayListAdapter() {
@@ -579,10 +593,11 @@ public class PlaylistFragment extends Fragment
                 viewHolder.details = (TextView)convertView.findViewById(R.id.details);
                 viewHolder.contextMenu = (ImageView)convertView.findViewById(R.id.list_context_menu);
                 viewHolder.duration = (TextView)convertView.findViewById(R.id.duration);
+                viewHolder.card = (CardView)convertView.findViewById(R.id.card);
 
                 convertView.setTag(viewHolder);
             } else {
-                viewHolder = (ViewHolder)convertView.getTag();
+                viewHolder = (ViewHolder) convertView.getTag();
             }
 
             final ListType.ItemsAll item = this.getItem(position);
@@ -630,6 +645,10 @@ public class PlaylistFragment extends Fragment
             viewHolder.duration.setText((duration > 0) ? UIUtils.formatTime(duration) : "");
             viewHolder.position = position;
 
+            int cardColor = (position == playlistGridView.getCheckedItemPosition()) ?
+                    selectedCardBackgroundColor: cardBackgroundColor;
+            viewHolder.card.setCardBackgroundColor(cardColor);
+
             // If not video, change aspect ration of poster to a square
             boolean isVideo = (item.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
                     (item.type.equals(ListType.ItemsAll.TYPE_EPISODE));
@@ -640,8 +659,8 @@ public class PlaylistFragment extends Fragment
                 artWidth = artHeight;
             }
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                    artUrl, title,
-                    viewHolder.art, artWidth, artHeight);
+                                                 artUrl, title,
+                                                 viewHolder.art, artWidth, artHeight);
 
             // For the popupmenu
             viewHolder.contextMenu.setTag(position);
@@ -656,6 +675,7 @@ public class PlaylistFragment extends Fragment
             TextView details;
             ImageView contextMenu;
             TextView duration;
+            CardView card;
             int position;
         }
     }
