@@ -26,7 +26,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,8 +59,6 @@ import org.xbmc.kore.utils.RepeatListener;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
-import java.net.UnknownHostException;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -92,6 +89,11 @@ public class RemoteFragment extends Fragment
      * The current active player id
      */
     private int currentActivePlayerId = -1;
+
+    /**
+     * The current item type
+     */
+    private String currentNowPlayingItemType = null;
 
     @InjectView(R.id.info_panel) RelativeLayout infoPanel;
     @InjectView(R.id.media_panel) RelativeLayout mediaPanel;
@@ -137,6 +139,9 @@ public class RemoteFragment extends Fragment
 
     // EventServer connection
     private EventServerConnection eventServerConnection = null;
+
+    // Icons for fastForward/Rewind or skipPrevious/skipNext
+    int fastForwardIcon, rewindIcon, skipPreviousIcon, skipNextIcon;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -199,7 +204,19 @@ public class RemoteFragment extends Fragment
 
         adjustRemoteButtons();
 
-//        // Padd main content view to account for bottom system bar
+        TypedArray styledAttributes = getActivity().getTheme().obtainStyledAttributes(new int[] {
+                R.attr.iconFastForward,
+                R.attr.iconRewind,
+                R.attr.iconNext,
+                R.attr.iconPrevious
+        });
+        fastForwardIcon = styledAttributes.getResourceId(0, R.drawable.ic_fast_forward_white_24dp);
+        rewindIcon = styledAttributes.getResourceId(1, R.drawable.ic_fast_rewind_white_24dp);
+        skipNextIcon = styledAttributes.getResourceId(2, R.drawable.ic_skip_next_white_24dp);
+        skipPreviousIcon = styledAttributes.getResourceId(3, R.drawable.ic_skip_previous_white_24dp);
+        styledAttributes.recycle();
+
+//        // Pad main content view to account for bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), root, false, false, true);
 
         // No clipping
@@ -409,14 +426,24 @@ public class RemoteFragment extends Fragment
      */
     @OnClick(R.id.fast_forward)
     public void onFastForwardClicked(View v) {
-        Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.INCREMENT);
-        action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
+        if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
+            Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
+            action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+        } else {
+            Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.INCREMENT);
+            action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
+        }
     }
 
     @OnClick(R.id.rewind)
     public void onRewindClicked(View v) {
-        Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.DECREMENT);
-        action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
+        if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
+            Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
+            action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+        } else {
+            Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.DECREMENT);
+            action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
+        }
     }
 
     @OnClick(R.id.play)
@@ -453,6 +480,7 @@ public class RemoteFragment extends Fragment
                              ListType.ItemsAll getItemResult) {
         setNowPlayingInfo(getItemResult, getPropertiesResult);
         currentActivePlayerId = getActivePlayerResult.playerid;
+        currentNowPlayingItemType = getItemResult.type;
         // Switch icon
         UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed);
     }
@@ -462,6 +490,7 @@ public class RemoteFragment extends Fragment
                               ListType.ItemsAll getItemResult) {
         setNowPlayingInfo(getItemResult, getPropertiesResult);
         currentActivePlayerId = getActivePlayerResult.playerid;
+        currentNowPlayingItemType = getItemResult.type;
         // Switch icon
         UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed);
     }
@@ -508,13 +537,15 @@ public class RemoteFragment extends Fragment
     public void inputOnInputRequested(String title, String type, String value) {}
     public void observerOnStopObserving() {}
 
-        /**
-         * Sets whats playing information
-         * @param nowPlaying Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
-         */
+    /**
+     * Sets whats playing information
+     * @param nowPlaying Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
+     */
     private void setNowPlayingInfo(ListType.ItemsAll nowPlaying,
                                    PlayerType.PropertyValue properties) {
         String title, underTitle, thumbnailUrl;
+        int currentRewindIcon, currentFastForwardIcon;
+
         switch (nowPlaying.type) {
             case ListType.ItemsAll.TYPE_MOVIE:
                 switchToPanel(R.id.media_panel, true);
@@ -522,6 +553,8 @@ public class RemoteFragment extends Fragment
                 title = nowPlaying.title;
                 underTitle = nowPlaying.tagline;
                 thumbnailUrl = nowPlaying.thumbnail;
+                currentFastForwardIcon = fastForwardIcon;
+                currentRewindIcon = rewindIcon;
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
                 switchToPanel(R.id.media_panel, true);
@@ -530,6 +563,8 @@ public class RemoteFragment extends Fragment
                 String season = String.format(getString(R.string.season_episode_abbrev), nowPlaying.season, nowPlaying.episode);
                 underTitle = String.format("%s | %s", nowPlaying.showtitle, season);
                 thumbnailUrl = nowPlaying.art.poster;
+                currentFastForwardIcon = fastForwardIcon;
+                currentRewindIcon = rewindIcon;
                 break;
             case ListType.ItemsAll.TYPE_SONG:
                 switchToPanel(R.id.media_panel, true);
@@ -537,6 +572,8 @@ public class RemoteFragment extends Fragment
                 title = nowPlaying.title;
                 underTitle = nowPlaying.displayartist + " | " + nowPlaying.album;
                 thumbnailUrl = nowPlaying.thumbnail;
+                currentFastForwardIcon = skipNextIcon;
+                currentRewindIcon = skipPreviousIcon;
                 break;
             case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
                 switchToPanel(R.id.media_panel, true);
@@ -544,18 +581,24 @@ public class RemoteFragment extends Fragment
                 title = nowPlaying.title;
                 underTitle = Utils.listStringConcat(nowPlaying.artist, ", ") + " | " + nowPlaying.album;
                 thumbnailUrl = nowPlaying.thumbnail;
+                currentFastForwardIcon = fastForwardIcon;
+                currentRewindIcon = rewindIcon;
                 break;
             default:
                 switchToPanel(R.id.media_panel, true);
                 title = nowPlaying.label;
                 underTitle = "";
                 thumbnailUrl = nowPlaying.thumbnail;
+                currentFastForwardIcon = fastForwardIcon;
+                currentRewindIcon = rewindIcon;
                 break;
         }
 
         nowPlayingTitle.setText(title);
         nowPlayingDetails.setText(underTitle);
 
+        fastForwardButton.setImageResource(currentFastForwardIcon);
+        rewindButton.setImageResource(currentRewindIcon);
 //        // If not video, change aspect ration of poster to a square
 //        boolean isVideo = (nowPlaying.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
 //                (nowPlaying.type.equals(ListType.ItemsAll.TYPE_EPISODE));
