@@ -159,7 +159,7 @@ public class RepeatListener implements View.OnTouchListener {
                     .getBoolean(Settings.KEY_PREF_VIBRATE_REMOTE_BUTTONS,
                             Settings.DEFAULT_PREF_VIBRATE_REMOTE_BUTTONS);
             if (vibrateOnPress) {
-                vibrator.vibrate(500);
+                vibrator.vibrate(UIUtils.buttonVibrationDuration);
             }
         }
     }

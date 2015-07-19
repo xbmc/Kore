@@ -52,6 +52,7 @@ public class UIUtils {
 
     public static final int initialButtonRepeatInterval = 400; // ms
     public static final int buttonRepeatInterval = 80; // ms
+    public static final int buttonVibrationDuration = 100; //ms
 
     /**
      * Formats time based on seconds
