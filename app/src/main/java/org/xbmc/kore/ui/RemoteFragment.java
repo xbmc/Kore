@@ -16,6 +16,7 @@
 package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -25,6 +26,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -140,6 +142,9 @@ public class RemoteFragment extends Fragment
     // EventServer connection
     private EventServerConnection eventServerConnection = null;
 
+    //Vibrator reference for remote buttons
+    private Vibrator vibrator;
+
     // Icons for fastForward/Rewind or skipPrevious/skipNext
     int fastForwardIcon, rewindIcon, skipPreviousIcon, skipNextIcon;
 
@@ -148,6 +153,8 @@ public class RemoteFragment extends Fragment
         super.onCreate(savedInstanceState);
         hostManager = HostManager.getInstance(getActivity());
         hostConnectionObserver = hostManager.getHostConnectionObserver();
+
+        vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
         buttonInAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_in);
         buttonOutAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_out);
@@ -308,7 +315,7 @@ public class RemoteFragment extends Fragment
                                                          public void onClick(View v) {
                                                              action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
                                                          }
-                                                     }, buttonInAnim, buttonOutAnim));
+                                                     }, buttonInAnim, buttonOutAnim, getActivity().getApplicationContext()));
     }
 
     private void setupDefaultButton(View button,
@@ -344,7 +351,7 @@ public class RemoteFragment extends Fragment
                                                          public void onClick(View v) {
                                                              eventServerConnection.sendPacket(packet);
                                                          }
-                                                     }, buttonInAnim, buttonOutAnim));
+                                                     }, buttonInAnim, buttonOutAnim, getActivity().getApplicationContext()));
     }
 
 
