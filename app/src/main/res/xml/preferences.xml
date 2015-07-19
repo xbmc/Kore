@@ -39,6 +39,11 @@
         android:title="@string/use_hardware_volume_keys"
         android:defaultValue="true"/>
 
+    <CheckBoxPreference
+        android:key="pref_vibrate_remote_buttons"
+        android:title="@string/vibrate_on_remote"
+        android:defaultValue="false"/>
+
     <Preference
         android:key="pref_about"
         android:title="@string/about"/>

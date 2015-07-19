@@ -88,6 +88,10 @@ public interface Settings {
     public static final String KEY_PREF_USE_HARDWARE_VOLUME_KEYS = "pref_use_hardware_volume_keys";
     public static final boolean DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS = true;
 
+    // Vibrate on remote button press
+    public static final String KEY_PREF_VIBRATE_REMOTE_BUTTONS = "pref_vibrate_remote_buttons";
+    public static final boolean DEFAULT_PREF_VIBRATE_REMOTE_BUTTONS = false;
+
     // Current host id
     public static final String KEY_PREF_CURRENT_HOST_ID = "current_host_id";
     public static final int DEFAULT_PREF_CURRENT_HOST_ID = -1;
