@@ -136,8 +136,8 @@ public class RemoteFragment extends Fragment
 
     private Animation buttonInAnim;
     private Animation buttonOutAnim;
-    // Touch listener that provides touch feedbacl
-    private View.OnTouchListener feedbackTouckListener;
+    // Touch listener that provides touch feedback
+    private View.OnTouchListener feedbackTouchListener;
 
     // EventServer connection
     private EventServerConnection eventServerConnection = null;
@@ -161,7 +161,7 @@ public class RemoteFragment extends Fragment
 
         createEventServerConnection();
 
-        feedbackTouckListener = new View.OnTouchListener() {
+        feedbackTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -322,7 +322,7 @@ public class RemoteFragment extends Fragment
                                     final ApiMethod<String> clickAction,
                                     final ApiMethod<String> longClickAction) {
         // Set animation
-        button.setOnTouchListener(feedbackTouckListener);
+        button.setOnTouchListener(feedbackTouchListener);
         if (clickAction != null) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
