@@ -16,7 +16,6 @@
 package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -26,9 +25,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -143,9 +140,6 @@ public class RemoteFragment extends Fragment
     // EventServer connection
     private EventServerConnection eventServerConnection = null;
 
-    //Vibrator reference for remote buttons
-    private Vibrator vibrator;
-
     // Icons for fastForward/Rewind or skipPrevious/skipNext
     int fastForwardIcon, rewindIcon, skipPreviousIcon, skipNextIcon;
 
@@ -154,8 +148,6 @@ public class RemoteFragment extends Fragment
         super.onCreate(savedInstanceState);
         hostManager = HostManager.getInstance(getActivity());
         hostConnectionObserver = hostManager.getHostConnectionObserver();
-
-        vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
         buttonInAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_in);
         buttonOutAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_out);
@@ -328,8 +320,7 @@ public class RemoteFragment extends Fragment
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    vibrator.vibrate(UIUtils.buttonVibrationDuration);
-                    Log.e("Vibrator", "Vibrated!");
+                    UIUtils.handleVibration(getActivity());
                     clickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
                 }
             });
@@ -338,8 +329,7 @@ public class RemoteFragment extends Fragment
             button.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    vibrator.vibrate(UIUtils.buttonVibrationDuration);
-                    Log.e("Vibrator", "Vibrated!");
+                    UIUtils.handleVibration(getActivity());
                     longClickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
                     return true;
                 }
@@ -405,30 +395,35 @@ public class RemoteFragment extends Fragment
      */
     @OnClick(R.id.home)
     public void onHomeClicked(View v) {
+        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.HOME);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
     @OnClick(R.id.movies)
     public void onMoviedClicked(View v) {
+        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_MOVIE_TITLES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
     @OnClick(R.id.tv_shows)
     public void onTvShowsClicked(View v) {
+        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_TV_SHOWS_TITLES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
     @OnClick(R.id.music)
     public void onMusicClicked(View v) {
+        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.MUSICLIBRARY);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
     @OnClick(R.id.pictures)
     public void onPicturesClicked(View v) {
+        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.PICTURES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
@@ -438,6 +433,7 @@ public class RemoteFragment extends Fragment
      */
     @OnClick(R.id.fast_forward)
     public void onFastForwardClicked(View v) {
+        UIUtils.handleVibration(getActivity());
         if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
             Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
             action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
@@ -449,6 +445,7 @@ public class RemoteFragment extends Fragment
 
     @OnClick(R.id.rewind)
     public void onRewindClicked(View v) {
+        UIUtils.handleVibration(getActivity());
         if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
             Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
             action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
@@ -460,12 +457,14 @@ public class RemoteFragment extends Fragment
 
     @OnClick(R.id.play)
     public void onPlayClicked(View v) {
+        UIUtils.handleVibration(getActivity());
         Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
     }
 
     @OnClick(R.id.stop)
     public void onStopClicked(View v) {
+        UIUtils.handleVibration(getActivity());
         Player.Stop action = new Player.Stop(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
