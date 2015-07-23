@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -327,6 +328,8 @@ public class RemoteFragment extends Fragment
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    vibrator.vibrate(UIUtils.buttonVibrationDuration);
+                    Log.e("Vibrator", "Vibrated!");
                     clickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
                 }
             });
@@ -335,6 +338,8 @@ public class RemoteFragment extends Fragment
             button.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    vibrator.vibrate(UIUtils.buttonVibrationDuration);
+                    Log.e("Vibrator", "Vibrated!");
                     longClickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
                     return true;
                 }
