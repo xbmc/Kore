@@ -67,7 +67,6 @@ public class RepeatListener implements View.OnTouchListener {
     private View downView;
 
     private Context context;
-    private Vibrator vibrator;
 
     /**
      * Constructor for a repeat listener
@@ -104,10 +103,7 @@ public class RepeatListener implements View.OnTouchListener {
         this.animDown = animDown;
         this.animUp = animUp;
 
-        if (context != null) {
-            this.context = context;
-            this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        }
+        this.context = context;
     }
 
     /**
@@ -122,7 +118,7 @@ public class RepeatListener implements View.OnTouchListener {
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                handleVibration();
+                UIUtils.handleVibration(context);
                 repeatHandler.removeCallbacks(handlerRunnable);
                 if (initialInterval >= 0) {
                     repeatHandler.postDelayed(handlerRunnable, initialInterval);
@@ -150,18 +146,4 @@ public class RepeatListener implements View.OnTouchListener {
         // Consume the event for views other than buttons
         return !((view instanceof Button) || (view instanceof ImageButton));
     }
-
-    private void handleVibration() {
-        if(context != null) {
-            //Check if we should vibrate
-            boolean vibrateOnPress = PreferenceManager
-                    .getDefaultSharedPreferences(context)
-                    .getBoolean(Settings.KEY_PREF_VIBRATE_REMOTE_BUTTONS,
-                            Settings.DEFAULT_PREF_VIBRATE_REMOTE_BUTTONS);
-            if (vibrateOnPress) {
-                vibrator.vibrate(UIUtils.buttonVibrationDuration);
-            }
-        }
-    }
-
 }
