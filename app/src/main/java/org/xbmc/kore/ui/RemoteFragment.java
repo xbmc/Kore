@@ -395,35 +395,30 @@ public class RemoteFragment extends Fragment
      */
     @OnClick(R.id.home)
     public void onHomeClicked(View v) {
-        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.HOME);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
     @OnClick(R.id.movies)
     public void onMoviedClicked(View v) {
-        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_MOVIE_TITLES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
     @OnClick(R.id.tv_shows)
     public void onTvShowsClicked(View v) {
-        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_TV_SHOWS_TITLES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
     @OnClick(R.id.music)
     public void onMusicClicked(View v) {
-        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.MUSICLIBRARY);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
     @OnClick(R.id.pictures)
     public void onPicturesClicked(View v) {
-        UIUtils.handleVibration(getActivity());
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.PICTURES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
@@ -433,7 +428,6 @@ public class RemoteFragment extends Fragment
      */
     @OnClick(R.id.fast_forward)
     public void onFastForwardClicked(View v) {
-        UIUtils.handleVibration(getActivity());
         if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
             Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
             action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
@@ -445,7 +439,6 @@ public class RemoteFragment extends Fragment
 
     @OnClick(R.id.rewind)
     public void onRewindClicked(View v) {
-        UIUtils.handleVibration(getActivity());
         if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
             Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
             action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
@@ -457,14 +450,12 @@ public class RemoteFragment extends Fragment
 
     @OnClick(R.id.play)
     public void onPlayClicked(View v) {
-        UIUtils.handleVibration(getActivity());
         Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
     }
 
     @OnClick(R.id.stop)
     public void onStopClicked(View v) {
-        UIUtils.handleVibration(getActivity());
         Player.Stop action = new Player.Stop(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
