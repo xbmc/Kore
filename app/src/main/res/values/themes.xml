@@ -43,6 +43,8 @@
         <!--<item name="colorControlHighlight">@color/color_accent</item>-->
         <!--<item name="colorControlActivated">@color/color_accent</item>-->
 
+        <item name="colorButtonNormal">?attr/colorPrimary</item>
+
         <item name="appTextColorPrimary">@color/white</item>
         <item name="appTextColorSecondary">@color/white_dim_50pct</item>
 

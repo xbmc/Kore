@@ -26,11 +26,13 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.AppCompatButton;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -55,6 +57,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -77,6 +80,7 @@ public class TVShowOverviewFragment extends Fragment
 
     // Displayed movie id
     private int tvshowId = -1;
+    private String tvshowTitle;
 
     // Controls whether a automatic sync refresh has been issued for this show
     private static boolean hasIssuedOutdatedRefresh = false;
@@ -102,8 +106,7 @@ public class TVShowOverviewFragment extends Fragment
 
     @InjectView(R.id.media_description) TextView mediaDescription;
     @InjectView(R.id.cast_list) GridLayout videoCastList;
-    @InjectView(R.id.additional_cast_list) TextView videoAdditionalCastList;
-    @InjectView(R.id.additional_cast_title) TextView videoAdditionalCastTitle;
+    @InjectView(R.id.see_all_cast) Button seeAllCast;
 
     /**
      * Create a new instance of this, initialized to show tvshowId
@@ -251,6 +254,19 @@ public class TVShowOverviewFragment extends Fragment
     }
 
     /**
+     * Callbacks for injected buttons
+     */
+    @OnClick(R.id.see_all_cast)
+    public void onSeeAllCastClicked(View v) {
+        Intent launchIntent = new Intent(getActivity(), AllCastActivity.class)
+                .putExtra(AllCastActivity.EXTRA_CAST_TYPE, AllCastActivity.EXTRA_TYPE_TVSHOW)
+                .putExtra(AllCastActivity.EXTRA_ID, tvshowId)
+                .putExtra(AllCastActivity.EXTRA_TITLE, tvshowTitle);
+        startActivity(launchIntent);
+        getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+    }
+
+    /**
      * Loader callbacks
      */
     /** {@inheritDoc} */
@@ -312,7 +328,7 @@ public class TVShowOverviewFragment extends Fragment
      */
     private void displayTVShowDetails(Cursor cursor) {
         cursor.moveToFirst();
-        String tvshowTitle = cursor.getString(TVShowDetailsQuery.TITLE);
+        tvshowTitle = cursor.getString(TVShowDetailsQuery.TITLE);
         mediaTitle.setText(tvshowTitle);
         int numEpisodes = cursor.getInt(TVShowDetailsQuery.EPISODE),
                 watchedEpisodes = cursor.getInt(TVShowDetailsQuery.WATCHEDEPISODES);
@@ -375,8 +391,10 @@ public class TVShowOverviewFragment extends Fragment
                         cursor.getString(TVShowCastListQuery.THUMBNAIL)));
             } while (cursor.moveToNext());
 
-            UIUtils.setupCastInfo(getActivity(), castList, videoCastList,
-                    videoAdditionalCastTitle, videoAdditionalCastList);
+            UIUtils.setupCastInfo(getActivity(), castList, videoCastList);
+            seeAllCast.setVisibility(
+                    (cursor.getCount() <= Settings.DEFAULT_MAX_CAST_PICTURES) ?
+                    View.GONE : View.VISIBLE);
         }
     }
 
@@ -441,7 +459,7 @@ public class TVShowOverviewFragment extends Fragment
     /**
      * Movie cast list query parameters.
      */
-    private interface TVShowCastListQuery {
+    public interface TVShowCastListQuery {
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MediaContract.TVShowCast.NAME,

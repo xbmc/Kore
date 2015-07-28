@@ -16,15 +16,16 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
                 android:layout_margin="@dimen/image_grid_margin">
     <ImageView
         android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"/>
         <!--android:src="?attr/iconPerson"/>-->
@@ -35,23 +36,34 @@
         <!--android:layout_height="match_parent"-->
         <!--android:src="?attr/imageViewShade"/>-->
 
-    <TextView
-        android:id="@+id/role"
+    <!--
+    Somehow i can't make the TextViews work correctly, one below the other when this RelativeLayout is inside a
+    Gridview, so i resort to a LinearLayout to position them
+    -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        style="@style/TextAppearance.Media.Cast"
-        android:textColor="?attr/appTextColorSecondary"
-        android:background="?attr/contentBackgroundColor"/>
+        android:background="?attr/contentBackgroundColor">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/role"
-        android:layout_above="@id/role"
-        style="@style/TextAppearance.Media.Cast"
-        android:background="?attr/contentBackgroundColor"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Media.Cast"/>
+
+        <TextView
+            android:id="@+id/role"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Media.Cast"
+            android:textColor="?attr/appTextColorSecondary"/>
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

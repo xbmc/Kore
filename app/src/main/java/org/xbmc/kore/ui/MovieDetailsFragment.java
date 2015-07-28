@@ -37,6 +37,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -99,6 +100,7 @@ public class MovieDetailsFragment extends Fragment
 
     // Displayed movie id
     private int movieId = -1;
+    private String movieTitle;
 
     // Info for downloading the movie
     private FileDownloadHelper.MovieInfo movieDownloadInfo = null;
@@ -134,8 +136,7 @@ public class MovieDetailsFragment extends Fragment
     @InjectView(R.id.media_description) TextView mediaDescription;
     @InjectView(R.id.directors) TextView mediaDirectors;
     @InjectView(R.id.cast_list) GridLayout videoCastList;
-    @InjectView(R.id.additional_cast_list) TextView videoAdditionalCastList;
-    @InjectView(R.id.additional_cast_title) TextView videoAdditionalCastTitle;
+    @InjectView(R.id.see_all_cast) Button seeAllCast;
 
     /**
      * Create a new instance of this, initialized to show the movie movieId
@@ -285,6 +286,19 @@ public class MovieDetailsFragment extends Fragment
                 Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    /**
+     * Callbacks for injected buttons
+     */
+    @OnClick(R.id.see_all_cast)
+    public void onSeeAllCastClicked(View v) {
+        Intent launchIntent = new Intent(getActivity(), AllCastActivity.class)
+                .putExtra(AllCastActivity.EXTRA_CAST_TYPE, AllCastActivity.EXTRA_TYPE_MOVIE)
+                .putExtra(AllCastActivity.EXTRA_ID, movieId)
+                .putExtra(AllCastActivity.EXTRA_TITLE, movieTitle);
+        startActivity(launchIntent);
+        getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
     }
 
     /**
@@ -519,7 +533,7 @@ public class MovieDetailsFragment extends Fragment
     private void displayMovieDetails(Cursor cursor) {
         LogUtils.LOGD(TAG, "Refreshing movie details");
         cursor.moveToFirst();
-        String movieTitle = cursor.getString(MovieDetailsQuery.TITLE);
+        movieTitle = cursor.getString(MovieDetailsQuery.TITLE);
         mediaTitle.setText(movieTitle);
         mediaUndertitle.setText(cursor.getString(MovieDetailsQuery.TAGLINE));
 
@@ -620,8 +634,10 @@ public class MovieDetailsFragment extends Fragment
                         cursor.getString(MovieCastListQuery.THUMBNAIL)));
             } while (cursor.moveToNext());
 
-            UIUtils.setupCastInfo(getActivity(), castList, videoCastList,
-                    videoAdditionalCastTitle, videoAdditionalCastList);
+            UIUtils.setupCastInfo(getActivity(), castList, videoCastList);
+            seeAllCast.setVisibility(
+                    (cursor.getCount() <= Settings.DEFAULT_MAX_CAST_PICTURES) ?
+                            View.GONE : View.VISIBLE);
         }
     }
 
@@ -690,7 +706,7 @@ public class MovieDetailsFragment extends Fragment
     /**
      * Movie cast list query parameters.
      */
-    private interface MovieCastListQuery {
+    public interface MovieCastListQuery {
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MediaContract.MovieCast.NAME,

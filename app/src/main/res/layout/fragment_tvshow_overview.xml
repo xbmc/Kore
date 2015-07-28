@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/remote_content_hmargin"
                 android:layout_marginRight="@dimen/remote_content_hmargin"
+                android:paddingBottom="@dimen/default_padding"
                 android:transitionGroup="true">
                 <TextView
                     android:id="@+id/media_title"
@@ -179,27 +180,16 @@
                     android:columnCount="@integer/cast_grid_view_columns"
                     android:orientation="horizontal"/>
 
-                <TextView
-                    android:id="@+id/additional_cast_title"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/see_all_cast"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cast_list"
-                    style="@style/TextAppearance.Media.Title"
-                    android:layout_marginTop="@dimen/default_padding"
-                    android:paddingLeft="@dimen/default_padding"
-                    android:paddingRight="@dimen/default_padding"
-                    android:text="@string/additional_cast"/>
-
-                <TextView
-                    android:id="@+id/additional_cast_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/additional_cast_title"
-                    style="@style/TextAppearance.Media.Info"
-                    android:textColor="?attr/appTextColorSecondary"
-                    android:layout_marginBottom="@dimen/default_padding"
-                    android:paddingLeft="@dimen/default_padding"
-                    android:paddingRight="@dimen/default_padding"/>
+                    android:layout_alignRight="@id/cast_list"
+                    android:layout_alignEnd="@id/cast_list"
+                    android:layout_marginRight="@dimen/small_padding"
+                    android:layout_marginEnd="@dimen/small_padding"
+                    android:text="@string/see_all_cast"/>
 
             </RelativeLayout>
         </ScrollView>

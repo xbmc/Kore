@@ -252,7 +252,7 @@ public class UIUtils {
         int layoutMarginPx = 2 * resources.getDimensionPixelSize(R.dimen.remote_content_hmargin);
         int imageMarginPx = 2 * resources.getDimensionPixelSize(R.dimen.image_grid_margin);
         int imageWidth = (displayMetrics.widthPixels - layoutMarginPx - numColumns * imageMarginPx) / numColumns;
-        int imageHeight = (int)(imageWidth * 1.2);
+        int imageHeight = (int)(imageWidth * 1.5);
 
         List<VideoType.Cast> noPicturesCastList = new ArrayList<VideoType.Cast>();
         int maxCastPictures = Settings.DEFAULT_MAX_CAST_PICTURES;
@@ -260,8 +260,7 @@ public class UIUtils {
         for (int i = 0; i < castList.size(); i++) {
             VideoType.Cast actor = castList.get(i);
 
-            if (((maxCastPictures == -1) || (currentPictureNumber < maxCastPictures)) &&
-                    (actor.thumbnail != null)) {
+            if ((currentPictureNumber < maxCastPictures) && (actor.thumbnail != null)) {
                 // Present the picture
                 currentPictureNumber++;
                 View castView = LayoutInflater.from(context).inflate(R.layout.grid_item_cast, castListView, false);
@@ -270,7 +269,7 @@ public class UIUtils {
                 TextView castRole = (TextView) castView.findViewById(R.id.role);
 
                 castView.getLayoutParams().width = imageWidth;
-                castView.getLayoutParams().height = (int) (imageHeight * 1.2);
+                castView.getLayoutParams().height = imageHeight;
                 castView.setTag(actor.name);
                 castView.setOnClickListener(castListClickListener);
 
@@ -305,6 +304,68 @@ public class UIUtils {
         } else {
             additionalCastTitleView.setVisibility(View.GONE);
             additionalCastView.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Fills the standard cast info list, consisting of a {@link android.widget.GridLayout}
+     * with actor images and a Textview with the name and the role of the additional cast.
+     * The number of actor presented on the {@link android.widget.GridLayout} is controlled
+     * through the global setting, and only actors with images are presented.
+     * The rest are presented in the additionalCastView TextView
+     *
+     * @param context Activity
+     * @param castList Cast list
+     * @param castListView GridLayout on which too show actors that have images
+     */
+    public static void setupCastInfo(final Context context,
+                                     List<VideoType.Cast> castList, GridLayout castListView) {
+        HostManager hostManager = HostManager.getInstance(context);
+        Resources resources = context.getResources();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+
+        View.OnClickListener castListClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.openImdbForPerson(context, (String)v.getTag());
+            }
+        };
+
+        castListView.removeAllViews();
+        int numColumns = castListView.getColumnCount();
+
+        int layoutMarginPx = 2 * resources.getDimensionPixelSize(R.dimen.remote_content_hmargin);
+        int imageMarginPx = 2 * resources.getDimensionPixelSize(R.dimen.image_grid_margin);
+        int imageWidth = (displayMetrics.widthPixels - layoutMarginPx - numColumns * imageMarginPx) / numColumns;
+        int imageHeight = (int)(imageWidth * 1.5);
+
+        int maxCastPictures = Settings.DEFAULT_MAX_CAST_PICTURES;
+        int currentPictureNumber = 0;
+        for (int i = 0; i < castList.size(); i++) {
+            VideoType.Cast actor = castList.get(i);
+
+            if ((currentPictureNumber < maxCastPictures) && (actor.thumbnail != null)) {
+                // Present the picture
+                currentPictureNumber++;
+                View castView = LayoutInflater.from(context).inflate(R.layout.grid_item_cast, castListView, false);
+                ImageView castPicture = (ImageView) castView.findViewById(R.id.picture);
+                TextView castName = (TextView) castView.findViewById(R.id.name);
+                TextView castRole = (TextView) castView.findViewById(R.id.role);
+
+                castView.getLayoutParams().width = imageWidth;
+                castView.getLayoutParams().height = imageHeight;
+                castView.setTag(actor.name);
+                castView.setOnClickListener(castListClickListener);
+
+                castName.setText(actor.name);
+                castRole.setText(actor.role);
+                UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                     actor.thumbnail, actor.name,
+                                                     castPicture, imageWidth, imageHeight);
+                castListView.addView(castView);
+            }
         }
     }
 
