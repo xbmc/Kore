@@ -34,11 +34,23 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             style="@style/TextAppearance.Medialist.Title"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
             android:gravity="center_vertical"/>
+
+        <ImageView
+            android:id="@+id/list_context_menu"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:padding="@dimen/default_icon_padding"
+            android:layout_alignTop="@id/art"
+            android:layout_alignParentRight="true"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconOverflow"
+            android:contentDescription="@string/action_options"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>
