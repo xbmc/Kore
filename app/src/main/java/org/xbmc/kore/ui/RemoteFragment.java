@@ -134,8 +134,8 @@ public class RemoteFragment extends Fragment
 
     private Animation buttonInAnim;
     private Animation buttonOutAnim;
-    // Touch listener that provides touch feedbacl
-    private View.OnTouchListener feedbackTouckListener;
+    // Touch listener that provides touch feedback
+    private View.OnTouchListener feedbackTouchListener;
 
     // EventServer connection
     private EventServerConnection eventServerConnection = null;
@@ -154,7 +154,7 @@ public class RemoteFragment extends Fragment
 
         createEventServerConnection();
 
-        feedbackTouckListener = new View.OnTouchListener() {
+        feedbackTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -308,18 +308,19 @@ public class RemoteFragment extends Fragment
                                                          public void onClick(View v) {
                                                              action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
                                                          }
-                                                     }, buttonInAnim, buttonOutAnim));
+                                                     }, buttonInAnim, buttonOutAnim, getActivity().getApplicationContext()));
     }
 
     private void setupDefaultButton(View button,
                                     final ApiMethod<String> clickAction,
                                     final ApiMethod<String> longClickAction) {
         // Set animation
-        button.setOnTouchListener(feedbackTouckListener);
+        button.setOnTouchListener(feedbackTouchListener);
         if (clickAction != null) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    UIUtils.handleVibration(getActivity());
                     clickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
                 }
             });
@@ -328,6 +329,7 @@ public class RemoteFragment extends Fragment
             button.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    UIUtils.handleVibration(getActivity());
                     longClickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
                     return true;
                 }
@@ -344,7 +346,7 @@ public class RemoteFragment extends Fragment
                                                          public void onClick(View v) {
                                                              eventServerConnection.sendPacket(packet);
                                                          }
-                                                     }, buttonInAnim, buttonOutAnim));
+                                                     }, buttonInAnim, buttonOutAnim, getActivity().getApplicationContext()));
     }
 
 

@@ -15,13 +15,18 @@
  */
 package org.xbmc.kore.utils;
 
+import android.content.Context;
 import android.os.Handler;
+import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import org.xbmc.kore.Settings;
 
 /**
  * A class, that can be used as a TouchListener on any view (e.g. a Button).
@@ -61,6 +66,8 @@ public class RepeatListener implements View.OnTouchListener {
 
     private View downView;
 
+    private Context context;
+
     /**
      * Constructor for a repeat listener
      *
@@ -69,26 +76,34 @@ public class RepeatListener implements View.OnTouchListener {
      * @param clickListener The OnClickListener, that will be called periodically
      */
     public RepeatListener(int initialInterval, int repeatInterval, View.OnClickListener clickListener) {
-        this(initialInterval, repeatInterval, clickListener, null, null);
+        this(initialInterval, repeatInterval, clickListener, null, null, null);
+    }
+
+    public RepeatListener(int initialInterval, int repeatInterval, View.OnClickListener clickListener,
+                          Animation animDown, Animation animUp) {
+        this(initialInterval, repeatInterval, clickListener, animUp, animDown, null);
     }
 
     /**
-     * Constructor for a repeat listener, with animation
+     * Constructor for a repeat listener, with animation and vibration
      *
      * @param initialInterval The interval after first click event. If negative, no repeat will occur
      * @param repeatInterval The interval after second and subsequent click events. If negative, no repeat will occur
      * @param clickListener The OnClickListener, that will be called periodically
      * @param animDown Animation to play on touch
      * @param animUp Animation to play on release
+     * @param context Context used to access preferences and services
      */
     public RepeatListener(int initialInterval, int repeatInterval, View.OnClickListener clickListener,
-                          Animation animDown, Animation animUp) {
+                          Animation animDown, Animation animUp, Context context) {
         this.initialInterval = initialInterval;
         this.repeatInterval = repeatInterval;
         this.clickListener = clickListener;
 
         this.animDown = animDown;
         this.animUp = animUp;
+
+        this.context = context;
     }
 
     /**
@@ -103,6 +118,7 @@ public class RepeatListener implements View.OnTouchListener {
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                UIUtils.handleVibration(context);
                 repeatHandler.removeCallbacks(handlerRunnable);
                 if (initialInterval >= 0) {
                     repeatHandler.postDelayed(handlerRunnable, initialInterval);
@@ -130,5 +146,4 @@ public class RepeatListener implements View.OnTouchListener {
         // Consume the event for views other than buttons
         return !((view instanceof Button) || (view instanceof ImageButton));
     }
-
 }
