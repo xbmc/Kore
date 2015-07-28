@@ -231,7 +231,7 @@ public class AllCastActivity extends BaseActivity
 
             if (artWidth == -1) {
                 Resources resources = context.getResources();
-                int imageMarginPx = resources.getDimensionPixelSize(R.dimen.default_padding);
+                int imageMarginPx = resources.getDimensionPixelSize(R.dimen.small_padding);
 
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

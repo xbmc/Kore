@@ -15,5 +15,5 @@
    limitations under the License.
 -->
 <resources>
-    <integer name="cast_grid_view_columns">4</integer>
+    <integer name="cast_grid_view_columns">5</integer>
 </resources>

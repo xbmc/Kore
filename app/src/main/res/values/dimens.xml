@@ -19,7 +19,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="image_grid_margin">8dp</dimen>
+    <dimen name="image_grid_margin">4dp</dimen>
 
     <dimen name="wizard_title">144dp</dimen>
 
