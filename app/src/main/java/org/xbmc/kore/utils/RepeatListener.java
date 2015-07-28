@@ -17,16 +17,12 @@ package org.xbmc.kore.utils;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageButton;
-
-import org.xbmc.kore.Settings;
 
 /**
  * A class, that can be used as a TouchListener on any view (e.g. a Button).

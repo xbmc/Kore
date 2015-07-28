@@ -54,7 +54,7 @@ public class UIUtils {
 
     public static final int initialButtonRepeatInterval = 400; // ms
     public static final int buttonRepeatInterval = 80; // ms
-    public static final int buttonVibrationDuration = 100; //ms
+    public static final int buttonVibrationDuration = 50; //ms
 
     /**
      * Formats time based on seconds
@@ -459,16 +459,18 @@ public class UIUtils {
     }
 
     public static void handleVibration(Context context) {
-        if(context != null) {
-            Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-            //Check if we should vibrate
-            boolean vibrateOnPress = PreferenceManager
-                    .getDefaultSharedPreferences(context)
-                    .getBoolean(Settings.KEY_PREF_VIBRATE_REMOTE_BUTTONS,
+        if(context == null) return;
+
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (!vibrator.hasVibrator()) return;
+
+        //Check if we should vibrate
+        boolean vibrateOnPress = PreferenceManager
+                .getDefaultSharedPreferences(context)
+                .getBoolean(Settings.KEY_PREF_VIBRATE_REMOTE_BUTTONS,
                             Settings.DEFAULT_PREF_VIBRATE_REMOTE_BUTTONS);
-            if (vibrateOnPress) {
-                vibrator.vibrate(UIUtils.buttonVibrationDuration);
-            }
+        if (vibrateOnPress) {
+            vibrator.vibrate(UIUtils.buttonVibrationDuration);
         }
     }
 
