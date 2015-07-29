@@ -860,8 +860,6 @@ public class NowPlayingFragment extends Fragment
                 @Override
                 public void onClick(View v) {
                     Intent launchIntent = new Intent(getActivity(), AllCastActivity.class)
-                            .putExtra(AllCastActivity.EXTRA_CAST_TYPE, AllCastActivity.EXTRA_TYPE_CAST_LIST)
-                            .putExtra(AllCastActivity.EXTRA_ID, 0)
                             .putExtra(AllCastActivity.EXTRA_TITLE, title)
                             .putParcelableArrayListExtra(AllCastActivity.EXTRA_CAST_LIST,
                                                          (ArrayList<VideoType.Cast>)getItemResult.cast);

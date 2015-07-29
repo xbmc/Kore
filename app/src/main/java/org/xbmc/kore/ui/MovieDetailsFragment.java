@@ -102,6 +102,8 @@ public class MovieDetailsFragment extends Fragment
     private int movieId = -1;
     private String movieTitle;
 
+    private ArrayList<VideoType.Cast> castArrayList;
+
     // Info for downloading the movie
     private FileDownloadHelper.MovieInfo movieDownloadInfo = null;
 
@@ -294,9 +296,8 @@ public class MovieDetailsFragment extends Fragment
     @OnClick(R.id.see_all_cast)
     public void onSeeAllCastClicked(View v) {
         Intent launchIntent = new Intent(getActivity(), AllCastActivity.class)
-                .putExtra(AllCastActivity.EXTRA_CAST_TYPE, AllCastActivity.EXTRA_TYPE_MOVIE)
-                .putExtra(AllCastActivity.EXTRA_ID, movieId)
-                .putExtra(AllCastActivity.EXTRA_TITLE, movieTitle);
+                .putExtra(AllCastActivity.EXTRA_TITLE, movieTitle)
+                .putParcelableArrayListExtra(AllCastActivity.EXTRA_CAST_LIST, castArrayList);
         startActivity(launchIntent);
         getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
     }
@@ -626,15 +627,15 @@ public class MovieDetailsFragment extends Fragment
         // Transform the cursor into a List<VideoType.Cast>
 
         if (cursor.moveToFirst()) {
-            List<VideoType.Cast> castList = new ArrayList<VideoType.Cast>(cursor.getCount());
+            castArrayList = new ArrayList<VideoType.Cast>(cursor.getCount());
             do {
-                castList.add(new VideoType.Cast(cursor.getString(MovieCastListQuery.NAME),
-                        cursor.getInt(MovieCastListQuery.ORDER),
-                        cursor.getString(MovieCastListQuery.ROLE),
-                        cursor.getString(MovieCastListQuery.THUMBNAIL)));
+                castArrayList.add(new VideoType.Cast(cursor.getString(MovieCastListQuery.NAME),
+                                                     cursor.getInt(MovieCastListQuery.ORDER),
+                                                     cursor.getString(MovieCastListQuery.ROLE),
+                                                     cursor.getString(MovieCastListQuery.THUMBNAIL)));
             } while (cursor.moveToNext());
 
-            UIUtils.setupCastInfo(getActivity(), castList, videoCastList);
+            UIUtils.setupCastInfo(getActivity(), castArrayList, videoCastList);
             seeAllCast.setVisibility(
                     (cursor.getCount() <= Settings.DEFAULT_MAX_CAST_PICTURES) ?
                             View.GONE : View.VISIBLE);

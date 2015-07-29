@@ -82,6 +82,8 @@ public class TVShowOverviewFragment extends Fragment
     private int tvshowId = -1;
     private String tvshowTitle;
 
+    private ArrayList<VideoType.Cast> castArrayList;
+
     // Controls whether a automatic sync refresh has been issued for this show
     private static boolean hasIssuedOutdatedRefresh = false;
 
@@ -259,9 +261,8 @@ public class TVShowOverviewFragment extends Fragment
     @OnClick(R.id.see_all_cast)
     public void onSeeAllCastClicked(View v) {
         Intent launchIntent = new Intent(getActivity(), AllCastActivity.class)
-                .putExtra(AllCastActivity.EXTRA_CAST_TYPE, AllCastActivity.EXTRA_TYPE_TVSHOW)
-                .putExtra(AllCastActivity.EXTRA_ID, tvshowId)
-                .putExtra(AllCastActivity.EXTRA_TITLE, tvshowTitle);
+                .putExtra(AllCastActivity.EXTRA_TITLE, tvshowTitle)
+                .putParcelableArrayListExtra(AllCastActivity.EXTRA_CAST_LIST, castArrayList);
         startActivity(launchIntent);
         getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
     }
@@ -383,15 +384,15 @@ public class TVShowOverviewFragment extends Fragment
         // Transform the cursor into a List<VideoType.Cast>
 
         if (cursor.moveToFirst()) {
-            List<VideoType.Cast> castList = new ArrayList<VideoType.Cast>(cursor.getCount());
+            castArrayList = new ArrayList<VideoType.Cast>(cursor.getCount());
             do {
-                castList.add(new VideoType.Cast(cursor.getString(TVShowCastListQuery.NAME),
+                castArrayList.add(new VideoType.Cast(cursor.getString(TVShowCastListQuery.NAME),
                         cursor.getInt(TVShowCastListQuery.ORDER),
                         cursor.getString(TVShowCastListQuery.ROLE),
                         cursor.getString(TVShowCastListQuery.THUMBNAIL)));
             } while (cursor.moveToNext());
 
-            UIUtils.setupCastInfo(getActivity(), castList, videoCastList);
+            UIUtils.setupCastInfo(getActivity(), castArrayList, videoCastList);
             seeAllCast.setVisibility(
                     (cursor.getCount() <= Settings.DEFAULT_MAX_CAST_PICTURES) ?
                     View.GONE : View.VISIBLE);
