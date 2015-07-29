@@ -281,7 +281,7 @@ public class NavigationDrawerFragment extends Fragment {
         else if (activity instanceof SettingsActivity)
             return ACTIVITY_SETTINGS;
 
-        return ACTIVITY_HOSTS;
+        return -1;
     }
 
     /**

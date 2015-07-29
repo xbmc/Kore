@@ -15,20 +15,15 @@
  */
 package org.xbmc.kore.ui;
 
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.content.res.Resources;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -41,7 +36,6 @@ import android.widget.TextView;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.VideoType;
-import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -125,6 +119,19 @@ public class AllCastActivity extends BaseActivity {
         outState.putParcelableArrayList(EXTRA_CAST_LIST, castArrayList);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setupActionBar(String title) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
@@ -133,7 +140,7 @@ public class AllCastActivity extends BaseActivity {
         if (actionBar == null) return;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        navigationDrawerFragment.setDrawerIndicatorEnabled(true);
+        navigationDrawerFragment.setDrawerIndicatorEnabled(false);
         actionBar.setTitle(getResources().getString(R.string.cast) + " - " + title);
     }
 
