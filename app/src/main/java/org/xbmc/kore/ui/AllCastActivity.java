@@ -33,16 +33,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -58,9 +62,11 @@ public class AllCastActivity extends BaseActivity
     public static final String EXTRA_CAST_TYPE = "EXTRA_CAST_TYPE";
     public static final String EXTRA_ID = "EXTRA_ID";
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
+    public static final String EXTRA_CAST_LIST = "EXTRA_CAST_LIST";
 
     public static final int EXTRA_TYPE_MOVIE = 0;
     public static final int EXTRA_TYPE_TVSHOW = 1;
+    public static final int EXTRA_TYPE_CAST_LIST = 2;
 
     // Loader IDs
     private static final int LOADER_CAST = 0;
@@ -70,7 +76,9 @@ public class AllCastActivity extends BaseActivity
     private int movie_tvshow_id = -1;
     private String movie_tvshow_title;
 
-    private CursorAdapter adapter;
+    private ArrayList<VideoType.Cast> castArrayList;
+
+    private CursorAdapter cursorAdapter;
     NavigationDrawerFragment navigationDrawerFragment;
 
     @InjectView(R.id.cast_list) GridView castGridView;
@@ -99,7 +107,7 @@ public class AllCastActivity extends BaseActivity
 
         LogUtils.LOGD(TAG, "Showing cast for: " + movie_tvshow_title);
 
-        // Configure the adapter and start the loader
+        // Configure the grid
         castGridView.setEmptyView(emptyView);
         castGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -109,10 +117,19 @@ public class AllCastActivity extends BaseActivity
             }
         });
 
-        adapter = new CastAdapter(this, cast_type);
-        castGridView.setAdapter(adapter);
-
-        getLoaderManager().initLoader(LOADER_CAST, null, this);
+        if (cast_type == EXTRA_TYPE_CAST_LIST) {
+            if (savedInstanceState == null) {
+                castArrayList = getIntent().getParcelableArrayListExtra(EXTRA_CAST_LIST);
+            } else {
+                castArrayList = savedInstanceState.getParcelableArrayList(EXTRA_CAST_LIST);
+            }
+            CastArrayAdapter arrayAdapter = new CastArrayAdapter(this, castArrayList);
+            castGridView.setAdapter(arrayAdapter);
+        } else {
+            cursorAdapter = new CastCursorAdapter(this, cast_type);
+            castGridView.setAdapter(cursorAdapter);
+            getLoaderManager().initLoader(LOADER_CAST, null, this);
+        }
 
         setupActionBar(movie_tvshow_title);
     }
@@ -133,6 +150,8 @@ public class AllCastActivity extends BaseActivity
         outState.putInt(EXTRA_CAST_TYPE, cast_type);
         outState.putInt(EXTRA_ID, movie_tvshow_id);
         outState.putString(EXTRA_TITLE, movie_tvshow_title);
+        if (cast_type == EXTRA_TYPE_CAST_LIST)
+            outState.putParcelableArrayList(EXTRA_CAST_LIST, castArrayList);
     }
 
     private void setupActionBar(String title) {
@@ -178,7 +197,7 @@ public class AllCastActivity extends BaseActivity
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         LogUtils.LOGD(TAG, "cursor count: " + cursor.getCount());
-        adapter.swapCursor(cursor);
+        cursorAdapter.swapCursor(cursor);
         // To prevent the empty text from appearing on the first load, set it now
         emptyView.setText(getString(R.string.no_cast_info));
     }
@@ -187,10 +206,67 @@ public class AllCastActivity extends BaseActivity
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         // Release loader's data
-        adapter.swapCursor(null);
+        cursorAdapter.swapCursor(null);
     }
 
-    private static class CastAdapter extends CursorAdapter {
+    public static class CastArrayAdapter extends ArrayAdapter<VideoType.Cast> {
+        private HostManager hostManager;
+        private int artWidth = -1, artHeight = -1;
+
+        public CastArrayAdapter(Context context, ArrayList<VideoType.Cast> castArrayList) {
+            super(context, 0, castArrayList);
+            this.hostManager = HostManager.getInstance(context);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext())
+                                            .inflate(R.layout.grid_item_cast, parent, false);
+
+                if (artWidth == -1) {
+                    Resources resources = getContext().getResources();
+                    int imageMarginPx = resources.getDimensionPixelSize(R.dimen.small_padding);
+
+                    DisplayMetrics displayMetrics = new DisplayMetrics();
+                    WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+                    windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+
+                    int numColumns = resources.getInteger(R.integer.cast_grid_view_columns);
+
+                    artWidth = (displayMetrics.widthPixels - (2 + numColumns - 1) * imageMarginPx) / numColumns;
+                    artHeight = (int) (artWidth * 1.5);
+                    LogUtils.LOGD(TAG, "width: " + artWidth);
+                }
+
+                // Setup View holder pattern
+                ViewHolder viewHolder = new ViewHolder();
+                viewHolder.roleView = (TextView) convertView.findViewById(R.id.role);
+                viewHolder.nameView = (TextView) convertView.findViewById(R.id.name);
+                viewHolder.pictureView = (ImageView) convertView.findViewById(R.id.picture);
+
+                convertView.setTag(viewHolder);
+
+                convertView.getLayoutParams().width = artWidth;
+                convertView.getLayoutParams().height = artHeight;
+            }
+
+            final ViewHolder viewHolder = (ViewHolder)convertView.getTag();
+            VideoType.Cast cast = getItem(position);
+
+            viewHolder.roleView.setText(cast.role);
+            viewHolder.nameView.setText(cast.name);
+            UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
+                                                 cast.thumbnail, cast.name,
+                                                 viewHolder.pictureView, artWidth, artHeight);
+            viewHolder.castName = cast.name;
+
+            return convertView;
+
+        }
+    }
+
+    private static class CastCursorAdapter extends CursorAdapter {
         Context context;
         private HostManager hostManager;
         private int artWidth = -1, artHeight = -1;
@@ -199,7 +275,7 @@ public class AllCastActivity extends BaseActivity
         private int role_idx = 3;
         private int thumbnail_idx = 4;
 
-        public CastAdapter(Context context, int castType) {
+        public CastCursorAdapter(Context context, int castType) {
             super(context, null, false);
             this.context = context;
             this.hostManager = HostManager.getInstance(context);

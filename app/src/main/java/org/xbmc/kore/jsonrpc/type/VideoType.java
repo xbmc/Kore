@@ -15,6 +15,9 @@
  */
 package org.xbmc.kore.jsonrpc.type;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.xbmc.kore.utils.JsonUtils;
@@ -29,7 +32,7 @@ import java.util.List;
 public class VideoType {
     private static final String TAG = LogUtils.makeLogTag(VideoType.class);
 
-    public static class Cast {
+    public static class Cast implements Parcelable {
         public static final String NAME = "name";
         public static final String ORDER = "order";
         public static final String ROLE = "role";
@@ -72,6 +75,29 @@ public class VideoType {
             }
             return castList;
         }
+
+        // Parcelable interface implementation
+        public int describeContents() {
+            return 0;
+        }
+
+        public void writeToParcel(Parcel out, int flags) {
+            out.writeString(name);
+            out.writeInt(order);
+            out.writeString(role);
+            out.writeString(thumbnail);
+        }
+
+        public static final Parcelable.Creator<Cast> CREATOR
+                = new Parcelable.Creator<Cast>() {
+            public Cast createFromParcel(Parcel in) {
+                return new Cast(in.readString(), in.readInt(), in.readString(), in.readString());
+            }
+
+            public Cast[] newArray(int size) {
+                return new Cast[size];
+            }
+        };
     }
 
     public static class Resume {

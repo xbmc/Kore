@@ -16,6 +16,7 @@
 package org.xbmc.kore.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -54,11 +57,13 @@ import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
+import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.RepeatListener;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -160,8 +165,7 @@ public class NowPlayingFragment extends Fragment
 
     @InjectView(R.id.media_description) TextView mediaDescription;
     @InjectView(R.id.cast_list) GridLayout videoCastList;
-    @InjectView(R.id.additional_cast_list) TextView videoAdditionalCastList;
-    @InjectView(R.id.additional_cast_title) TextView videoAdditionalCastTitle;
+    @InjectView(R.id.see_all_cast) Button seeAllCast;
 
     @Override
     public void onAttach(Activity activity) {
@@ -637,8 +641,8 @@ public class NowPlayingFragment extends Fragment
      * @param getItemResult Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
      */
     private void setNowPlayingInfo(PlayerType.PropertyValue getPropertiesResult,
-                                   ListType.ItemsAll getItemResult) {
-        String title, underTitle, art, poster, genreSeason, year,
+                                   final ListType.ItemsAll getItemResult) {
+        final String title, underTitle, art, poster, genreSeason, year,
                 descriptionPlot, votes, maxRating;
         double rating;
 
@@ -839,8 +843,6 @@ public class NowPlayingFragment extends Fragment
                 (getPropertiesResult.audiostreams.size() > 0)) {
             overflowButton.setVisibility(View.VISIBLE);
             videoCastList.setVisibility(View.VISIBLE);
-            videoAdditionalCastTitle.setVisibility(View.VISIBLE);
-            videoAdditionalCastList.setVisibility(View.VISIBLE);
 
             // Save subtitles and audiostreams list
             availableAudioStreams = getPropertiesResult.audiostreams;
@@ -849,12 +851,28 @@ public class NowPlayingFragment extends Fragment
             currentSubtitleIndex = getPropertiesResult.currentsubtitle.index;
 
             // Cast list
-            UIUtils.setupCastInfo(getActivity(), getItemResult.cast, videoCastList, videoAdditionalCastTitle, videoAdditionalCastList);
+            UIUtils.setupCastInfo(getActivity(), getItemResult.cast, videoCastList);
+
+            seeAllCast.setVisibility(
+                    (getItemResult.cast.size() <= Settings.DEFAULT_MAX_CAST_PICTURES) ?
+                            View.GONE : View.VISIBLE);
+            seeAllCast.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent launchIntent = new Intent(getActivity(), AllCastActivity.class)
+                            .putExtra(AllCastActivity.EXTRA_CAST_TYPE, AllCastActivity.EXTRA_TYPE_CAST_LIST)
+                            .putExtra(AllCastActivity.EXTRA_ID, 0)
+                            .putExtra(AllCastActivity.EXTRA_TITLE, title)
+                            .putParcelableArrayListExtra(AllCastActivity.EXTRA_CAST_LIST,
+                                                         (ArrayList<VideoType.Cast>)getItemResult.cast);
+                    startActivity(launchIntent);
+                    getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+                }
+            });
         } else {
             overflowButton.setVisibility(View.GONE);
             videoCastList.setVisibility(View.GONE);
-            videoAdditionalCastTitle.setVisibility(View.GONE);
-            videoAdditionalCastList.setVisibility(View.GONE);
+            seeAllCast.setVisibility(View.GONE);
         }
     }
 
