@@ -39,6 +39,7 @@ public class EditHostActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_host_wizard);
 
         // Only load first fragment if we're starting the activity
         if (savedInstanceState == null) {
@@ -87,14 +88,14 @@ public class EditHostActivity extends BaseActivity implements
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, editFragment)
+                    .add(R.id.fragment_container, editFragment)
                     .commit();
         }
         setupActionBar();
 
 //        // Setup system bars and content padding
 //        setupSystemBarsColors();
-//        UIUtils.setPaddingForSystemBars(this, findViewById(android.R.id.content), true, true, true);
+//        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.fragment_container), true, true, true);
     }
 
     @Override

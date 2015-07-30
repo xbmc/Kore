@@ -38,16 +38,20 @@ public class AddHostActivity extends BaseActivity
         HostFragmentManualConfiguration.HostManualConfigurationListener,
         AddHostFragmentFinish.AddHostFinishListener {
 
+    private Fragment previousFragment = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_host_wizard);
 
         // Only load first fragment if we're starting the activity
         if (savedInstanceState == null) {
             AddHostFragmentWelcome firstStep = new AddHostFragmentWelcome();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, firstStep)
+                    .add(R.id.fragment_container, firstStep)
                     .commit();
         }
 
@@ -156,7 +160,7 @@ public class AddHostActivity extends BaseActivity
     private void switchToFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(android.R.id.content, fragment)
+                .replace(R.id.fragment_container, fragment)
                 .commit();
     }
 }
