@@ -198,7 +198,7 @@ public class UIUtils {
         return new CharacterDrawable(charAvatar, color);
     }
 
-    static boolean playPauseIconsLoaded = false;
+    public static boolean playPauseIconsLoaded = false;
     static int iconPauseResId = R.drawable.ic_pause_white_24dp,
             iconPlayResId = R.drawable.ic_play_arrow_white_24dp;
     /**
@@ -210,7 +210,7 @@ public class UIUtils {
     public static void setPlayPauseButtonIcon(Context context, ImageView view, int speed) {
 
         if (!playPauseIconsLoaded) {
-            TypedArray styledAttributes = context.obtainStyledAttributes(new int[]{iconPauseResId, iconPlayResId});
+            TypedArray styledAttributes = context.obtainStyledAttributes(new int[]{R.attr.iconPause, R.attr.iconPlay});
             iconPauseResId = styledAttributes.getResourceId(0, R.drawable.ic_pause_white_24dp);
             iconPlayResId = styledAttributes.getResourceId(1, R.drawable.ic_play_arrow_white_24dp);
             styledAttributes.recycle();

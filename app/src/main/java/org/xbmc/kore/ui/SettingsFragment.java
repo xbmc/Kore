@@ -27,6 +27,7 @@ import android.support.v4.app.TaskStackBuilder;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.UIUtils;
 
 /**
  * Simple fragment to display preferences screen
@@ -68,6 +69,9 @@ public class SettingsFragment extends PreferenceFragment
 
         if (key.equals(Settings.KEY_PREF_THEME)) {
             //String newTheme = sharedPreferences.getString(key, DEFAULT_PREF_THEME);
+
+            // Explicitly clear cache of resource ids that is maintained in the activity
+            UIUtils.playPauseIconsLoaded = false;
 
             // restart to apply new theme (actually build an entirely new task stack)
             TaskStackBuilder.create(getActivity())
