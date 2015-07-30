@@ -859,10 +859,8 @@ public class NowPlayingFragment extends Fragment
             seeAllCast.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent launchIntent = new Intent(getActivity(), AllCastActivity.class)
-                            .putExtra(AllCastActivity.EXTRA_TITLE, title)
-                            .putParcelableArrayListExtra(AllCastActivity.EXTRA_CAST_LIST,
-                                                         (ArrayList<VideoType.Cast>)getItemResult.cast);
+                    Intent launchIntent = AllCastActivity.buildLaunchIntent(
+                            getActivity(), title, (ArrayList<VideoType.Cast>) getItemResult.cast);
                     startActivity(launchIntent);
                     getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
                 }

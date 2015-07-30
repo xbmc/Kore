@@ -260,10 +260,7 @@ public class TVShowOverviewFragment extends Fragment
      */
     @OnClick(R.id.see_all_cast)
     public void onSeeAllCastClicked(View v) {
-        Intent launchIntent = new Intent(getActivity(), AllCastActivity.class)
-                .putExtra(AllCastActivity.EXTRA_TITLE, tvshowTitle)
-                .putParcelableArrayListExtra(AllCastActivity.EXTRA_CAST_LIST, castArrayList);
-        startActivity(launchIntent);
+        startActivity(AllCastActivity.buildLaunchIntent(getActivity(), tvshowTitle, castArrayList));
         getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
     }
 

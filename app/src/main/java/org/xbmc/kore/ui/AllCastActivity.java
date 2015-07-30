@@ -15,7 +15,9 @@
  */
 package org.xbmc.kore.ui;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -64,6 +66,21 @@ public class AllCastActivity extends BaseActivity {
 
     @InjectView(R.id.cast_list) GridView castGridView;
     @InjectView(android.R.id.empty) TextView emptyView;
+
+    /**
+     * Returns an intent that can be used to start this activity, with all the correct parameters
+     *
+     * @param context Calling activity's context
+     * @param title Title to show on action bar
+     * @param castArrayList Cast list to show
+     * @return Intent to start this activity
+     */
+    public static Intent buildLaunchIntent(Context context,
+                                           String title, ArrayList<VideoType.Cast> castArrayList) {
+        return new Intent(context, AllCastActivity.class)
+                .putExtra(AllCastActivity.EXTRA_TITLE, title)
+                .putParcelableArrayListExtra(AllCastActivity.EXTRA_CAST_LIST, castArrayList);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
