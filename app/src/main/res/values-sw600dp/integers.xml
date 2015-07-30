@@ -16,4 +16,5 @@
 -->
 <resources>
     <integer name="cast_grid_view_columns">4</integer>
+   <integer name="cast_grid_view_rows">3</integer>
 </resources>

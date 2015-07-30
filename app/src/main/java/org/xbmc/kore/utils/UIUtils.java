@@ -249,13 +249,13 @@ public class UIUtils {
 
         castListView.removeAllViews();
         int numColumns = castListView.getColumnCount();
+        int numRows = resources.getInteger(R.integer.cast_grid_view_rows);
+        int maxCastPictures = numColumns * numRows;
 
         int layoutMarginPx = 2 * resources.getDimensionPixelSize(R.dimen.remote_content_hmargin);
         int imageMarginPx = 2 * resources.getDimensionPixelSize(R.dimen.image_grid_margin);
         int imageWidth = (displayMetrics.widthPixels - layoutMarginPx - numColumns * imageMarginPx) / numColumns;
         int imageHeight = (int)(imageWidth * 1.5);
-
-        int maxCastPictures = Settings.DEFAULT_MAX_CAST_PICTURES;
 
         for (int i = 0; i < Math.min(castList.size(), maxCastPictures); i++) {
             VideoType.Cast actor = castList.get(i);

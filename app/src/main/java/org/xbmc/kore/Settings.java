@@ -28,9 +28,6 @@ public interface Settings {
 //    public static final long DB_UPDATE_INTERVAL = 12 * DateUtils.HOUR_IN_MILLIS;
     public static final long DB_UPDATE_INTERVAL = 5 * DateUtils.MINUTE_IN_MILLIS;
 
-    // Maximum pictures to show on cast list (-1 to show all)
-    public static final int DEFAULT_MAX_CAST_PICTURES = 12;
-
     // Sort orders
     public static final int SORT_BY_NAME = 0,
             SORT_BY_DATE_ADDED = 1;
