@@ -241,8 +241,14 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
     <string name="wizard_xbmc_use_tcp">Usar TCP</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Não foi possível descobrir o endereço deste centro multimédia.</string>
     <string name="wizard_zeroconf_no_host_address">Não foi possível descobrir o endereço deste centro multimédia.</string>
+  <string name="no_cast_info">Não existe informação sobre o elenco</string>
+  <string name="remaining_cast_count">Mais %d</string>
+  <string name="vibrate_on_remote">Vibrar ao pressionar botões</string>
+  <string name="video">Vídeo</string>
+  <string name="wizard_xbmc_event_server_port">Porto ES (9777)</string>
+  <string name="wizard_xbmc_use_event_server">Usar EventServer</string>
 
-    <!--<string name="buy_me_coffee">Oferecer um café</string>-->
+  <!--<string name="buy_me_coffee">Oferecer um café</string>-->
   <!--<string name="expresso_please">Expresso, por favor. Obrigado!</string>-->
   <!--<string name="thanks_for_coffe">Obrigado pelo café!</string>-->
   <!--<string name="remove_coffee_message">Pressione para ocultar esta configuração</string>-->
