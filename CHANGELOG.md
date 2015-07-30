@@ -1,6 +1,20 @@
 Changelog
 ---------
 
+Version 1.5.0
+-------------
+- D-pad buttons can skip forward/backward when media is playing (if EventServer is enabled in the media center's configuration, and accessible in Kodi)
+- Added new screen to show all cast in movies and tv shows
+- Added vibration option to d-pad buttons
+- Add stop button to remote screen
+- Fix youtube share behaviour
+- Czech translation
+- Simplified Chinese translation
+- Russian translation
+- Basque translation
+- Spanish translation
+- Bug fixes
+
 Version 1.4.0
 -------------
 - Added support for sharing from youtube app to Kodi
