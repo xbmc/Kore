@@ -305,18 +305,6 @@
                 android:layout_marginTop="@dimen/default_padding"
                 android:columnCount="@integer/cast_grid_view_columns"
                 android:orientation="horizontal"/>
-
-            <Button
-                android:id="@+id/see_all_cast"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cast_list"
-                android:layout_alignRight="@id/cast_list"
-                android:layout_alignEnd="@id/cast_list"
-                android:layout_marginRight="@dimen/small_padding"
-                android:layout_marginEnd="@dimen/small_padding"
-                android:text="@string/see_all_cast"/>
-
         </RelativeLayout>
     </ScrollView>
 

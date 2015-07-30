@@ -102,4 +102,5 @@
     <attr name="iconChevronLeft" format="reference" />
     <attr name="iconChevronRight" format="reference" />
 
+    <attr name="iconOpenInNew" format="reference" />
 </resources>

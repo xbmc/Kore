@@ -135,6 +135,8 @@
 
         <item name="iconSearch">@drawable/ic_search_white_24dp</item>
         <item name="iconSearchToolbar">@drawable/ic_search_white_24dp</item>
+
+        <item name="iconOpenInNew">@drawable/ic_open_in_new_white_24dp</item>
     </style>
 
     <!-- Base Light theme. -->
@@ -254,6 +256,8 @@
 
         <item name="iconSearch">@drawable/ic_search_black_24dp</item>
         <item name="iconSearchToolbar">@drawable/ic_search_white_24dp</item>
+
+        <item name="iconOpenInNew">@drawable/ic_open_in_new_black_24dp</item>
     </style>
 
     <!-- Blue Grey theme. -->

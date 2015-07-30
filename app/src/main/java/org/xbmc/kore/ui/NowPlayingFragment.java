@@ -165,7 +165,6 @@ public class NowPlayingFragment extends Fragment
 
     @InjectView(R.id.media_description) TextView mediaDescription;
     @InjectView(R.id.cast_list) GridLayout videoCastList;
-    @InjectView(R.id.see_all_cast) Button seeAllCast;
 
     @Override
     public void onAttach(Activity activity) {
@@ -851,24 +850,12 @@ public class NowPlayingFragment extends Fragment
             currentSubtitleIndex = getPropertiesResult.currentsubtitle.index;
 
             // Cast list
-            UIUtils.setupCastInfo(getActivity(), getItemResult.cast, videoCastList);
-
-            seeAllCast.setVisibility(
-                    (getItemResult.cast.size() <= Settings.DEFAULT_MAX_CAST_PICTURES) ?
-                            View.GONE : View.VISIBLE);
-            seeAllCast.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent launchIntent = AllCastActivity.buildLaunchIntent(
-                            getActivity(), title, (ArrayList<VideoType.Cast>) getItemResult.cast);
-                    startActivity(launchIntent);
-                    getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
-                }
-            });
+            UIUtils.setupCastInfo(getActivity(), getItemResult.cast, videoCastList,
+                                  AllCastActivity.buildLaunchIntent(getActivity(), title,
+                                                                    (ArrayList<VideoType.Cast>)getItemResult.cast));
         } else {
             overflowButton.setVisibility(View.GONE);
             videoCastList.setVisibility(View.GONE);
-            seeAllCast.setVisibility(View.GONE);
         }
     }
 

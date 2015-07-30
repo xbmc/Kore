@@ -216,7 +216,8 @@
     <string name="cast">Cast</string>
     <string name="additional_cast">Additional cast</string>
     <string name="cast_list_text">%1$s as %2$s</string>
-    <string name="see_all_cast">See all</string>
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <string name="remaining_cast_count">%d more</string>
 
     <string name="general_error_executing_action">Error executing action: %1$s</string>
     <string name="error_getting_playlist">Error fetching playlist</string>

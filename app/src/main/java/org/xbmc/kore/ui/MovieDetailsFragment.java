@@ -138,7 +138,6 @@ public class MovieDetailsFragment extends Fragment
     @InjectView(R.id.media_description) TextView mediaDescription;
     @InjectView(R.id.directors) TextView mediaDirectors;
     @InjectView(R.id.cast_list) GridLayout videoCastList;
-    @InjectView(R.id.see_all_cast) Button seeAllCast;
 
     /**
      * Create a new instance of this, initialized to show the movie movieId
@@ -288,15 +287,6 @@ public class MovieDetailsFragment extends Fragment
                 Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    /**
-     * Callbacks for injected buttons
-     */
-    @OnClick(R.id.see_all_cast)
-    public void onSeeAllCastClicked(View v) {
-        startActivity(AllCastActivity.buildLaunchIntent(getActivity(), movieTitle, castArrayList));
-        getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
     }
 
     /**
@@ -632,10 +622,8 @@ public class MovieDetailsFragment extends Fragment
                                                      cursor.getString(MovieCastListQuery.THUMBNAIL)));
             } while (cursor.moveToNext());
 
-            UIUtils.setupCastInfo(getActivity(), castArrayList, videoCastList);
-            seeAllCast.setVisibility(
-                    (cursor.getCount() <= Settings.DEFAULT_MAX_CAST_PICTURES) ?
-                            View.GONE : View.VISIBLE);
+            UIUtils.setupCastInfo(getActivity(), castArrayList, videoCastList,
+                                  AllCastActivity.buildLaunchIntent(getActivity(), movieTitle, castArrayList));
         }
     }
 

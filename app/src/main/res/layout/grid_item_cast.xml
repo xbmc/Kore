@@ -41,6 +41,7 @@
     Gridview, so i resort to a LinearLayout to position them
     -->
     <LinearLayout
+        android:id="@+id/cast_name_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -64,6 +65,28 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/all_cast_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="?attr/contentBackgroundColor"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@android:id/icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="?attr/iconOpenInNew"/>
+        <TextView
+            android:id="@+id/remaining_cast_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@android:id/icon"
+            android:gravity="center_horizontal"
+            style="@style/TextAppearance.Media.Info"/>
+    </RelativeLayout>
 
 
 </RelativeLayout>

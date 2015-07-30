@@ -78,8 +78,8 @@ public class AllCastActivity extends BaseActivity {
     public static Intent buildLaunchIntent(Context context,
                                            String title, ArrayList<VideoType.Cast> castArrayList) {
         return new Intent(context, AllCastActivity.class)
-                .putExtra(AllCastActivity.EXTRA_TITLE, title)
-                .putParcelableArrayListExtra(AllCastActivity.EXTRA_CAST_LIST, castArrayList);
+                .putExtra(EXTRA_TITLE, title)
+                .putParcelableArrayListExtra(EXTRA_CAST_LIST, castArrayList);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class AllCastActivity extends BaseActivity {
             castArrayList = savedInstanceState.getParcelableArrayList(EXTRA_CAST_LIST);
         }
 
-        LogUtils.LOGD(TAG, "Showing cast for: " + movie_tvshow_title);
+        //LogUtils.LOGD(TAG, "Showing cast for: " + movie_tvshow_title);
 
         // Configure the grid
         castGridView.setEmptyView(emptyView);
@@ -158,7 +158,9 @@ public class AllCastActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         navigationDrawerFragment.setDrawerIndicatorEnabled(false);
-        actionBar.setTitle(getResources().getString(R.string.cast) + " - " + title);
+        actionBar.setTitle((title != null) ?
+                                   getResources().getString(R.string.cast) + " - " + title :
+                                   getResources().getString(R.string.cast));
     }
 
     public static class CastArrayAdapter extends ArrayAdapter<VideoType.Cast> {

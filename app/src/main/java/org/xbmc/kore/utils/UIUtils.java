@@ -17,6 +17,7 @@ package org.xbmc.kore.utils;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -226,22 +227,23 @@ public class UIUtils {
      * through the global setting, and only actors with images are presented.
      * The rest are presented in the additionalCastView TextView
      *
-     * @param context Activity
+     * @param activity Activity
      * @param castList Cast list
      * @param castListView GridLayout on which too show actors that have images
      */
-    public static void setupCastInfo(final Context context,
-                                     List<VideoType.Cast> castList, GridLayout castListView) {
-        HostManager hostManager = HostManager.getInstance(context);
-        Resources resources = context.getResources();
+    public static void setupCastInfo(final Activity activity,
+                                     List<VideoType.Cast> castList, GridLayout castListView,
+                                     final Intent allCastActivityLaunchIntent) {
+        HostManager hostManager = HostManager.getInstance(activity);
+        Resources resources = activity.getResources();
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager)activity.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
 
         View.OnClickListener castListClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openImdbForPerson(context, (String)v.getTag());
+                Utils.openImdbForPerson(activity, (String)v.getTag());
             }
         };
 
@@ -254,30 +256,46 @@ public class UIUtils {
         int imageHeight = (int)(imageWidth * 1.5);
 
         int maxCastPictures = Settings.DEFAULT_MAX_CAST_PICTURES;
-        int currentPictureNumber = 0;
-        for (int i = 0; i < castList.size(); i++) {
+
+        for (int i = 0; i < Math.min(castList.size(), maxCastPictures); i++) {
             VideoType.Cast actor = castList.get(i);
 
-            if ((currentPictureNumber < maxCastPictures) && (actor.thumbnail != null)) {
-                // Present the picture
-                currentPictureNumber++;
-                View castView = LayoutInflater.from(context).inflate(R.layout.grid_item_cast, castListView, false);
-                ImageView castPicture = (ImageView) castView.findViewById(R.id.picture);
-                TextView castName = (TextView) castView.findViewById(R.id.name);
-                TextView castRole = (TextView) castView.findViewById(R.id.role);
+            View castView = LayoutInflater.from(activity).inflate(R.layout.grid_item_cast, castListView, false);
+            ImageView castPicture = (ImageView) castView.findViewById(R.id.picture);
+            TextView castName = (TextView) castView.findViewById(R.id.name);
+            TextView castRole = (TextView) castView.findViewById(R.id.role);
 
-                castView.getLayoutParams().width = imageWidth;
-                castView.getLayoutParams().height = imageHeight;
-                castView.setTag(actor.name);
-                castView.setOnClickListener(castListClickListener);
+            castView.getLayoutParams().width = imageWidth;
+            castView.getLayoutParams().height = imageHeight;
+            castView.setTag(actor.name);
 
+            UIUtils.loadImageWithCharacterAvatar(activity, hostManager,
+                                                 actor.thumbnail, actor.name,
+                                                 castPicture, imageWidth, imageHeight);
+
+            if ((i == maxCastPictures - 1) && (castList.size() > i + 1)) {
+                View castNameGroup = castView.findViewById(R.id.cast_name_group);
+                View allCastGroup = castView.findViewById(R.id.all_cast_group);
+                TextView remainingCastCount = (TextView)castView.findViewById(R.id.remaining_cast_count);
+
+                castNameGroup.setVisibility(View.GONE);
+                allCastGroup.setVisibility(View.VISIBLE);
+                remainingCastCount.setText(String.format(activity.getString(R.string.remaining_cast_count),
+                                                         castList.size() - maxCastPictures + 1));
+                castView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        activity.startActivity(allCastActivityLaunchIntent);
+                        activity.overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+                    }
+                });
+            } else {
                 castName.setText(actor.name);
                 castRole.setText(actor.role);
-                UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                                                     actor.thumbnail, actor.name,
-                                                     castPicture, imageWidth, imageHeight);
-                castListView.addView(castView);
+                castView.setOnClickListener(castListClickListener);
             }
+
+            castListView.addView(castView);
         }
     }
 

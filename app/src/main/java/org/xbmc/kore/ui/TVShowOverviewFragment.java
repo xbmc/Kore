@@ -108,7 +108,6 @@ public class TVShowOverviewFragment extends Fragment
 
     @InjectView(R.id.media_description) TextView mediaDescription;
     @InjectView(R.id.cast_list) GridLayout videoCastList;
-    @InjectView(R.id.see_all_cast) Button seeAllCast;
 
     /**
      * Create a new instance of this, initialized to show tvshowId
@@ -256,15 +255,6 @@ public class TVShowOverviewFragment extends Fragment
     }
 
     /**
-     * Callbacks for injected buttons
-     */
-    @OnClick(R.id.see_all_cast)
-    public void onSeeAllCastClicked(View v) {
-        startActivity(AllCastActivity.buildLaunchIntent(getActivity(), tvshowTitle, castArrayList));
-        getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
-    }
-
-    /**
      * Loader callbacks
      */
     /** {@inheritDoc} */
@@ -389,10 +379,8 @@ public class TVShowOverviewFragment extends Fragment
                         cursor.getString(TVShowCastListQuery.THUMBNAIL)));
             } while (cursor.moveToNext());
 
-            UIUtils.setupCastInfo(getActivity(), castArrayList, videoCastList);
-            seeAllCast.setVisibility(
-                    (cursor.getCount() <= Settings.DEFAULT_MAX_CAST_PICTURES) ?
-                    View.GONE : View.VISIBLE);
+            UIUtils.setupCastInfo(getActivity(), castArrayList, videoCastList,
+                                  AllCastActivity.buildLaunchIntent(getActivity(), tvshowTitle, castArrayList));
         }
     }
 
