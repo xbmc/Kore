@@ -16,16 +16,23 @@
 package org.xbmc.kore.service;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Process;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -44,6 +51,7 @@ import org.xbmc.kore.utils.Utils;
 import java.lang.System;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -89,6 +97,10 @@ public class LibrarySyncService extends Service {
     private Handler callbackHandler;
     private HandlerThread handlerThread;
 
+    private ArrayList<SyncOrchestrator> syncOrchestrators;
+
+    private final IBinder serviceBinder = new LocalBinder();
+
     @Override
     public void onCreate() {
         // Create a Handler Thread to process callback calls after the Xbmc method call
@@ -98,6 +110,8 @@ public class LibrarySyncService extends Service {
         // Get the HandlerThread's Looper and use it for our Handler
         callbackHandler = new Handler(handlerThread.getLooper());
         // Check which libraries to update and call the corresponding methods on Xbmc
+
+        syncOrchestrators = new ArrayList<>();
     }
 
     @Override
@@ -107,11 +121,11 @@ public class LibrarySyncService extends Service {
         // to not interfere with the normal application usage of it (namely calls to disconnect
         // and usage of the socket).
         HostInfo hostInfo = HostManager.getInstance(this).getHostInfo();
-        HostConnection hostConnection = new HostConnection(hostInfo);
-        hostConnection.setProtocol(HostConnection.PROTOCOL_HTTP);
 
-        SyncOrchestrator syncOrchestrator = new SyncOrchestrator(this, startId, hostConnection,
+        SyncOrchestrator syncOrchestrator = new SyncOrchestrator(this, startId, hostInfo,
                 callbackHandler, getContentResolver());
+
+        syncOrchestrators.add(syncOrchestrator);
 
         // Get the request parameters that we should pass when calling back the caller
         Bundle syncExtras = intent.getBundleExtra(SYNC_EXTRAS);
@@ -167,8 +181,7 @@ public class LibrarySyncService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // We don't provide binding, so return null
-        return null;
+        return serviceBinder;
     }
 
     @SuppressLint("NewApi")
@@ -182,38 +195,68 @@ public class LibrarySyncService extends Service {
         }
     }
 
+    public class LocalBinder extends Binder {
+        public LibrarySyncService getService() {
+            return LibrarySyncService.this;
+        }
+    }
+
+    /**
+     *
+     * @param hostInfo host information for which to get items currently syncing
+     * @return currently syncing syncitems for given hostInfo
+     */
+    public ArrayList<SyncItem> getItemsSyncing(HostInfo hostInfo) {
+        ArrayList<SyncItem> syncItems = new ArrayList<>();
+        for( SyncOrchestrator orchestrator : syncOrchestrators) {
+            if( orchestrator.getHostInfo().getId() == hostInfo.getId() ) {
+                syncItems.addAll(orchestrator.getSyncItems());
+                return syncItems;
+            }
+        }
+        return null;
+    }
+
     /**
      * Orchestrator for a list os SyncItems
      * Keeps a list of SyncItems to sync, and calls each one in order
      * When finishes cleans up and stops the service by calling stopSelf
      */
-    private static class SyncOrchestrator {
+    private class SyncOrchestrator {
         private ArrayDeque<SyncItem> syncItems;
         private Service syncService;
         private final int serviceStartId;
-        private final HostConnection hostConnection;
+        private HostConnection hostConnection;
+        private final HostInfo hostInfo;
         private final Handler callbackHandler;
         private final ContentResolver contentResolver;
 
         private SyncItem currentSyncItem;
+
+        private Iterator<SyncItem> syncItemIterator;
+
         /**
          * Constructor
          * @param syncService Service on which to call {@link #stopSelf()} when finished
          * @param startId Service startid to use when calling {@link #stopSelf()}
-         * @param hostConnection Host connection to use
+         * @param hostInfo Host from which to sync
          * @param callbackHandler Handler on which to post callbacks
          * @param contentResolver Content resolver
          */
         public SyncOrchestrator(Service syncService, final int startId,
-                                final HostConnection hostConnection,
+                                final HostInfo hostInfo,
                                 final Handler callbackHandler,
                                 final ContentResolver contentResolver) {
             this.syncService = syncService;
             this.syncItems = new ArrayDeque<SyncItem>();
             this.serviceStartId = startId;
-            this.hostConnection = hostConnection;
+            this.hostInfo = hostInfo;
             this.callbackHandler = callbackHandler;
             this.contentResolver = contentResolver;
+        }
+
+        public HostInfo getHostInfo() {
+            return hostInfo;
         }
 
         /**
@@ -224,6 +267,10 @@ public class LibrarySyncService extends Service {
             syncItems.add(syncItem);
         }
 
+        public ArrayDeque<SyncItem> getSyncItems() {
+            return syncItems;
+        }
+
         private long startTime = -1;
         private long partialStartTime;
 
@@ -232,16 +279,19 @@ public class LibrarySyncService extends Service {
          */
         public void startSync() {
             startTime = System.currentTimeMillis();
+            hostConnection = new HostConnection(hostInfo);
+            hostConnection.setProtocol(HostConnection.PROTOCOL_HTTP);
+            syncItemIterator = syncItems.iterator();
             nextSync();
         }
 
         /**
          * Processes the next item on the sync list, or cleans up if it is finished.
          */
-        public void nextSync() {
-            if (syncItems.size() > 0) {
+        private void nextSync() {
+            if (syncItemIterator.hasNext()) {
                 partialStartTime = System.currentTimeMillis();
-                currentSyncItem = syncItems.poll();
+                currentSyncItem = syncItemIterator.next();
                 currentSyncItem.sync(this, hostConnection, callbackHandler, contentResolver);
             } else {
                 LogUtils.LOGD(TAG, "Sync finished for all items. Total time: " +
@@ -249,6 +299,8 @@ public class LibrarySyncService extends Service {
                 // No more syncs, cleanup.
                 // No need to disconnect, as this is HTTP
                 //hostConnection.disconnect();
+
+                syncOrchestrators.remove(this);
                 syncService.stopSelf(serviceStartId);
             }
         }
@@ -256,7 +308,7 @@ public class LibrarySyncService extends Service {
         /**
          * One of the syync items finish syncing
          */
-        public void syncItemFinished() {
+        private void syncItemFinished() {
             LogUtils.LOGD(TAG, "Sync finished for item: " + currentSyncItem.getDescription() +
                                ". Total time: " + (System.currentTimeMillis() - partialStartTime));
 
@@ -264,6 +316,9 @@ public class LibrarySyncService extends Service {
                     .post(new MediaSyncEvent(currentSyncItem.getSyncType(),
                             currentSyncItem.getSyncExtras(),
                             MediaSyncEvent.STATUS_SUCCESS));
+
+            syncItems.remove(currentSyncItem);
+
             nextSync();
         }
 
@@ -272,7 +327,7 @@ public class LibrarySyncService extends Service {
          * @param errorCode Error code
          * @param description Description
          */
-        public void syncItemFailed(int errorCode, String description) {
+        private void syncItemFailed(int errorCode, String description) {
             LogUtils.LOGD(TAG, "A Sync item has got an error. Sync item: " +
                                currentSyncItem.getDescription() +
                                ". Error description: " + description);
@@ -291,7 +346,7 @@ public class LibrarySyncService extends Service {
     /**
      * Represent an item that can be synced
      */
-    private interface SyncItem {
+    public interface SyncItem {
         /**
          * Syncs an item from the XBMC host to the local database
          * @param orchestrator Orchestrator to call when finished

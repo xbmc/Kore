@@ -15,8 +15,14 @@
  */
 package org.xbmc.kore.service;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.jsonrpc.type.AudioType;
 import org.xbmc.kore.jsonrpc.type.LibraryType;
@@ -30,6 +36,10 @@ import java.util.List;
  * Util functions for the Library Sync Service
  */
 public class SyncUtils {
+
+    public interface OnServiceListener {
+        void onServiceConnected(LibrarySyncService librarySyncService);
+    }
 
     public static final String LIST_DELIMETER = ", ";
 
@@ -336,7 +346,7 @@ public class SyncUtils {
      * @return {@link android.content.ContentValues} with the music video values
      */
     public static ContentValues contentValuesFromMusicVideo(int hostId,
-                                                          VideoType.DetailsMusicVideo musicVideo) {
+                                                            VideoType.DetailsMusicVideo musicVideo) {
         ContentValues musicVideoValues = new ContentValues();
         musicVideoValues.put(MediaContract.MusicVideosColumns.HOST_ID, hostId);
         musicVideoValues.put(MediaContract.MusicVideosColumns.MUSICVIDEOID, musicVideo.musicvideoid);
@@ -401,4 +411,69 @@ public class SyncUtils {
         return musicVideoValues;
     }
 
+    /**
+     * Binds to {@link LibrarySyncService} and calls {@link OnServiceListener#onServiceConnected(LibrarySyncService)} when connected
+     * @param context {@link Context}
+     * @param listener {@link OnServiceListener}
+     * @return {@link ServiceConnection} to be able to disconnect the connection
+     */
+    public static ServiceConnection connectToLibrarySyncService(Context context, final OnServiceListener listener) {
+        Intent intent = new Intent(context, LibrarySyncService.class);
+
+        final ServiceConnection serviceConnection = new ServiceConnection() {
+
+            @Override
+            public void onServiceConnected(ComponentName className,
+                                           IBinder service) {
+
+                LibrarySyncService.LocalBinder binder = (LibrarySyncService.LocalBinder) service;
+                LibrarySyncService librarySyncService = binder.getService();
+
+                listener.onServiceConnected(librarySyncService);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName arg0) {
+            }
+        };
+
+        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+        return serviceConnection;
+    }
+
+    /**
+     * Disconnects from a running LibrarySyncService
+     * @param context {@link Context}
+     * @param serviceConnection {@link ServiceConnection} that was used to connect/bind to the service
+     */
+    public static void disconnectFromLibrarySyncService(Context context, ServiceConnection serviceConnection) {
+        context.unbindService(serviceConnection);
+    };
+
+    /**
+     * Checks if a running LibrarySyncService is syncing any given SyncType from a specific host
+     * @param service running LibrarySyncService. Use {@link #connectToLibrarySyncService(Context, OnServiceListener)} to connect to a running LibrarySyncService
+     * @param hostInfo host to check for sync items currently running or queued
+     * @param syncTypes sync types to check
+     * @return true if any of the given syncTypes is running or queued, false otherwise
+     */
+    public static boolean isLibrarySyncing(LibrarySyncService service, HostInfo hostInfo, String... syncTypes) {
+        if (service == null || hostInfo == null || syncTypes == null)
+            return false;
+
+        ArrayList<LibrarySyncService.SyncItem> itemsSyncing = service.getItemsSyncing(hostInfo);
+        if( itemsSyncing == null )
+            return false;
+
+        for (LibrarySyncService.SyncItem syncItem : itemsSyncing) {
+            for( String syncType : syncTypes ) {
+                if (syncItem.getSyncType().equals(syncType)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }
