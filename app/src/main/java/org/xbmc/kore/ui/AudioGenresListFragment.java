@@ -54,7 +54,7 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.MediaManager;
+import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 import butterknife.ButterKnife;
@@ -374,10 +374,10 @@ public class AudioGenresListFragment extends Fragment
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.action_play:
-                            MediaManager.play(AudioGenresListFragment.this, playListItem);
+                            MediaPlayerUtils.play(AudioGenresListFragment.this, playListItem);
                             return true;
                         case R.id.action_queue:
-                            MediaManager.queueAudio(AudioGenresListFragment.this, playListItem);
+                            MediaPlayerUtils.queueAudio(AudioGenresListFragment.this, playListItem);
                             return true;
                     }
                     return false;

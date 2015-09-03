@@ -55,7 +55,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.MediaManager;
+import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 import butterknife.ButterKnife;
@@ -390,10 +390,10 @@ public class ArtistListFragment extends Fragment
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.action_play:
-                            MediaManager.play(ArtistListFragment.this, playListItem);
+                            MediaPlayerUtils.play(ArtistListFragment.this, playListItem);
                             return true;
                         case R.id.action_queue:
-                            MediaManager.queueAudio(ArtistListFragment.this, playListItem);
+                            MediaPlayerUtils.queueAudio(ArtistListFragment.this, playListItem);
                             return true;
                     }
                     return false;

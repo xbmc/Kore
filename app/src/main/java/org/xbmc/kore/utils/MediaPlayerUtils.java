@@ -35,7 +35,7 @@ import org.xbmc.kore.ui.RemoteActivity;
 
 import java.util.ArrayList;
 
-public class MediaManager {
+public class MediaPlayerUtils {
 
     /**
      * Clears current playlist and starts playing item
