@@ -35,28 +35,43 @@
             android:layout_alignParentLeft="true"
             android:contentDescription="@string/poster"/>
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/art"
+        <ImageView
+            android:id="@+id/list_context_menu"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:padding="@dimen/default_icon_padding"
             android:layout_alignTop="@id/art"
-            style="@style/TextAppearance.Medialist.Title"/>
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/title"
-            android:layout_below="@id/title"
-            style="@style/TextAppearance.Medialist.Details"/>
+            android:layout_alignParentRight="true"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconOverflow"
+            android:contentDescription="@string/action_options"/>
 
-        <TextView
-            android:id="@+id/genres"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name"
-            android:layout_alignLeft="@id/title"
-            android:layout_alignParentBottom="true"
-            style="@style/TextAppearance.Medialist.OtherInfo"/>
+            android:orientation="vertical"
+            android:layout_toLeftOf="@+id/list_context_menu"
+            android:layout_toRightOf="@id/art"
+            android:layout_alignTop="@id/art">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Medialist.Title"/>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Medialist.Details"/>
+
+            <TextView
+                android:id="@+id/genres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Medialist.OtherInfo"/>
+
+        </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

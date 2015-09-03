@@ -41,6 +41,7 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,10 +50,12 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
+import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.MediaManager;
 import org.xbmc.kore.utils.UIUtils;
 
 import butterknife.ButterKnife;
@@ -84,7 +87,6 @@ public class ArtistListFragment extends Fragment
     // Activity listener
     private OnArtistSelectedListener listenerActivity;
 
-    private HostManager hostManager;
     private HostInfo hostInfo;
     private EventBus bus;
 
@@ -103,8 +105,7 @@ public class ArtistListFragment extends Fragment
         ButterKnife.inject(this, root);
 
         bus = EventBus.getDefault();
-        hostManager = HostManager.getInstance(getActivity());
-        hostInfo = hostManager.getHostInfo();
+        hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
 
         swipeRefreshLayout.setOnRefreshListener(this);
         //UIUtils.setSwipeRefreshLayoutColorScheme(swipeRefreshLayout);
@@ -305,7 +306,7 @@ public class ArtistListFragment extends Fragment
         final int THUMBNAIL = 4;
     }
 
-    private static class ArtistsAdapter extends CursorAdapter {
+    private class ArtistsAdapter extends CursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
@@ -354,6 +355,11 @@ public class ArtistListFragment extends Fragment
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                     thumbnail, viewHolder.artistName,
                     viewHolder.artView, artWidth, artHeight);
+
+            // For the popupmenu
+            ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
+            contextMenu.setTag(viewHolder);
+            contextMenu.setOnClickListener(artistlistItemMenuClickListener);
         }
     }
 
@@ -368,4 +374,32 @@ public class ArtistListFragment extends Fragment
         int artistId;
         String artistName;
     }
+
+    private View.OnClickListener artistlistItemMenuClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            final ViewHolder viewHolder = (ViewHolder)v.getTag();
+
+            final PlaylistType.Item playListItem = new PlaylistType.Item();
+            playListItem.artistid = viewHolder.artistId;
+
+            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_play:
+                            MediaManager.play(ArtistListFragment.this, playListItem);
+                            return true;
+                        case R.id.action_queue:
+                            MediaManager.queueAudio(ArtistListFragment.this, playListItem);
+                            return true;
+                    }
+                    return false;
+                }
+            });
+            popupMenu.show();
+        }
+    };
 }
