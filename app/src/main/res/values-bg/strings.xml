@@ -23,17 +23,19 @@
     <string name="loading">Зареждане…</string>
 
     <!-- Navigation drawer tips -->
-	<string name="navigation_drawer_open">Open navigation drawer</string>
-	<string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
-	<string name="xbmc_media_center">Медиен център</string>
-	<string name="home">Начален екран</string>
-	<string name="movies">Филми</string>
-	<string name="tv_shows">ТВ Сериали</string>
-	<string name="music">Музика</string>
-	<string name="pictures">Снимки</string>
+    <string name="xbmc_media_center">Медиен център</string>
+    <string name="home">Начален екран</string>
+    <string name="movies">Филми</string>
+    <string name="tv_shows">ТВ Сериали</string>
+    <string name="music">Музика</string>
+    <string name="pictures">Снимки</string>
     <string name="addons">Добавки</string>
-
+    <string name="files">Файлове</string>
+    <string name="video">Видео</string>
+    <string name="file_browser">Диспечер на файлове</string>
     <string name="no_xbmc_configured">Няма настроен медиен център</string>
     <string name="add_xbmc">Добавяне на медиен център</string>
 
@@ -43,6 +45,7 @@
     <string name="power">Изключи...</string>
     <string name="quit">Изход</string>
     <string name="suspend">Суспендиране</string>
+    <string name="reboot">Рестартиране</string>
     <string name="shutdown">Изключване</string>
 
     <string name="send">Изпрати</string>
@@ -77,7 +80,7 @@
     Докоснете <i>Повторно търсене</i> за втори опит или <i>Напред</i> за ръчно настройване.
     ]]></string>
     <string name="wizard_search_host_found"><![CDATA[
-    В локалната мрежа са открити следните медийни центрове.<br/><br/>Изберет кой да бъде добавен или докоснете <i>Напред</i> за ръчно добавяне.
+    В локалната мрежа са открити следните медийни центрове.<br/><br/>Изберете кой да бъде добавен или докоснете <i>Напред</i> за ръчно добавяне.
     ]]></string>
     <string name="searching">Търсене…</string>
     <string name="no_xbmc_found">Няма открити медийни центрове</string>
@@ -93,11 +96,15 @@
     <string name="wizard_xbmc_tcp_port">TCP порт (9090)</string>
     <string name="wizard_xbmc_mac_address">MAC адрес</string>
     <string name="wizard_xbmc_wol_port">WoL порт (9)</string>
+    <string name="wizard_xbmc_use_tcp">Ползвай TCP</string>
+    <string name="wizard_xbmc_event_server_port">СС порт (9777)</string>
+    <string name="wizard_xbmc_use_event_server">Ползвай Сървър за Събития</string>
 
     <string name="wizard_no_name_specified">Моля, въведете име за медийния център, с което ще го отличавате по-късно.</string>
     <string name="wizard_no_address_specified">Моля, въведете адреса на медийния център, за да бъде открит.</string>
-    <string name="wizard_invalid_http_port_specified">Моля, въведете HTTP порт за медийния център, за да бъде открит.</string>
-    <string name="wizard_invalid_tcp_port_specified">Моля, въведете TCP порт за медийния център, за да бъде открит.</string>
+    <string name="wizard_invalid_http_port_specified">Моля, въведете HTTP порт за медийния център.</string>
+    <string name="wizard_invalid_tcp_port_specified">Моля, въведете TCP порт за медийния център.</string>
+    <string name="wizard_invalid_es_port_specified">Моля, въведете порта на Сървъра за Събития за медийния център.</string>
 
     <string name="wizard_connecting_to_xbmc_title">Свързване към %1$s…</string>
     <string name="wizard_connecting_to_xbmc_message">Моля, изчакайте докато връзката се тества…</string>
@@ -113,6 +120,9 @@
     Можете да го контролирате. В момента библиотеката се синхронизира и ще бъде налична за разглеждане след малко.<br/><br/>
     Докоснете <b><i>Завършено</i></b> за да започнете да ползвате дистанционното.
     ]]></string>
+
+    <string name="wizard_zeroconf_no_host_address">Адресът на медийният център не може да бъде открит!</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Свързването с медийния център не е възможно, защото адреса му не може да бъде открит.</string>
 
     <string name="play">Възпроизведи</string>
     <string name="pause">Пауза</string>
@@ -130,6 +140,8 @@
     <string name="no_audiostream">Няма налични аудио потоци</string>
     <string name="download_subtitle">Сваляне на субтитри</string>
     <string name="none">Няма</string>
+    <string name="audio_sync">Sync audio</string>
+    <string name="subtitle_sync">Sync subtitles</string>
 
     <string name="left">Наляво</string>
     <string name="right">Надясно</string>
@@ -138,7 +150,7 @@
     <string name="select">Избор</string>
     <string name="info">Информация</string>
     <string name="codec_info">Кодек</string>
-    <string name="context">Контекст</string>
+    <string name="context">Контекстно меню</string>
     <string name="osd">Меню</string>
     <string name="back">Назад</string>
 
@@ -153,7 +165,10 @@
     <string name="wake_up">Събуждане</string>
     <string name="edit_xbmc">Редактиране на медиен център</string>
     <string name="delete_xbmc">Изтриване на медиен център</string>
-    <string name="delete_xbmc_confirm">Желаете медийният център да бъде изтрит?</string>
+    <string name="delete_xbmc_confirm">Желаете ли медийният център да бъде изтрит?</string>
+    <string name="queue_file">На опашката</string>
+    <string name="play_file">Възпроизведи</string>
+    <string name="play_from_here">Възпроизведи от тук</string>
 
     <string name="connecting_to_xbmc">Свързване…</string>
     <string name="unable_to_connect_to_xbmc">Свързването с медийния център не е възможно</string>
@@ -178,7 +193,7 @@
     <string name="max_rating_music">/5</string>
 
     <string name="fanart">Фен-арт</string>
-    <string name="poster">Постер</string>
+    <string name="poster">Плакат</string>
     <string name="thumbnail">Миниатюра</string>
 
     <string name="error_getting_properties">Свойствата на Kodi/XBMC не са достъпни.\nГрешка:
@@ -186,40 +201,52 @@
     <string name="error_executing_subtitles">Добавката за субтитри не може да бъде стартирана.\nГрешка: %1$s.</string>
     <string name="error_getting_addon_info">Информацията за добавката не е достъпна.\nГрешка:
         %1$s.</string>
+    <string name="error_getting_source_info">Списъкът на файлове не е достъпен.\nГрешка:
+        %1$s.</string>
+    <string name="error_play_media_file">Файлът не може да бъде възпроизведен.\nГрешка:
+        %1$s.</string>
+    <string name="error_queue_media_file">Файлът не може да бъде добавен към опашката.\nГрешка:
+        %1$s.</string>
+    <string name="error_get_active_player">Couldn\'t get active player.\nГрешка:
+        %1$s.</string>
 
     <string name="directors">Режисьор:</string>
     <string name="studio">Студио:</string>
     <string name="cast">Участници</string>
     <string name="additional_cast">Други участници</string>
     <string name="cast_list_text">%1$s като %2$s</string>
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <string name="remaining_cast_count">Още %d</string>
 
     <string name="general_error_executing_action">Грешка при изпълнение на действие: %1$s</string>
     <string name="error_getting_playlist">Грешка при изтеглянето на плейлист</string>
     <string name="error_message">Грешка: %1$s</string>
     <string name="playlist_empty">Празен плейлист</string>
     <string name="clear_playlist">Изчисти плейлиста</string>
+    <string name="source_empty">Източникът на медия е празен</string>
 
     <string name="no_movies_found_refresh">Няма открити филми\n\nПлъзнете надолу за обновяване</string>
     <string name="no_tvshows_found_refresh">Няма открити ТВ Сериали\n\nПлъзнете надолу за обновяване</string>
     <string name="no_episodes_found">Няма открити епизоди</string>
-    <string name="no_artists_found_refresh">No artists found\n\nПлъзнете надолу за обновяване</string>
+    <string name="no_artists_found_refresh">Няма открити артисти\n\nПлъзнете надолу за обновяване</string>
     <string name="no_albums_found_refresh">Няма открити албуми\n\nПлъзнете надолу за обновяване</string>
     <string name="no_genres_found_refresh">Няма открити жанрове\n\nПлъзнете надолу за обновяване</string>
     <string name="no_addons_found_refresh">Няма открити добавки или няма връзка\n\nПлъзнете надолу за обновяване</string>
     <string name="no_music_videos_found_refresh">Няма открити клипове\n\nПлъзнете надолу за обновяване</string>
     <string name="pull_to_refresh">Плъзнете за обновяване</string>
+    <string name="no_cast_info">Няма информация за участниците</string>
 
     <string name="minutes_abbrev">%1$s мин</string>
     <string name="sync_successful">Успешно синхронизиране</string>
     <string name="error_while_syncing">Възникна грешка при синхронизирането: %1$s</string>
 
     <string name="action_search">Търсене</string>
-    <string name="action_search_movies">Търси филм</string>
-    <string name="action_search_tvshows">Търси ТВ Сериал</string>
-    <string name="action_search_albums">Търси албум</string>
-    <string name="action_search_artists">Търси артист</string>
-    <string name="action_search_genres">Търси жанр</string>
-    <string name="action_search_music_videos">Търси клип</string>
+    <string name="action_search_movies">Търсене за филм</string>
+    <string name="action_search_tvshows">Търсене за ТВ Сериал</string>
+    <string name="action_search_albums">Търсене за албум</string>
+    <string name="action_search_artists">Търсене за артист</string>
+    <string name="action_search_genres">Търсене за жанр</string>
+    <string name="action_search_music_videos">Търсене за клип</string>
 
     <string name="add_to_playlist">Добави към плейлист</string>
     <string name="item_added_to_playlist">Добавен към плейлист</string>
@@ -228,6 +255,10 @@
     <string name="imdb">IMDb</string>
     <string name="seen">Гледан</string>
     <string name="download">Сваляне</string>
+
+    <string name="confirm_movie_download">Желаете ли да свалите филма?\nСвалянето ще започне на заден фон и най-вероятно ще отнеме известно време.</string>
+    <string name="confirm_episode_download">Желаете ли да свалите епизода?\nСвалянето ще започне на заден фон и най-вероятно ще отнеме известно време.</string>
+    <string name="confirm_album_download">Желаете ли да свалите албума?\nСвалянето ще започне на заден фон и най-вероятно ще отнеме известно време.</string>
 
     <string name="download_file_exists">Файлът съществува.\nДа бъде презаписан или свален с ново име?</string>
     <string name="download_dir_exists">Директорията вече съществува.\nАко съществуват и файлове със същото име да бъдат презаписани или свалени с ново име?</string>
@@ -251,13 +282,13 @@
 
     <string name="author">Автор:</string>
     <string name="version">Версия:</string>
-    <string name="enable_disable">Вкл./Изкл. на добавка</string>
+    <string name="enable_disable">Вкл./Изкл. на добавката</string>
     <string name="addon_enabled">Добавката е включена</string>
     <string name="addon_disabled">Добавката е изключена</string>
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Без гледаните</string>
-    <string name="sort_order">Сортирай по</string>
+    <string name="sort_order">Сортирай по…</string>
     <string name="sort_by_name">име</string>
     <string name="sort_by_date_added">дата на добавяне</string>
     <string name="ignore_prefixes">Игнорирай представките</string>
@@ -273,13 +304,14 @@
     <string name="switch_to_remote">Към дистанционното след стартиране</string>
     <string name="show_notification">Показвай известия и при възпроизвеждане</string>
     <string name="use_hardware_volume_keys">Контрол на звука с клавишите за сила за звука</string>
+    <string name="vibrate_on_remote">Вибриране при натискане на бутон</string>
 
     <string name="about">За приложението</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2015 XBMC Foundation.<br><br>
         Моля, оценете ни в <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
-        If you need help, check our <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
+        Ако се нуждаете от помощ посетете форума: <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
     ]]></string>
 
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
@@ -293,5 +325,7 @@
     <!--<string name="error_querying_inventory">Липсва информация за покупката.</string>-->
     <!--<string name="error_during_purchased">Възникна грешка по време на закупуването.</string>-->
     <!--<string name="purchase_thanks">Благодаря за подкрепата!</string>-->
+
+    <string name="play_on_kodi">Kodi</string>
 
 </resources>
