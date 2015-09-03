@@ -137,13 +137,21 @@ public class SendTextDialogFragment extends DialogFragment {
         textToSend.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    mListener.onSendTextFinished(
-                            textToSend.getText().toString(),
-                            finishAfterSend.isChecked());
+                if (actionId == EditorInfo.IME_ACTION_SEND ) {
+                    onSendTextFinished();
+                }  // handles enter key on external keyboard, issue #99
+                else if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED &&
+                        (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    onSendTextFinished();
                 }
                 dialog.dismiss();
                 return false;
+            }
+
+            private void onSendTextFinished() {
+                mListener.onSendTextFinished(
+                        textToSend.getText().toString(),
+                        finishAfterSend.isChecked());
             }
         });
         return dialog;
