@@ -41,6 +41,7 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,10 +50,12 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
+import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.MediaManager;
 import org.xbmc.kore.utils.UIUtils;
 
 import butterknife.ButterKnife;
@@ -209,7 +212,7 @@ public class AlbumListFragment extends AbstractMusicListFragment {
         final int YEAR = 6;
     }
 
-    private static class AlbumsAdapter extends CursorAdapter {
+    private class AlbumsAdapter extends CursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
@@ -264,6 +267,11 @@ public class AlbumListFragment extends AbstractMusicListFragment {
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                     thumbnail, viewHolder.albumTitle,
                     viewHolder.artView, artWidth, artHeight);
+
+            // For the popupmenu
+            ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
+            contextMenu.setTag(viewHolder);
+            contextMenu.setOnClickListener(albumlistItemMenuClickListener);
         }
     }
 
@@ -279,4 +287,32 @@ public class AlbumListFragment extends AbstractMusicListFragment {
         int albumId;
         String albumTitle;
     }
+
+    private View.OnClickListener albumlistItemMenuClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            final ViewHolder viewHolder = (ViewHolder)v.getTag();
+
+            final PlaylistType.Item playListItem = new PlaylistType.Item();
+            playListItem.albumid = viewHolder.albumId;
+
+            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_play:
+                            MediaManager.play(AlbumListFragment.this, playListItem);
+                            return true;
+                        case R.id.action_queue:
+                            MediaManager.queueAudio(AlbumListFragment.this, playListItem);
+                            return true;
+                    }
+                    return false;
+                }
+            });
+            popupMenu.show();
+        }
+    };
 }
