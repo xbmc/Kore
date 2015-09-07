@@ -247,6 +247,9 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
   <string name="video">Vídeo</string>
   <string name="wizard_xbmc_event_server_port">Porto ES (9777)</string>
   <string name="wizard_xbmc_use_event_server">Usar EventServer</string>
+  <string name="no_network_connection">Nenhuma conexão de rede activa</string>
+  <string name="wizard_invalid_es_port_specified">Por favor especifique um porto válido para o EventServer.</string>
+  <string name="wizard_search_no_network_connection"><![CDATA[Por favor active uma conexão de rede antes de procurar centros multimédia.]]></string>
 
   <!--<string name="buy_me_coffee">Oferecer um café</string>-->
   <!--<string name="expresso_please">Expresso, por favor. Obrigado!</string>-->
