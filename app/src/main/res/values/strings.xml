@@ -80,9 +80,14 @@
     I couldn\'t find any media center on your network.<br/>If you need help configuring it, check <a href="http://syncedsynapse.com/kore/kore-faq/>here</a>.<br/><br/>
     Click <i>Search</i> to search again or <i>Next</i> for manual configuration.
     ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    Please enable the network connection.<br/><br/>
+    Click <i>Search</i> to search again or <i>Next</i> for manual configuration.
+    ]]></string>
     <string name="wizard_search_host_found"><![CDATA[
     I found these media centers on your network.<br/><br/>Select one to add or press <i>Next</i> to manually add a new one.
     ]]></string>
+    <string name="no_network_connection">No network connection</string>
     <string name="searching">Searching…</string>
     <string name="no_xbmc_found">No media center found</string>
     <string name="xbmc_found">Media center found</string>
