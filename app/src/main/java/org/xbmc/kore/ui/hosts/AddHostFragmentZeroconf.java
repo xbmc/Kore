@@ -295,14 +295,7 @@ public class AddHostFragmentZeroconf extends Fragment {
         progressBar.setVisibility(View.GONE);
         hostListGridView.setVisibility(View.GONE);
 
-        nextButton.setVisibility(View.VISIBLE);
-        nextButton.setText(R.string.next);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddHostZeroconfNoHost();
-            }
-        });
+        nextButton.setVisibility(View.GONE);
 
         previousButton.setVisibility(View.VISIBLE);
         previousButton.setText(R.string.search_again);
