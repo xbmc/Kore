@@ -279,12 +279,12 @@
     <string name="no_network_connection">Aucune connexion réseau</string>
     <string name="reboot">Redémarrer</string>
     <string name="show_notification">Afficher les notifications pendant la lecture</string>
-    <string name="sort_by_date_added">Par date d'ajout</string>
+    <string name="sort_by_date_added">Par date d\'ajout</string>
     <string name="sort_by_name">Par nom</string>
     <string name="sort_order">Trier</string>
     <string name="source_empty">Source vide</string>
     <string name="subtitle_sync">Synchroniser les sous-titres</string>
-    <string name="use_hardware_volume_keys">Controller le volume avec les boutons de l'appareil</string>
+    <string name="use_hardware_volume_keys">Controller le volume avec les boutons de l\'appareil</string>
     <string name="video">Vidéo</string>
     <string name="vibrate_on_remote"></string>
     <string name="wizard_invalid_es_port_specified">Veuillez renseigner un port EventServer valide pour ce média.</string>
@@ -295,9 +295,9 @@
     <string name="wizard_zeroconf_cant_connect_no_host_address">Connexion à ce centre multimédia impossible car l\'adresse est introuvable.</string>
     <string name="wizard_zeroconf_no_host_address">Récupération de l\'adresse impossible!</string>
     <string name="remaining_cast_count">%d plus</string>
-    <string name="queue_file">File d'attente</string>
+    <string name="queue_file">File d\'attente</string>
     <string name="play_file">Jouer</string>
-    <string name="play_from_here">Jouer à partir d'ici</string>
+    <string name="play_from_here">Jouer à partir d\'ici</string>
     <string name="play_on_kodi">Kodi</string>
     <string name="files">Fichiers</string>
     <string name="file_browser">Fichiers</string>
