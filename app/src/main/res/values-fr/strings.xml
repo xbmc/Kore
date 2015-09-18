@@ -306,11 +306,11 @@
     <string name="error_getting_source_info">Navigation dans les fichiers impossible.\nErreur: %1$s.</string>
     <string name="error_get_active_player">Récupération du lecteur actif impossible.\nErreur: %1$s.</string>
     <string name="context">Contexte</string>
-    <string name="confirm_album_download">Etes-vous sûre de vouloir télécharger cet album?\nCelui-ce sera téléchargé en arrière-plan, mais
+    <string name="confirm_album_download">Etes-vous sûre de vouloir télécharger cet album?\nCelui-ci sera téléchargé en arrière-plan, mais
         prendra du temps.</string>
-    <string name="confirm_episode_download">Etes-vous sûre de vouloir télécharger cet épisode?\nCelui-ce sera téléchargé en arrière-plan,
+    <string name="confirm_episode_download">Etes-vous sûre de vouloir télécharger cet épisode?\nCelui-ci sera téléchargé en arrière-plan,
         mais prendra du temps.</string>
-    <string name="confirm_movie_download">Etes-vous sûre de vouloir télécharger cet album?\nCelui-ce sera téléchargé en arrière-plan, mais
+    <string name="confirm_movie_download">Etes-vous sûre de vouloir télécharger cet album?\nCelui-ci sera téléchargé en arrière-plan, mais
         prendra du temps.</string>
     <string name="audio_sync">Synchronisation audio</string>
     <string name="ignore_prefixes">Ignorer les préfixes</string>
