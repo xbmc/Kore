@@ -276,6 +276,45 @@
 
         Si vous avez besoin d\'aide, consultez le <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
     ]]></string>
+    <string name="no_network_connection">Aucune connexion réseau</string>
+    <string name="reboot">Redémarrer</string>
+    <string name="show_notification">Afficher les notifications pendant la lecture</string>
+    <string name="sort_by_date_added">Par date d'ajout</string>
+    <string name="sort_by_name">Par nom</string>
+    <string name="sort_order">Trier</string>
+    <string name="source_empty">Source vide</string>
+    <string name="subtitle_sync">Synchroniser les sous-titres</string>
+    <string name="use_hardware_volume_keys">Controller le volume avec les boutons de l'appareil</string>
+    <string name="video">Vidéo</string>
+    <string name="vibrate_on_remote"></string>
+    <string name="wizard_invalid_es_port_specified">Veuillez renseigner un port EventServer valide pour ce média.</string>
+    <string name="wizard_search_no_network_connection"><![CDATA[     Veuillez activer une connexion réseau avant de rechercher un centre multimédia. <br/>     ]]></string>
+    <string name="wizard_xbmc_event_server_port">ES Port (9777)</string>
+    <string name="wizard_xbmc_use_event_server">Utiliser EventServer</string>
+    <string name="wizard_xbmc_use_tcp">Utiliser TCP</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Connexion à ce centre multimédia impossible car l\'adresse est introuvable.</string>
+    <string name="wizard_zeroconf_no_host_address">Récupération de l\'adresse impossible!</string>
+    <string name="remaining_cast_count">%d plus</string>
+    <string name="queue_file">File d'attente</string>
+    <string name="play_file">Jouer</string>
+    <string name="play_from_here">Jouer à partir d'ici</string>
+    <string name="play_on_kodi">Kodi</string>
+    <string name="files">Fichiers</string>
+    <string name="file_browser">Fichiers</string>
+    <string name="error_queue_media_file">Ajout du média impossible.\nErreur: %1$s.</string>
+    <string name="error_play_media_file">Lecture du média impossible.\nErreur: %1$s.</string>
+    <string name="error_getting_source_info">Navigation dans les fichiers impossible.\nErreur: %1$s.</string>
+    <string name="error_get_active_player">Récupération du lecteur actif impossible.\nErreur: %1$s.</string>
+    <string name="context">Contexte</string>
+    <string name="confirm_album_download">Etes-vous sûre de vouloir télécharger cet album?\nCelui-ce sera téléchargé en arrière-plan, mais
+        prendra du temps.</string>
+    <string name="confirm_episode_download">Etes-vous sûre de vouloir télécharger cet épisode?\nCelui-ce sera téléchargé en arrière-plan,
+        mais prendra du temps.</string>
+    <string name="confirm_movie_download">Etes-vous sûre de vouloir télécharger cet album?\nCelui-ce sera téléchargé en arrière-plan, mais
+        prendra du temps.</string>
+    <string name="audio_sync">Synchronisation audio</string>
+    <string name="ignore_prefixes">Ignorer les préfixes</string>
+    <string name="no_cast_info">Aucun acteur à afficher</string>
 
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Achetez-moi un café</string>-->
