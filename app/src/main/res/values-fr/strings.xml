@@ -286,7 +286,7 @@
     <string name="subtitle_sync">Synchroniser les sous-titres</string>
     <string name="use_hardware_volume_keys">Controller le volume avec les boutons de l\'appareil</string>
     <string name="video">Vidéo</string>
-    <string name="vibrate_on_remote"></string>
+    <string name="vibrate_on_remote">Vibrer au touché</string>
     <string name="wizard_invalid_es_port_specified">Veuillez renseigner un port EventServer valide pour ce média.</string>
     <string name="wizard_search_no_network_connection"><![CDATA[     Veuillez activer une connexion réseau avant de rechercher un centre multimédia. <br/>     ]]></string>
     <string name="wizard_xbmc_event_server_port">ES Port (9777)</string>
