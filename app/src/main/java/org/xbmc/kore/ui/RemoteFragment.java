@@ -232,8 +232,9 @@ public class RemoteFragment extends Fragment
                 R.attr.remoteButtonColorFilter,
                 R.attr.contentBackgroundColor});
 //                R.attr.remoteBackgroundColorFilter});
-        int remoteButtonsColor =  styledAttributes.getColor(0, R.color.white),
-                remoteBackgroundColor = styledAttributes.getColor(1, R.color.dark_content_background_dim_70pct);
+        Resources resources = getResources();
+        int remoteButtonsColor =  styledAttributes.getColor(0, resources.getColor(R.color.white)),
+            remoteBackgroundColor = styledAttributes.getColor(1, resources.getColor(R.color.dark_content_background_dim_70pct));
         styledAttributes.recycle();
 
         leftButton.setColorFilter(remoteButtonsColor);
