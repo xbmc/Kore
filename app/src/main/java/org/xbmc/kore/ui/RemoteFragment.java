@@ -344,7 +344,8 @@ public class RemoteFragment extends Fragment
                                                      new View.OnClickListener() {
                                                          @Override
                                                          public void onClick(View v) {
-                                                             eventServerConnection.sendPacket(packet);
+                                                             if (eventServerConnection != null)
+                                                                 eventServerConnection.sendPacket(packet);
                                                          }
                                                      }, buttonInAnim, buttonOutAnim, getActivity().getApplicationContext()));
     }
