@@ -396,7 +396,6 @@ public class TVShowEpisodeDetailsFragment extends Fragment
                         }
                     }, callbackHandler);
                 } else {
-                    if (!isAdded()) return;
                     Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
                          .show();
                 }
@@ -404,6 +403,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
 
             @Override
             public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
                      .show();
