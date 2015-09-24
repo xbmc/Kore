@@ -55,7 +55,7 @@ public class LibrarySyncService extends Service {
     public static final String TAG = LogUtils.makeLogTag(LibrarySyncService.class);
 
     private static final int LIMIT_SYNC_MOVIES = 300;
-    private static final int LIMIT_SYNC_TVSHOWS = 300;
+    private static final int LIMIT_SYNC_TVSHOWS = 2;
     private static final int LIMIT_SYNC_ARTISTS = 300;
     private static final int LIMIT_SYNC_ALBUMS = 300;
     private static final int LIMIT_SYNC_SONGS = 600;
@@ -647,7 +647,7 @@ public class LibrarySyncService extends Service {
                                 startIdx + LIMIT_SYNC_TVSHOWS, allResults);
                     } else {
                         // Ok, we have all the shows, insert them
-                        LogUtils.LOGD(TAG, "syncAllTVShows: Got all tv shows");
+                        LogUtils.LOGD(TAG, "syncAllTVShows: Got all tv shows. Total: " + allResults.size());
                         deleteTVShows(contentResolver, hostId, -1);
                         insertTVShowsAndGetDetails(orchestrator, hostConnection, callbackHandler,
                                 contentResolver, allResults);
@@ -665,6 +665,7 @@ public class LibrarySyncService extends Service {
         private void deleteTVShows(final ContentResolver contentResolver,
                                    int hostId, int tvshowId) {
             if (tvshowId == -1) {
+                LogUtils.LOGD(TAG, "Deleting all existing tv shows: ");
                 // Delete all tvshows
                 String where = MediaContract.TVShowsColumns.HOST_ID + "=?";
                 contentResolver.delete(MediaContract.Episodes.CONTENT_URI,
@@ -704,6 +705,7 @@ public class LibrarySyncService extends Service {
             }
             // Insert the tvshows
             contentResolver.bulkInsert(MediaContract.TVShows.CONTENT_URI, tvshowsValuesBatch);
+            LogUtils.LOGD(TAG, "Inserted " + tvShows.size() + " tv shows.");
 
             ContentValues tvshowsCastValuesBatch[] = new ContentValues[castCount];
             int count = 0;
@@ -717,6 +719,7 @@ public class LibrarySyncService extends Service {
             }
             // Insert the cast list for this movie
             contentResolver.bulkInsert(MediaContract.TVShowCast.CONTENT_URI, tvshowsCastValuesBatch);
+            LogUtils.LOGD(TAG, "Inserted " + count + " cast records for tv shows.");
 
             // Start the sequential syncing of seasons
             chainSyncSeasons(orchestrator, hostConnection, callbackHandler,
@@ -770,6 +773,8 @@ public class LibrarySyncService extends Service {
                         }
                         // Insert the seasons
                         contentResolver.bulkInsert(MediaContract.Seasons.CONTENT_URI, seasonsValuesBatch);
+
+                        LogUtils.LOGD(TAG, "Inserted seasons for tv show " + position + ". Number of seasons: " + result.size());
 
                         if (getSyncType().equals(SYNC_SINGLE_TVSHOW)) {
                             // HACK: Update watched episodes count for the tvshow with the sum
@@ -856,6 +861,8 @@ public class LibrarySyncService extends Service {
                         // Insert the episodes
                         contentResolver.bulkInsert(MediaContract.Episodes.CONTENT_URI, episodesValuesBatch);
 
+                        LogUtils.LOGD(TAG, "Inserted episodes for tv show " + position + ". Number of episodes: " + result.size());
+
                         chainSyncEpisodes(orchestrator, hostConnection, callbackHandler,
                                 contentResolver, tvShows, position + 1);
                     }
@@ -868,6 +875,7 @@ public class LibrarySyncService extends Service {
                 }, callbackHandler);
             } else {
                 // We're finished
+                LogUtils.LOGD(TAG, "Sync tv shows finished successfully");
                 orchestrator.syncItemFinished();
             }
         }
