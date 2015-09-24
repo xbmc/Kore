@@ -55,7 +55,7 @@ public class LibrarySyncService extends Service {
     public static final String TAG = LogUtils.makeLogTag(LibrarySyncService.class);
 
     private static final int LIMIT_SYNC_MOVIES = 300;
-    private static final int LIMIT_SYNC_TVSHOWS = 300;
+    private static final int LIMIT_SYNC_TVSHOWS = 200;
     private static final int LIMIT_SYNC_ARTISTS = 300;
     private static final int LIMIT_SYNC_ALBUMS = 300;
     private static final int LIMIT_SYNC_SONGS = 600;
@@ -647,7 +647,7 @@ public class LibrarySyncService extends Service {
                                 startIdx + LIMIT_SYNC_TVSHOWS, allResults);
                     } else {
                         // Ok, we have all the shows, insert them
-                        LogUtils.LOGD(TAG, "syncAllTVShows: Got all tv shows");
+                        LogUtils.LOGD(TAG, "syncAllTVShows: Got all tv shows. Total: " + allResults.size());
                         deleteTVShows(contentResolver, hostId, -1);
                         insertTVShowsAndGetDetails(orchestrator, hostConnection, callbackHandler,
                                 contentResolver, allResults);
@@ -665,6 +665,7 @@ public class LibrarySyncService extends Service {
         private void deleteTVShows(final ContentResolver contentResolver,
                                    int hostId, int tvshowId) {
             if (tvshowId == -1) {
+                LogUtils.LOGD(TAG, "Deleting all existing tv shows: ");
                 // Delete all tvshows
                 String where = MediaContract.TVShowsColumns.HOST_ID + "=?";
                 contentResolver.delete(MediaContract.Episodes.CONTENT_URI,
@@ -704,6 +705,7 @@ public class LibrarySyncService extends Service {
             }
             // Insert the tvshows
             contentResolver.bulkInsert(MediaContract.TVShows.CONTENT_URI, tvshowsValuesBatch);
+            LogUtils.LOGD(TAG, "Inserted " + tvShows.size() + " tv shows.");
 
             ContentValues tvshowsCastValuesBatch[] = new ContentValues[castCount];
             int count = 0;
@@ -868,6 +870,7 @@ public class LibrarySyncService extends Service {
                 }, callbackHandler);
             } else {
                 // We're finished
+                LogUtils.LOGD(TAG, "Sync tv shows finished successfully");
                 orchestrator.syncItemFinished();
             }
         }
