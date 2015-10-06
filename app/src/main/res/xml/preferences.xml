@@ -24,22 +24,22 @@
         android:entryValues="@array/themes_values_array"
         android:defaultValue="0"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="pref_switch_to_remote_after_media_start"
         android:title="@string/switch_to_remote"
         android:defaultValue="true"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="pref_show_notification"
         android:title="@string/show_notification"
         android:defaultValue="false"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="pref_use_hardware_volume_keys"
         android:title="@string/use_hardware_volume_keys"
         android:defaultValue="true"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="pref_vibrate_remote_buttons"
         android:title="@string/vibrate_on_remote"
         android:defaultValue="false"/>

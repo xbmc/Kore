@@ -17,6 +17,8 @@ package org.xbmc.kore.ui.hosts;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -118,6 +120,11 @@ public class AddHostFragmentZeroconf extends Fragment {
      * Starts the service discovery, setting up the UI accordingly
      */
     public void startSearching() {
+        if( ! isNetworkConnected() ) {
+            noNetworkConnection();
+            return;
+        }
+
         LogUtils.LOGD(TAG, "Starting service discovery...");
         searchCancelled = false;
         final Handler handler = new Handler();
@@ -125,6 +132,7 @@ public class AddHostFragmentZeroconf extends Fragment {
             @Override
             public void run() {
                 WifiManager wifiManager = (WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
+
                 WifiManager.MulticastLock multicastLock = null;
                 try {
                     // Get wifi ip address
@@ -277,6 +285,37 @@ public class AddHostFragmentZeroconf extends Fragment {
             }
         });
 
+    }
+
+    private void noNetworkConnection() {
+        titleTextView.setText(R.string.no_network_connection);
+        messageTextView.setText(Html.fromHtml(getString(R.string.wizard_search_no_network_connection)));
+        messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        progressBar.setVisibility(View.GONE);
+        hostListGridView.setVisibility(View.GONE);
+
+        nextButton.setVisibility(View.GONE);
+
+        previousButton.setVisibility(View.VISIBLE);
+        previousButton.setText(R.string.search_again);
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearching();
+            }
+        });
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
     }
 
     /**
