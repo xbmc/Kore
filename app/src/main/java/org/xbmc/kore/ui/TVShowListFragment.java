@@ -182,6 +182,8 @@ public class TVShowListFragment extends Fragment
         MenuItem hideWatched = menu.findItem(R.id.action_hide_watched),
                 ignoreArticles = menu.findItem(R.id.action_ignore_prefixes),
                 sortByName = menu.findItem(R.id.action_sort_by_name),
+                sortByYear = menu.findItem(R.id.action_sort_by_year),
+                sortByRating = menu.findItem(R.id.action_sort_by_rating),
                 sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -190,6 +192,12 @@ public class TVShowListFragment extends Fragment
 
         int sortOrder = preferences.getInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.DEFAULT_PREF_TVSHOWS_SORT_ORDER);
         switch (sortOrder) {
+            case Settings.SORT_BY_YEAR:
+                sortByYear.setChecked(true);
+                break;
+            case Settings.SORT_BY_RATING:
+                sortByRating.setChecked(true);
+                break;
             case Settings.SORT_BY_DATE_ADDED:
                 sortByDateAdded.setChecked(true);
                 break;
@@ -223,6 +231,20 @@ public class TVShowListFragment extends Fragment
                 item.setChecked(true);
                 preferences.edit()
                         .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_NAME)
+                        .apply();
+                getLoaderManager().restartLoader(LOADER_TVSHOWS, null, this);
+                break;
+            case R.id.action_sort_by_year:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_YEAR)
+                        .apply();
+                getLoaderManager().restartLoader(LOADER_TVSHOWS, null, this);
+                break;
+            case R.id.action_sort_by_rating:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_RATING)
                         .apply();
                 getLoaderManager().restartLoader(LOADER_TVSHOWS, null, this);
                 break;
@@ -337,6 +359,10 @@ public class TVShowListFragment extends Fragment
         int sortOrder = preferences.getInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.DEFAULT_PREF_TVSHOWS_SORT_ORDER);
         if (sortOrder == Settings.SORT_BY_DATE_ADDED) {
             sortOrderStr = TVShowListQuery.SORT_BY_DATE_ADDED;
+        } else if (sortOrder == Settings.SORT_BY_YEAR) {
+            sortOrderStr = TVShowListQuery.SORT_BY_YEAR;
+        } else if (sortOrder == Settings.SORT_BY_RATING) {
+            sortOrderStr = TVShowListQuery.SORT_BY_RATING;
         } else {
             // Sort by name
             if (preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_IGNORE_PREFIXES, Settings.DEFAULT_PREF_TVSHOWS_IGNORE_PREFIXES)) {
@@ -381,6 +407,8 @@ public class TVShowListFragment extends Fragment
         };
 
         String SORT_BY_NAME = MediaContract.TVShows.TITLE + " ASC";
+        String SORT_BY_YEAR = MediaContract.TVShows.PREMIERED + " DESC";
+        String SORT_BY_RATING = MediaContract.TVShows.RATING + " DESC";
         String SORT_BY_DATE_ADDED = MediaContract.TVShows.DATEADDED + " DESC";
         String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.TVShows.TITLE) + " ASC";
 
