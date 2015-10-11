@@ -35,8 +35,20 @@
                     android:title="@string/sort_by_name"
                     app:showAsAction="never"/>
                 <item
+                    android:id="@+id/action_sort_by_year"
+                    android:title="@string/sort_by_year"
+                    app:showAsAction="never"/>
+                <item
+                    android:id="@+id/action_sort_by_rating"
+                    android:title="@string/sort_by_rating"
+                    app:showAsAction="never"/>
+                <item
                     android:id="@+id/action_sort_by_date_added"
                     android:title="@string/sort_by_date_added"
+                    app:showAsAction="never"/>
+                <item
+                    android:id="@+id/action_sort_by_length"
+                    android:title="@string/sort_by_length"
                     app:showAsAction="never"/>
             </group>
             <group

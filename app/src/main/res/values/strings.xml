@@ -301,6 +301,9 @@
     <string name="hide_watched">Hide watched</string>
     <string name="sort_order">Sort</string>
     <string name="sort_by_name">By name</string>
+    <string name="sort_by_year">By year</string>
+    <string name="sort_by_rating">By rating</string>
+    <string name="sort_by_length">By length</string>
     <string name="sort_by_date_added">By date added</string>
     <string name="ignore_prefixes">Ignore prefixes</string>
 
