@@ -185,7 +185,11 @@ public class MovieListFragment extends Fragment
         MenuItem hideWatched = menu.findItem(R.id.action_hide_watched),
                 ignoreArticles = menu.findItem(R.id.action_ignore_prefixes),
                 sortByName = menu.findItem(R.id.action_sort_by_name),
-                sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added);
+                sortByYear = menu.findItem(R.id.action_sort_by_year),
+                sortByRating = menu.findItem(R.id.action_sort_by_rating),
+                sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added),
+                sortByLength = menu.findItem(R.id.action_sort_by_length);
+
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED));
@@ -193,8 +197,17 @@ public class MovieListFragment extends Fragment
 
         int sortOrder = preferences.getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
         switch (sortOrder) {
+            case Settings.SORT_BY_YEAR:
+                sortByYear.setChecked(true);
+                break;
+            case Settings.SORT_BY_RATING:
+                sortByRating.setChecked(true);
+                break;
             case Settings.SORT_BY_DATE_ADDED:
                 sortByDateAdded.setChecked(true);
+                break;
+            case Settings.SORT_BY_LENGTH:
+                sortByLength.setChecked(true);
                 break;
             default:
                 sortByName.setChecked(true);
@@ -229,10 +242,31 @@ public class MovieListFragment extends Fragment
                         .apply();
                 getLoaderManager().restartLoader(LOADER_MOVIES, null, this);
                 break;
+            case R.id.action_sort_by_year:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_YEAR)
+                        .apply();
+                getLoaderManager().restartLoader(LOADER_MOVIES, null, this);
+                break;
+            case R.id.action_sort_by_rating:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_RATING)
+                        .apply();
+                getLoaderManager().restartLoader(LOADER_MOVIES, null, this);
+                break;
             case R.id.action_sort_by_date_added:
                 item.setChecked(true);
                 preferences.edit()
                         .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
+                        .apply();
+                getLoaderManager().restartLoader(LOADER_MOVIES, null, this);
+                break;
+            case R.id.action_sort_by_length:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_LENGTH)
                         .apply();
                 getLoaderManager().restartLoader(LOADER_MOVIES, null, this);
                 break;
@@ -342,6 +376,12 @@ public class MovieListFragment extends Fragment
         int sortOrder = preferences.getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
         if (sortOrder == Settings.SORT_BY_DATE_ADDED) {
             sortOrderStr = MovieListQuery.SORT_BY_DATE_ADDED;
+        } else if (sortOrder == Settings.SORT_BY_RATING) {
+            sortOrderStr = MovieListQuery.SORT_BY_RATING;
+        } else if (sortOrder == Settings.SORT_BY_YEAR) {
+            sortOrderStr = MovieListQuery.SORT_BY_YEAR;
+        } else if (sortOrder == Settings.SORT_BY_LENGTH) {
+            sortOrderStr = MovieListQuery.SORT_BY_LENGTH;
         } else {
             // Sort by name
             if (preferences.getBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, Settings.DEFAULT_PREF_MOVIES_IGNORE_PREFIXES)) {
@@ -385,8 +425,12 @@ public class MovieListFragment extends Fragment
                 MediaContract.Movies.TAGLINE,
         };
 
+
         String SORT_BY_NAME = MediaContract.Movies.TITLE + " ASC";
+        String SORT_BY_YEAR = MediaContract.Movies.YEAR + " ASC";
+        String SORT_BY_RATING = MediaContract.Movies.RATING + " DESC";
         String SORT_BY_DATE_ADDED = MediaContract.Movies.DATEADDED + " DESC";
+        String SORT_BY_LENGTH = MediaContract.Movies.RUNTIME + " DESC";
         String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.Movies.TITLE) + " ASC";
 
         final int ID = 0;

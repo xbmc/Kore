@@ -30,7 +30,10 @@ public interface Settings {
 
     // Sort orders
     public static final int SORT_BY_NAME = 0,
-            SORT_BY_DATE_ADDED = 1;
+            SORT_BY_DATE_ADDED = 1,
+            SORT_BY_RATING = 2,
+            SORT_BY_YEAR = 3,
+            SORT_BY_LENGTH = 4;
 
     /**
      * Preferences keys.
