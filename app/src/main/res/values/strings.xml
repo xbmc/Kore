@@ -233,6 +233,7 @@
     <string name="no_movies_found_refresh">No movies found\n\nSwipe down to refresh</string>
     <string name="no_tvshows_found_refresh">No TV Shows found\n\nSwipe down to refresh</string>
     <string name="no_episodes_found">No episodes found</string>
+    <string name="swipe_down_to_refresh">Swipe down to refresh</string>
     <string name="no_artists_found_refresh">No artists found\n\nSwipe down to refresh</string>
     <string name="no_albums_found_refresh">No albums found\n\nSwipe down to refresh</string>
     <string name="no_genres_found_refresh">No genres found\n\nSwipe down to refresh</string>

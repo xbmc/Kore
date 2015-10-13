@@ -65,39 +65,22 @@ import de.greenrobot.event.EventBus;
 /**
  * Fragment that presents the albums list
  */
-public class AlbumListFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>,
-        SwipeRefreshLayout.OnRefreshListener,
-        SearchView.OnQueryTextListener {
+public class AlbumListFragment extends AbstractMusicListFragment {
     private static final String TAG = LogUtils.makeLogTag(AlbumListFragment.class);
 
     public interface OnAlbumSelectedListener {
         public void onAlbumSelected(int albumId, String albumTitle);
     }
 
-    // Loader IDs
-    private static final int LOADER_ALBUMS = 0;
-
     private static final String GENREID = "genreid",
             ARTISTID = "artistid";
 
-    // The search filter to use in the loader
-    private String searchFilter = null;
     private int genreId = -1;
     private int artistId = -1;
-
-    // Movies adapter
-    private CursorAdapter adapter;
 
     // Activity listener
     private OnAlbumSelectedListener listenerActivity;
 
-    private HostInfo hostInfo;
-    private EventBus bus;
-
-    @InjectView(R.id.list) GridView albumsGridView;
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(android.R.id.empty) TextView emptyView;
 
     /**
      * Create a new instance of this, initialized to show albums of genres
@@ -124,8 +107,47 @@ public class AlbumListFragment extends Fragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected AdapterView.OnItemClickListener createOnItemClickListener() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the movie id from the tag
+                ViewHolder tag = (ViewHolder) view.getTag();
+                // Notify the activity
+                listenerActivity.onAlbumSelected(tag.albumId, tag.albumTitle);
+            }
+        };
+    }
+
+    @Override
+    protected CursorAdapter createAdapter() {
+        return new AlbumsAdapter(getActivity());
+    }
+
+    @Override
+    protected CursorLoader createCursorLoader() {
+        Uri uri;
+        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        int hostId = hostInfo != null ? hostInfo.getId() : -1;
+
+        if (artistId != -1) {
+            uri = MediaContract.AlbumArtists.buildAlbumsForArtistListUri(hostId, artistId);
+        } else if (genreId != -1) {
+            uri = MediaContract.AlbumGenres.buildAlbumsForGenreListUri(hostId, genreId);
+        } else {
+            uri = MediaContract.Albums.buildAlbumsListUri(hostId);
+        }
+
+        String selection = null;
+        String selectionArgs[] = null;
+        String searchFilter = getSearchFilter();
+        if (!TextUtils.isEmpty(searchFilter)) {
+            selection = MediaContract.Albums.TITLE + " LIKE ?";
+            selectionArgs = new String[] {"%" + searchFilter + "%"};
+        }
+
+        return new CursorLoader(getActivity(), uri,
+                AlbumListQuery.PROJECTION, selection, selectionArgs, AlbumListQuery.SORT);
     }
 
     @Override
@@ -136,43 +158,7 @@ public class AlbumListFragment extends Fragment
             artistId = getArguments().getInt(ARTISTID, -1);
         }
 
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
-        ButterKnife.inject(this, root);
-
-        bus = EventBus.getDefault();
-        hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        // Pad main content view to overlap with bottom system bar
-//        UIUtils.setPaddingForSystemBars(getActivity(), albumsGridView, false, false, true);
-//        albumsGridView.setClipToPadding(false);
-
-        return root;
-    }
-
-
-    @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        albumsGridView.setEmptyView(emptyView);
-        albumsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the movie id from the tag
-                ViewHolder tag = (ViewHolder) view.getTag();
-                // Notify the activity
-                listenerActivity.onAlbumSelected(tag.albumId, tag.albumTitle);
-            }
-        });
-
-        // Configure the adapter and start the loader
-        adapter = new AlbumsAdapter(getActivity());
-        albumsGridView.setAdapter(adapter);
-        getLoaderManager().initLoader(LOADER_ALBUMS, null, this);
-
-        setHasOptionsMenu(true);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -192,18 +178,6 @@ public class AlbumListFragment extends Fragment
     }
 
     @Override
-    public void onResume() {
-        bus.register(this);
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        bus.unregister(this);
-        super.onPause();
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.media_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -211,112 +185,6 @@ public class AlbumListFragment extends Fragment
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint(getString(R.string.action_search_albums));
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Search view callbacks
-     */
-    /** {@inheritDoc} */
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        searchFilter = newText;
-        getLoaderManager().restartLoader(LOADER_ALBUMS, null, this);
-        return true;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean onQueryTextSubmit(String newText) {
-        // All is handled in onQueryTextChange
-        return true;
-    }
-
-    /**
-     * Swipe refresh layout callback
-     */
-    /** {@inheritDoc} */
-    @Override
-    public void onRefresh () {
-        if (hostInfo != null) {
-            // Make sure we're showing the refresh
-            swipeRefreshLayout.setRefreshing(true);
-            // Start the syncing process
-            Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
-            syncIntent.putExtra(LibrarySyncService.SYNC_ALL_MUSIC, true);
-            getActivity().startService(syncIntent);
-        } else {
-            swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                 .show();
-        }
-    }
-
-    /**
-     * Event bus post. Called when the syncing process ended
-     *
-     * @param event Refreshes data
-     */
-    public void onEventMainThread(MediaSyncEvent event) {
-        if (event.syncType.equals(LibrarySyncService.SYNC_ALL_MUSIC)) {
-            swipeRefreshLayout.setRefreshing(false);
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                getLoaderManager().restartLoader(LOADER_ALBUMS, null, this);
-                Toast.makeText(getActivity(), R.string.sync_successful, Toast.LENGTH_SHORT)
-                     .show();
-            } else {
-                String msg = (event.errorCode == ApiException.API_ERROR) ?
-                             String.format(getString(R.string.error_while_syncing), event.errorMessage) :
-                             getString(R.string.unable_to_connect_to_xbmc);
-                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    /**
-     * Loader callbacks
-     */
-    /** {@inheritDoc} */
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        Uri uri;
-        int hostId = hostInfo != null ? hostInfo.getId() : -1;
-
-        if (artistId != -1) {
-            uri = MediaContract.AlbumArtists.buildAlbumsForArtistListUri(hostId, artistId);
-        } else if (genreId != -1) {
-            uri = MediaContract.AlbumGenres.buildAlbumsForGenreListUri(hostId, genreId);
-        } else {
-            uri = MediaContract.Albums.buildAlbumsListUri(hostId);
-        }
-
-        String selection = null;
-        String selectionArgs[] = null;
-        if (!TextUtils.isEmpty(searchFilter)) {
-            selection = MediaContract.Albums.TITLE + " LIKE ?";
-            selectionArgs = new String[] {"%" + searchFilter + "%"};
-        }
-
-        return new CursorLoader(getActivity(), uri,
-                AlbumListQuery.PROJECTION, selection, selectionArgs, AlbumListQuery.SORT);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        adapter.swapCursor(cursor);
-        // To prevent the empty text from appearing on the first load, set it now
-        emptyView.setText(getString(R.string.no_albums_found_refresh));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        adapter.swapCursor(null);
     }
 
     /**
