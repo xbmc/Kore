@@ -55,7 +55,7 @@ public class TVShowListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowListFragment.class);
 
     public interface OnTVShowSelectedListener {
-        public void onTVShowSelected(int tvshowId, String tvshowTitle);
+        public void onTVShowSelected(View view, int tvshowId, String tvshowTitle);
     }
 
     // Activity listener
@@ -72,7 +72,7 @@ public class TVShowListFragment extends AbstractListFragment {
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder) view.getTag();
                 // Notify the activity
-                listenerActivity.onTVShowSelected(tag.tvshowId, tag.tvshowTitle);
+                listenerActivity.onTVShowSelected(view, tag.tvshowId, tag.tvshowTitle);
             }
         };
     }

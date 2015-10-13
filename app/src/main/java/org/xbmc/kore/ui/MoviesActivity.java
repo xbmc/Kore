@@ -25,7 +25,9 @@ import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
@@ -172,11 +174,14 @@ public class MoviesActivity extends BaseActivity
      * @param movieTitle Title
      */
     @TargetApi(21)
-    public void onMovieSelected(int movieId, String movieTitle) {
+    public void onMovieSelected(View view, int movieId, String movieTitle) {
         selectedMovieId = movieId;
         selectedMovieTitle = movieTitle;
 
-        MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(movieId);
+        ImageView poster = (ImageView) view.findViewById(R.id.art);
+
+        MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(movieId, poster);
+
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions

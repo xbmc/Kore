@@ -68,7 +68,7 @@ public class TVShowEpisodeListFragment extends Fragment
     private static final String TAG = LogUtils.makeLogTag(TVShowEpisodeListFragment.class);
 
     public interface OnEpisodeSelectedListener {
-        public void onEpisodeSelected(int tvshowId, int episodeId);
+        public void onEpisodeSelected(View view, int tvshowId, int episodeId);
     }
 
     public static final String TVSHOWID = "tvshow_id";
@@ -142,7 +142,7 @@ public class TVShowEpisodeListFragment extends Fragment
                 // Get the movie id from the tag
                 EpisodeViewHolder tag = (EpisodeViewHolder)v.getTag();
                 // Notify the activity
-                listenerActivity.onEpisodeSelected(tvshowId, tag.episodeId);
+                listenerActivity.onEpisodeSelected(v, tvshowId, tag.episodeId);
                 return true;
             }
         });

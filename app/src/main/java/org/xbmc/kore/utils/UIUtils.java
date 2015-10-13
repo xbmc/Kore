@@ -22,6 +22,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,6 +38,9 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -109,28 +115,30 @@ public class UIUtils {
      * @param imageView Image view to load into
      * @param imageWidth Width of the image, for caching purposes
      * @param imageHeight Height of the image, for caching purposes
+     * @param placeholder image to show while image is being loaded
      */
     public static void loadImageIntoImageview(HostManager hostManager,
                                               String imageUrl, ImageView imageView,
-                                              int imageWidth, int imageHeight) {
+                                              int imageWidth, int imageHeight, ImageView placeholder) {
 //        if (TextUtils.isEmpty(imageUrl)) {
 //            imageView.setImageResource(R.drawable.delete_ic_action_picture);
 //            return;
 //        }
 
-        if ((imageWidth) > 0 && (imageHeight > 0)) {
-            hostManager.getPicasso()
-                    .load(hostManager.getHostInfo().getImageUrl(imageUrl))
-                    .resize(imageWidth, imageHeight)
-                    .centerCrop()
-                    .into(imageView);
-        } else {
-            hostManager.getPicasso()
-                    .load(hostManager.getHostInfo().getImageUrl(imageUrl))
-                    .fit()
-                    .centerCrop()
-                    .into(imageView);
+        RequestCreator requestCreator = hostManager.getPicasso().load(hostManager.getHostInfo().getImageUrl(imageUrl));
+
+        if( placeholder != null ) {
+            requestCreator.placeholder(placeholder.getDrawable());
         }
+
+        if ((imageWidth) > 0 && (imageHeight > 0)) {
+            requestCreator.resize(imageWidth, imageHeight);
+        } else {
+            requestCreator.fit();
+        }
+
+        requestCreator.centerCrop();
+        requestCreator.into(imageView);
     }
 
     private static TypedArray characterAvatarColors = null;

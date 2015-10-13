@@ -259,16 +259,16 @@ public class AddonDetailsFragment extends Fragment {
             mediaPoster.setVisibility(View.VISIBLE);
             UIUtils.loadImageIntoImageview(hostManager,
                     addonDetails.thumbnail,
-                    mediaPoster, posterWidth, posterHeight);
+                    mediaPoster, posterWidth, posterHeight, null);
             UIUtils.loadImageIntoImageview(hostManager,
                     addonDetails.fanart,
-                    mediaArt, artWidth, artHeight);
+                    mediaArt, artWidth, artHeight, null);
         } else {
             // No fanart, just present the poster
             mediaPoster.setVisibility(View.GONE);
             UIUtils.loadImageIntoImageview(hostManager,
                     addonDetails.thumbnail,
-                    mediaArt, artWidth, artHeight);
+                    mediaArt, artWidth, artHeight, null);
             // Reset padding
             int paddingLeft = mediaTitle.getPaddingRight(),
                     paddingRight = mediaTitle.getPaddingRight(),

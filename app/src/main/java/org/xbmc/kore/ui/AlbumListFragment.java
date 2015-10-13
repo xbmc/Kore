@@ -56,7 +56,7 @@ public class AlbumListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(AlbumListFragment.class);
 
     public interface OnAlbumSelectedListener {
-        public void onAlbumSelected(int albumId, String albumTitle);
+        public void onAlbumSelected(View view, int albumId, String albumTitle);
     }
 
     private static final String GENREID = "genreid",
@@ -103,7 +103,7 @@ public class AlbumListFragment extends AbstractListFragment {
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder) view.getTag();
                 // Notify the activity
-                listenerActivity.onAlbumSelected(tag.albumId, tag.albumTitle);
+                listenerActivity.onAlbumSelected(view, tag.albumId, tag.albumTitle);
             }
         };
     }

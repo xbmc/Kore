@@ -96,4 +96,5 @@ public class CharacterDrawable extends ColorDrawable {
     public int getOpacity() {
         return PixelFormat.TRANSLUCENT;
     }
+
 }

@@ -55,7 +55,7 @@ public class MovieListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(MovieListFragment.class);
 
     public interface OnMovieSelectedListener {
-        public void onMovieSelected(int movieId, String movieTitle);
+        public void onMovieSelected(View view, int movieId, String movieTitle);
     }
 
     // Activity listener
@@ -72,7 +72,7 @@ public class MovieListFragment extends AbstractListFragment {
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder) view.getTag();
                 // Notify the activity
-                listenerActivity.onMovieSelected(tag.movieId, tag.movieTitle);
+                listenerActivity.onMovieSelected(view, tag.movieId, tag.movieTitle);
             }
         };
     }

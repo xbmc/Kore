@@ -16,7 +16,6 @@
 package org.xbmc.kore.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -29,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,7 +39,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -808,7 +805,7 @@ public class NowPlayingFragment extends Fragment
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                     poster, title,
                     mediaPoster, posterWidth, posterHeight);
-            UIUtils.loadImageIntoImageview(hostManager, art, mediaArt, displayMetrics.widthPixels, artHeight);
+            UIUtils.loadImageIntoImageview(hostManager, art, mediaArt, displayMetrics.widthPixels, artHeight, null);
 
             // Reset padding
             int paddingLeft = resources.getDimensionPixelOffset(R.dimen.poster_width_plus_padding),
@@ -820,7 +817,7 @@ public class NowPlayingFragment extends Fragment
         } else {
             // No fanart, just present the poster
             mediaPoster.setVisibility(View.GONE);
-            UIUtils.loadImageIntoImageview(hostManager, poster, mediaArt, artWidth, artHeight);
+            UIUtils.loadImageIntoImageview(hostManager, poster, mediaArt, artWidth, artHeight, null);
             // Reset padding
             int paddingLeft = mediaTitle.getPaddingRight(),
                     paddingRight = mediaTitle.getPaddingRight(),

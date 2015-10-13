@@ -538,7 +538,7 @@ public class RemoteActivity extends BaseActivity
             getWindowManager().getDefaultDisplay().getSize(displaySize);
 
             UIUtils.loadImageIntoImageview(hostManager, url, backgroundImage,
-                    displaySize.x, displaySize.y / 2);
+                    displaySize.x, displaySize.y / 2, null);
 
             final int pixelsPerPage = displaySize.x / 4;
 

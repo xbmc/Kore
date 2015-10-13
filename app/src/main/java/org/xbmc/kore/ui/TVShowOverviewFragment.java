@@ -15,24 +15,20 @@
  */
 package org.xbmc.kore.ui;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.AppCompatButton;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -43,7 +39,6 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.provider.MediaContract;
@@ -51,35 +46,25 @@ import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
-import java.lang.System;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
  * Presents a TV Show overview
  */
-public class TVShowOverviewFragment extends Fragment
+public class TVShowOverviewFragment extends AbstractDetailsFragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(TVShowOverviewFragment.class);
-
-    public static final String TVSHOWID = "tvshow_id";
 
     // Loader IDs
     private static final int LOADER_TVSHOW = 0,
             LOADER_CAST = 1;
 
-    private HostManager hostManager;
-    private HostInfo hostInfo;
-    private EventBus bus;
-
     // Displayed movie id
-    private int tvshowId = -1;
     private String tvshowTitle;
 
     private ArrayList<VideoType.Cast> castArrayList;
@@ -109,41 +94,10 @@ public class TVShowOverviewFragment extends Fragment
     @InjectView(R.id.media_description) TextView mediaDescription;
     @InjectView(R.id.cast_list) GridLayout videoCastList;
 
-    /**
-     * Create a new instance of this, initialized to show tvshowId
-     */
-    public static TVShowOverviewFragment newInstance(int tvshowId) {
-        TVShowOverviewFragment fragment = new TVShowOverviewFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(TVSHOWID, tvshowId);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        tvshowId = getArguments().getInt(TVSHOWID, -1);
-
-        if ((container == null) || (tvshowId == -1)) {
-            // We're not being shown or there's nothing to show
-            return null;
-        }
-
+    protected View createView(LayoutInflater inflater, ViewGroup container) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_tvshow_overview, container, false);
         ButterKnife.inject(this, root);
-
-        bus = EventBus.getDefault();
-        hostManager = HostManager.getInstance(getActivity());
-        hostInfo = hostManager.getHostInfo();
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-        //UIUtils.setSwipeRefreshLayoutColorScheme(swipeRefreshLayout);
 
         // Setup dim the fanart when scroll changes. Full dim on 4 * iconSize dp
         Resources resources = getActivity().getResources();
@@ -157,11 +111,20 @@ public class TVShowOverviewFragment extends Fragment
             }
         });
 
-        // Pad main content view to overlap with bottom system bar
-//        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
-//        mediaPanel.setClipToPadding(false);
-
         return root;
+    }
+
+    @Override
+    protected ArrayList<String> getSyncTypes() {
+        ArrayList<String> syncTypes = new ArrayList<>();
+        syncTypes.add(LibrarySyncService.SYNC_SINGLE_TVSHOW);
+        syncTypes.add(LibrarySyncService.SYNC_ALL_TVSHOWS);
+        return syncTypes;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -178,18 +141,6 @@ public class TVShowOverviewFragment extends Fragment
     }
 
     @Override
-    public void onResume() {
-        bus.register(this);
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        bus.unregister(this);
-        super.onPause();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 //        outState.putInt(TVSHOWID, tvshowId);
@@ -201,56 +152,22 @@ public class TVShowOverviewFragment extends Fragment
     /** {@inheritDoc} */
     @Override
     public void onRefresh () {
-        if (hostInfo != null) {
+        if (getHostInfo() != null) {
             // Start the syncing process
-            startSync(false);
+            startSyncProcess(false, LibrarySyncService.SYNC_SINGLE_TVSHOW, LibrarySyncService.SYNC_TVSHOWID);
         } else {
             swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                 .show();
+                    .show();
         }
     }
 
-    private void startSync(boolean silentRefresh) {
-        Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
-        syncIntent.putExtra(LibrarySyncService.SYNC_SINGLE_TVSHOW, true);
-        syncIntent.putExtra(LibrarySyncService.SYNC_TVSHOWID, tvshowId);
-
-        Bundle syncExtras = new Bundle();
-        syncExtras.putBoolean(LibrarySyncService.SILENT_SYNC, silentRefresh);
-        syncIntent.putExtra(LibrarySyncService.SYNC_EXTRAS, syncExtras);
-
-        getActivity().startService(syncIntent);
-    }
-
-    /**
-     * Event bus post. Called when the syncing process ended
-     *
-     * @param event Refreshes data
-     */
-    public void onEventMainThread(MediaSyncEvent event) {
-        boolean silentSync = false;
-        if (event.syncExtras != null) {
-            silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
-        }
-
-        if (event.syncType.equals(LibrarySyncService.SYNC_SINGLE_TVSHOW) ||
-            event.syncType.equals(LibrarySyncService.SYNC_ALL_TVSHOWS)) {
-            swipeRefreshLayout.setRefreshing(false);
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                getLoaderManager().restartLoader(LOADER_TVSHOW, null, this);
-                getLoaderManager().restartLoader(LOADER_CAST, null, this);
-                if (!silentSync) {
-                    Toast.makeText(getActivity(),
-                            R.string.sync_successful, Toast.LENGTH_SHORT)
-                         .show();
-                }
-            } else if (!silentSync) {
-                String msg = (event.errorCode == ApiException.API_ERROR) ?
-                             String.format(getString(R.string.error_while_syncing), event.errorMessage) :
-                             getString(R.string.unable_to_connect_to_xbmc);
-                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-            }
+    @Override
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
+        swipeRefreshLayout.setRefreshing(false);
+        if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+            getLoaderManager().restartLoader(LOADER_TVSHOW, null, this);
+            getLoaderManager().restartLoader(LOADER_CAST, null, this);
         }
     }
 
@@ -263,11 +180,11 @@ public class TVShowOverviewFragment extends Fragment
         Uri uri;
         switch (i) {
             case LOADER_TVSHOW:
-                uri = MediaContract.TVShows.buildTVShowUri(hostInfo.getId(), tvshowId);
+                uri = MediaContract.TVShows.buildTVShowUri(getHostInfo().getId(), getItemId());
                 return new CursorLoader(getActivity(), uri,
                         TVShowDetailsQuery.PROJECTION, null, null, null);
             case LOADER_CAST:
-                uri = MediaContract.TVShowCast.buildTVShowCastListUri(hostInfo.getId(), tvshowId);
+                uri = MediaContract.TVShowCast.buildTVShowCastListUri(getHostInfo().getId(), getItemId());
                 return new CursorLoader(getActivity(), uri,
                         TVShowCastListQuery.PROJECTION, null, null, TVShowCastListQuery.SORT);
             default:
@@ -353,13 +270,10 @@ public class TVShowOverviewFragment extends Fragment
 
         int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
         int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
-        UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                cursor.getString(TVShowDetailsQuery.THUMBNAIL), tvshowTitle,
-                mediaPoster, posterWidth, posterHeight);
+        displayPoster(mediaPoster,cursor.getString(TVShowDetailsQuery.THUMBNAIL), tvshowTitle, posterWidth, posterHeight);
+
         int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height);
-        UIUtils.loadImageIntoImageview(hostManager,
-                cursor.getString(TVShowDetailsQuery.FANART),
-                mediaArt, displayMetrics.widthPixels, artHeight);
+        UIUtils.loadImageIntoImageview(getHostManager(), cursor.getString(TVShowDetailsQuery.FANART),mediaArt, displayMetrics.widthPixels, artHeight, null);
     }
 
     /**
@@ -380,7 +294,7 @@ public class TVShowOverviewFragment extends Fragment
             } while (cursor.moveToNext());
 
             UIUtils.setupCastInfo(getActivity(), castArrayList, videoCastList,
-                                  AllCastActivity.buildLaunchIntent(getActivity(), tvshowTitle, castArrayList));
+                    AllCastActivity.buildLaunchIntent(getActivity(), tvshowTitle, castArrayList));
         }
     }
 
@@ -401,7 +315,7 @@ public class TVShowOverviewFragment extends Fragment
         if (System.currentTimeMillis() > lastUpdated + Settings.DB_UPDATE_INTERVAL) {
             // Trigger a silent refresh
             hasIssuedOutdatedRefresh = true;
-            startSync(true);
+            startSyncProcess(true, LibrarySyncService.SYNC_SINGLE_TVSHOW, LibrarySyncService.SYNC_TVSHOWID);
         }
     }
 
