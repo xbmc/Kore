@@ -43,6 +43,7 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
+import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -50,7 +51,7 @@ import org.xbmc.kore.utils.UIUtils;
 /**
  * Fragment that presents the artists list
  */
-public class ArtistListFragment extends AbstractMusicListFragment {
+public class ArtistListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(ArtistListFragment.class);
 
     public interface OnArtistSelectedListener {
@@ -59,6 +60,9 @@ public class ArtistListFragment extends AbstractMusicListFragment {
 
     // Activity listener
     private OnArtistSelectedListener listenerActivity;
+
+    @Override
+    protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     @Override
     protected AdapterView.OnItemClickListener createOnItemClickListener() {

@@ -17,18 +17,13 @@ package org.xbmc.kore.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -39,17 +34,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiException;
-import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
@@ -58,14 +49,10 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
-
 /**
  * Fragment that presents the albums list
  */
-public class AlbumListFragment extends AbstractMusicListFragment {
+public class AlbumListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(AlbumListFragment.class);
 
     public interface OnAlbumSelectedListener {
@@ -81,6 +68,8 @@ public class AlbumListFragment extends AbstractMusicListFragment {
     // Activity listener
     private OnAlbumSelectedListener listenerActivity;
 
+    @Override
+    protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     /**
      * Create a new instance of this, initialized to show albums of genres

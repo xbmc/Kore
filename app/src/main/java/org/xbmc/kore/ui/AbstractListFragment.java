@@ -16,6 +16,7 @@
 
 package org.xbmc.kore.ui;
 
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -38,8 +39,11 @@ import android.widget.Toast;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
+import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.service.SyncUtils;
+import org.xbmc.kore.utils.LogUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -50,6 +54,7 @@ public abstract class AbstractListFragment extends Fragment
 		SyncUtils.OnServiceListener,
 		SearchView.OnQueryTextListener,
 		SwipeRefreshLayout.OnRefreshListener {
+    private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
 
 	private ServiceConnection serviceConnection;
 	private CursorAdapter adapter;
@@ -71,14 +76,7 @@ public abstract class AbstractListFragment extends Fragment
 
 	abstract protected AdapterView.OnItemClickListener createOnItemClickListener();
 	abstract protected CursorAdapter createAdapter();
-	abstract protected void onSwipeRefresh();
 	abstract protected CursorLoader createCursorLoader();
-
-	/**
-	 * Called each time a MediaSyncEvent is received.
-	 * @param event
-	 */
-	abstract protected void onSyncProcessEnded(MediaSyncEvent event);
 
 	@Nullable
 	@Override
@@ -152,6 +150,13 @@ public abstract class AbstractListFragment extends Fragment
 	}
 
 	/**
+	 * Should return the {@link org.xbmc.kore.service.LibrarySyncService} SyncType that
+	 * this list initiates
+	 * @return {@link org.xbmc.kore.service.LibrarySyncService} SyncType
+	 */
+	abstract protected String getListSyncType();
+
+	/**
 	 * Event bus post. Called when the syncing process ended
 	 *
 	 * @param event Refreshes data
@@ -161,8 +166,53 @@ public abstract class AbstractListFragment extends Fragment
 	}
 
 	/**
-	 * Search view callbacks
+	 * Called each time a MediaSyncEvent is received.
+	 * @param event
 	 */
+	protected void onSyncProcessEnded(MediaSyncEvent event) {
+        boolean silentSync = false;
+        if (event.syncExtras != null) {
+            silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
+        }
+
+		if (event.syncType.equals(getListSyncType())) {
+			swipeRefreshLayout.setRefreshing(false);
+			if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+				refreshList();
+                if (!silentSync) {
+                    Toast.makeText(getActivity(), R.string.sync_successful, Toast.LENGTH_SHORT)
+                        .show();
+                }
+            } else if (!silentSync) {
+				String msg = (event.errorCode == ApiException.API_ERROR) ?
+					String.format(getString(R.string.error_while_syncing), event.errorMessage) :
+					getString(R.string.unable_to_connect_to_xbmc);
+				Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+    @Override
+    public void onServiceConnected(LibrarySyncService librarySyncService) {
+        if(SyncUtils.isLibrarySyncing(
+              librarySyncService,
+              HostManager.getInstance(getActivity()).getHostInfo(),
+              getListSyncType())) {
+            showRefreshAnimation();
+        }
+    }
+
+    protected void onSwipeRefresh() {
+		LogUtils.LOGD(TAG, "Swipe, starting sync for: " + getListSyncType());
+        // Start the syncing process
+        Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
+        syncIntent.putExtra(getListSyncType(), true);
+        getActivity().startService(syncIntent);
+    }
+
+    /**
+     * Search view callbacks
+     */
 	/** {@inheritDoc} */
 	@Override
 	public boolean onQueryTextChange(String newText) {

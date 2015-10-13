@@ -17,7 +17,6 @@ package org.xbmc.kore.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -38,18 +37,14 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiException;
-import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.LibrarySyncService;
-import org.xbmc.kore.service.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -67,6 +62,9 @@ public class MovieListFragment extends AbstractListFragment {
     private OnMovieSelectedListener listenerActivity;
 
     @Override
+    protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MOVIES; }
+
+    @Override
     protected AdapterView.OnItemClickListener createOnItemClickListener() {
         return new AdapterView.OnItemClickListener() {
             @Override
@@ -82,13 +80,6 @@ public class MovieListFragment extends AbstractListFragment {
     @Override
     protected CursorAdapter createAdapter() {
         return new MoviesAdapter(getActivity());
-    }
-
-    @Override
-    protected void onSwipeRefresh() {
-        Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
-        syncIntent.putExtra(LibrarySyncService.SYNC_ALL_MOVIES, true);
-        getActivity().startService(syncIntent);
     }
 
     @Override
@@ -127,39 +118,6 @@ public class MovieListFragment extends AbstractListFragment {
 
         return new CursorLoader(getActivity(), uri,
                 MovieListQuery.PROJECTION, selection.toString(), selectionArgs, sortOrderStr);
-    }
-
-    @Override
-    protected void onSyncProcessEnded(MediaSyncEvent event) {
-        boolean silentSync = false;
-        if (event.syncExtras != null) {
-            silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
-        }
-
-        if (event.syncType.equals(LibrarySyncService.SYNC_SINGLE_MOVIE) ||
-                event.syncType.equals(LibrarySyncService.SYNC_ALL_MOVIES)) {
-            swipeRefreshLayout.setRefreshing(false);
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                refreshList();
-                if (!silentSync) {
-                    Toast.makeText(getActivity(), R.string.sync_successful, Toast.LENGTH_SHORT)
-                            .show();
-                }
-            } else if (!silentSync) {
-                String msg = (event.errorCode == ApiException.API_ERROR) ?
-                        String.format(getString(R.string.error_while_syncing), event.errorMessage) :
-                        getString(R.string.unable_to_connect_to_xbmc);
-                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    @Override
-    public void onServiceConnected(LibrarySyncService librarySyncService) {
-        if(SyncUtils.isLibrarySyncing(librarySyncService, HostManager.getInstance(getActivity()).getHostInfo(),
-                LibrarySyncService.SYNC_ALL_MOVIES, LibrarySyncService.SYNC_SINGLE_MOVIE)) {
-            showRefreshAnimation();
-        }
     }
 
     @Override
