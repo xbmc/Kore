@@ -151,7 +151,7 @@ public class HostConnection {
      * OkHttpClient. Make sure it is initialized, by calling {@link #getOkHttpClient()}
      */
     private OkHttpClient httpClient = null;
-    private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json");
+    private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
 
     /**
      * Creates a new host connection
