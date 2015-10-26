@@ -33,15 +33,15 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.service.LibrarySyncService;
+import org.xbmc.kore.service.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
-
-import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
 abstract public class AbstractDetailsFragment extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener {
+        implements SwipeRefreshLayout.OnRefreshListener,
+        SyncUtils.OnServiceListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractDetailsFragment.class);
 
     private HostManager hostManager;
@@ -50,6 +50,8 @@ abstract public class AbstractDetailsFragment extends Fragment
     private String syncType;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private ServiceConnection serviceConnection;
 
     abstract protected View createView(LayoutInflater inflater, ViewGroup container);
 
@@ -110,6 +112,12 @@ abstract public class AbstractDetailsFragment extends Fragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
+    }
+
+    @Override
     public void onResume() {
         bus.register(this);
         super.onResume();
@@ -119,6 +127,12 @@ abstract public class AbstractDetailsFragment extends Fragment
     public void onPause() {
         bus.unregister(this);
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SyncUtils.disconnectFromLibrarySyncService(getActivity(), serviceConnection);
     }
 
     @Override
@@ -138,7 +152,7 @@ abstract public class AbstractDetailsFragment extends Fragment
             if(syncType != null) {
                 syncIntent.putExtra(syncType, true);
             }
-            
+
             String syncID = getSyncID();
             int itemId = getSyncItemID();
             if( ( syncID != null ) && ( itemId != -1 ) ) {
@@ -198,6 +212,22 @@ abstract public class AbstractDetailsFragment extends Fragment
                     String.format(getString(R.string.error_while_syncing), event.errorMessage) :
                     getString(R.string.unable_to_connect_to_xbmc);
             Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onServiceConnected(LibrarySyncService librarySyncService) {
+        if (syncType == null)
+            return;
+
+        if (SyncUtils.isLibrarySyncing(
+                librarySyncService,
+                HostManager.getInstance(getActivity()).getHostInfo(),
+                syncType)) {
+            if (swipeRefreshLayout != null) {
+                UIUtils.showRefreshAnimation(swipeRefreshLayout);
+            }
+            return;
         }
     }
 
