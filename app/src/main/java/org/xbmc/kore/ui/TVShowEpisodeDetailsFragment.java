@@ -17,7 +17,6 @@ package org.xbmc.kore.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -26,7 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -46,10 +44,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
@@ -67,14 +62,12 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 
 /**
  * Presents movie details
  */
-public class TVShowEpisodeDetailsFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>,
-        SwipeRefreshLayout.OnRefreshListener {
+public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(TVShowEpisodeDetailsFragment.class);
 
     public static final String TVSHOWID = "tvshow_id";
@@ -83,10 +76,6 @@ public class TVShowEpisodeDetailsFragment extends Fragment
     // Loader IDs
     private static final int LOADER_EPISODE = 0;
 //    private static final int LOADER_CAST = 1;
-
-    private HostManager hostManager;
-    private HostInfo hostInfo;
-    private EventBus bus;
 
     /**
      * Handler on which to post RPC callbacks
@@ -143,28 +132,18 @@ public class TVShowEpisodeDetailsFragment extends Fragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected View createView(LayoutInflater inflater, ViewGroup container) {
         tvshowId = getArguments().getInt(TVSHOWID, -1);
         episodeId = getArguments().getInt(EPISODEID, -1);
 
-        if ((container == null) || (episodeId == -1)) {
-            // We're not being shown or there's nothing to show
+        if(episodeId == -1) {
+            // There's nothing to show
             return null;
         }
 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_episode_details, container, false);
         ButterKnife.inject(this, root);
 
-        bus = EventBus.getDefault();
-        hostManager = HostManager.getInstance(getActivity());
-        hostInfo = hostManager.getHostInfo();
-
-        swipeRefreshLayout.setOnRefreshListener(this);
         //UIUtils.setSwipeRefreshLayoutColorScheme(swipeRefreshLayout);
 
         // Setup dim the fanart when scroll changes. Full dim on 4 * iconSize dp
@@ -189,6 +168,25 @@ public class TVShowEpisodeDetailsFragment extends Fragment
         return root;
     }
 
+    @Override
+    protected String getSyncType() {
+        return LibrarySyncService.SYNC_SINGLE_TVSHOW;
+    }
+
+    @Override
+    protected String getSyncID() {
+        return LibrarySyncService.SYNC_TVSHOWID;
+    }
+
+    @Override
+    protected int getSyncItemID() {
+        return tvshowId;
+    }
+
+    @Override
+    protected SwipeRefreshLayout getSwipeRefreshLayout() {
+        return swipeRefreshLayout;
+    }
 
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
@@ -197,87 +195,19 @@ public class TVShowEpisodeDetailsFragment extends Fragment
         // Start the loaders
         getLoaderManager().initLoader(LOADER_EPISODE, null, this);
 //        getLoaderManager().initLoader(LOADER_CAST, null, this);
-
-        setHasOptionsMenu(false);
     }
 
     @Override
     public void onResume() {
-        bus.register(this);
         // Force the exit view to invisible
         exitTransitionView.setVisibility(View.INVISIBLE);
         super.onResume();
     }
 
     @Override
-    public void onPause() {
-        bus.unregister(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        outState.putInt(TVSHOWID, tvshowId);
-//        outState.putInt(EPISODEID, episodeId);
-    }
-
-    /**
-     * Swipe refresh layout callback
-     */
-    /** {@inheritDoc} */
-    @Override
-    public void onRefresh () {
-        if (hostInfo != null) {
-            // Start the syncing process
-            startSync(false);
-        } else {
-            swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                 .show();
-        }
-    }
-
-    private void startSync(boolean silentRefresh) {
-        Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
-        syncIntent.putExtra(LibrarySyncService.SYNC_SINGLE_TVSHOW, true);
-        syncIntent.putExtra(LibrarySyncService.SYNC_TVSHOWID, tvshowId);
-
-        Bundle syncExtras = new Bundle();
-        syncExtras.putBoolean(LibrarySyncService.SILENT_SYNC, silentRefresh);
-        syncIntent.putExtra(LibrarySyncService.SYNC_EXTRAS, syncExtras);
-
-        getActivity().startService(syncIntent);
-    }
-
-    /**
-     * Event bus post. Called when the syncing process ended
-     *
-     * @param event Refreshes data
-     */
-    public void onEventMainThread(MediaSyncEvent event) {
-        boolean silentSync = false;
-        if (event.syncExtras != null) {
-            silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
-        }
-
-        if (event.syncType.equals(LibrarySyncService.SYNC_SINGLE_TVSHOW) ||
-            event.syncType.equals(LibrarySyncService.SYNC_ALL_TVSHOWS)) {
-            swipeRefreshLayout.setRefreshing(false);
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                getLoaderManager().restartLoader(LOADER_EPISODE, null, this);
-//                getLoaderManager().restartLoader(LOADER_CAST, null, this);
-                if (!silentSync) {
-                    Toast.makeText(getActivity(),
-                            R.string.sync_successful, Toast.LENGTH_SHORT)
-                         .show();
-                }
-            } else if (!silentSync) {
-                String msg = (event.errorCode == ApiException.API_ERROR) ?
-                             String.format(getString(R.string.error_while_syncing), event.errorMessage) :
-                             getString(R.string.unable_to_connect_to_xbmc);
-                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-            }
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
+        if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+            getLoaderManager().restartLoader(LOADER_EPISODE, null, this);
         }
     }
 
@@ -290,7 +220,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
         Uri uri;
         switch (i) {
             case LOADER_EPISODE:
-                uri = MediaContract.Episodes.buildTVShowEpisodeUri(hostInfo.getId(), tvshowId, episodeId);
+                uri = MediaContract.Episodes.buildTVShowEpisodeUri(getHostInfo().getId(), tvshowId, episodeId);
                 return new CursorLoader(getActivity(), uri,
                         EpisodeDetailsQuery.PROJECTION, null, null, null);
 //            case LOADER_CAST:
@@ -331,7 +261,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
         PlaylistType.Item item = new PlaylistType.Item();
         item.episodeid = episodeId;
         Player.Open action = new Player.Open(item);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+        action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 if (!isAdded()) return;
@@ -352,7 +282,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
+                        .show();
             }
         }, callbackHandler);
     }
@@ -361,7 +291,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
     public void onAddToPlaylistClicked(View v) {
         Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
 
-        getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
+        getPlaylists.execute(getHostManager().getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
             public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
                 if (!isAdded()) return;
@@ -378,13 +308,13 @@ public class TVShowEpisodeDetailsFragment extends Fragment
                     PlaylistType.Item item = new PlaylistType.Item();
                     item.episodeid = episodeId;
                     Playlist.Add action = new Playlist.Add(videoPlaylistId, item);
-                    action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                    action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
                         @Override
                         public void onSuccess(String result) {
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                 .show();
+                                    .show();
                         }
 
                         @Override
@@ -392,12 +322,12 @@ public class TVShowEpisodeDetailsFragment extends Fragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                 .show();
+                                    .show();
                         }
                     }, callbackHandler);
                 } else {
                     Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                         .show();
+                            .show();
                 }
             }
 
@@ -406,7 +336,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
+                        .show();
             }
         }, callbackHandler);
     }
@@ -419,7 +349,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
 
         VideoLibrary.SetEpisodeDetails action =
                 new VideoLibrary.SetEpisodeDetails(episodeId, newPlaycount, null);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+        action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 // Force a refresh, but don't show a message
@@ -455,27 +385,27 @@ public class TVShowEpisodeDetailsFragment extends Fragment
         if (file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                   .setMessage(R.string.download_file_exists)
-                   .setPositiveButton(R.string.overwrite,
-                           new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                           tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                           callbackHandler);
-                               }
-                           })
-                   .setNeutralButton(R.string.download_with_new_name,
-                           new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                           tvshowDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                           callbackHandler);
-                               }
-                           })
-                   .setNegativeButton(android.R.string.cancel, noopClickListener)
-                   .show();
+                    .setMessage(R.string.download_file_exists)
+                    .setPositiveButton(R.string.overwrite,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                            tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                            callbackHandler);
+                                }
+                            })
+                    .setNeutralButton(R.string.download_with_new_name,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                            tvshowDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                            callbackHandler);
+                                }
+                            })
+                    .setNegativeButton(android.R.string.cancel, noopClickListener)
+                    .show();
         } else {
             // Confirm that the user really wants to download the file
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -485,7 +415,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                                             tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
                                             callbackHandler);
                                 }
@@ -507,9 +437,9 @@ public class TVShowEpisodeDetailsFragment extends Fragment
 
         int runtime = cursor.getInt(EpisodeDetailsQuery.RUNTIME) / 60;
         String durationPremiered =  runtime > 0 ?
-                                    String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                                    "  |  " + cursor.getString(EpisodeDetailsQuery.FIRSTAIRED) :
-                                    cursor.getString(EpisodeDetailsQuery.FIRSTAIRED);
+                String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                        "  |  " + cursor.getString(EpisodeDetailsQuery.FIRSTAIRED) :
+                cursor.getString(EpisodeDetailsQuery.FIRSTAIRED);
         mediaPremiered.setText(durationPremiered);
         String season = String.format(getString(R.string.season_episode),
                 cursor.getInt(EpisodeDetailsQuery.SEASON),
@@ -543,7 +473,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
 //                cursor.getString(EpisodeDetailsQuery.THUMBNAIL),
 //                mediaPoster, posterWidth, posterHeight);
         int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height);
-        UIUtils.loadImageIntoImageview(hostManager,
+        UIUtils.loadImageIntoImageview(getHostManager(),
                 cursor.getString(EpisodeDetailsQuery.THUMBNAIL),
                 mediaArt, displayMetrics.widthPixels, artHeight);
 

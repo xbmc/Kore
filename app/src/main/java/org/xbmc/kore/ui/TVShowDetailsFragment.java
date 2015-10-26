@@ -87,12 +87,6 @@ public class TVShowDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(false);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
     }

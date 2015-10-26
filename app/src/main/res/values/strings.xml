@@ -336,6 +336,7 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Play on Kodi</string>
+    <string name="refresh">Refresh</string>
 
     <string name="error_getting_pvr_info">An error occurred while getting channels info: %1$s</string>
     <string name="error_starting_channel">An error occurred starting channel playback: %1$s</string>
