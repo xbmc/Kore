@@ -24,6 +24,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -445,5 +446,20 @@ public class UIUtils {
             // No animation show, just launch the remote
             context.startActivity(launchIntent);
         }
+    }
+
+    /**
+     * Use this to manually start the swiperefreshlayout refresh animation.
+     * Fixes issue with refresh animation not showing when using appcompat library (from version 20?)
+     * See https://code.google.com/p/android/issues/detail?id=77712
+     * @param layout
+     */
+    public static void showRefreshAnimation(@NonNull final SwipeRefreshLayout layout) {
+        layout.post(new Runnable() {
+            @Override
+            public void run() {
+                layout.setRefreshing(true);
+            }
+        });
     }
 }

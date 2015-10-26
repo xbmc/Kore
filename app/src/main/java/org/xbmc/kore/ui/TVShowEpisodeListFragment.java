@@ -17,7 +17,6 @@ package org.xbmc.kore.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -26,7 +25,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -42,29 +40,26 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 /**
  * Presents a list of episodes for a TV show
  */
-public class TVShowEpisodeListFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>,
-        SwipeRefreshLayout.OnRefreshListener {
+public class TVShowEpisodeListFragment extends AbstractDetailsFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(TVShowEpisodeListFragment.class);
 
     public interface OnEpisodeSelectedListener {
@@ -85,39 +80,45 @@ public class TVShowEpisodeListFragment extends Fragment
 
     private CursorTreeAdapter adapter;
 
-    private HostManager hostManager;
-    private HostInfo hostInfo;
-    private EventBus bus;
-
     @InjectView(R.id.list) ExpandableListView seasonsEpisodesListView;
     @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(android.R.id.empty) TextView emptyView;
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected View createView(LayoutInflater inflater, ViewGroup container) {
         tvshowId = getArguments().getInt(TVSHOWID, -1);
-        if ((container == null) || (tvshowId == -1)) {
-            // We're not being shown or there's nothing to show
+        if (tvshowId == -1) {
+            // There's nothing to show
             return null;
         }
-
-        bus = EventBus.getDefault();
-        hostManager = HostManager.getInstance(getActivity());
-        hostInfo = hostManager.getHostInfo();
 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_tvshow_episodes_list, container, false);
         ButterKnife.inject(this, root);
 
-        swipeRefreshLayout.setOnRefreshListener(this);
         //UIUtils.setSwipeRefreshLayoutColorScheme(swipeRefreshLayout);
 
         return root;
+    }
+
+    @Override
+    protected String getSyncType() {
+        return LibrarySyncService.SYNC_SINGLE_TVSHOW;
+    }
+
+    @Override
+    protected String getSyncID() {
+        return LibrarySyncService.SYNC_TVSHOWID;
+    }
+
+    @Override
+    protected int getSyncItemID() {
+        return tvshowId;
+    }
+
+    @Override
+    protected SwipeRefreshLayout getSwipeRefreshLayout() {
+        return swipeRefreshLayout;
     }
 
     @Override
@@ -171,25 +172,6 @@ public class TVShowEpisodeListFragment extends Fragment
         listenerActivity = null;
     }
 
-    @Override
-    public void onResume() {
-        bus.register(this);
-
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        bus.unregister(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        LogUtils.LOGD(TAG, "onSaveInstanceState");
-//        outState.putInt(TVSHOWID, tvshowId);
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -198,7 +180,7 @@ public class TVShowEpisodeListFragment extends Fragment
         // Setup filters
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         menu.findItem(R.id.action_hide_watched)
-            .setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED));
+                .setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED));
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -221,57 +203,10 @@ public class TVShowEpisodeListFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
-
-    /**
-     * Swipe refresh layout callback
-     */
-    /** {@inheritDoc} */
     @Override
-    public void onRefresh () {
-        if (hostInfo != null) {
-            startSync(false);
-        } else {
-            swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                 .show();
-        }
-    }
-
-    private void startSync(boolean silentRefresh) {
-        // Start the syncing process
-        Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
-        syncIntent.putExtra(LibrarySyncService.SYNC_SINGLE_TVSHOW, true);
-        syncIntent.putExtra(LibrarySyncService.SYNC_TVSHOWID, tvshowId);
-
-        Bundle syncExtras = new Bundle();
-        syncExtras.putBoolean(LibrarySyncService.SILENT_SYNC, silentRefresh);
-        syncIntent.putExtra(LibrarySyncService.SYNC_EXTRAS, syncExtras);
-
-        getActivity().startService(syncIntent);
-    }
-
-    /**
-     * Event bus post. Called when the syncing process ended
-     *
-     * @param event Refreshes data
-     */
-    public void onEventMainThread(MediaSyncEvent event) {
-        if (event.syncType.equals(LibrarySyncService.SYNC_SINGLE_TVSHOW) ||
-            event.syncType.equals(LibrarySyncService.SYNC_ALL_TVSHOWS)) {
-            swipeRefreshLayout.setRefreshing(false);
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                getLoaderManager().restartLoader(LOADER_SEASONS, null, this);
-                // This message will be displayed by the fragment TVShowOverview,
-                // which is already loaded, and this event also gets handled by it,
-                // so there's no need to show this message here.
-//                Toast.makeText(getActivity(), R.string.sync_successful, Toast.LENGTH_SHORT)
-//                     .show();
-//            } else {
-//                Toast.makeText(getActivity(),
-//                        String.format(getString(R.string.error_while_syncing), event.errorMessage),
-//                        Toast.LENGTH_SHORT)
-//                     .show();
-            }
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
+        if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+            getLoaderManager().restartLoader(LOADER_SEASONS, null, this);
         }
     }
 
@@ -283,7 +218,7 @@ public class TVShowEpisodeListFragment extends Fragment
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         if (!isAdded()) {
             LogUtils.LOGD(TAG, "Trying to create a loader, but the fragment isn't added. " +
-                               "Loader Id: " + id);
+                    "Loader Id: " + id);
             return null;
         }
 
@@ -295,13 +230,13 @@ public class TVShowEpisodeListFragment extends Fragment
         switch (id) {
             case LOADER_SEASONS:
                 // Load seasons
-                uri = MediaContract.Seasons.buildTVShowSeasonsListUri(hostInfo.getId(), tvshowId);
+                uri = MediaContract.Seasons.buildTVShowSeasonsListUri(getHostInfo().getId(), tvshowId);
 
                 // Filters
                 if (tvshowEpisodesFilterHideWatched) {
                     selection.append(MediaContract.SeasonsColumns.WATCHEDEPISODES)
-                             .append("!=")
-                             .append(MediaContract.SeasonsColumns.EPISODE);
+                            .append("!=")
+                            .append(MediaContract.SeasonsColumns.EPISODE);
                 }
 
                 return new CursorLoader(getActivity(), uri,
@@ -309,12 +244,12 @@ public class TVShowEpisodeListFragment extends Fragment
             default:
                 // Load episodes for a season. Season is in bundle
                 int season = bundle.getInt(SEASON);
-                uri = MediaContract.Episodes.buildTVShowSeasonEpisodesListUri(hostInfo.getId(), tvshowId, season);
+                uri = MediaContract.Episodes.buildTVShowSeasonEpisodesListUri(getHostInfo().getId(), tvshowId, season);
 
                 // Filters
                 if (tvshowEpisodesFilterHideWatched) {
                     selection.append(MediaContract.EpisodesColumns.PLAYCOUNT)
-                             .append("=0");
+                            .append("=0");
                 }
 
                 return new CursorLoader(getActivity(), uri,
@@ -326,7 +261,7 @@ public class TVShowEpisodeListFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         LogUtils.LOGD(TAG, "onLoadFinished, Loader id: " + cursorLoader.getId() + ". Rows: " +
-                           cursor.getCount());
+                cursor.getCount());
         switch (cursorLoader.getId()) {
             case LOADER_SEASONS:
                 adapter.setGroupCursor(cursor);
@@ -467,23 +402,23 @@ public class TVShowEpisodeListFragment extends Fragment
             // Get the art dimensions
             Resources resources = context.getResources();
             artWidth = (int)(resources.getDimension(R.dimen.seasonlist_art_width) /
-                             UIUtils.IMAGE_RESIZE_FACTOR);
+                    UIUtils.IMAGE_RESIZE_FACTOR);
             artHeight = (int)(resources.getDimension(R.dimen.seasonlist_art_heigth) /
-                              UIUtils.IMAGE_RESIZE_FACTOR);
+                    UIUtils.IMAGE_RESIZE_FACTOR);
             separatorPadding = resources.getDimensionPixelSize(R.dimen.small_padding);
         }
 
         @Override
         public View newGroupView(Context context, Cursor cursor, boolean isExpanded, ViewGroup parent) {
             final View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.list_item_season, parent, false);
+                    .inflate(R.layout.list_item_season, parent, false);
             return view;
         }
 
         @Override
         public View newChildView(Context context, Cursor cursor, boolean isLastChild, ViewGroup parent) {
             final View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.list_item_episode, parent, false);
+                    .inflate(R.layout.list_item_episode, parent, false);
 
             // Setup View holder pattern
             EpisodeViewHolder viewHolder = new EpisodeViewHolder();
@@ -535,12 +470,12 @@ public class TVShowEpisodeListFragment extends Fragment
 
             viewHolder.episodenumberView.setText(
                     String.format(context.getString(R.string.episode_number),
-                    cursor.getInt(EpisodesListQuery.EPISODE)));
+                            cursor.getInt(EpisodesListQuery.EPISODE)));
             int runtime = cursor.getInt(EpisodesListQuery.RUNTIME) / 60;
             String duration =  runtime > 0 ?
-                               String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                               "  |  " + cursor.getString(EpisodesListQuery.FIRSTAIRED) :
-                               cursor.getString(EpisodesListQuery.FIRSTAIRED);
+                    String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                            "  |  " + cursor.getString(EpisodesListQuery.FIRSTAIRED) :
+                    cursor.getString(EpisodesListQuery.FIRSTAIRED);
             viewHolder.titleView.setText(cursor.getString(EpisodesListQuery.TITLE));
             viewHolder.detailsView.setText(duration);
 
@@ -576,7 +511,7 @@ public class TVShowEpisodeListFragment extends Fragment
             // will be used as the loader's id
             LoaderManager loaderManager = getLoaderManager();
             if ((loaderManager.getLoader(groupPositon) == null) ||
-                (loaderManager.getLoader(groupPositon).isReset())) {
+                    (loaderManager.getLoader(groupPositon).isReset())) {
                 loaderManager.initLoader(groupPositon, bundle, TVShowEpisodeListFragment.this);
             } else {
                 loaderManager.restartLoader(groupPositon, bundle, TVShowEpisodeListFragment.this);
@@ -594,7 +529,7 @@ public class TVShowEpisodeListFragment extends Fragment
         TextView titleView;
         TextView detailsView;
         TextView episodenumberView;
-//        ImageView artView;
+        //        ImageView artView;
         ImageView checkmarkView;
 
         int episodeId;
