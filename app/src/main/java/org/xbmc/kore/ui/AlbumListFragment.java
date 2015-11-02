@@ -211,10 +211,12 @@ public class AlbumListFragment extends AbstractListFragment {
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
+            // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
+            // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.albumlist_art_width) /
+            artWidth = (int)(resources.getDimension(R.dimen.albumdetail_poster_width) /
                              UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.albumlist_art_heigth) /
+            artHeight = (int)(resources.getDimension(R.dimen.albumdetail_poster_heigth) /
                              UIUtils.IMAGE_RESIZE_FACTOR);
         }
 

@@ -249,10 +249,12 @@ public class MovieListFragment extends AbstractListFragment {
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
+            // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
+            // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.movielist_art_width) /
+            artWidth = (int)(resources.getDimension(R.dimen.now_playing_poster_width) /
                              UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.movielist_art_heigth) /
+            artHeight = (int)(resources.getDimension(R.dimen.now_playing_poster_height) /
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
