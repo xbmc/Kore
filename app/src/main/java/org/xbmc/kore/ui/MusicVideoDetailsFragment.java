@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -72,33 +73,21 @@ import de.greenrobot.event.EventBus;
 /**
  * Presents music videos details
  */
-public class MusicVideoDetailsFragment extends Fragment
+public class MusicVideoDetailsFragment extends AbstractDetailsFragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(MusicVideoDetailsFragment.class);
 
-    public static final String MUSICVIDEOID = "music_video_id";
-
     // Loader IDs
     private static final int LOADER_MUSIC_VIDEO = 0;
-
-    private HostManager hostManager;
-    private HostInfo hostInfo;
-    private EventBus bus;
 
     /**
      * Handler on which to post RPC callbacks
      */
     private Handler callbackHandler = new Handler();
 
-    // Displayed music video id
-    private int musicVideoId = -1;
-
     // Info for downloading the music video
     private FileDownloadHelper.MusicVideoInfo musicVideoDownloadInfo = null;
-
-    // Controls whether the finished refreshing message is shown
-    private boolean showRefreshStatusMessage = true;
 
     @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
@@ -124,60 +113,58 @@ public class MusicVideoDetailsFragment extends Fragment
 
     /**
      * Create a new instance of this, initialized to show the video musicVideoId
+     * @param musicVideoId
+     * @param poster image to show while poster is loading.
      */
-    public static MusicVideoDetailsFragment newInstance(int musicVideoId) {
+    public static MusicVideoDetailsFragment newInstance(int musicVideoId, ImageView poster) {
         MusicVideoDetailsFragment fragment = new MusicVideoDetailsFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(MUSICVIDEOID, musicVideoId);
-        fragment.setArguments(args);
+        fragment.setupArguments(musicVideoId, poster);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+   @Override
+    protected View createView(LayoutInflater inflater, ViewGroup container) {
+       ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_music_video_details, container, false);
+       ButterKnife.inject(this, root);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        musicVideoId = getArguments().getInt(MUSICVIDEOID, -1);
+       swipeRefreshLayout.setOnRefreshListener(this);
+       //UIUtils.setSwipeRefreshLayoutColorScheme(swipeRefreshLayout);
 
-        if ((container == null) || (musicVideoId == -1)) {
-            // We're not being shown or there's nothing to show
-            return null;
-        }
+       // Setup dim the fanart when scroll changes. Full dim on 4 * iconSize dp
+       Resources resources = getActivity().getResources();
+       final int pixelsToTransparent  = 4 * resources.getDimensionPixelSize(R.dimen.default_icon_size);
+       mediaPanel.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+           @Override
+           public void onScrollChanged() {
+               float y = mediaPanel.getScrollY();
+               float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
+               mediaArt.setAlpha(newAlpha);
+           }
+       });
 
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_music_video_details, container, false);
-        ButterKnife.inject(this, root);
+       FloatingActionButton fab = (FloatingActionButton)fabButton;
+       fab.attachToScrollView((ObservableScrollView) mediaPanel);
 
-        bus = EventBus.getDefault();
-        hostManager = HostManager.getInstance(getActivity());
-        hostInfo = hostManager.getHostInfo();
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-        //UIUtils.setSwipeRefreshLayoutColorScheme(swipeRefreshLayout);
-
-        // Setup dim the fanart when scroll changes. Full dim on 4 * iconSize dp
-        Resources resources = getActivity().getResources();
-        final int pixelsToTransparent  = 4 * resources.getDimensionPixelSize(R.dimen.default_icon_size);
-        mediaPanel.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                float y = mediaPanel.getScrollY();
-                float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
-                mediaArt.setAlpha(newAlpha);
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton)fabButton;
-        fab.attachToScrollView((ObservableScrollView) mediaPanel);
-
-        // Pad main content view to overlap with bottom system bar
+       // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
 //        mediaPanel.setClipToPadding(false);
 
-        return root;
+       return root;
+    }
+
+    @Override
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
+        if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+            swipeRefreshLayout.setRefreshing(false);
+            getLoaderManager().restartLoader(LOADER_MUSIC_VIDEO, null, this);
+        }
+    }
+
+    @Override
+    protected ArrayList<String> getSyncTypes() {
+        ArrayList<String> syncTypes = new ArrayList<>();
+        syncTypes.add(LibrarySyncService.SYNC_ALL_MUSIC_VIDEOS);
+        return syncTypes;
     }
 
     @Override
@@ -192,22 +179,8 @@ public class MusicVideoDetailsFragment extends Fragment
 
     @Override
     public void onResume() {
-        bus.register(this);
-        // Force the exit view to invisible
         exitTransitionView.setVisibility(View.INVISIBLE);
         super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        bus.unregister(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        outState.putInt(MUSICVIDEOID, musicVideoId);
     }
 
     /**
@@ -216,41 +189,12 @@ public class MusicVideoDetailsFragment extends Fragment
     /** {@inheritDoc} */
     @Override
     public void onRefresh () {
-        if (hostInfo != null) {
-            // Start the syncing process
-            Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
-            syncIntent.putExtra(LibrarySyncService.SYNC_ALL_MUSIC_VIDEOS, true);
-            getActivity().startService(syncIntent);
+        if (getHostInfo() != null) {
+            startSyncProcess(false, LibrarySyncService.SYNC_ALL_MUSIC_VIDEOS, null);
         } else {
             swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
                  .show();
-        }
-    }
-
-    /**
-     * Event bus post. Called when the syncing process ended
-     *
-     * @param event Refreshes data
-     */
-    public void onEventMainThread(MediaSyncEvent event) {
-        if (event.syncType.equals(LibrarySyncService.SYNC_ALL_MUSIC_VIDEOS)) {
-            swipeRefreshLayout.setRefreshing(false);
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                getLoaderManager().restartLoader(LOADER_MUSIC_VIDEO, null, this);
-                if (showRefreshStatusMessage) {
-                    Toast.makeText(getActivity(),
-                            R.string.sync_successful, Toast.LENGTH_SHORT)
-                         .show();
-                }
-            } else if (showRefreshStatusMessage) {
-                String msg = (event.errorCode == ApiException.API_ERROR) ?
-                             String.format(getString(R.string.error_while_syncing), event.errorMessage) :
-                             getString(R.string.unable_to_connect_to_xbmc);
-                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-            }
-            // Reset
-            showRefreshStatusMessage = true;
         }
     }
 
@@ -263,7 +207,7 @@ public class MusicVideoDetailsFragment extends Fragment
         Uri uri;
         switch (i) {
             case LOADER_MUSIC_VIDEO:
-                uri = MediaContract.MusicVideos.buildMusicVideoUri(hostInfo.getId(), musicVideoId);
+                uri = MediaContract.MusicVideos.buildMusicVideoUri(getHostInfo().getId(), getItemId());
                 return new CursorLoader(getActivity(), uri,
                         MusicVideoDetailsQuery.PROJECTION, null, null, null);
             default:
@@ -295,9 +239,9 @@ public class MusicVideoDetailsFragment extends Fragment
     @OnClick(R.id.fab)
     public void onFabClicked(View v) {
         PlaylistType.Item item = new PlaylistType.Item();
-        item.musicvideoid = musicVideoId;
+        item.musicvideoid = getItemId();
         Player.Open action = new Player.Open(item);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+        action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 if (!isAdded()) return;
@@ -327,7 +271,7 @@ public class MusicVideoDetailsFragment extends Fragment
     public void onAddToPlaylistClicked(View v) {
         Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
 
-        getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
+        getPlaylists.execute(getHostManager().getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
             public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
                 if (!isAdded()) return;
@@ -342,9 +286,9 @@ public class MusicVideoDetailsFragment extends Fragment
                 // If found, add to playlist
                 if (videoPlaylistId != -1) {
                     PlaylistType.Item item = new PlaylistType.Item();
-                    item.musicvideoid = musicVideoId;
+                    item.musicvideoid = getItemId();
                     Playlist.Add action = new Playlist.Add(videoPlaylistId, item);
-                    action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                    action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
                         @Override
                         public void onSuccess(String result) {
                             if (!isAdded()) return;
@@ -395,7 +339,7 @@ public class MusicVideoDetailsFragment extends Fragment
                            new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialog, int which) {
-                                   FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                   FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                                            musicVideoDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
                                            callbackHandler);
                                }
@@ -404,7 +348,7 @@ public class MusicVideoDetailsFragment extends Fragment
                            new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialog, int which) {
-                                   FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                   FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                                            musicVideoDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
                                            callbackHandler);
                                }
@@ -418,7 +362,7 @@ public class MusicVideoDetailsFragment extends Fragment
                            })
                    .show();
         } else {
-            FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+            FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                     musicVideoDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
                     callbackHandler);
         }
@@ -461,18 +405,13 @@ public class MusicVideoDetailsFragment extends Fragment
             int posterWidth = resources.getDimensionPixelOffset(R.dimen.musicvideodetail_poster_width);
             int posterHeight = resources.getDimensionPixelOffset(R.dimen.musicvideodetail_poster_heigth);
             mediaPoster.setVisibility(View.VISIBLE);
-            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                    poster, musicVideoTitle,
-                    mediaPoster, posterWidth, posterHeight);
-            UIUtils.loadImageIntoImageview(hostManager,
+            displayPoster(mediaPoster, poster, musicVideoTitle, posterWidth, posterHeight);
+            UIUtils.loadImageIntoImageview(getHostManager(),
                     fanart,
-                    mediaArt, artWidth, artHeight);
+                    mediaArt, artWidth, artHeight, null);
         } else {
-            // No fanart, just present the poster
             mediaPoster.setVisibility(View.GONE);
-            UIUtils.loadImageIntoImageview(hostManager,
-                    poster,
-                    mediaArt, artWidth, artHeight);
+            displayPoster(mediaArt, poster, musicVideoTitle, artWidth, artHeight);
             // Reset padding
             int paddingLeft = mediaTitle.getPaddingRight(),
                     paddingRight = mediaTitle.getPaddingRight(),

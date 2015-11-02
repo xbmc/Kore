@@ -22,10 +22,10 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -46,12 +46,12 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
+import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
@@ -67,32 +67,19 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 
-/**
- * Presents movie details
- */
-public class AlbumDetailsFragment extends Fragment
+public class AlbumDetailsFragment extends AbstractDetailsFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(AlbumDetailsFragment.class);
-
-    public static final String ALBUMID = "album_id";
 
     // Loader IDs
     private static final int LOADER_ALBUM = 0,
             LOADER_SONGS = 1;
 
-    private HostManager hostManager;
-    private HostInfo hostInfo;
-    private EventBus bus;
-
     /**
      * Handler on which to post RPC callbacks
      */
     private Handler callbackHandler = new Handler();
-
-    // Displayed album id
-    private int albumId = -1;
 
     // Album information
     private String albumDisplayArtist;
@@ -127,13 +114,13 @@ public class AlbumDetailsFragment extends Fragment
 
     /**
      * Create a new instance of this, initialized to show the album albumId
+     * @param albumId
+     * @param poster image to show while poster is loading.
      */
-    public static AlbumDetailsFragment newInstance(int albumId) {
+    public static AlbumDetailsFragment newInstance(int albumId, ImageView poster) {
         AlbumDetailsFragment fragment = new AlbumDetailsFragment();
 
-        Bundle args = new Bundle();
-        args.putInt(ALBUMID, albumId);
-        fragment.setArguments(args);
+        fragment.setupArguments(albumId, poster);
         return fragment;
     }
 
@@ -143,20 +130,9 @@ public class AlbumDetailsFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        albumId = getArguments().getInt(ALBUMID, -1);
-
-        if ((container == null) || (albumId == -1)) {
-            // We're not being shown or there's nothing to show
-            return null;
-        }
-
+    protected View createView(LayoutInflater inflater, ViewGroup container) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_album_details, container, false);
         ButterKnife.inject(this, root);
-
-        bus = EventBus.getDefault();
-        hostManager = HostManager.getInstance(getActivity());
-        hostInfo = hostManager.getHostInfo();
 
         // Setup dim the fanart when scroll changes. Full dim on 4 * iconSize dp
         Resources resources = getActivity().getResources();
@@ -176,8 +152,17 @@ public class AlbumDetailsFragment extends Fragment
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
 //        mediaPanel.setClipToPadding(false);
-
         return root;
+    }
+
+    @Override
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
+
+    }
+
+    @Override
+    protected ArrayList<String> getSyncTypes() {
+        return null;
     }
 
     @Override
@@ -197,16 +182,6 @@ public class AlbumDetailsFragment extends Fragment
         super.onResume();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     /**
      * Loader callbacks
      */
@@ -216,11 +191,11 @@ public class AlbumDetailsFragment extends Fragment
         Uri uri;
         switch (i) {
             case LOADER_ALBUM:
-                uri = MediaContract.Albums.buildAlbumUri(hostInfo.getId(), albumId);
+                uri = MediaContract.Albums.buildAlbumUri(getHostInfo().getId(), getItemId());
                 return new CursorLoader(getActivity(), uri,
                         AlbumDetailsQuery.PROJECTION, null, null, null);
             case LOADER_SONGS:
-                uri = MediaContract.Songs.buildSongsListUri(hostInfo.getId(), albumId);
+                uri = MediaContract.Songs.buildSongsListUri(getHostInfo().getId(), getItemId());
                 return new CursorLoader(getActivity(), uri,
                         AlbumSongsListQuery.PROJECTION, null, null, AlbumSongsListQuery.SORT);
             default:
@@ -258,9 +233,9 @@ public class AlbumDetailsFragment extends Fragment
     @OnClick(R.id.fab)
     public void onFabClicked(View v) {
         PlaylistType.Item item = new PlaylistType.Item();
-        item.albumid = albumId;
+        item.albumid = getItemId();
         Player.Open action = new Player.Open(item);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+        action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 if (!isAdded()) return;
@@ -281,20 +256,20 @@ public class AlbumDetailsFragment extends Fragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
+                        .show();
             }
         }, callbackHandler);
     }
 
     @OnClick(R.id.add_to_playlist)
     public void onAddToPlaylistClicked(View v) {
-        addToPlaylist(TYPE_ALBUM, albumId);
+        addToPlaylist(TYPE_ALBUM, getItemId());
     }
 
     @OnClick(R.id.download)
     public void onDownloadClicked(View v) {
         if ((albumTitle == null) || (albumDisplayArtist == null) ||
-            (songInfoList == null) || (songInfoList.size() == 0)) {
+                (songInfoList == null) || (songInfoList.size() == 0)) {
             // Nothing to download
             Toast.makeText(getActivity(), R.string.no_files_to_download, Toast.LENGTH_SHORT).show();
             return;
@@ -311,21 +286,21 @@ public class AlbumDetailsFragment extends Fragment
         if (file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                   .setMessage(R.string.download_dir_exists)
-                   .setPositiveButton(R.string.overwrite,
-                           new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                           songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                           callbackHandler);
-                               }
-                           })
+                    .setMessage(R.string.download_dir_exists)
+                    .setPositiveButton(R.string.overwrite,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                            songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                            callbackHandler);
+                                }
+                            })
                     .setNeutralButton(R.string.download_with_new_name,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                                             songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
                                             callbackHandler);
                                 }
@@ -340,7 +315,7 @@ public class AlbumDetailsFragment extends Fragment
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                                             songInfoList, FileDownloadHelper.OVERWRITE_FILES,
                                             callbackHandler);
                                 }
@@ -368,10 +343,10 @@ public class AlbumDetailsFragment extends Fragment
         int year = cursor.getInt(AlbumDetailsQuery.YEAR);
         String genres = cursor.getString(AlbumDetailsQuery.GENRE);
         String label = (year > 0) ?
-                       (!TextUtils.isEmpty(genres) ?
+                (!TextUtils.isEmpty(genres) ?
                         genres + "  |  " + String.valueOf(year) :
                         String.valueOf(year)) :
-                       genres;
+                genres;
         mediaYear.setText(label);
 
         double rating = cursor.getDouble(AlbumDetailsQuery.RATING);
@@ -427,22 +402,23 @@ public class AlbumDetailsFragment extends Fragment
 
         int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height),
                 artWidth = displayMetrics.widthPixels;
+
         if (!TextUtils.isEmpty(fanart)) {
             int posterWidth = resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_width);
             int posterHeight = resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_heigth);
             mediaPoster.setVisibility(View.VISIBLE);
-            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                    poster, albumTitle,
-                    mediaPoster, posterWidth, posterHeight);
-            UIUtils.loadImageIntoImageview(hostManager,
+            displayPoster(mediaPoster, poster, albumTitle, posterWidth, posterHeight);
+
+            UIUtils.loadImageIntoImageview(getHostManager(),
                     fanart,
-                    mediaArt, artWidth, artHeight);
+                    mediaArt, artWidth, artHeight, null);
         } else {
             // No fanart, just present the poster
             mediaPoster.setVisibility(View.GONE);
-            UIUtils.loadImageIntoImageview(hostManager,
+            UIUtils.loadImageIntoImageview(getHostManager(),
                     poster,
-                    mediaArt, artWidth, artHeight);
+                    mediaArt, artWidth, artHeight, getPosterPlaceHolder());
+
             // Reset padding
             int paddingLeft = mediaTitle.getPaddingRight(),
                     paddingRight = mediaTitle.getPaddingRight(),
@@ -461,7 +437,7 @@ public class AlbumDetailsFragment extends Fragment
         PlaylistType.Item item = new PlaylistType.Item();
         item.songid = songId;
         Player.Open action = new Player.Open(item);
-        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+        action.execute(getHostManager().getConnection(), defaultStringActionCallback, callbackHandler);
     }
 
     private int TYPE_ALBUM = 0,
@@ -474,7 +450,7 @@ public class AlbumDetailsFragment extends Fragment
     private void addToPlaylist(final int type, final int id) {
         Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
 
-        getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
+        getPlaylists.execute(getHostManager().getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
             public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
                 if (!isAdded()) return;
@@ -495,13 +471,13 @@ public class AlbumDetailsFragment extends Fragment
                         item.songid = id;
                     }
                     Playlist.Add action = new Playlist.Add(audioPlaylistId, item);
-                    action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                    action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
                         @Override
                         public void onSuccess(String result) {
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                 .show();
+                                    .show();
                         }
 
                         @Override
@@ -509,12 +485,12 @@ public class AlbumDetailsFragment extends Fragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                 .show();
+                                    .show();
                         }
                     }, callbackHandler);
                 } else {
                     Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                         .show();
+                            .show();
                 }
             }
 
@@ -523,7 +499,7 @@ public class AlbumDetailsFragment extends Fragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
+                        .show();
             }
         }, callbackHandler);
     }
@@ -559,33 +535,33 @@ public class AlbumDetailsFragment extends Fragment
                             if (file.exists()) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                 builder.setTitle(R.string.download)
-                                       .setMessage(R.string.download_file_exists)
-                                       .setPositiveButton(R.string.overwrite,
-                                               new DialogInterface.OnClickListener() {
-                                                   @Override
-                                                   public void onClick(DialogInterface dialog, int which) {
-                                                       FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                               songInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                                               callbackHandler);
-                                                   }
-                                               })
-                                       .setNeutralButton(R.string.download_with_new_name,
-                                               new DialogInterface.OnClickListener() {
-                                                   @Override
-                                                   public void onClick(DialogInterface dialog, int which) {
-                                                       FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                               songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                               callbackHandler);
-                                                   }
-                                               })
-                                       .setNegativeButton(android.R.string.cancel,
-                                               new DialogInterface.OnClickListener() {
-                                                   @Override
-                                                   public void onClick(DialogInterface dialog, int which) { }
-                                               })
-                                       .show();
+                                        .setMessage(R.string.download_file_exists)
+                                        .setPositiveButton(R.string.overwrite,
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                songInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                callbackHandler);
+                                                    }
+                                                })
+                                        .setNeutralButton(R.string.download_with_new_name,
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                callbackHandler);
+                                                    }
+                                                })
+                                        .setNegativeButton(android.R.string.cancel,
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) { }
+                                                })
+                                        .show();
                             } else {
-                                FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                                         songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
                                         callbackHandler);
                             }
@@ -608,7 +584,7 @@ public class AlbumDetailsFragment extends Fragment
             songInfoList = new ArrayList<FileDownloadHelper.SongInfo>(cursor.getCount());
             do {
                 View songView = LayoutInflater.from(getActivity())
-                                              .inflate(R.layout.list_item_song, songListView, false);
+                        .inflate(R.layout.list_item_song, songListView, false);
                 TextView songTitle = (TextView)songView.findViewById(R.id.song_title);
                 TextView trackNumber = (TextView)songView.findViewById(R.id.track_number);
                 TextView duration = (TextView)songView.findViewById(R.id.duration);

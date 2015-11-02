@@ -25,7 +25,9 @@ import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
@@ -189,12 +191,14 @@ public class TVShowsActivity extends BaseActivity
      * @param tvshowTitle Title
      */
     @TargetApi(21)
-    public void onTVShowSelected(int tvshowId, String tvshowTitle) {
+    public void onTVShowSelected(View view, int tvshowId, String tvshowTitle) {
         selectedTVShowId = tvshowId;
         selectedTVShowTitle = tvshowTitle;
 
+        ImageView poster = (ImageView) view.findViewById(R.id.art);
+
         // Replace list fragment
-        TVShowDetailsFragment tvshowDetailsFragment = TVShowDetailsFragment.newInstance(tvshowId);
+        TVShowDetailsFragment tvshowDetailsFragment = TVShowDetailsFragment.newInstance(tvshowId, poster);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
@@ -220,12 +224,12 @@ public class TVShowsActivity extends BaseActivity
      * @param episodeId Episode id
      */
     @TargetApi(21)
-    public void onEpisodeSelected(int tvshowId, int episodeId) {
+    public void onEpisodeSelected(View view, int tvshowId, int episodeId) {
         selectedEpisodeId = episodeId;
 
         // Replace list fragment
         TVShowEpisodeDetailsFragment fragment =
-                TVShowEpisodeDetailsFragment.newInstance(tvshowId, episodeId);
+                TVShowEpisodeDetailsFragment.newInstance(tvshowId, episodeId, null);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions

@@ -17,7 +17,6 @@ package org.xbmc.kore.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -26,7 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -37,7 +35,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -47,12 +44,10 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
@@ -68,39 +63,29 @@ import org.xbmc.kore.utils.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 
 /**
  * Presents movie details
  */
-public class MovieDetailsFragment extends Fragment
+public class MovieDetailsFragment extends AbstractDetailsFragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(MovieDetailsFragment.class);
-
-    public static final String MOVIEID = "movie_id";
-
-    // Loader IDs
-    private static final int LOADER_MOVIE = 0,
-            LOADER_CAST = 1;
-
-    private HostManager hostManager;
-    private HostInfo hostInfo;
-    private EventBus bus;
 
     /**
      * Handler on which to post RPC callbacks
      */
     private Handler callbackHandler = new Handler();
 
-    // Displayed movie id
-    private int movieId = -1;
     private String movieTitle;
+
+    // Loader IDs
+    private static final int LOADER_MOVIE = 0,
+            LOADER_CAST = 1;
 
     private ArrayList<VideoType.Cast> castArrayList;
 
@@ -141,36 +126,19 @@ public class MovieDetailsFragment extends Fragment
 
     /**
      * Create a new instance of this, initialized to show the movie movieId
+     * @param movieId
+     * @param poster image to show while poster is loading.
      */
-    public static MovieDetailsFragment newInstance(int movieId) {
+    public static MovieDetailsFragment newInstance(int movieId, ImageView poster) {
         MovieDetailsFragment fragment = new MovieDetailsFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(MOVIEID, movieId);
-        fragment.setArguments(args);
+        fragment.setupArguments(movieId, poster);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        movieId = getArguments().getInt(MOVIEID, -1);
-
-        if ((container == null) || (movieId == -1)) {
-            // We're not being shown or there's nothing to show
-            return null;
-        }
-
+    public View createView(LayoutInflater inflater, ViewGroup container) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_movie_details, container, false);
         ButterKnife.inject(this, root);
-
-        bus = EventBus.getDefault();
-        hostManager = HostManager.getInstance(getActivity());
-        hostInfo = hostManager.getHostInfo();
 
         swipeRefreshLayout.setOnRefreshListener(this);
         //UIUtils.setSwipeRefreshLayoutColorScheme(swipeRefreshLayout);
@@ -198,7 +166,7 @@ public class MovieDetailsFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         hasIssuedOutdatedRefresh = false;
@@ -212,22 +180,9 @@ public class MovieDetailsFragment extends Fragment
 
     @Override
     public void onResume() {
-        bus.register(this);
         // Force the exit view to invisible
         exitTransitionView.setVisibility(View.INVISIBLE);
         super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        bus.unregister(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        outState.putInt(MOVIEID, movieId);
     }
 
     /**
@@ -236,56 +191,28 @@ public class MovieDetailsFragment extends Fragment
     /** {@inheritDoc} */
     @Override
     public void onRefresh () {
-        if (hostInfo != null) {
-            startSync(false);
+        if (getHostInfo() != null) {
+            startSyncProcess(false, LibrarySyncService.SYNC_SINGLE_MOVIE, LibrarySyncService.SYNC_MOVIEID);
         } else {
             swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                 .show();
+            Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void startSync(boolean silentRefresh) {
-        // Start the syncing process
-        Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
-        syncIntent.putExtra(LibrarySyncService.SYNC_SINGLE_MOVIE, true);
-        syncIntent.putExtra(LibrarySyncService.SYNC_MOVIEID, movieId);
-
-        Bundle syncExtras = new Bundle();
-        syncExtras.putBoolean(LibrarySyncService.SILENT_SYNC, silentRefresh);
-        syncIntent.putExtra(LibrarySyncService.SYNC_EXTRAS, syncExtras);
-
-        getActivity().startService(syncIntent);
+    @Override
+    protected ArrayList<String> getSyncTypes() {
+        ArrayList<String> syncTypes = new ArrayList<>();
+        syncTypes.add(LibrarySyncService.SYNC_SINGLE_MOVIE);
+        syncTypes.add(LibrarySyncService.SYNC_ALL_MOVIES);
+        return syncTypes;
     }
 
-    /**
-     * Event bus post. Called when the syncing process ended
-     *
-     * @param event Refreshes data
-     */
-    public void onEventMainThread(MediaSyncEvent event) {
-        boolean silentSync = false;
-        if (event.syncExtras != null) {
-            silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
-        }
-
-        if (event.syncType.equals(LibrarySyncService.SYNC_SINGLE_MOVIE) ||
-            event.syncType.equals(LibrarySyncService.SYNC_ALL_MOVIES)) {
-            swipeRefreshLayout.setRefreshing(false);
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                getLoaderManager().restartLoader(LOADER_MOVIE, null, this);
-                getLoaderManager().restartLoader(LOADER_CAST, null, this);
-                if (!silentSync) {
-                    Toast.makeText(getActivity(),
-                            R.string.sync_successful, Toast.LENGTH_SHORT)
-                         .show();
-                }
-            } else if (!silentSync) {
-                String msg = (event.errorCode == ApiException.API_ERROR) ?
-                             String.format(getString(R.string.error_while_syncing), event.errorMessage) :
-                             getString(R.string.unable_to_connect_to_xbmc);
-                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-            }
+    @Override
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
+        swipeRefreshLayout.setRefreshing(false);
+        if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+            getLoaderManager().restartLoader(LOADER_MOVIE, null, this);
+            getLoaderManager().restartLoader(LOADER_CAST, null, this);
         }
     }
 
@@ -298,11 +225,11 @@ public class MovieDetailsFragment extends Fragment
         Uri uri;
         switch (i) {
             case LOADER_MOVIE:
-                uri = MediaContract.Movies.buildMovieUri(hostInfo.getId(), movieId);
+                uri = MediaContract.Movies.buildMovieUri(getHostInfo().getId(), getItemId());
                 return new CursorLoader(getActivity(), uri,
                         MovieDetailsQuery.PROJECTION, null, null, null);
             case LOADER_CAST:
-                uri = MediaContract.MovieCast.buildMovieCastListUri(hostInfo.getId(), movieId);
+                uri = MediaContract.MovieCast.buildMovieCastListUri(getHostInfo().getId(), getItemId());
                 return new CursorLoader(getActivity(), uri,
                         MovieCastListQuery.PROJECTION, null, null, MovieCastListQuery.SORT);
             default:
@@ -338,9 +265,9 @@ public class MovieDetailsFragment extends Fragment
     @OnClick(R.id.fab)
     public void onFabClicked(View v) {
         PlaylistType.Item item = new PlaylistType.Item();
-        item.movieid = movieId;
+        item.movieid = getItemId();
         Player.Open action = new Player.Open(item);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+        action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 if (!isAdded()) return;
@@ -361,7 +288,7 @@ public class MovieDetailsFragment extends Fragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
+                        .show();
             }
         }, callbackHandler);
     }
@@ -370,7 +297,7 @@ public class MovieDetailsFragment extends Fragment
     public void onAddToPlaylistClicked(View v) {
         Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
 
-        getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
+        getPlaylists.execute(getHostManager().getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
             public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
                 if (!isAdded()) return;
@@ -385,28 +312,25 @@ public class MovieDetailsFragment extends Fragment
                 // If found, add to playlist
                 if (videoPlaylistId != -1) {
                     PlaylistType.Item item = new PlaylistType.Item();
-                    item.movieid = movieId;
+                    item.movieid = getItemId();
                     Playlist.Add action = new Playlist.Add(videoPlaylistId, item);
-                    action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                    action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
                         @Override
                         public void onSuccess(String result) {
                             if (!isAdded()) return;
                             // Got an error, show toast
-                            Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                 .show();
+                            Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(int errorCode, String description) {
                             if (!isAdded()) return;
                             // Got an error, show toast
-                            Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                 .show();
+                            Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT).show();
                         }
                     }, callbackHandler);
                 } else {
-                    Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                         .show();
+                    Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -414,8 +338,7 @@ public class MovieDetailsFragment extends Fragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 // Got an error, show toast
-                Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
+                Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
     }
@@ -436,13 +359,13 @@ public class MovieDetailsFragment extends Fragment
         int newPlaycount = (playcount > 0) ? 0 : 1;
 
         VideoLibrary.SetMovieDetails action =
-                new VideoLibrary.SetMovieDetails(movieId, newPlaycount, null);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                new VideoLibrary.SetMovieDetails(getItemId(), newPlaycount, null);
+        action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 if (!isAdded()) return;
                 // Force a refresh, but don't show a message
-                startSync(true);
+                startSyncProcess(true, LibrarySyncService.SYNC_SINGLE_MOVIE, LibrarySyncService.SYNC_MOVIEID);
             }
 
             @Override
@@ -473,27 +396,27 @@ public class MovieDetailsFragment extends Fragment
         if (file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                   .setMessage(R.string.download_file_exists)
-                   .setPositiveButton(R.string.overwrite,
-                           new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                           movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                           callbackHandler);
-                               }
-                           })
-                   .setNeutralButton(R.string.download_with_new_name,
-                           new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                           movieDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                           callbackHandler);
-                               }
-                           })
-                   .setNegativeButton(android.R.string.cancel, noopClickListener)
-                   .show();
+                    .setMessage(R.string.download_file_exists)
+                    .setPositiveButton(R.string.overwrite,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                            movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                            callbackHandler);
+                                }
+                            })
+                    .setNeutralButton(R.string.download_with_new_name,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                            movieDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                            callbackHandler);
+                                }
+                            })
+                    .setNegativeButton(android.R.string.cancel, noopClickListener)
+                    .show();
         } else {
             // Confirm that the user really wants to download the file
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -503,7 +426,7 @@ public class MovieDetailsFragment extends Fragment
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                                             movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
                                             callbackHandler);
                                 }
@@ -527,9 +450,9 @@ public class MovieDetailsFragment extends Fragment
 
         int runtime = cursor.getInt(MovieDetailsQuery.RUNTIME) / 60;
         String durationYear =  runtime > 0 ?
-                               String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                               "  |  " + String.valueOf(cursor.getInt(MovieDetailsQuery.YEAR)) :
-                               String.valueOf(cursor.getInt(MovieDetailsQuery.YEAR));
+                String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                        "  |  " + String.valueOf(cursor.getInt(MovieDetailsQuery.YEAR)) :
+                String.valueOf(cursor.getInt(MovieDetailsQuery.YEAR));
         mediaYear.setText(durationYear);
         mediaGenres.setText(cursor.getString(MovieDetailsQuery.GENRES));
 
@@ -542,7 +465,7 @@ public class MovieDetailsFragment extends Fragment
             mediaMaxRating.setText(getString(R.string.max_rating_video));
             String votes = cursor.getString(MovieDetailsQuery.VOTES);
             mediaRatingVotes.setText((TextUtils.isEmpty(votes)) ?
-                                     "" : String.format(getString(R.string.votes), votes));
+                    "" : String.format(getString(R.string.votes), votes));
         } else {
             mediaRating.setVisibility(View.INVISIBLE);
             mediaMaxRating.setVisibility(View.INVISIBLE);
@@ -564,13 +487,12 @@ public class MovieDetailsFragment extends Fragment
 
         int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
         int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
-        UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                cursor.getString(MovieDetailsQuery.THUMBNAIL), movieTitle,
-                mediaPoster, posterWidth, posterHeight);
+        displayPoster(mediaPoster,cursor.getString(MovieDetailsQuery.THUMBNAIL),movieTitle,posterWidth, posterHeight);
+
         int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height);
-        UIUtils.loadImageIntoImageview(hostManager,
+        UIUtils.loadImageIntoImageview(getHostManager(),
                 cursor.getString(MovieDetailsQuery.FANART),
-                mediaArt, displayMetrics.widthPixels, artHeight);
+                mediaArt, displayMetrics.widthPixels, artHeight, null);
 
         // Setup movie download info
         movieDownloadInfo = new FileDownloadHelper.MovieInfo(
@@ -617,13 +539,13 @@ public class MovieDetailsFragment extends Fragment
             castArrayList = new ArrayList<VideoType.Cast>(cursor.getCount());
             do {
                 castArrayList.add(new VideoType.Cast(cursor.getString(MovieCastListQuery.NAME),
-                                                     cursor.getInt(MovieCastListQuery.ORDER),
-                                                     cursor.getString(MovieCastListQuery.ROLE),
-                                                     cursor.getString(MovieCastListQuery.THUMBNAIL)));
+                        cursor.getInt(MovieCastListQuery.ORDER),
+                        cursor.getString(MovieCastListQuery.ROLE),
+                        cursor.getString(MovieCastListQuery.THUMBNAIL)));
             } while (cursor.moveToNext());
 
             UIUtils.setupCastInfo(getActivity(), castArrayList, videoCastList,
-                                  AllCastActivity.buildLaunchIntent(getActivity(), movieTitle, castArrayList));
+                    AllCastActivity.buildLaunchIntent(getActivity(), movieTitle, castArrayList));
         }
     }
 
@@ -644,7 +566,7 @@ public class MovieDetailsFragment extends Fragment
         if (System.currentTimeMillis() > lastUpdated + Settings.DB_UPDATE_INTERVAL) {
             // Trigger a silent refresh
             hasIssuedOutdatedRefresh = true;
-            startSync(true);
+            startSyncProcess(true, LibrarySyncService.SYNC_SINGLE_MOVIE, LibrarySyncService.SYNC_MOVIEID);
         }
     }
 

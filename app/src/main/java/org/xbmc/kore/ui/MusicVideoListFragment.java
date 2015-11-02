@@ -52,7 +52,7 @@ public class MusicVideoListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(MusicVideoListFragment.class);
 
     public interface OnMusicVideoSelectedListener {
-        public void onMusicVideoSelected(int musicVideoId, String musicVideoTitle);
+        public void onMusicVideoSelected(View view, int musicVideoId, String musicVideoTitle);
     }
 
     // Activity listener
@@ -69,7 +69,7 @@ public class MusicVideoListFragment extends AbstractListFragment {
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder)view.getTag();
                 // Notify the activity
-                listenerActivity.onMusicVideoSelected(tag.musicVideoId, tag.musicVideoTitle);
+                listenerActivity.onMusicVideoSelected(view, tag.musicVideoId, tag.musicVideoTitle);
             }
         };
     }

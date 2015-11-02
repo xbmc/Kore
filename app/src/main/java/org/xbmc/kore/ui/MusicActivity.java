@@ -25,6 +25,8 @@ import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
@@ -249,12 +251,12 @@ public class MusicActivity extends BaseActivity
     }
 
     @TargetApi(21)
-    public void onAlbumSelected(int albumId, String albumTitle) {
+    public void onAlbumSelected(View view, int albumId, String albumTitle) {
         selectedAlbumId = albumId;
         selectedAlbumTitle = albumTitle;
 
         // Replace list fragment
-        AlbumDetailsFragment albumDetailsFragment = AlbumDetailsFragment.newInstance(albumId);
+        AlbumDetailsFragment albumDetailsFragment = AlbumDetailsFragment.newInstance(albumId, (ImageView)view.findViewById(R.id.art));
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
@@ -290,12 +292,12 @@ public class MusicActivity extends BaseActivity
     }
 
     @TargetApi(21)
-    public void onMusicVideoSelected(int musicVideoId, String musicVideoTitle) {
+    public void onMusicVideoSelected(View view, int musicVideoId, String musicVideoTitle) {
         selectedMusicVideoId = musicVideoId;
         selectedMusicVideoTitle = musicVideoTitle;
 
         // Replace list fragment
-        MusicVideoDetailsFragment detailsFragment = MusicVideoDetailsFragment.newInstance(musicVideoId);
+        MusicVideoDetailsFragment detailsFragment = MusicVideoDetailsFragment.newInstance(musicVideoId, (ImageView)view.findViewById(R.id.art));
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions

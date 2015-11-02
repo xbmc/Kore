@@ -15,17 +15,22 @@
  */
 package org.xbmc.kore.ui;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import org.xbmc.kore.R;
+import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,13 +38,8 @@ import butterknife.InjectView;
 /**
  * Container for the TV Show overview and Episodes list
  */
-public class TVShowDetailsFragment extends Fragment {
+public class TVShowDetailsFragment extends AbstractDetailsFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowDetailsFragment.class);
-
-    public static final String TVSHOWID = "tvshow_id";
-
-    // Displayed movie id
-    private int tvshowId = -1;
 
     @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
     @InjectView(R.id.pager) ViewPager viewPager;
@@ -47,37 +47,26 @@ public class TVShowDetailsFragment extends Fragment {
     /**
      * Create a new instance of this, initialized to show tvshowId
      */
-    public static TVShowDetailsFragment newInstance(int tvshowId) {
+    public static TVShowDetailsFragment newInstance(int tvshowId, ImageView poster) {
         TVShowDetailsFragment fragment = new TVShowDetailsFragment();
 
-        Bundle args = new Bundle();
-        args.putInt(TVSHOWID, tvshowId);
-        fragment.setArguments(args);
+        fragment.setupArguments(tvshowId, poster);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        tvshowId = getArguments().getInt(TVSHOWID, -1);
-
-        if ((container == null) || (tvshowId == -1)) {
-            // We're not being shown or there's nothing to show
-            return null;
-        }
-
+    protected View createView(LayoutInflater inflater, ViewGroup container) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_tvshow_details, container, false);
         ButterKnife.inject(this, root);
 
-        long baseFragmentId = tvshowId * 10;
+        Bundle bundleForTVShowEpisodeListFragment = new Bundle();
+        bundleForTVShowEpisodeListFragment.putInt(TVShowEpisodeListFragment.TVSHOWID, getItemId());
+
+        long baseFragmentId = getItemId() * 10;
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
                 .addTab(TVShowOverviewFragment.class, getArguments(), R.string.tvshow_overview,
                         baseFragmentId)
-                .addTab(TVShowEpisodeListFragment.class, getArguments(),
+                .addTab(TVShowEpisodeListFragment.class, bundleForTVShowEpisodeListFragment,
                         R.string.tvshow_episodes, baseFragmentId + 1);
 
         viewPager.setAdapter(tabsAdapter);
@@ -87,24 +76,23 @@ public class TVShowDetailsFragment extends Fragment {
     }
 
     @Override
+    protected ArrayList<String> getSyncTypes() {
+        return null;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        outState.putInt(TVSHOWID, tvshowId);
     }
 }
