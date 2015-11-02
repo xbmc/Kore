@@ -386,6 +386,8 @@ public class RemoteActivity extends BaseActivity
                         Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
+        intent.setAction(null);
+
     }
 
     /**
