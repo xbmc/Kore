@@ -1,0 +1,24 @@
+{
+  "id": 32,
+  "jsonrpc": "2.0",
+  "result": {
+    "channelgroups": [{
+      "channelgroupid": 40,
+      "channeltype": "tv",
+      "label": "All channels"
+    }, {
+      "channelgroupid": -1,
+      "channeltype": "tv",
+      "label": "Main"
+    }, {
+      "channelgroupid": -1,
+      "channeltype": "tv",
+      "label": "Other"
+    }],
+    "limits": {
+      "end": 3,
+      "start": 0,
+      "total": 3
+    }
+  }
+}
