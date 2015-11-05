@@ -562,7 +562,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
                     R.attr.colorAccent});
             downloadButton.setColorFilter(
-                    styledAttributes.getColor(0, R.color.accent_default));
+                    styledAttributes.getColor(0, getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
         } else {
             downloadButton.clearColorFilter();
@@ -575,7 +575,7 @@ public class TVShowEpisodeDetailsFragment extends Fragment
             Resources.Theme theme = getActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.colorAccent});
-            seenButton.setColorFilter(styledAttributes.getColor(0, R.color.accent_default));
+            seenButton.setColorFilter(styledAttributes.getColor(0, getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
         } else {
             seenButton.clearColorFilter();

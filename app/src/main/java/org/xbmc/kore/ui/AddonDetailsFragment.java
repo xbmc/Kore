@@ -287,7 +287,8 @@ public class AddonDetailsFragment extends Fragment {
             Resources.Theme theme = getActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.colorAccent});
-            enabledButton.setColorFilter(styledAttributes.getColor(0, R.color.accent_default));
+            enabledButton.setColorFilter(styledAttributes.getColor(0,
+                    getActivity().getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
 
             fabButton.setVisibility(View.VISIBLE);

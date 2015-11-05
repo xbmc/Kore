@@ -306,7 +306,7 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
         }
-        mDrawerLayout.closeDrawer(Gravity.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
 
         // Same activity, just return
         if (item.id == getItemIdFromActivity())
@@ -395,8 +395,11 @@ public class NavigationDrawerFragment extends Fragment {
                             R.attr.colorAccent,
                             R.attr.textColorOverPrimary
                     });
-            selectedItemColor = styledAttributes.getColor(0, R.color.accent_default);
-            hostItemColor = styledAttributes.getColor(1, R.color.white);
+            Resources resources = context.getResources();
+            selectedItemColor = styledAttributes.getColor(0,
+                    resources.getColor(R.color.accent_default));
+            hostItemColor = styledAttributes.getColor(1,
+                    resources.getColor(R.color.white));
             styledAttributes.recycle();
         }
 

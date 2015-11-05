@@ -457,7 +457,7 @@ public class TVShowEpisodeListFragment extends Fragment
                     R.attr.iconCollapse,
                     R.attr.iconExpand,
             });
-            themeAccentColor = styledAttributes.getColor(0, R.color.accent_default);
+            themeAccentColor = styledAttributes.getColor(0, getResources().getColor(R.color.accent_default));
             iconCollapseResId = styledAttributes.getResourceId(1, R.drawable.ic_expand_less_white_24dp);
             iconExpandResId = styledAttributes.getResourceId(2, R.drawable.ic_expand_more_white_24dp);
             styledAttributes.recycle();

@@ -531,8 +531,10 @@ public class PlaylistFragment extends Fragment
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.appCardBackgroundColor,
                     R.attr.appSelectedCardBackgroundColor});
-            cardBackgroundColor = styledAttributes.getColor(0, R.color.dark_content_background);
-            selectedCardBackgroundColor = styledAttributes.getColor(1, R.color.dark_selected_content_background);
+            cardBackgroundColor = styledAttributes.getColor(0,
+                    getResources().getColor(R.color.dark_content_background));
+            selectedCardBackgroundColor = styledAttributes.getColor(1,
+                    getResources().getColor(R.color.dark_selected_content_background));
             styledAttributes.recycle();
         }
 

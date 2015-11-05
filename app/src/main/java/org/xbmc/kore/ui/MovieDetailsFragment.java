@@ -583,7 +583,8 @@ public class MovieDetailsFragment extends Fragment
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
                     R.attr.colorAccent});
             downloadButton.setColorFilter(
-                    styledAttributes.getColor(0, R.color.accent_default));
+                    styledAttributes.getColor(0,
+                            getActivity().getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
         } else {
             downloadButton.clearColorFilter();
@@ -596,7 +597,8 @@ public class MovieDetailsFragment extends Fragment
             Resources.Theme theme = getActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.colorAccent});
-            seenButton.setColorFilter(styledAttributes.getColor(0, R.color.accent_default));
+            seenButton.setColorFilter(styledAttributes.getColor(0,
+                    getActivity().getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
         } else {
             seenButton.clearColorFilter();

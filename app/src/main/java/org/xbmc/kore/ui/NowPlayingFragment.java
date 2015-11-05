@@ -319,7 +319,8 @@ public class NowPlayingFragment extends Fragment
                     TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                             R.attr.colorAccent});
                     volumeMuteButton.setColorFilter(
-                            styledAttributes.getColor(0, R.color.accent_default));
+                            styledAttributes.getColor(0,
+                                    getActivity().getResources().getColor(R.color.accent_default)));
                     styledAttributes.recycle();
                 } else {
                     volumeMuteButton.clearColorFilter();
@@ -763,24 +764,25 @@ public class NowPlayingFragment extends Fragment
         }
 
         Resources.Theme theme = getActivity().getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
+        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
                 R.attr.colorAccent,
                 R.attr.iconRepeat,
                 R.attr.iconRepeatOne});
+        int accentDefaultColor = getResources().getColor(R.color.accent_default);
         if (getPropertiesResult.repeat.equals(PlayerType.Repeat.OFF)) {
             repeatButton.setImageResource(styledAttributes.getResourceId(1, R.drawable.ic_repeat_white_24dp));
             repeatButton.clearColorFilter();
         } else if (getPropertiesResult.repeat.equals(PlayerType.Repeat.ONE)) {
             repeatButton.setImageResource(styledAttributes.getResourceId(2, R.drawable.ic_repeat_one_white_24dp));
-            repeatButton.setColorFilter(styledAttributes.getColor(0, R.color.accent_default));
+            repeatButton.setColorFilter(styledAttributes.getColor(0, accentDefaultColor));
         } else {
             repeatButton.setImageResource(styledAttributes.getResourceId(1, R.drawable.ic_repeat_white_24dp));
-            repeatButton.setColorFilter(styledAttributes.getColor(0, R.color.accent_default));
+            repeatButton.setColorFilter(styledAttributes.getColor(0, accentDefaultColor));
         }
         if (!getPropertiesResult.shuffled) {
             shuffleButton.clearColorFilter();
         } else {
-            shuffleButton.setColorFilter(styledAttributes.getColor(0, R.color.accent_default));
+            shuffleButton.setColorFilter(styledAttributes.getColor(0, accentDefaultColor));
         }
         styledAttributes.recycle();
 
