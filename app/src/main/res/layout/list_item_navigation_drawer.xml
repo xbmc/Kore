@@ -27,6 +27,7 @@
         android:layout_marginLeft="@dimen/default_padding"
         android:layout_marginRight="@dimen/default_padding"
         android:layout_centerVertical="true"
+        android:tint="?attr/defaultButtonColorFilter"
         android:src="@drawable/ic_launcher"/>
 
     <TextView

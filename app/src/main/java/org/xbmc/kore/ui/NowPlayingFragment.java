@@ -708,6 +708,21 @@ public class NowPlayingFragment extends Fragment
                 maxRating = null;
                 votes = null;
                 break;
+            case ListType.ItemsAll.TYPE_CHANNEL:
+                switchToPanel(R.id.media_panel);
+
+                title = getItemResult.label;
+                underTitle = getItemResult.title;
+                art = getItemResult.fanart;
+                poster = getItemResult.thumbnail;
+
+                genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
+                year = getItemResult.premiered;
+                descriptionPlot = getItemResult.plot;
+                rating = getItemResult.rating;
+                maxRating = null;
+                votes = null;
+                break;
             default:
                 // Other type, just present basic info
                 switchToPanel(R.id.media_panel);
@@ -729,7 +744,7 @@ public class NowPlayingFragment extends Fragment
         mediaTitle.setText(title);
         mediaUndertitle.setText(underTitle);
 
-        setDurationInfo(getPropertiesResult.time, getPropertiesResult.totaltime, getPropertiesResult.speed);
+        setDurationInfo(getItemResult.type, getPropertiesResult.time, getPropertiesResult.totaltime, getPropertiesResult.speed);
         mediaSeekbar.setOnSeekBarChangeListener(seekbarChangeListener);
 
         if (!TextUtils.isEmpty(year) || !TextUtils.isEmpty(genreSeason)) {
@@ -822,7 +837,7 @@ public class NowPlayingFragment extends Fragment
         } else {
             // No fanart, just present the poster
             mediaPoster.setVisibility(View.GONE);
-            UIUtils.loadImageIntoImageview(hostManager, poster, mediaArt, artWidth, artHeight);
+            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager, poster, title, mediaArt, artWidth, artHeight);
             // Reset padding
             int paddingLeft = mediaTitle.getPaddingRight(),
                     paddingRight = mediaTitle.getPaddingRight(),
@@ -932,11 +947,12 @@ public class NowPlayingFragment extends Fragment
 
     /**
      * Sets the information about current media duration and sets seekbar
+     * @param type What is playing
      * @param time Current time
      * @param totalTime Total time
      * @param speed Media speed
      */
-    private void setDurationInfo(GlobalType.Time time, GlobalType.Time totalTime, int speed) {
+    private void setDurationInfo(String type, GlobalType.Time time, GlobalType.Time totalTime, int speed) {
         mediaTotalTime = totalTime.hours * 3600 +
                 totalTime.minutes * 60 +
                 totalTime.seconds;
@@ -951,7 +967,7 @@ public class NowPlayingFragment extends Fragment
 
         // Only update when its playing
         mediaSeekbar.removeCallbacks(seekBarUpdater);
-        if (speed == 1) {
+        if ((speed == 1) || (type.equals(ListType.ItemsAll.TYPE_CHANNEL))) {
             mediaSeekbar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
         }
     }

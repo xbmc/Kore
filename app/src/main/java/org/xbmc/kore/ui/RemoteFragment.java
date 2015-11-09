@@ -588,6 +588,15 @@ public class RemoteFragment extends Fragment
                 currentFastForwardIcon = fastForwardIcon;
                 currentRewindIcon = rewindIcon;
                 break;
+            case ListType.ItemsAll.TYPE_CHANNEL:
+                switchToPanel(R.id.media_panel, true);
+
+                title = nowPlaying.label;
+                underTitle = nowPlaying.title;
+                thumbnailUrl = nowPlaying.thumbnail;
+                currentFastForwardIcon = fastForwardIcon;
+                currentRewindIcon = rewindIcon;
+                break;
             default:
                 switchToPanel(R.id.media_panel, true);
                 title = nowPlaying.label;

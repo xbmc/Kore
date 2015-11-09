@@ -433,13 +433,17 @@ public class Player {
     public static final class Open extends ApiMethod<String> {
         public final static String METHOD_NAME = "Player.Open";
 
+        public final static String TYPE_PLAYLIST = "playlist",
+                TYPE_CHANNEL = "channel";
+
         /**
          * Start playback of either the playlist with the given ID, a slideshow with the pictures
          * from the given directory or a single file or an item from the database.
-         * @param playlistId
-         * @param position
+         * @param itemType This should always be TYPE_PLAYLIST
+         * @param playlistId Id
+         * @param position Position to start
          */
-        public Open(int playlistId, int position) {
+        public Open(String itemType, int playlistId, int position) {
             super();
             final ObjectNode item = objectMapper.createObjectNode();
             item.put("playlistid", playlistId);
@@ -458,14 +462,22 @@ public class Player {
         }
 
         /**
-         * Select the active player
-         * @param playlistId playlist ID to select
+         * Starts playing a playlist or channel
+         * @param itemType TYPE_PLAYLIST or TYPE_CHANNEL
+         * @param itemId Corresponding ID to open
          */
-        public Open(int playlistId) {
+        public Open(String itemType, int itemId) {
             super();
             final ObjectNode item = objectMapper.createObjectNode();
-            item.put("playlistid", playlistId);
-            addParameterToRequest("item", item);
+            switch (itemType) {
+                case TYPE_PLAYLIST:
+                    item.put("playlistid", itemId);
+                    addParameterToRequest("item", item);
+                    break;
+                case TYPE_CHANNEL:
+                    item.put("channelid", itemId);
+                    addParameterToRequest("item", item);
+            }
         }
 
         @Override

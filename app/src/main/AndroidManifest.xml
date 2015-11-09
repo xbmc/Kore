@@ -53,6 +53,7 @@
         <activity android:name="org.xbmc.kore.ui.AddonsActivity"/>
         <activity android:name="org.xbmc.kore.ui.SettingsActivity"/>
         <activity android:name="org.xbmc.kore.ui.FileActivity"/>
+        <activity android:name="org.xbmc.kore.ui.PVRActivity"/>
         <activity android:name="org.xbmc.kore.ui.AllCastActivity"/>
 
         <!-- Providers -->

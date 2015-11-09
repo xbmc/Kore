@@ -29,7 +29,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,9 +64,10 @@ public class NavigationDrawerFragment extends Fragment {
             ACTIVITY_MOVIES = 2,
             ACTIVITY_TVSHOWS = 3,
             ACTIVITY_MUSIC = 4,
-            ACTIVITY_FILES = 5,
-            ACTIVITY_ADDONS = 6,
-            ACTIVITY_SETTINGS = 7;
+            ACTIVITY_PVR = 5,
+            ACTIVITY_FILES = 6,
+            ACTIVITY_ADDONS = 7,
+            ACTIVITY_SETTINGS = 8;
 
     // The current selected item id (based on the activity)
     private static int selectedItemId = -1;
@@ -126,6 +126,7 @@ public class NavigationDrawerFragment extends Fragment {
                 R.attr.iconMovies,
                 R.attr.iconTvShows,
                 R.attr.iconMusic,
+                R.attr.iconPVR,
                 R.attr.iconFiles,
                 R.attr.iconAddons,
                 R.attr.iconSettings,
@@ -149,6 +150,9 @@ public class NavigationDrawerFragment extends Fragment {
                 new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MUSIC,
                         getString(R.string.music),
                         styledAttributes.getResourceId(ACTIVITY_MUSIC, 0)),
+                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_PVR,
+                        getString(R.string.tv_radio),
+                        styledAttributes.getResourceId(ACTIVITY_PVR, 0)),
                 new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,
                         getString(R.string.files),
                         styledAttributes.getResourceId(ACTIVITY_FILES, 0)),
@@ -274,6 +278,8 @@ public class NavigationDrawerFragment extends Fragment {
             return ACTIVITY_TVSHOWS;
         else if (activity instanceof MusicActivity)
             return ACTIVITY_MUSIC;
+        else if (activity instanceof PVRActivity)
+            return ACTIVITY_PVR;
         else if (activity instanceof FileActivity)
             return ACTIVITY_FILES;
         else if (activity instanceof AddonsActivity)
@@ -289,13 +295,14 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private static final SparseArray<Class> activityItemIdMap;
     static {
-        activityItemIdMap = new SparseArray<Class>(10);
+        activityItemIdMap = new SparseArray<>(10);
         activityItemIdMap.put(ACTIVITY_HOSTS, HostManagerActivity.class);
         activityItemIdMap.put(ACTIVITY_REMOTE, RemoteActivity.class);
         activityItemIdMap.put(ACTIVITY_MOVIES, MoviesActivity.class);
         activityItemIdMap.put(ACTIVITY_MUSIC, MusicActivity.class);
         activityItemIdMap.put(ACTIVITY_FILES, FileActivity.class);
         activityItemIdMap.put(ACTIVITY_TVSHOWS, TVShowsActivity.class);
+        activityItemIdMap.put(ACTIVITY_PVR, PVRActivity.class);
         activityItemIdMap.put(ACTIVITY_ADDONS, AddonsActivity.class);
         activityItemIdMap.put(ACTIVITY_SETTINGS, SettingsActivity.class);
 
@@ -339,11 +346,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -396,10 +400,8 @@ public class NavigationDrawerFragment extends Fragment {
                             R.attr.textColorOverPrimary
                     });
             Resources resources = context.getResources();
-            selectedItemColor = styledAttributes.getColor(0,
-                    resources.getColor(R.color.accent_default));
-            hostItemColor = styledAttributes.getColor(1,
-                    resources.getColor(R.color.white));
+            selectedItemColor = styledAttributes.getColor(0, resources.getColor(R.color.accent_default));
+            hostItemColor = styledAttributes.getColor(1, resources.getColor(R.color.white));
             styledAttributes.recycle();
         }
 

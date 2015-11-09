@@ -35,6 +35,7 @@
 	<attr name="drawerBackgroundColor" format="reference|color" />
 
     <attr name="remoteButtonColorFilter" format="reference|color" />
+    <attr name="defaultButtonColorFilter" format="reference|color" />
     <!--<attr name="remoteBackgroundColorFilter" format="reference|color" />-->
 
     <!-- Icons -->
@@ -48,6 +49,7 @@
     <attr name="iconHome" format="reference" />
     <attr name="iconAddons" format="reference" />
     <attr name="iconFiles" format="reference" />
+    <attr name="iconPVR" format="reference" />
 
     <attr name="iconNew" format="reference" />
     <attr name="iconNewToolbar" format="reference" />

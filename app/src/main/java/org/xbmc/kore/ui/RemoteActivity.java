@@ -433,7 +433,7 @@ public class RemoteActivity extends BaseActivity
             @Override
             public void onSuccess(String result ) {
                 if (startPlaylist) {
-                    Player.Open action = new Player.Open(PlaylistType.VIDEO_PLAYLISTID);
+                    Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, PlaylistType.VIDEO_PLAYLISTID);
                     action.execute(connection, new ApiCallback<String>() {
                         @Override
                         public void onSuccess(String result) {

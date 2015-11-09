@@ -131,7 +131,7 @@ public class PlaylistFragment extends Fragment
         playlistGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Player.Open action = new Player.Open(currentPlaylistId, position);
+                Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, currentPlaylistId, position);
                 action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
             }
         });

@@ -69,6 +69,7 @@
         <item name="separatorColor">@color/dark_separator</item>
 
         <item name="remoteButtonColorFilter">@color/white</item>
+        <item name="defaultButtonColorFilter">@color/white</item>
         <!--<item name="remoteBackgroundColorFilter">@color/dark_content_background</item>-->
 
         <!-- Icons -->
@@ -93,6 +94,7 @@
         <item name="iconHome">@drawable/ic_home_white_24dp</item>
         <item name="iconAddons">@drawable/ic_extension_white_24dp</item>
         <item name="iconFiles">@drawable/ic_folder_white_24dp</item>
+        <item name="iconPVR">@drawable/ic_dvr_24dp</item>
 
         <item name="iconNew">@drawable/ic_add_box_white_24dp</item>
         <item name="iconNewToolbar">@drawable/ic_add_box_white_24dp</item>
@@ -180,6 +182,7 @@
         <item name="separatorColor">@color/light_separator</item>
 
         <item name="remoteButtonColorFilter">@color/black_dim_54pct</item>
+        <item name="defaultButtonColorFilter">@color/black_dim_54pct</item>
         <!--<item name="remoteBackgroundColorFilter">@color/light_content_background</item>-->
 
         <!-- Icons, same for all themes, will be colored dynamically -->
@@ -214,6 +217,7 @@
         <item name="iconHome">@drawable/ic_home_black_24dp</item>
         <item name="iconAddons">@drawable/ic_extension_black_24dp</item>
         <item name="iconFiles">@drawable/ic_folder_black_24dp</item>
+        <item name="iconPVR">@drawable/ic_dvr_24dp</item>
 
         <item name="iconNew">@drawable/ic_add_box_black_24dp</item>
         <item name="iconNewToolbar">@drawable/ic_add_box_white_24dp</item>

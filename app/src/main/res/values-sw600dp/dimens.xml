@@ -71,4 +71,7 @@
     <dimen name="addondetail_poster_width">146dp</dimen>
     <dimen name="addondetail_poster_heigth">146dp</dimen>
 
+    <dimen name="channellist_art_width">88dp</dimen>
+    <dimen name="channellist_art_heigth">88dp</dimen>
+
 </resources>

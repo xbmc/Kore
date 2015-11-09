@@ -402,7 +402,7 @@ public class MediaFileListFragment extends Fragment {
             public void onSuccess(ArrayList<PlayerType.GetActivePlayersReturnType> result ) {
                 // find out if any player is running. If it is not, start one
                 if (result.isEmpty()) {
-                    Player.Open action = new Player.Open(playlistId);
+                    Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, playlistId);
                     action.execute(connection, new ApiCallback<String>() {
                         @Override
                         public void onSuccess(String result) { }
