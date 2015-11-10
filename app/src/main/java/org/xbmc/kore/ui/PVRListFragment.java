@@ -35,6 +35,7 @@ import android.widget.Toast;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
@@ -205,8 +206,11 @@ public class PVRListFragment extends Fragment
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting channel groups: " + description);
 
-                // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
+                if (errorCode == ApiException.API_ERROR) {
+                    emptyView.setText(String.format(getString(R.string.might_not_have_pvr), description));
+                } else {
+                    emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
+                }
                 Toast.makeText(getActivity(),
                                String.format(getString(R.string.error_getting_pvr_info), description),
                                Toast.LENGTH_SHORT).show();
