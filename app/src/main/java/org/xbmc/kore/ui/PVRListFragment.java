@@ -38,7 +38,6 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
-import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -53,6 +52,8 @@ import butterknife.InjectView;
 public class PVRListFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(PVRListFragment.class);
+
+    public static final String CHANNELGROUPID = "channel_group_id";
 
     public interface OnPVRSelectedListener {
         public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle);
@@ -88,6 +89,10 @@ public class PVRListFragment extends Fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
         ButterKnife.inject(this, root);
 
+        if (savedInstanceState != null) {
+            selectedChannelGroupId = savedInstanceState.getInt(CHANNELGROUPID);
+        }
+
         hostManager = HostManager.getInstance(getActivity());
 
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -103,15 +108,18 @@ public class PVRListFragment extends Fragment
         return root;
     }
 
-
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
 
-        if ((channelGroupAdapter == null) ||
-            (channelGroupAdapter.getCount() == 0))
-            browseChannelGroups();
+        if (selectedChannelGroupId == -1) {
+            if ((channelGroupAdapter == null) ||
+                (channelGroupAdapter.getCount() == 0))
+                browseChannelGroups();
+        } else {
+            browseChannels(selectedChannelGroupId);
+        }
     }
 
     @Override
@@ -138,6 +146,12 @@ public class PVRListFragment extends Fragment
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
     }
 
     /**
