@@ -40,10 +40,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.ui.hosts.HostManagerActivity;
 import org.xbmc.kore.utils.LogUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -135,40 +141,51 @@ public class NavigationDrawerFragment extends Fragment {
         HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
         String hostName = (hostInfo != null) ? hostInfo.getName() : getString(R.string.xbmc_media_center);
 
-        DrawerItem items[] = new DrawerItem[]{
-                new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName,
-                        styledAttributes.getResourceId(ACTIVITY_HOSTS, 0)),
-                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_REMOTE,
-                        getString(R.string.remote),
-                        styledAttributes.getResourceId(ACTIVITY_REMOTE, 0)),
-                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MOVIES,
-                        getString(R.string.movies),
-                        styledAttributes.getResourceId(ACTIVITY_MOVIES, 0)),
-                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_TVSHOWS,
-                        getString(R.string.tv_shows),
-                        styledAttributes.getResourceId(ACTIVITY_TVSHOWS, 0)),
-                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MUSIC,
-                        getString(R.string.music),
-                        styledAttributes.getResourceId(ACTIVITY_MUSIC, 0)),
-                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_PVR,
-                        getString(R.string.tv_radio),
-                        styledAttributes.getResourceId(ACTIVITY_PVR, 0)),
-                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,
-                        getString(R.string.files),
-                        styledAttributes.getResourceId(ACTIVITY_FILES, 0)),
-                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_ADDONS,
-                        getString(R.string.addons),
-                        styledAttributes.getResourceId(ACTIVITY_ADDONS, 0)),
-                new DrawerItem(), // Divider
-                new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_SETTINGS,
-                        getString(R.string.settings),
-                        styledAttributes.getResourceId(ACTIVITY_SETTINGS, 0)),
-        };
+        Set<String> shownItems = PreferenceManager
+                .getDefaultSharedPreferences(getActivity())
+                .getStringSet(Settings.KEY_PREF_NAV_DRAWER_ITEMS,
+                              new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.entry_values_nav_drawer_items))));
+
+        ArrayList<DrawerItem> items = new ArrayList<>(15);
+        items.add(new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName,
+                                 styledAttributes.getResourceId(ACTIVITY_HOSTS, 0)));
+        items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_REMOTE,
+                                 getString(R.string.remote),
+                                 styledAttributes.getResourceId(ACTIVITY_REMOTE, 0)));
+        if (shownItems.contains(String.valueOf(ACTIVITY_MOVIES)))
+            items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MOVIES,
+                                     getString(R.string.movies),
+                                     styledAttributes.getResourceId(ACTIVITY_MOVIES, 0)));
+        if (shownItems.contains(String.valueOf(ACTIVITY_TVSHOWS)))
+            items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_TVSHOWS,
+                                     getString(R.string.tv_shows),
+                                     styledAttributes.getResourceId(ACTIVITY_TVSHOWS, 0)));
+        if (shownItems.contains(String.valueOf(ACTIVITY_MUSIC)))
+            items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MUSIC,
+                                     getString(R.string.music),
+                                     styledAttributes.getResourceId(ACTIVITY_MUSIC, 0)));
+        if (shownItems.contains(String.valueOf(ACTIVITY_PVR)))
+            items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_PVR,
+                                     getString(R.string.tv_radio),
+                                     styledAttributes.getResourceId(ACTIVITY_PVR, 0)));
+        if (shownItems.contains(String.valueOf(ACTIVITY_FILES)))
+            items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,
+                                     getString(R.string.files),
+                                     styledAttributes.getResourceId(ACTIVITY_FILES, 0)));
+        if (shownItems.contains(String.valueOf(ACTIVITY_ADDONS)))
+            items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_ADDONS,
+                                     getString(R.string.addons),
+                                     styledAttributes.getResourceId(ACTIVITY_ADDONS, 0)));
+        items.add(new DrawerItem()); // Divider
+        items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_SETTINGS,
+                                 getString(R.string.settings),
+                                 styledAttributes.getResourceId(ACTIVITY_SETTINGS, 0)));
+
         styledAttributes.recycle();
         mDrawerListView.setAdapter(new DrawerItemAdapter(
                 getActivity(),
                 R.layout.list_item_navigation_drawer,
-                items));
+                items.toArray(new DrawerItem[items.size()])));
 
         return mDrawerListView;
     }

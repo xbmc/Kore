@@ -44,6 +44,13 @@
         android:title="@string/vibrate_on_remote"
         android:defaultValue="false"/>
 
+    <MultiSelectListPreference
+        android:key="pref_nav_drawer_items"
+        android:title="@string/nav_drawer_items"
+        android:entries="@array/entries_nav_drawer_items"
+        android:entryValues="@array/entry_values_nav_drawer_items"
+        android:defaultValue="@array/entry_values_nav_drawer_items"/>
+
     <Preference
         android:key="pref_about"
         android:title="@string/about"/>
