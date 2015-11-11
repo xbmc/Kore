@@ -19,7 +19,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -42,12 +41,14 @@ public class PVRActivity extends BaseActivity
 
     public static final String CHANNELGROUPID = "channel_group_id";
     public static final String CHANNELGROUPTITLE = "channel_group_title";
+    public static final String RETURNTOCHANNELGROUP = "return_to_channel_group";
 
     public static final String CHANNELID = "channel_id";
     public static final String CHANNELTITLE = "channel_title";
 
     private int selectedChannelGroupId = -1;
     private String selectedChannelGroupTitle = null;
+    private boolean returnToChannelGroupList = true;
 
     private int selectedChannelId = -1;
     private String selectedChannelTitle = null;
@@ -86,6 +87,7 @@ public class PVRActivity extends BaseActivity
         } else {
             selectedChannelGroupId = savedInstanceState.getInt(CHANNELGROUPID, -1);
             selectedChannelGroupTitle = savedInstanceState.getString(CHANNELGROUPTITLE, null);
+            returnToChannelGroupList = savedInstanceState.getBoolean(RETURNTOCHANNELGROUP, true);
 
             selectedChannelId = savedInstanceState.getInt(CHANNELID, -1);
             selectedChannelTitle = savedInstanceState.getString(CHANNELTITLE, null);
@@ -109,6 +111,7 @@ public class PVRActivity extends BaseActivity
         super.onSaveInstanceState(outState);
         outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
         outState.putString(CHANNELGROUPTITLE, selectedChannelGroupTitle);
+        outState.putBoolean(RETURNTOCHANNELGROUP, returnToChannelGroupList);
 
         outState.putInt(CHANNELID, selectedChannelId);
         outState.putString(CHANNELTITLE, selectedChannelTitle);
@@ -140,7 +143,7 @@ public class PVRActivity extends BaseActivity
                     setupActionBar(null);
                     getSupportFragmentManager().popBackStack();
                     return true;
-                } else if (selectedChannelGroupId != -1) {
+                } else if (returnToChannelGroupList && (selectedChannelGroupId != -1)) {
                     onBackPressed();
                     return true;
                 }
@@ -159,7 +162,7 @@ public class PVRActivity extends BaseActivity
             selectedChannelId = -1;
             selectedChannelTitle = null;
             setupActionBar(null);
-        } else if (selectedChannelGroupId != -1) {
+        } else if ((selectedChannelGroupId != -1) && returnToChannelGroupList) {
             selectedChannelGroupId = -1;
             selectedChannelGroupTitle = null;
             setupActionBar(null);
@@ -181,7 +184,7 @@ public class PVRActivity extends BaseActivity
         if (actionBar == null) return;
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (channelTitle != null) {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(false);
+            navigationDrawerFragment.setDrawerIndicatorEnabled(!returnToChannelGroupList);
             actionBar.setTitle(channelTitle);
         } else {
             navigationDrawerFragment.setDrawerIndicatorEnabled(true);
@@ -195,9 +198,10 @@ public class PVRActivity extends BaseActivity
      * @param channelGroupId Channel group selected
      * @param channelGroupTitle Title
      */
-    public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle) {
+    public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle, boolean canReturnToChannelGroupList) {
         selectedChannelGroupId = channelGroupId;
         selectedChannelGroupTitle = channelGroupTitle;
+        this.returnToChannelGroupList = canReturnToChannelGroupList;
 
         setupActionBar(selectedChannelGroupTitle);
     }

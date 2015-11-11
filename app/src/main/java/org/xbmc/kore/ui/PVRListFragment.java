@@ -57,7 +57,7 @@ public class PVRListFragment extends Fragment
     public static final String CHANNELGROUPID = "channel_group_id";
 
     public interface OnPVRSelectedListener {
-        public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle);
+        public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle, boolean canReturnToChannelGroupList);
         public void onChannelGuideSelected(int channelId, String channelTitle);
     }
 
@@ -195,10 +195,17 @@ public class PVRListFragment extends Fragment
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Got channel groups");
 
-                // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(getString(R.string.no_channel_groups_found_refresh));
-                setupChannelGroupsGridview(result);
-                swipeRefreshLayout.setRefreshing(false);
+                if (result.size() == 1) {
+                    // Single channel group, go directly to channel list
+                    selectedChannelGroupId = result.get(0).channelgroupid;
+                    listenerActivity.onChannelGroupSelected(selectedChannelGroupId, result.get(0).label, false);
+                    browseChannels(selectedChannelGroupId);
+                } else {
+                    // To prevent the empty text from appearing on the first load, set it now
+                    emptyView.setText(getString(R.string.no_channel_groups_found_refresh));
+                    setupChannelGroupsGridview(result);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
 
             @Override
@@ -236,7 +243,7 @@ public class PVRListFragment extends Fragment
                 ChannelGroupViewHolder tag = (ChannelGroupViewHolder) view.getTag();
                 selectedChannelGroupId = tag.channelGroupId;
                 // Notify the activity and show the channels
-                listenerActivity.onChannelGroupSelected(tag.channelGroupId, tag.channelGroupName);
+                listenerActivity.onChannelGroupSelected(tag.channelGroupId, tag.channelGroupName, true);
                 browseChannels(tag.channelGroupId);
             }
         });
