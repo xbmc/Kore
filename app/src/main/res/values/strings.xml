@@ -240,8 +240,8 @@
     <string name="no_genres_found_refresh">No genres found\n\nSwipe down to refresh</string>
     <string name="no_addons_found_refresh">No addons found or not connected\n\nSwipe down to refresh</string>
     <string name="no_music_videos_found_refresh">No videos found\n\nSwipe down to refresh</string>
-    <string name="no_channel_groups_found_refresh">No channel groups found or not connected\n\nSwipe down to refresh</string>
-    <string name="no_channels_found_refresh">No channel groups found or not connected\n\nSwipe down to refresh</string>
+    <string name="no_channel_groups_found_refresh">No channel groups found.\n\nSwipe down to refresh</string>
+    <string name="no_channels_found_refresh">No channels found.\n\nSwipe down to refresh</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_cast_info">No cast info to display</string>
 
@@ -342,5 +342,8 @@
     <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\nIf that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
     <string name="error_starting_channel">An error occurred starting channel playback: %1$s</string>
     <string name="channel_switching">Switching to channel %1$s</string>
+
+    <string name="tv">TV</string>
+    <string name="radio">Radio</string>
 
 </resources>
