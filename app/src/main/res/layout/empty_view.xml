@@ -23,5 +23,6 @@
           android:layout_gravity="center"
           android:gravity="center"
           android:visibility="gone"
+          android:padding="@dimen/default_padding"
           android:text="@string/loading"/>
 

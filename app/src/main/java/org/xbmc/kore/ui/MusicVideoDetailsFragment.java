@@ -195,7 +195,7 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
     }
 
     @Override
-    protected void onSyncProcessEnded(MediaSyncEvent event) {
+   protected void onSyncProcessEnded(MediaSyncEvent event) {
         if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
             getLoaderManager().restartLoader(LOADER_MUSIC_VIDEO, null, this);
         }

@@ -314,6 +314,7 @@
     <string name="show_notification">Show notification while playing</string>
     <string name="use_hardware_volume_keys">Use volume keys to control volume</string>
     <string name="vibrate_on_remote">Vibrate on remote button press</string>
+    <string name="nav_drawer_items">Side menu shortcuts</string>
 
     <string name="about">About</string>
     <string name="about_desc"><![CDATA[
@@ -339,6 +340,7 @@
     <string name="refresh">Refresh</string>
 
     <string name="error_getting_pvr_info">An error occurred while getting channels info: %1$s</string>
+    <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\nIf that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
     <string name="error_starting_channel">An error occurred starting channel playback: %1$s</string>
     <string name="channel_switching">Switching to channel %1$s</string>
 

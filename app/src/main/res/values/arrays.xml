@@ -41,4 +41,24 @@
         <!--<item>4</item>-->
     </string-array>
 
+    <!-- Navigation Drawer items -->
+    <string-array name="entries_nav_drawer_items">
+        <item>@string/movies</item>
+        <item>@string/tv_shows</item>
+        <item>@string/music</item>
+        <item>@string/tv_radio</item>
+        <item>@string/files</item>
+        <item>@string/addons</item>
+    </string-array>
+
+    <!-- CAUTION: Keep this synced with the entries ids in NavigationDrawerFragment.java -->
+    <string-array translatable="false" name="entry_values_nav_drawer_items">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
 </resources>

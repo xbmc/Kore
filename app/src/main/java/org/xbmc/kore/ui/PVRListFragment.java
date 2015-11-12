@@ -35,10 +35,10 @@ import android.widget.Toast;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
-import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -54,8 +54,10 @@ public class PVRListFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(PVRListFragment.class);
 
+    public static final String CHANNELGROUPID = "channel_group_id";
+
     public interface OnPVRSelectedListener {
-        public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle);
+        public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle, boolean canReturnToChannelGroupList);
         public void onChannelGuideSelected(int channelId, String channelTitle);
     }
 
@@ -88,6 +90,10 @@ public class PVRListFragment extends Fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
         ButterKnife.inject(this, root);
 
+        if (savedInstanceState != null) {
+            selectedChannelGroupId = savedInstanceState.getInt(CHANNELGROUPID);
+        }
+
         hostManager = HostManager.getInstance(getActivity());
 
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -103,15 +109,18 @@ public class PVRListFragment extends Fragment
         return root;
     }
 
-
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
 
-        if ((channelGroupAdapter == null) ||
-            (channelGroupAdapter.getCount() == 0))
-            browseChannelGroups();
+        if (selectedChannelGroupId == -1) {
+            if ((channelGroupAdapter == null) ||
+                (channelGroupAdapter.getCount() == 0))
+                browseChannelGroups();
+        } else {
+            browseChannels(selectedChannelGroupId);
+        }
     }
 
     @Override
@@ -138,6 +147,12 @@ public class PVRListFragment extends Fragment
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
     }
 
     /**
@@ -180,10 +195,17 @@ public class PVRListFragment extends Fragment
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Got channel groups");
 
-                // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(getString(R.string.no_channel_groups_found_refresh));
-                setupChannelGroupsGridview(result);
-                swipeRefreshLayout.setRefreshing(false);
+                if (result.size() == 1) {
+                    // Single channel group, go directly to channel list
+                    selectedChannelGroupId = result.get(0).channelgroupid;
+                    listenerActivity.onChannelGroupSelected(selectedChannelGroupId, result.get(0).label, false);
+                    browseChannels(selectedChannelGroupId);
+                } else {
+                    // To prevent the empty text from appearing on the first load, set it now
+                    emptyView.setText(getString(R.string.no_channel_groups_found_refresh));
+                    setupChannelGroupsGridview(result);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
 
             @Override
@@ -191,8 +213,11 @@ public class PVRListFragment extends Fragment
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting channel groups: " + description);
 
-                // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
+                if (errorCode == ApiException.API_ERROR) {
+                    emptyView.setText(String.format(getString(R.string.might_not_have_pvr), description));
+                } else {
+                    emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
+                }
                 Toast.makeText(getActivity(),
                                String.format(getString(R.string.error_getting_pvr_info), description),
                                Toast.LENGTH_SHORT).show();
@@ -218,7 +243,7 @@ public class PVRListFragment extends Fragment
                 ChannelGroupViewHolder tag = (ChannelGroupViewHolder) view.getTag();
                 selectedChannelGroupId = tag.channelGroupId;
                 // Notify the activity and show the channels
-                listenerActivity.onChannelGroupSelected(tag.channelGroupId, tag.channelGroupName);
+                listenerActivity.onChannelGroupSelected(tag.channelGroupId, tag.channelGroupName, true);
                 browseChannels(tag.channelGroupId);
             }
         });

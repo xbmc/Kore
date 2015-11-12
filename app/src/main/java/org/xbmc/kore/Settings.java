@@ -17,6 +17,8 @@ package org.xbmc.kore;
 
 import android.text.format.DateUtils;
 
+import java.util.Set;
+
 /**
  * Interface that contains various constants and the keys for settings stored in shared preferences
  */
@@ -96,4 +98,5 @@ public interface Settings {
     public static final String KEY_PREF_CHECKED_EVENT_SERVER_CONNECTION = "checked_event_server_connection";
     public static final boolean DEFAULT_PREF_CHECKED_EVENT_SERVER_CONNECTION = false;
 
+    public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
 }

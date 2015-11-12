@@ -67,9 +67,7 @@ public class SettingsFragment extends PreferenceFragment
         // Update summaries
         setupPreferences();
 
-        if (key.equals(Settings.KEY_PREF_THEME)) {
-            //String newTheme = sharedPreferences.getString(key, DEFAULT_PREF_THEME);
-
+        if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.KEY_PREF_NAV_DRAWER_ITEMS)) {
             // Explicitly clear cache of resource ids that is maintained in the activity
             UIUtils.playPauseIconsLoaded = false;
 

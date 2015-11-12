@@ -455,9 +455,6 @@ public class UIUtils {
      * @param layout
      */
     public static void showRefreshAnimation(@NonNull final SwipeRefreshLayout layout) {
-        /**
-         *
-         */
         layout.post(new Runnable() {
             @Override
             public void run() {
