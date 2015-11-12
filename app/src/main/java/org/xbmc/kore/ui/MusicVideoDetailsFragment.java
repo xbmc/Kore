@@ -185,8 +185,6 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
 
         // Start the loaders
         getLoaderManager().initLoader(LOADER_MUSIC_VIDEO, null, this);
-
-        setHasOptionsMenu(false);
     }
 
     @Override
