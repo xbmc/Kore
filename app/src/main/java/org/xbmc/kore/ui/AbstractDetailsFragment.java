@@ -115,12 +115,12 @@ abstract public class AbstractDetailsFragment extends Fragment
     }
 
     @Override
-
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
+    @Override
     public void onStart() {
         super.onStart();
         serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
@@ -138,6 +138,7 @@ abstract public class AbstractDetailsFragment extends Fragment
         super.onPause();
     }
 
+    @Override
     public void onStop() {
         super.onStop();
         SyncUtils.disconnectFromLibrarySyncService(getActivity(), serviceConnection);
