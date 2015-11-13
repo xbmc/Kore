@@ -17,16 +17,29 @@ package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
+import android.transition.ChangeImageTransform;
+import android.transition.ChangeTransform;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
@@ -67,10 +80,15 @@ public class MoviesActivity extends BaseActivity
 
             // Setup animations
             if (Utils.isLollipopOrLater()) {
-                movieListFragment.setExitTransition(null);
+                //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
+                Fade fade = new Fade();
+                fade.setDuration(50);
+                movieListFragment.setExitTransition(fade);
                 movieListFragment.setReenterTransition(TransitionInflater
                         .from(this)
                         .inflateTransition(android.R.transition.fade));
+                movieListFragment.setSharedElementReturnTransition(TransitionInflater.from(
+                        this).inflateTransition(R.transition.change_image));
             }
             getSupportFragmentManager()
                     .beginTransaction()
@@ -168,31 +186,42 @@ public class MoviesActivity extends BaseActivity
     /**
      * Callback from movielist fragment when a movie is selected.
      * Switch fragment in portrait
-     * @param movieId Movie selected
-     * @param movieTitle Title
+     * @param vh ViewHolder holding movie info of item clicked
      */
     @TargetApi(21)
-    public void onMovieSelected(int movieId, String movieTitle) {
-        selectedMovieId = movieId;
-        selectedMovieTitle = movieTitle;
-
-        MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(movieId);
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+    public void onMovieSelected(MovieListFragment.ViewHolder vh) {
+        selectedMovieTitle = vh.movieTitle;
+        selectedMovieId = vh.movieId;
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
+            MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(vh);
+            FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+
             movieDetailsFragment.setEnterTransition(TransitionInflater
                     .from(this)
                     .inflateTransition(R.transition.media_details));
-            movieDetailsFragment.setReturnTransition(null);
+
+            movieDetailsFragment.setSharedElementReturnTransition(TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image));
+            movieDetailsFragment.setSharedElementEnterTransition(TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image));
+
+            fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
+                    .addToBackStack(null)
+                    .addSharedElement(vh.artView, vh.artView.getTransitionName())
+                    .commit();
         } else {
+            MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(vh);
+            FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
                     R.anim.fragment_list_popenter, 0);
+            fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
 
-        fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
-                .addToBackStack(null)
-                .commit();
         setupActionBar(selectedMovieTitle);
     }
 }

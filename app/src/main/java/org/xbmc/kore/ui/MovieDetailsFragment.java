@@ -44,6 +44,8 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+import com.squareup.okhttp.internal.Util;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -75,6 +77,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
     private static final String TAG = LogUtils.makeLogTag(MovieDetailsFragment.class);
 
     public static final String MOVIEID = "movie_id";
+    public static final String POSTER_TRANS_NAME = "POSTER_TRANS_NAME";
 
     // Loader IDs
     private static final int LOADER_MOVIE = 0,
@@ -129,11 +132,16 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
     /**
      * Create a new instance of this, initialized to show the movie movieId
      */
-    public static MovieDetailsFragment newInstance(int movieId) {
+    public static MovieDetailsFragment newInstance(MovieListFragment.ViewHolder vh) {
         MovieDetailsFragment fragment = new MovieDetailsFragment();
 
         Bundle args = new Bundle();
-        args.putInt(MOVIEID, movieId);
+        args.putInt(MOVIEID, vh.movieId);
+
+        if( Utils.isLollipopOrLater()) {
+            args.putString(POSTER_TRANS_NAME, vh.artView.getTransitionName());
+        }
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -166,6 +174,10 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
 
         FloatingActionButton fab = (FloatingActionButton)fabButton;
         fab.attachToScrollView((ObservableScrollView) mediaPanel);
+
+        if(Utils.isLollipopOrLater()) {
+            mediaPoster.setTransitionName(getArguments().getString(POSTER_TRANS_NAME));
+        }
 
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
@@ -209,7 +221,17 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
     public void onResume() {
         // Force the exit view to invisible
         exitTransitionView.setVisibility(View.INVISIBLE);
+
+        //As we make mediaPoster invisible in onStop() we need to make it visible here.
+        mediaPoster.setVisibility(View.VISIBLE);
         super.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        //TODO: for some reason poster is included in the bottom slide animation, by making it invisible it is not noticeable for the user
+        mediaPoster.setVisibility(View.INVISIBLE);
+        super.onStop();
     }
 
     @Override
