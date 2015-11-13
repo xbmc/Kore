@@ -17,12 +17,17 @@ package org.xbmc.kore.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiException;
@@ -57,6 +63,7 @@ public class PVRListFragment extends Fragment
     public static final String CHANNELGROUPID = "channel_group_id";
 
     public interface OnPVRSelectedListener {
+        public void onChannelTypeSelected(String channelType);
         public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle, boolean canReturnToChannelGroupList);
         public void onChannelGuideSelected(int channelId, String channelTitle);
     }
@@ -79,6 +86,7 @@ public class PVRListFragment extends Fragment
     private ChannelAdapter channelAdapter = null;
 
     private int selectedChannelGroupId = -1;
+    private String selectedChannelType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +101,9 @@ public class PVRListFragment extends Fragment
         if (savedInstanceState != null) {
             selectedChannelGroupId = savedInstanceState.getInt(CHANNELGROUPID);
         }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        selectedChannelType = preferences.getString(Settings.KEY_PREF_PVR_LIST_CHANNEL_TYPE, Settings.DEFAULT_PREF_PVR_LIST_CHANNEL_TYPE);
 
         hostManager = HostManager.getInstance(getActivity());
 
@@ -112,7 +123,7 @@ public class PVRListFragment extends Fragment
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
 
         if (selectedChannelGroupId == -1) {
             if ((channelGroupAdapter == null) ||
@@ -155,6 +166,47 @@ public class PVRListFragment extends Fragment
         outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
     }
 
+    public static String getChannelTypeTitle(Context context, String ChannelType) {
+        return (ChannelType.equals(PVRType.ChannelType.TV)) ?
+                context.getResources().getString(R.string.tv) :
+                context.getResources().getString(R.string.radio);
+    }
+
+    private void setupChannelTypeMenuItem(MenuItem item, String channelType) {
+        item.setTitle(getChannelTypeTitle(getActivity(), channelType));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.pvr_list, menu);
+
+        String switchChannelType = (selectedChannelType.equals(PVRType.ChannelType.TV)) ?
+                PVRType.ChannelType.RADIO : PVRType.ChannelType.TV;
+        setupChannelTypeMenuItem(menu.findItem(R.id.action_switch_channel_type), switchChannelType);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        switch (item.getItemId()) {
+            case R.id.action_switch_channel_type:
+                selectedChannelType = (selectedChannelType.equals(PVRType.ChannelType.TV)) ?
+                        PVRType.ChannelType.RADIO : PVRType.ChannelType.TV;
+                preferences.edit()
+                           .putString(Settings.KEY_PREF_PVR_LIST_CHANNEL_TYPE, selectedChannelType)
+                           .apply();
+                setupChannelTypeMenuItem(item, selectedChannelType);
+                browseChannelGroups();
+                listenerActivity.onChannelTypeSelected(selectedChannelType);
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * Swipe refresh layout callback
      */
@@ -186,9 +238,8 @@ public class PVRListFragment extends Fragment
      * Get the channel groups list and setup the gridview
      */
     private void browseChannelGroups() {
-        // TODO: Make the channel type selectable
         LogUtils.LOGD(TAG, "Getting channel groups");
-        PVR.GetChannelGroups action = new PVR.GetChannelGroups(PVRType.ChannelType.TV);
+        PVR.GetChannelGroups action = new PVR.GetChannelGroups(selectedChannelType);
         action.execute(hostManager.getConnection(), new ApiCallback<List<PVRType.DetailsChannelGroup>>() {
             @Override
             public void onSuccess(List<PVRType.DetailsChannelGroup> result) {

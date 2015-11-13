@@ -17,6 +17,7 @@
 package org.xbmc.kore.ui;
 
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,13 +36,15 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.service.LibrarySyncService;
+import org.xbmc.kore.service.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 import de.greenrobot.event.EventBus;
 
 abstract public class AbstractDetailsFragment extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener {
+        implements SwipeRefreshLayout.OnRefreshListener,
+        SyncUtils.OnServiceListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractDetailsFragment.class);
 
     private HostManager hostManager;
@@ -50,6 +53,8 @@ abstract public class AbstractDetailsFragment extends Fragment
     private String syncType;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private ServiceConnection serviceConnection;
 
     abstract protected View createView(LayoutInflater inflater, ViewGroup container);
 
@@ -110,9 +115,15 @@ abstract public class AbstractDetailsFragment extends Fragment
     }
 
     @Override
+
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    public void onStart() {
+        super.onStart();
+        serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
     }
 
     @Override
@@ -127,6 +138,11 @@ abstract public class AbstractDetailsFragment extends Fragment
         super.onPause();
     }
 
+    public void onStop() {
+        super.onStop();
+        SyncUtils.disconnectFromLibrarySyncService(getActivity(), serviceConnection);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.refresh_item, menu);
@@ -135,7 +151,7 @@ abstract public class AbstractDetailsFragment extends Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_refresh:
                 onRefresh();
         }
@@ -213,6 +229,22 @@ abstract public class AbstractDetailsFragment extends Fragment
                     String.format(getString(R.string.error_while_syncing), event.errorMessage) :
                     getString(R.string.unable_to_connect_to_xbmc);
             Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onServiceConnected(LibrarySyncService librarySyncService) {
+        if (syncType == null)
+            return;
+
+        if (SyncUtils.isLibrarySyncing(
+                librarySyncService,
+                HostManager.getInstance(getActivity()).getHostInfo(),
+                syncType)) {
+            if (swipeRefreshLayout != null) {
+                UIUtils.showRefreshAnimation(swipeRefreshLayout);
+            }
+            return;
         }
     }
 
