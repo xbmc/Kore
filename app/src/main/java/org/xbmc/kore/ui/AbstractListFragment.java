@@ -28,6 +28,9 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -131,6 +134,21 @@ public abstract class AbstractListFragment extends Fragment
 	public void onStop() {
 		super.onStop();
 		SyncUtils.disconnectFromLibrarySyncService(getActivity(), serviceConnection);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.refresh_item, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.action_refresh:
+				onRefresh();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**

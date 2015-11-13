@@ -195,8 +195,6 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
         // Start the loaders
         getLoaderManager().initLoader(LOADER_EPISODE, null, this);
 //        getLoaderManager().initLoader(LOADER_CAST, null, this);
-
-        setHasOptionsMenu(false);
     }
 
     @Override
