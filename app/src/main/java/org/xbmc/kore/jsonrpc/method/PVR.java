@@ -145,6 +145,48 @@ public class PVR {
         }
     }
 
+
+    /**
+     * Retrieves the recordings
+     */
+    public static class GetRecordings extends ApiMethod<List<PVRType.DetailsRecording>> {
+        public final static String METHOD_NAME = "PVR.GetRecordings";
+        private final static String LIST_NODE = "recordings";
+
+        /**
+         * Retrieves the recordings
+         *
+         * @param properties Properties to retrieve. See {@link PVRType.FieldsRecording} for a list of
+         *                   accepted values
+         */
+        public GetRecordings(String... properties) {
+            super();
+            addParameterToRequest("properties", properties);
+        }
+
+        @Override
+        public String getMethodName() {
+            return METHOD_NAME;
+        }
+
+        @Override
+        public List<PVRType.DetailsRecording> resultFromJson(ObjectNode jsonObject)
+                throws ApiException {
+            JsonNode resultNode = jsonObject.get(RESULT_NODE);
+            ArrayNode items = resultNode.has(LIST_NODE) ?
+                    (ArrayNode)resultNode.get(LIST_NODE) : null;
+            if (items == null) {
+                return new ArrayList<>(0);
+            }
+            ArrayList<PVRType.DetailsRecording> result = new ArrayList<>(items.size());
+
+            for (JsonNode item : items) {
+                result.add(new PVRType.DetailsRecording(item));
+            }
+
+            return result;
+        }
+    }
     /**
      * Toggle recording of a channel
      */

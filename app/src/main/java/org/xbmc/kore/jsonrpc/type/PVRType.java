@@ -208,4 +208,98 @@ public class PVRType {
         }
     }
 
+    /**
+     * Enums for PVR.Fields.Recording
+     */
+    public interface FieldsRecording {
+
+        String TITLE = "title";
+        String PLOT = "plot";
+        String PLOTOUTLINE = "plotoutline";
+        String GENRE = "genre";
+        String PLAYCOUNT = "playcount";
+        String RESUME = "resume";
+        String CHANNEL = "channel";
+        String STARTTIME = "starttime";
+        String ENDTIME = "endtime";
+        String RUNTIME = "runtime";
+        String LIFETIME = "lifetime";
+        String ICON = "icon";
+        String ART = "art";
+        String STREAMURL = "streamurl";
+        String FILE = "file";
+        String DIRECTORY = "directory";
+
+        public final static String[] allValues = new String[] {
+                TITLE, PLOT, PLOTOUTLINE, GENRE, PLAYCOUNT, RESUME, CHANNEL, STARTTIME, ENDTIME, RUNTIME,
+                LIFETIME, ICON, ART, STREAMURL, FILE, DIRECTORY
+        };
+    }
+
+    /**
+     * PVR.Details.Recording
+     */
+    public static class DetailsRecording extends ItemType.DetailsBase {
+        public static final String ART = "art";
+        public static final String CHANNEL = "channel";
+        public static final String DIRECTORY = "directory";
+        public static final String ENDTIME = "endtime";
+        public static final String FILE = "file";
+        public static final String GENRE = "genre";
+        public static final String ICON = "icon";
+        public static final String LIFETIME = "lifetime";
+        public static final String PLAYCOUNT = "playcount";
+        public static final String PLOT = "plot";
+        public static final String PLOTOUTLINE = "plotoutline";
+        public static final String RECORDINGID = "recordingid";
+        public static final String RESUME = "resume";
+        public static final String RUNTIME = "runtime";
+        public static final String STARTTIME = "starttime";
+        public static final String STREAMURL = "streamurl";
+        public static final String TITLE = "title";
+
+        public final MediaType.Artwork art;
+        public final String channel;
+        public final String directory;
+        public final String endtime;
+        public final String file;
+        public final String genre;
+        public final String icon;
+        public final int lifetime;
+        public final int playcount;
+        public final String plot;
+        public final String plotoutline;
+        public final int recordingid;
+        public final VideoType.Resume resume;
+        public final int runtime;
+        public final String starttime;
+        public final String streamurl;
+        public final String title;
+
+        /**
+         * Constructor
+         * @param node JSON object representing a Detail object
+         */
+        public DetailsRecording(JsonNode node) {
+            super(node);
+            art = node.has(ART) ? new MediaType.Artwork(node.get(ART)) : null;
+            channel = JsonUtils.stringFromJsonNode(node, CHANNEL);
+            directory = JsonUtils.stringFromJsonNode(node, DIRECTORY);
+            endtime = JsonUtils.stringFromJsonNode(node, ENDTIME);
+            file = JsonUtils.stringFromJsonNode(node, FILE);
+            genre = JsonUtils.stringFromJsonNode(node, GENRE);
+            icon = JsonUtils.stringFromJsonNode(node, ICON);
+            lifetime = JsonUtils.intFromJsonNode(node, LIFETIME, 0);
+            playcount = JsonUtils.intFromJsonNode(node, PLAYCOUNT, 0);
+            plot = JsonUtils.stringFromJsonNode(node, PLOT);
+            plotoutline = JsonUtils.stringFromJsonNode(node, PLOTOUTLINE);
+            recordingid = JsonUtils.intFromJsonNode(node, RECORDINGID, 0);
+            resume = node.has(RESUME) ? new VideoType.Resume(node.get(RESUME)) : null;
+            runtime = JsonUtils.intFromJsonNode(node, RUNTIME, 0);
+            starttime = JsonUtils.stringFromJsonNode(node, STARTTIME);
+            streamurl = JsonUtils.stringFromJsonNode(node, STREAMURL);
+            title = JsonUtils.stringFromJsonNode(node, TITLE);
+        }
+    }
+
 }
