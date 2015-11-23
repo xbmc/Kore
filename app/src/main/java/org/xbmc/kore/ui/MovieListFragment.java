@@ -288,18 +288,22 @@ public class MovieListFragment extends AbstractListFragment {
             viewHolder.movieId = cursor.getInt(MovieListQuery.MOVIEID);
             viewHolder.movieTitle = cursor.getString(MovieListQuery.TITLE);
             viewHolder.movieTagline = cursor.getString(MovieListQuery.TAGLINE);
+            viewHolder.movieYear = cursor.getInt(MovieListQuery.YEAR);
+            viewHolder.movieRating = cursor.getDouble(MovieListQuery.RATING);
 
             viewHolder.titleView.setText(viewHolder.movieTitle);
-            String details = TextUtils.isEmpty(cursor.getString(MovieListQuery.TAGLINE)) ?
-                    cursor.getString(MovieListQuery.GENRES) :
-                    cursor.getString(MovieListQuery.TAGLINE);
+
+            viewHolder.movieGenres = cursor.getString(MovieListQuery.GENRES);
+            String details = TextUtils.isEmpty(viewHolder.movieTagline) ?
+                    viewHolder.movieGenres :
+                    viewHolder.movieTagline;
             viewHolder.detailsView.setText(details);
 //            viewHolder.yearView.setText(String.valueOf(cursor.getInt(MovieListQuery.YEAR)));
-            int runtime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
-            String duration =  runtime > 0 ?
-                    String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                            "  |  " + String.valueOf(cursor.getInt(MovieListQuery.YEAR)) :
-                    String.valueOf(cursor.getInt(MovieListQuery.YEAR));
+            viewHolder.movieRuntime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
+            String duration =  viewHolder.movieRuntime > 0 ?
+                    String.format(context.getString(R.string.minutes_abbrev), String.valueOf(viewHolder.movieRuntime)) +
+                            "  |  " + viewHolder.movieYear :
+                    String.valueOf(viewHolder.movieYear);
             viewHolder.durationView.setText(duration);
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                     cursor.getString(MovieListQuery.THUMBNAIL), viewHolder.movieTitle,
@@ -324,5 +328,9 @@ public class MovieListFragment extends AbstractListFragment {
         int movieId;
         String movieTitle;
         String movieTagline;
+        int movieYear;
+        int movieRuntime;
+        String movieGenres;
+        double movieRating;
     }
 }

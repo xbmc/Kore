@@ -81,7 +81,10 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
     public static final String BUNDLE_KEY_MOVIEPLOT = "movie_plot";
     public static final String BUNDLE_KEY_MOVIEID = "movie_id";
     public static final String POSTER_TRANS_NAME = "POSTER_TRANS_NAME";
-
+    public static final String BUNDLE_KEY_MOVIEGENRES = "movie_genres";
+    public static final String BUNDLE_KEY_MOVIEYEAR = "movie_year";
+    public static final String BUNDLE_KEY_MOVIERUNTIME = "movie_runtime";
+    public static final String BUNDLE_KEY_MOVIERATING = "movie_rating";
     // Loader IDs
     private static final int LOADER_MOVIE = 0,
             LOADER_CAST = 1;
@@ -143,7 +146,10 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         args.putInt(BUNDLE_KEY_MOVIEID, vh.movieId);
         args.putString(BUNDLE_KEY_MOVIETITLE, vh.movieTitle);
         args.putString(BUNDLE_KEY_MOVIEPLOT, vh.movieTagline);
-
+        args.putString(BUNDLE_KEY_MOVIEGENRES, vh.movieGenres);
+        args.putInt(BUNDLE_KEY_MOVIEYEAR, vh.movieYear);
+        args.putInt(BUNDLE_KEY_MOVIERUNTIME, vh.movieRuntime);
+        args.putDouble(BUNDLE_KEY_MOVIERATING, vh.movieRating);
         if( Utils.isLollipopOrLater()) {
             args.putString(POSTER_TRANS_NAME, vh.artView.getTransitionName());
         }
@@ -155,7 +161,8 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
     @TargetApi(21)
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        movieId = getArguments().getInt(BUNDLE_KEY_MOVIEID, -1);
+        Bundle bundle = getArguments();
+        movieId = bundle.getInt(BUNDLE_KEY_MOVIEID, -1);
 
         if (movieId == -1) {
             // There's nothing to show
@@ -186,8 +193,11 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
             mediaPoster.setTransitionName(getArguments().getString(POSTER_TRANS_NAME));
         }
 
-        mediaTitle.setText(getArguments().getString(BUNDLE_KEY_MOVIETITLE));
-        mediaUndertitle.setText(getArguments().getString(BUNDLE_KEY_MOVIEPLOT));
+        mediaTitle.setText(bundle.getString(BUNDLE_KEY_MOVIETITLE));
+        mediaUndertitle.setText(bundle.getString(BUNDLE_KEY_MOVIEPLOT));
+        mediaGenres.setText(bundle.getString(BUNDLE_KEY_MOVIEGENRES));
+        setMediaYear(bundle.getInt(BUNDLE_KEY_MOVIERUNTIME), bundle.getInt(BUNDLE_KEY_MOVIEYEAR));
+        setMediaRating(bundle.getDouble(BUNDLE_KEY_MOVIERATING));
 
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
@@ -489,12 +499,8 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         mediaTitle.setText(movieTitle);
         mediaUndertitle.setText(cursor.getString(MovieDetailsQuery.TAGLINE));
 
-        int runtime = cursor.getInt(MovieDetailsQuery.RUNTIME) / 60;
-        String durationYear =  runtime > 0 ?
-                String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                        "  |  " + String.valueOf(cursor.getInt(MovieDetailsQuery.YEAR)) :
-                String.valueOf(cursor.getInt(MovieDetailsQuery.YEAR));
-        mediaYear.setText(durationYear);
+        setMediaYear(cursor.getInt(MovieDetailsQuery.RUNTIME) / 60, cursor.getInt(MovieDetailsQuery.YEAR));
+
         mediaGenres.setText(cursor.getString(MovieDetailsQuery.GENRES));
 
         double rating = cursor.getDouble(MovieDetailsQuery.RATING);
@@ -502,8 +508,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
             mediaRating.setVisibility(View.VISIBLE);
             mediaMaxRating.setVisibility(View.VISIBLE);
             mediaRatingVotes.setVisibility(View.VISIBLE);
-            mediaRating.setText(String.format("%01.01f", rating));
-            mediaMaxRating.setText(getString(R.string.max_rating_video));
+            setMediaRating(rating);
             String votes = cursor.getString(MovieDetailsQuery.VOTES);
             mediaRatingVotes.setText((TextUtils.isEmpty(votes)) ?
                     "" : String.format(getString(R.string.votes), votes));
@@ -553,6 +558,19 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         } else {
             downloadButton.clearColorFilter();
         }
+    }
+
+    private void setMediaRating(double rating) {
+        mediaRating.setText(String.format("%01.01f", rating));
+        mediaMaxRating.setText(getString(R.string.max_rating_video));
+    }
+
+    private void setMediaYear(int runtime, int year) {
+        String durationYear =  runtime > 0 ?
+                String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                        "  |  " + year :
+                String.valueOf(year);
+        mediaYear.setText(durationYear);
     }
 
     private void setupSeenButton(int playcount) {
