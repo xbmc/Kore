@@ -193,6 +193,8 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
 //        mediaPanel.setClipToPadding(false);
 
+        //Disable download button until loader has finished and download info is available
+        downloadButton.setEnabled(false);
         return root;
     }
 
@@ -539,7 +541,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
                 movieTitle, cursor.getString(MovieDetailsQuery.FILE));
 
         // Check if downloaded file exists
-        downloadButton.setVisibility(View.VISIBLE);
+        downloadButton.setEnabled(true);
         if (movieDownloadInfo.downloadFileExists()) {
             Resources.Theme theme = getActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
