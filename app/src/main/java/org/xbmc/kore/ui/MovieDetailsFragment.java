@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -132,6 +133,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
     /**
      * Create a new instance of this, initialized to show the movie movieId
      */
+    @TargetApi(21)
     public static MovieDetailsFragment newInstance(MovieListFragment.ViewHolder vh) {
         MovieDetailsFragment fragment = new MovieDetailsFragment();
 
@@ -146,6 +148,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         return fragment;
     }
 
+    @TargetApi(21)
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         movieId = getArguments().getInt(MOVIEID, -1);
@@ -221,7 +224,6 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
     public void onResume() {
         // Force the exit view to invisible
         exitTransitionView.setVisibility(View.INVISIBLE);
-
         //As we make mediaPoster invisible in onStop() we need to make it visible here.
         mediaPoster.setVisibility(View.VISIBLE);
         super.onResume();

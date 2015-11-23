@@ -19,6 +19,7 @@
     <fade>
         <targets>
             <target android:excludeId="@id/media_panel_group"/>
+            <target android:excludeId="@id/fab"/>
         </targets>
     </fade>
     <!--<slide android:slideEdge="top">-->

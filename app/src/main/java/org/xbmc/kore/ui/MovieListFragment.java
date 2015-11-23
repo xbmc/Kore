@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -278,6 +279,7 @@ public class MovieListFragment extends AbstractListFragment {
         }
 
         /** {@inheritDoc} */
+        @TargetApi(21)
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
