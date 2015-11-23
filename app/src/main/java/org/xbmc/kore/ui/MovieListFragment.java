@@ -287,6 +287,7 @@ public class MovieListFragment extends AbstractListFragment {
             // Save the movie id
             viewHolder.movieId = cursor.getInt(MovieListQuery.MOVIEID);
             viewHolder.movieTitle = cursor.getString(MovieListQuery.TITLE);
+            viewHolder.movieTagline = cursor.getString(MovieListQuery.TAGLINE);
 
             viewHolder.titleView.setText(viewHolder.movieTitle);
             String details = TextUtils.isEmpty(cursor.getString(MovieListQuery.TAGLINE)) ?
@@ -307,7 +308,6 @@ public class MovieListFragment extends AbstractListFragment {
             if(Utils.isLollipopOrLater()) {
                 viewHolder.artView.setTransitionName("a"+viewHolder.movieId);
             }
-
         }
     }
 
@@ -323,5 +323,6 @@ public class MovieListFragment extends AbstractListFragment {
 
         int movieId;
         String movieTitle;
+        String movieTagline;
     }
 }

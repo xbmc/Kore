@@ -77,7 +77,9 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(MovieDetailsFragment.class);
 
-    public static final String MOVIEID = "movie_id";
+    public static final String BUNDLE_KEY_MOVIETITLE = "movie_title";
+    public static final String BUNDLE_KEY_MOVIEPLOT = "movie_plot";
+    public static final String BUNDLE_KEY_MOVIEID = "movie_id";
     public static final String POSTER_TRANS_NAME = "POSTER_TRANS_NAME";
 
     // Loader IDs
@@ -138,7 +140,9 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         MovieDetailsFragment fragment = new MovieDetailsFragment();
 
         Bundle args = new Bundle();
-        args.putInt(MOVIEID, vh.movieId);
+        args.putInt(BUNDLE_KEY_MOVIEID, vh.movieId);
+        args.putString(BUNDLE_KEY_MOVIETITLE, vh.movieTitle);
+        args.putString(BUNDLE_KEY_MOVIEPLOT, vh.movieTagline);
 
         if( Utils.isLollipopOrLater()) {
             args.putString(POSTER_TRANS_NAME, vh.artView.getTransitionName());
@@ -151,7 +155,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
     @TargetApi(21)
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        movieId = getArguments().getInt(MOVIEID, -1);
+        movieId = getArguments().getInt(BUNDLE_KEY_MOVIEID, -1);
 
         if (movieId == -1) {
             // There's nothing to show
@@ -181,6 +185,9 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         if(Utils.isLollipopOrLater()) {
             mediaPoster.setTransitionName(getArguments().getString(POSTER_TRANS_NAME));
         }
+
+        mediaTitle.setText(getArguments().getString(BUNDLE_KEY_MOVIETITLE));
+        mediaUndertitle.setText(getArguments().getString(BUNDLE_KEY_MOVIEPLOT));
 
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
