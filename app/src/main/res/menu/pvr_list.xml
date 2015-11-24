@@ -15,9 +15,28 @@
    limitations under the License.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_switch_channel_type"
-        android:title="@string/tv"
-        android:orderInCategory="1"
-        app:showAsAction="never" />
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="@string/tv_radio"
+          android:orderInCategory="1"
+          android:icon="@drawable/ic_dvr_24dp"
+          app:showAsAction="ifRoom">
+        <menu>
+            <group android:checkableBehavior="single"
+                   android:orderInCategory="1">
+                <item android:id="@+id/action_pvr_list_tv_channels"
+                      android:title="@string/tv_channels"
+                      android:orderInCategory="1"
+                      app:showAsAction="ifRoom" />
+                <item android:id="@+id/action_pvr_list_radio_channels"
+                      android:title="@string/radio_channels"
+                      android:orderInCategory="2"
+                      app:showAsAction="ifRoom" />
+                <item android:id="@+id/action_pvr_list_recordings"
+                      android:title="@string/recordings"
+                      android:orderInCategory="3"
+                      app:showAsAction="ifRoom" />
+            </group>
+        </menu>
+    </item>
 </menu>

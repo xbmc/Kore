@@ -63,7 +63,7 @@ public class PVRListFragment extends Fragment
     public static final String CHANNELGROUPID = "channel_group_id";
 
     public interface OnPVRSelectedListener {
-        public void onChannelTypeSelected(String channelType);
+        public void onListTypeChanged(int listType);
         public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle, boolean canReturnToChannelGroupList);
         public void onChannelGuideSelected(int channelId, String channelTitle);
     }
@@ -84,9 +84,14 @@ public class PVRListFragment extends Fragment
 
     private ChannelGroupAdapter channelGroupAdapter = null;
     private ChannelAdapter channelAdapter = null;
+    private RecordingsAdapter recordingsAdapter = null;
 
     private int selectedChannelGroupId = -1;
-    private String selectedChannelType;
+
+    public static final int LIST_TV_CHANNELS = 0,
+            LIST_RADIO_CHANNELS = 1,
+            LIST_RECORDINGS = 2;
+    private int currentListType = LIST_TV_CHANNELS;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,7 +108,7 @@ public class PVRListFragment extends Fragment
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        selectedChannelType = preferences.getString(Settings.KEY_PREF_PVR_LIST_CHANNEL_TYPE, Settings.DEFAULT_PREF_PVR_LIST_CHANNEL_TYPE);
+        currentListType = preferences.getInt(Settings.KEY_PREF_PVR_LIST_TYPE, Settings.DEFAULT_PREF_PVR_LIST_TYPE);
 
         hostManager = HostManager.getInstance(getActivity());
 
@@ -125,12 +130,16 @@ public class PVRListFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
 
-        if (selectedChannelGroupId == -1) {
-            if ((channelGroupAdapter == null) ||
-                (channelGroupAdapter.getCount() == 0))
-                browseChannelGroups();
+        if (currentListType == LIST_RECORDINGS) {
+            browseRecordings();
         } else {
-            browseChannels(selectedChannelGroupId);
+            if (selectedChannelGroupId == -1) {
+                if ((channelGroupAdapter == null) ||
+                    (channelGroupAdapter.getCount() == 0))
+                    browseChannelGroups();
+            } else {
+                browseChannels(selectedChannelGroupId);
+            }
         }
     }
 
@@ -166,23 +175,33 @@ public class PVRListFragment extends Fragment
         outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
     }
 
-    public static String getChannelTypeTitle(Context context, String ChannelType) {
-        return (ChannelType.equals(PVRType.ChannelType.TV)) ?
-                context.getResources().getString(R.string.tv) :
-                context.getResources().getString(R.string.radio);
-    }
-
-    private void setupChannelTypeMenuItem(MenuItem item, String channelType) {
-        item.setTitle(getChannelTypeTitle(getActivity(), channelType));
+    public static String getPVRListTypeTitle(Context context, int listType) {
+        switch (listType) {
+            case LIST_TV_CHANNELS:
+                return context.getResources().getString(R.string.tv);
+            case LIST_RADIO_CHANNELS:
+                return context.getResources().getString(R.string.radio);
+            case LIST_RECORDINGS:
+                return context.getResources().getString(R.string.recordings);
+        }
+        return null;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.pvr_list, menu);
 
-        String switchChannelType = (selectedChannelType.equals(PVRType.ChannelType.TV)) ?
-                PVRType.ChannelType.RADIO : PVRType.ChannelType.TV;
-        setupChannelTypeMenuItem(menu.findItem(R.id.action_switch_channel_type), switchChannelType);
+        switch (currentListType) {
+            case LIST_TV_CHANNELS:
+                menu.findItem(R.id.action_pvr_list_tv_channels).setChecked(true);
+                break;
+            case LIST_RADIO_CHANNELS:
+                menu.findItem(R.id.action_pvr_list_radio_channels).setChecked(true);
+                break;
+            case LIST_RECORDINGS:
+                menu.findItem(R.id.action_pvr_list_recordings).setChecked(true);
+                break;
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -190,19 +209,25 @@ public class PVRListFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         switch (item.getItemId()) {
-            case R.id.action_switch_channel_type:
-                selectedChannelType = (selectedChannelType.equals(PVRType.ChannelType.TV)) ?
-                        PVRType.ChannelType.RADIO : PVRType.ChannelType.TV;
-                preferences.edit()
-                           .putString(Settings.KEY_PREF_PVR_LIST_CHANNEL_TYPE, selectedChannelType)
-                           .apply();
-                setupChannelTypeMenuItem(item, selectedChannelType);
+            case R.id.action_pvr_list_tv_channels:
+                currentListType = LIST_TV_CHANNELS;
                 browseChannelGroups();
-                listenerActivity.onChannelTypeSelected(selectedChannelType);
+                break;
+            case R.id.action_pvr_list_radio_channels:
+                currentListType = LIST_RADIO_CHANNELS;
+                browseChannelGroups();
+                break;
+            case R.id.action_pvr_list_recordings:
+                currentListType = LIST_RECORDINGS;
+                browseRecordings();
                 break;
             default:
                 break;
         }
+        preferences.edit()
+                   .putInt(Settings.KEY_PREF_PVR_LIST_TYPE, currentListType)
+                   .apply();
+        listenerActivity.onListTypeChanged(currentListType);
 
         return super.onOptionsItemSelected(item);
     }
@@ -214,10 +239,14 @@ public class PVRListFragment extends Fragment
     @Override
     public void onRefresh () {
         if (hostManager.getHostInfo() != null) {
-            if (selectedChannelGroupId == -1) {
-                browseChannelGroups();
+            if (currentListType == LIST_RECORDINGS) {
+                browseRecordings();
             } else {
-                browseChannels(selectedChannelGroupId);
+                if (selectedChannelGroupId == -1) {
+                    browseChannelGroups();
+                } else {
+                    browseChannels(selectedChannelGroupId);
+                }
             }
         } else {
             swipeRefreshLayout.setRefreshing(false);
@@ -239,7 +268,8 @@ public class PVRListFragment extends Fragment
      */
     private void browseChannelGroups() {
         LogUtils.LOGD(TAG, "Getting channel groups");
-        PVR.GetChannelGroups action = new PVR.GetChannelGroups(selectedChannelType);
+        String channelType = (currentListType == LIST_TV_CHANNELS)? PVRType.ChannelType.TV : PVRType.ChannelType.RADIO;
+        PVR.GetChannelGroups action = new PVR.GetChannelGroups(channelType);
         action.execute(hostManager.getConnection(), new ApiCallback<List<PVRType.DetailsChannelGroup>>() {
             @Override
             public void onSuccess(List<PVRType.DetailsChannelGroup> result) {
@@ -488,4 +518,151 @@ public class PVRListFragment extends Fragment
         int channelId;
         String channelName;
     }
+
+    /**
+     * Get the recording list and setup the gridview
+     */
+    private void browseRecordings() {
+        PVR.GetRecordings action = new PVR.GetRecordings(PVRType.FieldsRecording.allValues);
+        action.execute(hostManager.getConnection(), new ApiCallback<List<PVRType.DetailsRecording>>() {
+            @Override
+            public void onSuccess(List<PVRType.DetailsRecording> result) {
+                if (!isAdded()) return;
+                LogUtils.LOGD(TAG, "Got recordings");
+
+                // To prevent the empty text from appearing on the first load, set it now
+                emptyView.setText(getString(R.string.no_recordings_found_refresh));
+                setupRecordingsGridview(result);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
+                LogUtils.LOGD(TAG, "Error getting recordings: " + description);
+
+                // To prevent the empty text from appearing on the first load, set it now
+                emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
+                Toast.makeText(getActivity(),
+                               String.format(getString(R.string.error_getting_pvr_info), description),
+                               Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, callbackHandler);
+    }
+
+    /**
+     * Called when we get the recordings
+     *
+     * @param result Recordings obtained
+     */
+    private void setupRecordingsGridview(List<PVRType.DetailsRecording> result) {
+        if (recordingsAdapter == null) {
+            recordingsAdapter = new RecordingsAdapter(getActivity(), R.layout.grid_item_recording);
+        }
+        gridView.setAdapter(recordingsAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the id from the tag
+                RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
+
+                // Start the recording
+                Toast.makeText(getActivity(),
+                               String.format(getString(R.string.starting_recording), tag.title),
+                               Toast.LENGTH_SHORT).show();
+                Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
+                action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        if (!isAdded()) return;
+                        LogUtils.LOGD(TAG, "Started recording");
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String description) {
+                        if (!isAdded()) return;
+                        LogUtils.LOGD(TAG, "Error starting recording: " + description);
+
+                        Toast.makeText(getActivity(),
+                                       String.format(getString(R.string.error_starting_recording), description),
+                                       Toast.LENGTH_SHORT).show();
+
+                    }
+                }, callbackHandler);
+
+            }
+        });
+
+        recordingsAdapter.clear();
+        recordingsAdapter.addAll(result);
+        recordingsAdapter.notifyDataSetChanged();
+    }
+
+    private class RecordingsAdapter extends ArrayAdapter<PVRType.DetailsRecording> {
+        private HostManager hostManager;
+        private int artWidth, artHeight;
+
+        public RecordingsAdapter(Context context, int resource) {
+            super(context, resource);
+
+            this.hostManager = HostManager.getInstance(context);
+
+            Resources resources = context.getResources();
+            artWidth = (int)(resources.getDimension(R.dimen.channellist_art_width) /
+                             UIUtils.IMAGE_RESIZE_FACTOR);
+            artHeight = (int)(resources.getDimension(R.dimen.channellist_art_heigth) /
+                              UIUtils.IMAGE_RESIZE_FACTOR);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getActivity())
+                                            .inflate(R.layout.grid_item_recording, parent, false);
+
+                // Setup View holder pattern
+                RecordingViewHolder viewHolder = new RecordingViewHolder();
+                viewHolder.titleView = (TextView)convertView.findViewById(R.id.title);
+                viewHolder.detailsView = (TextView)convertView.findViewById(R.id.details);
+                viewHolder.artView = (ImageView)convertView.findViewById(R.id.art);
+                viewHolder.durationView = (TextView)convertView.findViewById(R.id.duration);
+                convertView.setTag(viewHolder);
+            }
+
+            final RecordingViewHolder viewHolder = (RecordingViewHolder)convertView.getTag();
+            PVRType.DetailsRecording recordingDetails = this.getItem(position);
+
+            viewHolder.recordingId = recordingDetails.recordingid;
+            viewHolder.title = recordingDetails.title;
+
+            viewHolder.titleView.setText(recordingDetails.title);
+            viewHolder.detailsView.setText(recordingDetails.channel);
+            UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
+                                                 (recordingDetails.art != null) ?
+                                                         recordingDetails.art.poster : recordingDetails.icon,
+                                                 recordingDetails.channel,
+                                                 viewHolder.artView, artWidth, artHeight);
+            int runtime = recordingDetails.runtime / 60;
+            String duration =
+                    recordingDetails.starttime + " | " +
+                    String.format(this.getContext().getString(R.string.minutes_abbrev), String.valueOf(runtime));
+            viewHolder.durationView.setText(duration);
+
+            return convertView;
+        }
+    }
+
+    /**
+     * View holder pattern
+     */
+    private static class RecordingViewHolder {
+        ImageView artView;
+        TextView titleView, detailsView, durationView;
+
+        int recordingId;
+        String title;
+    }
+
 }

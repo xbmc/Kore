@@ -55,7 +55,7 @@ public class PVRActivity extends BaseActivity
 
     private int selectedChannelId = -1;
     private String selectedChannelTitle = null;
-    private String selectedChannelType;
+    private int currentListType;
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
@@ -98,9 +98,9 @@ public class PVRActivity extends BaseActivity
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        selectedChannelType = preferences.getString(Settings.KEY_PREF_PVR_LIST_CHANNEL_TYPE, Settings.DEFAULT_PREF_PVR_LIST_CHANNEL_TYPE);
+        currentListType = preferences.getInt(Settings.KEY_PREF_PVR_LIST_TYPE, Settings.DEFAULT_PREF_PVR_LIST_TYPE);
 
-        setupActionBar(selectedChannelType, selectedChannelGroupTitle);
+        setupActionBar(currentListType, selectedChannelGroupTitle);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class PVRActivity extends BaseActivity
                 if (selectedChannelId != -1) {
                     selectedChannelId = -1;
                     selectedChannelTitle = null;
-                    setupActionBar(selectedChannelType, null);
+                    setupActionBar(currentListType, null);
                     getSupportFragmentManager().popBackStack();
                     return true;
                 } else if (returnToChannelGroupList && (selectedChannelGroupId != -1)) {
@@ -165,25 +165,28 @@ public class PVRActivity extends BaseActivity
     @Override
     public void onBackPressed() {
         // If we are showing details in portrait, clear selected and show action bar
-        if (selectedChannelId != -1) {
-            selectedChannelId = -1;
-            selectedChannelTitle = null;
-            setupActionBar(selectedChannelType, null);
-        } else if ((selectedChannelGroupId != -1) && returnToChannelGroupList) {
-            selectedChannelGroupId = -1;
-            selectedChannelGroupTitle = null;
-            setupActionBar(selectedChannelType, null);
-            Fragment listFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if ((listFragment != null) &&
-                (listFragment instanceof PVRListFragment)) {
-                ((PVRListFragment)listFragment).onBackPressed();
+        if ((currentListType == PVRListFragment.LIST_TV_CHANNELS) ||
+            (currentListType == PVRListFragment.LIST_RADIO_CHANNELS)) {
+            if (selectedChannelId != -1) {
+                selectedChannelId = -1;
+                selectedChannelTitle = null;
+                setupActionBar(currentListType, null);
+            } else if ((selectedChannelGroupId != -1) && returnToChannelGroupList) {
+                selectedChannelGroupId = -1;
+                selectedChannelGroupTitle = null;
+                setupActionBar(currentListType, null);
+                Fragment listFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if ((listFragment != null) &&
+                    (listFragment instanceof PVRListFragment)) {
+                    ((PVRListFragment) listFragment).onBackPressed();
+                }
+                return;
             }
-            return;
         }
         super.onBackPressed();
     }
 
-    private void setupActionBar(String channelType, String channelTitle) {
+    private void setupActionBar(int listType, String channelTitle) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
 
@@ -195,14 +198,15 @@ public class PVRActivity extends BaseActivity
         boolean drawerIndicatorEnabled;
         if (channelTitle != null) {
             drawerIndicatorEnabled = !returnToChannelGroupList;
-            title = String.format("%s - %s", PVRListFragment.getChannelTypeTitle(this, channelType), channelTitle);
+            title = String.format("%s - %s", PVRListFragment.getPVRListTypeTitle(this, listType), channelTitle);
         } else {
             drawerIndicatorEnabled = true;
-            title = PVRListFragment.getChannelTypeTitle(this, channelType);
+            title = PVRListFragment.getPVRListTypeTitle(this, listType);
         }
         navigationDrawerFragment.setDrawerIndicatorEnabled(drawerIndicatorEnabled);
         actionBar.setTitle(title);
     }
+
 
     /**
      * Callback from list fragment when a channel group is selected.
@@ -215,7 +219,7 @@ public class PVRActivity extends BaseActivity
         selectedChannelGroupTitle = channelGroupTitle;
         this.returnToChannelGroupList = canReturnToChannelGroupList;
 
-        setupActionBar(selectedChannelType, selectedChannelGroupTitle);
+        setupActionBar(currentListType, selectedChannelGroupTitle);
     }
 
     /**
@@ -246,15 +250,15 @@ public class PVRActivity extends BaseActivity
 //        fragTrans.replace(R.id.fragment_container, pvrDetailsFragment)
 //                .addToBackStack(null)
 //                .commit();
-        setupActionBar(selectedChannelType, selectedChannelTitle);
+        setupActionBar(currentListType, selectedChannelTitle);
     }
 
     /**
-     * Callback from list fragment when the channel type is changed
-     * @param channelType Channel type selected
+     * Callback from list fragment when the list type is changed
+     * @param listType List type selected
      */
-    public void onChannelTypeSelected(String channelType) {
-        selectedChannelType = channelType;
-        setupActionBar(selectedChannelType, selectedChannelTitle);
+    public void onListTypeChanged(int listType) {
+        currentListType = listType;
+        setupActionBar(currentListType, selectedChannelTitle);
     }
 }

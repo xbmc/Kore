@@ -434,7 +434,8 @@ public class Player {
         public final static String METHOD_NAME = "Player.Open";
 
         public final static String TYPE_PLAYLIST = "playlist",
-                TYPE_CHANNEL = "channel";
+                TYPE_CHANNEL = "channel",
+                TYPE_RECORDING = "recording";
 
         /**
          * Start playback of either the playlist with the given ID, a slideshow with the pictures
@@ -472,12 +473,15 @@ public class Player {
             switch (itemType) {
                 case TYPE_PLAYLIST:
                     item.put("playlistid", itemId);
-                    addParameterToRequest("item", item);
                     break;
                 case TYPE_CHANNEL:
                     item.put("channelid", itemId);
-                    addParameterToRequest("item", item);
+                    break;
+                case TYPE_RECORDING:
+                    item.put("recordingid", itemId);
+                    break;
             }
+            addParameterToRequest("item", item);
         }
 
         @Override

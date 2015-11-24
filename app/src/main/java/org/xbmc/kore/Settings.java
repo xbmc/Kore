@@ -18,6 +18,7 @@ package org.xbmc.kore;
 import android.text.format.DateUtils;
 
 import org.xbmc.kore.jsonrpc.type.PVRType;
+import org.xbmc.kore.ui.PVRListFragment;
 
 import java.util.Set;
 
@@ -102,6 +103,6 @@ public interface Settings {
 
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
 
-    public static final String KEY_PREF_PVR_LIST_CHANNEL_TYPE = "pref_pvr_list_channel_type";
-    public static final String DEFAULT_PREF_PVR_LIST_CHANNEL_TYPE = PVRType.ChannelType.TV;
+    public static final String KEY_PREF_PVR_LIST_TYPE = "pref_pvr_list_type";
+    public static final int DEFAULT_PREF_PVR_LIST_TYPE = PVRListFragment.LIST_TV_CHANNELS;
 }

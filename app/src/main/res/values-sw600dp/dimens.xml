@@ -74,4 +74,7 @@
     <dimen name="channellist_art_width">88dp</dimen>
     <dimen name="channellist_art_heigth">88dp</dimen>
 
+    <dimen name="recordinglist_art_width">88dp</dimen>
+    <dimen name="recordinglist_art_heigth">88dp</dimen>
+
 </resources>
