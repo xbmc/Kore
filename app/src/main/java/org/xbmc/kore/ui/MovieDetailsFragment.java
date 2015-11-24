@@ -45,7 +45,6 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
-import com.squareup.okhttp.internal.Util;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -202,9 +201,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
 //        mediaPanel.setClipToPadding(false);
-
-        //Disable download button until loader has finished and download info is available
-        downloadButton.setEnabled(false);
+        
         return root;
     }
 
@@ -250,7 +247,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
 
     @Override
     public void onStop() {
-        //TODO: for some reason poster is included in the bottom slide animation, by making it invisible it is not noticeable for the user
+        //For some reason poster is included in the bottom slide animation, by making it invisible it is not noticeable for the user
         mediaPoster.setVisibility(View.INVISIBLE);
         super.onStop();
     }
@@ -546,7 +543,6 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
                 movieTitle, cursor.getString(MovieDetailsQuery.FILE));
 
         // Check if downloaded file exists
-        downloadButton.setEnabled(true);
         if (movieDownloadInfo.downloadFileExists()) {
             Resources.Theme theme = getActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
