@@ -56,6 +56,9 @@ abstract public class AbstractDetailsFragment extends Fragment
 
     private ServiceConnection serviceConnection;
 
+    // Used to hide the refresh animation when a silent refresh is issued
+    private boolean silentRefresh = false;
+
     abstract protected View createView(LayoutInflater inflater, ViewGroup container);
 
     /**
@@ -160,20 +163,23 @@ abstract public class AbstractDetailsFragment extends Fragment
     }
 
     protected void startSync(boolean silentRefresh) {
+        this.silentRefresh = silentRefresh;
+        LogUtils.LOGD(TAG, "Starting syc. Silent? " + silentRefresh);
+
         if (getHostInfo() != null) {
-            if( ( swipeRefreshLayout != null ) && ( ! silentRefresh ) ){
+            if ((swipeRefreshLayout != null) && (!silentRefresh)) {
                 UIUtils.showRefreshAnimation(swipeRefreshLayout);
             }
             // Start the syncing process
             Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
 
-            if(syncType != null) {
+            if (syncType != null) {
                 syncIntent.putExtra(syncType, true);
             }
 
             String syncID = getSyncID();
             int itemId = getSyncItemID();
-            if( ( syncID != null ) && ( itemId != -1 ) ) {
+            if ((syncID != null) && (itemId != -1)) {
                 syncIntent.putExtra(syncID, itemId);
             }
 
@@ -183,11 +189,11 @@ abstract public class AbstractDetailsFragment extends Fragment
 
             getActivity().startService(syncIntent);
         } else {
-            if( swipeRefreshLayout != null ) {
+            if (swipeRefreshLayout != null) {
                 swipeRefreshLayout.setRefreshing(false);
             }
             Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                    .show();
+                 .show();
         }
     }
 
@@ -238,14 +244,13 @@ abstract public class AbstractDetailsFragment extends Fragment
         if (syncType == null)
             return;
 
-        if (SyncUtils.isLibrarySyncing(
-                librarySyncService,
-                HostManager.getInstance(getActivity()).getHostInfo(),
-                syncType)) {
-            if (swipeRefreshLayout != null) {
-                UIUtils.showRefreshAnimation(swipeRefreshLayout);
-            }
-            return;
+        if (!silentRefresh &&
+            (swipeRefreshLayout != null) &&
+            SyncUtils.isLibrarySyncing(librarySyncService,
+                                       HostManager.getInstance(getActivity()).getHostInfo(),
+                                       syncType)) {
+            LogUtils.LOGD(TAG, "Showing refresh animation");
+            UIUtils.showRefreshAnimation(swipeRefreshLayout);
         }
     }
 
