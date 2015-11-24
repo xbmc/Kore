@@ -17,29 +17,17 @@ package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.transition.ChangeBounds;
-import android.transition.ChangeImageTransform;
-import android.transition.ChangeTransform;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
@@ -81,12 +69,11 @@ public class MoviesActivity extends BaseActivity
             // Setup animations
             if (Utils.isLollipopOrLater()) {
                 //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
-                Fade fade = new Fade();
-                fade.setDuration(50);
-                movieListFragment.setExitTransition(fade);
-                movieListFragment.setReenterTransition(TransitionInflater
+                Transition fade = TransitionInflater
                         .from(this)
-                        .inflateTransition(android.R.transition.fade));
+                        .inflateTransition(android.R.transition.fade);
+                movieListFragment.setExitTransition(fade);
+                movieListFragment.setReenterTransition(fade);
                 movieListFragment.setSharedElementReturnTransition(TransitionInflater.from(
                         this).inflateTransition(R.transition.change_image));
             }
@@ -201,11 +188,12 @@ public class MoviesActivity extends BaseActivity
             movieDetailsFragment.setEnterTransition(TransitionInflater
                     .from(this)
                     .inflateTransition(R.transition.media_details));
+            movieDetailsFragment.setReturnTransition(null);
 
-            movieDetailsFragment.setSharedElementReturnTransition(TransitionInflater.from(
-                    this).inflateTransition(R.transition.change_image));
-            movieDetailsFragment.setSharedElementEnterTransition(TransitionInflater.from(
-                    this).inflateTransition(R.transition.change_image));
+            Transition changeImageTransition = TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image);
+            movieDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
+            movieDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
 
             fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
                     .addToBackStack(null)
