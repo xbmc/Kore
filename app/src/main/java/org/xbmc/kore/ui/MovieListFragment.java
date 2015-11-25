@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -47,6 +48,7 @@ import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 /**
  * Fragment that presents the movie list
@@ -55,7 +57,7 @@ public class MovieListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(MovieListFragment.class);
 
     public interface OnMovieSelectedListener {
-        public void onMovieSelected(int movieId, String movieTitle);
+        public void onMovieSelected(ViewHolder vh);
     }
 
     // Activity listener
@@ -72,7 +74,7 @@ public class MovieListFragment extends AbstractListFragment {
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder) view.getTag();
                 // Notify the activity
-                listenerActivity.onMovieSelected(tag.movieId, tag.movieTitle);
+                listenerActivity.onMovieSelected(tag);
             }
         };
     }
@@ -253,16 +255,16 @@ public class MovieListFragment extends AbstractListFragment {
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
             artWidth = (int)(resources.getDimension(R.dimen.now_playing_poster_width) /
-                             UIUtils.IMAGE_RESIZE_FACTOR);
+                    UIUtils.IMAGE_RESIZE_FACTOR);
             artHeight = (int)(resources.getDimension(R.dimen.now_playing_poster_height) /
-                              UIUtils.IMAGE_RESIZE_FACTOR);
+                    UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
         /** {@inheritDoc} */
         @Override
         public View newView(Context context, final Cursor cursor, ViewGroup parent) {
             final View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.grid_item_movie, parent, false);
+                    .inflate(R.layout.grid_item_movie, parent, false);
 
             // Setup View holder pattern
             ViewHolder viewHolder = new ViewHolder();
@@ -277,6 +279,7 @@ public class MovieListFragment extends AbstractListFragment {
         }
 
         /** {@inheritDoc} */
+        @TargetApi(21)
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
@@ -284,36 +287,50 @@ public class MovieListFragment extends AbstractListFragment {
             // Save the movie id
             viewHolder.movieId = cursor.getInt(MovieListQuery.MOVIEID);
             viewHolder.movieTitle = cursor.getString(MovieListQuery.TITLE);
+            viewHolder.movieTagline = cursor.getString(MovieListQuery.TAGLINE);
+            viewHolder.movieYear = cursor.getInt(MovieListQuery.YEAR);
+            viewHolder.movieRating = cursor.getDouble(MovieListQuery.RATING);
 
             viewHolder.titleView.setText(viewHolder.movieTitle);
-            String details = TextUtils.isEmpty(cursor.getString(MovieListQuery.TAGLINE)) ?
-                             cursor.getString(MovieListQuery.GENRES) :
-                             cursor.getString(MovieListQuery.TAGLINE);
+
+            viewHolder.movieGenres = cursor.getString(MovieListQuery.GENRES);
+            String details = TextUtils.isEmpty(viewHolder.movieTagline) ?
+                    viewHolder.movieGenres :
+                    viewHolder.movieTagline;
             viewHolder.detailsView.setText(details);
 //            viewHolder.yearView.setText(String.valueOf(cursor.getInt(MovieListQuery.YEAR)));
-            int runtime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
-            String duration =  runtime > 0 ?
-                               String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                               "  |  " + String.valueOf(cursor.getInt(MovieListQuery.YEAR)) :
-                               String.valueOf(cursor.getInt(MovieListQuery.YEAR));
+            viewHolder.movieRuntime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
+            String duration =  viewHolder.movieRuntime > 0 ?
+                    String.format(context.getString(R.string.minutes_abbrev), String.valueOf(viewHolder.movieRuntime)) +
+                            "  |  " + viewHolder.movieYear :
+                    String.valueOf(viewHolder.movieYear);
             viewHolder.durationView.setText(duration);
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                     cursor.getString(MovieListQuery.THUMBNAIL), viewHolder.movieTitle,
                     viewHolder.artView, artWidth, artHeight);
+
+            if(Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("a"+viewHolder.movieId);
+            }
         }
     }
 
     /**
      * View holder pattern
      */
-    private static class ViewHolder {
+    public static class ViewHolder {
         TextView titleView;
         TextView detailsView;
-//        TextView yearView;
+        //        TextView yearView;
         TextView durationView;
         ImageView artView;
 
         int movieId;
         String movieTitle;
+        String movieTagline;
+        int movieYear;
+        int movieRuntime;
+        String movieGenres;
+        double movieRating;
     }
 }

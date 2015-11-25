@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,10 +68,14 @@ public class MoviesActivity extends BaseActivity
 
             // Setup animations
             if (Utils.isLollipopOrLater()) {
-                movieListFragment.setExitTransition(null);
-                movieListFragment.setReenterTransition(TransitionInflater
+                //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
+                Transition fade = TransitionInflater
                         .from(this)
-                        .inflateTransition(android.R.transition.fade));
+                        .inflateTransition(android.R.transition.fade);
+                movieListFragment.setExitTransition(fade);
+                movieListFragment.setReenterTransition(fade);
+                movieListFragment.setSharedElementReturnTransition(TransitionInflater.from(
+                        this).inflateTransition(R.transition.change_image));
             }
             getSupportFragmentManager()
                     .beginTransaction()
@@ -168,31 +173,43 @@ public class MoviesActivity extends BaseActivity
     /**
      * Callback from movielist fragment when a movie is selected.
      * Switch fragment in portrait
-     * @param movieId Movie selected
-     * @param movieTitle Title
+     * @param vh ViewHolder holding movie info of item clicked
      */
     @TargetApi(21)
-    public void onMovieSelected(int movieId, String movieTitle) {
-        selectedMovieId = movieId;
-        selectedMovieTitle = movieTitle;
-
-        MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(movieId);
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+    public void onMovieSelected(MovieListFragment.ViewHolder vh) {
+        selectedMovieTitle = vh.movieTitle;
+        selectedMovieId = vh.movieId;
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
+            MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(vh);
+            FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+
             movieDetailsFragment.setEnterTransition(TransitionInflater
                     .from(this)
                     .inflateTransition(R.transition.media_details));
             movieDetailsFragment.setReturnTransition(null);
+
+            Transition changeImageTransition = TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image);
+            movieDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
+            movieDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
+
+            fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
+                    .addToBackStack(null)
+                    .addSharedElement(vh.artView, vh.artView.getTransitionName())
+                    .commit();
         } else {
+            MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(vh);
+            FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
                     R.anim.fragment_list_popenter, 0);
+            fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
 
-        fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
-                .addToBackStack(null)
-                .commit();
         setupActionBar(selectedMovieTitle);
     }
 }
