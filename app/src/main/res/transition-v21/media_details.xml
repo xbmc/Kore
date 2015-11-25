@@ -15,22 +15,23 @@
    limitations under the License.
 -->
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- This fade exceeds GPU mem and throws a nasty error, so avoid it -->
     <fade>
         <targets>
-            <target android:excludeId="@id/media_panel_group"/>
-            <target android:excludeId="@id/fab"/>
+            <target android:targetId="@id/art"/>
         </targets>
     </fade>
-    <!--<slide android:slideEdge="top">-->
-    <!--<targets>-->
-    <!--<target android:excludeId="@id/media_panel_group"/>-->
-    <!--</targets>-->
-    <!--</slide>-->
 
     <slide android:slideEdge="bottom">
         <targets>
             <target android:excludeId="@id/art"/>
+            <target android:excludeId="@id/fab"/>
+            <target android:excludeId="@id/pager_tab_strip"/>
+        </targets>
+    </slide>
+
+    <slide android:slideEdge="bottom" android:startDelay="@integer/fab_animation_start_delay">
+        <targets>
+            <target android:targetId="@id/fab"/>
         </targets>
     </slide>
 </transitionSet>
