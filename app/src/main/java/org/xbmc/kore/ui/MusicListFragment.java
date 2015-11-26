@@ -15,44 +15,21 @@
  */
 package org.xbmc.kore.ui;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiException;
-import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
-import org.xbmc.kore.service.LibrarySyncService;
-import org.xbmc.kore.service.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 /**
  * Container for the various music lists
@@ -67,7 +44,7 @@ public class MusicListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_music_list, container, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_default_view_pager, container, false);
         ButterKnife.inject(this, root);
 
         tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())

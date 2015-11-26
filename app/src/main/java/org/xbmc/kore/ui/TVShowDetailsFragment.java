@@ -70,7 +70,7 @@ public class TVShowDetailsFragment extends Fragment {
             return null;
         }
 
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_tvshow_details, container, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_default_view_pager, container, false);
         ButterKnife.inject(this, root);
 
         long baseFragmentId = tvshowId * 10;
