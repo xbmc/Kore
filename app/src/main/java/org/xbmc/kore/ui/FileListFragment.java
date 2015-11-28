@@ -31,10 +31,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
- * Created by danhdroid on 3/18/15.
+ * Manages the viewpager of files
  */
 public class FileListFragment extends Fragment
-        implements FileActivity.OnBackPressedListener {
+        implements OnBackPressedListener {
 
     @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
     @InjectView(R.id.pager) ViewPager viewPager;
@@ -83,23 +83,15 @@ public class FileListFragment extends Fragment
     }
 
     @Override
-    public void onBackPressed() {
-        // tell current fragment to move up one directory
-
+    public boolean onBackPressed() {
+        // Tell current fragment to move up one directory, if possible
         MediaFileListFragment curPage = findFragmentByPosition(viewPager.getCurrentItem() + 1);
-        if (curPage != null) {
-            // based on the current position cast the page to the correct
-            // class and call the method
+        if ((curPage != null) && !curPage.atRootDirectory()) {
             curPage.onBackPressed();
+            return true;
         }
-    }
 
-    @Override
-    public boolean currentPageAtRootDirectory() {
-        MediaFileListFragment curPage = findFragmentByPosition(viewPager.getCurrentItem() + 1);
-        if (curPage != null) {
-            return curPage.atRootDirectory();
-        }
-        return true;
+        // Not handled, let the activity handle it
+        return false;
     }
 }

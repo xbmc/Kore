@@ -30,16 +30,11 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.utils.Utils;
 
 /**
- * Created by danhdroid on 3/18/15.
+ * Handles listing of files fragments
  */
 public class FileActivity extends BaseActivity {
 
     private NavigationDrawerFragment navigationDrawerFragment;
-
-    public interface OnBackPressedListener {
-        void onBackPressed();
-        boolean currentPageAtRootDirectory();
-    }
 
     OnBackPressedListener fragmentBackListener;
 
@@ -106,10 +101,8 @@ public class FileActivity extends BaseActivity {
     public void onBackPressed() {
         // tell fragment to move up one directory
         if (fragmentBackListener != null) {
-            if (!fragmentBackListener.currentPageAtRootDirectory())
-                fragmentBackListener.onBackPressed();
-            else
-                // already at the root level of the current page
+            boolean handled = fragmentBackListener.onBackPressed();
+            if (!handled)
                 super.onBackPressed();
         }
 

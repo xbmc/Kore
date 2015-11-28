@@ -102,7 +102,4 @@ public interface Settings {
     public static final boolean DEFAULT_PREF_CHECKED_EVENT_SERVER_CONNECTION = false;
 
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
-
-    public static final String KEY_PREF_PVR_LIST_TYPE = "pref_pvr_list_type";
-    public static final int DEFAULT_PREF_PVR_LIST_TYPE = PVRListFragment.LIST_TV_CHANNELS;
 }

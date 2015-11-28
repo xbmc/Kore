@@ -166,7 +166,7 @@ public class NavigationDrawerFragment extends Fragment {
                                      styledAttributes.getResourceId(ACTIVITY_MUSIC, 0)));
         if (shownItems.contains(String.valueOf(ACTIVITY_PVR)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_PVR,
-                                     getString(R.string.tv_radio),
+                                     getString(R.string.pvr),
                                      styledAttributes.getResourceId(ACTIVITY_PVR, 0)));
         if (shownItems.contains(String.valueOf(ACTIVITY_FILES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,

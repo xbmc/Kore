@@ -46,7 +46,7 @@
         <item>@string/movies</item>
         <item>@string/tv_shows</item>
         <item>@string/music</item>
-        <item>@string/tv_radio</item>
+        <item>@string/pvr</item>
         <item>@string/files</item>
         <item>@string/addons</item>
     </string-array>

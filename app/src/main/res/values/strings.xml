@@ -36,7 +36,7 @@
     <string name="files">Files</string>
     <string name="video">Video</string>
     <string name="file_browser">File Browser</string>
-    <string name="tv_radio">TV/Radio</string>
+    <string name="pvr">PVR</string>
 
     <string name="no_xbmc_configured">No media center configured</string>
     <string name="add_xbmc">Add Media Center</string>
