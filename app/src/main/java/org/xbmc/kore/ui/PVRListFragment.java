@@ -78,15 +78,12 @@ public class PVRListFragment extends Fragment
         setHasOptionsMenu(false);
     }
 
-    Fragment findFragmentByPosition(int position) {
-        String tag = "android:switcher:" + viewPager.getId() + ":" + position;
-        return getChildFragmentManager().findFragmentByTag(tag);
-    }
-
     @Override
     public boolean onBackPressed() {
         // Tell current fragment to move up one directory, if possible
-        Fragment visibleFragment = findFragmentByPosition(viewPager.getCurrentItem() + 1);
+        Fragment visibleFragment = ((TabsAdapter)viewPager.getAdapter())
+                .getStoredFragment(viewPager.getCurrentItem());
+
         if (visibleFragment instanceof OnBackPressedListener) {
             return ((OnBackPressedListener) visibleFragment).onBackPressed();
         }

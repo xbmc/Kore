@@ -20,8 +20,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This is a helper class that implements the management of tabs and all
@@ -62,12 +64,29 @@ public class TabsAdapter extends FragmentPagerAdapter {
         return tabInfos.size();
     }
 
+    /**
+     * Store the created fragments, so that it is possible to get them by position later
+     */
+    private HashMap<Integer, Fragment> createdFragments = new HashMap<>(5);
+
     @Override
     public Fragment getItem(int position) {
         TabInfo info = tabInfos.get(position);
-        return Fragment.instantiate(context, info.fragmentClass.getName(), info.args);
+        Fragment fragment = Fragment.instantiate(context, info.fragmentClass.getName(), info.args);
+
+        createdFragments.put(position, fragment);
+        return fragment;
     }
 
+    @Override
+    public void destroyItem (ViewGroup container, int position, Object object) {
+        super.destroyItem(container, position, object);
+        createdFragments.remove(position);
+    }
+
+    public Fragment getStoredFragment(int position) {
+        return createdFragments.get(position);
+    }
     @Override
     public long getItemId(int position) {
         return tabInfos.get(position).fragmentId;

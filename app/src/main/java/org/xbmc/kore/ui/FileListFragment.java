@@ -77,15 +77,11 @@ public class FileListFragment extends Fragment
         }
     }
 
-    MediaFileListFragment findFragmentByPosition(int position) {
-        String tag = "android:switcher:" + viewPager.getId() + ":" + position;
-        return (MediaFileListFragment) getChildFragmentManager().findFragmentByTag(tag);
-    }
-
     @Override
     public boolean onBackPressed() {
         // Tell current fragment to move up one directory, if possible
-        MediaFileListFragment curPage = findFragmentByPosition(viewPager.getCurrentItem() + 1);
+        MediaFileListFragment curPage = (MediaFileListFragment)((TabsAdapter)viewPager.getAdapter())
+                .getStoredFragment(viewPager.getCurrentItem());
         if ((curPage != null) && !curPage.atRootDirectory()) {
             curPage.onBackPressed();
             return true;
