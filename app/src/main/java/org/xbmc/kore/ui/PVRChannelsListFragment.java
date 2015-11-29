@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -34,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -401,6 +403,46 @@ public class PVRChannelsListFragment extends Fragment
         private HostManager hostManager;
         private int artWidth, artHeight;
 
+        private View.OnClickListener channelItemMenuClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int channelId = (Integer)v.getTag();
+
+                final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+                popupMenu.getMenuInflater().inflate(R.menu.pvr_channel_list_item, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_record_item:
+                                PVR.Record action = new PVR.Record(channelId);
+                                action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                                    @Override
+                                    public void onSuccess(String result) {
+                                        if (!isAdded()) return;
+                                        LogUtils.LOGD(TAG, "Started recording");
+                                    }
+
+                                    @Override
+                                    public void onError(int errorCode, String description) {
+                                        if (!isAdded()) return;
+                                        LogUtils.LOGD(TAG, "Error starting to record: " + description);
+
+                                        Toast.makeText(getActivity(),
+                                                       String.format(getString(R.string.error_starting_to_record), description),
+                                                       Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }, callbackHandler);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
+            }
+        };
+
         public ChannelAdapter(Context context, int resource) {
             super(context, resource);
             this.hostManager = HostManager.getInstance(context);
@@ -425,6 +467,7 @@ public class PVRChannelsListFragment extends Fragment
                 viewHolder.titleView = (TextView)convertView.findViewById(R.id.title);
                 viewHolder.detailsView = (TextView)convertView.findViewById(R.id.details);
                 viewHolder.artView = (ImageView)convertView.findViewById(R.id.art);
+                viewHolder.contextMenu = (ImageView)convertView.findViewById(R.id.list_context_menu);
                 convertView.setTag(viewHolder);
             }
 
@@ -441,6 +484,11 @@ public class PVRChannelsListFragment extends Fragment
             UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
                                                  channelDetails.thumbnail, channelDetails.channel,
                                                  viewHolder.artView, artWidth, artHeight);
+
+            // For the popupmenu
+            viewHolder.contextMenu.setTag(channelDetails.channelid);
+            viewHolder.contextMenu.setOnClickListener(channelItemMenuClickListener);
+
             return convertView;
         }
     }
@@ -450,7 +498,7 @@ public class PVRChannelsListFragment extends Fragment
      */
     private static class ChannelViewHolder {
         TextView titleView, detailsView;
-        ImageView artView;
+        ImageView artView, contextMenu;
 
         int channelId;
         String channelName;

@@ -23,34 +23,50 @@
     card_view:cardElevation="@dimen/default_card_elevation"
     card_view:cardBackgroundColor="?attr/appCardBackgroundColor">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/art"
             android:layout_width="@dimen/channellist_art_width"
             android:layout_height="@dimen/channellist_art_heigth"
-            android:contentDescription="@string/poster"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="@string/poster"
+            android:scaleType="centerCrop"/>
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/list_context_menu"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_alignTop="@id/art"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="@dimen/default_icon_padding"
+            android:src="?attr/iconOverflow"
+            android:contentDescription="@string/action_options"/>
+
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.Medialist.Title"
-                android:paddingTop="0dp"/>
-            <TextView
-                android:id="@+id/details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.Medialist.Details"
-                android:paddingBottom="0dp"/>
-        </LinearLayout>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/art"
+            android:layout_toEndOf="@+id/art"
+            android:layout_toLeftOf="@id/list_context_menu"
+            android:layout_toStartOf="@id/list_context_menu"
+            android:layout_alignTop="@id/art"
+            style="@style/TextAppearance.Medialist.Title"/>
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/title"
+            android:layout_alignStart="@id/title"
+            android:layout_below="@id/title"
+            android:layout_toRightOf="@id/art"
+            android:layout_toEndOf="@id/art"
+            style="@style/TextAppearance.Medialist.Details"/>
+    </RelativeLayout>
 </android.support.v7.widget.CardView>

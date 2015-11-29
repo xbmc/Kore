@@ -343,6 +343,7 @@
     <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\nIf that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
     <string name="error_starting_channel">An error occurred starting channel playback: %1$s</string>
     <string name="error_starting_recording">An error occurred starting a recording: %1$s</string>
+    <string name="error_starting_to_record">An error occurred while recording: %1$s</string>
     <string name="channel_switching">Switching to channel %1$s</string>
     <string name="starting_recording">Starting recording %1$s</string>
     <string name="refresh">refresh</string>
@@ -352,5 +353,7 @@
     <string name="recordings">Recordings</string>
     <string name="tv_channels">TV Channels</string>
     <string name="radio_channels">Radio Channels</string>
+
+    <string name="record">Record</string>
 
 </resources>

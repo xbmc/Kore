@@ -209,6 +209,14 @@ public class PVR {
             addParameterToRequest("record", "toggle");
         }
 
+        /**
+         * Records a channel
+         */
+        public Record(int channelId) {
+            super();
+            addParameterToRequest("channel", channelId);
+        }
+
         @Override
         public String getMethodName() {
             return METHOD_NAME;
