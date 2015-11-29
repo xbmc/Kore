@@ -584,7 +584,6 @@ public class RemoteActivity extends BaseActivity
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        checkEventServerAvailability();
         String imageUrl = (TextUtils.isEmpty(getItemResult.fanart)) ?
                 getItemResult.thumbnail : getItemResult.fanart;
         if ((imageUrl != null) && !imageUrl.equals(lastImageUrl)) {
@@ -610,7 +609,6 @@ public class RemoteActivity extends BaseActivity
     }
 
     public void playerOnStop() {
-        checkEventServerAvailability();
         if (lastImageUrl != null) {
             setImageViewBackground(null);
         }
@@ -643,32 +641,5 @@ public class RemoteActivity extends BaseActivity
      */
     public void SwitchToRemotePanel() {
         viewPager.setCurrentItem(1);
-    }
-
-    // TODO: Remove this method after deployment of version 1.5.0. The only objective of this is to facilitate the
-    // transition to using EventServer, by checking if it is available, but this needs to be done only once.
-    public void checkEventServerAvailability() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean checkedEventServerConnection =
-                preferences.getBoolean(Settings.KEY_PREF_CHECKED_EVENT_SERVER_CONNECTION,
-                                       Settings.DEFAULT_PREF_CHECKED_EVENT_SERVER_CONNECTION);
-        if (!checkedEventServerConnection) {
-            LogUtils.LOGD(TAG, "Checking EventServer connection implicitely");
-            // Check if EventServer is available
-            final HostInfo hostInfo = hostManager.getHostInfo();
-            EventServerConnection.testEventServerConnection(
-                    hostInfo,
-                    new EventServerConnection.EventServerConnectionCallback() {
-                        @Override
-                        public void OnConnectResult(boolean success) {
-                            hostInfo.setUseEventServer(success);
-                            hostManager.editHost(hostInfo.getId(), hostInfo);
-                        }
-                    },
-                    new Handler());
-            preferences.edit()
-                       .putBoolean(Settings.KEY_PREF_CHECKED_EVENT_SERVER_CONNECTION, true)
-                       .apply();
-        }
     }
 }
