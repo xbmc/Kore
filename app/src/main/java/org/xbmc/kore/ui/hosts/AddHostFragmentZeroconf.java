@@ -120,7 +120,7 @@ public class AddHostFragmentZeroconf extends Fragment {
      * Starts the service discovery, setting up the UI accordingly
      */
     public void startSearching() {
-        if( ! isNetworkConnected() ) {
+        if(!isNetworkConnected()) {
             noNetworkConnection();
             return;
         }
@@ -204,6 +204,8 @@ public class AddHostFragmentZeroconf extends Fragment {
      * No host was found, present messages and buttons
      */
     public void noHostFound() {
+        if (!isAdded()) return;
+
         titleTextView.setText(R.string.no_xbmc_found);
         messageTextView.setText(Html.fromHtml(getString(R.string.wizard_search_no_host_found)));
         messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -235,6 +237,8 @@ public class AddHostFragmentZeroconf extends Fragment {
      * @param serviceInfos Service infos found
      */
     public void foundHosts(final ServiceInfo[] serviceInfos) {
+        if (!isAdded()) return;
+
         LogUtils.LOGD(TAG, "Found hosts: " + serviceInfos.length);
         titleTextView.setText(R.string.xbmc_found);
         messageTextView.setText(Html.fromHtml(getString(R.string.wizard_search_host_found)));
