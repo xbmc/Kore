@@ -166,6 +166,7 @@ public class TVShowsActivity extends BaseActivity
         super.onBackPressed();
     }
 
+    private boolean drawerIndicatorIsArrow = false;
     private void setupActionBar(String tvshowTitle) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
@@ -174,10 +175,16 @@ public class TVShowsActivity extends BaseActivity
         if (actionBar == null) return;
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (tvshowTitle != null) {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(false);
+            if (!drawerIndicatorIsArrow) {
+                navigationDrawerFragment.animateDrawerToggle(true);
+                drawerIndicatorIsArrow = true;
+            }
             actionBar.setTitle(tvshowTitle);
         } else {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(true);
+            if (drawerIndicatorIsArrow) {
+                navigationDrawerFragment.animateDrawerToggle(false);
+                drawerIndicatorIsArrow = false;
+            }
             actionBar.setTitle(R.string.tv_shows);
         }
     }

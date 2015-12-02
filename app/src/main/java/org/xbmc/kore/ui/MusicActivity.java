@@ -207,30 +207,40 @@ public class MusicActivity extends BaseActivity
         super.onBackPressed();
     }
 
+    private boolean drawerIndicatorIsArrow = false;
     private void setupActionBar(String albumTitle, String artistName, String genreTitle,
                                 String musicVideoTitle) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
 
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) return;
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (albumTitle != null) {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(false);
             actionBar.setTitle(albumTitle);
         } else if (artistName != null) {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(false);
             actionBar.setTitle(artistName);
         } else if (genreTitle != null) {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(false);
             actionBar.setTitle(genreTitle);
         } else if (musicVideoTitle != null) {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(false);
             actionBar.setTitle(musicVideoTitle);
         } else {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(true);
             actionBar.setTitle(R.string.music);
         }
+
+        if ((albumTitle != null) || (artistName != null) || (genreTitle != null) || (musicVideoTitle != null)) {
+            if (!drawerIndicatorIsArrow) {
+                navigationDrawerFragment.animateDrawerToggle(true);
+                drawerIndicatorIsArrow = true;
+            }
+        } else {
+            if (drawerIndicatorIsArrow) {
+                navigationDrawerFragment.animateDrawerToggle(false);
+                drawerIndicatorIsArrow = false;
+            }
+        }
+
     }
 
     public void onArtistSelected(int artistId, String artistName) {
@@ -245,6 +255,7 @@ public class MusicActivity extends BaseActivity
                 .replace(R.id.fragment_container, albumListFragment)
                 .addToBackStack(null)
                 .commit();
+        navigationDrawerFragment.animateDrawerToggle(true);
         setupActionBar(null, artistName, null, null);
     }
 
@@ -269,7 +280,7 @@ public class MusicActivity extends BaseActivity
         }
 
         fragTrans.replace(R.id.fragment_container, albumDetailsFragment)
-                .addToBackStack(null)
+                 .addToBackStack(null)
                 .commit();
         setupActionBar(albumTitle, null, null, null);
     }
@@ -310,7 +321,7 @@ public class MusicActivity extends BaseActivity
         }
 
         fragTrans.replace(R.id.fragment_container, detailsFragment)
-                .addToBackStack(null)
+                 .addToBackStack(null)
                 .commit();
         setupActionBar(null, null, null, musicVideoTitle);
     }

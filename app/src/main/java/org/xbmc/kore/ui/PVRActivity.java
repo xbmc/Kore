@@ -152,6 +152,7 @@ public class PVRActivity extends BaseActivity
             super.onBackPressed();
     }
 
+    private boolean drawerIndicatorIsArrow = false;
     private void setupActionBar(String channelTitle) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
@@ -161,10 +162,16 @@ public class PVRActivity extends BaseActivity
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         if (channelTitle != null) {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(false);
+            if (!drawerIndicatorIsArrow) {
+                navigationDrawerFragment.animateDrawerToggle(true);
+                drawerIndicatorIsArrow = true;
+            }
             actionBar.setTitle(channelTitle);
         } else {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(true);
+            if (drawerIndicatorIsArrow) {
+                navigationDrawerFragment.animateDrawerToggle(false);
+                drawerIndicatorIsArrow = false;
+            }
             actionBar.setTitle(R.string.pvr);
         }
     }

@@ -23,6 +23,8 @@
         <item name="android:windowBackground">@color/dark_background</item>
         <!--<item name="android:windowActionBarOverlay">true</item>-->
 
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
         <!-- Set AppCompat’s color theming attrs -->
         <!--<item name="colorPrimary">@color/light_green_800</item>-->
         <!--<item name="colorPrimaryDark">@color/light_green_900</item>-->
@@ -147,6 +149,8 @@
         <item name="android:colorBackground">@color/light_background</item>
         <item name="android:windowBackground">@color/light_background</item>
 
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
         <!-- Set AppCompat’s color theming attrs -->
         <item name="colorPrimary">@color/deep_orange_500</item>
         <item name="colorPrimaryDark">@color/deep_orange_700</item>
@@ -156,7 +160,7 @@
 
         <!-- CAREFUL with this. This is so that the drawer toggle arrow
         is set to white but can have unintended consequences. Watch it -->
-        <item name="colorControlNormal">@color/white</item>
+        <!--<item name="colorControlNormal">@color/white</item>-->
 
         <item name="appTextColorPrimary">@color/black_dim_87pct</item>
         <item name="appTextColorSecondary">@color/black_dim_54pct</item>

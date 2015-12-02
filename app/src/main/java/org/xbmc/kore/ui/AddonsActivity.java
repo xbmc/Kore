@@ -149,6 +149,7 @@ public class AddonsActivity extends BaseActivity
         super.onBackPressed();
     }
 
+    private boolean drawerIndicatorIsArrow = false;
     private void setupActionBar(String addonTitle) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
@@ -157,10 +158,16 @@ public class AddonsActivity extends BaseActivity
         if (actionBar == null) return;
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (addonTitle != null) {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(false);
+            if (!drawerIndicatorIsArrow) {
+                navigationDrawerFragment.animateDrawerToggle(true);
+                drawerIndicatorIsArrow = true;
+            }
             actionBar.setTitle(addonTitle);
         } else {
-            navigationDrawerFragment.setDrawerIndicatorEnabled(true);
+            if (drawerIndicatorIsArrow) {
+                navigationDrawerFragment.animateDrawerToggle(false);
+                drawerIndicatorIsArrow = false;
+            }
             actionBar.setTitle(R.string.addons);
         }
     }
@@ -194,6 +201,7 @@ public class AddonsActivity extends BaseActivity
         fragTrans.replace(R.id.fragment_container, addonDetailsFragment)
                 .addToBackStack(null)
                 .commit();
+
         setupActionBar(selectedAddonTitle);
     }
 }

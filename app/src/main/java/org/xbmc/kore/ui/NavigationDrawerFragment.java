@@ -15,6 +15,8 @@
  */
 package org.xbmc.kore.ui;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -250,8 +253,29 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        //mDrawerLayout.setDrawerListener(mDrawerToggle);
         selectedItemId = getItemIdFromActivity();
+    }
+
+    /**
+     * Animates the drawerToggle from the hamburger to an arrow or vice versa
+     * @param toArrow True, hamburger to arrow, false arrow to hamburger
+     */
+    public void animateDrawerToggle(final boolean toArrow) {
+        float start = toArrow ? 0.0f : 1.0f,
+                end = 1.0f - start;
+
+        ValueAnimator anim = ValueAnimator.ofFloat(start, end);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float slideOffset = (Float) valueAnimator.getAnimatedValue();
+                mDrawerToggle.onDrawerSlide(mDrawerLayout, slideOffset);
+            }
+        });
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setDuration(500);
+        anim.start();
     }
 
     /**
