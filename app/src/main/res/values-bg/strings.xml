@@ -36,6 +36,8 @@
     <string name="files">Файлове</string>
     <string name="video">Видео</string>
     <string name="file_browser">Диспечер на файлове</string>
+    <string name="pvr">ПВР</string>
+
     <string name="no_xbmc_configured">Няма настроен медиен център</string>
     <string name="add_xbmc">Добавяне на медиен център</string>
 
@@ -79,9 +81,13 @@
     Няма открити медийни центрове.<br/>Помощ за настройките ще намерите <a href="http://syncedsynapse.com/kore/kore-faq/>тук</a>.<br/><br/>
     Докоснете <i>Повторно търсене</i> за втори опит или <i>Напред</i> за ръчно настройване.
     ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    Моля свържете се с мрежа, преди да търсите медийни центорве.<br/>
+    ]]></string>
     <string name="wizard_search_host_found"><![CDATA[
     В локалната мрежа са открити следните медийни центрове.<br/><br/>Изберете кой да бъде добавен или докоснете <i>Напред</i> за ръчно добавяне.
     ]]></string>
+    <string name="no_network_connection">Няма налична мрежа</string>
     <string name="searching">Търсене…</string>
     <string name="no_xbmc_found">Няма открити медийни центрове</string>
     <string name="xbmc_found">Открити медийни центрове</string>
@@ -219,26 +225,30 @@
     <string name="remaining_cast_count">Още %d</string>
 
     <string name="general_error_executing_action">Грешка при изпълнение на действие: %1$s</string>
-    <string name="error_getting_playlist">Грешка при изтеглянето на плейлист</string>
+    <string name="error_getting_playlist">Грешка при свалянето на плейлист</string>
     <string name="error_message">Грешка: %1$s</string>
     <string name="playlist_empty">Празен плейлист</string>
     <string name="clear_playlist">Изчисти плейлиста</string>
     <string name="source_empty">Източникът на медия е празен</string>
 
-    <string name="no_movies_found_refresh">Няма открити филми\n\nПлъзнете надолу за обновяване</string>
-    <string name="no_tvshows_found_refresh">Няма открити ТВ Сериали\n\nПлъзнете надолу за обновяване</string>
+    <string name="no_movies_found_refresh">Няма открити филми\n\nПлъзнете надолу за опресняване</string>
+    <string name="no_tvshows_found_refresh">Няма открити ТВ Сериали\n\nПлъзнете надолу за опресняване</string>
     <string name="no_episodes_found">Няма открити епизоди</string>
-    <string name="no_artists_found_refresh">Няма открити артисти\n\nПлъзнете надолу за обновяване</string>
-    <string name="no_albums_found_refresh">Няма открити албуми\n\nПлъзнете надолу за обновяване</string>
-    <string name="no_genres_found_refresh">Няма открити жанрове\n\nПлъзнете надолу за обновяване</string>
-    <string name="no_addons_found_refresh">Няма открити добавки или няма връзка\n\nПлъзнете надолу за обновяване</string>
-    <string name="no_music_videos_found_refresh">Няма открити клипове\n\nПлъзнете надолу за обновяване</string>
-    <string name="pull_to_refresh">Плъзнете за обновяване</string>
+    <string name="swipe_down_to_refresh">Плъзнете надолу за опресняване</string>
+    <string name="no_artists_found_refresh">Няма открити артисти\n\nПлъзнете надолу за опресняване</string>
+    <string name="no_albums_found_refresh">Няма открити албуми\n\nПлъзнете надолу за опресняване</string>
+    <string name="no_genres_found_refresh">Няма открити жанрове\n\nПлъзнете надолу за опресняване</string>
+    <string name="no_addons_found_refresh">Няма открити добавки или няма връзка\n\nПлъзнете надолу за опресняване</string>
+    <string name="no_music_videos_found_refresh">Няма открити клипове\n\nПлъзнете надолу за опресняване</string>
+    <string name="no_channel_groups_found_refresh">No channel groups found.\n\nПлъзнете надолу за опресняване</string>
+    <string name="no_channels_found_refresh">Няма открити канали.\n\nПлъзнете надолу за опресняване</string>
+    <string name="no_recordings_found_refresh">Няма открити записи.\n\nПлъзнете надолу за опресняване</string>
+    <string name="pull_to_refresh">Плъзнете за опресняване</string>
     <string name="no_cast_info">Няма информация за участниците</string>
 
     <string name="minutes_abbrev">%1$s мин</string>
     <string name="sync_successful">Успешно синхронизиране</string>
-    <string name="error_while_syncing">Възникна грешка при синхронизирането: %1$s</string>
+    <string name="error_while_syncing">Грешка при синхронизирането: %1$s</string>
 
     <string name="action_search">Търсене</string>
     <string name="action_search_movies">Търсене за филм</string>
@@ -292,7 +302,7 @@
     <string name="sort_by_name">име</string>
     <string name="sort_by_date_added">дата на добавяне</string>
     <string name="ignore_prefixes">Игнорирай представките</string>
-	
+
     <!-- Preferences strings -->
     <string name="theme">Тема</string>
     <string name="theme_night">Нощ</string>
@@ -305,6 +315,7 @@
     <string name="show_notification">Показвай известия и при възпроизвеждане</string>
     <string name="use_hardware_volume_keys">Контрол на звука с клавишите за сила за звука</string>
     <string name="vibrate_on_remote">Вибриране при натискане на бутон</string>
+    <string name="nav_drawer_items">Преки пътища в страничното меню</string>
 
     <string name="about">За приложението</string>
     <string name="about_desc"><![CDATA[
@@ -327,5 +338,18 @@
     <!--<string name="purchase_thanks">Благодаря за подкрепата!</string>-->
 
     <string name="play_on_kodi">Kodi</string>
+    <string name="error_getting_pvr_info">Грешка при свалянето на ПВР инф.: %1$s</string>
+    <string name="might_not_have_pvr">Грешка при свалянето на инф. за канали, вероятно защото медийният център няма тунер или не е настроен.\n\nВ такъв случай можете да премахнете елемента от страничното меню, от Настройки.</string>
+    <string name="error_starting_channel">Грешка при опит за възпроизвеждане на канал: %1$s</string>
+    <string name="error_starting_recording">Грешка при започване на запис: %1$s</string>
+    <string name="channel_switching">Превключване към канал %1$s</string>
+    <string name="starting_recording">Започване на запис %1$s</string>
+    <string name="refresh">опресни</string>
+
+    <string name="tv">ТВ</string>
+    <string name="radio">Радио</string>
+    <string name="recordings">Записи</string>
+    <string name="tv_channels">ТВ канали</string>
+    <string name="radio_channels">Радио канали</string>
 
 </resources>
