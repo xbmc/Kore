@@ -175,6 +175,11 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!isAdded()) {
+            // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
+            super.onCreateOptionsMenu(menu, inflater);
+            return;
+        }
         inflater.inflate(R.menu.tvshow_episode_list, menu);
 
         // Setup filters

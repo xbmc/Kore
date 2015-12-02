@@ -142,6 +142,12 @@ public class TVShowListFragment extends AbstractListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!isAdded()) {
+            // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
+            super.onCreateOptionsMenu(menu, inflater);
+            return;
+        }
+
         inflater.inflate(R.menu.tvshow_list, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);

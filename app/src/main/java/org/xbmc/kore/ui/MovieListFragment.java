@@ -140,6 +140,12 @@ public class MovieListFragment extends AbstractListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!isAdded()) {
+            // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
+            super.onCreateOptionsMenu(menu, inflater);
+            return;
+        }
+
         inflater.inflate(R.menu.movie_list, menu);
 
         // Setup search view
