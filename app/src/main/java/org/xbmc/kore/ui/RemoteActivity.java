@@ -163,7 +163,7 @@ public class RemoteActivity extends BaseActivity
     @Override
     public void onPause() {
         super.onPause();
-        hostConnectionObserver.unregisterPlayerObserver(this);
+        if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
     }
 
