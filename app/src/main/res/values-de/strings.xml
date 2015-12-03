@@ -36,6 +36,7 @@
     <string name="files">Dateien</string>
     <string name="video">Videos</string>
     <string name="file_browser">Datei-Browser</string>
+    <string name="pvr">PVR</string>
 
     <string name="no_xbmc_configured">Kein Media Center konfiguriert</string>
     <string name="add_xbmc">Media Center hinzufügen</string>
@@ -80,9 +81,13 @@
     Im lokalen Netzwerk konnte kein Media Center gefunden werden.<br/>Falls Sie Hilfe beim Konfigurieren brauchen, drücken Sie <a href="http://syncedsynapse.com/kore/kore-faq/>hier</a>.<br/><br/>
     Drücken Sie <i>Suche</i> um nochmal zu Suchen oder <i>Weiter</i> für die manuelle Konfiguration.
     ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    Bitte richten Sie eine Netzwerkverbindung ein, bevor Sie Media Center suchen.<br/>
+    ]]></string>
     <string name="wizard_search_host_found"><![CDATA[
     Es wurden Geräte im Netzwerk gefunden.<br/><br/>Wählen Sie ein Media Center zum Hinzufügen aus oder drücken Sie <i>Weiter</i> für die manuelle Konfiguration.
     ]]></string>
+    <string name="no_network_connection">Keine Netzwerkverbindung</string>
     <string name="searching">Suche…</string>
     <string name="no_xbmc_found">Kein Media Center gefunden</string>
     <string name="xbmc_found">Media Center gefunden</string>
@@ -98,11 +103,14 @@
     <string name="wizard_xbmc_mac_address">MAC Adresse</string>
     <string name="wizard_xbmc_wol_port">WoL Port (9)</string>
     <string name="wizard_xbmc_use_tcp">TCP verwenden</string>
+    <string name="wizard_xbmc_event_server_port">ES Port (9777)</string>
+    <string name="wizard_xbmc_use_event_server">EventServer verwenden</string>
 
     <string name="wizard_no_name_specified">Bitte geben Sie einen Namen für das Media Center ein.</string>
     <string name="wizard_no_address_specified">Bitte geben Sie die IP-Adresse des Media Center an.</string>
     <string name="wizard_invalid_http_port_specified">Bitte geben Sie einen gültigen HTTP Port an.</string>
     <string name="wizard_invalid_tcp_port_specified">Bitte geben Sie einen gültigen TCP Port an.</string>
+    <string name="wizard_invalid_es_port_specified">Bitte geben Sie einen gültigen EventServer Port an.</string>
 
     <string name="wizard_connecting_to_xbmc_title">Verbinden mit %1$s…</string>
     <string name="wizard_connecting_to_xbmc_message">Bitte warten Sie während die Verbindung zum Media Center aufgebaut wird…</string>
@@ -213,6 +221,8 @@
     <string name="cast">Besetzung</string>
     <string name="additional_cast">Zusätzliche Besetzung</string>
     <string name="cast_list_text">%1$s als %2$s</string>
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <string name="remaining_cast_count">%d mehr</string>
 
     <string name="general_error_executing_action">Fehler beim Ausführen der Aktion: %1$s</string>
     <string name="error_getting_playlist">Fehler beim Holen der Wiedergabeliste</string>
@@ -224,12 +234,17 @@
     <string name="no_movies_found_refresh">Kein Filme gefunden\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_tvshows_found_refresh">Keine Serien gefunden\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_episodes_found">Keine Episoden gefunden</string>
+    <string name="swipe_down_to_refresh">Zum Aktualisieren herunterziehen</string>
     <string name="no_artists_found_refresh">Keine Künstler gefunden\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_albums_found_refresh">Keine Alben gefunden\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_genres_found_refresh">Keine Genres gefunden\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_addons_found_refresh">Keine Erweiterungen gefunden oder nicht verbunden\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_music_videos_found_refresh">Keine Videos gefunden\n\nZum Aktualisieren herunterziehen</string>
+    <string name="no_channel_groups_found_refresh">Keine Kanalgruppen gefunden.\n\nZum Aktualisieren herunterziehen</string>
+    <string name="no_channels_found_refresh">Keine Kanäle gefunden.\n\nZum Aktualisieren herunterziehen</string>
+    <string name="no_recordings_found_refresh">Keine Aufnahmen gefunden.\n\nZum Aktualisieren herunterziehen</string>
     <string name="pull_to_refresh">Zum Aktualisieren ziehen</string>
+    <string name="no_cast_info">Keine Informationen zur Besetzung</string>
 
     <string name="minutes_abbrev">%1$s Min.</string>
     <string name="sync_successful">Synchronisation erfolgreich</string>
@@ -299,6 +314,8 @@
     <string name="switch_to_remote">Nach dem Abspielen eines Mediums zur Fernbedienung wechseln</string>
     <string name="show_notification">Nachricht mit aktueller Wiedergabe anzeigen</string>
     <string name="use_hardware_volume_keys">Lautstärketasten verwenden</string>
+    <string name="vibrate_on_remote">Auf Fernbedienungs-Knopfdruck vibrieren</string>
+    <string name="nav_drawer_items">Seitenmenü-Verknüpfungen</string>
 
     <string name="about">Über</string>
     <string name="about_desc"><![CDATA[
@@ -321,5 +338,22 @@
     <!--<string name="purchase_thanks">Danke für ihre Unterstützung!</string>-->
 
     <string name="play_on_kodi">Mit Kodi abspielen</string>
+
+    <string name="error_getting_pvr_info">Ein Fehler ist aufgetreten während des Empfangens der PVR Informationen: %1$s</string>
+    <string name="might_not_have_pvr">Ein Fehler ist während des Empfangens der Kanalinformationen aufgetreten, möglicherweise weil Ihr Media Center keinen Empfänger hat oder dieser falsch konfiguriert ist.\n\nWenn das der Fall ist und Sie diesen Eintrag aus dem Seitenmenü entfernen möchten, können Sie es in den Einstellungen tun.</string>
+    <string name="error_starting_channel">Ein Fehler ist beim Starten des Abspielens aufgetreten: %1$s</string>
+    <string name="error_starting_recording">Ein Fehler ist beim Starten der Aufnahme aufgetreten: %1$s</string>
+    <string name="error_starting_to_record">Während der Aufnahme ist ein Fehler aufgetreten: %1$s</string>
+    <string name="channel_switching">Wechseln zum Kanal %1$s</string>
+    <string name="starting_recording">Aufnahme von %1$s starten</string>
+    <string name="refresh">Aktualisieren</string>
+
+    <string name="tv">TV</string>
+    <string name="radio">Radio</string>
+    <string name="recordings">Aufnahmen</string>
+    <string name="tv_channels">TV-Kanäle</string>
+    <string name="radio_channels">Radiosender</string>
+
+    <string name="record">Aufnehmen</string>
 
 </resources>
