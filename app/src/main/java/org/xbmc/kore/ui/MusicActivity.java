@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -243,29 +244,44 @@ public class MusicActivity extends BaseActivity
 
     }
 
+    @TargetApi(21)
     public void onArtistSelected(int artistId, String artistName) {
         selectedArtistId = artistId;
         selectedArtistName = artistName;
 
         // Replace list fragment
         AlbumListFragment albumListFragment = AlbumListFragment.newInstanceForArtist(artistId);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0)
-                .replace(R.id.fragment_container, albumListFragment)
+
+        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+        // Setup animations
+        if (Utils.isLollipopOrLater()) {
+            //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
+            Transition fade = TransitionInflater
+                    .from(this)
+                    .inflateTransition(android.R.transition.fade);
+            albumListFragment.setExitTransition(fade);
+            albumListFragment.setReenterTransition(fade);
+            albumListFragment.setSharedElementReturnTransition(TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image));
+        } else {
+            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
+        }
+
+        fragTrans.replace(R.id.fragment_container, albumListFragment)
                 .addToBackStack(null)
                 .commit();
+
         navigationDrawerFragment.animateDrawerToggle(true);
         setupActionBar(null, artistName, null, null);
     }
 
     @TargetApi(21)
-    public void onAlbumSelected(int albumId, String albumTitle) {
-        selectedAlbumId = albumId;
-        selectedAlbumTitle = albumTitle;
+    public void onAlbumSelected(AlbumListFragment.ViewHolder vh) {
+        selectedAlbumId = vh.albumId;
+        selectedAlbumTitle = vh.albumTitle;
 
         // Replace list fragment
-        AlbumDetailsFragment albumDetailsFragment = AlbumDetailsFragment.newInstance(albumId);
+        AlbumDetailsFragment albumDetailsFragment = AlbumDetailsFragment.newInstance(vh);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
@@ -274,15 +290,22 @@ public class MusicActivity extends BaseActivity
                     .from(this)
                     .inflateTransition(R.transition.media_details));
             albumDetailsFragment.setReturnTransition(null);
+
+            Transition changeImageTransition = TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image);
+            albumDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
+            albumDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
+
+            fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
                     R.anim.fragment_list_popenter, 0);
         }
 
         fragTrans.replace(R.id.fragment_container, albumDetailsFragment)
-                 .addToBackStack(null)
+                .addToBackStack(null)
                 .commit();
-        setupActionBar(albumTitle, null, null, null);
+        setupActionBar(selectedAlbumTitle, null, null, null);
     }
 
     public void onAudioGenreSelected(int genreId, String genreTitle) {
@@ -321,7 +344,7 @@ public class MusicActivity extends BaseActivity
         }
 
         fragTrans.replace(R.id.fragment_container, detailsFragment)
-                 .addToBackStack(null)
+                .addToBackStack(null)
                 .commit();
         setupActionBar(null, null, null, musicVideoTitle);
     }

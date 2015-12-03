@@ -110,8 +110,7 @@
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
                     android:src="?attr/iconDownload"
-                    android:contentDescription="@string/download"
-                    android:visibility="gone"/>
+                    android:contentDescription="@string/download"/>
             </LinearLayout>
 
             <RelativeLayout
