@@ -102,4 +102,5 @@ public interface Settings {
     public static final boolean DEFAULT_PREF_CHECKED_EVENT_SERVER_CONNECTION = false;
 
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
+    public static final boolean KEY_PREF_REPLACE_FILES = false;
 }
