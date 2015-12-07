@@ -16,6 +16,7 @@
 
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -134,6 +135,7 @@ public class AlbumDetailsFragment extends Fragment
     /**
      * Create a new instance of this, initialized to show the album albumId
      */
+    @TargetApi(21)
     public static AlbumDetailsFragment newInstance(AlbumListFragment.ViewHolder vh) {
         AlbumDetailsFragment fragment = new AlbumDetailsFragment();
 
@@ -158,6 +160,7 @@ public class AlbumDetailsFragment extends Fragment
     }
 
     @Override
+    @TargetApi(21)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         albumId = getArguments().getInt(BUNDLE_KEY_ALBUMID, -1);
 
