@@ -451,6 +451,9 @@ public class AlbumDetailsFragment extends Fragment
             UIUtils.loadImageIntoImageview(hostManager,
                     fanart,
                     mediaArt, artWidth, artHeight);
+        } else {
+            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                    poster, albumTitle, mediaArt, artWidth, artHeight);
         }
     }
 
