@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -42,6 +43,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -105,8 +107,10 @@ public class TVShowOverviewFragment extends AbstractDetailsFragment
     }
 
     @Override
+    @TargetApi(21)
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        tvshowId = getArguments().getInt(TVSHOWID, -1);
+        Bundle bundle = getArguments();
+        tvshowId = bundle.getInt(TVShowDetailsFragment.BUNDLE_KEY_TVSHOWID, -1);
 
         if (tvshowId == -1) {
             // There's nothing to show
@@ -130,6 +134,18 @@ public class TVShowOverviewFragment extends AbstractDetailsFragment
             }
         });
 
+        tvshowTitle = bundle.getString(TVShowDetailsFragment.BUNDLE_KEY_TITLE);
+
+        mediaTitle.setText(tvshowTitle);
+        setMediaUndertitle(bundle.getInt(TVShowDetailsFragment.BUNDLE_KEY_EPISODE), bundle.getInt(TVShowDetailsFragment.BUNDLE_KEY_WATCHEDEPISODES));
+        setMediaPremiered(bundle.getString(TVShowDetailsFragment.BUNDLE_KEY_PREMIERED), bundle.getString(TVShowDetailsFragment.BUNDLE_KEY_STUDIO));
+        mediaGenres.setText(bundle.getString(TVShowDetailsFragment.BUNDLE_KEY_GENRES));
+        setMediaRating(bundle.getDouble(TVShowDetailsFragment.BUNDLE_KEY_RATING));
+        mediaDescription.setText(bundle.getString(TVShowDetailsFragment.BUNDLE_KEY_PLOT));
+
+        if(Utils.isLollipopOrLater()) {
+            mediaPoster.setTransitionName(getArguments().getString(TVShowDetailsFragment.POSTER_TRANS_NAME));
+        }
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
 //        mediaPanel.setClipToPadding(false);
@@ -244,26 +260,13 @@ public class TVShowOverviewFragment extends AbstractDetailsFragment
         mediaTitle.setText(tvshowTitle);
         int numEpisodes = cursor.getInt(TVShowDetailsQuery.EPISODE),
                 watchedEpisodes = cursor.getInt(TVShowDetailsQuery.WATCHEDEPISODES);
-        String episodes = String.format(getString(R.string.num_episodes),
-                numEpisodes, numEpisodes - watchedEpisodes);
-        mediaUndertitle.setText(episodes);
+        setMediaUndertitle(numEpisodes, watchedEpisodes);
 
-        String premiered = String.format(getString(R.string.premiered),
-                cursor.getString(TVShowDetailsQuery.PREMIERED)) +
-                "  |  " + cursor.getString(TVShowDetailsQuery.STUDIO);
-        mediaPremiered.setText(premiered);
+        setMediaPremiered(cursor.getString(TVShowDetailsQuery.PREMIERED), cursor.getString(TVShowDetailsQuery.STUDIO));
+
         mediaGenres.setText(cursor.getString(TVShowDetailsQuery.GENRES));
 
-        double rating = cursor.getDouble(TVShowDetailsQuery.RATING);
-        if (rating > 0) {
-            mediaRating.setVisibility(View.VISIBLE);
-            mediaMaxRating.setVisibility(View.VISIBLE);
-            mediaRating.setText(String.format("%01.01f", rating));
-            mediaMaxRating.setText(getString(R.string.max_rating_video));
-        } else {
-            mediaRating.setVisibility(View.INVISIBLE);
-            mediaMaxRating.setVisibility(View.INVISIBLE);
-        }
+        setMediaRating(cursor.getDouble(TVShowDetailsQuery.RATING));
 
         mediaDescription.setText(cursor.getString(TVShowDetailsQuery.PLOT));
 
@@ -286,6 +289,28 @@ public class TVShowOverviewFragment extends AbstractDetailsFragment
                 mediaArt, displayMetrics.widthPixels, artHeight);
     }
 
+    private void setMediaUndertitle(int numEpisodes, int watchedEpisodes) {
+        String episodes = String.format(getString(R.string.num_episodes),
+                numEpisodes, numEpisodes - watchedEpisodes);
+        mediaUndertitle.setText(episodes);
+    }
+
+    private void setMediaPremiered(String premiered, String studio) {
+        mediaPremiered.setText(String.format(getString(R.string.premiered),
+                premiered) + "  |  " + studio);
+    }
+
+    private void setMediaRating(double rating) {
+        if (rating > 0) {
+            mediaRating.setVisibility(View.VISIBLE);
+            mediaMaxRating.setVisibility(View.VISIBLE);
+            mediaRating.setText(String.format("%01.01f", rating));
+            mediaMaxRating.setText(getString(R.string.max_rating_video));
+        } else {
+            mediaRating.setVisibility(View.INVISIBLE);
+            mediaMaxRating.setVisibility(View.INVISIBLE);
+        }
+    }
     /**
      * Display the cast details
      *
