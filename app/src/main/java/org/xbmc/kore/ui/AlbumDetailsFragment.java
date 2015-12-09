@@ -16,13 +16,15 @@
 
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
@@ -46,6 +48,7 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostInfo;
@@ -59,6 +62,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,7 +71,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 
 /**
  * Presents movie details
@@ -76,7 +79,13 @@ public class AlbumDetailsFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(AlbumDetailsFragment.class);
 
-    public static final String ALBUMID = "album_id";
+    public static final String BUNDLE_KEY_ALBUMID = "album_id";
+    public static final String POSTER_TRANS_NAME = "POSTER_TRANS_NAME";
+    public static final String BUNDLE_KEY_ALBUMARTIST = "album_artist";
+    public static final String BUNDLE_KEY_ALBUMTITLE = "album_title";
+    public static final String BUNDLE_KEY_ALBUMGENRE = "album_genre";
+    public static final String BUNDLE_KEY_ALBUMYEAR = "album_year";
+    public static final String BUNDLE_KEY_ALBUMRATING = "album_rating";
 
     // Loader IDs
     private static final int LOADER_ALBUM = 0,
@@ -84,7 +93,6 @@ public class AlbumDetailsFragment extends Fragment
 
     private HostManager hostManager;
     private HostInfo hostInfo;
-    private EventBus bus;
 
     /**
      * Handler on which to post RPC callbacks
@@ -128,11 +136,21 @@ public class AlbumDetailsFragment extends Fragment
     /**
      * Create a new instance of this, initialized to show the album albumId
      */
-    public static AlbumDetailsFragment newInstance(int albumId) {
+    @TargetApi(21)
+    public static AlbumDetailsFragment newInstance(AlbumListFragment.ViewHolder vh) {
         AlbumDetailsFragment fragment = new AlbumDetailsFragment();
 
         Bundle args = new Bundle();
-        args.putInt(ALBUMID, albumId);
+        args.putInt(BUNDLE_KEY_ALBUMID, vh.albumId);
+        args.putString(BUNDLE_KEY_ALBUMTITLE, vh.albumTitle);
+        args.putString(BUNDLE_KEY_ALBUMARTIST, vh.albumArtist);
+        args.putString(BUNDLE_KEY_ALBUMGENRE, vh.albumGenre);
+        args.putInt(BUNDLE_KEY_ALBUMYEAR, vh.albumYear);
+        args.putDouble(BUNDLE_KEY_ALBUMRATING, vh.albumRating);
+
+        if( Utils.isLollipopOrLater()) {
+            args.putString(POSTER_TRANS_NAME, vh.artView.getTransitionName());
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -143,8 +161,9 @@ public class AlbumDetailsFragment extends Fragment
     }
 
     @Override
+    @TargetApi(21)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        albumId = getArguments().getInt(ALBUMID, -1);
+        albumId = getArguments().getInt(BUNDLE_KEY_ALBUMID, -1);
 
         if ((container == null) || (albumId == -1)) {
             // We're not being shown or there's nothing to show
@@ -154,7 +173,6 @@ public class AlbumDetailsFragment extends Fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_album_details, container, false);
         ButterKnife.inject(this, root);
 
-        bus = EventBus.getDefault();
         hostManager = HostManager.getInstance(getActivity());
         hostInfo = hostManager.getHostInfo();
 
@@ -172,6 +190,17 @@ public class AlbumDetailsFragment extends Fragment
 
         FloatingActionButton fab = (FloatingActionButton)fabButton;
         fab.attachToScrollView((ObservableScrollView) mediaPanel);
+
+        Bundle bundle = getArguments();
+
+        if(Utils.isLollipopOrLater()) {
+            mediaPoster.setTransitionName(bundle.getString(POSTER_TRANS_NAME));
+        }
+
+        mediaTitle.setText(bundle.getString(BUNDLE_KEY_ALBUMTITLE));
+        mediaUndertitle.setText(bundle.getString(BUNDLE_KEY_ALBUMARTIST));
+        setMediaYear(bundle.getString(BUNDLE_KEY_ALBUMGENRE), bundle.getInt(BUNDLE_KEY_ALBUMYEAR));
+        setMediaRating(bundle.getDouble(BUNDLE_KEY_ALBUMRATING));
 
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
@@ -195,11 +224,6 @@ public class AlbumDetailsFragment extends Fragment
         // Force the exit view to invisible
         exitTransitionView.setVisibility(View.INVISIBLE);
         super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -281,7 +305,7 @@ public class AlbumDetailsFragment extends Fragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
+                        .show();
             }
         }, callbackHandler);
     }
@@ -294,7 +318,7 @@ public class AlbumDetailsFragment extends Fragment
     @OnClick(R.id.download)
     public void onDownloadClicked(View v) {
         if ((albumTitle == null) || (albumDisplayArtist == null) ||
-            (songInfoList == null) || (songInfoList.size() == 0)) {
+                (songInfoList == null) || (songInfoList.size() == 0)) {
             // Nothing to download
             Toast.makeText(getActivity(), R.string.no_files_to_download, Toast.LENGTH_SHORT).show();
             return;
@@ -311,16 +335,16 @@ public class AlbumDetailsFragment extends Fragment
         if (file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                   .setMessage(R.string.download_dir_exists)
-                   .setPositiveButton(R.string.overwrite,
-                           new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                           songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                           callbackHandler);
-                               }
-                           })
+                    .setMessage(R.string.download_dir_exists)
+                    .setPositiveButton(R.string.overwrite,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                            songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                            callbackHandler);
+                                }
+                            })
                     .setNeutralButton(R.string.download_with_new_name,
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -365,21 +389,13 @@ public class AlbumDetailsFragment extends Fragment
         mediaTitle.setText(albumTitle);
         mediaUndertitle.setText(albumDisplayArtist);
 
-        int year = cursor.getInt(AlbumDetailsQuery.YEAR);
-        String genres = cursor.getString(AlbumDetailsQuery.GENRE);
-        String label = (year > 0) ?
-                       (!TextUtils.isEmpty(genres) ?
-                        genres + "  |  " + String.valueOf(year) :
-                        String.valueOf(year)) :
-                       genres;
-        mediaYear.setText(label);
+        setMediaYear(cursor.getString(AlbumDetailsQuery.GENRE), cursor.getInt(AlbumDetailsQuery.YEAR));
 
         double rating = cursor.getDouble(AlbumDetailsQuery.RATING);
         if (rating > 0) {
             mediaRating.setVisibility(View.VISIBLE);
             mediaMaxRating.setVisibility(View.VISIBLE);
-            mediaRating.setText(String.format("%01.01f", rating));
-            mediaMaxRating.setText(getString(R.string.max_rating_music));
+            setMediaRating(rating);
         } else {
             mediaRating.setVisibility(View.GONE);
             mediaMaxRating.setVisibility(View.GONE);
@@ -427,30 +443,33 @@ public class AlbumDetailsFragment extends Fragment
 
         int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height),
                 artWidth = displayMetrics.widthPixels;
+        int posterWidth = resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_width);
+        int posterHeight = resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_heigth);
+        UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                poster, albumTitle,
+                mediaPoster, posterWidth, posterHeight);
         if (!TextUtils.isEmpty(fanart)) {
-            int posterWidth = resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_width);
-            int posterHeight = resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_heigth);
-            mediaPoster.setVisibility(View.VISIBLE);
-            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                    poster, albumTitle,
-                    mediaPoster, posterWidth, posterHeight);
             UIUtils.loadImageIntoImageview(hostManager,
                     fanart,
                     mediaArt, artWidth, artHeight);
         } else {
-            // No fanart, just present the poster
-            mediaPoster.setVisibility(View.GONE);
-            UIUtils.loadImageIntoImageview(hostManager,
-                    poster,
-                    mediaArt, artWidth, artHeight);
-            // Reset padding
-            int paddingLeft = mediaTitle.getPaddingRight(),
-                    paddingRight = mediaTitle.getPaddingRight(),
-                    paddingTop = mediaTitle.getPaddingTop(),
-                    paddingBottom = mediaTitle.getPaddingBottom();
-            mediaTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-            mediaUndertitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                    poster, albumTitle, mediaArt, artWidth, artHeight);
         }
+    }
+
+    private void setMediaRating(double rating) {
+        mediaRating.setText(String.format("%01.01f", rating));
+        mediaMaxRating.setText(getString(R.string.max_rating_music));
+    }
+
+    private void setMediaYear(String genres, int year) {
+        String label = (year > 0) ?
+                (!TextUtils.isEmpty(genres) ?
+                        genres + "  |  " + String.valueOf(year) :
+                        String.valueOf(year)) :
+                genres;
+        mediaYear.setText(label);
     }
 
     /**
@@ -501,7 +520,7 @@ public class AlbumDetailsFragment extends Fragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                 .show();
+                                    .show();
                         }
 
                         @Override
@@ -509,12 +528,12 @@ public class AlbumDetailsFragment extends Fragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                 .show();
+                                    .show();
                         }
                     }, callbackHandler);
                 } else {
                     Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                         .show();
+                            .show();
                 }
             }
 
@@ -523,7 +542,7 @@ public class AlbumDetailsFragment extends Fragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
+                        .show();
             }
         }, callbackHandler);
     }
@@ -559,31 +578,31 @@ public class AlbumDetailsFragment extends Fragment
                             if (file.exists()) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                 builder.setTitle(R.string.download)
-                                       .setMessage(R.string.download_file_exists)
-                                       .setPositiveButton(R.string.overwrite,
-                                               new DialogInterface.OnClickListener() {
-                                                   @Override
-                                                   public void onClick(DialogInterface dialog, int which) {
-                                                       FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                               songInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                                               callbackHandler);
-                                                   }
-                                               })
-                                       .setNeutralButton(R.string.download_with_new_name,
-                                               new DialogInterface.OnClickListener() {
-                                                   @Override
-                                                   public void onClick(DialogInterface dialog, int which) {
-                                                       FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                               songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                               callbackHandler);
-                                                   }
-                                               })
-                                       .setNegativeButton(android.R.string.cancel,
-                                               new DialogInterface.OnClickListener() {
-                                                   @Override
-                                                   public void onClick(DialogInterface dialog, int which) { }
-                                               })
-                                       .show();
+                                        .setMessage(R.string.download_file_exists)
+                                        .setPositiveButton(R.string.overwrite,
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                                                songInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                callbackHandler);
+                                                    }
+                                                })
+                                        .setNeutralButton(R.string.download_with_new_name,
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                                                songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                callbackHandler);
+                                                    }
+                                                })
+                                        .setNegativeButton(android.R.string.cancel,
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) { }
+                                                })
+                                        .show();
                             } else {
                                 FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
                                         songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
@@ -608,7 +627,7 @@ public class AlbumDetailsFragment extends Fragment
             songInfoList = new ArrayList<FileDownloadHelper.SongInfo>(cursor.getCount());
             do {
                 View songView = LayoutInflater.from(getActivity())
-                                              .inflate(R.layout.list_item_song, songListView, false);
+                        .inflate(R.layout.list_item_song, songListView, false);
                 TextView songTitle = (TextView)songView.findViewById(R.id.song_title);
                 TextView trackNumber = (TextView)songView.findViewById(R.id.track_number);
                 TextView duration = (TextView)songView.findViewById(R.id.duration);
@@ -637,7 +656,6 @@ public class AlbumDetailsFragment extends Fragment
             } while (cursor.moveToNext());
 
             if (songInfoList.size() > 0) {
-                downloadButton.setVisibility(View.VISIBLE);
                 // Check if download dir exists
                 FileDownloadHelper.SongInfo songInfo = new FileDownloadHelper.SongInfo
                         (albumDisplayArtist, albumTitle, 0, 0, null, null);

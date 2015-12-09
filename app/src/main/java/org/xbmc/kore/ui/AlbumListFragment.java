@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -48,6 +49,7 @@ import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 /**
  * Fragment that presents the albums list
@@ -56,7 +58,7 @@ public class AlbumListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(AlbumListFragment.class);
 
     public interface OnAlbumSelectedListener {
-        public void onAlbumSelected(int albumId, String albumTitle);
+        public void onAlbumSelected(ViewHolder vh);
     }
 
     private static final String GENREID = "genreid",
@@ -103,7 +105,7 @@ public class AlbumListFragment extends AbstractListFragment {
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder) view.getTag();
                 // Notify the activity
-                listenerActivity.onAlbumSelected(tag.albumId, tag.albumTitle);
+                listenerActivity.onAlbumSelected(tag);
             }
         };
     }
@@ -194,6 +196,7 @@ public class AlbumListFragment extends AbstractListFragment {
                 MediaContract.Albums.GENRE,
                 MediaContract.Albums.THUMBNAIL,
                 MediaContract.Albums.YEAR,
+                MediaContract.Albums.RATING,
         };
 
         String SORT = MediaDatabase.sortCommonTokens(MediaContract.Albums.TITLE) + " ASC";
@@ -205,6 +208,7 @@ public class AlbumListFragment extends AbstractListFragment {
         final int GENRE = 4;
         final int THUMBNAIL = 5;
         final int YEAR = 6;
+        final int RATING = 7;
     }
 
     private class AlbumsAdapter extends CursorAdapter {
@@ -220,10 +224,8 @@ public class AlbumListFragment extends AbstractListFragment {
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.albumdetail_poster_width) /
-                             UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.albumdetail_poster_heigth) /
-                             UIUtils.IMAGE_RESIZE_FACTOR);
+            artWidth = (int) resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_width);
+            artHeight = (int) resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_heigth);
         }
 
         /** {@inheritDoc} */
@@ -244,12 +246,17 @@ public class AlbumListFragment extends AbstractListFragment {
         }
 
         /** {@inheritDoc} */
+        @TargetApi(21)
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
 
             viewHolder.albumId = cursor.getInt(AlbumListQuery.ALBUMID);
             viewHolder.albumTitle = cursor.getString(AlbumListQuery.TITLE);
+            viewHolder.albumArtist = cursor.getString(AlbumListQuery.DISPLAYARTIST);
+            viewHolder.albumGenre = cursor.getString(AlbumListQuery.GENRE);
+            viewHolder.albumYear = cursor.getInt(AlbumListQuery.YEAR);
+            viewHolder.albumRating = cursor.getDouble(AlbumListQuery.RATING);
 
             viewHolder.titleView.setText(viewHolder.albumTitle);
             viewHolder.artistView.setText(cursor.getString(AlbumListQuery.DISPLAYARTIST));
@@ -269,13 +276,17 @@ public class AlbumListFragment extends AbstractListFragment {
             ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
             contextMenu.setTag(viewHolder);
             contextMenu.setOnClickListener(albumlistItemMenuClickListener);
+
+            if(Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("a"+viewHolder.albumId);
+            }
         }
     }
 
     /**
      * View holder pattern
      */
-    private static class ViewHolder {
+    public static class ViewHolder {
         TextView titleView;
         TextView artistView;
         TextView genresView;
@@ -283,6 +294,10 @@ public class AlbumListFragment extends AbstractListFragment {
 
         int albumId;
         String albumTitle;
+        String albumArtist;
+        int albumYear;
+        String albumGenre;
+        double albumRating;
     }
 
     private View.OnClickListener albumlistItemMenuClickListener = new View.OnClickListener() {
