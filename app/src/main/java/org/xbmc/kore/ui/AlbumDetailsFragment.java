@@ -446,16 +446,11 @@ public class AlbumDetailsFragment extends Fragment
         int posterWidth = resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_width);
         int posterHeight = resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_heigth);
         UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                poster, albumTitle,
-                mediaPoster, posterWidth, posterHeight);
-        if (!TextUtils.isEmpty(fanart)) {
-            UIUtils.loadImageIntoImageview(hostManager,
-                    fanart,
-                    mediaArt, artWidth, artHeight);
-        } else {
-            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                    poster, albumTitle, mediaArt, artWidth, artHeight);
-        }
+                                             poster, albumTitle,
+                                             mediaPoster, posterWidth, posterHeight);
+        UIUtils.loadImageIntoImageview(hostManager,
+                                       TextUtils.isEmpty(fanart)? poster : fanart,
+                                       mediaArt, artWidth, artHeight);
     }
 
     private void setMediaRating(double rating) {
