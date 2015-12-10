@@ -22,14 +22,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controls the presentation of TV Shows information (list, details)
@@ -47,6 +52,9 @@ public class TVShowsActivity extends BaseActivity
     private int selectedTVShowId = -1;
     private String selectedTVShowTitle = null;
     private int selectedEpisodeId = -1;
+
+    private TVShowDetailsFragment tvshowDetailsFragment;
+    private boolean clearSharedElements;
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
@@ -70,10 +78,27 @@ public class TVShowsActivity extends BaseActivity
 
             // Setup animations
             if (Utils.isLollipopOrLater()) {
-                tvshowListFragment.setExitTransition(null);
-                tvshowListFragment.setReenterTransition(TransitionInflater
+                //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
+                Transition fade = TransitionInflater
                         .from(this)
-                        .inflateTransition(android.R.transition.fade));
+                        .inflateTransition(android.R.transition.fade);
+                tvshowListFragment.setExitTransition(fade);
+                tvshowListFragment.setReenterTransition(fade);
+
+                tvshowListFragment.setSharedElementReturnTransition(TransitionInflater.from(
+                        this).inflateTransition(R.transition.change_image));
+
+                android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        if (clearSharedElements) {
+                            names.clear();
+                            sharedElements.clear();
+                            clearSharedElements = false;
+                        }
+                    }
+                };
+                tvshowListFragment.setExitSharedElementCallback(seCallback);
             }
             getSupportFragmentManager()
                     .beginTransaction()
@@ -91,16 +116,6 @@ public class TVShowsActivity extends BaseActivity
 //        setupSystemBarsColors();
 //        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.fragment_container), true, true, true);
 //        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.drawer_layout), true, true, true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -192,24 +207,46 @@ public class TVShowsActivity extends BaseActivity
     /**
      * Callback from tvshows list fragment when a show is selected.
      * Switch fragment in portrait
-     * @param tvshowId Selected show
-     * @param tvshowTitle Title
+     * @param vh
      */
     @TargetApi(21)
-    public void onTVShowSelected(int tvshowId, String tvshowTitle) {
-        selectedTVShowId = tvshowId;
-        selectedTVShowTitle = tvshowTitle;
+    public void onTVShowSelected(TVShowListFragment.ViewHolder vh) {
+        selectedTVShowId = vh.tvshowId;
+        selectedTVShowTitle = vh.tvshowTitle;
 
         // Replace list fragment
-        TVShowDetailsFragment tvshowDetailsFragment = TVShowDetailsFragment.newInstance(tvshowId);
+        tvshowDetailsFragment = TVShowDetailsFragment.newInstance(vh);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
+            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    //On returning onMapSharedElements for the exiting fragment is called before the onMapSharedElements
+                    // for the reentering fragment. We use this to determine if we are returning and if
+                    // we should clear the shared element lists. Note that, clearing must be done in the reentering fragment
+                    // as this is called last. Otherwise it the app will crash during transition setup. Not sure, but might
+                    // be a v4 support package bug.
+                    if (tvshowDetailsFragment.isVisible()) {
+                        View sharedView = tvshowDetailsFragment.getSharedElement();
+                        if (sharedView == null) { // shared element not visible
+                            clearSharedElements = true;
+                        }
+                    }
+                }
+            };
+            tvshowDetailsFragment.setEnterSharedElementCallback(seCallback);
+
             tvshowDetailsFragment.setEnterTransition(TransitionInflater
                     .from(this)
                     .inflateTransition(R.transition.media_details));
             tvshowDetailsFragment.setReturnTransition(null);
+            Transition changeImageTransition = TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image);
+            tvshowDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
+            tvshowDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
+            fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
                     R.anim.fragment_list_popenter, 0);

@@ -18,6 +18,7 @@
     <fade>
         <targets>
             <target android:targetId="@id/art"/>
+            <target android:targetId="@id/pager_tab_strip"/>
         </targets>
     </fade>
 

@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -47,6 +48,7 @@ import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 /**
  * Fragment that presents the tv show list
@@ -55,7 +57,7 @@ public class TVShowListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowListFragment.class);
 
     public interface OnTVShowSelectedListener {
-        public void onTVShowSelected(int tvshowId, String tvshowTitle);
+        public void onTVShowSelected(TVShowListFragment.ViewHolder vh);
     }
 
     // Activity listener
@@ -72,7 +74,7 @@ public class TVShowListFragment extends AbstractListFragment {
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder) view.getTag();
                 // Notify the activity
-                listenerActivity.onTVShowSelected(tag.tvshowId, tag.tvshowTitle);
+                listenerActivity.onTVShowSelected(tag);
             }
         };
     }
@@ -225,9 +227,16 @@ public class TVShowListFragment extends AbstractListFragment {
                 MediaContract.TVShows.TVSHOWID,
                 MediaContract.TVShows.TITLE,
                 MediaContract.TVShows.THUMBNAIL,
+                MediaContract.TVShows.FANART,
                 MediaContract.TVShows.PREMIERED,
+                MediaContract.TVShows.STUDIO,
                 MediaContract.TVShows.EPISODE,
                 MediaContract.TVShows.WATCHEDEPISODES,
+                MediaContract.TVShows.RATING,
+                MediaContract.TVShows.PLOT,
+                MediaContract.TVShows.PLAYCOUNT,
+                MediaContract.TVShows.IMDBNUMBER,
+                MediaContract.TVShows.GENRES,
         };
 
         String SORT_BY_NAME = MediaContract.TVShows.TITLE + " ASC";
@@ -238,9 +247,16 @@ public class TVShowListFragment extends AbstractListFragment {
         final int TVSHOWID = 1;
         final int TITLE = 2;
         final int THUMBNAIL = 3;
-        final int PREMIERED = 4;
-        final int EPISODE = 5;
-        final int WATCHEDEPISODES = 6;
+        final int FANART = 4;
+        final int PREMIERED = 5;
+        final int STUDIO = 6;
+        final int EPISODE = 7;
+        final int WATCHEDEPISODES = 8;
+        final int RATING = 9;
+        final int PLOT = 10;
+        final int PLAYCOUNT = 11;
+        final int IMDBNUMBER = 12;
+        final int GENRES = 13;
     }
 
     private static class TVShowsAdapter extends CursorAdapter {
@@ -257,16 +273,16 @@ public class TVShowListFragment extends AbstractListFragment {
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
             artWidth = (int)(resources.getDimension(R.dimen.now_playing_poster_width) /
-                             UIUtils.IMAGE_RESIZE_FACTOR);
+                    UIUtils.IMAGE_RESIZE_FACTOR);
             artHeight = (int)(resources.getDimension(R.dimen.now_playing_poster_height) /
-                              UIUtils.IMAGE_RESIZE_FACTOR);
+                    UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
         /** {@inheritDoc} */
         @Override
         public View newView(Context context, final Cursor cursor, ViewGroup parent) {
             final View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.grid_item_tvshow, parent, false);
+                    .inflate(R.layout.grid_item_tvshow, parent, false);
 
             // Setup View holder pattern
             ViewHolder viewHolder = new ViewHolder();
@@ -281,6 +297,7 @@ public class TVShowListFragment extends AbstractListFragment {
         }
 
         /** {@inheritDoc} */
+        @TargetApi(21)
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
@@ -288,16 +305,25 @@ public class TVShowListFragment extends AbstractListFragment {
             // Save the movie id
             viewHolder.tvshowId = cursor.getInt(TVShowListQuery.TVSHOWID);
             viewHolder.tvshowTitle = cursor.getString(TVShowListQuery.TITLE);
+            viewHolder.episode = cursor.getInt(TVShowListQuery.EPISODE);
+            viewHolder.genres = cursor.getString(TVShowListQuery.GENRES);
+            viewHolder.plot = cursor.getString(TVShowListQuery.PLOT);
+            viewHolder.premiered = cursor.getString(TVShowListQuery.PREMIERED);
+            viewHolder.rating = cursor.getInt(TVShowListQuery.RATING);
+            viewHolder.studio = cursor.getString(TVShowListQuery.STUDIO);
+            viewHolder.watchedEpisodes = cursor.getInt(TVShowListQuery.WATCHEDEPISODES);
+
+            if(Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("a"+viewHolder.tvshowId);
+            }
 
             viewHolder.titleView.setText(viewHolder.tvshowTitle);
-            int numEpisodes = cursor.getInt(TVShowListQuery.EPISODE),
-                    watchedEpisodes = cursor.getInt(TVShowListQuery.WATCHEDEPISODES);
             String details = String.format(context.getString(R.string.num_episodes),
-                    numEpisodes, numEpisodes - watchedEpisodes);
+                    viewHolder.episode, viewHolder.episode - viewHolder.watchedEpisodes);
             viewHolder.detailsView.setText(details);
 
             String premiered = String.format(context.getString(R.string.premiered),
-                    cursor.getString(TVShowListQuery.PREMIERED));
+                    viewHolder.premiered);
             viewHolder.premieredView.setText(premiered);
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                     cursor.getString(TVShowListQuery.THUMBNAIL), viewHolder.tvshowTitle,
@@ -308,14 +334,21 @@ public class TVShowListFragment extends AbstractListFragment {
     /**
      * View holder pattern
      */
-    private static class ViewHolder {
+    public static class ViewHolder {
         TextView titleView;
         TextView detailsView;
-//        TextView yearView;
+        //        TextView yearView;
         TextView premieredView;
         ImageView artView;
 
         int tvshowId;
         String tvshowTitle;
+        String premiered;
+        String studio;
+        int episode;
+        int watchedEpisodes;
+        double rating;
+        String plot;
+        String genres;
     }
 }
