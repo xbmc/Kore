@@ -124,6 +124,8 @@
     <dimen name="recordinglist_art_width">74dp</dimen>
     <dimen name="recordinglist_art_heigth">74dp</dimen>
 
+    <dimen name="epg_time_width">56dp</dimen>
+
     <!-- Notification -->
     <dimen name="notification_height">64dp</dimen>
     <dimen name="notification_expanded_height">128dp</dimen>

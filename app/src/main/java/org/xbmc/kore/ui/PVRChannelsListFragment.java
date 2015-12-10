@@ -406,7 +406,9 @@ public class PVRChannelsListFragment extends Fragment
         private View.OnClickListener channelItemMenuClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int channelId = (Integer)v.getTag();
+                final ChannelViewHolder viewHolder = (ChannelViewHolder)v.getTag();
+                final int channelId = viewHolder.channelId;
+                final String channelName = viewHolder.channelName;
 
                 final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
                 popupMenu.getMenuInflater().inflate(R.menu.pvr_channel_list_item, popupMenu.getMenu());
@@ -434,6 +436,9 @@ public class PVRChannelsListFragment extends Fragment
 
                                     }
                                 }, callbackHandler);
+                                return true;
+                            case R.id.action_epg_item:
+                                listenerActivity.onChannelGuideSelected(channelId, channelName);
                                 return true;
                         }
                         return false;
@@ -486,7 +491,7 @@ public class PVRChannelsListFragment extends Fragment
                                                  viewHolder.artView, artWidth, artHeight);
 
             // For the popupmenu
-            viewHolder.contextMenu.setTag(channelDetails.channelid);
+            viewHolder.contextMenu.setTag(viewHolder);
             viewHolder.contextMenu.setOnClickListener(channelItemMenuClickListener);
 
             return convertView;

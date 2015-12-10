@@ -16,6 +16,10 @@
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_epg_item"
+          android:title="@string/pvr_epg"
+          android:orderInCategory="1"
+          app:showAsAction="never" />
     <item android:id="@+id/action_record_item"
         android:title="@string/record"
         android:orderInCategory="1"

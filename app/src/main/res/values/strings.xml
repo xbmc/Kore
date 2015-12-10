@@ -243,6 +243,7 @@
     <string name="no_channel_groups_found_refresh">No channel groups found.\n\nSwipe down to refresh</string>
     <string name="no_channels_found_refresh">No channels found.\n\nSwipe down to refresh</string>
     <string name="no_recordings_found_refresh">No recordings found.\n\nSwipe down to refresh</string>
+    <string name="no_broadcasts_found_refresh">No broadcasts found.\n\nSwipe down to refresh</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_cast_info">No cast info to display</string>
 
@@ -355,5 +356,6 @@
     <string name="radio_channels">Radio Channels</string>
 
     <string name="record">Record</string>
+    <string name="pvr_epg">Guide</string>
 
 </resources>

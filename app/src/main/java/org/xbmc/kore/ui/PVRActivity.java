@@ -18,6 +18,7 @@ package org.xbmc.kore.ui;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -188,23 +189,24 @@ public class PVRActivity extends BaseActivity
         selectedChannelId = channelId;
         selectedChannelTitle = channelTitle;
 
-//        // Replace list fragment
-//        PVRDetailsFragment pvrDetailsFragment = PVRDetailsFragment.newInstance(channelId);
-//        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-//
-//        // Set up transitions
-//        if (Utils.isLollipopOrLater()) {
-//            pvrDetailsFragment.setEnterTransition(TransitionInflater.from(this)
-//                                                          .inflateTransition(R.transition.media_details));
-//            pvrDetailsFragment.setReturnTransition(null);
-//        } else {
-//            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-//                                                 R.anim.fragment_list_popenter, 0);
-//        }
-//
-//        fragTrans.replace(R.id.fragment_container, pvrDetailsFragment)
-//                .addToBackStack(null)
-//                .commit();
+        // Replace list fragment
+        PVRChannelEPGListFragment pvrEPGFragment = PVRChannelEPGListFragment.newInstance(channelId);
+        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+
+        // Set up transitions
+        if (Utils.isLollipopOrLater()) {
+            pvrEPGFragment.setEnterTransition(
+                    TransitionInflater.from(this)
+                                      .inflateTransition(R.transition.media_details));
+            pvrEPGFragment.setReturnTransition(null);
+        } else {
+            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
+                                          R.anim.fragment_list_popenter, 0);
+        }
+
+        fragTrans.replace(R.id.fragment_container, pvrEPGFragment)
+                .addToBackStack(null)
+                .commit();
         setupActionBar(selectedChannelTitle);
     }
 }
