@@ -26,10 +26,14 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controls the presentation of Music information (list, details)
@@ -61,6 +65,8 @@ public class MusicActivity extends BaseActivity
     private String selectedMusicVideoTitle = null;
 
     private NavigationDrawerFragment navigationDrawerFragment;
+
+    private boolean clearSharedElements;
 
     @TargetApi(21)
     @Override
@@ -255,6 +261,18 @@ public class MusicActivity extends BaseActivity
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
         // Setup animations
         if (Utils.isLollipopOrLater()) {
+            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    if (clearSharedElements) {
+                        names.clear();
+                        sharedElements.clear();
+                        clearSharedElements = false;
+                    }
+                }
+            };
+            albumListFragment.setExitSharedElementCallback(seCallback);
+
             //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
             Transition fade = TransitionInflater
                     .from(this)
@@ -281,11 +299,29 @@ public class MusicActivity extends BaseActivity
         selectedAlbumTitle = vh.albumTitle;
 
         // Replace list fragment
-        AlbumDetailsFragment albumDetailsFragment = AlbumDetailsFragment.newInstance(vh);
+        final AlbumDetailsFragment albumDetailsFragment = AlbumDetailsFragment.newInstance(vh);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
+            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    //On returning onMapSharedElements for the exiting fragment is called before the onMapSharedElements
+                    // for the reentering fragment. We use this to determine if we are returning and if
+                    // we should clear the shared element lists. Note that, clearing must be done in the reentering fragment
+                    // as this is called last. Otherwise it the app will crash during transition setup. Not sure, but might
+                    // be a v4 support package bug.
+                    if (albumDetailsFragment.isVisible()) {
+                        View sharedView = albumDetailsFragment.getSharedElement();
+                        if (sharedView == null) { // shared element not visible
+                            clearSharedElements = true;
+                        }
+                    }
+                }
+            };
+            albumDetailsFragment.setEnterSharedElementCallback(seCallback);
+
             albumDetailsFragment.setEnterTransition(TransitionInflater
                     .from(this)
                     .inflateTransition(R.transition.media_details));

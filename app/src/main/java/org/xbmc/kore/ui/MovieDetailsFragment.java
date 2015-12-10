@@ -201,7 +201,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
 //        mediaPanel.setClipToPadding(false);
-        
+
         return root;
     }
 
@@ -626,6 +626,18 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
             hasIssuedOutdatedRefresh = true;
             startSync(true);
         }
+    }
+
+    /**
+     * Returns the shared element if visible
+     * @return View if visible, null otherwise
+     */
+    public View getSharedElement() {
+        if (UIUtils.isViewInBounds(mediaPanel, mediaPoster)) {
+            return mediaPoster;
+        }
+
+        return null;
     }
 
     /**

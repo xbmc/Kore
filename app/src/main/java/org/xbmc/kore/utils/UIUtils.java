@@ -122,16 +122,16 @@ public class UIUtils {
 
         if ((imageWidth) > 0 && (imageHeight > 0)) {
             hostManager.getPicasso()
-                    .load(hostManager.getHostInfo().getImageUrl(imageUrl))
-                    .resize(imageWidth, imageHeight)
-                    .centerCrop()
-                    .into(imageView);
+                       .load(hostManager.getHostInfo().getImageUrl(imageUrl))
+                       .resize(imageWidth, imageHeight)
+                       .centerCrop()
+                       .into(imageView);
         } else {
             hostManager.getPicasso()
-                    .load(hostManager.getHostInfo().getImageUrl(imageUrl))
-                    .fit()
-                    .centerCrop()
-                    .into(imageView);
+                       .load(hostManager.getHostInfo().getImageUrl(imageUrl))
+                       .fit()
+                       .centerCrop()
+                       .into(imageView);
         }
     }
 
@@ -191,11 +191,11 @@ public class UIUtils {
         }
 
         char charAvatar = TextUtils.isEmpty(str) ?
-                ' ' : str.charAt(0);
+                          ' ' : str.charAt(0);
         avatarColorsIdx = TextUtils.isEmpty(str) ? 0 :
-                Math.max(Character.getNumericValue(str.charAt(0)) +
-                        Character.getNumericValue(str.charAt(str.length() - 1)) +
-                        str.length(), 0) % characterAvatarColors.length();
+                          Math.max(Character.getNumericValue(str.charAt(0)) +
+                                   Character.getNumericValue(str.charAt(str.length() - 1)) +
+                                   str.length(), 0) % characterAvatarColors.length();
         int color = characterAvatarColors.getColor(avatarColorsIdx, 0xff000000);
 //            avatarColorsIdx = randomGenerator.nextInt(characterAvatarColors.length());
         return new CharacterDrawable(charAvatar, color);
@@ -318,7 +318,7 @@ public class UIUtils {
             @Override
             public void run() {
                 NetUtils.sendWolMagicPacket(hostInfo.getMacAddress(),
-                        hostInfo.getAddress(), hostInfo.getWolPort());
+                                            hostInfo.getAddress(), hostInfo.getWolPort());
             }
         }).start();
         Toast.makeText(context, R.string.wol_sent, Toast.LENGTH_SHORT).show();
@@ -423,7 +423,7 @@ public class UIUtils {
             // Show the animation
             int endRadius = Math.max(exitTransitionView.getHeight(), exitTransitionView.getWidth());
             Animator exitAnim = ViewAnimationUtils.createCircularReveal(exitTransitionView,
-                    centerX, centerY, 0, endRadius);
+                                                                        centerX, centerY, 0, endRadius);
 
             exitAnim.setDuration(200);
             exitAnim.addListener(new Animator.AnimatorListener() {
