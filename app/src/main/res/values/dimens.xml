@@ -114,7 +114,7 @@
     <dimen name="addonlist_art_heigth">74dp</dimen>
 
     <dimen name="addondetail_poster_width">112dp</dimen>
-    <dimen name="addondetail_poster_heigth">112dp</dimen>
+    <dimen name="addondetail_poster_height">112dp</dimen>
 
     <dimen name="filelist_art_width">52dp</dimen>
     <dimen name="filelist_art_heigth">76dp</dimen>

@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -39,6 +40,7 @@ import org.xbmc.kore.jsonrpc.method.Addons;
 import org.xbmc.kore.jsonrpc.type.AddonType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class AddonListFragment extends Fragment
     private static final String TAG = LogUtils.makeLogTag(AddonListFragment.class);
 
     public interface OnAddonSelectedListener {
-        public void onAddonSelected(String addonId, String addonTitle);
+        public void onAddonSelected(ViewHolder vh);
     }
 
     // Activity listener
@@ -99,7 +101,7 @@ public class AddonListFragment extends Fragment
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder) view.getTag();
                 // Notify the activity
-                listenerActivity.onAddonSelected(tag.addonId, tag.addonName);
+                listenerActivity.onAddonSelected(tag);
             }
         });
 
@@ -210,8 +212,8 @@ public class AddonListFragment extends Fragment
                 // To prevent the empty text from appearing on the first load, set it now
                 emptyView.setText(getString(R.string.no_addons_found_refresh));
                 Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_getting_addon_info), description),
-                        Toast.LENGTH_SHORT).show();
+                               String.format(getString(R.string.error_getting_addon_info), description),
+                               Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, callbackHandler);
@@ -230,13 +232,12 @@ public class AddonListFragment extends Fragment
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.addondetail_poster_width) /
-                             UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.addondetail_poster_heigth) /
-                              UIUtils.IMAGE_RESIZE_FACTOR);
+            artWidth = resources.getDimensionPixelOffset(R.dimen.addondetail_poster_width);;
+            artHeight = resources.getDimensionPixelOffset(R.dimen.addondetail_poster_height);;
         }
 
         /** {@inheritDoc} */
+        @TargetApi(21)
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
@@ -257,13 +258,23 @@ public class AddonListFragment extends Fragment
             // Save the movie id
             viewHolder.addonId = addonDetails.addonid;
             viewHolder.addonName = addonDetails.name;
+            viewHolder.author = addonDetails.author;
+            viewHolder.description = addonDetails.description;
+            viewHolder.summary = addonDetails.summary;
+            viewHolder.version = addonDetails.version;
+            viewHolder.fanart = addonDetails.fanart;
+            viewHolder.poster = addonDetails.thumbnail;
 
             viewHolder.titleView.setText(viewHolder.addonName);
             viewHolder.detailsView.setText(addonDetails.summary);
 
             UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
-                    addonDetails.thumbnail, viewHolder.addonName,
-                    viewHolder.artView, artWidth, artHeight);
+                                                 addonDetails.thumbnail, viewHolder.addonName,
+                                                 viewHolder.artView, artWidth, artHeight);
+
+            if(Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("a"+viewHolder.addonId);
+            }
             return convertView;
         }
     }
@@ -271,12 +282,18 @@ public class AddonListFragment extends Fragment
     /**
      * View holder pattern
      */
-    private static class ViewHolder {
+    public static class ViewHolder {
         TextView titleView;
         TextView detailsView;
         ImageView artView;
 
         String addonId;
         String addonName;
+        String summary;
+        String author;
+        String version;
+        String description;
+        String fanart;
+        String poster;
     }
 }
