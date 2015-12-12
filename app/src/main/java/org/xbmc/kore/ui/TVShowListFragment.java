@@ -266,7 +266,7 @@ public class TVShowListFragment extends AbstractListFragment {
         };
 
         String SORT_BY_NAME = MediaContract.TVShows.TITLE + " ASC";
-        String SORT_BY_YEAR = MediaContract.TVShows.PREMIERED + " DESC";
+        String SORT_BY_YEAR = MediaContract.TVShows.PREMIERED + " ASC";
         String SORT_BY_RATING = MediaContract.TVShows.RATING + " DESC";
         String SORT_BY_DATE_ADDED = MediaContract.TVShows.DATEADDED + " DESC";
         String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.TVShows.TITLE) + " ASC";
