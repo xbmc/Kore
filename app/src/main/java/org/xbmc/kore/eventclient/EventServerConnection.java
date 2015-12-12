@@ -26,6 +26,7 @@ import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.NetUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.io.IOException;
@@ -97,7 +98,7 @@ public class EventServerConnection {
             @Override
             public void run() {
                 try {
-                    hostInetAddress = InetAddress.getByName(hostInfo.getAddress());
+                    hostInetAddress = NetUtils.getInet4AddressByName(hostInfo.getAddress());
                 } catch (UnknownHostException exc) {
                     LogUtils.LOGD(TAG, "Got an UnknownHostException, disabling EventServer");
                     hostInetAddress = null;
@@ -164,7 +165,7 @@ public class EventServerConnection {
                 // Get the InetAddress
                 final InetAddress hostInetAddress;
                 try {
-                    hostInetAddress = InetAddress.getByName(hostInfo.getAddress());
+                    hostInetAddress = NetUtils.getInet4AddressByName(hostInfo.getAddress());
                 } catch (UnknownHostException exc) {
                     LogUtils.LOGD(TAG, "Couldn't get host InetAddress");
                     reportTestResult(callerHandler, callerCallback, false);
