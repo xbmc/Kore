@@ -670,6 +670,18 @@ public class AlbumDetailsFragment extends Fragment
     }
 
     /**
+     * Returns the shared element if visible
+     * @return View if visible, null otherwise
+     */
+    public View getSharedElement() {
+        if (UIUtils.isViewInBounds(mediaPanel, mediaPoster)) {
+            return mediaPoster;
+        }
+
+        return null;
+    }
+
+    /**
      * Album details query parameters.
      */
     private interface AlbumDetailsQuery {
