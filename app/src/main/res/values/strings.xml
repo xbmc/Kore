@@ -350,7 +350,7 @@
     <string name="error_starting_to_record">An error occurred while recording: %1$s</string>
     <string name="channel_switching">Switching to channel %1$s</string>
     <string name="starting_recording">Starting recording %1$s</string>
-    <string name="refresh">refresh</string>
+    <string name="refresh">Refresh</string>
 
     <string name="tv">TV</string>
     <string name="radio">Radio</string>
