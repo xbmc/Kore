@@ -248,6 +248,7 @@
     <string name="no_cast_info">No cast info to display</string>
 
     <string name="minutes_abbrev">%1$s min</string>
+    <string name="minutes_abbrev2">%1$sm</string>
     <string name="sync_successful">Sync successful</string>
     <string name="error_while_syncing">An error occurred while syncing: %1$s</string>
 

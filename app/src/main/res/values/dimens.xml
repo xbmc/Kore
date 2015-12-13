@@ -24,6 +24,7 @@
     <dimen name="wizard_title">144dp</dimen>
 
     <dimen name="default_padding">16dp</dimen>
+    <dimen name="tiny_padding">4dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="double_padding">32dp</dimen>
     <dimen name="large_padding">16dp</dimen>

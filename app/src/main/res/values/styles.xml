@@ -47,6 +47,12 @@
         <item name="android:fastScrollEnabled">true</item>
     </style>
 
+    <style name="Widget.ListView">
+        <item name="android:fastScrollEnabled">true</item>
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dp</item>
+    </style>
+
     <style name="DefaultDividerH">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
@@ -304,5 +310,15 @@
         <item name="android:textColor">@color/secondary_text_default_material_dark</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
+
+    <style name="TextAppearance.List">
+    </style>
+
+    <style name="TextAppearance.List.Day">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+    </style>
+
 </resources>
 
