@@ -1,6 +1,16 @@
 Changelog
 ---------
 
+Version 2.0.0
+-------------
+- PVR support
+- New animations on transitions from list to details screens
+- Added option to play/queue entire album, artist or genre
+- Improve library syncing
+- Various tweaks
+- Bug fixes
+
+
 Version 1.5.0
 -------------
 - D-pad buttons can skip forward/backward when media is playing (if EventServer is enabled in the media center's configuration, and accessible in Kodi)
