@@ -20,14 +20,18 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.TaskStackBuilder;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+
+import java.lang.reflect.Method;
 
 /**
  * Simple fragment to display preferences screen
@@ -37,12 +41,36 @@ public class SettingsFragment extends PreferenceFragment
 
     private static final String TAG = LogUtils.makeLogTag(SettingsFragment.class);
 
+    private int hostId;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
+
+        // Get the preference for side menu itens and change its Id to include
+        // the current host
+        MultiSelectListPreference sideMenuItens = (MultiSelectListPreference)findPreference(Settings.KEY_PREF_NAV_DRAWER_ITEMS);
+        hostId = HostManager.getInstance(getActivity()).getHostInfo().getId();
+        sideMenuItens.setKey(getNavDrawerItemsPrefKey(hostId));
+
+        // HACK: After changing the key dinamically like above, we need to force the preference
+        // to read its value. This can be done by calling onSetInitialValue, which is protected,
+        // so, instead of subclassing MultiSelectListPreference and make it public, this little
+        // hack changes its access mode.
+        // Furthermore, only do this is nothing is saved yet on the shared preferences,
+        // otherwise the defaults won't be applied
+        if (getPreferenceManager().getSharedPreferences().getStringSet(getNavDrawerItemsPrefKey(hostId), null) != null) {
+            Class iterClass = sideMenuItens.getClass();
+            try {
+                Method m = iterClass.getDeclaredMethod("onSetInitialValue", boolean.class, Object.class);
+                m.setAccessible(true);
+                m.invoke(sideMenuItens, true, null);
+            } catch (Exception e) {
+            }
+        }
 
         setupPreferences();
     }
@@ -67,7 +95,7 @@ public class SettingsFragment extends PreferenceFragment
         // Update summaries
         setupPreferences();
 
-        if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.KEY_PREF_NAV_DRAWER_ITEMS)) {
+        if (key.equals(Settings.KEY_PREF_THEME) || key.equals(getNavDrawerItemsPrefKey(hostId))) {
             // Explicitly clear cache of resource ids that is maintained in the activity
             UIUtils.playPauseIconsLoaded = false;
 
@@ -104,6 +132,9 @@ public class SettingsFragment extends PreferenceFragment
                 return true;
             }
         });
+    }
 
+    public static String getNavDrawerItemsPrefKey(int hostId) {
+        return Settings.KEY_PREF_NAV_DRAWER_ITEMS + hostId;
     }
 }

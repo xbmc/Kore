@@ -129,7 +129,7 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         Resources.Theme theme = getActivity().getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
+        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
                 R.attr.iconHosts,
                 R.attr.iconRemote,
                 R.attr.iconMovies,
@@ -143,10 +143,11 @@ public class NavigationDrawerFragment extends Fragment {
 
         HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
         String hostName = (hostInfo != null) ? hostInfo.getName() : getString(R.string.xbmc_media_center);
+        int hostId = (hostInfo != null) ? hostInfo.getId() : 0;
 
         Set<String> shownItems = PreferenceManager
                 .getDefaultSharedPreferences(getActivity())
-                .getStringSet(Settings.KEY_PREF_NAV_DRAWER_ITEMS,
+                .getStringSet(SettingsFragment.getNavDrawerItemsPrefKey(hostId),
                               new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.entry_values_nav_drawer_items))));
 
         ArrayList<DrawerItem> items = new ArrayList<>(15);
