@@ -111,6 +111,7 @@ public class HostFragmentManualConfiguration extends Fragment {
             }
         });
 
+        xbmcUseEventServerCheckbox.setChecked(true);
         xbmcUseEventServerCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
