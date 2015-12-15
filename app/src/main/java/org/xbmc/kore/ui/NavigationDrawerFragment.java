@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -254,7 +253,7 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        //mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
         selectedItemId = getItemIdFromActivity();
     }
 
