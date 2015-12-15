@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -44,6 +45,7 @@ import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 /**
  * Fragment that presents the artists list
@@ -52,7 +54,7 @@ public class MusicVideoListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(MusicVideoListFragment.class);
 
     public interface OnMusicVideoSelectedListener {
-        public void onMusicVideoSelected(int musicVideoId, String musicVideoTitle);
+        public void onMusicVideoSelected(ViewHolder vh);
     }
 
     // Activity listener
@@ -69,7 +71,7 @@ public class MusicVideoListFragment extends AbstractListFragment {
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder)view.getTag();
                 // Notify the activity
-                listenerActivity.onMusicVideoSelected(tag.musicVideoId, tag.musicVideoTitle);
+                listenerActivity.onMusicVideoSelected(tag);
             }
         };
     }
@@ -141,6 +143,8 @@ public class MusicVideoListFragment extends AbstractListFragment {
                 MediaContract.MusicVideos.THUMBNAIL,
                 MediaContract.MusicVideos.RUNTIME,
                 MediaContract.MusicVideos.GENRES,
+                MediaContract.MusicVideos.YEAR,
+                MediaContract.MusicVideos.PLOT,
         };
 
         String SORT = MediaDatabase.sortCommonTokens(MediaContract.MusicVideos.TITLE) + " ASC";
@@ -153,6 +157,8 @@ public class MusicVideoListFragment extends AbstractListFragment {
         final int THUMBNAIL = 5;
         final int RUNTIME = 6;
         final int GENRES = 7;
+        final int YEAR = 8;
+        final int PLOT = 9;
     }
 
     private static class MusicVideosAdapter extends CursorAdapter {
@@ -166,10 +172,8 @@ public class MusicVideoListFragment extends AbstractListFragment {
 
             // Get the art dimensions
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.musicvideolist_art_width) /
-                             UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.musicvideolist_art_heigth) /
-                              UIUtils.IMAGE_RESIZE_FACTOR);
+            artHeight = resources.getDimensionPixelOffset(R.dimen.musicvideodetail_poster_heigth);
+            artWidth = resources.getDimensionPixelOffset(R.dimen.musicvideodetail_poster_width);
         }
 
         /** {@inheritDoc} */
@@ -190,6 +194,7 @@ public class MusicVideoListFragment extends AbstractListFragment {
         }
 
         /** {@inheritDoc} */
+        @TargetApi(21)
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
@@ -197,28 +202,37 @@ public class MusicVideoListFragment extends AbstractListFragment {
             // Save the movie id
             viewHolder.musicVideoId = cursor.getInt(MusicVideosListQuery.MUSICVIDEOID);
             viewHolder.musicVideoTitle = cursor.getString(MusicVideosListQuery.TITLE);
+            viewHolder.album = cursor.getString(MusicVideosListQuery.ALBUM);
+            viewHolder.artist = cursor.getString(MusicVideosListQuery.ARTIST);
+            viewHolder.genres = cursor.getString(MusicVideosListQuery.GENRES);
+            viewHolder.plot = cursor.getString(MusicVideosListQuery.PLOT);
+            viewHolder.runtime = cursor.getInt(MusicVideosListQuery.RUNTIME);
+            viewHolder.year = cursor.getInt(MusicVideosListQuery.YEAR);
 
             viewHolder.titleView.setText(viewHolder.musicVideoTitle);
-            String artistAlbum = cursor.getString(MusicVideosListQuery.ARTIST) + "  |  " +
-                                 cursor.getString(MusicVideosListQuery.ALBUM);
+            String artistAlbum = viewHolder.artist + "  |  " +
+                                 viewHolder.album;
             viewHolder.artistAlbumView.setText(artistAlbum);
 
-            int runtime = cursor.getInt(MusicVideosListQuery.RUNTIME);
             String durationGenres =
-                    runtime > 0 ?
-                    UIUtils.formatTime(runtime) + "  |  " + cursor.getString(MusicVideosListQuery.GENRES) :
-                    cursor.getString(MusicVideosListQuery.GENRES);
+                    viewHolder.runtime > 0 ?
+                    UIUtils.formatTime(viewHolder.runtime) + "  |  " + viewHolder.genres :
+                    viewHolder.genres;
             viewHolder.durationGenresView.setText(durationGenres);
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                     cursor.getString(MusicVideosListQuery.THUMBNAIL), viewHolder.musicVideoTitle,
                     viewHolder.artView, artWidth, artHeight);
+
+            if(Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("a"+viewHolder.musicVideoId);
+            }
         }
     }
 
     /**
      * View holder pattern
      */
-    private static class ViewHolder {
+    public static class ViewHolder {
         TextView titleView;
         TextView artistAlbumView;
         TextView durationGenresView;
@@ -226,5 +240,11 @@ public class MusicVideoListFragment extends AbstractListFragment {
 
         int musicVideoId;
         String musicVideoTitle;
+        String artist;
+        String album;
+        int runtime;
+        String genres;
+        int year;
+        String plot;
     }
 }

@@ -19,6 +19,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -66,6 +67,8 @@ public class MusicActivity extends BaseActivity
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
+    private MusicListFragment musicListFragment;
+
     private boolean clearSharedElements;
 
     @TargetApi(21)
@@ -80,7 +83,7 @@ public class MusicActivity extends BaseActivity
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
         if (savedInstanceState == null) {
-            MusicListFragment musicListFragment = new MusicListFragment();
+            musicListFragment = new MusicListFragment();
 
             // Setup animations
             if (Utils.isLollipopOrLater()) {
@@ -88,6 +91,16 @@ public class MusicActivity extends BaseActivity
                 musicListFragment.setReenterTransition(TransitionInflater
                         .from(this)
                         .inflateTransition(android.R.transition.fade));
+                musicListFragment.setExitSharedElementCallback(new SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        if (clearSharedElements) {
+                            names.clear();
+                            sharedElements.clear();
+                            clearSharedElements = false;
+                        }
+                    }
+                });
             }
             getSupportFragmentManager()
                     .beginTransaction()
@@ -360,20 +373,46 @@ public class MusicActivity extends BaseActivity
     }
 
     @TargetApi(21)
-    public void onMusicVideoSelected(int musicVideoId, String musicVideoTitle) {
-        selectedMusicVideoId = musicVideoId;
-        selectedMusicVideoTitle = musicVideoTitle;
+    public void onMusicVideoSelected(MusicVideoListFragment.ViewHolder vh) {
+        selectedMusicVideoId = vh.musicVideoId;
+        selectedMusicVideoTitle = vh.musicVideoTitle;
 
         // Replace list fragment
-        MusicVideoDetailsFragment detailsFragment = MusicVideoDetailsFragment.newInstance(musicVideoId);
+        final MusicVideoDetailsFragment detailsFragment = MusicVideoDetailsFragment.newInstance(vh);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
+            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    //On returning onMapSharedElements for the exiting fragment is called before the onMapSharedElements
+                    // for the reentering fragment. We use this to determine if we are returning and if
+                    // we should clear the shared element lists. Note that, clearing must be done in the reentering fragment
+                    // as this is called last. Otherwise it the app will crash during transition setup. Not sure, but might
+                    // be a v4 support package bug.
+                    if (detailsFragment.isVisible()) {
+                        View sharedView = detailsFragment.getSharedElement();
+                        if (sharedView == null) { // shared element not visible
+                            LogUtils.LOGD(TAG, "onMusicVideoSelected: setting clearedSharedElements to true");
+                            clearSharedElements = true;
+                        }
+                    }
+                }
+            };
+            detailsFragment.setEnterSharedElementCallback(seCallback);
+
             detailsFragment.setEnterTransition(TransitionInflater
                     .from(this)
                     .inflateTransition(R.transition.media_details));
             detailsFragment.setReturnTransition(null);
+
+            Transition changeImageTransition = TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image);
+            detailsFragment.setSharedElementReturnTransition(changeImageTransition);
+            detailsFragment.setSharedElementEnterTransition(changeImageTransition);
+
+            fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
                     R.anim.fragment_list_popenter, 0);
@@ -382,6 +421,6 @@ public class MusicActivity extends BaseActivity
         fragTrans.replace(R.id.fragment_container, detailsFragment)
                 .addToBackStack(null)
                 .commit();
-        setupActionBar(null, null, null, musicVideoTitle);
+        setupActionBar(null, null, null, selectedMusicVideoTitle);
     }
 }
