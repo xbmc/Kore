@@ -16,8 +16,12 @@
 package org.xbmc.kore.ui.hosts;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -27,8 +31,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.service.LibrarySyncService;
+import org.xbmc.kore.ui.NavigationDrawerFragment;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Fragment that presents the welcome message
@@ -74,6 +89,16 @@ public class AddHostFragmentFinish extends Fragment {
         previous.setText(null);
         previous.setEnabled(false);
 
+        // Check if PVR is enabled for the current host
+        HostManager hostManager = HostManager.getInstance(getActivity());
+        if (hostManager.getHostInfo() != null) {
+            AddHostFragmentFinish.checkPVREnabledAndSetMenuItems(getActivity(), new Handler());
+            String prefKey = Settings.KEY_PREF_CHECKED_PVR_ENABLED + String.valueOf(hostManager.getHostInfo().getId());
+            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
+                             .putBoolean(prefKey, true)
+                             .apply();
+        }
+
         // Start the syncing process
         Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
         syncIntent.putExtra(LibrarySyncService.SYNC_ALL_MOVIES, true);
@@ -100,5 +125,40 @@ public class AddHostFragmentFinish extends Fragment {
         }
     }
 
+    /**
+     * Checks wheter PVR is enabled and sets a Preference that controls the items to show on
+     * the navigation drawer accordingly: if PVR is disabled, hide the PVR item, otherwise show it
+     *
+     * This
+     *
+     * @param context Context
+     */
+    public static void checkPVREnabledAndSetMenuItems(final Context context, Handler handler) {
+        final HostConnection conn = HostManager.getInstance(context).getConnection();
+        final int hostId = HostManager.getInstance(context).getHostInfo().getId();
+        org.xbmc.kore.jsonrpc.method.Settings.GetSettingValue getSettingValue =
+                new org.xbmc.kore.jsonrpc.method.Settings.GetSettingValue(org.xbmc.kore.jsonrpc.method.Settings.PVRMANAGER_ENABLED);
+        getSettingValue.execute(conn, new ApiCallback<JsonNode>() {
+            @Override
+            public void onSuccess(JsonNode result) {
+                // Result is boolean
+                boolean isEnabled = result.asBoolean(false);
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
+                Set<String> shownItems = new HashSet<>(Arrays.asList(
+                        context.getResources()
+                               .getStringArray(R.array.entry_values_nav_drawer_items)));
+                if (!isEnabled)
+                    shownItems.remove(String.valueOf(NavigationDrawerFragment.ACTIVITY_PVR));
+                sp.edit()
+                  .putStringSet(Settings.getNavDrawerItemsPrefKey(hostId), shownItems)
+                  .apply();
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                // Ignore, use defaults
+            }
+        }, handler);
+    }
 }

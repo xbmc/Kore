@@ -68,7 +68,7 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
-    private static final int ACTIVITY_HOSTS = 0,
+    public static final int ACTIVITY_HOSTS = 0,
             ACTIVITY_REMOTE = 1,
             ACTIVITY_MOVIES = 2,
             ACTIVITY_TVSHOWS = 3,
@@ -147,7 +147,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         Set<String> shownItems = PreferenceManager
                 .getDefaultSharedPreferences(getActivity())
-                .getStringSet(SettingsFragment.getNavDrawerItemsPrefKey(hostId),
+                .getStringSet(Settings.getNavDrawerItemsPrefKey(hostId),
                               new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.entry_values_nav_drawer_items))));
 
         ArrayList<DrawerItem> items = new ArrayList<>(15);

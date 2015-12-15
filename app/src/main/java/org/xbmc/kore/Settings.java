@@ -17,15 +17,10 @@ package org.xbmc.kore;
 
 import android.text.format.DateUtils;
 
-import org.xbmc.kore.jsonrpc.type.PVRType;
-import org.xbmc.kore.ui.PVRListFragment;
-
-import java.util.Set;
-
 /**
- * Interface that contains various constants and the keys for settings stored in shared preferences
+ * Class that contains various constants and the keys for settings stored in shared preferences
  */
-public interface Settings {
+public class Settings {
     /**
      * The update interval for the records in the DB. If the last update is older than this value
      * a refresh will be triggered. Applicable to TV Shows and Movies.
@@ -104,5 +99,11 @@ public interface Settings {
     public static final String KEY_PREF_CHECKED_EVENT_SERVER_CONNECTION = "checked_event_server_connection";
     public static final boolean DEFAULT_PREF_CHECKED_EVENT_SERVER_CONNECTION = false;
 
+    public static final String KEY_PREF_CHECKED_PVR_ENABLED = "checked_pvr_enabled";
+    public static final boolean DEFAULT_PREF_CHECKED_PVR_ENABLED = false;
+
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
+    public static String getNavDrawerItemsPrefKey(int hostId) {
+        return Settings.KEY_PREF_NAV_DRAWER_ITEMS + hostId;
+    }
 }

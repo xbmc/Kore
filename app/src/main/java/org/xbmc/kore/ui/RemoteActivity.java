@@ -56,6 +56,7 @@ import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.NotificationService;
 import org.xbmc.kore.ui.hosts.AddHostActivity;
+import org.xbmc.kore.ui.hosts.AddHostFragmentFinish;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
@@ -158,6 +159,8 @@ public class RemoteActivity extends BaseActivity
         hostConnectionObserver.registerPlayerObserver(this, true);
         // Force a refresh, mainly to update the time elapsed on the fragments
         hostConnectionObserver.forceRefreshResults();
+
+        checkPVREnabledAndSetMenuItems();
     }
 
     @Override
@@ -166,6 +169,25 @@ public class RemoteActivity extends BaseActivity
         if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
     }
+
+    // TODO: Remove this method after deployment of 2.0.0, as it is only needed to
+    // facilitate the transition by checking if PVR is enabled and set the side menu
+    // items accordingly
+    private void checkPVREnabledAndSetMenuItems() {
+        if (hostManager.getHostInfo() == null) return;
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        // Check if PVR is enabled for the current host
+        String prefKey = Settings.KEY_PREF_CHECKED_PVR_ENABLED + String.valueOf(hostManager.getHostInfo().getId());
+        boolean checkedPVREnabled = sp.getBoolean(prefKey, Settings.DEFAULT_PREF_CHECKED_PVR_ENABLED);
+        if (!checkedPVREnabled) {
+            AddHostFragmentFinish.checkPVREnabledAndSetMenuItems(this, new Handler());
+            sp.edit()
+              .putBoolean(prefKey, true)
+              .apply();
+        }
+    }
+
 
     /**
      * Override hardware volume keys and send to Kodi

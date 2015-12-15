@@ -54,7 +54,7 @@ public class SettingsFragment extends PreferenceFragment
         // the current host
         MultiSelectListPreference sideMenuItens = (MultiSelectListPreference)findPreference(Settings.KEY_PREF_NAV_DRAWER_ITEMS);
         hostId = HostManager.getInstance(getActivity()).getHostInfo().getId();
-        sideMenuItens.setKey(getNavDrawerItemsPrefKey(hostId));
+        sideMenuItens.setKey(Settings.getNavDrawerItemsPrefKey(hostId));
 
         // HACK: After changing the key dinamically like above, we need to force the preference
         // to read its value. This can be done by calling onSetInitialValue, which is protected,
@@ -62,7 +62,7 @@ public class SettingsFragment extends PreferenceFragment
         // hack changes its access mode.
         // Furthermore, only do this is nothing is saved yet on the shared preferences,
         // otherwise the defaults won't be applied
-        if (getPreferenceManager().getSharedPreferences().getStringSet(getNavDrawerItemsPrefKey(hostId), null) != null) {
+        if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getNavDrawerItemsPrefKey(hostId), null) != null) {
             Class iterClass = sideMenuItens.getClass();
             try {
                 Method m = iterClass.getDeclaredMethod("onSetInitialValue", boolean.class, Object.class);
@@ -95,7 +95,7 @@ public class SettingsFragment extends PreferenceFragment
         // Update summaries
         setupPreferences();
 
-        if (key.equals(Settings.KEY_PREF_THEME) || key.equals(getNavDrawerItemsPrefKey(hostId))) {
+        if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.getNavDrawerItemsPrefKey(hostId))) {
             // Explicitly clear cache of resource ids that is maintained in the activity
             UIUtils.playPauseIconsLoaded = false;
 
@@ -132,9 +132,5 @@ public class SettingsFragment extends PreferenceFragment
                 return true;
             }
         });
-    }
-
-    public static String getNavDrawerItemsPrefKey(int hostId) {
-        return Settings.KEY_PREF_NAV_DRAWER_ITEMS + hostId;
     }
 }
