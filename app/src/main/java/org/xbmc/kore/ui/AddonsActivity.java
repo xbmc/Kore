@@ -22,14 +22,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controls the presentation of Addons information (list, details)
@@ -46,6 +51,8 @@ public class AddonsActivity extends BaseActivity
     private String selectedAddonTitle;
 
     private NavigationDrawerFragment navigationDrawerFragment;
+
+    private boolean clearSharedElements;
 
     @TargetApi(21)
     @Override
@@ -67,10 +74,26 @@ public class AddonsActivity extends BaseActivity
 
             // Setup animations
             if (Utils.isLollipopOrLater()) {
-                addonListFragment.setExitTransition(null);
-                addonListFragment.setReenterTransition(TransitionInflater
+                //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
+                Transition fade = TransitionInflater
                         .from(this)
-                        .inflateTransition(android.R.transition.fade));
+                        .inflateTransition(android.R.transition.fade);
+                addonListFragment.setExitTransition(fade);
+                addonListFragment.setReenterTransition(fade);
+                addonListFragment.setSharedElementReturnTransition(TransitionInflater.from(
+                        this).inflateTransition(R.transition.change_image));
+
+                android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        if (clearSharedElements) {
+                            names.clear();
+                            sharedElements.clear();
+                            clearSharedElements = false;
+                        }
+                    }
+                };
+                addonListFragment.setExitSharedElementCallback(seCallback);
             }
             getSupportFragmentManager()
                     .beginTransaction()
@@ -175,32 +198,56 @@ public class AddonsActivity extends BaseActivity
     /**
      * Callback from list fragment when a addon is selected.
      * Switch fragment in portrait
-     * @param addonId Addon selected
-     * @param addonTitle Title
+     * @param vh
      */
     @TargetApi(21)
-    public void onAddonSelected(String addonId, String addonTitle) {
-        selectedAddonId = addonId;
-        selectedAddonTitle = addonTitle;
+    public void onAddonSelected(AddonListFragment.ViewHolder vh) {
+        selectedAddonId = vh.addonId;
+        selectedAddonTitle = vh.addonName;
 
         // Replace list fragment
-        AddonDetailsFragment addonDetailsFragment = AddonDetailsFragment.newInstance(addonId);
+        final AddonDetailsFragment addonDetailsFragment = AddonDetailsFragment.newInstance(vh);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
+            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    //On returning onMapSharedElements for the exiting fragment is called before the onMapSharedElements
+                    // for the reentering fragment. We use this to determine if we are returning and if
+                    // we should clear the shared element lists. Note that, clearing must be done in the reentering fragment
+                    // as this is called last. Otherwise it the app will crash during transition setup. Not sure, but might
+                    // be a v4 support package bug.
+                    if (addonDetailsFragment.isVisible()) {
+                        View sharedView = addonDetailsFragment.getSharedElement();
+                        if (sharedView == null) { // shared element not visible
+                            clearSharedElements = true;
+                        }
+                    }
+                }
+            };
+            addonDetailsFragment.setEnterSharedElementCallback(seCallback);
+
             addonDetailsFragment.setEnterTransition(TransitionInflater
-                    .from(this)
-                    .inflateTransition(R.transition.media_details));
+                                                            .from(this)
+                                                            .inflateTransition(R.transition.media_details));
             addonDetailsFragment.setReturnTransition(null);
+
+            Transition changeImageTransition = TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image);
+            addonDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
+            addonDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
+
+            fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                    R.anim.fragment_list_popenter, 0);
+                                          R.anim.fragment_list_popenter, 0);
         }
 
         fragTrans.replace(R.id.fragment_container, addonDetailsFragment)
-                .addToBackStack(null)
-                .commit();
+                 .addToBackStack(null)
+                 .commit();
 
         setupActionBar(selectedAddonTitle);
     }

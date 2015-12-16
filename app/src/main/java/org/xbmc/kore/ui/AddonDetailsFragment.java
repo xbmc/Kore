@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -39,9 +40,9 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Addons;
-import org.xbmc.kore.jsonrpc.type.AddonType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -53,7 +54,16 @@ import butterknife.OnClick;
 public class AddonDetailsFragment extends Fragment {
     private static final String TAG = LogUtils.makeLogTag(AddonDetailsFragment.class);
 
-    public static final String ADDONID = "addon_id";
+    public static final String BUNDLE_KEY_ADDONID = "addon_id";
+    public static final String POSTER_TRANS_NAME = "POSTER_TRANS_NAME";
+    public static final String BUNDLE_KEY_NAME = "name";
+    public static final String BUNDLE_KEY_AUTHOR = "author";
+    public static final String BUNDLE_KEY_SUMMARY = "summary";
+    public static final String BUNDLE_KEY_VERSION = "version";
+    public static final String BUNDLE_KEY_DESCRIPTION = "description";
+    public static final String BUNDLE_KEY_FANART = "fanart";
+    public static final String BUNDLE_KEY_POSTER = "poster";
+    public static final String BUNDLE_KEY_ENABLED = "enabled";
 
     private HostManager hostManager;
     private HostInfo hostInfo;
@@ -87,11 +97,24 @@ public class AddonDetailsFragment extends Fragment {
     /**
      * Create a new instance of this, initialized to show the addon addonId
      */
-    public static AddonDetailsFragment newInstance(String addonId) {
+    @TargetApi(21)
+    public static AddonDetailsFragment newInstance(AddonListFragment.ViewHolder vh) {
         AddonDetailsFragment fragment = new AddonDetailsFragment();
 
         Bundle args = new Bundle();
-        args.putString(ADDONID, addonId);
+        args.putString(BUNDLE_KEY_ADDONID, vh.addonId);
+        args.putString(BUNDLE_KEY_NAME, vh.addonName);
+        args.putString(BUNDLE_KEY_AUTHOR, vh.author);
+        args.putString(BUNDLE_KEY_VERSION, vh.version);
+        args.putString(BUNDLE_KEY_SUMMARY, vh.summary);
+        args.putString(BUNDLE_KEY_DESCRIPTION, vh.description);
+        args.putString(BUNDLE_KEY_FANART, vh.fanart);
+        args.putString(BUNDLE_KEY_POSTER, vh.poster);
+        args.putBoolean(BUNDLE_KEY_ENABLED, vh.enabled);
+
+        if( Utils.isLollipopOrLater()) {
+            args.putString(POSTER_TRANS_NAME, vh.artView.getTransitionName());
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -101,9 +124,11 @@ public class AddonDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @TargetApi(21)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        addonId = getArguments().getString(ADDONID, null);
+        Bundle bundle = getArguments();
+        addonId = bundle.getString(BUNDLE_KEY_ADDONID, null);
 
         if ((container == null) || (addonId == null)) {
             // We're not being shown or there's nothing to show
@@ -131,6 +156,20 @@ public class AddonDetailsFragment extends Fragment {
         FloatingActionButton fab = (FloatingActionButton)fabButton;
         fab.attachToScrollView((ObservableScrollView) mediaPanel);
 
+        if(Utils.isLollipopOrLater()) {
+            mediaPoster.setTransitionName(bundle.getString(POSTER_TRANS_NAME));
+        }
+
+        mediaTitle.setText(bundle.getString(BUNDLE_KEY_NAME));
+        mediaUndertitle.setText(bundle.getString(BUNDLE_KEY_SUMMARY));
+        mediaAuthor.setText(bundle.getString(BUNDLE_KEY_AUTHOR));
+        mediaVersion.setText(bundle.getString(BUNDLE_KEY_VERSION));
+        mediaDescription.setText(bundle.getString(BUNDLE_KEY_DESCRIPTION));
+
+        setImages(bundle.getString(BUNDLE_KEY_POSTER), bundle.getString(BUNDLE_KEY_FANART));
+
+        setupEnableButton(bundle.getBoolean(BUNDLE_KEY_ENABLED, false));
+
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
 //        mediaPanel.setClipToPadding(false);
@@ -142,31 +181,6 @@ public class AddonDetailsFragment extends Fragment {
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
-
-        // Get the addon details, this is done asyhnchronously
-        String[] properties = new String[] {
-                AddonType.Fields.NAME, AddonType.Fields.VERSION, AddonType.Fields.SUMMARY,
-                AddonType.Fields.DESCRIPTION,  AddonType.Fields.PATH, AddonType.Fields.AUTHOR,
-                AddonType.Fields.THUMBNAIL, AddonType.Fields.DISCLAIMER, AddonType.Fields.FANART,
-                //AddonType.Fields.DEPENDENCIES, AddonType.Fields.BROKEN, AddonType.Fields.EXTRAINFO,
-                AddonType.Fields.RATING, AddonType.Fields.ENABLED
-        };
-        Addons.GetAddonDetails action = new Addons.GetAddonDetails(addonId, properties);
-        action.execute(hostManager.getConnection(), new ApiCallback<AddonType.Details>() {
-            @Override
-            public void onSuccess(AddonType.Details result) {
-                if (!isAdded()) return;
-                displayAddonDetails(result);
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_getting_addon_info), description),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }, callbackHandler);
     }
 
     @Override
@@ -225,70 +239,39 @@ public class AddonDetailsFragment extends Fragment {
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 Toast.makeText(getActivity(),
-                        String.format(getString(R.string.general_error_executing_action), description),
-                        Toast.LENGTH_SHORT)
-                        .show();
+                               String.format(getString(R.string.general_error_executing_action), description),
+                               Toast.LENGTH_SHORT)
+                     .show();
             }
         }, callbackHandler);
     }
 
-    /**
-     * Display the addon details
-     *
-     * @param addonDetails Addon details
-     */
-    private void displayAddonDetails(AddonType.Details addonDetails) {
-        mediaTitle.setText(addonDetails.name);
-        mediaUndertitle.setText(addonDetails.summary);
-
-        mediaAuthor.setText(addonDetails.author);
-        mediaVersion.setText(addonDetails.version);
-
-        mediaDescription.setText(addonDetails.description);
-
-        // Images
+    private void setImages(String poster, String fanart) {
         Resources resources = getActivity().getResources();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
         int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height),
                 artWidth = displayMetrics.widthPixels;
-        if (!TextUtils.isEmpty(addonDetails.fanart)) {
-            int posterWidth = resources.getDimensionPixelOffset(R.dimen.addondetail_poster_width);
-            int posterHeight = resources.getDimensionPixelOffset(R.dimen.addondetail_poster_heigth);
-            mediaPoster.setVisibility(View.VISIBLE);
-            UIUtils.loadImageIntoImageview(hostManager,
-                    addonDetails.thumbnail,
-                    mediaPoster, posterWidth, posterHeight);
-            UIUtils.loadImageIntoImageview(hostManager,
-                    addonDetails.fanart,
-                    mediaArt, artWidth, artHeight);
-        } else {
-            // No fanart, just present the poster
-            mediaPoster.setVisibility(View.GONE);
-            UIUtils.loadImageIntoImageview(hostManager,
-                    addonDetails.thumbnail,
-                    mediaArt, artWidth, artHeight);
-            // Reset padding
-            int paddingLeft = mediaTitle.getPaddingRight(),
-                    paddingRight = mediaTitle.getPaddingRight(),
-                    paddingTop = mediaTitle.getPaddingTop(),
-                    paddingBottom = mediaTitle.getPaddingBottom();
-            mediaTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-            mediaUndertitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-        }
+        int posterWidth = resources.getDimensionPixelOffset(R.dimen.addondetail_poster_width);
+        int posterHeight = resources.getDimensionPixelOffset(R.dimen.addondetail_poster_height);
 
-        setupEnableButton(addonDetails.enabled);
+        UIUtils.loadImageIntoImageview(hostManager,
+                                       TextUtils.isEmpty(fanart)? poster : fanart,
+                                       mediaArt, artWidth, artHeight);
+        UIUtils.loadImageIntoImageview(hostManager,
+                                       poster,
+                                       mediaPoster, posterWidth, posterHeight);
+
     }
 
     private void setupEnableButton(boolean enabled) {
         // Enabled button
         if (enabled) {
             Resources.Theme theme = getActivity().getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
+            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
                     R.attr.colorAccent});
             enabledButton.setColorFilter(styledAttributes.getColor(0,
-                    getActivity().getResources().getColor(R.color.accent_default)));
+                                                                   getActivity().getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
 
             fabButton.setVisibility(View.VISIBLE);
@@ -297,5 +280,17 @@ public class AddonDetailsFragment extends Fragment {
             fabButton.setVisibility(View.GONE);
         }
         enabledButton.setTag(enabled);
+    }
+
+    /**
+     * Returns the shared element if visible
+     * @return View if visible, null otherwise
+     */
+    public View getSharedElement() {
+        if (UIUtils.isViewInBounds(mediaPanel, mediaPoster)) {
+            return mediaPoster;
+        }
+
+        return null;
     }
 }
