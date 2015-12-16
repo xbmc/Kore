@@ -43,6 +43,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -231,19 +232,8 @@ public class PVRChannelEPGListFragment extends Fragment
                 String duration = String.format(this.getContext().getString(R.string.minutes_abbrev2),
                                                 String.valueOf(broadcastDetails.runtime));
 
-                // Parse dates
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-                Date startTime, endTime;
-                try {
-                    startTime = sdf.parse(broadcastDetails.starttime);
-//                    endTime = sdf.parse(broadcastDetails.endtime);
-                } catch (ParseException exc) {
-                    startTime = new Date();
-//                    endTime = new Date();
-                }
-
                 int flags = DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_TIME;
-                viewHolder.startTimeView.setText(DateUtils.formatDateTime(getActivity(), startTime.getTime(), flags));
+                viewHolder.startTimeView.setText(DateUtils.formatDateTime(getActivity(), broadcastDetails.starttime.getTime(), flags));
                 viewHolder.endTimeView.setText(duration);
             } else {
                 // For a day
@@ -307,34 +297,24 @@ public class PVRChannelEPGListFragment extends Fragment
          * @return List of rows to show
          */
         public static List<EPGListRow> buildFromBroadcastList(List<PVRType.DetailsBroadcast> broadcasts) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-            Date currentTime = new Date(),
-                    startTime, endTime;
+            Date currentTime = new Date();
             int previousDayIdx = 0, dayIdx;
             Calendar cal = Calendar.getInstance();
 
             List<EPGListRow> result = new ArrayList<>(broadcasts.size() + 5);
 
             for (PVRType.DetailsBroadcast broadcast: broadcasts) {
-                try {
-                    startTime = sdf.parse(broadcast.starttime);
-                    endTime = sdf.parse(broadcast.endtime);
-                } catch (ParseException exc) {
-                    startTime = new Date();
-                    endTime = new Date();
-                }
-
                 // Ignore if before current time
-                if (endTime.before(currentTime)) {
+                if (broadcast.endtime.before(currentTime)) {
                     continue;
                 }
 
-                cal.setTime(startTime);
+                cal.setTime(broadcast.starttime);
                 dayIdx = cal.get(Calendar.YEAR) * 366 + cal.get(Calendar.DATE);
                 if (dayIdx > previousDayIdx) {
                     // New day, add a row representing it to the list
                     previousDayIdx = dayIdx;
-                    result.add(new EPGListRow(startTime));
+                    result.add(new EPGListRow(broadcast.starttime));
                 }
                 result.add(new EPGListRow(broadcast));
             }

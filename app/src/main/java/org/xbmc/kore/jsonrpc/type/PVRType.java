@@ -4,6 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import org.xbmc.kore.utils.JsonUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 /**
  * Types from PVR.*
  */
@@ -98,7 +104,6 @@ public class PVRType {
         public static final String WASACTIVE = "wasactive";
 
         public final int broadcastid;
-        public final String endtime;
         public final String episodename;
         public final int episodenum;
         public final int episodepart;
@@ -113,10 +118,11 @@ public class PVRType {
         public final double progresspercentage;
         public final int rating;
         public final int runtime;
-        public final String starttime;
         public final String thumbnail;
         public final String title;
         public final boolean wasactive;
+        public Date starttime;
+        public Date endtime;
 
         /**
          * Constructor
@@ -125,7 +131,6 @@ public class PVRType {
         public DetailsBroadcast(JsonNode node) {
             super(node);
             broadcastid = JsonUtils.intFromJsonNode(node, BROADCASTID);
-            endtime = JsonUtils.stringFromJsonNode(node, ENDTIME);
             episodename = JsonUtils.stringFromJsonNode(node, EPISODENAME);
             episodenum = JsonUtils.intFromJsonNode(node, EPISODENUM, 0);
             episodepart = JsonUtils.intFromJsonNode(node, EPISODEPART, 0);
@@ -140,10 +145,20 @@ public class PVRType {
             progresspercentage = JsonUtils.doubleFromJsonNode(node, PROGRESSPERCENTAGE, 0);
             rating = JsonUtils.intFromJsonNode(node, RATING, 0);
             runtime = JsonUtils.intFromJsonNode(node, RUNTIME, 0);
-            starttime = JsonUtils.stringFromJsonNode(node, STARTTIME);
             thumbnail = JsonUtils.stringFromJsonNode(node, THUMBNAIL);
             title = JsonUtils.stringFromJsonNode(node, TITLE);
             wasactive = JsonUtils.booleanFromJsonNode(node, WASACTIVE, false);
+
+            // Get times. All in UTC
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            try {
+                endtime = sdf.parse(JsonUtils.stringFromJsonNode(node, ENDTIME));
+                starttime = sdf.parse(JsonUtils.stringFromJsonNode(node, STARTTIME));
+            } catch (ParseException exc) {
+                starttime = new Date();
+                endtime = new Date();
+            }
         }
 
     }
