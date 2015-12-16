@@ -40,7 +40,7 @@ public class AboutDialogFragment
             versionName = null;
         }
         TextView version = (TextView) mainView.findViewById(R.id.app_version);
-        version.setText("v" + versionName);
+        version.setText(versionName);
 
         TextView about = (TextView)mainView.findViewById(R.id.about_desc);
         about.setText(Html.fromHtml(getString(R.string.about_desc)));

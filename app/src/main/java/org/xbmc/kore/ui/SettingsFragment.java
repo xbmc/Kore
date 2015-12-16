@@ -118,7 +118,7 @@ public class SettingsFragment extends PreferenceFragment
         // About preference
         String nameAndVersion = getActivity().getString(R.string.app_name);
         try {
-            nameAndVersion += " v" +
+            nameAndVersion += " " +
                     getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException exc) {
         }
