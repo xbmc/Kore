@@ -29,7 +29,8 @@
         android:layout_alignParentLeft="true"
         android:minWidth="@dimen/epg_time_width"
         android:gravity="end"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="?attr/appTextColorPrimary"/>
 
     <TextView
         android:id="@+id/end_time"
