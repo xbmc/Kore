@@ -9,18 +9,25 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
+        android:paddingLeft="@dimen/small_padding"
+        android:paddingStart="@dimen/small_padding"
+        android:paddingRight="0dp"
+        android:paddingEnd="0dp">
 
         <ImageView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/ic_launcher"
+            android:contentDescription="@string/app_name"/>
+
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
             android:paddingLeft="@dimen/default_padding"
-            android:paddingRight="@dimen/default_padding"
+            android:paddingRight="@dimen/small_padding"
 
             android:fontFamily="sans-serif"
             android:textSize="20sp"
@@ -33,7 +40,7 @@
             android:layout_gravity="center_vertical"
 
             android:fontFamily="sans-serif-light"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
