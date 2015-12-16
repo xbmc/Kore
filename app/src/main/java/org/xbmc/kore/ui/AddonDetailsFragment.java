@@ -63,6 +63,7 @@ public class AddonDetailsFragment extends Fragment {
     public static final String BUNDLE_KEY_DESCRIPTION = "description";
     public static final String BUNDLE_KEY_FANART = "fanart";
     public static final String BUNDLE_KEY_POSTER = "poster";
+    public static final String BUNDLE_KEY_ENABLED = "enabled";
 
     private HostManager hostManager;
     private HostInfo hostInfo;
@@ -109,6 +110,7 @@ public class AddonDetailsFragment extends Fragment {
         args.putString(BUNDLE_KEY_DESCRIPTION, vh.description);
         args.putString(BUNDLE_KEY_FANART, vh.fanart);
         args.putString(BUNDLE_KEY_POSTER, vh.poster);
+        args.putBoolean(BUNDLE_KEY_ENABLED, vh.enabled);
 
         if( Utils.isLollipopOrLater()) {
             args.putString(POSTER_TRANS_NAME, vh.artView.getTransitionName());
@@ -165,6 +167,8 @@ public class AddonDetailsFragment extends Fragment {
         mediaDescription.setText(bundle.getString(BUNDLE_KEY_DESCRIPTION));
 
         setImages(bundle.getString(BUNDLE_KEY_POSTER), bundle.getString(BUNDLE_KEY_FANART));
+
+        setupEnableButton(bundle.getBoolean(BUNDLE_KEY_ENABLED, false));
 
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);

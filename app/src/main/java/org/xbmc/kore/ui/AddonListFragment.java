@@ -264,6 +264,7 @@ public class AddonListFragment extends Fragment
             viewHolder.version = addonDetails.version;
             viewHolder.fanart = addonDetails.fanart;
             viewHolder.poster = addonDetails.thumbnail;
+            viewHolder.enabled = addonDetails.enabled;
 
             viewHolder.titleView.setText(viewHolder.addonName);
             viewHolder.detailsView.setText(addonDetails.summary);
@@ -295,5 +296,6 @@ public class AddonListFragment extends Fragment
         String description;
         String fanart;
         String poster;
+        Boolean enabled;
     }
 }
