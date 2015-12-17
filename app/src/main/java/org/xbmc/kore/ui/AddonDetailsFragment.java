@@ -40,6 +40,7 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Addons;
+import org.xbmc.kore.jsonrpc.type.AddonType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -181,6 +182,7 @@ public class AddonDetailsFragment extends Fragment {
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
+        updateEnabledButton();
     }
 
     @Override
@@ -292,5 +294,28 @@ public class AddonDetailsFragment extends Fragment {
         }
 
         return null;
+    }
+
+    private void updateEnabledButton() {
+        // Get the addon details, this is done asyhnchronously
+        String[] properties = new String[] {
+                AddonType.Fields.ENABLED
+        };
+        Addons.GetAddonDetails action = new Addons.GetAddonDetails(addonId, properties);
+        action.execute(hostManager.getConnection(), new ApiCallback<AddonType.Details>() {
+            @Override
+            public void onSuccess(AddonType.Details result) {
+                if (!isAdded()) return;
+                setupEnableButton(result.enabled);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
+                Toast.makeText(getActivity(),
+                               String.format(getString(R.string.error_getting_addon_info), description),
+                               Toast.LENGTH_SHORT).show();
+            }
+        }, callbackHandler);
     }
 }
