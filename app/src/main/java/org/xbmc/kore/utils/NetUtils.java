@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
@@ -35,6 +36,21 @@ import java.util.Enumeration;
  */
 public class NetUtils {
     private static final String TAG = LogUtils.makeLogTag(NetUtils.class);
+
+    /**
+     * Gets an IPv4 address from a host name
+     * @param host The host to look up
+     * @return Inet4Address
+     */
+    public static Inet4Address getInet4AddressByName(String host) throws UnknownHostException {
+        InetAddress[] addrs = InetAddress.getAllByName(host);
+        for (InetAddress addr : addrs) {
+            if (addr instanceof Inet4Address) {
+                return (Inet4Address)addr;
+            }
+        }
+        throw new UnknownHostException("No ipv4 address found");
+    }
 
     /**
      * Convert a IPv4 address from an integer to an InetAddress.
