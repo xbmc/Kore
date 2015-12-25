@@ -181,7 +181,7 @@
     <string name="play_from_here">Odtwórz z tego miejsca</string>
 
     <string name="connecting_to_xbmc">Łączę…</string>
-    <string name="unable_to_connect_to_xbmc">Unable to connect to media center</string>
+    <string name="unable_to_connect_to_xbmc">Nie mogę połączyć się z Odtwarzaczem</string>
     <string name="connected_to_xbmc">Połączony</string>
     <string name="xbmc_available">Dostępny</string>
     <string name="xbmc_unavailable">Niedostępny</string>
