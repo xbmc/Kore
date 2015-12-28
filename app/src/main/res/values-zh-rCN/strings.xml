@@ -62,9 +62,9 @@
 
     <string name="toggle_fullscreen">全屏切换</string>
 
-    <string name="connected_to">连接到 %1$s</string>
+    <string name="connected_to">已连接到 %1$s</string>
     <string name="connecting">连接中…</string>
-    <string name="connecting_to">连接到 %1$s (%2$s)…</string>
+    <string name="connecting_to">正在连接到 %1$s (%2$s)…</string>
 
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">欢迎</string>
@@ -324,6 +324,40 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">在Kodi上播放</string>
+    <string name="channel_switching">正在切换到频道 %1$s</string>
+    <string name="error_getting_pvr_info">获取PRV信息时出现了一个错误: %1$s</string>
+    <string name="error_starting_channel">开始频道回放时发生了一个错误: %1$s</string>
+    <string name="error_starting_recording">开始录像时发生了一个错误: %1$s</string>
+    <string name="error_starting_to_record">正在录像时发生了一个错误: %1$s</string>
+    <string name="minutes_abbrev2">%1$s分钟</string>
+    <string name="might_not_have_pvr">可能是你的媒体中心没有配好或者调谐品配置错误, 不能获取频道信息\n\n如果是这情况你可以在侧边菜单删除这个入口, 你可以在设置修改. </string>
+    <string name="nav_drawer_items">侧边菜单快捷方式</string>
+    <string name="no_broadcasts_found_refresh">没有发现广播\n\n向下滑动刷新试试</string>
+    <string name="no_cast_info">没有投放内容显示</string>
+    <string name="no_channel_groups_found_refresh">没有发现频道组\n\n向下滑动刷新试试</string>
+    <string name="no_channels_found_refresh">没有发现频道\n\n向下滑动刷新试试</string>
+    <string name="no_network_connection">没有网络连接</string>
+    <string name="no_recordings_found_refresh">没有发现录像\n\n向下滑动刷新试试</string>
+    <string name="pvr">PVR</string>
+    <string name="pvr_epg">指导</string>
+    <string name="radio">收音机</string>
+    <string name="radio_channels">收音机频道</string>
+    <string name="record">录像</string>
+    <string name="recordings">正在录像</string>
+    <string name="refresh">刷新</string>
+    <string name="remaining_cast_count">多于 %d</string>
+    <string name="sort_by_length">按长度</string>
+    <string name="sort_by_rating">按分级</string>
+    <string name="sort_by_year">按年份</string>
+    <string name="starting_recording">开始录像 %1$s</string>
+    <string name="swipe_down_to_refresh">向下滑动刷新</string>
+    <string name="tv">电视</string>
+    <string name="tv_channels">电视频道</string>
+    <string name="vibrate_on_remote">按下时振动</string>
+    <string name="wizard_invalid_es_port_specified">给这个服务器指定一个事件服务器</string>
+    <string name="wizard_search_no_network_connection"><![CDATA[     搜索媒体中心时请确保网络通畅.<br/>     ]]></string>
+    <string name="wizard_xbmc_event_server_port">事件服务器端口 (9777)</string>
+    <string name="wizard_xbmc_use_event_server">使用事件服务器</string>
 
 </resources>
 
