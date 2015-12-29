@@ -66,7 +66,8 @@ public class PVRChannelsListFragment extends Fragment
     public static final String SINGLECHANNELGROUP = "singlechannelgroup";
 
     public interface OnPVRChannelSelectedListener {
-        public void onChannelGuideSelected(int channelId, String channelTitle);
+        void onChannelGuideSelected(int channelId, String channelTitle);
+        void onChannelGroupSelected(int channelGroupId, String channelGroupTitle);
     }
 
     // Activity listener
@@ -264,6 +265,7 @@ public class PVRChannelsListFragment extends Fragment
                 ChannelGroupViewHolder tag = (ChannelGroupViewHolder) view.getTag();
                 selectedChannelGroupId = tag.channelGroupId;
                 // Notify the activity and show the channels
+                listenerActivity.onChannelGroupSelected(tag.channelGroupId, tag.channelGroupName);
                 browseChannels(tag.channelGroupId);
             }
         });
@@ -277,7 +279,7 @@ public class PVRChannelsListFragment extends Fragment
      * Gets and displays the channels of a channelgroup
      * @param channelGroupId id
      */
-    private void browseChannels(int channelGroupId) {
+    private void browseChannels(final int channelGroupId) {
         String[] properties = PVRType.FieldsChannel.allValues;
         LogUtils.LOGD(TAG, "Getting channels");
 

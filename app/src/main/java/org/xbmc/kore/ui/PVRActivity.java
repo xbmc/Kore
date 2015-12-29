@@ -42,10 +42,16 @@ public class PVRActivity extends BaseActivity
     public static final String CHANNELID = "channel_id";
     public static final String CHANNELTITLE = "channel_title";
 
+    public static final String CHANNELGROUPID = "channelgroupid";
+    public static final String CHANNELGROUPTITLE = "channelgrouptitle";
+
     private static final String LISTFRAGMENTTAG = "listfragmenttag";
 
     private int selectedChannelId = -1;
     private String selectedChannelTitle = null;
+
+    private int selectedChannelGroupId = -1;
+    private String selectedChannelGroupTitle = null;
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
@@ -81,9 +87,12 @@ public class PVRActivity extends BaseActivity
         } else {
             selectedChannelId = savedInstanceState.getInt(CHANNELID, -1);
             selectedChannelTitle = savedInstanceState.getString(CHANNELTITLE, null);
+
+            selectedChannelGroupId = savedInstanceState.getInt(CHANNELGROUPID, -1);
+            selectedChannelGroupTitle = savedInstanceState.getString(CHANNELGROUPTITLE, null);
         }
 
-        setupActionBar(selectedChannelTitle);
+        setupActionBar(selectedChannelGroupTitle, selectedChannelTitle);
     }
 
     @Override
@@ -101,6 +110,9 @@ public class PVRActivity extends BaseActivity
         super.onSaveInstanceState(outState);
         outState.putInt(CHANNELID, selectedChannelId);
         outState.putString(CHANNELTITLE, selectedChannelTitle);
+
+        outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
+        outState.putString(CHANNELGROUPTITLE, selectedChannelGroupTitle);
     }
 
     @Override
@@ -123,8 +135,18 @@ public class PVRActivity extends BaseActivity
                 if (selectedChannelId != -1) {
                     selectedChannelId = -1;
                     selectedChannelTitle = null;
-                    setupActionBar(null);
+                    setupActionBar(selectedChannelGroupTitle, null);
                     getSupportFragmentManager().popBackStack();
+                    return true;
+                } else if (selectedChannelGroupId != -1) {
+                    selectedChannelGroupId = -1;
+                    selectedChannelGroupTitle = null;
+                    setupActionBar(null, null);
+
+                    PVRListFragment fragment = (PVRListFragment)getSupportFragmentManager().findFragmentByTag(LISTFRAGMENTTAG);
+                    if (fragment != null) {
+                        fragment.onBackPressed();
+                    }
                     return true;
                 }
                 break;
@@ -142,8 +164,13 @@ public class PVRActivity extends BaseActivity
         if (selectedChannelId != -1) {
             selectedChannelId = -1;
             selectedChannelTitle = null;
-            setupActionBar(null);
+            setupActionBar(selectedChannelGroupTitle, null);
         } else {
+            if (selectedChannelGroupId != -1) {
+                selectedChannelGroupId = -1;
+                selectedChannelGroupTitle = null;
+                setupActionBar(null, null);
+            }
             PVRListFragment fragment = (PVRListFragment)getSupportFragmentManager().findFragmentByTag(LISTFRAGMENTTAG);
             if (fragment != null) {
                 handled = fragment.onBackPressed();
@@ -154,7 +181,7 @@ public class PVRActivity extends BaseActivity
     }
 
     private boolean drawerIndicatorIsArrow = false;
-    private void setupActionBar(String channelTitle) {
+    private void setupActionBar(String channelGroupTitle, String channelTitle) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
 
@@ -162,12 +189,12 @@ public class PVRActivity extends BaseActivity
         if (actionBar == null) return;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        if (channelTitle != null) {
+        if ((channelTitle != null) || (channelGroupTitle != null)) {
             if (!drawerIndicatorIsArrow) {
                 navigationDrawerFragment.animateDrawerToggle(true);
                 drawerIndicatorIsArrow = true;
             }
-            actionBar.setTitle(channelTitle);
+            actionBar.setTitle(channelTitle == null? channelGroupTitle : channelTitle);
         } else {
             if (drawerIndicatorIsArrow) {
                 navigationDrawerFragment.animateDrawerToggle(false);
@@ -207,6 +234,19 @@ public class PVRActivity extends BaseActivity
         fragTrans.replace(R.id.fragment_container, pvrEPGFragment)
                 .addToBackStack(null)
                 .commit();
-        setupActionBar(selectedChannelTitle);
+        setupActionBar(selectedChannelGroupTitle, selectedChannelTitle);
+    }
+
+    /**
+     * Callback from list fragment when a channel group is selected
+     * Just setup action bar
+     * @param channelGroupId Channel group selected
+     * @param channelGroupTitle Title
+     */
+    public void onChannelGroupSelected(int channelGroupId, String channelGroupTitle) {
+        selectedChannelGroupId = channelGroupId;
+        selectedChannelGroupTitle = channelGroupTitle;
+
+        setupActionBar(selectedChannelGroupTitle, selectedChannelTitle);
     }
 }
