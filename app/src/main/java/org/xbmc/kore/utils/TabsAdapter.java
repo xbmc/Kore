@@ -64,16 +64,20 @@ public class TabsAdapter extends FragmentPagerAdapter {
         return tabInfos.size();
     }
 
+    @Override
+    public Fragment getItem(int position) {
+        TabInfo info = tabInfos.get(position);
+        return Fragment.instantiate(context, info.fragmentClass.getName(), info.args);
+    }
+
     /**
      * Store the created fragments, so that it is possible to get them by position later
      */
     private HashMap<Integer, Fragment> createdFragments = new HashMap<>(5);
 
     @Override
-    public Fragment getItem(int position) {
-        TabInfo info = tabInfos.get(position);
-        Fragment fragment = Fragment.instantiate(context, info.fragmentClass.getName(), info.args);
-
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment)super.instantiateItem(container, position);
         createdFragments.put(position, fragment);
         return fragment;
     }
