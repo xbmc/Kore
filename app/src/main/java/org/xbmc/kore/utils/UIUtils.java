@@ -405,8 +405,8 @@ public class UIUtils {
     }
 
     /**
-     * Launches the remote activity, performing a circular reveal animation if
-     * Lollipop or later
+     * Launches {@link RemoteActivity}, performing a circular reveal animation if
+     * Lollipop or later. This method clears the back stack up to {@link RemoteActivity}
      *
      * @param context Context
      * @param centerX Center X of the animation
