@@ -418,7 +418,8 @@ public class UIUtils {
     public static void switchToRemoteWithAnimation(final Context context,
                                                    int centerX, int centerY,
                                                    final View exitTransitionView) {
-        final Intent launchIntent = new Intent(context, RemoteActivity.class);
+        final Intent launchIntent = new Intent(context, RemoteActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (Utils.isLollipopOrLater()) {
             // Show the animation
             int endRadius = Math.max(exitTransitionView.getHeight(), exitTransitionView.getWidth());
