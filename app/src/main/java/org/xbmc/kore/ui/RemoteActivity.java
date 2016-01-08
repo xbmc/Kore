@@ -361,22 +361,22 @@ public class RemoteActivity extends BaseActivity
                 !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_VIEW)))
             return;
 
-        Uri youTubeUri = null;
+        Uri videoUri = null;
         if (action.equals(Intent.ACTION_SEND)) {
             // Get the URI, which is stored in Extras
-            youTubeUri = getYouTubeUri(intent.getStringExtra(Intent.EXTRA_TEXT));
-            if (youTubeUri == null) return;
+            videoUri = getYouTubeUri(intent.getStringExtra(Intent.EXTRA_TEXT));
+            if (videoUri == null) return;
         } else if (action.equals(Intent.ACTION_VIEW)) {
             if (intent.getData() == null) return;
-            youTubeUri = Uri.parse(intent.getData().toString());
+            videoUri = Uri.parse(intent.getData().toString());
         }
 
-        final String videoId = getYouTubeVideoId(youTubeUri);
+        final String videoId = getVideoId(videoUri);
         if (videoId == null) return;
 
-//        final String kodiAddonUrl = "plugin://plugin.video.youtube/?path=/root/search&action=play_video&videoid="
-//                + videoId;
-        final String kodiAddonUrl = "plugin://plugin.video.youtube/play/?video_id=" + videoId;
+        final String kodiAddonUrl = "plugin://plugin.video." +
+                (videoUri.getHost().endsWith("vimeo.com") ? "vimeo" : "youtube") +
+                "/play/?video_id=" + videoId;
 
         // Check if any video player is active and clear the playlist before queuing if so
         final HostConnection connection = hostManager.getConnection();
@@ -516,19 +516,17 @@ public class RemoteActivity extends BaseActivity
     }
 
     /**
-     * Returns the youtube video ID from its URL
+     * Returns the youtube/vimeo video ID from its URL
      *
-     * @param playuri Youtube URL
-     * @return Youtube Video ID
+     * @param playuri Youtube/Vimeo URL
+     * @return Youtube/Vimeo Video ID
      */
-    private String getYouTubeVideoId(Uri playuri) {
-        if (playuri.getHost().endsWith("youtube.com") || playuri.getHost().endsWith("youtu.be")) {
+    private String getVideoId(Uri playuri) {
+        if (playuri.getHost().endsWith("youtube.com") || playuri.getHost().endsWith("youtu.be") || playuri.getHost().endsWith("vimeo.com")) {
             // We'll need to get the v= parameter from the URL
             final Pattern pattern =
-                    Pattern.compile("(?:https?:\\/\\/)?(?:www\\.|m\\.)?youtu(?:.be\\/|be\\.com\\/watch\\?v=)([\\w-]+)",
+                    Pattern.compile("(?:https?:\\/\\/)?(?:www\\.|m\\.)?(?:youtu(?:\\.be\\/|be\\.com\\/watch\\?v=)|vimeo\\.com\\/)([\\w-]+)",
                             Pattern.CASE_INSENSITIVE);
-//			final Pattern pattern = Pattern.compile("^http(:?s)?:\\/\\/(?:www\\.)?(?:youtube\\.com|youtu\\.be)\\/watch\\?(?=.*v=([\\w-]+))(?:\\S+)?$", Pattern.CASE_INSENSITIVE);
-//			final Pattern pattern = Pattern.compile(".*v=([a-z0-9_\\-]+)(?:&.)*", Pattern.CASE_INSENSITIVE);
             final Matcher matcher = pattern.matcher(playuri.toString());
             if (matcher.matches()) {
                 return matcher.group(1);
