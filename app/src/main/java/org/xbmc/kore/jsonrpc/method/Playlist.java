@@ -170,4 +170,27 @@ public class Playlist {
             return jsonObject.get(RESULT_NODE).textValue();
         }
     }
+
+
+    public static final class Insert extends ApiMethod<String> {
+        public final static String METHOD_NAME = "Playlist.Insert";
+
+        /**
+         * Add item(s) to playlist
+         */
+        public Insert(int playlistId, int position, PlaylistType.Item item) {
+            super();
+            addParameterToRequest("playlistid", playlistId);
+            addParameterToRequest("position", position);
+            addParameterToRequest("item", item);
+        }
+
+        @Override
+        public String getMethodName() { return METHOD_NAME; }
+
+        @Override
+        public String resultFromJson(ObjectNode jsonObject) throws ApiException {
+            return jsonObject.get(RESULT_NODE).textValue();
+        }
+    }
 }
