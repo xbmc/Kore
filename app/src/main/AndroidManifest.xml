@@ -40,8 +40,9 @@
                 <data android:scheme="http" android:host="youtube.com"/>
                 <data android:scheme="http" android:host="m.youtube.com"/>
                 <data android:scheme="http" android:host="www.youtube.com"/>
+                <data android:scheme="http" android:host="vimeo.com"/>
+                <data android:scheme="http" android:host="www.vimeo.com"/>
             </intent-filter>
-
         </activity>
 
         <activity android:name="org.xbmc.kore.ui.hosts.HostManagerActivity"/>
