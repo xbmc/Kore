@@ -30,12 +30,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostConnectionObserver;
@@ -44,16 +43,17 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
+import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
+import org.xbmc.kore.ui.viewgroups.DynamicListView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -100,17 +100,10 @@ public class PlaylistFragment extends Fragment
      * Injectable views
      */
     @InjectView(R.id.info_panel) RelativeLayout infoPanel;
-    @InjectView(R.id.playlist) GridView playlistGridView;
+    @InjectView(R.id.playlist) DynamicListView playlistListView;
 
     @InjectView(R.id.info_title) TextView infoTitle;
     @InjectView(R.id.info_message) TextView infoMessage;
-
-//    @InjectView(R.id.play) ImageButton playButton;
-//    @InjectView(R.id.stop) ImageButton stopButton;
-//    @InjectView(R.id.previous) ImageButton previousButton;
-//    @InjectView(R.id.next) ImageButton nextButton;
-//    @InjectView(R.id.rewind) ImageButton rewindButton;
-//    @InjectView(R.id.fast_forward) ImageButton fastForwardButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,20 +118,16 @@ public class PlaylistFragment extends Fragment
         ButterKnife.inject(this, root);
 
         playListAdapter = new PlayListAdapter();
-        playlistGridView.setAdapter(playListAdapter);
+        playlistListView.setAdapter(playListAdapter);
 
         // When clicking on an item, play it
-        playlistGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        playlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, currentPlaylistId, position);
                 action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
             }
         });
-
-//        // Pad main content view to overlap bottom system bar
-//        UIUtils.setPaddingForSystemBars(getActivity(), playlistGridView, false, false, true);
-//        playlistGridView.setClipToPadding(false);
 
         return root;
     }
@@ -184,28 +173,6 @@ public class PlaylistFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-//        super.onCreateContextMenu(menu, v, menuInfo);
-//        // Add the options
-//        menu.add(0, CONTEXT_MENU_REMOVE_ITEM, 1, R.string.remove);
-//    }
-//
-//    @Override
-//    public boolean onContextItemSelected(android.view.MenuItem item) {
-//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//
-//        switch (item.getItemId()) {
-//            case CONTEXT_MENU_REMOVE_ITEM:
-//                // Remove this item from the playlist
-//                Playlist.Remove action = new Playlist.Remove(currentPlaylistId, info.position);
-//                action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-//                forceRefreshPlaylist();
-//                return true;
-//        }
-//        return super.onContextItemSelected(item);
-//    }
-
     public void forceRefreshPlaylist() {
         // If we are playing something, refresh playlist
         if ((lastCallResult == PLAYER_IS_PLAYING) || (lastCallResult == PLAYER_IS_PAUSED)) {
@@ -217,59 +184,6 @@ public class PlaylistFragment extends Fragment
      * Default callback for methods that don't return anything
      */
     private ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
-
-//    /**
-//     * Callback for methods that change the play speed
-//     */
-//    private ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
-//        @Override
-//        public void onSuccess(Integer result) {
-//            UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result);
-//        }
-//
-//        @Override
-//        public void onError(int errorCode, String description) { }
-//    };
-//
-//    /**
-//     * Callbacks for bottom button bar
-//     */
-//    @OnClick(R.id.play)
-//    public void onPlayClicked(View v) {
-//        Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
-//        action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
-//    }
-//
-//    @OnClick(R.id.stop)
-//    public void onStopClicked(View v) {
-//        Player.Stop action = new Player.Stop(currentActivePlayerId);
-//        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-//        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, 0);
-//    }
-//
-//    @OnClick(R.id.fast_forward)
-//    public void onFastForwardClicked(View v) {
-//        Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.INCREMENT);
-//        action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
-//    }
-//
-//    @OnClick(R.id.rewind)
-//    public void onRewindClicked(View v) {
-//        Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.DECREMENT);
-//        action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
-//    }
-//
-//    @OnClick(R.id.previous)
-//    public void onPreviousClicked(View v) {
-//        Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
-//        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-//    }
-//
-//    @OnClick(R.id.next)
-//    public void onNextClicked(View v) {
-//        Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
-//        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-//    }
 
     /**
      * Last call results
@@ -287,9 +201,9 @@ public class PlaylistFragment extends Fragment
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
         if ((lastGetPlaylistItemsResult == null) ||
-                (lastCallResult != PlayerEventsObserver.PLAYER_IS_PLAYING) ||
-                (currentActivePlayerId != getActivePlayerResult.playerid) ||
-                (lastGetItemResult.id != getItemResult.id)) {
+            (lastCallResult != PlayerEventsObserver.PLAYER_IS_PLAYING) ||
+            (currentActivePlayerId != getActivePlayerResult.playerid) ||
+            (lastGetItemResult.id != getItemResult.id)) {
             // Check if something is different, and only if so, start the chain calls
             setupPlaylistInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
             currentActivePlayerId = getActivePlayerResult.playerid;
@@ -297,8 +211,6 @@ public class PlaylistFragment extends Fragment
             // Hopefully nothing changed, so just use the last results
             displayPlaylist(getItemResult, lastGetPlaylistItemsResult);
         }
-        // Switch icon
-//        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed);
 
         // Save results
         lastCallResult = PLAYER_IS_PLAYING;
@@ -311,17 +223,15 @@ public class PlaylistFragment extends Fragment
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
         if ((lastGetPlaylistItemsResult == null) ||
-                (lastCallResult != PlayerEventsObserver.PLAYER_IS_PLAYING) ||
-                (currentActivePlayerId != getActivePlayerResult.playerid) ||
-                (lastGetItemResult.id != getItemResult.id)) {
+            (lastCallResult != PlayerEventsObserver.PLAYER_IS_PLAYING) ||
+            (currentActivePlayerId != getActivePlayerResult.playerid) ||
+            (lastGetItemResult.id != getItemResult.id)) {
             setupPlaylistInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
             currentActivePlayerId = getActivePlayerResult.playerid;
         } else {
             // Hopefully nothing changed, so just use the last results
             displayPlaylist(getItemResult, lastGetPlaylistItemsResult);
         }
-        // Switch icon
-//        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed);
 
         lastCallResult = PLAYER_IS_PAUSED;
         lastGetActivePlayerResult = getActivePlayerResult;
@@ -436,17 +346,33 @@ public class PlaylistFragment extends Fragment
         }
         switchToPanel(R.id.playlist);
 
-        // Set items, which call notifyDataSetChanged
-        playListAdapter.setPlaylistItems(playlistItems);
-        // Present the checked item
+        //If a user is dragging a list item we must not modify the adapter to prevent
+        //the dragged item's adapter position from diverging from its listview position
+        if (!playlistListView.isItemBeingDragged()) {
+            // Set items, which call notifyDataSetChanged
+            playListAdapter.setPlaylistItems(playlistItems);
+            highlightItem(getItemResult, playlistItems);
+        } else {
+            highlightItem(getItemResult, playListAdapter.playlistItems);
+        }
+    }
+
+    private void highlightItem(final ListType.ItemsAll item,
+                               final List<ListType.ItemsAll> playlistItems) {
         for (int i = 0; i < playlistItems.size(); i++) {
-            if ((playlistItems.get(i).id == getItemResult.id) &&
-                (playlistItems.get(i).type.equals(getItemResult.type))) {
-                playlistGridView.setItemChecked(i, true);
-                playlistGridView.setSelection(i);
+            if ((playlistItems.get(i).id == item.id) &&
+                (playlistItems.get(i).type.equals(item.type))) {
+
+                //When user is dragging an item it is very annoying when we change the list position
+                if (!playlistListView.isItemBeingDragged()) {
+                    playlistListView.setSelection(i);
+                }
+                playlistListView.setItemChecked(i, true);
+
             }
         }
     }
+
 
     /**
      * Switches the info panel shown (they are exclusive)
@@ -456,11 +382,11 @@ public class PlaylistFragment extends Fragment
         switch (panelResId) {
             case R.id.info_panel:
                 infoPanel.setVisibility(View.VISIBLE);
-                playlistGridView.setVisibility(View.GONE);
+                playlistListView.setVisibility(View.GONE);
                 break;
             case R.id.playlist:
                 infoPanel.setVisibility(View.GONE);
-                playlistGridView.setVisibility(View.VISIBLE);
+                playlistListView.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -488,7 +414,7 @@ public class PlaylistFragment extends Fragment
      * Adapter used to show the hosts in the ListView
      */
     private class PlayListAdapter extends BaseAdapter
-            implements ListAdapter {
+            implements DynamicListView.DynamicListAdapter {
         private View.OnClickListener playlistItemMenuClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -532,9 +458,9 @@ public class PlaylistFragment extends Fragment
                     R.attr.appCardBackgroundColor,
                     R.attr.appSelectedCardBackgroundColor});
             cardBackgroundColor = styledAttributes.getColor(0,
-                    getResources().getColor(R.color.dark_content_background));
+                                                            getResources().getColor(R.color.dark_content_background));
             selectedCardBackgroundColor = styledAttributes.getColor(1,
-                    getResources().getColor(R.color.dark_selected_content_background));
+                                                                    getResources().getColor(R.color.dark_selected_content_background));
             styledAttributes.recycle();
         }
 
@@ -573,7 +499,10 @@ public class PlaylistFragment extends Fragment
 
         @Override
         public long getItemId(int position) {
-            return position;
+            if (position < 0 || position >= playlistItems.size()) {
+                return -1;
+            }
+            return playlistItems.get(position).id;
         }
 
         @Override
@@ -582,12 +511,66 @@ public class PlaylistFragment extends Fragment
         }
 
         @Override
+        public void onSwapItems(int positionOne, int positionTwo) {
+            ListType.ItemsAll tmp = playlistItems.get(positionOne);
+            playlistItems.set(positionOne, playlistItems.get(positionTwo));
+            playlistItems.set(positionTwo, tmp);
+        }
+
+        @Override
+        public void onSwapFinished(final int originalPosition, final int finalPosition) {
+            final HostConnection hostConnection = hostManager.getConnection();
+
+            if (playlistItems.get(finalPosition).id == lastGetItemResult.id) {
+                Toast.makeText(getActivity(), R.string.cannot_move_playing_item, Toast.LENGTH_SHORT)
+                     .show();
+                rollbackSwappedItems(originalPosition, finalPosition);
+                notifyDataSetChanged();
+                return;
+            }
+
+            Playlist.Remove remove = new Playlist.Remove(currentPlaylistId, originalPosition);
+            remove.execute(hostConnection, new ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    Playlist.Insert insert = new Playlist.Insert(currentPlaylistId, finalPosition, createPlaylistTypeItem(playlistItems.get(finalPosition)));
+                    insert.execute(hostConnection, new ApiCallback<String>() {
+                        @Override
+                        public void onSuccess(String result) {
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String description) {
+                            //Remove succeeded but insert failed, so we need to remove item from playlist at final position
+                            playlistItems.remove(finalPosition);
+                            notifyDataSetChanged();
+                            if (!isAdded()) return;
+                            // Got an error, show toast
+                            Toast.makeText(getActivity(), R.string.unable_to_move_item, Toast.LENGTH_SHORT)
+                                 .show();
+                        }
+                    }, callbackHandler);
+                }
+
+                @Override
+                public void onError(int errorCode, String description) {
+                    rollbackSwappedItems(originalPosition, finalPosition);
+                    notifyDataSetChanged();
+                    if (!isAdded()) return;
+                    // Got an error, show toast
+                    Toast.makeText(getActivity(), R.string.unable_to_move_item, Toast.LENGTH_SHORT)
+                         .show();
+                }
+            }, callbackHandler);
+        }
+
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity())
-                        .inflate(R.layout.grid_item_playlist, parent, false);
+                                            .inflate(R.layout.grid_item_playlist, parent, false);
                 // ViewHolder pattern
                 viewHolder = new ViewHolder();
                 viewHolder.art = (ImageView)convertView.findViewById(R.id.art);
@@ -647,13 +630,13 @@ public class PlaylistFragment extends Fragment
             viewHolder.duration.setText((duration > 0) ? UIUtils.formatTime(duration) : "");
             viewHolder.position = position;
 
-            int cardColor = (position == playlistGridView.getCheckedItemPosition()) ?
-                    selectedCardBackgroundColor: cardBackgroundColor;
+            int cardColor = (position == playlistListView.getCheckedItemPosition()) ?
+                            selectedCardBackgroundColor: cardBackgroundColor;
             viewHolder.card.setCardBackgroundColor(cardColor);
 
             // If not video, change aspect ration of poster to a square
             boolean isVideo = (item.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
-                    (item.type.equals(ListType.ItemsAll.TYPE_EPISODE));
+                              (item.type.equals(ListType.ItemsAll.TYPE_EPISODE));
             if (!isVideo) {
                 ViewGroup.LayoutParams layoutParams = viewHolder.art.getLayoutParams();
                 layoutParams.width = layoutParams.height;
@@ -669,6 +652,42 @@ public class PlaylistFragment extends Fragment
             viewHolder.contextMenu.setOnClickListener(playlistItemMenuClickListener);
 
             return convertView;
+        }
+
+        private PlaylistType.Item createPlaylistTypeItem(ListType.ItemsAll item) {
+            PlaylistType.Item playlistItem = new PlaylistType.Item();
+
+            switch (item.type) {
+                case ListType.ItemsAll.TYPE_MOVIE:
+                    playlistItem.movieid = item.id;
+                    break;
+                case ListType.ItemsAll.TYPE_EPISODE:
+                    playlistItem.episodeid = item.id;
+                    break;
+                case ListType.ItemsAll.TYPE_SONG:
+                    playlistItem.songid = item.id;
+                    break;
+                case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
+                    playlistItem.musicvideoid = item.id;
+                    break;
+                default:
+                    LogUtils.LOGE(TAG, "createPlaylistTypeItem, failed to create item for "+item.type);
+                    break;
+            }
+
+            return playlistItem;
+        }
+
+        private void rollbackSwappedItems(int originalPosition, int newPosition) {
+            if (originalPosition > newPosition) {
+                for (int i = newPosition; i < originalPosition; i++) {
+                    onSwapItems(i, i + 1);
+                }
+            } else if (originalPosition < newPosition) {
+                for (int i = newPosition; i > originalPosition; i--) {
+                    onSwapItems(i, i - 1);
+                }
+            }
         }
 
         private class ViewHolder {

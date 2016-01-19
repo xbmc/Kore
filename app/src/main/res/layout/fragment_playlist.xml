@@ -23,7 +23,7 @@
     <include layout="@layout/remote_info_panel"/>
 
     <!-- Playlist -->
-    <GridView
+    <org.xbmc.kore.ui.viewgroups.DynamicListView
         android:id="@+id/playlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,10 +36,8 @@
         android:choiceMode="singleChoice"
         android:listSelector="?attr/selectableItemBackground"
         android:drawSelectorOnTop="true"
-        style="@style/Widget.GridView"/>
-    <!--android:paddingBottom="@dimen/bottom_bar_height"-->
-
-    <!-- Bottom media buttons -->
-    <!--<include layout="@layout/bottom_media_bar"/>-->
+        android:fastScrollEnabled="true"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/default_grid_vertical_spacing"/>
 
 </RelativeLayout>
