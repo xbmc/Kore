@@ -215,6 +215,7 @@
         %1$s.</string>
      <string name="error_get_active_player">Couldn\'t get active player.\nError message:
         %1$s.</string>
+    <string name="error_share_video">Couldn\'t share video to Kodi/XBMC.</string>
 
     <string name="directors">Directors:</string>
     <string name="studio">Studio:</string>

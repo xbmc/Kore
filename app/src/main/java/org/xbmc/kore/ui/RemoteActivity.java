@@ -372,7 +372,12 @@ public class RemoteActivity extends BaseActivity
         }
 
         final String videoId = getVideoId(videoUri);
-        if (videoId == null) return;
+        if (videoId == null) {
+            Toast.makeText(RemoteActivity.this,
+                    R.string.error_share_video,
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         final String kodiAddonUrl = "plugin://plugin.video." +
                 (videoUri.getHost().endsWith("vimeo.com") ? "vimeo" : "youtube") +
@@ -524,9 +529,15 @@ public class RemoteActivity extends BaseActivity
     private String getVideoId(Uri playuri) {
         if (playuri.getHost().endsWith("youtube.com") || playuri.getHost().endsWith("youtu.be") || playuri.getHost().endsWith("vimeo.com")) {
             // We'll need to get the v= parameter from the URL
-            final Pattern pattern =
-                    Pattern.compile("(?:https?:\\/\\/)?(?:www\\.|m\\.)?(?:youtu(?:\\.be\\/|be\\.com\\/watch\\?v=)|vimeo\\.com\\/)([\\w-]+)",
-                            Pattern.CASE_INSENSITIVE);
+            final Pattern pattern;
+            if (playuri.getHost().endsWith("vimeo.com")) {
+                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.|player\\.)?vimeo\\.com\\/(?:.*\\/)?(\\d+)(?:\\?.*)?$",
+                        Pattern.CASE_INSENSITIVE);
+            }
+            else {
+                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.|m\\.)?youtu(?:\\.be|be\\.com)\\/watch\\?(?:.*&)?v=([\\w-]+)(?:&.*)?$",
+                        Pattern.CASE_INSENSITIVE);
+            }
             final Matcher matcher = pattern.matcher(playuri.toString());
             if (matcher.matches()) {
                 return matcher.group(1);
