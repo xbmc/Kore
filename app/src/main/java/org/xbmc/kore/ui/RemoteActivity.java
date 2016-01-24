@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.text.TextDirectionHeuristicsCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -316,6 +317,9 @@ public class RemoteActivity extends BaseActivity
      * Callbacks from Send text dialog
      */
     public void onSendTextFinished(String text, boolean done) {
+        if (TextDirectionHeuristicsCompat.FIRSTSTRONG_LTR.isRtl(text, 0, text.length())) {
+            text = new StringBuilder(text).reverse().toString();
+        }
         Input.SendText action = new Input.SendText(text, done);
         action.execute(hostManager.getConnection(), null, null);
     }
