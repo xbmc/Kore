@@ -535,7 +535,7 @@ public class RemoteActivity extends BaseActivity
                         Pattern.CASE_INSENSITIVE);
             }
             else {
-                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.|m\\.)?youtu(?:\\.be|be\\.com)\\/watch\\?(?:.*&)?v=([\\w-]+)(?:&.*)?$",
+                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.|m\\.)?youtu(?:\\.be\\/|be\\.com\\/watch\\?v=)([\\w-]+)(?:[\\?&].*)?$",
                         Pattern.CASE_INSENSITIVE);
             }
             final Matcher matcher = pattern.matcher(playuri.toString());
