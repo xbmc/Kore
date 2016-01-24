@@ -70,7 +70,7 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Welcome</string>
     <string name="wizard_welcome_message"><![CDATA[
-    Let\'s start by adding a media center. Make sure your Kodi/XBMC is running, properly configured and on the same network of your device.<br/><br/>
+    Let\'s start by adding a media center. Make sure your Kodi/XBMC is running, properly configured and on the same network as your device.<br/><br/>
     You can get help configuring it <a href="http://syncedsynapse.com/kore/kore-faq/>here</a>.<br/><br/>
     When you\'re ready press <b><i>Next</i></b>.
     ]]></string>
