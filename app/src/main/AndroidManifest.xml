@@ -42,6 +42,7 @@
                 <data android:scheme="http" android:host="www.youtube.com"/>
                 <data android:scheme="http" android:host="vimeo.com"/>
                 <data android:scheme="http" android:host="www.vimeo.com"/>
+                <data android:scheme="http" android:host="player.vimeo.com"/>
             </intent-filter>
         </activity>
 
