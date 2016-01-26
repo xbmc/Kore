@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -48,6 +49,7 @@ import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 /**
  * Fragment that presents the artists list
@@ -56,7 +58,7 @@ public class ArtistListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(ArtistListFragment.class);
 
     public interface OnArtistSelectedListener {
-        public void onArtistSelected(int artistId, String artistName);
+        public void onArtistSelected(ViewHolder tag);
     }
 
     // Activity listener
@@ -73,7 +75,7 @@ public class ArtistListFragment extends AbstractListFragment {
                 // Get the artist id from the tag
                 ViewHolder tag = (ViewHolder) view.getTag();
                 // Notify the activity
-                listenerActivity.onArtistSelected(tag.artistId, tag.artistName);
+                listenerActivity.onArtistSelected(tag);
             }
         };
     }
@@ -140,16 +142,20 @@ public class ArtistListFragment extends AbstractListFragment {
                 MediaContract.Artists.ARTISTID,
                 MediaContract.Artists.ARTIST,
                 MediaContract.Artists.GENRE,
-                MediaContract.Movies.THUMBNAIL,
+                MediaContract.Artists.THUMBNAIL,
+                MediaContract.Artists.DESCRIPTION,
+                MediaContract.Artists.FANART
         };
 
         String SORT = MediaDatabase.sortCommonTokens(MediaContract.Artists.ARTIST) + " ASC";
 
-        final int ID = 0;
-        final int ARTISTID = 1;
-        final int ARTIST = 2;
-        final int GENRE = 3;
-        final int THUMBNAIL = 4;
+        int ID = 0;
+        int ARTISTID = 1;
+        int ARTIST = 2;
+        int GENRE = 3;
+        int THUMBNAIL = 4;
+        int DESCRIPTION = 5;
+        int FANART = 6;
     }
 
     private class ArtistsAdapter extends CursorAdapter {
@@ -163,10 +169,8 @@ public class ArtistListFragment extends AbstractListFragment {
 
             // Get the art dimensions
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.artistlist_art_width) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.artistlist_art_heigth) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
+            artWidth = (int)(resources.getDimension(R.dimen.albumdetail_poster_width));
+            artHeight = (int)(resources.getDimension(R.dimen.albumdetail_poster_heigth));
         }
 
         /** {@inheritDoc} */
@@ -186,6 +190,7 @@ public class ArtistListFragment extends AbstractListFragment {
         }
 
         /** {@inheritDoc} */
+        @TargetApi(21)
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
@@ -193,32 +198,43 @@ public class ArtistListFragment extends AbstractListFragment {
             // Save the movie id
             viewHolder.artistId = cursor.getInt(ArtistListQuery.ARTISTID);
             viewHolder.artistName = cursor.getString(ArtistListQuery.ARTIST);
+            viewHolder.genres = cursor.getString(ArtistListQuery.GENRE);
+            viewHolder.description = cursor.getString(ArtistListQuery.DESCRIPTION);
+            viewHolder.fanart = cursor.getString(ArtistListQuery.FANART);
 
             viewHolder.nameView.setText(viewHolder.artistName);
             viewHolder.genresView.setText(cursor.getString(ArtistListQuery.GENRE));
+            viewHolder.poster = cursor.getString(ArtistListQuery.THUMBNAIL);
 
-            String thumbnail = cursor.getString(ArtistListQuery.THUMBNAIL);
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                    thumbnail, viewHolder.artistName,
+                    viewHolder.poster, viewHolder.artistName,
                     viewHolder.artView, artWidth, artHeight);
 
             // For the popupmenu
             ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
             contextMenu.setTag(viewHolder);
             contextMenu.setOnClickListener(artistlistItemMenuClickListener);
+
+            if(Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("a"+viewHolder.artistId);
+            }
         }
     }
 
     /**
      * View holder pattern
      */
-    private static class ViewHolder {
+    public static class ViewHolder {
         TextView nameView;
         TextView genresView;
         ImageView artView;
 
         int artistId;
         String artistName;
+        String genres;
+        String description;
+        String fanart;
+        String poster;
     }
 
     private View.OnClickListener artistlistItemMenuClickListener = new View.OnClickListener() {
