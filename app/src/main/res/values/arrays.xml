@@ -51,6 +51,23 @@
         <item>@string/addons</item>
     </string-array>
 
+    <!-- Download connection types -->
+    <string-array name="entries_download_media_items">
+        <item>WiFi</item>
+        <item>Mobile</item>
+        <item>Any</item>
+    </string-array>
+
+    <string-array name="entry_values_download_media_items">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="default_values_download_media_items">
+        <item>0</item>
+    </string-array>
+
     <!-- CAUTION: Keep this synced with the entries ids in NavigationDrawerFragment.java -->
     <string-array translatable="false" name="entry_values_nav_drawer_items">
         <item>2</item>

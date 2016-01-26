@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -222,7 +223,7 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
             case LOADER_EPISODE:
                 uri = MediaContract.Episodes.buildTVShowEpisodeUri(getHostInfo().getId(), tvshowId, episodeId);
                 return new CursorLoader(getActivity(), uri,
-                        EpisodeDetailsQuery.PROJECTION, null, null, null);
+                                        EpisodeDetailsQuery.PROJECTION, null, null, null);
 //            case LOADER_CAST:
 //                uri = MediaContract.MovieCast.buildMovieCastListUri(hostInfo.getId(), episodeId);
 //                return new CursorLoader(getActivity(), uri,
@@ -269,7 +270,7 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
                 boolean switchToRemote = PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
                         .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
-                                Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
+                                    Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
                 if (switchToRemote) {
                     int cx = (fabButton.getLeft() + fabButton.getRight()) / 2;
                     int cy = (fabButton.getTop() + fabButton.getBottom()) / 2;
@@ -282,7 +283,7 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                        .show();
+                     .show();
             }
         }, callbackHandler);
     }
@@ -314,7 +315,7 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
 
                         @Override
@@ -322,12 +323,12 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
                     }, callbackHandler);
                 } else {
                     Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                            .show();
+                         .show();
                 }
             }
 
@@ -336,7 +337,7 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                        .show();
+                     .show();
             }
         }, callbackHandler);
     }
@@ -366,8 +367,8 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
         setupSeenButton(newPlaycount);
     }
 
-    @OnClick(R.id.download)
-    public void onDownloadClicked(View v) {
+    @Override
+    protected void onDownload() {
         if (tvshowDownloadInfo == null) {
             // Nothing to download
             Toast.makeText(getActivity(), R.string.no_files_to_download, Toast.LENGTH_SHORT).show();
@@ -385,43 +386,43 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
         if (file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                    .setMessage(R.string.download_file_exists)
-                    .setPositiveButton(R.string.overwrite,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                            tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNeutralButton(R.string.download_with_new_name,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                            tvshowDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNegativeButton(android.R.string.cancel, noopClickListener)
-                    .show();
+                   .setMessage(R.string.download_file_exists)
+                   .setPositiveButton(R.string.overwrite,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                               tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               callbackHandler);
+                                          }
+                                      })
+                   .setNeutralButton(R.string.download_with_new_name,
+                                     new DialogInterface.OnClickListener() {
+                                         @Override
+                                         public void onClick(DialogInterface dialog, int which) {
+                                             FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                              tvshowDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                              callbackHandler);
+                                         }
+                                     })
+                   .setNegativeButton(android.R.string.cancel, noopClickListener)
+                   .show();
         } else {
             // Confirm that the user really wants to download the file
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                    .setMessage(R.string.confirm_episode_download)
-                    .setPositiveButton(android.R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                            tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNegativeButton(android.R.string.cancel, noopClickListener)
-                    .show();
+                   .setMessage(R.string.confirm_episode_download)
+                   .setPositiveButton(android.R.string.ok,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                               tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               callbackHandler);
+                                          }
+                                      })
+                   .setNegativeButton(android.R.string.cancel, noopClickListener)
+                   .show();
         }
     }
 
@@ -437,13 +438,13 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
 
         int runtime = cursor.getInt(EpisodeDetailsQuery.RUNTIME) / 60;
         String durationPremiered =  runtime > 0 ?
-                String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                        "  |  " + cursor.getString(EpisodeDetailsQuery.FIRSTAIRED) :
-                cursor.getString(EpisodeDetailsQuery.FIRSTAIRED);
+                                    String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                                    "  |  " + cursor.getString(EpisodeDetailsQuery.FIRSTAIRED) :
+                                    cursor.getString(EpisodeDetailsQuery.FIRSTAIRED);
         mediaPremiered.setText(durationPremiered);
         String season = String.format(getString(R.string.season_episode),
-                cursor.getInt(EpisodeDetailsQuery.SEASON),
-                cursor.getInt(EpisodeDetailsQuery.EPISODE));
+                                      cursor.getInt(EpisodeDetailsQuery.SEASON),
+                                      cursor.getInt(EpisodeDetailsQuery.EPISODE));
         mediaSeason.setText(season);
 
         double rating = cursor.getDouble(EpisodeDetailsQuery.RATING);
@@ -474,8 +475,8 @@ public class TVShowEpisodeDetailsFragment extends AbstractDetailsFragment
 //                mediaPoster, posterWidth, posterHeight);
         int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height);
         UIUtils.loadImageIntoImageview(getHostManager(),
-                cursor.getString(EpisodeDetailsQuery.THUMBNAIL),
-                mediaArt, displayMetrics.widthPixels, artHeight);
+                                       cursor.getString(EpisodeDetailsQuery.THUMBNAIL),
+                                       mediaArt, displayMetrics.widthPixels, artHeight);
 
         // Setup movie download info
         tvshowDownloadInfo = new FileDownloadHelper.TVShowInfo(
