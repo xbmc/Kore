@@ -21,41 +21,48 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/small_padding">
-
-    <!--<ImageView-->
-    <!--android:id="@+id/art"-->
-    <!--android:layout_width="@dimen/episodelist_art_width"-->
-    <!--android:layout_height="@dimen/episodelist_art_heigth"-->
-    <!--android:layout_alignParentStart="true"-->
-    <!--android:contentDescription="@string/poster"-->
-    <!--android:scaleType="centerCrop"/>-->
-
+    
     <ImageView
-        android:id="@+id/checkmark"
+        android:id="@+id/list_context_menu"
         android:layout_width="@dimen/default_icon_size"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/default_icon_size"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/small_padding"
-        android:contentDescription="@string/seen"
-        android:src="?attr/iconSeen"/>
+        android:padding="@dimen/default_icon_padding"
+        style="@style/Widget.Button.Borderless"
+        android:src="?attr/iconOverflow"
+        android:contentDescription="@string/action_options"/>
 
-    <TextView
-        android:id="@+id/episode_number"
+    <RelativeLayout
+        android:id="@+id/relativelayout_checkmark_epnumber"
         android:layout_width="@dimen/seasonlist_art_width"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:gravity="right"
-        style="@style/TextAppearance.Medialist.Title"
-        android:paddingTop="@dimen/small_padding"/>
+        android:layout_alignParentLeft="true">
+
+        <ImageView
+            android:id="@+id/checkmark"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="@dimen/small_padding"
+            android:contentDescription="@string/seen"
+            android:src="?attr/iconSeen"/>
+
+        <TextView
+            android:id="@+id/episode_number"
+            android:layout_width="@dimen/seasonlist_art_width"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Medialist.Title"
+            android:gravity="right"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/episode_number"
-        android:layout_toRightOf="@id/episode_number"
-        android:layout_toLeftOf="@id/checkmark"
+        android:layout_alignTop="@id/relativelayout_checkmark_epnumber"
+        android:layout_toRightOf="@id/relativelayout_checkmark_epnumber"
+        android:layout_toLeftOf="@id/list_context_menu"
         style="@style/TextAppearance.Medialist.Title"
         android:paddingTop="@dimen/small_padding"/>
 

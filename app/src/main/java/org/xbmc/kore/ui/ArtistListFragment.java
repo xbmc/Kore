@@ -40,6 +40,7 @@ import android.widget.TextView;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
@@ -238,7 +239,7 @@ public class ArtistListFragment extends AbstractListFragment {
                             MediaPlayerUtils.play(ArtistListFragment.this, playListItem);
                             return true;
                         case R.id.action_queue:
-                            MediaPlayerUtils.queueAudio(ArtistListFragment.this, playListItem);
+                            MediaPlayerUtils.queue(ArtistListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
                             return true;
                     }
                     return false;

@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.CursorTreeAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -45,9 +46,11 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
+import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 import java.util.HashMap;
@@ -445,7 +448,6 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
     private class SeasonsEpisodesAdapter extends CursorTreeAdapter {
 
         private int themeAccentColor;
-        private int separatorPadding;
         private int iconCollapseResId,
                 iconExpandResId;
 
@@ -476,7 +478,6 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
                              UIUtils.IMAGE_RESIZE_FACTOR);
             artHeight = (int)(resources.getDimension(R.dimen.seasonlist_art_heigth) /
                               UIUtils.IMAGE_RESIZE_FACTOR);
-            separatorPadding = resources.getDimensionPixelSize(R.dimen.small_padding);
         }
 
         @Override
@@ -497,7 +498,7 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
             viewHolder.titleView = (TextView)view.findViewById(R.id.title);
             viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
             viewHolder.episodenumberView = (TextView)view.findViewById(R.id.episode_number);
-//            viewHolder.artView = (ImageView)view.findViewById(R.id.art);
+            viewHolder.contextMenuView = (ImageView)view.findViewById(R.id.list_context_menu);
             viewHolder.checkmarkView = (ImageView)view.findViewById(R.id.checkmark);
 
             view.setTag(viewHolder);
@@ -552,8 +553,13 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
                 viewHolder.checkmarkView.setVisibility(View.VISIBLE);
                 viewHolder.checkmarkView.setColorFilter(themeAccentColor);
             } else {
-                viewHolder.checkmarkView.setVisibility(View.GONE);
+                viewHolder.checkmarkView.setVisibility(View.INVISIBLE);
             }
+
+            // For the popupmenu
+            ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
+            contextMenu.setTag(viewHolder);
+            contextMenu.setOnClickListener(contextlistItemMenuClickListener);
         }
 
         @Override
@@ -588,10 +594,39 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
         TextView titleView;
         TextView detailsView;
         TextView episodenumberView;
-        //        ImageView artView;
+        ImageView contextMenuView;
         ImageView checkmarkView;
+        //        ImageView artView;
 
         int episodeId;
     }
+
+    private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            final EpisodeViewHolder viewHolder = (EpisodeViewHolder)v.getTag();
+
+            final PlaylistType.Item playListItem = new PlaylistType.Item();
+            playListItem.episodeid = viewHolder.episodeId;
+
+            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_play:
+                            MediaPlayerUtils.play(TVShowEpisodeListFragment.this, playListItem);
+                            return true;
+                        case R.id.action_queue:
+                            MediaPlayerUtils.queue(TVShowEpisodeListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
+                            return true;
+                    }
+                    return false;
+                }
+            });
+            popupMenu.show();
+        }
+    };
 
 }
