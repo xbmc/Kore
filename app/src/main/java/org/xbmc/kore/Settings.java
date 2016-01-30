@@ -53,6 +53,10 @@ public class Settings {
     public static final String KEY_PREF_SHOW_NOTIFICATION = "pref_show_notification";
     public static final boolean DEFAULT_PREF_SHOW_NOTIFICATION = false;
 
+    // Pause during calls
+    public static final String KEY_PREF_PAUSE_DURING_CALLS = "pref_pause_during_calls";
+    public static final boolean DEFAULT_PREF_PAUSE_DURING_CALLS = true;
+
     // Other keys used in preferences.xml
     public static final String KEY_PREF_ABOUT = "pref_about";
 

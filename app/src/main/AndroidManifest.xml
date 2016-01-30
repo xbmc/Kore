@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -69,6 +70,13 @@
             android:exported="false"/>
         <service android:name="org.xbmc.kore.service.IntentActionsService"
             android:exported="false"/>
+
+        <!-- Receivers -->
+        <receiver android:name="org.xbmc.kore.service.PauseCallService">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE"/>
+            </intent-filter>
+        </receiver>
 
         <uses-library android:required="false" android:name="com.sec.android.app.multiwindow"/>
         <meta-data android:name="com.sec.android.support.multiwindow" android:value="true" />

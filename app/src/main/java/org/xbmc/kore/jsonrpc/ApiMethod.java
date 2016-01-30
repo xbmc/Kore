@@ -64,15 +64,27 @@ public abstract class ApiMethod<T> {
 	 * Constructor, sets up the necessary items to make the call later
 	 */
 	public ApiMethod() {
-        synchronized (this) {
-            this.id = (++lastId % 10000);
-        }
+		this(true);
+	}
 
+	/**
+	 * Constructor, sets up the necessary items to make the call later
+	 */
+	public ApiMethod(boolean sendId) {
 		// Create the rpc request object with the common fields according to JSON RPC spec
 		jsonRequest = objectMapper.createObjectNode();
 		jsonRequest.put("jsonrpc", "2.0");
 		jsonRequest.put(METHOD_NODE, getMethodName());
-		jsonRequest.put(ID_NODE, id);
+
+		if(sendId) {
+			synchronized (this) {
+				this.id = (++lastId % 10000);
+			}
+			jsonRequest.put(ID_NODE, id);
+		}
+		else {
+			id = -1;
+		}
 	}
 
     /**
