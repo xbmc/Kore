@@ -15,12 +15,24 @@
  */
 package org.xbmc.kore;
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
+
+import org.xbmc.kore.utils.LogUtils;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class that contains various constants and the keys for settings stored in shared preferences
  */
 public class Settings {
+    private static final String TAG = LogUtils.makeLogTag(Settings.class);
+
     /**
      * The update interval for the records in the DB. If the last update is older than this value
      * a refresh will be triggered. Applicable to TV Shows and Movies.
@@ -105,5 +117,32 @@ public class Settings {
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
     public static String getNavDrawerItemsPrefKey(int hostId) {
         return Settings.KEY_PREF_NAV_DRAWER_ITEMS + hostId;
+    }
+
+    public static final String KEY_PREF_DOWNLOAD_TYPES = "pref_download_conn_types";
+
+    /**
+     * Determines the bit flags used by {@link DownloadManager.Request} to correspond to the enabled network connections
+     * from the settings screen.
+     * @return {@link DownloadManager.Request} network types bit flags that are enabled or 0 if none are enabled
+     */
+    public static int allowedDownloadNetworkTypes(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> connPrefs = sharedPref.getStringSet(Settings.KEY_PREF_DOWNLOAD_TYPES,
+                                                        new HashSet<>(Arrays.asList(new String[]{"0"})));
+        int result = 0; // default none
+        for(String pref : connPrefs) {
+            switch( Integer.parseInt(pref) ) {
+                case 0:
+                    result |= DownloadManager.Request.NETWORK_WIFI;
+                    break;
+                case 1:
+                    result |= DownloadManager.Request.NETWORK_MOBILE;
+                    break;
+                case 2: // currently -1 means all network types in DownloadManager
+                    result |= ~0;
+            }
+        }
+        return result;
     }
 }

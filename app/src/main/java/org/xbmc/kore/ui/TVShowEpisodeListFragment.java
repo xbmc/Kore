@@ -134,6 +134,11 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
     }
 
     @Override
+    protected void onDownload() {
+
+    }
+
+    @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 

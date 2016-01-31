@@ -27,10 +27,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -55,6 +55,7 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
+import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
@@ -75,7 +76,7 @@ import butterknife.OnClick;
 /**
  * Presents movie details
  */
-public class AlbumDetailsFragment extends Fragment
+public class AlbumDetailsFragment extends AbstractDetailsFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(AlbumDetailsFragment.class);
 
@@ -155,14 +156,9 @@ public class AlbumDetailsFragment extends Fragment
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     @TargetApi(21)
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    protected View createView(LayoutInflater inflater, ViewGroup container) {
         albumId = getArguments().getInt(BUNDLE_KEY_ALBUMID, -1);
 
         if ((container == null) || (albumId == -1)) {
@@ -210,6 +206,31 @@ public class AlbumDetailsFragment extends Fragment
     }
 
     @Override
+    protected String getSyncType() {
+        return null;
+    }
+
+    @Override
+    protected String getSyncID() {
+        return null;
+    }
+
+    @Override
+    protected int getSyncItemID() {
+        return 0;
+    }
+
+    @Override
+    protected SwipeRefreshLayout getSwipeRefreshLayout() {
+        return null;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -242,11 +263,11 @@ public class AlbumDetailsFragment extends Fragment
             case LOADER_ALBUM:
                 uri = MediaContract.Albums.buildAlbumUri(hostInfo.getId(), albumId);
                 return new CursorLoader(getActivity(), uri,
-                        AlbumDetailsQuery.PROJECTION, null, null, null);
+                                        AlbumDetailsQuery.PROJECTION, null, null, null);
             case LOADER_SONGS:
                 uri = MediaContract.Songs.buildSongsListUri(hostInfo.getId(), albumId);
                 return new CursorLoader(getActivity(), uri,
-                        AlbumSongsListQuery.PROJECTION, null, null, AlbumSongsListQuery.SORT);
+                                        AlbumSongsListQuery.PROJECTION, null, null, AlbumSongsListQuery.SORT);
             default:
                 return null;
         }
@@ -292,7 +313,7 @@ public class AlbumDetailsFragment extends Fragment
                 boolean switchToRemote = PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
                         .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
-                                Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
+                                    Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
                 if (switchToRemote) {
                     int cx = (fabButton.getLeft() + fabButton.getRight()) / 2;
                     int cy = (fabButton.getTop() + fabButton.getBottom()) / 2;
@@ -305,7 +326,7 @@ public class AlbumDetailsFragment extends Fragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                        .show();
+                     .show();
             }
         }, callbackHandler);
     }
@@ -315,10 +336,10 @@ public class AlbumDetailsFragment extends Fragment
         addToPlaylist(TYPE_ALBUM, albumId);
     }
 
-    @OnClick(R.id.download)
-    public void onDownloadClicked(View v) {
+    @Override
+    protected void onDownload() {
         if ((albumTitle == null) || (albumDisplayArtist == null) ||
-                (songInfoList == null) || (songInfoList.size() == 0)) {
+            (songInfoList == null) || (songInfoList.size() == 0)) {
             // Nothing to download
             Toast.makeText(getActivity(), R.string.no_files_to_download, Toast.LENGTH_SHORT).show();
             return;
@@ -335,43 +356,48 @@ public class AlbumDetailsFragment extends Fragment
         if (file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                    .setMessage(R.string.download_dir_exists)
-                    .setPositiveButton(R.string.overwrite,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                            songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNeutralButton(R.string.download_with_new_name,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                            songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNegativeButton(android.R.string.cancel, noopClickListener)
-                    .show();
+                   .setMessage(R.string.download_dir_exists)
+                   .setPositiveButton(R.string.overwrite,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                              FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                                                               songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               callbackHandler);
+                                          }
+                                      })
+                   .setNeutralButton(R.string.download_with_new_name,
+                                     new DialogInterface.OnClickListener() {
+                                         @Override
+                                         public void onClick(DialogInterface dialog, int which) {
+                                             FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                                                              songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                              callbackHandler);
+                                         }
+                                     })
+                   .setNegativeButton(android.R.string.cancel, noopClickListener)
+                   .show();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                    .setMessage(R.string.confirm_album_download)
-                    .setPositiveButton(android.R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                            songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNegativeButton(android.R.string.cancel, noopClickListener)
-                    .show();
+                   .setMessage(R.string.confirm_album_download)
+                   .setPositiveButton(android.R.string.ok,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                              FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                                                               songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               callbackHandler);
+                                          }
+                                      })
+                   .setNegativeButton(android.R.string.cancel, noopClickListener)
+                   .show();
         }
+    }
+
+    @Override
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
+
     }
 
     private boolean isDescriptionExpanded = false;
@@ -412,9 +438,9 @@ public class AlbumDetailsFragment extends Fragment
                     R.attr.iconCollapse
             });
             final int iconCollapseResId = styledAttributes.getResourceId(0,
-                    R.drawable.ic_expand_less_white_24dp);
+                                                                         R.drawable.ic_expand_less_white_24dp);
             final int iconExpandResId = styledAttributes.getResourceId(1,
-                    R.drawable.ic_expand_more_white_24dp);
+                                                                       R.drawable.ic_expand_more_white_24dp);
             styledAttributes.recycle();
 
             mediaDescriptionContainer.setOnClickListener(new View.OnClickListener() {
@@ -460,10 +486,10 @@ public class AlbumDetailsFragment extends Fragment
 
     private void setMediaYear(String genres, int year) {
         String label = (year > 0) ?
-                (!TextUtils.isEmpty(genres) ?
+                       (!TextUtils.isEmpty(genres) ?
                         genres + "  |  " + String.valueOf(year) :
                         String.valueOf(year)) :
-                genres;
+                       genres;
         mediaYear.setText(label);
     }
 
@@ -515,7 +541,7 @@ public class AlbumDetailsFragment extends Fragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
 
                         @Override
@@ -523,12 +549,12 @@ public class AlbumDetailsFragment extends Fragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
                     }, callbackHandler);
                 } else {
                     Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                            .show();
+                         .show();
                 }
             }
 
@@ -537,7 +563,7 @@ public class AlbumDetailsFragment extends Fragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                        .show();
+                     .show();
             }
         }, callbackHandler);
     }
@@ -573,35 +599,35 @@ public class AlbumDetailsFragment extends Fragment
                             if (file.exists()) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                 builder.setTitle(R.string.download)
-                                        .setMessage(R.string.download_file_exists)
-                                        .setPositiveButton(R.string.overwrite,
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                songInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                                                callbackHandler);
-                                                    }
-                                                })
-                                        .setNeutralButton(R.string.download_with_new_name,
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                callbackHandler);
-                                                    }
-                                                })
-                                        .setNegativeButton(android.R.string.cancel,
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) { }
-                                                })
-                                        .show();
+                                       .setMessage(R.string.download_file_exists)
+                                       .setPositiveButton(R.string.overwrite,
+                                                          new DialogInterface.OnClickListener() {
+                                                              @Override
+                                                              public void onClick(DialogInterface dialog, int which) {
+                                                                  FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                                                                                   songInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                                                   callbackHandler);
+                                                              }
+                                                          })
+                                       .setNeutralButton(R.string.download_with_new_name,
+                                                         new DialogInterface.OnClickListener() {
+                                                             @Override
+                                                             public void onClick(DialogInterface dialog, int which) {
+                                                                 FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
+                                                                                                  songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                                                  callbackHandler);
+                                                             }
+                                                         })
+                                       .setNegativeButton(android.R.string.cancel,
+                                                          new DialogInterface.OnClickListener() {
+                                                              @Override
+                                                              public void onClick(DialogInterface dialog, int which) { }
+                                                          })
+                                       .show();
                             } else {
                                 FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                        songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                        callbackHandler);
+                                                                 songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                 callbackHandler);
                             }
                             return true;
                     }
@@ -622,7 +648,7 @@ public class AlbumDetailsFragment extends Fragment
             songInfoList = new ArrayList<FileDownloadHelper.SongInfo>(cursor.getCount());
             do {
                 View songView = LayoutInflater.from(getActivity())
-                        .inflate(R.layout.list_item_song, songListView, false);
+                                              .inflate(R.layout.list_item_song, songListView, false);
                 TextView songTitle = (TextView)songView.findViewById(R.id.song_title);
                 TextView trackNumber = (TextView)songView.findViewById(R.id.track_number);
                 TextView duration = (TextView)songView.findViewById(R.id.duration);
@@ -660,7 +686,7 @@ public class AlbumDetailsFragment extends Fragment
                             R.attr.colorAccent});
                     downloadButton.setColorFilter(
                             styledAttributes.getColor(0,
-                                    getActivity().getResources().getColor(R.color.accent_default)));
+                                                      getActivity().getResources().getColor(R.color.accent_default)));
                     styledAttributes.recycle();
                 } else {
                     downloadButton.clearColorFilter();

@@ -25,6 +25,7 @@ import android.util.Base64;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -375,7 +376,7 @@ public class FileDownloadHelper {
                     request.addRequestHeader("Authorization", "Basic " + token);
                 }
                 request.allowScanningByMediaScanner();
-                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+                request.setAllowedNetworkTypes(Settings.allowedDownloadNetworkTypes(context));
                 request.setTitle(mediaInfo.getDownloadTitle(context));
                 request.setDescription(mediaInfo.getDownloadDescrition(context));
 

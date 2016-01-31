@@ -271,11 +271,11 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
             case LOADER_MOVIE:
                 uri = MediaContract.Movies.buildMovieUri(getHostInfo().getId(), movieId);
                 return new CursorLoader(getActivity(), uri,
-                        MovieDetailsQuery.PROJECTION, null, null, null);
+                                        MovieDetailsQuery.PROJECTION, null, null, null);
             case LOADER_CAST:
                 uri = MediaContract.MovieCast.buildMovieCastListUri(getHostInfo().getId(), movieId);
                 return new CursorLoader(getActivity(), uri,
-                        MovieCastListQuery.PROJECTION, null, null, MovieCastListQuery.SORT);
+                                        MovieCastListQuery.PROJECTION, null, null, MovieCastListQuery.SORT);
             default:
                 return null;
         }
@@ -319,7 +319,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
                 boolean switchToRemote = PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
                         .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
-                                Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
+                                    Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
                 if (switchToRemote) {
                     int cx = (fabButton.getLeft() + fabButton.getRight()) / 2;
                     int cy = (fabButton.getTop() + fabButton.getBottom()) / 2;
@@ -332,7 +332,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                        .show();
+                     .show();
             }
         }, callbackHandler);
     }
@@ -364,7 +364,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
 
                         @Override
@@ -372,12 +372,12 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
                     }, callbackHandler);
                 } else {
                     Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                            .show();
+                         .show();
                 }
             }
 
@@ -386,7 +386,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                        .show();
+                     .show();
             }
         }, callbackHandler);
     }
@@ -425,8 +425,8 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         setupSeenButton(newPlaycount);
     }
 
-    @OnClick(R.id.download)
-    public void onDownloadClicked(View v) {
+    @Override
+    protected void onDownload() {
         if (movieDownloadInfo == null) {
             // Nothing to download
             Toast.makeText(getActivity(), R.string.no_files_to_download, Toast.LENGTH_SHORT).show();
@@ -444,43 +444,43 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         if (file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                    .setMessage(R.string.download_file_exists)
-                    .setPositiveButton(R.string.overwrite,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                            movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNeutralButton(R.string.download_with_new_name,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                            movieDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNegativeButton(android.R.string.cancel, noopClickListener)
-                    .show();
+                   .setMessage(R.string.download_file_exists)
+                   .setPositiveButton(R.string.overwrite,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                               movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               callbackHandler);
+                                          }
+                                      })
+                   .setNeutralButton(R.string.download_with_new_name,
+                                     new DialogInterface.OnClickListener() {
+                                         @Override
+                                         public void onClick(DialogInterface dialog, int which) {
+                                             FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                              movieDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                              callbackHandler);
+                                         }
+                                     })
+                   .setNegativeButton(android.R.string.cancel, noopClickListener)
+                   .show();
         } else {
             // Confirm that the user really wants to download the file
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                    .setMessage(R.string.confirm_movie_download)
-                    .setPositiveButton(android.R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                            movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNegativeButton(android.R.string.cancel, noopClickListener)
-                    .show();
+                   .setMessage(R.string.confirm_movie_download)
+                   .setPositiveButton(android.R.string.ok,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                               movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               callbackHandler);
+                                          }
+                                      })
+                   .setNegativeButton(android.R.string.cancel, noopClickListener)
+                   .show();
         }
     }
 
@@ -508,7 +508,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
             setMediaRating(rating);
             String votes = cursor.getString(MovieDetailsQuery.VOTES);
             mediaRatingVotes.setText((TextUtils.isEmpty(votes)) ?
-                    "" : String.format(getString(R.string.votes), votes));
+                                     "" : String.format(getString(R.string.votes), votes));
         } else {
             mediaRating.setVisibility(View.INVISIBLE);
             mediaMaxRating.setVisibility(View.INVISIBLE);
@@ -531,12 +531,12 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
         int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
         UIUtils.loadImageWithCharacterAvatar(getActivity(), getHostManager(),
-                cursor.getString(MovieDetailsQuery.THUMBNAIL), movieTitle,
-                mediaPoster, posterWidth, posterHeight);
+                                             cursor.getString(MovieDetailsQuery.THUMBNAIL), movieTitle,
+                                             mediaPoster, posterWidth, posterHeight);
         int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height);
         UIUtils.loadImageIntoImageview(getHostManager(),
-                cursor.getString(MovieDetailsQuery.FANART),
-                mediaArt, displayMetrics.widthPixels, artHeight);
+                                       cursor.getString(MovieDetailsQuery.FANART),
+                                       mediaArt, displayMetrics.widthPixels, artHeight);
 
         // Setup movie download info
         movieDownloadInfo = new FileDownloadHelper.MovieInfo(
@@ -549,7 +549,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
                     R.attr.colorAccent});
             downloadButton.setColorFilter(
                     styledAttributes.getColor(0,
-                            getActivity().getResources().getColor(R.color.accent_default)));
+                                              getActivity().getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
         } else {
             downloadButton.clearColorFilter();
@@ -563,9 +563,9 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
 
     private void setMediaYear(int runtime, int year) {
         String durationYear =  runtime > 0 ?
-                String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                        "  |  " + year :
-                String.valueOf(year);
+                               String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                               "  |  " + year :
+                               String.valueOf(year);
         mediaYear.setText(durationYear);
     }
 
@@ -576,7 +576,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.colorAccent});
             seenButton.setColorFilter(styledAttributes.getColor(0,
-                    getActivity().getResources().getColor(R.color.accent_default)));
+                                                                getActivity().getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
         } else {
             seenButton.clearColorFilter();
@@ -597,13 +597,13 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
             castArrayList = new ArrayList<VideoType.Cast>(cursor.getCount());
             do {
                 castArrayList.add(new VideoType.Cast(cursor.getString(MovieCastListQuery.NAME),
-                        cursor.getInt(MovieCastListQuery.ORDER),
-                        cursor.getString(MovieCastListQuery.ROLE),
-                        cursor.getString(MovieCastListQuery.THUMBNAIL)));
+                                                     cursor.getInt(MovieCastListQuery.ORDER),
+                                                     cursor.getString(MovieCastListQuery.ROLE),
+                                                     cursor.getString(MovieCastListQuery.THUMBNAIL)));
             } while (cursor.moveToNext());
 
             UIUtils.setupCastInfo(getActivity(), castArrayList, videoCastList,
-                    AllCastActivity.buildLaunchIntent(getActivity(), movieTitle, castArrayList));
+                                  AllCastActivity.buildLaunchIntent(getActivity(), movieTitle, castArrayList));
         }
     }
 

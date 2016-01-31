@@ -44,6 +44,7 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -246,7 +247,7 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
             case LOADER_MUSIC_VIDEO:
                 uri = MediaContract.MusicVideos.buildMusicVideoUri(getHostInfo().getId(), musicVideoId);
                 return new CursorLoader(getActivity(), uri,
-                        MusicVideoDetailsQuery.PROJECTION, null, null, null);
+                                        MusicVideoDetailsQuery.PROJECTION, null, null, null);
             default:
                 return null;
         }
@@ -286,7 +287,7 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
                 boolean switchToRemote = PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
                         .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
-                                Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
+                                    Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
                 if (switchToRemote) {
                     int cx = (fabButton.getLeft() + fabButton.getRight()) / 2;
                     int cy = (fabButton.getTop() + fabButton.getBottom()) / 2;
@@ -299,7 +300,7 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                        .show();
+                     .show();
             }
         }, callbackHandler);
     }
@@ -331,7 +332,7 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
 
                         @Override
@@ -339,12 +340,12 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
                             if (!isAdded()) return;
                             // Got an error, show toast
                             Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
                     }, callbackHandler);
                 } else {
                     Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                            .show();
+                         .show();
                 }
             }
 
@@ -353,13 +354,13 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
                 if (!isAdded()) return;
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                        .show();
+                     .show();
             }
         }, callbackHandler);
     }
 
-    @OnClick(R.id.download)
-    public void onDownloadClicked(View v) {
+    @Override
+    protected void onDownload() {
         if (musicVideoDownloadInfo == null) {
             // Nothing to download
             Toast.makeText(getActivity(), R.string.no_files_to_download, Toast.LENGTH_SHORT).show();
@@ -371,37 +372,37 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
         if (file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
-                    .setMessage(R.string.download_file_exists)
-                    .setPositiveButton(R.string.overwrite,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                            musicVideoDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNeutralButton(R.string.download_with_new_name,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                            musicVideoDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                            callbackHandler);
-                                }
-                            })
-                    .setNegativeButton(android.R.string.cancel,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Nothing to do
-                                }
-                            })
-                    .show();
+                   .setMessage(R.string.download_file_exists)
+                   .setPositiveButton(R.string.overwrite,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                               musicVideoDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               callbackHandler);
+                                          }
+                                      })
+                   .setNeutralButton(R.string.download_with_new_name,
+                                     new DialogInterface.OnClickListener() {
+                                         @Override
+                                         public void onClick(DialogInterface dialog, int which) {
+                                             FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                              musicVideoDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                              callbackHandler);
+                                         }
+                                     })
+                   .setNegativeButton(android.R.string.cancel,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                              // Nothing to do
+                                          }
+                                      })
+                   .show();
         } else {
             FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                    musicVideoDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                    callbackHandler);
+                                             musicVideoDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                             callbackHandler);
         }
     }
 
@@ -436,11 +437,11 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
         int posterWidth = resources.getDimensionPixelOffset(R.dimen.musicvideodetail_poster_width);
         int posterHeight = resources.getDimensionPixelOffset(R.dimen.musicvideodetail_poster_width);
         UIUtils.loadImageWithCharacterAvatar(getActivity(), getHostManager(),
-                poster, musicVideoTitle,
-                mediaPoster, posterWidth, posterHeight);
+                                             poster, musicVideoTitle,
+                                             mediaPoster, posterWidth, posterHeight);
         UIUtils.loadImageIntoImageview(getHostManager(),
-                TextUtils.isEmpty(fanart)? poster : fanart,
-                mediaArt, artWidth, artHeight);
+                                       TextUtils.isEmpty(fanart)? poster : fanart,
+                                       mediaArt, artWidth, artHeight);
 
         // Setup download info
         musicVideoDownloadInfo = new FileDownloadHelper.MusicVideoInfo(
@@ -453,7 +454,7 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
                     R.attr.colorAccent});
             downloadButton.setColorFilter(
                     styledAttributes.getColor(0,
-                            getActivity().getResources().getColor(R.color.accent_default)));
+                                              getActivity().getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
         } else {
             downloadButton.clearColorFilter();
@@ -466,9 +467,9 @@ public class MusicVideoDetailsFragment extends AbstractDetailsFragment
 
     private void setMediaYear(int runtime, int year) {
         String durationYear =  runtime > 0 ?
-                UIUtils.formatTime(runtime) + "  |  " +
-                        String.valueOf(year) :
-                String.valueOf(year);
+                               UIUtils.formatTime(runtime) + "  |  " +
+                               String.valueOf(year) :
+                               String.valueOf(year);
         mediaYear.setText(durationYear);
     }
 

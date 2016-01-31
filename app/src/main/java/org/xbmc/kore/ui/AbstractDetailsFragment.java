@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
@@ -40,6 +41,8 @@ import org.xbmc.kore.service.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
+import butterknife.OnClick;
+import butterknife.Optional;
 import de.greenrobot.event.EventBus;
 
 abstract public class AbstractDetailsFragment extends Fragment
@@ -88,6 +91,12 @@ abstract public class AbstractDetailsFragment extends Fragment
      * @return
      */
     abstract protected SwipeRefreshLayout getSwipeRefreshLayout();
+
+    /**
+     * When the view created in {@link #createView(LayoutInflater, ViewGroup)} contains a button
+     * with resource identifier R.id.download this will be called to initiate the download
+     */
+    abstract protected void onDownload();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -160,6 +169,16 @@ abstract public class AbstractDetailsFragment extends Fragment
                 onRefresh();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Optional
+    @OnClick(R.id.download)
+    public void onDownloadClicked(View v) {
+        if (Settings.allowedDownloadNetworkTypes(getActivity()) != 0) {
+            onDownload();
+        } else {
+            Toast.makeText(getActivity(), R.string.no_connection_type_selected, Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected void startSync(boolean silentRefresh) {

@@ -364,5 +364,6 @@
     <string name="pvr_epg">Guide</string>
     <string name="unable_to_move_item">Unable to move item</string>
     <string name="cannot_move_playing_item">Cannot move currently playing/paused item</string>
+    <string name="no_connection_type_selected">No connection type selected in settings</string>
 
 </resources>
