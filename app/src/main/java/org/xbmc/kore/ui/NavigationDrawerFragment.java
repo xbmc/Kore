@@ -217,27 +217,7 @@ public class NavigationDrawerFragment extends Fragment {
                 mDrawerLayout,                    /* DrawerLayout object */
                 R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
                 R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
-        ) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                if (!isAdded()) {
-                    return;
-                }
-                saveUserLearnedDrawer();
-                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                if (!isAdded()) {
-                    return;
-                }
-                saveUserLearnedDrawer();
-                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-        };
+        );
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
@@ -253,7 +233,34 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        // Not using mDrawerToggle as the listener to not confuse the drawer icon.
+        // The icon will be used exclusively for navigation, not for indicating whether the drawer layout is opened or closed.
+        // Nevertheless, a listener needs to be set up to save the userLearnedDrawer preference.
+        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) { }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                if (!isAdded()) {
+                    return;
+                }
+                saveUserLearnedDrawer();
+                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                if (!isAdded()) {
+                    return;
+                }
+                saveUserLearnedDrawer();
+                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) { }
+        });
         selectedItemId = getItemIdFromActivity();
     }
 
@@ -299,6 +306,14 @@ public class NavigationDrawerFragment extends Fragment {
             mUserLearnedDrawer = true;
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
             sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+
+            // Sync the drawer toggle on the first run
+            mDrawerLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mDrawerToggle.syncState();
+                }
+            });
         }
     }
 
