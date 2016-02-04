@@ -318,7 +318,7 @@ public class AlbumListFragment extends AbstractListFragment {
                             MediaPlayerUtils.play(AlbumListFragment.this, playListItem);
                             return true;
                         case R.id.action_queue:
-                            MediaPlayerUtils.queueAudio(AlbumListFragment.this, playListItem);
+                            MediaPlayerUtils.queue(AlbumListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
                             return true;
                     }
                     return false;

@@ -79,11 +79,12 @@ public class MediaPlayerUtils {
     }
 
     /**
-     * Clears current playlist and starts playing item
+     * Queues item to current playlist
      * @param fragment Fragment instance from which this method is called
-     * @param item PlaylistType.Item that needs to be added to the current audio playlist
+     * @param item PlaylistType.Item that needs to be added to the current playlist
+     * @param type {@link org.xbmc.kore.jsonrpc.type.PlaylistType.GetPlaylistsReturnType}
      */
-    public static void queueAudio(final Fragment fragment, final PlaylistType.Item item) {
+    public static void queue(final Fragment fragment, final PlaylistType.Item item, final String type) {
         Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
 
         final Handler callbackHandler = new Handler();
@@ -96,17 +97,17 @@ public class MediaPlayerUtils {
             @Override
             public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
                 if (!fragment.isAdded()) return;
-                // Ok, loop through the playlists, looking for the audio one
-                int audioPlaylistId = -1;
+                // Ok, loop through the playlists, looking for the correct one
+                int playlistId = -1;
                 for (PlaylistType.GetPlaylistsReturnType playlist : result) {
-                    if (playlist.type.equals(PlaylistType.GetPlaylistsReturnType.AUDIO)) {
-                        audioPlaylistId = playlist.playlistid;
+                    if (playlist.type.equals(type)) {
+                        playlistId = playlist.playlistid;
                         break;
                     }
                 }
                 // If found, add to playlist
-                if (audioPlaylistId != -1) {
-                    Playlist.Add action = new Playlist.Add(audioPlaylistId, item);
+                if (playlistId != -1) {
+                    Playlist.Add action = new Playlist.Add(playlistId, item);
                     action.execute(hostManager.getConnection(), new ApiCallback<String>() {
                         @Override
                         public void onSuccess(String result) {

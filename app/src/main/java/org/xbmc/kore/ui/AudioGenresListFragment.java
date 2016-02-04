@@ -233,7 +233,7 @@ public class AudioGenresListFragment extends AbstractListFragment {
                             MediaPlayerUtils.play(AudioGenresListFragment.this, playListItem);
                             return true;
                         case R.id.action_queue:
-                            MediaPlayerUtils.queueAudio(AudioGenresListFragment.this, playListItem);
+                            MediaPlayerUtils.queue(AudioGenresListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
                             return true;
                     }
                     return false;
