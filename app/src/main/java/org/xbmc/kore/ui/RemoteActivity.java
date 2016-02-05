@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -26,6 +27,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -53,6 +56,7 @@ import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.NotificationService;
+import org.xbmc.kore.service.PauseCallService;
 import org.xbmc.kore.ui.hosts.AddHostActivity;
 import org.xbmc.kore.ui.hosts.AddHostFragmentFinish;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
@@ -87,6 +91,8 @@ public class RemoteActivity extends BaseActivity
     private HostConnectionObserver hostConnectionObserver;
 
     private NavigationDrawerFragment navigationDrawerFragment;
+
+    private PauseCallService pauseCallService = null;
 
     @InjectView(R.id.background_image) ImageView backgroundImage;
     @InjectView(R.id.pager_indicator) CirclePageIndicator pageIndicator;
@@ -614,11 +620,27 @@ public class RemoteActivity extends BaseActivity
         // Check whether we should show a notification
         boolean showNotification = PreferenceManager
                 .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION, Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
+                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION,
+                            Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
         if (showNotification) {
             // Let's start the notification service
             LogUtils.LOGD(TAG, "Starting notification service");
             startService(new Intent(this, NotificationService.class));
+        }
+
+        // Check whether we should react to phone state changes
+        boolean shouldPause = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+                            Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+        if (shouldPause) {
+            // Let's start the notification service
+            LogUtils.LOGD(TAG, "Starting phone state listener");
+            if(pauseCallService == null) {
+                pauseCallService = new PauseCallService(this);
+                ((TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE)).listen(
+                        pauseCallService, PhoneStateListener.LISTEN_CALL_STATE);
+            }
         }
     }
 
@@ -633,6 +655,12 @@ public class RemoteActivity extends BaseActivity
             setImageViewBackground(null);
         }
         lastImageUrl = null;
+
+        if(pauseCallService != null) {
+            ((TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE)).listen(
+                    pauseCallService, PhoneStateListener.LISTEN_NONE);
+            pauseCallService = null;
+        }
     }
 
     public void playerNoResultsYet() {

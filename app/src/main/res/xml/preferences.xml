@@ -37,7 +37,7 @@
     <SwitchPreference
         android:key="pref_pause_during_calls"
         android:title="@string/pause_during_calls"
-        android:defaultValue="true"/>
+        android:defaultValue="false"/>
 
     <SwitchPreference
         android:key="pref_use_hardware_volume_keys"

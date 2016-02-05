@@ -55,7 +55,7 @@ public class Settings {
 
     // Pause during calls
     public static final String KEY_PREF_PAUSE_DURING_CALLS = "pref_pause_during_calls";
-    public static final boolean DEFAULT_PREF_PAUSE_DURING_CALLS = true;
+    public static final boolean DEFAULT_PREF_PAUSE_DURING_CALLS = false;
 
     // Other keys used in preferences.xml
     public static final String KEY_PREF_ABOUT = "pref_about";
