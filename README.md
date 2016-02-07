@@ -1,3 +1,5 @@
+Tarvis-CI status [![Build Status](https://travis-ci.org/xbmc/Kore.svg?branch=master)](https://travis-ci.org/xbmc/Kore/)
+
 Kore - Kodi/XBMC remote for Android
 -----------------------------------
 
