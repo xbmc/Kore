@@ -272,6 +272,7 @@
     <string name="confirm_movie_download">Are you sure you want to download this movie?\nThe movie will be downloaded in the background, but it can take a while to finish.</string>
     <string name="confirm_episode_download">Are you sure you want to download this episode?\nThe episode will be downloaded in the background, but it can take a while to finish.</string>
     <string name="confirm_album_download">Are you sure you want to download this album?\nThe album will be downloaded in the background, but it can take a while to finish.</string>
+    <string name="confirm_artist_download">Are you sure you want to download all albums?\nThe albums will be downloaded in the background, but it can take a while to finish.</string>
 
     <string name="download_file_exists">File already exists.\nDo you want to overwrite it or download with a new name?</string>
     <string name="download_dir_exists">Download directory already exists.\nIf any files have the same name, do you want to overwrite them or download them with a new name?</string>

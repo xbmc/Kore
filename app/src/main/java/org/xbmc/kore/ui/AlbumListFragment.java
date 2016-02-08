@@ -61,8 +61,8 @@ public class AlbumListFragment extends AbstractListFragment {
         public void onAlbumSelected(ViewHolder vh);
     }
 
-    private static final String GENREID = "genreid",
-            ARTISTID = "artistid";
+    public static final String BUNDLE_KEY_GENREID = "genreid",
+            BUNDLE_KEY_ARTISTID = "artistid";
 
     private int genreId = -1;
     private int artistId = -1;
@@ -80,7 +80,7 @@ public class AlbumListFragment extends AbstractListFragment {
         AlbumListFragment fragment = new AlbumListFragment();
 
         Bundle args = new Bundle();
-        args.putInt(GENREID, genreId);
+        args.putInt(BUNDLE_KEY_GENREID, genreId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,7 +92,7 @@ public class AlbumListFragment extends AbstractListFragment {
         AlbumListFragment fragment = new AlbumListFragment();
 
         Bundle args = new Bundle();
-        args.putInt(ARTISTID, artistId);
+        args.putInt(BUNDLE_KEY_ARTISTID, artistId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -145,8 +145,8 @@ public class AlbumListFragment extends AbstractListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
         if (args != null) {
-            genreId = getArguments().getInt(GENREID, -1);
-            artistId = getArguments().getInt(ARTISTID, -1);
+            genreId = getArguments().getInt(BUNDLE_KEY_GENREID, -1);
+            artistId = getArguments().getInt(BUNDLE_KEY_ARTISTID, -1);
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);

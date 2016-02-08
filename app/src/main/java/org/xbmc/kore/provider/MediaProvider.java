@@ -77,7 +77,8 @@ public class MediaProvider extends ContentProvider {
     private static final int ALBUM_GENRES_LIST = 711;
 
     private static final int SONGS_ALL = 800;
-    private static final int SONGS_LIST = 802;
+    private static final int SONGS_ARTIST = 801;
+    private static final int SONGS_ALBUM = 802;
     private static final int SONGS_ID = 803;
 
     private static final int AUDIO_GENRES_ALL = 900;
@@ -181,10 +182,13 @@ public class MediaProvider extends ContentProvider {
         matcher.addURI(authority, MediaContract.PATH_SONGS, SONGS_ALL);
         matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
                                   MediaContract.PATH_ALBUMS + "/*/" +
-                                  MediaContract.PATH_SONGS, SONGS_LIST);
+                                  MediaContract.PATH_SONGS, SONGS_ALBUM);
         matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
                                   MediaContract.PATH_ALBUMS + "/*/" +
                                   MediaContract.PATH_SONGS + "/*", SONGS_ID);
+        matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
+                                  MediaContract.PATH_ARTISTS + "/*/" +
+                                  MediaContract.PATH_SONGS, SONGS_ARTIST);
 
         // Genres
         matcher.addURI(authority, MediaContract.PATH_AUDIO_GENRES, AUDIO_GENRES_ALL);
@@ -269,7 +273,8 @@ public class MediaProvider extends ContentProvider {
             case ALBUMS_ID:
                 return MediaContract.Albums.CONTENT_ITEM_TYPE;
             case SONGS_ALL:
-            case SONGS_LIST:
+            case SONGS_ARTIST:
+            case SONGS_ALBUM:
                 return MediaContract.Songs.CONTENT_TYPE;
             case SONGS_ID:
                 return MediaContract.Songs.CONTENT_ITEM_TYPE;
@@ -656,12 +661,19 @@ public class MediaProvider extends ContentProvider {
             case SONGS_ALL: {
                 return builder.table(MediaDatabase.Tables.SONGS);
             }
-            case SONGS_LIST: {
+            case SONGS_ALBUM: {
                 final String hostId = MediaContract.Hosts.getHostId(uri);
                 final String albumId = MediaContract.Albums.getAlbumId(uri);
                 return builder.table(MediaDatabase.Tables.SONGS)
                               .where(MediaContract.Songs.HOST_ID + "=?", hostId)
                               .where(MediaContract.Songs.ALBUMID + "=?", albumId);
+            }
+            case SONGS_ARTIST: {
+                final String hostId = MediaContract.Hosts.getHostId(uri);
+                final String artistId = MediaContract.Artists.getArtistId(uri);
+                return builder.table(MediaDatabase.Tables.SONGS_FOR_ARTIST_JOIN)
+                       .where(Qualified.SONGS_HOST_ID + "=?", hostId)
+                       .where(Qualified.ALBUM_ARTISTS_ARTISTID + "=?", artistId);
             }
             case SONGS_ID: {
                 final String hostId = MediaContract.Hosts.getHostId(uri);
@@ -780,6 +792,7 @@ public class MediaProvider extends ContentProvider {
                 MediaDatabase.Tables.ALBUM_GENRES + "." + MediaContract.AlbumGenres.GENREID;
         String ALBUM_GENRES_ALBUMID =
                 MediaDatabase.Tables.ALBUM_GENRES + "." + MediaContract.AlbumGenres.ALBUMID;
-
+        String SONGS_HOST_ID =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.HOST_ID;
     }
 }

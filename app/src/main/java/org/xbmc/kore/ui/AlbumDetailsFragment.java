@@ -265,7 +265,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                 return new CursorLoader(getActivity(), uri,
                                         AlbumDetailsQuery.PROJECTION, null, null, null);
             case LOADER_SONGS:
-                uri = MediaContract.Songs.buildSongsListUri(hostInfo.getId(), albumId);
+                uri = MediaContract.Songs.buildAlbumSongsListUri(hostInfo.getId(), albumId);
                 return new CursorLoader(getActivity(), uri,
                                         AlbumSongsListQuery.PROJECTION, null, null, AlbumSongsListQuery.SORT);
             default:

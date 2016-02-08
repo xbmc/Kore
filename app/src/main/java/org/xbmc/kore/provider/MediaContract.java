@@ -587,11 +587,18 @@ public class MediaContract {
         public static final String CONTENT_ITEM_TYPE =
                 "vnd.android.cursor.item/vnd.org.xbmc." + PATH_SONGS;
 
-        /** Build {@link Uri} for albums list. */
-        public static Uri buildSongsListUri(long hostId, long albumId) {
+        /** Build {@link Uri} for album songs list. */
+        public static Uri buildAlbumSongsListUri(long hostId, long albumId) {
             return Albums.buildAlbumUri(hostId, albumId).buildUpon()
                         .appendPath(PATH_SONGS)
                         .build();
+        }
+
+        /** Build {@link Uri} for artists songs list. */
+        public static Uri buildArtistSongsListUri(long hostId, long artistId) {
+            return Artists.buildArtistUri(hostId, artistId).buildUpon()
+                    .appendPath(PATH_SONGS)
+                    .build();
         }
 
         /** Build {@link Uri} for requested {@link #_ID}. */

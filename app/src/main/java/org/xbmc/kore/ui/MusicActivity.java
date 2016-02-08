@@ -94,6 +94,9 @@ public class MusicActivity extends BaseActivity
                 musicListFragment.setExitSharedElementCallback(new SharedElementCallback() {
                     @Override
                     public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        // Clearing must be done in the reentering fragment
+                        // as this is called last. Otherwise, the app will crash during transition setup. Not sure, but might
+                        // be a v4 support package bug.
                         if (clearSharedElements) {
                             names.clear();
                             sharedElements.clear();
@@ -264,12 +267,12 @@ public class MusicActivity extends BaseActivity
     }
 
     @TargetApi(21)
-    public void onArtistSelected(int artistId, String artistName) {
-        selectedArtistId = artistId;
-        selectedArtistName = artistName;
+    public void onArtistSelected(ArtistListFragment.ViewHolder viewHolder) {
+        selectedArtistId = viewHolder.artistId;
+        selectedArtistName = viewHolder.artistName;
 
         // Replace list fragment
-        AlbumListFragment albumListFragment = AlbumListFragment.newInstanceForArtist(artistId);
+        final ArtistDetailsFragment artistDetailsFragment = ArtistDetailsFragment.newInstance(viewHolder);
 
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
         // Setup animations
@@ -277,33 +280,34 @@ public class MusicActivity extends BaseActivity
             android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                    if (clearSharedElements) {
-                        names.clear();
-                        sharedElements.clear();
-                        clearSharedElements = false;
+                    View sharedView = artistDetailsFragment.getSharedElement();
+                    if (sharedView == null) { // shared element not visible
+                        clearSharedElements = true;
                     }
                 }
             };
-            albumListFragment.setExitSharedElementCallback(seCallback);
+            artistDetailsFragment.setEnterSharedElementCallback(seCallback);
 
-            //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
-            Transition fade = TransitionInflater
+            artistDetailsFragment.setEnterTransition(TransitionInflater
                     .from(this)
-                    .inflateTransition(android.R.transition.fade);
-            albumListFragment.setExitTransition(fade);
-            albumListFragment.setReenterTransition(fade);
-            albumListFragment.setSharedElementReturnTransition(TransitionInflater.from(
-                    this).inflateTransition(R.transition.change_image));
+                    .inflateTransition(R.transition.media_details));
+            artistDetailsFragment.setReturnTransition(null);
+
+            Transition changeImageTransition = TransitionInflater.from(
+                    this).inflateTransition(R.transition.change_image);
+            artistDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
+            artistDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
+            fragTrans.addSharedElement(viewHolder.artView, viewHolder.artView.getTransitionName());
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
         }
 
-        fragTrans.replace(R.id.fragment_container, albumListFragment)
+        fragTrans.replace(R.id.fragment_container, artistDetailsFragment)
                 .addToBackStack(null)
                 .commit();
 
         navigationDrawerFragment.animateDrawerToggle(true);
-        setupActionBar(null, artistName, null, null);
+        setupActionBar(null, selectedArtistName, null, null);
     }
 
     @TargetApi(21)

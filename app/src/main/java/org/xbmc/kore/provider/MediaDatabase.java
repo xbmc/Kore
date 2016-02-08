@@ -88,7 +88,16 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 ALBUM_GENRES + "." + MediaContract.AlbumGenres.HOST_ID + "=" + AUDIO_GENRES + "." + MediaContract.AudioGenres.HOST_ID +
                 " AND " +
                 ALBUM_GENRES + "." + MediaContract.AlbumGenres.GENREID + "=" + AUDIO_GENRES + "." + MediaContract.AudioGenres.GENREID;
-	}
+
+        /**
+         * Join to get Songs for an Artist
+         */
+        String SONGS_FOR_ARTIST_JOIN =
+                SONGS + " JOIN " + ALBUM_ARTISTS + " ON " +
+                SONGS + "." + MediaContract.Songs.HOST_ID + "=" + ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID +
+                " AND " +
+                SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.ALBUMID;
+    }
 
     private interface References {
         String HOST_ID =
