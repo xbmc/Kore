@@ -464,24 +464,6 @@ public class MediaDatabase extends SQLiteOpenHelper {
         }
 	}
 
-    private void resetDb(SQLiteDatabase db) {
-		db.execSQL("DROP TABLE IF EXISTS " + Tables.HOSTS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.MOVIES);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.MOVIE_CAST);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.TVSHOWS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.TVSHOWS_CAST);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.SEASONS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.EPISODES);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.ARTISTS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.ALBUMS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.SONGS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.AUDIO_GENRES);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.ALBUM_ARTISTS);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.ALBUM_GENRES);
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.MUSIC_VIDEOS);
-		onCreate(db);
-    }
-
     /**
      * Tokens to move from prefix to suffix when sorting titles
      *

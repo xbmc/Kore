@@ -295,25 +295,6 @@ public class RemoteActivity extends BaseActivity
     }
 
     /**
-     * Issue commands to update the Audio and Video libraries, sequentially
-     */
-    private void updateLibraries() {
-        final Handler callbackHandler = new Handler();
-        VideoLibrary.Scan actionScanVideo = new VideoLibrary.Scan();
-        actionScanVideo.execute(hostManager.getConnection(), new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                // Great, now update the Audio library
-                AudioLibrary.Scan actionScanAudio = new AudioLibrary.Scan();
-                actionScanAudio.execute(hostManager.getConnection(), null, callbackHandler);
-            }
-
-            @Override
-            public void onError(int errorCode, String description) { }
-        }, callbackHandler);
-    }
-
-    /**
      * Callbacks from Send text dialog
      */
     public void onSendTextFinished(String text, boolean done) {
