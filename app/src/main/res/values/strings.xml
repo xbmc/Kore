@@ -367,4 +367,7 @@
     <string name="cannot_move_playing_item">Cannot move currently playing/paused item</string>
     <string name="no_connection_type_selected">No connection type selected in settings</string>
 
+    <string name="download_network_types_title">Download network types</string>
+    <string name="download_network_types_summary">Allowed network types for media downloads</string>
+
 </resources>
