@@ -16,10 +16,13 @@
 
 package org.xbmc.kore.ui;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -33,6 +36,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
@@ -40,6 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
@@ -47,6 +52,7 @@ import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.service.LibrarySyncService;
 import org.xbmc.kore.service.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -71,7 +77,7 @@ public abstract class AbstractListFragment extends Fragment
 	// The search filter to use in the loader
 	private String searchFilter = null;
 
-	private boolean isSyncing;
+	private boolean gridViewUsesMultipleColumns;
 
 	@InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 	@InjectView(R.id.list) GridView gridView;
@@ -81,6 +87,7 @@ public abstract class AbstractListFragment extends Fragment
 	abstract protected CursorAdapter createAdapter();
 	abstract protected CursorLoader createCursorLoader();
 
+	@TargetApi(16)
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,6 +100,25 @@ public abstract class AbstractListFragment extends Fragment
 
 		swipeRefreshLayout.setOnRefreshListener(this);
 
+		//Listener added to be able to determine if multiple-columns is at all possible for the current grid
+		//We use this information to enable/disable the menu item to switch between multiple and single columns
+		gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				if(gridView.getNumColumns() > 1) {
+					gridViewUsesMultipleColumns = true;
+				}
+
+				if(Utils.isJellybeanOrLater()) {
+					gridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				} else {
+					gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				}
+
+				//Make sure menu is updated if it was already created
+				getActivity().invalidateOptionsMenu();
+			}
+		});
 		return root;
 	}
 
@@ -138,7 +164,29 @@ public abstract class AbstractListFragment extends Fragment
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.refresh_item, menu);
+		inflater.inflate(R.menu.abstractlistfragment, menu);
+
+		if(gridViewUsesMultipleColumns) {
+			if (PreferenceManager
+					.getDefaultSharedPreferences(getActivity())
+					.getBoolean(Settings.KEY_PREF_SINGLE_COLUMN,
+								Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
+				gridView.setNumColumns(1);
+				adapter.notifyDataSetChanged();
+
+				MenuItem item = menu.findItem(R.id.action_multi_single_columns);
+				item.setTitle(R.string.multi_column);
+			}
+		} else {
+			//Default number of columns for GridView is set to AUTO_FIT.
+			//When this leads to a single column it is not possible
+			//to switch to multiple columns. We therefore disable
+			//the menu item.
+			MenuItem item = menu.findItem(R.id.action_multi_single_columns);
+			item.setTitle(R.string.multi_column);
+			item.setEnabled(false);
+		}
+
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -147,8 +195,28 @@ public abstract class AbstractListFragment extends Fragment
 		switch(item.getItemId()) {
 			case R.id.action_refresh:
 				onRefresh();
+				break;
+			case R.id.action_multi_single_columns:
+				toggleAmountOfColumns(item);
+				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void toggleAmountOfColumns(MenuItem item) {
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(getActivity()).edit();
+		if (gridView.getNumColumns() == 1) {
+			editor.putBoolean(Settings.KEY_PREF_SINGLE_COLUMN, false);
+			item.setTitle(R.string.single_column);
+			gridView.setNumColumns(GridView.AUTO_FIT);
+		} else {
+			editor.putBoolean(Settings.KEY_PREF_SINGLE_COLUMN, true);
+			item.setTitle(R.string.multi_column);
+			gridView.setNumColumns(1);
+		}
+		editor.commit();
+		adapter.notifyDataSetChanged(); //force gridView to redraw
 	}
 
 	/**
