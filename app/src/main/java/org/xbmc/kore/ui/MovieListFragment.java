@@ -25,8 +25,6 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +32,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,16 +64,11 @@ public class MovieListFragment extends AbstractListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MOVIES; }
 
     @Override
-    protected AdapterView.OnItemClickListener createOnItemClickListener() {
-        return new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the movie id from the tag
-                ViewHolder tag = (ViewHolder) view.getTag();
-                // Notify the activity
-                listenerActivity.onMovieSelected(tag);
-            }
-        };
+    protected void onListItemClicked(View view) {
+        // Get the movie id from the tag
+        ViewHolder tag = (ViewHolder) view.getTag();
+        // Notify the activity
+        listenerActivity.onMovieSelected(tag);
     }
 
     @Override
@@ -136,6 +128,7 @@ public class MovieListFragment extends AbstractListFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnMovieSelectedListener");
         }
+        setSupportsSearch(true);
     }
 
     @Override
@@ -153,12 +146,6 @@ public class MovieListFragment extends AbstractListFragment {
         }
 
         inflater.inflate(R.menu.movie_list, menu);
-
-        // Setup search view
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(this);
-        searchView.setQueryHint(getString(R.string.action_search_movies));
 
         // Setup filters
         MenuItem hideWatched = menu.findItem(R.id.action_hide_watched),

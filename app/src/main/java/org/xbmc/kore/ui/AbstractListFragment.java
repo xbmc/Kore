@@ -16,6 +16,7 @@
 
 package org.xbmc.kore.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
@@ -25,8 +26,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,6 +62,8 @@ public abstract class AbstractListFragment extends Fragment
 		SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
 
+	private final String BUNDLE_KEY_SEARCHQUERY = "search_query";
+
 	private ServiceConnection serviceConnection;
 	private CursorAdapter adapter;
 
@@ -70,14 +75,15 @@ public abstract class AbstractListFragment extends Fragment
 
 	// The search filter to use in the loader
 	private String searchFilter = null;
+	private String savedSearchFilter;
 
-	private boolean isSyncing;
+	private boolean supportsSearch;
 
 	@InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 	@InjectView(R.id.list) GridView gridView;
 	@InjectView(android.R.id.empty) TextView emptyView;
 
-	abstract protected AdapterView.OnItemClickListener createOnItemClickListener();
+	abstract protected void onListItemClicked(View view);
 	abstract protected CursorAdapter createAdapter();
 	abstract protected CursorLoader createCursorLoader();
 
@@ -101,11 +107,23 @@ public abstract class AbstractListFragment extends Fragment
 		super.onActivityCreated(savedInstanceState);
 
 		gridView.setEmptyView(emptyView);
-		gridView.setOnItemClickListener(createOnItemClickListener());
+		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				savedSearchFilter = searchFilter;
+				onListItemClicked(view);
+			}
+		});
 
 		// Configure the adapter and start the loader
 		adapter = createAdapter();
 		gridView.setAdapter(adapter);
+
+		if (savedInstanceState != null) {
+			searchFilter = savedInstanceState.getString(BUNDLE_KEY_SEARCHQUERY);
+		} else {
+			searchFilter = savedSearchFilter;
+		}
 
 		getLoaderManager().initLoader(LOADER, null, this);
 
@@ -137,8 +155,32 @@ public abstract class AbstractListFragment extends Fragment
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		/**
+		 * We handle two different situations here:
+		 *
+		 * 	  1. User clicks item, then rotates the device and returns to the list fragment.
+		 * 	  2. User rotates the device while on the list fragment.
+		 *
+		 * In the first situation searchFilter will be empty, but savedSearchFilter will contain
+		 * the query as it was saved in onItemClick
+		 * In the second situation searchFilter will contain the query
+		 */
+		if ((searchFilter != null) && (! TextUtils.isEmpty(searchFilter))){
+			savedSearchFilter = searchFilter;
+		}
+		outState.putString(BUNDLE_KEY_SEARCHQUERY, savedSearchFilter);
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		if (supportsSearch) {
+			setupSearchMenuItem(menu, inflater);
+		}
+
 		inflater.inflate(R.menu.refresh_item, menu);
+
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -149,6 +191,18 @@ public abstract class AbstractListFragment extends Fragment
 				onRefresh();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Use this to indicate your fragment supports search queries.
+	 * Get the entered search query using {@link #getSearchFilter()}
+	 * <br/>
+	 * Note: make sure this is set before {@link #onCreateOptionsMenu(Menu, MenuInflater)} is called.
+	 * For instance in {@link #onAttach(Activity)}.
+	 * @param supportsSearch true if you support search queries, false otherwise
+	 */
+	public void setSupportsSearch(boolean supportsSearch) {
+		this.supportsSearch = supportsSearch;
 	}
 
 	/**
@@ -296,4 +350,25 @@ public abstract class AbstractListFragment extends Fragment
 			}
 		});
 	}
+
+	private void setupSearchMenuItem(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.media_search, menu);
+		MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+		if (searchMenuItem != null) {
+			SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+			searchView.setOnQueryTextListener(this);
+			searchView.setQueryHint(getString(R.string.action_search));
+
+			if (searchFilter != null) {
+				restoreSearchMenuItemState(searchMenuItem, searchView, searchFilter);
+			}
+		}
+	}
+
+	private void restoreSearchMenuItemState(MenuItem item, SearchView view, String query) {
+		item.expandActionView();
+		view.setQuery(query, true);
+		view.clearFocus();
+	}
+
 }
