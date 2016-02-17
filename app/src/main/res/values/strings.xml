@@ -369,4 +369,7 @@
     <string name="single_column">Single column</string>
     <string name="multi_column">Multi-column</string>
 
+    <string name="download_network_types_title">Download network types</string>
+    <string name="download_network_types_summary">Allowed network types for media downloads</string>
+
 </resources>
