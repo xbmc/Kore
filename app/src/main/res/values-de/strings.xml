@@ -312,6 +312,7 @@
     <string name="theme_solarized_dark">Solarized dunkel</string>
 
     <string name="switch_to_remote">Nach dem Abspielen eines Mediums zur Fernbedienung wechseln</string>
+    <string name="keep_remote_above_lockscreen">Fernbedienung auf dem Sperrbildschirm anzeigen</string>
     <string name="show_notification">Nachricht mit aktueller Wiedergabe anzeigen</string>
     <string name="use_hardware_volume_keys">Lautstärketasten verwenden</string>
     <string name="vibrate_on_remote">Auf Fernbedienungs-Knopfdruck vibrieren</string>
