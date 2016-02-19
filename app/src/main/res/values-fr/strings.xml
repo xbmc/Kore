@@ -23,30 +23,35 @@
     <string name="loading">Chargement en cours\u2026</string>
 
     <!-- Navigation drawer tips -->
-	<string name="navigation_drawer_open">Ouvrir le volet de navigation</string>
-	<string name="navigation_drawer_close">Fermer le volet de navigation</string>
+    <string name="navigation_drawer_open">Ouvrir le volet de navigation</string>
+    <string name="navigation_drawer_close">Fermer le volet de navigation</string>
 
-	<string name="xbmc_media_center">Centre Multimédia</string>
-	<string name="home">Accueil</string>
-	<string name="movies">Films</string>
-	<string name="tv_shows">Séries TV</string>
-	<string name="music">Musique</string>
-	<string name="pictures">Images</string>
+    <string name="xbmc_media_center">Centre Multimédia</string>
+    <string name="home">Accueil</string>
+    <string name="movies">Films</string>
+    <string name="tv_shows">Séries TV</string>
+    <string name="music">Musique</string>
+    <string name="pictures">Images</string>
     <string name="addons">Extensions</string>
+    <string name="files">Fichiers</string>
+    <string name="video">Vidéo</string>
+    <string name="file_browser">Fichiers</string>
+    <string name="pvr">Magnétoscope</string>
 
-    <string name="no_xbmc_configured">Aucun centre multimédia configuré</string>
+    <string name="no_xbmc_configured">Aucun Centre Multimédia configuré</string>
     <string name="add_xbmc">Ajouter un Centre Multimédia</string>
 
-    <string name="xbmc_quit">Fermeture du Centre Multimédia.</string>
-    <string name="wol_sent">Demande de réveil par réseau envoyé à votre centre multimédia.</string>
+    <string name="xbmc_quit">Fermeture du Centre Multimédia en cours\u2026</string>
+    <string name="wol_sent">Demande de réveil par réseau envoyée à votre Centre Multimédia.</string>
 
     <string name="power">Alimentation</string>
     <string name="quit">Arrêter</string>
     <string name="suspend">Suspendre</string>
+    <string name="reboot">Redémarrer</string>
     <string name="shutdown">Éteindre</string>
 
     <string name="send">Envoyer</string>
-    <string name="send_text">Envoyer un texte au centre multimédia</string>
+    <string name="send_text">Envoyer du texte au Centre Multimédia</string>
     <string name="text_to_send">Texte à envoyer</string>
     <string name="finish_after_send">Terminer après l\'envoi</string>
 
@@ -60,32 +65,36 @@
 
     <string name="connected_to">Connecté à %1$s</string>
     <string name="connecting">Connexion en cours\u2026</string>
-    <string name="connecting_to">Connexion à %1$s (%2$s)\u2026</string>
+    <string name="connecting_to">Connexion à %1$s (%2$s)en cours\u2026</string>
 
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bienvenue</string>
     <string name="wizard_welcome_message"><![CDATA[
-    Commençons par l\'ajout d\'un centre multimédia. Assurez-vous que Kodi/XBMC est en cours d\'exécution, correctement configuré et sur le même réseau que votre appareil<br/><br/>
+    Commençons par l\'ajout d\'un Centre Multimédia. Assurez-vous que votre Kodi/XBMC est en cours d\'exécution, correctement configuré et sur le même réseau que votre appareil.<br/><br/>
     Vous pouvez obtenir de l\'aide pour sa configuration <a href="http://syncedsynapse.com/kore/kore-faq/>ici</a>.<br/><br/>
     Lorsque vous êtes prêt appuyez sur <b><i>Suivant</i></b>.
     ]]></string>
     <string name="wizard_search_message"><![CDATA[
-    Recherche en cours de centres multimédia sur votre réseau local\u2026<br/>
+    Recherche de Centres Multimédia sur votre réseau local en cours\u2026<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
-    Je n\'ai pas trouvé de centre multimédia sur votre réseau.<br/>Si vous avez besoin d\'aide pour le configurer, consultez <a href="http://syncedsynapse.com/kore/kore-faq/>ceci</a>.<br/><br/>
+    Je n\'ai trouvé aucun Centre Multimédia sur votre réseau.<br/>Si vous avez besoin d\'aide pour le configurer, consultez <a href="http://syncedsynapse.com/kore/kore-faq/>ceci</a>.<br/><br/>
     Appuyez sur <i>Recherche</i> pour une nouvelle recherche ou <i>Suivant</i> pour configurer manuellement.
     ]]></string>
-    <string name="wizard_search_host_found"><![CDATA[
-    J\'ai trouvé ce(s) centre(s) multimédia sur votre réseau.<br/><br/>Sélectionnez-en un à ajouter ou appuyez sur <i>Suivant</i> pour en ajouter un nouveau manuellement.
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    Activez une connexion réseau avant de rechercher un Centre Multimédia.<br/>
     ]]></string>
+    <string name="wizard_search_host_found"><![CDATA[
+    J\'ai trouvé ce(s) Centre(s) Multimédia sur votre réseau.<br/><br/>Sélectionnez-en un à ajouter ou appuyez sur <i>Suivant</i> pour en ajouter un nouveau manuellement.
+    ]]></string>
+    <string name="no_network_connection">Aucune connexion réseau</string>
     <string name="searching">Recherche en cours\u2026</string>
-    <string name="no_xbmc_found">Aucun centre multimédia trouvé</string>
-    <string name="xbmc_found">Centre multimédia trouvé</string>
+    <string name="no_xbmc_found">Aucun Centre Multimédia trouvé</string>
+    <string name="xbmc_found">Centre Multimédia trouvé</string>
     <string name="wizard_manual_configuration">Configuration manuelle</string>
-    <string name="wizard_manual_configuration_message">Saisissez la configuration de votre centre multimédia\u00A0:</string>
+    <string name="wizard_manual_configuration_message">Saisissez la configuration de votre Centre Multimédia\u00A0:</string>
     <string name="wizard_manual_configuration_message_advanced">Configuration avancée (laisser vide pour les paramètres par défaut)</string>
-    <string name="wizard_xbmc_name">Nom du centre multimédia</string>
+    <string name="wizard_xbmc_name">Nom du Centre Multimédia</string>
     <string name="wizard_xbmc_ip">Adresse</string>
     <string name="wizard_xbmc_port">Port</string>
     <string name="wizard_xbmc_username">Nom d\'utilisateur</string>
@@ -93,14 +102,18 @@
     <string name="wizard_xbmc_tcp_port">Port TCP (9090)</string>
     <string name="wizard_xbmc_mac_address">Adresse MAC</string>
     <string name="wizard_xbmc_wol_port">Port WoL (9)</string>
+    <string name="wizard_xbmc_use_tcp">Utiliser TCP</string>
+    <string name="wizard_xbmc_event_server_port">Port ES (9777)</string>
+    <string name="wizard_xbmc_use_event_server">Utiliser EventServer</string>
 
-    <string name="wizard_no_name_specified">Indiquez un nom pour ce centre multimédia, afin que vous puissiez l\'identifier plus tard.</string>
-    <string name="wizard_no_address_specified">Indiquez l\'adresse de ce centre multimédia, afin que je puisse le localiser.</string>
-    <string name="wizard_invalid_http_port_specified">Indiquez un port HTTP valide pour ce centre multimédia, afin que je puisse le localiser.</string>
-    <string name="wizard_invalid_tcp_port_specified">Indiquez un port TCP valide pour ce centre multimédia, afin que je puisse le localiser.</string>
+    <string name="wizard_no_name_specified">Indiquez un nom pour ce Centre Multimédia, afin que vous puissiez l\'identifier plus tard.</string>
+    <string name="wizard_no_address_specified">Indiquez l\'adresse de ce Centre Multimédia, afin que je puisse le localiser.</string>
+    <string name="wizard_invalid_http_port_specified">Indiquez un port HTTP valide pour ce Centre Multimédia.</string>
+    <string name="wizard_invalid_tcp_port_specified">Indiquez un port TCP valide pour ce Centre Multimédia.</string>
+    <string name="wizard_invalid_es_port_specified">Indiquez un port EventServer valide pour ce Centre Multimédia.</string>
 
-    <string name="wizard_connecting_to_xbmc_title">Connexion en cours sur %1$s\u2026</string>
-    <string name="wizard_connecting_to_xbmc_message">Patientez pendant que j\'essaie de me connecter à votre centre multimédia\u2026</string>
+    <string name="wizard_connecting_to_xbmc_title">Connexion sur %1$s en cours\u2026</string>
+    <string name="wizard_connecting_to_xbmc_message">Patientez pendant que j\'essaie de me connecter à votre Centre Multimédia.</string>
 
     <string name="wizard_empty_authentication">Kodi/XBMC requiert une authentification.\nIndiquez un nom d\'utilisateur et un mot de passe.</string>
     <string name="wizard_incorrect_authentication">Mauvais nom d\'utilisateur et/ou mot de passe.\nVérifiez vos informations d\'identification.</string>
@@ -109,10 +122,13 @@
 
     <string name="wizard_done">Terminé !</string>
     <string name="wizard_done_message"><![CDATA[
-    Votre centre multimédia est configuré.<br/>
+    Votre Centre Multimédia est configuré.<br/>
     Vous pouvez maintenant utiliser la télécommande pour le contrôler. Votre médiathèque est en cours de synchronisation, et devrait être disponible dans quelques instants.<br/><br/>
     Appuyez sur <b><i>Terminé</i></b> pour commencer à utiliser la télécommande.
     ]]></string>
+
+    <string name="wizard_zeroconf_no_host_address">Impossible de récupérer l\'adresse de ce Centre Multimédia !</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Connexion à ce Centre Multimédia impossible car l\'adresse est introuvable.</string>
 
     <string name="play">Lecture</string>
     <string name="pause">Pause</string>
@@ -130,6 +146,8 @@
     <string name="no_audiostream">Aucun flux audio disponible</string>
     <string name="download_subtitle">Télécharger les sous-titres</string>
     <string name="none">Aucun</string>
+    <string name="audio_sync">Synchroniser l\'audio</string>
+    <string name="subtitle_sync">Synchroniser les sous-titres</string>
 
     <string name="left">Gauche</string>
     <string name="right">Droite</string>
@@ -138,6 +156,7 @@
     <string name="select">Sélectionner</string>
     <string name="info">Info</string>
     <string name="codec_info">Codec</string>
+    <string name="context">Contexte</string>
     <string name="osd">Menu</string>
     <string name="back">Retour</string>
 
@@ -150,12 +169,15 @@
     <string name="remove">Supprimer</string>
     <string name="edit">Modifier</string>
     <string name="wake_up">Réveiller</string>
-    <string name="edit_xbmc">Modifier le centre multimédia</string>
-    <string name="delete_xbmc">Supprimer le centre multimédia</string>
-    <string name="delete_xbmc_confirm">Êtes-vous sûr de vouloir supprimer ce centre multimédia\u00A0?</string>
+    <string name="edit_xbmc">Modifier le Centre Multimédia</string>
+    <string name="delete_xbmc">Supprimer le Centre Multimédia</string>
+    <string name="delete_xbmc_confirm">Êtes-vous sûr de vouloir supprimer ce Centre Multimédia\u00A0?</string>
+    <string name="queue_file">File d\'attente</string>
+    <string name="play_file">Lire</string>
+    <string name="play_from_here">Lire à partir d\'ici</string>
 
     <string name="connecting_to_xbmc">Connexion en cours\u2026</string>
-    <string name="unable_to_connect_to_xbmc">Impossible de se connecter au centre multimédia</string>
+    <string name="unable_to_connect_to_xbmc">Impossible de se connecter au Centre Multimédia</string>
     <string name="connected_to_xbmc">Connecté</string>
     <string name="xbmc_available">Disponible</string>
     <string name="xbmc_unavailable">Non disponible</string>
@@ -186,31 +208,49 @@
     <string name="error_executing_subtitles">Impossible d\'exécuter l\'extension des sous-titres.\nMessage d\'erreur\u00A0: %1$s.</string>
     <string name="error_getting_addon_info">Impossible d\'obtenir les informations de l\'extension.\nMessage d\'erreur\u00A0:
         %1$s.</string>
+   <string name="error_getting_source_info">Impossible de parcourir les fichiers.\nMessage d\'erreur\u00A0:
+        %1$s.</string>
+    <string name="error_play_media_file">Impossible de lire ce fichier multimédia.\nMessage d\'erreur\u00A0:
+        %1$s.</string>
+    <string name="error_queue_media_file">Impossible d\'ajouter ce fichier multimédia à la liste de lecture.\nMessage d\'erreur\u00A0:
+        %1$s.</string>
+     <string name="error_get_active_player">Impossible de récupérer le lecteur actif.\nMessage d\'erreur\u00A0:
+        %1$s.</string>
+    <string name="error_share_video">Impossible de partager la vidéo avec Kodi/XBMC.</string>
 
     <string name="directors">Réalisateur\u00A0:</string>
     <string name="studio">Studio\u00A0:</string>
     <string name="cast">Casting</string>
     <string name="additional_cast">Casting supplémentaire</string>
     <string name="cast_list_text">%1$s pour %2$s</string>
+    <string name="remaining_cast_count">%d de plus</string>
 
     <string name="general_error_executing_action">Erreur d\'exécution de l\'action\u00A0: %1$s</string>
-    <string name="error_getting_playlist">Erreur de récupération des informations de la playlist</string>
+    <string name="error_getting_playlist">Erreur lors de la récupération des informations de la liste de lecture</string>
     <string name="error_message">Message d\'erreur\u00A0: %1$s</string>
     <string name="playlist_empty">Liste de lecture vide</string>
+    <string name="source_empty">Source multimédia vide</string>
     <string name="clear_playlist">Effacer la liste de lecture</string>
 
-    <string name="no_movies_found_refresh">Aucun film trouvé\n\nGlissez vers le bas pour rafraîchir</string>
-    <string name="no_tvshows_found_refresh">Aucune Série TV trouvée\n\nGlissez vers le bas pour rafraîchir</string>
+    <string name="no_movies_found_refresh">Aucun film trouvé\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_tvshows_found_refresh">Aucune Série TV trouvée\n\nGlissez vers le bas pour actualiser</string>
     <string name="no_episodes_found">Aucun épisode trouvé</string>
-    <string name="no_artists_found_refresh">Aucun artiste trouvé\n\nGlissez vers le bas pour rafraîchir</string>
-    <string name="no_albums_found_refresh">Aucun album trouvé\n\nGlissez vers le bas pour rafraîchir</string>
-    <string name="no_genres_found_refresh">Aucun genre trouvé\n\nGlissez vers le bas pour rafraîchir</string>
-    <string name="no_addons_found_refresh">Aucune extension trouvée ou connectée\n\nGlissez vers le bas pour rafraîchir</string>
-    <string name="no_music_videos_found_refresh">Aucune vidéo trouvée\n\nGlissez vers le bas pour rafraîchir</string>
-    <string name="pull_to_refresh">Tirer pour rafraîchir</string>
+    <string name="swipe_down_to_refresh">Glissez vers le bas pour actualiser</string>
+    <string name="no_artists_found_refresh">Aucun artiste trouvé\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_albums_found_refresh">Aucun album trouvé\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_genres_found_refresh">Aucun genre trouvé\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_addons_found_refresh">Aucune extension trouvée ou connectée\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_music_videos_found_refresh">Aucune vidéo trouvée\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_channel_groups_found_refresh">Aucun groupe de chaînes trouvés.\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_channels_found_refresh">Aucune chaîne trouvée.\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_recordings_found_refresh">Aucun enregistrement trouvé.\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_broadcasts_found_refresh">Aucune émission trouvée.\n\nGlissez vers le bas pour actualiser</string>
+    <string name="pull_to_refresh">Glissez vers le bas pour actualiser</string>
+    <string name="no_cast_info">Aucune information de casting à afficher</string>
 
     <string name="minutes_abbrev">%1$s min</string>
-    <string name="sync_successful">Synchronisation réussie</string>
+    <string name="minutes_abbrev2">%1$sm</string>
+    <string name="sync_successful">Synchronisation effectuée</string>
     <string name="error_while_syncing">Erreur lors de la synchronisation\u00A0: %1$s</string>
 
     <string name="action_search">Recherche</string>
@@ -229,11 +269,16 @@
     <string name="seen">Visualisé</string>
     <string name="download">Téléchargé</string>
 
-    <string name="download_file_exists">Fichier déjà existant.\nVoulez-vous l\'écraser ou le télécharger sous un nouveau nom\u00A0?</string>
+    <string name="confirm_movie_download">Êtes-vous sûr de vouloir télécharger ce film ?\nLe film sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
+    <string name="confirm_episode_download">Êtes-vous sûr de vouloir télécharger cet épisode ?\n%L\'épisode sera téléchargé en arrière-plan,ce qui peut durer un certain temps.</string>
+    <string name="confirm_album_download">Êtes-vous sûr de vouloir télécharger cet album ?\nL\'album sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
+    <string name="confirm_artist_download">Êtes-vous sûr de vouloir télécharger tous les albums ?\nLes albums vont être téléchargés en arrière-plan, ce qui peut durer un certain temps.</string>
+
+    <string name="download_file_exists">Fichier déjà existant.\nVoulez-vous l\'écraser ou le télécharger avec un nouveau nom\u00A0?</string>
     <string name="download_dir_exists">Répertoire de téléchargement déjà existant.\nSi des fichiers portent le même nom, voulez-vous les écraser ou les télécharger avec un nouveau nom\u00A0?</string>
     <string name="overwrite">Écraser</string>
     <string name="download_with_new_name">Nouveau nom</string>
-    <string name="download_file_description">Téléchargé depuis votre centre multimédia</string>
+    <string name="download_file_description">Téléchargé depuis votre Centre Multimédia</string>
 
     <string name="num_episodes">%1$d épisodes  |  %2$d non visionné(s)</string>
     <string name="premiered">Première diffusion\u00A0: %1$s</string>
@@ -247,7 +292,7 @@
     <string name="music_videos">Vidéos</string>
 
     <string name="no_files_to_download">Aucun fichier à télécharger.</string>
-    <string name="error_getting_file_information">Aucune information pour télécharger le fichier %1$s.</string>
+    <string name="error_getting_file_information">Impossible d\'obtenir les informations pour télécharger le fichier %1$s.</string>
 
     <string name="author">Auteur\u00A0:</string>
     <string name="version">Version\u00A0:</string>
@@ -256,7 +301,14 @@
     <string name="addon_disabled">Extension désactivée</string>
 
     <!-- Filters on list menus -->
-    <string name="hide_watched">Masquer visionné(s)</string>
+    <string name="hide_watched">Masquer les visionnés</string>
+    <string name="sort_order">Trier</string>
+    <string name="sort_by_name">Par nom</string>
+    <string name="sort_by_year">Par année</string>
+    <string name="sort_by_rating">Par évaluation</string>
+    <string name="sort_by_length">Par durée</string>
+    <string name="sort_by_date_added">Par date d\'ajout</string>
+    <string name="ignore_prefixes">Ignorer les préfixes</string>
 
     <!-- Preferences strings -->
     <string name="theme">Thème</string>
@@ -267,6 +319,10 @@
     <string name="theme_solarized_dark">Solarisé Foncé</string>
 
     <string name="switch_to_remote">Basculer sur la télécommande après le début de la lecture</string>
+    <string name="show_notification">Afficher les notifications pendant la lecture</string>
+    <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
+    <string name="vibrate_on_remote">Vibrer à l\'appui</string>
+    <string name="nav_drawer_items">Raccourcis du volet de navigation</string>
 
 
     <string name="about">À propos</string>
@@ -274,58 +330,36 @@
         \u00A9 2015 XBMC Foundation.<br><br>
         Évaluez-nous sur <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
-        Si vous avez besoin d\'aide, consultez le <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
+        Si vous avez besoin d\'aide, consultez notre <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
     ]]></string>
-    <string name="no_network_connection">Aucune connexion réseau</string>
-    <string name="reboot">Redémarrer</string>
-    <string name="show_notification">Afficher les notifications pendant la lecture</string>
-    <string name="sort_by_date_added">Par date d\'ajout</string>
-    <string name="sort_by_name">Par nom</string>
-    <string name="sort_order">Trier</string>
-    <string name="source_empty">Source vide</string>
-    <string name="subtitle_sync">Synchroniser les sous-titres</string>
-    <string name="use_hardware_volume_keys">Controller le volume avec les boutons de l\'appareil</string>
-    <string name="video">Vidéo</string>
-    <string name="vibrate_on_remote">Vibrer au touché</string>
-    <string name="wizard_invalid_es_port_specified">Veuillez renseigner un port EventServer valide pour ce média.</string>
-    <string name="wizard_search_no_network_connection"><![CDATA[     Veuillez activer une connexion réseau avant de rechercher un centre multimédia. <br/>     ]]></string>
-    <string name="wizard_xbmc_event_server_port">ES Port (9777)</string>
-    <string name="wizard_xbmc_use_event_server">Utiliser EventServer</string>
-    <string name="wizard_xbmc_use_tcp">Utiliser TCP</string>
-    <string name="wizard_zeroconf_cant_connect_no_host_address">Connexion à ce centre multimédia impossible car l\'adresse est introuvable.</string>
-    <string name="wizard_zeroconf_no_host_address">Récupération de l\'adresse impossible!</string>
-    <string name="remaining_cast_count">%d plus</string>
-    <string name="queue_file">File d\'attente</string>
-    <string name="play_file">Jouer</string>
-    <string name="play_from_here">Jouer à partir d\'ici</string>
-    <string name="play_on_kodi">Kodi</string>
-    <string name="files">Fichiers</string>
-    <string name="file_browser">Fichiers</string>
-    <string name="error_queue_media_file">Ajout du média impossible.\nErreur: %1$s.</string>
-    <string name="error_play_media_file">Lecture du média impossible.\nErreur: %1$s.</string>
-    <string name="error_getting_source_info">Navigation dans les fichiers impossible.\nErreur: %1$s.</string>
-    <string name="error_get_active_player">Récupération du lecteur actif impossible.\nErreur: %1$s.</string>
-    <string name="context">Contexte</string>
-    <string name="confirm_album_download">Etes-vous sûre de vouloir télécharger cet album?\nCelui-ci sera téléchargé en arrière-plan, mais
-        prendra du temps.</string>
-    <string name="confirm_episode_download">Etes-vous sûre de vouloir télécharger cet épisode?\nCelui-ci sera téléchargé en arrière-plan,
-        mais prendra du temps.</string>
-    <string name="confirm_movie_download">Etes-vous sûre de vouloir télécharger cet album?\nCelui-ci sera téléchargé en arrière-plan, mais
-        prendra du temps.</string>
-    <string name="audio_sync">Synchronisation audio</string>
-    <string name="ignore_prefixes">Ignorer les préfixes</string>
-    <string name="no_cast_info">Aucun acteur à afficher</string>
 
-    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
-    <!--<string name="buy_me_coffee">Achetez-moi un café</string>-->
-    <!--<string name="expresso_please">Un expresso, s\'il vous plaît. Merci\u00A0!</string>-->
-    <!--<string name="thanks_for_coffe">Merci pour le café\u00A0!</string>-->
-    <!--<string name="remove_coffee_message">Appuyez pour masquer ce paramètre</string>-->
-    <!--<string name="buy_coffee_to_unlock_themes">S\'il vous plaît achetez-moi un café pour débloquer plus de thèmes</string>-->
+    <string name="play_on_kodi">Lire sur Kodi</string>
 
-    <!--<string name="error_setting_up_billing">Impossible de configurer le service de facturation du Google Play\u00A0:\n%s</string>-->
-    <!--<string name="error_querying_inventory">Échec.</string>-->
-    <!--<string name="error_during_purchased">Erreur lors de l\'achat.</string>-->
-    <!--<string name="purchase_thanks">Merci pour votre soutien\u00A0!</string>-->
+    <string name="error_getting_pvr_info">Erreur lors de l\'obtention des informations du magnétoscope numérique : %1$s</string>
+    <string name="might_not_have_pvr">Erreur lors de l\'obtention des informations des chaînes, soit parce que votre Centre Multimédia n\'est pas équipé d\'un \"tuner\" soit parce qu\'il n\'est pas configuré.\n\nSi c\'est le cas et que vous souhaitez supprimer cette entrée du volet de navigation, vous pouvez le faire dans les Paramètres.</string>
+    <string name="error_starting_channel">Erreur au démarrage de la lecture de la chaîne : %1$s</string>
+    <string name="error_starting_recording">Erreur au démarrage de l\'enregistrement : %1$s</string>
+    <string name="error_starting_to_record">Erreur lors de l\'enregistrement : %1$s</string>
+    <string name="channel_switching">Passez à la chaîne %1$s</string>
+    <string name="starting_recording">Démarrage de l\'enregistrement de %1$s</string>
+    <string name="refresh">Actualiser</string>
+
+    <string name="tv">TV</string>
+    <string name="radio">Radio</string>
+    <string name="recordings">Enregistrements</string>
+    <string name="tv_channels">Chaînes de télévision</string>
+    <string name="radio_channels">Chaînes de Radio</string>
+
+    <string name="record">Enregistrer</string>
+    <string name="pvr_epg">Guide</string>
+    <string name="unable_to_move_item">Déplacement impossible</string>
+    <string name="cannot_move_playing_item">Impossible de déplacer l\'élément en cours de lecture ou en pause</string>
+    <string name="no_connection_type_selected">Aucune connexion définie dans les paramètres</string>
+
+    <string name="download_network_types_title">Types de réseaux pour le téléchargement</string>
+    <string name="download_network_types_summary">Types de réseaux autorisés pour le téléchargement de médias</string>
+
+    <string name="single_column">Une colonne</string>
+    <string name="multi_column">Plusieurs colonnes</string>
 
 </resources>
