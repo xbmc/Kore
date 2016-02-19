@@ -53,8 +53,8 @@
 
     <MultiSelectListPreference
         android:key="pref_download_conn_types"
-        android:title="Download network types"
-        android:summary="Allowed network types for media downloads"
+        android:title="@string/download_network_types_title"
+        android:summary="@string/download_network_types_summary"
         android:entries="@array/entries_download_media_items"
         android:entryValues="@array/entry_values_download_media_items"
         android:defaultValue="@array/default_values_download_media_items"/>
