@@ -484,26 +484,6 @@ public class MediaProvider extends ContentProvider {
     }
 
     /**
-     * Build a simple {@link SelectionBuilder} to match the requested
-     * {@link Uri}. This is usually enough to support
-     * {@link #update}, and {@link #delete} operations.
-     */
-    private SelectionBuilder buildUpdateDeleteSelection(Uri uri) {
-        final SelectionBuilder builder = new SelectionBuilder();
-        final int match = sUriMatcher.match(uri);
-        switch (match) {
-            case HOSTS_ID: {
-                final String hostId = MediaContract.Hosts.getHostId(uri);
-                return builder.table(MediaDatabase.Tables.HOSTS)
-                              .where(BaseColumns._ID + "=?", hostId);
-            }
-            default: {
-                throw new UnsupportedOperationException("Unsupported uri: " + uri);
-            }
-        }
-    }
-
-    /**
      * Build an advanced {@link SelectionBuilder} to match the requested
      * {@link Uri}. This is usually only used by {@link #query}, since it
      * performs table joins useful for {@link Cursor} data.

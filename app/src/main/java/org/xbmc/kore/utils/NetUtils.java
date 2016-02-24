@@ -86,7 +86,7 @@ public class NetUtils {
             InetAddress inet = InetAddress.getByName(hostAddress);
 
             // Send some traffic, with a timeout
-            boolean reachable = inet.isReachable(1000);
+            inet.isReachable(1000);
 
             ipHostAddress = inet.getHostAddress();
         } catch (UnknownHostException e) {
