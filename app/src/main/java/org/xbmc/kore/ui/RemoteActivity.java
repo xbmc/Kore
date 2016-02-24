@@ -32,6 +32,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -160,6 +161,17 @@ public class RemoteActivity extends BaseActivity
         hostConnectionObserver.registerPlayerObserver(this, true);
         // Force a refresh, mainly to update the time elapsed on the fragments
         hostConnectionObserver.forceRefreshResults();
+
+        // Check whether we should keep the remote activity above the lockscreen
+        boolean keepAboveLockscreen = PreferenceManager
+            .getDefaultSharedPreferences(this)
+            .getBoolean(Settings.KEY_PREF_KEEP_REMOTE_ABOVE_LOCKSCREEN,
+                    Settings.DEFAULT_KEY_PREF_KEEP_REMOTE_ABOVE_LOCKSCREEN);
+        if (keepAboveLockscreen) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        }
 
         checkPVREnabledAndSetMenuItems();
     }

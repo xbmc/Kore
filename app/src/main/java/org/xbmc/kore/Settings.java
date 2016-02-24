@@ -61,6 +61,10 @@ public class Settings {
     public static final String KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = "pref_switch_to_remote_after_media_start";
     public static final boolean DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = true;
 
+    // Keep remote activity above lockscreen
+    public static final String KEY_PREF_KEEP_REMOTE_ABOVE_LOCKSCREEN = "pref_keep_remote_above_lockscreen";
+    public static final boolean DEFAULT_KEY_PREF_KEEP_REMOTE_ABOVE_LOCKSCREEN = false;
+
     // Show notifications
     public static final String KEY_PREF_SHOW_NOTIFICATION = "pref_show_notification";
     public static final boolean DEFAULT_PREF_SHOW_NOTIFICATION = false;

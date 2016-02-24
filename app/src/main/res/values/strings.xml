@@ -319,6 +319,7 @@
     <string name="theme_solarized_dark">Solarized Dark</string>
 
     <string name="switch_to_remote">Switch to remote after media start</string>
+    <string name="keep_remote_above_lockscreen">Keep remote above lockscreen</string>
     <string name="show_notification">Show notification while playing</string>
     <string name="use_hardware_volume_keys">Use volume keys to control volume</string>
     <string name="vibrate_on_remote">Vibrate on remote button press</string>
