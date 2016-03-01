@@ -65,7 +65,7 @@
 
     <string name="connected_to">Connecté à %1$s</string>
     <string name="connecting">Connexion en cours\u2026</string>
-    <string name="connecting_to">Connexion à %1$s (%2$s)en cours\u2026</string>
+    <string name="connecting_to">Connexion à %1$s (%2$s) en cours\u2026</string>
 
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bienvenue</string>
@@ -319,6 +319,7 @@
     <string name="theme_solarized_dark">Solarisé Foncé</string>
 
     <string name="switch_to_remote">Basculer sur la télécommande après le début de la lecture</string>
+    <string name="keep_remote_above_lockscreen">Conserver la télécommande sur l\'écran de déverrouillage</string>
     <string name="show_notification">Afficher les notifications pendant la lecture</string>
     <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
     <string name="vibrate_on_remote">Vibrer à l\'appui</string>
