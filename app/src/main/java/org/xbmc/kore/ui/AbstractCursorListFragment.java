@@ -17,6 +17,7 @@
 package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
@@ -25,15 +26,20 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
@@ -54,6 +60,8 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractCursorListFragment.class);
 
+	private final String BUNDLE_KEY_SEARCH_QUERY = "search_query";
+
 	private ServiceConnection serviceConnection;
 
 	private HostInfo hostInfo;
@@ -66,7 +74,13 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	// The search filter to use in the loader
 	private String searchFilter = null;
+	private String savedSearchFilter;
+	private boolean supportsSearch;
+	private boolean loaderLoading;
 
+	private SearchView searchView;
+
+	abstract protected void onListItemClicked(View view);
 	abstract protected CursorLoader createCursorLoader();
 
 	@TargetApi(16)
@@ -83,6 +97,11 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		swipeRefreshLayout.setOnRefreshListener(this);
 
 		adapter = (CursorAdapter) getAdapter();
+
+		if (savedInstanceState != null) {
+			savedSearchFilter = savedInstanceState.getString(BUNDLE_KEY_SEARCH_QUERY);
+		}
+		searchFilter = savedSearchFilter;
 
 		return root;
 	}
@@ -119,8 +138,32 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		if (!TextUtils.isEmpty(searchFilter)) {
+			savedSearchFilter = searchFilter;
+		}
+		outState.putString(BUNDLE_KEY_SEARCH_QUERY, savedSearchFilter);
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected AdapterView.OnItemClickListener createOnItemClickListener() {
+		return new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				saveSearchState();
+				onListItemClicked(view);
+			}
+		};
+	}
+
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.abstractcursorlistfragment, menu);
+
+		if (supportsSearch) {
+			setupSearchMenuItem(menu, inflater);
+		}
 
 		super.onCreateOptionsMenu(menu, inflater);
 	}
@@ -204,6 +247,18 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
         }
     }
 
+	/**
+	 * Use this to indicate your fragment supports search queries.
+	 * Get the entered search query using {@link #getSearchFilter()}
+	 * <br/>
+	 * Note: make sure this is set before {@link #onCreateOptionsMenu(Menu, MenuInflater)} is called.
+	 * For instance in {@link #onAttach(Activity)}
+	 * @param supportsSearch true if you support search queries, false otherwise
+	 */
+	public void setSupportsSearch(boolean supportsSearch) {
+		this.supportsSearch = supportsSearch;
+	}
+
     protected void onSwipeRefresh() {
 		LogUtils.LOGD(TAG, "Swipe, starting sync for: " + getListSyncType());
         // Start the syncing process
@@ -218,8 +273,15 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	/** {@inheritDoc} */
 	@Override
 	public boolean onQueryTextChange(String newText) {
+		if ((!searchView.hasFocus()) && TextUtils.isEmpty(newText)) {
+			//onQueryTextChange called as a result of manually expanding the searchView in setupSearchMenuItem(...)
+			return true;
+		}
+
 		searchFilter = newText;
-		getLoaderManager().restartLoader(LOADER, null, this);
+
+		restartLoader();
+
 		return true;
 	}
 
@@ -236,12 +298,14 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	/** {@inheritDoc} */
 	@Override
 	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+		loaderLoading = true;
 		return createCursorLoader();
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+		loaderLoading = false;
 		adapter.swapCursor(cursor);
 		// To prevent the empty text from appearing on the first load, set it now
 		emptyView.setText(getString(R.string.swipe_down_to_refresh));
@@ -253,6 +317,12 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		adapter.swapCursor(null);
 	}
 
+	/**
+	 * Save the search state of the list fragment
+	 */
+	public void saveSearchState() {
+		savedSearchFilter = searchFilter;
+	}
 
 	/**
 	 * @return text entered in searchview
@@ -265,6 +335,58 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	 * Use this to reload the items in the list
 	 */
 	public void refreshList() {
-		getLoaderManager().restartLoader(LOADER, null, this);
+		restartLoader();
+	}
+
+	private void setupSearchMenuItem(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.media_search, menu);
+		MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+		if (searchMenuItem != null) {
+			searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+			searchView.setOnQueryTextListener(this);
+			searchView.setQueryHint(getString(R.string.action_search));
+			if ((savedSearchFilter != null) && (!TextUtils.isEmpty(savedSearchFilter))){
+				searchMenuItem.expandActionView();
+				searchView.setQuery(savedSearchFilter, false);
+				searchView.clearFocus();
+			}
+
+			MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+				@Override
+				public boolean onMenuItemActionExpand(MenuItem item) {
+					return true;
+				}
+
+				@Override
+				public boolean onMenuItemActionCollapse(MenuItem item) {
+					searchFilter = savedSearchFilter = null;
+					restartLoader();
+					return true;
+				}
+			});
+		}
+
+		//Handle clearing search query using the close button (X button).
+		View view = searchView.findViewById(R.id.search_close_btn);
+		if (view != null) {
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					EditText editText = (EditText) searchView.findViewById(R.id.search_src_text);
+					editText.setText("");
+					searchView.setQuery("", false);
+					searchFilter = savedSearchFilter = "";
+					restartLoader();
+				}
+			});
+		}
+	}
+
+	private void restartLoader() {
+		//When loader is restarted while current loader hasn't finished yet,
+		//it may result in none of the loaders finishing.
+		if(!loaderLoading) {
+			getLoaderManager().restartLoader(LOADER, null, this);
+		}
 	}
 }

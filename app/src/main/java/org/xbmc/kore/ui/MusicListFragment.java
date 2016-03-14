@@ -39,6 +39,8 @@ public class MusicListFragment extends Fragment {
 
     private TabsAdapter tabsAdapter;
 
+    private int currentItem;
+
     @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
     @InjectView(R.id.pager) ViewPager viewPager;
 
@@ -56,6 +58,28 @@ public class MusicListFragment extends Fragment {
         viewPager.setAdapter(tabsAdapter);
         pagerTabStrip.setViewPager(viewPager);
 
+        currentItem = viewPager.getCurrentItem();
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                AbstractCursorListFragment f =
+                        ((AbstractCursorListFragment) tabsAdapter.getStoredFragment(currentItem));
+                if (f != null) {
+                    f.saveSearchState();
+                }
+                currentItem = viewPager.getCurrentItem();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
         return root;
     }
 
