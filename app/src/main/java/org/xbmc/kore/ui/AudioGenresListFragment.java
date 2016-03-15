@@ -108,7 +108,7 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
     /**
      * Audio genres list query parameters.
      */
-    private interface AudioGenreListQuery {
+    public interface AudioGenreListQuery {
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MediaContract.AudioGenres.GENREID,

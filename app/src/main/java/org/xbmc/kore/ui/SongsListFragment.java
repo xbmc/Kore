@@ -134,7 +134,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
     /**
      * Album songs list query parameters.
      */
-    private interface SongsListQuery {
+    public interface SongsListQuery {
         String[] PROJECTION = {
                 MediaDatabase.Tables.SONGS + "." + BaseColumns._ID,
                 MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE,

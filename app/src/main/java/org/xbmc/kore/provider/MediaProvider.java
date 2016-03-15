@@ -805,7 +805,7 @@ public class MediaProvider extends ContentProvider {
      * {@link MediaContract} fields that are fully qualified with a specific
      * parent {@link MediaDatabase.Tables}. Used when needed to work around SQL ambiguity.
      */
-    private interface Qualified {
+    public interface Qualified {
         String ALBUM_ARTISTS_HOST_ID =
                 MediaDatabase.Tables.ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID;
         String ALBUM_ARTISTS_ARTISTID =

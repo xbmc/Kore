@@ -30,6 +30,7 @@ import org.xbmc.kore.jsonrpc.type.LibraryType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaProvider;
+import org.xbmc.kore.service.library.SyncMusic;
 import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -45,12 +46,12 @@ public class Database {
         mediaProvider.onCreate();
 
         HostInfo hostInfo = addHost(context);
-
+        SyncMusic syncMusic = new SyncMusic(hostInfo.getId(), null);
         insertMovies(context, hostInfo.getId());
-        insertArtists(context, hostInfo.getId());
-        insertGenres(context, hostInfo.getId());
-        insertAlbums(context, hostInfo.getId());
-        insertSongs(context, hostInfo.getId());
+        insertArtists(context, syncMusic);
+        insertGenres(context, syncMusic);
+        insertAlbums(context, syncMusic);
+        insertSongs(context, syncMusic);
 
         return hostInfo;
     }
@@ -96,86 +97,34 @@ public class Database {
         context.getContentResolver().bulkInsert(MediaContract.MovieCast.CONTENT_URI, movieCastValuesBatch);
     }
 
-    private static void insertArtists(Context context, int hostId) throws ApiException, IOException {
+    private static void insertArtists(Context context, SyncMusic syncMusic) throws ApiException, IOException {
         AudioLibrary.GetArtists getArtists = new AudioLibrary.GetArtists(false);
         String result = Utils.readFile(context, "AudioLibrary.GetArtists.json");
         ArrayList<AudioType.DetailsArtist> artistList = (ArrayList) getArtists.resultFromJson(result).items;
 
-        ContentValues artistValuesBatch[] = new ContentValues[artistList.size()];
-        for (int i = 0; i < artistList.size(); i++) {
-            AudioType.DetailsArtist artist = artistList.get(i);
-            artistValuesBatch[i] = SyncUtils.contentValuesFromArtist(hostId, artist);
-        }
-
-        context.getContentResolver().bulkInsert(MediaContract.Artists.CONTENT_URI, artistValuesBatch);
+        syncMusic.insertArtists(artistList, context.getContentResolver());
     }
 
-    private static void insertGenres(Context context, int hostId) throws ApiException, IOException {
+    private static void insertGenres(Context context, SyncMusic syncMusic) throws ApiException, IOException {
         AudioLibrary.GetGenres getGenres = new AudioLibrary.GetGenres();
         ArrayList<LibraryType.DetailsGenre> genreList = (ArrayList) getGenres.resultFromJson(Utils.readFile(context, "AudioLibrary.GetGenres.json"));
 
-        ContentValues genresValuesBatch[] = new ContentValues[genreList.size()];
-        for (int i = 0; i < genreList.size(); i++) {
-            LibraryType.DetailsGenre genre = genreList.get(i);
-            genresValuesBatch[i] = SyncUtils.contentValuesFromAudioGenre(hostId, genre);
-        }
-
-        context.getContentResolver().bulkInsert(MediaContract.AudioGenres.CONTENT_URI, genresValuesBatch);
+        syncMusic.insertGenresItems(genreList, context.getContentResolver());
     }
 
-    private static void insertAlbums(Context context, int hostId) throws ApiException, IOException {
+    private static void insertAlbums(Context context, SyncMusic syncMusic) throws ApiException, IOException {
         AudioLibrary.GetAlbums getAlbums = new AudioLibrary.GetAlbums();
         String result = Utils.readFile(context, "AudioLibrary.GetAlbums.json");
         ArrayList<AudioType.DetailsAlbum> albumList = (ArrayList) getAlbums.resultFromJson(result).items;
 
-        ContentResolver contentResolver = context.getContentResolver();
-
-        ContentValues albumValuesBatch[] = new ContentValues[albumList.size()];
-        int artistsCount = 0, genresCount = 0;
-        for (int i = 0; i < albumList.size(); i++) {
-            AudioType.DetailsAlbum album = albumList.get(i);
-            albumValuesBatch[i] = SyncUtils.contentValuesFromAlbum(hostId, album);
-
-            artistsCount += album.artistid.size();
-            genresCount += album.genreid.size();
-        }
-        contentResolver.bulkInsert(MediaContract.Albums.CONTENT_URI, albumValuesBatch);
-
-        // Iterate on each album, collect the artists and the genres and insert them
-        ContentValues albumArtistsValuesBatch[] = new ContentValues[artistsCount];
-        ContentValues albumGenresValuesBatch[] = new ContentValues[genresCount];
-        int artistCount = 0, genreCount = 0;
-        for (AudioType.DetailsAlbum album : albumList) {
-            for (int artistId : album.artistid) {
-                albumArtistsValuesBatch[artistCount] = new ContentValues();
-                albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.HOST_ID, hostId);
-                albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.ALBUMID, album.albumid);
-                albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.ARTISTID, artistId);
-                artistCount++;
-            }
-
-            for (int genreId : album.genreid) {
-                albumGenresValuesBatch[genreCount] = new ContentValues();
-                albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.HOST_ID, hostId);
-                albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.ALBUMID, album.albumid);
-                albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.GENREID, genreId);
-                genreCount++;
-            }
-        }
-
-        contentResolver.bulkInsert(MediaContract.AlbumArtists.CONTENT_URI, albumArtistsValuesBatch);
-        contentResolver.bulkInsert(MediaContract.AlbumGenres.CONTENT_URI, albumGenresValuesBatch);
+        syncMusic.insertAlbumsItems(albumList, context.getContentResolver());
     }
 
-    private static void insertSongs(Context context, int hostId) throws ApiException, IOException {
+    private static void insertSongs(Context context, SyncMusic syncMusic) throws ApiException, IOException {
         AudioLibrary.GetSongs getSongs = new AudioLibrary.GetSongs();
-        ArrayList<AudioType.DetailsSong> songList = (ArrayList) getSongs.resultFromJson(Utils.readFile(context, "AudioLibrary.GetSongs.json")).items;
+        ArrayList<AudioType.DetailsSong> songList = (ArrayList)
+                getSongs.resultFromJson(Utils.readFile(context, "AudioLibrary.GetSongs.json")).items;
 
-        ContentValues songValuesBatch[] = new ContentValues[songList.size()];
-        for (int i = 0; i < songList.size(); i++) {
-            AudioType.DetailsSong song = songList.get(i);
-            songValuesBatch[i] = SyncUtils.contentValuesFromSong(hostId, song);
-        }
-        context.getContentResolver().bulkInsert(MediaContract.Songs.CONTENT_URI, songValuesBatch);
+        syncMusic.insertSongsItems(songList, context.getContentResolver());
     }
 }

@@ -163,7 +163,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     /**
      * Album list query parameters.
      */
-    private interface AlbumListQuery {
+    public interface AlbumListQuery {
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MediaContract.Albums.ALBUMID,

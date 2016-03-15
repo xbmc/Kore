@@ -18,6 +18,7 @@ package org.xbmc.kore.testhelpers;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.IBinder;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.widget.DrawerLayout;
@@ -92,6 +93,15 @@ public class Utils {
         isInitialized = false;
     }
 
+    public static String cursorToString(Cursor cursor) {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (String name : cursor.getColumnNames()) {
+            int index = cursor.getColumnIndex(name);
+            stringBuffer.append(name + "=" + cursor.getString(index) + "\n");
+        }
+        return stringBuffer.toString();
+    }
+
     private static void disableAnimations() {
         int permStatus = context.checkCallingOrSelfPermission(ANIMATION_PERMISSION);
         if (permStatus == PackageManager.PERMISSION_GRANTED) {
@@ -126,5 +136,17 @@ public class Utils {
         } catch (Exception e) {
             Log.e("SystemAnimations", "Could not change animation scale to " + animationScale + " :'(");
         }
+    }
+
+    public static boolean moveCursorTo(Cursor cursor, int index, int item) {
+        if (( cursor == null ) || ( ! cursor.moveToFirst() ))
+            return false;
+
+        do {
+            if ( cursor.getInt(index) == item )
+                return true;
+        } while (cursor.moveToNext());
+
+        return false;
     }
 }
