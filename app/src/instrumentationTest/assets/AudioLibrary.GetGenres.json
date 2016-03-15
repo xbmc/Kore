@@ -1,0 +1,247 @@
+{
+   "id" : "libGenres",
+   "result" : {
+      "limits" : {
+         "total" : 39,
+         "start" : 0,
+         "end" : 39
+      },
+      "genres" : [
+         {
+            "genreid" : 9,
+            "title" : "Ambient",
+            "label" : "Ambient",
+            "thumbnail" : ""
+         },
+         {
+            "label" : "Bluegrass",
+            "thumbnail" : "",
+            "genreid" : 33,
+            "title" : "Bluegrass"
+         },
+         {
+            "title" : "Blues",
+            "genreid" : 1,
+            "thumbnail" : "",
+            "label" : "Blues"
+         },
+         {
+            "label" : "Blues Compilation",
+            "thumbnail" : "",
+            "genreid" : 35,
+            "title" : "Blues Compilation"
+         },
+         {
+            "thumbnail" : "",
+            "label" : "Brutal Death Metal",
+            "title" : "Brutal Death Metal",
+            "genreid" : 32
+         },
+         {
+            "title" : "Celtic",
+            "genreid" : 24,
+            "thumbnail" : "",
+            "label" : "Celtic"
+         },
+         {
+            "genreid" : 11,
+            "title" : "Classic for Kids",
+            "label" : "Classic for Kids",
+            "thumbnail" : ""
+         },
+         {
+            "thumbnail" : "",
+            "label" : "Classical",
+            "title" : "Classical",
+            "genreid" : 3
+         },
+         {
+            "genreid" : 13,
+            "title" : "Country",
+            "label" : "Country",
+            "thumbnail" : ""
+         },
+         {
+            "title" : "Dancehall",
+            "genreid" : 31,
+            "thumbnail" : "",
+            "label" : "Dancehall"
+         },
+         {
+            "title" : "Easy Listening",
+            "genreid" : 20,
+            "thumbnail" : "",
+            "label" : "Easy Listening"
+         },
+         {
+            "title" : "Folk",
+            "genreid" : 4,
+            "thumbnail" : "",
+            "label" : "Folk"
+         },
+         {
+            "label" : "Folklore",
+            "thumbnail" : "",
+            "genreid" : 22,
+            "title" : "Folklore"
+         },
+         {
+            "label" : "Goregrind",
+            "thumbnail" : "",
+            "genreid" : 14,
+            "title" : "Goregrind"
+         },
+         {
+            "genreid" : 8,
+            "title" : "Grind Core",
+            "label" : "Grind Core",
+            "thumbnail" : ""
+         },
+         {
+            "title" : "Grindcore",
+            "genreid" : 18,
+            "thumbnail" : "",
+            "label" : "Grindcore"
+         },
+         {
+            "label" : "Hardcore",
+            "thumbnail" : "",
+            "genreid" : 12,
+            "title" : "Hardcore"
+         },
+         {
+            "label" : "Hardcore Thrash",
+            "thumbnail" : "",
+            "genreid" : 30,
+            "title" : "Hardcore Thrash"
+         },
+         {
+            "title" : "Hip-Hop",
+            "genreid" : 17,
+            "thumbnail" : "",
+            "label" : "Hip-Hop"
+         },
+         {
+            "title" : "Instrumental",
+            "genreid" : 39,
+            "thumbnail" : "",
+            "label" : "Instrumental"
+         },
+         {
+            "genreid" : 5,
+            "title" : "Jazz",
+            "label" : "Jazz",
+            "thumbnail" : ""
+         },
+         {
+            "label" : "Jazz+Funk",
+            "thumbnail" : "",
+            "genreid" : 21,
+            "title" : "Jazz+Funk"
+         },
+         {
+            "thumbnail" : "",
+            "label" : "Metal",
+            "title" : "Metal",
+            "genreid" : 10
+         },
+         {
+            "label" : "Oldies",
+            "thumbnail" : "",
+            "genreid" : 36,
+            "title" : "Oldies"
+         },
+         {
+            "genreid" : 23,
+            "title" : "Other",
+            "label" : "Other",
+            "thumbnail" : ""
+         },
+         {
+            "title" : "Pop",
+            "genreid" : 25,
+            "thumbnail" : "",
+            "label" : "Pop"
+         },
+         {
+            "thumbnail" : "",
+            "label" : "porno grind",
+            "title" : "porno grind",
+            "genreid" : 26
+         },
+         {
+            "title" : "Punk",
+            "genreid" : 7,
+            "thumbnail" : "",
+            "label" : "Punk"
+         },
+         {
+            "label" : "Punk Rock",
+            "thumbnail" : "",
+            "genreid" : 16,
+            "title" : "Punk Rock"
+         },
+         {
+            "title" : "Rap",
+            "genreid" : 28,
+            "thumbnail" : "",
+            "label" : "Rap"
+         },
+         {
+            "title" : "Reggae",
+            "genreid" : 2,
+            "thumbnail" : "",
+            "label" : "Reggae"
+         },
+         {
+            "title" : "Rhythm and Blues",
+            "genreid" : 19,
+            "thumbnail" : "",
+            "label" : "Rhythm and Blues"
+         },
+         {
+            "title" : "Rock",
+            "genreid" : 34,
+            "thumbnail" : "",
+            "label" : "Rock"
+         },
+         {
+            "genreid" : 15,
+            "title" : "Salsa",
+            "label" : "Salsa",
+            "thumbnail" : ""
+         },
+         {
+            "thumbnail" : "",
+            "label" : "Soul",
+            "title" : "Soul",
+            "genreid" : 29
+         },
+         {
+            "thumbnail" : "",
+            "label" : "Soundtrack",
+            "title" : "Soundtrack",
+            "genreid" : 6
+         },
+         {
+            "thumbnail" : "",
+            "label" : "Sprachkurs",
+            "title" : "Sprachkurs",
+            "genreid" : 27
+         },
+         {
+            "title" : "Κινηματογραφική",
+            "genreid" : 37,
+            "thumbnail" : "",
+            "label" : "Κινηματογραφική"
+         },
+         {
+            "title" : "ゲーム音楽",
+            "genreid" : 38,
+            "thumbnail" : "",
+            "label" : "ゲーム音楽"
+         }
+      ]
+   },
+   "jsonrpc" : "2.0"
+}
