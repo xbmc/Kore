@@ -50,7 +50,7 @@ import org.xbmc.kore.utils.UIUtils;
 /**
  * Fragment that presents the album genres list
  */
-public class AudioGenresListFragment extends AbstractListFragment {
+public class AudioGenresListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(AudioGenresListFragment.class);
 
     public interface OnAudioGenreSelectedListener {

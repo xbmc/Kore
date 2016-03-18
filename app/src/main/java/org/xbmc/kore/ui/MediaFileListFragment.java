@@ -21,15 +21,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.PopupMenu;
@@ -56,13 +53,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
 /**
  * Presents a list of files of different types (Video/Music)
  */
-public class MediaFileListFragment extends Fragment {
+public class MediaFileListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(MediaFileListFragment.class);
 
     public static final String MEDIA_TYPE = "mediaType";
@@ -80,15 +74,15 @@ public class MediaFileListFragment extends Fragment {
     String mediaType = Files.Media.MUSIC;
     String parentDirectory = null;
     int playlistId = PlaylistType.MUSIC_PLAYLISTID;             // this is the ID of the music player
-    private MediaFileListAdapter adapter = null;
+//    private MediaFileListAdapter adapter = null;
     boolean browseRootAlready = false;
 
     ArrayList<FileLocation> rootFileLocation = new ArrayList<FileLocation>();
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
 
-    @InjectView(R.id.list) GridView folderGridView;
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(android.R.id.empty) TextView emptyView;
+//    @InjectView(R.id.list) GridView folderGridView;
+//    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+//    @InjectView(android.R.id.empty) TextView emptyView;
 
     public static MediaFileListFragment newInstance(final String media) {
         MediaFileListFragment fragment = new MediaFileListFragment();
@@ -103,7 +97,7 @@ public class MediaFileListFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString(MEDIA_TYPE, mediaType);
         try {
-            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList<FileLocation>)adapter.getFileItemList());
+            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList<FileLocation>) ((MediaFileListAdapter) getAdapter()).getFileItemList());
         } catch (NullPointerException npe) {
             // adapter is null probably nothing was save in bundle because the directory is empty
             // ignore this so that the empty message would display later on
@@ -113,7 +107,23 @@ public class MediaFileListFragment extends Fragment {
     }
 
     @Override
+    protected AdapterView.OnItemClickListener createOnItemClickListener() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(position));
+            }
+        };
+    }
+
+    @Override
+    protected BaseAdapter createAdapter() {
+        return new MediaFileListAdapter(getActivity(), R.layout.grid_item_file);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
             mediaType = args.getString(MEDIA_TYPE, Files.Media.MUSIC);
@@ -123,11 +133,8 @@ public class MediaFileListFragment extends Fragment {
                 playlistId = PlaylistType.PICTURE_PLAYLISTID;
             }
         }
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
-        ButterKnife.inject(this, root);
 
         hostManager = HostManager.getInstance(getActivity());
-        swipeRefreshLayout.setEnabled(false);
 
         emptyView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,18 +142,7 @@ public class MediaFileListFragment extends Fragment {
                 browseSources();
             }
         });
-        folderGridView.setEmptyView(emptyView);
-        folderGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                handleFileSelect(adapter.getItem(position));
-            }
-        });
 
-        if (adapter == null) {
-            adapter = new MediaFileListAdapter(getActivity(), R.layout.grid_item_file);
-        }
-        folderGridView.setAdapter(adapter);
         if (savedInstanceState != null) {
             mediaType = savedInstanceState.getString(MEDIA_TYPE);
             //currentPath = savedInstanceState.getString(CURRENT_PATH);
@@ -158,7 +154,7 @@ public class MediaFileListFragment extends Fragment {
             ArrayList<FileLocation> list = savedInstanceState.getParcelableArrayList(PATH_CONTENTS);
             rootFileLocation = savedInstanceState.getParcelableArrayList(ROOT_PATH_CONTENTS);
             browseRootAlready = savedInstanceState.getBoolean(ROOT_VISITED);
-            adapter.setFilelistItems(list);
+            ((MediaFileListAdapter) getAdapter()).setFilelistItems(list);
         }
         else {
             browseSources();
@@ -187,13 +183,13 @@ public class MediaFileListFragment extends Fragment {
 
     public void onBackPressed() {
         // Emulate a click on ..
-        handleFileSelect(adapter.getItem(0));
+        handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(0));
     }
 
     public boolean atRootDirectory() {
-        if (adapter.getCount() == 0)
+        if (getAdapter().getCount() == 0)
             return true;
-        FileLocation fl = adapter.getItem(0);
+        FileLocation fl = ((MediaFileListAdapter) getAdapter()).getItem(0);
         if (fl == null)
             return true;
         else
@@ -224,7 +220,7 @@ public class MediaFileListFragment extends Fragment {
 
                 browseRootAlready = true;
                 emptyView.setText(getString(R.string.source_empty));
-                adapter.setFilelistItems(rootFileLocation);
+                ((MediaFileListAdapter) getAdapter()).setFilelistItems(rootFileLocation);
             }
 
             @Override
@@ -320,7 +316,7 @@ public class MediaFileListFragment extends Fragment {
                 for (ListType.ItemFile i : result) {
                     flList.add(FileLocation.newInstanceFromItemFile(getActivity(), i));
                 }
-                adapter.setFilelistItems(flList);
+                ((MediaFileListAdapter) getAdapter()).setFilelistItems(flList);
                 browseRootAlready = false;
             }
 

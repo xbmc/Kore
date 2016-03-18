@@ -50,7 +50,7 @@ import org.xbmc.kore.utils.Utils;
 /**
  * Fragment that presents the artists list
  */
-public class MusicVideoListFragment extends AbstractListFragment {
+public class MusicVideoListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(MusicVideoListFragment.class);
 
     public interface OnMusicVideoSelectedListener {
