@@ -80,6 +80,11 @@ public class RemoteActivity extends BaseActivity
         SendTextDialogFragment.SendTextDialogListener {
 	private static final String TAG = LogUtils.makeLogTag(RemoteActivity.class);
 
+
+    private static final int NOWPLAYING_FRAGMENT_ID = 1;
+    private static final int REMOTE_FRAGMENT_ID = 2;
+    private static final int PLAYLIST_FRAGMENT_ID = 3;
+
     /**
      * Host manager singleton
      */
@@ -125,9 +130,9 @@ public class RemoteActivity extends BaseActivity
 
         // Set up pager and fragments
         TabsAdapter tabsAdapter = new TabsAdapter(this, getSupportFragmentManager())
-                .addTab(NowPlayingFragment.class, null, R.string.now_playing, 1)
-                .addTab(RemoteFragment.class, null, R.string.remote, 2)
-                .addTab(PlaylistFragment.class, null, R.string.playlist, 3);
+                .addTab(NowPlayingFragment.class, null, R.string.now_playing, NOWPLAYING_FRAGMENT_ID)
+                .addTab(RemoteFragment.class, null, R.string.remote, REMOTE_FRAGMENT_ID)
+                .addTab(PlaylistFragment.class, null, R.string.playlist, PLAYLIST_FRAGMENT_ID);
 
         viewPager.setAdapter(tabsAdapter);
         pageIndicator.setViewPager(viewPager);
@@ -323,7 +328,7 @@ public class RemoteActivity extends BaseActivity
 
 
     private void setupActionBar() {
-        setToolbarTitle(toolbar, 1);
+        setToolbarTitle(toolbar, NOWPLAYING_FRAGMENT_ID);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -472,13 +477,7 @@ public class RemoteActivity extends BaseActivity
                     }, callbackHandler);
                 }
 
-                // Force a refresh of the playlist fragment
-                String tag = "android:switcher:" + viewPager.getId() + ":" + 3;
-                PlaylistFragment playlistFragment = (PlaylistFragment)getSupportFragmentManager()
-                        .findFragmentByTag(tag);
-                if (playlistFragment != null) {
-                    playlistFragment.forceRefreshPlaylist();
-                }
+                refreshPlaylist();
             }
 
             @Override
@@ -669,5 +668,19 @@ public class RemoteActivity extends BaseActivity
      */
     public void SwitchToRemotePanel() {
         viewPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onShuffleClicked() {
+        refreshPlaylist();
+    }
+
+    private void refreshPlaylist() {
+        String tag = "android:switcher:" + viewPager.getId() + ":" + PLAYLIST_FRAGMENT_ID;
+        PlaylistFragment playlistFragment = (PlaylistFragment)getSupportFragmentManager()
+                .findFragmentByTag(tag);
+        if (playlistFragment != null) {
+            playlistFragment.forceRefreshPlaylist();
+        }
     }
 }
