@@ -49,7 +49,7 @@ public class ArtistDetailsFragment extends Fragment {
         ArtistDetailsFragment fragment = new ArtistDetailsFragment();
 
         Bundle args = new Bundle();
-        args.putInt(ArtistOverviewFragment.BUNDLE_KEY_ID, vh.artistId);
+        args.putInt(ArtistOverviewFragment.BUNDLE_KEY_ARTISTID, vh.artistId);
         args.putInt(AlbumListFragment.BUNDLE_KEY_ARTISTID, vh.artistId);
         args.putString(ArtistOverviewFragment.BUNDLE_KEY_TITLE, vh.artistName);
         args.putString(ArtistOverviewFragment.BUNDLE_KEY_FANART, vh.fanart);
@@ -67,7 +67,10 @@ public class ArtistDetailsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int id = getArguments().getInt(ArtistOverviewFragment.BUNDLE_KEY_ID, -1);
+        Bundle arguments = getArguments();
+        int id = arguments.getInt(ArtistOverviewFragment.BUNDLE_KEY_ARTISTID, -1);
+
+        arguments.putInt(SongsListFragment.BUNDLE_KEY_ARTISTID, id);
 
         if ((container == null) || (id == -1)) {
             // We're not being shown or there's nothing to show
@@ -79,10 +82,12 @@ public class ArtistDetailsFragment extends Fragment {
 
         long baseFragmentId = id * 10;
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
-                .addTab(ArtistOverviewFragment.class, getArguments(), R.string.info,
+                .addTab(ArtistOverviewFragment.class, arguments, R.string.info,
                         baseFragmentId)
-                .addTab(AlbumListFragment.class, getArguments(),
-                        R.string.albums, baseFragmentId + 1);
+                .addTab(AlbumListFragment.class, arguments,
+                        R.string.albums, baseFragmentId + 1)
+                .addTab(SongsListFragment.class, arguments,
+                        R.string.songs, baseFragmentId + 2);
 
         viewPager.setAdapter(tabsAdapter);
         pagerTabStrip.setViewPager(viewPager);

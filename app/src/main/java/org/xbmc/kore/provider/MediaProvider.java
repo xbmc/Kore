@@ -80,6 +80,7 @@ public class MediaProvider extends ContentProvider {
     private static final int SONGS_ARTIST = 801;
     private static final int SONGS_ALBUM = 802;
     private static final int SONGS_ID = 803;
+    private static final int SONGS_LIST = 804;
 
     private static final int AUDIO_GENRES_ALL = 900;
     private static final int AUDIO_GENRES_LIST = 901;
@@ -181,6 +182,8 @@ public class MediaProvider extends ContentProvider {
         // Songs
         matcher.addURI(authority, MediaContract.PATH_SONGS, SONGS_ALL);
         matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
+                                  MediaContract.PATH_SONGS, SONGS_LIST);
+        matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
                                   MediaContract.PATH_ALBUMS + "/*/" +
                                   MediaContract.PATH_SONGS, SONGS_ALBUM);
         matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
@@ -273,6 +276,7 @@ public class MediaProvider extends ContentProvider {
             case ALBUMS_ID:
                 return MediaContract.Albums.CONTENT_ITEM_TYPE;
             case SONGS_ALL:
+            case SONGS_LIST:
             case SONGS_ARTIST:
             case SONGS_ALBUM:
                 return MediaContract.Songs.CONTENT_TYPE;
@@ -641,6 +645,11 @@ public class MediaProvider extends ContentProvider {
             case SONGS_ALL: {
                 return builder.table(MediaDatabase.Tables.SONGS);
             }
+            case SONGS_LIST: {
+                final String hostId = MediaContract.Hosts.getHostId(uri);
+                return builder.table(MediaDatabase.Tables.SONGS_AND_ALBUM_JOIN)
+                        .where(Qualified.SONGS_HOST_ID + "=?", hostId);
+            }
             case SONGS_ALBUM: {
                 final String hostId = MediaContract.Hosts.getHostId(uri);
                 final String albumId = MediaContract.Albums.getAlbumId(uri);
@@ -651,6 +660,7 @@ public class MediaProvider extends ContentProvider {
             case SONGS_ARTIST: {
                 final String hostId = MediaContract.Hosts.getHostId(uri);
                 final String artistId = MediaContract.Artists.getArtistId(uri);
+                LogUtils.LOGD(TAG, "buildQuerySelection: SONGS_ARTIST: "+MediaDatabase.Tables.SONGS_FOR_ARTIST_JOIN);
                 return builder.table(MediaDatabase.Tables.SONGS_FOR_ARTIST_JOIN)
                        .where(Qualified.SONGS_HOST_ID + "=?", hostId)
                        .where(Qualified.ALBUM_ARTISTS_ARTISTID + "=?", artistId);

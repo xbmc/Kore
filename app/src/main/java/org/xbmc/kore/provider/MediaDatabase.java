@@ -96,7 +96,17 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 SONGS + " JOIN " + ALBUM_ARTISTS + " ON " +
                 SONGS + "." + MediaContract.Songs.HOST_ID + "=" + ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID +
                 " AND " +
-                SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.ALBUMID;
+                SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.ALBUMID +
+                " JOIN " + ALBUMS + " ON " +
+                SONGS + "." + MediaContract.Songs.HOST_ID + "=" + ALBUMS + "." + MediaContract.Albums.HOST_ID +
+                " AND " +
+                SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUMS + "." + MediaContract.Albums.ALBUMID;
+
+        String SONGS_AND_ALBUM_JOIN =
+                SONGS + " JOIN " + ALBUMS + " ON " +
+                SONGS + "." + MediaContract.Songs.HOST_ID + "=" + ALBUMS + "." + MediaContract.Albums.HOST_ID +
+                " AND " +
+                SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUMS + "." + MediaContract.Albums.ALBUMID;
     }
 
     private interface References {

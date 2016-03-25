@@ -73,7 +73,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(ArtistOverviewFragment.class);
 
-    public static final String BUNDLE_KEY_ID = "id";
+    public static final String BUNDLE_KEY_ARTISTID = "id";
     public static final String POSTER_TRANS_NAME = "POSTER_TRANS_NAME";
     public static final String BUNDLE_KEY_TITLE = "title";
     public static final String BUNDLE_KEY_GENRE = "genre";
@@ -116,7 +116,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         Bundle bundle = getArguments();
-        artistId = bundle.getInt(BUNDLE_KEY_ID, -1);
+        artistId = bundle.getInt(BUNDLE_KEY_ARTISTID, -1);
 
         if ((container == null) || (artistId == -1)) {
             // We're not being shown or there's nothing to show
@@ -455,7 +455,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
     }
 
     /**
-     * Movie cast list query parameters.
+     * Song list query parameters.
      */
     private interface AlbumSongsListQuery {
         String[] PROJECTION = {
