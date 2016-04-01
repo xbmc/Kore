@@ -53,7 +53,7 @@ import org.xbmc.kore.utils.Utils;
 /**
  * Fragment that presents the movie list
  */
-public class MovieListFragment extends AbstractListFragment {
+public class MovieListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(MovieListFragment.class);
 
     public interface OnMovieSelectedListener {

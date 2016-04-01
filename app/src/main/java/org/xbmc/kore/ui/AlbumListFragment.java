@@ -54,7 +54,7 @@ import org.xbmc.kore.utils.Utils;
 /**
  * Fragment that presents the albums list
  */
-public class AlbumListFragment extends AbstractListFragment {
+public class AlbumListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(AlbumListFragment.class);
 
     public interface OnAlbumSelectedListener {

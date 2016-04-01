@@ -17,7 +17,7 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_multi_single_columns"
-          android:title="@string/single_column"
+    <item android:id="@+id/action_refresh"
+          android:title="@string/refresh"
           app:showAsAction="never"/>
 </menu>

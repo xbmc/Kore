@@ -53,7 +53,7 @@ import org.xbmc.kore.utils.Utils;
 /**
  * Fragment that presents the tv show list
  */
-public class TVShowListFragment extends AbstractListFragment {
+public class TVShowListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowListFragment.class);
 
     public interface OnTVShowSelectedListener {

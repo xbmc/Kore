@@ -41,7 +41,6 @@ import android.widget.TextView;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
@@ -54,7 +53,7 @@ import org.xbmc.kore.utils.Utils;
 /**
  * Fragment that presents the artists list
  */
-public class ArtistListFragment extends AbstractListFragment {
+public class ArtistListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(ArtistListFragment.class);
 
     public interface OnArtistSelectedListener {

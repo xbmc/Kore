@@ -17,19 +17,12 @@
 package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,44 +31,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
-import android.widget.CursorAdapter;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiException;
-import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
-import org.xbmc.kore.service.LibrarySyncService;
-import org.xbmc.kore.service.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
-public abstract class AbstractListFragment extends Fragment
-		implements LoaderManager.LoaderCallbacks<Cursor>,
-		SyncUtils.OnServiceListener,
-		SearchView.OnQueryTextListener,
-		SwipeRefreshLayout.OnRefreshListener {
+public abstract class AbstractListFragment extends Fragment {
     private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
-
-	private ServiceConnection serviceConnection;
-	private CursorAdapter adapter;
-
-	private HostInfo hostInfo;
-	private EventBus bus;
-
-	// Loader IDs
-	private static final int LOADER = 0;
-
-	// The search filter to use in the loader
-	private String searchFilter = null;
+	private BaseAdapter adapter;
 
 	private boolean gridViewUsesMultipleColumns;
 
@@ -84,8 +54,7 @@ public abstract class AbstractListFragment extends Fragment
 	@InjectView(android.R.id.empty) TextView emptyView;
 
 	abstract protected AdapterView.OnItemClickListener createOnItemClickListener();
-	abstract protected CursorAdapter createAdapter();
-	abstract protected CursorLoader createCursorLoader();
+	abstract protected BaseAdapter createAdapter();
 
 	@TargetApi(16)
 	@Nullable
@@ -94,22 +63,25 @@ public abstract class AbstractListFragment extends Fragment
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
 		ButterKnife.inject(this, root);
 
-		bus = EventBus.getDefault();
-		HostManager hostManager = HostManager.getInstance(getActivity());
-		hostInfo = hostManager.getHostInfo();
+		swipeRefreshLayout.setEnabled(false);
 
-		swipeRefreshLayout.setOnRefreshListener(this);
+		gridView.setEmptyView(emptyView);
+		gridView.setOnItemClickListener(createOnItemClickListener());
+
+		// Configure the adapter and start the loader
+		adapter = createAdapter();
+		gridView.setAdapter(adapter);
 
 		//Listener added to be able to determine if multiple-columns is at all possible for the current grid
 		//We use this information to enable/disable the menu item to switch between multiple and single columns
 		gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
-				if(gridView.getNumColumns() > 1) {
+				if (gridView.getNumColumns() > 1) {
 					gridViewUsesMultipleColumns = true;
 				}
 
-				if(Utils.isJellybeanOrLater()) {
+				if (Utils.isJellybeanOrLater()) {
 					gridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 				} else {
 					gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -119,47 +91,11 @@ public abstract class AbstractListFragment extends Fragment
 				getActivity().invalidateOptionsMenu();
 			}
 		});
-		return root;
-	}
 
-	@Override
-	public void onActivityCreated (Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		gridView.setEmptyView(emptyView);
-		gridView.setOnItemClickListener(createOnItemClickListener());
-
-		// Configure the adapter and start the loader
-		adapter = createAdapter();
-		gridView.setAdapter(adapter);
-
-		getLoaderManager().initLoader(LOADER, null, this);
 
 		setHasOptionsMenu(true);
-	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-		serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
-	}
-
-	@Override
-	public void onResume() {
-		bus.register(this);
-		super.onResume();
-	}
-
-	@Override
-	public void onPause() {
-		bus.unregister(this);
-		super.onPause();
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		SyncUtils.disconnectFromLibrarySyncService(getActivity(), serviceConnection);
+		return root;
 	}
 
 	@Override
@@ -193,9 +129,6 @@ public abstract class AbstractListFragment extends Fragment
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
-			case R.id.action_refresh:
-				onRefresh();
-				break;
 			case R.id.action_multi_single_columns:
 				toggleAmountOfColumns(item);
 				break;
@@ -219,139 +152,6 @@ public abstract class AbstractListFragment extends Fragment
 		adapter.notifyDataSetChanged(); //force gridView to redraw
 	}
 
-	/**
-	 * Swipe refresh layout callback
-	 */
-	/** {@inheritDoc} */
-	@Override
-	public void onRefresh() {
-		if (hostInfo != null) {
-			showRefreshAnimation();
-			onSwipeRefresh();
-		} else {
-			swipeRefreshLayout.setRefreshing(false);
-			Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-					.show();
-		}
-	}
-
-	/**
-	 * Should return the {@link org.xbmc.kore.service.LibrarySyncService} SyncType that
-	 * this list initiates
-	 * @return {@link org.xbmc.kore.service.LibrarySyncService} SyncType
-	 */
-	abstract protected String getListSyncType();
-
-	/**
-	 * Event bus post. Called when the syncing process ended
-	 *
-	 * @param event Refreshes data
-	 */
-	public void onEventMainThread(MediaSyncEvent event) {
-		onSyncProcessEnded(event);
-	}
-
-	/**
-	 * Called each time a MediaSyncEvent is received.
-	 * @param event
-	 */
-	protected void onSyncProcessEnded(MediaSyncEvent event) {
-        boolean silentSync = false;
-        if (event.syncExtras != null) {
-            silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
-        }
-
-		if (event.syncType.equals(getListSyncType())) {
-			swipeRefreshLayout.setRefreshing(false);
-			if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-				refreshList();
-                if (!silentSync) {
-                    Toast.makeText(getActivity(), R.string.sync_successful, Toast.LENGTH_SHORT)
-                        .show();
-                }
-            } else if (!silentSync) {
-				String msg = (event.errorCode == ApiException.API_ERROR) ?
-					String.format(getString(R.string.error_while_syncing), event.errorMessage) :
-					getString(R.string.unable_to_connect_to_xbmc);
-				Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-			}
-		}
-	}
-
-    @Override
-    public void onServiceConnected(LibrarySyncService librarySyncService) {
-        if(SyncUtils.isLibrarySyncing(
-              librarySyncService,
-              HostManager.getInstance(getActivity()).getHostInfo(),
-              getListSyncType())) {
-            showRefreshAnimation();
-        }
-    }
-
-    protected void onSwipeRefresh() {
-		LogUtils.LOGD(TAG, "Swipe, starting sync for: " + getListSyncType());
-        // Start the syncing process
-        Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
-        syncIntent.putExtra(getListSyncType(), true);
-        getActivity().startService(syncIntent);
-    }
-
-    /**
-     * Search view callbacks
-     */
-	/** {@inheritDoc} */
-	@Override
-	public boolean onQueryTextChange(String newText) {
-		searchFilter = newText;
-		getLoaderManager().restartLoader(LOADER, null, this);
-		return true;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public boolean onQueryTextSubmit(String newText) {
-		// All is handled in onQueryTextChange
-		return true;
-	}
-
-	/**
-	 * Loader callbacks
-	 */
-	/** {@inheritDoc} */
-	@Override
-	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-		return createCursorLoader();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-		adapter.swapCursor(cursor);
-		// To prevent the empty text from appearing on the first load, set it now
-		emptyView.setText(getString(R.string.swipe_down_to_refresh));
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void onLoaderReset(Loader<Cursor> cursorLoader) {
-		adapter.swapCursor(null);
-	}
-
-
-	/**
-	 * @return text entered in searchview
-	 */
-	public String getSearchFilter() {
-		return searchFilter;
-	}
-
-	/**
-	 * Use this to reload the items in the list
-	 */
-	public void refreshList() {
-		getLoaderManager().restartLoader(LOADER, null, this);
-	}
-
 	public void showRefreshAnimation() {
 		/**
 		 * Fixes issue with refresh animation not showing when using appcompat library (from version 20?)
@@ -363,5 +163,9 @@ public abstract class AbstractListFragment extends Fragment
 				swipeRefreshLayout.setRefreshing(true);
 			}
 		});
+	}
+
+	public BaseAdapter getAdapter() {
+		return adapter;
 	}
 }
