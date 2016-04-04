@@ -47,6 +47,8 @@ public abstract class AbstractListFragment extends Fragment {
     private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
 	private BaseAdapter adapter;
 
+	private final String BUNDLE_SAVEDINSTANCE_LISTPOSITION = "lposition";
+
 	private boolean gridViewUsesMultipleColumns;
 
 	@InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
@@ -72,6 +74,16 @@ public abstract class AbstractListFragment extends Fragment {
 		adapter = createAdapter();
 		gridView.setAdapter(adapter);
 
+		if (savedInstanceState != null) {
+			final int listPosition = savedInstanceState.getInt(BUNDLE_SAVEDINSTANCE_LISTPOSITION);
+			gridView.post(new Runnable() {
+				@Override
+				public void run() {
+					gridView.setSelection(listPosition);
+				}
+			});
+		}
+
 		//Listener added to be able to determine if multiple-columns is at all possible for the current grid
 		//We use this information to enable/disable the menu item to switch between multiple and single columns
 		gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -92,10 +104,17 @@ public abstract class AbstractListFragment extends Fragment {
 			}
 		});
 
-
 		setHasOptionsMenu(true);
 
 		return root;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (gridView != null) {
+			outState.putInt(BUNDLE_SAVEDINSTANCE_LISTPOSITION, gridView.getFirstVisiblePosition());
+		}
 	}
 
 	@Override
