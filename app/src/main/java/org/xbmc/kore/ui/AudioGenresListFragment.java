@@ -22,16 +22,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -64,16 +59,11 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     @Override
-    protected AdapterView.OnItemClickListener createOnItemClickListener() {
-        return new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the movie id from the tag
-                ViewHolder tag = (ViewHolder) view.getTag();
-                // Notify the activity
-                listenerActivity.onAudioGenreSelected(tag.genreId, tag.genreTitle);
-            }
-        };
+    protected void onListItemClicked(View view) {
+        // Get the movie id from the tag
+        ViewHolder tag = (ViewHolder) view.getTag();
+        // Notify the activity
+        listenerActivity.onAudioGenreSelected(tag.genreId, tag.genreTitle);
     }
 
     @Override
@@ -106,6 +96,7 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnAudioGenreSelectedListener");
         }
+        setSupportsSearch(true);
     }
 
     @Override
@@ -113,23 +104,6 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
         super.onDetach();
         listenerActivity = null;
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!isAdded()) {
-            // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
-            super.onCreateOptionsMenu(menu, inflater);
-            return;
-        }
-
-        inflater.inflate(R.menu.media_search, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(this);
-        searchView.setQueryHint(getString(R.string.action_search_genres));
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
 
     /**
      * Audio genres list query parameters.
