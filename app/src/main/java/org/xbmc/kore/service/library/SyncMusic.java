@@ -1,0 +1,351 @@
+/*
+ * Copyright 2015 Synced Synapse. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.xbmc.kore.service.library;
+
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.os.Handler;
+
+import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.jsonrpc.method.AudioLibrary;
+import org.xbmc.kore.jsonrpc.type.AudioType;
+import org.xbmc.kore.jsonrpc.type.LibraryType;
+import org.xbmc.kore.jsonrpc.type.ListType;
+import org.xbmc.kore.provider.MediaContract;
+import org.xbmc.kore.utils.LogUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SyncMusic extends SyncItem {
+    public static final String TAG = LogUtils.makeLogTag(SyncMusic.class);
+
+    private static final int LIMIT_SYNC_ARTISTS = 300;
+    private static final int LIMIT_SYNC_ALBUMS = 300;
+    private static final int LIMIT_SYNC_SONGS = 600;
+
+    private final int hostId;
+    private final Bundle syncExtras;
+
+    /**
+     * Syncs all the music on selected XBMC to the local database
+     * @param hostId XBMC host id
+     */
+    public SyncMusic(final int hostId, Bundle syncExtras) {
+        this.hostId = hostId;
+        this.syncExtras = syncExtras;
+    }
+
+    /** {@inheritDoc} */
+    public String getDescription() {
+        return "Sync music for host: " + hostId;
+    }
+
+    /** {@inheritDoc} */
+    public String getSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
+
+    /** {@inheritDoc} */
+    public Bundle getSyncExtras() {
+        return syncExtras;
+    }
+
+    /** {@inheritDoc} */
+    public void sync(final SyncOrchestrator orchestrator,
+                     final HostConnection hostConnection,
+                     final Handler callbackHandler,
+                     final ContentResolver contentResolver) {
+        chainCallSyncArtists(orchestrator, hostConnection, callbackHandler, contentResolver, 0);
+    }
+
+    private final static String getArtistsProperties[] = {
+            // AudioType.FieldsArtists.INSTRUMENT, AudioType.FieldsArtists.STYLE,
+            // AudioType.FieldsArtists.MOOD, AudioType.FieldsArtists.BORN,
+            // AudioType.FieldsArtists.FORMED,
+            AudioType.FieldsArtists.DESCRIPTION,
+            AudioType.FieldsArtists.GENRE,
+            // AudioType.FieldsArtists.DIED,
+            // AudioType.FieldsArtists.DISBANDED, AudioType.FieldsArtists.YEARSACTIVE,
+            //AudioType.FieldsArtists.MUSICBRAINZARTISTID,
+            AudioType.FieldsArtists.FANART,
+            AudioType.FieldsArtists.THUMBNAIL
+    };
+    /**
+     * Gets all artists recursively and forwards the call to Genres
+     * Genres->Albums->Songs
+     */
+    public void chainCallSyncArtists(final SyncOrchestrator orchestrator,
+                                     final HostConnection hostConnection,
+                                     final Handler callbackHandler,
+                                     final ContentResolver contentResolver,
+                                     final int startIdx) {
+        // Artists->Genres->Albums->Songs
+        // Only gets album artists (first parameter)
+        ListType.Limits limits = new ListType.Limits(startIdx, startIdx + LIMIT_SYNC_ARTISTS);
+        AudioLibrary.GetArtists action = new AudioLibrary.GetArtists(limits, true, getArtistsProperties);
+        action.execute(hostConnection, new ApiCallback<List<AudioType.DetailsArtist>>() {
+            @Override
+            public void onSuccess(List<AudioType.DetailsArtist> result) {
+                if (result == null) result = new ArrayList<>(0); // Safeguard
+                // First delete all music info
+                if (startIdx == 0) deleteMusicInfo(contentResolver, hostId);
+
+                // Insert artists
+                ContentValues artistValuesBatch[] = new ContentValues[result.size()];
+                for (int i = 0; i < result.size(); i++) {
+                    AudioType.DetailsArtist artist = result.get(i);
+                    artistValuesBatch[i] = SyncUtils.contentValuesFromArtist(hostId, artist);
+                }
+                contentResolver.bulkInsert(MediaContract.Artists.CONTENT_URI, artistValuesBatch);
+
+                if (result.size() == LIMIT_SYNC_ARTISTS) {
+                    // Max limit returned, there may be some more
+                    LogUtils.LOGD(TAG, "chainCallSyncArtists: More results on media center, recursing.");
+                    result = null; // Help the GC?
+                    chainCallSyncArtists(orchestrator, hostConnection, callbackHandler, contentResolver,
+                                         startIdx + LIMIT_SYNC_ARTISTS);
+                } else {
+                    // Ok, we have all the artists, proceed
+                    LogUtils.LOGD(TAG, "chainCallSyncArtists: Got all results, continuing");
+                    chainCallSyncGenres(orchestrator, hostConnection, callbackHandler, contentResolver);
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                // Ok, something bad happend, just quit
+                orchestrator.syncItemFailed(errorCode, description);
+            }
+        }, callbackHandler);
+    }
+
+    private void deleteMusicInfo(final ContentResolver contentResolver,
+                                 int hostId) {
+        // Delete music info
+        String where = MediaContract.Artists.HOST_ID + "=?";
+        contentResolver.delete(MediaContract.AlbumArtists.CONTENT_URI,
+                               where, new String[]{String.valueOf(hostId)});
+        contentResolver.delete(MediaContract.AlbumGenres.CONTENT_URI,
+                               where, new String[]{String.valueOf(hostId)});
+        contentResolver.delete(MediaContract.Songs.CONTENT_URI,
+                               where, new String[]{String.valueOf(hostId)});
+        contentResolver.delete(MediaContract.AudioGenres.CONTENT_URI,
+                               where, new String[]{String.valueOf(hostId)});
+        contentResolver.delete(MediaContract.Albums.CONTENT_URI,
+                               where, new String[]{String.valueOf(hostId)});
+        contentResolver.delete(MediaContract.Artists.CONTENT_URI,
+                               where, new String[]{String.valueOf(hostId)});
+    }
+
+
+    private final static String getGenresProperties[] = {
+            LibraryType.FieldsGenre.TITLE, LibraryType.FieldsGenre.THUMBNAIL
+    };
+    /**
+     * Syncs Audio genres and forwards calls to sync albums:
+     * Genres->Albums->Songs
+     */
+    private void chainCallSyncGenres(final SyncOrchestrator orchestrator,
+                                     final HostConnection hostConnection,
+                                     final Handler callbackHandler,
+                                     final ContentResolver contentResolver) {
+        // Genres->Albums->Songs
+        AudioLibrary.GetGenres action = new AudioLibrary.GetGenres(getGenresProperties);
+        action.execute(hostConnection, new ApiCallback<List<LibraryType.DetailsGenre>>() {
+            @Override
+            public void onSuccess(List<LibraryType.DetailsGenre> result) {
+                if (result == null) result = new ArrayList<>(0); // Safeguard
+                ContentValues genresValuesBatch[] = new ContentValues[result.size()];
+
+                for (int i = 0; i < result.size(); i++) {
+                    LibraryType.DetailsGenre genre = result.get(i);
+                    genresValuesBatch[i] = SyncUtils.contentValuesFromAudioGenre(hostId, genre);
+                }
+
+                // Insert the genres and proceed to albums
+                contentResolver.bulkInsert(MediaContract.AudioGenres.CONTENT_URI, genresValuesBatch);
+                chainCallSyncAlbums(orchestrator, hostConnection, callbackHandler, contentResolver, 0);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                // Ok, something bad happend, just quit
+                orchestrator.syncItemFailed(errorCode, description);
+            }
+        }, callbackHandler);
+    }
+
+    private static final String getAlbumsProperties[] = {
+            AudioType.FieldsAlbum.TITLE, AudioType.FieldsAlbum.DESCRIPTION,
+            AudioType.FieldsAlbum.ARTIST, AudioType.FieldsAlbum.GENRE,
+            //AudioType.FieldsAlbum.THEME, AudioType.FieldsAlbum.MOOD,
+            //AudioType.FieldsAlbum.STYLE, AudioType.FieldsAlbum.TYPE,
+            AudioType.FieldsAlbum.ALBUMLABEL, AudioType.FieldsAlbum.RATING,
+            AudioType.FieldsAlbum.YEAR,
+            //AudioType.FieldsAlbum.MUSICBRAINZALBUMID,
+            //AudioType.FieldsAlbum.MUSICBRAINZALBUMARTISTID,
+            AudioType.FieldsAlbum.FANART, AudioType.FieldsAlbum.THUMBNAIL,
+            AudioType.FieldsAlbum.PLAYCOUNT, AudioType.FieldsAlbum.GENREID,
+            AudioType.FieldsAlbum.ARTISTID, AudioType.FieldsAlbum.DISPLAYARTIST
+    };
+
+    /**
+     * Syncs Albums recursively and forwards calls to sync songs:
+     * Albums->Songs
+     */
+    private void chainCallSyncAlbums(final SyncOrchestrator orchestrator,
+                                     final HostConnection hostConnection,
+                                     final Handler callbackHandler,
+                                     final ContentResolver contentResolver,
+                                     final int startIdx) {
+        final long albumSyncStartTime = System.currentTimeMillis();
+        // Albums->Songs
+        ListType.Limits limits = new ListType.Limits(startIdx, startIdx + LIMIT_SYNC_ALBUMS);
+        AudioLibrary.GetAlbums action = new AudioLibrary.GetAlbums(limits, getAlbumsProperties);
+        action.execute(hostConnection, new ApiCallback<List<AudioType.DetailsAlbum>>() {
+            @Override
+            public void onSuccess(List<AudioType.DetailsAlbum> result) {
+                if (result == null) result = new ArrayList<>(0); // Safeguard
+                // Insert the partial results
+                ContentValues albumValuesBatch[] = new ContentValues[result.size()];
+                int artistsCount = 0, genresCount = 0;
+                for (int i = 0; i < result.size(); i++) {
+                    AudioType.DetailsAlbum album = result.get(i);
+                    albumValuesBatch[i] = SyncUtils.contentValuesFromAlbum(hostId, album);
+
+                    artistsCount += album.artistid.size();
+                    genresCount += album.genreid.size();
+                }
+                contentResolver.bulkInsert(MediaContract.Albums.CONTENT_URI, albumValuesBatch);
+
+                LogUtils.LOGD(TAG, "Finished inserting albums in: " +
+                                   (System.currentTimeMillis() - albumSyncStartTime));
+
+                // Iterate on each album, collect the artists and the genres and insert them
+                ContentValues albumArtistsValuesBatch[] = new ContentValues[artistsCount];
+                ContentValues albumGenresValuesBatch[] = new ContentValues[genresCount];
+                int artistCount = 0, genreCount = 0;
+                for (AudioType.DetailsAlbum album : result) {
+                    for (int artistId : album.artistid) {
+                        albumArtistsValuesBatch[artistCount] = new ContentValues();
+                        albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.HOST_ID, hostId);
+                        albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.ALBUMID, album.albumid);
+                        albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.ARTISTID, artistId);
+                        artistCount++;
+                    }
+
+                    for (int genreId : album.genreid) {
+                        albumGenresValuesBatch[genreCount] = new ContentValues();
+                        albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.HOST_ID, hostId);
+                        albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.ALBUMID, album.albumid);
+                        albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.GENREID, genreId);
+                        genreCount++;
+                    }
+                }
+
+                contentResolver.bulkInsert(MediaContract.AlbumArtists.CONTENT_URI, albumArtistsValuesBatch);
+                contentResolver.bulkInsert(MediaContract.AlbumGenres.CONTENT_URI, albumGenresValuesBatch);
+
+                LogUtils.LOGD(TAG, "Finished inserting artists and genres in: " +
+                                   (System.currentTimeMillis() - albumSyncStartTime));
+
+                if (result.size() == LIMIT_SYNC_ALBUMS) {
+                    // Max limit returned, there may be some more
+                    LogUtils.LOGD(TAG, "chainCallSyncAlbums: More results on media center, recursing.");
+                    result = null; // Help the GC?
+                    chainCallSyncAlbums(orchestrator, hostConnection, callbackHandler, contentResolver,
+                                        startIdx + LIMIT_SYNC_ALBUMS);
+                } else {
+                    // Ok, we have all the albums, proceed to songs
+                    LogUtils.LOGD(TAG, "chainCallSyncAlbums: Got all results, continuing");
+                    chainCallSyncSongs(orchestrator, hostConnection, callbackHandler, contentResolver, 0);
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                // Ok, something bad happend, just quit
+                orchestrator.syncItemFailed(errorCode, description);
+            }
+        }, callbackHandler);
+    }
+
+    private static final String getSongsProperties[] = {
+            AudioType.FieldsSong.TITLE,
+            //AudioType.FieldsSong.ARTIST, AudioType.FieldsSong.ALBUMARTIST, AudioType.FieldsSong.GENRE,
+            //AudioType.FieldsSong.YEAR, AudioType.FieldsSong.RATING,
+            //AudioType.FieldsSong.ALBUM,
+            AudioType.FieldsSong.TRACK, AudioType.FieldsSong.DURATION,
+            //AudioType.FieldsSong.COMMENT, AudioType.FieldsSong.LYRICS,
+            //AudioType.FieldsSong.MUSICBRAINZTRACKID,
+            //AudioType.FieldsSong.MUSICBRAINZARTISTID,
+            //AudioType.FieldsSong.MUSICBRAINZALBUMID,
+            //AudioType.FieldsSong.MUSICBRAINZALBUMARTISTID,
+            //AudioType.FieldsSong.PLAYCOUNT, AudioType.FieldsSong.FANART,
+            AudioType.FieldsSong.THUMBNAIL, AudioType.FieldsSong.FILE,
+            AudioType.FieldsSong.ALBUMID,
+            //AudioType.FieldsSong.LASTPLAYED, AudioType.FieldsSong.DISC,
+            //AudioType.FieldsSong.GENREID, AudioType.FieldsSong.ARTISTID,
+            //AudioType.FieldsSong.DISPLAYARTIST, AudioType.FieldsSong.ALBUMARTISTID
+    };
+
+    /**
+     * Syncs songs and stops
+     */
+    private void chainCallSyncSongs(final SyncOrchestrator orchestrator,
+                                    final HostConnection hostConnection,
+                                    final Handler callbackHandler,
+                                    final ContentResolver contentResolver,
+                                    final int startIdx) {
+        // Songs
+        ListType.Limits limits = new ListType.Limits(startIdx, startIdx + LIMIT_SYNC_SONGS);
+        AudioLibrary.GetSongs action = new AudioLibrary.GetSongs(limits, getSongsProperties);
+        action.execute(hostConnection, new ApiCallback<List<AudioType.DetailsSong>>() {
+            @Override
+            public void onSuccess(List<AudioType.DetailsSong> result) {
+                if (result == null) result = new ArrayList<>(0); // Safeguard
+                // Save partial results to DB
+                ContentValues songValuesBatch[] = new ContentValues[result.size()];
+                for (int i = 0; i < result.size(); i++) {
+                    AudioType.DetailsSong song = result.get(i);
+                    songValuesBatch[i] = SyncUtils.contentValuesFromSong(hostId, song);
+                }
+                contentResolver.bulkInsert(MediaContract.Songs.CONTENT_URI, songValuesBatch);
+
+                if (result.size() == LIMIT_SYNC_SONGS) {
+                    // Max limit returned, there may be some more
+                    LogUtils.LOGD(TAG, "chainCallSyncSongs: More results on media center, recursing.");
+                    result = null; // Help the GC?
+                    chainCallSyncSongs(orchestrator, hostConnection, callbackHandler, contentResolver,
+                                       startIdx + LIMIT_SYNC_SONGS);
+                } else {
+                    // Ok, we have all the songs, insert them
+                    LogUtils.LOGD(TAG, "chainCallSyncSongs: Got all results, continuing");
+                    orchestrator.syncItemFinished();
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                // Ok, something bad happend, just quit
+                orchestrator.syncItemFailed(errorCode, description);
+            }
+        }, callbackHandler);
+    }
+
+}

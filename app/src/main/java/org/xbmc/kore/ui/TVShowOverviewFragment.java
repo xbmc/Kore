@@ -40,7 +40,7 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.service.LibrarySyncService;
+import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
