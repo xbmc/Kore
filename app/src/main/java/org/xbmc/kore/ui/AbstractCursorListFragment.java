@@ -37,7 +37,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -47,8 +46,8 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
-import org.xbmc.kore.service.LibrarySyncService;
-import org.xbmc.kore.service.SyncUtils;
+import org.xbmc.kore.service.library.LibrarySyncService;
+import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 
 import de.greenrobot.event.EventBus;

@@ -18,6 +18,7 @@ package org.xbmc.kore.jsonrpc.type;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.xbmc.kore.utils.JsonUtils;
 
 import java.util.List;
@@ -342,6 +343,31 @@ public class ListType {
         }
     }
 
+    public static class LimitsReturned {
+        public int start = -1;
+        public int end = -1;
+        public int total = -1;
+
+        public LimitsReturned(ObjectNode jsonNode) {
+            JsonNode resultNode = jsonNode.get("result");
+            JsonNode item = resultNode.has("limits") ? resultNode.get("limits") : null;
+            if (item == null) {
+                return;
+            }
+
+            start = JsonUtils.intFromJsonNode(item, "start");
+            end = JsonUtils.intFromJsonNode(item, "end");
+            total = JsonUtils.intFromJsonNode(item, "total");
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() +
+                             ", start="+start+
+                             ", end="+end+
+                             ", total="+total;
+        }
+    }
 
     /**
      * Enums for List.Fields.All

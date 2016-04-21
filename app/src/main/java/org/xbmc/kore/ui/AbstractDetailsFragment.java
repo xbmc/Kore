@@ -36,8 +36,8 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
-import org.xbmc.kore.service.LibrarySyncService;
-import org.xbmc.kore.service.SyncUtils;
+import org.xbmc.kore.service.library.LibrarySyncService;
+import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -65,16 +65,16 @@ abstract public class AbstractDetailsFragment extends Fragment
     abstract protected View createView(LayoutInflater inflater, ViewGroup container);
 
     /**
-     * Should return {@link org.xbmc.kore.service.LibrarySyncService} SyncType that
+     * Should return {@link LibrarySyncService} SyncType that
      * this fragment initiates
-     * @return {@link org.xbmc.kore.service.LibrarySyncService} SyncType
+     * @return {@link LibrarySyncService} SyncType
      */
     abstract protected String getSyncType();
 
     /**
-     * Should return the {@link org.xbmc.kore.service.LibrarySyncService} syncID if this fragment
+     * Should return the {@link LibrarySyncService} syncID if this fragment
      * synchronizes a single item. The itemId that should be synced must returned by {@link #getSyncItemID()}
-     * @return {@link org.xbmc.kore.service.LibrarySyncService} SyncID
+     * @return {@link LibrarySyncService} SyncID
      */
     abstract protected String getSyncID();
 

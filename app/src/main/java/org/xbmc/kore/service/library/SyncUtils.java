@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.xbmc.kore.service;
+package org.xbmc.kore.service.library;
 
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -27,6 +27,7 @@ import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.jsonrpc.type.AudioType;
 import org.xbmc.kore.jsonrpc.type.LibraryType;
 import org.xbmc.kore.provider.MediaContract;
+import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
@@ -462,11 +463,11 @@ public class SyncUtils {
         if (service == null || hostInfo == null || syncTypes == null)
             return false;
 
-        ArrayList<LibrarySyncService.SyncItem> itemsSyncing = service.getItemsSyncing(hostInfo);
+        ArrayList<SyncItem> itemsSyncing = service.getItemsSyncing(hostInfo);
         if( itemsSyncing == null )
             return false;
 
-        for (LibrarySyncService.SyncItem syncItem : itemsSyncing) {
+        for (SyncItem syncItem : itemsSyncing) {
             for( String syncType : syncTypes ) {
                 if (syncItem.getSyncType().equals(syncType)) {
                     return true;
