@@ -286,6 +286,9 @@
     <string name="tvshow_overview">Overview</string>
     <string name="tvshow_episodes">Episodes</string>
 
+    <string name="addon_overview">Overview</string>
+    <string name="addon_content">Content</string>
+
     <string name="artists">Artists</string>
     <string name="albums">Albums</string>
     <string name="genres">Genres</string>

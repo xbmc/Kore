@@ -206,7 +206,7 @@ public class AddonsActivity extends BaseActivity
         selectedAddonTitle = vh.addonName;
 
         // Replace list fragment
-        final AddonDetailsFragment addonDetailsFragment = AddonDetailsFragment.newInstance(vh);
+        final AddonOverviewFragment addonDetailsFragment = AddonOverviewFragment.newInstance(vh);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
