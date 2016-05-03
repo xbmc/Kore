@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,10 +30,8 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import butterknife.ButterKnife;
@@ -43,50 +40,13 @@ import butterknife.InjectView;
 /**
  * Container for the TV Show overview and Episodes list
  */
-public class AddonOverviewFragment extends Fragment {
-    private static final String TAG = LogUtils.makeLogTag(AddonOverviewFragment.class);
+public class AddonsOverviewFragment extends Fragment {
+    private static final String TAG = LogUtils.makeLogTag(AddonsOverviewFragment.class);
 
     private TabsAdapter tabsAdapter;
 
     @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
     @InjectView(R.id.pager) ViewPager viewPager;
-
-    /**
-     * Create a new instance of this, initialized to show the addon addonId
-     */
-    @TargetApi(21)
-    public static AddonOverviewFragment newInstance(AddonListFragment.ViewHolder vh) {
-        AddonOverviewFragment fragment = new AddonOverviewFragment();
-
-        Bundle args = new Bundle();
-        args.putString(AddonDetailsFragment.BUNDLE_KEY_ADDONID, vh.addonId);
-        args.putString(AddonDetailsFragment.BUNDLE_KEY_NAME, vh.addonName);
-        args.putString(AddonDetailsFragment.BUNDLE_KEY_AUTHOR, vh.author);
-        args.putString(AddonDetailsFragment.BUNDLE_KEY_VERSION, vh.version);
-        args.putString(AddonDetailsFragment.BUNDLE_KEY_SUMMARY, vh.summary);
-        args.putString(AddonDetailsFragment.BUNDLE_KEY_DESCRIPTION, vh.description);
-        args.putString(AddonDetailsFragment.BUNDLE_KEY_FANART, vh.fanart);
-        args.putString(AddonDetailsFragment.BUNDLE_KEY_POSTER, vh.poster);
-        args.putBoolean(AddonDetailsFragment.BUNDLE_KEY_ENABLED, vh.enabled);
-
-        if( Utils.isLollipopOrLater()) {
-            args.putString(AddonDetailsFragment.POSTER_TRANS_NAME, vh.artView.getTransitionName());
-        }
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public Bundle contentArgs(Bundle details) {
-        String name = details.getString(AddonDetailsFragment.BUNDLE_KEY_NAME, "Content");
-        String path = details.getString(AddonDetailsFragment.BUNDLE_KEY_ADDONID);
-
-        Bundle content = new Bundle();
-        content.putString(AddonDetailsFragment.BUNDLE_KEY_NAME, name);
-        MediaFileListFragment.FileLocation rootPath = new MediaFileListFragment.FileLocation(name, "plugin://" + path, true);
-        rootPath.setRootDir(true);
-        content.putParcelable(MediaFileListFragment.ROOT_PATH, rootPath);
-        return content;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,9 +55,7 @@ public class AddonOverviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Bundle args = getArguments();
-
-        if ((container == null) || (args == null)) {
+        if (container == null) {
             // We're not being shown or there's nothing to show
             return null;
         }
@@ -105,11 +63,18 @@ public class AddonOverviewFragment extends Fragment {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_default_view_pager, container, false);
         ButterKnife.inject(this, root);
 
-        long baseFragmentId = 1000;
-        tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
-                .addTab(AddonDetailsFragment.class, args, R.string.addon_overview, baseFragmentId++)
-                .addTab(MediaFileListFragment.class, contentArgs(args), R.string.addon_content, baseFragmentId++)
-                ;
+        tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager());
+        SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
+        Set<String> bookmarked = prefs.getStringSet("bookmarked", Collections.<String>emptySet());
+        long baseFragmentId = 70 + bookmarked.size() * 100;
+        for (String path: bookmarked) {
+            String name = prefs.getString("name_" + path, "Content");
+            Bundle addon = new Bundle();
+            addon.putString(AddonDetailsFragment.BUNDLE_KEY_NAME, name);
+            addon.putParcelable(MediaFileListFragment.ROOT_PATH, new MediaFileListFragment.FileLocation(name, "plugin://" + path, true));
+            tabsAdapter.addTab(MediaFileListFragment.class, addon, name, baseFragmentId++);
+        }
+        tabsAdapter.addTab(AddonListFragment.class, new Bundle(), R.string.addons, baseFragmentId);
         viewPager.setAdapter(tabsAdapter);
         pagerTabStrip.setViewPager(viewPager);
 
