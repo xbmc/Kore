@@ -143,7 +143,8 @@ public class MediaFileListFragment extends AbstractListFragment {
         emptyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browseSources();
+                if (!atRootDirectory())
+                    browseSources();
             }
         });
 
