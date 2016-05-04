@@ -16,7 +16,6 @@
 package org.xbmc.kore.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -29,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,7 +39,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -83,6 +80,7 @@ public class NowPlayingFragment extends Fragment
      */
     public interface NowPlayingListener {
         public void SwitchToRemotePanel();
+        public void onShuffleClicked();
     }
 
     /**
@@ -341,6 +339,7 @@ public class NowPlayingFragment extends Fragment
                 if (!isAdded()) return;
                 // Force a refresh
                 hostConnectionObserver.forceRefreshResults();
+                nowPlayingListener.onShuffleClicked();
             }
 
             @Override
