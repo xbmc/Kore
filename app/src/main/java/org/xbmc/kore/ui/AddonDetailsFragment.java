@@ -16,6 +16,8 @@
 package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -44,6 +46,10 @@ import org.xbmc.kore.jsonrpc.type.AddonType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -80,6 +86,7 @@ public class AddonDetailsFragment extends Fragment {
     // Buttons
     @InjectView(R.id.fab) ImageButton fabButton;
     @InjectView(R.id.enable_disable) ImageButton enabledButton;
+    @InjectView(R.id.pin_unpin) ImageButton pinButton;
 
     // Detail views
     @InjectView(R.id.media_panel) ScrollView mediaPanel;
@@ -170,6 +177,7 @@ public class AddonDetailsFragment extends Fragment {
         setImages(bundle.getString(BUNDLE_KEY_POSTER), bundle.getString(BUNDLE_KEY_FANART));
 
         setupEnableButton(bundle.getBoolean(BUNDLE_KEY_ENABLED, false));
+        updatePinButton();
 
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
@@ -317,5 +325,48 @@ public class AddonDetailsFragment extends Fragment {
                                Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
+    }
+
+    @OnClick(R.id.pin_unpin)
+    public void onPinClicked(View v) {
+        final boolean enable = (v.getTag() == null)? true : !(Boolean)v.getTag();
+
+        String name = mediaTitle.getText().toString();
+        String path = addonId;
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
+        Set<String> bookmarked = new HashSet<>(prefs.getStringSet("bookmarked", Collections.<String>emptySet()));
+        if (enable)
+            bookmarked.add(path);
+        else
+            bookmarked.remove(path);
+        prefs
+                .edit()
+                .putStringSet("bookmarked", bookmarked)
+                .putString("name_" + path, name)
+                .commit();
+        Toast.makeText(getActivity(), enable? R.string.addon_pinned : R.string.addon_unpinned, Toast.LENGTH_SHORT).show();
+        setupPinButton(enable);
+    }
+
+    private void setupPinButton(boolean enabled) {
+        // Enabled button
+        if (enabled) {
+            Resources.Theme theme = getActivity().getTheme();
+            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
+                    R.attr.colorAccent});
+            pinButton.setColorFilter(styledAttributes.getColor(0,
+                    getActivity().getResources().getColor(R.color.accent_default)));
+            styledAttributes.recycle();
+        } else {
+            pinButton.clearColorFilter();
+        }
+        pinButton.setTag(enabled);
+    }
+
+    private void updatePinButton() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
+        Set<String> bookmarked = prefs.getStringSet("bookmarked", Collections.<String>emptySet());
+        setupPinButton(bookmarked.contains(addonId));
     }
 }

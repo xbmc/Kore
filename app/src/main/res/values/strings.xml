@@ -302,6 +302,9 @@
     <string name="enable_disable">Enable/Disable Addon</string>
     <string name="addon_enabled">Addon enabled</string>
     <string name="addon_disabled">Addon disabled</string>
+    <string name="pin_unpin">Pin/Unpin Addon</string>
+    <string name="addon_pinned">Addon pinned</string>
+    <string name="addon_unpinned">Addon unpinned</string>
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Hide watched</string>
