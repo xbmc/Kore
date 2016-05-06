@@ -78,6 +78,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     int playlistId = PlaylistType.MUSIC_PLAYLISTID;             // this is the ID of the music player
 //    private MediaFileListAdapter adapter = null;
     boolean browseRootAlready = false;
+    FileLocation loadOnVisible = null;
 
     ArrayList<FileLocation> rootFileLocation = new ArrayList<FileLocation>();
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
@@ -162,13 +163,25 @@ public class MediaFileListFragment extends AbstractListFragment {
             ((MediaFileListAdapter) getAdapter()).setFilelistItems(list);
         }
         else if (rootPath != null) {
-            browseRootAlready = true;
-            browseDirectory(rootPath);
+            loadOnVisible = rootPath;
+            // setUserVisibleHint may have already fired
+            setUserVisibleHint(getUserVisibleHint());
         }
         else {
             browseSources();
         }
         return root;
+    }
+
+    @Override
+    public void setUserVisibleHint (boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && loadOnVisible != null) {
+            FileLocation rootPath = loadOnVisible;
+            loadOnVisible = null;
+            browseRootAlready = true;
+            browseDirectory(rootPath);
+        }
     }
 
     void handleFileSelect(FileLocation f) {
