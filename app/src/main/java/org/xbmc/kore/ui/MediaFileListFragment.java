@@ -65,6 +65,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     public static final String ROOT_PATH_CONTENTS = "rootPathContents";
     public static final String ROOT_VISITED = "rootVisited";
     public static final String ROOT_PATH = "rootPath";
+    public static final String DELAY_LOAD = "delayLoad";
     private static final String ADDON_SOURCE = "addons:";
 
     private HostManager hostManager;
@@ -165,7 +166,7 @@ public class MediaFileListFragment extends AbstractListFragment {
         else if (rootPath != null) {
             loadOnVisible = rootPath;
             // setUserVisibleHint may have already fired
-            setUserVisibleHint(getUserVisibleHint());
+            setUserVisibleHint(getUserVisibleHint() || !args.getBoolean(DELAY_LOAD, false));
         }
         else {
             browseSources();

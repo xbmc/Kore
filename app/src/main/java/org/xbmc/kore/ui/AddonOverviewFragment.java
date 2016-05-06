@@ -85,6 +85,7 @@ public class AddonOverviewFragment extends Fragment {
         MediaFileListFragment.FileLocation rootPath = new MediaFileListFragment.FileLocation(name, "plugin://" + path, true);
         rootPath.setRootDir(true);
         content.putParcelable(MediaFileListFragment.ROOT_PATH, rootPath);
+        content.putBoolean(MediaFileListFragment.DELAY_LOAD, true);
         return content;
     }
 
