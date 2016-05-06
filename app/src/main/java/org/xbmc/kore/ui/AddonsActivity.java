@@ -70,7 +70,7 @@ public class AddonsActivity extends BaseActivity
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
         if (savedInstanceState == null) {
-            AddonsOverviewFragment addonListFragment = new AddonsOverviewFragment();
+            AddonListContainerFragment addonListFragment = new AddonListContainerFragment();
 
             // Setup animations
             if (Utils.isLollipopOrLater()) {

@@ -40,8 +40,8 @@ import butterknife.InjectView;
 /**
  * Container for the TV Show overview and Episodes list
  */
-public class AddonsOverviewFragment extends Fragment {
-    private static final String TAG = LogUtils.makeLogTag(AddonsOverviewFragment.class);
+public class AddonListContainerFragment extends Fragment {
+    private static final String TAG = LogUtils.makeLogTag(AddonListContainerFragment.class);
 
     private TabsAdapter tabsAdapter;
 
