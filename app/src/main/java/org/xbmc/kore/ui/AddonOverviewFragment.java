@@ -43,7 +43,7 @@ import butterknife.InjectView;
 /**
  * Container for the TV Show overview and Episodes list
  */
-public class AddonOverviewFragment extends Fragment {
+public class AddonOverviewFragment extends SharedElementFragment {
     private static final String TAG = LogUtils.makeLogTag(AddonOverviewFragment.class);
 
     private TabsAdapter tabsAdapter;
@@ -68,6 +68,7 @@ public class AddonOverviewFragment extends Fragment {
         args.putString(AddonDetailsFragment.BUNDLE_KEY_FANART, vh.fanart);
         args.putString(AddonDetailsFragment.BUNDLE_KEY_POSTER, vh.poster);
         args.putBoolean(AddonDetailsFragment.BUNDLE_KEY_ENABLED, vh.enabled);
+        args.putBoolean(AddonDetailsFragment.BUNDLE_KEY_BROWSABLE, vh.browsable);
 
         if( Utils.isLollipopOrLater()) {
             args.putString(AddonDetailsFragment.POSTER_TRANS_NAME, vh.artView.getTransitionName());
@@ -127,6 +128,7 @@ public class AddonOverviewFragment extends Fragment {
         return tabsAdapter.getItem(viewPager.getCurrentItem());
     }
 
+    @Override
     public View getSharedElement() {
         View view = getView();
         if (view == null)

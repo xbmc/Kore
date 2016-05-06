@@ -58,7 +58,7 @@ import butterknife.OnClick;
 /**
  * Presents addon details
  */
-public class AddonDetailsFragment extends Fragment {
+public class AddonDetailsFragment extends SharedElementFragment {
     private static final String TAG = LogUtils.makeLogTag(AddonDetailsFragment.class);
 
     public static final String BUNDLE_KEY_ADDONID = "addon_id";
@@ -71,6 +71,7 @@ public class AddonDetailsFragment extends Fragment {
     public static final String BUNDLE_KEY_FANART = "fanart";
     public static final String BUNDLE_KEY_POSTER = "poster";
     public static final String BUNDLE_KEY_ENABLED = "enabled";
+    public static final String BUNDLE_KEY_BROWSABLE = "browsable";
 
     private HostManager hostManager;
     private HostInfo hostInfo;
@@ -119,6 +120,7 @@ public class AddonDetailsFragment extends Fragment {
         args.putString(BUNDLE_KEY_FANART, vh.fanart);
         args.putString(BUNDLE_KEY_POSTER, vh.poster);
         args.putBoolean(BUNDLE_KEY_ENABLED, vh.enabled);
+        args.putBoolean(BUNDLE_KEY_BROWSABLE, vh.browsable);
 
         if( Utils.isLollipopOrLater()) {
             args.putString(POSTER_TRANS_NAME, vh.artView.getTransitionName());
@@ -177,7 +179,8 @@ public class AddonDetailsFragment extends Fragment {
         setImages(bundle.getString(BUNDLE_KEY_POSTER), bundle.getString(BUNDLE_KEY_FANART));
 
         setupEnableButton(bundle.getBoolean(BUNDLE_KEY_ENABLED, false));
-        updatePinButton();
+        if (bundle.getBoolean(BUNDLE_KEY_BROWSABLE, true))
+            updatePinButton();
 
         // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
@@ -296,6 +299,7 @@ public class AddonDetailsFragment extends Fragment {
      * Returns the shared element if visible
      * @return View if visible, null otherwise
      */
+    @Override
     public View getSharedElement() {
         if (UIUtils.isViewInBounds(mediaPanel, mediaPoster)) {
             return mediaPoster;
@@ -362,6 +366,7 @@ public class AddonDetailsFragment extends Fragment {
             pinButton.clearColorFilter();
         }
         pinButton.setTag(enabled);
+        pinButton.setVisibility(View.VISIBLE);
     }
 
     private void updatePinButton() {

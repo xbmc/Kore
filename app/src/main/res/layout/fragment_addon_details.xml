@@ -99,6 +99,7 @@
                     android:layout_height="match_parent"/>
                 <ImageButton
                     android:id="@+id/pin_unpin"
+                    android:visibility="gone"
                     android:layout_width="@dimen/buttonbar_button_width"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
