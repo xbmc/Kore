@@ -67,14 +67,14 @@ public class AddonListContainerFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
         Set<String> bookmarked = prefs.getStringSet("bookmarked", Collections.<String>emptySet());
         long baseFragmentId = 70 + bookmarked.size() * 100;
+        tabsAdapter.addTab(AddonListFragment.class, new Bundle(), R.string.addons, baseFragmentId);
         for (String path: bookmarked) {
             String name = prefs.getString("name_" + path, "Content");
             Bundle addon = new Bundle();
             addon.putString(AddonDetailsFragment.BUNDLE_KEY_NAME, name);
             addon.putParcelable(MediaFileListFragment.ROOT_PATH, new MediaFileListFragment.FileLocation(name, "plugin://" + path, true));
-            tabsAdapter.addTab(MediaFileListFragment.class, addon, name, baseFragmentId++);
+            tabsAdapter.addTab(MediaFileListFragment.class, addon, name, ++baseFragmentId);
         }
-        tabsAdapter.addTab(AddonListFragment.class, new Bundle(), R.string.addons, baseFragmentId);
         viewPager.setAdapter(tabsAdapter);
         pagerTabStrip.setViewPager(viewPager);
 
