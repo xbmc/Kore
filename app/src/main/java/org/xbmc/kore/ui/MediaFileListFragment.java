@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.regex.Pattern;
 
 /**
  * Presents a list of files of different types (Video/Music)
@@ -63,6 +64,8 @@ public class MediaFileListFragment extends AbstractListFragment {
     public static final String PATH_CONTENTS = "pathContents";
     public static final String ROOT_PATH_CONTENTS = "rootPathContents";
     public static final String ROOT_VISITED = "rootVisited";
+    public static final String ROOT_PATH = "rootPath";
+    public static final String DELAY_LOAD = "delayLoad";
     private static final String ADDON_SOURCE = "addons:";
 
     private HostManager hostManager;
@@ -76,6 +79,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     int playlistId = PlaylistType.MUSIC_PLAYLISTID;             // this is the ID of the music player
 //    private MediaFileListAdapter adapter = null;
     boolean browseRootAlready = false;
+    FileLocation loadOnVisible = null;
 
     ArrayList<FileLocation> rootFileLocation = new ArrayList<FileLocation>();
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
@@ -125,8 +129,10 @@ public class MediaFileListFragment extends AbstractListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         Bundle args = getArguments();
+        FileLocation rootPath = null;
         if (args != null) {
-            mediaType = args.getString(MEDIA_TYPE, Files.Media.MUSIC);
+            rootPath = args.getParcelable(ROOT_PATH);
+            mediaType = args.getString(MEDIA_TYPE, Files.Media.FILES);
             if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
                 playlistId = PlaylistType.VIDEO_PLAYLISTID;
             } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
@@ -139,7 +145,8 @@ public class MediaFileListFragment extends AbstractListFragment {
         emptyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browseSources();
+                if (!atRootDirectory())
+                    browseSources();
             }
         });
 
@@ -156,10 +163,26 @@ public class MediaFileListFragment extends AbstractListFragment {
             browseRootAlready = savedInstanceState.getBoolean(ROOT_VISITED);
             ((MediaFileListAdapter) getAdapter()).setFilelistItems(list);
         }
+        else if (rootPath != null) {
+            loadOnVisible = rootPath;
+            // setUserVisibleHint may have already fired
+            setUserVisibleHint(getUserVisibleHint() || !args.getBoolean(DELAY_LOAD, false));
+        }
         else {
             browseSources();
         }
         return root;
+    }
+
+    @Override
+    public void setUserVisibleHint (boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && loadOnVisible != null) {
+            FileLocation rootPath = loadOnVisible;
+            loadOnVisible = null;
+            browseRootAlready = true;
+            browseDirectory(rootPath);
+        }
     }
 
     void handleFileSelect(FileLocation f) {
@@ -308,11 +331,12 @@ public class MediaFileListFragment extends AbstractListFragment {
 
                 ArrayList<FileLocation> flList = new ArrayList<FileLocation>();
 
-                // insert the parent directory as the first item in the list
-                FileLocation fl = new FileLocation("..", parentDirectory, true);
-                fl.setRootDir(dir.isRootDir());
-                flList.add(0, fl);
-
+                if (dir.hasParent) {
+                    // insert the parent directory as the first item in the list
+                    FileLocation fl = new FileLocation("..", parentDirectory, true);
+                    fl.setRootDir(dir.isRootDir());
+                    flList.add(0, fl);
+                }
                 for (ListType.ItemFile i : result) {
                     flList.add(FileLocation.newInstanceFromItemFile(getActivity(), i));
                 }
@@ -630,6 +654,7 @@ public class MediaFileListFragment extends AbstractListFragment {
 
         public final String file;
         public final boolean isDirectory;
+        public final boolean hasParent;
         private boolean isRoot;
 
 
@@ -640,10 +665,13 @@ public class MediaFileListFragment extends AbstractListFragment {
             this(title, path, isDir, null, null, null);
         }
 
+        static final Pattern noParent = Pattern.compile("plugin://[^/]*/?");
         public FileLocation(String title, String path, boolean isDir, String details, String sizeDuration, String artUrl) {
             this.title = title;
             this.file = path;
             this.isDirectory = isDir;
+            this.hasParent = !noParent.matcher(path).matches();
+
             this.isRoot = false;
 
             this.details = details;
@@ -698,6 +726,7 @@ public class MediaFileListFragment extends AbstractListFragment {
             this.title = in.readString();
             this.file = in.readString();
             this.isDirectory = (in.readInt() != 0);
+            this.hasParent = (in.readInt() != 0);
             this.isRoot = (in.readInt() != 0);
 
             this.details = in.readString();
@@ -713,6 +742,7 @@ public class MediaFileListFragment extends AbstractListFragment {
             out.writeString(title);
             out.writeString(file);
             out.writeInt(isDirectory ? 1 : 0);
+            out.writeInt(hasParent ? 1 : 0);
             out.writeInt(isRoot ? 1 : 0);
 
             out.writeString(details);

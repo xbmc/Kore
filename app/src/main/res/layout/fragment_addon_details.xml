@@ -98,6 +98,14 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"/>
                 <ImageButton
+                    android:id="@+id/pin_unpin"
+                    android:visibility="gone"
+                    android:layout_width="@dimen/buttonbar_button_width"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconNew"
+                    android:contentDescription="@string/enable_disable"/>
+                <ImageButton
                     android:id="@+id/enable_disable"
                     android:layout_width="@dimen/buttonbar_button_width"
                     android:layout_height="match_parent"

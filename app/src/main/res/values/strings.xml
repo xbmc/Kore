@@ -286,6 +286,9 @@
     <string name="tvshow_overview">Overview</string>
     <string name="tvshow_episodes">Episodes</string>
 
+    <string name="addon_overview">Overview</string>
+    <string name="addon_content">Content</string>
+
     <string name="artists">Artists</string>
     <string name="albums">Albums</string>
     <string name="genres">Genres</string>
@@ -299,6 +302,9 @@
     <string name="enable_disable">Enable/Disable Addon</string>
     <string name="addon_enabled">Addon enabled</string>
     <string name="addon_disabled">Addon disabled</string>
+    <string name="pin_unpin">Pin/Unpin Addon</string>
+    <string name="addon_pinned">Addon pinned</string>
+    <string name="addon_unpinned">Addon unpinned</string>
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Hide watched</string>

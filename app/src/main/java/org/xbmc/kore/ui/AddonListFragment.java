@@ -265,6 +265,7 @@ public class AddonListFragment extends Fragment
             viewHolder.fanart = addonDetails.fanart;
             viewHolder.poster = addonDetails.thumbnail;
             viewHolder.enabled = addonDetails.enabled;
+            viewHolder.browsable = AddonType.Types.XBMC_PYTHON_PLUGINSOURCE.equals(addonDetails.type);
 
             viewHolder.titleView.setText(viewHolder.addonName);
             viewHolder.detailsView.setText(addonDetails.summary);
@@ -297,5 +298,6 @@ public class AddonListFragment extends Fragment
         String fanart;
         String poster;
         Boolean enabled;
+        Boolean browsable;
     }
 }
