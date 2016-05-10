@@ -17,6 +17,8 @@ package org.xbmc.kore.jsonrpc.event;
 
 import android.os.Bundle;
 
+import org.xbmc.kore.service.library.LibrarySyncService;
+
 /**
  * Event to post on {@link de.greenrobot.event.EventBus} that notifies of a sync
  */
@@ -33,7 +35,7 @@ public class MediaSyncEvent {
     /**
      * Creates a new sync event
      *
-     * @param syncType One of the constants in {@link org.xbmc.kore.service.LibrarySyncService}
+     * @param syncType One of the constants in {@link LibrarySyncService}
      */
     public MediaSyncEvent(String syncType, Bundle syncExtras, int status) {
         this(syncType, syncExtras, status, -1, null);
