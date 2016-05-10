@@ -18,7 +18,9 @@ package org.xbmc.kore.jsonrpc.method;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.xbmc.kore.jsonrpc.ApiException;
+import org.xbmc.kore.jsonrpc.ApiList;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.type.AudioType;
 import org.xbmc.kore.jsonrpc.type.LibraryType;
@@ -83,7 +85,7 @@ public class AudioLibrary {
     /**
      * Retrieve all artists
      */
-    public static class GetArtists extends ApiMethod<List<AudioType.DetailsArtist>> {
+    public static class GetArtists extends ApiMethod<ApiList<AudioType.DetailsArtist>> {
         public final static String METHOD_NAME = "AudioLibrary.GetArtists";
 
         private final static String LIST_NODE = "artists";
@@ -126,28 +128,29 @@ public class AudioLibrary {
         }
 
         @Override
-        public List<AudioType.DetailsArtist> resultFromJson(ObjectNode jsonObject)
-                throws ApiException {
+        public ApiList<AudioType.DetailsArtist> resultFromJson(ObjectNode jsonObject) throws ApiException {
+            ListType.LimitsReturned limits = new ListType.LimitsReturned(jsonObject);
+
             JsonNode resultNode = jsonObject.get(RESULT_NODE);
             ArrayNode items = resultNode.has(LIST_NODE) ?
-                              (ArrayNode)resultNode.get(LIST_NODE) : null;
+                    (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<AudioType.DetailsArtist>(0);
+                return new ApiList<>(new ArrayList<AudioType.DetailsArtist>(0), limits);
             }
-            ArrayList<AudioType.DetailsArtist> result = new ArrayList<AudioType.DetailsArtist>(items.size());
+            ArrayList<AudioType.DetailsArtist> result = new ArrayList<>(items.size());
 
             for (JsonNode item : items) {
                 result.add(new AudioType.DetailsArtist(item));
             }
 
-            return result;
+            return new ApiList<>(result, limits);
         }
     }
 
     /**
      * Retrieve all albums from specified artist or genre
      */
-    public static class GetAlbums extends ApiMethod<List<AudioType.DetailsAlbum>> {
+    public static class GetAlbums extends ApiMethod<ApiList<AudioType.DetailsAlbum>> {
         public final static String METHOD_NAME = "AudioLibrary.GetAlbums";
 
         private final static String LIST_NODE = "albums";
@@ -182,20 +185,22 @@ public class AudioLibrary {
         }
 
         @Override
-        public List<AudioType.DetailsAlbum> resultFromJson(ObjectNode jsonObject)
+        public ApiList<AudioType.DetailsAlbum> resultFromJson(ObjectNode jsonObject)
                 throws ApiException {
+            ListType.LimitsReturned limits = new ListType.LimitsReturned(jsonObject);
+
             JsonNode resultNode = jsonObject.get(RESULT_NODE);
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<AudioType.DetailsAlbum>(0);
+                return new ApiList<>(new ArrayList<AudioType.DetailsAlbum>(0), limits);
             }
-            ArrayList<AudioType.DetailsAlbum> result = new ArrayList<AudioType.DetailsAlbum>(items.size());
+            ArrayList<AudioType.DetailsAlbum> result = new ArrayList<>(items.size());
             for (JsonNode item : items) {
                 result.add(new AudioType.DetailsAlbum(item));
             }
 
-            return result;
+            return new ApiList<>(result, limits);
         }
     }
 
@@ -244,7 +249,7 @@ public class AudioLibrary {
     /**
      * Retrieve all songs from specified album, artist or genre
      */
-    public static class GetSongs extends ApiMethod<List<AudioType.DetailsSong>> {
+    public static class GetSongs extends ApiMethod<ApiList<AudioType.DetailsSong>> {
         public final static String METHOD_NAME = "AudioLibrary.GetSongs";
 
         private final static String LIST_NODE = "songs";
@@ -279,21 +284,22 @@ public class AudioLibrary {
         }
 
         @Override
-        public List<AudioType.DetailsSong> resultFromJson(ObjectNode jsonObject)
+        public ApiList<AudioType.DetailsSong> resultFromJson(ObjectNode jsonObject)
                 throws ApiException {
-            JsonNode resultNode = jsonObject.get(RESULT_NODE);
+            ListType.LimitsReturned limits = new ListType.LimitsReturned(jsonObject);
 
+            JsonNode resultNode = jsonObject.get(RESULT_NODE);
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<AudioType.DetailsSong>(0);
+                return new ApiList<>(new ArrayList<AudioType.DetailsSong>(0), limits);
             }
-            ArrayList<AudioType.DetailsSong> result = new ArrayList<AudioType.DetailsSong>(items.size());
+            ArrayList<AudioType.DetailsSong> result = new ArrayList<>(items.size());
             for (JsonNode item : items) {
                 result.add(new AudioType.DetailsSong(item));
             }
 
-            return result;
+            return new ApiList<>(result, limits);
         }
     }
 

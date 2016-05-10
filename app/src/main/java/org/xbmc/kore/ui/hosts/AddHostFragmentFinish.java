@@ -38,7 +38,7 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
-import org.xbmc.kore.service.LibrarySyncService;
+import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.NavigationDrawerFragment;
 
 import java.util.Arrays;
