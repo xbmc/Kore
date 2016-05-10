@@ -87,7 +87,7 @@ public class AddonDetailsFragment extends SharedElementFragment {
     // Buttons
     @InjectView(R.id.fab) ImageButton fabButton;
     @InjectView(R.id.enable_disable) ImageButton enabledButton;
-    @InjectView(R.id.pin_unpin) ImageButton pinButton;
+    @InjectView(R.id.pin_unpin) ImageView pinButton;
 
     // Detail views
     @InjectView(R.id.media_panel) ScrollView mediaPanel;
@@ -333,39 +333,40 @@ public class AddonDetailsFragment extends SharedElementFragment {
 
     @OnClick(R.id.pin_unpin)
     public void onPinClicked(View v) {
-        final boolean enable = (v.getTag() == null)? true : !(Boolean)v.getTag();
+        final boolean isBookmarked = (v.getTag() == null)? true : !(Boolean)v.getTag();
 
         String name = mediaTitle.getText().toString();
         String path = addonId;
 
         SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
-        Set<String> bookmarked = new HashSet<>(prefs.getStringSet("bookmarked", Collections.<String>emptySet()));
-        if (enable)
-            bookmarked.add(path);
+        Set<String> bookmarks = new HashSet<>(prefs.getStringSet("bookmarked", Collections.<String>emptySet()));
+        if (isBookmarked)
+            bookmarks.add(path);
         else
-            bookmarked.remove(path);
-        prefs
-                .edit()
-                .putStringSet("bookmarked", bookmarked)
-                .putString("name_" + path, name)
-                .commit();
-        Toast.makeText(getActivity(), enable? R.string.addon_pinned : R.string.addon_unpinned, Toast.LENGTH_SHORT).show();
-        setupPinButton(enable);
+            bookmarks.remove(path);
+        prefs.edit()
+             .putStringSet("bookmarked", bookmarks)
+             .putString("name_" + path, name)
+             .apply();
+        Toast.makeText(getActivity(), isBookmarked? R.string.addon_pinned : R.string.addon_unpinned, Toast.LENGTH_SHORT).show();
+        setupPinButton(isBookmarked);
     }
 
-    private void setupPinButton(boolean enabled) {
-        // Enabled button
-        if (enabled) {
-            Resources.Theme theme = getActivity().getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
-                    R.attr.colorAccent});
-            pinButton.setColorFilter(styledAttributes.getColor(0,
-                    getActivity().getResources().getColor(R.color.accent_default)));
-            styledAttributes.recycle();
+    private void setupPinButton(boolean bookmarked) {
+        Resources.Theme theme = getActivity().getTheme();
+        TypedArray styledAttributes =
+                theme.obtainStyledAttributes(new int[] {R.attr.defaultButtonColorFilter, R.attr.colorAccent});
+        Resources resources = getActivity().getResources();
+        // Bookmarked button
+        if (bookmarked) {
+            pinButton.setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(1),
+                                                               resources.getColor(R.color.accent_default)));
         } else {
-            pinButton.clearColorFilter();
+            pinButton.setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(0),
+                                                               resources.getColor(R.color.white)));
         }
-        pinButton.setTag(enabled);
+        styledAttributes.recycle();
+        pinButton.setTag(bookmarked);
         pinButton.setVisibility(View.VISIBLE);
     }
 

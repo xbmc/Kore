@@ -105,4 +105,5 @@
     <attr name="iconChevronRight" format="reference" />
 
     <attr name="iconOpenInNew" format="reference" />
+    <attr name="iconBookmark" format="reference" />
 </resources>

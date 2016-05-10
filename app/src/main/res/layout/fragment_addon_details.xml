@@ -103,7 +103,7 @@
                     android:layout_width="@dimen/buttonbar_button_width"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconNew"
+                    android:src="?attr/iconBookmark"
                     android:contentDescription="@string/enable_disable"/>
                 <ImageButton
                     android:id="@+id/enable_disable"
