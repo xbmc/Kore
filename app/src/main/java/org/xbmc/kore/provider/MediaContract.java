@@ -609,6 +609,12 @@ public class MediaContract {
                          .build();
         }
 
+        public static Uri buildSongsListUri(long hostId) {
+            return Hosts.buildHostUri(hostId).buildUpon()
+                        .appendPath(PATH_SONGS)
+                        .build();
+        }
+
         /** Read {@link #_ID} from {@link Albums} {@link Uri}. */
         public static String getSongId(Uri uri) {
             return uri.getPathSegments().get(5);

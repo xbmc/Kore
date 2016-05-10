@@ -372,5 +372,6 @@
 
     <string name="download_network_types_title">Download network types</string>
     <string name="download_network_types_summary">Allowed network types for media downloads</string>
+    <string name="songs">Songs</string>
 
 </resources>
