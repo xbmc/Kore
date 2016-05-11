@@ -510,7 +510,7 @@ public class RemoteFragment extends Fragment
     public void playerOnConnectionError(int errorCode, String description) {
         HostInfo hostInfo = hostManager.getHostInfo();
 
-        switchToPanel(R.id.info_panel, false);
+        switchToPanel(R.id.info_panel, true);
         if (hostInfo != null) {
             infoTitle.setText(R.string.connecting);
             // TODO: check error code
@@ -523,7 +523,7 @@ public class RemoteFragment extends Fragment
 
     public void playerNoResultsYet() {
         // Initialize info panel
-        switchToPanel(R.id.info_panel, false);
+        switchToPanel(R.id.info_panel, true);
         HostInfo hostInfo = hostManager.getHostInfo();
         if (hostInfo != null) {
             infoTitle.setText(R.string.connecting);
