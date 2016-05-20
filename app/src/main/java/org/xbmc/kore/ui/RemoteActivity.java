@@ -57,8 +57,7 @@ import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
-import org.xbmc.kore.service.NotificationService;
-import org.xbmc.kore.service.PauseCallService;
+import org.xbmc.kore.service.ConnectionObserversManagerService;
 import org.xbmc.kore.ui.hosts.AddHostActivity;
 import org.xbmc.kore.ui.hosts.AddHostFragmentFinish;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
@@ -98,8 +97,6 @@ public class RemoteActivity extends BaseActivity
     private HostConnectionObserver hostConnectionObserver;
 
     private NavigationDrawerFragment navigationDrawerFragment;
-
-    private PauseCallService pauseCallService = null;
 
     @InjectView(R.id.background_image) ImageView backgroundImage;
     @InjectView(R.id.pager_indicator) CirclePageIndicator pageIndicator;
@@ -622,31 +619,32 @@ public class RemoteActivity extends BaseActivity
         }
         lastImageUrl = imageUrl;
 
-        // Check whether we should show a notification
-        boolean showNotification = PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION,
-                            Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
-        if (showNotification) {
-            // Let's start the notification service
-            LogUtils.LOGD(TAG, "Starting notification service");
-            startService(new Intent(this, NotificationService.class));
-        }
+        // Start service that manages connection observers
+        LogUtils.LOGD(TAG, "Starting observer service");
+        startService(new Intent(this, ConnectionObserversManagerService.class));
 
-        // Check whether we should react to phone state changes
-        boolean shouldPause = PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
-                            Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
-        if (shouldPause) {
-            // Let's start the notification service
-            LogUtils.LOGD(TAG, "Starting phone state listener");
-            if(pauseCallService == null) {
-                pauseCallService = new PauseCallService(this);
-                ((TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE)).listen(
-                        pauseCallService, PhoneStateListener.LISTEN_CALL_STATE);
-            }
-        }
+
+//        // Check whether we should show a notification
+//        boolean showNotification = PreferenceManager
+//                .getDefaultSharedPreferences(this)
+//                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION,
+//                            Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
+//        if (showNotification) {
+//            // Let's start the notification service
+//            LogUtils.LOGD(TAG, "Starting notification service");
+//            startService(new Intent(this, NotificationObserver.class));
+//        }
+//
+//        // Check whether we should react to phone state changes
+//        boolean shouldPause = PreferenceManager
+//                .getDefaultSharedPreferences(this)
+//                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+//                            Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+//        if (shouldPause) {
+//            // Let's start the listening service
+//            LogUtils.LOGD(TAG, "Starting phone state listener");
+//            startService(new Intent(this, PauseCallObserver.class));
+//        }
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
@@ -656,16 +654,11 @@ public class RemoteActivity extends BaseActivity
     }
 
     public void playerOnStop() {
+        LogUtils.LOGD(TAG, "Player stopping");
         if (lastImageUrl != null) {
             setImageViewBackground(null);
         }
         lastImageUrl = null;
-
-        if(pauseCallService != null) {
-            ((TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE)).listen(
-                    pauseCallService, PhoneStateListener.LISTEN_NONE);
-            pauseCallService = null;
-        }
     }
 
     public void playerNoResultsYet() {

@@ -68,7 +68,7 @@
         <!-- Services -->
         <service android:name=".service.library.LibrarySyncService"
             android:exported="false"/>
-        <service android:name="org.xbmc.kore.service.NotificationService"
+        <service android:name="org.xbmc.kore.service.ConnectionObserversManagerService"
             android:exported="false"/>
         <service android:name="org.xbmc.kore.service.IntentActionsService"
             android:exported="false"/>

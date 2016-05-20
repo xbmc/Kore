@@ -36,38 +36,41 @@ import org.xbmc.kore.utils.LogUtils;
  * The listener query Kodi's state on phone state changed event.
  * When a call ends we only resume if it was paused by the listener.
  */
-public class PauseCallService extends PhoneStateListener
+public class PauseCallObserver extends PhoneStateListener
         implements HostConnectionObserver.PlayerEventsObserver {
-    public static final String TAG = LogUtils.makeLogTag(PauseCallService.class);
-    private Context context;
+    public static final String TAG = LogUtils.makeLogTag(PauseCallObserver.class);
+
     private int currentActivePlayerId = -1;
     private boolean isPlaying = false;
     private boolean shouldResume = false;
 
-    public PauseCallService(Context context) {
-        this.context = context;
+    private Context mContext;
+    private HostManager mHostManager;
+
+    public PauseCallObserver(Context context) {
+        this.mContext = context;
+        mHostManager = HostManager.getInstance(context);
+
+        ((TelephonyManager)mContext
+                .getSystemService(Context.TELEPHONY_SERVICE))
+                .listen(this, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
     @Override
     public void onCallStateChanged(int state, String incomingNumber) {
-        // We won't create a new thread because the request to the host are
-        // already done in a separate thread. Just fire the request and forget
-        HostManager hostManager = HostManager.getInstance(context);
-        hostManager.getHostConnectionObserver().replyWithLastResult(this);
-
         if (state == TelephonyManager.CALL_STATE_OFFHOOK && isPlaying) {
             Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
-            action.execute(hostManager.getConnection(), null, null);
+            action.execute(mHostManager.getConnection(), null, null);
             shouldResume = true;
         } else if (state == TelephonyManager.CALL_STATE_IDLE && !isPlaying && shouldResume) {
             Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
-            action.execute(hostManager.getConnection(), null, null);
+            action.execute(mHostManager.getConnection(), null, null);
             shouldResume = false;
         } else if (state == TelephonyManager.CALL_STATE_RINGING) {
             Player.Notification action = new Player.Notification(
-                    context.getResources().getString(R.string.pause_call_incoming_title),
-                    context.getResources().getString(R.string.pause_call_incoming_message));
-            action.execute(hostManager.getConnection(), null, null);
+                    mContext.getResources().getString(R.string.pause_call_incoming_title),
+                    mContext.getResources().getString(R.string.pause_call_incoming_message));
+            action.execute(mHostManager.getConnection(), null, null);
         }
     }
 
@@ -90,11 +93,18 @@ public class PauseCallService extends PhoneStateListener
         isPlaying = false;
     }
 
+    private void stopListener() {
+        ((TelephonyManager)mContext
+                .getSystemService(Context.TELEPHONY_SERVICE))
+                .listen(this, PhoneStateListener.LISTEN_NONE);
+    }
+
     @Override
     public void playerOnStop() {
         currentActivePlayerId = -1;
         isPlaying = false;
         shouldResume = false;
+        stopListener();
     }
 
     @Override
@@ -108,11 +118,15 @@ public class PauseCallService extends PhoneStateListener
     }
 
     @Override
-    public void systemOnQuit() {}
+    public void systemOnQuit() {
+        playerOnStop();
+    }
 
     @Override
     public void inputOnInputRequested(String title, String type, String value) {}
 
     @Override
-    public void observerOnStopObserving() {}
+    public void observerOnStopObserving() {
+        playerOnStop();
+    }
 }
