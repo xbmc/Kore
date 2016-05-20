@@ -46,87 +46,32 @@ import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 /**
- * This service maintains a notification in the notification area while
- * something is playing, and keeps running while it is playing.
- * This service stops itself as soon as the playing stops or there's no
- * connection. Thus, this should only be started if something is already
- * playing, otherwise it will shutdown automatically.
- * It doesn't try to mirror Kodi's state at all times, because that would
- * imply running at all times which can be resource consuming.
- *
- * A {@link HostConnectionObserver} singleton is used to keep track of Kodi's
- * state. This singleton should be the same as used in the app's activities
+ * This class mantains a notification on the notification area while something is playing.
+ * It is meant to be used in conjunction with {@link ConnectionObserversManagerService},
+ * which should create an instance of this and manage it
  */
-public class NotificationService extends Service
+public class NotificationObserver
         implements HostConnectionObserver.PlayerEventsObserver {
-    public static final String TAG = LogUtils.makeLogTag(NotificationService.class);
+    public static final String TAG = LogUtils.makeLogTag(NotificationObserver.class);
 
     private static final int NOTIFICATION_ID = 1;
 
-    private HostConnectionObserver mHostConnectionObserver = null;
-
     private PendingIntent mRemoteStartPendingIntent;
+    private Context mContext;
 
-    @Override
-    public void onCreate() {
-        // We do not create any thread because all the works is supposed to
-        // be done on the main thread, so that the connection observer
-        // can be shared with the app, and notify it on the UI thread
+    public NotificationObserver(Context context) {
+        this.mContext = context;
 
         // Create the intent to start the remote when the user taps the notification
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mContext);
         stackBuilder.addParentStack(RemoteActivity.class);
-        stackBuilder.addNextIntent(new Intent(this, RemoteActivity.class));
+        stackBuilder.addNextIntent(new Intent(mContext, RemoteActivity.class));
         mRemoteStartPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        LogUtils.LOGD(TAG, "onStartCommand");
-        // Get the connection observer here, not on create to check if
-        // there has been a change in hosts, and if so unregister the previous one
-        HostConnectionObserver connectionObserver = HostManager.getInstance(this).getHostConnectionObserver();
-
-        // If we are already initialized and the same host, exit
-        if (mHostConnectionObserver == connectionObserver) {
-            LogUtils.LOGD(TAG, "Already initialized");
-            return START_STICKY;
-        }
-
-        // If there's a change in hosts, unregister from the previous one
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
-        }
-
-        // Register us on the connection observer
-        mHostConnectionObserver = connectionObserver;
-        mHostConnectionObserver.registerPlayerObserver(this, true);
-
-        // If we get killed, after returning from here, don't restart
-        return START_STICKY;
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // We don't provide binding, so return null
-        return null;
-    }
-
-    @Override
-    public void onTaskRemoved (Intent rootIntent) {
-        // Gracefully stop
-        removeNotification();
-        LogUtils.LOGD(TAG, "Shutting down notification service - Task removed");
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
-        }
-        stopSelf();
     }
 
     /**
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
      */
-
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
@@ -141,12 +86,6 @@ public class NotificationService extends Service
 
     public void playerOnStop() {
         removeNotification();
-        // Stop service
-        LogUtils.LOGD(TAG, "Shutting down notification service - Player stopped");
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
-        }
-        stopSelf();
     }
 
     public void playerNoResultsYet() {
@@ -155,22 +94,10 @@ public class NotificationService extends Service
 
     public void playerOnConnectionError(int errorCode, String description) {
         removeNotification();
-        // Stop service
-        LogUtils.LOGD(TAG, "Shutting down notification service - Connection error");
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
-        }
-        stopSelf();
     }
 
     public void systemOnQuit() {
         removeNotification();
-        // Stop service
-        LogUtils.LOGD(TAG, "Shutting down notification service - System quit");
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
-        }
-        stopSelf();
     }
 
     // Ignore this
@@ -179,8 +106,6 @@ public class NotificationService extends Service
     public void observerOnStopObserving() {
         // Called when the user changes host
         removeNotification();
-        LogUtils.LOGD(TAG, "Shutting down notification service - System quit");
-        stopSelf();
     }
 
     // Picasso target that will be used to load images
@@ -205,7 +130,7 @@ public class NotificationService extends Service
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
                 title = getItemResult.title;
-                String seasonEpisode = String.format(getString(R.string.season_episode_abbrev),
+                String seasonEpisode = String.format(mContext.getString(R.string.season_episode_abbrev),
                         getItemResult.season, getItemResult.episode);
                 underTitle = String.format("%s | %s", getItemResult.showtitle, seasonEpisode);
                 poster = getItemResult.art.poster;
@@ -253,7 +178,7 @@ public class NotificationService extends Service
         }
 
         // Setup the collpased and expanded notifications
-        final RemoteViews collapsedRV = new RemoteViews(this.getPackageName(), R.layout.notification_colapsed);
+        final RemoteViews collapsedRV = new RemoteViews(mContext.getPackageName(), R.layout.notification_colapsed);
         collapsedRV.setImageViewResource(R.id.rewind, rewindIcon);
         collapsedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingItent);
         collapsedRV.setImageViewResource(R.id.play, playPauseIcon);
@@ -263,7 +188,7 @@ public class NotificationService extends Service
         collapsedRV.setTextViewText(R.id.title, title);
         collapsedRV.setTextViewText(R.id.text2, underTitle);
 
-        final RemoteViews expandedRV = new RemoteViews(this.getPackageName(), R.layout.notification_expanded);
+        final RemoteViews expandedRV = new RemoteViews(mContext.getPackageName(), R.layout.notification_expanded);
         expandedRV.setImageViewResource(R.id.rewind, rewindIcon);
         expandedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingItent);
         expandedRV.setImageViewResource(R.id.play, playPauseIcon);
@@ -284,7 +209,7 @@ public class NotificationService extends Service
         }
 
         // Build the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
         final Notification notification = builder
                 .setSmallIcon(smallIcon)
                 .setShowWhen(false)
@@ -314,7 +239,7 @@ public class NotificationService extends Service
         //
         // 4. We specifically resize the image to the same dimensions used in
         // the remote, so that Picasso reuses it in the remote and here from the cache
-        Resources resources = this.getResources();
+        Resources resources = mContext.getResources();
         final int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
         final int posterHeight = isVideo?
                 resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height):
@@ -328,7 +253,7 @@ public class NotificationService extends Service
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
-                    CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(NotificationService.this, title);
+                    CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(mContext, title);
                     showNotification(Utils.drawableToBitmap(avatarDrawable, posterWidth, posterHeight));
                 }
 
@@ -342,14 +267,15 @@ public class NotificationService extends Service
                         expandedRV.setImageViewBitmap(expandedIconResId, bitmap);
                     }
 
-                    NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                    NotificationManager notificationManager =
+                            (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.notify(NOTIFICATION_ID, notification);
                     picassoTarget = null;
                 }
             };
 
             // Load the image
-            HostManager hostManager = HostManager.getInstance(this);
+            HostManager hostManager = HostManager.getInstance(mContext);
             hostManager.getPicasso()
                     .load(hostManager.getHostInfo().getImageUrl(poster))
                     .resize(posterWidth, posterHeight)
@@ -358,15 +284,16 @@ public class NotificationService extends Service
     }
 
     private PendingIntent buildActionPendingIntent(int playerId, String action) {
-        Intent intent = new Intent(this, IntentActionsService.class)
+        Intent intent = new Intent(mContext, IntentActionsService.class)
                 .setAction(action)
                 .putExtra(IntentActionsService.EXTRA_PLAYER_ID, playerId);
 
-        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void removeNotification() {
-        NotificationManager  notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager  notificationManager =
+                (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(NOTIFICATION_ID);
     }
 }

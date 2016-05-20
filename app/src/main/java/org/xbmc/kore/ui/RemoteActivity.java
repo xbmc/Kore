@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -27,6 +28,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -38,9 +41,7 @@ import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.eventclient.EventServerConnection;
 import org.xbmc.kore.host.HostConnectionObserver;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -56,7 +57,7 @@ import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
-import org.xbmc.kore.service.NotificationService;
+import org.xbmc.kore.service.ConnectionObserversManagerService;
 import org.xbmc.kore.ui.hosts.AddHostActivity;
 import org.xbmc.kore.ui.hosts.AddHostFragmentFinish;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
@@ -618,15 +619,32 @@ public class RemoteActivity extends BaseActivity
         }
         lastImageUrl = imageUrl;
 
-        // Check whether we should show a notification
-        boolean showNotification = PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION, Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
-        if (showNotification) {
-            // Let's start the notification service
-            LogUtils.LOGD(TAG, "Starting notification service");
-            startService(new Intent(this, NotificationService.class));
-        }
+        // Start service that manages connection observers
+        LogUtils.LOGD(TAG, "Starting observer service");
+        startService(new Intent(this, ConnectionObserversManagerService.class));
+
+
+//        // Check whether we should show a notification
+//        boolean showNotification = PreferenceManager
+//                .getDefaultSharedPreferences(this)
+//                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION,
+//                            Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
+//        if (showNotification) {
+//            // Let's start the notification service
+//            LogUtils.LOGD(TAG, "Starting notification service");
+//            startService(new Intent(this, NotificationObserver.class));
+//        }
+//
+//        // Check whether we should react to phone state changes
+//        boolean shouldPause = PreferenceManager
+//                .getDefaultSharedPreferences(this)
+//                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+//                            Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+//        if (shouldPause) {
+//            // Let's start the listening service
+//            LogUtils.LOGD(TAG, "Starting phone state listener");
+//            startService(new Intent(this, PauseCallObserver.class));
+//        }
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
@@ -636,6 +654,7 @@ public class RemoteActivity extends BaseActivity
     }
 
     public void playerOnStop() {
+        LogUtils.LOGD(TAG, "Player stopping");
         if (lastImageUrl != null) {
             setImageViewBackground(null);
         }

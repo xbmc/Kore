@@ -40,6 +40,11 @@
         android:defaultValue="false"/>
 
     <CheckBoxPreference
+        android:key="pref_pause_during_calls"
+        android:title="@string/pause_during_calls"
+        android:defaultValue="false"/>
+
+    <CheckBoxPreference
         android:key="pref_use_hardware_volume_keys"
         android:title="@string/use_hardware_volume_keys"
         android:defaultValue="true"/>

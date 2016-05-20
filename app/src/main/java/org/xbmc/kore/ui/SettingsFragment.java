@@ -28,6 +28,7 @@ import android.support.v4.app.TaskStackBuilder;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.service.ConnectionObserversManagerService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -104,6 +105,14 @@ public class SettingsFragment extends PreferenceFragment
                             .addNextIntent(new Intent(getActivity(), RemoteActivity.class))
                             .addNextIntent(new Intent(getActivity(), SettingsActivity.class))
                             .startActivities();
+        }
+
+        // If one of the settings that use the observer service are modified, restart it
+        if (key.equals(Settings.KEY_PREF_SHOW_NOTIFICATION) || key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS)) {
+            LogUtils.LOGD(TAG, "Stoping connection observer service");
+            Intent intent = new Intent(getActivity(), ConnectionObserversManagerService.class);
+            getActivity().stopService(intent);
+            getActivity().startService(intent);
         }
     }
 

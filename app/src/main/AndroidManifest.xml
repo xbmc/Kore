@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -67,7 +68,7 @@
         <!-- Services -->
         <service android:name=".service.library.LibrarySyncService"
             android:exported="false"/>
-        <service android:name="org.xbmc.kore.service.NotificationService"
+        <service android:name="org.xbmc.kore.service.ConnectionObserversManagerService"
             android:exported="false"/>
         <service android:name="org.xbmc.kore.service.IntentActionsService"
             android:exported="false"/>
