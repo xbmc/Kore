@@ -236,7 +236,7 @@ public class PVRChannelsListFragment extends Fragment
                 LogUtils.LOGD(TAG, "Error getting channel groups: " + description);
 
                 if (errorCode == ApiException.API_ERROR) {
-                    emptyView.setText(String.format(getString(R.string.might_not_have_pvr), description));
+                    emptyView.setText(getString(R.string.might_not_have_pvr));
                 } else {
                     emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
                 }
