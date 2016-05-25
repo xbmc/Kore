@@ -15,10 +15,13 @@
  */
 package org.xbmc.kore.service;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
@@ -102,12 +105,15 @@ public class ConnectionObserversManagerService extends Service
             mConnectionObservers.add(new NotificationObserver(this));
         }
 
-        // Check whether we should react to phone state changes
+        // Check whether we should react to phone state changes and wether
+        // we have permissions to do so
         boolean shouldPause = PreferenceManager
                 .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
-                            Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
-        if (shouldPause) {
+                .getBoolean(Settings.KEY_PREF_PAUSE_DURING_CALLS,
+                            Settings.DEFAULT_PREF_PAUSE_DURING_CALLS);
+        boolean hasPhonePermission =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+        if (shouldPause && hasPhonePermission) {
             mConnectionObservers.add(new PauseCallObserver(this));
         }
     }

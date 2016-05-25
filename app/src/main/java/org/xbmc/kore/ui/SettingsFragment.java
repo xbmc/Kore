@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,7 +24,12 @@ import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.TwoStatePreference;
+import android.support.annotation.NonNull;
+import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -31,6 +37,7 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.service.ConnectionObserversManagerService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import java.lang.reflect.Method;
 
@@ -73,6 +80,13 @@ public class SettingsFragment extends PreferenceFragment
             }
         }
 
+        // Check permission for phone state and set preference accordingly
+        if (!hasPhonePermission()) {
+            TwoStatePreference pauseCallPreference =
+                    (TwoStatePreference)findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
+            pauseCallPreference.setChecked(false);
+        }
+
         setupPreferences();
     }
 
@@ -107,13 +121,44 @@ public class SettingsFragment extends PreferenceFragment
                             .startActivities();
         }
 
-        // If one of the settings that use the observer service are modified, restart it
+        // If the pause during call is selected, make sure we have permission to read phone state
+        if (key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS) &&
+            (sharedPreferences.getBoolean(Settings.KEY_PREF_PAUSE_DURING_CALLS, Settings.DEFAULT_PREF_PAUSE_DURING_CALLS))) {
+            if (!hasPhonePermission()) {
+                FragmentCompat.requestPermissions(this,
+                                                  new String[] {Manifest.permission.READ_PHONE_STATE},
+                                                  Utils.PERMISSION_REQUEST_READ_PHONE_STATE);
+            }
+        }
+
+            // If one of the settings that use the observer service are modified, restart it
         if (key.equals(Settings.KEY_PREF_SHOW_NOTIFICATION) || key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS)) {
             LogUtils.LOGD(TAG, "Stoping connection observer service");
             Intent intent = new Intent(getActivity(), ConnectionObserversManagerService.class);
             getActivity().stopService(intent);
             getActivity().startService(intent);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Utils.PERMISSION_REQUEST_READ_PHONE_STATE:
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length == 0) ||
+                    (grantResults[0] != PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(getActivity(), R.string.read_phone_state_permission_denied, Toast.LENGTH_SHORT)
+                         .show();
+                    TwoStatePreference pauseCallPreference =
+                            (TwoStatePreference)findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
+                    pauseCallPreference.setChecked(false);
+                }
+                break;
+        }
+    }
+
+    private boolean hasPhonePermission() {
+        return ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**

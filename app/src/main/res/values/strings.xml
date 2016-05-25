@@ -383,4 +383,7 @@
     <string name="download_network_types_summary">Allowed network types for media downloads</string>
     <string name="songs">Songs</string>
 
+    <string name="read_phone_state_permission_denied">Permission denied. Won\'t be able to pause playback during calls.</string>
+    <string name="write_storage_permission_denied">Permission denied. Won\'t be able to download files.</string>
+
 </resources>

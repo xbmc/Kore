@@ -32,6 +32,9 @@ import java.util.List;
  * */
 public class Utils {
 
+    public static final int PERMISSION_REQUEST_WRITE_STORAGE = 0,
+            PERMISSION_REQUEST_READ_PHONE_STATE = 1;
+
     /**
      * Returns whether the SDK is the Jellybean release or later.
      */
