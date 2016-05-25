@@ -64,7 +64,9 @@
             android:layout_toLeftOf="@id/list_context_menu"
             android:layout_toStartOf="@id/list_context_menu"
             android:layout_alignTop="@id/art"
-            style="@style/TextAppearance.Medialist.Title"/>
+            style="@style/TextAppearance.Medialist.Title"
+            android:singleLine="false"
+            android:ellipsize="middle"/>
         <TextView
             android:id="@+id/details"
             android:layout_width="match_parent"
