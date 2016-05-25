@@ -124,7 +124,7 @@
     android:id="@+id/status_bar_latest_event_content"
     android:layout_width="match_parent"
     android:layout_height="128dp"
-    android:background="@color/background_floating_material_dark">
+    android:background="@color/notification_backgroup">
 
     <FrameLayout
         android:id="@+id/icon"
@@ -193,7 +193,8 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:contentDescription="@string/rewind"/>
         <ImageButton
             android:id="@+id/play"
             style="@style/Widget.Button.Borderless"
@@ -202,7 +203,8 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:contentDescription="@string/play"/>
         <ImageButton
             android:id="@+id/fast_forward"
             style="@style/Widget.Button.Borderless"
@@ -211,7 +213,8 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:contentDescription="@string/fast_forward"/>
     </LinearLayout>
     <ImageView
         android:layout_width="match_parent"

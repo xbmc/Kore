@@ -26,7 +26,7 @@ import org.xbmc.kore.utils.UIUtils;
 /**
  * Base activity, where common behaviour is implemented
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

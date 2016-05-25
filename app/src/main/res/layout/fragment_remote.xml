@@ -239,6 +239,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/down"
+            android:layout_toEndOf="@id/down"
             android:layout_alignTop="@id/back"
             android:src="?attr/iconMenu"
             android:contentDescription="@string/osd"/>

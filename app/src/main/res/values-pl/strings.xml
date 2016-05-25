@@ -272,9 +272,9 @@
     <string name="seen">Obejrzany</string>
     <string name="download">Pobierz</string>
 
-    <string name="confirm_movie_download">Czy na pewno chcesz pobrać ten film?\nFilm będzie pobierany w tle, a to może zająć trochę czasu...</string>
-    <string name="confirm_episode_download">Czy na pewno chcesz pobrać ten odcinek?\nOdcinek będzie pobierany w tle, a to może zająć trochę czasu...</string>
-    <string name="confirm_album_download">Czy na pewno chcesz pobrać ten album?\nAlbum będzie pobierany w tle, a to może zająć trochę czasu...</string>
+    <string name="confirm_movie_download">Czy na pewno chcesz pobrać ten film?\nFilm będzie pobierany w tle, a to może zająć trochę czasu…</string>
+    <string name="confirm_episode_download">Czy na pewno chcesz pobrać ten odcinek?\nOdcinek będzie pobierany w tle, a to może zająć trochę czasu…</string>
+    <string name="confirm_album_download">Czy na pewno chcesz pobrać ten album?\nAlbum będzie pobierany w tle, a to może zająć trochę czasu…</string>
 
     <string name="download_file_exists">Taki plik istnieje.\nChcesz go nadpisać, czy nadać nową nazwę?</string>
     <string name="download_dir_exists">Katalog pobrania już istnieje.\nJeśli wystąpią duplikaty nazwy - chciałbyś nadpisać pliki, czy zmienić im nazwę?</string>
@@ -326,7 +326,7 @@
     <string name="vibrate_on_remote">Wibruj po naciśnięciu klawiszy pilota</string>
     <string name="nav_drawer_items">Boczne skróty</string>
 
-    <string name="about">O ...</string>
+    <string name="about">O …</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2015 XBMC Foundation.<br><br>
         Proszę, oceń nas na <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>

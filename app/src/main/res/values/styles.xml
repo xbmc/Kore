@@ -301,13 +301,13 @@
 
     <style name="TextAppearance.Notification.Title">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
-        <item name="android:textColor">@color/primary_text_default_material_dark</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
     <style name="TextAppearance.Notification.Details">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
+        <item name="android:textColor">@color/white_dim_70pct</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 

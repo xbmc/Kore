@@ -167,7 +167,7 @@ public abstract class AbstractListFragment extends Fragment {
 			item.setTitle(R.string.multi_column);
 			gridView.setNumColumns(1);
 		}
-		editor.commit();
+		editor.apply();
 		adapter.notifyDataSetChanged(); //force gridView to redraw
 	}
 

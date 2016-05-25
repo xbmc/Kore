@@ -42,6 +42,7 @@
             android:padding="@dimen/default_icon_padding"
             android:layout_alignTop="@id/art"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             style="@style/Widget.Button.Borderless"
             android:src="?attr/iconOverflow"
             android:contentDescription="@string/action_options"/>
@@ -52,6 +53,8 @@
             android:orientation="vertical"
             android:layout_toLeftOf="@+id/list_context_menu"
             android:layout_toRightOf="@id/art"
+            android:layout_toStartOf="@+id/list_context_menu"
+            android:layout_toEndOf="@id/art"
             android:layout_alignTop="@id/art">
 
             <TextView

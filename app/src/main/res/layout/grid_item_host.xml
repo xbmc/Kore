@@ -44,6 +44,7 @@
             android:padding="@dimen/default_icon_padding"
             android:layout_alignTop="@id/status_indicator"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             style="@style/Widget.Button.Borderless"
             android:src="?attr/iconOverflow"
             android:contentDescription="@string/action_options"/>
@@ -54,6 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/status_indicator"
             android:layout_toLeftOf="@id/list_context_menu"
+            android:layout_toEndOf="@id/status_indicator"
+            android:layout_toStartOf="@id/list_context_menu"
             android:layout_alignTop="@id/status_indicator"
             android:layout_alignWithParentIfMissing="true"
             style="@style/TextAppearance.HostName"/>
@@ -65,6 +68,8 @@
             android:layout_below="@+id/host_name"
             android:layout_alignLeft="@+id/host_name"
             android:layout_alignRight="@+id/host_name"
+            android:layout_alignStart="@+id/host_name"
+            android:layout_alignEnd="@+id/host_name"
             style="@style/TextAppearance.HostDetails"/>
 
     </RelativeLayout>

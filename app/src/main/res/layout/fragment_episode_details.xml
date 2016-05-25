@@ -130,6 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         style="@style/TextAppearance.Media.SmallDetails"/>
                     <TextView
                         android:id="@+id/season"
@@ -137,6 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/premiered"
                         android:layout_alignRight="@id/premiered"
+                        android:layout_alignEnd="@id/premiered"
                         style="@style/TextAppearance.Media.SmallDetails"/>
 
                     <TextView
@@ -145,8 +147,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/season"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         style="@style/TextAppearance.Media.Rating"
-                        android:layout_marginRight="@dimen/small_padding"/>
+                        android:layout_marginRight="@dimen/small_padding"
+                        android:layout_marginEnd="@dimen/small_padding"/>
 
                     <TextView
                         android:id="@+id/max_rating"
@@ -156,6 +160,8 @@
                         android:layout_alignBottom="@id/season"
                         android:layout_toRightOf="@id/rating"
                         android:layout_toLeftOf="@id/season"
+                        android:layout_toEndOf="@id/rating"
+                        android:layout_toStartOf="@id/season"
                         style="@style/TextAppearance.Media.SmallDetails"
                         android:text="@string/max_rating_video"/>
                 </RelativeLayout>
@@ -186,6 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/director_title"
+                    android:layout_toEndOf="@id/director_title"
                     android:layout_alignTop="@id/director_title"
                     style="@style/TextAppearance.Media.Info"
                     android:textColor="?attr/appTextColorSecondary"
@@ -252,6 +259,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="@dimen/default_padding"
         android:layout_marginRight="@dimen/double_padding"
+        android:layout_marginEnd="@dimen/double_padding"
         android:src="@drawable/ic_play_arrow_white_24dp"
         app:fab_colorNormal="?attr/fabColorNormal"
         app:fab_colorPressed="?attr/fabColorPressed"/>

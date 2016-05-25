@@ -26,7 +26,7 @@
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         style="@style/TextAppearance.Medialist.Title"
-        android:gravity="right"
+        android:gravity="end"
         android:paddingTop="@dimen/small_padding"
         android:paddingLeft="@dimen/small_padding"
         android:paddingRight="@dimen/small_padding"/>
@@ -36,6 +36,7 @@
         android:layout_height="@dimen/default_icon_size"
         android:padding="@dimen/default_icon_padding"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         style="@style/Widget.Button.Borderless"
         android:src="?attr/iconOverflow"
@@ -48,12 +49,15 @@
         style="@style/TextAppearance.Medialist.Title"
         android:layout_toRightOf="@id/track_number"
         android:layout_toLeftOf="@id/list_context_menu"
+        android:layout_toEndOf="@id/track_number"
+        android:layout_toStartOf="@id/list_context_menu"
         android:layout_alignBottom="@id/track_number"/>
     <TextView
         android:id="@+id/duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/song_title"
+        android:layout_alignStart="@id/song_title"
         android:layout_below="@id/song_title"
         style="@style/TextAppearance.Medialist.Details"
         android:paddingBottom="@dimen/small_padding"/>

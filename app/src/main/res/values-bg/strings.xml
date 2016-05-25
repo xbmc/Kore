@@ -44,7 +44,7 @@
     <string name="xbmc_quit">Медийният център се затваря.</string>
     <string name="wol_sent">До медийния център е изпратен сигнал за събуждане.</string>
 
-    <string name="power">Изключи...</string>
+    <string name="power">Изключи…</string>
     <string name="quit">Изход</string>
     <string name="suspend">Суспендиране</string>
     <string name="reboot">Рестартиране</string>
