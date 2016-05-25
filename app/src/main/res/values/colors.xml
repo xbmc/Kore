@@ -25,7 +25,7 @@
 
     <color name="white">#ffffffff</color>
     <color name="white_dim_50pct">#88ffffff</color>
-    <color name="white_dim_70pct">#3bffffff</color>
+    <color name="white_dim_70pct">#b3ffffff</color>
 
     <color name="black_dim_87pct">#de000000</color>
     <color name="black_dim_54pct">#8a000000</color>
