@@ -41,6 +41,7 @@ public class MediaContract {
     public static final String PATH_ALBUMS = "albums";
     public static final String PATH_AUDIO_GENRES = "audio_genres";
     public static final String PATH_SONGS = "songs";
+    public static final String PATH_SONG_ARTISTS = "song_artists";
     public static final String PATH_ALBUM_ARTISTS = "album_artists";
     public static final String PATH_ALBUM_GENRES = "album_genres";
     public static final String PATH_MUSIC_VIDEOS = "music_videos";
@@ -699,6 +700,36 @@ public class MediaContract {
         public final static String[] ALL_COLUMNS = {
                 _ID, HOST_ID, ALBUMID, ARTISTID,
         };
+    }
+
+    /**
+     * Columns for SongArtists table
+     * All Other IDs refer to XBMC Ids, not Internal ones
+     */
+    public interface SongArtistsColumns {
+        String HOST_ID = "host_id";
+        String SONGID = "songid";
+        String ARTISTID = "artistid";
+    }
+
+    public static class SongArtists implements BaseColumns, SongArtistsColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SONG_ARTISTS).build();
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_SONG_ARTISTS;
+
+        /** Build {@link Uri} for requested {@link #_ID}. */
+        public static Uri buildSongsForArtistListUri(long hostId, long artistId) {
+            return Hosts.buildHostUri(hostId).buildUpon()
+                        .appendPath(PATH_ARTISTS)
+                        .appendPath(String.valueOf(artistId))
+                        .appendPath(PATH_SONGS)
+                        .build();
+        }
+
+        public final static String[] ALL_COLUMNS = {
+                _ID, HOST_ID, SONGID, ARTISTID,
+                };
     }
 
     /**

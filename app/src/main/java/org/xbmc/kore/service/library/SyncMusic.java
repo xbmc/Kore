@@ -317,7 +317,8 @@ public class SyncMusic extends SyncItem {
             AudioType.FieldsSong.THUMBNAIL, AudioType.FieldsSong.FILE,
             AudioType.FieldsSong.ALBUMID,
             //AudioType.FieldsSong.LASTPLAYED, AudioType.FieldsSong.DISC,
-            //AudioType.FieldsSong.GENREID, AudioType.FieldsSong.ARTISTID,
+            //AudioType.FieldsSong.GENREID,
+            AudioType.FieldsSong.ARTISTID,
             //AudioType.FieldsSong.DISPLAYARTIST, AudioType.FieldsSong.ALBUMARTISTID
     };
 
@@ -345,13 +346,29 @@ public class SyncMusic extends SyncItem {
                     limitsReturned = result.limits;
                 }
 
+                int totalArtistsCount  = 0;
                 // Save partial results to DB
                 ContentValues songValuesBatch[] = new ContentValues[items.size()];
                 for (int i = 0; i < items.size(); i++) {
                     AudioType.DetailsSong song = items.get(i);
                     songValuesBatch[i] = SyncUtils.contentValuesFromSong(hostId, song);
+                    totalArtistsCount += song.artistid.size();
                 }
                 contentResolver.bulkInsert(MediaContract.Songs.CONTENT_URI, songValuesBatch);
+
+                // Iterate on each song, collect the artists and insert them
+                ContentValues songArtistsValuesBatch[] = new ContentValues[totalArtistsCount];
+                int artistCount = 0;
+                for (AudioType.DetailsSong song : items) {
+                    for (int artistId : song.artistid) {
+                        songArtistsValuesBatch[artistCount] = new ContentValues();
+                        songArtistsValuesBatch[artistCount].put(MediaContract.SongArtists.HOST_ID, hostId);
+                        songArtistsValuesBatch[artistCount].put(MediaContract.SongArtists.SONGID, song.songid);
+                        songArtistsValuesBatch[artistCount].put(MediaContract.SongArtists.ARTISTID, artistId);
+                        artistCount++;
+                    }
+                }
+                contentResolver.bulkInsert(MediaContract.SongArtists.CONTENT_URI, songArtistsValuesBatch);
 
                 if (moreItemsAvailable(limitsReturned)) {
                     LogUtils.LOGD(TAG, "chainCallSyncSongs: More results on media center, recursing.");

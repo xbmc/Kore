@@ -27,7 +27,6 @@ import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.jsonrpc.type.AudioType;
 import org.xbmc.kore.jsonrpc.type.LibraryType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class SyncUtils {
         void onServiceConnected(LibrarySyncService librarySyncService);
     }
 
-    public static final String LIST_DELIMETER = ", ";
+    public static final String LIST_DELIMITER = ", ";
 
     /**
      * Returns {@link android.content.ContentValues} from a {@link org.xbmc.kore.jsonrpc.type.VideoType.DetailsMovie} movie
@@ -61,7 +60,7 @@ public class SyncUtils {
         movieValues.put(MediaContract.MoviesColumns.TITLE, movie.title);
         movieValues.put(MediaContract.MoviesColumns.FILE, movie.file);
         movieValues.put(MediaContract.MoviesColumns.PLOT, movie.plot);
-        movieValues.put(MediaContract.MoviesColumns.DIRECTOR, Utils.listStringConcat(movie.director, LIST_DELIMETER));
+        movieValues.put(MediaContract.MoviesColumns.DIRECTOR, Utils.listStringConcat(movie.director, LIST_DELIMITER));
         movieValues.put(MediaContract.MoviesColumns.RUNTIME, movie.runtime);
         if (movie.streamdetails != null) {
             if (movie.streamdetails.audio.size() > 0) {
@@ -78,7 +77,7 @@ public class SyncUtils {
                 movieValues.put(MediaContract.MoviesColumns.AUDIO_CHANNELS, selectedStream.channels);
                 movieValues.put(MediaContract.MoviesColumns.AUDIO_CODEC, selectedStream.codec);
                 movieValues.put(MediaContract.MoviesColumns.AUDIO_LANGUAGE,
-                        Utils.listStringConcat(languages, LIST_DELIMETER));
+                        Utils.listStringConcat(languages, LIST_DELIMITER));
             }
             if (movie.streamdetails.subtitle.size() > 0) {
                 // Concat all subtitle languages
@@ -87,7 +86,7 @@ public class SyncUtils {
                     subtitles.add(movie.streamdetails.subtitle.get(j).language);
                 }
                 movieValues.put(MediaContract.MoviesColumns.SUBTITLES_LANGUAGES,
-                        Utils.listStringConcat(subtitles, LIST_DELIMETER));
+                        Utils.listStringConcat(subtitles, LIST_DELIMITER));
             }
             if (movie.streamdetails.video.size() > 0) {
                 // We're only getting the first video channel...
@@ -102,22 +101,22 @@ public class SyncUtils {
             }
         }
         movieValues.put(MediaContract.MoviesColumns.COUNTRIES,
-                Utils.listStringConcat(movie.country, LIST_DELIMETER));
+                Utils.listStringConcat(movie.country, LIST_DELIMITER));
         movieValues.put(MediaContract.MoviesColumns.GENRES,
-                Utils.listStringConcat(movie.genre, LIST_DELIMETER));
+                Utils.listStringConcat(movie.genre, LIST_DELIMITER));
         movieValues.put(MediaContract.MoviesColumns.IMDBNUMBER, movie.imdbnumber);
         movieValues.put(MediaContract.MoviesColumns.MPAA, movie.mpaa);
         movieValues.put(MediaContract.MoviesColumns.RATING, movie.rating);
         movieValues.put(MediaContract.MoviesColumns.SET, movie.set);
         movieValues.put(MediaContract.MoviesColumns.SETID, movie.setid);
         movieValues.put(MediaContract.MoviesColumns.STUDIOS,
-                Utils.listStringConcat(movie.studio, LIST_DELIMETER));
+                Utils.listStringConcat(movie.studio, LIST_DELIMITER));
         movieValues.put(MediaContract.MoviesColumns.TAGLINE, movie.tagline);
         movieValues.put(MediaContract.MoviesColumns.TOP250, movie.top250);
         movieValues.put(MediaContract.MoviesColumns.TRAILER, movie.trailer);
         movieValues.put(MediaContract.MoviesColumns.VOTES, movie.votes);
         movieValues.put(MediaContract.MoviesColumns.WRITERS,
-                Utils.listStringConcat(movie.writer, LIST_DELIMETER));
+                Utils.listStringConcat(movie.writer, LIST_DELIMITER));
         movieValues.put(MediaContract.MoviesColumns.YEAR, movie.year);
 
         return movieValues;
@@ -164,10 +163,10 @@ public class SyncUtils {
         tvshowValues.put(MediaContract.TVShowsColumns.PREMIERED, tvshow.premiered);
         tvshowValues.put(MediaContract.TVShowsColumns.RATING, tvshow.rating);
         tvshowValues.put(MediaContract.TVShowsColumns.STUDIO,
-                Utils.listStringConcat(tvshow.studio, LIST_DELIMETER));
+                Utils.listStringConcat(tvshow.studio, LIST_DELIMITER));
         tvshowValues.put(MediaContract.TVShowsColumns.WATCHEDEPISODES, tvshow.watchedepisodes);
         tvshowValues.put(MediaContract.TVShowsColumns.GENRES,
-                Utils.listStringConcat(tvshow.genre, LIST_DELIMETER));
+                Utils.listStringConcat(tvshow.genre, LIST_DELIMITER));
 
         return tvshowValues;
     }
@@ -215,12 +214,12 @@ public class SyncUtils {
         episodeValues.put(MediaContract.EpisodesColumns.TITLE, episode.title);
         episodeValues.put(MediaContract.EpisodesColumns.FILE, episode.file);
         episodeValues.put(MediaContract.EpisodesColumns.PLOT, episode.plot);
-        episodeValues.put(MediaContract.EpisodesColumns.DIRECTOR, Utils.listStringConcat(episode.director, LIST_DELIMETER));
+        episodeValues.put(MediaContract.EpisodesColumns.DIRECTOR, Utils.listStringConcat(episode.director, LIST_DELIMITER));
         episodeValues.put(MediaContract.EpisodesColumns.RUNTIME, episode.runtime);
         episodeValues.put(MediaContract.EpisodesColumns.FIRSTAIRED, episode.firstaired);
         episodeValues.put(MediaContract.EpisodesColumns.RATING, episode.rating);
         episodeValues.put(MediaContract.EpisodesColumns.SHOWTITLE, episode.showtitle);
-        episodeValues.put(MediaContract.EpisodesColumns.WRITER, Utils.listStringConcat(episode.writer, LIST_DELIMETER));
+        episodeValues.put(MediaContract.EpisodesColumns.WRITER, Utils.listStringConcat(episode.writer, LIST_DELIMITER));
 
         if (episode.streamdetails.audio.size() > 0) {
             // Get the stream with the most channels and concat all the languages
@@ -235,7 +234,7 @@ public class SyncUtils {
             }
             episodeValues.put(MediaContract.EpisodesColumns.AUDIO_CHANNELS, selectedStream.channels);
             episodeValues.put(MediaContract.EpisodesColumns.AUDIO_CODEC, selectedStream.codec);
-            episodeValues.put(MediaContract.EpisodesColumns.AUDIO_LANGUAGE, Utils.listStringConcat(languages, LIST_DELIMETER));
+            episodeValues.put(MediaContract.EpisodesColumns.AUDIO_LANGUAGE, Utils.listStringConcat(languages, LIST_DELIMITER));
         }
         if (episode.streamdetails.subtitle.size() > 0) {
             // Concat all subtitle languages
@@ -243,7 +242,7 @@ public class SyncUtils {
             for (int j = 0; j < episode.streamdetails.subtitle.size(); j++) {
                 subtitles.add(episode.streamdetails.subtitle.get(j).language);
             }
-            episodeValues.put(MediaContract.EpisodesColumns.SUBTITLES_LANGUAGES, Utils.listStringConcat(subtitles, LIST_DELIMETER));
+            episodeValues.put(MediaContract.EpisodesColumns.SUBTITLES_LANGUAGES, Utils.listStringConcat(subtitles, LIST_DELIMITER));
         }
         if (episode.streamdetails.video.size() > 0) {
             // We're only getting the first video channel...
@@ -273,7 +272,7 @@ public class SyncUtils {
         castValues.put(MediaContract.ArtistsColumns.ARTIST, artist.artist);
         castValues.put(MediaContract.ArtistsColumns.DESCRIPTION, artist.description);
         castValues.put(MediaContract.ArtistsColumns.GENRE,
-                Utils.listStringConcat(artist.genre, LIST_DELIMETER));
+                Utils.listStringConcat(artist.genre, LIST_DELIMITER));
         castValues.put(MediaContract.ArtistsColumns.FANART, artist.fanart);
         castValues.put(MediaContract.ArtistsColumns.THUMBNAIL, artist.thumbnail);
 
@@ -315,7 +314,7 @@ public class SyncUtils {
         castValues.put(MediaContract.Albums.ALBUMLABEL, album.albumlabel);
         castValues.put(MediaContract.Albums.DESCRIPTION, album.description);
         castValues.put(MediaContract.Albums.PLAYCOUNT, album.playcount);
-        castValues.put(MediaContract.Albums.GENRE, Utils.listStringConcat(album.genre, LIST_DELIMETER));
+        castValues.put(MediaContract.Albums.GENRE, Utils.listStringConcat(album.genre, LIST_DELIMITER));
 
         return castValues;
     }
@@ -357,7 +356,7 @@ public class SyncUtils {
         musicVideoValues.put(MediaContract.MusicVideosColumns.TITLE, musicVideo.title);
         musicVideoValues.put(MediaContract.MusicVideosColumns.FILE, musicVideo.file);
         musicVideoValues.put(MediaContract.MusicVideosColumns.PLOT, musicVideo.plot);
-        musicVideoValues.put(MediaContract.MusicVideosColumns.DIRECTOR, Utils.listStringConcat(musicVideo.director, LIST_DELIMETER));
+        musicVideoValues.put(MediaContract.MusicVideosColumns.DIRECTOR, Utils.listStringConcat(musicVideo.director, LIST_DELIMITER));
         musicVideoValues.put(MediaContract.MusicVideosColumns.RUNTIME, musicVideo.runtime);
         if (musicVideo.streamdetails != null) {
             if (musicVideo.streamdetails.audio.size() > 0) {
@@ -374,7 +373,7 @@ public class SyncUtils {
                 musicVideoValues.put(MediaContract.MusicVideosColumns.AUDIO_CHANNELS, selectedStream.channels);
                 musicVideoValues.put(MediaContract.MusicVideosColumns.AUDIO_CODEC, selectedStream.codec);
                 musicVideoValues.put(MediaContract.MusicVideosColumns.AUDIO_LANGUAGE,
-                        Utils.listStringConcat(languages, LIST_DELIMETER));
+                        Utils.listStringConcat(languages, LIST_DELIMITER));
             }
             if (musicVideo.streamdetails.subtitle.size() > 0) {
                 // Concat all subtitle languages
@@ -383,7 +382,7 @@ public class SyncUtils {
                     subtitles.add(musicVideo.streamdetails.subtitle.get(j).language);
                 }
                 musicVideoValues.put(MediaContract.MusicVideosColumns.SUBTITLES_LANGUAGES,
-                        Utils.listStringConcat(subtitles, LIST_DELIMETER));
+                        Utils.listStringConcat(subtitles, LIST_DELIMITER));
             }
             if (musicVideo.streamdetails.video.size() > 0) {
                 // We're only getting the first video channel...
@@ -399,13 +398,13 @@ public class SyncUtils {
         }
         musicVideoValues.put(MediaContract.MusicVideosColumns.ALBUM, musicVideo.album);
         musicVideoValues.put(MediaContract.MusicVideosColumns.ARTIST,
-                Utils.listStringConcat(musicVideo.artist, LIST_DELIMETER));
+                Utils.listStringConcat(musicVideo.artist, LIST_DELIMITER));
         musicVideoValues.put(MediaContract.MusicVideosColumns.GENRES,
-                Utils.listStringConcat(musicVideo.genre, LIST_DELIMETER));
+                Utils.listStringConcat(musicVideo.genre, LIST_DELIMITER));
         musicVideoValues.put(MediaContract.MusicVideosColumns.STUDIOS,
-                Utils.listStringConcat(musicVideo.studio, LIST_DELIMETER));
+                Utils.listStringConcat(musicVideo.studio, LIST_DELIMITER));
         musicVideoValues.put(MediaContract.MusicVideosColumns.TAG,
-                Utils.listStringConcat(musicVideo.tag, LIST_DELIMETER));
+                Utils.listStringConcat(musicVideo.tag, LIST_DELIMITER));
         musicVideoValues.put(MediaContract.MusicVideosColumns.TRACK, musicVideo.track);
         musicVideoValues.put(MediaContract.MusicVideosColumns.YEAR, musicVideo.year);
 

@@ -49,6 +49,8 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
+import java.util.ArrayList;
+
 /**
  * Fragment that presents the songs list
  */
@@ -94,7 +96,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
         }
 
         return new CursorLoader(getActivity(), uri,
-                                SongsAlbumsListQuery.PROJECTION, selection, selectionArgs, SongsAlbumsListQuery.SORT);
+                                SongsListQuery.PROJECTION, selection, selectionArgs, SongsListQuery.SORT);
     }
 
     @Override
@@ -130,34 +132,9 @@ public class SongsListFragment extends AbstractCursorListFragment {
     }
 
     /**
-     * Song list query parameters.
-     */
-    private interface SongsListQuery {
-        String[] PROJECTION = {
-                MediaDatabase.Tables.SONGS + "." + BaseColumns._ID,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TRACK,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.DURATION,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.FILE,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.SONGID,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.ALBUMID,
-                };
-
-        String SORT = MediaContract.Songs.TRACK + " ASC";
-
-        int ID = 0;
-        int TITLE = 1;
-        int TRACK = 2;
-        int DURATION = 3;
-        int FILE = 4;
-        int SONGID = 5;
-        int ALBUMID = 6;
-    }
-
-    /**
      * Album songs list query parameters.
      */
-    private interface SongsAlbumsListQuery {
+    private interface SongsListQuery {
         String[] PROJECTION = {
                 MediaDatabase.Tables.SONGS + "." + BaseColumns._ID,
                 MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE,
@@ -170,6 +147,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
                 MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.GENRE,
                 MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.YEAR,
                 MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.THUMBNAIL,
+                MediaDatabase.Tables.ARTISTS + "." + MediaContract.Artists.ARTIST
                 };
 
         String SORT = MediaDatabase.sortCommonTokens(MediaDatabase.Tables.SONGS
@@ -187,6 +165,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
         int GENRE = 8;
         int YEAR = 9;
         int THUMBNAIL = 10;
+        int ARTIST = 11;
     }
 
     private class SongsAdapter extends CursorAdapter {
@@ -229,25 +208,30 @@ public class SongsListFragment extends AbstractCursorListFragment {
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
 
-            String title = cursor.getString(SongsAlbumsListQuery.TITLE);
-            viewHolder.songId = cursor.getInt(SongsAlbumsListQuery.SONGID);
+            String title = cursor.getString(SongsListQuery.TITLE);
+            viewHolder.songId = cursor.getInt(SongsListQuery.SONGID);
 
             viewHolder.title.setText(title);
-            viewHolder.artist.setText(String.valueOf(cursor.getString(SongsAlbumsListQuery.ALBUMARTIST)));
 
-            int year = cursor.getInt(SongsAlbumsListQuery.YEAR);
+            String artist = cursor.getString(SongsListQuery.ALBUMARTIST);
+            if (TextUtils.isEmpty(artist))
+                artist = cursor.getString(SongsListQuery.ARTIST);
+
+            viewHolder.artist.setText(artist);
+
+            int year = cursor.getInt(SongsListQuery.YEAR);
             if (year > 0) {
                 setDetails(viewHolder.details,
-                           cursor.getString(SongsAlbumsListQuery.ALBUMTITLE),
+                           cursor.getString(SongsListQuery.ALBUMTITLE),
                            String.valueOf(year),
-                           cursor.getString(SongsAlbumsListQuery.GENRE));
+                           cursor.getString(SongsListQuery.GENRE));
             } else {
                 setDetails(viewHolder.details,
-                           cursor.getString(SongsAlbumsListQuery.ALBUMTITLE),
-                           cursor.getString(SongsAlbumsListQuery.GENRE));
+                           cursor.getString(SongsListQuery.ALBUMTITLE),
+                           cursor.getString(SongsListQuery.GENRE));
             }
 
-            String thumbnail = cursor.getString(SongsAlbumsListQuery.THUMBNAIL);
+            String thumbnail = cursor.getString(SongsListQuery.THUMBNAIL);
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  thumbnail, title,
                                                  viewHolder.art, artWidth, artHeight);
@@ -306,21 +290,12 @@ public class SongsListFragment extends AbstractCursorListFragment {
             return;
         }
 
-        StringBuilder stringBuilder = new StringBuilder();
-
-        int i = 0;
-        int size = elements.length - 1;
-        for (; i < size; i++) {
-            if (!TextUtils.isEmpty(elements[i])) {
-                stringBuilder.append(elements[i]);
-                stringBuilder.append(" | ");
-            }
+        ArrayList<String> details = new ArrayList<>();
+        for (int i = 0; i < elements.length; i++) {
+            if (!TextUtils.isEmpty(elements[i]))
+                details.add(elements[i]);
         }
 
-        if (elements.length > 0) {
-            stringBuilder.append(elements[i]);
-        }
-
-        textView.setText(stringBuilder.toString());
+        textView.setText(TextUtils.join(" | ", details.toArray()));
     }
 }
