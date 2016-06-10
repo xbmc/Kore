@@ -43,6 +43,28 @@ public class SongsTest extends AbstractTestClass {
     }
 
     @Test
+    public void queryArtistSongsTest() {
+        Uri uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(), TestValues.ArtistSong.artistId);
+
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.ArtistSong.PROJECTION, null, null, null);
+
+        assertNotNull(cursor);
+        assertEquals("cursor size ", 17, cursor.getCount());
+        TestUtils.testCursorContainsRange(cursor, cursor.getColumnIndex(MediaContract.SongsColumns.SONGID),
+                                          96, 112);
+        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
+                                                           TestValues.ArtistSong.songId));
+
+        assertTrue(cursor.moveToFirst());
+        do {
+            String displayArtist =
+                    cursor.getString(cursor.getColumnIndex(MediaProvider.Qualified.SONGS_DISPLAYARTIST));
+            assertEquals( "Found " + displayArtist + ", but should be " + TestValues.ArtistSong.displayArtist,
+                          displayArtist, TestValues.ArtistSong.displayArtist);
+        } while (cursor.moveToNext());
+    }
+
+    @Test
     public void queryArtistsSongWithArtistWithoutAlbumTest() {
         Uri uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(),
                                                               TestValues.SongWithArtistWithoutAlbum.artistId);
@@ -83,9 +105,9 @@ public class SongsTest extends AbstractTestClass {
                                                     null, null, null);
 
         assertNotNull(cursor);
-        assertEquals("cursor size ", 1804, cursor.getCount());
+        assertEquals("cursor size ", 1810, cursor.getCount());
         TestUtils.testCursorContainsRange(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
-                                          1, 1804);
+                                          1, 1810);
     }
 
     @Test
@@ -109,6 +131,8 @@ public class SongsTest extends AbstractTestClass {
                                                     TestValues.ArtistSong.PROJECTION,
                                                     null, null, null);
 
+        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
+                                                           TestValues.SongWithArtistWithoutAlbum.songId));
         assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
                                                            TestValues.SongWithArtistWithoutAlbum.songId));
         TestValues.SongWithArtistWithoutAlbum.test(cursor);

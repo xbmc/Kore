@@ -7573,6 +7573,64 @@
                "",
                ""
             ]
+         },
+         {
+            "mood" : [],
+            "displayartist" : "Various artists",
+            "artist" : [
+               "Various artists"
+            ],
+            "fanart" : "",
+            "genreid" : [],
+            "albumlabel" : "",
+            "theme" : [],
+            "genre" : [],
+            "thumbnail" : "",
+            "style" : [],
+            "description" : "",
+            "musicbrainzalbumartistid" : [
+               ""
+            ],
+            "label" : "Various Artists Album",
+            "title" : "Various Artists Album",
+            "albumid" : 235,
+            "musicbrainzalbumid" : "",
+            "year" : 0,
+            "artistid" : [
+               229
+            ],
+            "rating" : 0,
+            "type" : "",
+            "playcount" : 0
+         },
+         {
+            "albumlabel" : "",
+            "albumid" : 236,
+            "playcount" : 0,
+            "genreid" : [],
+            "displayartist" : "Various artists",
+            "musicbrainzalbumartistid" : [
+               ""
+            ],
+            "musicbrainzalbumid" : "",
+            "label" : "Various Artists Album No Song Artist",
+            "mood" : [],
+            "type" : "",
+            "title" : "Various Artists Album No Song Artist",
+            "style" : [],
+            "year" : 0,
+            "fanart" : "",
+            "genre" : [],
+            "artist" : [
+               "Various artists"
+            ],
+            "artistid" : [
+               229
+            ],
+            "theme" : [],
+            "description" : "",
+            "thumbnail" : "",
+            "rating" : 0
          }
       ]
    }

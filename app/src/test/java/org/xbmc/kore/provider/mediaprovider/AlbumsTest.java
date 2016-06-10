@@ -21,6 +21,7 @@ import android.net.Uri;
 
 import org.junit.Test;
 import org.xbmc.kore.provider.MediaContract;
+import org.xbmc.kore.testutils.CursorUtils;
 import org.xbmc.kore.testutils.TestUtils;
 
 import static junit.framework.Assert.assertEquals;
@@ -36,11 +37,11 @@ public class AlbumsTest extends AbstractTestClass {
         Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
-        assertEquals("cursor size ", 232, cursor.getCount());
+        assertEquals("cursor size ", 234, cursor.getCount());
         int columnIndex = cursor.getColumnIndex(MediaContract.AlbumsColumns.ALBUMID);
         TestUtils.testCursorContainsRange(cursor, columnIndex, 1, 75);
         TestUtils.testCursorContainsRange(cursor, columnIndex, 77, 82);
-        TestUtils.testCursorContainsRange(cursor, columnIndex, 84, 234);
+        TestUtils.testCursorContainsRange(cursor, columnIndex, 84, 235);
     }
 
     @Test
@@ -66,6 +67,28 @@ public class AlbumsTest extends AbstractTestClass {
         assertEquals("cursor size ", 1, cursor.getCount());
         assertTrue(cursor.moveToFirst());
         TestValues.Album.test(cursor);
+    }
+
+    @Test
+    public void queryAlbumsForArtistWithVariousArtistsTest() {
+        Uri uri = MediaContract.AlbumArtists.buildAlbumsForArtistListUri(hostInfo.getId(),
+                                                                         TestValues.AlbumWithVariousArtists.artistId);
+
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.AlbumWithVariousArtists.PROJECTION, null, null, null);
+
+        assertNotNull(cursor);
+        assertEquals("cursor size ", 2, cursor.getCount());
+        cursor.moveToFirst();
+
+        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor,
+                                                           cursor.getColumnIndex(MediaContract.Albums.ALBUMID),
+                                                           TestValues.AlbumWithVariousArtists.albumId));
+        TestValues.AlbumWithVariousArtists.test(cursor);
+
+        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor,
+                                                           cursor.getColumnIndex(MediaContract.Albums.ALBUMID),
+                                                           TestValues.AlbumWithVariousArtistsNoSongArtists.albumId));
+        TestValues.AlbumWithVariousArtistsNoSongArtists.test(cursor);
     }
 
     @Test

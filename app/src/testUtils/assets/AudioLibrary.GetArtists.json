@@ -4542,6 +4542,26 @@
             "formed" : "",
             "style" : [],
             "fanart" : ""
+         },
+         {
+            "instrument" : [],
+            "artist" : "Various artists",
+            "fanart" : "",
+            "mood" : [],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "genre" : [],
+            "died" : "",
+            "description" : "",
+            "style" : [],
+            "label" : "Various artists",
+            "yearsactive" : [],
+            "artistid" : 229,
+            "born" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
          }
       ],
       "limits" : {

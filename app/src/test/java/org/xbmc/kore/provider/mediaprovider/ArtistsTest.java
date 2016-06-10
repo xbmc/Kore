@@ -37,7 +37,7 @@ public class ArtistsTest extends AbstractTestClass {
         Cursor cursor = shadowContentResolver.query(uri, TestValues.Artist.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
-        assertEquals("cursor size ", 227, cursor.getCount());
+        assertEquals("cursor size ", 228, cursor.getCount());
         TestUtils.testCursorContainsRange(cursor, cursor.getColumnIndex(MediaContract.ArtistsColumns.ARTISTID),
                                           1, 94);
         //Artist id 95 should be missing
