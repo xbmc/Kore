@@ -571,7 +571,7 @@ public class MediaContract {
         String HOST_ID = "host_id";
         String ALBUMID = "albumid";
         String SONGID = "songid";
-
+        String DISPLAYARTIST = "displayartist";
         String DURATION = "duration";
         String THUMBNAIL = "thumbnail";
         String FILE = "file";

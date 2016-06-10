@@ -23,7 +23,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
 
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SelectionBuilder;
@@ -671,8 +670,9 @@ public class MediaProvider extends ContentProvider {
                               .mapToTable(MediaContract.Songs.SONGID, MediaDatabase.Tables.SONGS)
                               .mapToTable(MediaContract.Songs.TITLE, MediaDatabase.Tables.SONGS)
                               .mapToTable(MediaContract.Songs.ALBUMID, MediaDatabase.Tables.SONGS)
-                              .mapToTable(MediaContract.Songs.UPDATED, MediaDatabase.Tables.SONGS)
                               .mapToTable(MediaContract.Songs.THUMBNAIL, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Songs.DISPLAYARTIST, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.AlbumArtists.ARTISTID, MediaDatabase.Tables.ALBUM_ARTISTS)
                               .mapToTable(MediaContract.SongArtists.ARTISTID, MediaDatabase.Tables.SONG_ARTISTS)
                               .where(Qualified.SONGS_HOST_ID + "=?", hostId)
                               .groupBy(Qualified.SONGS_SONGID);
@@ -681,8 +681,8 @@ public class MediaProvider extends ContentProvider {
                 final String hostId = MediaContract.Hosts.getHostId(uri);
                 final String albumId = MediaContract.Albums.getAlbumId(uri);
                 return builder.table(MediaDatabase.Tables.SONGS)
-                              .where(MediaContract.Songs.HOST_ID + "=?", hostId)
-                              .where(MediaContract.Songs.ALBUMID + "=?", albumId);
+                              .where(Qualified.SONGS_HOST_ID + "=?", hostId)
+                              .where(Qualified.SONGS_ALBUMID + "=?", albumId);
             }
             case SONGS_ID: {
                 final String hostId = MediaContract.Hosts.getHostId(uri);
@@ -737,11 +737,14 @@ public class MediaProvider extends ContentProvider {
                               .mapToTable(MediaContract.Songs.SONGID, MediaDatabase.Tables.SONGS)
                               .mapToTable(MediaContract.Songs.TITLE, MediaDatabase.Tables.SONGS)
                               .mapToTable(MediaContract.Songs.ALBUMID, MediaDatabase.Tables.SONGS)
-                              .mapToTable(MediaContract.Songs.UPDATED, MediaDatabase.Tables.SONGS)
-                              .mapToTable(MediaContract.Songs.THUMBNAIL, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Songs.DISPLAYARTIST, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.AlbumArtists.ARTISTID, MediaDatabase.Tables.ALBUM_ARTISTS)
                               .mapToTable(MediaContract.SongArtists.ARTISTID, MediaDatabase.Tables.SONG_ARTISTS)
                               .where(Qualified.SONG_ARTISTS_HOST_ID + "=?", hostId)
-                              .where(Qualified.SONG_ARTISTS_ARTISTID + "=?", artistId);
+                              .where(Qualified.SONG_ARTISTS_ARTISTID + "=?"
+                                     + " OR " +
+                                     Qualified.ALBUM_ARTISTS_ARTISTID + "=?", artistId, artistId)
+                              .groupBy(Qualified.SONGS_ID);
             }
             case ALBUM_ARTISTS_LIST: {
                 // Artists for Album
@@ -806,6 +809,14 @@ public class MediaProvider extends ContentProvider {
      * parent {@link MediaDatabase.Tables}. Used when needed to work around SQL ambiguity.
      */
     public interface Qualified {
+        String ALBUMS_TITLE =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.TITLE;
+        String ALBUMS_GENRE =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.GENRE;
+        String ALBUMS_YEAR =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.YEAR;
+        String ALBUMS_THUMBNAIL =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.THUMBNAIL;
         String ALBUM_ARTISTS_HOST_ID =
                 MediaDatabase.Tables.ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID;
         String ALBUM_ARTISTS_ARTISTID =
@@ -818,10 +829,24 @@ public class MediaProvider extends ContentProvider {
                 MediaDatabase.Tables.ALBUM_GENRES + "." + MediaContract.AlbumGenres.GENREID;
         String ALBUM_GENRES_ALBUMID =
                 MediaDatabase.Tables.ALBUM_GENRES + "." + MediaContract.AlbumGenres.ALBUMID;
+        String SONGS_ID =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs._ID;
+        String SONGS_TRACK =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TRACK;
+        String SONGS_DURATION =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.DURATION;
+        String SONGS_FILE =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.FILE;
         String SONGS_HOST_ID =
                 MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.HOST_ID;
         String SONGS_SONGID =
                 MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.SONGID;
+        String SONGS_DISPLAYARTIST =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.DISPLAYARTIST;
+        String SONGS_TITLE =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE;
+        String SONGS_ALBUMID =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.ALBUMID;
         String SONG_ARTISTS_HOST_ID =
                 MediaDatabase.Tables.SONG_ARTISTS + "." + MediaContract.SongArtists.HOST_ID;
         String SONG_ARTISTS_ARTISTID =

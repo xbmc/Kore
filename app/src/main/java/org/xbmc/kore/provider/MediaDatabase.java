@@ -32,7 +32,9 @@ public class MediaDatabase extends SQLiteOpenHelper {
 
 	private static final String DB_NAME = "xbmc.sqlite";
     private static final int DB_VERSION_PRE_EVENT_SERVER = 4,
-            DB_VERSION_PRE_SONG_ARTISTS = 5, DB_VERSION = 6;
+            DB_VERSION_PRE_SONG_ARTISTS = 5,
+            DB_VERSION_PRE_SONG_DISPLAY_ARTIST = 6,
+            DB_VERSION = 7;
 
 	/**
 	 * Tables exposed
@@ -94,7 +96,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
          * Join to get Songs for an Artist or Album with artist info and album info only if available
          */
         String SONGS_FOR_ARTIST_AND_OR_ALBUM_JOIN =
-                SONG_ARTISTS + " JOIN " + SONGS + " ON " +
+                SONGS + " JOIN " + SONG_ARTISTS + " ON " +
                 SONG_ARTISTS + "." + MediaContract.SongArtists.HOST_ID + "=" + SONGS + "." + MediaContract.Songs.HOST_ID +
                 " AND " +
                 SONG_ARTISTS + "." + MediaContract.SongArtists.SONGID + "=" + SONGS + "." + MediaContract.Songs.SONGID +
@@ -102,10 +104,14 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 SONG_ARTISTS + "." + MediaContract.SongArtists.HOST_ID + "=" + ARTISTS + "." + MediaContract.Artists.HOST_ID +
                 " AND " +
                 SONG_ARTISTS + "." + MediaContract.SongArtists.ARTISTID + "=" + ARTISTS + "." + MediaContract.Artists.ARTISTID +
+                " LEFT JOIN " + ALBUM_ARTISTS + " ON " +
+                SONG_ARTISTS + "." + MediaContract.SongArtists.HOST_ID + "=" + ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID +
+                " AND " +
+                SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.ALBUMID +
                 " LEFT JOIN " + ALBUMS + " ON " +
                 SONG_ARTISTS + "." + MediaContract.SongArtists.HOST_ID + "=" + ALBUMS + "." + MediaContract.Albums.HOST_ID +
                 " AND " +
-                SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUMS + "." + MediaContract.Albums.ALBUMID;
+                ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.ALBUMID + "=" + ALBUMS + "." + MediaContract.Albums.ALBUMID;
     }
 
 
@@ -355,6 +361,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.SongsColumns.FILE + " TEXT, " +
                    MediaContract.SongsColumns.TRACK + " INTEGER, " +
                    MediaContract.SongsColumns.TITLE + " TEXT, " +
+                   MediaContract.SongsColumns.DISPLAYARTIST + " TEXT, " +
                    "UNIQUE (" +
                    MediaContract.SongsColumns.HOST_ID + ", " +
                    MediaContract.SongsColumns.ALBUMID + ", " +
@@ -452,6 +459,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
         db.execSQL(buildHostsDeleteTrigger(Tables.SONGS, MediaContract.SongsColumns.HOST_ID));
         db.execSQL(buildHostsDeleteTrigger(Tables.AUDIO_GENRES, MediaContract.AudioGenresColumns.HOST_ID));
         db.execSQL(buildHostsDeleteTrigger(Tables.ALBUM_ARTISTS, MediaContract.AlbumArtistsColumns.HOST_ID));
+        db.execSQL(buildHostsDeleteTrigger(Tables.SONG_ARTISTS, MediaContract.SongArtistsColumns.HOST_ID));
         db.execSQL(buildHostsDeleteTrigger(Tables.ALBUM_GENRES, MediaContract.AlbumGenresColumns.HOST_ID));
         db.execSQL(buildHostsDeleteTrigger(Tables.MUSIC_VIDEOS, MediaContract.MusicVideosColumns.HOST_ID));
 
@@ -478,6 +486,10 @@ public class MediaDatabase extends SQLiteOpenHelper {
                            " INTEGER DEFAULT " + HostInfo.DEFAULT_EVENT_SERVER_PORT + ";");
             case DB_VERSION_PRE_SONG_ARTISTS:
                 createSongArtistsTable(db);
+            case DB_VERSION_PRE_SONG_DISPLAY_ARTIST:
+                db.execSQL("ALTER TABLE " + Tables.SONGS +
+                           " ADD COLUMN " + MediaContract.SongsColumns.DISPLAYARTIST +
+                           " TEXT;");
         }
 	}
 
