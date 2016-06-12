@@ -445,6 +445,18 @@ public class NowPlayingFragment extends Fragment
             case SELECT_AUDIOSTREAM:
                 // 0 is to sync audio, other is for a specific audiostream
                 switch (which) {
+                    case -2:
+                        for(int i = 0; i < 5; i++) {
+                            Input.ExecuteAction syncAudioDelayAction = new Input.ExecuteAction(Input.ExecuteAction.AUDIODELAYMINUS);
+                            syncAudioDelayAction.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                        }
+                        break;
+                    case -1:
+                        for(int i = 0; i < 5; i++) {
+                            Input.ExecuteAction syncAudioAheadAction = new Input.ExecuteAction(Input.ExecuteAction.AUDIODELAYPLUS);
+                            syncAudioAheadAction.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                        }
+                        break;
                     case 0:
                         Input.ExecuteAction syncAudioAction = new Input.ExecuteAction(Input.ExecuteAction.AUDIODELAY);
                         syncAudioAction.execute(hostManager.getConnection(), new ApiCallback<String>() {
@@ -469,6 +481,18 @@ public class NowPlayingFragment extends Fragment
                 Player.SetSubtitle setSubtitle;
                 // 0 is to download subtitles, 1 is for sync, 2 is for none, other is for a specific subtitle index
                 switch (which) {
+                    case -2:
+                        for(int i = 0; i < 5; i++) {
+                            Input.ExecuteAction syncSubtitleDelayAction = new Input.ExecuteAction(Input.ExecuteAction.SUBTITLEDELAYMINUS);
+                            syncSubtitleDelayAction.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                        }
+                        break;
+                    case -1:
+                        for(int i = 0; i < 5; i++) {
+                            Input.ExecuteAction syncSubtitleAheadAction = new Input.ExecuteAction(Input.ExecuteAction.SUBTITLEDELAYPLUS);
+                            syncSubtitleAheadAction.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                        }
+                        break;
                     case 0:
                         // Download subtitles. First check host version to see which method to call
                         Application.GetProperties getProperties = new Application.GetProperties(Application.GetProperties.VERSION);

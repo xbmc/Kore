@@ -143,6 +143,21 @@ public class GenericSelectDialog
                                 mListener.onDialogSelect(token, which);
                             dialog.dismiss();
                         }
+                    })
+                    .setPositiveButton("+0.5s >", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (mListener != null)
+                                mListener.onDialogSelect(token, which);
+                        }
+                    })
+                    .setNegativeButton("< -0.5s", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (mListener != null)
+                                mListener.onDialogSelect(token, which);
+                            dialog.cancel();
+                        }
                     });
         } else {
             final CharSequence[] items = args.getCharSequenceArray(ARRAY_ITEMS);
@@ -165,11 +180,23 @@ public class GenericSelectDialog
                         mListener.onDialogSelect(token, which);
                     dialog.dismiss();
                 }
-            });
+            })
+                    .setPositiveButton("+0.5s >", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (mListener != null)
+                                mListener.onDialogSelect(token, which);
+                        }
+                    })
+                    .setNegativeButton("< -0.5s", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (mListener != null)
+                                mListener.onDialogSelect(token, which);
+                        }
+                    });
 
         }
         return builder.create();
-
     }
-
 }
