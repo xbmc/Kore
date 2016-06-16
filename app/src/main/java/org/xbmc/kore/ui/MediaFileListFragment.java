@@ -686,25 +686,28 @@ public class MediaFileListFragment extends AbstractListFragment {
                 case ListType.ItemBase.TYPE_MOVIE:
                     title = itemFile.title;
                     details = itemFile.tagline;
-                    sizeDuration = itemFile.size > 0 ?
-                            UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
-                            UIUtils.formatTime(itemFile.runtime);
+                    sizeDuration = (itemFile.size > 0) && (itemFile.runtime > 0) ?
+                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
+                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                   (itemFile.runtime > 0)? UIUtils.formatTime(itemFile.runtime) : null;
                     artUrl = itemFile.thumbnail;
                     break;
                 case ListType.ItemBase.TYPE_EPISODE:
                     title = itemFile.title;
                     details = String.format(context.getString(R.string.season_episode), itemFile.season, itemFile.episode);
-                    sizeDuration = itemFile.size > 0 ?
-                            UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
-                            UIUtils.formatTime(itemFile.runtime);
+                    sizeDuration = (itemFile.size > 0) && (itemFile.runtime > 0) ?
+                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
+                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                   (itemFile.runtime > 0)? UIUtils.formatTime(itemFile.runtime) : null;
                     artUrl = itemFile.thumbnail;
                     break;
                 case ListType.ItemBase.TYPE_MUSIC_VIDEO:
                     title = itemFile.title;
                     details = Utils.listStringConcat(itemFile.artist, ", ") + " | " + itemFile.album;
-                    sizeDuration = itemFile.size > 0 ?
-                            UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
-                            UIUtils.formatTime(itemFile.runtime);
+                    sizeDuration = (itemFile.size > 0) && (itemFile.runtime > 0) ?
+                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
+                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                   (itemFile.runtime > 0)? UIUtils.formatTime(itemFile.runtime) : null;
                     artUrl = itemFile.thumbnail;
                     break;
                 case ListType.ItemBase.TYPE_ALBUM:
@@ -712,9 +715,10 @@ public class MediaFileListFragment extends AbstractListFragment {
                     title = itemFile.title;
                     details = itemFile.displayartist + " | " + itemFile.album;
                     artUrl = itemFile.thumbnail;
-                    sizeDuration = itemFile.size > 0 ?
-                            UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
-                            UIUtils.formatTime(itemFile.duration);
+                    sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
+                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
+                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                   (itemFile.duration > 0)? UIUtils.formatTime(itemFile.duration) : null;
                     break;
                 case ListType.ItemBase.TYPE_PICTURE:
                 default:
