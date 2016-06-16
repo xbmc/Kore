@@ -17,11 +17,13 @@ package org.xbmc.kore.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.annotation.Nullable;
 
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SelectionBuilder;
@@ -35,6 +37,8 @@ public class MediaProvider extends ContentProvider {
     private static final String TAG = LogUtils.makeLogTag(MediaProvider.class);
 
     private MediaDatabase mOpenHelper;
+
+    private Context context;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -218,9 +222,16 @@ public class MediaProvider extends ContentProvider {
         return matcher;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     @Override
     public boolean onCreate() {
-        mOpenHelper = new MediaDatabase(getContext());
+        if (context == null) {
+            context = getContext();
+        }
+        mOpenHelper = new MediaDatabase(context);
         return true;
     }
 
@@ -341,7 +352,7 @@ public class MediaProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unsuported uri: " + uri);
             }
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);
 
         return insertedUri;
     }
@@ -433,10 +444,10 @@ public class MediaProvider extends ContentProvider {
         } finally {
             db.endTransaction();
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);
 
         LogUtils.LOGD(TAG, "Bulk insert finished for uri (" + uri +
-                           ") in (ms): " + (System.currentTimeMillis() - startTime));
+                ") in (ms): " + (System.currentTimeMillis() - startTime));
         return values.length;
     }
 
@@ -470,7 +481,7 @@ public class MediaProvider extends ContentProvider {
         final SelectionBuilder builder = buildQuerySelection(uri, match);
         int result = builder.where(selection, selectionArgs)
                             .update(db, values);
-        getContext().getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);
         return result;
     }
 
@@ -483,7 +494,7 @@ public class MediaProvider extends ContentProvider {
         int result = builder.where(selection, selectionArgs)
                             .delete(db);
         LogUtils.LOGD(TAG, "delete(uri=" + uri + "). Rows affected: " + result);
-        getContext().getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);
         return result;
     }
 

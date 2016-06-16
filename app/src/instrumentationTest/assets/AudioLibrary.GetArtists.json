@@ -1,0 +1,4493 @@
+{
+   "id" : "libArtists",
+   "jsonrpc" : "2.0",
+   "result" : {
+      "artists" : [
+         {
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artist" : "ABC Orch",
+            "artistid" : 195,
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "label" : "ABC Orch",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "died" : "",
+            "artist" : "ABC Orch Conducted by Herschel Burke Gilbert",
+            "artistid" : 196,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "ABC Orch Conducted by Herschel Burke Gilbert",
+            "fanart" : "",
+            "yearsactive" : []
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "artist" : "Adam \"Swannee\" Swann",
+            "died" : "",
+            "artistid" : 97,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "label" : "Adam \"Swannee\" Swann",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Adult Books",
+            "fanart" : "",
+            "yearsactive" : [],
+            "died" : "",
+            "artistid" : 17,
+            "artist" : "Adult Books",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "artist" : "Al Caiola",
+            "died" : "",
+            "artistid" : 197,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "label" : "Al Caiola",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artistid" : 198,
+            "artist" : "Al Caiola & His Orch",
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "label" : "Al Caiola & His Orch",
+            "yearsactive" : [],
+            "fanart" : "",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Al Ferrier",
+            "yearsactive" : [],
+            "fanart" : "",
+            "description" : "",
+            "died" : "",
+            "artist" : "Al Ferrier",
+            "artistid" : 146,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artistid" : 1,
+            "died" : "",
+            "artist" : "Albert Collins",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "label" : "Albert Collins",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artist" : "Alton Ellis",
+            "died" : "",
+            "artistid" : 8,
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Alton Ellis",
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "Aretha Franklin",
+            "yearsactive" : [],
+            "fanart" : "",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "artist" : "Aretha Franklin",
+            "died" : "",
+            "artistid" : 110,
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Arlette Zola",
+            "died" : "",
+            "artistid" : 161,
+            "description" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Arlette Zola",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "description" : "",
+            "born" : "",
+            "artist" : "Art Podell",
+            "died" : "",
+            "artistid" : 98,
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Art Podell"
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "The Artist",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 73,
+            "artist" : "The Artist",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artist" : "Assimilation",
+            "artistid" : 29,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Assimilation",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "born" : "",
+            "died" : "",
+            "artistid" : 9,
+            "artist" : "Atrium Musicae de Madrid, Gregorio Paniagua",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Atrium Musicae de Madrid, Gregorio Paniagua"
+         },
+         {
+            "artist" : "Authentic Greek Folk Songs and Dances",
+            "died" : "",
+            "artistid" : 10,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Authentic Greek Folk Songs and Dances",
+            "yearsactive" : [],
+            "fanart" : ""
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Bath",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Bath",
+            "artistid" : 12,
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artist" : "Ben E. King",
+            "artistid" : 111,
+            "born" : "",
+            "description" : "",
+            "label" : "Ben E. King",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "died" : "",
+            "artist" : "Bent Fabric",
+            "artistid" : 11,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Bent Fabric",
+            "yearsactive" : [],
+            "fanart" : ""
+         },
+         {
+            "description" : "",
+            "born" : "",
+            "artist" : "Bernstein, Charles",
+            "died" : "",
+            "artistid" : 13,
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Bernstein, Charles"
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "artist" : "Bill Hayes",
+            "died" : "",
+            "artistid" : 199,
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "label" : "Bill Hayes",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Billy Cheatwood",
+            "fanart" : "",
+            "yearsactive" : [],
+            "description" : "",
+            "died" : "",
+            "artistid" : 99,
+            "artist" : "Billy Cheatwood",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artist" : "Billy Larkin",
+            "artistid" : 175,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Billy Larkin",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Bleach Boys",
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artistid" : 15,
+            "artist" : "Bleach Boys",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artist" : "BLOOD DUSTER",
+            "died" : "",
+            "artistid" : 16,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "label" : "BLOOD DUSTER",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artist" : "Bob B. Sox and the Blue Jeans",
+            "artistid" : 112,
+            "born" : "",
+            "label" : "Bob B. Sox and the Blue Jeans",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "description" : "",
+            "born" : "",
+            "artist" : "Bobby Jay",
+            "died" : "",
+            "artistid" : 147,
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Bobby Jay"
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "artist" : "Boss DJ",
+            "died" : "",
+            "artistid" : 18,
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "label" : "Boss DJ",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "formed" : "",
+            "label" : "Brad Nowell",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 19,
+            "died" : "",
+            "artist" : "Brad Nowell",
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Brian Eno",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artistid" : 21,
+            "died" : "",
+            "artist" : "Brian Eno",
+            "description" : ""
+         },
+         {
+            "label" : "Bruce Cloud",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artistid" : 176,
+            "artist" : "Bruce Cloud",
+            "born" : ""
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Bruckner. Anton",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "artistid" : 22,
+            "died" : "",
+            "artist" : "Bruckner. Anton",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Brutal Truth",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artist" : "Brutal Truth",
+            "artistid" : 23,
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 24,
+            "artist" : "Burning Spear",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Burning Spear",
+            "formed" : ""
+         },
+         {
+            "born" : "",
+            "died" : "",
+            "artist" : "Calefax Rietkwintet",
+            "artistid" : 25,
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Calefax Rietkwintet"
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "label" : "Carl Perkins",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "died" : "",
+            "artistid" : 113,
+            "artist" : "Carl Perkins",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 148,
+            "artist" : "Carol Fran",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Carol Fran",
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "CBS Orch",
+            "born" : "",
+            "died" : "",
+            "artistid" : 200,
+            "artist" : "CBS Orch",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "label" : "Changing Channels",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artist" : "Changing Channels",
+            "artistid" : 201,
+            "born" : ""
+         },
+         {
+            "label" : "Charles Sheffield",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artist" : "Charles Sheffield",
+            "artistid" : 149,
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artist" : "Charlie Parker All Stars [5]",
+            "artistid" : 129,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Charlie Parker All Stars [5]",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Chick Corea",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Chick Corea",
+            "died" : "",
+            "artistid" : 26,
+            "description" : ""
+         },
+         {
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Christine Delaroche",
+            "mood" : [],
+            "style" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artist" : "Christine Delaroche",
+            "died" : "",
+            "artistid" : 162
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Christine Pilzer",
+            "born" : "",
+            "died" : "",
+            "artistid" : 163,
+            "artist" : "Christine Pilzer",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Clair Marlo, Alexander Baker",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 132,
+            "artist" : "Clair Marlo, Alexander Baker",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "artistid" : 177,
+            "died" : "",
+            "artist" : "Clare Sisters",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Clare Sisters",
+            "yearsactive" : [],
+            "fanart" : ""
+         },
+         {
+            "description" : "",
+            "died" : "",
+            "artistid" : 92,
+            "artist" : "Clitoridus Invaginatus",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Clitoridus Invaginatus",
+            "yearsactive" : [],
+            "fanart" : ""
+         },
+         {
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Clothilde",
+            "mood" : [],
+            "style" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 164,
+            "artist" : "Clothilde"
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artist" : "Cockpunch",
+            "artistid" : 27,
+            "born" : "",
+            "description" : "",
+            "label" : "Cockpunch",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Conway Twitty",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "artist" : "Conway Twitty",
+            "died" : "",
+            "artistid" : 28,
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "died" : "",
+            "artistid" : 30,
+            "artist" : "Corporal Raid",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Corporal Raid",
+            "yearsactive" : [],
+            "fanart" : ""
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 165,
+            "artist" : "Cosette",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Cosette",
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Cy Jack, Duncan Aran",
+            "fanart" : "",
+            "yearsactive" : [],
+            "description" : "",
+            "died" : "",
+            "artist" : "Cy Jack, Duncan Aran",
+            "artistid" : 133,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "DAMAS GRATIS",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "DAMAS GRATIS",
+            "died" : "",
+            "artistid" : 31,
+            "description" : ""
+         },
+         {
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Dauner",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artistid" : 32,
+            "artist" : "Dauner",
+            "description" : ""
+         },
+         {
+            "label" : "David Lindley",
+            "yearsactive" : [],
+            "fanart" : "",
+            "mood" : [],
+            "style" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "artistid" : 100,
+            "died" : "",
+            "artist" : "David Lindley",
+            "born" : ""
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "artist" : "Dean Landon, Anika Paris",
+            "died" : "",
+            "artistid" : 134,
+            "born" : "",
+            "label" : "Dean Landon, Anika Paris",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "label" : "Deep Sleep",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artist" : "Deep Sleep",
+            "artistid" : 34,
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Dephine Desyeux",
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artistid" : 166,
+            "died" : "",
+            "artist" : "Dephine Desyeux",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "Dick Rasmini",
+            "yearsactive" : [],
+            "fanart" : "",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artist" : "Dick Rasmini",
+            "artistid" : 101,
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "label" : "Dick Weissman",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 102,
+            "died" : "",
+            "artist" : "Dick Weissman",
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Die Toten Hosen",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "artistid" : 35,
+            "died" : "",
+            "artist" : "Die Toten Hosen",
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Dion",
+            "fanart" : "",
+            "yearsactive" : [],
+            "artistid" : 114,
+            "died" : "",
+            "artist" : "Dion",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "died" : "",
+            "artist" : "Dismemberment",
+            "artistid" : 93,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Dismemberment",
+            "fanart" : "",
+            "yearsactive" : []
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artistid" : 36,
+            "artist" : "DJ Revolution",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "label" : "DJ Revolution",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artist" : "The Drifters",
+            "artistid" : 74,
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "label" : "The Drifters",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "artist" : "Eating Shit",
+            "died" : "",
+            "artistid" : 38,
+            "born" : "",
+            "label" : "Eating Shit",
+            "yearsactive" : [],
+            "fanart" : "",
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Ed Bruce",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "artist" : "Ed Bruce",
+            "died" : "",
+            "artistid" : 178,
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 179,
+            "died" : "",
+            "artist" : "Eddie Martin",
+            "born" : "",
+            "description" : "",
+            "label" : "Eddie Martin",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Eddy Arnold",
+            "fanart" : "",
+            "yearsactive" : [],
+            "description" : "",
+            "died" : "",
+            "artistid" : 115,
+            "artist" : "Eddy Arnold",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "Elizabeth",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artist" : "Elizabeth",
+            "artistid" : 167,
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Elvis Presley",
+            "died" : "",
+            "artistid" : 116,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Elvis Presley",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Eric Weissberg with Marshall Brickman",
+            "died" : "",
+            "artistid" : 103,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Eric Weissberg with Marshall Brickman",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Erik Darling",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artistid" : 104,
+            "artist" : "Erik Darling",
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artist" : "Etta James",
+            "artistid" : 39,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Etta James",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "description" : "",
+            "artistid" : 117,
+            "died" : "",
+            "artist" : "Everly Brothers, The",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Everly Brothers, The",
+            "fanart" : "",
+            "yearsactive" : []
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "the Faeries",
+            "description" : "",
+            "born" : "",
+            "artistid" : 75,
+            "died" : "",
+            "artist" : "the Faeries",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "description" : "",
+            "born" : "",
+            "artistid" : 40,
+            "died" : "",
+            "artist" : "Fats Domino",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Fats Domino"
+         },
+         {
+            "died" : "",
+            "artist" : "Floyd Robinson",
+            "artistid" : 118,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Floyd Robinson",
+            "fanart" : "",
+            "yearsactive" : []
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Frank Sinatra",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 41,
+            "artist" : "Frank Sinatra",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "died" : "",
+            "artistid" : 202,
+            "artist" : "Frankie Laine",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "label" : "Frankie Laine",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Galactic",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artistid" : 42,
+            "died" : "",
+            "artist" : "Galactic",
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Gene Autry",
+            "born" : "",
+            "died" : "",
+            "artistid" : 203,
+            "artist" : "Gene Autry",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Geoff Bastow, Jim Harbourg",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artist" : "Geoff Bastow, Jim Harbourg",
+            "artistid" : 135,
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "God Bless You",
+            "description" : "",
+            "born" : "",
+            "artistid" : 48,
+            "died" : "",
+            "artist" : "God Bless You",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Green, Lloyd",
+            "yearsactive" : [],
+            "fanart" : "",
+            "description" : "",
+            "died" : "",
+            "artist" : "Green, Lloyd",
+            "artistid" : 43,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Grup de tabaleters i dolçainers \"El Puig\"",
+            "yearsactive" : [],
+            "fanart" : "",
+            "description" : "",
+            "died" : "",
+            "artistid" : 44,
+            "artist" : "Grup de tabaleters i dolçainers \"El Puig\"",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artist" : "Guitar Gable",
+            "died" : "",
+            "artistid" : 150,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Guitar Gable",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artistid" : 119,
+            "died" : "",
+            "artist" : "Guy Mitchell",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Guy Mitchell",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Henry Hayes",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artist" : "Henry Hayes",
+            "artistid" : 2,
+            "description" : ""
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Henry Hayes With Georgetta Hardin",
+            "yearsactive" : [],
+            "fanart" : "",
+            "died" : "",
+            "artist" : "Henry Hayes With Georgetta Hardin",
+            "artistid" : 3,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artistid" : 4,
+            "artist" : "Herbert Milburn and the Lesabres",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "label" : "Herbert Milburn and the Lesabres",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "artistid" : 76,
+            "died" : "",
+            "artist" : "The Hollywood Trombones",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "label" : "The Hollywood Trombones",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artistid" : 204,
+            "artist" : "Hugh O'Brian w Ken Darby's Orch & Chorus",
+            "born" : "",
+            "description" : "",
+            "label" : "Hugh O'Brian w Ken Darby's Orch & Chorus",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 205,
+            "artist" : "Hugo Mentenegro",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Hugo Mentenegro",
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Ian Clarke, Simon Painter",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artist" : "Ian Clarke, Simon Painter",
+            "died" : "",
+            "artistid" : 136,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artistid" : 37,
+            "artist" : "Intro",
+            "description" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Intro",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "Isabelle De Funes",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "artist" : "Isabelle De Funes",
+            "died" : "",
+            "artistid" : 168,
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "died" : "",
+            "artistid" : 14,
+            "artist" : "It Appears",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "label" : "It Appears",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artist" : "Jacqueline Perez",
+            "died" : "",
+            "artistid" : 169,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Jacqueline Perez",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "description" : "",
+            "died" : "",
+            "artistid" : 170,
+            "artist" : "Jacqueline Tajeb",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Jacqueline Tajeb",
+            "fanart" : "",
+            "yearsactive" : []
+         },
+         {
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "James Brown",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artistid" : 45,
+            "died" : "",
+            "artist" : "James Brown",
+            "description" : ""
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artistid" : 137,
+            "died" : "",
+            "artist" : "Jamie Winchester, Tibor Bornai",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Jamie Winchester, Tibor Bornai",
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "January Jones",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artistid" : 180,
+            "died" : "",
+            "artist" : "January Jones",
+            "description" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "artistid" : 181,
+            "died" : "",
+            "artist" : "Jarmels",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Jarmels",
+            "formed" : ""
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 151,
+            "died" : "",
+            "artist" : "Jay Nelson",
+            "born" : "",
+            "description" : "",
+            "label" : "Jay Nelson",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artist" : "Jay-Z",
+            "artistid" : 46,
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "label" : "Jay-Z",
+            "yearsactive" : [],
+            "fanart" : "",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artistid" : 182,
+            "died" : "",
+            "artist" : "Jennifer Wells",
+            "description" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Jennifer Wells",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Jerry Lee Lewis",
+            "yearsactive" : [],
+            "fanart" : "",
+            "description" : "",
+            "artist" : "Jerry Lee Lewis",
+            "died" : "",
+            "artistid" : 120,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Jim Helms",
+            "artistid" : 105,
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Jim Helms",
+            "formed" : ""
+         },
+         {
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Jim McGuinn",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Jim McGuinn",
+            "died" : "",
+            "artistid" : 106,
+            "description" : ""
+         },
+         {
+            "label" : "Jim Reeves",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 47,
+            "died" : "",
+            "artist" : "Jim Reeves",
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "label" : "Joe Hudson & His Rockin' Dukes",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 152,
+            "died" : "",
+            "artist" : "Joe Hudson & His Rockin' Dukes",
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artistid" : 5,
+            "died" : "",
+            "artist" : "Joe Hughes",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Joe Hughes",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "artistid" : 107,
+            "died" : "",
+            "artist" : "Joe Maphis",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Joe Maphis",
+            "yearsactive" : [],
+            "fanart" : ""
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "John D. Loudermilk",
+            "description" : "",
+            "born" : "",
+            "artistid" : 121,
+            "died" : "",
+            "artist" : "John D. Loudermilk",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artist" : "John Pitman",
+            "died" : "",
+            "artistid" : 138,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "John Pitman",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "John Powell",
+            "artistid" : 49,
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "John Powell",
+            "formed" : ""
+         },
+         {
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Johnnie Ray",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Johnnie Ray",
+            "died" : "",
+            "artistid" : 122,
+            "description" : ""
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Johnny & The Hurricanes",
+            "died" : "",
+            "artistid" : 183,
+            "description" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Johnny & The Hurricanes",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "born" : "",
+            "died" : "",
+            "artist" : "Johnny Cash",
+            "artistid" : 50,
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Johnny Cash"
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Johnny Cash a",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artist" : "Johnny Cash a",
+            "died" : "",
+            "artistid" : 52,
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 153,
+            "artist" : "Johnny Jano",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Johnny Jano",
+            "formed" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Johnny Restivo",
+            "artistid" : 123,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Johnny Restivo",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "artistid" : 206,
+            "died" : "",
+            "artist" : "Johnny Western",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Johnny Western",
+            "fanart" : "",
+            "yearsactive" : []
+         },
+         {
+            "born" : "",
+            "died" : "",
+            "artist" : "June Valli",
+            "artistid" : 184,
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "June Valli"
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Karaindrou, Eleni",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "artist" : "Karaindrou, Eleni",
+            "died" : "",
+            "artistid" : 53,
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Katy David",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 171,
+            "artist" : "Katy David",
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Koboldix",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Koboldix",
+            "artistid" : 54,
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artist" : "Kottans Kapelle",
+            "died" : "",
+            "artistid" : 55,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "label" : "Kottans Kapelle",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artist" : "LAMARQUE et GOUDARD",
+            "died" : "",
+            "artistid" : 56,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "label" : "LAMARQUE et GOUDARD",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Lazy Lester",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 154,
+            "artist" : "Lazy Lester",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "artistid" : 155,
+            "died" : "",
+            "artist" : "Leroy Washington",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Leroy Washington",
+            "yearsactive" : [],
+            "fanart" : ""
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "artist" : "Les Paul",
+            "died" : "",
+            "artistid" : 57,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "label" : "Les Paul",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artistid" : 58,
+            "artist" : "Les Paul & Mary Ford",
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "label" : "Les Paul & Mary Ford",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Les Santes",
+            "born" : "",
+            "died" : "",
+            "artist" : "Les Santes",
+            "artistid" : 59,
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artistid" : 156,
+            "artist" : "Lightning Slim",
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "label" : "Lightning Slim",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Lindsay Tomasic",
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Lindsay Tomasic",
+            "died" : "",
+            "artistid" : 139,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artist" : "Lindsay Tomasic, Lisa Rapport",
+            "artistid" : 140,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Lindsay Tomasic, Lisa Rapport",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "label" : "Liz Brady",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artist" : "Liz Brady",
+            "died" : "",
+            "artistid" : 172,
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Lonesome Sundown",
+            "died" : "",
+            "artistid" : 157,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Lonesome Sundown",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Lonnis Smith",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Lonnis Smith",
+            "artistid" : 185,
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Marienvesper 1693",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artist" : "Marienvesper 1693",
+            "artistid" : 60,
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Marty Robbins",
+            "born" : "",
+            "artist" : "Marty Robbins",
+            "died" : "",
+            "artistid" : 207,
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Marvellows",
+            "fanart" : "",
+            "yearsactive" : [],
+            "artistid" : 186,
+            "died" : "",
+            "artist" : "Marvellows",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "artistid" : 108,
+            "died" : "",
+            "artist" : "Mason Williams",
+            "born" : "",
+            "label" : "Mason Williams",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Matthias Wittwer, Clements Schweikhart",
+            "yearsactive" : [],
+            "fanart" : "",
+            "description" : "",
+            "artistid" : 141,
+            "died" : "",
+            "artist" : "Matthias Wittwer, Clements Schweikhart",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Max;Frimmer;Winter;Grotzinger;Kleine Konzert",
+            "artistid" : 61,
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Max;Frimmer;Winter;Grotzinger;Kleine Konzert"
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Meditation",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artist" : "Meditation",
+            "artistid" : 33,
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artistid" : 51,
+            "died" : "",
+            "artist" : "Medley: Church In The Wildwood",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Medley: Church In The Wildwood",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artistid" : 142,
+            "artist" : "Michael Bräumer, Uwe Clemens",
+            "description" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Michael Bräumer, Uwe Clemens",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Mike Seeger",
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artist" : "Mike Seeger",
+            "artistid" : 109,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "Milt Rogers",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "artistid" : 187,
+            "died" : "",
+            "artist" : "Milt Rogers",
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "label" : "Modus Delicti",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artistid" : 94,
+            "artist" : "Modus Delicti",
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artistid" : 62,
+            "artist" : "Music Kids",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "label" : "Music Kids",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "NBC Orch",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artist" : "NBC Orch",
+            "artistid" : 208,
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "Neil Sedaka",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 124,
+            "died" : "",
+            "artist" : "Neil Sedaka",
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "artist" : "Nina Simone",
+            "died" : "",
+            "artistid" : 188,
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "label" : "Nina Simone",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Olivia",
+            "born" : "",
+            "died" : "",
+            "artistid" : 173,
+            "artist" : "Olivia",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "description" : "",
+            "artist" : "Onie Wheeler",
+            "died" : "",
+            "artistid" : 63,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "Onie Wheeler",
+            "yearsactive" : [],
+            "fanart" : ""
+         },
+         {
+            "label" : "Orch & Chorus Conducted by David Buttolph",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artist" : "Orch & Chorus Conducted by David Buttolph",
+            "died" : "",
+            "artistid" : 209,
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "artistid" : 130,
+            "died" : "",
+            "artist" : "Original Charlie Parker Quintet [5]",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Original Charlie Parker Quintet [5]",
+            "yearsactive" : [],
+            "fanart" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artist" : "Original Charlie Parker Sextet [6]",
+            "died" : "",
+            "artistid" : 131,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "label" : "Original Charlie Parker Sextet [6]",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : ""
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "died" : "",
+            "artist" : "Paul Anka",
+            "artistid" : 125,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "label" : "Paul Anka",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "description" : "",
+            "born" : "",
+            "artistid" : 64,
+            "died" : "",
+            "artist" : "Paul Englishby",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Paul Englishby"
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Peggy March",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Peggy March",
+            "artistid" : 126,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 6,
+            "artist" : "Piano Slim",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Piano Slim",
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artistid" : 189,
+            "died" : "",
+            "artist" : "Pierre Lalonde",
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "label" : "Pierre Lalonde",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "pigto",
+            "died" : "",
+            "artistid" : 65,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "pigto",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Plas Johnson",
+            "fanart" : "",
+            "yearsactive" : [],
+            "artistid" : 190,
+            "died" : "",
+            "artist" : "Plas Johnson",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Platters, The",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 127,
+            "artist" : "Platters, The",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "PONS",
+            "born" : "",
+            "died" : "",
+            "artist" : "PONS",
+            "artistid" : 66,
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "P￩rez Prado",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artist" : "P￩rez Prado",
+            "died" : "",
+            "artistid" : 191,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Quito Colayco",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Quito Colayco",
+            "artistid" : 143,
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Ramones",
+            "mood" : [],
+            "style" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 67,
+            "artist" : "Ramones"
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "artist" : "Ray Charles",
+            "died" : "",
+            "artistid" : 68,
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Ray Charles",
+            "formed" : ""
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Ray Peterson",
+            "artistid" : 128,
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Ray Peterson",
+            "formed" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 69,
+            "artist" : "Roach Gigz",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Roach Gigz",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "artist" : "Ronnie Gallant",
+            "died" : "",
+            "artistid" : 192,
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Ronnie Gallant",
+            "formed" : ""
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Roy Rogers",
+            "died" : "",
+            "artistid" : 210,
+            "description" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Roy Rogers",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Roy Rogers w Spade Cooley & His Western Swing Band",
+            "artistid" : 211,
+            "genre" : [],
+            "instrument" : [],
+            "mood" : [],
+            "style" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Roy Rogers w Spade Cooley & His Western Swing Band",
+            "formed" : ""
+         },
+         {
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Ryan James, Matteo Imbrianti",
+            "mood" : [],
+            "style" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 144,
+            "artist" : "Ryan James, Matteo Imbrianti"
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Sandra M. Levy, John J. Hayes",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 145,
+            "artist" : "Sandra M. Levy, John J. Hayes",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artistid" : 158,
+            "died" : "",
+            "artist" : "Silas Hogan",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Silas Hogan",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Slim Harpo",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artistid" : 159,
+            "died" : "",
+            "artist" : "Slim Harpo",
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 70,
+            "artist" : "Smoky Mountain",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Smoky Mountain",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Space Juniors",
+            "died" : "",
+            "artistid" : 71,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Space Juniors",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "died" : "",
+            "artistid" : 174,
+            "artist" : "Stella",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "style" : [],
+            "mood" : [],
+            "label" : "Stella",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : ""
+         },
+         {
+            "label" : "Svenska Akademien",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artist" : "Svenska Akademien",
+            "artistid" : 72,
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Tex Ritter",
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artist" : "Tex Ritter",
+            "artistid" : 212,
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Tigers, (The)",
+            "born" : "",
+            "artistid" : 7,
+            "died" : "",
+            "artist" : "Tigers, (The)",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : ""
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Toni Harper",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "artist" : "Toni Harper",
+            "died" : "",
+            "artistid" : 193,
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Triumphs",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "artistid" : 194,
+            "died" : "",
+            "artist" : "Triumphs",
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "instrument" : [],
+            "genre" : [],
+            "artist" : "U-Roy",
+            "died" : "",
+            "artistid" : 77,
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "formed" : "",
+            "label" : "U-Roy",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : []
+         },
+         {
+            "label" : "Unicorn Valley",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 78,
+            "died" : "",
+            "artist" : "Unicorn Valley",
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "VA",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artist" : "VA",
+            "artistid" : 90,
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "died" : "",
+            "artistid" : 91,
+            "artist" : "VARIOS",
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "VARIOS",
+            "fanart" : "",
+            "yearsactive" : []
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 96,
+            "died" : "",
+            "artist" : "Various",
+            "born" : "",
+            "description" : "",
+            "label" : "Various",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Victims in Ecstacy",
+            "yearsactive" : [],
+            "fanart" : "",
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artistid" : 213,
+            "artist" : "Victims in Ecstacy",
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "artist" : "Vladimir Cosma",
+            "died" : "",
+            "artistid" : 214,
+            "born" : "",
+            "label" : "Vladimir Cosma",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "formed" : ""
+         },
+         {
+            "died" : "",
+            "artist" : "Vries, Han De; Alma Musica Amsterdam; Asperen, Bob van",
+            "artistid" : 215,
+            "born" : "",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "label" : "Vries, Han De; Alma Musica Amsterdam; Asperen, Bob van",
+            "fanart" : "",
+            "yearsactive" : []
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Waltons",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "died" : "",
+            "artistid" : 216,
+            "artist" : "Waltons",
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Warren Storm",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Warren Storm",
+            "artistid" : 160,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "artist" : "Wat Tyler",
+            "died" : "",
+            "artistid" : 217,
+            "description" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Wat Tyler",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "Welcome Tomorrow",
+            "yearsactive" : [],
+            "fanart" : "",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artistid" : 20,
+            "artist" : "Welcome Tomorrow",
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "Wildabeast",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artistid" : 218,
+            "artist" : "Wildabeast",
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "Zhao Jiping",
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artistid" : 219,
+            "artist" : "Zhao Jiping",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "artistid" : 220,
+            "died" : "",
+            "artist" : "Άνευ ερμηνευτού",
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "label" : "Άνευ ερμηνευτού",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "died" : "",
+            "artist" : "Трыхэђшэр аџсъютр",
+            "artistid" : 221,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "Трыхэђшэр аџсъютр",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "mood" : [],
+            "style" : [],
+            "label" : "のこいのこ",
+            "fanart" : "",
+            "yearsactive" : [],
+            "formed" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : "",
+            "description" : "",
+            "died" : "",
+            "artist" : "のこいのこ",
+            "artistid" : 79,
+            "born" : "",
+            "genre" : [],
+            "instrument" : []
+         },
+         {
+            "style" : [],
+            "mood" : [],
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "ひばり児童合唱団",
+            "formed" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "born" : "",
+            "artist" : "ひばり児童合唱団",
+            "died" : "",
+            "artistid" : 80,
+            "description" : "",
+            "instrument" : [],
+            "genre" : []
+         },
+         {
+            "label" : "アナーキー",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artist" : "アナーキー",
+            "artistid" : 222,
+            "born" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "ジャレコ",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 223,
+            "died" : "",
+            "artist" : "ジャレコ",
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "ペグモ",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artist" : "ペグモ",
+            "died" : "",
+            "artistid" : 81,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "formed" : "",
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "ヤマハ音楽振興会",
+            "mood" : [],
+            "style" : [],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artist" : "ヤマハ音楽振興会",
+            "died" : "",
+            "artistid" : 224,
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
+         },
+         {
+            "label" : "大和田　りつ子",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "artistid" : 82,
+            "died" : "",
+            "artist" : "大和田　りつ子",
+            "born" : "",
+            "description" : ""
+         },
+         {
+            "formed" : "",
+            "label" : "子門　真人",
+            "yearsactive" : [],
+            "fanart" : "",
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "died" : "",
+            "artist" : "子門　真人",
+            "artistid" : 83,
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "born" : "",
+            "artistid" : 84,
+            "died" : "",
+            "artist" : "松熊　由紀",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "松熊　由紀",
+            "mood" : [],
+            "style" : []
+         },
+         {
+            "formed" : "",
+            "mood" : [],
+            "style" : [],
+            "label" : "柴矢　裕美",
+            "yearsactive" : [],
+            "fanart" : "",
+            "description" : "",
+            "died" : "",
+            "artist" : "柴矢　裕美",
+            "artistid" : 85,
+            "born" : "",
+            "genre" : [],
+            "instrument" : [],
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "thumbnail" : ""
+         },
+         {
+            "born" : "",
+            "died" : "",
+            "artistid" : 225,
+            "artist" : "横山だいすけ、三谷たくみ",
+            "description" : "",
+            "instrument" : [],
+            "genre" : [],
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "thumbnail" : "",
+            "formed" : "",
+            "style" : [],
+            "mood" : [],
+            "fanart" : "",
+            "yearsactive" : [],
+            "label" : "横山だいすけ、三谷たくみ"
+         },
+         {
+            "formed" : "",
+            "label" : "永井寛孝とおっぺれった",
+            "fanart" : "",
+            "yearsactive" : [],
+            "style" : [],
+            "mood" : [],
+            "instrument" : [],
+            "genre" : [],
+            "artist" : "永井寛孝とおっぺれった",
+            "died" : "",
+            "artistid" : 86,
+            "born" : "",
+            "description" : "",
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : ""
+         },
+         {
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "disbanded" : "",
+            "instrument" : [],
+            "genre" : [],
+            "born" : "",
+            "died" : "",
+            "artist" : "田原　俊彦",
+            "artistid" : 87,
+            "description" : "",
+            "yearsactive" : [],
+            "fanart" : "",
+            "label" : "田原　俊彦",
+            "style" : [],
+            "mood" : [],
+            "formed" : ""
+         },
+         {
+            "label" : "速水　けんたろう",
+            "fanart" : "",
+            "yearsactive" : [],
+            "mood" : [],
+            "style" : [],
+            "formed" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artistid" : 88,
+            "artist" : "速水　けんたろう",
+            "born" : ""
+         },
+         {
+            "genre" : [],
+            "instrument" : [],
+            "description" : "",
+            "died" : "",
+            "artist" : "速水けんたろう、茂森あゆみ",
+            "artistid" : 89,
+            "born" : "",
+            "thumbnail" : "",
+            "disbanded" : "",
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "formed" : "",
+            "label" : "速水けんたろう、茂森あゆみ",
+            "yearsactive" : [],
+            "fanart" : "",
+            "mood" : [],
+            "style" : []
+         }
+      ],
+      "limits" : {
+         "total" : 224,
+         "end" : 224,
+         "start" : 0
+      }
+   }
+}

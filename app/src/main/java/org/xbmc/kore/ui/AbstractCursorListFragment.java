@@ -73,9 +73,9 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	// The search filter to use in the loader
 	private String searchFilter = null;
+	private boolean loaderLoading;
 	private String savedSearchFilter;
 	private boolean supportsSearch;
-	private boolean loaderLoading;
 
 	private SearchView searchView;
 
@@ -308,6 +308,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		adapter.swapCursor(cursor);
 		// To prevent the empty text from appearing on the first load, set it now
 		emptyView.setText(getString(R.string.swipe_down_to_refresh));
+		loaderLoading = false;
 	}
 
 	/** {@inheritDoc} */
