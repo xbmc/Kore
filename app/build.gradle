@@ -39,6 +39,9 @@ android {
     }
 
     productFlavors {
+        full {
+        }
+
         instrumentationTest {
             applicationId "org.xbmc.kore.instrumentationtest"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
