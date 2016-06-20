@@ -121,8 +121,10 @@ def adb = android.getAdbExe().toString()
 // Source: http://stackoverflow.com/q/29908110/112705
 afterEvaluate {
     task grantAnimationPermissionDev(type: Exec, dependsOn: 'installInstrumentationTestDebug') {
-        println("Executing: $adb shell pm grant $android.productFlavors.instrumentationTest.applicationId android.permission.SET_ANIMATION_SCALE")
-        commandLine "$adb shell pm grant $android.productFlavors.instrumentationTest.applicationId android.permission.SET_ANIMATION_SCALE".split(' ')
+        doFirst {
+            println("Executing: $adb shell pm grant $android.productFlavors.instrumentationTest.applicationId android.permission.SET_ANIMATION_SCALE")
+            commandLine "$adb shell pm grant $android.productFlavors.instrumentationTest.applicationId android.permission.SET_ANIMATION_SCALE".split(' ')
+        }
     }
 
     // When launching individual tests from Android Studio, it seems that only the assemble tasks
