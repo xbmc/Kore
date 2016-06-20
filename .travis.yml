@@ -23,4 +23,4 @@ android:
 before_script:
 
 script: 
-  - ./gradlew assembleRelease
+  - ./gradlew assembleFullRelease
