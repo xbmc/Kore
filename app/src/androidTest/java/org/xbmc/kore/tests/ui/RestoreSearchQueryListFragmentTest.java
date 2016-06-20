@@ -187,6 +187,7 @@ public class RestoreSearchQueryListFragmentTest {
      *   2. Press back
      *   3. Result: search query should be cleared, collapsed, and list should show everything
      */
+    @Test
     public void searchBackTest() {
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), SEARCH_QUERY);
         Espresso.pressBack();
@@ -204,11 +205,12 @@ public class RestoreSearchQueryListFragmentTest {
      *   4. Press home button
      *   5. Result: search query should be cleared, collapsed, and list should show everything
      */
+    @Test
     public void searchClickBackUpTest() {
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), SEARCH_QUERY);
         EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
         Espresso.pressBack();
-        EspressoTestUtils.clickHomeButton();
+        EspressoTestUtils.clickToolbarCollapseButton();
         EspressoTestUtils.checkSearchMenuCollapsed();
         EspressoTestUtils.checkListMatchesSearchQuery("", COMPLETE_LIST_SIZE, R.id.list);
     }
@@ -221,10 +223,10 @@ public class RestoreSearchQueryListFragmentTest {
      *   2. Press home button
      *   3. Result: search query should be cleared, collapsed, and list should show everything
      */
+    @Test
     public void searchUpTest() {
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), SEARCH_QUERY);
-        Espresso.pressBack();
-        EspressoTestUtils.clickHomeButton();
+        EspressoTestUtils.clickToolbarCollapseButton();
         EspressoTestUtils.checkSearchMenuCollapsed();
         EspressoTestUtils.checkListMatchesSearchQuery("", COMPLETE_LIST_SIZE, R.id.list);
     }
