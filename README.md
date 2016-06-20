@@ -2,7 +2,7 @@ Travis CI status [![Build Status](https://travis-ci.org/xbmc/Kore.svg?branch=mas
 
 Codacy analysis [![Codacy Badge](https://api.codacy.com/project/badge/grade/d7a03e5dff8840918b9d9ae069a7645e)](https://www.codacy.com/app/Kodi/Kore)
 
-Doxygen documentation [![Documentation](https://codedocs.xyz/xbmc/xbmc.svg)](https://codedocs.xyz/xbmc/xbmc/)
+Doxygen documentation [![Documentation](https://codedocs.xyz/xbmc/Kore.svg)](https://codedocs.xyz/xbmc/Kore/)
 
 Kore - Kodi/XBMC remote for Android
 -----------------------------------
