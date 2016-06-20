@@ -35,11 +35,13 @@ import static android.support.test.espresso.assertion.ViewAssertions.doesNotExis
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
+import static org.xbmc.kore.testhelpers.action.ViewActions.clearFocus;
 
 public class EspressoTestUtils {
 
@@ -71,8 +73,18 @@ public class EspressoTestUtils {
         }
     }
 
-    public static void clickHomeButton() {
-        onView(withId(android.R.id.home)).perform(click());
+    /**
+     * Clicks the arrow button in the toolbar when its function is collapsing a view. For instance,
+     * collapse the search view in the toolbar.
+     */
+    public static void clickToolbarCollapseButton() {
+        /**
+         * The image button in the toolbar used as home/collapse/back button has no ID we can use.
+         * In appcompat v7 the arrow button in the toolbar used to collapse a search view has a
+         * description "Collapse". We use this to find the button in the view and perform the click
+         * action.
+         */
+        onView(withContentDescription("Collapse")).perform(click());
     }
 
     /**
@@ -84,7 +96,7 @@ public class EspressoTestUtils {
         EspressoTestUtils.clickMenuItem(activity, activity.getString(R.string.action_search), R.id.action_search);
 
         onView(isAssignableFrom(AutoCompleteTextView.class))
-                .perform(click(), typeText(query));
+                .perform(click(), typeText(query), clearFocus());
 
         Espresso.closeSoftKeyboard();
     }
