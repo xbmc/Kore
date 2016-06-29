@@ -110,7 +110,7 @@ public class AddonOverviewFragment extends SharedElementFragment {
         long baseFragmentId = 1000;
         tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
                 .addTab(AddonDetailsFragment.class, args, R.string.addon_overview, baseFragmentId++)
-                .addTab(MediaFileListFragment.class, contentArgs(args), R.string.addon_content, baseFragmentId++)
+                .addTab(MediaFileListFragment.class, contentArgs(args), R.string.addon_content, baseFragmentId)
                 ;
         viewPager.setAdapter(tabsAdapter);
         pagerTabStrip.setViewPager(viewPager);
