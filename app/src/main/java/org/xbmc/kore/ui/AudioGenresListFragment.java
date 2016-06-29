@@ -77,7 +77,7 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
         Uri uri = MediaContract.AudioGenres.buildAudioGenresListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.AudioGenres.TITLE + " LIKE ?";

@@ -82,7 +82,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         Uri uri = MediaContract.TVShows.buildTVShowsListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         StringBuilder selection = new StringBuilder();
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection.append(MediaContract.TVShowsColumns.TITLE + " LIKE ?");

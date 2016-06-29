@@ -120,7 +120,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         }
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.Albums.TITLE + " LIKE ?";

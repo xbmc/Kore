@@ -141,7 +141,7 @@ public class SettingsFragment extends PreferenceFragment
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case Utils.PERMISSION_REQUEST_READ_PHONE_STATE:
                 // If request is cancelled, the result arrays are empty.

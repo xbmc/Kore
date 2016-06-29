@@ -82,7 +82,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         Uri uri = MediaContract.Movies.buildMoviesListUri(hostInfo != null? hostInfo.getId() : -1);
 
         StringBuilder selection = new StringBuilder();
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection.append(MediaContract.MoviesColumns.TITLE + " LIKE ?");

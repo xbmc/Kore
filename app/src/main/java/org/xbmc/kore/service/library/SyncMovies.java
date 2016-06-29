@@ -84,7 +84,7 @@ public class SyncMovies extends SyncItem {
                      final HostConnection hostConnection,
                      final Handler callbackHandler,
                      final ContentResolver contentResolver) {
-        String properties[] = {
+        String[] properties = {
                 VideoType.FieldsMovie.TITLE, VideoType.FieldsMovie.GENRE,
                 VideoType.FieldsMovie.YEAR, VideoType.FieldsMovie.RATING,
                 VideoType.FieldsMovie.DIRECTOR, VideoType.FieldsMovie.TRAILER,
@@ -141,7 +141,7 @@ public class SyncMovies extends SyncItem {
                                final HostConnection hostConnection,
                                final Handler callbackHandler,
                                final ContentResolver contentResolver,
-                               final String properties[],
+                               final String[] properties,
                                final int startIdx) {
         // Call GetMovies with the current limits set
         ListType.Limits limits = new ListType.Limits(startIdx, startIdx + LIMIT_SYNC_MOVIES);
@@ -209,7 +209,7 @@ public class SyncMovies extends SyncItem {
     private void insertMovies(final SyncOrchestrator orchestrator,
                               final ContentResolver contentResolver,
                               final List<VideoType.DetailsMovie> movies) {
-        ContentValues movieValuesBatch[] = new ContentValues[movies.size()];
+        ContentValues[] movieValuesBatch = new ContentValues[movies.size()];
         int castCount = 0;
 
         // Iterate on each movie
@@ -222,7 +222,7 @@ public class SyncMovies extends SyncItem {
         // Insert the movies
         contentResolver.bulkInsert(MediaContract.Movies.CONTENT_URI, movieValuesBatch);
 
-        ContentValues movieCastValuesBatch[] = new ContentValues[castCount];
+        ContentValues[] movieCastValuesBatch = new ContentValues[castCount];
         int count = 0;
         // Iterate on each movie/cast
         for (VideoType.DetailsMovie movie : movies) {
