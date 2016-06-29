@@ -340,7 +340,7 @@ public class PlaylistFragment extends Fragment
 
     private void displayPlaylist(final ListType.ItemsAll getItemResult,
                                  final List<ListType.ItemsAll> playlistItems) {
-        if (playlistItems.size() == 0) {
+        if (playlistItems.isEmpty()) {
             displayEmptyPlaylistMessage();
             return;
         }

@@ -153,7 +153,7 @@ public class SyncMovies extends SyncItem {
                     // First call, delete movies from DB
                     deleteMovies(contentResolver, hostId, -1);
                 }
-                if (result.size() > 0) {
+                if (!result.isEmpty()) {
                     insertMovies(orchestrator, contentResolver, result);
                 }
 
