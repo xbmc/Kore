@@ -482,9 +482,7 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
 
         @Override
         public View newGroupView(Context context, Cursor cursor, boolean isExpanded, ViewGroup parent) {
-            final View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.list_item_season, parent, false);
-            return view;
+            return LayoutInflater.from(context).inflate(R.layout.list_item_season, parent, false);
         }
 
         @Override
