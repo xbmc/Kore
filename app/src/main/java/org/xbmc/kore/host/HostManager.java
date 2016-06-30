@@ -119,7 +119,7 @@ public class HostManager {
      * @return Host list
      */
 	public ArrayList<HostInfo> getHosts(boolean forcedReload) {
-        if (forcedReload || (hosts.size() == 0)) {
+        if (forcedReload || (hosts.isEmpty())) {
             hosts.clear();
 
             Cursor cursor = context.getContentResolver()
@@ -167,7 +167,7 @@ public class HostManager {
 
             // No host selected. Check if there are hosts configured and default to the first one
             if (currentHostId == -1) {
-                if (hosts.size() > 0) {
+                if (!hosts.isEmpty()) {
                     currentHostInfo = hosts.get(0);
                     currentHostId = currentHostInfo.getId();
                     prefs.edit()
@@ -424,7 +424,7 @@ public class HostManager {
         // If we just deleted the current connection, switch to another
         if ((currentHostInfo != null) && (currentHostInfo.getId() == hostId)) {
             releaseCurrentHost();
-            if (hosts.size() > 0)
+            if (!hosts.isEmpty())
                 switchHost(hosts.get(0));
         }
 	}

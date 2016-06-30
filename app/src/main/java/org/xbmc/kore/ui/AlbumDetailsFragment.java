@@ -339,7 +339,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
     @Override
     protected void onDownload() {
         if ((albumTitle == null) || (albumDisplayArtist == null) ||
-            (songInfoList == null) || (songInfoList.size() == 0)) {
+            (songInfoList == null) || (songInfoList.isEmpty())) {
             // Nothing to download
             Toast.makeText(getActivity(), R.string.no_files_to_download, Toast.LENGTH_SHORT).show();
             return;
@@ -676,7 +676,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                 songListView.addView(songView);
             } while (cursor.moveToNext());
 
-            if (songInfoList.size() > 0) {
+            if (!songInfoList.isEmpty()) {
                 // Check if download dir exists
                 FileDownloadHelper.SongInfo songInfo = new FileDownloadHelper.SongInfo
                         (albumDisplayArtist, albumTitle, 0, 0, null, null);

@@ -367,7 +367,7 @@ public class MediaFileListFragment extends AbstractListFragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                while (mediaQueueFileLocation.size() > 0) {
+                while (!mediaQueueFileLocation.isEmpty()) {
                     queueMediaFile(mediaQueueFileLocation.poll().file);
                 }
             }

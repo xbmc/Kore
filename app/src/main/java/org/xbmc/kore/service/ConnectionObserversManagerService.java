@@ -65,7 +65,7 @@ public class ConnectionObserversManagerService extends Service
         createObservers();
 
         // If no observers created, stop immediately
-        if (mConnectionObservers.size() == 0) {
+        if (mConnectionObservers.isEmpty()) {
             LogUtils.LOGD(TAG, "No observers, stopping observer service.");
             stopSelf();
         }

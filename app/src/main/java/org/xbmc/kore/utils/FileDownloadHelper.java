@@ -295,7 +295,7 @@ public class FileDownloadHelper {
                                     final List<? extends MediaInfo> mediaInfoList,
                                     final int fileHandlingMode,
                                     final Handler callbackHandler) {
-        if ((mediaInfoList == null) || (mediaInfoList.size() == 0))
+        if ((mediaInfoList == null) || (mediaInfoList.isEmpty()))
             return;
 
         if (!checkDownloadDir(context, mediaInfoList.get(0).getAbsoluteDirectoryPath()))

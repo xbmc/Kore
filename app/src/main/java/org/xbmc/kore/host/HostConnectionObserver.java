@@ -135,7 +135,7 @@ public class HostConnectionObserver
         public void run() {
             final int HTTP_NOTIFICATION_CHECK_INTERVAL = 3000;
             // If no one is listening to this, just exit
-            if (playerEventsObservers.size() == 0) return;
+            if (playerEventsObservers.isEmpty()) return;
 
             // Check whats playing
             checkWhatsPlaying();
@@ -151,7 +151,7 @@ public class HostConnectionObserver
             final int PING_AFTER_ERROR_CHECK_INTERVAL = 2000,
                     PING_AFTER_SUCCESS_CHECK_INTERVAL = 10000;
             // If no one is listening to this, just exit
-            if (playerEventsObservers.size() == 0) return;
+            if (playerEventsObservers.isEmpty()) return;
 
             JSONRPC.Ping ping = new JSONRPC.Ping();
             ping.execute(connection, new ApiCallback<String>() {
@@ -232,7 +232,7 @@ public class HostConnectionObserver
         LogUtils.LOGD(TAG, "Unregistering observer. Still got " + playerEventsObservers.size() +
                            " observers.");
 
-        if (playerEventsObservers.size() == 0) {
+        if (playerEventsObservers.isEmpty()) {
             // No more observers, so unregister us from the host connection, or stop
             // the http checker thread
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
