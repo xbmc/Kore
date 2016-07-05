@@ -283,6 +283,9 @@
     <string name="tvshow_overview">Apžvalga</string>
     <string name="tvshow_episodes">Epizodai</string>
 
+    <string name="addon_overview">Apžvalga</string>
+    <string name="addon_content">Turinys</string>
+
     <string name="artists">Atlikėjai</string>
     <string name="albums">Albumai</string>
     <string name="genres">Žanrai</string>
@@ -296,6 +299,9 @@
     <string name="enable_disable">Įjungti/išjungti priedą</string>
     <string name="addon_enabled">Priedas įjungtas</string>
     <string name="addon_disabled">Priedas išjungtas</string>
+    <string name="pin_unpin">Prisegti/Atsegti priedą</string>
+    <string name="addon_pinned">Priedas prisegtas</string>
+    <string name="addon_unpinned">Priedas atsegtas</string>
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Slėpti peržiūrėtus</string>
@@ -318,6 +324,7 @@
     <string name="switch_to_remote">Atidaryti pultą paleidus media</string>
     <string name="keep_remote_above_lockscreen">Rodyti pultą virš užrakinto ekranok</string>
     <string name="show_notification">Rodyti pranešimus atkūrimo metu</string>
+    <string name="pause_during_calls">Pristabdyti atkūrimą skambučio metu</string>
     <string name="use_hardware_volume_keys">Naudoti garsumo mygtukus garsumo valdymui</string>
     <string name="vibrate_on_remote">Vibruoti paspaudus pulto mygtuką</string>
     <string name="nav_drawer_items">Šoninio meniu nuorodos</string>
@@ -342,6 +349,8 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Atkurti Kodi</string>
+    <string name="pause_call_incoming_title">Įeinantis skambutis</string>
+    <string name="pause_call_incoming_message">Patikrinkite telefoną, kažkas jums skambina</string>
 
     <string name="error_getting_pvr_info">Gaunant PVR informaciją įvyko klaida: %1$s</string>
     <string name="might_not_have_pvr">Gaunant kanalo informaciją įvyko klaida, tikriausiai dėl to, kad media centras neturi imtuvo arba jis nesukonfigūruotas.\n\nJei taip yra, jūs tikriausiai norėsite pašalinti šį įrašą iš šoninio meniu - tai atlikti galite nustatymuose.</string>
@@ -368,5 +377,9 @@
 
     <string name="download_network_types_title">Tinklo tipai atsiuntimams</string>
     <string name="download_network_types_summary">Leidžiami tinklo tipai media atsiuntimams</string>
+    <string name="songs">Dainos</string>
+
+    <string name="read_phone_state_permission_denied">Leidimas nesuteiktas. Nebus įmanoma pristabdyti atkūrimo skambučių metu.</string>
+    <string name="write_storage_permission_denied">Leidimas nesuteiktas. Nebus įmanoma atsisiųsti failų.</string>
 
 </resources>
