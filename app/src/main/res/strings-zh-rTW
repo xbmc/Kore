@@ -23,8 +23,8 @@
     <string name="loading">載入中…</string>
 
     <!-- Navigation drawer tips -->
-	<string name="navigation_drawer_open">開啟遙控界面</string>
-	<string name="navigation_drawer_close">關閉遙控界面</string>
+	<string name="navigation_drawer_open">張開導航抽屜</string>
+	<string name="navigation_drawer_close">關閉導航抽屜</string>
 
 	<string name="xbmc_media_center">媒體中心</string>
 	<string name="home">主界面</string>
@@ -128,7 +128,7 @@
     ]]></string>
 
     <string name="wizard_zeroconf_no_host_address">無法取得此媒體中心的網址！</string>
-    <string name="wizard_zeroconf_cant_connect_no_host_address">無法連線到此媒體中心，因為無法找到它的網址。/string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">無法連線到此媒體中心，因為無法找到它的網址。</string>
 
     <string name="play">播放</string>
     <string name="pause">暫停</string>
@@ -190,8 +190,8 @@
     <string name="playlist">播放列表</string>
 
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
-    <string name="season_episode">Season %1$02d | Episode %2$02d</string>
-    <string name="season_number">Season %1$02d</string>
+    <string name="season_episode">第 %1$02d 季 | 第 %2$02d  集</string>
+    <string name="season_number">第 %1$02d 季</string>
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s 票</string>
@@ -202,26 +202,20 @@
     <string name="poster">海報</string>
     <string name="thumbnail">縮略圖</string>
 
-    <string name="error_getting_properties">無法讀取 Kodi/XBMC 內容。\n錯誤訊息：
-        %1$s.</string>
+    <string name="error_getting_properties">無法讀取 Kodi/XBMC 內容。\n錯誤訊息：%1$s。</string>
     <string name="error_executing_subtitles">無法執行字幕元件。\n錯誤訊息： %1$s。</string>
-    <string name="error_getting_addon_info">無法讀取附加元件資訊。\n錯誤訊息：
-        %1$s.</string>
-   <string name="error_getting_source_info">無法瀏覽檔案。\n錯誤訊息：
-        %1$s.</string>
-    <string name="error_play_media_file">無法播放媒體檔案。\n錯誤訊息：
-        %1$s.</string>
-    <string name="error_queue_media_file">無法佇列媒體檔案。\n錯誤訊息：
-        %1$s.</string>
-     <string name="error_get_active_player">無法提取可用的播放器。\n錯誤訊息：
-        %1$s.</string>
+    <string name="error_getting_addon_info">無法讀取附加元件資訊。\n錯誤訊息：%1$s。</string>
+   <string name="error_getting_source_info">無法瀏覽檔案。\n錯誤訊息：%1$s。</string>
+    <string name="error_play_media_file">無法播放媒體檔案。\n錯誤訊息：%1$s。</string>
+    <string name="error_queue_media_file">無法佇列媒體檔案。\n錯誤訊息： %1$s。</string>
+     <string name="error_get_active_player">無法提取可用的播放器。\n錯誤訊息：%1$s。</string>
     <string name="error_share_video">無法分析影片到 Kodi/XBMC。</string>
 
     <string name="directors">導演：</string>
     <string name="studio">製片：</string>
     <string name="cast">演員</string>
     <string name="additional_cast">其他演員</string>
-    <string name="cast_list_text">%1$s as %2$s</string>
+    <string name="cast_list_text">%1$s 扮演 %2$s</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
     <string name="remaining_cast_count">還有 %d</string>
 
