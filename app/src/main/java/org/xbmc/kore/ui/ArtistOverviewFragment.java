@@ -229,7 +229,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
             case LOADER_SONGS:
                 uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(), artistId);
                 return new CursorLoader(getActivity(), uri,
-                                        AlbumSongsListQuery.PROJECTION, null, null, AlbumSongsListQuery.SORT);
+                                        SongsListQuery.PROJECTION, null, null, SongsListQuery.SORT);
             default:
                 return null;
         }
@@ -299,16 +299,16 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
 
     private FileDownloadHelper.SongInfo createSongInfo(Cursor cursor) {
         FileDownloadHelper.SongInfo songInfo = null;
-        String albumTitle = albumTitles.get(cursor.getInt(AlbumSongsListQuery.ALBUMID));
+        String albumTitle = albumTitles.get(cursor.getInt(SongsListQuery.ALBUMID));
         if (albumTitle != null) {
             // Add this song to the list
             songInfo = new FileDownloadHelper.SongInfo(
                     artistTitle,
                     albumTitle,
-                    cursor.getInt(AlbumSongsListQuery.SONGID),
-                    cursor.getInt(AlbumSongsListQuery.TRACK),
-                    cursor.getString(AlbumSongsListQuery.TITLE),
-                    cursor.getString(AlbumSongsListQuery.FILE));
+                    cursor.getInt(SongsListQuery.SONGID),
+                    cursor.getInt(SongsListQuery.TRACK),
+                    cursor.getString(SongsListQuery.TITLE),
+                    cursor.getString(SongsListQuery.FILE));
         }
         return songInfo;
     }
@@ -457,7 +457,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
     /**
      * Song list query parameters.
      */
-    private interface AlbumSongsListQuery {
+    private interface SongsListQuery {
         String[] PROJECTION = {
                 MediaDatabase.Tables.SONGS + "." + BaseColumns._ID,
                 MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE,

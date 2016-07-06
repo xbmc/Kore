@@ -32,7 +32,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
 
 	private static final String DB_NAME = "xbmc.sqlite";
     private static final int DB_VERSION_PRE_EVENT_SERVER = 4,
-            DB_VERSION = 5;
+            DB_VERSION_PRE_SONG_ARTISTS = 5, DB_VERSION = 6;
 
 	/**
 	 * Tables exposed
@@ -48,6 +48,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
         String ARTISTS = "artists";
         String ALBUMS = "albums";
         String SONGS = "songs";
+        String SONG_ARTISTS = "song_artists";
         String AUDIO_GENRES = "audio_genres";
         String ALBUM_ARTISTS = "album_artists";
         String ALBUM_GENRES = "album_genres";
@@ -90,24 +91,24 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 ALBUM_GENRES + "." + MediaContract.AlbumGenres.GENREID + "=" + AUDIO_GENRES + "." + MediaContract.AudioGenres.GENREID;
 
         /**
-         * Join to get Songs for an Artist
+         * Join to get Songs for an Artist or Album with artist info and album info only if available
          */
-        String SONGS_FOR_ARTIST_JOIN =
-                SONGS + " JOIN " + ALBUM_ARTISTS + " ON " +
-                SONGS + "." + MediaContract.Songs.HOST_ID + "=" + ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID +
+        String SONGS_FOR_ARTIST_AND_OR_ALBUM_JOIN =
+                SONG_ARTISTS + " JOIN " + SONGS + " ON " +
+                SONG_ARTISTS + "." + MediaContract.SongArtists.HOST_ID + "=" + SONGS + "." + MediaContract.Songs.HOST_ID +
                 " AND " +
-                SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.ALBUMID +
-                " JOIN " + ALBUMS + " ON " +
-                SONGS + "." + MediaContract.Songs.HOST_ID + "=" + ALBUMS + "." + MediaContract.Albums.HOST_ID +
+                SONG_ARTISTS + "." + MediaContract.SongArtists.SONGID + "=" + SONGS + "." + MediaContract.Songs.SONGID +
+                " LEFT JOIN " + ARTISTS + " ON " +
+                SONG_ARTISTS + "." + MediaContract.SongArtists.HOST_ID + "=" + ARTISTS + "." + MediaContract.Artists.HOST_ID +
                 " AND " +
-                SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUMS + "." + MediaContract.Albums.ALBUMID;
-
-        String SONGS_AND_ALBUM_JOIN =
-                SONGS + " JOIN " + ALBUMS + " ON " +
-                SONGS + "." + MediaContract.Songs.HOST_ID + "=" + ALBUMS + "." + MediaContract.Albums.HOST_ID +
+                SONG_ARTISTS + "." + MediaContract.SongArtists.ARTISTID + "=" + ARTISTS + "." + MediaContract.Artists.ARTISTID +
+                " LEFT JOIN " + ALBUMS + " ON " +
+                SONG_ARTISTS + "." + MediaContract.SongArtists.HOST_ID + "=" + ALBUMS + "." + MediaContract.Albums.HOST_ID +
                 " AND " +
                 SONGS + "." + MediaContract.Songs.ALBUMID + "=" + ALBUMS + "." + MediaContract.Albums.ALBUMID;
     }
+
+
 
     private interface References {
         String HOST_ID =
@@ -118,6 +119,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 "REFERENCES " + Tables.ARTISTS + "(" + MediaContract.ArtistsColumns.ARTISTID + ")";
         String GENREID =
                 "REFERENCES " + Tables.AUDIO_GENRES + "(" + MediaContract.AudioGenresColumns.GENREID + ")";
+        String SONGID =
+                "REFERENCES " + Tables.SONGS + "(" + MediaContract.Songs.SONGID + ")";
     }
 
     public MediaDatabase(Context context) {
@@ -359,6 +362,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    ") ON CONFLICT REPLACE)"
         );
 
+        createSongArtistsTable(db);
+
         // AudioGenres
         db.execSQL("CREATE TABLE " + Tables.AUDIO_GENRES + "(" +
                    BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -378,7 +383,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                    MediaContract.AlbumArtistsColumns.HOST_ID + " INTEGER NOT NULL " + References.HOST_ID + ", " +
                    MediaContract.AlbumArtistsColumns.ALBUMID + " INTEGER NOT NULL " + References.ALBUMID + ", " +
-                   MediaContract.AlbumArtistsColumns.ARTISTID + " INTEGER NOT NULL " + References .ARTISTID + ", " +
+                   MediaContract.AlbumArtistsColumns.ARTISTID + " INTEGER NOT NULL " + References.ARTISTID + ", " +
                    "UNIQUE (" +
                    MediaContract.AlbumArtistsColumns.HOST_ID + ", " +
                    MediaContract.AlbumArtistsColumns.ALBUMID + ", " +
@@ -471,6 +476,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.EVENT_SERVER_PORT +
                            " INTEGER DEFAULT " + HostInfo.DEFAULT_EVENT_SERVER_PORT + ";");
+            case DB_VERSION_PRE_SONG_ARTISTS:
+                createSongArtistsTable(db);
         }
 	}
 
@@ -514,6 +521,20 @@ public class MediaDatabase extends SQLiteOpenHelper {
         order.append(" ELSE " + column + " END) ");
 
         return order.toString();
+    }
+
+    private void createSongArtistsTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + Tables.SONG_ARTISTS + "(" +
+                   BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                   MediaContract.SongArtistsColumns.HOST_ID + " INTEGER NOT NULL " + References.HOST_ID + ", " +
+                   MediaContract.SongArtistsColumns.SONGID + " INTEGER NOT NULL " + References.SONGID + ", " +
+                   MediaContract.SongArtistsColumns.ARTISTID + " INTEGER NOT NULL " + References .ARTISTID + ", " +
+                   "UNIQUE (" +
+                   MediaContract.SongArtistsColumns.HOST_ID + ", " +
+                   MediaContract.SongArtistsColumns.SONGID + ", " +
+                   MediaContract.SongArtistsColumns.ARTISTID +
+                   ") ON CONFLICT REPLACE)"
+                  );
     }
 }
 
