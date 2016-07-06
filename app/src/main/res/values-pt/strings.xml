@@ -211,7 +211,7 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
   <string name="about">Sobre</string>
   <string name="about_desc"><![CDATA[
         \u00A9 2015 XBMC Foundation.<br><br>
-Por favor classifique-nos na <b><a href="market://details?id=org.xbmc.kore">Googgle Play</a></b><br><br>
+Por favor classifique-nos na <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
 Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
 ]]></string>
@@ -291,6 +291,11 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
   <string name="addon_pinned">Extensão afixada na lista de extensões</string>
   <string name="addon_unpinned">Estensão desafixada da lista de extensões</string>
   <string name="pin_unpin">Afixar</string>
+  <string name="pause_call_incoming_message">Verifique o seu telefone, está uma chamada pendente</string>
+  <string name="pause_call_incoming_title">Chamada pendente</string>
+  <string name="pause_during_calls">Parar reprodução quando receber chamadas</string>
+  <string name="read_phone_state_permission_denied">Permissão negada. Não será possível parar a reprodução quando se receberem chamadas</string>
+  <string name="write_storage_permission_denied">Permissão negada. Não será possível transferir ficheiros</string>
 
   <!--<string name="buy_me_coffee">Oferecer um café</string>-->
   <!--<string name="expresso_please">Expresso, por favor. Obrigado!</string>-->
