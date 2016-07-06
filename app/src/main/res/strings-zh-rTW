@@ -61,7 +61,7 @@
     <string name="update_video_library">更新視訊資料庫</string>
     <string name="update_audio_library">更新音訊資料庫</string>
 
-    <string name="toggle_fullscreen">切除至全螢幕</string>
+    <string name="toggle_fullscreen">切換至全螢幕</string>
 
     <string name="connected_to">已連線到 %1$s</string>
     <string name="connecting">連線中…</string>
