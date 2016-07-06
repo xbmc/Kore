@@ -209,7 +209,7 @@
     <string name="error_play_media_file">無法播放媒體檔案。\n錯誤訊息：%1$s。</string>
     <string name="error_queue_media_file">無法佇列媒體檔案。\n錯誤訊息： %1$s。</string>
      <string name="error_get_active_player">無法提取可用的播放器。\n錯誤訊息：%1$s。</string>
-    <string name="error_share_video">無法分析影片到 Kodi/XBMC。</string>
+    <string name="error_share_video">無法分享影片到 Kodi/XBMC。</string>
 
     <string name="directors">導演：</string>
     <string name="studio">製片：</string>
@@ -324,7 +324,7 @@
     <string name="pause_during_calls">當有來電時暫停播放</string>
     <string name="use_hardware_volume_keys">使用裝置音量鍵控制音量</string>
     <string name="vibrate_on_remote">按遙控鍵時發出震動回饋</string>
-    <string name="nav_drawer_items">側邊功能表捷徑</string>
+    <string name="nav_drawer_items">抽屜功能表捷徑</string>
 
     <string name="about">關於</string>
     <string name="about_desc"><![CDATA[
