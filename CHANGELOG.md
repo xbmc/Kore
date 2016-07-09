@@ -1,6 +1,18 @@
 Changelog
 ---------
 
+Version 2.1.0
+-------------
+- Add songs tab on Music section and Artist section and support for showing songs without album or artist
+- Add addon browsing
+- Show artist details when an artist is selected from the list
+- New option: pause playing when in a phone call (requires permission to phone state on Android versions < 6.0)
+- New option: keep the remote above the lockscreen
+- Support for playing Vimeo URLs
+- Improve library syncing
+- Various UI tweaks
+- Bug fixes
+
 Version 2.0.0
 -------------
 - PVR support
@@ -9,7 +21,6 @@ Version 2.0.0
 - Improve library syncing
 - Various tweaks
 - Bug fixes
-
 
 Version 1.5.0
 -------------
