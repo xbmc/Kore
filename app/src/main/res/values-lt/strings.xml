@@ -89,18 +89,18 @@
     <string name="no_xbmc_found">Nerastas joks media centras</string>
     <string name="xbmc_found">Media centras rastas</string>
     <string name="wizard_manual_configuration">Rankinis nustatymas</string>
-    <string name="wizard_manual_configuration_message">Įveskite savo media centro konfigūraciją:</string>
+    <string name="wizard_manual_configuration_message">Įveskite media centro konfigūraciją:</string>
     <string name="wizard_manual_configuration_message_advanced">Išplėstinė konfigūracija (palikite tuščią norėdami naudoti numatytąsias reikšmes)</string>
     <string name="wizard_xbmc_name">Media centro vardas</string>
     <string name="wizard_xbmc_ip">Adresas</string>
     <string name="wizard_xbmc_port">Prievadas</string>
     <string name="wizard_xbmc_username">Vartotojo vardas</string>
     <string name="wizard_xbmc_password">Slaptažodis</string>
-    <string name="wizard_xbmc_tcp_port">TCP prievadas (9090)</string>
+    <string name="wizard_xbmc_tcp_port">TCP priev. (9090)</string>
     <string name="wizard_xbmc_mac_address">MAC adresas</string>
-    <string name="wizard_xbmc_wol_port">WoL prievadas (9)</string>
+    <string name="wizard_xbmc_wol_port">WoL priev. (9)</string>
     <string name="wizard_xbmc_use_tcp">Naudoti TCP</string>
-    <string name="wizard_xbmc_event_server_port">ES prievadas (9777)</string>
+    <string name="wizard_xbmc_event_server_port">ES priev. (9777)</string>
     <string name="wizard_xbmc_use_event_server">Naudoti EventServer</string>
 
     <string name="wizard_no_name_specified">Nurodykite šio media centro vardą, kad vėliau galėtumėte jį identifikuoti.</string>
@@ -322,7 +322,7 @@
     <string name="theme_solarized_dark">Ryški tamsi</string>
 
     <string name="switch_to_remote">Atidaryti pultą paleidus media</string>
-    <string name="keep_remote_above_lockscreen">Rodyti pultą virš užrakinto ekranok</string>
+    <string name="keep_remote_above_lockscreen">Rodyti pultą užrakintame ekrane</string>
     <string name="show_notification">Rodyti pranešimus atkūrimo metu</string>
     <string name="pause_during_calls">Pristabdyti atkūrimą skambučio metu</string>
     <string name="use_hardware_volume_keys">Naudoti garsumo mygtukus garsumo valdymui</string>
