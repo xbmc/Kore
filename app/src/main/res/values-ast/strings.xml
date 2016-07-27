@@ -6,7 +6,7 @@
   <string name="app_name">Kore</string>
   <string name="settings">Axustes</string>
   <string name="action_options">Opciones</string>
-  <string name="loading">Cargando…</string>
+  <string name="loading">Cargando...</string>
   <!--Navigation drawer tips-->
   <string name="navigation_drawer_open">Abrir caxón de navegación</string>
   <string name="navigation_drawer_close">Zarrar caxón de navegación</string>
@@ -41,7 +41,7 @@
   <string name="update_audio_library">Anovar fonoteca</string>
   <string name="toggle_fullscreen">Alternar pantalla completa</string>
   <string name="connected_to">Coneutáu a %1$s</string>
-  <string name="connecting">Coneutando…</string>
+  <string name="connecting">Coneutando...</string>
   <string name="connecting_to">Coneutando a %1$s (%2$s)…</string>
   <!--String used in add host wizard-->
   <string name="wizard_welcome">Bienllegáu</string>
@@ -64,7 +64,7 @@ Habilita la conexón de rede enantes de guetar centros multimedia, por favor.<br
 Alcontré estos centros multimedia na to rede.<br/><br/>Esbilla ún p\'amestalu o primi <i>Siguiente</i> p\'amestar a mano otru.
 ]]></string>
   <string name="no_network_connection">Ensin conexón de rede</string>
-  <string name="searching">Guetando…</string>
+  <string name="searching">Guetando...</string>
   <string name="no_xbmc_found">Nun s\'alcontraron centros multimedia</string>
   <string name="xbmc_found">Centros multimedia alcontraos</string>
   <string name="wizard_manual_configuration">Configuración manual</string>
@@ -87,7 +87,7 @@ Alcontré estos centros multimedia na to rede.<br/><br/>Esbilla ún p\'amestalu 
   <string name="wizard_invalid_tcp_port_specified">Especifica un puertu TCP válidu pa esti centru multimedia, por favor.</string>
   <string name="wizard_invalid_es_port_specified">Especifica un puertu d\'EventServer válidu pa esti centru multimedia, por favor.</string>
   <string name="wizard_connecting_to_xbmc_title">Coneutando a %1$s…</string>
-  <string name="wizard_connecting_to_xbmc_message">Por favor, espera entrín tento de coneutame col to centru multimedia…</string>
+  <string name="wizard_connecting_to_xbmc_message">Por favor, espera entrín tento de coneutame col to centru multimedia...</string>
   <string name="wizard_empty_authentication">Kodi/XBMC rique l\'autenticación.\nEspecifica un nome d\'usuariu y contraseña, por favor.</string>
   <string name="wizard_incorrect_authentication">Nome d\'usuariu y/o contraseña incorreutos.\nComprueba les tos credenciales, por favor.</string>
   <string name="wizard_success_connecting">Coneutáu a Kodi/XBMC.</string>
@@ -141,7 +141,7 @@ Primi <b><i>Finar</i></b> p\'apenzar a usar el mandu.
   <string name="queue_file">Cola</string>
   <string name="play_file">Reproducir</string>
   <string name="play_from_here">Reproducir dende equí</string>
-  <string name="connecting_to_xbmc">Coneutar…</string>
+  <string name="connecting_to_xbmc">Coneutar...</string>
   <string name="unable_to_connect_to_xbmc">Nun pue coneutase col centru multimedia</string>
   <string name="connected_to_xbmc">Coneutáu</string>
   <string name="xbmc_available">Disponible</string>
@@ -267,6 +267,7 @@ Primi <b><i>Finar</i></b> p\'apenzar a usar el mandu.
   <string name="switch_to_remote">Camudar al mandu dempués del aniciu de medios</string>
   <string name="keep_remote_above_lockscreen">Caltener el mandu enriba la pantalla de bloquéu</string>
   <string name="show_notification">Amosar avisu entrín se reproduz</string>
+  <string name="pause_during_calls">Posar reproducción nes llamaes</string>
   <string name="use_hardware_volume_keys">Usar les tecles de volume pa controlalu</string>
   <string name="vibrate_on_remote">Vibrar nes pulsaciones del mandu</string>
   <string name="nav_drawer_items">Atayos del menú llateral</string>
@@ -288,6 +289,8 @@ Si precises ayuda, comprueba\'l nuesu <b><a href=\"http://forum.kodi.tv/forumdis
   <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
   <!--<string name="purchase_thanks">Thanks for your support!</string>-->
   <string name="play_on_kodi">Reproducir en Kodi</string>
+  <string name="pause_call_incoming_title">Llamada entrante</string>
+  <string name="pause_call_incoming_message">Comprueba\'l to teléfonu, daquién ta llamándote.</string>
   <string name="error_getting_pvr_info">Asocedió un fallu entrín se consiguía la información de PVR: %1$s</string>
   <string name="might_not_have_pvr">Asocedió un fallu entrín se consiguía la información de les canales, quiciabes porque\'l to centru multimedia nun tien un sintonizador o nun ta configuráu.\n\nSi ye\'l casu y prestaríate desaniciar esta entrada del menú llateral, pues facelo n\'Axustes</string>
   <string name="error_starting_channel">Asocedió un fallu aniciando la reproducción de la canal: %1$s</string>
@@ -311,4 +314,6 @@ Si precises ayuda, comprueba\'l nuesu <b><a href=\"http://forum.kodi.tv/forumdis
   <string name="download_network_types_title">Tribes de rede de descarga</string>
   <string name="download_network_types_summary">Tribes de rede permitíes pa descargues de medios</string>
   <string name="songs">Canciones</string>
+  <string name="read_phone_state_permission_denied">Permisu ñegáu. Nun sedrás a posar la reproducción nes llamaes.</string>
+  <string name="write_storage_permission_denied">Permisu ñegáu. Nun sedrás a baxar ficheros.</string>
 </resources>
