@@ -329,7 +329,7 @@
     <string name="vibrate_on_remote">Vibruoti paspaudus pulto mygtuką</string>
     <string name="nav_drawer_items">Šoninio meniu nuorodos</string>
 
-    <string name="about">About</string>
+    <string name="about">Apie</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2015 XBMC Foundation.<br><br>
         Įvertinkite mus <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
