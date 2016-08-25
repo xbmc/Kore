@@ -23,6 +23,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import org.xbmc.kore.host.HostInfo;
+import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.jsonrpc.type.AudioType;
 import org.xbmc.kore.jsonrpc.type.LibraryType;
@@ -474,6 +475,18 @@ public class SyncUtils {
             }
         }
 
+        return false;
+    }
+
+    /**
+     * Checks if there are more items available according to the limits returned
+     * @param limitsReturned
+     * @return true if there are more items available, false otherwise
+     */
+    public static boolean moreItemsAvailable(ListType.LimitsReturned limitsReturned) {
+        if (limitsReturned != null) {
+            return ( limitsReturned.total - limitsReturned.end ) > 0;
+        }
         return false;
     }
 }

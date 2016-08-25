@@ -19,18 +19,6 @@ package org.xbmc.kore.tests.mediaprovider;
 import android.database.Cursor;
 
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.provider.MediaDatabase;
-import org.xbmc.kore.provider.MediaProvider;
-import org.xbmc.kore.ui.AlbumListFragment;
-import org.xbmc.kore.ui.ArtistListFragment;
-import org.xbmc.kore.ui.ArtistOverviewFragment;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 

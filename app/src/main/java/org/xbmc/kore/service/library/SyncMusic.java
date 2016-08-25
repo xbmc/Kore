@@ -118,7 +118,7 @@ public class SyncMusic extends SyncItem {
 
                 insertArtists(items, contentResolver);
 
-                if (moreItemsAvailable(limitsReturned)) {
+                if (SyncUtils.moreItemsAvailable(limitsReturned)) {
                     LogUtils.LOGD(TAG, "chainCallSyncArtists: More results on media center, recursing.");
                     result = null; // Help the GC?
                     chainCallSyncArtists(orchestrator, hostConnection, callbackHandler, contentResolver,
@@ -235,7 +235,7 @@ public class SyncMusic extends SyncItem {
                 LogUtils.LOGD(TAG, "Finished inserting artists and genres in: " +
                                    (System.currentTimeMillis() - albumSyncStartTime));
 
-                if (moreItemsAvailable(limitsReturned)) {
+                if (SyncUtils.moreItemsAvailable(limitsReturned)) {
                     LogUtils.LOGD(TAG, "chainCallSyncAlbums: More results on media center, recursing.");
                     result = null; // Help the GC?
                     chainCallSyncAlbums(orchestrator, hostConnection, callbackHandler, contentResolver,
@@ -302,7 +302,7 @@ public class SyncMusic extends SyncItem {
                 // Save partial results to DB
                 insertSongsItems(items, contentResolver);
 
-                if (moreItemsAvailable(limitsReturned)) {
+                if (SyncUtils.moreItemsAvailable(limitsReturned)) {
                     LogUtils.LOGD(TAG, "chainCallSyncSongs: More results on media center, recursing.");
                     result = null; // Help the GC?
                     chainCallSyncSongs(orchestrator, hostConnection, callbackHandler, contentResolver,
@@ -406,13 +406,5 @@ public class SyncMusic extends SyncItem {
         }
 
         contentResolver.bulkInsert(MediaContract.SongArtists.CONTENT_URI, songArtistsValuesBatch);
-    }
-
-    private boolean moreItemsAvailable(ListType.LimitsReturned limitsReturned) {
-        boolean moreItemsAvailable = false;
-        if (limitsReturned != null) {
-            moreItemsAvailable = ( limitsReturned.total - limitsReturned.end ) > 0;
-        }
-        return moreItemsAvailable;
     }
 }

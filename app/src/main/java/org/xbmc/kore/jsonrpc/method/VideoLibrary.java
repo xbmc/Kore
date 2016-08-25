@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xbmc.kore.jsonrpc.ApiException;
+import org.xbmc.kore.jsonrpc.ApiList;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
@@ -82,7 +83,7 @@ public class VideoLibrary {
     /**
      * Retrieve all movies
      */
-    public static class GetMovies extends ApiMethod<List<VideoType.DetailsMovie>> {
+    public static class GetMovies extends ApiMethod<ApiList<VideoType.DetailsMovie>> {
         public final static String METHOD_NAME = "VideoLibrary.GetMovies";
 
         private final static String LIST_NODE = "movies";
@@ -118,13 +119,15 @@ public class VideoLibrary {
         }
 
         @Override
-        public List<VideoType.DetailsMovie> resultFromJson(ObjectNode jsonObject)
+        public ApiList<VideoType.DetailsMovie> resultFromJson(ObjectNode jsonObject)
                 throws ApiException {
+            ListType.LimitsReturned limits = new ListType.LimitsReturned(jsonObject);
+
             JsonNode resultNode = jsonObject.get(RESULT_NODE);
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<VideoType.DetailsMovie>(0);
+                return new ApiList<>(new ArrayList<VideoType.DetailsMovie>(0), limits);
             }
             ArrayList<VideoType.DetailsMovie> result = new ArrayList<VideoType.DetailsMovie>(items.size());
 
@@ -132,7 +135,7 @@ public class VideoLibrary {
                 result.add(new VideoType.DetailsMovie(item));
             }
 
-            return result;
+            return new ApiList<>(result, limits);
         }
     }
 
@@ -200,7 +203,7 @@ public class VideoLibrary {
     /**
      * Retrieve all TV Shows
      */
-    public static class GetTVShows extends ApiMethod<List<VideoType.DetailsTVShow>> {
+    public static class GetTVShows extends ApiMethod<ApiList<VideoType.DetailsTVShow>> {
         public final static String METHOD_NAME = "VideoLibrary.GetTVShows";
 
         private final static String LIST_NODE = "tvshows";
@@ -235,21 +238,22 @@ public class VideoLibrary {
         }
 
         @Override
-        public List<VideoType.DetailsTVShow> resultFromJson(ObjectNode jsonObject)
+        public ApiList<VideoType.DetailsTVShow> resultFromJson(ObjectNode jsonObject)
                 throws ApiException {
+            ListType.LimitsReturned limits = new ListType.LimitsReturned(jsonObject);
             JsonNode resultNode = jsonObject.get(RESULT_NODE);
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<VideoType.DetailsTVShow>(0);
+                return new ApiList<>(new ArrayList<VideoType.DetailsTVShow>(0), limits);
             }
-            ArrayList<VideoType.DetailsTVShow> result = new ArrayList<VideoType.DetailsTVShow>(items.size());
+            ArrayList<VideoType.DetailsTVShow> result = new ArrayList<>(items.size());
 
             for (JsonNode item : items) {
                 result.add(new VideoType.DetailsTVShow(item));
             }
 
-            return result;
+            return new ApiList<>(result, limits);
         }
     }
 
