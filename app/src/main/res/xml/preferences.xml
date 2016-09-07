@@ -35,6 +35,11 @@
         android:defaultValue="false"/>
 
     <CheckBoxPreference
+        android:key="pref_keep_screen_on"
+        android:title="Keep screen on when using remote"
+        android:defaultValue="false"/>
+
+    <CheckBoxPreference
         android:key="pref_show_notification"
         android:title="@string/show_notification"
         android:defaultValue="false"/>

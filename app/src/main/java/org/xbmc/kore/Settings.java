@@ -65,6 +65,10 @@ public class Settings {
     public static final String KEY_PREF_KEEP_REMOTE_ABOVE_LOCKSCREEN = "pref_keep_remote_above_lockscreen";
     public static final boolean DEFAULT_KEY_PREF_KEEP_REMOTE_ABOVE_LOCKSCREEN = false;
 
+    // Keep screen on when on the remote activity
+    public static final String KEY_PREF_KEEP_SCREEN_ON = "pref_keep_screen_on";
+    public static final boolean DEFAULT_KEY_PREF_KEEP_SCREEN_ON = false;
+
     // Show notifications
     public static final String KEY_PREF_SHOW_NOTIFICATION = "pref_show_notification";
     public static final boolean DEFAULT_PREF_SHOW_NOTIFICATION = false;

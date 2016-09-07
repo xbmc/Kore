@@ -179,6 +179,17 @@ public class RemoteActivity extends BaseActivity
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         }
 
+        // Check whether we should keep the screen on
+        boolean keepScreenOn = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_KEEP_SCREEN_ON,
+                            Settings.DEFAULT_KEY_PREF_KEEP_SCREEN_ON);
+        if (keepScreenOn) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+
         checkPVREnabledAndSetMenuItems();
     }
 
