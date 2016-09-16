@@ -437,10 +437,10 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                     R.attr.iconExpand,
                     R.attr.iconCollapse
             });
-            final int iconCollapseResId = styledAttributes.getResourceId(0,
-                                                                         R.drawable.ic_expand_less_white_24dp);
-            final int iconExpandResId = styledAttributes.getResourceId(1,
-                                                                       R.drawable.ic_expand_more_white_24dp);
+            final int iconCollapseResId =
+                    styledAttributes.getResourceId(styledAttributes.getIndex(0), R.drawable.ic_expand_less_white_24dp);
+            final int iconExpandResId =
+                    styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_expand_more_white_24dp);
             styledAttributes.recycle();
 
             mediaDescriptionContainer.setOnClickListener(new View.OnClickListener() {

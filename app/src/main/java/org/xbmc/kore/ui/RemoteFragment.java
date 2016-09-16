@@ -210,10 +210,10 @@ public class RemoteFragment extends Fragment
                 R.attr.iconNext,
                 R.attr.iconPrevious
         });
-        fastForwardIcon = styledAttributes.getResourceId(0, R.drawable.ic_fast_forward_white_24dp);
-        rewindIcon = styledAttributes.getResourceId(1, R.drawable.ic_fast_rewind_white_24dp);
-        skipNextIcon = styledAttributes.getResourceId(2, R.drawable.ic_skip_next_white_24dp);
-        skipPreviousIcon = styledAttributes.getResourceId(3, R.drawable.ic_skip_previous_white_24dp);
+        fastForwardIcon = styledAttributes.getResourceId(styledAttributes.getIndex(0), R.drawable.ic_fast_forward_white_24dp);
+        rewindIcon = styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_fast_rewind_white_24dp);
+        skipNextIcon = styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_skip_next_white_24dp);
+        skipPreviousIcon = styledAttributes.getResourceId(styledAttributes.getIndex(3), R.drawable.ic_skip_previous_white_24dp);
         styledAttributes.recycle();
 
 //        // Pad main content view to account for bottom system bar
@@ -233,8 +233,8 @@ public class RemoteFragment extends Fragment
                 R.attr.contentBackgroundColor});
 //                R.attr.remoteBackgroundColorFilter});
         Resources resources = getResources();
-        int remoteButtonsColor =  styledAttributes.getColor(0, resources.getColor(R.color.white)),
-            remoteBackgroundColor = styledAttributes.getColor(1, resources.getColor(R.color.dark_content_background_dim_70pct));
+        int remoteButtonsColor =  styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.white)),
+            remoteBackgroundColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.dark_content_background_dim_70pct));
         styledAttributes.recycle();
 
         leftButton.setColorFilter(remoteButtonsColor);

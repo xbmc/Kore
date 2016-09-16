@@ -784,19 +784,19 @@ public class NowPlayingFragment extends Fragment
                 R.attr.iconRepeatOne});
         int accentDefaultColor = getResources().getColor(R.color.accent_default);
         if (getPropertiesResult.repeat.equals(PlayerType.Repeat.OFF)) {
-            repeatButton.setImageResource(styledAttributes.getResourceId(1, R.drawable.ic_repeat_white_24dp));
+            repeatButton.setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
             repeatButton.clearColorFilter();
         } else if (getPropertiesResult.repeat.equals(PlayerType.Repeat.ONE)) {
-            repeatButton.setImageResource(styledAttributes.getResourceId(2, R.drawable.ic_repeat_one_white_24dp));
-            repeatButton.setColorFilter(styledAttributes.getColor(0, accentDefaultColor));
+            repeatButton.setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_repeat_one_white_24dp));
+            repeatButton.setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(0), accentDefaultColor));
         } else {
-            repeatButton.setImageResource(styledAttributes.getResourceId(1, R.drawable.ic_repeat_white_24dp));
-            repeatButton.setColorFilter(styledAttributes.getColor(0, accentDefaultColor));
+            repeatButton.setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
+            repeatButton.setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(0), accentDefaultColor));
         }
         if (!getPropertiesResult.shuffled) {
             shuffleButton.clearColorFilter();
         } else {
-            shuffleButton.setColorFilter(styledAttributes.getColor(0, accentDefaultColor));
+            shuffleButton.setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(0), accentDefaultColor));
         }
         styledAttributes.recycle();
 

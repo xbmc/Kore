@@ -465,9 +465,10 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
                     R.attr.iconCollapse,
                     R.attr.iconExpand,
             });
-            themeAccentColor = styledAttributes.getColor(0, getResources().getColor(R.color.accent_default));
-            iconCollapseResId = styledAttributes.getResourceId(1, R.drawable.ic_expand_less_white_24dp);
-            iconExpandResId = styledAttributes.getResourceId(2, R.drawable.ic_expand_more_white_24dp);
+
+            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.accent_default));
+            iconCollapseResId = styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_expand_less_white_24dp);
+            iconExpandResId = styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_expand_more_white_24dp);
             styledAttributes.recycle();
 
             this.hostManager = HostManager.getInstance(context);

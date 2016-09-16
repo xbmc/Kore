@@ -214,8 +214,8 @@ public class UIUtils {
 
         if (!playPauseIconsLoaded) {
             TypedArray styledAttributes = context.obtainStyledAttributes(new int[]{R.attr.iconPause, R.attr.iconPlay});
-            iconPauseResId = styledAttributes.getResourceId(0, R.drawable.ic_pause_white_24dp);
-            iconPlayResId = styledAttributes.getResourceId(1, R.drawable.ic_play_arrow_white_24dp);
+            iconPauseResId = styledAttributes.getResourceId(styledAttributes.getIndex(0), R.drawable.ic_pause_white_24dp);
+            iconPlayResId = styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_play_arrow_white_24dp);
             styledAttributes.recycle();
             playPauseIconsLoaded = true;
         }

@@ -151,38 +151,38 @@ public class NavigationDrawerFragment extends Fragment {
 
         ArrayList<DrawerItem> items = new ArrayList<>(15);
         items.add(new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName,
-                                 styledAttributes.getResourceId(ACTIVITY_HOSTS, 0)));
+                                 styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_HOSTS), 0)));
         items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_REMOTE,
                                  getString(R.string.remote),
-                                 styledAttributes.getResourceId(ACTIVITY_REMOTE, 0)));
+                                 styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_REMOTE), 0)));
         if (shownItems.contains(String.valueOf(ACTIVITY_MOVIES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MOVIES,
                                      getString(R.string.movies),
-                                     styledAttributes.getResourceId(ACTIVITY_MOVIES, 0)));
+                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_MOVIES), 0)));
         if (shownItems.contains(String.valueOf(ACTIVITY_TVSHOWS)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_TVSHOWS,
                                      getString(R.string.tv_shows),
-                                     styledAttributes.getResourceId(ACTIVITY_TVSHOWS, 0)));
+                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_TVSHOWS), 0)));
         if (shownItems.contains(String.valueOf(ACTIVITY_MUSIC)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MUSIC,
                                      getString(R.string.music),
-                                     styledAttributes.getResourceId(ACTIVITY_MUSIC, 0)));
+                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_MUSIC), 0)));
         if (shownItems.contains(String.valueOf(ACTIVITY_PVR)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_PVR,
                                      getString(R.string.pvr),
-                                     styledAttributes.getResourceId(ACTIVITY_PVR, 0)));
+                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_PVR), 0)));
         if (shownItems.contains(String.valueOf(ACTIVITY_FILES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,
                                      getString(R.string.files),
-                                     styledAttributes.getResourceId(ACTIVITY_FILES, 0)));
+                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_FILES), 0)));
         if (shownItems.contains(String.valueOf(ACTIVITY_ADDONS)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_ADDONS,
                                      getString(R.string.addons),
-                                     styledAttributes.getResourceId(ACTIVITY_ADDONS, 0)));
+                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_ADDONS), 0)));
         items.add(new DrawerItem()); // Divider
         items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_SETTINGS,
                                  getString(R.string.settings),
-                                 styledAttributes.getResourceId(ACTIVITY_SETTINGS, 0)));
+                                 styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_SETTINGS), 0)));
 
         styledAttributes.recycle();
         mDrawerListView.setAdapter(new DrawerItemAdapter(
@@ -456,8 +456,8 @@ public class NavigationDrawerFragment extends Fragment {
                             R.attr.textColorOverPrimary
                     });
             Resources resources = context.getResources();
-            selectedItemColor = styledAttributes.getColor(0, resources.getColor(R.color.accent_default));
-            hostItemColor = styledAttributes.getColor(1, resources.getColor(R.color.white));
+            selectedItemColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.accent_default));
+            hostItemColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.white));
             styledAttributes.recycle();
         }
 

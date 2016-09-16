@@ -119,7 +119,7 @@ public class EditHostActivity extends BaseActivity implements
         if (actionBar != null) {
             actionBar.setTitle(R.string.edit_xbmc);
             TypedArray styledAttrs = getTheme().obtainStyledAttributes(new int[] {R.attr.iconHosts});
-            actionBar.setIcon(styledAttrs.getResourceId(0, R.drawable.ic_phonelink_white_24dp));
+            actionBar.setIcon(styledAttrs.getResourceId(styledAttrs.getIndex(0), R.drawable.ic_phonelink_white_24dp));
             styledAttrs.recycle();
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
