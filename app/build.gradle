@@ -12,7 +12,7 @@ def getVersionName = { ->
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "org.xbmc.kore"
