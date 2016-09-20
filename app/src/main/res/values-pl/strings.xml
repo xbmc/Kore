@@ -328,7 +328,7 @@
 
     <string name="about">O …</string>
     <string name="about_desc"><![CDATA[
-        \u00A9 2015 XBMC Foundation.<br><br>
+        \u00A9 2016 XBMC Foundation.<br><br>
         Proszę, oceń nas na <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
         Jeśli potrzebujesz pomocy, odwiedź nasze <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
@@ -365,5 +365,27 @@
 
     <string name="record">Nagraj</string>
     <string name="pvr_epg">Przewodnik</string>
+    <string name="addon_content">Zawartość</string>
+    <string name="addon_overview">Przegląd</string>
+    <string name="addon_pinned">Dodatek przypięty</string>
+    <string name="addon_unpinned">Dodatek odpięty</string>
+    <string name="cannot_move_playing_item">Nie można przenieść aktualnie odtwarzanego/zatrzymanego pliku</string>
+    <string name="confirm_artist_download">Czy na pewno chcesz pobrać wszystkie albumy?\nAlbumy będą pobierane w tle, a to może zająć trochę czasu…</string>
+    <string name="download_network_types_summary">Dozwolone typy sieci do pobierania plików</string>
+    <string name="download_network_types_title">Dozwolone typy sieci</string>
+    <string name="error_share_video">Nie można udostępnić filmu do Kodi/XBMC. </string>
+    <string name="keep_remote_above_lockscreen">Pilot nad blokadą ekranu</string>
+    <string name="no_connection_type_selected">Nie ustawiono typu połączenia</string>
+    <string name="pause_call_incoming_message">Sprawdź swój telefon, ktoś dzwoni do Ciebie</string>
+    <string name="pause_call_incoming_title">Połączenie przychodzące</string>
+    <string name="pause_during_calls">Zatrzymaj odtwarzanie podczas rozmowy</string>
+    <string name="pin_unpin">Przypnij/Odepnij Dodatek</string>
+    <string name="read_phone_state_permission_denied">Odmowa dostępu. Nie będzie można zatrzymać odtwarzania podczas rozmowy.</string>
+    <string name="single_column">Pojedyncza kolumna</string>
+    <string name="songs">Dźwięki</string>
+    <string name="unable_to_move_item">Nie można przenieść pliku</string>
+    <string name="write_storage_permission_denied">Odmowa dostępu. Nie będzie można pobierać plików.</string>
+    <string name="multi_column">Wiele kolumn</string>
+    <string name="pref_keep_screen_on">Nie wyłączaj ekranu podczas używania pilota</string>
 
 </resources>
