@@ -70,7 +70,7 @@ public class Database {
         ArrayList<VideoType.DetailsMovie> movieList = (ArrayList) getMovies.resultFromJson(result);
 
 
-        ContentValues movieValuesBatch[] = new ContentValues[movieList.size()];
+        ContentValues[] movieValuesBatch = new ContentValues[movieList.size()];
         int castCount = 0;
 
         // Iterate on each movie
@@ -82,7 +82,7 @@ public class Database {
 
         context.getContentResolver().bulkInsert(MediaContract.Movies.CONTENT_URI, movieValuesBatch);
 
-        ContentValues movieCastValuesBatch[] = new ContentValues[castCount];
+        ContentValues[] movieCastValuesBatch = new ContentValues[castCount];
         int count = 0;
         // Iterate on each movie/cast
         for (VideoType.DetailsMovie movie : movieList) {
@@ -101,7 +101,7 @@ public class Database {
         String result = Utils.readFile(context, "AudioLibrary.GetArtists.json");
         ArrayList<AudioType.DetailsArtist> artistList = (ArrayList) getArtists.resultFromJson(result).items;
 
-        ContentValues artistValuesBatch[] = new ContentValues[artistList.size()];
+        ContentValues[] artistValuesBatch = new ContentValues[artistList.size()];
         for (int i = 0; i < artistList.size(); i++) {
             AudioType.DetailsArtist artist = artistList.get(i);
             artistValuesBatch[i] = SyncUtils.contentValuesFromArtist(hostId, artist);
@@ -114,7 +114,7 @@ public class Database {
         AudioLibrary.GetGenres getGenres = new AudioLibrary.GetGenres();
         ArrayList<LibraryType.DetailsGenre> genreList = (ArrayList) getGenres.resultFromJson(Utils.readFile(context, "AudioLibrary.GetGenres.json"));
 
-        ContentValues genresValuesBatch[] = new ContentValues[genreList.size()];
+        ContentValues[] genresValuesBatch = new ContentValues[genreList.size()];
         for (int i = 0; i < genreList.size(); i++) {
             LibraryType.DetailsGenre genre = genreList.get(i);
             genresValuesBatch[i] = SyncUtils.contentValuesFromAudioGenre(hostId, genre);
@@ -130,7 +130,7 @@ public class Database {
 
         ContentResolver contentResolver = context.getContentResolver();
 
-        ContentValues albumValuesBatch[] = new ContentValues[albumList.size()];
+        ContentValues[] albumValuesBatch = new ContentValues[albumList.size()];
         int artistsCount = 0, genresCount = 0;
         for (int i = 0; i < albumList.size(); i++) {
             AudioType.DetailsAlbum album = albumList.get(i);
@@ -142,8 +142,8 @@ public class Database {
         contentResolver.bulkInsert(MediaContract.Albums.CONTENT_URI, albumValuesBatch);
 
         // Iterate on each album, collect the artists and the genres and insert them
-        ContentValues albumArtistsValuesBatch[] = new ContentValues[artistsCount];
-        ContentValues albumGenresValuesBatch[] = new ContentValues[genresCount];
+        ContentValues[] albumArtistsValuesBatch = new ContentValues[artistsCount];
+        ContentValues[] albumGenresValuesBatch = new ContentValues[genresCount];
         int artistCount = 0, genreCount = 0;
         for (AudioType.DetailsAlbum album : albumList) {
             for (int artistId : album.artistid) {
@@ -171,7 +171,7 @@ public class Database {
         AudioLibrary.GetSongs getSongs = new AudioLibrary.GetSongs();
         ArrayList<AudioType.DetailsSong> songList = (ArrayList) getSongs.resultFromJson(Utils.readFile(context, "AudioLibrary.GetSongs.json")).items;
 
-        ContentValues songValuesBatch[] = new ContentValues[songList.size()];
+        ContentValues[] songValuesBatch = new ContentValues[songList.size()];
         for (int i = 0; i < songList.size(); i++) {
             AudioType.DetailsSong song = songList.get(i);
             songValuesBatch[i] = SyncUtils.contentValuesFromSong(hostId, song);

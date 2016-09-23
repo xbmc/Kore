@@ -81,7 +81,7 @@ public class SyncTVShows extends SyncItem {
         return syncExtras;
     }
 
-    private final static String getTVShowsProperties[] = {
+    private final static String[] getTVShowsProperties = {
             VideoType.FieldsTVShow.TITLE, VideoType.FieldsTVShow.GENRE,
             //VideoType.FieldsTVShow.YEAR,
             VideoType.FieldsTVShow.RATING, VideoType.FieldsTVShow.PLOT,
@@ -201,7 +201,7 @@ public class SyncTVShows extends SyncItem {
                                             final Handler callbackHandler,
                                             final ContentResolver contentResolver,
                                             List<VideoType.DetailsTVShow> tvShows) {
-        ContentValues tvshowsValuesBatch[] = new ContentValues[tvShows.size()];
+        ContentValues[] tvshowsValuesBatch = new ContentValues[tvShows.size()];
         int castCount = 0;
 
         // Iterate on each show
@@ -214,7 +214,7 @@ public class SyncTVShows extends SyncItem {
         contentResolver.bulkInsert(MediaContract.TVShows.CONTENT_URI, tvshowsValuesBatch);
         LogUtils.LOGD(TAG, "Inserted " + tvShows.size() + " tv shows.");
 
-        ContentValues tvshowsCastValuesBatch[] = new ContentValues[castCount];
+        ContentValues[] tvshowsCastValuesBatch = new ContentValues[castCount];
         int count = 0;
         // Iterate on each show/cast
         for (VideoType.DetailsTVShow tvshow : tvShows) {
@@ -232,7 +232,7 @@ public class SyncTVShows extends SyncItem {
                          contentResolver, tvShows, 0);
     }
 
-    private final static String seasonsProperties[] = {
+    private final static String[] seasonsProperties = {
             VideoType.FieldsSeason.SEASON, VideoType.FieldsSeason.SHOWTITLE,
             //VideoType.FieldsSeason.PLAYCOUNT,
             VideoType.FieldsSeason.EPISODE,
@@ -269,7 +269,7 @@ public class SyncTVShows extends SyncItem {
             action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsSeason>>() {
                 @Override
                 public void onSuccess(List<VideoType.DetailsSeason> result) {
-                    ContentValues seasonsValuesBatch[] = new ContentValues[result.size()];
+                    ContentValues[] seasonsValuesBatch = new ContentValues[result.size()];
                     int totalWatchedEpisodes = 0;
                     for (int i = 0; i < result.size(); i++) {
                         VideoType.DetailsSeason season = result.get(i);
@@ -309,7 +309,7 @@ public class SyncTVShows extends SyncItem {
         }
     }
 
-    private final static String getEpisodesProperties[] = {
+    private final static String[] getEpisodesProperties = {
             VideoType.FieldsEpisode.TITLE, VideoType.FieldsEpisode.PLOT,
             //VideoType.FieldsEpisode.VOTES,
             VideoType.FieldsEpisode.RATING,
@@ -357,7 +357,7 @@ public class SyncTVShows extends SyncItem {
             action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsEpisode>>() {
                 @Override
                 public void onSuccess(List<VideoType.DetailsEpisode> result) {
-                    ContentValues episodesValuesBatch[] = new ContentValues[result.size()];
+                    ContentValues[] episodesValuesBatch = new ContentValues[result.size()];
                     for (int i = 0; i < result.size(); i++) {
                         VideoType.DetailsEpisode episode = result.get(i);
                         episodesValuesBatch[i] = SyncUtils.contentValuesFromEpisode(hostId, episode);

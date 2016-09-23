@@ -80,7 +80,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
         Uri uri = MediaContract.Artists.buildArtistsListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.ArtistsColumns.ARTIST + " LIKE ?";
