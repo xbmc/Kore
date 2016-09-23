@@ -75109,12 +75109,58 @@
             "songid" : 1618,
             "title" : "Reel - Upstairs in a Tent",
             "album" : "Ireland's Best Fiddle Tunes Disk 2"
+         },
+         {
+            "musicbrainzalbumartistid" : [],
+            "year" : 0,
+            "albumartistid" : [
+               226,
+               227,
+               228
+            ],
+            "disc" : 0,
+            "musicbrainztrackid" : "",
+            "fanart" : "",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/music/ThreeArtists/ThreeArtistsAlbum/01-threeartists.mp3",
+            "genre" : [],
+            "displayartist" : "First artist / Second artist / Third artist",
+            "comment" : "",
+            "musicbrainzartistid" : [],
+            "artistid" : [
+               226,
+               227,
+               228
+            ],
+            "lastplayed" : "",
+            "songid" : 1804,
+            "playcount" : 0,
+            "thumbnail" : "",
+            "albumartist" : [
+               "First artist",
+               "Second artist",
+               "Third artist"
+            ],
+            "albumid" : 234,
+            "genreid" : [],
+            "track" : 1,
+            "label" : "threeartists",
+            "title" : "threeartists",
+            "rating" : 0,
+            "artist" : [
+               "First artist",
+               "Second artist",
+               "Third artist"
+            ],
+            "lyrics" : "",
+            "duration" : 5,
+            "album" : "ThreeArtistsAlbum",
+            "musicbrainzalbumid" : ""
          }
       ],
       "limits" : {
-         "end" : 1803,
+         "end" : 1804,
          "start" : 0,
-         "total" : 1803
+         "total" : 1804
       }
    },
    "jsonrpc" : "2.0"

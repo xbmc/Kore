@@ -76,6 +76,22 @@ public class Utils {
         return builder.toString();
     }
 
+    /**
+     * Concats a list of integers...
+     * @param list
+     * @param delimiter
+     * @return
+     */
+    public static String listIntegerConcat(List<Integer> list, String delimiter) {
+        StringBuilder builder = new StringBuilder();
+        boolean first = true;
+        for (Integer item : list) {
+            if (!first) builder.append(delimiter);
+            builder.append(item);
+            first = false;
+        }
+        return builder.toString();
+    }
 
     /**
      * Calls {@link Context#startActivity(Intent)} with the given <b>implicit</b> {@link Intent}

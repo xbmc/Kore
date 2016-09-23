@@ -3,9 +3,9 @@
    "jsonrpc" : "2.0",
    "result" : {
       "limits" : {
-         "total" : 231,
+         "total" : 232,
          "start" : 0,
-         "end" : 231
+         "end" : 234
       },
       "albums" : [
          {
@@ -7538,6 +7538,41 @@
             "theme" : [],
             "musicbrainzalbumid" : "",
             "playcount" : 0
+         },
+         {
+            "musicbrainzalbumid" : "",
+            "description" : "",
+            "artist" : [
+               "First artist",
+               "Second artist",
+               "Third artist"
+            ],
+            "type" : "",
+            "title" : "ThreeArtistsAlbum",
+            "label" : "ThreeArtistsAlbum",
+            "rating" : 0,
+            "albumlabel" : "",
+            "playcount" : 0,
+            "albumid" : 234,
+            "thumbnail" : "",
+            "genreid" : [],
+            "artistid" : [
+               226,
+               227,
+               228
+            ],
+            "mood" : [],
+            "theme" : [],
+            "genre" : [],
+            "displayartist" : "First artist / Second artist / Third artist",
+            "style" : [],
+            "fanart" : "",
+            "year" : 0,
+            "musicbrainzalbumartistid" : [
+               "",
+               "",
+               ""
+            ]
          }
       ]
    }

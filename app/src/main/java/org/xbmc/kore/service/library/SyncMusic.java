@@ -86,6 +86,7 @@ public class SyncMusic extends SyncItem {
             AudioType.FieldsArtists.FANART,
             AudioType.FieldsArtists.THUMBNAIL
     };
+
     /**
      * Gets all artists recursively and forwards the call to Genres
      * Genres->Albums->Songs
@@ -115,13 +116,7 @@ public class SyncMusic extends SyncItem {
                 // First delete all music info
                 if (startIdx == 0) deleteMusicInfo(contentResolver, hostId);
 
-                // Insert artists
-                ContentValues artistValuesBatch[] = new ContentValues[items.size()];
-                for (int i = 0; i < items.size(); i++) {
-                    AudioType.DetailsArtist artist = items.get(i);
-                    artistValuesBatch[i] = SyncUtils.contentValuesFromArtist(hostId, artist);
-                }
-                contentResolver.bulkInsert(MediaContract.Artists.CONTENT_URI, artistValuesBatch);
+                insertArtists(items, contentResolver);
 
                 if (moreItemsAvailable(limitsReturned)) {
                     LogUtils.LOGD(TAG, "chainCallSyncArtists: More results on media center, recursing.");
@@ -151,6 +146,8 @@ public class SyncMusic extends SyncItem {
                                where, new String[]{String.valueOf(hostId)});
         contentResolver.delete(MediaContract.AlbumGenres.CONTENT_URI,
                                where, new String[]{String.valueOf(hostId)});
+        contentResolver.delete(MediaContract.SongArtists.CONTENT_URI,
+                               where, new String[]{String.valueOf(hostId)});
         contentResolver.delete(MediaContract.Songs.CONTENT_URI,
                                where, new String[]{String.valueOf(hostId)});
         contentResolver.delete(MediaContract.AudioGenres.CONTENT_URI,
@@ -178,16 +175,9 @@ public class SyncMusic extends SyncItem {
         action.execute(hostConnection, new ApiCallback<List<LibraryType.DetailsGenre>>() {
             @Override
             public void onSuccess(List<LibraryType.DetailsGenre> result) {
-                if (result == null) result = new ArrayList<>(0); // Safeguard
-                ContentValues genresValuesBatch[] = new ContentValues[result.size()];
+                if (result != null)
+                    insertGenresItems(result, contentResolver);
 
-                for (int i = 0; i < result.size(); i++) {
-                    LibraryType.DetailsGenre genre = result.get(i);
-                    genresValuesBatch[i] = SyncUtils.contentValuesFromAudioGenre(hostId, genre);
-                }
-
-                // Insert the genres and proceed to albums
-                contentResolver.bulkInsert(MediaContract.AudioGenres.CONTENT_URI, genresValuesBatch);
                 chainCallSyncAlbums(orchestrator, hostConnection, callbackHandler, contentResolver, 0);
             }
 
@@ -240,44 +230,7 @@ public class SyncMusic extends SyncItem {
                 }
 
                 // Insert the partial results
-                ContentValues albumValuesBatch[] = new ContentValues[items.size()];
-                int artistsCount = 0, genresCount = 0;
-                for (int i = 0; i < items.size(); i++) {
-                    AudioType.DetailsAlbum album = items.get(i);
-                    albumValuesBatch[i] = SyncUtils.contentValuesFromAlbum(hostId, album);
-
-                    artistsCount += album.artistid.size();
-                    genresCount += album.genreid.size();
-                }
-                contentResolver.bulkInsert(MediaContract.Albums.CONTENT_URI, albumValuesBatch);
-
-                LogUtils.LOGD(TAG, "Finished inserting albums in: " +
-                                   (System.currentTimeMillis() - albumSyncStartTime));
-
-                // Iterate on each album, collect the artists and the genres and insert them
-                ContentValues albumArtistsValuesBatch[] = new ContentValues[artistsCount];
-                ContentValues albumGenresValuesBatch[] = new ContentValues[genresCount];
-                int artistCount = 0, genreCount = 0;
-                for (AudioType.DetailsAlbum album : items) {
-                    for (int artistId : album.artistid) {
-                        albumArtistsValuesBatch[artistCount] = new ContentValues();
-                        albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.HOST_ID, hostId);
-                        albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.ALBUMID, album.albumid);
-                        albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.ARTISTID, artistId);
-                        artistCount++;
-                    }
-
-                    for (int genreId : album.genreid) {
-                        albumGenresValuesBatch[genreCount] = new ContentValues();
-                        albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.HOST_ID, hostId);
-                        albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.ALBUMID, album.albumid);
-                        albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.GENREID, genreId);
-                        genreCount++;
-                    }
-                }
-
-                contentResolver.bulkInsert(MediaContract.AlbumArtists.CONTENT_URI, albumArtistsValuesBatch);
-                contentResolver.bulkInsert(MediaContract.AlbumGenres.CONTENT_URI, albumGenresValuesBatch);
+                insertAlbumsItems(items, contentResolver);
 
                 LogUtils.LOGD(TAG, "Finished inserting artists and genres in: " +
                                    (System.currentTimeMillis() - albumSyncStartTime));
@@ -346,29 +299,8 @@ public class SyncMusic extends SyncItem {
                     limitsReturned = result.limits;
                 }
 
-                int totalArtistsCount  = 0;
                 // Save partial results to DB
-                ContentValues songValuesBatch[] = new ContentValues[items.size()];
-                for (int i = 0; i < items.size(); i++) {
-                    AudioType.DetailsSong song = items.get(i);
-                    songValuesBatch[i] = SyncUtils.contentValuesFromSong(hostId, song);
-                    totalArtistsCount += song.artistid.size();
-                }
-                contentResolver.bulkInsert(MediaContract.Songs.CONTENT_URI, songValuesBatch);
-
-                // Iterate on each song, collect the artists and insert them
-                ContentValues songArtistsValuesBatch[] = new ContentValues[totalArtistsCount];
-                int artistCount = 0;
-                for (AudioType.DetailsSong song : items) {
-                    for (int artistId : song.artistid) {
-                        songArtistsValuesBatch[artistCount] = new ContentValues();
-                        songArtistsValuesBatch[artistCount].put(MediaContract.SongArtists.HOST_ID, hostId);
-                        songArtistsValuesBatch[artistCount].put(MediaContract.SongArtists.SONGID, song.songid);
-                        songArtistsValuesBatch[artistCount].put(MediaContract.SongArtists.ARTISTID, artistId);
-                        artistCount++;
-                    }
-                }
-                contentResolver.bulkInsert(MediaContract.SongArtists.CONTENT_URI, songArtistsValuesBatch);
+                insertSongsItems(items, contentResolver);
 
                 if (moreItemsAvailable(limitsReturned)) {
                     LogUtils.LOGD(TAG, "chainCallSyncSongs: More results on media center, recursing.");
@@ -384,10 +316,96 @@ public class SyncMusic extends SyncItem {
 
             @Override
             public void onError(int errorCode, String description) {
-                // Ok, something bad happend, just quit
+                // Ok, something bad happened, just quit
                 orchestrator.syncItemFailed(errorCode, description);
             }
         }, callbackHandler);
+    }
+
+    public void insertArtists(List<AudioType.DetailsArtist> items, ContentResolver contentResolver) {
+        ContentValues artistValuesBatch[] = new ContentValues[items.size()];
+        for (int i = 0; i < items.size(); i++) {
+            AudioType.DetailsArtist artist = items.get(i);
+            artistValuesBatch[i] = SyncUtils.contentValuesFromArtist(hostId, artist);
+        }
+        contentResolver.bulkInsert(MediaContract.Artists.CONTENT_URI, artistValuesBatch);
+    }
+
+    public void insertGenresItems(List<LibraryType.DetailsGenre> items, ContentResolver contentResolver) {
+        ContentValues genresValuesBatch[] = new ContentValues[items.size()];
+
+        for (int i = 0; i < items.size(); i++) {
+            LibraryType.DetailsGenre genre = items.get(i);
+            genresValuesBatch[i] = SyncUtils.contentValuesFromAudioGenre(hostId, genre);
+        }
+
+        // Insert the genres and proceed to albums
+        contentResolver.bulkInsert(MediaContract.AudioGenres.CONTENT_URI, genresValuesBatch);
+    }
+
+    public void insertAlbumsItems(List<AudioType.DetailsAlbum> items, ContentResolver contentResolver) {
+        ContentValues albumValuesBatch[] = new ContentValues[items.size()];
+        int artistsCount = 0, genresCount = 0;
+        for (int i = 0; i < items.size(); i++) {
+            AudioType.DetailsAlbum album = items.get(i);
+            albumValuesBatch[i] = SyncUtils.contentValuesFromAlbum(hostId, album);
+
+            artistsCount += album.artistid.size();
+            genresCount += album.genreid.size();
+        }
+        contentResolver.bulkInsert(MediaContract.Albums.CONTENT_URI, albumValuesBatch);
+
+        // Iterate on each album, collect the artists and the genres and insert them
+        ContentValues albumArtistsValuesBatch[] = new ContentValues[artistsCount];
+        ContentValues albumGenresValuesBatch[] = new ContentValues[genresCount];
+        int artistCount = 0, genreCount = 0;
+        for (AudioType.DetailsAlbum album : items) {
+            for (int artistId : album.artistid) {
+                albumArtistsValuesBatch[artistCount] = new ContentValues();
+                albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.HOST_ID, hostId);
+                albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.ALBUMID, album.albumid);
+                albumArtistsValuesBatch[artistCount].put(MediaContract.AlbumArtists.ARTISTID, artistId);
+                artistCount++;
+            }
+
+            for (int genreId : album.genreid) {
+                albumGenresValuesBatch[genreCount] = new ContentValues();
+                albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.HOST_ID, hostId);
+                albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.ALBUMID, album.albumid);
+                albumGenresValuesBatch[genreCount].put(MediaContract.AlbumGenres.GENREID, genreId);
+                genreCount++;
+            }
+        }
+
+        contentResolver.bulkInsert(MediaContract.AlbumArtists.CONTENT_URI, albumArtistsValuesBatch);
+        contentResolver.bulkInsert(MediaContract.AlbumGenres.CONTENT_URI, albumGenresValuesBatch);
+    }
+
+    public void insertSongsItems(List<AudioType.DetailsSong> items, ContentResolver contentResolver) {
+        ContentValues songValuesBatch[] = new ContentValues[items.size()];
+        int totalArtistsCount = 0;
+        for (int i = 0; i < items.size(); i++) {
+            AudioType.DetailsSong song = items.get(i);
+            songValuesBatch[i] = SyncUtils.contentValuesFromSong(hostId, song);
+
+            totalArtistsCount += song.artistid.size();
+        }
+        contentResolver.bulkInsert(MediaContract.Songs.CONTENT_URI, songValuesBatch);
+
+        // Iterate on each song, collect the artists and insert them
+        ContentValues songArtistsValuesBatch[] = new ContentValues[totalArtistsCount];
+        int artistCount = 0;
+        for (AudioType.DetailsSong song : items) {
+            for (int artistId : song.artistid) {
+                songArtistsValuesBatch[artistCount] = new ContentValues();
+                songArtistsValuesBatch[artistCount].put(MediaContract.SongArtists.HOST_ID, hostId);
+                songArtistsValuesBatch[artistCount].put(MediaContract.SongArtists.SONGID, song.songid);
+                songArtistsValuesBatch[artistCount].put(MediaContract.SongArtists.ARTISTID, artistId);
+                artistCount++;
+            }
+        }
+
+        contentResolver.bulkInsert(MediaContract.SongArtists.CONTENT_URI, songArtistsValuesBatch);
     }
 
     private boolean moreItemsAvailable(ListType.LimitsReturned limitsReturned) {

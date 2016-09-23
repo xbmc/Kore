@@ -4482,11 +4482,71 @@
             "fanart" : "",
             "mood" : [],
             "style" : []
+         },
+         {
+            "description" : "",
+            "disbanded" : "",
+            "artist" : "First artist",
+            "instrument" : [],
+            "label" : "First artist",
+            "born" : "",
+            "yearsactive" : [],
+            "genre" : [],
+            "thumbnail" : "",
+            "mood" : [],
+            "artistid" : 226,
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "died" : "",
+            "formed" : "",
+            "style" : [],
+            "fanart" : ""
+         },
+         {
+            "description" : "",
+            "disbanded" : "",
+            "artist" : "Second artist",
+            "instrument" : [],
+            "label" : "Second artist",
+            "born" : "",
+            "yearsactive" : [],
+            "genre" : [],
+            "thumbnail" : "",
+            "mood" : [],
+            "artistid" : 227,
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "died" : "",
+            "formed" : "",
+            "style" : [],
+            "fanart" : ""
+         },
+         {
+            "description" : "",
+            "disbanded" : "",
+            "artist" : "Third artist",
+            "instrument" : [],
+            "label" : "Third artist",
+            "born" : "",
+            "yearsactive" : [],
+            "genre" : [],
+            "thumbnail" : "",
+            "mood" : [],
+            "artistid" : 228,
+            "musicbrainzartistid" : [
+               ""
+            ],
+            "died" : "",
+            "formed" : "",
+            "style" : [],
+            "fanart" : ""
          }
       ],
       "limits" : {
-         "total" : 224,
-         "end" : 224,
+         "total" : 227,
+         "end" : 228,
          "start" : 0
       }
    }

@@ -710,7 +710,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
     /**
      * Album details query parameters.
      */
-    private interface AlbumDetailsQuery {
+    public interface AlbumDetailsQuery {
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MediaContract.Albums.TITLE,
@@ -739,7 +739,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
     /**
      * Movie cast list query parameters.
      */
-    private interface AlbumSongsListQuery {
+    public interface AlbumSongsListQuery {
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MediaContract.Songs.TITLE,
