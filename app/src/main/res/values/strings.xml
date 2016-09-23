@@ -326,6 +326,7 @@
 
     <string name="switch_to_remote">Switch to remote after media start</string>
     <string name="keep_remote_above_lockscreen">Keep remote above lockscreen</string>
+    <string name="pref_keep_screen_on">Keep screen on when using remote</string>
     <string name="show_notification">Show notification while playing</string>
     <string name="pause_during_calls">Pause playing while phone in a call</string>
     <string name="use_hardware_volume_keys">Use volume keys to control volume</string>
