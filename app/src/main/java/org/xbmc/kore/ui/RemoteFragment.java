@@ -192,7 +192,7 @@ public class RemoteFragment extends Fragment
             setupRepeatButton(upButton, new Input.Up());
             setupRepeatButton(downButton, new Input.Down());
         }
-        setupDefaultButton(selectButton, new Input.Select(), null);
+        setupDefaultButton(selectButton, new Input.Select(), new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU));
 
         // Other buttons
         setupDefaultButton(backButton, new Input.Back(), null);
