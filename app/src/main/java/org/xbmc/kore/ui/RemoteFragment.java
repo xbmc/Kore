@@ -195,7 +195,7 @@ public class RemoteFragment extends Fragment
         setupDefaultButton(selectButton, new Input.Select(), null);
 
         // Other buttons
-        setupDefaultButton(backButton, new Input.Back(), null);
+        setupDefaultButton(backButton, new Input.Back(), new Input.Home());
         setupDefaultButton(infoButton,
                            new Input.ExecuteAction(Input.ExecuteAction.INFO),
                            new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
