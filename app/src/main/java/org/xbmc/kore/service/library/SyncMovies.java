@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.ApiList;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.ListType;
@@ -146,19 +147,24 @@ public class SyncMovies extends SyncItem {
         // Call GetMovies with the current limits set
         ListType.Limits limits = new ListType.Limits(startIdx, startIdx + LIMIT_SYNC_MOVIES);
         VideoLibrary.GetMovies action = new VideoLibrary.GetMovies(limits, properties);
-        action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsMovie>>() {
+        action.execute(hostConnection, new ApiCallback<ApiList<VideoType.DetailsMovie>>() {
             @Override
-            public void onSuccess(List<VideoType.DetailsMovie> result) {
+            public void onSuccess(ApiList<VideoType.DetailsMovie> result) {
+                ListType.LimitsReturned limitsReturned = null;
+                if (result != null) {
+                    limitsReturned = result.limits;
+                }
+
                 if (startIdx == 0) {
                     // First call, delete movies from DB
                     deleteMovies(contentResolver, hostId, -1);
                 }
-                if (!result.isEmpty()) {
-                    insertMovies(orchestrator, contentResolver, result);
+                if (!result.items.isEmpty()) {
+                    insertMovies(orchestrator, contentResolver, result.items);
                 }
 
-                LogUtils.LOGD(TAG, "syncAllMovies, movies gotten: " + result.size());
-                if (result.size() == LIMIT_SYNC_MOVIES) {
+                LogUtils.LOGD(TAG, "syncAllMovies, movies gotten: " + result.items.size());
+                if (SyncUtils.moreItemsAvailable(limitsReturned)) {
                     // Max limit returned, there may be some more movies
                     // As we're going to recurse, these result objects can add up, so
                     // let's help the GC and indicate that we don't need this memory
@@ -176,7 +182,7 @@ public class SyncMovies extends SyncItem {
 
             @Override
             public void onError(int errorCode, String description) {
-                // Ok, something bad happend, just quit
+                // Ok, something bad happened, just quit
                 orchestrator.syncItemFailed(errorCode, description);
             }
         }, callbackHandler);

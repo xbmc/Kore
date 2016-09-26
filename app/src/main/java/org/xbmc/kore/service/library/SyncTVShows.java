@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.ApiList;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.ListType;
@@ -143,11 +144,11 @@ public class SyncTVShows extends SyncItem {
         // Call GetTVShows with the current limits set
         ListType.Limits limits = new ListType.Limits(startIdx, startIdx + LIMIT_SYNC_TVSHOWS);
         VideoLibrary.GetTVShows action = new VideoLibrary.GetTVShows(limits, getTVShowsProperties);
-        action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsTVShow>>() {
+        action.execute(hostConnection, new ApiCallback<ApiList<VideoType.DetailsTVShow>>() {
             @Override
-            public void onSuccess(List<VideoType.DetailsTVShow> result) {
-                allResults.addAll(result);
-                if (result.size() == LIMIT_SYNC_TVSHOWS) {
+            public void onSuccess(ApiList<VideoType.DetailsTVShow> result) {
+                allResults.addAll(result.items);
+                if (SyncUtils.moreItemsAvailable(result.limits)) {
                     // Max limit returned, there may be some more movies
                     LogUtils.LOGD(TAG, "syncAllTVShows: More tv shows on media center, recursing.");
                     syncAllTVShows(orchestrator, hostConnection, callbackHandler, contentResolver,

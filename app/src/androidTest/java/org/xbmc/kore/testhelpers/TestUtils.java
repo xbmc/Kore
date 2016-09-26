@@ -18,13 +18,9 @@ package org.xbmc.kore.testhelpers;
 
 import android.database.Cursor;
 
-import org.xbmc.kore.ui.SongsListFragment;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class TestUtils {

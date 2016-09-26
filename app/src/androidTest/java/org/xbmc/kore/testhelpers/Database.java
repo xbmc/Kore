@@ -23,6 +23,7 @@ import android.content.Context;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
+import org.xbmc.kore.jsonrpc.ApiList;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.AudioType;
@@ -68,15 +69,15 @@ public class Database {
     private static void insertMovies(Context context, int hostId) throws ApiException, IOException {
         VideoLibrary.GetMovies getMovies = new VideoLibrary.GetMovies();
         String result = Utils.readFile(context, "Video.Details.Movie.json");
-        ArrayList<VideoType.DetailsMovie> movieList = (ArrayList) getMovies.resultFromJson(result);
+        ApiList<VideoType.DetailsMovie> movieList = getMovies.resultFromJson(result);
 
 
-        ContentValues movieValuesBatch[] = new ContentValues[movieList.size()];
+        ContentValues movieValuesBatch[] = new ContentValues[movieList.items.size()];
         int castCount = 0;
 
         // Iterate on each movie
-        for (int i = 0; i < movieList.size(); i++) {
-            VideoType.DetailsMovie movie = movieList.get(i);
+        for (int i = 0; i < movieList.items.size(); i++) {
+            VideoType.DetailsMovie movie = movieList.items.get(i);
             movieValuesBatch[i] = SyncUtils.contentValuesFromMovie(hostId, movie);
             castCount += movie.cast.size();
         }
@@ -86,7 +87,7 @@ public class Database {
         ContentValues movieCastValuesBatch[] = new ContentValues[castCount];
         int count = 0;
         // Iterate on each movie/cast
-        for (VideoType.DetailsMovie movie : movieList) {
+        for (VideoType.DetailsMovie movie : movieList.items) {
             for (VideoType.Cast cast : movie.cast) {
                 movieCastValuesBatch[count] = SyncUtils.contentValuesFromCast(hostId, cast);
                 movieCastValuesBatch[count].put(MediaContract.MovieCastColumns.MOVIEID, movie.movieid);
