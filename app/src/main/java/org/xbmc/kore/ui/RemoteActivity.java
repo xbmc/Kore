@@ -386,16 +386,17 @@ public class RemoteActivity extends BaseActivity
         }
 
         final String videoId = getVideoId(videoUri);
-        if (videoId == null) {
-            Toast.makeText(RemoteActivity.this,
-                    R.string.error_share_video,
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        final String kodiAddonUrl = "plugin://plugin.video." +
+        String videoUrl;
+        if (videoId != null) {
+            videoUrl = "plugin://plugin.video." +
                 (videoUri.getHost().endsWith("vimeo.com") ? "vimeo" : "youtube") +
                 "/play/?video_id=" + videoId;
+
+        } else {
+            videoUrl = videoUri.toString();
+        }
+
+        final String fvideoUrl = videoUrl;
 
         // Check if any video player is active and clear the playlist before queuing if so
         final HostConnection connection = hostManager.getConnection();
@@ -413,9 +414,9 @@ public class RemoteActivity extends BaseActivity
 
                 if (!videoIsPlaying) {
                     // Clear the playlist
-                    clearPlaylistAndQueueFile(kodiAddonUrl, connection, callbackHandler);
+                    clearPlaylistAndQueueFile(fvideoUrl, connection, callbackHandler);
                 } else {
-                    queueFile(kodiAddonUrl, false, connection, callbackHandler);
+                    queueFile(fvideoUrl, false, connection, callbackHandler);
                 }
             }
 
