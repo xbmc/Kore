@@ -222,6 +222,16 @@ public class NowPlayingFragment extends Fragment
     public void onResume() {
         super.onResume();
         hostConnectionObserver.registerPlayerObserver(this, true);
+        Application.GetProperties action = new Application.GetProperties(Application.GetProperties.MUTED);
+        action.execute(hostManager.getConnection(), new ApiCallback<ApplicationType.PropertyValue>() {
+            @Override
+            public void onSuccess(ApplicationType.PropertyValue result) {
+                setVolumeMuteButton(result.muted);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) { }
+        }, callbackHandler);
     }
 
     @Override
@@ -311,18 +321,7 @@ public class NowPlayingFragment extends Fragment
         action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                if (!isAdded()) return;
-                if (result) {
-                    Resources.Theme theme = getActivity().getTheme();
-                    TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                            R.attr.colorAccent});
-                    volumeMuteButton.setColorFilter(
-                            styledAttributes.getColor(0,
-                                    getActivity().getResources().getColor(R.color.accent_default)));
-                    styledAttributes.recycle();
-                } else {
-                    volumeMuteButton.clearColorFilter();
-                }
+                setVolumeMuteButton(result);
             }
 
             @Override
@@ -968,6 +967,25 @@ public class NowPlayingFragment extends Fragment
         mediaSeekbar.removeCallbacks(seekBarUpdater);
         if ((speed == 1) || (type.equals(ListType.ItemsAll.TYPE_CHANNEL))) {
             mediaSeekbar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
+        }
+    }
+
+    /**
+     * Sets the color of the mute volume button according to the player's status
+     * @param isMuted Whether the player is muted
+     */
+    private void setVolumeMuteButton(Boolean isMuted) {
+        if (!isAdded()) return;
+        if (isMuted) {
+            Resources.Theme theme = getActivity().getTheme();
+            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
+                    R.attr.colorAccent});
+            volumeMuteButton.setColorFilter(
+                    styledAttributes.getColor(0,
+                            getActivity().getResources().getColor(R.color.accent_default)));
+            styledAttributes.recycle();
+        } else {
+            volumeMuteButton.clearColorFilter();
         }
     }
 
