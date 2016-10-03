@@ -108,6 +108,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             sortOrderStr = TVShowListQuery.SORT_BY_YEAR;
         } else if (sortOrder == Settings.SORT_BY_RATING) {
             sortOrderStr = TVShowListQuery.SORT_BY_RATING;
+        } else if (sortOrder == Settings.SORT_BY_LAST_PLAYED) {
+            sortOrderStr = TVShowListQuery.SORT_BY_LAST_PLAYED;
         } else {
             // Sort by name
             if (preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_IGNORE_PREFIXES, Settings.DEFAULT_PREF_TVSHOWS_IGNORE_PREFIXES)) {
@@ -156,7 +158,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 sortByName = menu.findItem(R.id.action_sort_by_name),
                 sortByYear = menu.findItem(R.id.action_sort_by_year),
                 sortByRating = menu.findItem(R.id.action_sort_by_rating),
-                sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added);
+                sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added),
+                sortByLastPlayed = menu.findItem(R.id.action_sort_by_last_played);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOWS_FILTER_HIDE_WATCHED));
@@ -172,6 +175,9 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 break;
             case Settings.SORT_BY_DATE_ADDED:
                 sortByDateAdded.setChecked(true);
+                break;
+            case Settings.SORT_BY_LAST_PLAYED:
+                sortByLastPlayed.setChecked(true);
                 break;
             default:
                 sortByName.setChecked(true);
@@ -227,6 +233,13 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                         .apply();
                 refreshList();
                 break;
+            case R.id.action_sort_by_last_played:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_LAST_PLAYED)
+                        .apply();
+                refreshList();
+                break;
             default:
                 break;
         }
@@ -259,6 +272,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         String SORT_BY_YEAR = MediaContract.TVShows.PREMIERED + " ASC";
         String SORT_BY_RATING = MediaContract.TVShows.RATING + " DESC";
         String SORT_BY_DATE_ADDED = MediaContract.TVShows.DATEADDED + " DESC";
+        String SORT_BY_LAST_PLAYED = MediaContract.TVShows.LASTPLAYED + " DESC";
         String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.TVShows.TITLE) + " ASC";
 
         final int ID = 0;

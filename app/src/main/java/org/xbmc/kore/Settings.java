@@ -48,7 +48,8 @@ public class Settings {
             SORT_BY_LENGTH = 4,
             SORT_BY_ALBUM = 5,
             SORT_BY_ARTIST = 6,
-            SORT_BY_ARTIST_YEAR = 7 ;
+            SORT_BY_ARTIST_YEAR = 7,
+            SORT_BY_LAST_PLAYED = 8;
 
     /**
      * Preferences keys.

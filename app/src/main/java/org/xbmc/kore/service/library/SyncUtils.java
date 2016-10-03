@@ -58,6 +58,7 @@ public class SyncUtils {
         movieValues.put(MediaContract.MoviesColumns.THUMBNAIL, movie.thumbnail);
         movieValues.put(MediaContract.MoviesColumns.PLAYCOUNT, movie.playcount);
         movieValues.put(MediaContract.MoviesColumns.DATEADDED, movie.dateadded);
+        movieValues.put(MediaContract.MoviesColumns.LASTPLAYED, movie.lastplayed);
         movieValues.put(MediaContract.MoviesColumns.TITLE, movie.title);
         movieValues.put(MediaContract.MoviesColumns.FILE, movie.file);
         movieValues.put(MediaContract.MoviesColumns.PLOT, movie.plot);
@@ -156,6 +157,7 @@ public class SyncUtils {
         tvshowValues.put(MediaContract.TVShowsColumns.PLAYCOUNT, tvshow.playcount);
         tvshowValues.put(MediaContract.TVShowsColumns.TITLE, tvshow.title);
         tvshowValues.put(MediaContract.TVShowsColumns.DATEADDED, tvshow.dateadded);
+        tvshowValues.put(MediaContract.TVShowsColumns.LASTPLAYED, tvshow.lastplayed);
         tvshowValues.put(MediaContract.TVShowsColumns.FILE, tvshow.file);
         tvshowValues.put(MediaContract.TVShowsColumns.PLOT, tvshow.plot);
         tvshowValues.put(MediaContract.TVShowsColumns.EPISODE, tvshow.episode);

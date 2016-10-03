@@ -102,6 +102,8 @@ public class MovieListFragment extends AbstractCursorListFragment {
         int sortOrder = preferences.getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
         if (sortOrder == Settings.SORT_BY_DATE_ADDED) {
             sortOrderStr = MovieListQuery.SORT_BY_DATE_ADDED;
+        } else if (sortOrder == Settings.SORT_BY_LAST_PLAYED) {
+            sortOrderStr = MovieListQuery.SORT_BY_LAST_PLAYED;
         } else if (sortOrder == Settings.SORT_BY_RATING) {
             sortOrderStr = MovieListQuery.SORT_BY_RATING;
         } else if (sortOrder == Settings.SORT_BY_YEAR) {
@@ -155,6 +157,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 sortByYear = menu.findItem(R.id.action_sort_by_year),
                 sortByRating = menu.findItem(R.id.action_sort_by_rating),
                 sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added),
+                sortByLastPlayed = menu.findItem(R.id.action_sort_by_last_played),
                 sortByLength = menu.findItem(R.id.action_sort_by_length);
 
 
@@ -172,6 +175,9 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 break;
             case Settings.SORT_BY_DATE_ADDED:
                 sortByDateAdded.setChecked(true);
+                break;
+            case Settings.SORT_BY_LAST_PLAYED:
+                sortByLastPlayed.setChecked(true);
                 break;
             case Settings.SORT_BY_LENGTH:
                 sortByLength.setChecked(true);
@@ -230,6 +236,13 @@ public class MovieListFragment extends AbstractCursorListFragment {
                         .apply();
                 refreshList();
                 break;
+            case R.id.action_sort_by_last_played:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_LAST_PLAYED)
+                        .apply();
+                refreshList();
+                break;
             case R.id.action_sort_by_length:
                 item.setChecked(true);
                 preferences.edit()
@@ -265,6 +278,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         String SORT_BY_YEAR = MediaContract.Movies.YEAR + " ASC";
         String SORT_BY_RATING = MediaContract.Movies.RATING + " DESC";
         String SORT_BY_DATE_ADDED = MediaContract.Movies.DATEADDED + " DESC";
+        String SORT_BY_LAST_PLAYED = MediaContract.Movies.LASTPLAYED + " DESC";
         String SORT_BY_LENGTH = MediaContract.Movies.RUNTIME + " DESC";
         String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.Movies.TITLE) + " ASC";
 

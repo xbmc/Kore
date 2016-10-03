@@ -145,6 +145,7 @@ public class MediaContract {
         String WRITERS = "writers";
         String YEAR = "year";
         String DATEADDED = "dateadded";
+        String LASTPLAYED = "lastplayed";
     }
 
     public static class Movies implements BaseColumns, SyncColumns, MoviesColumns {
@@ -229,6 +230,7 @@ public class MediaContract {
         String PLAYCOUNT = "playcount";
         String TITLE = "title";
         String DATEADDED = "dateadded";
+        String LASTPLAYED = "lastplayed";
         String FILE = "file";
         String PLOT = "plot";
         String EPISODE = "episode";
