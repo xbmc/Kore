@@ -326,6 +326,7 @@
 
     <string name="switch_to_remote">Basculer sur la télécommande après le début de la lecture</string>
     <string name="keep_remote_above_lockscreen">Conserver la télécommande sur l\'écran de déverrouillage</string>
+    <string name="pref_keep_screen_on">Conserver l\'écran allumé lors de l\'utilisation de la télécommande</string>
     <string name="show_notification">Afficher les notifications pendant la lecture</string>
     <string name="pause_during_calls">Mettre en pause lors des appels téléphoniques</string>
     <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
