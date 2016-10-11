@@ -338,6 +338,11 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
             } while (cursor.moveToNext());
         }
 
+        if (songInfoList.size() == 0) {
+            Toast.makeText(getActivity(), R.string.no_songs_to_download, Toast.LENGTH_LONG);
+            return;
+        }
+
         // Check if the directory exists and whether to overwrite it
         File file = new File(songInfoList.get(0).getAbsoluteDirectoryPath());
         if (file.exists()) {

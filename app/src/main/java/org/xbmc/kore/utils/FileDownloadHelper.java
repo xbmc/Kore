@@ -45,6 +45,10 @@ public class FileDownloadHelper {
     public static final int OVERWRITE_FILES = 0,
             DOWNLOAD_WITH_NEW_NAME = 1;
 
+    public static final String NO_ARTIST_DIR = "No artist",
+            NO_MOVIE_TITLE_DIR = "No title",
+            NO_TVSHOW_TITLE_DIR = "No title";
+
     public static abstract class MediaInfo {
         public final String fileName;
 
@@ -120,8 +124,8 @@ public class FileDownloadHelper {
         }
 
         public String getRelativeDirectoryPath() {
-            return (TextUtils.isEmpty(album) || TextUtils.isEmpty(artist)) ?
-                    null : artist + "/" + album;
+            return (TextUtils.isEmpty(artist) ? NO_ARTIST_DIR :
+                    TextUtils.isEmpty(album) ? artist : artist + "/" + album);
         }
 
         public String getDownloadFileName() {
@@ -153,7 +157,7 @@ public class FileDownloadHelper {
 
         public String getRelativeDirectoryPath() {
             return (TextUtils.isEmpty(title)) ?
-                   null : title;
+                   NO_MOVIE_TITLE_DIR : title;
         }
 
         public String getDownloadFileName() {
@@ -193,10 +197,10 @@ public class FileDownloadHelper {
         public String getRelativeDirectoryPath() {
             if (season > 0) {
                 return (TextUtils.isEmpty(tvshowTitle)) ?
-                       null : tvshowTitle + "/Season" + String.valueOf(season);
+                       NO_TVSHOW_TITLE_DIR : tvshowTitle + "/Season" + String.valueOf(season);
             } else {
                 return (TextUtils.isEmpty(tvshowTitle)) ?
-                       null : tvshowTitle;
+                       NO_TVSHOW_TITLE_DIR : tvshowTitle;
             }
         }
 
