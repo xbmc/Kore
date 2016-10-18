@@ -105,6 +105,13 @@ public class FileDownloadHelper {
         public String getDownloadDescrition(Context context) {
             return context.getString(R.string.download_file_description);
         }
+
+        public String getMediaUrl(HostInfo hostInfo) {
+            String pathforUrl = fileName.replaceAll(" ", "%20").replaceAll("'","%27");
+            String videoUrl = String.format("http://%s:%d/vfs/%s", hostInfo.getAddress(),
+                    hostInfo.getHttpPort(), pathforUrl);
+            return videoUrl;
+        }
     }
 
     /**

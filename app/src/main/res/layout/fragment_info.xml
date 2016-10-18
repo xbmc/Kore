@@ -140,6 +140,14 @@
                         android:src="?attr/iconSeen"
                         android:contentDescription="@string/seen"
                         android:visibility="gone"/>
+                    <ImageButton
+                        android:id="@+id/local_play"
+                        android:layout_width="@dimen/buttonbar_button_width"
+                        android:layout_height="match_parent"
+                        style="@style/Widget.Button.Borderless"
+                        android:src="?attr/iconPlay"
+                        android:contentDescription="LocalPlay"/>
+
                 </LinearLayout>
 
                 <LinearLayout
