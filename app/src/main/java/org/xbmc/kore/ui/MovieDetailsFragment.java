@@ -436,17 +436,10 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
             return;
         }
 
-        HostInfo hostinfo = getHostInfo();
-        String pathforUrl = movieDownloadInfo.fileName.replaceAll(" ", "%20").replaceAll("'","%27");
-        String videoUrl = String.format("http://%s:%d/vfs/%s", hostinfo.getAddress(),
-                    hostinfo.getHttpPort(), pathforUrl);
-
+        String videoUrl =  movieDownloadInfo.getMediaUrl(getHostInfo());
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
         intent.setDataAndType(Uri.parse(videoUrl), "video/*");
         startActivity(intent);
-
-
-
     }
 
     @Override
