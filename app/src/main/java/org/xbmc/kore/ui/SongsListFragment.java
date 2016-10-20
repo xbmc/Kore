@@ -44,6 +44,7 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
+import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -136,23 +137,20 @@ public class SongsListFragment extends AbstractCursorListFragment {
      */
     public interface SongsListQuery {
         String[] PROJECTION = {
-                MediaDatabase.Tables.SONGS + "." + BaseColumns._ID,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TRACK,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.DURATION,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.FILE,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.SONGID,
-                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.TITLE,
-                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.DISPLAYARTIST,
-                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.GENRE,
-                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.YEAR,
-                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.THUMBNAIL,
-                MediaDatabase.Tables.ARTISTS + "." + MediaContract.Artists.ARTIST
+                MediaProvider.Qualified.SONGS_ID,
+                MediaProvider.Qualified.SONGS_TITLE,
+                MediaProvider.Qualified.SONGS_TRACK,
+                MediaProvider.Qualified.SONGS_DURATION,
+                MediaProvider.Qualified.SONGS_FILE,
+                MediaProvider.Qualified.SONGS_SONGID,
+                MediaProvider.Qualified.SONGS_DISPLAYARTIST,
+                MediaProvider.Qualified.ALBUMS_TITLE,
+                MediaProvider.Qualified.ALBUMS_GENRE,
+                MediaProvider.Qualified.ALBUMS_YEAR,
+                MediaProvider.Qualified.ALBUMS_THUMBNAIL
                 };
 
-        String SORT = MediaDatabase.sortCommonTokens(MediaDatabase.Tables.SONGS
-                                                     + "." +
-                                                     MediaContract.Songs.TITLE) + " ASC";
+        String SORT = MediaDatabase.sortCommonTokens(MediaProvider.Qualified.SONGS_TITLE) + " ASC";
 
         int ID = 0;
         int TITLE = 1;
@@ -160,12 +158,11 @@ public class SongsListFragment extends AbstractCursorListFragment {
         int DURATION = 3;
         int FILE = 4;
         int SONGID = 5;
-        int ALBUMTITLE = 6;
-        int ALBUMARTIST = 7;
+        int SONGARTIST = 6;
+        int ALBUMTITLE = 7;
         int GENRE = 8;
         int YEAR = 9;
         int THUMBNAIL = 10;
-        int ARTIST = 11;
     }
 
     private class SongsAdapter extends CursorAdapter {
@@ -213,10 +210,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
 
             viewHolder.title.setText(title);
 
-            String artist = cursor.getString(SongsListQuery.ALBUMARTIST);
-            if (TextUtils.isEmpty(artist))
-                artist = cursor.getString(SongsListQuery.ARTIST);
-
+            String artist = cursor.getString(SongsListQuery.SONGARTIST);
             viewHolder.artist.setText(artist);
 
             int year = cursor.getInt(SongsListQuery.YEAR);

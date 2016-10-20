@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.provider.MediaContract;
+import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.testhelpers.Database;
 import org.xbmc.kore.testhelpers.TestUtils;
 import org.xbmc.kore.testhelpers.Utils;
@@ -161,7 +162,7 @@ public class MediaProviderMusicTest {
     public void queryAlbumSongsTest() {
         Uri uri = MediaContract.Songs.buildAlbumSongsListUri(hostInfo.getId(), TestValues.Album.albumId);
 
-        Cursor cursor = contentResolver.query(uri, new String[] {MediaContract.Songs.SONGID}, null, null, null);
+        Cursor cursor = contentResolver.query(uri, new String[] {MediaProvider.Qualified.SONGS_SONGID}, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 17, cursor.getCount());

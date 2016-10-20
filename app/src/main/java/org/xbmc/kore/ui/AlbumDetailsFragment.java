@@ -60,6 +60,7 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
+import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -651,7 +652,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                                               .inflate(R.layout.list_item_song, songListView, false);
                 TextView songTitle = (TextView)songView.findViewById(R.id.song_title);
                 TextView trackNumber = (TextView)songView.findViewById(R.id.track_number);
-                TextView duration = (TextView)songView.findViewById(R.id.duration);
+                TextView details = (TextView)songView.findViewById(R.id.details);
                 ImageView contextMenu = (ImageView)songView.findViewById(R.id.list_context_menu);
 
                 // Add this song to the list
@@ -665,8 +666,14 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                 songInfoList.add(songInfo);
 
                 songTitle.setText(songInfo.title);
+
+
                 trackNumber.setText(String.valueOf(songInfo.track));
-                duration.setText(UIUtils.formatTime(cursor.getInt(AlbumSongsListQuery.DURATION)));
+
+                String artist = cursor.getString(AlbumSongsListQuery.ARTIST);
+                String duration = UIUtils.formatTime(cursor.getInt(AlbumSongsListQuery.DURATION));
+                String detailsText = TextUtils.isEmpty(artist) ? duration : duration + "  |  " + artist;
+                details.setText(detailsText);
 
                 contextMenu.setTag(songInfo);
                 contextMenu.setOnClickListener(songItemMenuClickListener);
@@ -737,7 +744,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
     }
 
     /**
-     * Movie cast list query parameters.
+     * Album songs list query parameters.
      */
     public interface AlbumSongsListQuery {
         String[] PROJECTION = {
@@ -747,15 +754,17 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                 MediaContract.Songs.DURATION,
                 MediaContract.Songs.FILE,
                 MediaContract.Songs.SONGID,
+                MediaContract.Songs.DISPLAYARTIST
         };
 
         String SORT = MediaContract.Songs.TRACK + " ASC";
 
-        final int ID = 0;
-        final int TITLE = 1;
-        final int TRACK = 2;
-        final int DURATION = 3;
-        final int FILE = 4;
-        final int SONGID = 5;
+        int ID = 0;
+        int TITLE = 1;
+        int TRACK = 2;
+        int DURATION = 3;
+        int FILE = 4;
+        int SONGID = 5;
+        int ARTIST = 6;
     }
 }
