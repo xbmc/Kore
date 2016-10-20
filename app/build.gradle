@@ -38,6 +38,19 @@ android {
         }
     }
 
+    sourceSets {
+        fullDebug {
+            assets.srcDirs = ['src/testUtils/assets']
+        }
+        test {
+            java.srcDirs = ['src/test/java', 'src/testUtils/java']
+        }
+        instrumentationTest {
+            java.srcDirs = ['src/testUtils/java']
+            assets.srcDirs = ['src/testUtils/assets']
+        }
+    }
+
     productFlavors {
         full {
         }
@@ -45,6 +58,7 @@ android {
         instrumentationTest {
             applicationId "org.xbmc.kore.instrumentationtest"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+            proguardFiles 'proguardTest-rules.pro'
         }
     }
 
@@ -110,6 +124,10 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
     androidTestCompile 'com.android.support:support-v13:23.4.0'
+    instrumentationTestCompile 'junit:junit:4.12'
+
+    testCompile 'org.robolectric:robolectric:3.1.1'
+    testCompile 'junit:junit:4.12'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

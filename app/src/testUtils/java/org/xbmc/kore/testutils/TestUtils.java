@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.xbmc.kore.testhelpers;
+package org.xbmc.kore.testutils;
 
 import android.database.Cursor;
 
