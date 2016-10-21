@@ -738,6 +738,7 @@ public class MediaProvider extends ContentProvider {
                               .mapToTable(MediaContract.Songs.TITLE, MediaDatabase.Tables.SONGS)
                               .mapToTable(MediaContract.Songs.ALBUMID, MediaDatabase.Tables.SONGS)
                               .mapToTable(MediaContract.Songs.DISPLAYARTIST, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Albums.TITLE, MediaDatabase.Tables.ALBUMS)
                               .mapToTable(MediaContract.AlbumArtists.ARTISTID, MediaDatabase.Tables.ALBUM_ARTISTS)
                               .mapToTable(MediaContract.SongArtists.ARTISTID, MediaDatabase.Tables.SONG_ARTISTS)
                               .where(Qualified.SONG_ARTISTS_HOST_ID + "=?", hostId)
