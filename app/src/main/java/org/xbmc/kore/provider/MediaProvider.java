@@ -738,7 +738,6 @@ public class MediaProvider extends ContentProvider {
                               .mapToTable(MediaContract.Songs.TITLE, MediaDatabase.Tables.SONGS)
                               .mapToTable(MediaContract.Songs.ALBUMID, MediaDatabase.Tables.SONGS)
                               .mapToTable(MediaContract.Songs.DISPLAYARTIST, MediaDatabase.Tables.SONGS)
-                              .mapToTable(MediaContract.Albums.TITLE, MediaDatabase.Tables.ALBUMS)
                               .mapToTable(MediaContract.AlbumArtists.ARTISTID, MediaDatabase.Tables.ALBUM_ARTISTS)
                               .mapToTable(MediaContract.SongArtists.ARTISTID, MediaDatabase.Tables.SONG_ARTISTS)
                               .where(Qualified.SONG_ARTISTS_HOST_ID + "=?", hostId)
@@ -818,6 +817,8 @@ public class MediaProvider extends ContentProvider {
                 MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.YEAR;
         String ALBUMS_THUMBNAIL =
                 MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.THUMBNAIL;
+        String ALBUMS_DISPLAYARTIST =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.DISPLAYARTIST;
         String ALBUM_ARTISTS_HOST_ID =
                 MediaDatabase.Tables.ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID;
         String ALBUM_ARTISTS_ARTISTID =
