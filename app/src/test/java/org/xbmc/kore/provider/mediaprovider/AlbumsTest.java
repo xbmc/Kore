@@ -37,11 +37,11 @@ public class AlbumsTest extends AbstractTestClass {
         Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
-        assertEquals("cursor size ", 234, cursor.getCount());
+        assertEquals("cursor size ", 235, cursor.getCount());
         int columnIndex = cursor.getColumnIndex(MediaContract.AlbumsColumns.ALBUMID);
         TestUtils.testCursorContainsRange(cursor, columnIndex, 1, 75);
         TestUtils.testCursorContainsRange(cursor, columnIndex, 77, 82);
-        TestUtils.testCursorContainsRange(cursor, columnIndex, 84, 235);
+        TestUtils.testCursorContainsRange(cursor, columnIndex, 84, 237);
     }
 
     @Test

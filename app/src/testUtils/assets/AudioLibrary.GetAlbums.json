@@ -7631,6 +7631,35 @@
             "description" : "",
             "thumbnail" : "",
             "rating" : 0
+         },
+         {
+            "type" : "",
+            "musicbrainzalbumid" : "",
+            "title" : "Multi disc album",
+            "label" : "Multi disc album",
+            "genreid" : [],
+            "theme" : [],
+            "albumlabel" : "",
+            "playcount" : 0,
+            "style" : [],
+            "albumid" : 237,
+            "rating" : 0,
+            "fanart" : "",
+            "genre" : [],
+            "description" : "",
+            "artist" : [
+               "Multi disc artist"
+            ],
+            "year" : 0,
+            "artistid" : [
+               230
+            ],
+            "mood" : [],
+            "displayartist" : "Multi disc artist",
+            "thumbnail" : "",
+            "musicbrainzalbumartistid" : [
+               ""
+            ]
          }
       ]
    }
