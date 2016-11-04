@@ -577,6 +577,7 @@ public class MediaContract {
         String FILE = "file";
         String TRACK = "track";
         String TITLE = "title";
+        String DISC = "disc";
     }
 
     public static class Songs implements BaseColumns, SyncColumns, SongsColumns {
@@ -622,7 +623,7 @@ public class MediaContract {
         }
 
         public final static String[] ALL_COLUMNS = {
-                _ID, UPDATED, HOST_ID, ALBUMID, SONGID, DURATION, THUMBNAIL, FILE, TRACK, TITLE,
+                _ID, UPDATED, HOST_ID, ALBUMID, SONGID, DURATION, THUMBNAIL, FILE, TRACK, TITLE, DISC
         };
     }
 
