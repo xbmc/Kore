@@ -21,8 +21,10 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
 import org.xbmc.kore.jsonrpc.method.Player;
+import org.xbmc.kore.jsonrpc.notification.Application;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.System;
+import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.utils.LogUtils;
@@ -43,9 +45,19 @@ import java.util.List;
  */
 public class HostConnectionObserver
         implements HostConnection.PlayerNotificationsObserver,
-        HostConnection.SystemNotificationsObserver,
-        HostConnection.InputNotificationsObserver {
+                   HostConnection.SystemNotificationsObserver,
+                   HostConnection.InputNotificationsObserver,
+                   HostConnection.ApplicationNotificationsObserver {
     public static final String TAG = LogUtils.makeLogTag(HostConnectionObserver.class);
+
+    public interface ApplicationEventsObserver {
+        /**
+         * Notifies the observer that volume has changed
+         * @param volume
+         * @param muted
+         */
+        public void applicationOnVolumeChanged(int volume, boolean muted);
+    }
 
     /**
      * Interface that an observer has to implement to receive player events
@@ -123,6 +135,7 @@ public class HostConnectionObserver
      * The list of observers
      */
     private List<PlayerEventsObserver> playerEventsObservers = new ArrayList<PlayerEventsObserver>();
+    private List<ApplicationEventsObserver> applicationEventsObservers = new ArrayList<>();
 
 //    /**
 //     * Handlers for which observer, on which to notify them
@@ -130,7 +143,7 @@ public class HostConnectionObserver
 //    private Map<PlayerEventsObserver, Handler> observerHandlerMap = new HashMap<PlayerEventsObserver, Handler>();
 
     private Handler checkerHandler = new Handler();
-    private Runnable httpCheckerRunnable = new Runnable() {
+    private Runnable httpPlayerCheckerRunnable = new Runnable() {
         @Override
         public void run() {
             final int HTTP_NOTIFICATION_CHECK_INTERVAL = 3000;
@@ -139,6 +152,20 @@ public class HostConnectionObserver
 
             // Check whats playing
             checkWhatsPlaying();
+
+            // Keep checking
+            checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
+        }
+    };
+
+    private Runnable httpApplicationCheckerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            final int HTTP_NOTIFICATION_CHECK_INTERVAL = 3000;
+            // If no one is listening to this, just exit
+            if (applicationEventsObservers.isEmpty()) return;
+
+            getApplicationProperties();
 
             // Keep checking
             checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
@@ -158,8 +185,8 @@ public class HostConnectionObserver
                 @Override
                 public void onSuccess(String result) {
                     // Ok, we've got a ping, if we were in a error or uninitialized state, update
-                    if ((lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
-                        (lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR)) {
+                    if ((hostState.lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
+                        (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR)) {
                         checkWhatsPlaying();
                     }
                     checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_SUCCESS_CHECK_INTERVAL);
@@ -181,14 +208,31 @@ public class HostConnectionObserver
         }
     };
 
-    private int lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
-    private PlayerType.GetActivePlayersReturnType lastGetActivePlayerResult = null;
-    private PlayerType.PropertyValue lastGetPropertiesResult = null;
-    private ListType.ItemsAll lastGetItemResult = null;
-    private int lastErrorCode;
-    private String lastErrorDescription;
+    public class HostState {
+        private int lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+        private PlayerType.GetActivePlayersReturnType lastGetActivePlayerResult = null;
+        private PlayerType.PropertyValue lastGetPropertiesResult = null;
+        private ListType.ItemsAll lastGetItemResult = null;
+        private boolean volumeMuted = false;
+        private int volumeLevel = -1;  // -1 indicates no volumeLevel known
+        private int lastErrorCode;
+        private String lastErrorDescription;
+
+        public int getVolumeLevel() {
+            return volumeLevel;
+        }
+
+        public boolean isVolumeMuted() {
+            return volumeMuted;
+        }
+    }
+
+    public HostState hostState;
+
+    private HostConnectionObserver() {}
 
     public HostConnectionObserver(HostConnection connection) {
+        this.hostState = new HostState();
         this.connection = connection;
     }
 
@@ -216,7 +260,7 @@ public class HostConnectionObserver
                 // Start the ping checker
                 checkerHandler.post(tcpCheckerRunnable);
             } else {
-                checkerHandler.post(httpCheckerRunnable);
+                checkerHandler.post(httpPlayerCheckerRunnable);
             }
         }
     }
@@ -229,7 +273,8 @@ public class HostConnectionObserver
         playerEventsObservers.remove(observer);
 //        observerHandlerMap.remove(observer);
 
-        LogUtils.LOGD(TAG, "Unregistering observer. Still got " + playerEventsObservers.size() +
+        LogUtils.LOGD(TAG, "Unregistering player observer " + observer.getClass().getSimpleName() +
+                           ". Still got " + playerEventsObservers.size() +
                            " observers.");
 
         if (playerEventsObservers.isEmpty()) {
@@ -241,9 +286,61 @@ public class HostConnectionObserver
                 connection.unregisterInputNotificationsObserver(this);
                 checkerHandler.removeCallbacks(tcpCheckerRunnable);
             } else {
-                checkerHandler.removeCallbacks(httpCheckerRunnable);
+                checkerHandler.removeCallbacks(httpPlayerCheckerRunnable);
             }
-            lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+            hostState.lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+        }
+    }
+
+    /**
+     * Registers a new observer that will be notified about application events
+     * @param observer Observer
+     * @param replyImmediately
+     */
+    public void registerApplicationObserver(ApplicationEventsObserver observer, boolean replyImmediately) {
+        if (this.connection == null)
+            return;
+
+        applicationEventsObservers.add(observer);
+
+        if (replyImmediately) {
+            if( hostState.volumeLevel == -1 ) {
+                getApplicationProperties();
+            } else {
+                observer.applicationOnVolumeChanged(hostState.volumeLevel, hostState.volumeMuted);
+            }
+        }
+
+        if (applicationEventsObservers.size() == 1) {
+            // If this is the first observer, start checking through HTTP or register us
+            // as a connection observer, which we will pass to the "real" observer
+            if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
+                connection.registerApplicationNotificationsObserver(this, checkerHandler);
+            } else {
+                checkerHandler.post(httpApplicationCheckerRunnable);
+            }
+        }
+    }
+
+    /**
+     * Unregisters a previously registered observer
+     * @param observer Observer to unregister
+     */
+    public void unregisterApplicationObserver(PlayerEventsObserver observer) {
+        applicationEventsObservers.remove(observer);
+
+        LogUtils.LOGD(TAG, "Unregistering application observer " + observer.getClass().getSimpleName() +
+                           ". Still got " + applicationEventsObservers.size() +
+                           " observers.");
+
+        if (applicationEventsObservers.isEmpty()) {
+            // No more observers, so unregister us from the host connection, or stop
+            // the http checker thread
+            if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
+                connection.unregisterApplicationotificationsObserver(this);
+            } else {
+                checkerHandler.removeCallbacks(httpApplicationCheckerRunnable);
+            }
         }
     }
 
@@ -262,9 +359,9 @@ public class HostConnectionObserver
             connection.unregisterInputNotificationsObserver(this);
             checkerHandler.removeCallbacks(tcpCheckerRunnable);
         } else {
-            checkerHandler.removeCallbacks(httpCheckerRunnable);
+            checkerHandler.removeCallbacks(httpPlayerCheckerRunnable);
         }
-        lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+        hostState.lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
     }
 
     /**
@@ -332,6 +429,39 @@ public class HostConnectionObserver
         }
     }
 
+    @Override
+    public void onVolumeChanged(Application.OnVolumeChanged notification) {
+        hostState.volumeMuted = notification.muted;
+        hostState.volumeLevel = notification.volume;
+
+        for (ApplicationEventsObserver observer : applicationEventsObservers) {
+            observer.applicationOnVolumeChanged(notification.volume, notification.muted);
+        }
+    }
+
+    private void getApplicationProperties() {
+        org.xbmc.kore.jsonrpc.method.Application.GetProperties getProperties =
+                new org.xbmc.kore.jsonrpc.method.Application.GetProperties(org.xbmc.kore.jsonrpc.method.Application.GetProperties.VOLUME,
+                                                                           org.xbmc.kore.jsonrpc.method.Application.GetProperties.MUTED);
+        getProperties.execute(connection, new ApiCallback<ApplicationType.PropertyValue>() {
+            @Override
+            public void onSuccess(ApplicationType.PropertyValue result) {
+                hostState.volumeMuted = result.muted;
+                hostState.volumeLevel = result.volume;
+
+                for (ApplicationEventsObserver observer : applicationEventsObservers) {
+                    observer.applicationOnVolumeChanged(result.volume, result.muted);
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                LogUtils.LOGD(TAG, "Could not get application properties");
+                notifyConnectionError(errorCode, description, playerEventsObservers);
+            }
+        }, checkerHandler);
+    }
+
     /**
      * Checks whats playing and notifies observers
      */
@@ -344,7 +474,7 @@ public class HostConnectionObserver
 
     /**
      * Calls Player.GetActivePlayers
-     * On success chains execution to chainCallGetProperties
+     * On success chains execution to chainCallGetPlayerProperties
      */
     private void chainCallGetActivePlayers() {
         Player.GetActivePlayers getActivePlayers = new Player.GetActivePlayers();
@@ -356,7 +486,7 @@ public class HostConnectionObserver
                     notifyNothingIsPlaying(playerEventsObservers);
                     return;
                 }
-                chainCallGetProperties(result.get(0));
+                chainCallGetPlayerProperties(result.get(0));
             }
 
             @Override
@@ -371,7 +501,7 @@ public class HostConnectionObserver
      * Calls Player.GetProperties
      * On success chains execution to chainCallGetItem
      */
-    private void chainCallGetProperties(final PlayerType.GetActivePlayersReturnType getActivePlayersResult) {
+    private void chainCallGetPlayerProperties(final PlayerType.GetActivePlayersReturnType getActivePlayersResult) {
         String propertiesToGet[] = new String[] {
                 // Check is something more is needed
                 PlayerType.PropertyName.SPEED,
@@ -465,7 +595,7 @@ public class HostConnectionObserver
         }, checkerHandler);
     }
 
-    // Whether to foorce a reply or if the results are equal to the last one, don't reply
+    // Whether to force a reply or if the results are equal to the last one, don't reply
     private boolean forceReply = false;
 
     /**
@@ -478,11 +608,11 @@ public class HostConnectionObserver
     private void notifyConnectionError(final int errorCode, final String description, List<PlayerEventsObserver> observers) {
         // Reply if different from last result
         if (forceReply ||
-            (lastCallResult != PlayerEventsObserver.PLAYER_CONNECTION_ERROR) ||
-            (lastErrorCode != errorCode)) {
-            lastCallResult = PlayerEventsObserver.PLAYER_CONNECTION_ERROR;
-            lastErrorCode = errorCode;
-            lastErrorDescription = description;
+            (hostState.lastCallResult != PlayerEventsObserver.PLAYER_CONNECTION_ERROR) ||
+            (hostState.lastErrorCode != errorCode)) {
+            hostState.lastCallResult = PlayerEventsObserver.PLAYER_CONNECTION_ERROR;
+            hostState.lastErrorCode = errorCode;
+            hostState.lastErrorDescription = description;
             forceReply = false;
             // Copy list to prevent ConcurrentModificationExceptions
             List<PlayerEventsObserver> allObservers = new ArrayList<>(observers);
@@ -519,8 +649,8 @@ public class HostConnectionObserver
     private void notifyNothingIsPlaying(List<PlayerEventsObserver> observers) {
         // Reply if forced or different from last result
         if (forceReply ||
-            (lastCallResult != PlayerEventsObserver.PLAYER_IS_STOPPED)) {
-            lastCallResult = PlayerEventsObserver.PLAYER_IS_STOPPED;
+            (hostState.lastCallResult != PlayerEventsObserver.PLAYER_IS_STOPPED)) {
+            hostState.lastCallResult = PlayerEventsObserver.PLAYER_IS_STOPPED;
             forceReply = false;
             // Copy list to prevent ConcurrentModificationExceptions
             List<PlayerEventsObserver> allObservers = new ArrayList<>(observers);
@@ -554,16 +684,16 @@ public class HostConnectionObserver
         int currentCallResult = (getPropertiesResult.speed == 0) ?
                 PlayerEventsObserver.PLAYER_IS_PAUSED : PlayerEventsObserver.PLAYER_IS_PLAYING;
         if (forceReply ||
-                (lastCallResult != currentCallResult) ||
-                (lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
-                (lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
-                (!lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat)) ||
-                (lastGetItemResult.id != getItemResult.id) ||
-                (!lastGetItemResult.label.equals(getItemResult.label))) {
-            lastCallResult = currentCallResult;
-            lastGetActivePlayerResult = getActivePlayersResult;
-            lastGetPropertiesResult = getPropertiesResult;
-            lastGetItemResult = getItemResult;
+                (hostState.lastCallResult != currentCallResult) ||
+                (hostState.lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
+                (hostState.lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
+                (!hostState.lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat)) ||
+                (hostState.lastGetItemResult.id != getItemResult.id) ||
+                (!hostState.lastGetItemResult.label.equals(getItemResult.label))) {
+            hostState.lastCallResult = currentCallResult;
+            hostState.lastGetActivePlayerResult = getActivePlayersResult;
+            hostState.lastGetPropertiesResult = getPropertiesResult;
+            hostState.lastGetItemResult = getItemResult;
             forceReply = false;
             // Copy list to prevent ConcurrentModificationExceptions
             List<PlayerEventsObserver> allObservers = new ArrayList<>(observers);
@@ -619,16 +749,16 @@ public class HostConnectionObserver
      * @param observer Obserser to call with last result
      */
     public void replyWithLastResult(PlayerEventsObserver observer) {
-        switch (lastCallResult) {
+        switch (hostState.lastCallResult) {
             case PlayerEventsObserver.PLAYER_CONNECTION_ERROR:
-                notifyConnectionError(lastErrorCode, lastErrorDescription, observer);
+                notifyConnectionError(hostState.lastErrorCode, hostState.lastErrorDescription, observer);
                 break;
             case PlayerEventsObserver.PLAYER_IS_STOPPED:
                 notifyNothingIsPlaying(observer);
                 break;
             case PlayerEventsObserver.PLAYER_IS_PAUSED:
             case PlayerEventsObserver.PLAYER_IS_PLAYING:
-                notifySomethingIsPlaying(lastGetActivePlayerResult, lastGetPropertiesResult, lastGetItemResult, observer);
+                notifySomethingIsPlaying(hostState.lastGetActivePlayerResult, hostState.lastGetPropertiesResult, hostState.lastGetItemResult, observer);
                 break;
             case PlayerEventsObserver.PLAYER_NO_RESULT:
                 observer.playerNoResultsYet();
@@ -642,5 +772,9 @@ public class HostConnectionObserver
     public void forceRefreshResults() {
         forceReply = true;
         chainCallGetActivePlayers();
+    }
+
+    public HostState getHostState() {
+        return hostState;
     }
 }

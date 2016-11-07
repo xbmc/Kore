@@ -50,7 +50,6 @@ import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.jsonrpc.method.Player;
-import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
@@ -72,7 +71,8 @@ import butterknife.OnClick;
  */
 public class NowPlayingFragment extends Fragment
         implements HostConnectionObserver.PlayerEventsObserver,
-        GenericSelectDialog.GenericSelectDialogListener {
+                   HostConnectionObserver.ApplicationEventsObserver,
+                   GenericSelectDialog.GenericSelectDialogListener {
     private static final String TAG = LogUtils.makeLogTag(NowPlayingFragment.class);
 
     /**
@@ -132,8 +132,6 @@ public class NowPlayingFragment extends Fragment
     @InjectView(R.id.rewind) ImageButton rewindButton;
     @InjectView(R.id.fast_forward) ImageButton fastForwardButton;
 
-    @InjectView(R.id.volume_down) ImageButton volumeDownButton;
-    @InjectView(R.id.volume_up) ImageButton volumeUpButton;
     @InjectView(R.id.volume_mute) ImageButton volumeMuteButton;
     @InjectView(R.id.shuffle) ImageButton shuffleButton;
     @InjectView(R.id.repeat) ImageButton repeatButton;
@@ -153,6 +151,9 @@ public class NowPlayingFragment extends Fragment
     @InjectView(R.id.media_duration) TextView mediaDuration;
     @InjectView(R.id.media_progress) TextView mediaProgress;
     @InjectView(R.id.seek_bar) SeekBar mediaSeekbar;
+
+    @InjectView(R.id.volume_bar) SeekBar volumeSeekBar;
+    @InjectView(R.id.volume_text) TextView volumeTextView;
 
     @InjectView(R.id.media_details) RelativeLayout mediaDetailsPanel;
     @InjectView(R.id.rating) TextView mediaRating;
@@ -187,11 +188,6 @@ public class NowPlayingFragment extends Fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_now_playing, container, false);
         ButterKnife.inject(this, root);
 
-        setupVolumeRepeatButton(volumeDownButton,
-                new Application.SetVolume(GlobalType.IncrementDecrement.DECREMENT));
-        setupVolumeRepeatButton(volumeUpButton,
-                new Application.SetVolume(GlobalType.IncrementDecrement.INCREMENT));
-
         // Setup dim the fanart when scroll changes
         // Full dim on 4 * iconSize dp
         Resources resources = getActivity().getResources();
@@ -222,16 +218,7 @@ public class NowPlayingFragment extends Fragment
     public void onResume() {
         super.onResume();
         hostConnectionObserver.registerPlayerObserver(this, true);
-        Application.GetProperties action = new Application.GetProperties(Application.GetProperties.MUTED);
-        action.execute(hostManager.getConnection(), new ApiCallback<ApplicationType.PropertyValue>() {
-            @Override
-            public void onSuccess(ApplicationType.PropertyValue result) {
-                setVolumeMuteButton(result.muted);
-            }
-
-            @Override
-            public void onError(int errorCode, String description) { }
-        }, callbackHandler);
+        hostConnectionObserver.registerApplicationObserver(this, true);
     }
 
     @Override
@@ -239,6 +226,7 @@ public class NowPlayingFragment extends Fragment
         super.onPause();
         stopNowPlayingInfo();
         hostConnectionObserver.unregisterPlayerObserver(this);
+        hostConnectionObserver.unregisterApplicationObserver(this);
     }
 
     /**
@@ -261,16 +249,6 @@ public class NowPlayingFragment extends Fragment
         @Override
         public void onError(int errorCode, String description) { }
     };
-
-    private void setupVolumeRepeatButton(View button, final ApiMethod<Integer> action) {
-        button.setOnTouchListener(new RepeatListener(UIUtils.initialButtonRepeatInterval, UIUtils.buttonRepeatInterval,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        action.execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
-                    }
-                }));
-    }
 
     /**
      * Callbacks for bottom button bar
@@ -317,11 +295,17 @@ public class NowPlayingFragment extends Fragment
      */
     @OnClick(R.id.volume_mute)
     public void onVolumeMuteClicked(View v) {
+        // We boldly set the mute button to the desired state before actually setting
+        // the mute state on the host. We do this to make it clear to the user that the button
+        // was pressed.
+        HostConnectionObserver.HostState hostState = hostConnectionObserver.getHostState();
+        setVolumeState(!hostState.isVolumeMuted(), hostState.getVolumeLevel());
+
         Application.SetMute action = new Application.SetMute();
         action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                setVolumeMuteButton(result);
+                //We depend on the listener to correct the mute button state
             }
 
             @Override
@@ -386,7 +370,7 @@ public class NowPlayingFragment extends Fragment
                 case R.id.audiostreams:
                     // Setup audiostream select dialog
                     String[] audiostreams = new String[(availableAudioStreams != null) ?
-                            availableAudioStreams.size() + ADDED_AUDIO_OPTIONS : ADDED_AUDIO_OPTIONS];
+                                                       availableAudioStreams.size() + ADDED_AUDIO_OPTIONS : ADDED_AUDIO_OPTIONS];
 
                     audiostreams[0] = getString(R.string.audio_sync);
 
@@ -394,21 +378,21 @@ public class NowPlayingFragment extends Fragment
                         for (int i = 0; i < availableAudioStreams.size(); i++) {
                             PlayerType.AudioStream current = availableAudioStreams.get(i);
                             audiostreams[i + ADDED_AUDIO_OPTIONS] = TextUtils.isEmpty(current.language) ?
-                                    current.name : current.language + " | " + current.name;
+                                                                    current.name : current.language + " | " + current.name;
                             if (current.index == currentAudiostreamIndex) {
                                 selectedItem = i + ADDED_AUDIO_OPTIONS;
                             }
                         }
 
                         GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
-                                SELECT_AUDIOSTREAM, getString(R.string.audiostreams), audiostreams, selectedItem);
+                                                                                     SELECT_AUDIOSTREAM, getString(R.string.audiostreams), audiostreams, selectedItem);
                         dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
                     }
                     return true;
                 case R.id.subtitles:
                     // Setup subtitles select dialog
                     String[] subtitles = new String[(availableSubtitles != null) ?
-                            availableSubtitles.size() + ADDED_SUBTITLE_OPTIONS : ADDED_SUBTITLE_OPTIONS];
+                                                    availableSubtitles.size() + ADDED_SUBTITLE_OPTIONS : ADDED_SUBTITLE_OPTIONS];
 
                     subtitles[0] = getString(R.string.download_subtitle);
                     subtitles[1] = getString(R.string.subtitle_sync);
@@ -418,7 +402,7 @@ public class NowPlayingFragment extends Fragment
                         for (int i = 0; i < availableSubtitles.size(); i++) {
                             PlayerType.Subtitle current = availableSubtitles.get(i);
                             subtitles[i + ADDED_SUBTITLE_OPTIONS] = TextUtils.isEmpty(current.language) ?
-                                    current.name : current.language + " | " + current.name;
+                                                                    current.name : current.language + " | " + current.name;
                             if (current.index == currentSubtitleIndex) {
                                 selectedItem = i + ADDED_SUBTITLE_OPTIONS;
                             }
@@ -426,7 +410,7 @@ public class NowPlayingFragment extends Fragment
                     }
 
                     GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
-                            SELECT_SUBTITLES, getString(R.string.subtitles), subtitles, selectedItem);
+                                                                                 SELECT_SUBTITLES, getString(R.string.subtitles), subtitles, selectedItem);
                     dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
                     return true;
             }
@@ -519,8 +503,8 @@ public class NowPlayingFragment extends Fragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_executing_subtitles), description),
-                        Toast.LENGTH_SHORT).show();
+                               String.format(getString(R.string.error_executing_subtitles), description),
+                               Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
     }
@@ -614,6 +598,11 @@ public class NowPlayingFragment extends Fragment
         playerNoResultsYet();
     }
 
+    @Override
+    public void applicationOnVolumeChanged(int volume, boolean muted) {
+        setVolumeState(muted, volume);
+    }
+
     // Ignore this
     public void inputOnInputRequested(String title, String type, String value) {}
     public void observerOnStopObserving() {}
@@ -679,7 +668,7 @@ public class NowPlayingFragment extends Fragment
 
                 title = getItemResult.title;
                 underTitle = Utils.listStringConcat(getItemResult.artist, ", ")
-                        + " | " + getItemResult.album;
+                             + " | " + getItemResult.album;
                 art = getItemResult.fanart;
                 poster = getItemResult.thumbnail;
 
@@ -783,6 +772,8 @@ public class NowPlayingFragment extends Fragment
         }
         styledAttributes.recycle();
 
+        volumeSeekBar.setOnSeekBarChangeListener(volumeSeekbarChangeListener);
+
         Resources resources = getActivity().getResources();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -796,7 +787,7 @@ public class NowPlayingFragment extends Fragment
 
             // If not video, change aspect ration of poster to a square
             boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
-                    (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE));
+                              (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE));
             if (!isVideo) {
                 ViewGroup.LayoutParams layoutParams = mediaPoster.getLayoutParams();
                 layoutParams.height = layoutParams.width;
@@ -805,8 +796,8 @@ public class NowPlayingFragment extends Fragment
             }
 
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                    poster, title,
-                    mediaPoster, posterWidth, posterHeight);
+                                                 poster, title,
+                                                 mediaPoster, posterWidth, posterHeight);
             UIUtils.loadImageIntoImageview(hostManager, art, mediaArt, displayMetrics.widthPixels, artHeight);
 
             // Reset padding
@@ -838,7 +829,7 @@ public class NowPlayingFragment extends Fragment
         // TODO: change this check to the commeted out one when jsonrpc returns the correct type
 //        if (getPropertiesResult.type.equals(PlayerType.PropertyValue.TYPE_VIDEO)) {
         if ((getPropertiesResult.audiostreams != null) &&
-                (getPropertiesResult.audiostreams.size() > 0)) {
+            (getPropertiesResult.audiostreams.size() > 0)) {
             overflowButton.setVisibility(View.VISIBLE);
             videoCastList.setVisibility(View.VISIBLE);
 
@@ -936,14 +927,14 @@ public class NowPlayingFragment extends Fragment
      */
     private void setDurationInfo(String type, GlobalType.Time time, GlobalType.Time totalTime, int speed) {
         mediaTotalTime = totalTime.hours * 3600 +
-                totalTime.minutes * 60 +
-                totalTime.seconds;
+                         totalTime.minutes * 60 +
+                         totalTime.seconds;
         mediaSeekbar.setMax(mediaTotalTime);
         mediaDuration.setText(UIUtils.formatTime(totalTime));
 
         mediaCurrentTime = time.hours * 3600 +
-                time.minutes * 60 +
-                time.seconds;
+                           time.minutes * 60 +
+                           time.seconds;
         mediaSeekbar.setProgress(mediaCurrentTime);
         mediaProgress.setText(UIUtils.formatTime(time));
 
@@ -955,23 +946,52 @@ public class NowPlayingFragment extends Fragment
     }
 
     /**
-     * Sets the color of the mute volume button according to the player's status
-     * @param isMuted Whether the player is muted
+     * Sets UI volume state
+     * @param muted whether volume is muted
+     * @param volume
      */
-    private void setVolumeMuteButton(Boolean isMuted) {
+    private void setVolumeState(Boolean muted, int volume) {
         if (!isAdded()) return;
-        if (isMuted) {
+
+        if (muted) {
+            volumeSeekBar.setProgress(0);
+            volumeTextView.setText(R.string.muted);
+
             Resources.Theme theme = getActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.colorAccent});
             volumeMuteButton.setColorFilter(
                     styledAttributes.getColor(0,
-                            getActivity().getResources().getColor(R.color.accent_default)));
+                                              getActivity().getResources().getColor(R.color.accent_default)));
             styledAttributes.recycle();
+
         } else {
+            volumeSeekBar.setProgress(volume);
+            volumeTextView.setText(String.valueOf(volume));
             volumeMuteButton.clearColorFilter();
         }
     }
+
+    private SeekBar.OnSeekBarChangeListener volumeSeekbarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (fromUser) {
+                volumeTextView.setText(String.valueOf(progress));
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            new Application.SetVolume(seekBar.getProgress())
+                    .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
+
+        }
+    };
 
     /**
      * Seekbar change listener. Sends seek commands to XBMC based on the seekbar position

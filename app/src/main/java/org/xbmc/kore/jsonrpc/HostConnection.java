@@ -32,6 +32,7 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.xbmc.kore.host.HostInfo;
+import org.xbmc.kore.jsonrpc.notification.Application;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.Player;
 import org.xbmc.kore.jsonrpc.notification.System;
@@ -92,6 +93,10 @@ public class HostConnection {
         public void onInputRequested(Input.OnInputRequested notification);
     }
 
+    public interface ApplicationNotificationsObserver {
+        public void onVolumeChanged(Application.OnVolumeChanged notification);
+    }
+
     /**
 	 * Host to connect too
 	 */
@@ -138,6 +143,12 @@ public class HostConnection {
      */
     private final HashMap<InputNotificationsObserver, Handler> inputNotificationsObservers =
             new HashMap<InputNotificationsObserver, Handler>();
+
+    /**
+     * The observers that will be notified of application notifications
+     */
+    private final HashMap<ApplicationNotificationsObserver, Handler> applicationNotificationsObservers =
+            new HashMap<>();
 
     private ExecutorService executorService;
 
@@ -248,6 +259,23 @@ public class HostConnection {
      */
     public void unregisterInputNotificationsObserver(InputNotificationsObserver observer) {
         inputNotificationsObservers.remove(observer);
+    }
+
+    /**
+     * Registers an observer for input notifications
+     * @param observer The {@link InputNotificationsObserver}
+     */
+    public void registerApplicationNotificationsObserver(ApplicationNotificationsObserver observer,
+                                                   Handler handler) {
+        applicationNotificationsObservers.put(observer, handler);
+    }
+
+    /**
+     * Unregisters and observer from the input notifications
+     * @param observer The {@link InputNotificationsObserver}
+     */
+    public void unregisterApplicationotificationsObserver(ApplicationNotificationsObserver observer) {
+        applicationNotificationsObservers.remove(observer);
     }
 
     /**
@@ -811,6 +839,19 @@ public class HostConnection {
                         @Override
                         public void run() {
                             observer.onInputRequested(apiNotification);
+                        }
+                    });
+                }
+            } else if (notificationName.equals(Application.OnVolumeChanged.NOTIFICATION_NAME)) {
+                final Application.OnVolumeChanged apiNotification =
+                        new Application.OnVolumeChanged(params);
+                for (final ApplicationNotificationsObserver observer :
+                        applicationNotificationsObservers.keySet()) {
+                    Handler handler = inputNotificationsObservers.get(observer);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            observer.onVolumeChanged(apiNotification);
                         }
                     });
                 }

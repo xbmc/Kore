@@ -57,10 +57,19 @@ public class Application {
         public final static String METHOD_NAME = "Application.SetVolume";
 
         /**
-         * Set the current volume
+         * Increment or decrement the volume
          * @param volume String enum in {@link org.xbmc.kore.jsonrpc.type.GlobalType.IncrementDecrement}
          */
         public SetVolume(String volume) {
+            super();
+            addParameterToRequest("volume", volume);
+        }
+
+        /**
+         * Set the volume
+         * @param volume volume between 0 and 100
+         */
+        public SetVolume(int volume) {
             super();
             addParameterToRequest("volume", volume);
         }
