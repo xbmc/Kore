@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.xbmc.kore.tests.mediaprovider;
+package org.xbmc.kore.provider.mediaprovider;
 
 import android.database.Cursor;
 

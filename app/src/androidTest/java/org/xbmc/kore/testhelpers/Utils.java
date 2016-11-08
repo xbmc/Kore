@@ -18,7 +18,6 @@ package org.xbmc.kore.testhelpers;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.IBinder;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.widget.DrawerLayout;
@@ -27,10 +26,10 @@ import android.util.Log;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.provider.MediaProvider;
+import org.xbmc.kore.testutils.Database;
 import org.xbmc.kore.utils.LogUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 
 public class Utils {
@@ -44,20 +43,6 @@ public class Utils {
 
     private static HostInfo hostInfo;
     private static Context context;
-
-    public static String readFile(Context context, String filename) throws IOException {
-        InputStream is = context.getAssets().open(filename);
-
-        int size = is.available();
-
-        byte[] buffer = new byte[size];
-
-        is.read(buffer);
-
-        is.close();
-
-        return new String(buffer, "UTF-8");
-    }
 
     public static void closeDrawer(final ActivityTestRule<?> activityTestRule) throws Throwable {
         activityTestRule.runOnUiThread(new Runnable() {
@@ -77,7 +62,11 @@ public class Utils {
 
         disableAnimations();
 
-        hostInfo = Database.fill(context);
+        MediaProvider mediaProvider = new MediaProvider();
+        mediaProvider.setContext(context);
+        mediaProvider.onCreate();
+
+        hostInfo = Database.fill(context, context.getContentResolver());
 
         HostManager.getInstance(context).switchHost(hostInfo);
         Utils.closeDrawer(activityTestRule);
@@ -86,20 +75,11 @@ public class Utils {
     }
 
     public static void cleanup() {
-        Database.flush(context, hostInfo);
+        Database.flush(context.getContentResolver(), hostInfo);
 
         enableAnimations();
 
         isInitialized = false;
-    }
-
-    public static String cursorToString(Cursor cursor) {
-        StringBuffer stringBuffer = new StringBuffer();
-        for (String name : cursor.getColumnNames()) {
-            int index = cursor.getColumnIndex(name);
-            stringBuffer.append(name + "=" + cursor.getString(index) + "\n");
-        }
-        return stringBuffer.toString();
     }
 
     private static void disableAnimations() {
@@ -136,17 +116,5 @@ public class Utils {
         } catch (Exception e) {
             Log.e("SystemAnimations", "Could not change animation scale to " + animationScale + " :'(");
         }
-    }
-
-    public static boolean moveCursorTo(Cursor cursor, int index, int item) {
-        if (( cursor == null ) || ( ! cursor.moveToFirst() ))
-            return false;
-
-        do {
-            if ( cursor.getInt(index) == item )
-                return true;
-        } while (cursor.moveToNext());
-
-        return false;
     }
 }

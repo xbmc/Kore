@@ -14,72 +14,27 @@
  * limitations under the License.
  */
 
-package org.xbmc.kore.tests.mediaprovider;
+package org.xbmc.kore.provider.mediaprovider;
 
-import android.content.ContentResolver;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.provider.MediaProvider;
-import org.xbmc.kore.testhelpers.Database;
-import org.xbmc.kore.testhelpers.TestUtils;
-import org.xbmc.kore.testhelpers.Utils;
-import org.xbmc.kore.ui.MoviesActivity;
-import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.testutils.CursorUtils;
+import org.xbmc.kore.testutils.TestUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
-@RunWith(AndroidJUnit4.class)
-public class MediaProviderMusicTest {
-    private static HostInfo hostInfo;
-    private static Context context;
-    private ContentResolver contentResolver;
-
-    /**
-     * Note that the activity MoviesActivity is only needed for context and is not tested
-     */
-    @Rule
-    public ActivityTestRule<MoviesActivity> mActivityRule = new ActivityTestRule<>(
-            MoviesActivity.class);
-
-    @Before
-    public void setUp() throws Exception {
-        context = mActivityRule.getActivity();
-
-        if (hostInfo == null) // We only need to fill the database the first time
-            hostInfo = Database.fill(context);
-
-        contentResolver = mActivityRule.getActivity().getContentResolver();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
-    @AfterClass
-    public static void cleanup() {
-        Database.flush(context, hostInfo);
-    }
+public class MediaProviderMusicTest extends AbstractTestClass {
 
     @Test
     public void queryAllArtistsTest() {
         Uri uri = MediaContract.Artists.buildArtistsListUri(hostInfo.getId());
 
-        Cursor cursor = contentResolver.query(uri, TestValues.Artist.PROJECTION, null, null, null);
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.Artist.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 227, cursor.getCount());
@@ -94,7 +49,7 @@ public class MediaProviderMusicTest {
     public void queryArtistTest() {
         Uri uri = MediaContract.Artists.buildArtistUri(hostInfo.getId(), TestValues.Artist.artistId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.Artist.PROJECTION, null, null, null);
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.Artist.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());
@@ -106,7 +61,7 @@ public class MediaProviderMusicTest {
     public void queryAllAlbumsTest() {
         Uri uri = MediaContract.Albums.buildAlbumsListUri(hostInfo.getId());
 
-        Cursor cursor = contentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 232, cursor.getCount());
@@ -120,7 +75,7 @@ public class MediaProviderMusicTest {
     public void queryAlbumTest() {
         Uri uri = MediaContract.Albums.buildAlbumUri(hostInfo.getId(), TestValues.Album.albumId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());
@@ -133,7 +88,7 @@ public class MediaProviderMusicTest {
         Uri uri = MediaContract.AlbumArtists.buildAlbumsForArtistListUri(hostInfo.getId(),
                                                                          TestValues.Artist.artistId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());
@@ -146,7 +101,7 @@ public class MediaProviderMusicTest {
         int genreId = 13;
         Uri uri = MediaContract.AlbumGenres.buildAlbumsForGenreListUri(hostInfo.getId(), genreId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 31, cursor.getCount());
@@ -162,7 +117,7 @@ public class MediaProviderMusicTest {
     public void queryAlbumSongsTest() {
         Uri uri = MediaContract.Songs.buildAlbumSongsListUri(hostInfo.getId(), TestValues.Album.albumId);
 
-        Cursor cursor = contentResolver.query(uri, new String[] {MediaProvider.Qualified.SONGS_SONGID}, null, null, null);
+        Cursor cursor = shadowContentResolver.query(uri, new String[] {MediaContract.Songs.SONGID}, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 17, cursor.getCount());
@@ -175,7 +130,7 @@ public class MediaProviderMusicTest {
         Uri uri = MediaContract.Albums.buildAlbumUri(hostInfo.getId(),
                                                      TestValues.AlbumWithoutArtist.albumId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.AlbumWithoutArtist.PROJECTION, null, null, null);
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.AlbumWithoutArtist.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());
@@ -188,7 +143,7 @@ public class MediaProviderMusicTest {
         Uri uri = MediaContract.Albums.buildAlbumUri(hostInfo.getId(),
                                                      TestValues.AlbumWithMultipleArtists.albumId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.AlbumWithMultipleArtists.PROJECTION,
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.AlbumWithMultipleArtists.PROJECTION,
                                               null, null, null);
 
         assertNotNull(cursor);
@@ -201,13 +156,13 @@ public class MediaProviderMusicTest {
     public void queryArtistSongsTest() {
         Uri uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(), TestValues.ArtistSong.artistId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.ArtistSong.PROJECTION, null, null, null);
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.ArtistSong.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 17, cursor.getCount());
         TestUtils.testCursorContainsRange(cursor, cursor.getColumnIndex(MediaContract.SongsColumns.SONGID),
                                           96, 112);
-        assertTrue(Utils.moveCursorTo(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
+        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
                                       TestValues.ArtistSong.songId));
     }
 
@@ -216,13 +171,12 @@ public class MediaProviderMusicTest {
         Uri uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(),
                                                               TestValues.SongWithArtistWithoutAlbum.artistId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.SongWithArtistWithoutAlbum.PROJECTION,
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.SongWithArtistWithoutAlbum.PROJECTION,
                                               null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());
         assertTrue(cursor.moveToFirst());
-        Utils.cursorToString(cursor);
         TestValues.SongWithArtistWithoutAlbum.test(cursor);
     }
 
@@ -231,7 +185,7 @@ public class MediaProviderMusicTest {
         Uri uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(),
                                                               TestValues.SongWithMultipleArtists.firstArtistId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.SongWithMultipleArtists.PROJECTION,
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.SongWithMultipleArtists.PROJECTION,
                                               null, null, null);
 
         assertNotNull(cursor);
@@ -245,7 +199,7 @@ public class MediaProviderMusicTest {
         Uri uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(),
                                                               TestValues.SongWithMultipleArtists.secondArtistId);
 
-        Cursor cursor = contentResolver.query(uri, TestValues.SongWithMultipleArtists.PROJECTION,
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.SongWithMultipleArtists.PROJECTION,
                                               null, null, null);
 
         assertNotNull(cursor);
@@ -259,7 +213,7 @@ public class MediaProviderMusicTest {
         Uri uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(),
                                                               TestValues.SongWithMultipleArtists.thirdArtistId);
 
-        Cursor cursor = contentResolver.query(uri,
+        Cursor cursor = shadowContentResolver.query(uri,
                                               TestValues.SongWithMultipleArtists.PROJECTION,
                                               null, null, null);
 
@@ -273,7 +227,7 @@ public class MediaProviderMusicTest {
     public void queryAllSongsTest() {
         Uri uri = MediaContract.Songs.buildSongsListUri(hostInfo.getId());
 
-         Cursor cursor = contentResolver.query(uri,
+         Cursor cursor = shadowContentResolver.query(uri,
                                               TestValues.ArtistSong.PROJECTION,
                                               null, null, null);
 
@@ -283,22 +237,22 @@ public class MediaProviderMusicTest {
                                           1, 1804);
 
         //Test if list also contains a song WITH an album AND an artist
-        assertTrue(Utils.moveCursorTo(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
-                                      TestValues.SongWithAlbumAndArtist.songId));
+        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
+                                            TestValues.SongWithAlbumAndArtist.songId));
         TestValues.SongWithAlbumAndArtist.test(cursor);
 
         //Test if list also contains a song WITHOUT an album but WITH an artist
-        assertTrue(Utils.moveCursorTo(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
+        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
                                       TestValues.SongWithArtistWithoutAlbum.songId));
         TestValues.SongWithArtistWithoutAlbum.test(cursor);
 
         //Test if list also contains a song WITH an album but WITHOUT an artist
-        assertTrue(Utils.moveCursorTo(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
+        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
                                       TestValues.SongWithAlbumWithoutArtist.songId));
         TestValues.SongWithAlbumWithoutArtist.test(cursor);
 
         //Test if list contains a song WITH MULTIPLE artists
-        assertTrue(Utils.moveCursorTo(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
+        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
                                       TestValues.SongWithMultipleArtists.songId));
         TestValues.SongWithMultipleArtists.test(cursor);
     }
@@ -308,14 +262,13 @@ public class MediaProviderMusicTest {
         Uri uri = MediaContract.Albums.buildAlbumUri(hostInfo.getId(),
                                                    TestValues.AlbumWithMultipleArtists.albumId);
 
-        Cursor cursor = contentResolver.query(uri,
+        Cursor cursor = shadowContentResolver.query(uri,
                                               TestValues.AlbumWithMultipleArtists.PROJECTION,
                                               null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());
         assertTrue(cursor.moveToFirst());
-        LogUtils.LOGD("MediaProviderMusicTest", Utils.cursorToString(cursor));
         TestValues.AlbumWithMultipleArtists.test(cursor);
     }
 
@@ -323,7 +276,7 @@ public class MediaProviderMusicTest {
     public void queryAllGenresTest() {
         Uri uri = MediaContract.AudioGenres.buildAudioGenresListUri(hostInfo.getId());
 
-        Cursor cursor = contentResolver.query(uri,
+        Cursor cursor = shadowContentResolver.query(uri,
                                               new String[] {MediaContract.AudioGenresColumns.GENREID},
                                               null, null, null);
 
