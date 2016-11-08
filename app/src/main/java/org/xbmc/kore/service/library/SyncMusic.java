@@ -269,11 +269,12 @@ public class SyncMusic extends SyncItem {
             //AudioType.FieldsSong.PLAYCOUNT, AudioType.FieldsSong.FANART,
             AudioType.FieldsSong.THUMBNAIL, AudioType.FieldsSong.FILE,
             AudioType.FieldsSong.ALBUMID,
-            //AudioType.FieldsSong.LASTPLAYED, AudioType.FieldsSong.DISC,
+            //AudioType.FieldsSong.LASTPLAYED,
+            AudioType.FieldsSong.DISC,
             //AudioType.FieldsSong.GENREID,
             AudioType.FieldsSong.ARTISTID,
 //            AudioType.FieldsSong.ALBUMARTISTID,
-            AudioType.FieldsSong.DISPLAYARTIST
+            AudioType.FieldsSong.DISPLAYARTIST,
     };
 
     /**

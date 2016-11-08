@@ -337,6 +337,7 @@ public class SyncUtils {
         songValues.put(MediaContract.Songs.TRACK, song.track);
         songValues.put(MediaContract.Songs.TITLE, song.title);
         songValues.put(MediaContract.Songs.DISPLAYARTIST, song.displayartist);
+        songValues.put(MediaContract.Songs.DISC, song.disc);
 
         return songValues;
     }

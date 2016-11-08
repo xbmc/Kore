@@ -34,7 +34,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
     private static final int DB_VERSION_PRE_EVENT_SERVER = 4,
             DB_VERSION_PRE_SONG_ARTISTS = 5,
             DB_VERSION_PRE_SONG_DISPLAY_ARTIST = 6,
-            DB_VERSION = 7;
+            DB_VERSION_PRE_SONG_DISC = 7,
+            DB_VERSION = 8;
 
 	/**
 	 * Tables exposed
@@ -355,6 +356,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.SyncColumns.UPDATED + " INTEGER NOT NULL," +
                    MediaContract.SongsColumns.HOST_ID + " INTEGER NOT NULL " + References.HOST_ID + ", " +
                    MediaContract.SongsColumns.ALBUMID + " INTEGER NOT NULL, " +
+                   MediaContract.SongsColumns.DISC + " INTEGER NOT NULL, " +
                    MediaContract.SongsColumns.SONGID + " INTEGER NOT NULL, " +
                    MediaContract.SongsColumns.DURATION + " INTEGER, " +
                    MediaContract.SongsColumns.THUMBNAIL + " TEXT, " +
@@ -490,6 +492,10 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE " + Tables.SONGS +
                            " ADD COLUMN " + MediaContract.SongsColumns.DISPLAYARTIST +
                            " TEXT;");
+            case DB_VERSION_PRE_SONG_DISC:
+                db.execSQL("ALTER TABLE " + Tables.SONGS +
+                           " ADD COLUMN " + MediaContract.SongsColumns.DISC +
+                           " INTEGER DEFAULT 1;");
         }
 	}
 

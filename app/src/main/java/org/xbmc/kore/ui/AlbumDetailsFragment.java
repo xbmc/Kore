@@ -754,10 +754,11 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                 MediaContract.Songs.DURATION,
                 MediaContract.Songs.FILE,
                 MediaContract.Songs.SONGID,
-                MediaContract.Songs.DISPLAYARTIST
+                MediaContract.Songs.DISPLAYARTIST,
+                MediaContract.Songs.DISC
         };
 
-        String SORT = MediaContract.Songs.TRACK + " ASC";
+        String SORT = MediaContract.Songs.DISC + " ASC, " + MediaContract.Songs.TRACK + " ASC";
 
         int ID = 0;
         int TITLE = 1;
@@ -766,5 +767,6 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
         int FILE = 4;
         int SONGID = 5;
         int ARTIST = 6;
+        int DISC = 7;
     }
 }
