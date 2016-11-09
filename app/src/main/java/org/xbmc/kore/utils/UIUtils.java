@@ -18,11 +18,14 @@ package org.xbmc.kore.utils;
 import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -46,6 +49,7 @@ import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.RemoteActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -471,5 +475,90 @@ public class UIUtils {
         Rect containerBounds = new Rect();
         container.getHitRect(containerBounds);
         return view.getLocalVisibleRect(containerBounds);
+    }
+
+
+    /**
+     * Downloads a list of songs. Asks the user for confirmation if one or more songs
+     * already exist on the device
+     * @param context required to show the user a dialog
+     * @param songInfoList the song infos for the songs that need to be downloaded
+     * @param hostInfo the host info from which the songs should be downloaded
+     * @param callbackHandler Thread handler that should be used to handle the download result
+     */
+    public static void downloadSongs(final Context context,
+                                     final ArrayList<FileDownloadHelper.SongInfo> songInfoList,
+                                     final HostInfo hostInfo,
+                                     final Handler callbackHandler) {
+        if (songInfoList == null || songInfoList.size() == 0) {
+            Toast.makeText(context, R.string.no_songs_to_download, Toast.LENGTH_LONG);
+            return;
+        }
+
+        // Check if any file exists and whether to overwrite it
+        boolean someFilesExist = false;
+        for (FileDownloadHelper.SongInfo songInfo : songInfoList) {
+            File file = new File(songInfoList.get(0).getAbsoluteFilePath());
+            if (file.exists()) {
+                someFilesExist = true;
+                break;
+            }
+        }
+
+        if (someFilesExist) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.download)
+                   .setMessage(songInfoList.size() > 1 ? R.string.download_files_exists : R.string.download_file_exists)
+                   .setPositiveButton(R.string.overwrite,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                              FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                                               songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               callbackHandler);
+                                          }
+                                      })
+                   .setNeutralButton(R.string.download_with_new_name,
+                                     new DialogInterface.OnClickListener() {
+                                         @Override
+                                         public void onClick(DialogInterface dialog, int which) {
+                                             FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                                              songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                              callbackHandler);
+                                         }
+                                     })
+                   .setNegativeButton(android.R.string.cancel,
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) { }
+                                      })
+                   .show();
+        } else {
+            if ( songInfoList.size() > 12 ) { // No scientific reason this should be 12. I just happen to like 12.
+                String message = context.getResources().getString(R.string.confirm_songs_download);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.download)
+                       .setMessage(String.format(message, songInfoList.size()))
+                       .setPositiveButton(android.R.string.ok,
+                                          new DialogInterface.OnClickListener() {
+                                              @Override
+                                              public void onClick(DialogInterface dialog, int which) {
+                                                  FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                                                   songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                                                                   callbackHandler);
+                                              }
+                                          })
+                       .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                           }
+                       })
+                       .show();
+            } else {
+                FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                 songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                 callbackHandler);
+            }
+        }
     }
 }

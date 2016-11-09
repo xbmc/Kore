@@ -817,6 +817,8 @@ public class MediaProvider extends ContentProvider {
                 MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.YEAR;
         String ALBUMS_THUMBNAIL =
                 MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.THUMBNAIL;
+        String ALBUMS_DISPLAYARTIST =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.DISPLAYARTIST;
         String ALBUM_ARTISTS_HOST_ID =
                 MediaDatabase.Tables.ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID;
         String ALBUM_ARTISTS_ARTISTID =

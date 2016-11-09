@@ -50,7 +50,7 @@ public class FileDownloadHelper {
             NO_TVSHOW_TITLE_DIR = "No title";
 
     public static abstract class MediaInfo {
-        public final String fileName;
+        public String fileName;
 
         public MediaInfo(final String fileName) {
             this.fileName = fileName;
@@ -106,11 +106,20 @@ public class FileDownloadHelper {
      * Info for downloading songs
      */
     public static class SongInfo extends MediaInfo {
-        public final String artist;
-        public final String album;
-        public final int songId;
-        public final int track;
-        public final String title;
+        public String artist;
+        public String album;
+        public int songId;
+        public int track;
+        public String title;
+
+        public SongInfo() {
+            super(null);
+            artist = null;
+            album = null;
+            songId = -1;
+            track = -1;
+            title = null;
+        }
 
         public SongInfo(final String artist, final String album,
                         final int songId, final int track, final String title,

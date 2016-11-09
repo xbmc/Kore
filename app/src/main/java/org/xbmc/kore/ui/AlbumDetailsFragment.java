@@ -60,7 +60,6 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -107,7 +106,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
     // Album information
     private String albumDisplayArtist;
     private String albumTitle;
-    private List<FileDownloadHelper.SongInfo> songInfoList = null;
+    private ArrayList<FileDownloadHelper.SongInfo> songInfoList = null;
 
     @InjectView(R.id.exit_transition_view) View exitTransitionView;
     // Buttons
@@ -339,61 +338,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
 
     @Override
     protected void onDownload() {
-        if ((albumTitle == null) || (albumDisplayArtist == null) ||
-            (songInfoList == null) || (songInfoList.isEmpty())) {
-            // Nothing to download
-            Toast.makeText(getActivity(), R.string.no_files_to_download, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        DialogInterface.OnClickListener noopClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) { }
-                };
-
-        // Check if the directory exists and whether to overwrite it
-        File file = new File(songInfoList.get(0).getAbsoluteDirectoryPath());
-        if (file.exists()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.download)
-                   .setMessage(R.string.download_dir_exists)
-                   .setPositiveButton(R.string.overwrite,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                               songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
-                   .setNeutralButton(R.string.download_with_new_name,
-                                     new DialogInterface.OnClickListener() {
-                                         @Override
-                                         public void onClick(DialogInterface dialog, int which) {
-                                             FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                              songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                              callbackHandler);
-                                         }
-                                     })
-                   .setNegativeButton(android.R.string.cancel, noopClickListener)
-                   .show();
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.download)
-                   .setMessage(R.string.confirm_album_download)
-                   .setPositiveButton(android.R.string.ok,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                               songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
-                   .setNegativeButton(android.R.string.cancel, noopClickListener)
-                   .show();
-        }
+        UIUtils.downloadSongs(getActivity(), songInfoList, hostInfo, callbackHandler);
     }
 
     @Override
@@ -595,41 +540,10 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                             addToPlaylist(TYPE_SONG, songId);
                             return true;
                         case R.id.download:
-                            // Check if the file exists and whether to overwrite it
-                            File file = new File(songInfo.getAbsoluteFilePath());
-                            if (file.exists()) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                builder.setTitle(R.string.download)
-                                       .setMessage(R.string.download_file_exists)
-                                       .setPositiveButton(R.string.overwrite,
-                                                          new DialogInterface.OnClickListener() {
-                                                              @Override
-                                                              public void onClick(DialogInterface dialog, int which) {
-                                                                  FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                                                   songInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                                                                                   callbackHandler);
-                                                              }
-                                                          })
-                                       .setNeutralButton(R.string.download_with_new_name,
-                                                         new DialogInterface.OnClickListener() {
-                                                             @Override
-                                                             public void onClick(DialogInterface dialog, int which) {
-                                                                 FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                                                  songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                                                  callbackHandler);
-                                                             }
-                                                         })
-                                       .setNegativeButton(android.R.string.cancel,
-                                                          new DialogInterface.OnClickListener() {
-                                                              @Override
-                                                              public void onClick(DialogInterface dialog, int which) { }
-                                                          })
-                                       .show();
-                            } else {
-                                FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                 songInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                 callbackHandler);
-                            }
+                            ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
+                            songInfoList.add(songInfo);
+                            UIUtils.downloadSongs(getActivity(), songInfoList,
+                                                  hostInfo, callbackHandler);
                             return true;
                     }
                     return false;
@@ -655,9 +569,11 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                 TextView details = (TextView)songView.findViewById(R.id.details);
                 ImageView contextMenu = (ImageView)songView.findViewById(R.id.list_context_menu);
 
+                String artist = cursor.getString(AlbumSongsListQuery.ARTIST);
+
                 // Add this song to the list
                 FileDownloadHelper.SongInfo songInfo = new FileDownloadHelper.SongInfo(
-                        albumDisplayArtist,
+                        artist,
                         albumTitle,
                         cursor.getInt(AlbumSongsListQuery.SONGID),
                         cursor.getInt(AlbumSongsListQuery.TRACK),
@@ -670,7 +586,6 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
 
                 trackNumber.setText(String.valueOf(songInfo.track));
 
-                String artist = cursor.getString(AlbumSongsListQuery.ARTIST);
                 String duration = UIUtils.formatTime(cursor.getInt(AlbumSongsListQuery.DURATION));
                 String detailsText = TextUtils.isEmpty(artist) ? duration : duration + "  |  " + artist;
                 details.setText(detailsText);
