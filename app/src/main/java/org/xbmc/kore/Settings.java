@@ -45,7 +45,10 @@ public class Settings {
             SORT_BY_DATE_ADDED = 1,
             SORT_BY_RATING = 2,
             SORT_BY_YEAR = 3,
-            SORT_BY_LENGTH = 4;
+            SORT_BY_LENGTH = 4,
+            SORT_BY_ALBUM = 5,
+            SORT_BY_ARTIST = 6,
+            SORT_BY_ARTIST_YEAR = 7 ;
 
     /**
      * Preferences keys.
@@ -87,6 +90,10 @@ public class Settings {
     // Sort order on movies
     public static final String KEY_PREF_MOVIES_SORT_ORDER = "movies_sort_order";
     public static final int DEFAULT_PREF_MOVIES_SORT_ORDER = SORT_BY_NAME;
+
+    // Sort order on albums
+    public static final String KEY_PREF_ALBUMS_SORT_ORDER = "albums_sort_order";
+    public static final int DEFAULT_PREF_ALBUMS_SORT_ORDER = SORT_BY_ALBUM;
 
     // Ignore articles on movie sorting
     public static final String KEY_PREF_MOVIES_IGNORE_PREFIXES = "movies_ignore_prefixes";

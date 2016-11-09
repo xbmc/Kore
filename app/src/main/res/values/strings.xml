@@ -388,5 +388,8 @@
     <string name="write_storage_permission_denied">Permission denied. Won\'t be able to download files.</string>
 
     <string name="no_songs_to_download">No songs to download</string>
+    <string name="by_album">By album</string>
+    <string name="by_artist">By artist</string>
+    <string name="by_artist_and_year">By artist and year</string>
 
 </resources>

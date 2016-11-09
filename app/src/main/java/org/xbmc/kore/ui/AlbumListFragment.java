@@ -18,14 +18,18 @@ package org.xbmc.kore.ui;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +39,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
@@ -93,6 +98,64 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.album_list, menu);
+
+        MenuItem sortByAlbum = menu.findItem(R.id.action_sort_by_album),
+                sortByArtist = menu.findItem(R.id.action_sort_by_artist),
+                sortByArtistYear = menu.findItem(R.id.action_sort_by_artist_year);
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        int sortOrder = preferences.getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
+        switch (sortOrder) {
+            case Settings.SORT_BY_ALBUM:
+                sortByAlbum.setChecked(true);
+                break;
+            case Settings.SORT_BY_ARTIST:
+                sortByArtist.setChecked(true);
+                break;
+            case Settings.SORT_BY_ARTIST_YEAR:
+                sortByArtistYear.setChecked(true);
+                break;
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        switch (item.getItemId()) {
+            case R.id.action_sort_by_album:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                           .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ALBUM)
+                           .apply();
+                refreshList();
+                break;
+            case R.id.action_sort_by_artist:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                           .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ARTIST)
+                           .apply();
+                refreshList();
+                break;
+            case R.id.action_sort_by_artist_year:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                           .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ARTIST_YEAR)
+                           .apply();
+                refreshList();
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onListItemClicked(View view) {
         // Get the movie id from the tag
         ViewHolder tag = (ViewHolder) view.getTag();
@@ -127,8 +190,20 @@ public class AlbumListFragment extends AbstractCursorListFragment {
             selectionArgs = new String[] {"%" + searchFilter + "%"};
         }
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        String sortOrderStr;
+        int sortOrder = preferences.getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
+        if (sortOrder == Settings.SORT_BY_ARTIST) {
+            sortOrderStr = AlbumListQuery.SORT_BY_ARTIST;
+        } else if (sortOrder == Settings.SORT_BY_ARTIST_YEAR) {
+            sortOrderStr = AlbumListQuery.SORT_BY_ARTIST_YEAR;
+        } else {
+            sortOrderStr = AlbumListQuery.SORT_BY_ALBUM;
+        }
+
         return new CursorLoader(getActivity(), uri,
-                AlbumListQuery.PROJECTION, selection, selectionArgs, AlbumListQuery.SORT);
+                AlbumListQuery.PROJECTION, selection, selectionArgs, sortOrderStr);
     }
 
     @Override
@@ -175,7 +250,10 @@ public class AlbumListFragment extends AbstractCursorListFragment {
                 MediaContract.Albums.RATING,
         };
 
-        String SORT = MediaDatabase.sortCommonTokens(MediaContract.Albums.TITLE) + " ASC";
+        String SORT_BY_ALBUM = MediaDatabase.sortCommonTokens(MediaContract.Albums.TITLE) + " ASC";
+        String SORT_BY_ARTIST = MediaDatabase.sortCommonTokens(MediaContract.Albums.DISPLAYARTIST) + " ASC";
+        String SORT_BY_ARTIST_YEAR = MediaDatabase.sortCommonTokens(MediaContract.Albums.DISPLAYARTIST)
+                                     + " ASC, " + MediaContract.Albums.YEAR + " ASC";
 
         final int ID = 0;
         final int ALBUMID = 1;
