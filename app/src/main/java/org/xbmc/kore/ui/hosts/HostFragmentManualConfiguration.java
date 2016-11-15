@@ -386,10 +386,6 @@ public class HostFragmentManualConfiguration extends Fragment {
         } else {
             hostConnectionChecked(hostInfo);
         }
-        PreferenceManager.getDefaultSharedPreferences(getActivity())
-                         .edit()
-                         .putBoolean(Settings.KEY_PREF_CHECKED_EVENT_SERVER_CONNECTION, true)
-                         .apply();
     }
 
     /**

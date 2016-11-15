@@ -189,8 +189,6 @@ public class RemoteActivity extends BaseActivity
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-
-        checkPVREnabledAndSetMenuItems();
     }
 
     @Override
@@ -199,25 +197,6 @@ public class RemoteActivity extends BaseActivity
         if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
     }
-
-    // TODO: Remove this method after deployment of 2.0.0, as it is only needed to
-    // facilitate the transition by checking if PVR is enabled and set the side menu
-    // items accordingly
-    private void checkPVREnabledAndSetMenuItems() {
-        if (hostManager.getHostInfo() == null) return;
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        // Check if PVR is enabled for the current host
-        String prefKey = Settings.KEY_PREF_CHECKED_PVR_ENABLED + String.valueOf(hostManager.getHostInfo().getId());
-        boolean checkedPVREnabled = sp.getBoolean(prefKey, Settings.DEFAULT_PREF_CHECKED_PVR_ENABLED);
-        if (!checkedPVREnabled) {
-            AddHostFragmentFinish.checkPVREnabledAndSetMenuItems(this, new Handler());
-            sp.edit()
-              .putBoolean(prefKey, true)
-              .apply();
-        }
-    }
-
 
     /**
      * Override hardware volume keys and send to Kodi

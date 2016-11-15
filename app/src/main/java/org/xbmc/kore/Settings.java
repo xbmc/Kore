@@ -127,12 +127,6 @@ public class Settings {
     public static final String KEY_PREF_CURRENT_HOST_ID = "current_host_id";
     public static final int DEFAULT_PREF_CURRENT_HOST_ID = -1;
 
-    public static final String KEY_PREF_CHECKED_EVENT_SERVER_CONNECTION = "checked_event_server_connection";
-    public static final boolean DEFAULT_PREF_CHECKED_EVENT_SERVER_CONNECTION = false;
-
-    public static final String KEY_PREF_CHECKED_PVR_ENABLED = "checked_pvr_enabled";
-    public static final boolean DEFAULT_PREF_CHECKED_PVR_ENABLED = false;
-
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
     public static String getNavDrawerItemsPrefKey(int hostId) {
         return Settings.KEY_PREF_NAV_DRAWER_ITEMS + hostId;
