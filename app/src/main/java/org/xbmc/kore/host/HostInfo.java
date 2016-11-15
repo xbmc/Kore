@@ -16,6 +16,7 @@
 package org.xbmc.kore.host;
 
 import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -49,7 +50,12 @@ public class HostInfo {
 	 */
 	public static final int DEFAULT_EVENT_SERVER_PORT = 9777;
 
-	/**
+    public static final int DEFAULT_KODI_VERSION_MAJOR = 16;
+    public static final int DEFAULT_KODI_VERSION_MINOR = 1;
+    public static final String DEFAULT_KODI_VERSION_REVISION = "Unknown";
+    public static final String DEFAULT_KODI_VERSION_TAG = "stable";
+
+    /**
 	 * Internal id of the host
 	 */
 	private int id;
@@ -86,6 +92,20 @@ public class HostInfo {
 	 */
 	private int protocol;
 
+
+    /**
+     * Kodi Version
+     */
+    private int kodiVersionMajor;
+    private int kodiVersionMinor;
+    private String kodiVersionRevision;
+    private String kodiVersionTag;
+
+    /**
+     * Last time updated (in millis)
+     */
+    private long updated;
+
     private String auxImageHttpAddress;
 
     /**
@@ -102,7 +122,9 @@ public class HostInfo {
 	 */
 	public HostInfo(int id, String name, String address, int protocol, int httpPort, int tcpPort,
 					String username, String password, String macAddress, int wolPort,
-                    boolean useEventServer, int eventServerPort) {
+                    boolean useEventServer, int eventServerPort,
+                    int kodiVersionMajor, int kodiVersionMinor, String kodiVersionRevision, String kodiVersionTag,
+                    long updated) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
@@ -119,6 +141,12 @@ public class HostInfo {
 
         this.useEventServer = useEventServer;
 		this.eventServerPort = eventServerPort;
+
+        this.kodiVersionMajor = kodiVersionMajor;
+        this.kodiVersionMinor = kodiVersionMinor;
+        this.kodiVersionRevision = kodiVersionRevision;
+        this.kodiVersionTag = kodiVersionTag;
+        this.updated = updated;
 
         // For performance reasons
         this.auxImageHttpAddress = getHttpURL() + "/image/";
@@ -139,7 +167,10 @@ public class HostInfo {
                     int tcpPort, String username, String password,
                     boolean useEventServer, int eventServerPort) {
         this(-1, name, address, protocol, httpPort, tcpPort, username,
-                password, null, DEFAULT_WOL_PORT, useEventServer, eventServerPort);
+             password, null, DEFAULT_WOL_PORT, useEventServer, eventServerPort,
+             DEFAULT_KODI_VERSION_MAJOR, DEFAULT_KODI_VERSION_MINOR,
+             DEFAULT_KODI_VERSION_REVISION, DEFAULT_KODI_VERSION_TAG,
+             0);
 	}
 
     public int getId() {
@@ -198,7 +229,27 @@ public class HostInfo {
 		return eventServerPort;
 	}
 
-	/**
+    public int getKodiVersionMajor() {
+        return kodiVersionMajor;
+    }
+
+    public int getKodiVersionMinor() {
+        return kodiVersionMinor;
+    }
+
+    public String getKodiVersionRevision() {
+        return kodiVersionRevision;
+    }
+
+    public String getKodiVersionTag() {
+        return kodiVersionTag;
+    }
+
+    public long getUpdated() {
+        return updated;
+    }
+
+    /**
      * Overrides the protocol for this host info
      * @param protocol Protocol
      */
@@ -215,6 +266,22 @@ public class HostInfo {
      */
     public void setUseEventServer(boolean useEventServer) {
         this.useEventServer = useEventServer;
+    }
+
+    public void setKodiVersionMajor(int kodiVersionMajor) {
+        this.kodiVersionMajor = kodiVersionMajor;
+    }
+
+    public void setKodiVersionMinor(int kodiVersionMinor) {
+        this.kodiVersionMinor = kodiVersionMinor;
+    }
+
+    public void setKodiVersionRevision(String kodiVersionRevision) {
+        this.kodiVersionRevision = kodiVersionRevision;
+    }
+
+    public void setKodiVersionTag(String kodiVersionTag) {
+        this.kodiVersionTag = kodiVersionTag;
     }
 
     /**

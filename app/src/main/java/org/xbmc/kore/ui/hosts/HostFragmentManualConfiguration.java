@@ -39,7 +39,9 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
+import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.NetUtils;
 
@@ -375,17 +377,44 @@ public class HostFragmentManualConfiguration extends Fragment {
 
                             LogUtils.LOGD(TAG, "Check ES connection: " + success);
                             if (success) {
-                                hostConnectionChecked(hostInfo);
+                                chainCallCheckKodiVersion(hostInfo);
                             } else {
                                 hostInfo.setUseEventServer(false);
-                                hostConnectionChecked(hostInfo);
+                                chainCallCheckKodiVersion(hostInfo);
                             }
                         }
                     },
                     handler);
         } else {
-            hostConnectionChecked(hostInfo);
+            chainCallCheckKodiVersion(hostInfo);
         }
+    }
+
+    private void chainCallCheckKodiVersion(final HostInfo hostInfo) {
+        final HostConnection hostConnection = new HostConnection(hostInfo);
+        hostConnection.setProtocol(HostConnection.PROTOCOL_HTTP);
+
+        final Application.GetProperties getProperties = new Application.GetProperties(Application.GetProperties.VERSION);
+        getProperties.execute(hostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
+            @Override
+            public void onSuccess(ApplicationType.PropertyValue result) {
+                LogUtils.LOGD(TAG, "Successfully checked Kodi version.");
+                hostInfo.setKodiVersionMajor(result.version.major);
+                hostInfo.setKodiVersionMinor(result.version.minor);
+                hostInfo.setKodiVersionRevision(result.version.revision);
+                hostInfo.setKodiVersionTag(result.version.tag);
+
+                hostConnection.disconnect();
+                hostConnectionChecked(hostInfo);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                // Couldn't get Kodi version... Odd, but let's proceed anyway with the defaults
+                hostConnection.disconnect();
+                hostConnectionChecked(hostInfo);
+            }
+        }, handler);
     }
 
     /**

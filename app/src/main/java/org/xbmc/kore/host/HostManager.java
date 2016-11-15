@@ -20,8 +20,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Base64;
 
 import com.squareup.okhttp.Interceptor;
@@ -33,7 +35,11 @@ import com.squareup.picasso.Picasso;
 
 import org.xbmc.kore.BuildConfig;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.jsonrpc.method.Application;
+import org.xbmc.kore.jsonrpc.method.System;
+import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.utils.BasicAuthUrlConnectionDownloader;
 import org.xbmc.kore.utils.LogUtils;
@@ -145,8 +151,16 @@ public class HostManager {
                     boolean useEventServer = (cursor.getInt(idx++) != 0);
                     int eventServerPort = cursor.getInt(idx++);
 
-                    hosts.add(new HostInfo(id, name, address, protocol, httpPort, tcpPort,
-                            username, password, macAddress, wolPort, useEventServer, eventServerPort));
+                    int kodiVersionMajor = cursor.getInt(idx++);
+                    int kodiVersionMinor = cursor.getInt(idx++);
+                    String kodiVersionRevision = cursor.getString(idx++);
+                    String kodiVersionTag = cursor.getString(idx++);
+
+                    hosts.add(new HostInfo(
+                            id, name, address, protocol, httpPort, tcpPort,
+                            username, password, macAddress, wolPort, useEventServer, eventServerPort,
+                            kodiVersionMajor, kodiVersionMinor, kodiVersionRevision, kodiVersionTag,
+                            updated));
                 }
             }
             cursor.close();
@@ -312,9 +326,10 @@ public class HostManager {
                        hostInfo.getHttpPort(), hostInfo.getTcpPort(),
                        hostInfo.getUsername(), hostInfo.getPassword(),
                        hostInfo.getMacAddress(), hostInfo.getWolPort(),
-                       hostInfo.getUseEventServer(), hostInfo.getEventServerPort());
+                       hostInfo.getUseEventServer(), hostInfo.getEventServerPort(),
+                       hostInfo.getKodiVersionMajor(), hostInfo.getKodiVersionMinor(),
+                       hostInfo.getKodiVersionRevision(), hostInfo.getKodiVersionTag());
     }
-
 
     /**
 	 * Adds a new XBMC host to the database
@@ -329,7 +344,8 @@ public class HostManager {
 	 */
 	public HostInfo addHost(String name, String address, int protocol, int httpPort, int tcpPort,
 						   String username, String password, String macAddress, int wolPort,
-                            boolean useEventServer, int eventServerPort) {
+                            boolean useEventServer, int eventServerPort,
+                            int kodiVersionMajor, int kodiVersionMinor, String kodiVersionRevision, String kodiVersionTag) {
 
 		ContentValues values = new ContentValues();
 		values.put(MediaContract.HostsColumns.NAME, name);
@@ -343,6 +359,11 @@ public class HostManager {
         values.put(MediaContract.HostsColumns.WOL_PORT, wolPort);
         values.put(MediaContract.HostsColumns.USE_EVENT_SERVER, useEventServer);
         values.put(MediaContract.HostsColumns.EVENT_SERVER_PORT, eventServerPort);
+
+        values.put(MediaContract.HostsColumns.KODI_VERSION_MAJOR, kodiVersionMajor);
+        values.put(MediaContract.HostsColumns.KODI_VERSION_MINOR, kodiVersionMinor);
+        values.put(MediaContract.HostsColumns.KODI_VERSION_REVISION, kodiVersionRevision);
+        values.put(MediaContract.HostsColumns.KODI_VERSION_TAG, kodiVersionTag);
 
         Uri newUri = context.getContentResolver()
                             .insert(MediaContract.Hosts.CONTENT_URI, values);
@@ -379,6 +400,11 @@ public class HostManager {
         values.put(MediaContract.HostsColumns.WOL_PORT, newHostInfo.getWolPort());
         values.put(MediaContract.HostsColumns.USE_EVENT_SERVER, newHostInfo.getUseEventServer());
         values.put(MediaContract.HostsColumns.EVENT_SERVER_PORT, newHostInfo.getEventServerPort());
+
+        values.put(MediaContract.HostsColumns.KODI_VERSION_MAJOR, newHostInfo.getKodiVersionMajor());
+        values.put(MediaContract.HostsColumns.KODI_VERSION_MINOR, newHostInfo.getKodiVersionMinor());
+        values.put(MediaContract.HostsColumns.KODI_VERSION_REVISION, newHostInfo.getKodiVersionRevision());
+        values.put(MediaContract.HostsColumns.KODI_VERSION_TAG, newHostInfo.getKodiVersionTag());
 
         context.getContentResolver()
                .update(MediaContract.Hosts.buildHostUri(hostId), values, null, null);
@@ -450,6 +476,44 @@ public class HostManager {
             // So, for now, just let it be...
 //            currentPicasso.shutdown();
             currentPicasso = null;
+        }
+    }
+
+    // Check Kodi's version every 2 days
+    private final static long KODI_VERSION_CHECK_INTERVAL_MILLIS = 2 * DateUtils.DAY_IN_MILLIS;
+
+    /**
+     * Periodic checks Kodi's version and updates the DB to reflect that.
+     * This should be called somewhere that gets executed periodically
+     *
+     * @param hostInfo Host for which to check version
+     */
+    public void checkAndUpdateKodiVersion(final HostInfo hostInfo) {
+        if (hostInfo.getUpdated() + KODI_VERSION_CHECK_INTERVAL_MILLIS < java.lang.System.currentTimeMillis()) {
+            LogUtils.LOGD(TAG, "Checking Kodi version...");
+            final HostConnection hostConnection = new HostConnection(hostInfo);
+            final Application.GetProperties getProperties = new Application.GetProperties(Application.GetProperties.VERSION);
+            getProperties.execute(hostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
+                @Override
+                public void onSuccess(ApplicationType.PropertyValue result) {
+                    LogUtils.LOGD(TAG, "Successfully checked Kodi version.");
+                    hostInfo.setKodiVersionMajor(result.version.major);
+                    hostInfo.setKodiVersionMinor(result.version.minor);
+                    hostInfo.setKodiVersionRevision(result.version.revision);
+                    hostInfo.setKodiVersionTag(result.version.tag);
+
+                    editHost(hostInfo.getId(), hostInfo);
+
+                    hostConnection.disconnect();
+                }
+
+                @Override
+                public void onError(int errorCode, String description) {
+                    // Couldn't get Kodi version... Ignore
+                    LogUtils.LOGD(TAG, "Couldn't get Kodi version. Error: " + description);
+                    hostConnection.disconnect();
+                }
+            }, new Handler());
         }
     }
 }

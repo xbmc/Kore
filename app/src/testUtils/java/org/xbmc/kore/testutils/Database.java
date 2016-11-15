@@ -60,7 +60,9 @@ public class Database {
 
     private static HostInfo addHost(Context context) {
         return HostManager.getInstance(context).addHost("TestHost", "127.0.0.1", 1, 80, 9090, null,
-                                                        null, "52:54:00:12:35:02", 9, false, 9777);
+                                                        null, "52:54:00:12:35:02", 9, false, 9777,
+                                                        HostInfo.DEFAULT_KODI_VERSION_MAJOR, HostInfo.DEFAULT_KODI_VERSION_MINOR,
+                                                        HostInfo.DEFAULT_KODI_VERSION_REVISION, HostInfo.DEFAULT_KODI_VERSION_TAG);
     }
 
     public static void insertMovies(Context context, ContentResolver contentResolver, int hostId)

@@ -35,7 +35,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
             DB_VERSION_PRE_SONG_ARTISTS = 5,
             DB_VERSION_PRE_SONG_DISPLAY_ARTIST = 6,
             DB_VERSION_PRE_SONG_DISC = 7,
-            DB_VERSION = 8;
+            DB_VERSION_PRE_HOST_VERSION = 8,
+            DB_VERSION = 9;
 
 	/**
 	 * Tables exposed
@@ -151,7 +152,12 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.HostsColumns.MAC_ADDRESS + " TEXT, " +
                    MediaContract.HostsColumns.WOL_PORT + " INTEGER, " +
                    MediaContract.HostsColumns.USE_EVENT_SERVER + " INTEGER, " +
-                   MediaContract.HostsColumns.EVENT_SERVER_PORT + " INTEGER)"
+                   MediaContract.HostsColumns.EVENT_SERVER_PORT + " INTEGER, " +
+
+                   MediaContract.HostsColumns.KODI_VERSION_MAJOR + " INTEGER, " +
+                   MediaContract.HostsColumns.KODI_VERSION_MINOR + " INTEGER, " +
+                   MediaContract.HostsColumns.KODI_VERSION_REVISION + " TEXT, " +
+                   MediaContract.HostsColumns.KODI_VERSION_TAG + " TEXT)"
 		);
 
         // Movies
@@ -496,6 +502,19 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE " + Tables.SONGS +
                            " ADD COLUMN " + MediaContract.SongsColumns.DISC +
                            " INTEGER DEFAULT 1;");
+            case DB_VERSION_PRE_HOST_VERSION:
+                db.execSQL("ALTER TABLE " + Tables.HOSTS +
+                           " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_MAJOR +
+                           " INTEGER DEFAULT " + String.valueOf(HostInfo.DEFAULT_KODI_VERSION_MAJOR) + ";");
+                db.execSQL("ALTER TABLE " + Tables.HOSTS +
+                           " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_MINOR +
+                           " INTEGER DEFAULT " + String.valueOf(HostInfo.DEFAULT_KODI_VERSION_MINOR) + ";");
+                db.execSQL("ALTER TABLE " + Tables.HOSTS +
+                           " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_REVISION +
+                           " TEXT DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_REVISION + ";");
+                db.execSQL("ALTER TABLE " + Tables.HOSTS +
+                           " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_TAG +
+                           " TEXT DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_TAG + ";");
         }
 	}
 
