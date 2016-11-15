@@ -59,6 +59,7 @@ public class Input {
         public final static String SHOWSUBTITLES = "showsubtitles";
         public final static String NEXTSUBTITLE = "nextsubtitle";
         public final static String CODECINFO = "codecinfo";
+        public final static String PLAYERPROCESSINFO = "playerprocessinfo";
         public final static String NEXTPICTURE = "nextpicture";
         public final static String PREVIOUSPICTURE = "previouspicture";
         public final static String ZOOMOUT = "zoomout";

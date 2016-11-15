@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.eventclient.ButtonCodes;
@@ -48,9 +49,11 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
+import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.jsonrpc.method.Player;
+import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
@@ -196,11 +199,34 @@ public class RemoteFragment extends Fragment
 
         // Other buttons
         setupDefaultButton(backButton, new Input.Back(), null);
-        setupDefaultButton(infoButton,
-                           new Input.ExecuteAction(Input.ExecuteAction.INFO),
-                           new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
         setupDefaultButton(osdButton, new Input.ExecuteAction(Input.ExecuteAction.OSD), null);
         setupDefaultButton(contextButton, new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU), null);
+
+        // Info button, v17 uses a different window to display codec info so check version number
+        Application.GetProperties getProperties = new Application.GetProperties(Application.GetProperties.VERSION);
+        getProperties.execute(hostManager.getConnection(), new ApiCallback<ApplicationType.PropertyValue>() {
+            @Override
+            public void onSuccess(ApplicationType.PropertyValue result) {
+                if (!isAdded()) return;
+                if (result.version.major < 17) {
+                    setupDefaultButton(infoButton,
+                            new Input.ExecuteAction(Input.ExecuteAction.INFO),
+                            new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
+                } else {
+                    setupDefaultButton(infoButton,
+                            new Input.ExecuteAction(Input.ExecuteAction.INFO),
+                            new Input.ExecuteAction(Input.ExecuteAction.PLAYERPROCESSINFO));
+                }
+            }
+            @Override
+            public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
+                // Something went wrong
+                Toast.makeText(getActivity(),
+                        String.format(getString(R.string.error_getting_properties), description),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, callbackHandler);
 
         adjustRemoteButtons();
 
