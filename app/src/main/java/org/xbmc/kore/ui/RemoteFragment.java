@@ -203,30 +203,16 @@ public class RemoteFragment extends Fragment
         setupDefaultButton(contextButton, new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU), null);
 
         // Info button, v17 uses a different window to display codec info so check version number
-        Application.GetProperties getProperties = new Application.GetProperties(Application.GetProperties.VERSION);
-        getProperties.execute(hostManager.getConnection(), new ApiCallback<ApplicationType.PropertyValue>() {
-            @Override
-            public void onSuccess(ApplicationType.PropertyValue result) {
-                if (!isAdded()) return;
-                if (result.version.major < 17) {
-                    setupDefaultButton(infoButton,
-                            new Input.ExecuteAction(Input.ExecuteAction.INFO),
-                            new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
-                } else {
-                    setupDefaultButton(infoButton,
-                            new Input.ExecuteAction(Input.ExecuteAction.INFO),
-                            new Input.ExecuteAction(Input.ExecuteAction.PLAYERPROCESSINFO));
-                }
-            }
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                // Something went wrong
-                Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_getting_properties), description),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }, callbackHandler);
+        HostInfo hostInfo = hostManager.getHostInfo();
+        if (hostInfo.getKodiVersionMajor() < 17) {
+            setupDefaultButton(infoButton,
+                               new Input.ExecuteAction(Input.ExecuteAction.INFO),
+                               new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
+        } else {
+            setupDefaultButton(infoButton,
+                               new Input.ExecuteAction(Input.ExecuteAction.INFO),
+                               new Input.ExecuteAction(Input.ExecuteAction.PLAYERPROCESSINFO));
+        }
 
         adjustRemoteButtons();
 
