@@ -187,15 +187,17 @@ public class RemoteFragment extends Fragment
             setupEventServerButton(rightButton, ButtonCodes.REMOTE_RIGHT);
             setupEventServerButton(upButton, ButtonCodes.REMOTE_UP);
             setupEventServerButton(downButton, ButtonCodes.REMOTE_DOWN);
-            //setupEventServerButton(selectButton, ButtonCodes.REMOTE_SELECT);
+
+            setupEventServerButton(selectButton, ButtonCodes.REMOTE_SELECT);
         } else {
             // Otherwise, use json-rpc
             setupRepeatButton(leftButton, new Input.Left());
             setupRepeatButton(rightButton, new Input.Right());
             setupRepeatButton(upButton, new Input.Up());
             setupRepeatButton(downButton, new Input.Down());
+
+            setupDefaultButton(selectButton, new Input.Select(), null);
         }
-        setupDefaultButton(selectButton, new Input.Select(), null);
 
         // Other buttons
         setupDefaultButton(backButton, new Input.Back(), null);
