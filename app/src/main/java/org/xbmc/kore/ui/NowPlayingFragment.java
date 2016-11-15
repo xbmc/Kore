@@ -471,28 +471,12 @@ public class NowPlayingFragment extends Fragment
                 switch (which) {
                     case 0:
                         // Download subtitles. First check host version to see which method to call
-                        Application.GetProperties getProperties = new Application.GetProperties(Application.GetProperties.VERSION);
-                        getProperties.execute(hostManager.getConnection(), new ApiCallback<ApplicationType.PropertyValue>() {
-                            @Override
-                            public void onSuccess(ApplicationType.PropertyValue result) {
-                                if (!isAdded()) return;
-                                // Ok, we've got a version, decide which method to call
-                                if (result.version.major < 13) {
-                                    showDownloadSubtitlesPreGotham();
-                                } else {
-                                    showDownloadSubtitlesPostGotham();
-                                }
-                            }
-
-                            @Override
-                            public void onError(int errorCode, String description) {
-                                if (!isAdded()) return;
-                                // Something went wrong
-                                Toast.makeText(getActivity(),
-                                        String.format(getString(R.string.error_getting_properties), description),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }, callbackHandler);
+                        HostInfo hostInfo = hostManager.getHostInfo();
+                        if (hostInfo.getKodiVersionMajor() < 13) {
+                            showDownloadSubtitlesPreGotham();
+                        } else {
+                            showDownloadSubtitlesPostGotham();
+                        }
                         break;
                     case 1:
                         Input.ExecuteAction syncSubtitleAction = new Input.ExecuteAction(Input.ExecuteAction.SUBTITLEDELAY);
