@@ -122,6 +122,7 @@ public class RemoteActivity extends BaseActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+            return;
         }
 
         // Set up the drawer.

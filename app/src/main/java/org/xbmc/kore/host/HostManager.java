@@ -489,6 +489,8 @@ public class HostManager {
      * @param hostInfo Host for which to check version
      */
     public void checkAndUpdateKodiVersion(final HostInfo hostInfo) {
+        if (hostInfo == null) return;
+
         if (hostInfo.getUpdated() + KODI_VERSION_CHECK_INTERVAL_MILLIS < java.lang.System.currentTimeMillis()) {
             LogUtils.LOGD(TAG, "Checking Kodi version...");
             final HostConnection hostConnection = new HostConnection(hostInfo);
