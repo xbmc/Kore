@@ -43,7 +43,7 @@ sub printRanges($\@) {
     }
 
     if ( $count == 0 ) {
-        print $current;
+        print $current if defined $current;
     } else {
         print $current - $count . "-" . $current;
     }

@@ -104,16 +104,53 @@ public class TestValues {
         }
     }
 
+    public static class AlbumWithVariousArtists {
+        public static int artistId = 229;
+        public static int albumId = 235;
+        public static String title = "Various Artists Album";
+        public static String displayArtist = "Various artists";
+
+        public static String[] PROJECTION = new String[] {MediaContract.Albums.DISPLAYARTIST,
+                                                          MediaContract.Albums.ALBUMID,
+                                                          MediaContract.Albums.TITLE,
+                                                          MediaContract.AlbumArtists.ARTISTID};
+
+        public static void test(Cursor cursor) {
+            assertEquals(albumId, cursor.getInt(cursor.getColumnIndex(MediaContract.Albums.ALBUMID)));
+            assertEquals(title, cursor.getString(cursor.getColumnIndex(MediaContract.Albums.TITLE)));
+            assertEquals(displayArtist, cursor.getString(cursor.getColumnIndex(MediaContract.Albums.DISPLAYARTIST)));
+            assertEquals(artistId, cursor.getInt(cursor.getColumnIndex(MediaContract.AlbumArtists.ARTISTID)));
+        }
+    }
+
+    public static class AlbumWithVariousArtistsNoSongArtists {
+        public static int artistId = 229;
+        public static int albumId = 236;
+        public static String title = "Various Artists Album No Song Artist";
+        public static String displayArtist = "Various artists";
+
+        public static String[] PROJECTION = AlbumWithVariousArtists.PROJECTION;
+
+        public static void test(Cursor cursor) {
+            assertEquals(albumId, cursor.getInt(cursor.getColumnIndex(MediaContract.Albums.ALBUMID)));
+            assertEquals(title, cursor.getString(cursor.getColumnIndex(MediaContract.Albums.TITLE)));
+            assertEquals(displayArtist, cursor.getString(cursor.getColumnIndex(MediaContract.Albums.DISPLAYARTIST)));
+            assertEquals(artistId, cursor.getInt(cursor.getColumnIndex(MediaContract.AlbumArtists.ARTISTID)));
+        }
+    }
+
     public static class ArtistSong {
         public static int songId = 96;
         public static int artistId = Artist.artistId;
         public static int albumId = Album.albumId;
         public static String title = "Intro & Main Title";
-        public static String[] PROJECTION = new String[] { MediaContract.Songs.SONGID,
-                                                           MediaContract.Songs.TITLE,
-                                                           MediaContract.Songs.ALBUMID,
-                                                           MediaContract.SongArtists.ARTISTID,
-                                                           MediaContract.Artists.ARTIST };
+        public static String displayArtist = "Bernstein, Charles";
+        public static String[] PROJECTION = new String[] {MediaContract.Songs.SONGID,
+                                                          MediaContract.Songs.TITLE,
+                                                          MediaContract.Songs.ALBUMID,
+                                                          MediaContract.Songs.DISPLAYARTIST,
+                                                          MediaContract.SongArtists.ARTISTID,
+                                                          MediaContract.AlbumArtists.ARTISTID };
 
         public static void test(Cursor cursor) {
             assertEquals(songId, cursor.getInt(cursor.getColumnIndex(MediaContract.Songs.SONGID)));
@@ -128,12 +165,14 @@ public class TestValues {
         public static int artistId = 195;
         public static int albumId = 201;
         public static String title = "The Lone Ranger (William Tell Overture)";
+        public static String displayartist = "ABC Orch";
 
         public static String[] PROJECTION = ArtistSong.PROJECTION;
 
         public static void test(Cursor cursor) {
             assertEquals(songId, cursor.getInt(cursor.getColumnIndex(MediaContract.Songs.SONGID)));
             assertEquals(title, cursor.getString(cursor.getColumnIndex(MediaContract.Songs.TITLE)));
+            assertEquals(displayartist, cursor.getString(cursor.getColumnIndex(MediaContract.Songs.DISPLAYARTIST)));
             assertEquals(albumId, cursor.getInt(cursor.getColumnIndex(MediaContract.Songs.ALBUMID)));
             assertEquals(artistId, cursor.getInt(cursor.getColumnIndex(MediaContract.SongArtists.ARTISTID)));
         }
@@ -161,12 +200,14 @@ public class TestValues {
         public static int artistId = 73;
         public static int albumId = 76;
         public static String title = "Unknown";
+        public static String displayartist = "The Artist";
 
         public static String[] PROJECTION = ArtistSong.PROJECTION;
 
         public static void test(Cursor cursor) {
             assertEquals(songId, cursor.getInt(cursor.getColumnIndex(MediaContract.Songs.SONGID)));
             assertEquals(title, cursor.getString(cursor.getColumnIndex(MediaContract.Songs.TITLE)));
+            assertEquals(displayartist, cursor.getString(cursor.getColumnIndex(MediaContract.Songs.DISPLAYARTIST)));
             assertEquals(albumId, cursor.getInt(cursor.getColumnIndex(MediaContract.Songs.ALBUMID)));
             assertEquals(artistId, cursor.getInt(cursor.getColumnIndex(MediaContract.SongArtists.ARTISTID)));
         }
@@ -179,6 +220,7 @@ public class TestValues {
         public static int thirdArtistId = 228;
         public static int albumId = 234;
         public static String title = "threeartists";
+        public static String displayartist = "First artist / Second artist / Third artist";
 
         public static String[] PROJECTION = ArtistSong.PROJECTION;
 
@@ -186,6 +228,7 @@ public class TestValues {
             assertEquals(songId, cursor.getInt(cursor.getColumnIndex(MediaContract.Songs.SONGID)));
             assertEquals(title, cursor.getString(cursor.getColumnIndex(MediaContract.Songs.TITLE)));
             assertEquals(albumId, cursor.getInt(cursor.getColumnIndex(MediaContract.Songs.ALBUMID)));
+            assertEquals(displayartist, cursor.getString(cursor.getColumnIndex(MediaContract.Songs.DISPLAYARTIST)));
         }
     }
 }

@@ -75155,12 +75155,240 @@
             "duration" : 5,
             "album" : "ThreeArtistsAlbum",
             "musicbrainzalbumid" : ""
+         },
+         {
+            "lyrics" : "",
+            "album" : "Various Artists Album",
+            "duration" : 5,
+            "artistid" : [
+              226
+            ],
+            "year" : 0,
+            "comment" : "",
+            "musicbrainzalbumid" : "",
+            "label" : "firstsong",
+            "genre" : [],
+            "albumartistid" : [
+              229
+            ],
+            "fanart" : "",
+            "lastplayed" : "",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Various Artists/Various Artists Album/01-firstartist.mp3",
+            "playcount" : 0,
+            "displayartist" : "First artist",
+            "musicbrainzartistid" : [],
+            "albumartist" : [
+              "Various artists"
+            ],
+            "rating" : 0,
+            "musicbrainztrackid" : "",
+            "title" : "firstsong",
+            "musicbrainzalbumartistid" : [],
+            "artist" : [
+              "First artist"
+            ],
+            "genreid" : [],
+            "albumid" : 235,
+            "track" : 1,
+            "disc" : 0,
+            "thumbnail" : "",
+            "songid" : 1805
+         },
+         {
+            "artistid" : [
+              227
+            ],
+            "duration" : 5,
+            "album" : "Various Artists Album",
+            "lyrics" : "",
+            "year" : 0,
+            "label" : "secondsong",
+            "genre" : [],
+            "albumartistid" : [
+              229
+            ],
+            "musicbrainzalbumid" : "",
+            "comment" : "",
+            "lastplayed" : "",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Various Artists/Various Artists Album/02-secondartist.mp3",
+            "fanart" : "",
+            "musicbrainzartistid" : [],
+            "displayartist" : "Second artist",
+            "playcount" : 0,
+            "albumartist" : [
+              "Various artists"
+            ],
+            "rating" : 0,
+            "musicbrainzalbumartistid" : [],
+            "artist" : [
+              "Second artist"
+            ],
+            "genreid" : [],
+            "musicbrainztrackid" : "",
+            "title" : "secondsong",
+            "songid" : 1806,
+            "track" : 2,
+            "albumid" : 235,
+            "disc" : 0,
+            "thumbnail" : ""
+         },
+         {
+            "albumartist" : [
+              "Various artists"
+            ],
+            "rating" : 0,
+            "playcount" : 0,
+            "musicbrainzartistid" : [],
+            "displayartist" : "Third artist",
+            "track" : 3,
+            "albumid" : 235,
+            "disc" : 0,
+            "thumbnail" : "",
+            "songid" : 1807,
+            "musicbrainztrackid" : "",
+            "title" : "thirdsong",
+            "genreid" : [],
+            "musicbrainzalbumartistid" : [],
+            "artist" : [
+              "Third artist"
+            ],
+            "year" : 0,
+            "lyrics" : "",
+            "album" : "Various Artists Album",
+            "artistid" : [
+              228
+            ],
+            "duration" : 5,
+            "fanart" : "",
+            "lastplayed" : "",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Various Artists/Various Artists Album/03-thirdartist.mp3",
+            "comment" : "",
+            "musicbrainzalbumid" : "",
+            "label" : "thirdsong",
+            "genre" : [],
+            "albumartistid" : [
+              229
+            ]
+         },
+         {
+            "duration" : 5,
+            "rating" : 0,
+            "musicbrainzartistid" : [],
+            "thumbnail" : "",
+            "artistid" : [
+               0
+            ],
+            "artist" : [
+               ""
+            ],
+            "comment" : "",
+            "genre" : [],
+            "albumartistid" : [
+              229
+            ],
+            "album" : "Various Artists Album No Song Artist",
+            "title" : "first song album artist no song artist",
+            "fanart" : "",
+            "lyrics" : "",
+            "year" : 0,
+            "songid" : 1808,
+            "disc" : 0,
+            "musicbrainzalbumartistid" : [],
+            "albumartist" : [
+               "Various artists"
+            ],
+            "musicbrainzalbumid" : "",
+            "label" : "first song album artist no song artist",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/music/unknown/Various Artists Album with Album Artist but no Artist/01-first_album_artist_no_song_artist.mp3",
+            "musicbrainztrackid" : "",
+            "lastplayed" : "",
+            "displayartist" : "",
+            "genreid" : [],
+            "playcount" : 0,
+            "track" : 1,
+            "albumid" :236 
+         },
+         {
+            "duration" : 5,
+            "rating" : 0,
+            "musicbrainzartistid" : [],
+            "thumbnail" : "",
+            "artistid" : [
+               0
+            ],
+            "artist" : [
+               ""
+            ],
+            "comment" : "",
+            "genre" : [],
+            "albumartistid" : [
+              229
+            ],
+            "album" : "Various Artists Album No Song Artist",
+            "title" : "second song album artist no song artist",
+            "fanart" : "",
+            "lyrics" : "",
+            "year" : 0,
+            "songid" : 1809,
+            "disc" : 0,
+            "musicbrainzalbumartistid" : [],
+            "albumartist" : [
+               "Various artists"
+            ],
+            "musicbrainzalbumid" : "",
+            "label" : "second song album artist no song artist",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/music/unknown/Various Artists Album with Album Artist but no Artist/02-second_album_artist_no_song_artist.mp3",
+            "musicbrainztrackid" : "",
+            "lastplayed" : "",
+            "displayartist" : "",
+            "genreid" : [],
+            "playcount" : 0,
+            "track" : 2,
+            "albumid" : 236
+         },
+         {
+            "duration" : 5,
+            "rating" : 0,
+            "musicbrainzartistid" : [],
+            "thumbnail" : "",
+            "artistid" : [
+               0
+            ],
+            "artist" : [
+               ""
+            ],
+            "comment" : "",
+            "genre" : [],
+            "albumartistid" : [
+              229
+            ],
+            "album" : "Various Artists Album No Song Artist",
+            "title" : "third song album artist no song artist",
+            "fanart" : "",
+            "lyrics" : "",
+            "year" : 0,
+            "songid" : 1810,
+            "disc" : 0,
+            "musicbrainzalbumartistid" : [],
+            "albumartist" : [
+               "Various artists"
+            ],
+            "musicbrainzalbumid" : "",
+            "label" : "third song album artist no song artist",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/music/unknown/Various Artists Album with Album Artist but no Artist/03-third_album_artist_no_song_artist.mp3",
+            "musicbrainztrackid" : "",
+            "lastplayed" : "",
+            "displayartist" : "",
+            "genreid" : [],
+            "playcount" : 0,
+            "track" : 3,
+            "albumid" : 236
          }
       ],
       "limits" : {
-         "end" : 1804,
+         "end" : 1809,
          "start" : 0,
-         "total" : 1804
+         "total" : 1810
       }
    },
    "jsonrpc" : "2.0"

@@ -29,6 +29,7 @@ sub sendJsonRequest($$) {
     my $json = shift;
 
     my $jsonrequest = encode_json($json);
+
     my $req = HTTP::Request->new( 'POST', $url );
     $req->header( 'Content-Type' => 'application/json-rpc' );
     $req->content( $jsonrequest );

@@ -49,8 +49,8 @@ public class RestoreSearchQueryViewPagerTest {
     private final int ARTIST_SEARCH_QUERY_LIST_SIZE = 2;
     private final String ALBUMS_SEARCH_QUERY = "tes";
     private final int ALBUM_SEARCH_QUERY_LIST_SIZE = 3;
-    private final int ARTIST_COMPLETE_LIST_SIZE = 227;
-    private final int ALBUM_COMPLETE_LIST_SIZE = 232;
+    private final int ARTIST_COMPLETE_LIST_SIZE = 228;
+    private final int ALBUM_COMPLETE_LIST_SIZE = 234;
 
     private LoaderIdlingResource loaderIdlingResource;
 

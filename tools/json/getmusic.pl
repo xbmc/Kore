@@ -20,6 +20,7 @@ use warnings;
 
 use Types::Serialiser;
 use JsonTools qw(sendJsonRequest writeJsonFile);
+use Data::Dumper;
 
 my $url = "http://127.0.0.1:8080/jsonrpc";
 
@@ -121,7 +122,7 @@ sub getGenres() {
 }
 
 sub getAlbums($) {
-    my $artist = shift;
+    my $artistid = shift;
     my $jsonrequest = {
         "jsonrpc" => "2.0",
         "method" => "AudioLibrary.GetAlbums",
@@ -152,18 +153,39 @@ sub getAlbums($) {
         "id" => "libAlbums"
     };
 
-    if ( defined $artist ) {
-	$jsonrequest->{"params"}{"filter"} = {
-                        "field" => "artist",
-                        "operator" => "is",
-                        "value" => "$artist"
-                        };
+    if ( defined $artistid ) {
+	    $jsonrequest->{"params"}->{"filter"}->{"artistid"} = $artistid;
     }
 
     return sendJsonRequest($url, $jsonrequest);
 }
 
 writeJsonFile("AudioLibrary.GetGenres.json", getGenres());
-writeJsonFile("AudioLibrary.GetArtists.json", getArtists());
-writeJsonFile("AudioLibrary.GetAlbums.json", getAlbums(undef));
+
+my $artists = getArtists();
+writeJsonFile("AudioLibrary.GetArtists.json", $artists);
+
+my $json_albums;
+my %albums_seen; #Need to filter out duplicates of various artist albums
+my $count = 0;
+for my $artist (@{$artists->{"result"}->{"artists"}}) {
+    my $albums = getAlbums($artist->{"artistid"});
+    if ( ! defined $json_albums ) {
+        $count = 1;
+        $json_albums = $albums;
+    } else {
+        for my $album (@{$albums->{"result"}->{"albums"}}) {
+            my $albumid = $album->{"albumid"};
+            if ( ! exists $albums_seen{$albumid} ) {
+                $count++;
+                push $json_albums->{"result"}->{"albums"}, $album;
+                $albums_seen{$albumid} = "";
+            }
+        }
+    }
+}
+
+$json_albums->{"result"}{"limits"} = {"end" => $count, "start" => 0, "total" => $count};
+
+writeJsonFile("AudioLibrary.GetAlbums.json", $json_albums);
 writeJsonFile("AudioLibrary.GetSongs.json", getSongs(undef));
