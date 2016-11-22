@@ -401,7 +401,7 @@ public class NowPlayingFragment extends Fragment
                         }
 
                         GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
-                                SELECT_AUDIOSTREAM, getString(R.string.audiostreams), audiostreams, selectedItem);
+                                SELECT_AUDIOSTREAM, getString(R.string.audiostreams), audiostreams, selectedItem, "+0.125s >", "< -0.125s");
                         dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
                     }
                     return true;
@@ -426,7 +426,7 @@ public class NowPlayingFragment extends Fragment
                     }
 
                     GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
-                            SELECT_SUBTITLES, getString(R.string.subtitles), subtitles, selectedItem);
+                            SELECT_SUBTITLES, getString(R.string.subtitles), subtitles, selectedItem, "+0.5s >", "< -0.5s");
                     dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
                     return true;
             }
@@ -444,6 +444,14 @@ public class NowPlayingFragment extends Fragment
             case SELECT_AUDIOSTREAM:
                 // 0 is to sync audio, other is for a specific audiostream
                 switch (which) {
+                    case -2:
+                    case -1:
+                        String action = (which == -2) ? Input.ExecuteAction.AUDIODELAYMINUS : Input.ExecuteAction.AUDIODELAYPLUS;
+                        for(int i = 0; i < 5; i++) {
+                            Input.ExecuteAction syncAudioAheadAction = new Input.ExecuteAction(action);
+                            syncAudioAheadAction.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                        }
+                        break;
                     case 0:
                         Input.ExecuteAction syncAudioAction = new Input.ExecuteAction(Input.ExecuteAction.AUDIODELAY);
                         syncAudioAction.execute(hostManager.getConnection(), new ApiCallback<String>() {
@@ -468,6 +476,14 @@ public class NowPlayingFragment extends Fragment
                 Player.SetSubtitle setSubtitle;
                 // 0 is to download subtitles, 1 is for sync, 2 is for none, other is for a specific subtitle index
                 switch (which) {
+                    case -2:
+                    case -1:
+                        String action = (which == -2) ? Input.ExecuteAction.SUBTITLEDELAYMINUS : Input.ExecuteAction.SUBTITLEDELAYPLUS;
+                        for(int i = 0; i < 5; i++) {
+                            Input.ExecuteAction syncSubtitleAheadAction = new Input.ExecuteAction(action);
+                            syncSubtitleAheadAction.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                        }
+                        break;
                     case 0:
                         // Download subtitles. First check host version to see which method to call
                         HostInfo hostInfo = hostManager.getHostInfo();
