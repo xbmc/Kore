@@ -712,7 +712,7 @@ public class MediaFileListFragment extends AbstractListFragment {
                     break;
                 case ListType.ItemBase.TYPE_ALBUM:
                 case ListType.ItemBase.TYPE_SONG:
-                    title = itemFile.title;
+                    title = itemFile.label;
                     details = itemFile.displayartist + " | " + itemFile.album;
                     artUrl = itemFile.thumbnail;
                     sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
