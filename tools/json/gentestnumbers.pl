@@ -197,41 +197,48 @@ sub printAlbumTestNumbers($$) {
     print "\n\n";
 }
 
-sub printSongTestNumbers($$) {
-    my $artistid = shift;
-    my $albumid = shift;
+sub printSongTestNumbers(\@) {
+    my $songids = shift;
+    print "Amount of songs: ", scalar @{$songids}, "\n\n";
+    print "Song ids: ";
+    my @songs = sort {$a->{"songid"} <=> $b->{"songid"}} @{$songids};
+    printRanges("songid", @songs);
+    print "\n\n";
+}
 
-    my $json_hash = decodeJson( "AudioLibrary.GetSongs.json" );
-    my $result = getSongs($json_hash);
-    print "Amount of songs: ", scalar @{$result}, "\n\n";
+sub printArtistSongsTestNumbers(\@$) {
+    my $songids = shift;
+    my $artistid = shift;
 
     my @songsforartist;
-    my @songsforalbum;
 
-    print "Song ids: ";
-
-    my @songids = sort {$a->{"songid"} <=> $b->{"songid"}} @{$result};
-    printRanges("songid", @songids);
-
-    for my $song (@songids) {
+    for my $song (@{$songids}) {
         for my $id (@{$song->{"artistid"}}) {
             if ( $id == $artistid ) {
                 push @songsforartist, $song;
             }
         }
+    }
+    print "Songs for artistid " . $artistid . ": total=" . scalar @songsforartist . ": ids=";
+    printRanges("songid", @songsforartist);
+    print "\n";
+}
+
+sub printAlbumSongsTestNumbers(\@$) {
+    my $songids = shift;
+    my $albumid = shift;
+
+    my @songsforalbum;
+
+    for my $song (@{$songids}) {
         if ( $song->{"albumid"} == $albumid ) {
             push @songsforalbum, $song;
         }
     }
-    print "\n\n";
-
-    print "Songs for artistid " . $artistid . ": total=" . scalar @songsforartist . ": ids=";
-    printRanges("songid", @songsforartist);
-    print "\n\n";
 
     print "Songs for albumid " . $albumid . ": total=" . scalar @songsforalbum . ": ids=";
     printRanges("songid", @songsforalbum);
-    print "\n\n";
+    print "\n";
 }
 
 sub printSongCornerCases() {
@@ -278,6 +285,12 @@ printArtistTestNumbers(13);
 printAlbumTestNumbers(13, 13);
 printAlbumCornerCases();
 
-printSongTestNumbers(13, 13);
+my $json_hash = decodeJson( "AudioLibrary.GetSongs.json" );
+my $result = getSongs($json_hash);
+printSongTestNumbers(@{$result});
+printArtistSongsTestNumbers(@{$result}, 232);
+printAlbumSongsTestNumbers(@{$result}, 237);
 
+print "\n\n";
 printSongCornerCases();
+

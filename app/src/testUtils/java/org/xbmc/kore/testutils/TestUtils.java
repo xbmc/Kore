@@ -49,6 +49,7 @@ public class TestUtils {
 
     /**
      * Tests if cursor contains all numbers from start until end for given column index.
+     * Including the start and end integers.
      * @param columnIndex
      * @param cursor
      * @param start

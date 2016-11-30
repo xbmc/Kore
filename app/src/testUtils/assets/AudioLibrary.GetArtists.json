@@ -4562,11 +4562,31 @@
             "musicbrainzartistid" : [
                ""
             ]
+         },
+         {
+            "instrument" : [],
+            "yearsactive" : [],
+            "label" : "Multi disc artist",
+            "died" : "",
+            "born" : "",
+            "genre" : [],
+            "fanart" : "",
+            "disbanded" : "",
+            "artist" : "Multi disc artist",
+            "description" : "",
+            "formed" : "",
+            "style" : [],
+            "artistid" : 230,
+            "mood" : [],
+            "thumbnail" : "",
+            "musicbrainzartistid" : [
+               ""
+            ]
          }
       ],
       "limits" : {
-         "total" : 227,
-         "end" : 228,
+         "total" : 228,
+         "end" : 229,
          "start" : 0
       }
    }

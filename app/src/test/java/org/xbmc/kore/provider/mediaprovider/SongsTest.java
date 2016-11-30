@@ -105,9 +105,9 @@ public class SongsTest extends AbstractTestClass {
                                                     null, null, null);
 
         assertNotNull(cursor);
-        assertEquals("cursor size ", 1810, cursor.getCount());
+        assertEquals("cursor size ", 1817, cursor.getCount());
         TestUtils.testCursorContainsRange(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
-                                          1, 1810);
+                                          1, 1817);
     }
 
     @Test
@@ -131,8 +131,6 @@ public class SongsTest extends AbstractTestClass {
                                                     TestValues.ArtistSong.PROJECTION,
                                                     null, null, null);
 
-        assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
-                                                           TestValues.SongWithArtistWithoutAlbum.songId));
         assertTrue(CursorUtils.moveCursorToFirstOccurrence(cursor, cursor.getColumnIndex(MediaContract.Songs.SONGID),
                                                            TestValues.SongWithArtistWithoutAlbum.songId));
         TestValues.SongWithArtistWithoutAlbum.test(cursor);
@@ -164,6 +162,20 @@ public class SongsTest extends AbstractTestClass {
         TestValues.SongWithMultipleArtists.test(cursor);
     }
 
+
+    @Test
+    public void queryMultidiscAlbumSongsTest() {
+        Uri uri = MediaContract.Songs.buildAlbumSongsListUri(hostInfo.getId(),
+                                                             TestValues.MultidiscAlbumSongs.albumId);
+
+        Cursor cursor = shadowContentResolver.query(uri, TestValues.MultidiscAlbumSongs.PROJECTION,
+                                                    null, null, null);
+
+        assertNotNull(cursor);
+        assertEquals("cursor size ", 7, cursor.getCount());
+        TestUtils.testCursorContainsRange(cursor, cursor.getColumnIndex(MediaContract.SongsColumns.SONGID),
+                                          1811, 1817);
+    }
 
     private void testMultipleArtistInArtistSongsList(int artistId, int songId) {
         Uri uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(),

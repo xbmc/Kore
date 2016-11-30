@@ -139,6 +139,23 @@ public class TestValues {
         }
     }
 
+    public static class MultidiscAlbumSongs {
+        public static int albumId = 237;
+        public static String title = "Multi disc album";
+        public static String displayArtist = "Multi disc artist";
+
+        public static String[] PROJECTION = MediaContract.Songs.ALL_COLUMNS;
+
+        public static void test(Cursor cursor) {
+            int resultAlbumId = cursor.getInt(cursor.getColumnIndex(MediaContract.AlbumsColumns.ALBUMID));
+            assertEquals(albumId, resultAlbumId);
+            String resultTitle = cursor.getString(cursor.getColumnIndex(MediaContract.AlbumsColumns.TITLE));
+            assertEquals(title, resultTitle);
+            String resultArtist = cursor.getString(cursor.getColumnIndex(MediaContract.AlbumsColumns.DISPLAYARTIST));
+            assertEquals(displayArtist, resultArtist);
+        }
+    }
+
     public static class ArtistSong {
         public static int songId = 96;
         public static int artistId = Artist.artistId;

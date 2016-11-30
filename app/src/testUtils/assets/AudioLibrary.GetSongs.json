@@ -75383,12 +75383,278 @@
             "playcount" : 0,
             "track" : 3,
             "albumid" : 236
-         }
+         },
+         {
+          "genreid" : [],
+          "albumartistid" : [
+            232
+          ],
+          "musicbrainztrackid" : "",
+          "duration" : 5,
+          "disc" : 1,
+          "album" : "Multi disc album",
+          "musicbrainzalbumid" : "",
+          "label" : "First disc first song",
+          "title" : "First disc first song",
+          "artistid" : [
+            232
+          ],
+          "lastplayed" : "",
+          "displayartist" : "Multi disc artist",
+          "musicbrainzalbumartistid" : [],
+          "thumbnail" : "",
+          "musicbrainzartistid" : [],
+          "comment" : "",
+          "lyrics" : "",
+          "track" : 1,
+          "year" : 0,
+          "songid" : 1811,
+          "fanart" : "",
+          "genre" : [],
+          "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Multi disc artist/Multi disc album/01-first_disc_first_track.mp3",
+          "artist" : [
+            "Multi disc artist"
+          ],
+          "playcount" : 0,
+          "albumid" : 237,
+          "rating" : 0,
+          "albumartist" : [
+            "Multi disc artist"
+          ]
+        },
+        {
+          "musicbrainzalbumid" : "",
+          "label" : "First disc second song",
+          "title" : "First disc second song",
+          "album" : "Multi disc album",
+          "disc" : 1,
+          "duration" : 5,
+          "musicbrainztrackid" : "",
+          "albumartistid" : [
+            232
+          ],
+          "genreid" : [],
+          "playcount" : 0,
+          "rating" : 0,
+          "albumartist" : [
+            "Multi disc artist"
+          ],
+          "albumid" : 237,
+          "genre" : [],
+          "fanart" : "",
+          "artist" : [
+            "Multi disc artist"
+          ],
+          "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Multi disc artist/Multi disc album/02-first_disc_second_track.mp3",
+          "year" : 0,
+          "songid" : 1812,
+          "track" : 2,
+          "lastplayed" : "",
+          "artistid" : [
+            232
+          ],
+          "thumbnail" : "",
+          "musicbrainzartistid" : [],
+          "comment" : "",
+          "musicbrainzalbumartistid" : [],
+          "lyrics" : "",
+          "displayartist" : "Multi disc artist"
+        },
+        {
+          "album" : "Multi disc album",
+          "musicbrainzalbumid" : "",
+          "title" : "Second disc first song",
+          "label" : "Second disc first song",
+          "albumartistid" : [
+            232
+          ],
+          "genreid" : [],
+          "musicbrainztrackid" : "",
+          "duration" : 5,
+          "disc" : 2,
+          "genre" : [],
+          "fanart" : "",
+          "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Multi disc artist/Multi disc album/01-second_disc_first_track.mp3",
+          "artist" : [
+            "Multi disc artist"
+          ],
+          "playcount" : 0,
+          "albumid" : 237,
+          "albumartist" : [
+            "Multi disc artist"
+          ],
+          "rating" : 0,
+          "artistid" : [
+            232
+          ],
+          "lastplayed" : "",
+          "displayartist" : "Multi disc artist",
+          "thumbnail" : "",
+          "musicbrainzartistid" : [],
+          "comment" : "",
+          "musicbrainzalbumartistid" : [],
+          "lyrics" : "",
+          "track" : 1,
+          "songid" : 1813,
+          "year" : 0
+        },
+        {
+          "albumartist" : [
+            "Multi disc artist"
+          ],
+          "rating" : 0,
+          "albumid" : 237,
+          "playcount" : 0,
+          "artist" : [
+            "Multi disc artist"
+          ],
+          "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Multi disc artist/Multi disc album/02-second_disc_second_track.mp3",
+          "genre" : [],
+          "fanart" : "",
+          "year" : 0,
+          "songid" : 1814,
+          "track" : 2,
+          "musicbrainzartistid" : [],
+          "thumbnail" : "",
+          "musicbrainzalbumartistid" : [],
+          "comment" : "",
+          "lyrics" : "",
+          "displayartist" : "Multi disc artist",
+          "lastplayed" : "",
+          "artistid" : [
+            232
+          ],
+          "label" : "Second disc second song",
+          "title" : "Second disc second song",
+          "musicbrainzalbumid" : "",
+          "album" : "Multi disc album",
+          "duration" : 5,
+          "disc" : 2,
+          "musicbrainztrackid" : "",
+          "genreid" : [],
+          "albumartistid" : [
+            232
+          ]
+        },
+        {
+          "title" : "Third disc first song",
+          "label" : "Third disc first song",
+          "musicbrainzalbumid" : "",
+          "album" : "Multi disc album",
+          "disc" : 3,
+          "duration" : 5,
+          "musicbrainztrackid" : "",
+          "genreid" : [],
+          "albumartistid" : [
+            232
+          ],
+          "rating" : 0,
+          "albumartist" : [
+            "Multi disc artist"
+          ],
+          "albumid" : 237,
+          "playcount" : 0,
+          "artist" : [
+            "Multi disc artist"
+          ],
+          "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Multi disc artist/Multi disc album/01-third_disc_first_track.mp3",
+          "genre" : [],
+          "fanart" : "",
+          "year" : 0,
+          "songid" : 1815,
+          "track" : 1,
+          "thumbnail" : "",
+          "musicbrainzalbumartistid" : [],
+          "musicbrainzartistid" : [],
+          "comment" : "",
+          "lyrics" : "",
+          "displayartist" : "Multi disc artist",
+          "lastplayed" : "",
+          "artistid" : [
+            232
+          ]
+        },
+        {
+          "album" : "Multi disc album",
+          "musicbrainzalbumid" : "",
+          "label" : "Third disc second song",
+          "title" : "Third disc second song",
+          "musicbrainztrackid" : "",
+          "genreid" : [],
+          "albumartistid" : [
+            232
+          ],
+          "duration" : 5,
+          "disc" : 3,
+          "fanart" : "",
+          "genre" : [],
+          "artist" : [
+            "Multi disc artist"
+          ],
+          "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Multi disc artist/Multi disc album/02-third_disc_second_track.mp3",
+          "playcount" : 0,
+          "albumartist" : [
+            "Multi disc artist"
+          ],
+          "rating" : 0,
+          "albumid" : 237,
+          "lastplayed" : "",
+          "artistid" : [
+            232
+          ],
+          "musicbrainzalbumartistid" : [],
+          "thumbnail" : "",
+          "musicbrainzartistid" : [],
+          "comment" : "",
+          "lyrics" : "",
+          "displayartist" : "Multi disc artist",
+          "year" : 0,
+          "songid" : 1816,
+          "track" : 2
+        },
+        {
+          "file" : "/Users/martijn/Projects/dummymediafiles/media/music/Multi disc artist/Multi disc album/03-third_disc_third_track.mp3",
+          "artist" : [
+            "Multi disc artist"
+          ],
+          "fanart" : "",
+          "genre" : [],
+          "albumid" : 237,
+          "albumartist" : [
+            "Multi disc artist"
+          ],
+          "rating" : 0,
+          "playcount" : 0,
+          "displayartist" : "Multi disc artist",
+          "thumbnail" : "",
+          "musicbrainzartistid" : [],
+          "musicbrainzalbumartistid" : [],
+          "lyrics" : "",
+          "comment" : "",
+          "artistid" : [
+            232
+          ],
+          "lastplayed" : "",
+          "track" : 3,
+          "year" : 0,
+          "songid" : 1817,
+          "album" : "Multi disc album",
+          "title" : "Third disc third song",
+          "label" : "Third disc third song",
+          "musicbrainzalbumid" : "",
+          "albumartistid" : [
+            232
+          ],
+          "genreid" : [],
+          "musicbrainztrackid" : "",
+          "duration" : 5,
+          "disc" : 3
+        }
       ],
       "limits" : {
-         "end" : 1809,
+         "end" : 1817,
          "start" : 0,
-         "total" : 1810
+         "total" : 1818
       }
    },
    "jsonrpc" : "2.0"
