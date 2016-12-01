@@ -67,7 +67,7 @@ public class JSONConnectionHandlerManager implements MockTcpServer.TcpServerConn
          * Used to get any notifications from the handler.
          * @return {@link JsonResponse} that should be sent to the client
          */
-        ArrayList<JsonResponse> getNotification();
+        ArrayList<JsonResponse> getNotifications();
 
         /**
          * Should set the state of the handler to its initial state
@@ -132,7 +132,7 @@ public class JSONConnectionHandlerManager implements MockTcpServer.TcpServerConn
 
         //Handle notifications
         for(ConnectionHandler handler : handlers) {
-            ArrayList<JsonResponse> jsonNotifications = handler.getNotification();
+            ArrayList<JsonResponse> jsonNotifications = handler.getNotifications();
             if (jsonNotifications != null) {
                 for (JsonResponse jsonResponse : jsonNotifications) {
                     stringBuffer.append(jsonResponse.toJsonString() +"\n");
@@ -140,7 +140,11 @@ public class JSONConnectionHandlerManager implements MockTcpServer.TcpServerConn
             }
         }
         responseCount++;
-        return stringBuffer.toString();
+        if (stringBuffer.length() > 0) {
+            return stringBuffer.toString();
+        } else {
+            return null;
+        }
     }
 
     /**

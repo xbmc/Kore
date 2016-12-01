@@ -66,8 +66,12 @@ public class ApplicationHandler implements JSONConnectionHandlerManager.Connecti
             jsonNotifications.add(new OnVolumeChanged(muted, volume));
     }
 
+    public int getVolume() {
+        return volume;
+    }
+
     @Override
-    public ArrayList<JsonResponse> getNotification() {
+    public ArrayList<JsonResponse> getNotifications() {
         ArrayList<JsonResponse> jsonResponses = new ArrayList<>(jsonNotifications);
         jsonNotifications.clear();
         return jsonResponses;

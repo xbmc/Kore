@@ -17,17 +17,18 @@
 package org.xbmc.kore.tests.ui;
 
 import android.support.test.espresso.Espresso;
-import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.xbmc.kore.R;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
+import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.ui.BaseMediaActivity;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickAdapterViewItem;
+import static org.xbmc.kore.testhelpers.EspressoTestUtils.rotateDevice;
 
 /**
  * Contains generic tests for all activities extending BaseMediaActivity
@@ -53,7 +54,7 @@ abstract public class BaseMediaActivityTests<T extends BaseMediaActivity> extend
      */
     @Test
     public void showArrowWhenSelectingListItem() {
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        clickAdapterViewItem(0, R.id.list);
 
         assertTrue(((T) EspressoTestUtils.getActivity()).getDrawerIndicatorIsArrow());
     }
@@ -68,7 +69,7 @@ abstract public class BaseMediaActivityTests<T extends BaseMediaActivity> extend
      */
     @Test
     public void showHamburgerWhenSelectingListItemAndReturn() {
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        clickAdapterViewItem(0, R.id.list);
         Espresso.pressBack();
 
         assertFalse(((T) EspressoTestUtils.getActivity()).getDrawerIndicatorIsArrow());
@@ -85,8 +86,8 @@ abstract public class BaseMediaActivityTests<T extends BaseMediaActivity> extend
      */
     @Test
     public void restoreArrowOnConfigurationChange() {
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
-        EspressoTestUtils.rotateDevice(getActivity());
+        clickAdapterViewItem(0, R.id.list);
+        rotateDevice(getActivity());
 
         assertTrue(((T) EspressoTestUtils.getActivity()).getDrawerIndicatorIsArrow());
     }
@@ -103,8 +104,8 @@ abstract public class BaseMediaActivityTests<T extends BaseMediaActivity> extend
      */
     @Test
     public void restoreHamburgerOnConfigurationChangeOnReturn() {
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
-        EspressoTestUtils.rotateDevice(getActivity());
+        clickAdapterViewItem(0, R.id.list);
+        rotateDevice(getActivity());
         Espresso.pressBack();
 
         assertFalse(((T) EspressoTestUtils.getActivity()).getDrawerIndicatorIsArrow());

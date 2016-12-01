@@ -19,11 +19,14 @@ package org.xbmc.kore.testhelpers;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
+import android.support.annotation.IntDef;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 
+import org.junit.internal.runners.statements.RunAfters;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -63,6 +66,11 @@ public class Utils {
                 drawerLayout.openDrawer(Gravity.LEFT);
             }
         });
+        DrawerLayout drawerLayout = (DrawerLayout) activityTestRule.getActivity().findViewById(R.id.drawer_layout);
+        while(true) {
+            if (drawerLayout.isDrawerOpen(Gravity.LEFT))
+                return;
+        }
     }
 
     public static void initialize(ActivityTestRule<?> activityTestRule, HostInfo info) throws Throwable {

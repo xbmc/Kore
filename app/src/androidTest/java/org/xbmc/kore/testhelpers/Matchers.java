@@ -24,11 +24,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.xbmc.kore.ui.widgets.RepeatModeButton;
+import org.xbmc.kore.ui.widgets.HighlightButton;
+import org.xbmc.kore.utils.UIUtils;
 
 public class Matchers {
     public static MenuItemTitleMatcher withMenuTitle(String title) {
@@ -125,6 +130,90 @@ public class Matchers {
             public void describeTo(Description description) {
                 description.appendText("withItemContent: ");
                 textMatcher.describeTo(description);
+            }
+        };
+    }
+
+    public static Matcher<View> withProgress(final int progress) {
+        return new BoundedMatcher<View, SeekBar>(SeekBar.class) {
+            @Override
+            protected boolean matchesSafely(SeekBar item) {
+                return item.getProgress() == progress;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("expected: " + progress);
+            }
+        };
+    }
+
+    public static Matcher<View> withProgress(final String progress) {
+        return new BoundedMatcher<View, TextView>(TextView.class) {
+            @Override
+            protected boolean matchesSafely(TextView item) {
+                return progress.contentEquals(item.getText());
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("expected: " + progress);
+            }
+        };
+    }
+
+    public static Matcher<View> withProgressGreaterThanOrEqual(final String time) {
+        return new BoundedMatcher<View, SeekBar>(SeekBar.class) {
+            @Override
+            protected boolean matchesSafely(SeekBar item) {
+                return item.getProgress() >= UIUtils.timeToSeconds(time);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("expected progress greater than " + time);
+            }
+        };
+    }
+
+    public static Matcher<View> withProgressGreaterThan(final int progress) {
+        return new BoundedMatcher<View, SeekBar>(SeekBar.class) {
+            @Override
+            protected boolean matchesSafely(SeekBar item) {
+                return item.getProgress() > progress;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("expected progress greater than " + progress);
+            }
+        };
+    }
+
+    public static Matcher<View> withHighlightState(final boolean highlight) {
+        return new BoundedMatcher<View, HighlightButton>(HighlightButton.class) {
+            @Override
+            protected boolean matchesSafely(HighlightButton item) {
+                return item.isHighlighted();
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("expected: " + highlight);
+            }
+        };
+    }
+
+    public static Matcher<View> withRepeatMode(final RepeatModeButton.MODE mode) {
+        return new BoundedMatcher<View, RepeatModeButton>(RepeatModeButton.class) {
+            @Override
+            protected boolean matchesSafely(RepeatModeButton item) {
+                return item.getMode() == mode;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("expected: " + mode.name());
             }
         };
     }

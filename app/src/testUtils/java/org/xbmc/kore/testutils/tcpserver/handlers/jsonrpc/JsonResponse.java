@@ -36,7 +36,7 @@ public abstract class JsonResponse {
     private static final String PARAMS_NODE = "params";
     private static final String METHOD_NODE = "method";
     private static final String DATA_NODE = "data";
-    private static final String ID_NODE = "id";
+    protected static final String ID_NODE = "id";
     private static final String JSONRPC_NODE = "jsonrpc";
 
     public enum TYPE {
@@ -167,6 +167,14 @@ public abstract class JsonResponse {
         }
     }
 
+    /**
+     * Adds the value to the array in node with the given key.
+     * If the array does not exist it will be created
+     * and added.
+     * @param node ObjectNode that should contain an entry with key with an array as value
+     * @param key the key of the item in ObjectNode that should hold the array
+     * @param value the value to be added to the array
+     */
     protected void addToArrayNode(ObjectNode node, String key, ObjectNode value) {
         JsonNode jsonNode = node.get(key);
         if (jsonNode == null) {
@@ -187,6 +195,10 @@ public abstract class JsonResponse {
 
     protected void addDataToResponse(String parameter, int value) {
         getDataNode().put(parameter, value);
+    }
+
+    protected void addDataToResponse(String parameter, ObjectNode node) {
+        getDataNode().set(parameter, node);
     }
 
     protected void addParameterToResponse(String parameter, String value) {
