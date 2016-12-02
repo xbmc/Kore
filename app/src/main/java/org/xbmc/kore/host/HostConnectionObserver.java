@@ -326,7 +326,7 @@ public class HostConnectionObserver
      * Unregisters a previously registered observer
      * @param observer Observer to unregister
      */
-    public void unregisterApplicationObserver(PlayerEventsObserver observer) {
+    public void unregisterApplicationObserver(ApplicationEventsObserver observer) {
         applicationEventsObservers.remove(observer);
 
         LogUtils.LOGD(TAG, "Unregistering application observer " + observer.getClass().getSimpleName() +
