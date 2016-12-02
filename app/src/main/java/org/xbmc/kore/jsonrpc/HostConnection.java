@@ -847,7 +847,7 @@ public class HostConnection {
                         new Application.OnVolumeChanged(params);
                 for (final ApplicationNotificationsObserver observer :
                         applicationNotificationsObservers.keySet()) {
-                    Handler handler = inputNotificationsObservers.get(observer);
+                    Handler handler = applicationNotificationsObservers.get(observer);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
