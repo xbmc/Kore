@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
    Copyright 2015 Synced Synapse. All rights reserved.
+
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
+
       http://www.apache.org/licenses/LICENSE-2.0
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -270,9 +273,11 @@
     <string name="confirm_episode_download">Ar tikrai norite atsisiųsti šį epizodą?\nEpizodas bus atsiųstas fone, tačiau tai gali užtrukti.</string>
     <string name="confirm_album_download">Ar tikrai norite atsisiųsti šį albumą?\nAlbumas bus atsiųstas fone, tačiau tai gali užtrukti.</string>
     <string name="confirm_artist_download">Ar tikrai norite atsisiųsti visus albumus?\nAlbumai bus atsiųsti fone, tačiau tai gali užtrukti.</string>
+    <string name="confirm_songs_download">Ar tikrai norite atsisiųsti %1$d dainų?\nDainos bus atsiųstos fone, Tačiau tai gali užtrukti.</string>
 
     <string name="download_file_exists">Failas jau egzistuoja.\nNorite jį perrašyti ar išsaugoti kitu vardu?</string>
     <string name="download_dir_exists">Atsiuntimo aplankas jau egzistuoja.\nJei kurių nors failų vardai sutaps, norite juos perrašyti ar išsaugoti kitais vardais?</string>
+    <string name="download_files_exists">Vienas ar daugiau failų jau egzistuoja.\nJei kurie nors failai turi tą patį pavadinimą, norite juos perrašyti ir išsaugoti kitu pavadinimu?</string>
     <string name="overwrite">Perrašyti</string>
     <string name="download_with_new_name">Naujas vardas</string>
     <string name="download_file_description">Atsisiųsta iš jūsų media centro</string>
@@ -323,17 +328,19 @@
 
     <string name="switch_to_remote">Atidaryti pultą paleidus media</string>
     <string name="keep_remote_above_lockscreen">Rodyti pultą užrakintame ekrane</string>
+    <string name="pref_keep_screen_on">Laikyti ekraną įjungtą naudojant pultą</string>
     <string name="show_notification">Rodyti pranešimus atkūrimo metu</string>
     <string name="pause_during_calls">Pristabdyti atkūrimą skambučio metu</string>
     <string name="use_hardware_volume_keys">Naudoti garsumo mygtukus garsumo valdymui</string>
     <string name="vibrate_on_remote">Vibruoti paspaudus pulto mygtuką</string>
     <string name="nav_drawer_items">Šoninio meniu nuorodos</string>
 
-    <string name="about">About</string>
+    <string name="about">Apie</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2015 XBMC Foundation.<br><br>
         Įvertinkite mus <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
-        Jei reikia pagalbos, apsilankykite <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
+
+        Jei reikia pagalbos, apsilankykite <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forume</a></b>
     ]]></string>
 
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
@@ -381,5 +388,11 @@
 
     <string name="read_phone_state_permission_denied">Leidimas nesuteiktas. Nebus įmanoma pristabdyti atkūrimo skambučių metu.</string>
     <string name="write_storage_permission_denied">Leidimas nesuteiktas. Nebus įmanoma atsisiųsti failų.</string>
+
+    <string name="no_songs_to_download">Nėra dainų atsisiuntimui</string>
+    <string name="by_album">Pagal albumą</string>
+    <string name="by_artist">Pagal atlikėją</string>
+    <string name="by_artist_and_year"Pagal atlikėją ir metus</string>
+    <string name="muted">nutildyta</string>
 
 </resources>
