@@ -340,7 +340,7 @@ public class PlaylistFragment extends Fragment
 
     private void displayPlaylist(final ListType.ItemsAll getItemResult,
                                  final List<ListType.ItemsAll> playlistItems) {
-        if (playlistItems.size() == 0) {
+        if (playlistItems.isEmpty()) {
             displayEmptyPlaylistMessage();
             return;
         }
@@ -457,10 +457,11 @@ public class PlaylistFragment extends Fragment
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.appCardBackgroundColor,
                     R.attr.appSelectedCardBackgroundColor});
-            cardBackgroundColor = styledAttributes.getColor(0,
-                                                            getResources().getColor(R.color.dark_content_background));
-            selectedCardBackgroundColor = styledAttributes.getColor(1,
-                                                                    getResources().getColor(R.color.dark_selected_content_background));
+            Resources resources = getResources();
+            cardBackgroundColor =
+                    styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.dark_content_background));
+            selectedCardBackgroundColor =
+                    styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.dark_selected_content_background));
             styledAttributes.recycle();
         }
 

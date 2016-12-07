@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -27,6 +28,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -38,9 +41,7 @@ import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.eventclient.EventServerConnection;
 import org.xbmc.kore.host.HostConnectionObserver;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -56,7 +57,7 @@ import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
-import org.xbmc.kore.service.NotificationService;
+import org.xbmc.kore.service.ConnectionObserversManagerService;
 import org.xbmc.kore.ui.hosts.AddHostActivity;
 import org.xbmc.kore.ui.hosts.AddHostFragmentFinish;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
@@ -79,6 +80,11 @@ public class RemoteActivity extends BaseActivity
         NowPlayingFragment.NowPlayingListener,
         SendTextDialogFragment.SendTextDialogListener {
 	private static final String TAG = LogUtils.makeLogTag(RemoteActivity.class);
+
+
+    private static final int NOWPLAYING_FRAGMENT_ID = 1;
+    private static final int REMOTE_FRAGMENT_ID = 2;
+    private static final int PLAYLIST_FRAGMENT_ID = 3;
 
     /**
      * Host manager singleton
@@ -116,6 +122,7 @@ public class RemoteActivity extends BaseActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+            return;
         }
 
         // Set up the drawer.
@@ -125,9 +132,9 @@ public class RemoteActivity extends BaseActivity
 
         // Set up pager and fragments
         TabsAdapter tabsAdapter = new TabsAdapter(this, getSupportFragmentManager())
-                .addTab(NowPlayingFragment.class, null, R.string.now_playing, 1)
-                .addTab(RemoteFragment.class, null, R.string.remote, 2)
-                .addTab(PlaylistFragment.class, null, R.string.playlist, 3);
+                .addTab(NowPlayingFragment.class, null, R.string.now_playing, NOWPLAYING_FRAGMENT_ID)
+                .addTab(RemoteFragment.class, null, R.string.remote, REMOTE_FRAGMENT_ID)
+                .addTab(PlaylistFragment.class, null, R.string.playlist, PLAYLIST_FRAGMENT_ID);
 
         viewPager.setAdapter(tabsAdapter);
         pageIndicator.setViewPager(viewPager);
@@ -137,6 +144,9 @@ public class RemoteActivity extends BaseActivity
         viewPager.setOffscreenPageLimit(2);
 
         setupActionBar();
+
+        // Periodic Check of Kodi version
+        hostManager.checkAndUpdateKodiVersion(hostManager.getHostInfo());
 
         // If we should start playing something
 
@@ -173,7 +183,16 @@ public class RemoteActivity extends BaseActivity
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         }
 
-        checkPVREnabledAndSetMenuItems();
+        // Check whether we should keep the screen on
+        boolean keepScreenOn = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_KEEP_SCREEN_ON,
+                            Settings.DEFAULT_KEY_PREF_KEEP_SCREEN_ON);
+        if (keepScreenOn) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
     }
 
     @Override
@@ -182,25 +201,6 @@ public class RemoteActivity extends BaseActivity
         if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
     }
-
-    // TODO: Remove this method after deployment of 2.0.0, as it is only needed to
-    // facilitate the transition by checking if PVR is enabled and set the side menu
-    // items accordingly
-    private void checkPVREnabledAndSetMenuItems() {
-        if (hostManager.getHostInfo() == null) return;
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        // Check if PVR is enabled for the current host
-        String prefKey = Settings.KEY_PREF_CHECKED_PVR_ENABLED + String.valueOf(hostManager.getHostInfo().getId());
-        boolean checkedPVREnabled = sp.getBoolean(prefKey, Settings.DEFAULT_PREF_CHECKED_PVR_ENABLED);
-        if (!checkedPVREnabled) {
-            AddHostFragmentFinish.checkPVREnabledAndSetMenuItems(this, new Handler());
-            sp.edit()
-              .putBoolean(prefKey, true)
-              .apply();
-        }
-    }
-
 
     /**
      * Override hardware volume keys and send to Kodi
@@ -323,7 +323,7 @@ public class RemoteActivity extends BaseActivity
 
 
     private void setupActionBar() {
-        setToolbarTitle(toolbar, 1);
+        setToolbarTitle(toolbar, NOWPLAYING_FRAGMENT_ID);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -369,16 +369,17 @@ public class RemoteActivity extends BaseActivity
         }
 
         final String videoId = getVideoId(videoUri);
-        if (videoId == null) {
-            Toast.makeText(RemoteActivity.this,
-                    R.string.error_share_video,
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        final String kodiAddonUrl = "plugin://plugin.video." +
+        String videoUrl;
+        if (videoId != null) {
+            videoUrl = "plugin://plugin.video." +
                 (videoUri.getHost().endsWith("vimeo.com") ? "vimeo" : "youtube") +
                 "/play/?video_id=" + videoId;
+
+        } else {
+            videoUrl = videoUri.toString();
+        }
+
+        final String fvideoUrl = videoUrl;
 
         // Check if any video player is active and clear the playlist before queuing if so
         final HostConnection connection = hostManager.getConnection();
@@ -396,9 +397,9 @@ public class RemoteActivity extends BaseActivity
 
                 if (!videoIsPlaying) {
                     // Clear the playlist
-                    clearPlaylistAndQueueFile(kodiAddonUrl, connection, callbackHandler);
+                    clearPlaylistAndQueueFile(fvideoUrl, connection, callbackHandler);
                 } else {
-                    queueFile(kodiAddonUrl, false, connection, callbackHandler);
+                    queueFile(fvideoUrl, false, connection, callbackHandler);
                 }
             }
 
@@ -472,13 +473,7 @@ public class RemoteActivity extends BaseActivity
                     }, callbackHandler);
                 }
 
-                // Force a refresh of the playlist fragment
-                String tag = "android:switcher:" + viewPager.getId() + ":" + 3;
-                PlaylistFragment playlistFragment = (PlaylistFragment)getSupportFragmentManager()
-                        .findFragmentByTag(tag);
-                if (playlistFragment != null) {
-                    playlistFragment.forceRefreshPlaylist();
-                }
+                refreshPlaylist();
             }
 
             @Override
@@ -619,15 +614,32 @@ public class RemoteActivity extends BaseActivity
         }
         lastImageUrl = imageUrl;
 
-        // Check whether we should show a notification
-        boolean showNotification = PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION, Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
-        if (showNotification) {
-            // Let's start the notification service
-            LogUtils.LOGD(TAG, "Starting notification service");
-            startService(new Intent(this, NotificationService.class));
-        }
+        // Start service that manages connection observers
+        LogUtils.LOGD(TAG, "Starting observer service");
+        startService(new Intent(this, ConnectionObserversManagerService.class));
+
+
+//        // Check whether we should show a notification
+//        boolean showNotification = PreferenceManager
+//                .getDefaultSharedPreferences(this)
+//                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION,
+//                            Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
+//        if (showNotification) {
+//            // Let's start the notification service
+//            LogUtils.LOGD(TAG, "Starting notification service");
+//            startService(new Intent(this, NotificationObserver.class));
+//        }
+//
+//        // Check whether we should react to phone state changes
+//        boolean shouldPause = PreferenceManager
+//                .getDefaultSharedPreferences(this)
+//                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+//                            Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+//        if (shouldPause) {
+//            // Let's start the listening service
+//            LogUtils.LOGD(TAG, "Starting phone state listener");
+//            startService(new Intent(this, PauseCallObserver.class));
+//        }
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
@@ -637,6 +649,7 @@ public class RemoteActivity extends BaseActivity
     }
 
     public void playerOnStop() {
+        LogUtils.LOGD(TAG, "Player stopping");
         if (lastImageUrl != null) {
             setImageViewBackground(null);
         }
@@ -669,5 +682,19 @@ public class RemoteActivity extends BaseActivity
      */
     public void SwitchToRemotePanel() {
         viewPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onShuffleClicked() {
+        refreshPlaylist();
+    }
+
+    private void refreshPlaylist() {
+        String tag = "android:switcher:" + viewPager.getId() + ":" + PLAYLIST_FRAGMENT_ID;
+        PlaylistFragment playlistFragment = (PlaylistFragment)getSupportFragmentManager()
+                .findFragmentByTag(tag);
+        if (playlistFragment != null) {
+            playlistFragment.forceRefreshPlaylist();
+        }
     }
 }

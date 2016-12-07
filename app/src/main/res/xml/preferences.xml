@@ -24,27 +24,37 @@
         android:entryValues="@array/themes_values_array"
         android:defaultValue="0"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="pref_switch_to_remote_after_media_start"
         android:title="@string/switch_to_remote"
         android:defaultValue="true"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="pref_keep_remote_above_lockscreen"
         android:title="@string/keep_remote_above_lockscreen"
         android:defaultValue="false"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
+        android:key="pref_keep_screen_on"
+        android:title="@string/pref_keep_screen_on"
+        android:defaultValue="false"/>
+
+    <CheckBoxPreference
         android:key="pref_show_notification"
         android:title="@string/show_notification"
         android:defaultValue="false"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
+        android:key="pref_pause_during_calls"
+        android:title="@string/pause_during_calls"
+        android:defaultValue="false"/>
+
+    <CheckBoxPreference
         android:key="pref_use_hardware_volume_keys"
         android:title="@string/use_hardware_volume_keys"
         android:defaultValue="true"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="pref_vibrate_remote_buttons"
         android:title="@string/vibrate_on_remote"
         android:defaultValue="false"/>

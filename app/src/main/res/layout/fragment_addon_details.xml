@@ -53,6 +53,8 @@
                 style="@style/TextAppearance.Media.Title"
                 android:paddingLeft="@dimen/poster_width_plus_padding"
                 android:paddingRight="@dimen/default_padding"
+                android:paddingStart="@dimen/poster_width_plus_padding"
+                android:paddingEnd="@dimen/default_padding"
                 android:background="?attr/contentBackgroundColor"/>
             <TextView
                 android:id="@+id/media_undertitle"
@@ -61,6 +63,8 @@
                 style="@style/TextAppearance.Media.Subtitle"
                 android:paddingLeft="@dimen/poster_width_plus_padding"
                 android:paddingRight="@dimen/default_padding"
+                android:paddingStart="@dimen/poster_width_plus_padding"
+                android:paddingEnd="@dimen/default_padding"
                 android:layout_below="@id/media_title"
                 android:background="?attr/contentBackgroundColor"/>
 
@@ -71,6 +75,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="@dimen/default_padding"
+                android:layout_marginStart="@dimen/default_padding"
                 android:layout_alignBottom="@id/media_undertitle"
                 android:contentDescription="@string/poster"
                 android:scaleType="centerCrop"/>
@@ -98,6 +103,14 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"/>
                 <ImageButton
+                    android:id="@+id/pin_unpin"
+                    android:visibility="gone"
+                    android:layout_width="@dimen/buttonbar_button_width"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconBookmark"
+                    android:contentDescription="@string/enable_disable"/>
+                <ImageButton
                     android:id="@+id/enable_disable"
                     android:layout_width="@dimen/buttonbar_button_width"
                     android:layout_height="match_parent"
@@ -122,6 +135,7 @@
                     android:layout_height="wrap_content"
                     style="@style/TextAppearance.Media.SmallDetails"
                     android:paddingRight="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:textColor="?attr/appTextColorSecondary"
                     android:text="@string/author"/>
                 <TextView
@@ -135,6 +149,7 @@
                     android:layout_height="wrap_content"
                     style="@style/TextAppearance.Media.SmallDetails"
                     android:paddingRight="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:textColor="?attr/appTextColorSecondary"
                     android:text="@string/version"/>
                 <TextView
@@ -174,6 +189,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="@dimen/default_padding"
         android:layout_marginRight="@dimen/double_padding"
+        android:layout_marginEnd="@dimen/double_padding"
         android:src="@drawable/ic_play_arrow_white_24dp"
         app:fab_colorNormal="?attr/fabColorNormal"
         app:fab_colorPressed="?attr/fabColorPressed"/>

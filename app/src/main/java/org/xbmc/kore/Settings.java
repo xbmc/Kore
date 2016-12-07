@@ -45,7 +45,10 @@ public class Settings {
             SORT_BY_DATE_ADDED = 1,
             SORT_BY_RATING = 2,
             SORT_BY_YEAR = 3,
-            SORT_BY_LENGTH = 4;
+            SORT_BY_LENGTH = 4,
+            SORT_BY_ALBUM = 5,
+            SORT_BY_ARTIST = 6,
+            SORT_BY_ARTIST_YEAR = 7 ;
 
     /**
      * Preferences keys.
@@ -65,9 +68,17 @@ public class Settings {
     public static final String KEY_PREF_KEEP_REMOTE_ABOVE_LOCKSCREEN = "pref_keep_remote_above_lockscreen";
     public static final boolean DEFAULT_KEY_PREF_KEEP_REMOTE_ABOVE_LOCKSCREEN = false;
 
+    // Keep screen on when on the remote activity
+    public static final String KEY_PREF_KEEP_SCREEN_ON = "pref_keep_screen_on";
+    public static final boolean DEFAULT_KEY_PREF_KEEP_SCREEN_ON = false;
+
     // Show notifications
     public static final String KEY_PREF_SHOW_NOTIFICATION = "pref_show_notification";
     public static final boolean DEFAULT_PREF_SHOW_NOTIFICATION = false;
+
+    // Pause during calls
+    public static final String KEY_PREF_PAUSE_DURING_CALLS = "pref_pause_during_calls";
+    public static final boolean DEFAULT_PREF_PAUSE_DURING_CALLS = false;
 
     // Other keys used in preferences.xml
     public static final String KEY_PREF_ABOUT = "pref_about";
@@ -79,6 +90,10 @@ public class Settings {
     // Sort order on movies
     public static final String KEY_PREF_MOVIES_SORT_ORDER = "movies_sort_order";
     public static final int DEFAULT_PREF_MOVIES_SORT_ORDER = SORT_BY_NAME;
+
+    // Sort order on albums
+    public static final String KEY_PREF_ALBUMS_SORT_ORDER = "albums_sort_order";
+    public static final int DEFAULT_PREF_ALBUMS_SORT_ORDER = SORT_BY_ALBUM;
 
     // Ignore articles on movie sorting
     public static final String KEY_PREF_MOVIES_IGNORE_PREFIXES = "movies_ignore_prefixes";
@@ -111,12 +126,6 @@ public class Settings {
     // Current host id
     public static final String KEY_PREF_CURRENT_HOST_ID = "current_host_id";
     public static final int DEFAULT_PREF_CURRENT_HOST_ID = -1;
-
-    public static final String KEY_PREF_CHECKED_EVENT_SERVER_CONNECTION = "checked_event_server_connection";
-    public static final boolean DEFAULT_PREF_CHECKED_EVENT_SERVER_CONNECTION = false;
-
-    public static final String KEY_PREF_CHECKED_PVR_ENABLED = "checked_pvr_enabled";
-    public static final boolean DEFAULT_PREF_CHECKED_PVR_ENABLED = false;
 
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
     public static String getNavDrawerItemsPrefKey(int hostId) {

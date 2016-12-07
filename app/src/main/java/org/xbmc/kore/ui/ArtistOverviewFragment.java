@@ -17,7 +17,6 @@
 package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -55,15 +54,14 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
+import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -73,7 +71,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(ArtistOverviewFragment.class);
 
-    public static final String BUNDLE_KEY_ID = "id";
+    public static final String BUNDLE_KEY_ARTISTID = "id";
     public static final String POSTER_TRANS_NAME = "POSTER_TRANS_NAME";
     public static final String BUNDLE_KEY_TITLE = "title";
     public static final String BUNDLE_KEY_GENRE = "genre";
@@ -83,8 +81,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
 
     // Loader IDs
     private static final int LOADER_ARTIST = 0,
-            LOADER_ALBUMS = 1,
-            LOADER_SONGS = 2;
+            LOADER_SONGS = 1;
 
     private HostManager hostManager;
     private HostInfo hostInfo;
@@ -97,9 +94,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
     private int artistId = -1;
 
     private String artistTitle;
-
-    private HashMap<Integer, String> albumTitles = new HashMap<>();
-
+    
     @InjectView(R.id.exit_transition_view) View exitTransitionView;
     // Buttons
     @InjectView(R.id.fab) ImageButton fabButton;
@@ -116,7 +111,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         Bundle bundle = getArguments();
-        artistId = bundle.getInt(BUNDLE_KEY_ID, -1);
+        artistId = bundle.getInt(BUNDLE_KEY_ARTISTID, -1);
 
         if ((container == null) || (artistId == -1)) {
             // We're not being shown or there's nothing to show
@@ -180,7 +175,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
 
     @Override
     protected void onDownload() {
-        getLoaderManager().initLoader(LOADER_ALBUMS, null, this);
+        getLoaderManager().initLoader(LOADER_SONGS, null, this);
     }
 
     @Override
@@ -200,7 +195,6 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
     public void onPause() {
         //Make sure loader is not reloaded for albums and songs when we return
         //These loaders should only be activated by the user pressing the download button
-        getLoaderManager().destroyLoader(LOADER_ALBUMS);
         getLoaderManager().destroyLoader(LOADER_SONGS);
         super.onPause();
     }
@@ -222,14 +216,10 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
                 uri = MediaContract.Artists.buildArtistUri(hostInfo.getId(), artistId);
                 return new CursorLoader(getActivity(), uri,
                                         DetailsQuery.PROJECTION, null, null, null);
-            case LOADER_ALBUMS:
-                uri = MediaContract.AlbumArtists.buildAlbumsForArtistListUri(hostInfo.getId(), artistId);
-                return new CursorLoader(getActivity(), uri,
-                                        AlbumListQuery.PROJECTION, null, null, null);
             case LOADER_SONGS:
                 uri = MediaContract.Songs.buildArtistSongsListUri(hostInfo.getId(), artistId);
                 return new CursorLoader(getActivity(), uri,
-                                        AlbumSongsListQuery.PROJECTION, null, null, AlbumSongsListQuery.SORT);
+                                        SongsListQuery.PROJECTION, null, null, SongsListQuery.SORT);
             default:
                 return null;
         }
@@ -242,10 +232,6 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
             switch (cursorLoader.getId()) {
                 case LOADER_ARTIST:
                     displayArtistDetails(cursor);
-                    break;
-                case LOADER_ALBUMS:
-                    createAlbumList(cursor);
-                    getLoaderManager().initLoader(LOADER_SONGS, null, this);
                     break;
                 case LOADER_SONGS:
                     downloadSongs(cursor);
@@ -298,27 +284,13 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
     }
 
     private FileDownloadHelper.SongInfo createSongInfo(Cursor cursor) {
-        FileDownloadHelper.SongInfo songInfo = null;
-        String albumTitle = albumTitles.get(cursor.getInt(AlbumSongsListQuery.ALBUMID));
-        if (albumTitle != null) {
-            // Add this song to the list
-            songInfo = new FileDownloadHelper.SongInfo(
-                    artistTitle,
-                    albumTitle,
-                    cursor.getInt(AlbumSongsListQuery.SONGID),
-                    cursor.getInt(AlbumSongsListQuery.TRACK),
-                    cursor.getString(AlbumSongsListQuery.TITLE),
-                    cursor.getString(AlbumSongsListQuery.FILE));
-        }
-        return songInfo;
-    }
-
-    private void createAlbumList(Cursor cursor) {
-        if (cursor.moveToFirst()) {
-            do {
-                albumTitles.put(cursor.getInt(AlbumListQuery.ALBUMID), cursor.getString(AlbumListQuery.TITLE));
-            } while(cursor.moveToNext());
-        }
+        return new FileDownloadHelper.SongInfo(
+                cursor.getString(SongsListQuery.DISPLAYARTIST),
+                cursor.getString(SongsListQuery.ALBUMTITLE),
+                cursor.getInt(SongsListQuery.SONGID),
+                cursor.getInt(SongsListQuery.TRACK),
+                cursor.getString(SongsListQuery.TITLE),
+                cursor.getString(SongsListQuery.FILE));
     }
 
     private void downloadSongs(Cursor cursor) {
@@ -338,48 +310,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
             } while (cursor.moveToNext());
         }
 
-        // Check if the directory exists and whether to overwrite it
-        File file = new File(songInfoList.get(0).getAbsoluteDirectoryPath());
-        if (file.exists()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.download)
-                   .setMessage(R.string.download_dir_exists)
-                   .setPositiveButton(R.string.overwrite,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                               songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
-                   .setNeutralButton(R.string.download_with_new_name,
-                                     new DialogInterface.OnClickListener() {
-                                         @Override
-                                         public void onClick(DialogInterface dialog, int which) {
-                                             FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                              songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                              callbackHandler);
-                                         }
-                                     })
-                   .setNegativeButton(android.R.string.cancel, noopClickListener)
-                   .show();
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.download)
-                   .setMessage(R.string.confirm_artist_download)
-                   .setPositiveButton(android.R.string.ok,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              FileDownloadHelper.downloadFiles(getActivity(), hostInfo,
-                                                                               songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
-                   .setNegativeButton(android.R.string.cancel, noopClickListener)
-                   .show();
-        }
+        UIUtils.downloadSongs(getActivity(), songInfoList, hostInfo, callbackHandler);
     }
 
     private void displayArtistDetails(Cursor cursor) {
@@ -442,30 +373,20 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
         int FANART = 6;
     }
 
-    private interface AlbumListQuery {
-        String[] PROJECTION = {
-                BaseColumns._ID,
-                MediaContract.Albums.ALBUMID,
-                MediaContract.Albums.TITLE,
-        };
-
-        int ID = 0;
-        int ALBUMID = 1;
-        int TITLE = 2;
-    }
-
     /**
-     * Movie cast list query parameters.
+     * Song list query parameters.
      */
-    private interface AlbumSongsListQuery {
+    private interface SongsListQuery {
         String[] PROJECTION = {
                 MediaDatabase.Tables.SONGS + "." + BaseColumns._ID,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TRACK,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.DURATION,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.FILE,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.SONGID,
-                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.ALBUMID,
+                MediaProvider.Qualified.SONGS_TITLE,
+                MediaProvider.Qualified.SONGS_TRACK,
+                MediaProvider.Qualified.SONGS_DURATION,
+                MediaProvider.Qualified.SONGS_FILE,
+                MediaProvider.Qualified.SONGS_SONGID,
+                MediaProvider.Qualified.SONGS_ALBUMID,
+                MediaProvider.Qualified.ALBUMS_TITLE,
+                MediaProvider.Qualified.SONGS_DISPLAYARTIST
         };
 
         String SORT = MediaContract.Songs.TRACK + " ASC";
@@ -477,5 +398,7 @@ public class ArtistOverviewFragment extends AbstractDetailsFragment
         int FILE = 4;
         int SONGID = 5;
         int ALBUMID = 6;
+        int ALBUMTITLE = 7;
+        int DISPLAYARTIST = 8;
     }
 }

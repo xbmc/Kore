@@ -158,12 +158,11 @@
 
     <RelativeLayout
         android:id="@+id/remote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/remote_size"
+        android:layout_height="@dimen/remote_size"
         android:layout_above="@id/button_bar"
         android:layout_marginBottom="@dimen/default_padding"
         android:layout_centerHorizontal="true">
-        <!--android:background="?attr/contentBackgroundColor"-->
 
         <ImageView
             android:id="@+id/context"
@@ -239,6 +238,7 @@
             android:layout_width="@dimen/remote_icon_size"
             android:layout_height="@dimen/remote_icon_size"
             android:layout_toRightOf="@id/down"
+            android:layout_toEndOf="@id/down"
             android:layout_alignTop="@id/back"
             android:src="?attr/iconMenu"
             android:contentDescription="@string/osd"/>

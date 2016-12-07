@@ -116,7 +116,6 @@ public class Player {
         }
     }
 
-
     /**
      * Pauses or unpause playback and returns the new state
      */
@@ -493,4 +492,29 @@ public class Player {
         }
     }
 
+    /**
+     * Send notification message to XBMC/Kodi
+     */
+    public static final class Notification extends ApiMethod<String> {
+        public final static String METHOD_NAME = "GUI.ShowNotification";
+
+        /**
+         * Sends a text notification message to XBMC/Kodi
+         * @param title The title of the notification
+         * @param message The text message of the notification
+         */
+        public Notification(String title, String message) {
+            super(false);
+            addParameterToRequest("title", title);
+            addParameterToRequest("message", message);
+        }
+
+        @Override
+        public String getMethodName() { return METHOD_NAME; }
+
+        @Override
+        public String resultFromJson(ObjectNode jsonObject) throws ApiException {
+            return jsonObject.get(RESULT_NODE).textValue();
+        }
+    }
 }

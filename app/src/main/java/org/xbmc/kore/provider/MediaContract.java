@@ -41,6 +41,7 @@ public class MediaContract {
     public static final String PATH_ALBUMS = "albums";
     public static final String PATH_AUDIO_GENRES = "audio_genres";
     public static final String PATH_SONGS = "songs";
+    public static final String PATH_SONG_ARTISTS = "song_artists";
     public static final String PATH_ALBUM_ARTISTS = "album_artists";
     public static final String PATH_ALBUM_GENRES = "album_genres";
     public static final String PATH_MUSIC_VIDEOS = "music_videos";
@@ -65,6 +66,11 @@ public class MediaContract {
         String WOL_PORT = "wol_port";
         String USE_EVENT_SERVER = "use_event_server";
         String EVENT_SERVER_PORT = "event_server_port";
+
+        String KODI_VERSION_MAJOR = "kodi_version_major";
+        String KODI_VERSION_MINOR = "kodi_version_minor";
+        String KODI_VERSION_REVISION = "kodi_version_revision";
+        String KODI_VERSION_TAG = "kodi_version_tag";
     }
 
     public static class Hosts implements BaseColumns, SyncColumns, HostsColumns {
@@ -88,7 +94,8 @@ public class MediaContract {
 
         public final static String[] ALL_COLUMNS = {
                 _ID, UPDATED, NAME, ADDRESS, PROTOCOL, HTTP_PORT, TCP_PORT, USERNAME, PASSWORD,
-                MAC_ADDRESS, WOL_PORT, USE_EVENT_SERVER, EVENT_SERVER_PORT
+                MAC_ADDRESS, WOL_PORT, USE_EVENT_SERVER, EVENT_SERVER_PORT,
+                KODI_VERSION_MAJOR, KODI_VERSION_MINOR, KODI_VERSION_REVISION, KODI_VERSION_TAG
         };
     }
 
@@ -570,12 +577,13 @@ public class MediaContract {
         String HOST_ID = "host_id";
         String ALBUMID = "albumid";
         String SONGID = "songid";
-
+        String DISPLAYARTIST = "displayartist";
         String DURATION = "duration";
         String THUMBNAIL = "thumbnail";
         String FILE = "file";
         String TRACK = "track";
         String TITLE = "title";
+        String DISC = "disc";
     }
 
     public static class Songs implements BaseColumns, SyncColumns, SongsColumns {
@@ -609,13 +617,19 @@ public class MediaContract {
                          .build();
         }
 
+        public static Uri buildSongsListUri(long hostId) {
+            return Hosts.buildHostUri(hostId).buildUpon()
+                        .appendPath(PATH_SONGS)
+                        .build();
+        }
+
         /** Read {@link #_ID} from {@link Albums} {@link Uri}. */
         public static String getSongId(Uri uri) {
             return uri.getPathSegments().get(5);
         }
 
         public final static String[] ALL_COLUMNS = {
-                _ID, UPDATED, HOST_ID, ALBUMID, SONGID, DURATION, THUMBNAIL, FILE, TRACK, TITLE,
+                _ID, UPDATED, HOST_ID, ALBUMID, SONGID, DURATION, THUMBNAIL, FILE, TRACK, TITLE, DISC
         };
     }
 
@@ -693,6 +707,36 @@ public class MediaContract {
         public final static String[] ALL_COLUMNS = {
                 _ID, HOST_ID, ALBUMID, ARTISTID,
         };
+    }
+
+    /**
+     * Columns for SongArtists table
+     * All Other IDs refer to XBMC Ids, not Internal ones
+     */
+    public interface SongArtistsColumns {
+        String HOST_ID = "host_id";
+        String SONGID = "songid";
+        String ARTISTID = "artistid";
+    }
+
+    public static class SongArtists implements BaseColumns, SongArtistsColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SONG_ARTISTS).build();
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_SONG_ARTISTS;
+
+        /** Build {@link Uri} for requested {@link #_ID}. */
+        public static Uri buildSongsForArtistListUri(long hostId, long artistId) {
+            return Hosts.buildHostUri(hostId).buildUpon()
+                        .appendPath(PATH_ARTISTS)
+                        .appendPath(String.valueOf(artistId))
+                        .appendPath(PATH_SONGS)
+                        .build();
+        }
+
+        public final static String[] ALL_COLUMNS = {
+                _ID, HOST_ID, SONGID, ARTISTID,
+                };
     }
 
     /**

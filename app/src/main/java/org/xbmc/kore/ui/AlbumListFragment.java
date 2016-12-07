@@ -18,14 +18,14 @@ package org.xbmc.kore.ui;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,19 +33,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
-import org.xbmc.kore.service.LibrarySyncService;
+import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -54,7 +54,7 @@ import org.xbmc.kore.utils.Utils;
 /**
  * Fragment that presents the albums list
  */
-public class AlbumListFragment extends AbstractListFragment {
+public class AlbumListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(AlbumListFragment.class);
 
     public interface OnAlbumSelectedListener {
@@ -98,16 +98,69 @@ public class AlbumListFragment extends AbstractListFragment {
     }
 
     @Override
-    protected AdapterView.OnItemClickListener createOnItemClickListener() {
-        return new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the movie id from the tag
-                ViewHolder tag = (ViewHolder) view.getTag();
-                // Notify the activity
-                listenerActivity.onAlbumSelected(tag);
-            }
-        };
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.album_list, menu);
+
+        MenuItem sortByAlbum = menu.findItem(R.id.action_sort_by_album),
+                sortByArtist = menu.findItem(R.id.action_sort_by_artist),
+                sortByArtistYear = menu.findItem(R.id.action_sort_by_artist_year);
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        int sortOrder = preferences.getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
+        switch (sortOrder) {
+            case Settings.SORT_BY_ALBUM:
+                sortByAlbum.setChecked(true);
+                break;
+            case Settings.SORT_BY_ARTIST:
+                sortByArtist.setChecked(true);
+                break;
+            case Settings.SORT_BY_ARTIST_YEAR:
+                sortByArtistYear.setChecked(true);
+                break;
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        switch (item.getItemId()) {
+            case R.id.action_sort_by_album:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                           .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ALBUM)
+                           .apply();
+                refreshList();
+                break;
+            case R.id.action_sort_by_artist:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                           .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ARTIST)
+                           .apply();
+                refreshList();
+                break;
+            case R.id.action_sort_by_artist_year:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                           .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ARTIST_YEAR)
+                           .apply();
+                refreshList();
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onListItemClicked(View view) {
+        // Get the movie id from the tag
+        ViewHolder tag = (ViewHolder) view.getTag();
+        // Notify the activity
+        listenerActivity.onAlbumSelected(tag);
     }
 
     @Override
@@ -137,8 +190,20 @@ public class AlbumListFragment extends AbstractListFragment {
             selectionArgs = new String[] {"%" + searchFilter + "%"};
         }
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        String sortOrderStr;
+        int sortOrder = preferences.getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
+        if (sortOrder == Settings.SORT_BY_ARTIST) {
+            sortOrderStr = AlbumListQuery.SORT_BY_ARTIST;
+        } else if (sortOrder == Settings.SORT_BY_ARTIST_YEAR) {
+            sortOrderStr = AlbumListQuery.SORT_BY_ARTIST_YEAR;
+        } else {
+            sortOrderStr = AlbumListQuery.SORT_BY_ALBUM;
+        }
+
         return new CursorLoader(getActivity(), uri,
-                AlbumListQuery.PROJECTION, selection, selectionArgs, AlbumListQuery.SORT);
+                AlbumListQuery.PROJECTION, selection, selectionArgs, sortOrderStr);
     }
 
     @Override
@@ -160,6 +225,8 @@ public class AlbumListFragment extends AbstractListFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnAlbumSelectedListener");
         }
+
+        setSupportsSearch(true);
     }
 
     @Override
@@ -168,26 +235,10 @@ public class AlbumListFragment extends AbstractListFragment {
         listenerActivity = null;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!isAdded()) {
-            // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
-            super.onCreateOptionsMenu(menu, inflater);
-            return;
-        }
-
-        inflater.inflate(R.menu.media_search, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(this);
-        searchView.setQueryHint(getString(R.string.action_search_albums));
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
     /**
      * Album list query parameters.
      */
-    private interface AlbumListQuery {
+    public interface AlbumListQuery {
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MediaContract.Albums.ALBUMID,
@@ -199,7 +250,10 @@ public class AlbumListFragment extends AbstractListFragment {
                 MediaContract.Albums.RATING,
         };
 
-        String SORT = MediaDatabase.sortCommonTokens(MediaContract.Albums.TITLE) + " ASC";
+        String SORT_BY_ALBUM = MediaDatabase.sortCommonTokens(MediaContract.Albums.TITLE) + " ASC";
+        String SORT_BY_ARTIST = MediaDatabase.sortCommonTokens(MediaContract.Albums.DISPLAYARTIST) + " ASC";
+        String SORT_BY_ARTIST_YEAR = MediaDatabase.sortCommonTokens(MediaContract.Albums.DISPLAYARTIST)
+                                     + " ASC, " + MediaContract.Albums.YEAR + " ASC";
 
         final int ID = 0;
         final int ALBUMID = 1;

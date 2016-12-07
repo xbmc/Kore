@@ -14,6 +14,6 @@ SIGN_KEY=$3
 SIGN_KEYPASS=$4 
 
 echo "Signing..."
-jarsigner -sigalg MD5withRSA -digestalg SHA1 -keystore $SIGN_STORE -storepass $SIGN_STOREPASS $SIGN_KEYPASS_OPT $WORKSPACE/app/build/outputs/apk/app-release-unsigned.apk $SIGN_KEY
-$ZIPALIGN_JENKINS -f 4 $WORKSPACE/app/build/outputs/apk/app-release-unsigned.apk $WORKSPACE/kore-release.apk
+jarsigner -sigalg MD5withRSA -digestalg SHA1 -keystore $SIGN_STORE -storepass $SIGN_STOREPASS $SIGN_KEYPASS_OPT $WORKSPACE/app/build/outputs/apk/app-full-release-unsigned.apk $SIGN_KEY
+$ZIPALIGN_JENKINS -f 4 $WORKSPACE/app/build/outputs/apk/app-full-release-unsigned.apk $WORKSPACE/kore-release.apk
 echo "$WORKSPACE/kore-release.apk created"

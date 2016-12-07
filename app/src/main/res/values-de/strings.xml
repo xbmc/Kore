@@ -207,14 +207,15 @@
     <string name="error_executing_subtitles">Konnte Untertitel-Erweiterung nicht auführen.\nFehlermeldung: %1$s.</string>
     <string name="error_getting_addon_info">Konnte keine Erweiterungs-Informationen holen.\nFehlermeldung:
         %1$s.</string>
-   <string name="error_getting_source_info">Konnte Dateien nicht durchsuchen.\nFehlermeldung:
+    <string name="error_getting_source_info">Konnte Dateien nicht durchsuchen.\nFehlermeldung:
         %1$s.</string>
     <string name="error_play_media_file">Konnte Datei nicht abspielen.\nFehlermeldung:
         %1$s.</string>
     <string name="error_queue_media_file">Konnte Datei nicht zur Warteschlange hinzufügen.\nFehlermeldung:
         %1$s.</string>
-     <string name="error_get_active_player">Kein aktiver Player.\nFehlermeldung:
+    <string name="error_get_active_player">Kein aktiver Player.\nFehlermeldung:
         %1$s.</string>
+    <string name="error_share_video">Video konnte nicht zu Kodi/XBMC gesendet werden.</string>
 
     <string name="directors">Regisseure:</string>
     <string name="studio">Filmstudio:</string>
@@ -243,10 +244,12 @@
     <string name="no_channel_groups_found_refresh">Keine Kanalgruppen gefunden.\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_channels_found_refresh">Keine Kanäle gefunden.\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_recordings_found_refresh">Keine Aufnahmen gefunden.\n\nZum Aktualisieren herunterziehen</string>
+    <string name="no_broadcasts_found_refresh">Keine Sendungen gefunden.\n\nZum Aktualisieren herunterziehen</string>
     <string name="pull_to_refresh">Zum Aktualisieren ziehen</string>
     <string name="no_cast_info">Keine Informationen zur Besetzung</string>
 
     <string name="minutes_abbrev">%1$s Min.</string>
+    <string name="minutes_abbrev2">%1$sm</string>
     <string name="sync_successful">Synchronisation erfolgreich</string>
     <string name="error_while_syncing">Ein Fehler trat bei der Synchronisation auf: %1$s</string>
 
@@ -269,6 +272,7 @@
     <string name="confirm_movie_download">Wollen Sie diesen Film herunterladen?\nDer Film wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
     <string name="confirm_episode_download">Wollen Sie diese Folge herunterladen?\nDie Folge wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
     <string name="confirm_album_download">Wollen Sie dieses Album herunterladen?\nDas Album wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
+    <string name="confirm_artist_download">Wollen Sie alle Alben herunterladen?\nDie Alben werden dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
 
     <string name="download_file_exists">Datei existiert bereits.\nÜberschreiben oder unter neuem Namen speichern?</string>
     <string name="download_dir_exists">Download Ordner existiert bereits.\nBei Dateikonflikten überschreiben oder unter neuem Namen speichern?</string>
@@ -281,6 +285,9 @@
 
     <string name="tvshow_overview">Übersicht</string>
     <string name="tvshow_episodes">Episoden</string>
+
+    <string name="addon_overview">Übersicht</string>
+    <string name="addon_content">Inhalt</string>
 
     <string name="artists">Künstler</string>
     <string name="albums">Alben</string>
@@ -295,11 +302,17 @@
     <string name="enable_disable">Erweiterung aktivieren/deaktivieren</string>
     <string name="addon_enabled">Erweiterung aktiviert</string>
     <string name="addon_disabled">Erweiterung deaktiviert</string>
+    <string name="pin_unpin">Erweiterung anheften/loslösen</string>
+    <string name="addon_pinned">Erweiterung angeheftet</string>
+    <string name="addon_unpinned">Erweiterung losgelöst</string>
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Gesehene verbergen</string>
     <string name="sort_order">Sortierung</string>
     <string name="sort_by_name">Nach Name</string>
+    <string name="sort_by_year">Nach Jahr</string>
+    <string name="sort_by_rating">Nach Bewertung</string>
+    <string name="sort_by_length">Nach Länge</string>
     <string name="sort_by_date_added">Nach Hinzufügungsdatum</string>
     <string name="ignore_prefixes">Präfixe ignorieren</string>
 
@@ -314,6 +327,7 @@
     <string name="switch_to_remote">Nach dem Abspielen eines Mediums zur Fernbedienung wechseln</string>
     <string name="keep_remote_above_lockscreen">Fernbedienung auf dem Sperrbildschirm anzeigen</string>
     <string name="show_notification">Nachricht mit aktueller Wiedergabe anzeigen</string>
+    <string name="pause_during_calls">Bei Anruf Wiedergabe pausieren</string>
     <string name="use_hardware_volume_keys">Lautstärketasten verwenden</string>
     <string name="vibrate_on_remote">Auf Fernbedienungs-Knopfdruck vibrieren</string>
     <string name="nav_drawer_items">Seitenmenü-Verknüpfungen</string>
@@ -339,6 +353,8 @@
     <!--<string name="purchase_thanks">Danke für ihre Unterstützung!</string>-->
 
     <string name="play_on_kodi">Mit Kodi abspielen</string>
+    <string name="pause_call_incoming_title">Eingehender Anruf</string>
+    <string name="pause_call_incoming_message">Schauen Sie auf ihr Telefon, jemand ruft Sie an</string>
 
     <string name="error_getting_pvr_info">Ein Fehler ist aufgetreten während des Empfangens der PVR Informationen: %1$s</string>
     <string name="might_not_have_pvr">Ein Fehler ist während des Empfangens der Kanalinformationen aufgetreten, möglicherweise weil Ihr Media Center keinen Empfänger hat oder dieser falsch konfiguriert ist.\n\nWenn das der Fall ist und Sie diesen Eintrag aus dem Seitenmenü entfernen möchten, können Sie es in den Einstellungen tun.</string>
@@ -356,5 +372,18 @@
     <string name="radio_channels">Radiosender</string>
 
     <string name="record">Aufnehmen</string>
+    <string name="pvr_epg">Guide</string>
+    <string name="unable_to_move_item">Element kann nicht verschoben werden</string>
+    <string name="cannot_move_playing_item">Gerade wiedergegebenes Element kann nicht verschoben werden</string>
+    <string name="no_connection_type_selected">Keine Verbindungsart in den Einstellungen ausgewählt</string>
+    <string name="single_column">Einspaltig</string>
+    <string name="multi_column">Mehrspaltig</string>
+
+    <string name="download_network_types_title">Netzwerkart zum Herunterladen</string>
+    <string name="download_network_types_summary">Netzwerkarten zum Herunterladen von Medien</string>
+    <string name="songs">Songs</string>
+
+    <string name="read_phone_state_permission_denied">Erlaubnis verweigert. Wiedergabe kann nicht während Anrufen pausiert werden.</string>
+    <string name="write_storage_permission_denied">Erlaubnis verweigert. Kann keine Dateien herunterladen.</string>
 
 </resources>

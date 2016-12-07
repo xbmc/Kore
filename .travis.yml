@@ -1,4 +1,6 @@
 language: android
+jdk: oraclejdk8
+sudo: false
 
 env:
   matrix:
@@ -6,11 +8,16 @@ env:
 
 android:
   components:
+    # following added as quick fix to get support for 23.0.3 build tools
+    # "tools" always refers to the latest build tools version. Remove this
+    # when travis is able to parse "build-tools-23.0.3" correctly.
+    # See https://github.com/travis-ci/travis-ci/issues/5036
+    - tools
     # needed build tools
-    - build-tools-22.0.1
+    - build-tools-24.0.2
 
     # The SDK version used to compile your project
-    - android-22
+    - android-23
 
     # extra needed components
     - extra-android-m2repository
@@ -18,4 +25,4 @@ android:
 before_script:
 
 script: 
-  - ./gradlew assembleRelease
+  - ./gradlew testFullDebugUnitTest assembleFullRelease

@@ -58,6 +58,8 @@
                     style="@style/TextAppearance.Media.Title"
                     android:paddingLeft="@dimen/poster_width_plus_padding"
                     android:paddingRight="@dimen/default_padding"
+                    android:paddingStart="@dimen/poster_width_plus_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:background="?attr/contentBackgroundColor"/>
                 <TextView
                     android:id="@+id/media_undertitle"
@@ -66,6 +68,8 @@
                     style="@style/TextAppearance.Media.Subtitle"
                     android:paddingLeft="@dimen/poster_width_plus_padding"
                     android:paddingRight="@dimen/default_padding"
+                    android:paddingStart="@dimen/poster_width_plus_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:layout_below="@id/media_title"
                     android:background="?attr/contentBackgroundColor"/>
 
@@ -76,6 +80,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_marginStart="@dimen/default_padding"
                     android:layout_alignBottom="@id/media_undertitle"
                     android:contentDescription="@string/poster"
                     android:scaleType="centerCrop"/>
@@ -133,13 +138,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         style="@style/TextAppearance.Media.SmallDetails"/>
                     <TextView
                         android:id="@+id/genres"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:layout_toLeftOf="@id/year"
+                        android:layout_toStartOf="@id/year"
                         style="@style/TextAppearance.Media.SmallDetails"/>
                 </RelativeLayout>
 
@@ -174,6 +182,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="@dimen/default_padding"
         android:layout_marginRight="@dimen/double_padding"
+        android:layout_marginEnd="@dimen/double_padding"
         android:src="@drawable/ic_play_arrow_white_24dp"
         app:fab_colorNormal="?attr/fabColorNormal"
         app:fab_colorPressed="?attr/fabColorPressed"/>

@@ -38,7 +38,7 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
-import org.xbmc.kore.service.LibrarySyncService;
+import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.NavigationDrawerFragment;
 
 import java.util.Arrays;
@@ -92,11 +92,7 @@ public class AddHostFragmentFinish extends Fragment {
         // Check if PVR is enabled for the current host
         HostManager hostManager = HostManager.getInstance(getActivity());
         if (hostManager.getHostInfo() != null) {
-            AddHostFragmentFinish.checkPVREnabledAndSetMenuItems(getActivity(), new Handler());
-            String prefKey = Settings.KEY_PREF_CHECKED_PVR_ENABLED + String.valueOf(hostManager.getHostInfo().getId());
-            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
-                             .putBoolean(prefKey, true)
-                             .apply();
+            checkPVREnabledAndSetMenuItems(getActivity(), new Handler());
         }
 
         // Start the syncing process
@@ -128,8 +124,6 @@ public class AddHostFragmentFinish extends Fragment {
     /**
      * Checks wheter PVR is enabled and sets a Preference that controls the items to show on
      * the navigation drawer accordingly: if PVR is disabled, hide the PVR item, otherwise show it
-     *
-     * This
      *
      * @param context Context
      */

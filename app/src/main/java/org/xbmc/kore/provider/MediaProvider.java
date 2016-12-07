@@ -17,6 +17,7 @@ package org.xbmc.kore.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -35,6 +36,8 @@ public class MediaProvider extends ContentProvider {
     private static final String TAG = LogUtils.makeLogTag(MediaProvider.class);
 
     private MediaDatabase mOpenHelper;
+
+    private Context context;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -69,6 +72,7 @@ public class MediaProvider extends ContentProvider {
     private static final int ARTISTS_LIST = 601;
     private static final int ARTISTS_ID = 602;
     private static final int ARTIST_ALBUMS_LIST = 610;
+    private static final int ARTIST_SONGS_LIST = 611;
 
     private static final int ALBUMS_ALL = 700;
     private static final int ALBUMS_LIST = 701;
@@ -77,9 +81,9 @@ public class MediaProvider extends ContentProvider {
     private static final int ALBUM_GENRES_LIST = 711;
 
     private static final int SONGS_ALL = 800;
-    private static final int SONGS_ARTIST = 801;
     private static final int SONGS_ALBUM = 802;
     private static final int SONGS_ID = 803;
+    private static final int SONGS_LIST = 804;
 
     private static final int AUDIO_GENRES_ALL = 900;
     private static final int AUDIO_GENRES_LIST = 901;
@@ -88,6 +92,7 @@ public class MediaProvider extends ContentProvider {
 
     private static final int ALBUM_ARTISTS_ALL = 1000;
     private static final int ALBUM_GENRES_ALL = 1001;
+    private static final int SONG_ARTISTS_ALL = 1002;
 
     private static final int MUSIC_VIDEOS_ALL = 1100;
     private static final int MUSIC_VIDEOS_LIST = 1101;
@@ -164,6 +169,9 @@ public class MediaProvider extends ContentProvider {
         matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
                                   MediaContract.PATH_ARTISTS + "/*/" +
                                   MediaContract.PATH_ALBUMS, ARTIST_ALBUMS_LIST);
+        matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
+                                  MediaContract.PATH_ARTISTS + "/*/" +
+                                  MediaContract.PATH_SONGS, ARTIST_SONGS_LIST);
 
         // Albums
         matcher.addURI(authority, MediaContract.PATH_ALBUMS, ALBUMS_ALL);
@@ -181,14 +189,13 @@ public class MediaProvider extends ContentProvider {
         // Songs
         matcher.addURI(authority, MediaContract.PATH_SONGS, SONGS_ALL);
         matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
+                                  MediaContract.PATH_SONGS, SONGS_LIST);
+        matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
                                   MediaContract.PATH_ALBUMS + "/*/" +
                                   MediaContract.PATH_SONGS, SONGS_ALBUM);
         matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
                                   MediaContract.PATH_ALBUMS + "/*/" +
                                   MediaContract.PATH_SONGS + "/*", SONGS_ID);
-        matcher.addURI(authority, MediaContract.PATH_HOSTS + "/*/" +
-                                  MediaContract.PATH_ARTISTS + "/*/" +
-                                  MediaContract.PATH_SONGS, SONGS_ARTIST);
 
         // Genres
         matcher.addURI(authority, MediaContract.PATH_AUDIO_GENRES, AUDIO_GENRES_ALL);
@@ -204,6 +211,8 @@ public class MediaProvider extends ContentProvider {
         matcher.addURI(authority, MediaContract.PATH_ALBUM_ARTISTS, ALBUM_ARTISTS_ALL);
         // AlbumGenres
         matcher.addURI(authority, MediaContract.PATH_ALBUM_GENRES, ALBUM_GENRES_ALL);
+        // SongArtists
+        matcher.addURI(authority, MediaContract.PATH_SONG_ARTISTS, SONG_ARTISTS_ALL);
 
         // Music Videos
         matcher.addURI(authority, MediaContract.PATH_MUSIC_VIDEOS, MUSIC_VIDEOS_ALL);
@@ -215,9 +224,16 @@ public class MediaProvider extends ContentProvider {
         return matcher;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     @Override
     public boolean onCreate() {
-        mOpenHelper = new MediaDatabase(getContext());
+        if (context == null) {
+            context = getContext();
+        }
+        mOpenHelper = new MediaDatabase(context);
         return true;
     }
 
@@ -273,7 +289,8 @@ public class MediaProvider extends ContentProvider {
             case ALBUMS_ID:
                 return MediaContract.Albums.CONTENT_ITEM_TYPE;
             case SONGS_ALL:
-            case SONGS_ARTIST:
+            case SONGS_LIST:
+            case ARTIST_SONGS_LIST:
             case SONGS_ALBUM:
                 return MediaContract.Songs.CONTENT_TYPE;
             case SONGS_ID:
@@ -288,6 +305,8 @@ public class MediaProvider extends ContentProvider {
                 return MediaContract.AlbumArtists.CONTENT_TYPE;
             case ALBUM_GENRES_ALL:
                 return MediaContract.AlbumGenres.CONTENT_TYPE;
+            case SONG_ARTISTS_ALL:
+                return MediaContract.SongArtists.CONTENT_TYPE;
             case MUSIC_VIDEOS_ALL:
             case MUSIC_VIDEOS_LIST:
                 return MediaContract.MusicVideos.CONTENT_TYPE;
@@ -311,7 +330,6 @@ public class MediaProvider extends ContentProvider {
             default: {
                 // Most cases are handled with simple SelectionBuilder
                 final SelectionBuilder builder = buildQuerySelection(uri, match);
-
                 cursor = builder.where(selection, selectionArgs)
                                 .query(db, projection, sortOrder);
             }
@@ -337,7 +355,7 @@ public class MediaProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unsuported uri: " + uri);
             }
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);
 
         return insertedUri;
     }
@@ -398,6 +416,10 @@ public class MediaProvider extends ContentProvider {
                 table = MediaDatabase.Tables.ALBUM_ARTISTS;
                 break;
             }
+            case SONG_ARTISTS_ALL: {
+                table = MediaDatabase.Tables.SONG_ARTISTS;
+                break;
+            }
             case MUSIC_VIDEOS_ALL: {
                 table = MediaDatabase.Tables.MUSIC_VIDEOS;
                 break;
@@ -415,6 +437,7 @@ public class MediaProvider extends ContentProvider {
                 switch (match) {
                     case ALBUM_GENRES_ALL:
                     case ALBUM_ARTISTS_ALL:
+                    case SONG_ARTISTS_ALL:
                         // Nothing to add to these tables
                         break;
                     default:
@@ -429,10 +452,10 @@ public class MediaProvider extends ContentProvider {
         } finally {
             db.endTransaction();
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);
 
         LogUtils.LOGD(TAG, "Bulk insert finished for uri (" + uri +
-                           ") in (ms): " + (System.currentTimeMillis() - startTime));
+                ") in (ms): " + (System.currentTimeMillis() - startTime));
         return values.length;
     }
 
@@ -466,7 +489,7 @@ public class MediaProvider extends ContentProvider {
         final SelectionBuilder builder = buildQuerySelection(uri, match);
         int result = builder.where(selection, selectionArgs)
                             .update(db, values);
-        getContext().getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);
         return result;
     }
 
@@ -479,7 +502,7 @@ public class MediaProvider extends ContentProvider {
         int result = builder.where(selection, selectionArgs)
                             .delete(db);
         LogUtils.LOGD(TAG, "delete(uri=" + uri + "). Rows affected: " + result);
-        getContext().getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);
         return result;
     }
 
@@ -641,19 +664,25 @@ public class MediaProvider extends ContentProvider {
             case SONGS_ALL: {
                 return builder.table(MediaDatabase.Tables.SONGS);
             }
+            case SONGS_LIST: {
+                final String hostId = MediaContract.Hosts.getHostId(uri);
+                return builder.table(MediaDatabase.Tables.SONGS_FOR_ARTIST_AND_OR_ALBUM_JOIN)
+                              .mapToTable(MediaContract.Songs.SONGID, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Songs.TITLE, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Songs.ALBUMID, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Songs.THUMBNAIL, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Songs.DISPLAYARTIST, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.AlbumArtists.ARTISTID, MediaDatabase.Tables.ALBUM_ARTISTS)
+                              .mapToTable(MediaContract.SongArtists.ARTISTID, MediaDatabase.Tables.SONG_ARTISTS)
+                              .where(Qualified.SONGS_HOST_ID + "=?", hostId)
+                              .groupBy(Qualified.SONGS_SONGID);
+            }
             case SONGS_ALBUM: {
                 final String hostId = MediaContract.Hosts.getHostId(uri);
                 final String albumId = MediaContract.Albums.getAlbumId(uri);
                 return builder.table(MediaDatabase.Tables.SONGS)
-                              .where(MediaContract.Songs.HOST_ID + "=?", hostId)
-                              .where(MediaContract.Songs.ALBUMID + "=?", albumId);
-            }
-            case SONGS_ARTIST: {
-                final String hostId = MediaContract.Hosts.getHostId(uri);
-                final String artistId = MediaContract.Artists.getArtistId(uri);
-                return builder.table(MediaDatabase.Tables.SONGS_FOR_ARTIST_JOIN)
-                       .where(Qualified.SONGS_HOST_ID + "=?", hostId)
-                       .where(Qualified.ALBUM_ARTISTS_ARTISTID + "=?", artistId);
+                              .where(Qualified.SONGS_HOST_ID + "=?", hostId)
+                              .where(Qualified.SONGS_ALBUMID + "=?", albumId);
             }
             case SONGS_ID: {
                 final String hostId = MediaContract.Hosts.getHostId(uri);
@@ -682,6 +711,9 @@ public class MediaProvider extends ContentProvider {
             case ALBUM_ARTISTS_ALL: {
                 return builder.table(MediaDatabase.Tables.ALBUM_ARTISTS);
             }
+            case SONG_ARTISTS_ALL: {
+                return builder.table(MediaDatabase.Tables.SONG_ARTISTS);
+            }
             case ALBUM_GENRES_ALL: {
                 return builder.table(MediaDatabase.Tables.ALBUM_GENRES);
             }
@@ -696,6 +728,23 @@ public class MediaProvider extends ContentProvider {
                               .mapToTable(MediaContract.AlbumArtists.ARTISTID, MediaDatabase.Tables.ALBUM_ARTISTS)
                               .where(Qualified.ALBUM_ARTISTS_HOST_ID + "=?", hostId)
                               .where(Qualified.ALBUM_ARTISTS_ARTISTID + "=?", artistId);
+            }
+            case ARTIST_SONGS_LIST: {
+                // Songs for Artists
+                final String hostId = MediaContract.Hosts.getHostId(uri);
+                final String artistId = MediaContract.Artists.getArtistId(uri);
+                return builder.table(MediaDatabase.Tables.SONGS_FOR_ARTIST_AND_OR_ALBUM_JOIN)
+                              .mapToTable(MediaContract.Songs.SONGID, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Songs.TITLE, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Songs.ALBUMID, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.Songs.DISPLAYARTIST, MediaDatabase.Tables.SONGS)
+                              .mapToTable(MediaContract.AlbumArtists.ARTISTID, MediaDatabase.Tables.ALBUM_ARTISTS)
+                              .mapToTable(MediaContract.SongArtists.ARTISTID, MediaDatabase.Tables.SONG_ARTISTS)
+                              .where(Qualified.SONG_ARTISTS_HOST_ID + "=?", hostId)
+                              .where(Qualified.SONG_ARTISTS_ARTISTID + "=?"
+                                     + " OR " +
+                                     Qualified.ALBUM_ARTISTS_ARTISTID + "=?", artistId, artistId)
+                              .groupBy(Qualified.SONGS_ID);
             }
             case ALBUM_ARTISTS_LIST: {
                 // Artists for Album
@@ -759,7 +808,17 @@ public class MediaProvider extends ContentProvider {
      * {@link MediaContract} fields that are fully qualified with a specific
      * parent {@link MediaDatabase.Tables}. Used when needed to work around SQL ambiguity.
      */
-    private interface Qualified {
+    public interface Qualified {
+        String ALBUMS_TITLE =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.TITLE;
+        String ALBUMS_GENRE =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.GENRE;
+        String ALBUMS_YEAR =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.YEAR;
+        String ALBUMS_THUMBNAIL =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.THUMBNAIL;
+        String ALBUMS_DISPLAYARTIST =
+                MediaDatabase.Tables.ALBUMS + "." + MediaContract.Albums.DISPLAYARTIST;
         String ALBUM_ARTISTS_HOST_ID =
                 MediaDatabase.Tables.ALBUM_ARTISTS + "." + MediaContract.AlbumArtists.HOST_ID;
         String ALBUM_ARTISTS_ARTISTID =
@@ -772,7 +831,27 @@ public class MediaProvider extends ContentProvider {
                 MediaDatabase.Tables.ALBUM_GENRES + "." + MediaContract.AlbumGenres.GENREID;
         String ALBUM_GENRES_ALBUMID =
                 MediaDatabase.Tables.ALBUM_GENRES + "." + MediaContract.AlbumGenres.ALBUMID;
+        String SONGS_ID =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs._ID;
+        String SONGS_TRACK =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TRACK;
+        String SONGS_DURATION =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.DURATION;
+        String SONGS_FILE =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.FILE;
         String SONGS_HOST_ID =
                 MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.HOST_ID;
+        String SONGS_SONGID =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.SONGID;
+        String SONGS_DISPLAYARTIST =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.DISPLAYARTIST;
+        String SONGS_TITLE =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE;
+        String SONGS_ALBUMID =
+                MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.ALBUMID;
+        String SONG_ARTISTS_HOST_ID =
+                MediaDatabase.Tables.SONG_ARTISTS + "." + MediaContract.SongArtists.HOST_ID;
+        String SONG_ARTISTS_ARTISTID =
+                MediaDatabase.Tables.SONG_ARTISTS + "." + MediaContract.SongArtists.ARTISTID;
     }
 }

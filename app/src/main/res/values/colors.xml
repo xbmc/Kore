@@ -25,6 +25,7 @@
 
     <color name="white">#ffffffff</color>
     <color name="white_dim_50pct">#88ffffff</color>
+    <color name="white_dim_70pct">#b3ffffff</color>
 
     <color name="black_dim_87pct">#de000000</color>
     <color name="black_dim_54pct">#8a000000</color>
@@ -78,5 +79,7 @@
     <color name="solarized_base2_dim70pct">#b4eee8d5</color>
 
     <color name="solarized_orange_dark">#ffc73a00</color>
+
+    <color name="notification_backgroup">@color/background_floating_material_dark</color>
 
 </resources>

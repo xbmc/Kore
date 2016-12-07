@@ -54,6 +54,8 @@ public class MoviesActivity extends BaseActivity
 
     private boolean clearSharedElements;
 
+    private MovieListFragment movieListFragment;
+
     @TargetApi(21)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class MoviesActivity extends BaseActivity
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
         if (savedInstanceState == null) {
-            MovieListFragment movieListFragment = new MovieListFragment();
+            movieListFragment = new MovieListFragment();
 
             // Setup animations
             if (Utils.isLollipopOrLater()) {
@@ -169,6 +171,7 @@ public class MoviesActivity extends BaseActivity
             selectedMovieTitle = null;
             setupActionBar(null);
         }
+
         super.onBackPressed();
     }
 

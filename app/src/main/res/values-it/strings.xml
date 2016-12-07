@@ -120,7 +120,7 @@
     ]]></string>
 
     <string name="wizard_zeroconf_no_host_address">Non trovo questo indirizzo del media center!</string>
-    <string name="wizard_zeroconf_cant_connect_no_host_address">Non posso collegarmi a questo media center perchè non riesco a rilevare il suo indirizzo.</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Non posso collegarmi a questo media center perché non riesco a rilevare il suo indirizzo.</string>
     
     <string name="play">Play</string>
     <string name="pause">Pausa</string>

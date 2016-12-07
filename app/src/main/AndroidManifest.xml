@@ -7,8 +7,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!-- Dangerous permissions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -37,12 +40,14 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="youtube.com"/>
-                <data android:scheme="http" android:host="m.youtube.com"/>
-                <data android:scheme="http" android:host="www.youtube.com"/>
-                <data android:scheme="http" android:host="vimeo.com"/>
-                <data android:scheme="http" android:host="www.vimeo.com"/>
-                <data android:scheme="http" android:host="player.vimeo.com"/>
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="youtube.com"/>
+                <data android:host="m.youtube.com"/>
+                <data android:host="www.youtube.com"/>
+                <data android:host="vimeo.com"/>
+                <data android:host="www.vimeo.com"/>
+                <data android:host="player.vimeo.com"/>
             </intent-filter>
         </activity>
 
@@ -65,9 +70,9 @@
             android:exported="false"/>
 
         <!-- Services -->
-        <service android:name="org.xbmc.kore.service.LibrarySyncService"
+        <service android:name=".service.library.LibrarySyncService"
             android:exported="false"/>
-        <service android:name="org.xbmc.kore.service.NotificationService"
+        <service android:name="org.xbmc.kore.service.ConnectionObserversManagerService"
             android:exported="false"/>
         <service android:name="org.xbmc.kore.service.IntentActionsService"
             android:exported="false"/>

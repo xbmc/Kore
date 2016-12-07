@@ -16,11 +16,16 @@
 
 package org.xbmc.kore.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,10 +41,11 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
-import org.xbmc.kore.service.LibrarySyncService;
-import org.xbmc.kore.service.SyncUtils;
+import org.xbmc.kore.service.library.LibrarySyncService;
+import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import butterknife.OnClick;
 import butterknife.Optional;
@@ -65,16 +71,16 @@ abstract public class AbstractDetailsFragment extends Fragment
     abstract protected View createView(LayoutInflater inflater, ViewGroup container);
 
     /**
-     * Should return {@link org.xbmc.kore.service.LibrarySyncService} SyncType that
+     * Should return {@link LibrarySyncService} SyncType that
      * this fragment initiates
-     * @return {@link org.xbmc.kore.service.LibrarySyncService} SyncType
+     * @return {@link LibrarySyncService} SyncType
      */
     abstract protected String getSyncType();
 
     /**
-     * Should return the {@link org.xbmc.kore.service.LibrarySyncService} syncID if this fragment
+     * Should return the {@link LibrarySyncService} syncID if this fragment
      * synchronizes a single item. The itemId that should be synced must returned by {@link #getSyncItemID()}
-     * @return {@link org.xbmc.kore.service.LibrarySyncService} SyncID
+     * @return {@link LibrarySyncService} SyncID
      */
     abstract protected String getSyncID();
 
@@ -174,12 +180,38 @@ abstract public class AbstractDetailsFragment extends Fragment
     @Optional
     @OnClick(R.id.download)
     public void onDownloadClicked(View v) {
+        boolean hasStoragePermission =
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        if (!hasStoragePermission) {
+            requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                               Utils.PERMISSION_REQUEST_WRITE_STORAGE);
+            return;
+        }
+
         if (Settings.allowedDownloadNetworkTypes(getActivity()) != 0) {
             onDownload();
         } else {
             Toast.makeText(getActivity(), R.string.no_connection_type_selected, Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Utils.PERMISSION_REQUEST_WRITE_STORAGE:
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length > 0) &&
+                    (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    onDownloadClicked(null);
+                } else {
+                    Toast.makeText(getActivity(), R.string.write_storage_permission_denied, Toast.LENGTH_SHORT)
+                         .show();
+                }
+                break;
+        }
+    }
+
 
     protected void startSync(boolean silentRefresh) {
         this.silentRefresh = silentRefresh;

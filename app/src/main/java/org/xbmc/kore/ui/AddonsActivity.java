@@ -70,7 +70,7 @@ public class AddonsActivity extends BaseActivity
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
         if (savedInstanceState == null) {
-            AddonListFragment addonListFragment = new AddonListFragment();
+            AddonListContainerFragment addonListFragment = new AddonListContainerFragment();
 
             // Setup animations
             if (Utils.isLollipopOrLater()) {
@@ -206,7 +206,11 @@ public class AddonsActivity extends BaseActivity
         selectedAddonTitle = vh.addonName;
 
         // Replace list fragment
-        final AddonDetailsFragment addonDetailsFragment = AddonDetailsFragment.newInstance(vh);
+        final SharedElementFragment addonDetailsFragment =
+            vh.browsable
+            ? AddonOverviewFragment.newInstance(vh)
+            : AddonDetailsFragment.newInstance(vh)
+            ;
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions

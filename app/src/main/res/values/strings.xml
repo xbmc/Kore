@@ -273,9 +273,11 @@
     <string name="confirm_episode_download">Are you sure you want to download this episode?\nThe episode will be downloaded in the background, but it can take a while to finish.</string>
     <string name="confirm_album_download">Are you sure you want to download this album?\nThe album will be downloaded in the background, but it can take a while to finish.</string>
     <string name="confirm_artist_download">Are you sure you want to download all albums?\nThe albums will be downloaded in the background, but it can take a while to finish.</string>
+    <string name="confirm_songs_download">Are you sure you want to download %1$d songs?\nThe songs will be downloaded in the background, but it can take a while to finish.</string>
 
     <string name="download_file_exists">File already exists.\nDo you want to overwrite it or download with a new name?</string>
     <string name="download_dir_exists">Download directory already exists.\nIf any files have the same name, do you want to overwrite them or download them with a new name?</string>
+    <string name="download_files_exists">One or more files already exist.\nIf any files have the same name, do you want to overwrite them or download them with a new name?</string>
     <string name="overwrite">Overwrite</string>
     <string name="download_with_new_name">New name</string>
     <string name="download_file_description">Downloaded from your media center</string>
@@ -285,6 +287,9 @@
 
     <string name="tvshow_overview">Overview</string>
     <string name="tvshow_episodes">Episodes</string>
+
+    <string name="addon_overview">Overview</string>
+    <string name="addon_content">Content</string>
 
     <string name="artists">Artists</string>
     <string name="albums">Albums</string>
@@ -299,6 +304,9 @@
     <string name="enable_disable">Enable/Disable Addon</string>
     <string name="addon_enabled">Addon enabled</string>
     <string name="addon_disabled">Addon disabled</string>
+    <string name="pin_unpin">Pin/Unpin Addon</string>
+    <string name="addon_pinned">Addon pinned</string>
+    <string name="addon_unpinned">Addon unpinned</string>
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Hide watched</string>
@@ -320,7 +328,9 @@
 
     <string name="switch_to_remote">Switch to remote after media start</string>
     <string name="keep_remote_above_lockscreen">Keep remote above lockscreen</string>
+    <string name="pref_keep_screen_on">Keep screen on when using remote</string>
     <string name="show_notification">Show notification while playing</string>
+    <string name="pause_during_calls">Pause playing while phone in a call</string>
     <string name="use_hardware_volume_keys">Use volume keys to control volume</string>
     <string name="vibrate_on_remote">Vibrate on remote button press</string>
     <string name="nav_drawer_items">Side menu shortcuts</string>
@@ -346,6 +356,8 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Play on Kodi</string>
+    <string name="pause_call_incoming_title">Incoming call</string>
+    <string name="pause_call_incoming_message">Check your phone, someone is calling you</string>
 
     <string name="error_getting_pvr_info">An error occurred while getting pvr info: %1$s</string>
     <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\nIf that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
@@ -372,5 +384,15 @@
 
     <string name="download_network_types_title">Download network types</string>
     <string name="download_network_types_summary">Allowed network types for media downloads</string>
+    <string name="songs">Songs</string>
+
+    <string name="read_phone_state_permission_denied">Permission denied. Won\'t be able to pause playback during calls.</string>
+    <string name="write_storage_permission_denied">Permission denied. Won\'t be able to download files.</string>
+
+    <string name="no_songs_to_download">No songs to download</string>
+    <string name="by_album">By album</string>
+    <string name="by_artist">By artist</string>
+    <string name="by_artist_and_year">By artist and year</string>
+    <string name="muted">muted</string>
 
 </resources>

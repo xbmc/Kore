@@ -44,7 +44,7 @@
     <string name="xbmc_quit">Медийният център се затваря.</string>
     <string name="wol_sent">До медийния център е изпратен сигнал за събуждане.</string>
 
-    <string name="power">Изключи...</string>
+    <string name="power">Изключи…</string>
     <string name="quit">Изход</string>
     <string name="suspend">Суспендиране</string>
     <string name="reboot">Рестартиране</string>
@@ -82,7 +82,7 @@
     Докоснете <i>Повторно търсене</i> за втори опит или <i>Напред</i> за ръчно настройване.
     ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[
-    Моля свържете се с мрежа, преди да търсите медийни центорве.<br/>
+    Моля свържете се с мрежа, преди да търсите медийни центрове.<br/>
     ]]></string>
     <string name="wizard_search_host_found"><![CDATA[
     В локалната мрежа са открити следните медийни центрове.<br/><br/>Изберете кой да бъде добавен или докоснете <i>Напред</i> за ръчно добавяне.
@@ -215,6 +215,7 @@
         %1$s.</string>
     <string name="error_get_active_player">Couldn\'t get active player.\nГрешка:
         %1$s.</string>
+    <string name="error_share_video">Видеото не може да бъде споделено с Kodi.</string>
 
     <string name="directors">Режисьор:</string>
     <string name="studio">Студио:</string>
@@ -243,6 +244,7 @@
     <string name="no_channel_groups_found_refresh">No channel groups found.\n\nПлъзнете надолу за опресняване</string>
     <string name="no_channels_found_refresh">Няма открити канали.\n\nПлъзнете надолу за опресняване</string>
     <string name="no_recordings_found_refresh">Няма открити записи.\n\nПлъзнете надолу за опресняване</string>
+    <string name="no_broadcasts_found_refresh">No broadcasts found.\n\nПлъзнете надолу за опресняване</string>
     <string name="pull_to_refresh">Плъзнете за опресняване</string>
     <string name="no_cast_info">Няма информация за участниците</string>
 
@@ -269,6 +271,7 @@
     <string name="confirm_movie_download">Желаете ли да свалите филма?\nСвалянето ще започне на заден фон и най-вероятно ще отнеме известно време.</string>
     <string name="confirm_episode_download">Желаете ли да свалите епизода?\nСвалянето ще започне на заден фон и най-вероятно ще отнеме известно време.</string>
     <string name="confirm_album_download">Желаете ли да свалите албума?\nСвалянето ще започне на заден фон и най-вероятно ще отнеме известно време.</string>
+    <string name="confirm_artist_download">Желаете ли да свалите всички албуми?\nСвалянето ще започне на заден фон и най-вероятно ще отнеме известно време.</string>
 
     <string name="download_file_exists">Файлът съществува.\nДа бъде презаписан или свален с ново име?</string>
     <string name="download_dir_exists">Директорията вече съществува.\nАко съществуват и файлове със същото име да бъдат презаписани или свалени с ново име?</string>
@@ -281,6 +284,9 @@
 
     <string name="tvshow_overview">Обобщение</string>
     <string name="tvshow_episodes">Епизоди</string>
+
+    <string name="addon_overview">Обобщение</string>
+    <string name="addon_content">Съдържание</string>
 
     <string name="artists">Артисти</string>
     <string name="albums">Албуми</string>
@@ -295,11 +301,17 @@
     <string name="enable_disable">Вкл./Изкл. на добавката</string>
     <string name="addon_enabled">Добавката е включена</string>
     <string name="addon_disabled">Добавката е изключена</string>
+    <string name="pin_unpin">Закачи/Откачи добавка</string>
+    <string name="addon_pinned">Добавката е закачена</string>
+    <string name="addon_unpinned">Добавката е откачена</string>
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Без гледаните</string>
     <string name="sort_order">Сортирай по…</string>
     <string name="sort_by_name">име</string>
+    <string name="sort_by_year">година</string>
+    <string name="sort_by_rating">оценка</string>
+    <string name="sort_by_length">продължителност</string>
     <string name="sort_by_date_added">дата на добавяне</string>
     <string name="ignore_prefixes">Игнорирай представките</string>
 
@@ -312,7 +324,9 @@
     <string name="theme_solarized_dark">Соларизирана (Тъмна)</string>
 
     <string name="switch_to_remote">Към дистанционното след стартиране</string>
+    <string name="keep_remote_above_lockscreen">Показвай дистанционното над заключения екран</string>
     <string name="show_notification">Показвай известия и при възпроизвеждане</string>
+    <string name="pause_during_calls">"На пауза" при позвъняване</string>
     <string name="use_hardware_volume_keys">Контрол на звука с клавишите за сила за звука</string>
     <string name="vibrate_on_remote">Вибриране при натискане на бутон</string>
     <string name="nav_drawer_items">Преки пътища в страничното меню</string>
@@ -338,10 +352,13 @@
     <!--<string name="purchase_thanks">Благодаря за подкрепата!</string>-->
 
     <string name="play_on_kodi">Kodi</string>
+    <string name="pause_call_incoming_title">Входящо повикване</string>
+    <string name="pause_call_incoming_message">Проверете телефона си, търсят ви</string>
     <string name="error_getting_pvr_info">Грешка при свалянето на ПВР инф.: %1$s</string>
     <string name="might_not_have_pvr">Грешка при свалянето на инф. за канали, вероятно защото медийният център няма тунер или не е настроен.\n\nВ такъв случай можете да премахнете елемента от страничното меню, от Настройки.</string>
     <string name="error_starting_channel">Грешка при опит за възпроизвеждане на канал: %1$s</string>
     <string name="error_starting_recording">Грешка при започване на запис: %1$s</string>
+    <string name="error_starting_to_record">Грешка по време на записване: %1$s</string>
     <string name="channel_switching">Превключване към канал %1$s</string>
     <string name="starting_recording">Започване на запис %1$s</string>
     <string name="refresh">опресни</string>
@@ -351,5 +368,20 @@
     <string name="recordings">Записи</string>
     <string name="tv_channels">ТВ канали</string>
     <string name="radio_channels">Радио канали</string>
+
+    <string name="record">Запиши</string>
+    <string name="pvr_epg">Справочник</string>
+    <string name="unable_to_move_item">Елементът не може да бъде преместен</string>
+    <string name="cannot_move_playing_item">Елементи които се възпроизвеждат не могат да бъдат местени</string>
+    <string name="no_connection_type_selected">No connection type selected in settings</string>
+    <string name="single_column">Single column</string>
+    <string name="multi_column">Multi-column</string>
+
+    <string name="download_network_types_title">Download network types</string>
+    <string name="download_network_types_summary">Allowed network types for media downloads</string>
+    <string name="songs">Песни</string>
+
+    <string name="read_phone_state_permission_denied">Достъпът е отказан. Няма да може да бъде активиран режима "На пауза" при повикване.</string>
+    <string name="write_storage_permission_denied">Достъпът е отказан. Няма да може да бъдат сваляни файлове.</string>
 
 </resources>

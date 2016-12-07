@@ -21,15 +21,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.PopupMenu;
@@ -55,20 +52,20 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import java.util.regex.Pattern;
 
 /**
  * Presents a list of files of different types (Video/Music)
  */
-public class MediaFileListFragment extends Fragment {
+public class MediaFileListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(MediaFileListFragment.class);
 
     public static final String MEDIA_TYPE = "mediaType";
     public static final String PATH_CONTENTS = "pathContents";
     public static final String ROOT_PATH_CONTENTS = "rootPathContents";
     public static final String ROOT_VISITED = "rootVisited";
+    public static final String ROOT_PATH = "rootPath";
+    public static final String DELAY_LOAD = "delayLoad";
     private static final String ADDON_SOURCE = "addons:";
 
     private HostManager hostManager;
@@ -80,15 +77,16 @@ public class MediaFileListFragment extends Fragment {
     String mediaType = Files.Media.MUSIC;
     String parentDirectory = null;
     int playlistId = PlaylistType.MUSIC_PLAYLISTID;             // this is the ID of the music player
-    private MediaFileListAdapter adapter = null;
+//    private MediaFileListAdapter adapter = null;
     boolean browseRootAlready = false;
+    FileLocation loadOnVisible = null;
 
     ArrayList<FileLocation> rootFileLocation = new ArrayList<FileLocation>();
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
 
-    @InjectView(R.id.list) GridView folderGridView;
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(android.R.id.empty) TextView emptyView;
+//    @InjectView(R.id.list) GridView folderGridView;
+//    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+//    @InjectView(android.R.id.empty) TextView emptyView;
 
     public static MediaFileListFragment newInstance(final String media) {
         MediaFileListFragment fragment = new MediaFileListFragment();
@@ -103,7 +101,7 @@ public class MediaFileListFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString(MEDIA_TYPE, mediaType);
         try {
-            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList<FileLocation>)adapter.getFileItemList());
+            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList<FileLocation>) ((MediaFileListAdapter) getAdapter()).getFileItemList());
         } catch (NullPointerException npe) {
             // adapter is null probably nothing was save in bundle because the directory is empty
             // ignore this so that the empty message would display later on
@@ -113,40 +111,45 @@ public class MediaFileListFragment extends Fragment {
     }
 
     @Override
+    protected AdapterView.OnItemClickListener createOnItemClickListener() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(position));
+            }
+        };
+    }
+
+    @Override
+    protected BaseAdapter createAdapter() {
+        return new MediaFileListAdapter(getActivity(), R.layout.grid_item_file);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
         Bundle args = getArguments();
+        FileLocation rootPath = null;
         if (args != null) {
-            mediaType = args.getString(MEDIA_TYPE, Files.Media.MUSIC);
+            rootPath = args.getParcelable(ROOT_PATH);
+            mediaType = args.getString(MEDIA_TYPE, Files.Media.FILES);
             if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
                 playlistId = PlaylistType.VIDEO_PLAYLISTID;
             } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
                 playlistId = PlaylistType.PICTURE_PLAYLISTID;
             }
         }
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
-        ButterKnife.inject(this, root);
 
         hostManager = HostManager.getInstance(getActivity());
-        swipeRefreshLayout.setEnabled(false);
 
         emptyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browseSources();
-            }
-        });
-        folderGridView.setEmptyView(emptyView);
-        folderGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                handleFileSelect(adapter.getItem(position));
+                if (!atRootDirectory())
+                    browseSources();
             }
         });
 
-        if (adapter == null) {
-            adapter = new MediaFileListAdapter(getActivity(), R.layout.grid_item_file);
-        }
-        folderGridView.setAdapter(adapter);
         if (savedInstanceState != null) {
             mediaType = savedInstanceState.getString(MEDIA_TYPE);
             //currentPath = savedInstanceState.getString(CURRENT_PATH);
@@ -158,12 +161,28 @@ public class MediaFileListFragment extends Fragment {
             ArrayList<FileLocation> list = savedInstanceState.getParcelableArrayList(PATH_CONTENTS);
             rootFileLocation = savedInstanceState.getParcelableArrayList(ROOT_PATH_CONTENTS);
             browseRootAlready = savedInstanceState.getBoolean(ROOT_VISITED);
-            adapter.setFilelistItems(list);
+            ((MediaFileListAdapter) getAdapter()).setFilelistItems(list);
+        }
+        else if (rootPath != null) {
+            loadOnVisible = rootPath;
+            // setUserVisibleHint may have already fired
+            setUserVisibleHint(getUserVisibleHint() || !args.getBoolean(DELAY_LOAD, false));
         }
         else {
             browseSources();
         }
         return root;
+    }
+
+    @Override
+    public void setUserVisibleHint (boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && loadOnVisible != null) {
+            FileLocation rootPath = loadOnVisible;
+            loadOnVisible = null;
+            browseRootAlready = true;
+            browseDirectory(rootPath);
+        }
     }
 
     void handleFileSelect(FileLocation f) {
@@ -187,13 +206,13 @@ public class MediaFileListFragment extends Fragment {
 
     public void onBackPressed() {
         // Emulate a click on ..
-        handleFileSelect(adapter.getItem(0));
+        handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(0));
     }
 
     public boolean atRootDirectory() {
-        if (adapter.getCount() == 0)
+        if (getAdapter().getCount() == 0)
             return true;
-        FileLocation fl = adapter.getItem(0);
+        FileLocation fl = ((MediaFileListAdapter) getAdapter()).getItem(0);
         if (fl == null)
             return true;
         else
@@ -224,7 +243,7 @@ public class MediaFileListFragment extends Fragment {
 
                 browseRootAlready = true;
                 emptyView.setText(getString(R.string.source_empty));
-                adapter.setFilelistItems(rootFileLocation);
+                ((MediaFileListAdapter) getAdapter()).setFilelistItems(rootFileLocation);
             }
 
             @Override
@@ -312,15 +331,16 @@ public class MediaFileListFragment extends Fragment {
 
                 ArrayList<FileLocation> flList = new ArrayList<FileLocation>();
 
-                // insert the parent directory as the first item in the list
-                FileLocation fl = new FileLocation("..", parentDirectory, true);
-                fl.setRootDir(dir.isRootDir());
-                flList.add(0, fl);
-
+                if (dir.hasParent) {
+                    // insert the parent directory as the first item in the list
+                    FileLocation fl = new FileLocation("..", parentDirectory, true);
+                    fl.setRootDir(dir.isRootDir());
+                    flList.add(0, fl);
+                }
                 for (ListType.ItemFile i : result) {
                     flList.add(FileLocation.newInstanceFromItemFile(getActivity(), i));
                 }
-                adapter.setFilelistItems(flList);
+                ((MediaFileListAdapter) getAdapter()).setFilelistItems(flList);
                 browseRootAlready = false;
             }
 
@@ -347,7 +367,7 @@ public class MediaFileListFragment extends Fragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                while (mediaQueueFileLocation.size() > 0) {
+                while (!mediaQueueFileLocation.isEmpty()) {
                     queueMediaFile(mediaQueueFileLocation.poll().file);
                 }
             }
@@ -634,6 +654,7 @@ public class MediaFileListFragment extends Fragment {
 
         public final String file;
         public final boolean isDirectory;
+        public final boolean hasParent;
         private boolean isRoot;
 
 
@@ -644,10 +665,13 @@ public class MediaFileListFragment extends Fragment {
             this(title, path, isDir, null, null, null);
         }
 
+        static final Pattern noParent = Pattern.compile("plugin://[^/]*/?");
         public FileLocation(String title, String path, boolean isDir, String details, String sizeDuration, String artUrl) {
             this.title = title;
             this.file = path;
             this.isDirectory = isDir;
+            this.hasParent = !noParent.matcher(path).matches();
+
             this.isRoot = false;
 
             this.details = details;
@@ -662,27 +686,39 @@ public class MediaFileListFragment extends Fragment {
                 case ListType.ItemBase.TYPE_MOVIE:
                     title = itemFile.title;
                     details = itemFile.tagline;
-                    sizeDuration = UIUtils.formatTime(itemFile.runtime);
+                    sizeDuration = (itemFile.size > 0) && (itemFile.runtime > 0) ?
+                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
+                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                   (itemFile.runtime > 0)? UIUtils.formatTime(itemFile.runtime) : null;
                     artUrl = itemFile.thumbnail;
                     break;
                 case ListType.ItemBase.TYPE_EPISODE:
                     title = itemFile.title;
                     details = String.format(context.getString(R.string.season_episode), itemFile.season, itemFile.episode);
-                    sizeDuration = UIUtils.formatTime(itemFile.runtime);
+                    sizeDuration = (itemFile.size > 0) && (itemFile.runtime > 0) ?
+                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
+                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                   (itemFile.runtime > 0)? UIUtils.formatTime(itemFile.runtime) : null;
                     artUrl = itemFile.thumbnail;
                     break;
                 case ListType.ItemBase.TYPE_MUSIC_VIDEO:
                     title = itemFile.title;
                     details = Utils.listStringConcat(itemFile.artist, ", ") + " | " + itemFile.album;
-                    sizeDuration = UIUtils.formatTime(itemFile.runtime);
+                    sizeDuration = (itemFile.size > 0) && (itemFile.runtime > 0) ?
+                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
+                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                   (itemFile.runtime > 0)? UIUtils.formatTime(itemFile.runtime) : null;
                     artUrl = itemFile.thumbnail;
                     break;
                 case ListType.ItemBase.TYPE_ALBUM:
                 case ListType.ItemBase.TYPE_SONG:
-                    title = itemFile.title;
+                    title = itemFile.label;
                     details = itemFile.displayartist + " | " + itemFile.album;
                     artUrl = itemFile.thumbnail;
-                    sizeDuration = UIUtils.formatTime(itemFile.duration);
+                    sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
+                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
+                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                   (itemFile.duration > 0)? UIUtils.formatTime(itemFile.duration) : null;
                     break;
                 case ListType.ItemBase.TYPE_PICTURE:
                 default:
@@ -702,6 +738,7 @@ public class MediaFileListFragment extends Fragment {
             this.title = in.readString();
             this.file = in.readString();
             this.isDirectory = (in.readInt() != 0);
+            this.hasParent = (in.readInt() != 0);
             this.isRoot = (in.readInt() != 0);
 
             this.details = in.readString();
@@ -717,6 +754,7 @@ public class MediaFileListFragment extends Fragment {
             out.writeString(title);
             out.writeString(file);
             out.writeInt(isDirectory ? 1 : 0);
+            out.writeInt(hasParent ? 1 : 0);
             out.writeInt(isRoot ? 1 : 0);
 
             out.writeString(details);

@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/art"
+            android:layout_toEndOf="@id/art"
             android:layout_alignTop="@id/art"
             style="@style/TextAppearance.Medialist.Title"/>
         <TextView
@@ -48,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/title"
+            android:layout_alignStart="@id/title"
             android:layout_below="@id/title"
             style="@style/TextAppearance.Medialist.Details"/>
 
@@ -56,6 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/title"
+            android:layout_alignStart="@id/title"
             android:layout_below="@id/details"
             android:layout_alignParentBottom="true"
             style="@style/TextAppearance.Medialist.OtherInfo"/>

@@ -18,6 +18,7 @@
     <dimen name="wizard_title">216dp</dimen>
 
     <dimen name="remote_icon_size">126dp</dimen>
+    <dimen name="remote_size">378dp</dimen>
 
     <dimen name="remote_poster_width">96dp</dimen>
     <dimen name="remote_poster_height">162dp</dimen>

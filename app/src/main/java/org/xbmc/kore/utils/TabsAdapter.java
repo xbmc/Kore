@@ -38,12 +38,21 @@ public class TabsAdapter extends FragmentPagerAdapter {
         private final Bundle args;
         private final int titleRes;
         private final long fragmentId;
+        private final String titleString;
 
         TabInfo(Class<?> fragmentClass, Bundle args, int titleRes, long fragmentId) {
             this.fragmentClass = fragmentClass;
             this.args = args;
             this.titleRes = titleRes;
             this.fragmentId = fragmentId;
+            this.titleString = null;
+        }
+        TabInfo(Class<?> fragmentClass, Bundle args, String titleString, long fragmentId) {
+            this.fragmentClass = fragmentClass;
+            this.args = args;
+            this.titleRes = 0;
+            this.fragmentId = fragmentId;
+            this.titleString = titleString;
         }
     }
 
@@ -55,6 +64,12 @@ public class TabsAdapter extends FragmentPagerAdapter {
 
     public TabsAdapter addTab(Class<?> fragmentClass, Bundle args, int titleRes, long fragmentId) {
         TabInfo info = new TabInfo(fragmentClass, args, titleRes, fragmentId);
+        tabInfos.add(info);
+        return this;
+    }
+
+    public TabsAdapter addTab(Class<?> fragmentClass, Bundle args, String titleString, long fragmentId) {
+        TabInfo info = new TabInfo(fragmentClass, args, titleString, fragmentId);
         tabInfos.add(info);
         return this;
     }
@@ -101,7 +116,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
         TabInfo tabInfo = tabInfos.get(position);
         if (tabInfo != null) {
 //            return context.getString(tabInfo.titleRes).toUpperCase(Locale.getDefault());
-            return context.getString(tabInfo.titleRes);
+            return tabInfo.titleString == null? context.getString(tabInfo.titleRes) : tabInfo.titleString;
         }
         return null;
     }

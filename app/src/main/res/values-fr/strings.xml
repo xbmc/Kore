@@ -286,6 +286,9 @@
     <string name="tvshow_overview">Aperçu</string>
     <string name="tvshow_episodes">Épisodes</string>
 
+    <string name="addon_overview">Aperçu</string>
+    <string name="addon_content">Contenu</string>
+
     <string name="artists">Artistes</string>
     <string name="albums">Albums</string>
     <string name="genres">Genres</string>
@@ -299,6 +302,9 @@
     <string name="enable_disable">Activer/Désactiver une extension</string>
     <string name="addon_enabled">Extension activée</string>
     <string name="addon_disabled">Extension désactivée</string>
+    <string name="pin_unpin">Épingler/Annuler l\'épinglage de l\'extension</string>
+    <string name="addon_pinned">Extension épinglée</string>
+    <string name="addon_unpinned">Épinglage de l\'extension annulé</string>
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Masquer les visionnés</string>
@@ -320,7 +326,9 @@
 
     <string name="switch_to_remote">Basculer sur la télécommande après le début de la lecture</string>
     <string name="keep_remote_above_lockscreen">Conserver la télécommande sur l\'écran de déverrouillage</string>
+    <string name="pref_keep_screen_on">Conserver l\'écran allumé lors de l\'utilisation de la télécommande</string>
     <string name="show_notification">Afficher les notifications pendant la lecture</string>
+    <string name="pause_during_calls">Mettre en pause lors des appels téléphoniques</string>
     <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
     <string name="vibrate_on_remote">Vibrer à l\'appui</string>
     <string name="nav_drawer_items">Raccourcis du volet de navigation</string>
@@ -335,6 +343,8 @@
     ]]></string>
 
     <string name="play_on_kodi">Lire sur Kodi</string>
+    <string name="pause_call_incoming_title">Appel entrant</string>
+    <string name="pause_call_incoming_message">Vérifiez votre téléphone, quelqu\'un vous appelle</string>
 
     <string name="error_getting_pvr_info">Erreur lors de l\'obtention des informations du magnétoscope numérique : %1$s</string>
     <string name="might_not_have_pvr">Erreur lors de l\'obtention des informations des chaînes, soit parce que votre Centre Multimédia n\'est pas équipé d\'un \"tuner\" soit parce qu\'il n\'est pas configuré.\n\nSi c\'est le cas et que vous souhaitez supprimer cette entrée du volet de navigation, vous pouvez le faire dans les Paramètres.</string>
@@ -359,6 +369,10 @@
 
     <string name="download_network_types_title">Types de réseaux pour le téléchargement</string>
     <string name="download_network_types_summary">Types de réseaux autorisés pour le téléchargement de médias</string>
+    <string name="songs">Chansons</string>
+
+    <string name="read_phone_state_permission_denied">Autorisation refusée. Impossible de mettre de la lecture en pause pendant les appels téléphoniques.</string>
+    <string name="write_storage_permission_denied">Autorisation refusée. Impossible de télécharger des fichiers.</string>
 
     <string name="single_column">Une colonne</string>
     <string name="multi_column">Plusieurs colonnes</string>

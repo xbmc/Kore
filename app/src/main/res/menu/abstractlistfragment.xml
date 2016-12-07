@@ -20,7 +20,4 @@
     <item android:id="@+id/action_multi_single_columns"
           android:title="@string/single_column"
           app:showAsAction="never"/>
-    <item android:id="@+id/action_refresh"
-          android:title="@string/refresh"
-          app:showAsAction="never"/>
 </menu>

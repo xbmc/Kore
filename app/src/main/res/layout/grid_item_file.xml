@@ -42,7 +42,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            style="@style/TextAppearance.Medialist.OtherInfo"/>
+            style="@style/TextAppearance.Medialist.OtherInfo"
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingStart="@dimen/small_padding"/>
         <ImageView
             android:id="@+id/list_context_menu"
             android:layout_width="@dimen/default_icon_size"
@@ -64,7 +66,11 @@
             android:layout_toLeftOf="@id/list_context_menu"
             android:layout_toStartOf="@id/list_context_menu"
             android:layout_alignTop="@id/art"
-            style="@style/TextAppearance.Medialist.Title"/>
+            style="@style/TextAppearance.Medialist.Title"
+            android:paddingRight="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"
+            android:singleLine="false"
+            android:ellipsize="middle"/>
         <TextView
             android:id="@+id/details"
             android:layout_width="match_parent"
@@ -76,6 +82,8 @@
             android:layout_toEndOf="@id/art"
             android:layout_toLeftOf="@id/size_duration"
             android:layout_toStartOf="@id/size_duration"
-            style="@style/TextAppearance.Medialist.Details"/>
+            style="@style/TextAppearance.Medialist.Details"
+            android:paddingRight="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"/>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

@@ -39,6 +39,8 @@ public class MusicListFragment extends Fragment {
 
     private TabsAdapter tabsAdapter;
 
+    private int currentItem;
+
     @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
     @InjectView(R.id.pager) ViewPager viewPager;
 
@@ -51,11 +53,34 @@ public class MusicListFragment extends Fragment {
                 .addTab(ArtistListFragment.class, getArguments(), R.string.artists, 1)
                 .addTab(AlbumListFragment.class, getArguments(), R.string.albums, 2)
                 .addTab(AudioGenresListFragment.class, getArguments(), R.string.genres, 3)
-                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 4);
+                .addTab(SongsListFragment.class, getArguments(), R.string.songs, 4)
+                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 5);
 
         viewPager.setAdapter(tabsAdapter);
         pagerTabStrip.setViewPager(viewPager);
 
+        currentItem = viewPager.getCurrentItem();
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                AbstractCursorListFragment f =
+                        ((AbstractCursorListFragment) tabsAdapter.getStoredFragment(currentItem));
+                if (f != null) {
+                    f.saveSearchState();
+                }
+                currentItem = viewPager.getCurrentItem();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
         return root;
     }
 

@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.eventclient.ButtonCodes;
@@ -48,9 +49,11 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
+import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.jsonrpc.method.Player;
+import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
@@ -184,23 +187,34 @@ public class RemoteFragment extends Fragment
             setupEventServerButton(rightButton, ButtonCodes.REMOTE_RIGHT);
             setupEventServerButton(upButton, ButtonCodes.REMOTE_UP);
             setupEventServerButton(downButton, ButtonCodes.REMOTE_DOWN);
-            //setupEventServerButton(selectButton, ButtonCodes.REMOTE_SELECT);
+
+            setupEventServerButton(selectButton, ButtonCodes.REMOTE_SELECT);
         } else {
             // Otherwise, use json-rpc
             setupRepeatButton(leftButton, new Input.Left());
             setupRepeatButton(rightButton, new Input.Right());
             setupRepeatButton(upButton, new Input.Up());
             setupRepeatButton(downButton, new Input.Down());
+
+            setupDefaultButton(selectButton, new Input.Select(), null);
         }
-        setupDefaultButton(selectButton, new Input.Select(), null);
 
         // Other buttons
         setupDefaultButton(backButton, new Input.Back(), null);
-        setupDefaultButton(infoButton,
-                           new Input.ExecuteAction(Input.ExecuteAction.INFO),
-                           new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
         setupDefaultButton(osdButton, new Input.ExecuteAction(Input.ExecuteAction.OSD), null);
         setupDefaultButton(contextButton, new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU), null);
+
+        // Info button, v17 uses a different window to display codec info so check version number
+        HostInfo hostInfo = hostManager.getHostInfo();
+        if (hostInfo.getKodiVersionMajor() < 17) {
+            setupDefaultButton(infoButton,
+                               new Input.ExecuteAction(Input.ExecuteAction.INFO),
+                               new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
+        } else {
+            setupDefaultButton(infoButton,
+                               new Input.ExecuteAction(Input.ExecuteAction.INFO),
+                               new Input.ExecuteAction(Input.ExecuteAction.PLAYERPROCESSINFO));
+        }
 
         adjustRemoteButtons();
 
@@ -210,10 +224,10 @@ public class RemoteFragment extends Fragment
                 R.attr.iconNext,
                 R.attr.iconPrevious
         });
-        fastForwardIcon = styledAttributes.getResourceId(0, R.drawable.ic_fast_forward_white_24dp);
-        rewindIcon = styledAttributes.getResourceId(1, R.drawable.ic_fast_rewind_white_24dp);
-        skipNextIcon = styledAttributes.getResourceId(2, R.drawable.ic_skip_next_white_24dp);
-        skipPreviousIcon = styledAttributes.getResourceId(3, R.drawable.ic_skip_previous_white_24dp);
+        fastForwardIcon = styledAttributes.getResourceId(styledAttributes.getIndex(0), R.drawable.ic_fast_forward_white_24dp);
+        rewindIcon = styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_fast_rewind_white_24dp);
+        skipNextIcon = styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_skip_next_white_24dp);
+        skipPreviousIcon = styledAttributes.getResourceId(styledAttributes.getIndex(3), R.drawable.ic_skip_previous_white_24dp);
         styledAttributes.recycle();
 
 //        // Pad main content view to account for bottom system bar
@@ -233,8 +247,8 @@ public class RemoteFragment extends Fragment
                 R.attr.contentBackgroundColor});
 //                R.attr.remoteBackgroundColorFilter});
         Resources resources = getResources();
-        int remoteButtonsColor =  styledAttributes.getColor(0, resources.getColor(R.color.white)),
-            remoteBackgroundColor = styledAttributes.getColor(1, resources.getColor(R.color.dark_content_background_dim_70pct));
+        int remoteButtonsColor =  styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.white)),
+            remoteBackgroundColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.dark_content_background_dim_70pct));
         styledAttributes.recycle();
 
         leftButton.setColorFilter(remoteButtonsColor);
@@ -510,7 +524,7 @@ public class RemoteFragment extends Fragment
     public void playerOnConnectionError(int errorCode, String description) {
         HostInfo hostInfo = hostManager.getHostInfo();
 
-        switchToPanel(R.id.info_panel, false);
+        switchToPanel(R.id.info_panel, true);
         if (hostInfo != null) {
             infoTitle.setText(R.string.connecting);
             // TODO: check error code
@@ -523,7 +537,7 @@ public class RemoteFragment extends Fragment
 
     public void playerNoResultsYet() {
         // Initialize info panel
-        switchToPanel(R.id.info_panel, false);
+        switchToPanel(R.id.info_panel, true);
         HostInfo hostInfo = hostManager.getHostInfo();
         if (hostInfo != null) {
             infoTitle.setText(R.string.connecting);

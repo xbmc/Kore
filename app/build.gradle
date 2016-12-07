@@ -11,14 +11,14 @@ def getVersionName = { ->
 
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "org.xbmc.kore"
         minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 13
+        targetSdkVersion 23
+        versionCode 14
         versionName = getVersionName()
     }
 
@@ -35,6 +35,30 @@ android {
                 storePassword keyProps["storePass"]
                 keyPassword keyProps["pass"]
             }
+        }
+    }
+
+    sourceSets {
+        fullDebug {
+            assets.srcDirs = ['src/testUtils/assets']
+        }
+        test {
+            java.srcDirs = ['src/test/java', 'src/testUtils/java']
+        }
+        instrumentationTest {
+            java.srcDirs = ['src/testUtils/java']
+            assets.srcDirs = ['src/testUtils/assets']
+        }
+    }
+
+    productFlavors {
+        full {
+        }
+
+        instrumentationTest {
+            applicationId "org.xbmc.kore.instrumentationtest"
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+            proguardFiles 'proguardTest-rules.pro'
         }
     }
 
@@ -80,9 +104,10 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:22.2.0'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:cardview-v7:22.2.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
+    compile 'com.android.support:support-v13:23.4.0'
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
     compile 'com.jakewharton:butterknife:6.1.0'
@@ -93,5 +118,38 @@ dependencies {
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
 
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
+    androidTestCompile 'com.android.support:support-v13:23.4.0'
+    instrumentationTestCompile 'junit:junit:4.12'
+
+    testCompile 'org.robolectric:robolectric:3.1.1'
+    testCompile 'junit:junit:4.12'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+// Get the path to ADB.  Required when running tests directly from Android Studio.
+// Source: http://stackoverflow.com/a/26771087/112705
+def adb = android.getAdbExe().toString()
+
+// Source: http://stackoverflow.com/q/29908110/112705
+afterEvaluate {
+    task grantAnimationPermissionDev(type: Exec, dependsOn: 'installInstrumentationTestDebug') {
+        doFirst {
+            println("Executing: $adb shell pm grant $android.productFlavors.instrumentationTest.applicationId android.permission.SET_ANIMATION_SCALE")
+            commandLine "$adb shell pm grant $android.productFlavors.instrumentationTest.applicationId android.permission.SET_ANIMATION_SCALE".split(' ')
+        }
+    }
+
+    // When launching individual tests from Android Studio, it seems that only the assemble tasks
+    // get called directly, not the install* versions
+    tasks.each { task ->
+        if (task.name.startsWith('assembleInstrumentationTestDebugAndroidTest')) {
+            task.dependsOn grantAnimationPermissionDev
+        }
+    }
 }

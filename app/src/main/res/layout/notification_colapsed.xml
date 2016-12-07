@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/background_floating_material_dark">
+    android:background="@color/notification_backgroup">
 
     <ImageView android:id="@+id/icon"
         android:layout_width="@dimen/notification_art_default_width"

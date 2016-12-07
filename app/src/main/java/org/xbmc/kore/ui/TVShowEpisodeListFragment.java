@@ -48,7 +48,7 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.service.LibrarySyncService;
+import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -465,9 +465,10 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
                     R.attr.iconCollapse,
                     R.attr.iconExpand,
             });
-            themeAccentColor = styledAttributes.getColor(0, getResources().getColor(R.color.accent_default));
-            iconCollapseResId = styledAttributes.getResourceId(1, R.drawable.ic_expand_less_white_24dp);
-            iconExpandResId = styledAttributes.getResourceId(2, R.drawable.ic_expand_more_white_24dp);
+
+            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.accent_default));
+            iconCollapseResId = styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_expand_less_white_24dp);
+            iconExpandResId = styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_expand_more_white_24dp);
             styledAttributes.recycle();
 
             this.hostManager = HostManager.getInstance(context);
@@ -482,9 +483,7 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
 
         @Override
         public View newGroupView(Context context, Cursor cursor, boolean isExpanded, ViewGroup parent) {
-            final View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.list_item_season, parent, false);
-            return view;
+            return LayoutInflater.from(context).inflate(R.layout.list_item_season, parent, false);
         }
 
         @Override
