@@ -392,7 +392,7 @@
     <string name="no_songs_to_download">Nėra dainų atsisiuntimui</string>
     <string name="by_album">Pagal albumą</string>
     <string name="by_artist">Pagal atlikėją</string>
-    <string name="by_artist_and_year"Pagal atlikėją ir metus</string>
+    <string name="by_artist_and_year">Pagal atlikėją ir metus</string>
     <string name="muted">nutildyta</string>
 
 </resources>
