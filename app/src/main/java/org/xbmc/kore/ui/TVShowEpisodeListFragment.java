@@ -15,7 +15,7 @@
  */
 package org.xbmc.kore.ui;
 
-import android.app.Activity;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -25,196 +25,126 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.LoaderManager;
+import android.support.annotation.Nullable;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorTreeAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.CursorAdapter;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
-
-import java.util.HashMap;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import org.xbmc.kore.utils.Utils;
 
 /**
- * Presents a list of episodes for a TV show
+ * Presents a list of episodes for a TV show season
  */
-public class TVShowEpisodeListFragment extends AbstractDetailsFragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowEpisodeListFragment.class);
 
     public interface OnEpisodeSelectedListener {
-        public void onEpisodeSelected(int tvshowId, int episodeId);
+        void onEpisodeSelected(EpisodeViewHolder vh);
     }
 
     public static final String TVSHOWID = "tvshow_id";
-    public static final String SEASON = "season";
-
-    private final String BUNDLE_SAVEDINSTANCE_LISTPOSITION = "lposition";
-    private final String BUNDLE_SAVEDINSTANCE_ITEMPOSITION = "iposition";
-    private final String BUNDLE_SAVEDINSTANCE_GROUPSEXPANDED = "groupsexpanded";
-
-    // Loader IDs. Must be -1 to differentiate from group position
-    private static final int LOADER_SEASONS = -1;
-
-    private int listPosition = 0;
-    private int itemPosition = 0;
-
-    private HashMap<Integer, Boolean> groupsExpanded = new HashMap<>();
-    private HashMap<Integer, Boolean> childCursorsLoading;
-    private boolean isReturning; // used to determine if we are returning to this fragment and need to restore the state
+    public static final String TVSHOWSEASON = "season";
 
     // Displayed show id
     private int tvshowId = -1;
+    private int tvshowSeason = -1;
 
     // Activity listener
     private OnEpisodeSelectedListener listenerActivity;
 
-    private SeasonsEpisodesAdapter adapter;
+    /**
+     * Create a new instance of this, initialized to show tvshowId
+     */
+    @TargetApi(21)
+    public static TVShowEpisodeListFragment newInstance(int tvshowId, int season) {
+        TVShowEpisodeListFragment fragment = new TVShowEpisodeListFragment();
 
-    @InjectView(R.id.list) ExpandableListView seasonsEpisodesListView;
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(android.R.id.empty) TextView emptyView;
+        Bundle args = new Bundle();
+        args.putInt(TVSHOWID, tvshowId);
+        args.putInt(TVSHOWSEASON, season);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    protected View createView(LayoutInflater inflater, ViewGroup container) {
+    protected String getListSyncType() { return LibrarySyncService.SYNC_SINGLE_TVSHOW; }
+
+    @Override
+    protected String getSyncID() { return LibrarySyncService.SYNC_TVSHOWID; };
+
+    @Override
+    protected int getSyncItemID() { return tvshowId; };
+
+    @TargetApi(16) @Nullable @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
         tvshowId = getArguments().getInt(TVSHOWID, -1);
-        if (tvshowId == -1) {
+        tvshowSeason = getArguments().getInt(TVSHOWSEASON, -1);
+        if ((tvshowId == -1) || (tvshowSeason == -1)) {
             // There's nothing to show
             return null;
         }
-
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_tvshow_episodes_list, container, false);
-        ButterKnife.inject(this, root);
-
-        // Configure the adapter and start the loader
-        adapter = new SeasonsEpisodesAdapter(getActivity());
-        seasonsEpisodesListView.setAdapter(adapter);
-
         return root;
     }
 
     @Override
-    protected String getSyncType() {
-        return LibrarySyncService.SYNC_SINGLE_TVSHOW;
+    protected void onListItemClicked(View view) {
+        // Get the movie id from the tag
+        EpisodeViewHolder tag = (EpisodeViewHolder) view.getTag();
+        // Notify the activity
+        listenerActivity.onEpisodeSelected(tag);
+    }
+
+
+    @Override
+    protected CursorAdapter createAdapter() {
+        return new SeasonsEpisodesAdapter(getActivity());
     }
 
     @Override
-    protected String getSyncID() {
-        return LibrarySyncService.SYNC_TVSHOWID;
-    }
+    protected CursorLoader createCursorLoader() {
+        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        Uri uri = MediaContract.Episodes.buildTVShowSeasonEpisodesListUri(hostInfo.getId(), tvshowId, tvshowSeason);
 
-    @Override
-    protected int getSyncItemID() {
-        return tvshowId;
-    }
-
-    @Override
-    protected SwipeRefreshLayout getSwipeRefreshLayout() {
-        return swipeRefreshLayout;
-    }
-
-    @Override
-    protected void onDownload() {
-
-    }
-
-    @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        seasonsEpisodesListView.setEmptyView(emptyView);
-        seasonsEpisodesListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (parent.isGroupExpanded(groupPosition)) {
-                    parent.collapseGroup(groupPosition);
-                    groupsExpanded.remove(groupPosition);
-                } else {
-                    parent.expandGroup(groupPosition);
-                    groupsExpanded.put(groupPosition, true);
-                }
-                return true;
-            }
-        });
-        seasonsEpisodesListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                // Get the movie id from the tag
-                EpisodeViewHolder tag = (EpisodeViewHolder) v.getTag();
-                // Notify the activity
-                listenerActivity.onEpisodeSelected(tvshowId, tag.episodeId);
-                return true;
-            }
-        });
-
-        setHasOptionsMenu(true);
-
-        if (savedInstanceState != null) {
-            listPosition = savedInstanceState.getInt(BUNDLE_SAVEDINSTANCE_LISTPOSITION, 0);
-            itemPosition = savedInstanceState.getInt(BUNDLE_SAVEDINSTANCE_ITEMPOSITION, 0);
-            groupsExpanded = (HashMap) savedInstanceState.getSerializable(BUNDLE_SAVEDINSTANCE_GROUPSEXPANDED);
-            isReturning = true;
+        // Filters
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        StringBuilder selection = new StringBuilder();
+        if (preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOWS_FILTER_HIDE_WATCHED)) {
+            selection.append(MediaContract.EpisodesColumns.PLAYCOUNT)
+                     .append("=0");
         }
 
-        initLoader();
+        return new CursorLoader(getActivity(), uri,
+                                EpisodesListQuery.PROJECTION, selection.toString(), null, EpisodesListQuery.SORT);
     }
 
+
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            listenerActivity = (OnEpisodeSelectedListener) activity;
+            listenerActivity = (OnEpisodeSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnEpisodeSelectedListener");
+            throw new ClassCastException(context.toString() + " must implement OnEpisodeSelectedListener");
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        //Save scroll position
-        listPosition = seasonsEpisodesListView.getFirstVisiblePosition();
-        View itemView = seasonsEpisodesListView.getChildAt(0);
-        if (itemView != null) {
-            itemPosition = itemView.getTop();
-        } else {
-            itemPosition = 0;
-        }
-
-        isReturning = true;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt(BUNDLE_SAVEDINSTANCE_ITEMPOSITION, itemPosition);
-        outState.putInt(BUNDLE_SAVEDINSTANCE_LISTPOSITION, listPosition);
-        outState.putSerializable(BUNDLE_SAVEDINSTANCE_GROUPSEXPANDED, groupsExpanded);
     }
 
     @Override
@@ -250,168 +180,13 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
                 preferences.edit()
                            .putBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, item.isChecked())
                            .apply();
-                getLoaderManager().restartLoader(LOADER_SEASONS, null, this);
+                refreshList();
                 break;
             default:
                 break;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onSyncProcessEnded(MediaSyncEvent event) {
-        if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-            getLoaderManager().restartLoader(LOADER_SEASONS, null, this);
-        }
-    }
-
-    /**
-     * Loader callbacks
-     */
-    /** {@inheritDoc} */
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-        if (!isAdded()) {
-            LogUtils.LOGD(TAG, "Trying to create a loader, but the fragment isn't added. " +
-                               "Loader Id: " + id);
-            return null;
-        }
-
-        Uri uri;
-        StringBuilder selection = new StringBuilder();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        boolean tvshowEpisodesFilterHideWatched =
-                preferences.getBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED);
-        switch (id) {
-            case LOADER_SEASONS:
-                // Load seasons
-                uri = MediaContract.Seasons.buildTVShowSeasonsListUri(getHostInfo().getId(), tvshowId);
-
-                // Filters
-                if (tvshowEpisodesFilterHideWatched) {
-                    selection.append(MediaContract.SeasonsColumns.WATCHEDEPISODES)
-                             .append("!=")
-                             .append(MediaContract.SeasonsColumns.EPISODE);
-                }
-
-                return new CursorLoader(getActivity(), uri,
-                                        SeasonsListQuery.PROJECTION, selection.toString(), null, SeasonsListQuery.SORT);
-            default:
-                // Load episodes for a season. Season is in bundle
-                int season = bundle.getInt(SEASON);
-                uri = MediaContract.Episodes.buildTVShowSeasonEpisodesListUri(getHostInfo().getId(), tvshowId, season);
-
-                // Filters
-                if (tvshowEpisodesFilterHideWatched) {
-                    selection.append(MediaContract.EpisodesColumns.PLAYCOUNT)
-                             .append("=0");
-                }
-
-                return new CursorLoader(getActivity(), uri,
-                                        EpisodesListQuery.PROJECTION, selection.toString(), null, EpisodesListQuery.SORT);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        switch (cursorLoader.getId()) {
-            case LOADER_SEASONS:
-                adapter.setGroupCursor(cursor);
-                setState(cursor);
-                // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(getString(R.string.no_episodes_found));
-                break;
-            default:
-                // Check if the group cursor is set before setting the children cursor
-                // Somehow, when popping the back stack, the children cursor are reloaded first...
-                if (adapter.getCursor() != null) {
-                    int id = cursorLoader.getId();
-                    adapter.setChildrenCursor(id, cursor);
-                    childCursorsLoading.remove(id);
-                    if (isReturning && childCursorsLoading.isEmpty()) {
-                        isReturning = false;
-                        //All previous expanded child cursors loaded. Now we can finally restore the list position
-                        seasonsEpisodesListView.setSelectionFromTop(listPosition, itemPosition);
-                    }
-                }
-                break;
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        switch (cursorLoader.getId()) {
-            case LOADER_SEASONS:
-                adapter.setGroupCursor(null);
-                break;
-            default:
-                // Check if the group cursor is set before setting the children cursor
-                // Somehow, when popping the back stack, the children cursor are reloaded first...
-                if (adapter.getCursor() != null) {
-                    try {
-                        adapter.setChildrenCursor(cursorLoader.getId(), null);
-                    } catch (NullPointerException exc) {
-                        // Errrr... Adapter expired?
-                        LogUtils.LOGW(TAG, "Adapter expired.");
-                    }
-                }
-                break;
-        }
-    }
-
-    private void setState(Cursor cursor) {
-        if (cursor.getCount() == 1) {
-            seasonsEpisodesListView.expandGroup(0);
-        } else if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            do {
-                int position = cursor.getPosition();
-
-                // Expand the first season that has unseen episodes
-                int unwatched = cursor.getInt(SeasonsListQuery.EPISODE) - cursor.getInt(SeasonsListQuery.WATCHEDEPISODES);
-                if (groupsExpanded.isEmpty() && (unwatched > 0)) {
-                    seasonsEpisodesListView.expandGroup(position);
-                    groupsExpanded.put(position, true);
-                    break;
-                }
-
-                if (groupsExpanded.get(position) != null) {
-                    seasonsEpisodesListView.expandGroup(position);
-                }
-            } while (cursor.moveToNext());
-        }
-    }
-
-    private void initLoader() {
-        childCursorsLoading = new HashMap<>();
-        for (int id : groupsExpanded.keySet()) {
-            childCursorsLoading.put(id, true);
-        }
-        getLoaderManager().initLoader(LOADER_SEASONS, null, this);
-    }
-
-    /**
-     * Seasons list query parameters.
-     */
-    private interface SeasonsListQuery {
-        String[] PROJECTION = {
-                BaseColumns._ID,
-                MediaContract.Seasons.SEASON,
-                MediaContract.Seasons.THUMBNAIL,
-                MediaContract.Seasons.EPISODE,
-                MediaContract.Seasons.WATCHEDEPISODES
-        };
-
-        String SORT = MediaContract.Seasons.SEASON + " ASC";
-
-        final int ID = 0;
-        final int SEASON = 1;
-        final int THUMBNAIL = 2;
-        final int EPISODE = 3;
-        final int WATCHEDEPISODES = 4;
     }
 
     /**
@@ -431,111 +206,76 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
 
         String SORT = MediaContract.Episodes.EPISODE + " ASC";
 
-        final int ID = 0;
-        final int EPISODEID = 1;
-        final int EPISODE = 2;
-        final int THUMBNAIL = 3;
-        final int PLAYCOUNT = 4;
-        final int TITLE = 5;
-        final int RUNTIME = 6;
-        final int FIRSTAIRED = 7;
+        int ID = 0;
+        int EPISODEID = 1;
+        int EPISODE = 2;
+        int THUMBNAIL = 3;
+        int PLAYCOUNT = 4;
+        int TITLE = 5;
+        int RUNTIME = 6;
+        int FIRSTAIRED = 7;
     }
 
-    /**
-     * Adapter for the {@link android.widget.ExpandableListView}
-     * Manages the seasons and episodes list
-     */
-    private class SeasonsEpisodesAdapter extends CursorTreeAdapter {
 
-        private int themeAccentColor;
-        private int iconCollapseResId,
-                iconExpandResId;
+    private class SeasonsEpisodesAdapter extends CursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
+        private int themeAccentColor;
 
         public SeasonsEpisodesAdapter(Context context) {
-            // Cursor will be set vir CursorLoader
-            super(null, context);
+            super(context, null, false);
 
             // Get the default accent color
             Resources.Theme theme = context.getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.colorAccent,
-                    R.attr.iconCollapse,
-                    R.attr.iconExpand,
+                    R.attr.colorAccent
             });
 
             themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.accent_default));
-            iconCollapseResId = styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_expand_less_white_24dp);
-            iconExpandResId = styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_expand_more_white_24dp);
             styledAttributes.recycle();
 
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.seasonlist_art_width) /
+            artWidth = (int)(resources.getDimension(R.dimen.episodelist_art_width) /
                              UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.seasonlist_art_heigth) /
+            artHeight = (int)(resources.getDimension(R.dimen.episodelist_art_heigth) /
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
+        /** {@inheritDoc} */
         @Override
-        public View newGroupView(Context context, Cursor cursor, boolean isExpanded, ViewGroup parent) {
-            return LayoutInflater.from(context).inflate(R.layout.list_item_season, parent, false);
-        }
-
-        @Override
-        public View newChildView(Context context, Cursor cursor, boolean isLastChild, ViewGroup parent) {
+        public View newView(Context context, final Cursor cursor, ViewGroup parent) {
             final View view = LayoutInflater.from(context)
                                             .inflate(R.layout.list_item_episode, parent, false);
 
             // Setup View holder pattern
             EpisodeViewHolder viewHolder = new EpisodeViewHolder();
-            viewHolder.container = (RelativeLayout)view.findViewById(R.id.container);
             viewHolder.titleView = (TextView)view.findViewById(R.id.title);
             viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
             viewHolder.episodenumberView = (TextView)view.findViewById(R.id.episode_number);
             viewHolder.contextMenuView = (ImageView)view.findViewById(R.id.list_context_menu);
             viewHolder.checkmarkView = (ImageView)view.findViewById(R.id.checkmark);
+            viewHolder.artView = (ImageView)view.findViewById(R.id.art);
 
             view.setTag(viewHolder);
             return view;
         }
 
+        /** {@inheritDoc} */
         @Override
-        public void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
-            TextView seasonView = (TextView)view.findViewById(R.id.season);
-            TextView episodesView = (TextView)view.findViewById(R.id.episodes);
-            ImageView artView = (ImageView)view.findViewById(R.id.art);
-
-            seasonView.setText(String.format(context.getString(R.string.season_number),
-                                             cursor.getInt(SeasonsListQuery.SEASON)));
-            int numEpisodes = cursor.getInt(SeasonsListQuery.EPISODE),
-                    watchedEpisodes = cursor.getInt(SeasonsListQuery.WATCHEDEPISODES);
-            episodesView.setText(String.format(context.getString(R.string.num_episodes),
-                                               numEpisodes, numEpisodes - watchedEpisodes));
-
-            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                                                 cursor.getString(SeasonsListQuery.THUMBNAIL),
-                                                 String.valueOf(cursor.getInt(SeasonsListQuery.SEASON)),
-                                                 artView, artWidth, artHeight);
-
-            ImageView indicator = (ImageView)view.findViewById(R.id.status_indicator);
-            if (isExpanded) {
-                indicator.setImageResource(iconCollapseResId);
-            } else {
-                indicator.setImageResource(iconExpandResId);
-            }
-        }
-
-        @Override
-        public void bindChildView(View view, Context context, Cursor cursor, boolean isLastChild) {
+        public void bindView(View view, Context context, Cursor cursor) {
             final EpisodeViewHolder viewHolder = (EpisodeViewHolder)view.getTag();
 
             // Save the episode id
             viewHolder.episodeId = cursor.getInt(EpisodesListQuery.EPISODEID);
+            viewHolder.title = cursor.getString(EpisodesListQuery.TITLE);
+
+            if(Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("a"+viewHolder.episodeId);
+            }
 
             viewHolder.episodenumberView.setText(
                     String.format(context.getString(R.string.episode_number),
@@ -555,49 +295,30 @@ public class TVShowEpisodeListFragment extends AbstractDetailsFragment
                 viewHolder.checkmarkView.setVisibility(View.INVISIBLE);
             }
 
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 cursor.getString(EpisodesListQuery.THUMBNAIL), viewHolder.title,
+                                                 viewHolder.artView, artWidth, artHeight);
+
             // For the popupmenu
             ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
             contextMenu.setTag(viewHolder);
             contextMenu.setOnClickListener(contextlistItemMenuClickListener);
-        }
-
-        @Override
-        public Cursor getChildrenCursor(Cursor groupCursor) {
-            // Check if the fragment is attached to avoid IllegalStateException...
-            if (!isAdded()) return null;
-
-            // Start the episodes loader
-            final int season = groupCursor.getInt(SeasonsListQuery.SEASON);
-            Bundle bundle = new Bundle();
-            bundle.putInt(SEASON, season);
-            int groupPositon = groupCursor.getPosition();
-            // The season id will be passed in a bundle to the loadermanager, and the group id
-            // will be used as the loader's id
-            LoaderManager loaderManager = getLoaderManager();
-            if ((loaderManager.getLoader(groupPositon) == null) ||
-                (loaderManager.getLoader(groupPositon).isReset())) {
-                loaderManager.initLoader(groupPositon, bundle, TVShowEpisodeListFragment.this);
-            } else {
-                loaderManager.restartLoader(groupPositon, bundle, TVShowEpisodeListFragment.this);
-            }
-
-            return null;
         }
     }
 
     /**
      * View holder pattern, only for episodes
      */
-    private static class EpisodeViewHolder {
-        RelativeLayout container;
+    public static class EpisodeViewHolder {
         TextView titleView;
         TextView detailsView;
         TextView episodenumberView;
         ImageView contextMenuView;
         ImageView checkmarkView;
-        //        ImageView artView;
+        ImageView artView;
 
         int episodeId;
+        String title;
     }
 
     private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {

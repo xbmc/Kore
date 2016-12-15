@@ -201,6 +201,23 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	abstract protected String getListSyncType();
 
 	/**
+	 * Should return the {@link LibrarySyncService} syncID if this fragment
+	 * synchronizes a single item. The itemId that should be synced must returned by {@link #getSyncItemID()}
+	 * @return {@link LibrarySyncService} SyncID if syncing a single item. Null if not aplicable
+	 */
+	protected String getSyncID() {
+		return null;
+	}
+
+	/**
+	 * Should return the item ID for SyncID returned by {@link #getSyncID()}
+	 * @return -1 if not used.
+	 */
+	protected int getSyncItemID() {
+		return -1;
+	}
+
+	/**
 	 * Event bus post. Called when the syncing process ended
 	 *
 	 * @param event Refreshes data
@@ -238,10 +255,8 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
     @Override
     public void onServiceConnected(LibrarySyncService librarySyncService) {
-        if(SyncUtils.isLibrarySyncing(
-              librarySyncService,
-              HostManager.getInstance(getActivity()).getHostInfo(),
-              getListSyncType())) {
+        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        if(SyncUtils.isLibrarySyncing(librarySyncService, hostInfo, getListSyncType())) {
             showRefreshAnimation();
         }
     }
@@ -263,6 +278,13 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
         // Start the syncing process
         Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
         syncIntent.putExtra(getListSyncType(), true);
+
+        String syncID = getSyncID();
+        int itemId = getSyncItemID();
+        if ((syncID != null) && (itemId != -1)) {
+            syncIntent.putExtra(syncID, itemId);
+        }
+
         getActivity().startService(syncIntent);
     }
 

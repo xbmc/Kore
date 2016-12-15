@@ -184,6 +184,7 @@
                     style="@style/TextAppearance.Media.Info"
                     android:paddingLeft="@dimen/default_padding"
                     android:paddingRight="@dimen/default_padding"
+                    android:paddingBottom="0dp"
                     android:maxLines="@integer/description_max_lines"
                     android:ellipsize="@null"/>
                 <ImageView

@@ -42,18 +42,22 @@ import java.util.Map;
  */
 public class TVShowsActivity extends BaseActivity
         implements TVShowListFragment.OnTVShowSelectedListener,
-        TVShowEpisodeListFragment.OnEpisodeSelectedListener {
+                   TVShowDetailsFragment.OnSeasonSelectedListener,
+                   TVShowEpisodeListFragment.OnEpisodeSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(TVShowsActivity.class);
 
     public static final String TVSHOWID = "tvshow_id";
     public static final String TVSHOWTITLE = "tvshow_title";
     public static final String EPISODEID = "episode_id";
+    public static final String SEASON = "season";
+    public static final String SEASONTITLE = "season_title";
 
     private int selectedTVShowId = -1;
     private String selectedTVShowTitle = null;
+    private int selectedSeason = -1;
+    private String selectedSeasonTitle = null;
     private int selectedEpisodeId = -1;
 
-    private TVShowDetailsFragment tvshowDetailsFragment;
     private boolean clearSharedElements;
 
     private NavigationDrawerFragment navigationDrawerFragment;
@@ -108,6 +112,8 @@ public class TVShowsActivity extends BaseActivity
             selectedTVShowId = savedInstanceState.getInt(TVSHOWID, -1);
             selectedTVShowTitle = savedInstanceState.getString(TVSHOWTITLE, null);
             selectedEpisodeId = savedInstanceState.getInt(EPISODEID, -1);
+            selectedSeason = savedInstanceState.getInt(SEASON, -1);
+            selectedSeasonTitle = savedInstanceState.getString(SEASONTITLE, null);
         }
 
         setupActionBar(selectedTVShowTitle);
@@ -124,6 +130,8 @@ public class TVShowsActivity extends BaseActivity
         outState.putInt(TVSHOWID, selectedTVShowId);
         outState.putString(TVSHOWTITLE, selectedTVShowTitle);
         outState.putInt(EPISODEID, selectedEpisodeId);
+        outState.putInt(SEASON, selectedSeason);
+        outState.putString(SEASONTITLE, selectedSeasonTitle);
     }
 
     @Override
@@ -152,6 +160,12 @@ public class TVShowsActivity extends BaseActivity
                 if (selectedEpisodeId != -1) {
                     selectedEpisodeId = -1;
                     getSupportFragmentManager().popBackStack();
+                    setupActionBar(selectedSeasonTitle);
+                    return true;
+                } else if (selectedSeason != -1) {
+                    selectedSeason = -1;
+                    getSupportFragmentManager().popBackStack();
+                    setupActionBar(selectedTVShowTitle);
                     return true;
                 } else if (selectedTVShowId != -1) {
                     selectedTVShowId = -1;
@@ -173,6 +187,10 @@ public class TVShowsActivity extends BaseActivity
         // If we are showing episode or show details in portrait, clear selected and show action bar
         if (selectedEpisodeId != -1) {
             selectedEpisodeId = -1;
+            setupActionBar(selectedSeasonTitle);
+        } else if (selectedSeason != -1) {
+            selectedSeason = -1;
+            setupActionBar(selectedTVShowTitle);
         } else if (selectedTVShowId != -1) {
             selectedTVShowId = -1;
             selectedTVShowTitle = null;
@@ -182,19 +200,19 @@ public class TVShowsActivity extends BaseActivity
     }
 
     private boolean drawerIndicatorIsArrow = false;
-    private void setupActionBar(String tvshowTitle) {
+    private void setupActionBar(String title) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) return;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        if (tvshowTitle != null) {
+        if (title != null) {
             if (!drawerIndicatorIsArrow) {
                 navigationDrawerFragment.animateDrawerToggle(true);
                 drawerIndicatorIsArrow = true;
             }
-            actionBar.setTitle(tvshowTitle);
+            actionBar.setTitle(title);
         } else {
             if (drawerIndicatorIsArrow) {
                 navigationDrawerFragment.animateDrawerToggle(false);
@@ -207,7 +225,7 @@ public class TVShowsActivity extends BaseActivity
     /**
      * Callback from tvshows list fragment when a show is selected.
      * Switch fragment in portrait
-     * @param vh
+     * @param vh view holder
      */
     @TargetApi(21)
     public void onTVShowSelected(TVShowListFragment.ViewHolder vh) {
@@ -215,7 +233,7 @@ public class TVShowsActivity extends BaseActivity
         selectedTVShowTitle = vh.tvshowTitle;
 
         // Replace list fragment
-        tvshowDetailsFragment = TVShowDetailsFragment.newInstance(vh);
+        final TVShowDetailsFragment tvshowDetailsFragment = TVShowDetailsFragment.newInstance(vh);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
@@ -238,55 +256,71 @@ public class TVShowsActivity extends BaseActivity
             };
             tvshowDetailsFragment.setEnterSharedElementCallback(seCallback);
 
-            tvshowDetailsFragment.setEnterTransition(TransitionInflater
-                    .from(this)
-                    .inflateTransition(R.transition.media_details));
+            tvshowDetailsFragment.setEnterTransition(
+                    TransitionInflater.from(this)
+                                      .inflateTransition(R.transition.media_details));
             tvshowDetailsFragment.setReturnTransition(null);
-            Transition changeImageTransition = TransitionInflater.from(
-                    this).inflateTransition(R.transition.change_image);
+            Transition changeImageTransition =
+                    TransitionInflater.from(this)
+                                      .inflateTransition(R.transition.change_image);
             tvshowDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
             tvshowDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
             fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
         } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                    R.anim.fragment_list_popenter, 0);
+            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
         }
 
         fragTrans.replace(R.id.fragment_container, tvshowDetailsFragment)
-                .addToBackStack(null)
-                .commit();
+                 .addToBackStack(null)
+                 .commit();
         setupActionBar(selectedTVShowTitle);
     }
 
     /**
-     * Callback from tvshow episodes list when a episode is selected
-     * @param tvshowId Show id of the episode, should be the same as {@link #selectedTVShowId}
-     * @param episodeId Episode id
+     * Callback from tvshow details when a season is selected
+     * @param tvshowId tv show id
+     * @param seasonId season number
      */
-    @TargetApi(21)
-    public void onEpisodeSelected(int tvshowId, int episodeId) {
-        selectedEpisodeId = episodeId;
+    public void onSeasonSelected(int tvshowId, int seasonId) {
+        selectedSeason = seasonId;
+
+        // Replace fragment
+        TVShowEpisodeListFragment fragment =
+                TVShowEpisodeListFragment.newInstance(selectedTVShowId, seasonId);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0)
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+        selectedSeasonTitle = String.format(getString(R.string.season_number), seasonId);
+        setupActionBar(selectedSeasonTitle);
+    }
+
+    /**
+     * Callback from tvshow episodes list when a episode is selected
+     * @param vh view holder
+     */
+    public void onEpisodeSelected(TVShowEpisodeListFragment.EpisodeViewHolder vh) {
+        selectedEpisodeId = vh.episodeId;
 
         // Replace list fragment
         TVShowEpisodeDetailsFragment fragment =
-                TVShowEpisodeDetailsFragment.newInstance(tvshowId, episodeId);
+                TVShowEpisodeDetailsFragment.newInstance(selectedTVShowId, selectedEpisodeId);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
-            fragment.setEnterTransition(TransitionInflater
-                    .from(this)
-                    .inflateTransition(R.transition.media_details));
+            fragment.setEnterTransition(
+                    TransitionInflater.from(this).inflateTransition(R.transition.media_details));
             fragment.setReturnTransition(null);
         } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                    R.anim.fragment_list_popenter, 0);
+            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
         }
 
         fragTrans.replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
+                 .addToBackStack(null)
+                 .commit();
         setupActionBar(selectedTVShowTitle);
     }
-
 }

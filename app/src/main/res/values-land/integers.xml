@@ -17,4 +17,6 @@
 <resources>
     <integer name="cast_grid_view_columns">5</integer>
    <integer name="cast_grid_view_rows">2</integer>
+
+    <integer name="seasons_grid_view_columns">1</integer>
 </resources>

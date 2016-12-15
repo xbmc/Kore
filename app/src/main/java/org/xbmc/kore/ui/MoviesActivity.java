@@ -208,11 +208,11 @@ public class MoviesActivity extends BaseActivity
         selectedMovieTitle = vh.movieTitle;
         selectedMovieId = vh.movieId;
 
+        final MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(vh);
+        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
-            final MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(vh);
-            FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-
             android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
@@ -230,31 +230,24 @@ public class MoviesActivity extends BaseActivity
                 }
             };
             movieDetailsFragment.setEnterSharedElementCallback(seCallback);
-
-            movieDetailsFragment.setEnterTransition(TransitionInflater
-                    .from(this)
-                    .inflateTransition(R.transition.media_details));
+            movieDetailsFragment.setEnterTransition(
+                    TransitionInflater.from(this)
+                                      .inflateTransition(R.transition.media_details));
             movieDetailsFragment.setReturnTransition(null);
 
-            Transition changeImageTransition = TransitionInflater.from(
-                    this).inflateTransition(R.transition.change_image);
+            Transition changeImageTransition =
+                    TransitionInflater.from(this).inflateTransition(R.transition.change_image);
             movieDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
             movieDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
 
-            fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
-                    .addToBackStack(null)
-                    .addSharedElement(vh.artView, vh.artView.getTransitionName())
-                    .commit();
+            fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
         } else {
-            MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(vh);
-            FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
                     R.anim.fragment_list_popenter, 0);
-            fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
-                    .addToBackStack(null)
-                    .commit();
         }
+        fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
+                 .addToBackStack(null)
+                 .commit();
 
         setupActionBar(selectedMovieTitle);
     }

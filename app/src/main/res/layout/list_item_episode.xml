@@ -15,69 +15,89 @@
    limitations under the License.
 -->
 
-<RelativeLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/small_padding">
-    
-    <ImageView
-        android:id="@+id/list_context_menu"
-        android:layout_width="@dimen/default_icon_size"
-        android:layout_height="@dimen/default_icon_size"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:padding="@dimen/default_icon_padding"
-        style="@style/Widget.Button.Borderless"
-        android:src="?attr/iconOverflow"
-        android:contentDescription="@string/action_options"/>
+    card_view:cardElevation="@dimen/default_card_elevation"
+    card_view:cardBackgroundColor="?attr/appCardBackgroundColor">
 
     <RelativeLayout
-        android:id="@+id/relativelayout_checkmark_epnumber"
-        android:layout_width="@dimen/seasonlist_art_width"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/art"
+            android:layout_width="@dimen/episodelist_art_width"
+            android:layout_height="@dimen/episodelist_art_heigth"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="@string/poster"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/episode_number"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Medialist.Title"
+            android:paddingRight="@dimen/small_padding"
+            android:layout_alignTop="@id/art"
+            android:layout_toRightOf="@id/art"
+            android:layout_toEndOf="@id/art"/>
 
         <ImageView
             android:id="@+id/checkmark"
             android:layout_width="@dimen/default_icon_size"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="@dimen/small_padding"
-            android:contentDescription="@string/seen"
-            android:src="?attr/iconSeen"/>
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_below="@id/episode_number"
+            android:layout_alignLeft="@id/episode_number"
+            android:layout_alignStart="@id/episode_number"
+            android:padding="@dimen/default_icon_padding"
+            android:src="?attr/iconSeen"
+            android:contentDescription="@string/seen"/>
+
+        <ImageView
+            android:id="@+id/list_context_menu"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_alignTop="@id/art"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/default_icon_padding"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconOverflow"
+            android:contentDescription="@string/action_options"/>
 
         <TextView
-            android:id="@+id/episode_number"
-            android:layout_width="@dimen/seasonlist_art_width"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/episode_number"
+            android:layout_toRightOf="@id/episode_number"
+            android:layout_toLeftOf="@id/list_context_menu"
+            android:layout_toEndOf="@id/episode_number"
+            android:layout_toStartOf="@id/list_context_menu"
             style="@style/TextAppearance.Medialist.Title"
-            android:gravity="end"/>
+            android:paddingTop="@dimen/small_padding"
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingRight="@dimen/small_padding"/>
+
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_alignLeft="@id/title"
+            android:layout_alignStart="@id/title"
+            android:layout_below="@id/title"
+            style="@style/TextAppearance.Medialist.Details"
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:gravity="center_vertical"/>
+
+
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/relativelayout_checkmark_epnumber"
-        android:layout_toRightOf="@id/relativelayout_checkmark_epnumber"
-        android:layout_toLeftOf="@id/list_context_menu"
-        android:layout_toEndOf="@id/relativelayout_checkmark_epnumber"
-        android:layout_toStartOf="@id/list_context_menu"
-        style="@style/TextAppearance.Medialist.Title"
-        android:paddingTop="@dimen/small_padding"/>
-
-    <TextView
-        android:id="@+id/details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/title"
-        android:layout_alignStart="@id/title"
-        android:layout_below="@id/title"
-        style="@style/TextAppearance.Medialist.Details"
-        android:paddingBottom="@dimen/small_padding"/>
-
-</RelativeLayout>
+</android.support.v7.widget.CardView>

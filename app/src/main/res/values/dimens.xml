@@ -86,8 +86,8 @@
     <dimen name="seasonlist_art_width">72dp</dimen>
     <dimen name="seasonlist_art_heigth">104dp</dimen>
 
-    <dimen name="episodelist_art_width">112dp</dimen>
-    <dimen name="episodelist_art_heigth">64dp</dimen>
+    <dimen name="episodelist_art_width">84dp</dimen>
+    <dimen name="episodelist_art_heigth">84dp</dimen>
 
     <dimen name="artistlist_art_width">74dp</dimen>
     <dimen name="artistlist_art_heigth">74dp</dimen>

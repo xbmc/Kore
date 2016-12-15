@@ -84,26 +84,6 @@
                     android:contentDescription="@string/poster"
                     android:scaleType="centerCrop"/>
 
-                <!-- Buttons-->
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/media_actions_bar"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="@dimen/buttonbar_height"-->
-                    <!--android:layout_below="@id/media_undertitle"-->
-                    <!--android:paddingLeft="@dimen/default_padding"-->
-                    <!--android:paddingRight="@dimen/default_padding"-->
-                    <!--android:orientation="horizontal"-->
-                    <!--style="@style/ButtonBar"-->
-                    <!--android:background="?attr/contentBackgroundDimColor">-->
-                    <!--<ImageButton-->
-                        <!--android:id="@+id/go_to_imdb"-->
-                        <!--android:layout_width="@dimen/buttonbar_button_width"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--style="@style/Widget.Button.Borderless"-->
-                        <!--android:src="?attr/iconWWW"-->
-                        <!--android:contentDescription="@string/imdb"/>-->
-                <!--</LinearLayout>-->
-
                 <RelativeLayout
                     android:id="@+id/media_details"
                     android:layout_width="match_parent"
@@ -156,37 +136,81 @@
                         android:text="@string/max_rating_video"/>
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/media_description"
+                <LinearLayout
+                    android:id="@+id/media_description_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/media_details"
-                    style="@style/TextAppearance.Media.Info"
-                    android:paddingLeft="@dimen/default_padding"
-                    android:paddingRight="@dimen/default_padding"
-                    android:background="?attr/contentBackgroundColor"/>
+                    android:orientation="vertical"
+                    android:background="?attr/contentBackgroundColor">
+                    <TextView
+                        android:id="@+id/media_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/TextAppearance.Media.Info"
+                        android:paddingLeft="@dimen/default_padding"
+                        android:paddingRight="@dimen/default_padding"
+                        android:paddingBottom="0dp"
+                        android:maxLines="@integer/description_max_lines"
+                        android:ellipsize="@null"/>
+
+                    <ImageView
+                        android:id="@+id/show_all"
+                        android:layout_width="@dimen/small_icon_size"
+                        android:layout_height="@dimen/small_icon_size"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="@dimen/small_padding"
+                        android:layout_marginEnd="@dimen/small_padding"
+                        android:src="?attr/iconExpand"
+                        android:background="?android:attr/selectableItemBackground"/>
+                </LinearLayout>
 
                 <View
                     android:id="@+id/separator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@id/media_description"
+                    android:layout_below="@id/media_description_container"
                     style="@style/DefaultDividerH"/>
 
                 <TextView
-                    android:id="@+id/cast_title"
+                    android:id="@+id/seasons_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/separator"
                     style="@style/TextAppearance.Media.Title"
                     android:paddingLeft="@dimen/default_padding"
                     android:paddingRight="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    android:text="@string/tvshow_seasons"/>
+
+                <!--
+                TODO: Review the column count.
+                Currently set to 1 in all cases as any other value isn't working
+                 -->
+                <GridLayout
+                    android:id="@+id/seasons_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/seasons_title"
+                    android:columnCount="@integer/seasons_grid_view_columns"
+                    android:orientation="horizontal"
+                    android:useDefaultMargins="true"/>
+
+                <TextView
+                    android:id="@+id/cast_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/seasons_list"
+                    style="@style/TextAppearance.Media.Title"
+                    android:paddingLeft="@dimen/default_padding"
+                    android:paddingRight="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
                     android:text="@string/cast"/>
 
                 <GridLayout
                     android:id="@+id/cast_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/cast_title"
                     android:columnCount="@integer/cast_grid_view_columns"
                     android:orientation="horizontal"/>
