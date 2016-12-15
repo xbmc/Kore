@@ -273,9 +273,11 @@
     <string name="confirm_episode_download">Êtes-vous sûr de vouloir télécharger cet épisode ?\n%L\'épisode sera téléchargé en arrière-plan,ce qui peut durer un certain temps.</string>
     <string name="confirm_album_download">Êtes-vous sûr de vouloir télécharger cet album ?\nL\'album sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
     <string name="confirm_artist_download">Êtes-vous sûr de vouloir télécharger tous les albums ?\nLes albums vont être téléchargés en arrière-plan, ce qui peut durer un certain temps.</string>
+    <string name="confirm_songs_download">Êtes-vous sûr de vouloir télécharger les pistes musicales de %1$d ?\nLes pistes musicales vont être téléchargées en arrière-plan, ce qui peut durer un certain temps.</string>
 
-    <string name="download_file_exists">Fichier déjà existant.\nVoulez-vous l\'écraser ou le télécharger avec un nouveau nom\u00A0?</string>
+    <string name="download_file_exists">Fichier déjà présent.\nVoulez-vous l\'écraser ou le télécharger avec un nouveau nom\u00A0?</string>
     <string name="download_dir_exists">Répertoire de téléchargement déjà existant.\nSi des fichiers portent le même nom, voulez-vous les écraser ou les télécharger avec un nouveau nom\u00A0?</string>
+    <string name="download_files_exists">Un ou plusieurs fichier(s) sont déjà présent(s).\nSi des fichiers portent le même nom, voulez-vous les écraser ou les télécharger avec un nouveau nom\u00A0?</string>
     <string name="overwrite">Écraser</string>
     <string name="download_with_new_name">Nouveau nom</string>
     <string name="download_file_description">Téléchargé depuis votre Centre Multimédia</string>
@@ -376,5 +378,11 @@
 
     <string name="single_column">Une colonne</string>
     <string name="multi_column">Plusieurs colonnes</string>
+
+    <string name="no_songs_to_download">Aucune piste musicale à télécharger</string>
+    <string name="by_album">Par album</string>
+    <string name="by_artist">Par artiste</string>
+    <string name="by_artist_and_year">Par artiste et par année</string>
+    <string name="muted">en sourdine</string>
 
 </resources>
