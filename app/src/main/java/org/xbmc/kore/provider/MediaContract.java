@@ -28,6 +28,11 @@ public class MediaContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     /**
+     * LIMIT query to incluse in URIs so that it translate to a Limit By in the query
+     */
+    public static final String LIMIT_QUERY = "limit";
+
+    /**
      * Paths to tables
      */
     public static final String PATH_HOSTS = "hosts";
@@ -402,6 +407,17 @@ public class MediaContract {
         public static Uri buildTVShowEpisodesListUri(long hostId, long tvshowId) {
             return TVShows.buildTVShowUri(hostId, tvshowId).buildUpon()
                           .appendPath(PATH_EPISODES)
+                          .build();
+        }
+
+        /** Build {@link Uri} for tvshows list with a limit */
+        public static Uri buildTVShowEpisodesListUri(long hostId, long tvshowId, int limit) {
+            if (limit <= 0) return buildTVShowEpisodesListUri(hostId, tvshowId);
+
+            return TVShows.buildTVShowUri(hostId, tvshowId)
+                          .buildUpon()
+                          .appendPath(PATH_EPISODES)
+                          .appendQueryParameter(MediaContract.LIMIT_QUERY, String.valueOf(limit))
                           .build();
         }
 

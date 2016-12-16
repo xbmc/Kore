@@ -42,7 +42,7 @@ import java.util.Map;
  */
 public class TVShowsActivity extends BaseActivity
         implements TVShowListFragment.OnTVShowSelectedListener,
-                   TVShowDetailsFragment.OnSeasonSelectedListener,
+                   TVShowDetailsFragment.TVShowDetailsActionListener,
                    TVShowEpisodeListFragment.OnEpisodeSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(TVShowsActivity.class);
 
@@ -160,7 +160,10 @@ public class TVShowsActivity extends BaseActivity
                 if (selectedEpisodeId != -1) {
                     selectedEpisodeId = -1;
                     getSupportFragmentManager().popBackStack();
-                    setupActionBar(selectedSeasonTitle);
+                    if (selectedSeason != -1)
+                        setupActionBar(selectedSeasonTitle);
+                    else
+                        setupActionBar(selectedTVShowTitle);
                     return true;
                 } else if (selectedSeason != -1) {
                     selectedSeason = -1;
@@ -187,7 +190,10 @@ public class TVShowsActivity extends BaseActivity
         // If we are showing episode or show details in portrait, clear selected and show action bar
         if (selectedEpisodeId != -1) {
             selectedEpisodeId = -1;
-            setupActionBar(selectedSeasonTitle);
+            if (selectedSeason != -1)
+                setupActionBar(selectedSeasonTitle);
+            else
+                setupActionBar(selectedTVShowTitle);
         } else if (selectedSeason != -1) {
             selectedSeason = -1;
             setupActionBar(selectedTVShowTitle);
@@ -295,6 +301,33 @@ public class TVShowsActivity extends BaseActivity
                 .commit();
         selectedSeasonTitle = String.format(getString(R.string.season_number), seasonId);
         setupActionBar(selectedSeasonTitle);
+    }
+
+    /**
+     * Callback from tvshow details when a episode is selected
+     * @param episodeId episode id
+     */
+    public void onNextEpisodeSelected(int episodeId) {
+        selectedEpisodeId = episodeId;
+
+        // Replace list fragment
+        TVShowEpisodeDetailsFragment fragment =
+                TVShowEpisodeDetailsFragment.newInstance(selectedTVShowId, selectedEpisodeId);
+        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+
+        // Set up transitions
+        if (Utils.isLollipopOrLater()) {
+            fragment.setEnterTransition(
+                    TransitionInflater.from(this).inflateTransition(R.transition.media_details));
+            fragment.setReturnTransition(null);
+        } else {
+            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
+        }
+
+        fragTrans.replace(R.id.fragment_container, fragment)
+                 .addToBackStack(null)
+                 .commit();
+        setupActionBar(selectedTVShowTitle);
     }
 
     /**

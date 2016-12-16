@@ -330,8 +330,10 @@ public class MediaProvider extends ContentProvider {
             default: {
                 // Most cases are handled with simple SelectionBuilder
                 final SelectionBuilder builder = buildQuerySelection(uri, match);
+                String limit = uri.getQueryParameter(MediaContract.LIMIT_QUERY);
+
                 cursor = builder.where(selection, selectionArgs)
-                                .query(db, projection, sortOrder);
+                                .query(db, projection, sortOrder, limit);
             }
         }
         return cursor;

@@ -29,12 +29,14 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -43,10 +45,12 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
+import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
@@ -62,6 +66,8 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(TVShowDetailsFragment.class);
 
+    private static final int NEXT_EPISODES_COUNT = 2;
+
     public static final String POSTER_TRANS_NAME = "POSTER_TRANS_NAME";
     public static final String BUNDLE_KEY_TVSHOWID = "tvshow_id";
     public static final String BUNDLE_KEY_TITLE = "title";
@@ -73,17 +79,19 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
     public static final String BUNDLE_KEY_PLOT = "plot";
     public static final String BUNDLE_KEY_GENRES = "genres";
 
-    public interface OnSeasonSelectedListener {
+    public interface TVShowDetailsActionListener {
         void onSeasonSelected(int tvshowId, int season);
+        void onNextEpisodeSelected(int episodeId);
     }
 
     // Activity listener
-    private OnSeasonSelectedListener listenerActivity;
+    private TVShowDetailsActionListener listenerActivity;
 
     // Loader IDs
     private static final int LOADER_TVSHOW = 0,
-            LOADER_SEASONS = 1,
-            LOADER_CAST = 2;
+            LOADER_NEXT_EPISODES = 1,
+            LOADER_SEASONS = 2,
+            LOADER_CAST = 3;
 
     // Displayed movie id
     private int tvshowId = -1;
@@ -113,6 +121,9 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
 
     @InjectView(R.id.media_description) TextView mediaDescription;
     @InjectView(R.id.cast_list) GridLayout videoCastList;
+
+    @InjectView(R.id.next_episode_title) TextView nextEpisodeTitle;
+    @InjectView(R.id.next_episode_list) GridLayout nextEpisodeList;
 
     @InjectView(R.id.seasons_title) TextView seasonsListTitle;
     @InjectView(R.id.seasons_list) GridLayout seasonsList;
@@ -224,6 +235,7 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
 
         // Start the loaders
         getLoaderManager().initLoader(LOADER_TVSHOW, null, this);
+        getLoaderManager().initLoader(LOADER_NEXT_EPISODES, null, this);
         getLoaderManager().initLoader(LOADER_SEASONS, null, this);
         getLoaderManager().initLoader(LOADER_CAST, null, this);
     }
@@ -232,9 +244,9 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
     public void onAttach(Context activity) {
         super.onAttach(activity);
         try {
-            listenerActivity = (OnSeasonSelectedListener) activity;
+            listenerActivity = (TVShowDetailsActionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnSeasonSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement TVShowDetailsActionListener");
         }
     }
 
@@ -248,6 +260,7 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
     protected void onSyncProcessEnded(MediaSyncEvent event) {
         if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
             getLoaderManager().restartLoader(LOADER_TVSHOW, null, this);
+            getLoaderManager().restartLoader(LOADER_NEXT_EPISODES, null, this);
             getLoaderManager().restartLoader(LOADER_SEASONS, null, this);
             getLoaderManager().restartLoader(LOADER_CAST, null, this);
         }
@@ -266,6 +279,12 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
                 uri = MediaContract.TVShows.buildTVShowUri(getHostInfo().getId(), tvshowId);
                 return new CursorLoader(getActivity(), uri,
                                         TVShowDetailsQuery.PROJECTION, null, null, null);
+            case LOADER_NEXT_EPISODES:
+                // Load seasons
+                uri = MediaContract.Episodes.buildTVShowEpisodesListUri(getHostInfo().getId(), tvshowId, NEXT_EPISODES_COUNT);
+                String selection = MediaContract.EpisodesColumns.PLAYCOUNT + "=0";
+                return new CursorLoader(getActivity(), uri,
+                                        NextEpisodesListQuery.PROJECTION, selection, null, NextEpisodesListQuery.SORT);
             case LOADER_SEASONS:
                 // Load seasons
                 uri = MediaContract.Seasons.buildTVShowSeasonsListUri(getHostInfo().getId(), tvshowId);
@@ -284,11 +303,14 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         LogUtils.LOGD(TAG, "onLoadFinished");
-        if (cursor != null && cursor.getCount() > 0) {
+        if (cursor != null) {
             switch (cursorLoader.getId()) {
                 case LOADER_TVSHOW:
                     displayTVShowDetails(cursor);
                     checkOutdatedTVShowDetails(cursor);
+                    break;
+                case LOADER_NEXT_EPISODES:
+                    displayNextEpisodeList(cursor);
                     break;
                 case LOADER_SEASONS:
                     displaySeasonList(cursor);
@@ -427,6 +449,104 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
         }
     }
 
+    private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            final PlaylistType.Item playListItem = new PlaylistType.Item();
+            playListItem.episodeid = (int)v.getTag();
+
+            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_play:
+                            MediaPlayerUtils.play(TVShowDetailsFragment.this, playListItem);
+                            return true;
+                        case R.id.action_queue:
+                            MediaPlayerUtils.queue(TVShowDetailsFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
+                            return true;
+                    }
+                    return false;
+                }
+            });
+            popupMenu.show();
+        }
+    };
+
+    /**
+     * Display next episode list
+     *
+     * @param cursor Cursor with the data
+     */
+    private void displayNextEpisodeList(Cursor cursor) {
+        if (cursor.moveToFirst()) {
+            nextEpisodeTitle.setVisibility(View.VISIBLE);
+            nextEpisodeList.setVisibility(View.VISIBLE);
+
+            HostManager hostManager = HostManager.getInstance(getActivity());
+
+            View.OnClickListener episodeClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listenerActivity.onNextEpisodeSelected((int)v.getTag());
+                }
+            };
+
+            // Get the art dimensions
+            Resources resources = getActivity().getResources();
+            int artWidth = (int)(resources.getDimension(R.dimen.episodelist_art_width) /
+                                 UIUtils.IMAGE_RESIZE_FACTOR);
+            int artHeight = (int)(resources.getDimension(R.dimen.episodelist_art_heigth) /
+                                  UIUtils.IMAGE_RESIZE_FACTOR);
+
+            nextEpisodeList.removeAllViews();
+            do {
+                int episodeId = cursor.getInt(NextEpisodesListQuery.EPISODEID);
+                String title = cursor.getString(NextEpisodesListQuery.TITLE);
+                String seasonEpisode = String.format(getString(R.string.season_episode),
+                                                     cursor.getInt(NextEpisodesListQuery.SEASON),
+                                                     cursor.getInt(NextEpisodesListQuery.EPISODE));
+                int runtime = cursor.getInt(NextEpisodesListQuery.RUNTIME) / 60;
+                String duration =  runtime > 0 ?
+                                   String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                                   "  |  " + cursor.getString(NextEpisodesListQuery.FIRSTAIRED) :
+                                   cursor.getString(NextEpisodesListQuery.FIRSTAIRED);
+                String thumbnail = cursor.getString(NextEpisodesListQuery.THUMBNAIL);
+
+                View episodeView = LayoutInflater.from(getActivity())
+                                                 .inflate(R.layout.list_item_next_episode, nextEpisodeList, false);
+
+                ImageView artView = (ImageView)episodeView.findViewById(R.id.art);
+                TextView titleView = (TextView)episodeView.findViewById(R.id.title);
+                TextView detailsView = (TextView)episodeView.findViewById(R.id.details);
+                TextView durationView = (TextView)episodeView.findViewById(R.id.duration);
+
+                titleView.setText(title);
+                detailsView.setText(seasonEpisode);
+                durationView.setText(duration);
+
+                UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                                                     thumbnail, title,
+                                                     artView, artWidth, artHeight);
+                episodeView.setTag(episodeId);
+                episodeView.setOnClickListener(episodeClickListener);
+
+                // For the popupmenu
+                ImageView contextMenu = (ImageView)episodeView.findViewById(R.id.list_context_menu);
+                contextMenu.setTag(episodeId);
+                contextMenu.setOnClickListener(contextlistItemMenuClickListener);
+
+                nextEpisodeList.addView(episodeView);
+            } while (cursor.moveToNext());
+        } else {
+            // No episodes, hide views
+            nextEpisodeTitle.setVisibility(View.GONE);
+            nextEpisodeList.setVisibility(View.GONE);
+        }
+    }
+
     /**
      * Display the seasons list
      *
@@ -434,6 +554,9 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
      */
     private void displaySeasonList(Cursor cursor) {
         if (cursor.moveToFirst()) {
+            seasonsListTitle.setVisibility(View.VISIBLE);
+            seasonsList.setVisibility(View.VISIBLE);
+
             HostManager hostManager = HostManager.getInstance(getActivity());
 
             View.OnClickListener seasonListClickListener = new View.OnClickListener() {
@@ -482,9 +605,8 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
         } else {
             // No seasons, hide views
             seasonsListTitle.setVisibility(View.GONE);
-            seasonsList.setVisibility(View.INVISIBLE);
+            seasonsList.setVisibility(View.GONE);
         }
-
     }
 
     /**
@@ -555,6 +677,35 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
         int IMDBNUMBER = 11;
         int GENRES = 12;
         int UPDATED = 13;
+    }
+
+    /**
+     * Next episodes list query parameters.
+     */
+    private interface NextEpisodesListQuery {
+        String[] PROJECTION = {
+                BaseColumns._ID,
+                MediaContract.Episodes.EPISODEID,
+                MediaContract.Episodes.SEASON,
+                MediaContract.Episodes.EPISODE,
+                MediaContract.Episodes.THUMBNAIL,
+                MediaContract.Episodes.PLAYCOUNT,
+                MediaContract.Episodes.TITLE,
+                MediaContract.Episodes.RUNTIME,
+                MediaContract.Episodes.FIRSTAIRED,
+                };
+
+        String SORT = MediaContract.Episodes.EPISODEID + " ASC";
+
+        int ID = 0;
+        int EPISODEID = 1;
+        int SEASON = 2;
+        int EPISODE = 3;
+        int THUMBNAIL = 4;
+        int PLAYCOUNT = 5;
+        int TITLE = 6;
+        int RUNTIME = 7;
+        int FIRSTAIRED = 8;
     }
 
     /**

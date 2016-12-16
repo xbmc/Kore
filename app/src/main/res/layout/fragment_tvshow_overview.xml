@@ -173,10 +173,30 @@
                     style="@style/DefaultDividerH"/>
 
                 <TextView
-                    android:id="@+id/seasons_title"
+                    android:id="@+id/next_episode_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/separator"
+                    style="@style/TextAppearance.Media.Title"
+                    android:paddingLeft="@dimen/default_padding"
+                    android:paddingRight="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    android:text="@string/tvshow_next_episode"/>
+
+                <GridLayout
+                    android:id="@+id/next_episode_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/next_episode_title"
+                    android:columnCount="@integer/seasons_grid_view_columns"
+                    android:orientation="horizontal"
+                    android:useDefaultMargins="true"/>
+
+                <TextView
+                    android:id="@+id/seasons_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/next_episode_list"
                     style="@style/TextAppearance.Media.Title"
                     android:paddingLeft="@dimen/default_padding"
                     android:paddingRight="@dimen/default_padding"

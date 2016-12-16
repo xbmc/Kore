@@ -73,6 +73,7 @@ public class SettingsFragment extends PreferenceFragment
         if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getNavDrawerItemsPrefKey(hostId), null) != null) {
             Class iterClass = sideMenuItens.getClass();
             try {
+                @SuppressWarnings("unchecked")
                 Method m = iterClass.getDeclaredMethod("onSetInitialValue", boolean.class, Object.class);
                 m.setAccessible(true);
                 m.invoke(sideMenuItens, true, null);

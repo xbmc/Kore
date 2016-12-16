@@ -161,6 +161,13 @@ public class SelectionBuilder {
     /**
      * Execute query using the current internal state as {@code WHERE} clause.
      */
+    public Cursor query(SQLiteDatabase db, String[] columns, String orderBy, String limit) {
+        return query(db, columns, mGroupBy.toString(), null, orderBy, limit);
+    }
+
+    /**
+     * Execute query using the current internal state as {@code WHERE} clause.
+     */
     public Cursor query(SQLiteDatabase db, String[] columns, String groupBy,
             String having, String orderBy, String limit) {
         assertTable();
