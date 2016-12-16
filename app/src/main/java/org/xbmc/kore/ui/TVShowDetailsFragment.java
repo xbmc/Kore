@@ -35,6 +35,7 @@ import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -461,10 +462,13 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
                 ImageView seasonPictureView = (ImageView) seasonView.findViewById(R.id.art);
                 TextView seasonNumberView = (TextView) seasonView.findViewById(R.id.season);
                 TextView seasonEpisodesView = (TextView) seasonView.findViewById(R.id.episodes);
+                ProgressBar seasonProgressBar = (ProgressBar) seasonView.findViewById(R.id.season_progress_bar);
 
                 seasonNumberView.setText(String.format(getActivity().getString(R.string.season_number), seasonNumber));
                 seasonEpisodesView.setText(String.format(getActivity().getString(R.string.num_episodes),
                                                          numEpisodes, numEpisodes - watchedEpisodes));
+                seasonProgressBar.setMax(numEpisodes);
+                seasonProgressBar.setProgress(watchedEpisodes);
 
                 UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                      thumbnail,
