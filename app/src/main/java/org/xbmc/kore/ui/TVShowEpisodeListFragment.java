@@ -127,7 +127,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         // Filters
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         StringBuilder selection = new StringBuilder();
-        if (preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOWS_FILTER_HIDE_WATCHED)) {
+        if (preferences.getBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED)) {
             selection.append(MediaContract.EpisodesColumns.PLAYCOUNT)
                      .append("=0");
         }
