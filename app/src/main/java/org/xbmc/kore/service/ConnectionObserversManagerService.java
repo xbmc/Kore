@@ -127,8 +127,10 @@ public class ConnectionObserversManagerService extends Service
     @Override
     public void onTaskRemoved (Intent rootIntent) {
         // Gracefully stop
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
-            observer.playerOnConnectionError(0, "Task removed");
+        if (mConnectionObservers != null) {
+            for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+                observer.playerOnConnectionError(0, "Task removed");
+            }
         }
 
         LogUtils.LOGD(TAG, "Shutting down observer service - Task removed");
