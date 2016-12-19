@@ -114,7 +114,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'javax.jmdns:jmdns:3.4.1'
+    compile 'org.jmdns:jmdns:3.5.1'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'at.blogc:expandabletextview:1.0.3'
