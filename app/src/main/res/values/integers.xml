@@ -28,4 +28,5 @@
     <integer name="seasons_grid_view_columns">1</integer>
 
     <integer name="fab_animation_start_delay">100</integer>
+    <integer name="expandable_textview_animation_duration">200</integer>
 </resources>

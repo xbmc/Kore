@@ -177,7 +177,7 @@
                 android:layout_below="@id/media_details"
                 android:orientation="vertical"
                 android:background="?attr/contentBackgroundColor">
-                <TextView
+                <at.blogc.android.views.ExpandableTextView
                     android:id="@+id/media_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,7 +186,8 @@
                     android:paddingRight="@dimen/default_padding"
                     android:paddingBottom="0dp"
                     android:maxLines="@integer/description_max_lines"
-                    android:ellipsize="@null"/>
+                    android:ellipsize="end"
+                    app:animation_duration="@integer/expandable_textview_animation_duration"/>
                 <ImageView
                     android:id="@+id/show_all"
                     android:layout_width="@dimen/small_icon_size"
@@ -195,8 +196,7 @@
                     android:layout_marginBottom="@dimen/small_padding"
                     android:layout_marginRight="@dimen/small_padding"
                     android:layout_marginEnd="@dimen/small_padding"
-                    android:src="?attr/iconExpand"
-                    android:background="?android:attr/selectableItemBackground"/>
+                    android:src="?attr/iconExpand"/>
             </LinearLayout>
 
             <View

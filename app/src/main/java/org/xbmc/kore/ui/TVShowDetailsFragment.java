@@ -56,6 +56,7 @@ import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
 
+import at.blogc.android.views.ExpandableTextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -119,7 +120,7 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
     @InjectView(R.id.premiered) TextView mediaPremiered;
     @InjectView(R.id.genres) TextView mediaGenres;
 
-    @InjectView(R.id.media_description) TextView mediaDescription;
+    @InjectView(R.id.media_description) ExpandableTextView mediaDescription;
     @InjectView(R.id.cast_list) GridLayout videoCastList;
 
     @InjectView(R.id.next_episode_title) TextView nextEpisodeTitle;
@@ -130,8 +131,6 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
 
     @InjectView(R.id.media_description_container) LinearLayout mediaDescriptionContainer;
     @InjectView(R.id.show_all) ImageView mediaShowAll;
-
-    private boolean isDescriptionExpanded = false;
 
     /**
      * Create a new instance of this, initialized to show tvshowId
@@ -363,7 +362,6 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
         mediaDescription.setText(cursor.getString(TVShowDetailsQuery.PLOT));
 
         Resources resources = getActivity().getResources();
-        final int maxLines = resources.getInteger(R.integer.description_max_lines);
         TypedArray styledAttributes = getActivity().getTheme().obtainStyledAttributes(new int[] {
                 R.attr.iconExpand,
                 R.attr.iconCollapse
@@ -376,14 +374,8 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
         mediaDescriptionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isDescriptionExpanded) {
-                    mediaDescription.setMaxLines(Integer.MAX_VALUE);
-                    mediaShowAll.setImageResource(iconExpandResId);
-                } else {
-                    mediaDescription.setMaxLines(maxLines);
-                    mediaShowAll.setImageResource(iconCollapseResId);
-                }
-                isDescriptionExpanded = !isDescriptionExpanded;
+                mediaDescription.toggle();
+                mediaShowAll.setImageResource(mediaDescription.isExpanded() ? iconCollapseResId: iconExpandResId);
             }
         });
 
@@ -436,7 +428,7 @@ public class TVShowDetailsFragment extends AbstractDetailsFragment
     private void displayCastList(Cursor cursor) {
         // Transform the cursor into a List<VideoType.Cast>
         if (cursor.moveToFirst()) {
-            ArrayList<VideoType.Cast> castArrayList = new ArrayList<VideoType.Cast>(cursor.getCount());
+            ArrayList<VideoType.Cast> castArrayList = new ArrayList<>(cursor.getCount());
             do {
                 castArrayList.add(new VideoType.Cast(cursor.getString(TVShowCastListQuery.NAME),
                         cursor.getInt(TVShowCastListQuery.ORDER),

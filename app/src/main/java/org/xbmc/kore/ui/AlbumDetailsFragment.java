@@ -17,8 +17,6 @@
 package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -65,10 +63,10 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
+import at.blogc.android.views.ExpandableTextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -126,10 +124,9 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
     @InjectView(R.id.rating) TextView mediaRating;
     @InjectView(R.id.max_rating) TextView mediaMaxRating;
     @InjectView(R.id.year) TextView mediaYear;
-//    @InjectView(R.id.genres) TextView mediaGenres;
 
     @InjectView(R.id.media_description_container) LinearLayout mediaDescriptionContainer;
-    @InjectView(R.id.media_description) TextView mediaDescription;
+    @InjectView(R.id.media_description) ExpandableTextView mediaDescription;
     @InjectView(R.id.show_all) ImageView mediaShowAll;
 
     @InjectView(R.id.song_list) LinearLayout songListView;
@@ -346,7 +343,6 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
 
     }
 
-    private boolean isDescriptionExpanded = false;
     /**
      * Display the album details
      *
@@ -377,7 +373,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
         if (!TextUtils.isEmpty(description)) {
             mediaDescription.setVisibility(View.VISIBLE);
             mediaDescription.setText(description);
-            final int maxLines = resources.getInteger(R.integer.description_max_lines);
+
             Resources.Theme theme = getActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.iconExpand,
@@ -388,18 +384,11 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
             final int iconExpandResId =
                     styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_expand_more_white_24dp);
             styledAttributes.recycle();
-
             mediaDescriptionContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!isDescriptionExpanded) {
-                        mediaDescription.setMaxLines(Integer.MAX_VALUE);
-                        mediaShowAll.setImageResource(iconExpandResId);
-                    } else {
-                        mediaDescription.setMaxLines(maxLines);
-                        mediaShowAll.setImageResource(iconCollapseResId);
-                    }
-                    isDescriptionExpanded = !isDescriptionExpanded;
+                    mediaDescription.toggle();
+                    mediaShowAll.setImageResource(mediaDescription.isExpanded() ? iconCollapseResId: iconExpandResId);
                 }
             });
         } else {
@@ -426,7 +415,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
     }
 
     private void setMediaRating(double rating) {
-        mediaRating.setText(String.format("%01.01f", rating));
+        mediaRating.setText(String.format(Locale.getDefault(), "%01.01f", rating));
         mediaMaxRating.setText(getString(R.string.max_rating_music));
     }
 
@@ -560,7 +549,7 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
      */
     private void displaySongsList(Cursor cursor) {
         if (cursor.moveToFirst()) {
-            songInfoList = new ArrayList<FileDownloadHelper.SongInfo>(cursor.getCount());
+            songInfoList = new ArrayList<>(cursor.getCount());
             do {
                 View songView = LayoutInflater.from(getActivity())
                                               .inflate(R.layout.list_item_song, songListView, false);
@@ -646,16 +635,16 @@ public class AlbumDetailsFragment extends AbstractDetailsFragment
                 MediaContract.Albums.RATING,
         };
 
-        final int ID = 0;
-        final int TITLE = 1;
-        final int DISPLAYARTIST = 2;
-        final int THUMBNAIL = 3;
-        final int FANART = 4;
-        final int YEAR = 5;
-        final int GENRE = 6;
-        final int ALBUMLABEL = 7;
-        final int DESCRIPTION = 8;
-        final int RATING = 9;
+        int ID = 0;
+        int TITLE = 1;
+        int DISPLAYARTIST = 2;
+        int THUMBNAIL = 3;
+        int FANART = 4;
+        int YEAR = 5;
+        int GENRE = 6;
+        int ALBUMLABEL = 7;
+        int DESCRIPTION = 8;
+        int RATING = 9;
     }
 
     /**
