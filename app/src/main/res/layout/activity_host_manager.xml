@@ -20,7 +20,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.xbmc.kore.ui.hosts.HostManagerActivity">
+    tools:context="org.xbmc.kore.ui.sections.hosts.HostManagerActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,13 +32,13 @@
         <fragment android:id="@+id/hosts_list"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                  android:name="org.xbmc.kore.ui.hosts.HostListFragment" />
+                  android:name="org.xbmc.kore.ui.sections.hosts.HostListFragment" />
     </LinearLayout>
 
     <fragment android:id="@+id/navigation_drawer"
               android:layout_width="@dimen/navigation_drawer_width"
               android:layout_height="match_parent"
               android:layout_gravity="start"
-              android:name="org.xbmc.kore.ui.NavigationDrawerFragment" />
+              android:name="org.xbmc.kore.ui.generic.NavigationDrawerFragment" />
 
 </android.support.v4.widget.DrawerLayout>

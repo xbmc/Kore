@@ -32,7 +32,7 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
 import org.xbmc.kore.testhelpers.LoaderIdlingResource;
 import org.xbmc.kore.testhelpers.Utils;
-import org.xbmc.kore.ui.MusicActivity;
+import org.xbmc.kore.ui.sections.audio.MusicActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;

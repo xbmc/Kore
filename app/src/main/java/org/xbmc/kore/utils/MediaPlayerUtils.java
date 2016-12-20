@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.View;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
@@ -31,7 +30,7 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
-import org.xbmc.kore.ui.RemoteActivity;
+import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 
 import java.util.ArrayList;
 

@@ -20,7 +20,7 @@
 
         <!-- Activities -->
         <activity
-            android:name="org.xbmc.kore.ui.RemoteActivity"
+            android:name="org.xbmc.kore.ui.sections.remote.RemoteActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,17 +51,17 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="org.xbmc.kore.ui.hosts.HostManagerActivity"/>
-        <activity android:name="org.xbmc.kore.ui.hosts.AddHostActivity"/>
-        <activity android:name="org.xbmc.kore.ui.hosts.EditHostActivity"/>
-        <activity android:name="org.xbmc.kore.ui.MoviesActivity"/>
-        <activity android:name="org.xbmc.kore.ui.TVShowsActivity"/>
-        <activity android:name="org.xbmc.kore.ui.MusicActivity"/>
-        <activity android:name="org.xbmc.kore.ui.AddonsActivity"/>
-        <activity android:name="org.xbmc.kore.ui.SettingsActivity"/>
-        <activity android:name="org.xbmc.kore.ui.FileActivity"/>
-        <activity android:name="org.xbmc.kore.ui.PVRActivity"/>
-        <activity android:name="org.xbmc.kore.ui.AllCastActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.hosts.HostManagerActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.hosts.AddHostActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.hosts.EditHostActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.video.MoviesActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.video.TVShowsActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.audio.MusicActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.addon.AddonsActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.settings.SettingsActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.file.FileActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.video.PVRActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.video.AllCastActivity"/>
 
         <!-- Providers -->
         <provider
