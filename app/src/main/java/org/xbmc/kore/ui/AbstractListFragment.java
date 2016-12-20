@@ -187,4 +187,12 @@ public abstract class AbstractListFragment extends Fragment {
 	public BaseAdapter getAdapter() {
 		return adapter;
 	}
+
+	/**
+	 * Returns the view that is displayed when the gridview has no items to show
+	 * @return
+	 */
+	public TextView getEmptyView() {
+		return emptyView;
+	}
 }

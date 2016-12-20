@@ -31,7 +31,7 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
 import org.xbmc.kore.testhelpers.LoaderIdlingResource;
 import org.xbmc.kore.testhelpers.Utils;
-import org.xbmc.kore.ui.MoviesActivity;
+import org.xbmc.kore.ui.sections.video.MoviesActivity;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest

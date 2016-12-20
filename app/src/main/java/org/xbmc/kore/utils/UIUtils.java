@@ -47,7 +47,7 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
-import org.xbmc.kore.ui.RemoteActivity;
+import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 
 import java.io.File;
 import java.util.ArrayList;
