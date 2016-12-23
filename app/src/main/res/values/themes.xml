@@ -86,7 +86,7 @@
         <item name="iconDown">@drawable/remote_down_white</item>
         <item name="iconSelect">@drawable/remote_select_white</item>
 
-		<item name="iconHosts">@drawable/ic_phonelink_white_24dp</item>
+		<item name="iconHosts">@drawable/ic_devices_white_24dp</item>
         <item name="iconRemote">@drawable/ic_games_white_24dp</item>
         <item name="iconRemoteToolbar">@drawable/ic_games_white_24dp</item>
 		<item name="iconMovies">@drawable/ic_movie_white_24dp</item>
@@ -213,16 +213,16 @@
         <!--<item name="iconDown">@drawable/remote_down_black</item>-->
         <!--<item name="iconSelect">@drawable/remote_select_black</item>-->
 
-        <item name="iconHosts">@drawable/ic_phonelink_black_24dp</item>
-        <item name="iconRemote">@drawable/ic_games_black_24dp</item>
+        <item name="iconHosts">@drawable/ic_devices_white_24dp</item>
+        <item name="iconRemote">@drawable/ic_games_white_24dp</item>
         <item name="iconRemoteToolbar">@drawable/ic_games_white_24dp</item>
-        <item name="iconMovies">@drawable/ic_movie_black_24dp</item>
-        <item name="iconTvShows">@drawable/ic_tv_black_24dp</item>
-        <item name="iconMusic">@drawable/ic_headset_black_24dp</item>
-        <item name="iconPicture">@drawable/ic_image_black_24dp</item>
-        <item name="iconHome">@drawable/ic_home_black_24dp</item>
-        <item name="iconAddons">@drawable/ic_extension_black_24dp</item>
-        <item name="iconFiles">@drawable/ic_folder_black_24dp</item>
+        <item name="iconMovies">@drawable/ic_movie_grey_24dp</item>
+        <item name="iconTvShows">@drawable/ic_tv_grey_24dp</item>
+        <item name="iconMusic">@drawable/ic_headset_grey_24dp</item>
+        <item name="iconPicture">@drawable/ic_image_grey_24dp</item>
+        <item name="iconHome">@drawable/ic_home_grey_24dp</item>
+        <item name="iconAddons">@drawable/ic_extension_white_24dp</item>
+        <item name="iconFiles">@drawable/ic_folder_white_24dp</item>
         <item name="iconPVR">@drawable/ic_dvr_24dp</item>
 
         <item name="iconNew">@drawable/ic_add_box_black_24dp</item>
@@ -231,7 +231,7 @@
         <item name="iconOnOffToolbar">@drawable/ic_settings_power_white_24dp</item>
         <item name="iconKeyboard">@drawable/ic_keyboard_black_24dp</item>
 
-        <item name="iconSettings">@drawable/ic_settings_black_24dp</item>
+        <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
 
         <item name="iconPlay">@drawable/ic_play_arrow_black_24dp</item>
         <item name="iconPause">@drawable/ic_pause_black_24dp</item>
