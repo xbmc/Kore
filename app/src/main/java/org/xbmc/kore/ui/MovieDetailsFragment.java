@@ -18,6 +18,7 @@ package org.xbmc.kore.ui;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -48,6 +49,7 @@ import com.melnykov.fab.ObservableScrollView;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.method.Player;
@@ -114,6 +116,7 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
     @InjectView(R.id.go_to_imdb) ImageButton imdbButton;
     @InjectView(R.id.download) ImageButton downloadButton;
     @InjectView(R.id.seen) ImageButton seenButton;
+    @InjectView(R.id.local_play) ImageButton localPlayButton;
 
     // Detail views
     @InjectView(R.id.media_panel) ScrollView mediaPanel;
@@ -423,6 +426,20 @@ public class MovieDetailsFragment extends AbstractDetailsFragment
         // Change the button, to provide imeddiate feedback, even if it isn't yet stored in the db
         // (will be properly updated and refreshed after the refresh callback ends)
         setupSeenButton(newPlaycount);
+    }
+
+    @OnClick(R.id.local_play)
+    public void onLocalPlayClicked(View v) {
+        if (movieDownloadInfo == null) {
+            // Nothing to play on local
+            Toast.makeText(getActivity(), R.string.no_files_to_play, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String videoUrl =  movieDownloadInfo.getMediaUrl(getHostInfo());
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
+        intent.setDataAndType(Uri.parse(videoUrl), "video/*");
+        startActivity(intent);
     }
 
     @Override
