@@ -23,15 +23,15 @@
     <string name="loading">Lädt…</string>
 
     <!-- Navigation drawer tips -->
-	<string name="navigation_drawer_open">Navigationsbereich öffnen</string>
-	<string name="navigation_drawer_close">Navigationsbereich schließen</string>
+    <string name="navigation_drawer_open">Navigationsbereich öffnen</string>
+    <string name="navigation_drawer_close">Navigationsbereich schließen</string>
 
-	<string name="xbmc_media_center">Media Center</string>
-	<string name="home">Startseite</string>
-	<string name="movies">Filme</string>
-	<string name="tv_shows">Serien</string>
-	<string name="music">Musik</string>
-	<string name="pictures">Bilder</string>
+    <string name="xbmc_media_center">Media Center</string>
+    <string name="home">Startseite</string>
+    <string name="movies">Filme</string>
+    <string name="tv_shows">Serien</string>
+    <string name="music">Musik</string>
+    <string name="pictures">Bilder</string>
     <string name="addons">Anwendungen</string>
     <string name="files">Dateien</string>
     <string name="video">Videos</string>
@@ -273,9 +273,11 @@
     <string name="confirm_episode_download">Wollen Sie diese Folge herunterladen?\nDie Folge wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
     <string name="confirm_album_download">Wollen Sie dieses Album herunterladen?\nDas Album wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
     <string name="confirm_artist_download">Wollen Sie alle Alben herunterladen?\nDie Alben werden dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
+    <string name="confirm_songs_download">Wollen Sie das Lied %1$d herunterladen?\nDas Lied wird im Hintergrung heruntergeladen. Dies kann eine Weile dauern.</string>
 
     <string name="download_file_exists">Datei existiert bereits.\nÜberschreiben oder unter neuem Namen speichern?</string>
     <string name="download_dir_exists">Download Ordner existiert bereits.\nBei Dateikonflikten überschreiben oder unter neuem Namen speichern?</string>
+    <string name="download_files_exists">Eine oder mehr Dateien existieren bereits.\nBei Dateikonflikten überschreiben oder unter neuem Namen speichern?</string>
     <string name="overwrite">Überschreiben</string>
     <string name="download_with_new_name">Neuer Name</string>
     <string name="download_file_description">Heruntergeladen von meinem Media Center</string>
@@ -285,6 +287,8 @@
 
     <string name="tvshow_overview">Übersicht</string>
     <string name="tvshow_episodes">Episoden</string>
+    <string name="tvshow_seasons">Staffeln</string>
+    <string name="tvshow_next_episode">Nächste Episode</string>
 
     <string name="addon_overview">Übersicht</string>
     <string name="addon_content">Inhalt</string>
@@ -326,6 +330,7 @@
 
     <string name="switch_to_remote">Nach dem Abspielen eines Mediums zur Fernbedienung wechseln</string>
     <string name="keep_remote_above_lockscreen">Fernbedienung auf dem Sperrbildschirm anzeigen</string>
+    <string name="pref_keep_screen_on">Bildschirm nicht während der Nutzung als Fernbedienung ausschalten</string>
     <string name="show_notification">Nachricht mit aktueller Wiedergabe anzeigen</string>
     <string name="pause_during_calls">Bei Anruf Wiedergabe pausieren</string>
     <string name="use_hardware_volume_keys">Lautstärketasten verwenden</string>
@@ -385,5 +390,11 @@
 
     <string name="read_phone_state_permission_denied">Erlaubnis verweigert. Wiedergabe kann nicht während Anrufen pausiert werden.</string>
     <string name="write_storage_permission_denied">Erlaubnis verweigert. Kann keine Dateien herunterladen.</string>
+
+    <string name="no_songs_to_download">Keine Lieder zum Download</string>
+    <string name="by_album">Nach Album</string>
+    <string name="by_artist">Nach Künstler</string>
+    <string name="by_artist_and_year">Nach Künstler und Jahr</string>
+    <string name="muted">stumm geschalten</string>
 
 </resources>
