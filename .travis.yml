@@ -6,6 +6,12 @@ env:
   matrix:
     - ANDROID_TARGET=android-22  
 
+sudo: false
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
 android:
   components:
     # following added as quick fix to get support for 23.0.3 build tools
