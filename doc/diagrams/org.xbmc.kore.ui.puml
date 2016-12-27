@@ -1,0 +1,126 @@
+@startuml
+
+abstract class BaseActivity {
+    # void onCreate(Bundle savedInstanceState)
+    + void onPause()
+}
+
+class ConcreteActivity
+class AppCompatActivity
+
+AppCompatActivity <|-- BaseActivity
+BaseActivity <|-- ConcreteActivity
+
+abstract class AbstractDetailsFragment {
+    # {abstract} View createView(LayoutInflater inflater, ViewGroup container)
+    # {abstract} String getSyncType()
+    # {abstract} String getSyncID()
+    # {abstract} int getSyncItemID()
+    # {abstract} SwipeRefreshLayout getSwipeRefreshLayout()
+    # {abstract} void onDownload()
+    # {abstract} void onSyncProcessEnded(MediaSyncEvent event)
+    # void startSync(boolean silentRefresh)
+    + void onCreate(@Nullable Bundle savedInstanceState)
+    + View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    + void onActivityCreated(@Nullable Bundle savedInstanceState)
+    + void onStart()
+    + void onResume()
+    + void onPause()
+    + void onStop()
+    + void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    + boolean onOptionsItemSelected(MenuItem item)
+    + void onDownloadClicked(View v)
+    + void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults)
+    + void onRefresh ()
+    + void onEventMainThread(MediaSyncEvent event)
+    + void onServiceConnected(LibrarySyncService librarySyncService)
+    # HostManager getHostManager()
+    # HostInfo getHostInfo()
+
+}
+
+class ConcreteDetailsFragment {
+    # View createView(LayoutInflater inflater, ViewGroup container)
+    # String getSyncType()
+    # String getSyncID()
+    # int getSyncItemID()
+    # SwipeRefreshLayout getSwipeRefreshLayout()
+    # void onDownload()
+    # void onSyncProcessEnded(MediaSyncEvent event)
+}
+
+Fragment <|-- AbstractDetailsFragment
+AbstractDetailsFragment <|-- ConcreteDetailsFragment
+
+
+abstract class AbstractListFragment {
+    # {abstract} AdapterView.OnItemClickListener createOnItemClickListener()
+	# {abstract} BaseAdapter createAdapter()
+	+ View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	+ void onGlobalLayout()
+	+ void onSaveInstanceState(Bundle outState)
+	+ void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	+ boolean onOptionsItemSelected(MenuItem item)
+	- void toggleAmountOfColumns(MenuItem item)
+	+ void showRefreshAnimation()
+	+ BaseAdapter getAdapter()
+	+ TextView getEmptyView()
+}
+
+abstract class AbstractCursorListFragment {
+    # {abstract} void onListItemClicked(View view)
+	# {abstract} CursorLoader createCursorLoader()
+	# {abstract} String getListSyncType()
+    + View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	+ void onActivityCreated (Bundle savedInstanceState)
+	+ void onStart()
+	+ void onResume()
+	+ void onPause()
+	+ void onStop()
+	+ void onSaveInstanceState(Bundle outState)
+	+ void onItemClick(AdapterView<?> parent, View view, int position, long id)
+	+ void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	+ boolean onOptionsItemSelected(MenuItem item)
+	+ void onRefresh()
+	+ void onEventMainThread(MediaSyncEvent event)
+    + void onServiceConnected(LibrarySyncService librarySyncService)
+    + void setSupportsSearch(boolean supportsSearch)
+    + boolean onQueryTextChange(String newText)
+	+ boolean onQueryTextSubmit(String newText)
+	+ Loader<Cursor> onCreateLoader(int i, Bundle bundle)
+	+ void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
+	+ void onLoaderReset(Loader<Cursor> cursorLoader)
+	+ void saveSearchState()
+	+ String getSearchFilter()
+	+ void refreshList()
+	+ boolean onMenuItemActionExpand(MenuItem item)
+    + boolean onMenuItemActionCollapse(MenuItem item)
+    + void onClick(View v)
+    # AdapterView.OnItemClickListener createOnItemClickListener()
+    # String getSyncID()
+	# int getSyncItemID()
+	# void onSyncProcessEnded(MediaSyncEvent event)
+    # void onSwipeRefresh()
+	- void setupSearchMenuItem(Menu menu, MenuInflater inflater)
+	- void restartLoader()
+}
+
+class ConcreteCursorListFragment {
+    # void onListItemClicked(View view)
+	# CursorLoader createCursorLoader()
+	# String getListSyncType()
+	# BaseAdapter createAdapter()
+}
+
+class ConcreteListFragment {
+    # AdapterView.OnItemClickListener createOnItemClickListener()
+	# BaseAdapter createAdapter()
+}
+
+Fragment <|-- AbstractListFragment
+AbstractListFragment <|-- AbstractCursorListFragment
+AbstractCursorListFragment <|-- ConcreteCursorListFragment
+AbstractListFragment <|-- ConcreteListFragment
+
+
+@enduml
