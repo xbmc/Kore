@@ -138,7 +138,6 @@ public class HostManager {
                 while (cursor.moveToNext()) {
                     int idx = 0;
                     int id = cursor.getInt(idx++);
-                    long updated = cursor.getLong(idx++);
                     String name = cursor.getString(idx++);
                     String address = cursor.getString(idx++);
                     int protocol = cursor.getInt(idx++);
@@ -149,7 +148,7 @@ public class HostManager {
                     String macAddress = cursor.getString(idx++);
                     int wolPort = cursor.getInt(idx++);
                     boolean useEventServer = (cursor.getInt(idx++) != 0);
-                    int eventServerPort = cursor.getInt(idx++);
+                    int eventServerPort = cursor.getInt(idx);
 
                     int kodiVersionMajor = cursor.getInt(idx++);
                     int kodiVersionMinor = cursor.getInt(idx++);
