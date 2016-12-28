@@ -19,7 +19,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -31,7 +31,7 @@ import org.xbmc.kore.utils.UIUtils;
 /**
  * Presents the Preferences fragment
  */
-public class SettingsActivity extends ActionBarActivity{
+public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = LogUtils.makeLogTag(SettingsActivity.class);
 
     private SettingsFragment settingsFragment;
@@ -55,9 +55,9 @@ public class SettingsActivity extends ActionBarActivity{
 
         // Display the fragment as the main content.
         settingsFragment = new SettingsFragment();
-        getFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, settingsFragment)
-                            .commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, settingsFragment)
+                .commit();
     }
 
     @Override

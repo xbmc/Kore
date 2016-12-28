@@ -5,12 +5,12 @@ package org.xbmc.kore.ui.sections.settings;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -25,11 +25,10 @@ import org.xbmc.kore.R;
 public class AboutDialogFragment
         extends DialogFragment {
 
+    @NonNull
     @Override
     @SuppressWarnings("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         Activity activity = getActivity();
         View mainView = activity.getLayoutInflater().inflate(R.layout.fragment_about, null);
 
@@ -46,18 +45,9 @@ public class AboutDialogFragment
         about.setText(Html.fromHtml(getString(R.string.about_desc)));
         about.setMovementMethod(LinkMovementMethod.getInstance());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        // Build the dialog
-        builder.setView(mainView)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dismiss();
-                    }
-                });
-
-        return builder.create();
-
+        return new AlertDialog.Builder(activity)
+                .setView(mainView)
+                .setPositiveButton(android.R.string.ok, null)
+                .create();
     }
 }

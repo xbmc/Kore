@@ -15,15 +15,16 @@
  */
 package org.xbmc.kore.ui.sections.hosts;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -371,11 +372,11 @@ public class HostListFragment extends Fragment {
             return frag;
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.delete_xbmc)
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.delete_xbmc)
                     .setMessage(R.string.delete_xbmc_confirm)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -386,9 +387,8 @@ public class HostListFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int id) {
                             mListener.onDialogNegativeClick();
                         }
-                    });
-            // Create the AlertDialog object and return it
-            return builder.create();
+                    })
+                    .create();
         }
     }
 }
