@@ -217,7 +217,7 @@ public class MediaFileListFragment extends AbstractListFragment {
             return true;
         else
             // if we still see "..", it is not the real root directory
-            return fl.isRootDir() && (fl.title.contentEquals("..") == false);
+            return fl.isRootDir() && !fl.title.contentEquals("..");
     }
 
     /**
