@@ -33,7 +33,7 @@ import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.testutils.Database;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, sdk = 23)
 @Ignore
 public class AbstractTestClass {
     protected static HostInfo hostInfo;
