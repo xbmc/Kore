@@ -96,7 +96,7 @@
         <item name="iconHome">@drawable/ic_home_white_24dp</item>
         <item name="iconAddons">@drawable/ic_extension_white_24dp</item>
         <item name="iconFiles">@drawable/ic_folder_white_24dp</item>
-        <item name="iconPVR">@drawable/ic_dvr_24dp</item>
+        <item name="iconPVR">@drawable/ic_dvr_white_24dp</item>
 
         <item name="iconNew">@drawable/ic_add_box_white_24dp</item>
         <item name="iconNewToolbar">@drawable/ic_add_box_white_24dp</item>
@@ -216,14 +216,14 @@
         <item name="iconHosts">@drawable/ic_devices_white_24dp</item>
         <item name="iconRemote">@drawable/ic_games_white_24dp</item>
         <item name="iconRemoteToolbar">@drawable/ic_games_white_24dp</item>
-        <item name="iconMovies">@drawable/ic_movie_grey_24dp</item>
-        <item name="iconTvShows">@drawable/ic_tv_grey_24dp</item>
-        <item name="iconMusic">@drawable/ic_headset_grey_24dp</item>
-        <item name="iconPicture">@drawable/ic_image_grey_24dp</item>
-        <item name="iconHome">@drawable/ic_home_grey_24dp</item>
+        <item name="iconMovies">@drawable/ic_movie_white_24dp</item>
+        <item name="iconTvShows">@drawable/ic_tv_white_24dp</item>
+        <item name="iconMusic">@drawable/ic_headset_white_24dp</item>
+        <item name="iconPicture">@drawable/ic_image_white_24dp</item>
+        <item name="iconHome">@drawable/ic_home_white_24dp</item>
         <item name="iconAddons">@drawable/ic_extension_white_24dp</item>
         <item name="iconFiles">@drawable/ic_folder_white_24dp</item>
-        <item name="iconPVR">@drawable/ic_dvr_24dp</item>
+        <item name="iconPVR">@drawable/ic_dvr_white_24dp</item>
 
         <item name="iconNew">@drawable/ic_add_box_black_24dp</item>
         <item name="iconNewToolbar">@drawable/ic_add_box_white_24dp</item>
