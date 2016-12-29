@@ -28,4 +28,14 @@ android:
 before_script:
 
 script: 
-  - ./gradlew testFullDebugUnitTest assembleFullRelease
+  - ./gradlew assembleFullDebug testFullDebugUnitTest
+
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
