@@ -28,4 +28,4 @@ android:
 before_script:
 
 script: 
-  - ./gradlew --info assembleFullDebug testFullDebugUnitTest
+  - ./gradlew assembleFullDebug testFullDebugUnitTest
