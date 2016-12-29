@@ -23,7 +23,7 @@
         <item name="android:windowBackground">@color/dark_background</item>
         <!--<item name="android:windowActionBarOverlay">true</item>-->
 
-        <item name="preferenceTheme">@style/PrefTheme</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
@@ -153,7 +153,7 @@
         <item name="android:colorBackground">@color/light_background</item>
         <item name="android:windowBackground">@color/light_background</item>
 
-        <item name="preferenceTheme">@style/PrefTheme</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
@@ -348,10 +348,6 @@
         <item name="textColorOverPrimary">@color/white</item>
 
         <!--<item name="separatorColor">@color/dark_separator</item>-->
-    </style>
-
-    <style name="PrefTheme" parent="PreferenceThemeOverlay">
-        <item name="android:textAppearanceLarge">?android:textAppearanceMedium</item>
     </style>
 
 </resources>
