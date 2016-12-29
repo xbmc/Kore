@@ -4,7 +4,7 @@ sudo: false
 
 env:
   matrix:
-    - ANDROID_TARGET=android-22  
+    - ANDROID_TARGET=android-25
 
 android:
   components:
@@ -13,11 +13,14 @@ android:
     # when travis is able to parse "build-tools-23.0.3" correctly.
     # See https://github.com/travis-ci/travis-ci/issues/5036
     - tools
+    # intentionally duped, see:
+    # https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943
+    - tools
     # needed build tools
-    - build-tools-24.0.2
+    - build-tools-25.0.2
 
     # The SDK version used to compile your project
-    - android-23
+    - android-25
 
     # extra needed components
     - extra-android-m2repository
