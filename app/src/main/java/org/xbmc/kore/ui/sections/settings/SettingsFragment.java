@@ -126,9 +126,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
         if (key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS) &&
             (sharedPreferences.getBoolean(Settings.KEY_PREF_PAUSE_DURING_CALLS, Settings.DEFAULT_PREF_PAUSE_DURING_CALLS))) {
             if (!hasPhonePermission()) {
-                ActivityCompat.requestPermissions(getActivity(),
-                                                  new String[] {Manifest.permission.READ_PHONE_STATE},
-                                                  Utils.PERMISSION_REQUEST_READ_PHONE_STATE);
+                requestPermissions(
+                        new String[] {Manifest.permission.READ_PHONE_STATE},
+                        Utils.PERMISSION_REQUEST_READ_PHONE_STATE);
             }
         }
 
