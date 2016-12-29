@@ -328,12 +328,12 @@
     <string name="theme_solarized">Solarized</string>
     <string name="theme_solarized_dark">Solarized Dark</string>
 
-    <string name="switch_to_remote">Control on media select</string>
-    <string name="keep_remote_above_lockscreen">Control over lockscreen</string>
+    <string name="switch_to_remote">Show on media start</string>
+    <string name="keep_remote_above_lockscreen">Show over lockscreen</string>
     <string name="pref_keep_screen_on">Keep awake</string>
     <string name="show_notification">Notifications</string>
     <string name="pause_during_calls">Pause during phone call</string>
-    <string name="use_hardware_volume_keys">Device volume controls</string>
+    <string name="use_hardware_volume_keys">Device volume keys</string>
     <string name="vibrate_on_remote">Vibrate on touch</string>
     <string name="nav_drawer_items">Side menu shortcuts</string>
 
