@@ -1,0 +1,98 @@
+@startuml
+
+
+Actor Activity
+participant "AbstractListFragment" as A
+participant "AbstractCursorListFragment" as B
+participant "ConcreteCursorListFragment" as C
+
+Activity -> A: onCreate
+activate A
+A -> C: createAdapter()
+activate C
+C --> A: return adapter
+deactivate C
+deactivate A
+
+Activity -> B: onCreateView
+activate B
+B -> A: onCreateView
+deactivate B
+activate A
+A -> A: connect this class as swipe refresh listener
+A -> A: setup gridview
+activate A
+A -> B: createOnItemClickListener
+activate B
+B --> A: return click listener
+deactivate B
+deactivate A
+A -> A: restore saved state (if any)
+A -> A: enable options menu
+A -> B:
+deactivate A
+activate B
+B -> B: restore saved search query (if any)
+activate B
+deactivate B
+deactivate B
+
+Activity -> B: onActivityCreated
+activate B
+B -> LoaderManager: initialize cursor loader
+activate LoaderManager
+LoaderManager -> B: onCreateLoader
+B -> C: createCursorLoader
+activate B
+activate C
+C --> B: return cursorLoader
+deactivate C
+B --> LoaderManager: return cursorLoader
+deactivate B
+deactivate B
+deactivate LoaderManager
+
+Activity -> B: onStart
+Activate B
+B ->> LoaderManager: onStart
+Activate LoaderManager
+B -> B: bind to library sync service
+activate B
+deactivate B
+deactivate B
+LoaderManager ->> B: onLoadFinished
+
+Activity -> B: onResume
+Activate B
+B -> B: register to eventbus
+activate B
+deactivate B
+deactivate B
+== UI active ==
+...
+Activity ->> B: user selects list item
+activate B
+B -> B: saveSearchState
+activate B
+deactivate B
+B -> C: onListItemClicked(view)
+Activate C
+C -> Activity: onItemSelected
+note over Activity: starts corresponding InfoFragment
+deactivate C
+deactivate B
+== UI inactive ==
+Activity -> B: onPause
+activate B
+B -> B: unregister from eventbus
+activate B
+deactivate B
+deactivate B
+
+Activity -> B: onStop
+activate B
+B -> B: unbind from library sync service
+activate B
+deactivate B
+deactivate B
+@enduml

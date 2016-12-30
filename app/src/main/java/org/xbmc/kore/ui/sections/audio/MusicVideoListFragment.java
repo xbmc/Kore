@@ -38,6 +38,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -124,16 +125,16 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
 
         String SORT = MediaDatabase.sortCommonTokens(MediaContract.MusicVideos.TITLE) + " ASC";
 
-        final int ID = 0;
-        final int MUSICVIDEOID = 1;
-        final int TITLE = 2;
-        final int ARTIST = 3;
-        final int ALBUM = 4;
-        final int THUMBNAIL = 5;
-        final int RUNTIME = 6;
-        final int GENRES = 7;
-        final int YEAR = 8;
-        final int PLOT = 9;
+        int ID = 0;
+        int MUSICVIDEOID = 1;
+        int TITLE = 2;
+        int ARTIST = 3;
+        int ALBUM = 4;
+        int THUMBNAIL = 5;
+        int RUNTIME = 6;
+        int GENRES = 7;
+        int YEAR = 8;
+        int PLOT = 9;
     }
 
     private static class MusicVideosAdapter extends CursorAdapter {
@@ -147,8 +148,8 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
 
             // Get the art dimensions
             Resources resources = context.getResources();
-            artHeight = resources.getDimensionPixelOffset(R.dimen.musicvideodetail_poster_heigth);
-            artWidth = resources.getDimensionPixelOffset(R.dimen.musicvideodetail_poster_width);
+            artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
+            artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
         /** {@inheritDoc} */
@@ -175,31 +176,32 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
 
             // Save the movie id
-            viewHolder.musicVideoId = cursor.getInt(MusicVideosListQuery.MUSICVIDEOID);
-            viewHolder.musicVideoTitle = cursor.getString(MusicVideosListQuery.TITLE);
-            viewHolder.album = cursor.getString(MusicVideosListQuery.ALBUM);
-            viewHolder.artist = cursor.getString(MusicVideosListQuery.ARTIST);
-            viewHolder.genres = cursor.getString(MusicVideosListQuery.GENRES);
-            viewHolder.plot = cursor.getString(MusicVideosListQuery.PLOT);
-            viewHolder.runtime = cursor.getInt(MusicVideosListQuery.RUNTIME);
-            viewHolder.year = cursor.getInt(MusicVideosListQuery.YEAR);
+            viewHolder.dataHolder.setId(cursor.getInt(MusicVideosListQuery.MUSICVIDEOID));
+            viewHolder.dataHolder.setTitle(cursor.getString(MusicVideosListQuery.TITLE));
 
-            viewHolder.titleView.setText(viewHolder.musicVideoTitle);
-            String artistAlbum = viewHolder.artist + "  |  " +
-                                 viewHolder.album;
+            viewHolder.titleView.setText(viewHolder.dataHolder.getTitle());
+            String artistAlbum = cursor.getString(MusicVideosListQuery.ARTIST) + "  |  " +
+                                 cursor.getString(MusicVideosListQuery.ALBUM);
             viewHolder.artistAlbumView.setText(artistAlbum);
+            viewHolder.dataHolder.setUndertitle(artistAlbum);
 
+            int runtime = cursor.getInt(MusicVideosListQuery.RUNTIME);
+            String genres = cursor.getString(MusicVideosListQuery.GENRES);
             String durationGenres =
-                    viewHolder.runtime > 0 ?
-                    UIUtils.formatTime(viewHolder.runtime) + "  |  " + viewHolder.genres :
-                    viewHolder.genres;
+                    runtime > 0 ?
+                    UIUtils.formatTime(runtime) + "  |  " + genres :
+                    genres;
             viewHolder.durationGenresView.setText(durationGenres);
-            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                    cursor.getString(MusicVideosListQuery.THUMBNAIL), viewHolder.musicVideoTitle,
+            viewHolder.dataHolder.setDetails(durationGenres);
+
+            String posterUrl = cursor.getString(MusicVideosListQuery.THUMBNAIL);
+            viewHolder.dataHolder.setPosterUrl(posterUrl);
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager, posterUrl
+                    , viewHolder.dataHolder.getTitle(),
                     viewHolder.artView, artWidth, artHeight);
 
             if(Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("a"+viewHolder.musicVideoId);
+                viewHolder.artView.setTransitionName("a"+viewHolder.dataHolder.getId());
             }
         }
     }
@@ -213,13 +215,6 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
         TextView durationGenresView;
         ImageView artView;
 
-        int musicVideoId;
-        String musicVideoTitle;
-        String artist;
-        String album;
-        int runtime;
-        String genres;
-        int year;
-        String plot;
+        AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
     }
 }

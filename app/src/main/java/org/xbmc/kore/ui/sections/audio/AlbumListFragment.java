@@ -47,6 +47,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -59,7 +60,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(AlbumListFragment.class);
 
     public interface OnAlbumSelectedListener {
-        public void onAlbumSelected(ViewHolder vh);
+        public void onAlbumSelected(ViewHolder viewHolder);
     }
 
     public static final String BUNDLE_KEY_GENREID = "genreid",
@@ -75,27 +76,23 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     /**
-     * Create a new instance of this, initialized to show albums of genres
+     * Use this to display all albums for a specific artist
+     * @param artistId
      */
-    public static AlbumListFragment newInstanceForGenre(final int genreId) {
-        AlbumListFragment fragment = new AlbumListFragment();
-
+    public void setArtist(int artistId) {
         Bundle args = new Bundle();
-        args.putInt(BUNDLE_KEY_GENREID, genreId);
-        fragment.setArguments(args);
-        return fragment;
+        args.putInt(BUNDLE_KEY_ARTISTID, artistId);
+        setArguments(args);
     }
 
     /**
-     * Create a new instance of this, initialized to show albums of artists
+     * Use this to display all albums for a specific genre
+     * @param genreId
      */
-    public static AlbumListFragment newInstanceForArtist(final int artistId) {
-        AlbumListFragment fragment = new AlbumListFragment();
-
+    public void setGenre(int genreId) {
         Bundle args = new Bundle();
-        args.putInt(BUNDLE_KEY_ARTISTID, artistId);
-        fragment.setArguments(args);
-        return fragment;
+        args.putInt(BUNDLE_KEY_GENREID, genreId);
+        setArguments(args);
     }
 
     @Override
@@ -204,7 +201,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         }
 
         return new CursorLoader(getActivity(), uri,
-                AlbumListQuery.PROJECTION, selection, selectionArgs, sortOrderStr);
+                                AlbumListQuery.PROJECTION, selection, selectionArgs, sortOrderStr);
     }
 
     @Override
@@ -249,21 +246,21 @@ public class AlbumListFragment extends AbstractCursorListFragment {
                 MediaContract.Albums.THUMBNAIL,
                 MediaContract.Albums.YEAR,
                 MediaContract.Albums.RATING,
-        };
+                };
 
         String SORT_BY_ALBUM = MediaDatabase.sortCommonTokens(MediaContract.Albums.TITLE) + " ASC";
         String SORT_BY_ARTIST = MediaDatabase.sortCommonTokens(MediaContract.Albums.DISPLAYARTIST) + " ASC";
         String SORT_BY_ARTIST_YEAR = MediaDatabase.sortCommonTokens(MediaContract.Albums.DISPLAYARTIST)
                                      + " ASC, " + MediaContract.Albums.YEAR + " ASC";
 
-        final int ID = 0;
-        final int ALBUMID = 1;
-        final int TITLE = 2;
-        final int DISPLAYARTIST = 3;
-        final int GENRE = 4;
-        final int THUMBNAIL = 5;
-        final int YEAR = 6;
-        final int RATING = 7;
+        int ID = 0;
+        int ALBUMID = 1;
+        int TITLE = 2;
+        int DISPLAYARTIST = 3;
+        int GENRE = 4;
+        int THUMBNAIL = 5;
+        int YEAR = 6;
+        int RATING = 7;
     }
 
     private class AlbumsAdapter extends CursorAdapter {
@@ -279,8 +276,8 @@ public class AlbumListFragment extends AbstractCursorListFragment {
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = (int) resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_width);
-            artHeight = (int) resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_heigth);
+            artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
+            artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
         /** {@inheritDoc} */
@@ -306,34 +303,33 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
 
-            viewHolder.albumId = cursor.getInt(AlbumListQuery.ALBUMID);
-            viewHolder.albumTitle = cursor.getString(AlbumListQuery.TITLE);
-            viewHolder.albumArtist = cursor.getString(AlbumListQuery.DISPLAYARTIST);
-            viewHolder.albumGenre = cursor.getString(AlbumListQuery.GENRE);
-            viewHolder.albumYear = cursor.getInt(AlbumListQuery.YEAR);
-            viewHolder.albumRating = cursor.getDouble(AlbumListQuery.RATING);
+            viewHolder.dataHolder.setId(cursor.getInt(AlbumListQuery.ALBUMID));
+            viewHolder.dataHolder.setTitle(cursor.getString(AlbumListQuery.TITLE));
+            viewHolder.dataHolder.setUndertitle(cursor.getString(AlbumListQuery.DISPLAYARTIST));
 
-            viewHolder.titleView.setText(viewHolder.albumTitle);
-            viewHolder.artistView.setText(cursor.getString(AlbumListQuery.DISPLAYARTIST));
+            viewHolder.titleView.setText(viewHolder.dataHolder.getTitle());
+            viewHolder.artistView.setText(viewHolder.dataHolder.getUnderTitle());
             int year = cursor.getInt(AlbumListQuery.YEAR);
             String genres = cursor.getString(AlbumListQuery.GENRE);
             String desc = (genres != null) ?
                           ((year > 0) ? genres + "  |  " + year : genres) :
                           String.valueOf(year);
+            viewHolder.dataHolder.setDescription(desc);
             viewHolder.genresView.setText(desc);
 
-            String thumbnail = cursor.getString(AlbumListQuery.THUMBNAIL);
+            viewHolder.dataHolder.setPosterUrl(cursor.getString(AlbumListQuery.THUMBNAIL));
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                    thumbnail, viewHolder.albumTitle,
-                    viewHolder.artView, artWidth, artHeight);
+                                                 viewHolder.dataHolder.getPosterUrl(),
+                                                 viewHolder.dataHolder.getTitle(),
+                                                 viewHolder.artView, artWidth, artHeight);
 
             // For the popupmenu
             ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
             contextMenu.setTag(viewHolder);
             contextMenu.setOnClickListener(albumlistItemMenuClickListener);
 
-            if(Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("a"+viewHolder.albumId);
+            if (Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("al"+viewHolder.dataHolder.getId());
             }
         }
     }
@@ -346,13 +342,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         TextView artistView;
         TextView genresView;
         ImageView artView;
-
-        int albumId;
-        String albumTitle;
-        String albumArtist;
-        int albumYear;
-        String albumGenre;
-        double albumRating;
+        AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
     }
 
     private View.OnClickListener albumlistItemMenuClickListener = new View.OnClickListener() {
@@ -361,7 +351,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
             final ViewHolder viewHolder = (ViewHolder)v.getTag();
 
             final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.albumid = viewHolder.albumId;
+            playListItem.albumid = viewHolder.dataHolder.getId();
 
             final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
             popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());

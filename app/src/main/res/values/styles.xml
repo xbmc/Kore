@@ -172,7 +172,6 @@
     <style name="TextAppearance.Media.SmallDetails">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
         <item name="android:textColor">?attr/appTextColorSecondary</item>
-        <item name="android:singleLine">true</item>
     </style>
 
     <style name="TextAppearance.Media.Rating">

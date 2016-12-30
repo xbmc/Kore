@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             style="@style/TextAppearance.Medialist.Title"
             android:paddingRight="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"
             android:layout_alignTop="@id/art"
             android:layout_toRightOf="@id/art"
             android:layout_toEndOf="@id/art"/>
@@ -94,6 +95,7 @@
             android:layout_below="@id/title"
             style="@style/TextAppearance.Medialist.Details"
             android:paddingLeft="@dimen/small_padding"
+            android:paddingStart="@dimen/small_padding"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
             android:gravity="center_vertical"/>

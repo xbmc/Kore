@@ -110,7 +110,7 @@ public class AllCastActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the name from the tag
-                Utils.openImdbForPerson(AllCastActivity.this, (String) ((ViewHolder)view.getTag()).castName);
+                Utils.openImdbForPerson(AllCastActivity.this, ((ViewHolder)view.getTag()).castName);
             }
         });
 
@@ -118,16 +118,6 @@ public class AllCastActivity extends BaseActivity {
         castGridView.setAdapter(arrayAdapter);
 
         setupActionBar(movie_tvshow_title);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override

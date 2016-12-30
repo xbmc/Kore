@@ -95,8 +95,13 @@
     <dimen name="albumlist_art_width">74dp</dimen>
     <dimen name="albumlist_art_heigth">74dp</dimen>
 
-    <dimen name="albumdetail_poster_width">112dp</dimen>
-    <dimen name="albumdetail_poster_heigth">112dp</dimen>
+    <dimen name="detail_art_height">216dp</dimen>
+
+    <dimen name="detail_poster_width_square">112dp</dimen>
+    <dimen name="detail_poster_height_square">112dp</dimen>
+
+    <dimen name="detail_poster_width_nonsquare">112dp</dimen>
+    <dimen name="detail_poster_height_nonsquare">160dp</dimen>
 
     <dimen name="audiogenrelist_art_width">74dp</dimen>
     <dimen name="audiogenrelist_art_heigth">74dp</dimen>
@@ -104,14 +109,8 @@
     <dimen name="musicvideolist_art_width">74dp</dimen>
     <dimen name="musicvideolist_art_heigth">74dp</dimen>
 
-    <dimen name="musicvideodetail_poster_width">112dp</dimen>
-    <dimen name="musicvideodetail_poster_heigth">112dp</dimen>
-
     <dimen name="addonlist_art_width">74dp</dimen>
     <dimen name="addonlist_art_heigth">74dp</dimen>
-
-    <dimen name="addondetail_poster_width">112dp</dimen>
-    <dimen name="addondetail_poster_height">112dp</dimen>
 
     <dimen name="filelist_art_width">52dp</dimen>
     <dimen name="filelist_art_heigth">76dp</dimen>

@@ -474,6 +474,11 @@ public class MediaFileListFragment extends AbstractListFragment {
         return p;
     }
 
+    @Override
+    public void onRefresh() {
+
+    }
+
     private class MediaFileListAdapter extends BaseAdapter implements ListAdapter {
 
         Context ctx;

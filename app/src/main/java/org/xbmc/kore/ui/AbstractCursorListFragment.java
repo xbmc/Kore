@@ -27,7 +27,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -55,18 +54,14 @@ import de.greenrobot.event.EventBus;
 public abstract class AbstractCursorListFragment extends AbstractListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor>,
 		SyncUtils.OnServiceListener,
-		SearchView.OnQueryTextListener,
-		SwipeRefreshLayout.OnRefreshListener {
+		SearchView.OnQueryTextListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractCursorListFragment.class);
 
 	private final String BUNDLE_KEY_SEARCH_QUERY = "search_query";
 
 	private ServiceConnection serviceConnection;
 
-	private HostInfo hostInfo;
 	private EventBus bus;
-
-	private CursorAdapter adapter;
 
 	// Loader IDs
 	private static final int LOADER = 0;
@@ -89,13 +84,6 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		View root = super.onCreateView(inflater, container, savedInstanceState);
 
 		bus = EventBus.getDefault();
-		HostManager hostManager = HostManager.getInstance(getActivity());
-		hostInfo = hostManager.getHostInfo();
-
-		swipeRefreshLayout.setEnabled(true);
-		swipeRefreshLayout.setOnRefreshListener(this);
-
-		adapter = (CursorAdapter) getAdapter();
 
 		if (savedInstanceState != null) {
 			savedSearchFilter = savedInstanceState.getString(BUNDLE_KEY_SEARCH_QUERY);
@@ -178,22 +166,6 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	}
 
 	/**
-	 * Swipe refresh layout callback
-	 */
-	/** {@inheritDoc} */
-	@Override
-	public void onRefresh() {
-		if (hostInfo != null) {
-			showRefreshAnimation();
-			onSwipeRefresh();
-		} else {
-			swipeRefreshLayout.setRefreshing(false);
-			Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-					.show();
-		}
-	}
-
-	/**
 	 * Should return the {@link LibrarySyncService} SyncType that
 	 * this list initiates
 	 * @return {@link LibrarySyncService} SyncType
@@ -237,7 +209,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
         }
 
 		if (event.syncType.equals(getListSyncType())) {
-			swipeRefreshLayout.setRefreshing(false);
+			hideRefreshAnimation();
 			if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
 				refreshList();
                 if (!silentSync) {
@@ -273,10 +245,10 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		this.supportsSearch = supportsSearch;
 	}
 
-    protected void onSwipeRefresh() {
-		LogUtils.LOGD(TAG, "Swipe, starting sync for: " + getListSyncType());
-        // Start the syncing process
-        Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
+	@Override
+    public void onRefresh() {
+		showRefreshAnimation();
+		Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
         syncIntent.putExtra(getListSyncType(), true);
 
         String syncID = getSyncID();
@@ -327,16 +299,18 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
 		loaderLoading = false;
-		adapter.swapCursor(cursor);
-		// To prevent the empty text from appearing on the first load, set it now
-		emptyView.setText(getString(R.string.swipe_down_to_refresh));
+		((CursorAdapter) getAdapter()).swapCursor(cursor);
+		if (TextUtils.isEmpty(searchFilter)) {
+			// To prevent the empty text from appearing on the first load, set it now
+			emptyView.setText(getString(R.string.swipe_down_to_refresh));
+		}
 		loaderLoading = false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public void onLoaderReset(Loader<Cursor> cursorLoader) {
-		adapter.swapCursor(null);
+		((CursorAdapter) getAdapter()).swapCursor(null);
 	}
 
 	/**

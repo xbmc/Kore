@@ -41,6 +41,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -145,8 +146,8 @@ public class ArtistListFragment extends AbstractCursorListFragment {
 
             // Get the art dimensions
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.albumdetail_poster_width));
-            artHeight = (int)(resources.getDimension(R.dimen.albumdetail_poster_heigth));
+            artWidth = (int)(resources.getDimension(R.dimen.detail_poster_width_square));
+            artHeight = (int)(resources.getDimension(R.dimen.detail_poster_height_square));
         }
 
         /** {@inheritDoc} */
@@ -160,8 +161,9 @@ public class ArtistListFragment extends AbstractCursorListFragment {
             viewHolder.nameView = (TextView)view.findViewById(R.id.name);
             viewHolder.genresView = (TextView)view.findViewById(R.id.genres);
             viewHolder.artView = (ImageView)view.findViewById(R.id.art);
-
+            viewHolder.contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
             view.setTag(viewHolder);
+
             return view;
         }
 
@@ -172,27 +174,25 @@ public class ArtistListFragment extends AbstractCursorListFragment {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
 
             // Save the movie id
-            viewHolder.artistId = cursor.getInt(ArtistListQuery.ARTISTID);
-            viewHolder.artistName = cursor.getString(ArtistListQuery.ARTIST);
-            viewHolder.genres = cursor.getString(ArtistListQuery.GENRE);
-            viewHolder.description = cursor.getString(ArtistListQuery.DESCRIPTION);
-            viewHolder.fanart = cursor.getString(ArtistListQuery.FANART);
+            viewHolder.dataHolder.setId(cursor.getInt(ArtistListQuery.ARTISTID));
+            viewHolder.dataHolder.setTitle(cursor.getString(ArtistListQuery.ARTIST));
+            viewHolder.dataHolder.setUndertitle(cursor.getString(ArtistListQuery.GENRE));
+            viewHolder.dataHolder.setDescription(cursor.getString(ArtistListQuery.DESCRIPTION));
+            viewHolder.dataHolder.setFanArtUrl(cursor.getString(ArtistListQuery.FANART));
 
-            viewHolder.nameView.setText(viewHolder.artistName);
+            viewHolder.nameView.setText(cursor.getString(ArtistListQuery.ARTIST));
             viewHolder.genresView.setText(cursor.getString(ArtistListQuery.GENRE));
-            viewHolder.poster = cursor.getString(ArtistListQuery.THUMBNAIL);
+            viewHolder.dataHolder.setPosterUrl(cursor.getString(ArtistListQuery.THUMBNAIL));
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                    viewHolder.poster, viewHolder.artistName,
+                    viewHolder.dataHolder.getPosterUrl(), viewHolder.dataHolder.getTitle(),
                     viewHolder.artView, artWidth, artHeight);
 
-            // For the popupmenu
-            ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
-            contextMenu.setTag(viewHolder);
-            contextMenu.setOnClickListener(artistlistItemMenuClickListener);
+            viewHolder.contextMenu.setTag(viewHolder);
+            viewHolder.contextMenu.setOnClickListener(artistlistItemMenuClickListener);
 
-            if(Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("a"+viewHolder.artistId);
+            if (Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("ar"+viewHolder.dataHolder.getId());
             }
         }
     }
@@ -204,13 +204,9 @@ public class ArtistListFragment extends AbstractCursorListFragment {
         TextView nameView;
         TextView genresView;
         ImageView artView;
+        ImageView contextMenu;
 
-        int artistId;
-        String artistName;
-        String genres;
-        String description;
-        String fanart;
-        String poster;
+        AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
     }
 
     private View.OnClickListener artistlistItemMenuClickListener = new View.OnClickListener() {
@@ -219,7 +215,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
             final ViewHolder viewHolder = (ViewHolder)v.getTag();
 
             final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.artistid = viewHolder.artistId;
+            playListItem.artistid = viewHolder.dataHolder.getId();
 
             final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
             popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());

@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -23,6 +22,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.BaseColumns;
+import android.support.annotation.Nullable;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -61,17 +62,46 @@ public class SongsListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(SongsListFragment.class);
 
     public static final String BUNDLE_KEY_ARTISTID = "artistid";
+    public static final String BUNDLE_KEY_ALBUMID = "albumid";
+    public static final String BUNDLE_KEY_ALBUMTITLE = "albumtitle";
 
     private int artistId = -1;
+    private int albumId = -1;
+    private String albumTitle = "";
 
     private Handler callbackHandler = new Handler();
+
+    /**
+     * Use this to display all songs for a specific artist
+     * @param artistId
+     */
+    public void setArtist(int artistId) {
+        Bundle args = new Bundle();
+        args.putInt(BUNDLE_KEY_ARTISTID, artistId);
+        setArguments(args);
+    }
+
+    /**
+     * Use this to display all songs for a specific album
+     * @param albumId
+     */
+    public void setAlbum(int albumId, String albumTitle) {
+        Bundle args = new Bundle();
+        args.putInt(BUNDLE_KEY_ALBUMID, albumId);
+        args.putString(BUNDLE_KEY_ALBUMTITLE, albumTitle);
+        setArguments(args);
+    }
 
     @Override
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     @Override
     protected CursorAdapter createAdapter() {
-        return new SongsAdapter(getActivity());
+        if (albumId != -1 ) {
+            return new AlbumSongsAdapter(getActivity());
+        } else {
+            return new SongsAdapter(getActivity());
+        }
     }
 
     @Override
@@ -86,9 +116,11 @@ public class SongsListFragment extends AbstractCursorListFragment {
         HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
         int hostId = hostInfo != null ? hostInfo.getId() : -1;
 
-        if (artistId != -1) {
+        if (artistId != -1) { // get songs for artist
             uri = MediaContract.Songs.buildArtistSongsListUri(hostId, artistId);
-        } else {
+        } else if (albumId != -1) {
+            uri = MediaContract.Songs.buildAlbumSongsListUri(hostId, albumId);
+        } else { // get all songs
             uri = MediaContract.Songs.buildSongsListUri(hostId);
         }
 
@@ -100,8 +132,13 @@ public class SongsListFragment extends AbstractCursorListFragment {
             selectionArgs = new String[] {"%" + searchFilter + "%"};
         }
 
-        return new CursorLoader(getActivity(), uri,
-                                SongsListQuery.PROJECTION, selection, selectionArgs, SongsListQuery.SORT);
+        if (albumId != -1) {
+            return new CursorLoader(getActivity(), uri,
+                                    AlbumSongsListQuery.PROJECTION, selection, selectionArgs, AlbumSongsListQuery.SORT);
+        } else {
+            return new CursorLoader(getActivity(), uri,
+                                    SongsListQuery.PROJECTION, selection, selectionArgs, SongsListQuery.SORT);
+        }
     }
 
     @Override
@@ -111,13 +148,14 @@ public class SongsListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Bundle args = getArguments();
-        if (args != null) {
-            artistId = getArguments().getInt(BUNDLE_KEY_ARTISTID, -1);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            artistId = arguments.getInt(BUNDLE_KEY_ARTISTID, -1);
+            albumId = arguments.getInt(BUNDLE_KEY_ALBUMID, -1);
+            albumTitle = arguments.getString(BUNDLE_KEY_ALBUMTITLE, "");
         }
-
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -152,7 +190,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
                 MediaProvider.Qualified.ALBUMS_GENRE,
                 MediaProvider.Qualified.ALBUMS_YEAR,
                 MediaProvider.Qualified.ALBUMS_THUMBNAIL
-                };
+        };
 
         String SORT = MediaDatabase.sortCommonTokens(MediaProvider.Qualified.SONGS_TITLE) + " ASC";
 
@@ -169,6 +207,33 @@ public class SongsListFragment extends AbstractCursorListFragment {
         int THUMBNAIL = 10;
     }
 
+    /**
+     * Album songs list query parameters.
+     */
+    public interface AlbumSongsListQuery {
+        String[] PROJECTION = {
+                BaseColumns._ID,
+                MediaContract.Songs.TITLE,
+                MediaContract.Songs.TRACK,
+                MediaContract.Songs.DURATION,
+                MediaContract.Songs.FILE,
+                MediaContract.Songs.SONGID,
+                MediaContract.Songs.DISPLAYARTIST,
+                MediaContract.Songs.DISC
+        };
+
+        String SORT = MediaContract.Songs.DISC + " ASC, " + MediaContract.Songs.TRACK + " ASC";
+
+        int ID = 0;
+        int TITLE = 1;
+        int TRACK = 2;
+        int DURATION = 3;
+        int FILE = 4;
+        int SONGID = 5;
+        int ARTIST = 6;
+        int DISC = 7;
+    }
+
     private class SongsAdapter extends CursorAdapter {
 
         private HostManager hostManager;
@@ -182,14 +247,14 @@ public class SongsListFragment extends AbstractCursorListFragment {
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = (int) resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_width);
-            artHeight = (int) resources.getDimensionPixelOffset(R.dimen.albumdetail_poster_heigth);
+            artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
+            artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
         /** {@inheritDoc} */
         @Override
-        public View newView(Context context, final Cursor cursor, ViewGroup parent) {
-            final View view = LayoutInflater.from(context)
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            View view = LayoutInflater.from(context)
                                             .inflate(R.layout.grid_item_song, parent, false);
 
             // Setup View holder pattern
@@ -199,13 +264,13 @@ public class SongsListFragment extends AbstractCursorListFragment {
             viewHolder.art = (ImageView)view.findViewById(R.id.art);
             viewHolder.artist = (TextView)view.findViewById(R.id.artist);
             viewHolder.songInfo = new FileDownloadHelper.SongInfo();
+            viewHolder.contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
 
             view.setTag(viewHolder);
             return view;
         }
 
         /** {@inheritDoc} */
-        @TargetApi(21)
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
@@ -243,9 +308,62 @@ public class SongsListFragment extends AbstractCursorListFragment {
             viewHolder.songInfo.track = cursor.getInt(SongsListQuery.TRACK);
 
             // For the popupmenu
-            ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
-            contextMenu.setTag(viewHolder);
-            contextMenu.setOnClickListener(new View.OnClickListener() {
+            viewHolder.contextMenu.setTag(viewHolder);
+            viewHolder.contextMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    showPopupMenu(v);
+                }
+            });
+        }
+    }
+
+    private class AlbumSongsAdapter extends CursorAdapter {
+
+        public AlbumSongsAdapter(Context context) {
+            super(context, null, false);
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+            View view = LayoutInflater.from(context)
+                                      .inflate(R.layout.list_item_song, viewGroup, false);
+            // Setup View holder pattern
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.trackNumber = (TextView)view.findViewById(R.id.track_number);
+            viewHolder.title = (TextView)view.findViewById(R.id.song_title);
+            viewHolder.details = (TextView)view.findViewById(R.id.details);
+            viewHolder.contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
+            viewHolder.songInfo = new FileDownloadHelper.SongInfo();
+
+            view.setTag(viewHolder);
+
+            return view;
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            String artist = cursor.getString(AlbumSongsListQuery.ARTIST);
+
+            ViewHolder vh = (ViewHolder) view.getTag();
+
+            vh.title.setText(cursor.getString(AlbumSongsListQuery.TITLE));
+
+            vh.songInfo.artist = artist;
+            vh.songInfo.album = albumTitle;
+            vh.songInfo.songId = cursor.getInt(SongsListQuery.SONGID);
+            vh.songInfo.title = cursor.getString(SongsListQuery.TITLE);
+            vh.songInfo.fileName = cursor.getString(SongsListQuery.FILE);
+            vh.songInfo.track = cursor.getInt(SongsListQuery.TRACK);
+
+            vh.trackNumber.setText(String.valueOf(vh.songInfo.track));
+
+            String duration = UIUtils.formatTime(cursor.getInt(AlbumSongsListQuery.DURATION));
+            String detailsText = TextUtils.isEmpty(artist) ? duration : duration + "  |  " + artist;
+            vh.details.setText(detailsText);
+
+            vh.contextMenu.setTag(vh);
+            vh.contextMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     showPopupMenu(v);
@@ -262,6 +380,8 @@ public class SongsListFragment extends AbstractCursorListFragment {
         TextView title;
         TextView details;
         TextView artist;
+        TextView trackNumber;
+        ImageView contextMenu;
 
         FileDownloadHelper.SongInfo songInfo;
     }

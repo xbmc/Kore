@@ -54,23 +54,14 @@
     <dimen name="albumlist_art_width">88dp</dimen>
     <dimen name="albumlist_art_heigth">88dp</dimen>
 
-    <dimen name="albumdetail_poster_width">136dp</dimen>
-    <dimen name="albumdetail_poster_heigth">136dp</dimen>
-
     <dimen name="audiogenrelist_art_width">88dp</dimen>
     <dimen name="audiogenrelist_art_heigth">88dp</dimen>
 
     <dimen name="musicvideolist_art_width">88dp</dimen>
     <dimen name="musicvideolist_art_heigth">88dp</dimen>
 
-    <dimen name="musicvideodetail_poster_width">146dp</dimen>
-    <dimen name="musicvideodetail_poster_heigth">146dp</dimen>
-
     <dimen name="addonlist_art_width">88dp</dimen>
     <dimen name="addonlist_art_heigth">88dp</dimen>
-
-    <dimen name="addondetail_poster_width">146dp</dimen>
-    <dimen name="addondetail_poster_height">146dp</dimen>
 
     <dimen name="channellist_art_width">88dp</dimen>
     <dimen name="channellist_art_heigth">88dp</dimen>

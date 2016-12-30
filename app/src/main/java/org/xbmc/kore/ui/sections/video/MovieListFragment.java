@@ -44,6 +44,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -95,7 +96,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
             if (selection.length() != 0)
                 selection.append(" AND ");
             selection.append(MediaContract.MoviesColumns.PLAYCOUNT)
-                    .append("=0");
+                     .append("=0");
         }
 
         String sortOrderStr;
@@ -120,7 +121,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         }
 
         return new CursorLoader(getActivity(), uri,
-                MovieListQuery.PROJECTION, selection.toString(), selectionArgs, sortOrderStr);
+                                MovieListQuery.PROJECTION, selection.toString(), selectionArgs, sortOrderStr);
     }
 
     @Override
@@ -197,43 +198,43 @@ public class MovieListFragment extends AbstractCursorListFragment {
             case R.id.action_hide_watched:
                 item.setChecked(!item.isChecked());
                 preferences.edit()
-                        .putBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, item.isChecked())
-                        .apply();
+                           .putBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, item.isChecked())
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_ignore_prefixes:
                 item.setChecked(!item.isChecked());
                 preferences.edit()
-                        .putBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, item.isChecked())
-                        .apply();
+                           .putBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, item.isChecked())
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_name:
                 item.setChecked(true);
                 preferences.edit()
-                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_NAME)
-                        .apply();
+                           .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_NAME)
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_year:
                 item.setChecked(true);
                 preferences.edit()
-                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_YEAR)
-                        .apply();
+                           .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_YEAR)
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_rating:
                 item.setChecked(true);
                 preferences.edit()
-                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_RATING)
-                        .apply();
+                           .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_RATING)
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_date_added:
                 item.setChecked(true);
                 preferences.edit()
-                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
-                        .apply();
+                           .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_last_played:
@@ -246,8 +247,8 @@ public class MovieListFragment extends AbstractCursorListFragment {
             case R.id.action_sort_by_length:
                 item.setChecked(true);
                 preferences.edit()
-                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_LENGTH)
-                        .apply();
+                           .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_LENGTH)
+                           .apply();
                 refreshList();
                 break;
             default:
@@ -271,7 +272,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 MediaContract.Movies.RUNTIME,
                 MediaContract.Movies.RATING,
                 MediaContract.Movies.TAGLINE,
-        };
+                };
 
 
         String SORT_BY_NAME = MediaContract.Movies.TITLE + " ASC";
@@ -307,22 +308,21 @@ public class MovieListFragment extends AbstractCursorListFragment {
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
             artWidth = (int)(resources.getDimension(R.dimen.now_playing_poster_width) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
+                             UIUtils.IMAGE_RESIZE_FACTOR);
             artHeight = (int)(resources.getDimension(R.dimen.now_playing_poster_height) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
+                              UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
         /** {@inheritDoc} */
         @Override
         public View newView(Context context, final Cursor cursor, ViewGroup parent) {
             final View view = LayoutInflater.from(context)
-                    .inflate(R.layout.grid_item_movie, parent, false);
+                                            .inflate(R.layout.grid_item_movie, parent, false);
 
             // Setup View holder pattern
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.titleView = (TextView)view.findViewById(R.id.title);
             viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
-//            viewHolder.yearView = (TextView)view.findViewById(R.id.year);
             viewHolder.durationView = (TextView)view.findViewById(R.id.duration);
             viewHolder.artView = (ImageView)view.findViewById(R.id.art);
 
@@ -337,32 +337,37 @@ public class MovieListFragment extends AbstractCursorListFragment {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
 
             // Save the movie id
-            viewHolder.movieId = cursor.getInt(MovieListQuery.MOVIEID);
-            viewHolder.movieTitle = cursor.getString(MovieListQuery.TITLE);
-            viewHolder.movieTagline = cursor.getString(MovieListQuery.TAGLINE);
-            viewHolder.movieYear = cursor.getInt(MovieListQuery.YEAR);
-            viewHolder.movieRating = cursor.getDouble(MovieListQuery.RATING);
+            viewHolder.dataHolder.setId(cursor.getInt(MovieListQuery.MOVIEID));
+            viewHolder.dataHolder.setTitle(cursor.getString(MovieListQuery.TITLE));
+            viewHolder.dataHolder.setUndertitle(cursor.getString(MovieListQuery.TAGLINE));
 
-            viewHolder.titleView.setText(viewHolder.movieTitle);
+            int movieYear = cursor.getInt(MovieListQuery.YEAR);
+            viewHolder.dataHolder.setRating(cursor.getDouble(MovieListQuery.RATING));
+            viewHolder.dataHolder.setMaxRating(10);
 
-            viewHolder.movieGenres = cursor.getString(MovieListQuery.GENRES);
-            String details = TextUtils.isEmpty(viewHolder.movieTagline) ?
-                    viewHolder.movieGenres :
-                    viewHolder.movieTagline;
+            viewHolder.titleView.setText(viewHolder.dataHolder.getTitle());
+
+            String genres = cursor.getString(MovieListQuery.GENRES);
+            String details = TextUtils.isEmpty(viewHolder.dataHolder.getUnderTitle()) ?
+                             genres : viewHolder.dataHolder.getUnderTitle();
             viewHolder.detailsView.setText(details);
-//            viewHolder.yearView.setText(String.valueOf(cursor.getInt(MovieListQuery.YEAR)));
-            viewHolder.movieRuntime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
-            String duration =  viewHolder.movieRuntime > 0 ?
-                    String.format(context.getString(R.string.minutes_abbrev), String.valueOf(viewHolder.movieRuntime)) +
-                            "  |  " + viewHolder.movieYear :
-                    String.valueOf(viewHolder.movieYear);
-            viewHolder.durationView.setText(duration);
-            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                    cursor.getString(MovieListQuery.THUMBNAIL), viewHolder.movieTitle,
-                    viewHolder.artView, artWidth, artHeight);
 
-            if(Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("a"+viewHolder.movieId);
+            int runtime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
+            String duration =  runtime > 0 ?
+                               String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                               "  |  " + movieYear :
+                               String.valueOf(movieYear);
+            viewHolder.durationView.setText(duration);
+            viewHolder.dataHolder.setDetails(duration + "\n" + details);
+
+            viewHolder.dataHolder.setPosterUrl(cursor.getString(MovieListQuery.THUMBNAIL));
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 viewHolder.dataHolder.getPosterUrl(),
+                                                 viewHolder.dataHolder.getTitle(),
+                                                 viewHolder.artView, artWidth, artHeight);
+
+            if (Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("a" + viewHolder.dataHolder.getId());
             }
         }
     }
@@ -373,16 +378,9 @@ public class MovieListFragment extends AbstractCursorListFragment {
     public static class ViewHolder {
         TextView titleView;
         TextView detailsView;
-        //        TextView yearView;
         TextView durationView;
         ImageView artView;
 
-        int movieId;
-        String movieTitle;
-        String movieTagline;
-        int movieYear;
-        int movieRuntime;
-        String movieGenres;
-        double movieRating;
+        AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
     }
 }

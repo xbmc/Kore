@@ -195,6 +195,7 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s votes</string>
+    <string name="max_rating">/%1$s</string>
     <string name="max_rating_video">/10</string>
     <string name="max_rating_music">/5</string>
 
@@ -400,5 +401,9 @@
     <string name="by_artist">By artist</string>
     <string name="by_artist_and_year">By artist and year</string>
     <string name="muted">muted</string>
+    <string name="no_item_available_to_play">Error: no item available to play.</string>
+    <string name="Refreshing_not_implemented_for_this_item">Refreshing not implemented for this item</string>
+    <string name="no_songs_found_refresh">No songs found\\n\\nSwipe down to refresh</string>
+    <string name="not_implemented">Not implemented</string>
 
 </resources>

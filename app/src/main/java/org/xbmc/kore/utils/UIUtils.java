@@ -468,7 +468,7 @@ public class UIUtils {
     }
 
     /**
-     * Returns true if {@param view} is contained within {@param container}'s bounds.
+     * Returns true if {@param view} is visible within {@param container}'s bounds.
      */
     public static boolean isViewInBounds(@NonNull View container, @NonNull View view) {
         Rect containerBounds = new Rect();
@@ -497,7 +497,7 @@ public class UIUtils {
         // Check if any file exists and whether to overwrite it
         boolean someFilesExist = false;
         for (FileDownloadHelper.SongInfo songInfo : songInfoList) {
-            File file = new File(songInfoList.get(0).getAbsoluteFilePath());
+            File file = new File(songInfo.getAbsoluteFilePath());
             if (file.exists()) {
                 someFilesExist = true;
                 break;
@@ -559,5 +559,15 @@ public class UIUtils {
                                                  callbackHandler);
             }
         }
+    }
+
+    public static void highlightImageView(Context context, ImageView view) {
+        Resources.Theme theme = context.getTheme();
+        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
+                R.attr.colorAccent});
+        view.setColorFilter(
+                styledAttributes.getColor(0,
+                                          context.getResources().getColor(R.color.accent_default)));
+        styledAttributes.recycle();
     }
 }
