@@ -352,9 +352,7 @@
 
     <style name="PrefTheme" parent="PreferenceThemeOverlay.v14.Material">
         <item name="android:listPreferredItemPaddingLeft">@dimen/activity_horizontal_margin</item>
-        <item name="android:listPreferredItemPaddingStart">@dimen/activity_horizontal_margin</item>
         <item name="android:listPreferredItemPaddingRight">@dimen/activity_horizontal_margin</item>
-        <item name="android:listPreferredItemPaddingEnd">@dimen/activity_horizontal_margin</item>
     </style>
 
 </resources>
