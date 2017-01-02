@@ -40,14 +40,16 @@ android {
 
     sourceSets {
         fullDebug {
-            assets.srcDirs = ['src/testUtils/assets']
+            assets.srcDirs += 'src/testUtils/assets'
         }
         test {
-            java.srcDirs = ['src/test/java', 'src/testUtils/java']
+            java.srcDirs += 'src/testUtils/java'
+        }
+        androidTest {
+            java.srcDirs += 'src/testUtils/java'
         }
         instrumentationTest {
-            java.srcDirs = ['src/testUtils/java']
-            assets.srcDirs = ['src/testUtils/assets']
+            assets.srcDirs += 'src/testUtils/assets'
         }
     }
 
