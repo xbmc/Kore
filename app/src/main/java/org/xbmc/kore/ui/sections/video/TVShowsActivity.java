@@ -310,6 +310,7 @@ public class TVShowsActivity extends BaseActivity
      * Callback from tvshow details when a episode is selected
      * @param episodeId episode id
      */
+    @TargetApi(21)
     public void onNextEpisodeSelected(int episodeId) {
         selectedEpisodeId = episodeId;
 
@@ -337,6 +338,7 @@ public class TVShowsActivity extends BaseActivity
      * Callback from tvshow episodes list when a episode is selected
      * @param vh view holder
      */
+    @TargetApi(21)
     public void onEpisodeSelected(TVShowEpisodeListFragment.EpisodeViewHolder vh) {
         selectedEpisodeId = vh.episodeId;
 
