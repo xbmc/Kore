@@ -4,7 +4,7 @@ sudo: false
 
 env:
   matrix:
-    - ANDROID_TARGET=android-22  
+    - ANDROID_TARGET=android-25
 
 android:
   components:
@@ -12,6 +12,9 @@ android:
     # "tools" always refers to the latest build tools version. Remove this
     # when travis is able to parse "build-tools-23.0.3" correctly.
     # See https://github.com/travis-ci/travis-ci/issues/5036
+    - tools
+    # intentionally duped, see:
+    # https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943
     - tools
     # needed build tools
     - build-tools-25.0.2
@@ -25,4 +28,4 @@ android:
 before_script:
 
 script: 
-  - ./gradlew testFullDebugUnitTest assembleFullRelease
+  - ./gradlew assembleFullDebug testFullDebugUnitTest
