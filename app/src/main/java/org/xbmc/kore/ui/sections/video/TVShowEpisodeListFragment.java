@@ -266,6 +266,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         }
 
         /** {@inheritDoc} */
+        @TargetApi(21)
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             final EpisodeViewHolder viewHolder = (EpisodeViewHolder)view.getTag();
