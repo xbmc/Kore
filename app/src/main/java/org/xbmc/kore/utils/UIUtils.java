@@ -18,7 +18,6 @@ package org.xbmc.kore.utils;
 import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +29,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -140,7 +140,6 @@ public class UIUtils {
     }
 
     private static TypedArray characterAvatarColors = null;
-    private static int avatarColorsIdx = 0;
 //    private static Random randomGenerator = new Random();
 
     /**
@@ -196,10 +195,10 @@ public class UIUtils {
 
         char charAvatar = TextUtils.isEmpty(str) ?
                           ' ' : str.charAt(0);
-        avatarColorsIdx = TextUtils.isEmpty(str) ? 0 :
-                          Math.max(Character.getNumericValue(str.charAt(0)) +
-                                   Character.getNumericValue(str.charAt(str.length() - 1)) +
-                                   str.length(), 0) % characterAvatarColors.length();
+        int avatarColorsIdx = TextUtils.isEmpty(str) ? 0 :
+                Math.max(Character.getNumericValue(str.charAt(0)) +
+                        Character.getNumericValue(str.charAt(str.length() - 1)) +
+                        str.length(), 0) % characterAvatarColors.length();
         int color = characterAvatarColors.getColor(avatarColorsIdx, 0xff000000);
 //            avatarColorsIdx = randomGenerator.nextInt(characterAvatarColors.length());
         return new CharacterDrawable(charAvatar, color);

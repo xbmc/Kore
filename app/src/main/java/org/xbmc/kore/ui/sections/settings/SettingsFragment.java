@@ -20,15 +20,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.MultiSelectListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.TwoStatePreference;
 import android.support.annotation.NonNull;
-import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.TwoStatePreference;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
@@ -45,7 +43,7 @@ import java.lang.reflect.Method;
 /**
  * Simple fragment to display preferences screen
  */
-public class SettingsFragment extends PreferenceFragment
+public class SettingsFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = LogUtils.makeLogTag(SettingsFragment.class);
@@ -53,17 +51,16 @@ public class SettingsFragment extends PreferenceFragment
     private int hostId;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
         // Get the preference for side menu itens and change its Id to include
         // the current host
-        MultiSelectListPreference sideMenuItens = (MultiSelectListPreference)findPreference(Settings.KEY_PREF_NAV_DRAWER_ITEMS);
+        Preference sideMenuItems = findPreference(Settings.KEY_PREF_NAV_DRAWER_ITEMS);
         hostId = HostManager.getInstance(getActivity()).getHostInfo().getId();
-        sideMenuItens.setKey(Settings.getNavDrawerItemsPrefKey(hostId));
+        sideMenuItems.setKey(Settings.getNavDrawerItemsPrefKey(hostId));
 
         // HACK: After changing the key dinamically like above, we need to force the preference
         // to read its value. This can be done by calling onSetInitialValue, which is protected,
@@ -72,12 +69,12 @@ public class SettingsFragment extends PreferenceFragment
         // Furthermore, only do this is nothing is saved yet on the shared preferences,
         // otherwise the defaults won't be applied
         if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getNavDrawerItemsPrefKey(hostId), null) != null) {
-            Class iterClass = sideMenuItens.getClass();
+            Class iterClass = sideMenuItems.getClass();
             try {
                 @SuppressWarnings("unchecked")
                 Method m = iterClass.getDeclaredMethod("onSetInitialValue", boolean.class, Object.class);
                 m.setAccessible(true);
-                m.invoke(sideMenuItens, true, null);
+                m.invoke(sideMenuItems, true, null);
             } catch (Exception e) {
             }
         }
@@ -108,6 +105,7 @@ public class SettingsFragment extends PreferenceFragment
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Update summaries
         setupPreferences();
@@ -127,9 +125,9 @@ public class SettingsFragment extends PreferenceFragment
         if (key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS) &&
             (sharedPreferences.getBoolean(Settings.KEY_PREF_PAUSE_DURING_CALLS, Settings.DEFAULT_PREF_PAUSE_DURING_CALLS))) {
             if (!hasPhonePermission()) {
-                FragmentCompat.requestPermissions(this,
-                                                  new String[] {Manifest.permission.READ_PHONE_STATE},
-                                                  Utils.PERMISSION_REQUEST_READ_PHONE_STATE);
+                requestPermissions(
+                        new String[] {Manifest.permission.READ_PHONE_STATE},
+                        Utils.PERMISSION_REQUEST_READ_PHONE_STATE);
             }
         }
 
@@ -184,7 +182,7 @@ public class SettingsFragment extends PreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 AboutDialogFragment aboutDialog = new AboutDialogFragment();
-                aboutDialog.show(getActivity().getFragmentManager(), null);
+                aboutDialog.show(getFragmentManager(), null);
                 return true;
             }
         });

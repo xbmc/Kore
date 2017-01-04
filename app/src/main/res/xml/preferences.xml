@@ -14,68 +14,72 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
+<!--suppress AndroidElementNotAllowed -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ListPreference
-        android:key="pref_theme"
-        android:title="@string/theme"
-        android:dialogTitle="@string/theme"
-        android:entries="@array/themes_array"
-        android:entryValues="@array/themes_values_array"
-        android:defaultValue="0"/>
+    <PreferenceCategory android:title="Remote">
+        <SwitchPreferenceCompat
+            android:key="pref_switch_to_remote_after_media_start"
+            android:title="@string/switch_to_remote"
+            android:defaultValue="true"/>
 
-    <CheckBoxPreference
-        android:key="pref_switch_to_remote_after_media_start"
-        android:title="@string/switch_to_remote"
-        android:defaultValue="true"/>
+        <SwitchPreferenceCompat
+            android:key="pref_keep_remote_above_lockscreen"
+            android:title="@string/keep_remote_above_lockscreen"
+            android:defaultValue="false"/>
 
-    <CheckBoxPreference
-        android:key="pref_keep_remote_above_lockscreen"
-        android:title="@string/keep_remote_above_lockscreen"
-        android:defaultValue="false"/>
+        <SwitchPreferenceCompat
+            android:key="pref_use_hardware_volume_keys"
+            android:title="@string/use_hardware_volume_keys"
+            android:defaultValue="true"/>
 
-    <CheckBoxPreference
-        android:key="pref_keep_screen_on"
-        android:title="@string/pref_keep_screen_on"
-        android:defaultValue="false"/>
+        <SwitchPreferenceCompat
+            android:key="pref_vibrate_remote_buttons"
+            android:title="@string/vibrate_on_remote"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
 
-    <CheckBoxPreference
-        android:key="pref_show_notification"
-        android:title="@string/show_notification"
-        android:defaultValue="false"/>
+    <PreferenceCategory android:title="Application">
+        <ListPreference
+            android:key="pref_theme"
+            android:title="@string/theme"
+            android:entries="@array/themes_array"
+            android:entryValues="@array/themes_values_array"
+            android:defaultValue="0"/>
 
-    <CheckBoxPreference
-        android:key="pref_pause_during_calls"
-        android:title="@string/pause_during_calls"
-        android:defaultValue="false"/>
+        <SwitchPreferenceCompat
+            android:key="pref_keep_screen_on"
+            android:title="@string/pref_keep_screen_on"
+            android:defaultValue="false"/>
 
-    <CheckBoxPreference
-        android:key="pref_use_hardware_volume_keys"
-        android:title="@string/use_hardware_volume_keys"
-        android:defaultValue="true"/>
+        <SwitchPreferenceCompat
+            android:key="pref_show_notification"
+            android:title="@string/show_notification"
+            android:defaultValue="false"/>
 
-    <CheckBoxPreference
-        android:key="pref_vibrate_remote_buttons"
-        android:title="@string/vibrate_on_remote"
-        android:defaultValue="false"/>
+        <SwitchPreferenceCompat
+            android:key="pref_pause_during_calls"
+            android:title="@string/pause_during_calls"
+            android:defaultValue="false"/>
 
-    <MultiSelectListPreference
-        android:key="pref_nav_drawer_items"
-        android:title="@string/nav_drawer_items"
-        android:entries="@array/entries_nav_drawer_items"
-        android:entryValues="@array/entry_values_nav_drawer_items"
-        android:defaultValue="@array/entry_values_nav_drawer_items"/>
+        <MultiSelectListPreference
+            android:key="pref_nav_drawer_items"
+            android:title="@string/nav_drawer_items"
+            android:entries="@array/entries_nav_drawer_items"
+            android:entryValues="@array/entry_values_nav_drawer_items"
+            android:defaultValue="@array/entry_values_nav_drawer_items"/>
 
-    <MultiSelectListPreference
-        android:key="pref_download_conn_types"
-        android:title="@string/download_network_types_title"
-        android:summary="@string/download_network_types_summary"
-        android:entries="@array/entries_download_media_items"
-        android:entryValues="@array/entry_values_download_media_items"
-        android:defaultValue="@array/default_values_download_media_items"/>
+        <MultiSelectListPreference
+            android:key="pref_download_conn_types"
+            android:title="@string/download_network_types_title"
+            android:summary="@string/download_network_types_summary"
+            android:entries="@array/entries_download_media_items"
+            android:entryValues="@array/entry_values_download_media_items"
+            android:defaultValue="@array/default_values_download_media_items"/>
 
-    <Preference
-        android:key="pref_about"
-        android:title="@string/about"/>
+        <Preference
+            android:key="pref_about"
+            android:title="@string/about"/>
+    </PreferenceCategory>
 
 </PreferenceScreen>

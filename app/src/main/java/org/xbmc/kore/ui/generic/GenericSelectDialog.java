@@ -16,11 +16,12 @@
 package org.xbmc.kore.ui.generic;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 
 /**
  * Dialog fragment that presents a list options to the user.
@@ -121,6 +122,7 @@ public class GenericSelectDialog
      *
      * @return Dialog to select calendars
      */
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

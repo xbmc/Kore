@@ -16,11 +16,12 @@
 package org.xbmc.kore.ui.generic;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -94,6 +95,7 @@ public class SendTextDialogFragment extends DialogFragment {
      * @param savedInstanceState Saved state
      * @return Created dialog
      */
+    @NonNull
     @Override
     @SuppressWarnings("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
