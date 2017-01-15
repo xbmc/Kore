@@ -58,28 +58,28 @@ public class HostInfo {
     /**
 	 * Internal id of the host
 	 */
-	private int id;
+	private final int id;
 
 	/**
 	 * Friendly name of the host
 	 */
-	private String name;
+	private final String name;
 
 	/**
 	 * Connection information
 	 */
-	private String address;
-	private int httpPort;
-	private int tcpPort;
+	private final String address;
+	private final int httpPort;
+	private final int tcpPort;
 
     private boolean useEventServer;
-	private int eventServerPort;
+	private final int eventServerPort;
 
     /**
 	 * Authentication information
 	 */
-	private String username;
-	private String password;
+	private final String username;
+	private final String password;
 
     /**
      * Mac address and Wake On Lan port
@@ -104,9 +104,9 @@ public class HostInfo {
     /**
      * Last time updated (in millis)
      */
-    private long updated;
+    private final long updated;
 
-    private String auxImageHttpAddress;
+    private final String auxImageHttpAddress;
 
     /**
 	 * Full constructor. This constructor should be used when instantiating from the database
