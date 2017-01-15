@@ -297,7 +297,7 @@ public class HostInfo {
 	 * @return HTTP URL eg. http://192.168.1.1:8080/jsonrpc
 	 */
 	public String getJsonRpcHttpEndpoint() {
-		return "http://" + address + ":" + httpPort + JSON_RPC_ENDPOINT;
+		return getHttpURL() + JSON_RPC_ENDPOINT;
 	}
 
     /**
