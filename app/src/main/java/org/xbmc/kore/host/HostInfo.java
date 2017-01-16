@@ -31,6 +31,11 @@ public class HostInfo {
 	private static final String JSON_RPC_ENDPOINT = "/jsonrpc";
 
 	/**
+	 * Default HTTPS port
+	 */
+	public static final int DEFAULT_HTTPS_PORT = 443;
+
+	/**
 	 * Default HTTP port for XBMC (80 on Windows, 8080 on others)
  	 */
 	public static final int DEFAULT_HTTP_PORT = 8080;
@@ -71,6 +76,7 @@ public class HostInfo {
 	private final String address;
 	private final int httpPort;
 	private final int tcpPort;
+	public final boolean isHttps;
 
     private boolean useEventServer;
 	private final int eventServerPort;
@@ -124,7 +130,7 @@ public class HostInfo {
 					String username, String password, String macAddress, int wolPort,
                     boolean useEventServer, int eventServerPort,
                     int kodiVersionMajor, int kodiVersionMinor, String kodiVersionRevision, String kodiVersionTag,
-                    long updated) {
+                    long updated, boolean isHttps) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
@@ -133,6 +139,7 @@ public class HostInfo {
         }
 		this.protocol = protocol;
 		this.httpPort = httpPort;
+		this.isHttps = isHttps;
 		this.tcpPort = tcpPort;
 		this.username = username;
 		this.password = password;
@@ -165,12 +172,12 @@ public class HostInfo {
 	 */
 	public HostInfo(String name, String address, int protocol, int httpPort,
                     int tcpPort, String username, String password,
-                    boolean useEventServer, int eventServerPort) {
+                    boolean useEventServer, int eventServerPort, boolean isHttps) {
         this(-1, name, address, protocol, httpPort, tcpPort, username,
              password, null, DEFAULT_WOL_PORT, useEventServer, eventServerPort,
              DEFAULT_KODI_VERSION_MAJOR, DEFAULT_KODI_VERSION_MINOR,
              DEFAULT_KODI_VERSION_REVISION, DEFAULT_KODI_VERSION_TAG,
-             0);
+             0, isHttps);
 	}
 
     public int getId() {
@@ -289,7 +296,8 @@ public class HostInfo {
 	 * @return HTTP URL eg. http://192.168.1.1:8080
 	 */
 	public String getHttpURL() {
-		return "http://" + address + ":" + httpPort;
+		String scheme = isHttps ? "https://" : "http://";
+		return scheme + address + ":" + httpPort;
 	}
 
 	/**

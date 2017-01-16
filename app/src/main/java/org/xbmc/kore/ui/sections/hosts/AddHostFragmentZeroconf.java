@@ -283,7 +283,7 @@ public class AddHostFragmentZeroconf extends Fragment {
                 String hostAddress = addresses[0];
                 int hostHttpPort = selectedServiceInfo.getPort();
                 HostInfo selectedHostInfo = new HostInfo(hostName, hostAddress, HostConnection.PROTOCOL_TCP,
-                        hostHttpPort, HostInfo.DEFAULT_TCP_PORT, null, null, true, HostInfo.DEFAULT_EVENT_SERVER_PORT);
+                        hostHttpPort, HostInfo.DEFAULT_TCP_PORT, null, null, true, HostInfo.DEFAULT_EVENT_SERVER_PORT, false);
 
                 listener.onAddHostZeroconfFoundHost(selectedHostInfo);
             }

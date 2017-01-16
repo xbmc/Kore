@@ -43,6 +43,9 @@ import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.NetUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -212,6 +215,10 @@ public class HostFragmentManualConfiguration extends Fragment {
         }
     }
 
+    private static boolean isValidPort(int port) {
+        return port > 0 && port <= 65535;
+    }
+
     /**
      * Tests a connection with the values set in the UI.
      * Checks whether the values are correctly set, and then tries to make
@@ -220,14 +227,60 @@ public class HostFragmentManualConfiguration extends Fragment {
      */
     private void testConnection() {
         String xbmcName = xbmcNameEditText.getText().toString();
-        String xbmcAddress = xbmcIpAddressEditText.getText().toString();
 
-        int xbmcHttpPort;
+        boolean isHttps = false;
+        String xbmcAddress = xbmcIpAddressEditText.getText().toString();
+        if (xbmcAddress.startsWith("https://")) {
+            xbmcAddress = xbmcAddress.substring("https://".length());
+            LogUtils.LOGD(TAG, "Stripped https:// on address to get: " + xbmcAddress);
+            isHttps = true;
+        } else if (xbmcAddress.startsWith("http://")) {
+            xbmcAddress = xbmcAddress.substring("http://".length());
+            LogUtils.LOGD(TAG, "Stripped http:// on address to get: " + xbmcAddress);
+        }
+        int xbmcHttpPort = isHttps ? HostInfo.DEFAULT_HTTPS_PORT : HostInfo.DEFAULT_HTTP_PORT;
+
+        Integer implicitPort = null;
+        Matcher m = Pattern.compile("^.*:(\\d{1,5})\\z").matcher(xbmcAddress);
+        if (m.matches()) {
+            // Minus one character for the colon
+            xbmcAddress = xbmcAddress.substring(0, m.start(1) - 1);
+            LogUtils.LOGD(TAG, "Stripped port on address to get: " + xbmcAddress);
+            try {
+                implicitPort = Integer.valueOf(m.group(1));
+            } catch (NumberFormatException e) {
+                LogUtils.LOGW(
+                    TAG,
+                    "Value matching port regex couldn't be parsed as integer: " + m.group(1)
+                );
+                implicitPort = -1;
+            }
+        }
+
+        Integer explicitPort = null;
         String aux = xbmcHttpPortEditText.getText().toString();
-        try {
-            xbmcHttpPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_HTTP_PORT : Integer.valueOf(aux);
-        } catch (NumberFormatException exc) {
-            xbmcHttpPort = -1;
+        if (!TextUtils.isEmpty(aux)) {
+            try {
+                explicitPort = Integer.valueOf(aux);
+            } catch (NumberFormatException e) {
+                explicitPort = -1;
+            }
+        }
+
+        if (implicitPort != null) {
+            if (!isValidPort(implicitPort)) {
+                Toast.makeText(getActivity(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT);
+                xbmcIpAddressEditText.requestFocus();
+                return;
+            }
+            xbmcHttpPort = implicitPort;
+        } else if (explicitPort != null) {
+            if (!isValidPort(explicitPort)) {
+                Toast.makeText(getActivity(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT);
+                xbmcHttpPortEditText.requestFocus();
+                return;
+            }
+            xbmcHttpPort = explicitPort;
         }
 
         String xbmcUsername = xbmcUsernameEditText.getText().toString();
@@ -270,10 +323,6 @@ public class HostFragmentManualConfiguration extends Fragment {
             Toast.makeText(getActivity(), R.string.wizard_no_address_specified, Toast.LENGTH_SHORT).show();
             xbmcIpAddressEditText.requestFocus();
             return;
-        } else if (xbmcHttpPort <= 0) {
-            Toast.makeText(getActivity(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT).show();
-            xbmcHttpPortEditText.requestFocus();
-            return;
         } else if (xbmcTcpPort <= 0) {
             Toast.makeText(getActivity(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
             xbmcTcpPortEditText.requestFocus();
@@ -294,7 +343,7 @@ public class HostFragmentManualConfiguration extends Fragment {
         final HostInfo checkedHostInfo = new HostInfo(xbmcName, xbmcAddress, xbmcProtocol,
                                                       xbmcHttpPort, xbmcTcpPort,
                                                       xbmcUsername, xbmcPassword,
-                                                      xbmcUseEventServer, xbmcEventServerPort);
+                                                      xbmcUseEventServer, xbmcEventServerPort, isHttps);
         checkedHostInfo.setMacAddress(macAddress);
         checkedHostInfo.setWolPort(xbmcWolPort);
 

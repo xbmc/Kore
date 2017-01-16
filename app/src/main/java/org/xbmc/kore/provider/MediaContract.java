@@ -76,6 +76,7 @@ public class MediaContract {
         String KODI_VERSION_MINOR = "kodi_version_minor";
         String KODI_VERSION_REVISION = "kodi_version_revision";
         String KODI_VERSION_TAG = "kodi_version_tag";
+        String IS_HTTPS = "is_https";
     }
 
     public static class Hosts implements BaseColumns, SyncColumns, HostsColumns {
@@ -100,7 +101,8 @@ public class MediaContract {
         public final static String[] ALL_COLUMNS = {
                 _ID, UPDATED, NAME, ADDRESS, PROTOCOL, HTTP_PORT, TCP_PORT, USERNAME, PASSWORD,
                 MAC_ADDRESS, WOL_PORT, USE_EVENT_SERVER, EVENT_SERVER_PORT,
-                KODI_VERSION_MAJOR, KODI_VERSION_MINOR, KODI_VERSION_REVISION, KODI_VERSION_TAG
+                KODI_VERSION_MAJOR, KODI_VERSION_MINOR, KODI_VERSION_REVISION, KODI_VERSION_TAG,
+                IS_HTTPS
         };
     }
 
