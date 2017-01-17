@@ -287,6 +287,8 @@
 
     <string name="tvshow_overview">Aperçu</string>
     <string name="tvshow_episodes">Épisodes</string>
+    <string name="tvshow_seasons">Saisons</string>
+    <string name="tvshow_next_episode">Prochains épisodes</string>
 
     <string name="addon_overview">Aperçu</string>
     <string name="addon_content">Contenu</string>
