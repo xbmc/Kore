@@ -79,7 +79,7 @@
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
     Не знайдено жодного медіа центру у вашій мережі.<br/>Якщо вам потрібна допомога, натисніть <a href="http://syncedsynapse.com/kore/kore-faq/>тут</a>.<br/><br/>
-    Натисніть <i>Пошук</i> для повторного пошуку або <i>Далі</i> для налаштування вручну.
+    Натисніть <i>Повторити пошук</i> для повторного пошуку або <i>Вперед</i> для налаштування вручну.
     ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     Будь ласка, увімкніть мережеве з\'єднання, перш ніж шукати медіа центри.<br/>
@@ -93,7 +93,7 @@
     <string name="xbmc_found">Знайдено медіа центри</string>
     <string name="wizard_manual_configuration">Ручне налаштування</string>
     <string name="wizard_manual_configuration_message">Введіть налаштування вашого медіа цетру:</string>
-    <string name="wizard_manual_configuration_message_advanced">Експертні налаштування (залиште пустим для типових значень)</string>
+    <string name="wizard_manual_configuration_message_advanced">Експертні налаштування (залиште пустими для типових значень)</string>
     <string name="wizard_xbmc_name">Назва медіа центру</string>
     <string name="wizard_xbmc_ip">Адреса</string>
     <string name="wizard_xbmc_port">Порт</string>
@@ -120,7 +120,7 @@
     <string name="wizard_success_connecting">З\'єднано з Kodi/XBMC.</string>
     <string name="wizard_error_connecting">Не вдається з\'єднатись з Kodi/XBMC.\nБудь ласка, перевірте налаштування.</string>
 
-    <string name="wizard_done">All done!</string>
+    <string name="wizard_done">Все зроблено!</string>
     <string name="wizard_done_message"><![CDATA[
     Ваш медіа центр налаштовано.<br/>
     Тепер ви можете віддалено їм керувати. Ваша медіатека синхронізується, і незабаром буде доступна.<br/><br/>
@@ -218,7 +218,7 @@
 
     <string name="directors">Режисери:</string>
     <string name="studio">Студія:</string>
-    <string name="cast">В ролях</string>
+    <string name="cast">У ролях</string>
     <string name="additional_cast">Додаткові ролі</string>
     <string name="cast_list_text">%1$s як %2$s</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
@@ -290,7 +290,7 @@
     <string name="tvshow_next_episode">Наступні серії</string>
 
     <string name="addon_overview">Огляд</string>
-    <string name="addon_content">Зміст</string>
+    <string name="addon_content">Вміст</string>
 
     <string name="artists">Виконавці</string>
     <string name="albums">Альбоми</string>
@@ -336,7 +336,7 @@
     <string name="vibrate_on_remote">Вібрувати при натисканні</string>
     <string name="nav_drawer_items">Елементи бокового меню</string>
 
-    <string name="about">About</string>
+    <string name="about">Про додаток</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2015 XBMC Foundation.<br><br>
         Будь ласка, оцініть нас на <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
@@ -384,7 +384,7 @@
     <string name="multi_column">Кілька колонок</string>
 
     <string name="download_network_types_title">Обмежити завантаження медіа</string>
-    <string name="download_network_types_summary">Оберіть які типи медіа дозволені для завантаження.</string>
+    <string name="download_network_types_summary">Оберіть які типи мережі можна використовувати для завантаження.</string>
     <string name="songs">Треки</string>
 
     <string name="read_phone_state_permission_denied">Доступ заборонено. Неможливо зупиняти відтворення під час телефонних дзвінків.</string>
