@@ -593,26 +593,26 @@ public class PlaylistFragment extends Fragment
             int duration;
             switch (item.type) {
                 case ListType.ItemsAll.TYPE_MOVIE:
-                    title = item.title;
+                    title = TextUtils.isEmpty(item.title)? item.label : item.title;
                     details = item.tagline;
                     artUrl = item.thumbnail;
                     duration = item.runtime;
                     break;
                 case ListType.ItemsAll.TYPE_EPISODE:
-                    title = item.title;
+                    title = TextUtils.isEmpty(item.title)? item.label : item.title;
                     String season = String.format(getString(R.string.season_episode_abbrev), item.season, item.episode);
                     details = String.format("%s | %s", item.showtitle, season);
                     artUrl = item.art.poster;
                     duration = item.runtime;
                     break;
                 case ListType.ItemsAll.TYPE_SONG:
-                    title = item.title;
+                    title = TextUtils.isEmpty(item.title)? item.label : item.title;
                     details = item.displayartist + " | " + item.album;
                     artUrl = item.thumbnail;
                     duration = item.duration;
                     break;
                 case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
-                    title = item.title;
+                    title = TextUtils.isEmpty(item.title)? item.label : item.title;
                     details = Utils.listStringConcat(item.artist, ", ") + " | " + item.album;
                     artUrl = item.thumbnail;
                     duration = item.runtime;
