@@ -36,7 +36,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
             DB_VERSION_PRE_SONG_DISPLAY_ARTIST = 6,
             DB_VERSION_PRE_SONG_DISC = 7,
             DB_VERSION_PRE_HOST_VERSION = 8,
-            DB_VERSION = 9;
+            DB_VERSION_PRE_HOST_HTTPS = 9,
+            DB_VERSION = 10;
 
 	/**
 	 * Tables exposed
@@ -153,11 +154,11 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.HostsColumns.WOL_PORT + " INTEGER, " +
                    MediaContract.HostsColumns.USE_EVENT_SERVER + " INTEGER, " +
                    MediaContract.HostsColumns.EVENT_SERVER_PORT + " INTEGER, " +
-
                    MediaContract.HostsColumns.KODI_VERSION_MAJOR + " INTEGER, " +
                    MediaContract.HostsColumns.KODI_VERSION_MINOR + " INTEGER, " +
                    MediaContract.HostsColumns.KODI_VERSION_REVISION + " TEXT, " +
-                   MediaContract.HostsColumns.KODI_VERSION_TAG + " TEXT)"
+                   MediaContract.HostsColumns.KODI_VERSION_TAG + " TEXT, " +
+                   MediaContract.HostsColumns.IS_HTTPS + " INTEGER)"
 		);
 
         // Movies
@@ -515,6 +516,10 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_TAG +
                            " TEXT DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_TAG + ";");
+            case DB_VERSION_PRE_HOST_HTTPS:
+                db.execSQL("ALTER TABLE " + Tables.HOSTS +
+                           " ADD COLUMN " + MediaContract.HostsColumns.IS_HTTPS +
+                           " INTEGER DEFAULT 0;");
         }
 	}
 

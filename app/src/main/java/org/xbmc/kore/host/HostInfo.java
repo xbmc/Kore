@@ -31,6 +31,11 @@ public class HostInfo {
 	private static final String JSON_RPC_ENDPOINT = "/jsonrpc";
 
 	/**
+	 * Default HTTPS port
+	 */
+	public static final int DEFAULT_HTTPS_PORT = 443;
+
+	/**
 	 * Default HTTP port for XBMC (80 on Windows, 8080 on others)
  	 */
 	public static final int DEFAULT_HTTP_PORT = 8080;
@@ -58,28 +63,29 @@ public class HostInfo {
     /**
 	 * Internal id of the host
 	 */
-	private int id;
+	private final int id;
 
 	/**
 	 * Friendly name of the host
 	 */
-	private String name;
+	private final String name;
 
 	/**
 	 * Connection information
 	 */
-	private String address;
-	private int httpPort;
-	private int tcpPort;
+	private final String address;
+	private final int httpPort;
+	private final int tcpPort;
+	public final boolean isHttps;
 
     private boolean useEventServer;
-	private int eventServerPort;
+	private final int eventServerPort;
 
     /**
 	 * Authentication information
 	 */
-	private String username;
-	private String password;
+	private final String username;
+	private final String password;
 
     /**
      * Mac address and Wake On Lan port
@@ -104,9 +110,9 @@ public class HostInfo {
     /**
      * Last time updated (in millis)
      */
-    private long updated;
+    private final long updated;
 
-    private String auxImageHttpAddress;
+    private final String auxImageHttpAddress;
 
     /**
 	 * Full constructor. This constructor should be used when instantiating from the database
@@ -124,7 +130,7 @@ public class HostInfo {
 					String username, String password, String macAddress, int wolPort,
                     boolean useEventServer, int eventServerPort,
                     int kodiVersionMajor, int kodiVersionMinor, String kodiVersionRevision, String kodiVersionTag,
-                    long updated) {
+                    long updated, boolean isHttps) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
@@ -133,6 +139,7 @@ public class HostInfo {
         }
 		this.protocol = protocol;
 		this.httpPort = httpPort;
+		this.isHttps = isHttps;
 		this.tcpPort = tcpPort;
 		this.username = username;
 		this.password = password;
@@ -165,12 +172,12 @@ public class HostInfo {
 	 */
 	public HostInfo(String name, String address, int protocol, int httpPort,
                     int tcpPort, String username, String password,
-                    boolean useEventServer, int eventServerPort) {
+                    boolean useEventServer, int eventServerPort, boolean isHttps) {
         this(-1, name, address, protocol, httpPort, tcpPort, username,
              password, null, DEFAULT_WOL_PORT, useEventServer, eventServerPort,
              DEFAULT_KODI_VERSION_MAJOR, DEFAULT_KODI_VERSION_MINOR,
              DEFAULT_KODI_VERSION_REVISION, DEFAULT_KODI_VERSION_TAG,
-             0);
+             0, isHttps);
 	}
 
     public int getId() {
@@ -289,7 +296,8 @@ public class HostInfo {
 	 * @return HTTP URL eg. http://192.168.1.1:8080
 	 */
 	public String getHttpURL() {
-		return "http://" + address + ":" + httpPort;
+		String scheme = isHttps ? "https://" : "http://";
+		return scheme + address + ":" + httpPort;
 	}
 
 	/**
@@ -297,7 +305,7 @@ public class HostInfo {
 	 * @return HTTP URL eg. http://192.168.1.1:8080/jsonrpc
 	 */
 	public String getJsonRpcHttpEndpoint() {
-		return "http://" + address + ":" + httpPort + JSON_RPC_ENDPOINT;
+		return getHttpURL() + JSON_RPC_ENDPOINT;
 	}
 
     /**

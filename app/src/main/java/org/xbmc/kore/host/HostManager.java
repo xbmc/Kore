@@ -155,12 +155,13 @@ public class HostManager {
                     int kodiVersionMinor = cursor.getInt(idx++);
                     String kodiVersionRevision = cursor.getString(idx++);
                     String kodiVersionTag = cursor.getString(idx++);
+                    boolean isHttps = (cursor.getInt(idx++) != 0);
 
                     hosts.add(new HostInfo(
                             id, name, address, protocol, httpPort, tcpPort,
                             username, password, macAddress, wolPort, useEventServer, eventServerPort,
                             kodiVersionMajor, kodiVersionMinor, kodiVersionRevision, kodiVersionTag,
-                            updated));
+                            updated, isHttps));
                 }
             }
             cursor.close();
@@ -328,7 +329,8 @@ public class HostManager {
                        hostInfo.getMacAddress(), hostInfo.getWolPort(),
                        hostInfo.getUseEventServer(), hostInfo.getEventServerPort(),
                        hostInfo.getKodiVersionMajor(), hostInfo.getKodiVersionMinor(),
-                       hostInfo.getKodiVersionRevision(), hostInfo.getKodiVersionTag());
+                       hostInfo.getKodiVersionRevision(), hostInfo.getKodiVersionTag(),
+                       hostInfo.isHttps);
     }
 
     /**
@@ -345,7 +347,8 @@ public class HostManager {
 	public HostInfo addHost(String name, String address, int protocol, int httpPort, int tcpPort,
 						   String username, String password, String macAddress, int wolPort,
                             boolean useEventServer, int eventServerPort,
-                            int kodiVersionMajor, int kodiVersionMinor, String kodiVersionRevision, String kodiVersionTag) {
+                            int kodiVersionMajor, int kodiVersionMinor, String kodiVersionRevision, String kodiVersionTag,
+                            boolean isHttps) {
 
 		ContentValues values = new ContentValues();
 		values.put(MediaContract.HostsColumns.NAME, name);
@@ -359,11 +362,12 @@ public class HostManager {
         values.put(MediaContract.HostsColumns.WOL_PORT, wolPort);
         values.put(MediaContract.HostsColumns.USE_EVENT_SERVER, useEventServer);
         values.put(MediaContract.HostsColumns.EVENT_SERVER_PORT, eventServerPort);
-
         values.put(MediaContract.HostsColumns.KODI_VERSION_MAJOR, kodiVersionMajor);
         values.put(MediaContract.HostsColumns.KODI_VERSION_MINOR, kodiVersionMinor);
         values.put(MediaContract.HostsColumns.KODI_VERSION_REVISION, kodiVersionRevision);
         values.put(MediaContract.HostsColumns.KODI_VERSION_TAG, kodiVersionTag);
+        values.put(MediaContract.HostsColumns.IS_HTTPS, isHttps);
+
 
         Uri newUri = context.getContentResolver()
                             .insert(MediaContract.Hosts.CONTENT_URI, values);
@@ -400,11 +404,11 @@ public class HostManager {
         values.put(MediaContract.HostsColumns.WOL_PORT, newHostInfo.getWolPort());
         values.put(MediaContract.HostsColumns.USE_EVENT_SERVER, newHostInfo.getUseEventServer());
         values.put(MediaContract.HostsColumns.EVENT_SERVER_PORT, newHostInfo.getEventServerPort());
-
         values.put(MediaContract.HostsColumns.KODI_VERSION_MAJOR, newHostInfo.getKodiVersionMajor());
         values.put(MediaContract.HostsColumns.KODI_VERSION_MINOR, newHostInfo.getKodiVersionMinor());
         values.put(MediaContract.HostsColumns.KODI_VERSION_REVISION, newHostInfo.getKodiVersionRevision());
         values.put(MediaContract.HostsColumns.KODI_VERSION_TAG, newHostInfo.getKodiVersionTag());
+        values.put(MediaContract.HostsColumns.IS_HTTPS, newHostInfo.isHttps);
 
         context.getContentResolver()
                .update(MediaContract.Hosts.buildHostUri(hostId), values, null, null);
