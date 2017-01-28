@@ -369,9 +369,13 @@ public class RemoteActivity extends BaseActivity
         final String videoId = getVideoId(videoUri);
         String videoUrl;
         if (videoId != null) {
-            videoUrl = "plugin://plugin.video." +
-                (videoUri.getHost().endsWith("vimeo.com") ? "vimeo" : "youtube") +
-                "/play/?video_id=" + videoId;
+            if (videoUri.getHost().endsWith("svtplay.se")) {
+                videoUrl = "plugin://plugin.video.svtplay/?url=%2Fvideo%2F" + videoId + "&mode=video";
+            } else if (videoUri.getHost().endsWith("vimeo.com")) {
+                videoUrl = "plugin://plugin.video.vimeo?video_id=" + videoId;
+            } else {
+                videoUrl = "plugin://plugin.video.youtube/play/?video_id=" + videoId;
+            }
 
         } else {
             videoUrl = videoUri.toString();
@@ -517,10 +521,13 @@ public class RemoteActivity extends BaseActivity
      * @return Youtube/Vimeo Video ID
      */
     private String getVideoId(Uri playuri) {
-        if (playuri.getHost().endsWith("youtube.com") || playuri.getHost().endsWith("youtu.be") || playuri.getHost().endsWith("vimeo.com")) {
+        if (playuri.getHost().endsWith("svtplay.se") || playuri.getHost().endsWith("youtube.com") || playuri.getHost().endsWith("youtu.be") || playuri.getHost().endsWith("vimeo.com")) {
             // We'll need to get the v= parameter from the URL
             final Pattern pattern;
-            if (playuri.getHost().endsWith("vimeo.com")) {
+            if (playuri.getHost().endsWith("svtplay.se")) {
+                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+)\\/.*",
+                        Pattern.CASE_INSENSITIVE);
+            } else if (playuri.getHost().endsWith("vimeo.com")) {
                 pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.|player\\.)?vimeo\\.com\\/(?:.*\\/)?(\\d+)(?:\\?.*)?$",
                         Pattern.CASE_INSENSITIVE);
             }
