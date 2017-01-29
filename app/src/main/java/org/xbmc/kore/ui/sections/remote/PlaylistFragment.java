@@ -143,12 +143,14 @@ public class PlaylistFragment extends Fragment
     public void onResume() {
         super.onResume();
         hostConnectionObserver.registerPlayerObserver(this, true);
+        ShareHandlingFragment.of(getFragmentManager()).setPlaylistTag(getTag());
     }
 
     @Override
     public void onPause() {
         super.onPause();
         hostConnectionObserver.unregisterPlayerObserver(this);
+        ShareHandlingFragment.of(getFragmentManager()).setPlaylistTag(null);
     }
 
     @Override
