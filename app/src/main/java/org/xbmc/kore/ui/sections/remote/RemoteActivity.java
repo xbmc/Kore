@@ -65,6 +65,7 @@ import org.xbmc.kore.utils.UIUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -370,7 +371,7 @@ public class RemoteActivity extends BaseActivity
         String videoUrl;
         if (videoId != null) {
             if (videoUri.getHost().endsWith("svtplay.se")) {
-                videoUrl = "plugin://plugin.video.svtplay/?url=%2Fvideo%2F" + videoId + "&mode=video";
+                videoUrl = "plugin://plugin.video.svtplay/?url=%2Fvideo%2F" + URLEncoder.encode(videoId) + "&mode=video";
             } else if (videoUri.getHost().endsWith("vimeo.com")) {
                 videoUrl = "plugin://plugin.video.vimeo?video_id=" + videoId;
             } else {
@@ -525,7 +526,7 @@ public class RemoteActivity extends BaseActivity
             // We'll need to get the v= parameter from the URL
             final Pattern pattern;
             if (playuri.getHost().endsWith("svtplay.se")) {
-                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+)\\/.*",
+                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+\\/.*)",
                         Pattern.CASE_INSENSITIVE);
             } else if (playuri.getHost().endsWith("vimeo.com")) {
                 pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.|player\\.)?vimeo\\.com\\/(?:.*\\/)?(\\d+)(?:\\?.*)?$",
