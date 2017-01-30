@@ -48,6 +48,7 @@
                 <data android:host="vimeo.com"/>
                 <data android:host="www.vimeo.com"/>
                 <data android:host="player.vimeo.com"/>
+                <data android:host="www.svtplay.se"/>
             </intent-filter>
         </activity>
 
