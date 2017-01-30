@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
@@ -64,7 +65,7 @@ public class ShareHandlingFragment extends Fragment {
          * @return null when no url is recognized from this piece of data
          * passed through the intent.
          */
-        @Nullable String urlFrom(String source);
+        @Nullable String urlFrom(@Nullable String source);
     }
 
     interface OnFinish<T> {
@@ -109,7 +110,7 @@ public class ShareHandlingFragment extends Fragment {
     static final ShareHandler GENERIC = new ShareHandler() {
         @Nullable
         @Override
-        public String urlFrom(String data) {
+        public String urlFrom(@Nullable String data) {
             if (data == null) {
                 return null;
             }
@@ -120,10 +121,6 @@ public class ShareHandlingFragment extends Fragment {
             m = Pattern.compile(YOUTUBE_SHORT_URL).matcher(data);
             if (m.find()) {
                 return YOUTUBE_PREFIX + m.group(1);
-            }
-            m = Pattern.compile(TWITCH_URL).matcher(data);
-            if (m.find()) {
-                return TWITCH_PREFIX + m.group(1);
             }
             m = Pattern.compile(VIMEO_URL).matcher(data);
             if (m.find()) {
@@ -139,7 +136,10 @@ public class ShareHandlingFragment extends Fragment {
     static final ShareHandler YOUTUBE_APP = new ShareHandler() {
         @Nullable
         @Override
-        public String urlFrom(String text) {
+        public String urlFrom(@Nullable String text) {
+            if (text == null) {
+                return null;
+            }
             Matcher id = Pattern.compile(YOUTUBE_SHORT_URL).matcher(text);
             return id.find() ? YOUTUBE_PREFIX + id.group(1) : null;
         }
@@ -152,7 +152,10 @@ public class ShareHandlingFragment extends Fragment {
     static final ShareHandler TWITCH_APP = new ShareHandler() {
         @Nullable
         @Override
-        public String urlFrom(String text) {
+        public String urlFrom(@Nullable String text) {
+            if (text == null) {
+                return null;
+            }
             Matcher name = Pattern.compile(TWITCH_URL).matcher(text);
             return name.find() ? TWITCH_PREFIX + name.group(1) + "/" : null;
         }
@@ -222,7 +225,9 @@ public class ShareHandlingFragment extends Fragment {
             @Override
             public void got(Boolean isPlaying) {
                 if (isPlaying) {
-                    enqueue(h, file).start(refreshPlaylist());
+                    new Seq<>(enqueue(h, file))
+                            .then(hostNotify(h, getString(R.string.shared_video_added)))
+                            .start(refreshPlaylist());
                 } else {
                     new Seq<>(clearPlaylist(h))
                             .then(enqueue(h, file))
@@ -288,6 +293,34 @@ public class ShareHandlingFragment extends Fragment {
         };
     }
 
+    private Task<String> hostNotify(final Handler handler, final String message) {
+        return new Task<String>() {
+            @Override
+            public void start(@NonNull final OnFinish<? super String> then) {
+                connection.execute(
+                        new Player.Notification(getString(R.string.app_name), message),
+                        new ApiCallback<String>() {
+                            @Override
+                            public void onSuccess(String result) {
+                                then.got(result);
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String description) {
+                                // okhttp will barf here because of the 0-length response.
+                                // there's literally no response, the server just drops the stream.
+                                if (errorCode == ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST) {
+                                    then.got("");
+                                } else {
+                                    say(R.string.error_message, description);
+                                }
+                            }
+                        },
+                        handler);
+            }
+        };
+    }
+
     private Task<String> play(final Handler handler) {
         return new Task<String>() {
             @Override
@@ -301,7 +334,7 @@ public class ShareHandlingFragment extends Fragment {
     }
 
     private <T> ApiCallback<T>
-    callback(final OnFinish<? super T> then, final @StringRes int error) {
+    callback(final OnFinish<? super T> then, @StringRes final int error) {
         return new ApiCallback<T>() {
             @Override
             public void onSuccess(T result) {
