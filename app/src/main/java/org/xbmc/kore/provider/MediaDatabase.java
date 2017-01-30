@@ -37,7 +37,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
             DB_VERSION_PRE_SONG_DISC = 7,
             DB_VERSION_PRE_HOST_VERSION = 8,
             DB_VERSION_PRE_HOST_HTTPS = 9,
-            DB_VERSION = 10;
+            DB_VERSION_PRE_LAST_PLAYED = 10,
+            DB_VERSION = 11;
 
 	/**
 	 * Tables exposed
@@ -198,6 +199,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.MoviesColumns.WRITERS + " TEXT, " +
                    MediaContract.MoviesColumns.YEAR + " INTEGER, " +
                    MediaContract.MoviesColumns.DATEADDED + " TEXT, " +
+                   MediaContract.MoviesColumns.LASTPLAYED + " TEXT, " +
                    "UNIQUE (" + MediaContract.MoviesColumns.HOST_ID + ", " + MediaContract.MoviesColumns.MOVIEID + ") ON CONFLICT REPLACE)"
         );
 
@@ -229,6 +231,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.TVShowsColumns.PLAYCOUNT + " INTEGER, " +
                    MediaContract.TVShowsColumns.TITLE + " TEXT, " +
                    MediaContract.TVShowsColumns.DATEADDED + " TEXT, " +
+                   MediaContract.TVShowsColumns.LASTPLAYED + " TEXT, " +
                    MediaContract.TVShowsColumns.FILE + " TEXT, " +
                    MediaContract.TVShowsColumns.PLOT + " TEXT, " +
                    MediaContract.TVShowsColumns.EPISODE + " INTEGER, " +
@@ -520,6 +523,13 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.IS_HTTPS +
                            " INTEGER DEFAULT 0;");
+            case DB_VERSION_PRE_LAST_PLAYED:
+                db.execSQL("ALTER TABLE " + Tables.MOVIES +
+                           " ADD COLUMN " + MediaContract.MoviesColumns.LASTPLAYED +
+                           " TEXT;");
+                db.execSQL("ALTER TABLE " + Tables.TVSHOWS +
+                           " ADD COLUMN " + MediaContract.TVShowsColumns.LASTPLAYED +
+                           " TEXT;");
         }
 	}
 

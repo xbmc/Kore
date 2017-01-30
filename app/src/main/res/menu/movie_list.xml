@@ -40,6 +40,10 @@
                     android:title="@string/sort_by_date_added"
                     app:showAsAction="never"/>
                 <item
+                    android:id="@+id/action_sort_by_last_played"
+                    android:title="@string/sort_by_last_played"
+                    app:showAsAction="never"/>
+                <item
                     android:id="@+id/action_sort_by_length"
                     android:title="@string/sort_by_length"
                     app:showAsAction="never"/>
