@@ -18,6 +18,7 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlayerType.GetActivePlayersReturnType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
+import org.xbmc.kore.utils.Task;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -56,7 +57,7 @@ public class ShareHandlingFragment extends Fragment {
     private static final String TWITCH_PREFIX = "plugin://plugin.video.twitch/playLive/";
     private static final String VIMEO_PREFIX = "plugin://plugin.video.vimeo/play/?video_id=";
     private static final String YOUTUBE_SHORT_URL = "://youtu\\.be/([^\\?\\s/]+)";
-    private static final String YOUTUBE_LONG_URL = "://(?:www\\.)?youtube\\.com/watch\\S*[\\?&]v=([^&\\s]+)";
+    private static final String YOUTUBE_LONG_URL = "://(?:www\\.|m\\.)?youtube\\.com/watch\\S*[\\?&]v=([^&\\s]+)";
     private static final String TWITCH_URL = "://www\\.twitch\\.tv/([^\\?\\s/]+)";
     private static final String VIMEO_URL = "://(?:www\\.|player\\.)?vimeo\\.com[^\\?\\s]*?/(\\d+)";
 
@@ -66,41 +67,6 @@ public class ShareHandlingFragment extends Fragment {
          * passed through the intent.
          */
         @Nullable String urlFrom(@Nullable String source);
-    }
-
-    interface OnFinish<T> {
-        void got(T result);
-    }
-
-    interface Task<T> {
-        void start(@NonNull OnFinish<? super T> then);
-    }
-
-    static class Seq<T> implements Task<T> {
-        private final Task<T> task;
-
-        Seq(Task<T> task) {
-            this.task = task;
-        }
-
-        <U> Seq<U> then(final Task<U> block) {
-            return new Seq<>(new Task<U>() {
-                @Override
-                public void start(@NonNull final OnFinish<? super U> then) {
-                    task.start(new OnFinish<T>() {
-                        @Override
-                        public void got(T unused) {
-                            block.start(then);
-                        }
-                    });
-                }
-            });
-        }
-
-        @Override
-        public void start(@NonNull OnFinish<? super T> block) {
-            task.start(block);
-        }
     }
 
     /**
@@ -219,19 +185,19 @@ public class ShareHandlingFragment extends Fragment {
             return;
         }
 
-        final Handler h = new Handler();
+        final Handler handler = new Handler();
         final String file = pluginUrl;
-        isPlayingVideo(h).start(new OnFinish<Boolean>() {
+        isPlayingVideo(handler).start(new Task.OnFinish<Boolean>() {
             @Override
             public void got(Boolean isPlaying) {
                 if (isPlaying) {
-                    new Seq<>(enqueue(h, file))
-                            .then(hostNotify(h, getString(R.string.shared_video_added)))
+                    new Task.Sequence<>(enqueue(handler, file))
+                            .then(hostNotify(handler, getString(R.string.shared_video_added)))
                             .start(refreshPlaylist());
                 } else {
-                    new Seq<>(clearPlaylist(h))
-                            .then(enqueue(h, file))
-                            .then(play(h))
+                    new Task.Sequence<>(clearPlaylist(handler))
+                            .then(enqueue(handler, file))
+                            .then(play(handler))
                             .start(refreshPlaylist());
                 }
             }
@@ -302,13 +268,16 @@ public class ShareHandlingFragment extends Fragment {
                         new ApiCallback<String>() {
                             @Override
                             public void onSuccess(String result) {
+                                // this will never be hit, but call it anyway. it might be fixed in
+                                // the future, who knows.
                                 then.got(result);
                             }
 
                             @Override
                             public void onError(int errorCode, String description) {
                                 // okhttp will barf here because of the 0-length response.
-                                // there's literally no response, the server just drops the stream.
+                                // there's literally no response, the server just drops the socket.
+                                // is there a way to tell okhttp that this is expected?
                                 if (errorCode == ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST) {
                                     then.got("");
                                 } else {
@@ -334,7 +303,7 @@ public class ShareHandlingFragment extends Fragment {
     }
 
     private <T> ApiCallback<T>
-    callback(final OnFinish<? super T> then, @StringRes final int error) {
+    callback(final Task.OnFinish<? super T> then, @StringRes final int error) {
         return new ApiCallback<T>() {
             @Override
             public void onSuccess(T result) {
@@ -348,8 +317,8 @@ public class ShareHandlingFragment extends Fragment {
         };
     }
 
-    private OnFinish<Object> refreshPlaylist() {
-        return new OnFinish<Object>() {
+    private Task.OnFinish<Object> refreshPlaylist() {
+        return new Task.OnFinish<Object>() {
             @Override
             public void got(Object unused) {
                 if (playlistTag != null) {
