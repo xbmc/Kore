@@ -1,6 +1,18 @@
 Changelog
 ---------
 
+Version 2.2.0
+-------------
+- Redesign settings screen
+- Redesign TV show details to include next episodes and seasons list
+- Show volume level on the Now Playing screen
+- Added various new sort options on movies, TV shows and albums lists
+- Improved songs list, showing the artist name on each song
+- Support sharing to Kodi plain video urls
+- New option: keep screen on when using the remote
+- Various UI tweaks
+- Bug fixes
+
 Version 2.1.0
 -------------
 - Add songs tab on Music section and Artist section and support for showing songs without album or artist

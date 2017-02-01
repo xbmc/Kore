@@ -29,17 +29,12 @@ Credits
 - [Jackson](https://github.com/FasterXML/jackson)
 - [Butterknife](http://jakewharton.github.io/butterknife/)
 - [Picasso](http://square.github.io/picasso/)
+- [OkHttp](http://square.github.io/okhttp/)
 - [EventBus](https://github.com/greenrobot/EventBus)
-- [JmDNS](http://jmdns.sourceforge.net/)
+- [JmDNS](https://github.com/jmdns/jmdns)
 - [PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip)
 - [FloatingActionButton](https://github.com/makovkastar/FloatingActionButton)
 - [ExpandableTextView](https://github.com/Blogcat/Android-ExpandableTextView)
-
-**Translations**
-- French - Kowalski
-- Bulgarian - NEOhidra
-- German - jonas2515
-- Italian - Enrico Strocchi
 
 Links
 -----
@@ -52,7 +47,7 @@ Links
 License
 -------
 
-    Copyright 2015 XBMC Foundation
+    Copyright 2017 XBMC Foundation
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
