@@ -287,6 +287,8 @@
 
     <string name="tvshow_overview">Apžvalga</string>
     <string name="tvshow_episodes">Epizodai</string>
+    <string name="tvshow_seasons">Sezonai</string>
+    <string name="tvshow_next_episode">Kiti epizodai</string>
 
     <string name="addon_overview">Apžvalga</string>
     <string name="addon_content">Turinys</string>
@@ -316,6 +318,7 @@
     <string name="sort_by_rating">Pagal reitingą</string>
     <string name="sort_by_length">Pagal trukmę</string>
     <string name="sort_by_date_added">Pagal įdėjimo datą</string>
+    <string name="sort_by_last_played">Pagal paskutinį atkūrimą</string>
     <string name="ignore_prefixes">Ignoruoti prefiksus</string>
 
     <!-- Preferences strings -->
@@ -331,7 +334,7 @@
     <string name="pref_keep_screen_on">Laikyti ekraną įjungtą naudojant pultą</string>
     <string name="show_notification">Rodyti pranešimus atkūrimo metu</string>
     <string name="pause_during_calls">Pristabdyti atkūrimą skambučio metu</string>
-    <string name="use_hardware_volume_keys">Naudoti garsumo mygtukus garsumo valdymui</string>
+    <string name="use_hardware_volume_keys">Valdyti garsumą garso mygtukais</string>
     <string name="vibrate_on_remote">Vibruoti paspaudus pulto mygtuką</string>
     <string name="nav_drawer_items">Šoninio meniu nuorodos</string>
 
