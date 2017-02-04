@@ -73,7 +73,7 @@ public class ShareHandlingFragment extends Fragment {
      * Generic URL sharing, e.g. from reddit is fun. The link is sent through
      * the intent's {@link Intent#getData() uri data}.
      */
-    static final ShareHandler GENERIC = new ShareHandler() {
+    static final ShareHandler DECLARED_AUTHORITIES = new ShareHandler() {
         @Nullable
         @Override
         public String urlFrom(@Nullable String data) {
@@ -174,7 +174,7 @@ public class ShareHandlingFragment extends Fragment {
                 pluginUrl = pluginUrl != null ? pluginUrl : TWITCH_APP.urlFrom(extraText);
                 break;
             case Intent.ACTION_VIEW:
-                pluginUrl = GENERIC.urlFrom(intent.getDataString());
+                pluginUrl = DECLARED_AUTHORITIES.urlFrom(intent.getDataString());
                 break;
             default:
                 return;
@@ -216,7 +216,7 @@ public class ShareHandlingFragment extends Fragment {
             public void start(@NonNull final OnFinish<? super Boolean> then) {
                 connection.execute(
                         new Player.GetActivePlayers(),
-                        callback(new OnFinish<ArrayList<GetActivePlayersReturnType>>() {
+                        callOrSay(new OnFinish<ArrayList<GetActivePlayersReturnType>>() {
                             @Override
                             public void got(ArrayList<GetActivePlayersReturnType> result) {
                                 for (GetActivePlayersReturnType player : result) {
@@ -239,7 +239,7 @@ public class ShareHandlingFragment extends Fragment {
             public void start(@NonNull OnFinish<? super String> then) {
                 connection.execute(
                         new Playlist.Clear(PlaylistType.VIDEO_PLAYLISTID),
-                        callback(then, R.string.error_queue_media_file),
+                        callOrSay(then, R.string.error_queue_media_file),
                         handler);
             }
         };
@@ -253,7 +253,7 @@ public class ShareHandlingFragment extends Fragment {
             public void start(@NonNull OnFinish<? super String> then) {
                 connection.execute(
                         new Playlist.Add(PlaylistType.VIDEO_PLAYLISTID, item),
-                        callback(then, R.string.error_queue_media_file),
+                        callOrSay(then, R.string.error_queue_media_file),
                         handler);
             }
         };
@@ -296,14 +296,14 @@ public class ShareHandlingFragment extends Fragment {
             public void start(@NonNull OnFinish<? super String> then) {
                 connection.execute(
                         new Player.Open(Player.Open.TYPE_PLAYLIST, PlaylistType.VIDEO_PLAYLISTID),
-                        callback(then, R.string.error_play_media_file),
+                        callOrSay(then, R.string.error_play_media_file),
                         handler);
             }
         };
     }
 
     private <T> ApiCallback<T>
-    callback(final Task.OnFinish<? super T> then, @StringRes final int error) {
+    callOrSay(final Task.OnFinish<? super T> then, @StringRes final int error) {
         return new ApiCallback<T>() {
             @Override
             public void onSuccess(T result) {

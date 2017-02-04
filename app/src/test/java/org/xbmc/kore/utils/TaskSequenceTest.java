@@ -79,30 +79,30 @@ public class TaskSequenceTest {
 
     @Test
     public void tasks_are_called_in_order() {
-        final StringBuilder cs = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         final AtomicBoolean done = new AtomicBoolean(false);
         new Task.Sequence<>(new Task<Object>() {
             @Override
             public void start(OnFinish<? super Object> then) {
-                cs.append(1);
+                sb.append(1);
                 then.got(null);
             }
         }).then(new Task<Object>() {
             @Override
             public void start(OnFinish<? super Object> then) {
-                cs.append(',').append(2);
+                sb.append(',').append(2);
                 then.got(null);
             }
         }).then(new Task<Object>() {
             @Override
             public void start(OnFinish<? super Object> then) {
-                cs.append(',').append(3);
+                sb.append(',').append(3);
                 then.got(null);
             }
         }).then(new Task<String>() {
             @Override
             public void start(OnFinish<? super String> then) {
-                then.got(cs.toString());
+                then.got(sb.toString());
             }
         }).start(new Task.OnFinish<String>() {
             @Override
