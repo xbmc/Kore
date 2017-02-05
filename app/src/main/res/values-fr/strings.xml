@@ -318,6 +318,7 @@
     <string name="sort_by_rating">Par évaluation</string>
     <string name="sort_by_length">Par durée</string>
     <string name="sort_by_date_added">Par date d\'ajout</string>
+    <string name="sort_by_last_played">Par date de visionnage</string>
     <string name="ignore_prefixes">Ignorer les préfixes</string>
 
     <!-- Preferences strings -->
