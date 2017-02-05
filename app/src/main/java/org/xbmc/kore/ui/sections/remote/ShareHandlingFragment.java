@@ -62,7 +62,7 @@ public class ShareHandlingFragment extends Fragment {
     private static final String VIMEO_PREFIX = "plugin://plugin.video.vimeo/play/?video_id=";
     private static final String VIMEO_URL = "(?i)://(?:www\\.|player\\.)?vimeo\\.com[^\\?\\s]*?/(\\d+)";
     private static final String SVTPLAY_PREFIX = "plugin://plugin.video.svtplay/?url=";
-    private static final String SVTPLAY_URL = "(?i)://(?:www\\.)?svtplay\\.se/video/(\\d+/.*)";
+    private static final String SVTPLAY_URL = "(?i)://(?:www\\.)?svtplay\\.se(/video/\\d+/.*)";
 
     /**
      * Tries to match a bunch of URL patterns and converts the first match into
@@ -95,7 +95,7 @@ public class ShareHandlingFragment extends Fragment {
         }
         m = Pattern.compile(SVTPLAY_URL).matcher(data);
         if (m.find()) {
-            return SVTPLAY_PREFIX + Uri.encode("/video/" + m.group(1)) + "&mode=video";
+            return SVTPLAY_PREFIX + Uri.encode(m.group(1)) + "&mode=video";
         }
         return null;
     }

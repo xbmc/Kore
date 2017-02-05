@@ -1,6 +1,9 @@
 package org.xbmc.kore.ui.sections.remote;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -8,6 +11,8 @@ import java.net.URLEncoder;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE, sdk = 23)
 public class SharedUrlConverterTest {
     private static final String YT_PLUGIN_PREFIX = "plugin://plugin.video.youtube/play/?video_id=";
     private static final String VM_PLUGIN_PREFIX = "plugin://plugin.video.vimeo/play/?video_id=";
@@ -88,15 +93,26 @@ public class SharedUrlConverterTest {
     }
 
     @Test
-    public void youtube_long_slash_before_query_segment() {
+    public void youtube_long_slash_before_query_part() {
         assertEquals(YT_PLUGIN_PREFIX + YT_ID, ShareHandlingFragment
                 .urlFrom("https://www.youtube.com/watch/?v=" + YT_ID));
     }
 
     @Test
-    public void youtube_short_slash_before_query_segment() {
+    public void youtube_short_slash_before_query_part() {
         assertEquals(YT_PLUGIN_PREFIX + YT_ID, ShareHandlingFragment
                 .urlFrom("https://youtu.be/" + YT_ID + "/?foo=bar"));
+    }
+
+    @Test
+    public void youtube_bad_long_urls() {
+        for (String s : new String[] {
+                "https://www.youtube.com/watch/?u=" + YT_ID,
+                "https://wwe.youtube.com/watch/?v=" + YT_ID,
+                "https://youtube.com/?v=" + YT_ID,
+        }) {
+            assertNull(ShareHandlingFragment.urlFrom(s));
+        }
     }
 
     @Test
@@ -128,13 +144,17 @@ public class SharedUrlConverterTest {
         assertNull(ShareHandlingFragment.urlFrom("http://vimeo.com/a/b/c?path=/" + VM_ID));
     }
 
-    @Test
-    public void svtplay_url_format() throws UnsupportedEncodingException {
+    private static void weAreElectric() {
         try {
             ShareHandlingFragment.urlFrom("http://svtplay.se/video/0/");
         } catch (Throwable e) {
             assumeNoException(e);
         }
+    }
+
+    @Test
+    public void svtplay_url_format() throws UnsupportedEncodingException {
+        weAreElectric();
         String path = "/1234567890/lorem/1psum?dolor=sit&amet#foo-bar-baz";
         assertEquals(svtplayPluginUrl(path), ShareHandlingFragment
                 .urlFrom("http://www.svtplay.se/video" + path));
@@ -149,26 +169,27 @@ public class SharedUrlConverterTest {
 
     @Test
     public void svtplay_path_should_start_with_a_numeric_segment() {
-        for (String path : new String[] {"/a1/", "/1a/", "/ 1/", "/1 /"}) {
+        for (String path : new String[] {"/a1/", "/1a/", "//1/", "/a/1/"}) {
             assertNull(ShareHandlingFragment.urlFrom("http://www.svtplay.se/video" + path));
         }
     }
 
     private String svtplayPluginUrl(String path) throws UnsupportedEncodingException {
         return "plugin://plugin.video.svtplay/"
-                + "?url=%2fvideo%2f"
+                + "?url=%2Fvideo"
                 + URLEncoder.encode(path, "UTF-8")
                 + "&mode=video";
     }
 
     @Test
     public void case_insensitive() {
+        weAreElectric();
         for (String url : new String[] {
                 "HtTp://yOUtu.Be/" + YT_ID,
                 "htTP://M.YOutUbE.Com/waTCH?V=" + YT_ID,
                 "HTTPs://WWw.TwiTch.tv/" + TWITCH_ID,
                 "hTTPs://PLayeR.vimeO.coM/" + VM_ID,
-                //"hTtp://SVTPlay.Se/video/12345/",
+                "hTtp://SVTPlay.Se/video/12345/",
         }) {
             assertNotNull(ShareHandlingFragment.urlFrom(url));
         }
