@@ -57,11 +57,11 @@ public class ShareHandlingFragment extends Fragment {
     private static final String YOUTUBE_PREFIX = "plugin://plugin.video.youtube/play/?video_id=";
     private static final String YOUTUBE_SHORT_URL = "(?i)://youtu\\.be/([^\\?\\s/]+)";
     private static final String YOUTUBE_LONG_URL = "(?i)://(?:www\\.|m\\.)?youtube\\.com/watch\\S*[\\?&]v=([^&\\s]+)";
-    private static final String TWITCH_PREFIX = "plugin://plugin.video.twitch/playLive/";
-    private static final String TWITCH_URL = "(?i)://www\\.twitch\\.tv/([^\\?\\s/]+)";
+    private static final String TWITCH_PREFIX = "plugin://plugin.video.twitch/playLive/%s/";
+    private static final String TWITCH_URL = "(?i)://(?:www\\.)?twitch\\.tv/([^\\?\\s/]+)";
     private static final String VIMEO_PREFIX = "plugin://plugin.video.vimeo/play/?video_id=";
     private static final String VIMEO_URL = "(?i)://(?:www\\.|player\\.)?vimeo\\.com[^\\?\\s]*?/(\\d+)";
-    private static final String SVTPLAY_PREFIX = "plugin://plugin.video.svtplay/?url=";
+    private static final String SVTPLAY_PREFIX = "plugin://plugin.video.svtplay/?url=%s&mode=video";
     private static final String SVTPLAY_URL = "(?i)://(?:www\\.)?svtplay\\.se(/video/\\d+/.*)";
 
     /**
@@ -91,11 +91,11 @@ public class ShareHandlingFragment extends Fragment {
         // captured through EXTRA_TEXT param
         m = Pattern.compile(TWITCH_URL).matcher(data);
         if (m.find()) {
-            return TWITCH_PREFIX + m.group(1) + "/";
+            return String.format(TWITCH_PREFIX, m.group(1));
         }
         m = Pattern.compile(SVTPLAY_URL).matcher(data);
         if (m.find()) {
-            return SVTPLAY_PREFIX + Uri.encode(m.group(1)) + "&mode=video";
+            return String.format(SVTPLAY_PREFIX, Uri.encode(m.group(1)));
         }
         return null;
     }
@@ -133,14 +133,15 @@ public class ShareHandlingFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (handled || connection == null) {
+        Intent intent = getActivity().getIntent();
+        String action = intent.getAction();
+        if (handled || connection == null || action == null) {
             return;
         }
         handled = true;
 
-        Intent intent = getActivity().getIntent();
         String pluginUrl;
-        switch (intent.getAction()) {
+        switch (action) {
             case Intent.ACTION_SEND:
                 pluginUrl = urlFrom(intent.getStringExtra(Intent.EXTRA_TEXT));
                 break;

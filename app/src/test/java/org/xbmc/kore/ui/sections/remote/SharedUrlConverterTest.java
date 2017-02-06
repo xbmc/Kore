@@ -8,8 +8,10 @@ import org.robolectric.annotation.Config;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assume.assumeNoException;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 23)
@@ -134,6 +136,10 @@ public class SharedUrlConverterTest {
 
     @Test
     public void vimeo_id_is_the_first_numeric_segment() {
+        // there are actually valid vimeo links that don't have numeric ids in
+        // the url. i'd have to consult the plugin source to know for sure which
+        // urls are good. for now i'll just keep it like this because this is
+        // how it works before the refactor.
         String expected = VM_PLUGIN_PREFIX + VM_ID;
         assertEquals(expected, ShareHandlingFragment
                 .urlFrom("http://vimeo.com/" + VM_ID + "/a/b/c/987654321"));
@@ -164,6 +170,7 @@ public class SharedUrlConverterTest {
 
     @Test
     public void svtplay_path_should_have_a_trailing_slash() {
+        // this might be too strict; the plugin can recognize this just fine.
         assertNull(ShareHandlingFragment.urlFrom("http://www.svtplay.se/video/12345"));
     }
 
