@@ -171,7 +171,7 @@
     <string name="wake_up">Розбудити</string>
     <string name="edit_xbmc">Редагувати медіа центр</string>
     <string name="delete_xbmc">Видалити медіа центр</string>
-    <string name="delete_xbmc_confirm">Ви впевнені що хочете видалити цей меді центр?</string>
+    <string name="delete_xbmc_confirm">Ви впевнені що хочете видалити цей медіа центр?</string>
     <string name="queue_file">Додати до черги</string>
     <string name="play_file">Відтворити</string>
     <string name="play_from_here">Відтворити звідси</string>
@@ -276,7 +276,7 @@
 
     <string name="download_file_exists">Файл вже існує.\nВи хочете перезаписати його чи завантажити з новою назвою?</string>
     <string name="download_dir_exists">Папка завантажень вже існує.\nЯкщо будь-які файли мають однакову назву, ви хочете перезаписати їх чи завантажити з новою назваю?</string>
-    <string name="download_files_exists">Один або більше файлів вже існують.\nЯкщо будь-які файли мають однакову назву, ви хочете перезаписати їх чи завантажити з новою назваю?</string>
+    <string name="download_files_exists">Один або більше файлів вже існують.\nЯкщо будь-які файли мають однакову назву, ви хочете перезаписати їх чи завантажити з новою назвою?</string>
     <string name="overwrite">Перезаписати</string>
     <string name="download_with_new_name">Нова назва</string>
     <string name="download_file_description">Завантажено з вашого медіа центру</string>
