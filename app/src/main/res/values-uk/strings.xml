@@ -261,7 +261,7 @@
     <string name="action_search_music_videos">Пошук відео</string>
 
     <string name="add_to_playlist">Додати в плейліст</string>
-    <string name="item_added_to_playlist">Додану до плейлісту</string>
+    <string name="item_added_to_playlist">Додано до плейлісту</string>
     <string name="no_suitable_playlist">Не знайдено плейлісту, що підходить для цього типу медіа.</string>
 
     <string name="imdb">IMDb</string>
@@ -275,7 +275,7 @@
     <string name="confirm_songs_download">Ви впевнені що хочете завантажити %1$d треків?\nТреки буде завантажено в фоні, але це може зайняти деякий час.</string>
 
     <string name="download_file_exists">Файл вже існує.\nВи хочете перезаписати його чи завантажити з новою назвою?</string>
-    <string name="download_dir_exists">Папка завантажень вже існує.\nЯкщо будь-які файли мають однакову назву, ви хочете перезаписати їх чи завантажити з новою назваю?</string>
+    <string name="download_dir_exists">Папка завантажень вже існує.\nЯкщо будь-які файли мають однакову назву, ви хочете перезаписати їх чи завантажити з новою назвою?</string>
     <string name="download_files_exists">Один або більше файлів вже існують.\nЯкщо будь-які файли мають однакову назву, ви хочете перезаписати їх чи завантажити з новою назвою?</string>
     <string name="overwrite">Перезаписати</string>
     <string name="download_with_new_name">Нова назва</string>
