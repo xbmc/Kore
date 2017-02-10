@@ -336,7 +336,7 @@
     <string name="vibrate_on_remote">Вібрувати при натисканні</string>
     <string name="nav_drawer_items">Елементи бокового меню</string>
 
-    <string name="about">Про додаток</string>
+    <string name="about">Про застосунок</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2015 XBMC Foundation.<br><br>
         Будь ласка, оцініть нас на <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
