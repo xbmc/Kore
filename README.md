@@ -40,6 +40,7 @@ Links
 -----
 
 - [Kodi forum thread](http://forum.kodi.tv/forumdisplay.php?fid=129)
+- [F-Droid](https://f-droid.org/repository/browse/?fdid=org.xbmc.kore)
 - [Google Play][1]
 - [Google+ community](https://plus.google.com/communities/115506510322045554124)
 
