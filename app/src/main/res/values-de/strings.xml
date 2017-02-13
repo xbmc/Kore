@@ -318,6 +318,7 @@
     <string name="sort_by_rating">Nach Bewertung</string>
     <string name="sort_by_length">Nach Länge</string>
     <string name="sort_by_date_added">Nach Hinzufügungsdatum</string>
+    <string name="sort_by_last_played">Zuletzt gespielt</string>
     <string name="ignore_prefixes">Präfixe ignorieren</string>
 
     <!-- Preferences strings -->
