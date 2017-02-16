@@ -42,6 +42,8 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -167,7 +169,12 @@ public class AddonListFragment extends Fragment
                  .show();
         }
     }
-
+    public class AddonNameComparator implements Comparator<AddonType.Details>
+    {
+        public int compare(AddonType.Details left, AddonType.Details right) {
+            return left.name.toLowerCase().compareTo(right.name.toLowerCase());
+        }
+    }
     /**
      * Get the addons list and setup the gridview
      */
@@ -186,7 +193,14 @@ public class AddonListFragment extends Fragment
             @Override
             public void onSuccess(List<AddonType.Details> result) {
                 if (!isAdded()) return;
-
+                for (AddonType.Details addon : result) {
+                    String regex = "\\[.*?\\]";
+                    addon.name = addon.name.replaceAll(regex, "");
+                    addon.description = addon.description.replaceAll(regex, "");
+                    addon.summary = addon.summary.replaceAll(regex, "");
+                    addon.author = addon.author.replaceAll(regex, "");
+                }
+                Collections.sort(result, new AddonNameComparator());
                 adapter.clear();
                 for (AddonType.Details addon : result) {
                     if (addon.type.equals(AddonType.Types.UNKNOWN) ||

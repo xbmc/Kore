@@ -157,6 +157,12 @@ public class Files {
             ArrayNode items = (ArrayNode) fileNode;
             ArrayList<ListType.ItemFile> result = new ArrayList<ListType.ItemFile>(items.size());
             for (JsonNode item : items) {
+                String regex = "\\[.*?\\]";
+                JsonNode label = item.get("label");
+                if (!label.isNull()) {
+                    String new_label = label.textValue().replaceAll(regex, "");
+                    ((ObjectNode) item).put("label", new_label);
+                }
                 result.add(new ListType.ItemFile(item));
             }
             return result;

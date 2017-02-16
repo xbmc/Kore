@@ -103,16 +103,16 @@ public class AddonType {
         public static final String VERSION = "version";
 
         public final String addonid;
-        public final String author;
+        public String author;
         public final boolean broken;
-        public final String description;
+        public String description;
         public final String disclaimer;
         public final Boolean enabled;
         public final String fanart;
-        public final String name;
+        public String name;
         public final String path;
         public final int rating;
-        public final String summary;
+        public String summary;
         public final String thumbnail;
         public final String type;
         public final String version;
