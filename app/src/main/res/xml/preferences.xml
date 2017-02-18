@@ -63,6 +63,13 @@
             android:defaultValue="false"/>
 
         <MultiSelectListPreference
+            android:key="pref_remote_bar_items"
+            android:title="@string/remote_bar_items"
+            android:entries="@array/entries_remote_bar_items"
+            android:entryValues="@array/entry_values_remote_bar_items"
+            android:defaultValue="@array/default_values_remote_bar_items"/>
+
+        <MultiSelectListPreference
             android:key="pref_nav_drawer_items"
             android:title="@string/nav_drawer_items"
             android:entries="@array/entries_nav_drawer_items"

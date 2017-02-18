@@ -139,13 +139,17 @@ public class AddHostFragmentFinish extends Fragment {
                 boolean isEnabled = result.asBoolean(false);
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
-                Set<String> shownItems = new HashSet<>(Arrays.asList(
+                Set<String> barItems = new HashSet<>(Arrays.asList(
+                        context.getResources()
+                                .getStringArray(R.array.default_values_remote_bar_items)));
+                Set<String> navItems = new HashSet<>(Arrays.asList(
                         context.getResources()
                                .getStringArray(R.array.entry_values_nav_drawer_items)));
                 if (!isEnabled)
-                    shownItems.remove(String.valueOf(NavigationDrawerFragment.ACTIVITY_PVR));
+                    navItems.remove(String.valueOf(NavigationDrawerFragment.ACTIVITY_PVR));
                 sp.edit()
-                  .putStringSet(Settings.getNavDrawerItemsPrefKey(hostId), shownItems)
+                  .putStringSet(Settings.getRemoteBarItemsPrefKey(hostId), barItems)
+                  .putStringSet(Settings.getNavDrawerItemsPrefKey(hostId), navItems)
                   .apply();
             }
 

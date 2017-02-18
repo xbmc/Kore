@@ -155,6 +155,10 @@ public class GUI {
          * For use in params, to go directly to TV shows
          */
         public final static String PARAM_TV_SHOWS_TITLES = "TvShowTitles";
+        /**
+         * For use in params, to go to root screen
+         */
+        public final static String PARAM_ROOT = "Root";
 
         /**
          * Activates a window in XBMC. See class constants to check which windows are allowed.

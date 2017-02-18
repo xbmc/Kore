@@ -25,6 +25,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -39,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.eventclient.ButtonCodes;
 import org.xbmc.kore.eventclient.EventServerConnection;
 import org.xbmc.kore.eventclient.Packet;
@@ -59,9 +61,14 @@ import org.xbmc.kore.utils.RepeatListener;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import butterknife.Optional;
 
 /**
  * Remote view
@@ -107,11 +114,17 @@ public class RemoteFragment extends Fragment
     /**
      * Buttons
      */
-    @InjectView(R.id.home) ImageButton homeButton;
-    @InjectView(R.id.movies) ImageButton moviesButton;
-    @InjectView(R.id.tv_shows) ImageButton tvShowsButton;
-    @InjectView(R.id.music) ImageButton musicButton;
-    @InjectView(R.id.pictures) ImageButton picturesButton;
+    @Optional @InjectView(R.id.home) ImageButton homeButton;
+    @Optional @InjectView(R.id.movies) ImageButton moviesButton;
+    @Optional @InjectView(R.id.tv_shows) ImageButton tvShowsButton;
+    @Optional @InjectView(R.id.music) ImageButton musicButton;
+    @Optional @InjectView(R.id.pvr) ImageButton pvrButton;
+    @Optional @InjectView(R.id.pictures) ImageButton picturesButton;
+    @Optional @InjectView(R.id.videos) ImageButton videosButton;
+    @Optional @InjectView(R.id.favourites) ImageButton favouritesButton;
+    @Optional @InjectView(R.id.addons) ImageButton addonsButton;
+    @Optional @InjectView(R.id.weather) ImageButton weatherButton;
+    @Optional @InjectView(R.id.system) ImageButton systemButton;
 
     @InjectView(R.id.select) ImageView selectButton;
     @InjectView(R.id.left) ImageView leftButton;
@@ -227,6 +240,19 @@ public class RemoteFragment extends Fragment
         skipPreviousIcon = styledAttributes.getResourceId(styledAttributes.getIndex(3), R.drawable.ic_skip_previous_white_24dp);
         styledAttributes.recycle();
 
+        Set<String> shownItems = PreferenceManager
+                .getDefaultSharedPreferences(getActivity())
+                .getStringSet(Settings.getRemoteBarItemsPrefKey(hostInfo.getId()),
+                        new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.entry_values_remote_bar_items))));
+        ImageButton[] buttons = {
+                homeButton, moviesButton, tvShowsButton, musicButton, pvrButton, picturesButton,
+                videosButton, favouritesButton, addonsButton, weatherButton, systemButton
+        };
+        for (int i = 0; i < buttons.length; i++) {
+            if (buttons[i] != null)
+                buttons[i].setVisibility(shownItems.contains(String.valueOf(i)) ? View.VISIBLE : View.GONE);
+        }
+
 //        // Pad main content view to account for bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), root, false, false, true);
 
@@ -273,7 +299,6 @@ public class RemoteFragment extends Fragment
             remotePanel.setBackground(background);
         }
     }
-
 
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
@@ -406,33 +431,80 @@ public class RemoteFragment extends Fragment
     /**
      * Callbacks for bottom button bar
      */
+    @Optional
     @OnClick(R.id.home)
     public void onHomeClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.HOME);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
+    @Optional
     @OnClick(R.id.movies)
     public void onMoviedClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_MOVIE_TITLES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
+    @Optional
     @OnClick(R.id.tv_shows)
     public void onTvShowsClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_TV_SHOWS_TITLES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
+    @Optional
     @OnClick(R.id.music)
     public void onMusicClicked(View v) {
-        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.MUSICLIBRARY);
+        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.MUSIC, GUI.ActivateWindow.PARAM_ROOT);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
+    @Optional
+    @OnClick(R.id.pvr)
+    public void onRadioClicked(View v) {
+        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.PVR);
+        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+    }
+
+    @Optional
     @OnClick(R.id.pictures)
     public void onPicturesClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.PICTURES);
+        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+    }
+
+    @Optional
+    @OnClick(R.id.videos)
+    public void onVideosClicked(View v) {
+        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_ROOT);
+        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+    }
+
+    @Optional
+    @OnClick(R.id.favourites)
+    public void onFavouritesClicked(View v) {
+        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.FAVOURITES);
+        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+    }
+
+    @Optional
+    @OnClick(R.id.addons)
+    public void onAddonsClicked(View v) {
+        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.ADDONBROWSER);
+        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+    }
+
+    @Optional
+    @OnClick(R.id.weather)
+    public void onWeatherClicked(View v) {
+        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.WEATHER);
+        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+    }
+
+    @Optional
+    @OnClick(R.id.system)
+    public void onSystemClicked(View v) {
+        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.SETTINGS);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 

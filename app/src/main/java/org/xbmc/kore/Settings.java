@@ -128,6 +128,11 @@ public class Settings {
     public static final String KEY_PREF_CURRENT_HOST_ID = "current_host_id";
     public static final int DEFAULT_PREF_CURRENT_HOST_ID = -1;
 
+    public static final String KEY_PREF_REMOTE_BAR_ITEMS = "pref_remote_bar_items";
+    public static String getRemoteBarItemsPrefKey(int hostId) {
+        return Settings.KEY_PREF_REMOTE_BAR_ITEMS + hostId;
+    }
+
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
     public static String getNavDrawerItemsPrefKey(int hostId) {
         return Settings.KEY_PREF_NAV_DRAWER_ITEMS + hostId;

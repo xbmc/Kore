@@ -110,15 +110,16 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // Update summaries
         setupPreferences();
 
-        if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.getNavDrawerItemsPrefKey(hostId))) {
+        if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.getNavDrawerItemsPrefKey(hostId))
+                || key.equals((Settings.getRemoteBarItemsPrefKey(hostId)))) {
             // Explicitly clear cache of resource ids that is maintained in the activity
             UIUtils.playPauseIconsLoaded = false;
 
             // restart to apply new theme (actually build an entirely new task stack)
             TaskStackBuilder.create(getActivity())
-                            .addNextIntent(new Intent(getActivity(), RemoteActivity.class))
-                            .addNextIntent(new Intent(getActivity(), SettingsActivity.class))
-                            .startActivities();
+                    .addNextIntent(new Intent(getActivity(), RemoteActivity.class))
+                    .addNextIntent(new Intent(getActivity(), SettingsActivity.class))
+                    .startActivities();
         }
 
         // If the pause during call is selected, make sure we have permission to read phone state
