@@ -404,7 +404,7 @@ public class RemoteFragment extends Fragment
     private ApiCallback<String> defaultActionCallback = ApiMethod.getDefaultActionCallback();
 
     /**
-     * Callbacks for boottoom button bar
+     * Callbacks for bottom button bar
      */
     @OnClick(R.id.home)
     public void onHomeClicked(View v) {
