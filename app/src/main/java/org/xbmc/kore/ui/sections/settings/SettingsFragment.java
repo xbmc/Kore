@@ -56,17 +56,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        // Get the preference for side menu itens and change its Id to include
+        // Get the preference for side menu items and change its Id to include
         // the current host
         Preference sideMenuItems = findPreference(Settings.KEY_PREF_NAV_DRAWER_ITEMS);
         hostId = HostManager.getInstance(getActivity()).getHostInfo().getId();
         sideMenuItems.setKey(Settings.getNavDrawerItemsPrefKey(hostId));
 
-        // HACK: After changing the key dinamically like above, we need to force the preference
+        // HACK: After changing the key dynamically like above, we need to force the preference
         // to read its value. This can be done by calling onSetInitialValue, which is protected,
         // so, instead of subclassing MultiSelectListPreference and make it public, this little
         // hack changes its access mode.
-        // Furthermore, only do this is nothing is saved yet on the shared preferences,
+        // Furthermore, only do this if nothing is saved yet on the shared preferences,
         // otherwise the defaults won't be applied
         if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getNavDrawerItemsPrefKey(hostId), null) != null) {
             Class iterClass = sideMenuItems.getClass();
