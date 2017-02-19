@@ -145,7 +145,7 @@
     <string name="audiostreams">Аудіо доріжки</string>
     <string name="no_audiostream">Немає аудіо доріжок</string>
     <string name="download_subtitle">Завантажити субтитри</string>
-    <string name="none">Викнути</string>
+    <string name="none">Вимкнути</string>
     <string name="audio_sync">Синхронізувати аудіо</string>
     <string name="subtitle_sync">Синхронізувати субтитри</string>
 
