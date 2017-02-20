@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources>
+
+    <string name="app_name">Kore</string>
+    <string name="settings">設定</string>
+    <string name="action_options">オプション</string>
+
+    <string name="loading">ロード中…</string>
+
+    <!-- Navigation drawer tips -->
+    <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
+    <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
+
+    <string name="xbmc_media_center">メディアセンター</string>
+    <string name="home">ホーム</string>
+    <string name="movies">映画</string>
+    <string name="tv_shows">TV 番組</string>
+    <string name="music">音楽</string>
+    <string name="pictures">写真</string>
+    <string name="addons">アドオン</string>
+    <string name="files">ファイル</string>
+    <string name="video">ビデオ</string>
+    <string name="file_browser">ファイルブラウザー</string>
+    <string name="pvr">PVR</string>
+
+    <string name="no_xbmc_configured">メディアセンターが設定されていません</string>
+    <string name="add_xbmc">メディアセンターを追加</string>
+
+    <string name="xbmc_quit">メディアセンターを閉じています。</string>
+    <string name="wol_sent">メディアセンターにウェイクアップコールを送信しました。</string>
+
+    <string name="power">電源</string>
+    <string name="quit">終了</string>
+    <string name="suspend">サスペンド</string>
+    <string name="reboot">再起動</string>
+    <string name="shutdown">シャットダウン</string>
+
+    <string name="send">送信</string>
+    <string name="send_text">メディアセンターにテキストを送信</string>
+    <string name="text_to_send">送信するテキスト</string>
+    <string name="finish_after_send">送信後に完了</string>
+
+    <string name="library_actions">ライブラリーのメンテナンス</string>
+    <string name="clean_video_library">ビデオライブラリーをクリーニング</string>
+    <string name="clean_audio_library">オーディオライブラリーをクリーニング</string>
+    <string name="update_video_library">ビデオライブラリーを更新</string>
+    <string name="update_audio_library">オーディオライブラリーを更新</string>
+
+    <string name="toggle_fullscreen">全画面の切り替え</string>
+
+    <string name="connected_to">%1$s に接続しました</string>
+    <string name="connecting">接続中…</string>
+    <string name="connecting_to">%1$s (%2$s) に接続中…</string>
+
+    <!-- String used in add host wizard -->
+    <string name="wizard_welcome">ようこそ</string>
+    <string name="wizard_welcome_message"><![CDATA[
+    メディアセンターを追加して始めましょう。 お使いの Kodi/XBMC が実行中で、正しく設定されて、同じネットワークにいることを確認してください。<br/><br/>
+    設定のヘルプは <a href="http://syncedsynapse.com/kore/kore-faq/>こちら</a> で入手することができます。<br/><br/>
+    準備ができたら <b><i>次へ</i></b> を押してください。
+    ]]></string>
+    <string name="wizard_search_message"><![CDATA[
+    ローカルネットワークでメディアセンターを検索しています…<br/>
+    ]]></string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+    お使いのネットワークでメディアセンターが見つかりません。<br/>設定のヘルプが必要な場合は <a href="http://syncedsynapse.com/kore/kore-faq/>こちら</a> をご覧ください。<br/><br/>
+    <i>検索</i> をクリックするともう一度検索します、または <i>次へ</i> で手動で設定します。
+    ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    メディアセンターを検索する前にネットワーク接続を有効にしてください。<br/>
+    ]]></string>
+    <string name="wizard_search_host_found"><![CDATA[
+    お使いのネットワークでこれらのメディアセンターが見つかりました。<br/><br/>追加するものを選択するか <i>次へ</i> を押して手動で新しく追加します。
+    ]]></string>
+    <string name="no_network_connection">ネットワーク接続はありません</string>
+    <string name="searching">検索中…</string>
+    <string name="no_xbmc_found">メディアセンターが見つかりません</string>
+    <string name="xbmc_found">メディアセンターが見つかりました</string>
+    <string name="wizard_manual_configuration">手動設定</string>
+    <string name="wizard_manual_configuration_message">メディアセンターの設定を入力してください:</string>
+    <string name="wizard_manual_configuration_message_advanced">詳細設定 (デフォルトは空にします)</string>
+    <string name="wizard_xbmc_name">メディアセンター名</string>
+    <string name="wizard_xbmc_ip">アドレス</string>
+    <string name="wizard_xbmc_port">ポート</string>
+    <string name="wizard_xbmc_username">ユーザー名</string>
+    <string name="wizard_xbmc_password">パスワード</string>
+    <string name="wizard_xbmc_tcp_port">TCP ポート (9090)</string>
+    <string name="wizard_xbmc_mac_address">MAC アドレス</string>
+    <string name="wizard_xbmc_wol_port">WoL ポート (9)</string>
+    <string name="wizard_xbmc_use_tcp">TCP を使用</string>
+    <string name="wizard_xbmc_event_server_port">ES ポート (9777)</string>
+    <string name="wizard_xbmc_use_event_server">イベントサーバーを使用</string>
+
+    <string name="wizard_no_name_specified">このメディアセンターの名前を指定して、後で識別できるようにしてください。</string>
+    <string name="wizard_no_address_specified">このメディアセンターのアドレスを指定してください。</string>
+    <string name="wizard_invalid_http_port_specified">このメディアセンターに有効な HTTP ポートを指定してください。</string>
+    <string name="wizard_invalid_tcp_port_specified">このメディアセンターに有効な TCP ポートを指定してください。</string>
+    <string name="wizard_invalid_es_port_specified">このメディアセンターに有効なイベントサーバーポートを指定してください。</string>
+
+    <string name="wizard_connecting_to_xbmc_title">%1$s に接続中…</string>
+    <string name="wizard_connecting_to_xbmc_message">メディアセンターに接続する間、しばらくお待ちください…</string>
+
+    <string name="wizard_empty_authentication">Kodi/XBMC は認証が必要です。\nユーザー名とパスワードを指定してください。</string>
+    <string name="wizard_incorrect_authentication">ユーザー名および/またはパスワードが間違っています。\n資格情報を確認してください。</string>
+    <string name="wizard_success_connecting">Kodi/XBMC に接続しました。</string>
+    <string name="wizard_error_connecting">Kodi/XBMC に接続できませんでした。\n設定を確認してください。</string>
+
+    <string name="wizard_done">すべて完了しました!</string>
+    <string name="wizard_done_message"><![CDATA[
+    メディアセンターが設定されました。<br/>
+    リモートコントロールが使用できるようになりました。 ライブラリーを同期しています。しばらくすると利用できるようになります。<br/><br/>
+    <b><i>完了</i></b> を押してリモートを使用してください。
+    ]]></string>
+
+    <string name="wizard_zeroconf_no_host_address">このメディアセンターのアドレスを取得できませんでした!</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">アドレスを見つけることができなかったため、このメディアセンターに接続することができません。</string>
+
+    <string name="play">再生</string>
+    <string name="pause">一時停止</string>
+    <string name="stop">停止</string>
+    <string name="fast_forward">早送り</string>
+    <string name="rewind">巻き戻し</string>
+
+    <string name="repeat">繰り返し</string>
+    <string name="shuffle">シャッフル</string>
+    <string name="volume_up">音量大</string>
+    <string name="volume_down">音量小</string>
+    <string name="volume_mute">ミュート</string>
+    <string name="subtitles">字幕</string>
+    <string name="audiostreams">オーディオストリーム</string>
+    <string name="no_audiostream">オーディオストリームは利用できません</string>
+    <string name="download_subtitle">字幕をダウンロード</string>
+    <string name="none">なし</string>
+    <string name="audio_sync">音声を同期</string>
+    <string name="subtitle_sync">字幕を同期</string>
+
+    <string name="left">左</string>
+    <string name="right">右</string>
+    <string name="up">上</string>
+    <string name="down">下</string>
+    <string name="select">選択</string>
+    <string name="info">情報</string>
+    <string name="codec_info">コーデック</string>
+    <string name="context">コンテキスト</string>
+    <string name="osd">メニュー</string>
+    <string name="back">戻る</string>
+
+    <string name="previous">前へ</string>
+    <string name="next">次へ</string>
+    <string name="finish">完了</string>
+    <string name="test_connection">テスト</string>
+    <string name="search_again">もう一度検索</string>
+
+    <string name="remove">削除</string>
+    <string name="edit">編集</string>
+    <string name="wake_up">ウェイクアップ</string>
+    <string name="edit_xbmc">メディアセンターを編集</string>
+    <string name="delete_xbmc">メディアセンターを削除</string>
+    <string name="delete_xbmc_confirm">このメディアセンターを削除してもよろしいですか?</string>
+    <string name="queue_file">キュー</string>
+    <string name="play_file">再生</string>
+    <string name="play_from_here">ここから再生</string>
+
+    <string name="connecting_to_xbmc">接続中…</string>
+    <string name="unable_to_connect_to_xbmc">メディアセンターに接続できません</string>
+    <string name="connected_to_xbmc">接続しました</string>
+    <string name="xbmc_available">利用可能</string>
+    <string name="xbmc_unavailable">利用不可</string>
+
+    <string name="nothing_playing">再生していません</string>
+
+    <!-- Main view tabs -->
+    <string name="now_playing">再生中</string>
+    <string name="remote">リモート</string>
+    <string name="playlist">プレイリスト</string>
+
+    <string name="season_episode_abbrev">s%1$02de%2$02d</string>
+    <string name="season_episode">シーズン %1$02d | エピソード %2$02d</string>
+    <string name="season_number">シーズン %1$02d</string>
+    <string name="episode_number">%1$d</string>
+
+    <string name="votes">%1$s 票</string>
+    <string name="max_rating_video">/10</string>
+    <string name="max_rating_music">/5</string>
+
+    <string name="fanart">ファンアート</string>
+    <string name="poster">ポスター</string>
+    <string name="thumbnail">サムネイル</string>
+
+    <string name="error_getting_properties">Kodi/XBMC プロパティを取得できませんでした。\nエラーメッセージ:
+        %1$s。</string>
+    <string name="error_executing_subtitles">字幕アドオンを実行できませんでした。\nエラーメッセージ: %1$s。</string>
+    <string name="error_getting_addon_info">アドオン情報を取得できませんでした。\nエラーメッセージ:
+        %1$s。</string>
+    <string name="error_getting_source_info">ファイルを参照できませんでした。\nエラーメッセージ:
+        %1$s。</string>
+    <string name="error_play_media_file">メディアファイルを再生できませんでした。\nエラーメッセージ:
+        %1$s。</string>
+    <string name="error_queue_media_file">メディアファイルをキューに入れることができませんでした。\nエラーメッセージ:
+        %1$s。.</string>
+    <string name="error_get_active_player">有効なプレーヤーを取得できませんでした。\nエラーメッセージ:
+        %1$s。</string>
+    <string name="error_share_video">Kodi/XBMC にビデオを共有できませんでした。</string>
+
+    <string name="directors">ディレクター:</string>
+    <string name="studio">スタジオ:</string>
+    <string name="cast">キャスト</string>
+    <string name="additional_cast">追加キャスト</string>
+    <string name="cast_list_text">%1$s 役 %2$s</string>
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <string name="remaining_cast_count">%d さらに</string>
+
+    <string name="general_error_executing_action">操作実行時にエラー: %1$s</string>
+    <string name="error_getting_playlist">プレイリストの取得時にエラー</string>
+    <string name="error_message">エラーメッセージ: %1$s</string>
+    <string name="playlist_empty">プレイリストは空です</string>
+    <string name="clear_playlist">プレイリストをクリア</string>
+    <string name="source_empty">メディアソースは空です</string>
+
+    <string name="no_movies_found_refresh">映画は見つかりません\n\n下にスワイプすると更新します</string>
+    <string name="no_tvshows_found_refresh">TV 番組は見つかりません\n\n下にスワイプすると更新します</string>
+    <string name="no_episodes_found">エピソードは見つかりません</string>
+    <string name="swipe_down_to_refresh">下にスワイプすると更新します</string>
+    <string name="no_artists_found_refresh">アーティストは見つかりません\n\n下にスワイプすると更新します</string>
+    <string name="no_albums_found_refresh">アルバムは見つかりません\n\n下にスワイプすると更新します</string>
+    <string name="no_genres_found_refresh">ジャンルは見つかりません\n\n下にスワイプすると更新します</string>
+    <string name="no_addons_found_refresh">アドオンが見つからないか接続されていません\n\n下にスワイプすると更新します</string>
+    <string name="no_music_videos_found_refresh">ビデオは見つかりません\n\n下にスワイプすると更新します</string>
+    <string name="no_channel_groups_found_refresh">チャンネルグループは見つかりません。\n\n下にスワイプすると更新します</string>
+    <string name="no_channels_found_refresh">チャンネルは見つかりません。\n\n下にスワイプすると更新します</string>
+    <string name="no_recordings_found_refresh">レコーディングは見つかりません。\n\n下にスワイプすると更新します</string>
+    <string name="no_broadcasts_found_refresh">放送は見つかりません。\n\n下にスワイプすると更新します</string>
+    <string name="pull_to_refresh">引くと更新します</string>
+    <string name="no_cast_info">表示するキャスト情報はありません</string>
+
+    <string name="minutes_abbrev">%1$s 分</string>
+    <string name="minutes_abbrev2">%1$sm</string>
+    <string name="sync_successful">同期が成功しました</string>
+    <string name="error_while_syncing">同期中にエラーが発生しました: %1$s</string>
+
+    <string name="action_search">検索</string>
+    <string name="action_search_movies">映画を検索</string>
+    <string name="action_search_tvshows">TV 番組を検索</string>
+    <string name="action_search_albums">アルバムを検索</string>
+    <string name="action_search_artists">アーティストを検索</string>
+    <string name="action_search_genres">ジャンルを検索</string>
+    <string name="action_search_music_videos">ビデオを検索</string>
+
+    <string name="add_to_playlist">プレイリストに追加</string>
+    <string name="item_added_to_playlist">プレイリストに追加しました</string>
+    <string name="no_suitable_playlist">メディアタイプに追加するのに適したプレイリストが見つかりません。</string>
+
+    <string name="imdb">IMDb</string>
+    <string name="seen">視聴済</string>
+    <string name="download">ダウンロード</string>
+
+    <string name="confirm_movie_download">この映画をダウンロードしてもよろしいですか?\n映画はバックグラウンドでダウンロードされますが、完了するまでに時間がかかることがあります。</string>
+    <string name="confirm_episode_download">このエピソードをダウンロードしてもよろしいですか?\nエピソードはバックグラウンドでダウンロードされますが、完了するまでに時間がかかることがあります。</string>
+    <string name="confirm_album_download">このアルバムをダウンロードしてもよろしいですか?\nアルバムはバックグラウンドでダウンロードされますが、完了するまでに時間がかかることがあります。</string>
+    <string name="confirm_artist_download">すべてのアルバムをダウンロードしてもよろしいですか?\nアルバムはバックグラウンドでダウンロードされますが、完了するまでに時間がかかることがあります。</string>
+    <string name="confirm_songs_download">%1$d 曲をダウンロードしてもよろしいですか?\n曲はバックグラウンドでダウンロードされますが、完了するまでに時間がかかることがあります。</string>
+
+    <string name="download_file_exists">ファイルはすでに存在します。\n上書きしますか、それとも新しい名前でダウンロードしますか?</string>
+    <string name="download_dir_exists">ダウンロードディレクトリーはすでに存在します。\n同じ名前のファイルがあった場合、上書きしますか、それとも新しい名前でダウンロードしますか?</string>
+    <string name="download_files_exists">一以上のファイルがすでに存在します。\n同じ名前のファイルがあった場合、上書きしますか、それとも新しい名前でダウンロードしますか?</string>
+    <string name="overwrite">上書き</string>
+    <string name="download_with_new_name">新しい名前</string>
+    <string name="download_file_description">メディアセンターからダウンロードしました</string>
+
+    <string name="num_episodes">%1$d エピソード  |  %2$d 未視聴</string>
+    <string name="premiered">初演: %1$s</string>
+
+    <string name="tvshow_overview">概要</string>
+    <string name="tvshow_episodes">エピソード</string>
+    <string name="tvshow_seasons">シーズン</string>
+    <string name="tvshow_next_episode">次のエピソード</string>
+
+    <string name="addon_overview">概要</string>
+    <string name="addon_content">コンテンツ</string>
+
+    <string name="artists">アーティスト</string>
+    <string name="albums">アルバム</string>
+    <string name="genres">ジャンル</string>
+    <string name="music_videos">ビデオ</string>
+
+    <string name="no_files_to_download">ダウンロードするファイルはありません。</string>
+    <string name="error_getting_file_information">ダウンロードするファイルの情報を取得できませんでした %1$s。</string>
+
+    <string name="author">作者:</string>
+    <string name="version">バージョン:</string>
+    <string name="enable_disable">アドオンを有効/無効</string>
+    <string name="addon_enabled">アドオンを有効にしました</string>
+    <string name="addon_disabled">アドオンを無効にしました</string>
+    <string name="pin_unpin">アドオンをピン止め/ピン止め解除</string>
+    <string name="addon_pinned">アドオンをピン止めしました</string>
+    <string name="addon_unpinned">アドオンのピン止めを解除しました</string>
+
+    <!-- Filters on list menus -->
+    <string name="hide_watched">視聴済を非表示</string>
+    <string name="sort_order">並び替え</string>
+    <string name="sort_by_name">名前順</string>
+    <string name="sort_by_year">年順</string>
+    <string name="sort_by_rating">評価順</string>
+    <string name="sort_by_length">長さ順</string>
+    <string name="sort_by_date_added">追加日順</string>
+    <string name="sort_by_last_played">最終再生順</string>
+    <string name="ignore_prefixes">プレフィックスを無視する</string>
+
+    <!-- Preferences strings -->
+    <string name="theme">テーマ</string>
+    <string name="theme_night">夜間</string>
+    <string name="theme_day">日中</string>
+    <string name="theme_mist">ミスト</string>
+    <string name="theme_solarized">ソラリゼーション</string>
+    <string name="theme_solarized_dark">ソラリゼーションダーク</string>
+
+    <string name="switch_to_remote">メディア開始時に表示</string>
+    <string name="keep_remote_above_lockscreen">ロック画面上に表示</string>
+    <string name="pref_keep_screen_on">画面オンのままにする</string>
+    <string name="show_notification">再生中に通知を表示</string>
+    <string name="pause_during_calls">着信時に一時停止</string>
+    <string name="use_hardware_volume_keys">デバイスの音量ボタンを使用する</string>
+    <string name="vibrate_on_remote">タッチ時に振動</string>
+    <string name="nav_drawer_items">サイドメニュー ショートカット</string>
+
+    <string name="about">アプリについて</string>
+    <string name="about_desc"><![CDATA[
+        \u00A9 2015 XBMC ファウンデーション。<br><br>
+        <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b> で評価してください<br><br>
+
+        ヘルプが必要な場合は <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">フォーラム</a></b> をご覧ください
+    ]]></string>
+
+    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
+    <!--<string name="buy_me_coffee">私にコーヒーを買ってください</string>-->
+    <!--<string name="expresso_please">エスプレッソをください。 ありがとうございます!</string>-->
+    <!--<string name="thanks_for_coffe">コーヒーをありがとうございます!</string>-->
+    <!--<string name="remove_coffee_message">タップするとこの設定を非表示にします</string>-->
+    <!--<string name="buy_coffee_to_unlock_themes">私にコーヒーを買って、追加テーマのロックを解除してください</string>-->
+
+    <!--<string name="error_setting_up_billing">Google Play 課金サービスを設定できませんでした:\n%s</string>-->
+    <!--<string name="error_querying_inventory">インベントリーの照会に失敗しました</string>-->
+    <!--<string name="error_during_purchased">購入時にエラーが発生しました。</string>-->
+    <!--<string name="purchase_thanks">サポートありがとうございます!</string>-->
+
+    <string name="play_on_kodi">Kodi で再生</string>
+    <string name="pause_call_incoming_title">着信中</string>
+    <string name="pause_call_incoming_message">電話をご確認ください。着信中です</string>
+
+    <string name="error_getting_pvr_info">PVR 情報の取得中にエラーが発生しました: %1$s</string>
+    <string name="might_not_have_pvr">チャンネル情報の取得中にエラーが発生しました。おそらくメディアセンターにチューナーがないか、設定されていません。\n\nその場合、サイドメニューからこのエントリを削除したい場合は、設定で行うことができます。</string>
+    <string name="error_starting_channel">チャンネルの再生を開始中にエラーが発生しました: %1$s</string>
+    <string name="error_starting_recording">録音/録画の開始時にエラーが発生しました: %1$s</string>
+    <string name="error_starting_to_record">録音/録画中にエラーが発生しました: %1$s</string>
+    <string name="channel_switching">チャンネル %1$s に切り替え中</string>
+    <string name="starting_recording">録音/録画開始中 %1$s</string>
+    <string name="refresh">更新</string>
+
+    <string name="tv">TV</string>
+    <string name="radio">ラジオ</string>
+    <string name="recordings">録音/録画</string>
+    <string name="tv_channels">TV チャンネル</string>
+    <string name="radio_channels">ラジオチャンネル</string>
+
+    <string name="record">録音/録画</string>
+    <string name="pvr_epg">ガイド</string>
+    <string name="unable_to_move_item">アイレムを移動できません</string>
+    <string name="cannot_move_playing_item">現在再生/一時停止中のアイテムを移動できません</string>
+    <string name="no_connection_type_selected">設定で接続タイプが選択されていません</string>
+    <string name="single_column">単一表示</string>
+    <string name="multi_column">複数表示</string>
+
+    <string name="download_network_types_title">メディアのダウンロードを制限</string>
+    <string name="download_network_types_summary">メディアのダウンロードを許可するネットワークタイプを選択します</string>
+    <string name="songs">曲</string>
+
+    <string name="read_phone_state_permission_denied">アクセスが拒否されました。 着信時に再生を一時停止できません。</string>
+    <string name="write_storage_permission_denied">アクセスが拒否されました。 ファイルをダウンロードできません。</string>
+
+    <string name="no_songs_to_download">ダウンロードする曲はありません</string>
+    <string name="by_album">アルバム順</string>
+    <string name="by_artist">アーティスト順</string>
+    <string name="by_artist_and_year">アーティストと年順</string>
+    <string name="muted">ミュートしました</string>
+
+</resources>
