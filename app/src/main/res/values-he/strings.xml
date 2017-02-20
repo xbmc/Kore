@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources>
+
+    <string name="app_name">Kore</string>
+    <string name="settings">הגדרות</string>
+    <string name="action_options">אפשרויות</string>
+
+    <string name="loading">בטעינה…</string>
+
+    <!-- Navigation drawer tips -->
+    <string name="navigation_drawer_open">פתיחת מגירת הניווט</string>
+    <string name="navigation_drawer_close">סגירת מגירת הניווט</string>
+
+    <string name="xbmc_media_center">מרכז המדיה</string>
+    <string name="home">בית</string>
+    <string name="movies">סרטים</string>
+    <string name="tv_shows">סדרות</string>
+    <string name="music">מוזיקה</string>
+    <string name="pictures">תמונות</string>
+    <string name="addons">הרחבות</string>
+    <string name="files">קבצים</string>
+    <string name="video">וידאו</string>
+    <string name="file_browser">סייר קבצים</string>
+    <string name="pvr">PVR</string>
+
+    <string name="no_xbmc_configured">לא מוגדר מרכז מדיה</string>
+    <string name="add_xbmc">הוספת מרכז מדיה</string>
+
+    <string name="xbmc_quit">מרכז המדיה נסגר.</string>
+    <string name="wol_sent">נשלחה קריאת השכמה למרכז המדיה שלך.</string>
+
+    <string name="power">ניהול כללי</string>
+    <string name="quit">יציאה</string>
+    <string name="suspend">השהיה</string>
+    <string name="reboot">הפעלה מחדש</string>
+    <string name="shutdown">כיבוי</string>
+
+    <string name="send">שליחה</string>
+    <string name="send_text">שליחת טקסט למרכז המדיה</string>
+    <string name="text_to_send">טקסט לשליחה</string>
+    <string name="finish_after_send">לסיים לאחר השליחה</string>
+
+    <string name="library_actions">תחזוקת הספריה</string>
+    <string name="clean_video_library">ניקוי ספריית הווידאו</string>
+    <string name="clean_audio_library">ניקוי ספריית האודיו</string>
+    <string name="update_video_library">עדכון ספריית הווידאו</string>
+    <string name="update_audio_library">עדכון ספריית האודיו</string>
+
+    <string name="toggle_fullscreen">החלפת מצב מסך מלא</string>
+
+    <string name="connected_to">התחברת אל %1$s</string>
+    <string name="connecting">מתבצעת התחברות…</string>
+    <string name="connecting_to">מתבצעת התחברות אל %1$s‏ (%2$s)…</string>
+
+    <!-- String used in add host wizard -->
+    <string name="wizard_welcome">ברוך בואך</string>
+    <string name="wizard_welcome_message"><![CDATA[
+    נוכל להתחיל בהוספת מרכז מדיה. נא לוודא כי Kodi/XBMC פעיל, מוגדר כראוי ובאותה הרשת עם ההתקן שלך.<br/><br/>
+    ניתן לקבל עזרה בהגדרות <a href=\"http://syncedsynapse.com/kore/kore-faq/>כאן</a>.<br/><br/>
+    לאחר סיום ההכנות יש ללחוץ <b>כאן</b>.
+    ]]></string>
+    <string name="wizard_search_message"><![CDATA[
+    מתבצע חיפוש אחר מרכזי מדיה ברשת המקומית שלך…<br/>
+    ]]></string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+    לא נמצאו מרכזי מדיה ברשת שלך.<br/>אם נדרשת לך עזרה בהגדרה, כדאי לעיין <a href=\"http://syncedsynapse.com/kore/kore-faq/>כאן</a>.<br/><br/>
+    יש ללחוץ על <b>חיפוש</b> כדי לחפש שוב או על <b>הבא</b> לצורך הגדרה ידנית.
+    ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    נא להפעיל את החיבור לרשת בטרם החיפוש אחר מרכזי מדיה.<br/>
+    ]]></string>
+    <string name="wizard_search_host_found"><![CDATA[
+   מרכזי המדיה הבאים נמצאו ברשת שלך.<br/><br/>יש לבחור באחד מהם או ללחוץ על <b>הבא</b> כדי להוסיף אחד אחר ידנית.
+    ]]></string>
+    <string name="no_network_connection">אין חיבור לרשת</string>
+    <string name="searching">מתבצע חיפוש…</string>
+    <string name="no_xbmc_found">לא נמצאו מרכזי מדיה</string>
+    <string name="xbmc_found">נמצא מרכז מדיה</string>
+    <string name="wizard_manual_configuration">הגדרות ידניות</string>
+    <string name="wizard_manual_configuration_message">נא להזין את הגדרות מרכז המדיה שלך:</string>
+    <string name="wizard_manual_configuration_message_advanced">הגדרות מתקדמות (יש להשאיר ריק לבררת מחדל)</string>
+    <string name="wizard_xbmc_name">שם מרכז המדיה</string>
+    <string name="wizard_xbmc_ip">כתובת</string>
+    <string name="wizard_xbmc_port">פתחה</string>
+    <string name="wizard_xbmc_username">שם משתמש</string>
+    <string name="wizard_xbmc_password">ססמה</string>
+    <string name="wizard_xbmc_tcp_port">פתחת TCP‏ (9090)</string>
+    <string name="wizard_xbmc_mac_address">כתובת MAC (חומרה)</string>
+    <string name="wizard_xbmc_wol_port">כתובת WoL‏ (9)</string>
+    <string name="wizard_xbmc_use_tcp">שימוש ב־TCP</string>
+    <string name="wizard_xbmc_event_server_port">כתובת ES‏ (9777)</string>
+    <string name="wizard_xbmc_use_event_server">שימוש ב־EventServer</string>
+
+    <string name="wizard_no_name_specified">נא לציין שם למרכז המדיה הזה, כדי להקל על איתורו בהמשך.</string>
+    <string name="wizard_no_address_specified">נא לציין את כתובת מרכז המדיה כדי שניתן יהיה לאתר אותו.</string>
+    <string name="wizard_invalid_http_port_specified">נא לציין פתחת HTTP תקנית עבור מרכז מדיה זה.</string>
+    <string name="wizard_invalid_tcp_port_specified">נא לציין פתחת TCP תקנית עבור מרכז מדיה זה.</string>
+    <string name="wizard_invalid_es_port_specified">נא לציין פתחת EventServer תקנית עבור מרכז מדיה זה.</string>
+
+    <string name="wizard_connecting_to_xbmc_title">מתבצעת התחברות אל %1$s…</string>
+    <string name="wizard_connecting_to_xbmc_message">נא להמתין בעת ההתחברות למרכז המדיה שלך…</string>
+
+    <string name="wizard_empty_authentication">ל־Kodi/XBMC נדרש אימות.\\nנא לציין שם משתמש וססמה.</string>
+    <string name="wizard_incorrect_authentication">שם המשתמש ו/או הססמה שגויים.\\nנא לבדוק את פרטי הגישה שלך.</string>
+    <string name="wizard_success_connecting">קיים חיבור ל־Kodi/XBMC.</string>
+    <string name="wizard_error_connecting">לא ניתן להתחבר אל Kodi/XBMC.\\nנא לבדוק את ההגדרות.</string>
+
+    <string name="wizard_done">סיימנו בהצלחה!</string>
+    <string name="wizard_done_message"><![CDATA[
+    מרכז המדיה שלך מוגדר.<br/>
+    כעת ניתן להשתמש בשלט כדי לשלוט בו. הספריה שלך מסונכרנת, והיא אמורה להיות זמינה בעוד מספר רגעים.<br/><br/>
+    יש ללחוץ על <b>סיום</b> כדי להתחיל להשתמש בשלט.
+    ]]></string>
+
+    <string name="wizard_zeroconf_no_host_address">לא ניתן לקבל את הכתובת של מרכז המדיה הזה!</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">לא ניתן להתחבר למרכז המדיה הזה כיוון שאין אפשרות לאתר את הכתובת שלו.</string>
+
+    <string name="play">נגינה</string>
+    <string name="pause">השהיה</string>
+    <string name="stop">עצירה</string>
+    <string name="fast_forward">קידום מהיר</string>
+    <string name="rewind">חזרה אחורה</string>
+
+    <string name="repeat">נגינה מחזורית</string>
+    <string name="shuffle">ערבול</string>
+    <string name="volume_up">הגברת עצמת שמע</string>
+    <string name="volume_down">הנמכת עצמת שמע</string>
+    <string name="volume_mute">השתקה</string>
+    <string name="subtitles">כתוביות</string>
+    <string name="audiostreams">תזרימי אודיו</string>
+    <string name="no_audiostream">אין תזרימי אודיו זמינים</string>
+    <string name="download_subtitle">הורדת כתוביות</string>
+    <string name="none">ללא</string>
+    <string name="audio_sync">סנכרון אודיו</string>
+    <string name="subtitle_sync">סנכרון כתוביות</string>
+
+    <string name="left">שמאלה</string>
+    <string name="right">ימינה</string>
+    <string name="up">למעלה</string>
+    <string name="down">למעלה</string>
+    <string name="select">בחירה</string>
+    <string name="info">מידע</string>
+    <string name="codec_info">מפענח</string>
+    <string name="context">הקשר</string>
+    <string name="osd">תפריט</string>
+    <string name="back">חזרה</string>
+
+    <string name="previous">הקודם</string>
+    <string name="next">הבא</string>
+    <string name="finish">סיום</string>
+    <string name="test_connection">בדיקה</string>
+    <string name="search_again">חיפוש חוזר</string>
+
+    <string name="remove">הסרה</string>
+    <string name="edit">עריכה</string>
+    <string name="wake_up">השכמה</string>
+    <string name="edit_xbmc">עריכת מרכז המדיה</string>
+    <string name="delete_xbmc">מחיקת מרכז המדיה</string>
+    <string name="delete_xbmc_confirm">למחוק את מרכז המדיה?</string>
+    <string name="queue_file">הוספה לתור</string>
+    <string name="play_file">לנגן</string>
+    <string name="play_from_here">לנגן מכאן</string>
+
+    <string name="connecting_to_xbmc">מתבצעת התחברות…</string>
+    <string name="unable_to_connect_to_xbmc">לא ניתן להתחבר למרכז המדיה</string>
+    <string name="connected_to_xbmc">קיים חיבור</string>
+    <string name="xbmc_available">זמין</string>
+    <string name="xbmc_unavailable">לא זמין</string>
+
+    <string name="nothing_playing">שום דבר לא מתנגן</string>
+
+    <!-- Main view tabs -->
+    <string name="now_playing">מתנגן כעת</string>
+    <string name="remote">מרוחק</string>
+    <string name="playlist">רשימת נגינה</string>
+
+    <string name="season_episode_abbrev">ע%1$02dפ%2$02d</string>
+    <string name="season_episode">עונה %1$02d | פרק %2$02d</string>
+    <string name="season_number">עונה %1$02d</string>
+    <string name="episode_number">%1$d</string>
+
+    <string name="votes">%1$s קולות</string>
+    <string name="max_rating_video">/10</string>
+    <string name="max_rating_music">/5</string>
+
+    <string name="fanart">פנארט</string>
+    <string name="poster">כרזה</string>
+    <string name="thumbnail">תמונה ממוזערת</string>
+
+    <string name="error_getting_properties">לא ניתן לקבל את המאפיינים של Kodi/XBMC.\\nהודעת השגיאה:
+        %1$s.</string>
+    <string name="error_executing_subtitles">לא ניתן להפעיל את הרחבת הכתוביות.\\nהודעת השגיאה:
+        %1$s.</string>
+    <string name="error_getting_addon_info">לא ניתן לקבל פרטים על ההרחבה.\\nהודעת השגיאה:
+        %1$s.</string>
+    <string name="error_getting_source_info">לא ניתן לעיין בקבצים.\\nהודעת השגיאה:
+        %1$s.</string>
+    <string name="error_play_media_file">לא ניתן לנגן קובצי מדיה.\\nהודעת השגיאה:
+        %1$s.</string>
+    <string name="error_queue_media_file">לא ניתן להוסיף קובץ מדיה לתור.\\nהודעת השגיאה:
+        %1$s.</string>
+    <string name="error_get_active_player">לא ניתן לאתר את הנגן הפעיל.\\nהודעת השגיאה:
+        %1$s.</string>
+    <string name="error_share_video">לא ניתן לשתף וידאו אל Kodi/XBMC.</string>
+
+    <string name="directors">במאים:</string>
+    <string name="studio">סטודיו:</string>
+    <string name="cast">שחקנים</string>
+    <string name="additional_cast">שחקנים נוספים</string>
+    <string name="cast_list_text">%1$s בתפקיד %2$s</string>
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <string name="remaining_cast_count">עוד %d</string>
+
+    <string name="general_error_executing_action">הפעולה נכשלה: %1$s</string>
+    <string name="error_getting_playlist">הורדת רשימת הנגינה נכשלה</string>
+    <string name="error_message">הודעת שגיאה: %1$s </string>
+    <string name="playlist_empty">רשימת הנגינה ריקה</string>
+    <string name="clear_playlist">פינוי רשימת הנגינה</string>
+    <string name="source_empty">מקור המדיה ריק</string>
+
+    <string name="no_movies_found_refresh">לא נמצאו סרטים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_tvshows_found_refresh">לא נמצאו סדרות\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_episodes_found">לא נמצאו פרקים</string>
+    <string name="swipe_down_to_refresh">יש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_artists_found_refresh">לא נמצאו אמנים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_albums_found_refresh">לא נמצאו אלבומים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_genres_found_refresh">לא נמצאו סגנונות\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_addons_found_refresh">לא נמצאו הרחבות או שהחיבור אבד\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_music_videos_found_refresh">לא נמצאו סרטוניםים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_channel_groups_found_refresh">לא נמצאו קבוצות ערוצים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_channels_found_refresh">לא נמצאו ערוצים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_recordings_found_refresh">לא נמצאו הקלטות\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_broadcasts_found_refresh">לא נמצאו שידורים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="pull_to_refresh">יש למשוך כדי לרענן</string>
+    <string name="no_cast_info">אין פרטים על השחקנים</string>
+
+    <string name="minutes_abbrev">%1$s דק׳</string>
+    <string name="minutes_abbrev2">%1$sד׳</string>
+    <string name="sync_successful">הסנכרון הצליח</string>
+    <string name="error_while_syncing">אירעה שגיאה בזמן הסנכרון: %1$s</string>
+
+    <string name="action_search">חיפוש</string>
+    <string name="action_search_movies">חיפוש סרטים</string>
+    <string name="action_search_tvshows">חיפוש סדרות</string>
+    <string name="action_search_albums">חיפוש אלבומים</string>
+    <string name="action_search_artists">חיפוש אמנים</string>
+    <string name="action_search_genres">חיפוש סגנונות</string>
+    <string name="action_search_music_videos">חיפוש סרטונים</string>
+
+    <string name="add_to_playlist">הוספה לרשימת נגינה</string>
+    <string name="item_added_to_playlist">נוסף לרשימת הנגינה</string>
+    <string name="no_suitable_playlist">לא נמצאה רשימת נגינה תואמת להוספת סוג המדיה.</string>
+
+    <string name="imdb">IMDb</string>
+    <string name="seen">כבר ראיתי</string>
+    <string name="download">הורדה</string>
+
+    <string name="confirm_movie_download">להוריד את הסרט הזה?\\nהסרט יתקבל ברקע, יתכן שיחלוף זמן עד לסיום ההורדה.</string>
+    <string name="confirm_episode_download">להוריד את הפרק הזה?\\nהפרק יתקבל ברקע, יתכן שיחלוף זמן עד לסיום ההורדה.</string>
+    <string name="confirm_album_download">להוריד את האלבום הזה?\\nהאלבום יתקבל ברקע, יתכן שיחלוף זמן עד לסיום ההורדה.</string>
+    <string name="confirm_artist_download">להוריד את כל האלבומים?\\nהאלבומים יתקבלו ברקע, יתכן שיחלוף זמן עד לסיום ההורדה.</string>
+    <string name="confirm_songs_download">להוריד %1$d שירים?\\nהשירים יתקבלו ברקע, יתכן שיחלוף זמן עד לסיום ההורדה.</string>
+
+    <string name="download_file_exists">הקובץ כבר קיים.\\nלשכתב אותו או להוריד אותו בשם חדש?</string>
+    <string name="download_dir_exists">תיקיית ההורדה כבר קיימת.\\nאם לקבצים כלשהם יהיה שם זהה, לשכתב עליהם או להוריד אותם עם שם חדש?</string>
+    <string name="download_files_exists">כבר קיים קובץ אחד או יותר.\\nאם לקבצים כלשהם יש שם זהה, האם לשכתב אותם או להוריד אותם בשם חדש?</string>
+    <string name="overwrite">שכתוב</string>
+    <string name="download_with_new_name">שם חדש</string>
+    <string name="download_file_description">התקבל ממרכז המדיה שלך</string>
+
+    <string name="num_episodes">%1$d פרקים  |  %2$d לא נצפו עדיין</string>
+    <string name="premiered">עלה לאוויר: %1$s</string>
+
+    <string name="tvshow_overview">סקירה</string>
+    <string name="tvshow_episodes">פרקים</string>
+    <string name="tvshow_seasons">עונות</string>
+    <string name="tvshow_next_episode">הפרקים הבאים</string>
+
+    <string name="addon_overview">סקירה</string>
+    <string name="addon_content">תוכן</string>
+
+    <string name="artists">אמנים</string>
+    <string name="albums">אלבומים</string>
+    <string name="genres">סגנונות</string>
+    <string name="music_videos">סרטונים</string>
+
+    <string name="no_files_to_download">אין קבצים להורדה.</string>
+    <string name="error_getting_file_information">לא ניתן לקבל מידע לצורך הורדת הקובץ %1$s.</string>
+
+    <string name="author">יוצר:</string>
+    <string name="version">גרסה:</string>
+    <string name="enable_disable">הפעלה/נטרול של הרחבה</string>
+    <string name="addon_enabled">ההרחבה הופעלה</string>
+    <string name="addon_disabled">ההרחבה נוטרלה</string>
+    <string name="pin_unpin">נעיצה/שחרור של הרחבה</string>
+    <string name="addon_pinned">ההרחבה ננעצה</string>
+    <string name="addon_unpinned">ההרחבה שוחררה</string>
+
+    <!-- Filters on list menus -->
+    <string name="hide_watched">הסתרת אלו שראיתי</string>
+    <string name="sort_order">סידור</string>
+    <string name="sort_by_name">לפי שם</string>
+    <string name="sort_by_year">לפי שנה </string>
+    <string name="sort_by_rating">לפי דירוג</string>
+    <string name="sort_by_length">לפי אורך</string>
+    <string name="sort_by_date_added">לפי תאריך ההוספה</string>
+    <string name="sort_by_last_played">לפי מועד הנגינה האחרון</string>
+    <string name="ignore_prefixes">התעלמות מקידומות</string>
+
+    <!-- Preferences strings -->
+    <string name="theme">ערכת נושא</string>
+    <string name="theme_night">לילה</string>
+    <string name="theme_day">יום</string>
+    <string name="theme_mist">ערפל</string>
+    <string name="theme_solarized">זריחה</string>
+    <string name="theme_solarized_dark">זריחה כהה</string>
+
+    <string name="switch_to_remote">הצגה עם הפעלת המדיה</string>
+    <string name="keep_remote_above_lockscreen">הצגה על גבי מסך הנעילה</string>
+    <string name="pref_keep_screen_on">להשאיר את המסך דולק</string>
+    <string name="show_notification">הצגת התרעות בזמן הנגינה</string>
+    <string name="pause_during_calls">להשהות במהלך שיחת טלפון</string>
+    <string name="use_hardware_volume_keys">שימוש בלחצני עצמת השמע של ההתקן</string>
+    <string name="vibrate_on_remote">רטט בעת מגע</string>
+    <string name="nav_drawer_items">קיצורים בתפריט הצד</string>
+
+    <string name="about">על אודות</string>
+    <string name="about_desc"><![CDATA[
+        \\u00A9 2017 עמותת XBMC.<br><br>
+        נא לדרג אותנו ב־<b><a href=\"market://details?id=org.xbmc.kore\">Google Play</a></b><br><br>
+
+        אם יש לך צורך בעזרה, כדאי לבקר ב<b><a href=\"http://forum.kodi.tv/forumdisplay.php?fid=129\">פורום</a></b> שלנו
+    ]]></string>
+
+    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
+    <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
+    <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
+    <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
+    <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
+    <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
+
+    <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
+    <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
+    <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
+    <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+
+    <string name="play_on_kodi">לנגן ב־Kodi</string>
+    <string name="pause_call_incoming_title">שיחה נכנסת</string>
+    <string name="pause_call_incoming_message">נא להסתכל בטלפון, מנסים להתקשר אליך</string>
+
+    <string name="error_getting_pvr_info">אירעה שגיאה בעת קבלת נתוני ה־pvr‏: %1$s</string>
+    <string name="might_not_have_pvr">אירעה שגיאה בעת קבלת נתוני הערוצים, כנראה כיוון שלנגן המדיה שלך אין טיונר או שהוא לא מוגדר.\\n\\nאם זה המקרה וברצונך להסיר את הרשומה הזאת מתפריט הצד, ניתן לעשות זאת בהגדרות.</string>
+    <string name="error_starting_channel">אירעה שגיאה בהתחלת נגינת הערוץ: %1$s</string>
+    <string name="error_starting_recording">אירעה שגיאה בהתחלת ההקלטה: %1$s</string>
+    <string name="error_starting_to_record">אירעה שגיאה בעת ההקלטה: %1$s</string>
+    <string name="channel_switching">מעבר לערוץ %1$s</string>
+    <string name="starting_recording">התחלת הקלטת %1$s</string>
+    <string name="refresh">רענון</string>
+
+    <string name="tv">טלוויזיה</string>
+    <string name="radio">רדיו</string>
+    <string name="recordings">הקלטות</string>
+    <string name="tv_channels">ערוצי טלוויזיה</string>
+    <string name="radio_channels">ערוצי רדיו</string>
+
+    <string name="record">הקלטה</string>
+    <string name="pvr_epg">מדריך</string>
+    <string name="unable_to_move_item">לא ניתן להעביר פריט</string>
+    <string name="cannot_move_playing_item">לא ניתן להכביר את הפריט שמתנגן/מושהה כעת</string>
+    <string name="no_connection_type_selected">לא נבחר סוג חיבור בהגדרות</string>
+    <string name="single_column">עמודה בודדת</string>
+    <string name="multi_column">מספר עמודות</string>
+
+    <string name="download_network_types_title">הגבלת הורדות מדיה</string>
+    <string name="download_network_types_summary">נא לבחור את סוגי הרשת שדרכן מותר להוריד מדיה</string>
+    <string name="songs">שירים</string>
+
+    <string name="read_phone_state_permission_denied">ההרשאה נדחתה. לא תהיה אפשרות להשהות את הנגינה במהלך שיחות.</string>
+    <string name="write_storage_permission_denied">ההרשאה נדחתה. לא תהיה אפשרות להוריד קבצים.</string>
+
+    <string name="no_songs_to_download">אין שירים להורדה</string>
+    <string name="by_album">לפי אלבום</string>
+    <string name="by_artist">לפי אמן</string>
+    <string name="by_artist_and_year">לפי אמן ושנה</string>
+    <string name="muted">מושתק</string>
+
+</resources>
