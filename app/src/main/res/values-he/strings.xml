@@ -152,7 +152,7 @@
     <string name="left">שמאלה</string>
     <string name="right">ימינה</string>
     <string name="up">למעלה</string>
-    <string name="down">למעלה</string>
+    <string name="down">למטה</string>
     <string name="select">בחירה</string>
     <string name="info">מידע</string>
     <string name="codec_info">מפענח</string>
