@@ -321,8 +321,8 @@
     <string name="ignore_prefixes">Ігнорувати префікси</string>
 
     <!-- Preferences strings -->
-	<string name="title_remote">Управління</string>
-	<string name="title_application">Застосунок</string>
+    <string name="title_remote">Управління</string>
+    <string name="title_application">Застосунок</string>
 	
     <string name="theme">Тема</string>
     <string name="theme_night">Ніч</string>
