@@ -322,13 +322,16 @@
     <string name="ignore_prefixes">Ignore prefixes</string>
 
     <!-- Preferences strings -->
+    <string name="title_remote">Remote</string>
+    <string name="title_application">Application</string>
+	
     <string name="theme">Theme</string>
     <string name="theme_night">Night</string>
     <string name="theme_day">Day</string>
     <string name="theme_mist">Mist</string>
     <string name="theme_solarized">Solarized</string>
     <string name="theme_solarized_dark">Solarized Dark</string>
-
+	
     <string name="switch_to_remote">Show on media start</string>
     <string name="keep_remote_above_lockscreen">Show over lockscreen</string>
     <string name="pref_keep_screen_on">Stay awake</string>
