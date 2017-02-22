@@ -59,8 +59,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // Get the preference for side menu items and change its Id to include
         // the current host
         Preference sideMenuItems = findPreference(Settings.KEY_PREF_NAV_DRAWER_ITEMS);
+        Preference remoteBarItems = findPreference(Settings.KEY_PREF_REMOTE_BAR_ITEMS);
         hostId = HostManager.getInstance(getActivity()).getHostInfo().getId();
         sideMenuItems.setKey(Settings.getNavDrawerItemsPrefKey(hostId));
+        remoteBarItems.setKey(Settings.getRemoteBarItemsPrefKey(hostId));
 
         // HACK: After changing the key dynamically like above, we need to force the preference
         // to read its value. This can be done by calling onSetInitialValue, which is protected,
