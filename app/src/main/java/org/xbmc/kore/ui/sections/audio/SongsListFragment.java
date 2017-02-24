@@ -270,6 +270,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
         final ViewHolder viewHolder = (ViewHolder) v.getTag();
 
         final PlaylistType.Item playListItem = new PlaylistType.Item();
+        playListItem.songid = viewHolder.songInfo.songId;
 
         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
         popupMenu.getMenuInflater().inflate(R.menu.song_item, popupMenu.getMenu());
@@ -296,6 +297,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
         });
         popupMenu.show();
     }
+
 
     private void setDetails(TextView textView, String... elements) {
         if ((elements == null) || (elements.length < 1)) {
