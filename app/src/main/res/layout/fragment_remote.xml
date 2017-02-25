@@ -168,15 +168,15 @@
             android:src="?attr/iconPicture"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/pictures"/>
-        <!-- <ImageButton
+        <ImageButton
             android:id="@+id/videos"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconMovies"
+            android:src="?attr/iconVideo"
             android:tint="?attr/defaultButtonColorFilter"
-            android:contentDescription="@string/videos"/> -->
+            android:contentDescription="@string/videos"/>
         <!-- <ImageButton
             android:id="@+id/favourites"
             android:layout_width="0dp"
@@ -195,7 +195,7 @@
             android:src="?attr/iconAddons"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/addons"/>
-        <!-- <ImageButton
+        <ImageButton
             android:id="@+id/weather"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -203,7 +203,7 @@
             style="@style/Widget.Button.Borderless"
             android:src="?attr/iconWeather"
             android:tint="?attr/defaultButtonColorFilter"
-            android:contentDescription="@string/weather"/> -->
+            android:contentDescription="@string/weather"/>
         <ImageButton
             android:id="@+id/system"
             android:layout_width="0dp"

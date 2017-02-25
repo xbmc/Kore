@@ -120,10 +120,10 @@ public class RemoteFragment extends Fragment
     @Optional @InjectView(R.id.music) ImageButton musicButton;
     @Optional @InjectView(R.id.pvr) ImageButton pvrButton;
     @Optional @InjectView(R.id.pictures) ImageButton picturesButton;
-    //@Optional @InjectView(R.id.videos) ImageButton videosButton;
+    @Optional @InjectView(R.id.videos) ImageButton videosButton;
     //@Optional @InjectView(R.id.favourites) ImageButton favouritesButton;
     @Optional @InjectView(R.id.addons) ImageButton addonsButton;
-    //@Optional @InjectView(R.id.weather) ImageButton weatherButton;
+    @Optional @InjectView(R.id.weather) ImageButton weatherButton;
     @Optional @InjectView(R.id.system) ImageButton systemButton;
 
     @InjectView(R.id.select) ImageView selectButton;
@@ -246,7 +246,7 @@ public class RemoteFragment extends Fragment
                         new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.default_values_remote_bar_items))));
         ImageButton[] buttons = {
                 homeButton, moviesButton, tvShowsButton, musicButton, pvrButton, picturesButton,
-                addonsButton, systemButton
+                videosButton, addonsButton, weatherButton, systemButton
         };
         for (int i = 0; i < buttons.length; i++) {
             if (buttons[i] != null)
@@ -473,12 +473,12 @@ public class RemoteFragment extends Fragment
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    /*@Optional
+    @Optional
     @OnClick(R.id.videos)
     public void onVideosClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_ROOT);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-    }*/
+    }
 
     /*@Optional
     @OnClick(R.id.favourites)
@@ -494,12 +494,12 @@ public class RemoteFragment extends Fragment
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    /*@Optional
+    @Optional
     @OnClick(R.id.weather)
     public void onWeatherClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.WEATHER);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-    }*/
+    }
 
     @Optional
     @OnClick(R.id.system)
