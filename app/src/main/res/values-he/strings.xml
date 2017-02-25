@@ -323,6 +323,8 @@
     <string name="ignore_prefixes">התעלמות מקידומות</string>
 
     <!-- Preferences strings -->
+    <string name="application">אפליקציה</string>
+
     <string name="theme">ערכת נושא</string>
     <string name="theme_night">לילה</string>
     <string name="theme_day">יום</string>
