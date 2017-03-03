@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
 
-            <!-- Intent filter for sharing from youtube player -->
+            <!-- Intent filter for sharing from youtube player and twitch app -->
             <intent-filter android:label="@string/play_on_kodi">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -48,7 +48,10 @@
                 <data android:host="vimeo.com"/>
                 <data android:host="www.vimeo.com"/>
                 <data android:host="player.vimeo.com"/>
+                <data android:host="svtplay.se"/>
                 <data android:host="www.svtplay.se"/>
+                <data android:host="twitch.tv"/>
+                <data android:host="www.twitch.tv"/>
             </intent-filter>
         </activity>
 
