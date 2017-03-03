@@ -322,8 +322,7 @@
     <string name="ignore_prefixes">Ignore prefixes</string>
 
     <!-- Preferences strings -->
-    <string name="title_remote">Remote</string>
-    <string name="title_application">Application</string>
+    <string name="application">Application</string>
 	
     <string name="theme">Theme</string>
     <string name="theme_night">Night</string>
