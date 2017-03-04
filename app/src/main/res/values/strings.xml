@@ -340,7 +340,7 @@
     <string name="pause_during_calls">Pause during phone call</string>
     <string name="use_hardware_volume_keys">Use device volume keys</string>
     <string name="vibrate_on_remote">Vibrate on touch</string>
-    <string name="remote_bar_items">Remote bottom bar shortcuts</string>
+    <string name="remote_bar_items">Bottom bar shortcuts</string>
     <string name="nav_drawer_items">Side menu shortcuts</string>
 
     <string name="about">About</string>

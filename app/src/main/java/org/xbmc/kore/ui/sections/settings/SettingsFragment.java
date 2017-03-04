@@ -80,6 +80,16 @@ public class SettingsFragment extends PreferenceFragmentCompat
             } catch (Exception e) {
             }
         }
+        if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getRemoteBarItemsPrefKey(hostId), null) != null) {
+            Class iterClass = remoteBarItems.getClass();
+            try {
+                @SuppressWarnings("unchecked")
+                Method m = iterClass.getDeclaredMethod("onSetInitialValue", boolean.class, Object.class);
+                m.setAccessible(true);
+                m.invoke(remoteBarItems, true, null);
+            } catch (Exception e) {
+            }
+        }
 
         // Check permission for phone state and set preference accordingly
         if (!hasPhonePermission()) {

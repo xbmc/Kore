@@ -37,6 +37,13 @@
             android:key="pref_vibrate_remote_buttons"
             android:title="@string/vibrate_on_remote"
             android:defaultValue="false"/>
+
+        <MultiSelectListPreference
+            android:key="pref_remote_bar_items"
+            android:title="@string/remote_bar_items"
+            android:entries="@array/entries_remote_bar_items"
+            android:entryValues="@array/entry_values_remote_bar_items"
+            android:defaultValue="@array/default_values_remote_bar_items"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Application">
@@ -61,13 +68,6 @@
             android:key="pref_pause_during_calls"
             android:title="@string/pause_during_calls"
             android:defaultValue="false"/>
-
-        <MultiSelectListPreference
-            android:key="pref_remote_bar_items"
-            android:title="@string/remote_bar_items"
-            android:entries="@array/entries_remote_bar_items"
-            android:entryValues="@array/entry_values_remote_bar_items"
-            android:defaultValue="@array/default_values_remote_bar_items"/>
 
         <MultiSelectListPreference
             android:key="pref_nav_drawer_items"
