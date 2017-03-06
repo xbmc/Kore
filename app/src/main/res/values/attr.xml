@@ -49,7 +49,11 @@
     <attr name="iconHome" format="reference" />
     <attr name="iconAddons" format="reference" />
     <attr name="iconFiles" format="reference" />
+    <attr name="iconVideo" format="reference" />
     <attr name="iconPVR" format="reference" />
+    <attr name="iconFavourites" format="reference" />
+    <attr name="iconWeather" format="reference" />
+    <attr name="iconSystem" format="reference" />
 
     <attr name="iconNew" format="reference" />
     <attr name="iconNewToolbar" format="reference" />

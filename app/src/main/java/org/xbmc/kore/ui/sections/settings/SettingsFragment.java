@@ -56,17 +56,19 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        // Get the preference for side menu itens and change its Id to include
+        // Get the preference for side menu items and change its Id to include
         // the current host
         Preference sideMenuItems = findPreference(Settings.KEY_PREF_NAV_DRAWER_ITEMS);
+        Preference remoteBarItems = findPreference(Settings.KEY_PREF_REMOTE_BAR_ITEMS);
         hostId = HostManager.getInstance(getActivity()).getHostInfo().getId();
         sideMenuItems.setKey(Settings.getNavDrawerItemsPrefKey(hostId));
+        remoteBarItems.setKey(Settings.getRemoteBarItemsPrefKey(hostId));
 
-        // HACK: After changing the key dinamically like above, we need to force the preference
+        // HACK: After changing the key dynamically like above, we need to force the preference
         // to read its value. This can be done by calling onSetInitialValue, which is protected,
         // so, instead of subclassing MultiSelectListPreference and make it public, this little
         // hack changes its access mode.
-        // Furthermore, only do this is nothing is saved yet on the shared preferences,
+        // Furthermore, only do this if nothing is saved yet on the shared preferences,
         // otherwise the defaults won't be applied
         if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getNavDrawerItemsPrefKey(hostId), null) != null) {
             Class iterClass = sideMenuItems.getClass();
@@ -75,6 +77,16 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 Method m = iterClass.getDeclaredMethod("onSetInitialValue", boolean.class, Object.class);
                 m.setAccessible(true);
                 m.invoke(sideMenuItems, true, null);
+            } catch (Exception e) {
+            }
+        }
+        if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getRemoteBarItemsPrefKey(hostId), null) != null) {
+            Class iterClass = remoteBarItems.getClass();
+            try {
+                @SuppressWarnings("unchecked")
+                Method m = iterClass.getDeclaredMethod("onSetInitialValue", boolean.class, Object.class);
+                m.setAccessible(true);
+                m.invoke(remoteBarItems, true, null);
             } catch (Exception e) {
             }
         }
@@ -110,15 +122,16 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // Update summaries
         setupPreferences();
 
-        if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.getNavDrawerItemsPrefKey(hostId))) {
+        if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.getNavDrawerItemsPrefKey(hostId))
+                || key.equals((Settings.getRemoteBarItemsPrefKey(hostId)))) {
             // Explicitly clear cache of resource ids that is maintained in the activity
             UIUtils.playPauseIconsLoaded = false;
 
             // restart to apply new theme (actually build an entirely new task stack)
             TaskStackBuilder.create(getActivity())
-                            .addNextIntent(new Intent(getActivity(), RemoteActivity.class))
-                            .addNextIntent(new Intent(getActivity(), SettingsActivity.class))
-                            .startActivities();
+                    .addNextIntent(new Intent(getActivity(), RemoteActivity.class))
+                    .addNextIntent(new Intent(getActivity(), SettingsActivity.class))
+                    .startActivities();
         }
 
         // If the pause during call is selected, make sure we have permission to read phone state

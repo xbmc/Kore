@@ -99,6 +99,9 @@
         <item name="iconAddons">@drawable/ic_extension_white_24dp</item>
         <item name="iconFiles">@drawable/ic_folder_white_24dp</item>
         <item name="iconPVR">@drawable/ic_dvr_white_24dp</item>
+        <item name="iconVideo">@drawable/ic_video_white_24dp</item>
+        <item name="iconFavourites">@drawable/ic_star_white_24dp</item>
+        <item name="iconWeather">@drawable/ic_sunny_white_24dp</item>
 
         <item name="iconNew">@drawable/ic_add_box_white_24dp</item>
         <item name="iconNewToolbar">@drawable/ic_add_box_white_24dp</item>
@@ -228,6 +231,9 @@
         <item name="iconAddons">@drawable/ic_extension_white_24dp</item>
         <item name="iconFiles">@drawable/ic_folder_white_24dp</item>
         <item name="iconPVR">@drawable/ic_dvr_white_24dp</item>
+        <item name="iconVideo">@drawable/ic_video_white_24dp</item>
+        <item name="iconFavourites">@drawable/ic_star_white_24dp</item>
+        <item name="iconWeather">@drawable/ic_sunny_white_24dp</item>
 
         <item name="iconNew">@drawable/ic_add_box_black_24dp</item>
         <item name="iconNewToolbar">@drawable/ic_add_box_white_24dp</item>

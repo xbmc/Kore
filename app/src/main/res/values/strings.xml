@@ -35,8 +35,12 @@
     <string name="addons">Addons</string>
     <string name="files">Files</string>
     <string name="video">Video</string>
+    <string name="videos">Videos</string>
     <string name="file_browser">File Browser</string>
     <string name="pvr">PVR</string>
+    <string name="favourites">Favourites</string>
+    <string name="weather">Weather</string>
+    <string name="system">System</string>
 
     <string name="no_xbmc_configured">No media center configured</string>
     <string name="add_xbmc">Add Media Center</string>
@@ -339,6 +343,7 @@
     <string name="pause_during_calls">Pause during phone call</string>
     <string name="use_hardware_volume_keys">Use device volume keys</string>
     <string name="vibrate_on_remote">Vibrate on touch</string>
+    <string name="remote_bar_items">Bottom bar shortcuts</string>
     <string name="nav_drawer_items">Side menu shortcuts</string>
 
     <string name="about">About</string>

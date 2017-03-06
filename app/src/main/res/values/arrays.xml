@@ -41,6 +41,21 @@
         <!--<item>4</item>-->
     </string-array>
 
+    <!-- Remote Bar items -->
+    <string-array name="entries_remote_bar_items">
+        <item>@string/home</item>
+        <item>@string/movies</item>
+        <item>@string/tv_shows</item>
+        <item>@string/music</item>
+        <item>@string/pvr</item>
+        <item>@string/pictures</item>
+        <item>@string/videos</item>
+        <!-- <item>@string/favourites</item> -->
+        <item>@string/addons</item>
+        <item>@string/weather</item>
+        <item>@string/system</item>
+    </string-array>
+
     <!-- Navigation Drawer items -->
     <string-array name="entries_nav_drawer_items">
         <item>@string/movies</item>
@@ -66,6 +81,27 @@
 
     <string-array name="default_values_download_media_items">
         <item>0</item>
+    </string-array>
+
+    <string-array translatable="false" name="entry_values_remote_bar_items">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+
+    <string-array name="default_values_remote_bar_items">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
     </string-array>
 
     <!-- CAUTION: Keep this synced with the entries ids in NavigationDrawerFragment.java -->
