@@ -40,18 +40,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true">
+            android:layout_alignParentLeft="true"
+            android:transitionGroup="true">
 
-            <!-- Movie details information -->
             <RelativeLayout
                 android:id="@+id/media_panel_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/remote_content_hmargin"
-                android:layout_marginRight="@dimen/remote_content_hmargin"
-                android:paddingBottom="@dimen/default_padding"
-                android:transitionGroup="true">
-
+                android:layout_marginRight="@dimen/remote_content_hmargin">
                 <TextView
                     android:id="@+id/media_title"
                     android:layout_width="match_parent"
@@ -77,8 +74,8 @@
 
                 <ImageView
                     android:id="@+id/poster"
-                    android:layout_width="@dimen/now_playing_poster_width"
-                    android:layout_height="@dimen/now_playing_poster_height"
+                    android:layout_width="@dimen/detail_poster_width_square"
+                    android:layout_height="@dimen/detail_poster_height_square"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="@dimen/default_padding"
@@ -97,173 +94,155 @@
                     android:paddingRight="@dimen/default_padding"
                     android:orientation="horizontal"
                     style="@style/ButtonBar"
-                    android:background="?attr/contentBackgroundColor">
-                    <!--<ImageButton-->
-                        <!--android:id="@+id/play"-->
-                        <!--android:layout_width="@dimen/buttonbar_button_width"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--style="@style/Widget.Button.Borderless"-->
-                        <!--android:src="?attr/iconPlay"-->
-                        <!--android:contentDescription="@string/play"/>-->
+                    android:background="?attr/contentBackgroundColor"
+                    android:visibility="gone">
                     <Space
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"/>
                     <ImageButton
-                        android:id="@+id/add_to_playlist"
+                        android:id="@+id/media_action_pin_unpin"
+                        android:visibility="gone"
+                        android:layout_width="@dimen/buttonbar_button_width"
+                        android:layout_height="match_parent"
+                        style="@style/Widget.Button.Borderless"
+                        android:src="?attr/iconBookmark"
+                        android:contentDescription="@string/enable_disable"/>
+                    <ImageButton
+                        android:id="@+id/media_action_add_to_playlist"
                         android:layout_width="@dimen/buttonbar_button_width"
                         android:layout_height="match_parent"
                         style="@style/Widget.Button.Borderless"
                         android:src="?attr/iconAddToQueue"
-                        android:contentDescription="@string/add_to_playlist"/>
+                        android:contentDescription="@string/add_to_playlist"
+                        android:visibility="gone"/>
                     <ImageButton
-                        android:id="@+id/go_to_imdb"
-                        android:layout_width="@dimen/buttonbar_button_width"
-                        android:layout_height="match_parent"
-                        style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconInfoWWW"
-                        android:contentDescription="@string/imdb"/>
-                    <ImageButton
-                        android:id="@+id/download"
+                        android:id="@+id/media_action_download"
                         android:layout_width="@dimen/buttonbar_button_width"
                         android:layout_height="match_parent"
                         style="@style/Widget.Button.Borderless"
                         android:src="?attr/iconDownload"
                         android:contentDescription="@string/download"
-                        />
+                        android:visibility="gone"/>
                     <ImageButton
-                        android:id="@+id/seen"
+                        android:id="@+id/media_action_go_to_imdb"
+                        android:layout_width="@dimen/buttonbar_button_width"
+                        android:layout_height="match_parent"
+                        style="@style/Widget.Button.Borderless"
+                        android:src="?attr/iconInfoWWW"
+                        android:contentDescription="@string/imdb"
+                        android:visibility="gone"/>
+                    <ImageButton
+                        android:id="@+id/media_action_seen"
                         android:layout_width="@dimen/buttonbar_button_width"
                         android:layout_height="match_parent"
                         style="@style/Widget.Button.Borderless"
                         android:src="?attr/iconSeen"
-                        android:contentDescription="@string/seen"/>
+                        android:contentDescription="@string/seen"
+                        android:visibility="gone"/>
                 </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/media_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/media_actions_bar"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:paddingTop="@dimen/default_padding"
                     android:paddingBottom="@dimen/default_padding"
                     android:paddingLeft="@dimen/default_padding"
                     android:paddingRight="@dimen/default_padding"
+                    android:layout_below="@id/media_actions_bar"
                     android:background="?attr/contentBackgroundColor">
-                    <TextView
-                        android:id="@+id/year"
-                        android:layout_width="wrap_content"
+
+                    <LinearLayout
+                        android:id="@+id/rating_container"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
+                        android:layout_weight="3"
+                        android:layout_gravity="start">
+                        <TextView
+                            android:id="@+id/rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            style="@style/TextAppearance.Media.Rating"
+                            android:layout_marginRight="@dimen/small_padding"
+                            android:layout_marginEnd="@dimen/small_padding"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/rating_votes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/TextAppearance.Media.SmallDetails"/>
+
+                            <TextView
+                                android:id="@+id/max_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/TextAppearance.Media.SmallDetails"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/media_details_right"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:layout_gravity="end"
+                        android:gravity="end"
                         style="@style/TextAppearance.Media.SmallDetails"/>
-                    <TextView
-                        android:id="@+id/genres"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/year"
-                        android:layout_alignRight="@id/year"
-                        android:layout_alignEnd="@id/year"
-                        style="@style/TextAppearance.Media.SmallDetails"/>
+                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/genres"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        style="@style/TextAppearance.Media.Rating"
-                        android:layout_marginRight="@dimen/small_padding"
-                        android:layout_marginEnd="@dimen/small_padding"/>
-
-                    <TextView
-                        android:id="@+id/rating_votes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignTop="@id/year"
-                        android:layout_alignBottom="@id/year"
-                        android:layout_toRightOf="@id/rating"
-                        android:layout_toLeftOf="@id/year"
-                        android:layout_toEndOf="@id/rating"
-                        android:layout_toStartOf="@id/year"
-                        style="@style/TextAppearance.Media.SmallDetails"/>
-
-                    <TextView
-                        android:id="@+id/max_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignTop="@id/genres"
-                        android:layout_alignBottom="@id/genres"
-                        android:layout_toRightOf="@id/rating"
-                        android:layout_toLeftOf="@id/genres"
-                        android:layout_toEndOf="@id/rating"
-                        android:layout_toStartOf="@id/genres"
-                        style="@style/TextAppearance.Media.SmallDetails"
-                        android:text="@string/max_rating_video"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/media_description"
+                <LinearLayout
+                    android:id="@+id/media_description_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/media_details"
-                    style="@style/TextAppearance.Media.Info"
-                    android:paddingLeft="@dimen/default_padding"
-                    android:paddingRight="@dimen/default_padding"
-                    android:background="?attr/contentBackgroundColor"/>
-
-                <TextView
-                    android:id="@+id/director_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/media_description"
-                    style="@style/TextAppearance.Media.Info"
-                    android:paddingLeft="@dimen/default_padding"
-                    android:paddingRight="@dimen/default_padding"
-                    android:text="@string/directors"
-                    android:background="?attr/contentBackgroundColor"/>
-
-                <TextView
-                    android:id="@+id/directors"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/director_title"
-                    android:layout_toEndOf="@id/director_title"
-                    android:layout_alignTop="@id/director_title"
-                    style="@style/TextAppearance.Media.Info"
-                    android:textColor="?attr/appTextColorSecondary"
-                    android:background="?attr/contentBackgroundColor"/>
+                    android:orientation="vertical"
+                    android:background="?attr/contentBackgroundColor">
+                    <at.blogc.android.views.ExpandableTextView
+                        android:id="@+id/media_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/TextAppearance.Media.Info"
+                        android:paddingLeft="@dimen/default_padding"
+                        android:paddingRight="@dimen/default_padding"
+                        android:paddingBottom="0dp"
+                        android:maxLines="@integer/description_max_lines"
+                        android:ellipsize="end"
+                        app:animation_duration="@integer/expandable_textview_animation_duration"/>
+                    <ImageView
+                        android:id="@+id/show_all"
+                        android:layout_width="@dimen/small_icon_size"
+                        android:layout_height="@dimen/small_icon_size"
+                        android:layout_gravity="end"
+                        android:layout_marginBottom="@dimen/small_padding"
+                        android:layout_marginRight="@dimen/small_padding"
+                        android:layout_marginEnd="@dimen/small_padding"
+                        android:src="?attr/iconExpand"/>
+                </LinearLayout>
 
                 <View
                     android:id="@+id/separator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@id/directors"
+                    android:layout_below="@id/media_description_container"
                     style="@style/DefaultDividerH"/>
 
-                <TextView
-                    android:id="@+id/cast_title"
+                <FrameLayout
+                    android:id="@+id/media_additional_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/separator"
-                    style="@style/TextAppearance.Media.Title"
-                    android:paddingLeft="@dimen/default_padding"
-                    android:paddingRight="@dimen/default_padding"
-                    android:text="@string/cast"/>
-
-                <GridLayout
-                    android:id="@+id/cast_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/cast_title"
-                    android:columnCount="@integer/cast_grid_view_columns"
-                    android:orientation="horizontal"/>
+                    android:layout_marginTop="@dimen/default_padding"/>
 
             </RelativeLayout>
         </com.melnykov.fab.ObservableScrollView>
-
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.melnykov.fab.FloatingActionButton
@@ -278,7 +257,8 @@
         android:layout_marginEnd="@dimen/double_padding"
         android:src="@drawable/ic_play_arrow_white_24dp"
         app:fab_colorNormal="?attr/fabColorNormal"
-        app:fab_colorPressed="?attr/fabColorPressed"/>
+        app:fab_colorPressed="?attr/fabColorPressed"
+        android:visibility="gone"/>
 
     <!-- View that will be shown with the circularReveal when user presses the FAB -->
     <View

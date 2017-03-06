@@ -43,7 +43,8 @@ import org.xbmc.kore.utils.Utils;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public abstract class AbstractListFragment extends Fragment {
+public abstract class AbstractListFragment extends Fragment implements
+															SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
 	private BaseAdapter adapter;
 
@@ -58,6 +59,12 @@ public abstract class AbstractListFragment extends Fragment {
 	abstract protected AdapterView.OnItemClickListener createOnItemClickListener();
 	abstract protected BaseAdapter createAdapter();
 
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		adapter = createAdapter();
+	}
+
 	@TargetApi(16)
 	@Nullable
 	@Override
@@ -65,13 +72,10 @@ public abstract class AbstractListFragment extends Fragment {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
 		ButterKnife.inject(this, root);
 
-		swipeRefreshLayout.setEnabled(false);
+		swipeRefreshLayout.setOnRefreshListener(this);
 
 		gridView.setEmptyView(emptyView);
 		gridView.setOnItemClickListener(createOnItemClickListener());
-
-		// Configure the adapter and start the loader
-		adapter = createAdapter();
 		gridView.setAdapter(adapter);
 
 		if (savedInstanceState != null) {
@@ -99,7 +103,7 @@ public abstract class AbstractListFragment extends Fragment {
 					gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 				}
 
-				//Make sure menu is updated if it was already created
+				//Make sure menu is update	d if it was already created
 				getActivity().invalidateOptionsMenu();
 			}
 		});
@@ -182,6 +186,10 @@ public abstract class AbstractListFragment extends Fragment {
 				swipeRefreshLayout.setRefreshing(true);
 			}
 		});
+	}
+
+	public void hideRefreshAnimation() {
+		swipeRefreshLayout.setRefreshing(false);
 	}
 
 	public BaseAdapter getAdapter() {

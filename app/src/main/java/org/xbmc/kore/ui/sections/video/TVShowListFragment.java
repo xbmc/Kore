@@ -44,6 +44,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -96,8 +97,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             if (selection.length() != 0)
                 selection.append(" AND ");
             selection.append(MediaContract.TVShowsColumns.WATCHEDEPISODES)
-                    .append("!=")
-                    .append(MediaContract.TVShowsColumns.EPISODE);
+                     .append("!=")
+                     .append(MediaContract.TVShowsColumns.EPISODE);
         }
 
         String sortOrderStr;
@@ -121,8 +122,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
 
 
         return new CursorLoader(getActivity(), uri,
-                TVShowListQuery.PROJECTION, selection.toString(),
-                selectionArgs, sortOrderStr);
+                                TVShowListQuery.PROJECTION, selection.toString(),
+                                selectionArgs, sortOrderStr);
     }
 
     @Override
@@ -194,43 +195,43 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             case R.id.action_hide_watched:
                 item.setChecked(!item.isChecked());
                 preferences.edit()
-                        .putBoolean(Settings.KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED, item.isChecked())
-                        .apply();
+                           .putBoolean(Settings.KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED, item.isChecked())
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_ignore_prefixes:
                 item.setChecked(!item.isChecked());
                 preferences.edit()
-                        .putBoolean(Settings.KEY_PREF_TVSHOWS_IGNORE_PREFIXES, item.isChecked())
-                        .apply();
+                           .putBoolean(Settings.KEY_PREF_TVSHOWS_IGNORE_PREFIXES, item.isChecked())
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_name:
                 item.setChecked(true);
                 preferences.edit()
-                        .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_NAME)
-                        .apply();
+                           .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_NAME)
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_year:
                 item.setChecked(true);
                 preferences.edit()
-                        .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_YEAR)
-                        .apply();
+                           .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_YEAR)
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_rating:
                 item.setChecked(true);
                 preferences.edit()
-                        .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_RATING)
-                        .apply();
+                           .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_RATING)
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_date_added:
                 item.setChecked(true);
                 preferences.edit()
-                        .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
-                        .apply();
+                           .putInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
+                           .apply();
                 refreshList();
                 break;
             case R.id.action_sort_by_last_played:
@@ -266,7 +267,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 MediaContract.TVShows.PLAYCOUNT,
                 MediaContract.TVShows.IMDBNUMBER,
                 MediaContract.TVShows.GENRES,
-        };
+                };
 
         String SORT_BY_NAME = MediaContract.TVShows.TITLE + " ASC";
         String SORT_BY_YEAR = MediaContract.TVShows.PREMIERED + " ASC";
@@ -305,22 +306,21 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
             artWidth = (int)(resources.getDimension(R.dimen.now_playing_poster_width) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
+                             UIUtils.IMAGE_RESIZE_FACTOR);
             artHeight = (int)(resources.getDimension(R.dimen.now_playing_poster_height) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
+                              UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
         /** {@inheritDoc} */
         @Override
         public View newView(Context context, final Cursor cursor, ViewGroup parent) {
             final View view = LayoutInflater.from(context)
-                    .inflate(R.layout.grid_item_tvshow, parent, false);
+                                            .inflate(R.layout.grid_item_tvshow, parent, false);
 
             // Setup View holder pattern
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.titleView = (TextView)view.findViewById(R.id.title);
             viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
-//            viewHolder.yearView = (TextView)view.findViewById(R.id.year);
             viewHolder.premieredView = (TextView)view.findViewById(R.id.premiered);
             viewHolder.artView = (ImageView)view.findViewById(R.id.art);
 
@@ -335,31 +335,32 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             final ViewHolder viewHolder = (ViewHolder)view.getTag();
 
             // Save the movie id
-            viewHolder.tvshowId = cursor.getInt(TVShowListQuery.TVSHOWID);
-            viewHolder.tvshowTitle = cursor.getString(TVShowListQuery.TITLE);
-            viewHolder.episode = cursor.getInt(TVShowListQuery.EPISODE);
-            viewHolder.genres = cursor.getString(TVShowListQuery.GENRES);
-            viewHolder.plot = cursor.getString(TVShowListQuery.PLOT);
-            viewHolder.premiered = cursor.getString(TVShowListQuery.PREMIERED);
-            viewHolder.rating = cursor.getInt(TVShowListQuery.RATING);
-            viewHolder.studio = cursor.getString(TVShowListQuery.STUDIO);
-            viewHolder.watchedEpisodes = cursor.getInt(TVShowListQuery.WATCHEDEPISODES);
+            viewHolder.dataHolder.setId(cursor.getInt(TVShowListQuery.TVSHOWID));
+            viewHolder.dataHolder.setTitle(cursor.getString(TVShowListQuery.TITLE));
+            viewHolder.dataHolder.setDescription(cursor.getString(TVShowListQuery.PLOT));
+            viewHolder.dataHolder.setRating(cursor.getInt(TVShowListQuery.RATING));
+            int episode = cursor.getInt(TVShowListQuery.EPISODE);
+            int watchedEpisodes = cursor.getInt(TVShowListQuery.WATCHEDEPISODES);
 
-            if(Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("a"+viewHolder.tvshowId);
-            }
-
-            viewHolder.titleView.setText(viewHolder.tvshowTitle);
+            viewHolder.titleView.setText(viewHolder.dataHolder.getTitle());
             String details = String.format(context.getString(R.string.num_episodes),
-                    viewHolder.episode, viewHolder.episode - viewHolder.watchedEpisodes);
+                                           episode, episode - watchedEpisodes);
             viewHolder.detailsView.setText(details);
+            viewHolder.dataHolder.setUndertitle(details);
 
             String premiered = String.format(context.getString(R.string.premiered),
-                    viewHolder.premiered);
+                                             cursor.getString(TVShowListQuery.PREMIERED));
             viewHolder.premieredView.setText(premiered);
+            viewHolder.dataHolder.setDetails(premiered);
+            viewHolder.dataHolder.setPosterUrl(cursor.getString(TVShowListQuery.THUMBNAIL));
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                    cursor.getString(TVShowListQuery.THUMBNAIL), viewHolder.tvshowTitle,
-                    viewHolder.artView, artWidth, artHeight);
+                                                 viewHolder.dataHolder.getPosterUrl(),
+                                                 viewHolder.dataHolder.getTitle(),
+                                                 viewHolder.artView, artWidth, artHeight);
+
+            if (Utils.isLollipopOrLater()) {
+                viewHolder.artView.setTransitionName("a" + viewHolder.dataHolder.getId());
+            }
         }
     }
 
@@ -369,18 +370,9 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     public static class ViewHolder {
         TextView titleView;
         TextView detailsView;
-        //        TextView yearView;
         TextView premieredView;
         ImageView artView;
 
-        int tvshowId;
-        String tvshowTitle;
-        String premiered;
-        String studio;
-        int episode;
-        int watchedEpisodes;
-        double rating;
-        String plot;
-        String genres;
+        AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
     }
 }

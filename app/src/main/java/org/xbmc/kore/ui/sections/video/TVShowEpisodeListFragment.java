@@ -33,10 +33,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.CursorAdapter;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -46,10 +46,10 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Presents a list of episodes for a TV show season
@@ -58,7 +58,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowEpisodeListFragment.class);
 
     public interface OnEpisodeSelectedListener {
-        void onEpisodeSelected(EpisodeViewHolder vh);
+        void onEpisodeSelected(int tvshowId, ViewHolder dataHolder);
     }
 
     public static final String TVSHOWID = "tvshow_id";
@@ -109,9 +109,9 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     @Override
     protected void onListItemClicked(View view) {
         // Get the movie id from the tag
-        EpisodeViewHolder tag = (EpisodeViewHolder) view.getTag();
+        ViewHolder tag = (ViewHolder) view.getTag();
         // Notify the activity
-        listenerActivity.onEpisodeSelected(tag);
+        listenerActivity.onEpisodeSelected(tvshowId, tag);
     }
 
 
@@ -253,7 +253,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
                                             .inflate(R.layout.list_item_episode, parent, false);
 
             // Setup View holder pattern
-            EpisodeViewHolder viewHolder = new EpisodeViewHolder();
+            ViewHolder viewHolder = new ViewHolder();
             viewHolder.titleView = (TextView)view.findViewById(R.id.title);
             viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
             viewHolder.episodenumberView = (TextView)view.findViewById(R.id.episode_number);
@@ -269,15 +269,11 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         @TargetApi(21)
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            final EpisodeViewHolder viewHolder = (EpisodeViewHolder)view.getTag();
+            final ViewHolder viewHolder = (ViewHolder)view.getTag();
 
             // Save the episode id
-            viewHolder.episodeId = cursor.getInt(EpisodesListQuery.EPISODEID);
-            viewHolder.title = cursor.getString(EpisodesListQuery.TITLE);
-
-            if(Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("a"+viewHolder.episodeId);
-            }
+            viewHolder.dataHolder.setId(cursor.getInt(EpisodesListQuery.EPISODEID));
+            viewHolder.dataHolder.setTitle(cursor.getString(EpisodesListQuery.TITLE));
 
             viewHolder.episodenumberView.setText(
                     String.format(context.getString(R.string.episode_number),
@@ -298,7 +294,8 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
             }
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                                                 cursor.getString(EpisodesListQuery.THUMBNAIL), viewHolder.title,
+                                                 cursor.getString(EpisodesListQuery.THUMBNAIL),
+                                                 viewHolder.dataHolder.getTitle(),
                                                  viewHolder.artView, artWidth, artHeight);
 
             // For the popupmenu
@@ -311,7 +308,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     /**
      * View holder pattern, only for episodes
      */
-    public static class EpisodeViewHolder {
+    public static class ViewHolder {
         TextView titleView;
         TextView detailsView;
         TextView episodenumberView;
@@ -319,17 +316,16 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         ImageView checkmarkView;
         ImageView artView;
 
-        int episodeId;
-        String title;
+        AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
     }
 
     private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-            final EpisodeViewHolder viewHolder = (EpisodeViewHolder)v.getTag();
+            final ViewHolder viewHolder = (ViewHolder)v.getTag();
 
             final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.episodeid = viewHolder.episodeId;
+            playListItem.episodeid = viewHolder.dataHolder.getId();
 
             final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
             popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());

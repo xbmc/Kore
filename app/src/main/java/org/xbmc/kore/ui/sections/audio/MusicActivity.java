@@ -18,26 +18,22 @@ package org.xbmc.kore.ui.sections.audio;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.Utils;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Controls the presentation of Music information (list, details)
@@ -45,9 +41,9 @@ import java.util.Map;
  */
 public class MusicActivity extends BaseActivity
         implements ArtistListFragment.OnArtistSelectedListener,
-        AlbumListFragment.OnAlbumSelectedListener,
-        AudioGenresListFragment.OnAudioGenreSelectedListener,
-        MusicVideoListFragment.OnMusicVideoSelectedListener {
+                   AlbumListFragment.OnAlbumSelectedListener,
+                   AudioGenresListFragment.OnAudioGenreSelectedListener,
+                   MusicVideoListFragment.OnMusicVideoSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(MusicActivity.class);
 
     public static final String ALBUMID = "album_id";
@@ -58,6 +54,7 @@ public class MusicActivity extends BaseActivity
     public static final String GENRETITLE = "genre_title";
     public static final String MUSICVIDEOID = "music_video_id";
     public static final String MUSICVIDEOTITLE = "music_video_title";
+    public static final String LISTFRAGMENT_TAG = "musiclist";
 
     private int selectedAlbumId = -1;
     private int selectedArtistId = -1;
@@ -70,9 +67,8 @@ public class MusicActivity extends BaseActivity
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
-    private MusicListFragment musicListFragment;
+    private SharedElementTransition sharedElementTransition = new SharedElementTransition();
 
-    private boolean clearSharedElements;
 
     @TargetApi(21)
     @Override
@@ -85,34 +81,17 @@ public class MusicActivity extends BaseActivity
                 .findFragmentById(R.id.navigation_drawer);
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        Fragment fragment;
         if (savedInstanceState == null) {
-            musicListFragment = new MusicListFragment();
+            fragment = new MusicListFragment();
 
-            // Setup animations
-            if (Utils.isLollipopOrLater()) {
-                musicListFragment.setExitTransition(null);
-                musicListFragment.setReenterTransition(TransitionInflater
-                        .from(this)
-                        .inflateTransition(android.R.transition.fade));
-                musicListFragment.setExitSharedElementCallback(new SharedElementCallback() {
-                    @Override
-                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                        // Clearing must be done in the reentering fragment
-                        // as this is called last. Otherwise, the app will crash during transition setup. Not sure, but might
-                        // be a v4 support package bug.
-                        if (clearSharedElements) {
-                            names.clear();
-                            sharedElements.clear();
-                            clearSharedElements = false;
-                        }
-                    }
-                });
-            }
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, musicListFragment)
+                    .add(R.id.fragment_container, fragment, LISTFRAGMENT_TAG)
                     .commit();
         } else {
+            fragment = getSupportFragmentManager().findFragmentByTag(LISTFRAGMENT_TAG);
+
             selectedAlbumId = savedInstanceState.getInt(ALBUMID, -1);
             selectedArtistId = savedInstanceState.getInt(ARTISTID, -1);
             selectedGenreId = savedInstanceState.getInt(GENREID, -1);
@@ -123,22 +102,16 @@ public class MusicActivity extends BaseActivity
             selectedMusicVideoTitle = savedInstanceState.getString(MUSICVIDEOTITLE, null);
         }
 
+        if (Utils.isLollipopOrLater()) {
+            sharedElementTransition.setupExitTransition(this, fragment);
+        }
+
         setupActionBar(selectedAlbumTitle, selectedArtistName, selectedGenreTitle, selectedMusicVideoTitle);
 
 //        // Setup system bars and content padding, allowing averlap with the bottom bar
 //        setupSystemBarsColors();
 //        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.fragment_container), true, true, true);
 //        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.drawer_layout), true, true, true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -270,44 +243,28 @@ public class MusicActivity extends BaseActivity
     }
 
     @TargetApi(21)
-    public void onArtistSelected(ArtistListFragment.ViewHolder viewHolder) {
-        selectedArtistId = viewHolder.artistId;
-        selectedArtistName = viewHolder.artistName;
+    public void onArtistSelected(ArtistListFragment.ViewHolder vh) {
+        selectedArtistId = vh.dataHolder.getId();
+        selectedArtistName = vh.dataHolder.getTitle();
 
         // Replace list fragment
-        final ArtistDetailsFragment artistDetailsFragment = ArtistDetailsFragment.newInstance(viewHolder);
+        final ArtistDetailsFragment artistDetailsFragment = new ArtistDetailsFragment();
+        artistDetailsFragment.setDataHolder(vh.dataHolder);
+        vh.dataHolder.setSquarePoster(true);
 
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
         // Setup animations
         if (Utils.isLollipopOrLater()) {
-            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
-                @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                    View sharedView = artistDetailsFragment.getSharedElement();
-                    if (sharedView == null) { // shared element not visible
-                        clearSharedElements = true;
-                    }
-                }
-            };
-            artistDetailsFragment.setEnterSharedElementCallback(seCallback);
-
-            artistDetailsFragment.setEnterTransition(TransitionInflater
-                    .from(this)
-                    .inflateTransition(R.transition.media_details));
-            artistDetailsFragment.setReturnTransition(null);
-
-            Transition changeImageTransition = TransitionInflater.from(
-                    this).inflateTransition(R.transition.change_image);
-            artistDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
-            artistDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
-            fragTrans.addSharedElement(viewHolder.artView, viewHolder.artView.getTransitionName());
+            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
+            sharedElementTransition.setupEnterTransition(this, fragTrans, artistDetailsFragment,
+                                                         vh.artView);
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
         }
 
         fragTrans.replace(R.id.fragment_container, artistDetailsFragment)
-                .addToBackStack(null)
-                .commit();
+                 .addToBackStack(null)
+                 .commit();
 
         navigationDrawerFragment.animateDrawerToggle(true);
         setupActionBar(null, selectedArtistName, null, null);
@@ -315,52 +272,27 @@ public class MusicActivity extends BaseActivity
 
     @TargetApi(21)
     public void onAlbumSelected(AlbumListFragment.ViewHolder vh) {
-        selectedAlbumId = vh.albumId;
-        selectedAlbumTitle = vh.albumTitle;
+        selectedAlbumId = vh.dataHolder.getId();
+        selectedAlbumTitle = vh.dataHolder.getTitle();
 
         // Replace list fragment
-        final AlbumDetailsFragment albumDetailsFragment = AlbumDetailsFragment.newInstance(vh);
+        final AbstractInfoFragment albumInfoFragment = new AlbumInfoFragment();
+        vh.dataHolder.setSquarePoster(true);
+        albumInfoFragment.setDataHolder(vh.dataHolder);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
-            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
-                @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                    //On returning onMapSharedElements for the exiting fragment is called before the onMapSharedElements
-                    // for the reentering fragment. We use this to determine if we are returning and if
-                    // we should clear the shared element lists. Note that, clearing must be done in the reentering fragment
-                    // as this is called last. Otherwise it the app will crash during transition setup. Not sure, but might
-                    // be a v4 support package bug.
-                    if (albumDetailsFragment.isVisible()) {
-                        View sharedView = albumDetailsFragment.getSharedElement();
-                        if (sharedView == null) { // shared element not visible
-                            clearSharedElements = true;
-                        }
-                    }
-                }
-            };
-            albumDetailsFragment.setEnterSharedElementCallback(seCallback);
-
-            albumDetailsFragment.setEnterTransition(TransitionInflater
-                    .from(this)
-                    .inflateTransition(R.transition.media_details));
-            albumDetailsFragment.setReturnTransition(null);
-
-            Transition changeImageTransition = TransitionInflater.from(
-                    this).inflateTransition(R.transition.change_image);
-            albumDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
-            albumDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
-
-            fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
+            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
+            sharedElementTransition.setupEnterTransition(this, fragTrans, albumInfoFragment, vh.artView);
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                    R.anim.fragment_list_popenter, 0);
+                                          R.anim.fragment_list_popenter, 0);
         }
 
-        fragTrans.replace(R.id.fragment_container, albumDetailsFragment)
-                .addToBackStack(null)
-                .commit();
+        fragTrans.replace(R.id.fragment_container, albumInfoFragment)
+                 .addToBackStack(null)
+                 .commit();
         setupActionBar(selectedAlbumTitle, null, null, null);
     }
 
@@ -369,7 +301,9 @@ public class MusicActivity extends BaseActivity
         selectedGenreTitle = genreTitle;
 
         // Replace list fragment
-        AlbumListFragment albumListFragment = AlbumListFragment.newInstanceForGenre(genreId);
+        AlbumListFragment albumListFragment = new AlbumListFragment();
+        albumListFragment.setGenre(genreId);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0)
@@ -381,53 +315,28 @@ public class MusicActivity extends BaseActivity
 
     @TargetApi(21)
     public void onMusicVideoSelected(MusicVideoListFragment.ViewHolder vh) {
-        selectedMusicVideoId = vh.musicVideoId;
-        selectedMusicVideoTitle = vh.musicVideoTitle;
+        selectedMusicVideoId = vh.dataHolder.getId();
+        selectedMusicVideoTitle = vh.dataHolder.getTitle();
 
         // Replace list fragment
-        final MusicVideoDetailsFragment detailsFragment = MusicVideoDetailsFragment.newInstance(vh);
+        final MusicVideoInfoFragment musicVideoInfoFragment = new MusicVideoInfoFragment();
+        vh.dataHolder.setSquarePoster(true);
+        musicVideoInfoFragment.setDataHolder(vh.dataHolder);
+
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
-            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
-                @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                    //On returning onMapSharedElements for the exiting fragment is called before the onMapSharedElements
-                    // for the reentering fragment. We use this to determine if we are returning and if
-                    // we should clear the shared element lists. Note that, clearing must be done in the reentering fragment
-                    // as this is called last. Otherwise it the app will crash during transition setup. Not sure, but might
-                    // be a v4 support package bug.
-                    if (detailsFragment.isVisible()) {
-                        View sharedView = detailsFragment.getSharedElement();
-                        if (sharedView == null) { // shared element not visible
-                            LogUtils.LOGD(TAG, "onMusicVideoSelected: setting clearedSharedElements to true");
-                            clearSharedElements = true;
-                        }
-                    }
-                }
-            };
-            detailsFragment.setEnterSharedElementCallback(seCallback);
-
-            detailsFragment.setEnterTransition(TransitionInflater
-                    .from(this)
-                    .inflateTransition(R.transition.media_details));
-            detailsFragment.setReturnTransition(null);
-
-            Transition changeImageTransition = TransitionInflater.from(
-                    this).inflateTransition(R.transition.change_image);
-            detailsFragment.setSharedElementReturnTransition(changeImageTransition);
-            detailsFragment.setSharedElementEnterTransition(changeImageTransition);
-
-            fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
+            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
+            sharedElementTransition.setupEnterTransition(this, fragTrans, musicVideoInfoFragment, vh.artView);
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                    R.anim.fragment_list_popenter, 0);
+                                          R.anim.fragment_list_popenter, 0);
         }
 
-        fragTrans.replace(R.id.fragment_container, detailsFragment)
-                .addToBackStack(null)
-                .commit();
+        fragTrans.replace(R.id.fragment_container, musicVideoInfoFragment)
+                 .addToBackStack(null)
+                 .commit();
         setupActionBar(null, null, null, selectedMusicVideoTitle);
     }
 }

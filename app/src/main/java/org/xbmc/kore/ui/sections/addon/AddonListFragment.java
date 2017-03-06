@@ -21,14 +21,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +36,8 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Addons;
 import org.xbmc.kore.jsonrpc.type.AddonType;
+import org.xbmc.kore.ui.AbstractInfoFragment;
+import org.xbmc.kore.ui.AbstractListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -46,58 +46,27 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
 /**
  * Fragment that presents the movie list
  */
-public class AddonListFragment extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener {
+public class AddonListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(AddonListFragment.class);
 
     public interface OnAddonSelectedListener {
-        public void onAddonSelected(ViewHolder vh);
+        void onAddonSelected(ViewHolder vh);
     }
 
     // Activity listener
     private OnAddonSelectedListener listenerActivity;
-
-    private HostManager hostManager;
-
-    @InjectView(R.id.list) GridView addonsGridView;
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(android.R.id.empty) TextView emptyView;
 
     /**
      * Handler on which to post RPC callbacks
      */
     private Handler callbackHandler = new Handler();
 
-    private AddonsAdapter adapter = null;
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
-        ButterKnife.inject(this, root);
-
-        hostManager = HostManager.getInstance(getActivity());
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        emptyView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
-        addonsGridView.setEmptyView(emptyView);
-        addonsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    protected AdapterView.OnItemClickListener createOnItemClickListener() {
+        return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the movie id from the tag
@@ -105,27 +74,21 @@ public class AddonListFragment extends Fragment
                 // Notify the activity
                 listenerActivity.onAddonSelected(tag);
             }
-        });
-
-        if (adapter == null) {
-            adapter = new AddonsAdapter(getActivity(), R.layout.grid_item_addon);
-        }
-        addonsGridView.setAdapter(adapter);
-
-        // Pad main content view to overlap with bottom system bar
-//        UIUtils.setPaddingForSystemBars(getActivity(), addonsGridView, false, false, true);
-//        addonsGridView.setClipToPadding(false);
-
-        return root;
+        };
     }
 
+
+    @Override
+    protected BaseAdapter createAdapter() {
+        return new AddonsAdapter(getActivity(), R.layout.grid_item_addon);
+    }
 
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
 
-        if (adapter.getCount() == 0)
+        if (getAdapter().getCount() == 0)
             callGetAddonsAndSetup();
     }
 
@@ -146,25 +109,11 @@ public class AddonListFragment extends Fragment
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    /**
-     * Swipe refresh layout callback
-     */
-    /** {@inheritDoc} */
-    @Override
     public void onRefresh () {
-        if (hostManager.getHostInfo() != null) {
+        if (HostManager.getInstance(getActivity()).getHostInfo() != null) {
             callGetAddonsAndSetup();
         } else {
-            swipeRefreshLayout.setRefreshing(false);
+            hideRefreshAnimation();
             Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
                  .show();
         }
@@ -179,7 +128,9 @@ public class AddonListFragment extends Fragment
      * Get the addons list and setup the gridview
      */
     private void callGetAddonsAndSetup() {
-        swipeRefreshLayout.setRefreshing(true);
+        final AddonsAdapter adapter = (AddonsAdapter) getAdapter();
+
+        showRefreshAnimation();
         // Get the addon list, this is done asyhnchronously
         String[] properties = new String[] {
                 AddonType.Fields.NAME, AddonType.Fields.VERSION, AddonType.Fields.SUMMARY,
@@ -189,54 +140,60 @@ public class AddonListFragment extends Fragment
                 AddonType.Fields.RATING, AddonType.Fields.ENABLED
         };
         Addons.GetAddons action = new Addons.GetAddons(properties);
-        action.execute(hostManager.getConnection(), new ApiCallback<List<AddonType.Details>>() {
-            @Override
-            public void onSuccess(List<AddonType.Details> result) {
-                if (!isAdded()) return;
-                for (AddonType.Details addon : result) {
-                    String regex = "\\[.*?\\]";
-                    addon.name = addon.name.replaceAll(regex, "");
-                    addon.description = addon.description.replaceAll(regex, "");
-                    addon.summary = addon.summary.replaceAll(regex, "");
-                    addon.author = addon.author.replaceAll(regex, "");
-                }
-                Collections.sort(result, new AddonNameComparator());
-                adapter.clear();
-                for (AddonType.Details addon : result) {
-                    if (addon.type.equals(AddonType.Types.UNKNOWN) ||
-                        addon.type.equals(AddonType.Types.XBMC_PYTHON_PLUGINSOURCE) ||
-                        addon.type.equals(AddonType.Types.XBMC_PYTHON_SCRIPT) ||
-                        addon.type.equals(AddonType.Types.XBMC_ADDON_AUDIO) ||
-                        addon.type.equals(AddonType.Types.XBMC_ADDON_EXECUTABLE) ||
-                        addon.type.equals(AddonType.Types.XBMC_ADDON_VIDEO) ||
-                        addon.type.equals(AddonType.Types.XBMC_ADDON_IMAGE)) {
-                        adapter.add(addon);
-                    }
-                }
-                // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(getString(R.string.no_addons_found_refresh));
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-            }
+        action.execute(HostManager.getInstance(getActivity()).getConnection(),
+                       new ApiCallback<List<AddonType.Details>>() {
+                           @Override
+                           public void onSuccess(List<AddonType.Details> result) {
+                               if (!isAdded()) return;
 
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
+                               for (AddonType.Details addon : result) {
+                                   String regex = "\\[.*?\\]";
+                                   addon.name = addon.name.replaceAll(regex, "");
+                                   addon.description = addon.description.replaceAll(regex, "");
+                                   addon.summary = addon.summary.replaceAll(regex, "");
+                                   addon.author = addon.author.replaceAll(regex, "");
+                               }
+                               Collections.sort(result, new AddonNameComparator());
 
-                // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(getString(R.string.no_addons_found_refresh));
-                Toast.makeText(getActivity(),
-                               String.format(getString(R.string.error_getting_addon_info), description),
-                               Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }, callbackHandler);
+                               adapter.clear();
+                               for (AddonType.Details addon : result) {
+                                   if (addon.type.equals(AddonType.Types.UNKNOWN) ||
+                                       addon.type.equals(AddonType.Types.XBMC_PYTHON_PLUGINSOURCE) ||
+                                       addon.type.equals(AddonType.Types.XBMC_PYTHON_SCRIPT) ||
+                                       addon.type.equals(AddonType.Types.XBMC_ADDON_AUDIO) ||
+                                       addon.type.equals(AddonType.Types.XBMC_ADDON_EXECUTABLE) ||
+                                       addon.type.equals(AddonType.Types.XBMC_ADDON_VIDEO) ||
+                                       addon.type.equals(AddonType.Types.XBMC_ADDON_IMAGE)) {
+                                       adapter.add(addon);
+                                   }
+                               }
+
+                               adapter.notifyDataSetChanged();
+                               hideRefreshAnimation();
+
+                               if(adapter.getCount() == 0) {
+                                   getEmptyView().setText(R.string.no_addons_found_refresh);
+                               }
+                           }
+
+                           @Override
+                           public void onError(int errorCode, String description) {
+                               if (!isAdded()) return;
+
+                               Toast.makeText(getActivity(),
+                                              String.format(getString(R.string.error_getting_addon_info), description),
+                                              Toast.LENGTH_SHORT).show();
+                               hideRefreshAnimation();
+                           }
+                       }, callbackHandler);
     }
 
     private class AddonsAdapter extends ArrayAdapter<AddonType.Details> {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
+        private String author;
+        private String version;
 
         public AddonsAdapter(Context context, int resource) {
             super(context, resource);
@@ -246,8 +203,11 @@ public class AddonListFragment extends Fragment
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = resources.getDimensionPixelOffset(R.dimen.addondetail_poster_width);;
-            artHeight = resources.getDimensionPixelOffset(R.dimen.addondetail_poster_height);;
+            artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
+            artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
+
+            author = context.getString(R.string.author);
+            version = context.getString(R.string.version);
         }
 
         /** {@inheritDoc} */
@@ -269,27 +229,26 @@ public class AddonListFragment extends Fragment
             final ViewHolder viewHolder = (ViewHolder)convertView.getTag();
             AddonType.Details addonDetails = this.getItem(position);
 
-            // Save the movie id
-            viewHolder.addonId = addonDetails.addonid;
-            viewHolder.addonName = addonDetails.name;
-            viewHolder.author = addonDetails.author;
-            viewHolder.description = addonDetails.description;
-            viewHolder.summary = addonDetails.summary;
-            viewHolder.version = addonDetails.version;
-            viewHolder.fanart = addonDetails.fanart;
-            viewHolder.poster = addonDetails.thumbnail;
-            viewHolder.enabled = addonDetails.enabled;
-            viewHolder.browsable = AddonType.Types.XBMC_PYTHON_PLUGINSOURCE.equals(addonDetails.type);
+            viewHolder.dataHolder.setTitle(addonDetails.name);
+            viewHolder.dataHolder.setDescription(addonDetails.description);
+            viewHolder.dataHolder.setUndertitle(addonDetails.summary);
+            viewHolder.dataHolder.setFanArtUrl(addonDetails.fanart);
+            viewHolder.dataHolder.setPosterUrl(addonDetails.thumbnail);
+            viewHolder.dataHolder.setDetails(author + " " + addonDetails.author + "\n" +
+                                             version + " " +addonDetails.version);
+            viewHolder.dataHolder.getBundle().putString(AddonInfoFragment.BUNDLE_KEY_ADDONID, addonDetails.addonid);
+            viewHolder.dataHolder.getBundle().putBoolean(AddonInfoFragment.BUNDLE_KEY_BROWSABLE,
+                                                         AddonType.Types.XBMC_PYTHON_PLUGINSOURCE.equals(addonDetails.type));
 
-            viewHolder.titleView.setText(viewHolder.addonName);
+            viewHolder.titleView.setText(viewHolder.dataHolder.getTitle());
             viewHolder.detailsView.setText(addonDetails.summary);
 
             UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
-                                                 addonDetails.thumbnail, viewHolder.addonName,
+                                                 addonDetails.thumbnail, viewHolder.dataHolder.getTitle(),
                                                  viewHolder.artView, artWidth, artHeight);
 
             if(Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("a"+viewHolder.addonId);
+                viewHolder.artView.setTransitionName("a"+addonDetails.addonid);
             }
             return convertView;
         }
@@ -303,15 +262,6 @@ public class AddonListFragment extends Fragment
         TextView detailsView;
         ImageView artView;
 
-        String addonId;
-        String addonName;
-        String summary;
-        String author;
-        String version;
-        String description;
-        String fanart;
-        String poster;
-        Boolean enabled;
-        Boolean browsable;
+        AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
     }
 }

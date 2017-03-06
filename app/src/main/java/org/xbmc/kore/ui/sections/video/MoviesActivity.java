@@ -18,15 +18,13 @@ package org.xbmc.kore.ui.sections.video;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 
 import org.xbmc.kore.R;
@@ -34,10 +32,8 @@ import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.Utils;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Controls the presentation of Movies information (list, details)
@@ -49,15 +45,14 @@ public class MoviesActivity extends BaseActivity
 
     public static final String MOVIEID = "movie_id";
     public static final String MOVIETITLE = "movie_title";
+    public static final String LISTFRAGMENT_TAG = "movielist";
 
     private int selectedMovieId = -1;
     private String selectedMovieTitle;
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
-    private boolean clearSharedElements;
-
-    private MovieListFragment movieListFragment;
+    private SharedElementTransition sharedElementTransition = new SharedElementTransition();
 
     @TargetApi(21)
     @Override
@@ -74,52 +69,26 @@ public class MoviesActivity extends BaseActivity
                 .findFragmentById(R.id.navigation_drawer);
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        Fragment fragment;
         if (savedInstanceState == null) {
-            movieListFragment = new MovieListFragment();
+            fragment = new MovieListFragment();
 
-            // Setup animations
-            if (Utils.isLollipopOrLater()) {
-                //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
-                Transition fade = TransitionInflater
-                        .from(this)
-                        .inflateTransition(android.R.transition.fade);
-                movieListFragment.setExitTransition(fade);
-                movieListFragment.setReenterTransition(fade);
-                movieListFragment.setSharedElementReturnTransition(TransitionInflater.from(
-                        this).inflateTransition(R.transition.change_image));
-
-                android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
-                    @Override
-                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                        if (clearSharedElements) {
-                            names.clear();
-                            sharedElements.clear();
-                            clearSharedElements = false;
-                        }
-                    }
-                };
-                movieListFragment.setExitSharedElementCallback(seCallback);
-            }
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, movieListFragment)
+                    .add(R.id.fragment_container, fragment, LISTFRAGMENT_TAG)
                     .commit();
         } else {
+            fragment = getSupportFragmentManager().findFragmentByTag(LISTFRAGMENT_TAG);
+
             selectedMovieId = savedInstanceState.getInt(MOVIEID, -1);
             selectedMovieTitle = savedInstanceState.getString(MOVIETITLE, null);
         }
 
+        if (Utils.isLollipopOrLater()) {
+            sharedElementTransition.setupExitTransition(this, fragment);
+        }
+
         setupActionBar(selectedMovieTitle);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -208,47 +177,24 @@ public class MoviesActivity extends BaseActivity
      */
     @TargetApi(21)
     public void onMovieSelected(MovieListFragment.ViewHolder vh) {
-        selectedMovieTitle = vh.movieTitle;
-        selectedMovieId = vh.movieId;
+        selectedMovieTitle = vh.dataHolder.getTitle();
+        selectedMovieId = vh.dataHolder.getId();
 
-        final MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(vh);
+        final MovieInfoFragment movieInfoFragment = new MovieInfoFragment();
+        movieInfoFragment.setDataHolder(vh.dataHolder);
+
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
-            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
-                @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                    //On returning onMapSharedElements for the exiting fragment is called before the onMapSharedElements
-                    // for the reentering fragment. We use this to determine if we are returning and if
-                    // we should clear the shared element lists. Note that, clearing must be done in the reentering fragment
-                    // as this is called last. Otherwise it the app will crash during transition setup. Not sure, but might
-                    // be a v4 support package bug.
-                    if (movieDetailsFragment.isVisible()) {
-                        View sharedView = movieDetailsFragment.getSharedElement();
-                        if (sharedView == null) { // shared element not visible
-                            clearSharedElements = true;
-                        }
-                    }
-                }
-            };
-            movieDetailsFragment.setEnterSharedElementCallback(seCallback);
-            movieDetailsFragment.setEnterTransition(
-                    TransitionInflater.from(this)
-                                      .inflateTransition(R.transition.media_details));
-            movieDetailsFragment.setReturnTransition(null);
-
-            Transition changeImageTransition =
-                    TransitionInflater.from(this).inflateTransition(R.transition.change_image);
-            movieDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
-            movieDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
-
-            fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
+            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
+            sharedElementTransition.setupEnterTransition(this, fragTrans, movieInfoFragment,
+                                                         vh.artView);
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
                     R.anim.fragment_list_popenter, 0);
         }
-        fragTrans.replace(R.id.fragment_container, movieDetailsFragment)
+        fragTrans.replace(R.id.fragment_container, movieInfoFragment)
                  .addToBackStack(null)
                  .commit();
 

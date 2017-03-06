@@ -18,26 +18,24 @@ package org.xbmc.kore.ui.sections.video;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.Utils;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Controls the presentation of TV Shows information (list, details)
@@ -45,7 +43,7 @@ import java.util.Map;
  */
 public class TVShowsActivity extends BaseActivity
         implements TVShowListFragment.OnTVShowSelectedListener,
-                   TVShowDetailsFragment.TVShowDetailsActionListener,
+                   TVShowProgressFragment.TVShowProgressActionListener,
                    TVShowEpisodeListFragment.OnEpisodeSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(TVShowsActivity.class);
 
@@ -54,6 +52,7 @@ public class TVShowsActivity extends BaseActivity
     public static final String EPISODEID = "episode_id";
     public static final String SEASON = "season";
     public static final String SEASONTITLE = "season_title";
+    public static final String LISTFRAGMENT_TAG = "tvshowlist";
 
     private int selectedTVShowId = -1;
     private String selectedTVShowTitle = null;
@@ -61,7 +60,7 @@ public class TVShowsActivity extends BaseActivity
     private String selectedSeasonTitle = null;
     private int selectedEpisodeId = -1;
 
-    private boolean clearSharedElements;
+    private SharedElementTransition sharedElementTransition = new SharedElementTransition();
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
@@ -80,43 +79,26 @@ public class TVShowsActivity extends BaseActivity
                 .findFragmentById(R.id.navigation_drawer);
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        Fragment fragment;
         if (savedInstanceState == null) {
-            TVShowListFragment tvshowListFragment = new TVShowListFragment();
+            fragment = new TVShowListFragment();
 
-            // Setup animations
-            if (Utils.isLollipopOrLater()) {
-                //Fade added to prevent shared element from disappearing very shortly at the start of the transition.
-                Transition fade = TransitionInflater
-                        .from(this)
-                        .inflateTransition(android.R.transition.fade);
-                tvshowListFragment.setExitTransition(fade);
-                tvshowListFragment.setReenterTransition(fade);
-
-                tvshowListFragment.setSharedElementReturnTransition(TransitionInflater.from(
-                        this).inflateTransition(R.transition.change_image));
-
-                android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
-                    @Override
-                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                        if (clearSharedElements) {
-                            names.clear();
-                            sharedElements.clear();
-                            clearSharedElements = false;
-                        }
-                    }
-                };
-                tvshowListFragment.setExitSharedElementCallback(seCallback);
-            }
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, tvshowListFragment)
+                    .add(R.id.fragment_container, fragment, LISTFRAGMENT_TAG)
                     .commit();
         } else {
+            fragment = getSupportFragmentManager().findFragmentByTag(LISTFRAGMENT_TAG);
+
             selectedTVShowId = savedInstanceState.getInt(TVSHOWID, -1);
             selectedTVShowTitle = savedInstanceState.getString(TVSHOWTITLE, null);
             selectedEpisodeId = savedInstanceState.getInt(EPISODEID, -1);
             selectedSeason = savedInstanceState.getInt(SEASON, -1);
             selectedSeasonTitle = savedInstanceState.getString(SEASONTITLE, null);
+        }
+
+        if (Utils.isLollipopOrLater()) {
+            sharedElementTransition.setupExitTransition(this, fragment);
         }
 
         setupActionBar(selectedTVShowTitle);
@@ -238,43 +220,19 @@ public class TVShowsActivity extends BaseActivity
      */
     @TargetApi(21)
     public void onTVShowSelected(TVShowListFragment.ViewHolder vh) {
-        selectedTVShowId = vh.tvshowId;
-        selectedTVShowTitle = vh.tvshowTitle;
+        selectedTVShowId = vh.dataHolder.getId();
+        selectedTVShowTitle = vh.dataHolder.getTitle();
 
         // Replace list fragment
-        final TVShowDetailsFragment tvshowDetailsFragment = TVShowDetailsFragment.newInstance(vh);
+        final TVShowInfoFragment tvshowDetailsFragment = new TVShowInfoFragment();
+        tvshowDetailsFragment.setDataHolder(vh.dataHolder);
+
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
         if (Utils.isLollipopOrLater()) {
-            android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
-                @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                    //On returning onMapSharedElements for the exiting fragment is called before the onMapSharedElements
-                    // for the reentering fragment. We use this to determine if we are returning and if
-                    // we should clear the shared element lists. Note that, clearing must be done in the reentering fragment
-                    // as this is called last. Otherwise it the app will crash during transition setup. Not sure, but might
-                    // be a v4 support package bug.
-                    if (tvshowDetailsFragment.isVisible()) {
-                        View sharedView = tvshowDetailsFragment.getSharedElement();
-                        if (sharedView == null) { // shared element not visible
-                            clearSharedElements = true;
-                        }
-                    }
-                }
-            };
-            tvshowDetailsFragment.setEnterSharedElementCallback(seCallback);
-
-            tvshowDetailsFragment.setEnterTransition(
-                    TransitionInflater.from(this)
-                                      .inflateTransition(R.transition.media_details));
-            tvshowDetailsFragment.setReturnTransition(null);
-            Transition changeImageTransition =
-                    TransitionInflater.from(this)
-                                      .inflateTransition(R.transition.change_image);
-            tvshowDetailsFragment.setSharedElementReturnTransition(changeImageTransition);
-            tvshowDetailsFragment.setSharedElementEnterTransition(changeImageTransition);
-            fragTrans.addSharedElement(vh.artView, vh.artView.getTransitionName());
+            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
+            sharedElementTransition.setupEnterTransition(this, fragTrans, tvshowDetailsFragment, vh.artView);
         } else {
             fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
         }
@@ -308,15 +266,16 @@ public class TVShowsActivity extends BaseActivity
 
     /**
      * Callback from tvshow details when a episode is selected
-     * @param episodeId episode id
      */
     @TargetApi(21)
-    public void onNextEpisodeSelected(int episodeId) {
-        selectedEpisodeId = episodeId;
+    public void onNextEpisodeSelected(int tvshowId,
+                                      AbstractInfoFragment.DataHolder dh) {
+        selectedEpisodeId = dh.getId();
 
         // Replace list fragment
-        TVShowEpisodeDetailsFragment fragment =
-                TVShowEpisodeDetailsFragment.newInstance(selectedTVShowId, selectedEpisodeId);
+        TVShowEpisodeInfoFragment fragment = new TVShowEpisodeInfoFragment();
+        fragment.setDataHolder(dh);
+        fragment.setTvshowId(tvshowId);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
@@ -336,15 +295,16 @@ public class TVShowsActivity extends BaseActivity
 
     /**
      * Callback from tvshow episodes list when a episode is selected
-     * @param vh view holder
      */
     @TargetApi(21)
-    public void onEpisodeSelected(TVShowEpisodeListFragment.EpisodeViewHolder vh) {
-        selectedEpisodeId = vh.episodeId;
+    public void onEpisodeSelected(int tvshowId,
+                                  TVShowEpisodeListFragment.ViewHolder viewHolder) {
+        selectedEpisodeId = viewHolder.dataHolder.getId();
 
         // Replace list fragment
-        TVShowEpisodeDetailsFragment fragment =
-                TVShowEpisodeDetailsFragment.newInstance(selectedTVShowId, selectedEpisodeId);
+        TVShowEpisodeInfoFragment fragment = new TVShowEpisodeInfoFragment();
+        fragment.setDataHolder(viewHolder.dataHolder);
+        fragment.setTvshowId(tvshowId);
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions

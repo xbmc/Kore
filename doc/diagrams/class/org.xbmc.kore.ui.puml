@@ -1,0 +1,180 @@
+@startuml
+
+interface SharedElement {
+Required for all fragments that
+support shared element transitions
++ boolean isSharedElementVisible()
+}
+
+class DataHolder {
+Holds required data used by info and details fragments
++ DataHolder(Bundle bundle)
++ DataHolder(int itemId)
++ void setBundle(Bundle bundle)
++ void setPosterTransitionName(String posterTransitionName)
++ void setSquarePoster(boolean squarePoster)
++ void setRating(double rating)
++ void setMaxRating(int maxRating)
++ void setVotes(int votes)
++ void setPosterUrl(String posterUrl)
++ void setTitle(String title)
++ void setUndertitle(String underTitle)
++ void setDescription(String description)
++ void setDetails(String details)
++ void setFanArtUrl(String fanArtUrl)
++ void setId(int id)
++ String getPosterTransitionName()
++ boolean getSquarePoster()
++ double getRating()
++ int getMaxRating()
++ int getVotes()
++ String getPosterUrl()
++ String getTitle()
++ String getUnderTitle()
++ String getDescription()
++ String getDetails()
++ String getFanArtUrl()
++ int getId()
++ Bundle getBundle()
+}
+
+abstract class AbstractFragment {
+Holds the dataholder to provide quick access to required data in info
+and detail fragments. This is required to provide a smooth and
+responsive UX, especially when using shared element transitions.
++ void setDataHolder(AbstractInfoFragment.DataHolder dataHolder)
++ AbstractInfoFragment.DataHolder getDataHolder()
+}
+
+abstract class AbstractAdditionalInfoFragment {
+Defines mandatory methods for fragments that can be added to
+information fragments
++ abstract void refresh()
+}
+
+abstract class AbstractInfoFragment {
+Defines a common UI for information fragments. Concrete implementations
+of this class should ideally only provide the data, while the
+AbstractInfoFragment contains the logic to present the UI and react to
+user input.
+-- Implements --
++ boolean isSharedElementVisible()
+-- Generic --
+Allows concrete fragment to get certain data or update the UI
+--
+# void refreshAdditionInfoFragment()
+# HostManager getHostManager()
+# HostInfo getHostInfo()
+# void updateView(DataHolder dataHolder)
+# RefreshItem getRefreshItem()
+# void setExpandDescription(boolean expandDescription)
+-- Media action bar  --
+Adding a listener in a concrete fragment will add the corresponding
+button to the UI
+--
+# void setOnDownloadListener(final View.OnClickListener listener)
+# void setOnAddToPlaylistListener(View.OnClickListener listener)
+# void setOnGoToImdbListener(View.OnClickListener listener)
+# void setOnSeenListener(final View.OnClickListener listener)
+# void setOnPinClickedListener(final View.OnClickListener listener)
+# void setDownloadButtonState(boolean state)
+# void setSeenButtonState(boolean state)
+# void setPinButtonState(boolean state)
+-- Abstract methods --
+Every concrete fragment is able to add additional info using an
+AbstractAdditionalInfoFragment. This will be placed below the generic info.
+Every concrete fragment should implement a refresh functionality.
+The method setupMediaActionBar() will be called when the media action bar buttons
+are available. This is where the concrete fragment should call the setOn*Listeners
+to connect listeners to specific media action buttons.
+The method setupFAB(ImageButton FAB) will be called to allow adding a listener.
+It should return true to enable the FAB, false to disabled it.
+--
+# {abstract} AbstractAdditionalInfoFragment getAdditionalInfoFragment()
+# {abstract} RefreshItem createRefreshItem()
+# {abstract} boolean setupMediaActionBar()
+# {abstract} boolean setupFAB(ImageButton FAB)
+}
+
+abstract class AbstractTabsFragment {
+Defines a common UI for fragments that want to use a viewpager and a scrollable tab bar.
+-- Implements --
++ boolean isSharedElementVisible()
+--
+# {abstract} TabsAdapter createTabsAdapter(AbstractInfoFragment.DataHolder dataHolder)
+}
+
+class ConcreteTabsFragment {
+The returned TabsAdapter should hold all required tabs
+# TabsAdapter createTabsAdapter(AbstractInfoFragment.DataHolder dataHolder)
+}
+
+class ConcreteInfoFragment {
+Should be able to provide the required information by updating the DataHolder.
+Use getDataHolder() to get the current DataHolder and update it. Use updateView(DataHolder)
+to force an update of the UI with the updated DataHolder.
+--
+# AbstractAdditionalInfoFragment getAdditionalInfoFragment()
+# RefreshItem createRefreshItem()
+# boolean setupMediaActionBar()
+}
+
+class ConcreteAdditionalInfoFragment {
+    # void refresh()
+}
+
+abstract class AbstractListFragment {
+    # {abstract} AdapterView.OnItemClickListener createOnItemClickListener()
+	# {abstract} BaseAdapter createAdapter()
+	+ void hideRefreshAnimation()
+	+ void showRefreshAnimation()
+	+ BaseAdapter getAdapter()
+	+ TextView getEmptyView()
+}
+
+abstract class AbstractCursorListFragment {
+    # {abstract} void onListItemClicked(View view)
+	# {abstract} CursorLoader createCursorLoader()
+	# {abstract} String getListSyncType()
+    # AdapterView.OnItemClickListener createOnItemClickListener()
+    # String getSyncID()
+	# int getSyncItemID()
+    # void onRefresh()
+    + void refreshList()
+    + String getSearchFilter()
+    + public void saveSearchState()
+    + void onLoaderReset((Loader<Cursor> cursorLoader))
+}
+
+class ConcreteCursorListFragment {
+    # void onListItemClicked(View view)
+	# CursorLoader createCursorLoader()
+	# String getListSyncType()
+	# BaseAdapter createAdapter()
+}
+
+class ConcreteListFragment {
+    # AdapterView.OnItemClickListener createOnItemClickListener()
+	# BaseAdapter createAdapter()
+	# void onRefresh()
+}
+
+Fragment <|-- AbstractFragment
+AbstractFragment <|-- AbstractAdditionalInfoFragment
+AbstractFragment *--- DataHolder
+AbstractFragment <|-- AbstractTabsFragment
+AbstractFragment <|-- AbstractInfoFragment
+SharedElement <|.. AbstractInfoFragment
+SharedElement <|.. AbstractTabsFragment
+AbstractTabsFragment <|-- ConcreteTabsFragment
+AbstractInfoFragment <|-- ConcreteInfoFragment
+AbstractAdditionalInfoFragment <|-- ConcreteAdditionalInfoFragment
+
+Fragment <|-- AbstractListFragment
+AbstractListFragment <|-- AbstractCursorListFragment
+AbstractCursorListFragment <|-- ConcreteCursorListFragment
+AbstractListFragment <|-- ConcreteListFragment
+
+AbstractInfoFragment *--- AbstractAdditionalInfoFragment
+
+@enduml

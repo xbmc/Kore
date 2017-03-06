@@ -18,69 +18,19 @@ package org.xbmc.kore.ui.sections.addon;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.astuetz.PagerSlidingTabStrip;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.ui.AbstractTabsFragment;
+import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.sections.file.MediaFileListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
-import org.xbmc.kore.utils.UIUtils;
 
 import java.util.Collections;
 import java.util.Set;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
-/**
- * Container for the TV Show overview and Episodes list
- */
-public class AddonListContainerFragment extends Fragment {
+public class AddonListContainerFragment extends AbstractTabsFragment {
     private static final String TAG = LogUtils.makeLogTag(AddonListContainerFragment.class);
-
-    private TabsAdapter tabsAdapter;
-
-    @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
-    @InjectView(R.id.pager) ViewPager viewPager;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (container == null) {
-            // We're not being shown or there's nothing to show
-            return null;
-        }
-
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_default_view_pager, container, false);
-        ButterKnife.inject(this, root);
-
-        tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager());
-        SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
-        Set<String> bookmarked = prefs.getStringSet("bookmarked", Collections.<String>emptySet());
-        long baseFragmentId = 70 + bookmarked.size() * 100;
-        tabsAdapter.addTab(AddonListFragment.class, new Bundle(), R.string.addons, baseFragmentId);
-        for (String path: bookmarked) {
-            String name = prefs.getString("name_" + path, "Content");
-            Bundle addon = new Bundle();
-            addon.putString(AddonDetailsFragment.BUNDLE_KEY_NAME, name);
-            addon.putParcelable(MediaFileListFragment.ROOT_PATH, new MediaFileListFragment.FileLocation(name, "plugin://" + path, true));
-            tabsAdapter.addTab(MediaFileListFragment.class, addon, name, ++baseFragmentId);
-        }
-        viewPager.setAdapter(tabsAdapter);
-        pagerTabStrip.setViewPager(viewPager);
-
-        return root;
-    }
 
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
@@ -88,26 +38,24 @@ public class AddonListContainerFragment extends Fragment {
         setHasOptionsMenu(false);
     }
 
-    public Fragment getCurrentTabFragment() {
-        return tabsAdapter.getItem(viewPager.getCurrentItem());
-    }
+    @Override
+    protected TabsAdapter createTabsAdapter(AbstractInfoFragment.DataHolder dataHolder) {
+        Bundle arguments = dataHolder.getBundle();
+        if (arguments == null)
+            arguments = new Bundle();
 
-    public View getSharedElement() {
-        View view = getView();
-        if (view == null)
-            return null;
-
-        //Note: this works as R.id.poster is only used in TVShowOverviewFragment.
-        //If the same id is used in other fragments in the TabsAdapter we
-        //need to check which fragment is currently displayed
-        View artView = view.findViewById(R.id.poster);
-        View scrollView = view.findViewById(R.id.media_panel);
-        if (( artView != null ) &&
-                ( scrollView != null ) &&
-                UIUtils.isViewInBounds(scrollView, artView)) {
-            return artView;
+        TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager());
+        SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
+        Set<String> bookmarked = prefs.getStringSet("bookmarked", Collections.<String>emptySet());
+        long baseFragmentId = 70 + bookmarked.size() * 100;
+        tabsAdapter.addTab(AddonListFragment.class, new Bundle(), R.string.addons, baseFragmentId);
+        for (String path: bookmarked) {
+            String name = prefs.getString("name_" + path, "Content");
+            arguments.putParcelable(MediaFileListFragment.ROOT_PATH,
+                                    new MediaFileListFragment.FileLocation(name, "plugin://" + path, true));
+            tabsAdapter.addTab(MediaFileListFragment.class, arguments, name, ++baseFragmentId);
         }
 
-        return null;
+        return tabsAdapter;
     }
 }

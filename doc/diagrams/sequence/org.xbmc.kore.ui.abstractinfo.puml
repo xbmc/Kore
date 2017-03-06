@@ -1,0 +1,113 @@
+@startuml
+
+
+Actor Activity
+participant "AbstractFragment" as A
+participant "AbstractInfoFragment" as B
+participant "ConcreteInfoFragment" as C
+participant "AbstractAdditionalInfoFragment" as D
+participant "ConcreteAdditionalInfoFragment" as E
+participant "RefreshItem" as F
+
+Activity -> A: onCreate
+activate A
+A -> A: setup DataHolder
+activate A
+deactivate A
+deactivate A
+
+Activity -> B: onCreateView
+activate B
+B -> B: set poster size to square or rectangular
+B -> B: connect this class as swipe refresh listener
+B -> C: getAdditionalInfoFragment()
+activate C
+C -> B: return AbstractAdditionalInfoFragment or null if none
+deactivate C
+B -> C: setupMediaActionBar()
+activate C
+C -> B: setOn...Listener(View.OnClickListener)
+activate B
+C -> B: setOn...Listener(View.OnClickListener)
+C -> B: ...
+note over C: setting a listener for each\naction button required, will\nmake it visible in the UI
+note over B: Make button(s) visible\nin action bar and\nattach listener
+B --> C
+deactivate B
+deactivate C
+B -> C: setupFAB(ImageButton FAB)
+activate C
+note over C: add a listener for the FAB if needed
+C -> B: return true to enable the FAB, false to disable it
+B -> B: updateView(dataholder)
+deactivate C
+note left : updateView uses dataholder to fill views
+activate B
+deactivate B
+B --> Activity: return view
+deactivate B
+
+Activity -> B: onStart
+Activate B
+B -> B: bind to library sync service
+activate B
+deactivate B
+deactivate B
+
+Activity -> B: onResume
+Activate B
+B -> B: register refresh item if it exists
+activate B
+deactivate B
+deactivate B
+
+== UI active ==
+...
+
+note over B: user requests a refresh
+Activity -> B: onRefresh
+activate B
+B -> B: getRefreshItem()
+B -> C: if no refreshItem then call createRefreshItem()
+activate B
+activate C
+C -> B: return refresh item
+deactivate C
+deactivate B
+B ->> F: startSync()
+activate F
+F -> F: start LibrarySyncService
+B -> D: refresh()
+activate D
+D -> E: refresh()
+activate E
+E --> D
+deactivate E
+D --> B
+deactivate D
+deactivate B
+...
+F -> C: onSyncProcessEnded(MediaSyncEvent)
+deactivate F
+activate C
+note over C: update dataholder
+C -> B: updateView(dataholder)
+deactivate C
+
+...
+== UI inactive ==
+
+Activity -> B: onPause
+activate B
+B -> B: unregister refresh item if it exists
+activate B
+deactivate B
+deactivate B
+
+Activity -> B: onStop
+activate B
+B -> B: unbind from library sync service
+activate B
+deactivate B
+deactivate B
+@enduml
