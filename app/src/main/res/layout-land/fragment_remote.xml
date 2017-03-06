@@ -262,6 +262,15 @@
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/music"/>
         <ImageButton
+            android:id="@+id/pvr"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconPVR"
+            android:tint="?attr/defaultButtonColorFilter"
+            android:contentDescription="@string/pvr"/>
+        <ImageButton
             android:id="@+id/pictures"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -270,5 +279,50 @@
             android:src="?attr/iconPicture"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/pictures"/>
+        <ImageButton
+            android:id="@+id/videos"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconVideo"
+            android:tint="?attr/defaultButtonColorFilter"
+            android:contentDescription="@string/videos"/>
+        <!-- <ImageButton
+            android:id="@+id/favourites"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconFavourites"
+            android:tint="?attr/defaultButtonColorFilter"
+            android:contentDescription="@string/favourites"/> -->
+        <ImageButton
+            android:id="@+id/addons"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconAddons"
+            android:tint="?attr/defaultButtonColorFilter"
+            android:contentDescription="@string/addons"/>
+        <ImageButton
+            android:id="@+id/weather"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconWeather"
+            android:tint="?attr/defaultButtonColorFilter"
+            android:contentDescription="@string/weather"/>
+        <ImageButton
+            android:id="@+id/system"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconSettings"
+            android:tint="?attr/defaultButtonColorFilter"
+            android:contentDescription="@string/system"/>
     </LinearLayout>
 </LinearLayout>
