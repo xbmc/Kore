@@ -35,8 +35,13 @@
     <string name="addons">Надбудови</string>
     <string name="files">Файли</string>
     <string name="video">Відео</string>
+    <string name="videos">Відео</string>
     <string name="file_browser">Файл-менеджер</string>
     <string name="pvr">PVR</string>
+    <string name="favourites">Обране</string>
+    <string name="weather">Погода</string>
+    <string name="system">Система</string>
+	
 
     <string name="no_xbmc_configured">Медіа Центр не налаштовано</string>
     <string name="add_xbmc">Додати Медіа Центр</string>
@@ -337,11 +342,12 @@
     <string name="pause_during_calls">Призупиняти під час дзвінків</string>
     <string name="use_hardware_volume_keys">Використовувати кнопки гучності</string>
     <string name="vibrate_on_remote">Вібрувати при натисканні</string>
+    <string name="remote_bar_items">Елементи нижньої панелі</string>
     <string name="nav_drawer_items">Елементи бокового меню</string>
 
     <string name="about">Про застосунок</string>
     <string name="about_desc"><![CDATA[
-        \u00A9 2015 XBMC Foundation.<br><br>
+        \u00A9 2017 XBMC Foundation.<br><br>
         Будь ласка, оцініть нас на <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
         Якщо вам потрібна допомога, відвідайте <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">форум</a></b>
