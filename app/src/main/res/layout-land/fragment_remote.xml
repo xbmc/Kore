@@ -37,11 +37,15 @@
 
         <TextView
             android:id="@+id/info_title"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             style="@style/TextAppearance.Info.Title"
             tools:ignore="InconsistentLayout"/>
 
         <TextView
             android:id="@+id/info_message"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             style="@style/TextAppearance.Info.Details"
             android:layout_below="@id/info_title"
             tools:ignore="InconsistentLayout"/>
