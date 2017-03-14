@@ -49,7 +49,7 @@ public class ConnectionObserversManagerService extends Service
 
     private HostConnectionObserver mHostConnectionObserver = null;
 
-    private List<HostConnectionObserver.PlayerEventsObserver> mConnectionObservers;
+    private List<HostConnectionObserver.PlayerEventsObserver> mConnectionObservers = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -127,10 +127,8 @@ public class ConnectionObserversManagerService extends Service
     @Override
     public void onTaskRemoved (Intent rootIntent) {
         // Gracefully stop
-        if (mConnectionObservers != null) {
-            for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
-                observer.playerOnConnectionError(0, "Task removed");
-            }
+        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+            observer.playerOnConnectionError(0, "Task removed");
         }
 
         LogUtils.LOGD(TAG, "Shutting down observer service - Task removed");
