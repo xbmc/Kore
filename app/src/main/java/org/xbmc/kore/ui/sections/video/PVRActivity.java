@@ -16,21 +16,14 @@
 package org.xbmc.kore.ui.sections.video;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.ui.BaseActivity;
-import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
-import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
 
@@ -38,7 +31,7 @@ import org.xbmc.kore.utils.Utils;
  * Controls the presentation of Live TV/Radio and recordings information (list, details)
  * All the information is presented by specific fragments
  */
-public class PVRActivity extends BaseActivity
+public class PVRActivity extends BaseMediaActivity
         implements PVRChannelsListFragment.OnPVRChannelSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(PVRActivity.class);
 
@@ -56,56 +49,31 @@ public class PVRActivity extends BaseActivity
     private int selectedChannelGroupId = -1;
     private String selectedChannelGroupTitle = null;
 
-    private NavigationDrawerFragment navigationDrawerFragment;
+    @Override
+    protected String getActionBarTitle() {
+        if ( selectedChannelTitle != null ) {
+            return selectedChannelTitle;
+        } else if ( selectedChannelGroupTitle != null ) {
+            return selectedChannelGroupTitle;
+        }
+        return getString(R.string.pvr);
+    }
 
-    @TargetApi(21)
+    @Override
+    protected Fragment createFragment() {
+        return new PVRListFragment();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Request transitions on lollipop
-        if (Utils.isLollipopOrLater()) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_media);
-
-        // Set up the drawer.
-        navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        if (savedInstanceState == null) {
-            PVRListFragment pvrListFragment = new PVRListFragment();
-
-            // Setup animations
-            if (Utils.isLollipopOrLater()) {
-                pvrListFragment.setExitTransition(null);
-                pvrListFragment.setReenterTransition(TransitionInflater
-                        .from(this)
-                        .inflateTransition(android.R.transition.fade));
-            }
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, pvrListFragment, LISTFRAGMENTTAG)
-                    .commit();
-        } else {
+        if (savedInstanceState != null) {
             selectedChannelId = savedInstanceState.getInt(CHANNELID, -1);
             selectedChannelTitle = savedInstanceState.getString(CHANNELTITLE, null);
 
             selectedChannelGroupId = savedInstanceState.getInt(CHANNELGROUPID, -1);
             selectedChannelGroupTitle = savedInstanceState.getString(CHANNELGROUPTITLE, null);
         }
-
-        setupActionBar(selectedChannelGroupTitle, selectedChannelTitle);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -119,32 +87,20 @@ public class PVRActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.media_info, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_show_remote:
-                // Starts remote
-                Intent launchIntent = new Intent(this, RemoteActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(launchIntent);
-                return true;
             case android.R.id.home:
                 // If showing detail view, back up to list
                 if (selectedChannelId != -1) {
                     selectedChannelId = -1;
                     selectedChannelTitle = null;
-                    setupActionBar(selectedChannelGroupTitle, null);
+                    updateActionBar(getActionBarTitle(), true);
                     getSupportFragmentManager().popBackStack();
                     return true;
                 } else if (selectedChannelGroupId != -1) {
                     selectedChannelGroupId = -1;
                     selectedChannelGroupTitle = null;
-                    setupActionBar(null, null);
+                    updateActionBar(getActionBarTitle(), false);
 
                     PVRListFragment fragment = (PVRListFragment)getSupportFragmentManager().findFragmentByTag(LISTFRAGMENTTAG);
                     if (fragment != null) {
@@ -167,12 +123,12 @@ public class PVRActivity extends BaseActivity
         if (selectedChannelId != -1) {
             selectedChannelId = -1;
             selectedChannelTitle = null;
-            setupActionBar(selectedChannelGroupTitle, null);
+            updateActionBar(getActionBarTitle(), true);
         } else {
             if (selectedChannelGroupId != -1) {
                 selectedChannelGroupId = -1;
                 selectedChannelGroupTitle = null;
-                setupActionBar(null, null);
+                updateActionBar(getActionBarTitle(), true);
             }
             PVRListFragment fragment = (PVRListFragment)getSupportFragmentManager().findFragmentByTag(LISTFRAGMENTTAG);
             if (fragment != null) {
@@ -182,31 +138,6 @@ public class PVRActivity extends BaseActivity
         if (!handled)
             super.onBackPressed();
     }
-
-    private boolean drawerIndicatorIsArrow = false;
-    private void setupActionBar(String channelGroupTitle, String channelTitle) {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) return;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        if ((channelTitle != null) || (channelGroupTitle != null)) {
-            if (!drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(true);
-                drawerIndicatorIsArrow = true;
-            }
-            actionBar.setTitle(channelTitle == null? channelGroupTitle : channelTitle);
-        } else {
-            if (drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(false);
-                drawerIndicatorIsArrow = false;
-            }
-            actionBar.setTitle(R.string.pvr);
-        }
-    }
-
 
     /**
      * Callback from list fragment when the channel guide should be displayed.
@@ -237,7 +168,7 @@ public class PVRActivity extends BaseActivity
         fragTrans.replace(R.id.fragment_container, pvrEPGFragment)
                 .addToBackStack(null)
                 .commit();
-        setupActionBar(selectedChannelGroupTitle, selectedChannelTitle);
+        updateActionBar(getActionBarTitle(), true);
     }
 
     /**
@@ -250,6 +181,6 @@ public class PVRActivity extends BaseActivity
         selectedChannelGroupId = channelGroupId;
         selectedChannelGroupTitle = channelGroupTitle;
 
-        setupActionBar(selectedChannelGroupTitle, selectedChannelTitle);
+        updateActionBar(getActionBarTitle(), true);
     }
 }

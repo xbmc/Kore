@@ -19,77 +19,47 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.text.TextUtils;
 import android.view.MenuItem;
-import android.view.Window;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractFragment;
-import org.xbmc.kore.ui.BaseActivity;
-import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
+import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.SharedElementTransition;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Controls the presentation of Addons information (list, details)
  * All the information is presented by specific fragments
  */
-public class AddonsActivity extends BaseActivity
+public class AddonsActivity extends BaseMediaActivity
         implements AddonListFragment.OnAddonSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(AddonsActivity.class);
 
     public static final String ADDONID = "addon_id";
     public static final String ADDONTITLE = "addon_title";
-    public static final String LISTFRAGMENT_TAG = "addonlist";
 
     private String selectedAddonId;
     private String selectedAddonTitle;
 
-    private NavigationDrawerFragment navigationDrawerFragment;
+    @Override
+    protected Fragment createFragment() {
+        return new AddonListFragment();
+    }
 
-    private SharedElementTransition sharedElementTransition = new SharedElementTransition();
+    @Override
+    protected String getActionBarTitle() {
+        return TextUtils.isEmpty(selectedAddonTitle) ? getResources().getString(R.string.addons)
+                                                     : selectedAddonTitle;
+    }
 
-    @TargetApi(21)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Request transitions on lollipop
-        if (Utils.isLollipopOrLater()) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_media);
-
-        // Set up the drawer.
-        navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        Fragment fragment;
-        if (savedInstanceState == null) {
-            fragment = new AddonListContainerFragment();
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, fragment, LISTFRAGMENT_TAG)
-                    .commit();
-        } else {
-            fragment = getSupportFragmentManager().findFragmentByTag(LISTFRAGMENT_TAG);
-
+        if (savedInstanceState != null) {
             selectedAddonId = savedInstanceState.getString(ADDONID, null);
             selectedAddonTitle = savedInstanceState.getString(ADDONTITLE, null);
         }
-
-        if (Utils.isLollipopOrLater()) {
-            sharedElementTransition.setupExitTransition(this, fragment);
-        }
-
-        setupActionBar(selectedAddonTitle);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -97,15 +67,6 @@ public class AddonsActivity extends BaseActivity
         super.onSaveInstanceState(outState);
         outState.putString(ADDONID, selectedAddonId);
         outState.putString(ADDONTITLE, selectedAddonTitle);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (!navigationDrawerFragment.isDrawerOpen()) {
-//            getMenuInflater().inflate(R.menu.media_info, menu);
-//        }
-        getMenuInflater().inflate(R.menu.media_info, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -124,7 +85,7 @@ public class AddonsActivity extends BaseActivity
                 if (selectedAddonId != null) {
                     selectedAddonId = null;
                     selectedAddonTitle = null;
-                    setupActionBar(null);
+                    updateActionBar(getActionBarTitle(), false);
                     getSupportFragmentManager().popBackStack();
                     return true;
                 }
@@ -142,32 +103,9 @@ public class AddonsActivity extends BaseActivity
         if (selectedAddonId != null) {
             selectedAddonId = null;
             selectedAddonTitle = null;
-            setupActionBar(null);
+            updateActionBar(getActionBarTitle(), false);
         }
         super.onBackPressed();
-    }
-
-    private boolean drawerIndicatorIsArrow = false;
-    private void setupActionBar(String addonTitle) {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) return;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        if (addonTitle != null) {
-            if (!drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(true);
-                drawerIndicatorIsArrow = true;
-            }
-            actionBar.setTitle(addonTitle);
-        } else {
-            if (drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(false);
-                drawerIndicatorIsArrow = false;
-            }
-            actionBar.setTitle(R.string.addons);
-        }
     }
 
     /**
@@ -191,21 +129,8 @@ public class AddonsActivity extends BaseActivity
         vh.dataHolder.setSquarePoster(true);
         vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
 
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+        showFragment(addonDetailsFragment, vh.artView, vh.dataHolder);
 
-        // Set up transitions
-        if (Utils.isLollipopOrLater()) {
-            sharedElementTransition.setupEnterTransition(this, fragTrans, addonDetailsFragment,
-                                                         vh.artView);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                                          R.anim.fragment_list_popenter, 0);
-        }
-
-        fragTrans.replace(R.id.fragment_container, addonDetailsFragment)
-                 .addToBackStack(null)
-                 .commit();
-
-        setupActionBar(selectedAddonTitle);
+        updateActionBar(getActionBarTitle(), true);
     }
 }

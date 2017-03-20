@@ -16,79 +16,45 @@
 package org.xbmc.kore.ui.sections.video;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.ui.BaseActivity;
-import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
-import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.SharedElementTransition;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Controls the presentation of Movies information (list, details)
  * All the information is presented by specific fragments
  */
-public class MoviesActivity extends BaseActivity
+public class MoviesActivity extends BaseMediaActivity
         implements MovieListFragment.OnMovieSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(MoviesActivity.class);
 
     public static final String MOVIEID = "movie_id";
     public static final String MOVIETITLE = "movie_title";
-    public static final String LISTFRAGMENT_TAG = "movielist";
 
     private int selectedMovieId = -1;
     private String selectedMovieTitle;
 
-    private NavigationDrawerFragment navigationDrawerFragment;
+    @Override
+    protected String getActionBarTitle() {
+        return (selectedMovieTitle != null) ? selectedMovieTitle : getString(R.string.movies);
+    }
 
-    private SharedElementTransition sharedElementTransition = new SharedElementTransition();
+    @Override
+    protected Fragment createFragment() {
+        return new MovieListFragment();
+    }
 
-    @TargetApi(21)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Request transitions on lollipop
-        if (Utils.isLollipopOrLater()) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_media);
-
-        // Set up the drawer.
-        navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        Fragment fragment;
-        if (savedInstanceState == null) {
-            fragment = new MovieListFragment();
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, fragment, LISTFRAGMENT_TAG)
-                    .commit();
-        } else {
-            fragment = getSupportFragmentManager().findFragmentByTag(LISTFRAGMENT_TAG);
-
+        if (savedInstanceState != null) {
             selectedMovieId = savedInstanceState.getInt(MOVIEID, -1);
             selectedMovieTitle = savedInstanceState.getString(MOVIETITLE, null);
         }
-
-        if (Utils.isLollipopOrLater()) {
-            sharedElementTransition.setupExitTransition(this, fragment);
-        }
-
-        setupActionBar(selectedMovieTitle);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -99,23 +65,8 @@ public class MoviesActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (!navigationDrawerFragment.isDrawerOpen()) {
-//            getMenuInflater().inflate(R.menu.media_info, menu);
-//        }
-        getMenuInflater().inflate(R.menu.media_info, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_show_remote:
-                // Starts remote
-                Intent launchIntent = new Intent(this, RemoteActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(launchIntent);
-                return true;
             case android.R.id.home:
                 // Only respond to this if we are showing the movie details in portrait mode,
                 // which can be checked by checking if selected movie != -1, in which case we
@@ -123,7 +74,7 @@ public class MoviesActivity extends BaseActivity
                 if (selectedMovieId != -1) {
                     selectedMovieId = -1;
                     selectedMovieTitle = null;
-                    setupActionBar(null);
+                    updateActionBar(getActionBarTitle(), false);
                     getSupportFragmentManager().popBackStack();
                     return true;
                 }
@@ -141,33 +92,10 @@ public class MoviesActivity extends BaseActivity
         if (selectedMovieId != -1) {
             selectedMovieId = -1;
             selectedMovieTitle = null;
-            setupActionBar(null);
+            updateActionBar(getActionBarTitle(), false);
         }
 
         super.onBackPressed();
-    }
-
-    private boolean drawerIndicatorIsArrow = false;
-    private void setupActionBar(String movieTitle) {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) return;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        if (movieTitle != null) {
-            if (!drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(true);
-                drawerIndicatorIsArrow = true;
-            }
-            actionBar.setTitle(movieTitle);
-        } else {
-            if (drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(false);
-                drawerIndicatorIsArrow = false;
-            }
-            actionBar.setTitle(R.string.movies);
-        }
     }
 
     /**
@@ -183,21 +111,8 @@ public class MoviesActivity extends BaseActivity
         final MovieInfoFragment movieInfoFragment = new MovieInfoFragment();
         movieInfoFragment.setDataHolder(vh.dataHolder);
 
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+        showFragment(movieInfoFragment, vh.artView, vh.dataHolder);
 
-        // Set up transitions
-        if (Utils.isLollipopOrLater()) {
-            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
-            sharedElementTransition.setupEnterTransition(this, fragTrans, movieInfoFragment,
-                                                         vh.artView);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                    R.anim.fragment_list_popenter, 0);
-        }
-        fragTrans.replace(R.id.fragment_container, movieInfoFragment)
-                 .addToBackStack(null)
-                 .commit();
-
-        setupActionBar(selectedMovieTitle);
+        updateActionBar(selectedMovieTitle, true);
     }
 }
