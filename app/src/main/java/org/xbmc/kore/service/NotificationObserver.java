@@ -19,6 +19,7 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -55,15 +56,15 @@ public class NotificationObserver
     private static final int NOTIFICATION_ID = 1;
 
     private PendingIntent mRemoteStartPendingIntent;
-    private Context mContext;
+    private Service mService;
 
-    public NotificationObserver(Context context) {
-        this.mContext = context;
+    public NotificationObserver(Service service) {
+        this.mService = service;
 
         // Create the intent to start the remote when the user taps the notification
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mContext);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mService);
         stackBuilder.addParentStack(RemoteActivity.class);
-        stackBuilder.addNextIntent(new Intent(mContext, RemoteActivity.class));
+        stackBuilder.addNextIntent(new Intent(mService, RemoteActivity.class));
         mRemoteStartPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -128,8 +129,8 @@ public class NotificationObserver
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
                 title = getItemResult.title;
-                String seasonEpisode = String.format(mContext.getString(R.string.season_episode_abbrev),
-                        getItemResult.season, getItemResult.episode);
+                String seasonEpisode = String.format(mService.getString(R.string.season_episode_abbrev),
+                                                     getItemResult.season, getItemResult.episode);
                 underTitle = String.format("%s | %s", getItemResult.showtitle, seasonEpisode);
                 poster = getItemResult.art.poster;
                 smallIcon = R.drawable.ic_tv_white_24dp;
@@ -176,7 +177,7 @@ public class NotificationObserver
         }
 
         // Setup the collpased and expanded notifications
-        final RemoteViews collapsedRV = new RemoteViews(mContext.getPackageName(), R.layout.notification_colapsed);
+        final RemoteViews collapsedRV = new RemoteViews(mService.getPackageName(), R.layout.notification_colapsed);
         collapsedRV.setImageViewResource(R.id.rewind, rewindIcon);
         collapsedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingItent);
         collapsedRV.setImageViewResource(R.id.play, playPauseIcon);
@@ -186,7 +187,7 @@ public class NotificationObserver
         collapsedRV.setTextViewText(R.id.title, title);
         collapsedRV.setTextViewText(R.id.text2, underTitle);
 
-        final RemoteViews expandedRV = new RemoteViews(mContext.getPackageName(), R.layout.notification_expanded);
+        final RemoteViews expandedRV = new RemoteViews(mService.getPackageName(), R.layout.notification_expanded);
         expandedRV.setImageViewResource(R.id.rewind, rewindIcon);
         expandedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingItent);
         expandedRV.setImageViewResource(R.id.play, playPauseIcon);
@@ -207,7 +208,7 @@ public class NotificationObserver
         }
 
         // Build the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mService);
         final Notification notification = builder
                 .setSmallIcon(smallIcon)
                 .setShowWhen(false)
@@ -237,7 +238,7 @@ public class NotificationObserver
         //
         // 4. We specifically resize the image to the same dimensions used in
         // the remote, so that Picasso reuses it in the remote and here from the cache
-        Resources resources = mContext.getResources();
+        Resources resources = mService.getResources();
         final int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
         final int posterHeight = isVideo?
                 resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height):
@@ -251,7 +252,7 @@ public class NotificationObserver
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
-                    CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(mContext, title);
+                    CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(mService, title);
                     showNotification(Utils.drawableToBitmap(avatarDrawable, posterWidth, posterHeight));
                 }
 
@@ -265,15 +266,16 @@ public class NotificationObserver
                         expandedRV.setImageViewBitmap(expandedIconResId, bitmap);
                     }
 
-                    NotificationManager notificationManager =
-                            (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.notify(NOTIFICATION_ID, notification);
+//                    NotificationManager notificationManager =
+//                            (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
+//                    notificationManager.notify(NOTIFICATION_ID, notification);
+                    mService.startForeground(NOTIFICATION_ID, notification);
                     picassoTarget = null;
                 }
             };
 
             // Load the image
-            HostManager hostManager = HostManager.getInstance(mContext);
+            HostManager hostManager = HostManager.getInstance(mService);
             hostManager.getPicasso()
                     .load(hostManager.getHostInfo().getImageUrl(poster))
                     .resize(posterWidth, posterHeight)
@@ -282,16 +284,17 @@ public class NotificationObserver
     }
 
     private PendingIntent buildActionPendingIntent(int playerId, String action) {
-        Intent intent = new Intent(mContext, IntentActionsService.class)
+        Intent intent = new Intent(mService, IntentActionsService.class)
                 .setAction(action)
                 .putExtra(IntentActionsService.EXTRA_PLAYER_ID, playerId);
 
-        return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(mService, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void removeNotification() {
-        NotificationManager  notificationManager =
-                (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(NOTIFICATION_ID);
+//        NotificationManager  notificationManager =
+//                (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.cancel(NOTIFICATION_ID);
+        mService.stopForeground(true);
     }
 }
