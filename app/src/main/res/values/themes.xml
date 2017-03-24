@@ -40,8 +40,8 @@
         <!--<item name="colorPrimaryDark">@color/deep_orange_900</item>-->
         <!--<item name="colorPrimary">@color/blue_grey_500</item>-->
         <!--<item name="colorPrimaryDark">@color/blue_grey_700</item>-->
-        <item name="colorPrimary">@color/light_blue_700</item>
-        <item name="colorPrimaryDark">@color/light_blue_800</item>
+        <item name="colorPrimary">@color/estuary_default</item>
+        <item name="colorPrimaryDark">@color/estuary_default_dark</item>
 
         <item name="colorAccent">@color/accent_default</item>
         <!--<item name="colorControlHighlight">@color/color_accent</item>-->
