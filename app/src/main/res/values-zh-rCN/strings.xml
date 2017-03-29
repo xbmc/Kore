@@ -133,7 +133,7 @@
     <string name="volume_up">提高音量</string>
     <string name="volume_down">减小音量</string>
     <string name="volume_mute">静音</string>
-    <string name="subtitles">字母</string>
+    <string name="subtitles">字幕</string>
     <string name="audiostreams">音频</string>
     <string name="no_audiostream">没有音频</string>
     <string name="download_subtitle">下载字幕</string>
@@ -149,8 +149,8 @@
     <string name="info">资讯</string>
     <string name="codec_info">编码</string>
     <string name="context">上下文</string>
-    <string name="osd">菜单</string>
-    <string name="back">菜单</string>
+    <string name="osd">屏幕显示</string>
+    <string name="back">返回</string>
 
     <string name="previous">上一个</string>
     <string name="next">下一个</string>
