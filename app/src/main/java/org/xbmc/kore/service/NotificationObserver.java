@@ -162,38 +162,38 @@ public class NotificationObserver
         }
 
         // Create the actions, depending on the type of media
-        PendingIntent rewindPendingItent, ffPendingItent, playPausePendingIntent;
+        PendingIntent rewindPendingIntent, ffPendingIntent, playPausePendingIntent;
         playPausePendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_PLAY_PAUSE);
         if (getItemResult.type.equals(ListType.ItemsAll.TYPE_SONG)) {
-            rewindPendingItent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_PREVIOUS);
+            rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_PREVIOUS);
             rewindIcon = R.drawable.ic_skip_previous_white_24dp;
-            ffPendingItent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_NEXT);
+            ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_NEXT);
             ffIcon = R.drawable.ic_skip_next_white_24dp;
         } else {
-            rewindPendingItent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_REWIND);
+            rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_REWIND);
             rewindIcon = R.drawable.ic_fast_rewind_white_24dp;
-            ffPendingItent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_FAST_FORWARD);
+            ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_FAST_FORWARD);
             ffIcon = R.drawable.ic_fast_forward_white_24dp;
         }
 
         // Setup the collpased and expanded notifications
         final RemoteViews collapsedRV = new RemoteViews(mService.getPackageName(), R.layout.notification_colapsed);
         collapsedRV.setImageViewResource(R.id.rewind, rewindIcon);
-        collapsedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingItent);
+        collapsedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingIntent);
         collapsedRV.setImageViewResource(R.id.play, playPauseIcon);
         collapsedRV.setOnClickPendingIntent(R.id.play, playPausePendingIntent);
         collapsedRV.setImageViewResource(R.id.fast_forward, ffIcon);
-        collapsedRV.setOnClickPendingIntent(R.id.fast_forward, ffPendingItent);
+        collapsedRV.setOnClickPendingIntent(R.id.fast_forward, ffPendingIntent);
         collapsedRV.setTextViewText(R.id.title, title);
         collapsedRV.setTextViewText(R.id.text2, underTitle);
 
         final RemoteViews expandedRV = new RemoteViews(mService.getPackageName(), R.layout.notification_expanded);
         expandedRV.setImageViewResource(R.id.rewind, rewindIcon);
-        expandedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingItent);
+        expandedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingIntent);
         expandedRV.setImageViewResource(R.id.play, playPauseIcon);
         expandedRV.setOnClickPendingIntent(R.id.play, playPausePendingIntent);
         expandedRV.setImageViewResource(R.id.fast_forward, ffIcon);
-        expandedRV.setOnClickPendingIntent(R.id.fast_forward, ffPendingItent);
+        expandedRV.setOnClickPendingIntent(R.id.fast_forward, ffPendingIntent);
         expandedRV.setTextViewText(R.id.title, title);
         expandedRV.setTextViewText(R.id.text2, underTitle);
         final int expandedIconResId;
