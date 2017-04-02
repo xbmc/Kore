@@ -38,7 +38,9 @@ public class IntentActionsService extends Service {
             ACTION_REWIND = "rewind",
             ACTION_FAST_FORWARD = "fast_forward",
             ACTION_PREVIOUS = "previous",
-            ACTION_NEXT = "next";
+            ACTION_NEXT = "next",
+            ACTION_JUMP_BACKWARD = "jump_backward",
+            ACTION_JUMP_FORWARD = "jump_forward";
 
     @Override
     public void onCreate() { }
@@ -77,6 +79,16 @@ public class IntentActionsService extends Service {
                 case ACTION_NEXT:
                     hostConnection.execute(
                             new Player.GoTo(playerId, Player.GoTo.NEXT),
+                            null, null);
+                    break;
+                case ACTION_JUMP_BACKWARD:
+                    hostConnection.execute(
+                            new Player.Seek(playerId, Player.Seek.BACKWARD),
+                            null, null);
+                    break;
+                case ACTION_JUMP_FORWARD:
+                    hostConnection.execute(
+                            new Player.Seek(playerId, Player.Seek.FORWARD),
                             null, null);
                     break;
             }

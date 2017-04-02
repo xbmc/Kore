@@ -81,6 +81,10 @@ public class Settings {
     public static final String KEY_PREF_SHOW_NOW_PLAYING_PANEL = "pref_show_nowplayingpanel";
     public static final boolean DEFAULT_PREF_SHOW_NOW_PLAYING_PANEL = true;
 
+    // Seek mode
+    public static final String KEY_PREF_NOTIFICATION_SEEK_JUMP = "pref_notification_seek_jump";
+    public static final boolean DEFAULT_PREF_NOTIFICATION_SEEK_JUMP = false;
+    
     // Pause during calls
     public static final String KEY_PREF_PAUSE_DURING_CALLS = "pref_pause_during_calls";
     public static final boolean DEFAULT_PREF_PAUSE_DURING_CALLS = false;

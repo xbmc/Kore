@@ -27,6 +27,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
@@ -35,6 +36,7 @@ import android.widget.RemoteViews;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.notification.Player;
@@ -227,14 +229,22 @@ public class NotificationObserver
                 break;
         }
 
-        // Create the actions, depending on the type of media
+        // Create the actions, depending on the type of media and the user's preference
         PendingIntent rewindPendingIntent, ffPendingIntent, playPausePendingIntent;
         playPausePendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_PLAY_PAUSE);
+        boolean useSeekJump = PreferenceManager
+                .getDefaultSharedPreferences(this.mService)
+                .getBoolean(Settings.KEY_PREF_NOTIFICATION_SEEK_JUMP, Settings.DEFAULT_PREF_NOTIFICATION_SEEK_JUMP);
         if (getItemResult.type.equals(ListType.ItemsAll.TYPE_SONG)) {
             rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_PREVIOUS);
             rewindIcon = R.drawable.ic_skip_previous_white_24dp;
             ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_NEXT);
             ffIcon = R.drawable.ic_skip_next_white_24dp;
+        } else if (useSeekJump) {
+            rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_JUMP_BACKWARD);
+            rewindIcon = R.drawable.ic_chevron_left_white_24dp;
+            ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_JUMP_FORWARD);
+            ffIcon = R.drawable.ic_chevron_right_white_24dp;
         } else {
             rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_REWIND);
             rewindIcon = R.drawable.ic_fast_rewind_white_24dp;
