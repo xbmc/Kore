@@ -30,9 +30,10 @@
     <color name="black_dim_87pct">#de000000</color>
     <color name="black_dim_54pct">#8a000000</color>
 
-    <!--<color name="estuary_default">#0f85a5</color>-->
-    <color name="estuary_default">#147a96</color>
-    <color name="estuary_default_dark">#0f4d5e</color>
+    <color name="estuary_default">#0f85a5</color>
+    <color name="estuary_default_dark">#0a5b71</color>
+    <!--<color name="estuary_default">#147a96</color>-->
+    <!--<color name="estuary_default_dark">#0f4d5e</color>-->
 
     <!--<color name="dark_content_background">#ff222326</color>-->
     <!--<color name="dark_content_background_dim_70pct">#b4222326</color>-->
