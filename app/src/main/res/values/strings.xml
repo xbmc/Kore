@@ -410,4 +410,7 @@
     <string name="no_songs_found_refresh">No songs found\\n\\nSwipe down to refresh</string>
     <string name="not_implemented">Not implemented</string>
 
+    <string name="download_network_types_title">Download network types</string>
+    <string name="download_network_types_summary">Allowed network types for media downloads</string>
+
 </resources>
