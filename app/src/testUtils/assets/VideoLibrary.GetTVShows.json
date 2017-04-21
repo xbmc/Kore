@@ -1,0 +1,691 @@
+{
+   "id" : "libTVShows",
+   "jsonrpc" : "2.0",
+   "result" : {
+      "tvshows" : [
+         {
+            "tvshowid" : 2,
+            "sorttitle" : "",
+            "season" : 1,
+            "lastplayed" : "2017-02-06 16:56:12",
+            "runtime" : 3600,
+            "uniqueid" : {
+               "unknown" : "260473"
+            },
+            "imdbnumber" : "260473",
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f260473-1.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f260473-g.jpg/"
+            },
+            "originaltitle" : "",
+            "year" : 2012,
+            "title" : "3",
+            "mpaa" : "",
+            "userrating" : 0,
+            "studio" : [
+               "CBS"
+            ],
+            "rating" : 10,
+            "fanart" : "",
+            "tag" : [],
+            "premiered" : "2012-07-26",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/3 (2012)/",
+            "cast" : [],
+            "genre" : [
+               "Reality"
+            ],
+            "episodeguide" : "<episodeguide><url cache=\"260473-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/260473/all/en.zip</url></episodeguide>",
+            "watchedepisodes" : 3,
+            "dateadded" : "2016-08-26 09:16:59",
+            "label" : "3",
+            "ratings" : {
+               "default" : {
+                  "votes" : 0,
+                  "rating" : 10,
+                  "default" : true
+               }
+            },
+            "episode" : 8,
+            "plot" : "Instead of competing against each other, the women searching for love in this relationship series are there to share the experience with one another, offering emotional support during the dating and decision-making process as they whittle down the group of nearly 100 men they start out with and each tries to find a good match. The women -- 29-year-old entrepreneur April Francis, 34-year-old pharmaceutical sales rep Rachel Harley and 24-year-old model Libby Lopez -- bring different backgrounds and experiences to the table, but their common goal unites them as they embark on their journey. Alex Miranda hosts.",
+            "playcount" : 0,
+            "votes" : "0",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f260473-1.jpg/"
+         },
+         {
+            "cast" : [],
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/4-stjerners middag (2010)/",
+            "premiered" : "2010-01-25",
+            "watchedepisodes" : 2,
+            "episodeguide" : "<episodeguide><url cache=\"146391-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/146391/all/en.zip</url></episodeguide>",
+            "genre" : [
+               "Reality"
+            ],
+            "dateadded" : "2016-08-26 09:16:59",
+            "votes" : "1",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f146391-2.jpg/",
+            "ratings" : {
+               "default" : {
+                  "votes" : 1,
+                  "default" : true,
+                  "rating" : 10
+               }
+            },
+            "episode" : 110,
+            "playcount" : 0,
+            "label" : "4 Stjerners Middag",
+            "plot" : "Danish version of the British \"Come Dine With Me\". Every week four celebrities invites each other home for dinner, one by one. The goal is to make a perfect evening for the three guests, and collect as many points as possible, to be the host of the week. The host picks out the three course dinner and is responsible for buying groceries and preparing the meal.",
+            "studio" : [
+               "TVNorge"
+            ],
+            "rating" : 10,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f146391-2.jpg/",
+            "tag" : [],
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f146391-2.jpg/",
+               "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f146391-2.jpg/"
+            },
+            "imdbnumber" : "146391",
+            "title" : "4 Stjerners Middag",
+            "year" : 2010,
+            "originaltitle" : "",
+            "userrating" : 0,
+            "mpaa" : "",
+            "tvshowid" : 3,
+            "season" : 3,
+            "sorttitle" : "",
+            "lastplayed" : "2017-02-06 17:02:53",
+            "uniqueid" : {
+               "unknown" : "146391"
+            },
+            "runtime" : 3600
+         },
+         {
+            "title" : "11.22.63",
+            "year" : 2016,
+            "originaltitle" : "",
+            "mpaa" : "TV-MA",
+            "userrating" : 0,
+            "imdbnumber" : "301824",
+            "art" : {
+               "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f301824-10.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f301824-8.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f301824-g.jpg/"
+            },
+            "lastplayed" : "2017-02-28 11:14:40",
+            "runtime" : 3000,
+            "uniqueid" : {
+               "unknown" : "301824"
+            },
+            "tvshowid" : 1,
+            "sorttitle" : "",
+            "season" : 1,
+            "dateadded" : "2016-08-26 09:17:01",
+            "ratings" : {
+               "default" : {
+                  "votes" : 31,
+                  "rating" : 7.69999980926514,
+                  "default" : true
+               }
+            },
+            "episode" : 8,
+            "label" : "11.22.63",
+            "playcount" : 1,
+            "plot" : "A teacher discovers a time portal that leads to October 21st, 1960 and goes on a quest to try and prevent the assassination of John F. Kennedy, which is complicated by the presence of Lee Harvey Oswald and the fact that he's falling in love with the past itself.",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f301824-8.jpg/",
+            "votes" : "31",
+            "premiered" : "2016-02-15",
+            "cast" : [
+               {
+                  "thumbnail" : "image://nfs%3a%2f%2f192.168.2.3%2f%2fvar%2fdata%2fmedia%2fvideos%2fmovies%2fromance%2f.actors%2fJames_Franco.jpg/",
+                  "order" : 0,
+                  "name" : "James Franco",
+                  "role" : "Jake Epping"
+               },
+               {
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f358603.jpg/",
+                  "order" : 1,
+                  "role" : "Sadie Dunhill",
+                  "name" : "Sarah Gadon"
+               },
+               {
+                  "order" : 2,
+                  "thumbnail" : "image://nfs%3a%2f%2f192.168.2.3%2f%2fvar%2fdata%2fmedia%2fvideos%2fmovies%2fdrama%2f.actors%2fChris_Cooper.jpg/",
+                  "role" : "Al Templeton",
+                  "name" : "Chris Cooper"
+               },
+               {
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f380762.jpg/",
+                  "order" : 3,
+                  "role" : "Harry Dunning",
+                  "name" : "Leon Rippy"
+               },
+               {
+                  "name" : "Kevin J. O'Connor",
+                  "role" : "Yellow Card Man",
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f370399.jpg/",
+                  "order" : 4
+               },
+               {
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f358610.jpg/",
+                  "order" : 5,
+                  "role" : "Bill Turcotte",
+                  "name" : "George MacKay"
+               },
+               {
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f358609.jpg/",
+                  "order" : 6,
+                  "role" : "Lee Harvey Oswald",
+                  "name" : "Daniel Webber"
+               },
+               {
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f358608.jpg/",
+                  "order" : 7,
+                  "role" : "Johnny Clayton",
+                  "name" : "T.R. Knight"
+               },
+               {
+                  "order" : 8,
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f358607.jpg/",
+                  "role" : "Marquerite Oswald",
+                  "name" : "Cherry Jones"
+               },
+               {
+                  "order" : 9,
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f358606.jpg/",
+                  "name" : "Lucy Fry",
+                  "role" : "Marina Oswald"
+               },
+               {
+                  "role" : "Frank Dunning",
+                  "name" : "Josh Duhamel",
+                  "order" : 10,
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f358602.jpg/"
+               },
+               {
+                  "order" : 22,
+                  "role" : "George de Mohrenschildt",
+                  "name" : "Johny Coyne"
+               },
+               {
+                  "thumbnail" : "image://nfs%3a%2f%2f192.168.2.3%2f%2fvar%2fdata%2fmedia%2fvideos%2fmovies%2fdrama%2f.actors%2fNick_Searcy.jpg/",
+                  "order" : 23,
+                  "role" : "Deke Simmons",
+                  "name" : "Nick Searcy"
+               }
+            ],
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/11_22_63 (2016)/",
+            "genre" : [
+               "Drama",
+               "Mini-Series",
+               "Science-Fiction"
+            ],
+            "episodeguide" : "<episodeguide><url cache=\"301824-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/301824/all/en.zip</url></episodeguide>",
+            "watchedepisodes" : 8,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f301824-10.jpg/",
+            "tag" : [],
+            "studio" : [
+               "Hulu"
+            ],
+            "rating" : 7.69999980926514
+         },
+         {
+            "tvshowid" : 137,
+            "sorttitle" : "",
+            "season" : 5,
+            "lastplayed" : "",
+            "runtime" : 2700,
+            "uniqueid" : {
+               "unknown" : "77904"
+            },
+            "imdbnumber" : "77904",
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f77904-3.jpg/",
+               "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f77904-g9.jpg/"
+            },
+            "year" : 1983,
+            "originaltitle" : "",
+            "title" : "The A-Team",
+            "mpaa" : "TV-PG",
+            "userrating" : 0,
+            "studio" : [
+               "NBC"
+            ],
+            "rating" : 7.80000019073486,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+            "tag" : [],
+            "premiered" : "1983-01-23",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/The A-Team (1983)/",
+            "cast" : [
+               {
+                  "name" : "George Peppard",
+                  "role" : "Col. John \"Hannibal\" Smith",
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f82360.jpg/",
+                  "order" : 0
+               },
+               {
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f59826.jpg/",
+                  "order" : 1,
+                  "name" : "Dirk Benedict",
+                  "role" : "Lt. Templeton \"Faceman\" Peck"
+               },
+               {
+                  "name" : "Mr. T",
+                  "role" : "Sgt. Bosco Albert \"B.A.\" Baracus",
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f59825.jpg/",
+                  "order" : 2
+               },
+               {
+                  "order" : 3,
+                  "thumbnail" : "image://nfs%3a%2f%2f192.168.2.3%2f%2fvar%2fdata%2fmedia%2fvideos%2fmovies%2fscifi%2f.actors%2fDwight_Schultz.jpg/",
+                  "role" : "Capt. H.M. \"Howling Mad\" Murdock",
+                  "name" : "Dwight Schultz"
+               },
+               {
+                  "order" : 4,
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f59831.jpg/",
+                  "role" : "Tawnia Baker",
+                  "name" : "Marla Heasley"
+               },
+               {
+                  "name" : "Melinda Culea",
+                  "role" : "Amy Amanda 'Triple A' Allen",
+                  "order" : 5,
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f59827.jpg/"
+               },
+               {
+                  "name" : "William Lucking",
+                  "role" : "Col. Lynch",
+                  "order" : 6,
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f59836.jpg/"
+               },
+               {
+                  "role" : "Col. Roderick Decker",
+                  "name" : "Lance LeGault",
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f59828.jpg/",
+                  "order" : 7
+               },
+               {
+                  "name" : "Eddie Velez",
+                  "role" : "Frankie \"Dishpan Man\" Santana",
+                  "order" : 8,
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f59838.jpg/"
+               },
+               {
+                  "role" : "Col. Briggs",
+                  "name" : "Charles Napier",
+                  "thumbnail" : "image://nfs%3a%2f%2f192.168.2.3%2f%2fvar%2fdata%2fmedia%2fvideos%2fmovies%2fcomedy%2f.actors%2fCharles_Napier.jpg/",
+                  "order" : 9
+               },
+               {
+                  "role" : "Capt. Crane",
+                  "name" : "Carl Franklin",
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f59830.jpg/",
+                  "order" : 10
+               },
+               {
+                  "role" : "Gen. Hunt Stockwell",
+                  "name" : "Robert Vaughn",
+                  "order" : 19
+               }
+            ],
+            "genre" : [
+               "Action",
+               "Adventure"
+            ],
+            "watchedepisodes" : 0,
+            "episodeguide" : "<episodeguide><url cache=\"77904-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/77904/all/en.zip</url></episodeguide>",
+            "dateadded" : "2016-08-26 09:16:58",
+            "episode" : 97,
+            "ratings" : {
+               "default" : {
+                  "votes" : 45,
+                  "rating" : 7.80000019073486,
+                  "default" : true
+               }
+            },
+            "label" : "The A-Team",
+            "playcount" : 0,
+            "plot" : "The A-Team is about a group of ex-United States Army Special Forces personnel who work as soldiers of fortune, while on the run from the Army after being branded as war criminals for a crime they didn't commit.",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f77904-3.jpg/",
+            "votes" : "45"
+         },
+         {
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/",
+               "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f3449-g.jpg/"
+            },
+            "imdbnumber" : "75926",
+            "userrating" : 0,
+            "mpaa" : "TV-PG",
+            "year" : 2001,
+            "title" : "According to Jim",
+            "originaltitle" : "",
+            "sorttitle" : "",
+            "season" : 8,
+            "tvshowid" : 4,
+            "uniqueid" : {
+               "unknown" : "75926"
+            },
+            "runtime" : 1800,
+            "lastplayed" : "2017-02-28 12:18:10",
+            "watchedepisodes" : 9,
+            "episodeguide" : "<episodeguide><url cache=\"75926-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/75926/all/en.zip</url></episodeguide>",
+            "genre" : [
+               "Comedy"
+            ],
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/According to Jim (2001)/",
+            "cast" : [
+               {
+                  "name" : "James Belushi",
+                  "role" : "Jim",
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f41995.jpg/",
+                  "order" : 0
+               },
+               {
+                  "order" : 1,
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f41994.jpg/",
+                  "role" : "Cheryl",
+                  "name" : "Courtney Thorne-Smith"
+               },
+               {
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f41992.jpg/",
+                  "order" : 2,
+                  "name" : "Kimberly Williams-Paisley",
+                  "role" : "Dana"
+               },
+               {
+                  "role" : "Andy",
+                  "name" : "Larry Joe Campbell",
+                  "order" : 3,
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f41993.jpg/"
+               },
+               {
+                  "role" : "Ruby",
+                  "name" : "Taylor Atelian",
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f41991.jpg/",
+                  "order" : 4
+               },
+               {
+                  "name" : "Conner Rayburn",
+                  "role" : "Kyle",
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f41990.jpg/",
+                  "order" : 5
+               },
+               {
+                  "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2factors%2f41989.jpg/",
+                  "order" : 6,
+                  "role" : "Gracie",
+                  "name" : "Billi Bruno"
+               }
+            ],
+            "premiered" : "2001-10-03",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/",
+            "votes" : "34",
+            "label" : "According to Jim",
+            "ratings" : {
+               "default" : {
+                  "votes" : 34,
+                  "default" : true,
+                  "rating" : 8
+               }
+            },
+            "playcount" : 0,
+            "episode" : 182,
+            "plot" : "Jim is an abrasive but lovable suburban father. Much like his real life counterpart, Jim's character is noted as a fan of Blues music, as well as the Chicago Blackhawks, Chicago Bulls, Chicago Bears, and the Chicago Cubs. He's married to a gorgeous woman, Cheryl, and raises his five children – Ruby, Gracie, Kyle, and twins, Gordan and Jonathan – in a big house. Everything is perfect for Jim, if it wasn't for the messy situations he gets himself into and his laziness, which often makes him search for alternative ways of doing things with less effort. Of course, having his wife's siblings hanging out at his house all the time is no help. While Andy might be one of his best friends, Dana often teams up with Cheryl against Jim.",
+            "dateadded" : "2016-08-26 09:16:59",
+            "rating" : 8,
+            "studio" : [
+               "ABC (US)"
+            ],
+            "tag" : [],
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/"
+         },
+         {
+            "watchedepisodes" : 0,
+            "episodeguide" : "<episodeguide><url cache=\"252308-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/252308/all/en.zip</url></episodeguide>",
+            "genre" : [
+               "Animation",
+               "Children"
+            ],
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/The Adventures of Abney & Teal (2011)/",
+            "cast" : [],
+            "premiered" : "2011-09-26",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f252308-1.jpg/",
+            "votes" : "1",
+            "episode" : 52,
+            "ratings" : {
+               "default" : {
+                  "votes" : 1,
+                  "rating" : 9,
+                  "default" : true
+               }
+            },
+            "plot" : "Animated adventures of two friends who live on an island in the middle of a lake, in the middle of a park, in the middle of the big city.",
+            "playcount" : 0,
+            "label" : "The Adventures of Abney & Teal",
+            "dateadded" : "2016-08-26 09:16:57",
+            "rating" : 9,
+            "studio" : [
+               "CBeebies"
+            ],
+            "tag" : [],
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f252308-4.jpg/",
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f252308-1.jpg/",
+               "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f252308-4.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f252308-g3.jpg/"
+            },
+            "imdbnumber" : "252308",
+            "userrating" : 0,
+            "mpaa" : "TV-Y",
+            "year" : 2011,
+            "title" : "The Adventures of Abney & Teal",
+            "originaltitle" : "",
+            "season" : 2,
+            "sorttitle" : "",
+            "tvshowid" : 138,
+            "uniqueid" : {
+               "unknown" : "252308"
+            },
+            "runtime" : 660,
+            "lastplayed" : ""
+         },
+         {
+            "tag" : [],
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f104171-1.jpg/",
+            "rating" : 3,
+            "studio" : [
+               "Seven Network"
+            ],
+            "episode" : 1,
+            "ratings" : {
+               "default" : {
+                  "votes" : 1,
+                  "default" : true,
+                  "rating" : 3
+               }
+            },
+            "label" : "Air Ways",
+            "plot" : "Follow the ups and downs of travel on Tiger Airways as viewers get an unprecedented look into the day-to-day running of a budget airline in Australia. A cancelled flight causes chaos, staff witness an unexpected proposal, a baggage problem riles a mum's temper, and a sleep-deprived teenager awakens to a rude shock.\r\nNarrated by Corinne Grant",
+            "playcount" : 1,
+            "votes" : "1",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f104171-1.jpg/",
+            "dateadded" : "2016-08-26 09:16:57",
+            "genre" : [
+               "Reality"
+            ],
+            "episodeguide" : "<episodeguide><url cache=\"104171-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/104171/all/en.zip</url></episodeguide>",
+            "watchedepisodes" : 1,
+            "premiered" : "2009-07-21",
+            "cast" : [],
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/Airways (2009)/",
+            "runtime" : 1800,
+            "uniqueid" : {
+               "unknown" : "104171"
+            },
+            "lastplayed" : "2017-02-06 16:41:56",
+            "sorttitle" : "",
+            "season" : 1,
+            "tvshowid" : 5,
+            "mpaa" : "TV-PG",
+            "userrating" : 0,
+            "originaltitle" : "",
+            "year" : 2009,
+            "title" : "Air Ways",
+            "imdbnumber" : "104171",
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f104171-1.jpg/",
+               "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f104171-1.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f104171-g.jpg/"
+            }
+         },
+         {
+            "sorttitle" : "",
+            "season" : 0,
+            "tvshowid" : 127,
+            "runtime" : 0,
+            "uniqueid" : {
+               "unknown" : "278782"
+            },
+            "lastplayed" : "",
+            "imdbnumber" : "278782",
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f278782-1.jpg/"
+            },
+            "mpaa" : "",
+            "userrating" : 0,
+            "year" : 1969,
+            "originaltitle" : "",
+            "title" : "Al Jazeera Special Series",
+            "rating" : 10,
+            "studio" : [],
+            "tag" : [],
+            "fanart" : "",
+            "genre" : [],
+            "episodeguide" : "<episodeguide><url cache=\"278782-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/278782/all/en.zip</url></episodeguide>",
+            "watchedepisodes" : 0,
+            "premiered" : "1969-12-31",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/Special Series (2016)/",
+            "cast" : [],
+            "ratings" : {
+               "default" : {
+                  "votes" : 1,
+                  "rating" : 10,
+                  "default" : true
+               }
+            },
+            "episode" : 0,
+            "label" : "Al Jazeera Special Series",
+            "plot" : "",
+            "playcount" : 1,
+            "votes" : "1",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f278782-1.jpg/",
+            "dateadded" : ""
+         },
+         {
+            "originaltitle" : "",
+            "year" : 2012,
+            "title" : "American Colony Meet the Hutterites",
+            "userrating" : 0,
+            "mpaa" : "",
+            "art" : {
+               "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f259064-1.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f259064-1.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f259064-g.jpg/"
+            },
+            "imdbnumber" : "259064",
+            "lastplayed" : "",
+            "uniqueid" : {
+               "unknown" : "259064"
+            },
+            "runtime" : 1800,
+            "tvshowid" : 6,
+            "sorttitle" : "",
+            "season" : 1,
+            "dateadded" : "2016-08-26 09:16:57",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f259064-1.jpg/",
+            "votes" : "1",
+            "plot" : "Meet the Hutterites—a small religious colony in rural Montana who holds desperately to their sacred traditions while fighting the modern temptations of the outside world. King Colony is made up of 59 people and they are almost all related. This family lives together, works together, and worships God together, 7 days a week, 365 days a year, for their entire lives. And, like any family, this one doesn’t always agree. Most of the colony is holding tight to the age-old traditions of their ancestors, while others are flirting with modern society. Some feel that bringing modern technology, education, and ideas into the colony will only help it, while others fear that this modern way of thinking threatens their very existence. We follow the men, the women, the young, and the old, as they strive to live as proper Hutterites. Some will succeed, some will fail, and everyone will have a choice to make. This is the very first glimpse into the world of the Hutterites.",
+            "ratings" : {
+               "default" : {
+                  "votes" : 1,
+                  "default" : true,
+                  "rating" : 1
+               }
+            },
+            "label" : "American Colony Meet the Hutterites",
+            "episode" : 10,
+            "playcount" : 0,
+            "cast" : [],
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/American Colony: Meet the Hutterites (2012)/",
+            "premiered" : "2012-05-29",
+            "episodeguide" : "<episodeguide><url cache=\"259064-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/259064/all/en.zip</url></episodeguide>",
+            "watchedepisodes" : 0,
+            "genre" : [
+               "Documentary"
+            ],
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f259064-1.jpg/",
+            "tag" : [],
+            "studio" : [
+               "National Geographic"
+            ],
+            "rating" : 1
+         },
+         {
+            "runtime" : 3600,
+            "uniqueid" : {
+               "unknown" : "258525"
+            },
+            "lastplayed" : "",
+            "season" : 1,
+            "sorttitle" : "",
+            "tvshowid" : 7,
+            "mpaa" : "TV-PG",
+            "userrating" : 0,
+            "year" : 2012,
+            "originaltitle" : "",
+            "title" : "Amish: Out Of Order",
+            "imdbnumber" : "258525",
+            "art" : {
+               "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f258525-1.jpg/"
+            },
+            "tag" : [],
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f258525-1.jpg/",
+            "rating" : 8.5,
+            "studio" : [
+               "National Geographic"
+            ],
+            "label" : "Amish: Out Of Order",
+            "ratings" : {
+               "default" : {
+                  "rating" : 8.5,
+                  "default" : true,
+                  "votes" : 0
+               }
+            },
+            "plot" : "It takes a lot to leave the only life you’ve ever known—for one you’ve been told will lead you straight to hell. And with little possibility of normal contact with your family ever again, turning your back on the Amish order is an immense undertaking, and a choice that’s not made without tremendous consideration. In the new ten-part series Amish: Out of Order, follow the trials and tribulations of individuals who have made the decision to leave the Amish community behind. Due to their religious beliefs, most Amish refuse to be photographed or videotaped—even ex-Amish risk permanent shunning by their family and community for appearing on camera. The ex-Amish in this program accept that risk.",
+            "playcount" : 0,
+            "episode" : 9,
+            "thumbnail" : "",
+            "votes" : "0",
+            "dateadded" : "2016-08-26 09:16:59",
+            "genre" : [
+               "Documentary",
+               "Reality"
+            ],
+            "watchedepisodes" : 0,
+            "episodeguide" : "<episodeguide><url cache=\"258525-en.xml\">http://thetvdb.com/api/1D62F2F90030C444/series/258525/all/en.zip</url></episodeguide>",
+            "premiered" : "2012-04-24",
+            "cast" : [],
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/tvshows/Amish: Out of Order (2012)/"
+         }
+      ],
+      "limits" : {
+         "start" : 0,
+         "total" : 177,
+         "end" : 10
+      }
+   }
+}

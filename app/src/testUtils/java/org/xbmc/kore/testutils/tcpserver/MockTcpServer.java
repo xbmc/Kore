@@ -48,7 +48,6 @@ public class MockTcpServer {
     private boolean started;
     private ExecutorService executor;
     private int port = -1;
-    private StringBuffer request;
     private InetSocketAddress inetSocketAddress;
 
     private final Set<Socket> openClientSockets =
@@ -56,6 +55,10 @@ public class MockTcpServer {
 
     private final TcpServerConnectionHandler connectionHandler;
 
+    // TODO
+    // Enhance handler to handle multiple connections simultaneously. It can now handle one
+    // connection at a time, which makes the current setup of the MockTcpServer (with threading)
+    // overkill.
     public interface TcpServerConnectionHandler {
         /**
          * Processes received input
@@ -131,7 +134,6 @@ public class MockTcpServer {
                         //Socket closed
                         return;
                     }
-
                     openClientSockets.add(socket);
                     serveConnection(socket);
                 }
@@ -185,14 +187,9 @@ public class MockTcpServer {
             private void handleInput() throws IOException {
                 InputStreamReader in = new InputStreamReader(socket.getInputStream());
 
-                request = new StringBuffer();
                 int i;
                 while ((i = in.read()) != -1) {
-                    request.append((char) i);
-
-                    synchronized (connectionHandler) {
-                        connectionHandler.processInput((char) i);
-                    }
+                    connectionHandler.processInput((char) i);
                 }
 
                 socket.close();

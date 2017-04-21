@@ -14,55 +14,36 @@
  * limitations under the License.
  */
 
-package org.xbmc.kore.tests.ui;
+package org.xbmc.kore.tests.ui.movies;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.xbmc.kore.R;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
-import org.xbmc.kore.testhelpers.LoaderIdlingResource;
-import org.xbmc.kore.testhelpers.Utils;
+import org.xbmc.kore.tests.ui.AbstractTestClass;
 import org.xbmc.kore.ui.sections.video.MoviesActivity;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class RestoreSearchQueryListFragmentTest {
+public class RestoreSearchQueryListFragmentTest extends AbstractTestClass<MoviesActivity> {
 
     private final String SEARCH_QUERY = "Room";
     private final int SEARCH_QUERY_LIST_SIZE = 2;
     private final int COMPLETE_LIST_SIZE = 300;
 
-    private LoaderIdlingResource loaderIdlingResource;
-
     @Rule
     public ActivityTestRule<MoviesActivity> mActivityRule = new ActivityTestRule<>(
             MoviesActivity.class);
 
-    @Before
-    public void setUp() throws Throwable {
-        Utils.initialize(mActivityRule);
-        loaderIdlingResource = new LoaderIdlingResource(mActivityRule.getActivity().getSupportLoaderManager());
-        Espresso.registerIdlingResources(loaderIdlingResource);
-        Utils.closeDrawer(mActivityRule);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        Espresso.unregisterIdlingResources(loaderIdlingResource);
-    }
-
-    @AfterClass
-    public static void cleanup() {
-        Utils.cleanup();
+    @Override
+    protected ActivityTestRule<MoviesActivity> getActivityTestRule() {
+        return mActivityRule;
     }
 
     /**

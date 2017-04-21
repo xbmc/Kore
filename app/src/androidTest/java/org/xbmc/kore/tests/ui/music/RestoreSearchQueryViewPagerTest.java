@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.xbmc.kore.tests.ui;
+package org.xbmc.kore.tests.ui.music;
 
 import android.app.Activity;
 import android.support.test.espresso.Espresso;
@@ -22,28 +22,21 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.xbmc.kore.R;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
 import org.xbmc.kore.testhelpers.LoaderIdlingResource;
-import org.xbmc.kore.testhelpers.Utils;
+import org.xbmc.kore.tests.ui.AbstractTestClass;
 import org.xbmc.kore.ui.sections.audio.MusicActivity;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.swipeLeft;
-import static android.support.test.espresso.action.ViewActions.swipeRight;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickAlbumsTab;
+import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickArtistsTab;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class RestoreSearchQueryViewPagerTest {
+public class RestoreSearchQueryViewPagerTest extends AbstractTestClass<MusicActivity> {
 
     private final String ARTIST_SEARCH_QUERY = "Ben";
     private final int ARTIST_SEARCH_QUERY_LIST_SIZE = 2;
@@ -58,22 +51,9 @@ public class RestoreSearchQueryViewPagerTest {
     public ActivityTestRule<MusicActivity> mActivityRule = new ActivityTestRule<>(
             MusicActivity.class);
 
-    @Before
-    public void setUp() throws Throwable {
-        Utils.initialize(mActivityRule);
-        loaderIdlingResource = new LoaderIdlingResource(mActivityRule.getActivity().getSupportLoaderManager());
-        Espresso.registerIdlingResources(loaderIdlingResource);
-        Utils.closeDrawer(mActivityRule);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        Espresso.unregisterIdlingResources(loaderIdlingResource);
-    }
-
-    @AfterClass
-    public static void cleanup() {
-        Utils.cleanup();
+    @Override
+    protected ActivityTestRule<MusicActivity> getActivityTestRule() {
+        return mActivityRule;
     }
 
     /**
@@ -223,7 +203,7 @@ public class RestoreSearchQueryViewPagerTest {
      * UI interaction flow tested:
      *   1. Enter search query
      *   2. Switch to Albums tab
-     *   3. Rotated device
+     *   3. Rotate device
      *   4. Switch to Artists tab
      *   5. Result: search query entered at 1. should show in search field and list should match search query
      */
@@ -324,15 +304,5 @@ public class RestoreSearchQueryViewPagerTest {
 
         EspressoTestUtils.checkTextInSearchQuery(ALBUMS_SEARCH_QUERY);
         EspressoTestUtils.checkListMatchesSearchQuery(ALBUMS_SEARCH_QUERY, ALBUM_SEARCH_QUERY_LIST_SIZE, R.id.list);
-    }
-
-    private void clickAlbumsTab() {
-        onView(withId(R.id.pager_tab_strip)).perform(swipeLeft());
-        onView(withText(R.string.albums)).perform(click());
-    }
-
-    private void clickArtistsTab() {
-        onView(withId(R.id.pager_tab_strip)).perform(swipeRight());
-        onView(withText(R.string.artists)).perform(click());
     }
 }

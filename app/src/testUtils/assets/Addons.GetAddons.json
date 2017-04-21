@@ -1,0 +1,1244 @@
+{
+   "jsonrpc" : "2.0",
+   "id" : "libAddons",
+   "result" : {
+      "addons" : [
+         {
+            "path" : "/home/martijn/.kodi/addons/metadata.common.fanart.tv",
+            "enabled" : true,
+            "extrainfo" : [],
+            "description" : "Download backdrops from www.fanart.tv.com",
+            "rating" : -1,
+            "disclaimer" : "",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.metadata",
+                  "version" : "2.1.0"
+               }
+            ],
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.library",
+            "installed" : true,
+            "fanart" : "",
+            "version" : "3.1.4",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.common.fanart.tv%2ficon.png/",
+            "summary" : "fanart.tv Scraper Library",
+            "name" : "fanart.tv Scraper Library",
+            "addonid" : "metadata.common.fanart.tv"
+         },
+         {
+            "fanart" : "",
+            "version" : "1.1.8",
+            "type" : "kodi.resource.images",
+            "broken" : false,
+            "installed" : true,
+            "name" : "Weather Icons - Default",
+            "addonid" : "resource.images.weathericons.default",
+            "summary" : "Default Weather Icons",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fresource.images.weathericons.default%2ficon.png/",
+            "description" : "Default set of Weather Icons shipped with Kodi",
+            "rating" : -1,
+            "extrainfo" : [],
+            "enabled" : true,
+            "path" : "/usr/share/kodi/addons/resource.images.weathericons.default",
+            "dependencies" : [
+               {
+                  "version" : "1.0.0",
+                  "optional" : false,
+                  "addonid" : "kodi.resource"
+               }
+            ],
+            "author" : "Team Kodi",
+            "disclaimer" : ""
+         },
+         {
+            "author" : "Skipmode A1, Sparkline, Martijn",
+            "dependencies" : [
+               {
+                  "version" : "5.1.7",
+                  "optional" : false,
+                  "addonid" : "plugin.video.youtube"
+               },
+               {
+                  "version" : "3.0.8",
+                  "addonid" : "script.module.beautifulsoup",
+                  "optional" : false
+               },
+               {
+                  "optional" : false,
+                  "addonid" : "script.module.requests",
+                  "version" : "2.4.3"
+               },
+               {
+                  "addonid" : "xbmc.python",
+                  "optional" : false,
+                  "version" : "2.14.0"
+               }
+            ],
+            "disclaimer" : "For bugs, requests or general questions visit the Dumpert.nl thread on the XBMC forum.",
+            "rating" : -1,
+            "extrainfo" : [
+               {
+                  "value" : "nl",
+                  "key" : "language"
+               },
+               {
+                  "value" : "video",
+                  "key" : "provides"
+               }
+            ],
+            "description" : "Watch funny videos from Dumpert.nl (dutch)",
+            "enabled" : true,
+            "path" : "/home/martijn/.kodi/addons/plugin.video.dumpert",
+            "name" : "Dumpert",
+            "addonid" : "plugin.video.dumpert",
+            "summary" : "Watch funny videos from Dumpert.nl (dutch)",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.dumpert%2ficon.png/",
+            "fanart" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.dumpert%2ffanart.jpg/",
+            "version" : "1.1.4",
+            "type" : "xbmc.python.pluginsource",
+            "broken" : false,
+            "installed" : true
+         },
+         {
+            "name" : "Kodi Add-on repository",
+            "addonid" : "repository.xbmc.org",
+            "summary" : "Install Add-ons from Kodi.tv",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2frepository.xbmc.org%2ficon.png/",
+            "fanart" : "",
+            "version" : "2.5.9",
+            "type" : "xbmc.addon.repository",
+            "broken" : false,
+            "installed" : true,
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.addon",
+                  "version" : "12.0.0"
+               }
+            ],
+            "author" : "Team Kodi",
+            "disclaimer" : "Team Kodi did not make all the add-ons on this repository and are not responsible for their content",
+            "extrainfo" : [],
+            "rating" : -1,
+            "description" : "Download and install add-ons from the Official Kodi.tv add-on repository.[CR]  By using the official Repository you will be able to take advantage of our extensive file mirror service to help get you faster downloads from a region close to you.[CR]  All add-ons on this repository have under gone basic testing, if you find a broken or not working add-on please report it to Team Kodi so we can take any action needed.",
+            "enabled" : true,
+            "path" : "/usr/share/kodi/addons/repository.xbmc.org"
+         },
+         {
+            "disclaimer" : "",
+            "author" : "jez500, Team Kodi",
+            "dependencies" : [
+               {
+                  "addonid" : "xbmc.json",
+                  "optional" : false,
+                  "version" : "6.0.0"
+               }
+            ],
+            "path" : "/usr/share/kodi/addons/webinterface.default",
+            "extrainfo" : [
+               {
+                  "key" : "language",
+                  "value" : "en"
+               }
+            ],
+            "description" : "Browse and interact with your Music, Movies, TV Shows and more via a web browser. Stream music and videos to your browser. Edit and manage your Kodi media library.",
+            "rating" : -1,
+            "enabled" : true,
+            "summary" : "Default web interface",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fwebinterface.default%2ficon.png/",
+            "addonid" : "webinterface.default",
+            "name" : "Kodi web interface - Chorus2",
+            "installed" : true,
+            "type" : "xbmc.webinterface",
+            "broken" : false,
+            "version" : "2.4.4",
+            "fanart" : ""
+         },
+         {
+            "description" : "Black is a simple screensaver that will turn your screen black.",
+            "rating" : -1,
+            "extrainfo" : [],
+            "enabled" : true,
+            "path" : "/usr/share/kodi/addons/screensaver.xbmc.builtin.black",
+            "dependencies" : [],
+            "author" : "Team Kodi",
+            "disclaimer" : "",
+            "fanart" : "",
+            "version" : "1.0.31",
+            "type" : "xbmc.ui.screensaver",
+            "broken" : false,
+            "installed" : true,
+            "name" : "Black",
+            "addonid" : "screensaver.xbmc.builtin.black",
+            "summary" : "Screensaver that turns your screen black",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fscreensaver.xbmc.builtin.black%2ficon.png/"
+         },
+         {
+            "path" : "/home/martijn/.kodi/addons/metadata.albums.theaudiodb.com",
+            "extrainfo" : [],
+            "description" : "TheAudioDB.com is a community driven database of audio releases. It is our aim to be the most simple, easy to use and accurate source for Music metadata on the web. We also provide an API to access our repository of data so it can be used in many popular HTPC and Mobile apps to give you the best possible audio experience without the hassle.",
+            "rating" : -1,
+            "enabled" : true,
+            "disclaimer" : "",
+            "dependencies" : [
+               {
+                  "version" : "3.1.0",
+                  "optional" : false,
+                  "addonid" : "metadata.common.fanart.tv"
+               },
+               {
+                  "version" : "1.7.3",
+                  "addonid" : "metadata.common.theaudiodb.com",
+                  "optional" : false
+               },
+               {
+                  "version" : "2.1.0",
+                  "addonid" : "xbmc.metadata",
+                  "optional" : false
+               }
+            ],
+            "author" : "Olympia, Team Kodi",
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.albums",
+            "installed" : true,
+            "fanart" : "",
+            "version" : "1.2.0",
+            "summary" : "TheAudioDb Album Scraper",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.albums.theaudiodb.com%2ficon.png/",
+            "name" : "TheAudioDb Album Scraper",
+            "addonid" : "metadata.albums.theaudiodb.com"
+         },
+         {
+            "addonid" : "audioencoder.xbmc.builtin.wma",
+            "name" : "WMA encoder",
+            "summary" : "WMA Audio Encoder",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2faudioencoder.xbmc.builtin.wma%2ficon.png/",
+            "version" : "1.0.0",
+            "fanart" : "",
+            "installed" : true,
+            "broken" : false,
+            "type" : "xbmc.audioencoder",
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.audioencoder",
+                  "version" : "1.0.0"
+               }
+            ],
+            "author" : "spiff",
+            "disclaimer" : "",
+            "extrainfo" : [],
+            "description" : "WMA Audio Encoder",
+            "rating" : -1,
+            "enabled" : true,
+            "path" : "/usr/share/kodi/addons/audioencoder.xbmc.builtin.wma"
+         },
+         {
+            "disclaimer" : "",
+            "dependencies" : [],
+            "author" : "Team Kodi",
+            "path" : "/usr/share/kodi/addons/game.controller.default",
+            "enabled" : true,
+            "description" : "The default media center controller is based on the Xbox 360 controller.",
+            "rating" : -1,
+            "extrainfo" : [],
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fgame.controller.default%2ficon.png/",
+            "summary" : "Default Controller",
+            "name" : "Default Controller",
+            "addonid" : "game.controller.default",
+            "broken" : false,
+            "type" : "kodi.game.controller",
+            "installed" : true,
+            "fanart" : "",
+            "version" : "1.0.3"
+         },
+         {
+            "dependencies" : [],
+            "author" : "Team Kodi",
+            "disclaimer" : "",
+            "enabled" : true,
+            "extrainfo" : [],
+            "description" : "The Dim screensaver is a simple screensaver that will dim (fade out) your screen to a setable value between 20 and 100% .",
+            "rating" : -1,
+            "path" : "/usr/share/kodi/addons/screensaver.xbmc.builtin.dim",
+            "addonid" : "screensaver.xbmc.builtin.dim",
+            "name" : "Dim",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fscreensaver.xbmc.builtin.dim%2ficon.png/",
+            "summary" : "Screensaver that dims your screen",
+            "version" : "1.0.38",
+            "fanart" : "",
+            "installed" : true,
+            "type" : "xbmc.ui.screensaver",
+            "broken" : false
+         },
+         {
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fscript.module.beautifulsoup4%2ficon.png/",
+            "summary" : "HTML/XML parser for quick-turnaround applications like screen-scraping",
+            "addonid" : "script.module.beautifulsoup4",
+            "name" : "BeautifulSoup4",
+            "installed" : true,
+            "type" : "xbmc.python.module",
+            "broken" : false,
+            "version" : "4.5.3",
+            "fanart" : "",
+            "disclaimer" : "",
+            "author" : "Leonard Richardson (leonardr@segfault.org)",
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.python",
+                  "version" : "2.25.0"
+               }
+            ],
+            "path" : "/home/martijn/.kodi/addons/script.module.beautifulsoup4",
+            "enabled" : true,
+            "rating" : -1,
+            "description" : "Beautiful Soup parses arbitrarily invalid SGML and provides a variety of methods and Pythonic idioms for iterating and searching the parse tree.",
+            "extrainfo" : []
+         },
+         {
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "metadata.common.imdb.com",
+                  "version" : "2.7.8"
+               },
+               {
+                  "optional" : false,
+                  "addonid" : "metadata.common.themoviedb.org",
+                  "version" : "2.13.1"
+               },
+               {
+                  "optional" : true,
+                  "addonid" : "plugin.video.youtube",
+                  "version" : "4.4.10"
+               },
+               {
+                  "addonid" : "xbmc.metadata",
+                  "optional" : false,
+                  "version" : "2.1.0"
+               }
+            ],
+            "disclaimer" : "",
+            "extrainfo" : [],
+            "description" : "themoviedb.org is a free and open movie database. It's completely user driven by people like you. TMDb is currently used by millions of people every month and with their powerful API, it is also used by many popular media centers like Kodi to retrieve Movie Metadata, Posters and Fanart to enrich the user's experience.",
+            "rating" : -1,
+            "enabled" : true,
+            "path" : "/home/martijn/.kodi/addons/metadata.themoviedb.org",
+            "addonid" : "metadata.themoviedb.org",
+            "name" : "The Movie Database",
+            "summary" : "TMDB Movie Scraper",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.themoviedb.org%2ficon.png/",
+            "version" : "3.9.3",
+            "fanart" : "",
+            "installed" : true,
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.movies"
+         },
+         {
+            "disclaimer" : "Feel free to use this script. For information visit kodi.tv",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "addonid" : "xbmc.python",
+                  "optional" : false,
+                  "version" : "2.1.0"
+               }
+            ],
+            "path" : "/home/martijn/.kodi/addons/service.xbmc.versioncheck",
+            "extrainfo" : [],
+            "rating" : -1,
+            "description" : "Kodi Version Check only supports a number of platforms/distros as releases may differ between them. For more information visit the kodi.tv website.",
+            "enabled" : true,
+            "summary" : "Kodi Version Check checks if you are running latest released version.",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fservice.xbmc.versioncheck%2ficon.png/",
+            "addonid" : "service.xbmc.versioncheck",
+            "name" : "Version Check",
+            "installed" : true,
+            "type" : "xbmc.service",
+            "broken" : false,
+            "version" : "0.3.22",
+            "fanart" : ""
+         },
+         {
+            "rating" : -1,
+            "extrainfo" : [
+               {
+                  "key" : "language",
+                  "value" : "nl"
+               },
+               {
+                  "value" : "video",
+                  "key" : "provides"
+               }
+            ],
+            "description" : "Watch videos from Gamekings.nl (dutch)",
+            "enabled" : true,
+            "path" : "/home/martijn/.kodi/addons/plugin.video.gamekings",
+            "dependencies" : [
+               {
+                  "version" : "1.4.5",
+                  "addonid" : "plugin.video.twitch",
+                  "optional" : false
+               },
+               {
+                  "version" : "4.1.4",
+                  "addonid" : "plugin.video.vimeo",
+                  "optional" : false
+               },
+               {
+                  "addonid" : "plugin.video.youtube",
+                  "optional" : false,
+                  "version" : "5.1.7"
+               },
+               {
+                  "addonid" : "script.module.beautifulsoup",
+                  "optional" : false,
+                  "version" : "3.0.8"
+               },
+               {
+                  "version" : "2.4.3",
+                  "addonid" : "script.module.requests",
+                  "optional" : false
+               },
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.python",
+                  "version" : "2.14.0"
+               }
+            ],
+            "author" : "Skipmode A1, Amelandbor",
+            "disclaimer" : "For bugs, requests or general questions visit the Gamekings.nl thread on the Kodi forum.",
+            "fanart" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.gamekings%2ffanart.jpg/",
+            "version" : "1.2.7",
+            "broken" : false,
+            "type" : "xbmc.python.pluginsource",
+            "installed" : true,
+            "name" : "GameKings",
+            "addonid" : "plugin.video.gamekings",
+            "summary" : "Watch videos from Gamekings.nl (dutch)",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.gamekings%2ficon.png/"
+         },
+         {
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fscript.module.beautifulsoup%2ficon.png/",
+            "summary" : "HTML/XML parser for quick-turnaround applications like screen-scraping",
+            "name" : "BeautifulSoup",
+            "addonid" : "script.module.beautifulsoup",
+            "type" : "xbmc.python.module",
+            "broken" : false,
+            "installed" : true,
+            "fanart" : "",
+            "version" : "3.2.1",
+            "disclaimer" : "",
+            "author" : "Leonard Richardson (leonardr@segfault.org)",
+            "dependencies" : [
+               {
+                  "version" : "2.1.0",
+                  "addonid" : "xbmc.python",
+                  "optional" : false
+               }
+            ],
+            "path" : "/home/martijn/.kodi/addons/script.module.beautifulsoup",
+            "enabled" : true,
+            "description" : "Beautiful Soup parses arbitrarily invalid SGML and provides a variety of methods and Pythonic idioms for iterating and searching the parse tree.",
+            "extrainfo" : [],
+            "rating" : -1
+         },
+         {
+            "dependencies" : [
+               {
+                  "addonid" : "xbmc.python",
+                  "optional" : false,
+                  "version" : "2.1.0"
+               }
+            ],
+            "author" : "PythonWare",
+            "disclaimer" : "",
+            "rating" : -1,
+            "extrainfo" : [],
+            "description" : "",
+            "enabled" : true,
+            "path" : "/usr/share/kodi/addons/script.module.pil",
+            "addonid" : "script.module.pil",
+            "name" : "Python Image Library",
+            "summary" : "",
+            "thumbnail" : "",
+            "version" : "1.1.7",
+            "fanart" : "",
+            "installed" : true,
+            "type" : "xbmc.python.module",
+            "broken" : false
+         },
+         {
+            "type" : "xbmc.python.pluginsource",
+            "broken" : false,
+            "installed" : true,
+            "fanart" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.southpark_unofficial%2ffanart.jpg/",
+            "version" : "0.4.5",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.southpark_unofficial%2ficon.png/",
+            "summary" : "South Park Unofficial Player",
+            "name" : "South Park",
+            "addonid" : "plugin.video.southpark_unofficial",
+            "path" : "/home/martijn/.kodi/addons/plugin.video.southpark_unofficial",
+            "enabled" : true,
+            "extrainfo" : [
+               {
+                  "key" : "language",
+                  "value" : "en"
+               },
+               {
+                  "value" : "video",
+                  "key" : "provides"
+               }
+            ],
+            "description" : "Watch South Park episodes. The supported countries are the one that can view videos from http://southpark.cc.com or http://www.southpark.de.",
+            "rating" : -1,
+            "disclaimer" : "Some parts of this addon may not be legal in your country of residence - please check with your local laws before installing.",
+            "author" : "Deroad",
+            "dependencies" : [
+               {
+                  "version" : "2.1.0",
+                  "addonid" : "xbmc.python",
+                  "optional" : false
+               }
+            ]
+         },
+         {
+            "path" : "/home/martijn/.kodi/addons/plugin.video.vimeo",
+            "enabled" : true,
+            "description" : "Vimeo is a one of the biggest video-sharing websites of the world.",
+            "rating" : -1,
+            "extrainfo" : [
+               {
+                  "key" : "provides",
+                  "value" : "video"
+               }
+            ],
+            "disclaimer" : "",
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.python",
+                  "version" : "2.14.0"
+               }
+            ],
+            "author" : "bromix",
+            "type" : "xbmc.python.pluginsource",
+            "broken" : false,
+            "installed" : true,
+            "fanart" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.vimeo%2ffanart.jpg/",
+            "version" : "4.1.4",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.vimeo%2ficon.png/",
+            "summary" : "Plugin for Vimeo",
+            "name" : "Vimeo",
+            "addonid" : "plugin.video.vimeo"
+         },
+         {
+            "installed" : true,
+            "type" : "xbmc.metadata.scraper.musicvideos",
+            "broken" : false,
+            "version" : "1.3.3",
+            "fanart" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.musicvideos.theaudiodb.com%2ffanart.jpg/",
+            "summary" : "theaudiodb.com Music Video Scraper",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.musicvideos.theaudiodb.com%2ficon.png/",
+            "addonid" : "metadata.musicvideos.theaudiodb.com",
+            "name" : "TheAudioDb.com for Music Videos",
+            "path" : "/home/martijn/.kodi/addons/metadata.musicvideos.theaudiodb.com",
+            "rating" : -1,
+            "extrainfo" : [],
+            "description" : "This scraper downloads Music Video information from TheAudioDB.com website. Due to various search difficulties the scraper currently expects the folder/filename to be formatted as 'artist - trackname' otherwise it will not return results. It is important to note the space between the hyphen.",
+            "enabled" : true,
+            "disclaimer" : "",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "version" : "3.1.0",
+                  "optional" : false,
+                  "addonid" : "metadata.common.fanart.tv"
+               },
+               {
+                  "version" : "1.7.3",
+                  "optional" : false,
+                  "addonid" : "metadata.common.theaudiodb.com"
+               },
+               {
+                  "version" : "2.1.0",
+                  "addonid" : "xbmc.metadata",
+                  "optional" : false
+               }
+            ]
+         },
+         {
+            "disclaimer" : "",
+            "dependencies" : [
+               {
+                  "addonid" : "script.module.requests",
+                  "optional" : false,
+                  "version" : "2.12.4"
+               },
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.python",
+                  "version" : "2.19.0"
+               }
+            ],
+            "author" : "jdf76, bromix",
+            "path" : "/home/martijn/.kodi/addons/plugin.video.youtube",
+            "enabled" : true,
+            "description" : "YouTube is one of the biggest video-sharing websites of the world.",
+            "rating" : -1,
+            "extrainfo" : [
+               {
+                  "value" : "video",
+                  "key" : "provides"
+               }
+            ],
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.youtube%2ficon.png/",
+            "summary" : "Plugin for YouTube",
+            "addonid" : "plugin.video.youtube",
+            "name" : "YouTube",
+            "installed" : true,
+            "broken" : false,
+            "type" : "xbmc.python.pluginsource",
+            "version" : "5.3.12",
+            "fanart" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.youtube%2ffanart.jpg/"
+         },
+         {
+            "broken" : false,
+            "type" : "xbmc.python.pluginsource",
+            "installed" : true,
+            "fanart" : "",
+            "version" : "1.3.1",
+            "summary" : "Uitzendinggemist (NPO) - Watch free videos from Uitzendinggemist (only with a dutch ip-address)",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.uzg%2ficon.png/",
+            "name" : "Uitzendinggemist (NPO)",
+            "addonid" : "plugin.video.uzg",
+            "path" : "/home/martijn/.kodi/addons/plugin.video.uzg",
+            "rating" : -1,
+            "extrainfo" : [
+               {
+                  "key" : "language",
+                  "value" : "nl"
+               },
+               {
+                  "value" : "video",
+                  "key" : "provides"
+               }
+            ],
+            "description" : "Dutch Uitzendinggemist (NPO) videos NED1 / NED2 / NED3 (only with a dutch ip-address)",
+            "enabled" : true,
+            "disclaimer" : "",
+            "author" : "Bas Magré (Opvolger)",
+            "dependencies" : [
+               {
+                  "version" : "2.4.0",
+                  "addonid" : "script.module.xbmcswift2",
+                  "optional" : false
+               },
+               {
+                  "version" : "2.1.0",
+                  "addonid" : "xbmc.python",
+                  "optional" : false
+               }
+            ]
+         },
+         {
+            "fanart" : "image://%2fusr%2fshare%2fkodi%2faddons%2fskin.estouchy%2fresources%2ffanart.jpg/",
+            "version" : "1.1.9",
+            "broken" : false,
+            "type" : "xbmc.gui.skin",
+            "installed" : true,
+            "name" : "Estouchy",
+            "addonid" : "skin.estouchy",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fskin.estouchy%2fresources%2ficon.png/",
+            "summary" : "Skin for touchscreen devices",
+            "enabled" : true,
+            "extrainfo" : [],
+            "description" : "Skin designed to be used on touchscreen devices like tablets and smartphones",
+            "rating" : -1,
+            "path" : "/usr/share/kodi/addons/skin.estouchy",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "version" : "5.12.0",
+                  "addonid" : "xbmc.gui",
+                  "optional" : false
+               }
+            ],
+            "disclaimer" : ""
+         },
+         {
+            "addonid" : "script.module.requests",
+            "name" : "requests",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fscript.module.requests%2ficon.png/",
+            "summary" : "Python HTTP for Humans",
+            "version" : "2.12.4",
+            "fanart" : "",
+            "installed" : true,
+            "broken" : false,
+            "type" : "xbmc.python.module",
+            "dependencies" : [
+               {
+                  "version" : "2.14.0",
+                  "optional" : false,
+                  "addonid" : "xbmc.python"
+               }
+            ],
+            "author" : "kennethreitz, beenje",
+            "disclaimer" : "",
+            "enabled" : true,
+            "description" : "Packed for KODI from https://github.com/kennethreitz/requests",
+            "rating" : -1,
+            "extrainfo" : [],
+            "path" : "/home/martijn/.kodi/addons/script.module.requests"
+         },
+         {
+            "version" : "0.9.98",
+            "fanart" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fscript.lazytv%2ffanart.jpg/",
+            "installed" : true,
+            "type" : "xbmc.python.script",
+            "broken" : false,
+            "addonid" : "script.lazytv",
+            "name" : "LazyTV",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fscript.lazytv%2ficon.png/",
+            "summary" : "LazyTV",
+            "enabled" : true,
+            "extrainfo" : [
+               {
+                  "value" : "en",
+                  "key" : "language"
+               },
+               {
+                  "value" : "executable",
+                  "key" : "provides"
+               }
+            ],
+            "description" : "You have a huge library of TV shows and you havent viewed half of it. So why does it feel like such a chore to sit down and watch something?\nLazyTV is here to free you from your battles with indecision, instead letting you lean back and soak up content. With one click you can be channel-surfing your own library, or have what you probably want to watch pop up in a single window.\nAfterall, you know you want to watch TV, so why do you also have to decide what specifically to watch?\n\nUnlike a smart playlist or skin widget, LazyTV doesnt just provide the first unwatched episode of a TV show. It provides the first unwatched episode AFTER the last watched one in your library. A small, but important, distinction.\n\nLazyTV offers two main functions:\nThe first creates and launches a randomised playlist of the TV episodes. And not just any episodes, but the next episode it thinks you would want to watch. You also have the option to blend in your movies (both the watched and the unwatched) to complete the channel-surfing experience.\nThe second main function populates a window with the next available episode for each of your TV Shows. One click and your viewing menu is there, immediately.\n\nCombine either of the main functions with a playlist of preselected shows to customise your experience even further.\nSome TV shows, like cartoons or skit shows, can be viewed out of episodic order. So LazyTV gives you the ability to identify these shows and treat them differently. Those shows will be played in a random order.\n\nLazyTV also offers two minor functions that extend beyond the addon itself:\nThe first is an option to be notified if you are about to watch an episode that has an unwatched episode before it. This function excludes the TV shows identified as able to be watched out of order.\nThe second option posts a notification when you finish watching a TV episode telling you that the next show is available and asks if you want to view it now.\n\n\nLazyTV contains a service that stores the next episodes' information and monitors your player to pre-empt database changes. This is my attempt to make the addon more responsive on my Raspberry Pi. The Pi still takes a while to \"warm-up\"; a full refresh of the episode data (which occurs at start-up and on a library update) takes about 30 seconds for my ~100 show library*. However, the show list window opens and the random player starts in less than 2 seconds.\n\n*The same update takes 2 seconds on my laptop with its i5 processor.",
+            "rating" : -1,
+            "path" : "/home/martijn/.kodi/addons/script.lazytv",
+            "dependencies" : [
+               {
+                  "version" : "2.1.0",
+                  "optional" : false,
+                  "addonid" : "xbmc.python"
+               }
+            ],
+            "author" : "KodeKarnage",
+            "disclaimer" : ""
+         },
+         {
+            "extrainfo" : [
+               {
+                  "value" : "executable",
+                  "key" : "provides"
+               }
+            ],
+            "rating" : -1,
+            "description" : "The most powerful way to access content on Netflix and YouTube and Amazon Instant Video would be a web browser, if web browsers provided good native support for a 10-foot user interface. This add-on launches a browser and connects the arrow buttons on the remote control to the mouse pointer. This is the most user-friendly way to consume online content without needing a wireless keyboard.",
+            "enabled" : true,
+            "path" : "/home/martijn/.kodi/addons/plugin.program.remote.control.browser",
+            "dependencies" : [
+               {
+                  "version" : "4.3.2",
+                  "addonid" : "script.module.beautifulsoup4",
+                  "optional" : false
+               },
+               {
+                  "version" : "1.1.7",
+                  "addonid" : "script.module.pil",
+                  "optional" : false
+               },
+               {
+                  "version" : "2.24.0",
+                  "addonid" : "xbmc.python",
+                  "optional" : false
+               }
+            ],
+            "author" : "Chad Parry",
+            "disclaimer" : "The experience will be degraded unless these external dependencies are installed: “psutil,” “pyalsaaudio,” “pylirc2,” and “Pillow.” Another helpful utility is “unclutter,” which automatically hides the mouse pointer. (On a Debian-based system, run “sudo apt-get install python-psutil python-alsaaudio python-pylirc python-pil unclutter”). Finally, a theme with a large mouse pointer will improve pointer visibility, (e.g., https://www.gnome-look.org/p/999574/).",
+            "fanart" : "",
+            "version" : "1.0.5",
+            "type" : "xbmc.python.pluginsource",
+            "broken" : false,
+            "installed" : true,
+            "name" : "Remote Control Browser",
+            "addonid" : "plugin.program.remote.control.browser",
+            "summary" : "Browse websites with a remote control",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.program.remote.control.browser%2ficon.png/"
+         },
+         {
+            "fanart" : "",
+            "version" : "2.7.0",
+            "type" : "xbmc.metadata.scraper.albums",
+            "broken" : false,
+            "installed" : true,
+            "name" : "Universal Album Scraper",
+            "addonid" : "metadata.album.universal",
+            "summary" : "Universal Scraper for Albums",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.album.universal%2ficon.png/",
+            "description" : "This scraper collects information from the following supported sites: MusicBrainz, last.fm, allmusic.com and amazon.de, while grabs artwork from: fanart.tv, last.fm and allmusic.com. It can be set field by field that from which site you want that specific information.\n\nThe initial search is always done on MusicBrainz. In case allmusic and/or amazon.de links are not added on the MusicBrainz site, fields from allmusic.com and/or amazon.de cannot be fetched (very easy to add those missing links though).",
+            "extrainfo" : [],
+            "rating" : -1,
+            "enabled" : true,
+            "path" : "/home/martijn/.kodi/addons/metadata.album.universal",
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "metadata.common.allmusic.com",
+                  "version" : "3.1.0"
+               },
+               {
+                  "optional" : false,
+                  "addonid" : "metadata.common.fanart.tv",
+                  "version" : "3.1.0"
+               },
+               {
+                  "version" : "2.1.0",
+                  "optional" : false,
+                  "addonid" : "metadata.common.musicbrainz.org"
+               },
+               {
+                  "version" : "1.8.1",
+                  "optional" : false,
+                  "addonid" : "metadata.common.theaudiodb.com"
+               },
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.metadata",
+                  "version" : "2.1.0"
+               }
+            ],
+            "author" : "Olympia, Team Kodi",
+            "disclaimer" : ""
+         },
+         {
+            "fanart" : "",
+            "version" : "1.0.0",
+            "type" : "xbmc.audioencoder",
+            "broken" : false,
+            "installed" : true,
+            "name" : "AAC encoder",
+            "addonid" : "audioencoder.xbmc.builtin.aac",
+            "summary" : "AAC Audio Encoder",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2faudioencoder.xbmc.builtin.aac%2ficon.png/",
+            "description" : "AAC Audio Encoder",
+            "extrainfo" : [],
+            "rating" : -1,
+            "enabled" : true,
+            "path" : "/usr/share/kodi/addons/audioencoder.xbmc.builtin.aac",
+            "author" : "spiff",
+            "dependencies" : [
+               {
+                  "version" : "1.0.0",
+                  "optional" : false,
+                  "addonid" : "xbmc.audioencoder"
+               }
+            ],
+            "disclaimer" : ""
+         },
+         {
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.library",
+            "installed" : true,
+            "fanart" : "",
+            "version" : "1.3.4",
+            "summary" : "HTBackdrops Scraper Library",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.common.htbackdrops.com%2ficon.png/",
+            "name" : "HTBackdrops Scraper Library",
+            "addonid" : "metadata.common.htbackdrops.com",
+            "path" : "/home/martijn/.kodi/addons/metadata.common.htbackdrops.com",
+            "description" : "Download backdrops from www.htbackdrops.com",
+            "extrainfo" : [],
+            "rating" : -1,
+            "enabled" : true,
+            "disclaimer" : "",
+            "dependencies" : [
+               {
+                  "version" : "2.1.0",
+                  "optional" : false,
+                  "addonid" : "xbmc.metadata"
+               }
+            ],
+            "author" : "Team Kodi"
+         },
+         {
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fresource.language.en_gb%2ficon.png/",
+            "summary" : "English language pack",
+            "name" : "English",
+            "addonid" : "resource.language.en_gb",
+            "broken" : false,
+            "type" : "kodi.resource.language",
+            "installed" : true,
+            "fanart" : "",
+            "version" : "2.0.1",
+            "disclaimer" : "English is the default language for Kodi, removing it may cause issues",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "addonid" : "kodi.resource",
+                  "optional" : false,
+                  "version" : "1.0.0"
+               }
+            ],
+            "path" : "/usr/share/kodi/addons/resource.language.en_gb",
+            "enabled" : true,
+            "description" : "English version of all texts used in Kodi.",
+            "extrainfo" : [],
+            "rating" : -1
+         },
+         {
+            "summary" : "AllMusic Music Scraper Library",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.common.allmusic.com%2ficon.png/",
+            "name" : "AllMusic Scraper Library",
+            "addonid" : "metadata.common.allmusic.com",
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.library",
+            "installed" : true,
+            "fanart" : "",
+            "version" : "3.1.1",
+            "disclaimer" : "",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.metadata",
+                  "version" : "2.1.0"
+               }
+            ],
+            "path" : "/home/martijn/.kodi/addons/metadata.common.allmusic.com",
+            "rating" : -1,
+            "description" : "Download Music information from www.allmusic.com",
+            "extrainfo" : [],
+            "enabled" : true
+         },
+         {
+            "enabled" : true,
+            "description" : "TheTVDB.com is a TV Scraper. The site is a massive open database that can be modified by anybody and contains full meta data for many shows in different languages. All content and images on the site have been contributed by their users for users and have a high standard or quality. The database schema and website are open source under the GPL.",
+            "rating" : -1,
+            "extrainfo" : [],
+            "path" : "/home/martijn/.kodi/addons/metadata.tvdb.com",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "version" : "2.7.8",
+                  "addonid" : "metadata.common.imdb.com",
+                  "optional" : false
+               },
+               {
+                  "version" : "2.1.0",
+                  "optional" : false,
+                  "addonid" : "xbmc.metadata"
+               }
+            ],
+            "disclaimer" : "",
+            "fanart" : "",
+            "version" : "1.8.4",
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.tvshows",
+            "installed" : true,
+            "name" : "The TVDB",
+            "addonid" : "metadata.tvdb.com",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.tvdb.com%2ficon.png/",
+            "summary" : "Fetch TV show metadata from TheTVDB.com"
+         },
+         {
+            "fanart" : "",
+            "version" : "2.1.1",
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.library",
+            "installed" : true,
+            "name" : "MusicBrainz Scraper Library",
+            "addonid" : "metadata.common.musicbrainz.org",
+            "summary" : "MusicBrainz Music Scraper Library",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.common.musicbrainz.org%2ficon.png/",
+            "description" : "Download Music information from www.musicbrainz.org",
+            "extrainfo" : [],
+            "rating" : -1,
+            "enabled" : true,
+            "path" : "/home/martijn/.kodi/addons/metadata.common.musicbrainz.org",
+            "dependencies" : [
+               {
+                  "version" : "2.1.0",
+                  "optional" : false,
+                  "addonid" : "xbmc.metadata"
+               }
+            ],
+            "author" : "Team Kodi",
+            "disclaimer" : ""
+         },
+         {
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.albums",
+            "installed" : true,
+            "fanart" : "",
+            "version" : "1.0.0",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fmetadata.local%2ficon.png/",
+            "summary" : "Local Infomation only pseudo-scraper",
+            "name" : "Local information only",
+            "addonid" : "metadata.local",
+            "path" : "/usr/share/kodi/addons/metadata.local",
+            "enabled" : true,
+            "description" : "Use local information only",
+            "extrainfo" : [],
+            "rating" : -1,
+            "disclaimer" : "",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "version" : "1.0",
+                  "optional" : false,
+                  "addonid" : "xbmc.metadata"
+               }
+            ]
+         },
+         {
+            "summary" : "TMDb Scraper Library",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.common.themoviedb.org%2ficon.png/",
+            "name" : "The Movie Database Scraper Library",
+            "addonid" : "metadata.common.themoviedb.org",
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.library",
+            "installed" : true,
+            "fanart" : "",
+            "version" : "2.14.0",
+            "disclaimer" : "",
+            "dependencies" : [
+               {
+                  "version" : "2.1.0",
+                  "addonid" : "xbmc.metadata",
+                  "optional" : false
+               }
+            ],
+            "author" : "Team Kodi",
+            "path" : "/home/martijn/.kodi/addons/metadata.common.themoviedb.org",
+            "extrainfo" : [],
+            "rating" : -1,
+            "description" : "Download thumbs and fanarts from www.themoviedb.org",
+            "enabled" : true
+         },
+         {
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "kodi.resource",
+                  "version" : "1.0.0"
+               }
+            ],
+            "author" : "Team Kodi",
+            "disclaimer" : "",
+            "extrainfo" : [],
+            "description" : "Kodi GUI sounds",
+            "rating" : -1,
+            "enabled" : true,
+            "path" : "/usr/share/kodi/addons/resource.uisounds.kodi",
+            "name" : "Kodi UI Sounds",
+            "addonid" : "resource.uisounds.kodi",
+            "summary" : "Kodi GUI sounds",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fresource.uisounds.kodi%2ficon.png/",
+            "fanart" : "",
+            "version" : "1.0.0",
+            "type" : "kodi.resource.uisounds",
+            "broken" : false,
+            "installed" : true
+         },
+         {
+            "path" : "/home/martijn/.kodi/addons/metadata.common.theaudiodb.com",
+            "enabled" : true,
+            "extrainfo" : [],
+            "description" : "Download Music information from www.theaudiodb.com",
+            "rating" : -1,
+            "disclaimer" : "",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "addonid" : "xbmc.metadata",
+                  "optional" : false,
+                  "version" : "2.1.0"
+               }
+            ],
+            "type" : "xbmc.metadata.scraper.library",
+            "broken" : false,
+            "installed" : true,
+            "fanart" : "",
+            "version" : "1.9.0",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.common.theaudiodb.com%2ficon.png/",
+            "summary" : "TheAudioDb Music Scraper Library",
+            "name" : "TheAudioDb Scraper Library",
+            "addonid" : "metadata.common.theaudiodb.com"
+         },
+         {
+            "version" : "3.7.2",
+            "fanart" : "",
+            "installed" : true,
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.artists",
+            "addonid" : "metadata.artists.universal",
+            "name" : "Universal Artist Scraper",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.artists.universal%2ficon.png/",
+            "summary" : "Universal Scraper for Artists",
+            "enabled" : true,
+            "extrainfo" : [],
+            "description" : "This scraper collects information from the following supported sites: TheAudioDb.com, MusicBrainz, last.fm, and allmusic.com, while grabs artwork from: fanart.tv, htbackdrops.com, last.fm and allmusic.com. It can be set field by field that from which site you want that specific information.\n\nThe initial search is always done on MusicBrainz. In case allmusic link is not added on the MusicBrainz site fields from allmusic.com cannot be fetched (very easy to add those missing links though).",
+            "rating" : -1,
+            "path" : "/home/martijn/.kodi/addons/metadata.artists.universal",
+            "dependencies" : [
+               {
+                  "version" : "3.1.0",
+                  "optional" : false,
+                  "addonid" : "metadata.common.allmusic.com"
+               },
+               {
+                  "version" : "3.1.0",
+                  "addonid" : "metadata.common.fanart.tv",
+                  "optional" : false
+               },
+               {
+                  "version" : "1.3.2",
+                  "optional" : false,
+                  "addonid" : "metadata.common.htbackdrops.com"
+               },
+               {
+                  "version" : "2.1.0",
+                  "addonid" : "metadata.common.musicbrainz.org",
+                  "optional" : false
+               },
+               {
+                  "addonid" : "metadata.common.theaudiodb.com",
+                  "optional" : false,
+                  "version" : "1.8.1"
+               },
+               {
+                  "addonid" : "xbmc.metadata",
+                  "optional" : false,
+                  "version" : "2.1.0"
+               }
+            ],
+            "author" : "Olympia, Team Kodi",
+            "disclaimer" : ""
+         },
+         {
+            "path" : "/home/martijn/.kodi/addons/metadata.common.imdb.com",
+            "enabled" : true,
+            "rating" : -1,
+            "description" : "Download Movie information from www.imdb.com",
+            "extrainfo" : [],
+            "disclaimer" : "",
+            "author" : "Team Kodi",
+            "dependencies" : [
+               {
+                  "version" : "2.1.0",
+                  "addonid" : "xbmc.metadata",
+                  "optional" : false
+               }
+            ],
+            "installed" : true,
+            "broken" : false,
+            "type" : "xbmc.metadata.scraper.library",
+            "version" : "2.8.7",
+            "fanart" : "",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fmetadata.common.imdb.com%2ficon.png/",
+            "summary" : "IMDB Scraper Library",
+            "addonid" : "metadata.common.imdb.com",
+            "name" : "IMDB Scraper Library"
+         },
+         {
+            "disclaimer" : "",
+            "dependencies" : [
+               {
+                  "optional" : false,
+                  "addonid" : "xbmc.python",
+                  "version" : "2.1.0"
+               }
+            ],
+            "author" : "Jonathan Beluch (jbel)",
+            "path" : "/home/martijn/.kodi/addons/script.module.xbmcswift2",
+            "description" : "",
+            "extrainfo" : [],
+            "rating" : -1,
+            "enabled" : true,
+            "summary" : "",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fscript.module.xbmcswift2%2ficon.png/",
+            "addonid" : "script.module.xbmcswift2",
+            "name" : "xbmcswift2",
+            "installed" : true,
+            "broken" : false,
+            "type" : "xbmc.python.module",
+            "version" : "2.4.0",
+            "fanart" : ""
+         },
+         {
+            "path" : "/usr/share/kodi/addons/skin.estuary",
+            "enabled" : true,
+            "rating" : -1,
+            "extrainfo" : [],
+            "description" : "Estuary is the default skin for Kodi 17.0 and above. It attempts to be easy for first time Kodi users to understand and use.",
+            "disclaimer" : "Estuary is the default skin for Kodi, removing it may cause issues",
+            "dependencies" : [
+               {
+                  "version" : "5.12.0",
+                  "addonid" : "xbmc.gui",
+                  "optional" : false
+               }
+            ],
+            "author" : "phil65, Ichabod Fletchman",
+            "broken" : false,
+            "type" : "xbmc.gui.skin",
+            "installed" : true,
+            "fanart" : "image://%2fusr%2fshare%2fkodi%2faddons%2fskin.estuary%2fresources%2ffanart.jpg/",
+            "version" : "1.9.12",
+            "thumbnail" : "image://%2fusr%2fshare%2fkodi%2faddons%2fskin.estuary%2fresources%2ficon.png/",
+            "summary" : "Estuary skin by phil65. (Kodi's default skin)",
+            "name" : "Estuary",
+            "addonid" : "skin.estuary"
+         },
+         {
+            "version" : "1.4.5",
+            "fanart" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.twitch%2ffanart.jpg/",
+            "installed" : true,
+            "broken" : false,
+            "type" : "xbmc.python.pluginsource",
+            "addonid" : "plugin.video.twitch",
+            "name" : "Twitch",
+            "summary" : "Twitch video plugin",
+            "thumbnail" : "image://%2fhome%2fmartijn%2f.kodi%2faddons%2fplugin.video.twitch%2ficon.png/",
+            "extrainfo" : [
+               {
+                  "key" : "language",
+                  "value" : "en"
+               },
+               {
+                  "value" : "video",
+                  "key" : "provides"
+               }
+            ],
+            "description" : "Watch your favorite gaming streams!",
+            "rating" : -1,
+            "enabled" : true,
+            "path" : "/home/martijn/.kodi/addons/plugin.video.twitch",
+            "dependencies" : [
+               {
+                  "version" : "1.2.0",
+                  "optional" : false,
+                  "addonid" : "script.module.xbmcswift2"
+               },
+               {
+                  "addonid" : "xbmc.python",
+                  "optional" : false,
+                  "version" : "2.20.0"
+               }
+            ],
+            "author" : "A Talented Community",
+            "disclaimer" : ""
+         }
+      ],
+      "limits" : {
+         "start" : 0,
+         "end" : 41,
+         "total" : 41
+      }
+   }
+}

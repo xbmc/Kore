@@ -1,0 +1,465 @@
+{
+   "id" : "libTVShowSeasons",
+   "jsonrpc" : "2.0",
+   "result" : {
+      "limits" : {
+         "end" : 21,
+         "total" : 21,
+         "start" : 0
+      },
+      "seasons" : [
+         {
+            "playcount" : 0,
+            "episode" : 8,
+            "label" : "Season 1",
+            "userrating" : 0,
+            "thumbnail" : "",
+            "watchedepisodes" : 3,
+            "seasonid" : 6,
+            "art" : {
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f260473-1.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f260473-g.jpg/"
+            },
+            "fanart" : "",
+            "showtitle" : "3",
+            "season" : 1,
+            "tvshowid" : 2
+         },
+         {
+            "userrating" : 0,
+            "thumbnail" : "",
+            "episode" : 49,
+            "playcount" : 0,
+            "label" : "Season 1",
+            "seasonid" : 9,
+            "watchedepisodes" : 2,
+            "art" : {
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f146391-2.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f146391-2.jpg/"
+            },
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f146391-2.jpg/",
+            "season" : 1,
+            "showtitle" : "4 Stjerners Middag",
+            "tvshowid" : 3
+         },
+         {
+            "episode" : 41,
+            "playcount" : 0,
+            "label" : "Season 2",
+            "userrating" : 0,
+            "thumbnail" : "",
+            "art" : {
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f146391-2.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f146391-2.jpg/"
+            },
+            "seasonid" : 10,
+            "watchedepisodes" : 0,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f146391-2.jpg/",
+            "tvshowid" : 3,
+            "season" : 2,
+            "showtitle" : "4 Stjerners Middag"
+         },
+         {
+            "playcount" : 0,
+            "episode" : 20,
+            "label" : "Season 3",
+            "userrating" : 0,
+            "thumbnail" : "",
+            "art" : {
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f146391-2.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f146391-2.jpg/"
+            },
+            "watchedepisodes" : 0,
+            "seasonid" : 11,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f146391-2.jpg/",
+            "tvshowid" : 3,
+            "showtitle" : "4 Stjerners Middag",
+            "season" : 3
+         },
+         {
+            "episode" : 8,
+            "playcount" : 1,
+            "label" : "Season 1",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f301824-1-4.jpg/",
+            "userrating" : 0,
+            "art" : {
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f301824-g.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f301824-1-4.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f301824-8.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f301824-1-4.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f301824-10.jpg/"
+            },
+            "watchedepisodes" : 8,
+            "seasonid" : 3,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f301824-10.jpg/",
+            "tvshowid" : 1,
+            "showtitle" : "11.22.63",
+            "season" : 1
+         },
+         {
+            "tvshowid" : 137,
+            "showtitle" : "The A-Team",
+            "season" : 1,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+            "art" : {
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f77904-1.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-1.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f77904-g9.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f77904-3.jpg/",
+               "season.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f77904-1.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-1.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/"
+            },
+            "watchedepisodes" : 0,
+            "seasonid" : 553,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-1.jpg/",
+            "userrating" : 0,
+            "label" : "Season 1",
+            "playcount" : 0,
+            "episode" : 13
+         },
+         {
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-2.jpg/",
+            "playcount" : 0,
+            "label" : "Season 2",
+            "episode" : 23,
+            "seasonid" : 554,
+            "watchedepisodes" : 0,
+            "art" : {
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f77904-2.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f77904-g9.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-2.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+               "season.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f77904-2.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f77904-3.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-2.jpg/"
+            },
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+            "showtitle" : "The A-Team",
+            "season" : 2,
+            "tvshowid" : 137
+         },
+         {
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+            "showtitle" : "The A-Team",
+            "season" : 3,
+            "tvshowid" : 137,
+            "episode" : 25,
+            "playcount" : 0,
+            "label" : "Season 3",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-3.jpg/",
+            "userrating" : 0,
+            "seasonid" : 555,
+            "watchedepisodes" : 0,
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-3.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f77904-3.jpg/",
+               "season.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f77904-3.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f77904-g9.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-3.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f77904-3.jpg/"
+            }
+         },
+         {
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+            "showtitle" : "The A-Team",
+            "season" : 4,
+            "tvshowid" : 137,
+            "episode" : 23,
+            "playcount" : 0,
+            "label" : "Season 4",
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-4.jpg/",
+            "watchedepisodes" : 0,
+            "seasonid" : 556,
+            "art" : {
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-4.jpg/",
+               "season.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f77904-4.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f77904-3.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-4.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f77904-g9.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f77904-4.jpg/"
+            }
+         },
+         {
+            "label" : "Season 5",
+            "playcount" : 0,
+            "episode" : 13,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-5.jpg/",
+            "userrating" : 0,
+            "seasonid" : 557,
+            "watchedepisodes" : 0,
+            "art" : {
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f77904-g9.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-5.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f77904-5.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f77904-3.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/"
+            },
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f77904-5.jpg/",
+            "season" : 5,
+            "showtitle" : "The A-Team",
+            "tvshowid" : 137
+         },
+         {
+            "watchedepisodes" : 9,
+            "seasonid" : 14,
+            "art" : {
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f3449-g.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-1-2.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-1-2.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/"
+            },
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-1-2.jpg/",
+            "playcount" : 0,
+            "episode" : 22,
+            "label" : "Season 1",
+            "season" : 1,
+            "showtitle" : "According to Jim",
+            "tvshowid" : 4,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/"
+         },
+         {
+            "art" : {
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-2-2.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f3449-g.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-2-2.jpg/"
+            },
+            "seasonid" : 15,
+            "watchedepisodes" : 0,
+            "playcount" : 0,
+            "label" : "Season 2",
+            "episode" : 28,
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-2-2.jpg/",
+            "tvshowid" : 4,
+            "season" : 2,
+            "showtitle" : "According to Jim",
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/"
+         },
+         {
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-3-2.jpg/",
+            "playcount" : 0,
+            "label" : "Season 3",
+            "episode" : 29,
+            "watchedepisodes" : 0,
+            "seasonid" : 16,
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-3-2.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-3-2.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f3449-g.jpg/"
+            },
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+            "showtitle" : "According to Jim",
+            "season" : 3,
+            "tvshowid" : 4
+         },
+         {
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+            "season" : 4,
+            "showtitle" : "According to Jim",
+            "tvshowid" : 4,
+            "episode" : 27,
+            "playcount" : 0,
+            "label" : "Season 4",
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-4-2.jpg/",
+            "watchedepisodes" : 0,
+            "seasonid" : 17,
+            "art" : {
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-4-2.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f3449-g.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-4-2.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/"
+            }
+         },
+         {
+            "showtitle" : "According to Jim",
+            "season" : 5,
+            "tvshowid" : 4,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+            "seasonid" : 18,
+            "watchedepisodes" : 0,
+            "art" : {
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f3449-5.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f3449-g.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f3449-5.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/"
+            },
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f3449-5.jpg/",
+            "label" : "Season 5",
+            "playcount" : 0,
+            "episode" : 22
+         },
+         {
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+            "season" : 6,
+            "showtitle" : "According to Jim",
+            "tvshowid" : 4,
+            "playcount" : 0,
+            "episode" : 18,
+            "label" : "Season 6",
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-6-2.jpg/",
+            "seasonid" : 19,
+            "watchedepisodes" : 0,
+            "art" : {
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-6-2.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-6-2.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f3449-g.jpg/"
+            }
+         },
+         {
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+            "tvshowid" : 4,
+            "season" : 7,
+            "showtitle" : "According to Jim",
+            "episode" : 18,
+            "playcount" : 0,
+            "label" : "Season 7",
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-7-2.jpg/",
+            "userrating" : 0,
+            "art" : {
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f3449-g.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-7-2.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-7-2.jpg/"
+            },
+            "watchedepisodes" : 0,
+            "seasonid" : 20
+         },
+         {
+            "watchedepisodes" : 0,
+            "seasonid" : 21,
+            "art" : {
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f75926-1.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-8-2.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f3449-g.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-8-2.jpg/"
+            },
+            "playcount" : 0,
+            "episode" : 18,
+            "label" : "Season 8",
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f75926-8-2.jpg/",
+            "season" : 8,
+            "showtitle" : "According to Jim",
+            "tvshowid" : 4,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f75926-1.jpg/"
+         },
+         {
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f252308-4.jpg/",
+            "tvshowid" : 138,
+            "season" : 1,
+            "showtitle" : "The Adventures of Abney & Teal",
+            "userrating" : 0,
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f252308-1.jpg/",
+            "episode" : 26,
+            "playcount" : 0,
+            "label" : "Season 1",
+            "art" : {
+               "season.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f252308-1.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f252308-1.jpg/",
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f252308-1.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f252308-4.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f252308-1.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f252308-1.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f252308-g3.jpg/"
+            },
+            "watchedepisodes" : 0,
+            "seasonid" : 560
+         },
+         {
+            "season" : 2,
+            "showtitle" : "The Adventures of Abney & Teal",
+            "tvshowid" : 138,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f252308-4.jpg/",
+            "seasonid" : 561,
+            "watchedepisodes" : 0,
+            "art" : {
+               "poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f252308-2.jpg/",
+               "season.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f252308-2.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f252308-1.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f252308-4.jpg/",
+               "season.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f252308-2.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f252308-g3.jpg/",
+               "banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasonswide%2f252308-2.jpg/"
+            },
+            "thumbnail" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fseasons%2f252308-2.jpg/",
+            "userrating" : 0,
+            "playcount" : 0,
+            "label" : "Season 2",
+            "episode" : 26
+         },
+         {
+            "episode" : 1,
+            "playcount" : 1,
+            "label" : "Season 3",
+            "userrating" : 0,
+            "thumbnail" : "",
+            "watchedepisodes" : 1,
+            "seasonid" : 24,
+            "art" : {
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f104171-1.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f104171-1.jpg/",
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f104171-g.jpg/"
+            },
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f104171-1.jpg/",
+            "season" : 3,
+            "showtitle" : "Air Ways",
+            "tvshowid" : 5
+         },
+         {
+            "art" : {
+               "tvshow.banner" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fgraphical%2f259064-g.jpg/",
+               "tvshow.poster" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2fposters%2f259064-1.jpg/",
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f259064-1.jpg/"
+            },
+            "watchedepisodes" : 0,
+            "seasonid" : 27,
+            "thumbnail" : "",
+            "userrating" : 0,
+            "episode" : 10,
+            "playcount" : 0,
+            "label" : "Season 1",
+            "tvshowid" : 6,
+            "showtitle" : "American Colony Meet the Hutterites",
+            "season" : 1,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f259064-1.jpg/"
+         },
+         {
+            "tvshowid" : 7,
+            "showtitle" : "Amish: Out Of Order",
+            "season" : 1,
+            "fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f258525-1.jpg/",
+            "art" : {
+               "tvshow.fanart" : "image://http%3a%2f%2fthetvdb.com%2fbanners%2ffanart%2foriginal%2f258525-1.jpg/"
+            },
+            "seasonid" : 30,
+            "watchedepisodes" : 0,
+            "userrating" : 0,
+            "thumbnail" : "",
+            "episode" : 9,
+            "playcount" : 0,
+            "label" : "Season 1"
+         }
+      ]
+   }
+}

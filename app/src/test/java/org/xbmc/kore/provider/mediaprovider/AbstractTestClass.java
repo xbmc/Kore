@@ -48,6 +48,8 @@ public class AbstractTestClass {
         ShadowContentResolver.registerProvider("org.xbmc.kore.provider", provider);
         provider.onCreate();
 
-        hostInfo = Database.fill(RuntimeEnvironment.application, contentResolver);
+        hostInfo = Database.addHost(RuntimeEnvironment.application);
+
+        Database.fill(hostInfo, RuntimeEnvironment.application, contentResolver);
     }
 }
