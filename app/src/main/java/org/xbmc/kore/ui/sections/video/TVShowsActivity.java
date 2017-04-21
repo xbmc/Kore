@@ -16,32 +16,24 @@
 package org.xbmc.kore.ui.sections.video;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
-import org.xbmc.kore.ui.BaseActivity;
-import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
-import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.Utils;
 
 /**
  * Controls the presentation of TV Shows information (list, details)
  * All the information is presented by specific fragments
  */
-public class TVShowsActivity extends BaseActivity
+public class TVShowsActivity extends BaseMediaActivity
         implements TVShowListFragment.OnTVShowSelectedListener,
                    TVShowProgressFragment.TVShowProgressActionListener,
                    TVShowEpisodeListFragment.OnEpisodeSelectedListener {
@@ -52,7 +44,6 @@ public class TVShowsActivity extends BaseActivity
     public static final String EPISODEID = "episode_id";
     public static final String SEASON = "season";
     public static final String SEASONTITLE = "season_title";
-    public static final String LISTFRAGMENT_TAG = "tvshowlist";
 
     private int selectedTVShowId = -1;
     private String selectedTVShowTitle = null;
@@ -60,53 +51,28 @@ public class TVShowsActivity extends BaseActivity
     private String selectedSeasonTitle = null;
     private int selectedEpisodeId = -1;
 
-    private SharedElementTransition sharedElementTransition = new SharedElementTransition();
+    @Override
+    protected String getActionBarTitle() {
+        return (selectedSeasonTitle != null) ? selectedSeasonTitle :
+               (selectedTVShowTitle != null) ? selectedTVShowTitle : getString(R.string.tv_shows);
+    }
 
-    private NavigationDrawerFragment navigationDrawerFragment;
+    @Override
+    protected Fragment createFragment() {
+        return new TVShowListFragment();
+    }
 
     @TargetApi(21)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Request transitions on lollipop
-        if (Utils.isLollipopOrLater()) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_media);
-
-        // Set up the drawer.
-        navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        Fragment fragment;
-        if (savedInstanceState == null) {
-            fragment = new TVShowListFragment();
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, fragment, LISTFRAGMENT_TAG)
-                    .commit();
-        } else {
-            fragment = getSupportFragmentManager().findFragmentByTag(LISTFRAGMENT_TAG);
-
+        if (savedInstanceState != null) {
             selectedTVShowId = savedInstanceState.getInt(TVSHOWID, -1);
             selectedTVShowTitle = savedInstanceState.getString(TVSHOWTITLE, null);
             selectedEpisodeId = savedInstanceState.getInt(EPISODEID, -1);
             selectedSeason = savedInstanceState.getInt(SEASON, -1);
             selectedSeasonTitle = savedInstanceState.getString(SEASONTITLE, null);
         }
-
-        if (Utils.isLollipopOrLater()) {
-            sharedElementTransition.setupExitTransition(this, fragment);
-        }
-
-        setupActionBar(selectedTVShowTitle);
-
-//        // Setup system bars and content padding, allowing averlap with the bottom bar
-//        setupSystemBarsColors();
-//        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.fragment_container), true, true, true);
-//        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.drawer_layout), true, true, true);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -120,49 +86,14 @@ public class TVShowsActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (!navigationDrawerFragment.isDrawerOpen()) {
-//            getMenuInflater().inflate(R.menu.media_info, menu);
-//        }
-        getMenuInflater().inflate(R.menu.media_info, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_show_remote:
-                // Starts remote
-                Intent launchIntent = new Intent(this, RemoteActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(launchIntent);
-                return true;
             case android.R.id.home:
-                // Only respond to this if we are showing the episodeor show details in portrait
-                // mode, which can be checked by checking if selected movie != -1, in which case we
-                // should go back to the previous fragment, which is the list.
-                // The default behaviour is handled by the nav drawer (open/close)
-                if (selectedEpisodeId != -1) {
-                    selectedEpisodeId = -1;
+                if (getDrawerIndicatorIsArrow()) {
                     getSupportFragmentManager().popBackStack();
-                    if (selectedSeason != -1)
-                        setupActionBar(selectedSeasonTitle);
-                    else
-                        setupActionBar(selectedTVShowTitle);
-                    return true;
-                } else if (selectedSeason != -1) {
-                    selectedSeason = -1;
-                    getSupportFragmentManager().popBackStack();
-                    setupActionBar(selectedTVShowTitle);
-                    return true;
-                } else if (selectedTVShowId != -1) {
-                    selectedTVShowId = -1;
-                    selectedTVShowTitle = null;
-                    setupActionBar(null);
-                    getSupportFragmentManager().popBackStack();
+                    updateActionBar();
                     return true;
                 }
-                break;
             default:
                 break;
         }
@@ -172,45 +103,8 @@ public class TVShowsActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        // If we are showing episode or show details in portrait, clear selected and show action bar
-        if (selectedEpisodeId != -1) {
-            selectedEpisodeId = -1;
-            if (selectedSeason != -1)
-                setupActionBar(selectedSeasonTitle);
-            else
-                setupActionBar(selectedTVShowTitle);
-        } else if (selectedSeason != -1) {
-            selectedSeason = -1;
-            setupActionBar(selectedTVShowTitle);
-        } else if (selectedTVShowId != -1) {
-            selectedTVShowId = -1;
-            selectedTVShowTitle = null;
-            setupActionBar(null);
-        }
+        updateActionBar();
         super.onBackPressed();
-    }
-
-    private boolean drawerIndicatorIsArrow = false;
-    private void setupActionBar(String title) {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) return;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        if (title != null) {
-            if (!drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(true);
-                drawerIndicatorIsArrow = true;
-            }
-            actionBar.setTitle(title);
-        } else {
-            if (drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(false);
-                drawerIndicatorIsArrow = false;
-            }
-            actionBar.setTitle(R.string.tv_shows);
-        }
     }
 
     /**
@@ -226,21 +120,8 @@ public class TVShowsActivity extends BaseActivity
         // Replace list fragment
         final TVShowInfoFragment tvshowDetailsFragment = new TVShowInfoFragment();
         tvshowDetailsFragment.setDataHolder(vh.dataHolder);
-
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-
-        // Set up transitions
-        if (Utils.isLollipopOrLater()) {
-            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
-            sharedElementTransition.setupEnterTransition(this, fragTrans, tvshowDetailsFragment, vh.artView);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
-        }
-
-        fragTrans.replace(R.id.fragment_container, tvshowDetailsFragment)
-                 .addToBackStack(null)
-                 .commit();
-        setupActionBar(selectedTVShowTitle);
+        showFragment(tvshowDetailsFragment, vh.artView, vh.dataHolder);
+        updateActionBar(selectedTVShowTitle, true);
     }
 
     /**
@@ -261,7 +142,7 @@ public class TVShowsActivity extends BaseActivity
                 .addToBackStack(null)
                 .commit();
         selectedSeasonTitle = String.format(getString(R.string.season_number), seasonId);
-        setupActionBar(selectedSeasonTitle);
+        updateActionBar(selectedSeasonTitle, true);
     }
 
     /**
@@ -276,21 +157,8 @@ public class TVShowsActivity extends BaseActivity
         TVShowEpisodeInfoFragment fragment = new TVShowEpisodeInfoFragment();
         fragment.setDataHolder(dh);
         fragment.setTvshowId(tvshowId);
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-
-        // Set up transitions
-        if (Utils.isLollipopOrLater()) {
-            fragment.setEnterTransition(
-                    TransitionInflater.from(this).inflateTransition(R.transition.media_details));
-            fragment.setReturnTransition(null);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
-        }
-
-        fragTrans.replace(R.id.fragment_container, fragment)
-                 .addToBackStack(null)
-                 .commit();
-        setupActionBar(selectedTVShowTitle);
+        startFragment(fragment);
+        updateActionBar(selectedTVShowTitle, true);
     }
 
     /**
@@ -300,11 +168,16 @@ public class TVShowsActivity extends BaseActivity
     public void onEpisodeSelected(int tvshowId,
                                   TVShowEpisodeListFragment.ViewHolder viewHolder) {
         selectedEpisodeId = viewHolder.dataHolder.getId();
-
-        // Replace list fragment
         TVShowEpisodeInfoFragment fragment = new TVShowEpisodeInfoFragment();
         fragment.setDataHolder(viewHolder.dataHolder);
         fragment.setTvshowId(tvshowId);
+        startFragment(fragment);
+        updateActionBar(selectedTVShowTitle, true);
+    }
+
+    @TargetApi(21)
+    private void startFragment(AbstractFragment fragment) {
+        // Replace list fragment
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
@@ -319,6 +192,24 @@ public class TVShowsActivity extends BaseActivity
         fragTrans.replace(R.id.fragment_container, fragment)
                  .addToBackStack(null)
                  .commit();
-        setupActionBar(selectedTVShowTitle);
     }
+
+    private void updateActionBar() {
+        if (selectedEpisodeId != -1) {
+            selectedEpisodeId = -1;
+            if (selectedSeason != -1)
+                updateActionBar(selectedSeasonTitle, true);
+            else
+                updateActionBar(selectedTVShowTitle, true);
+        } else if (selectedSeason != -1) {
+            selectedSeason = -1;
+            selectedSeasonTitle = null;
+            updateActionBar(selectedTVShowTitle, true);
+        } else if (selectedTVShowId != -1) {
+            selectedTVShowId = -1;
+            selectedTVShowTitle = null;
+            updateActionBar(getActionBarTitle(), false);
+        }
+    }
+
 }

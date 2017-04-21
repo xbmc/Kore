@@ -16,30 +16,20 @@
 package org.xbmc.kore.ui.sections.audio;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractInfoFragment;
-import org.xbmc.kore.ui.BaseActivity;
-import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
-import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.SharedElementTransition;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Controls the presentation of Music information (list, details)
  * All the information is presented by specific fragments
  */
-public class MusicActivity extends BaseActivity
+public class MusicActivity extends BaseMediaActivity
         implements ArtistListFragment.OnArtistSelectedListener,
                    AlbumListFragment.OnAlbumSelectedListener,
                    AudioGenresListFragment.OnAudioGenreSelectedListener,
@@ -54,7 +44,6 @@ public class MusicActivity extends BaseActivity
     public static final String GENRETITLE = "genre_title";
     public static final String MUSICVIDEOID = "music_video_id";
     public static final String MUSICVIDEOTITLE = "music_video_title";
-    public static final String LISTFRAGMENT_TAG = "musiclist";
 
     private int selectedAlbumId = -1;
     private int selectedArtistId = -1;
@@ -65,33 +54,30 @@ public class MusicActivity extends BaseActivity
     private String selectedGenreTitle = null;
     private String selectedMusicVideoTitle = null;
 
-    private NavigationDrawerFragment navigationDrawerFragment;
+    @Override
+    protected String getActionBarTitle() {
+        if (selectedAlbumTitle != null) {
+            return selectedAlbumTitle;
+        } else if (selectedArtistName != null) {
+            return selectedArtistName;
+        } else if (selectedGenreTitle != null) {
+            return selectedGenreTitle;
+        } else if (selectedMusicVideoTitle != null) {
+            return selectedMusicVideoTitle;
+        } else {
+            return getResources().getString(R.string.music);
+        }
+    }
 
-    private SharedElementTransition sharedElementTransition = new SharedElementTransition();
-
+    @Override
+    protected Fragment createFragment() {
+        return new MusicListFragment();
+    }
 
     @TargetApi(21)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_media);
-
-        // Set up the drawer.
-        navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        Fragment fragment;
-        if (savedInstanceState == null) {
-            fragment = new MusicListFragment();
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, fragment, LISTFRAGMENT_TAG)
-                    .commit();
-        } else {
-            fragment = getSupportFragmentManager().findFragmentByTag(LISTFRAGMENT_TAG);
-
+        if (savedInstanceState != null) {
             selectedAlbumId = savedInstanceState.getInt(ALBUMID, -1);
             selectedArtistId = savedInstanceState.getInt(ARTISTID, -1);
             selectedGenreId = savedInstanceState.getInt(GENREID, -1);
@@ -101,17 +87,7 @@ public class MusicActivity extends BaseActivity
             selectedGenreTitle = savedInstanceState.getString(GENRETITLE, null);
             selectedMusicVideoTitle = savedInstanceState.getString(MUSICVIDEOTITLE, null);
         }
-
-        if (Utils.isLollipopOrLater()) {
-            sharedElementTransition.setupExitTransition(this, fragment);
-        }
-
-        setupActionBar(selectedAlbumTitle, selectedArtistName, selectedGenreTitle, selectedMusicVideoTitle);
-
-//        // Setup system bars and content padding, allowing averlap with the bottom bar
-//        setupSystemBarsColors();
-//        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.fragment_container), true, true, true);
-//        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.drawer_layout), true, true, true);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -128,50 +104,39 @@ public class MusicActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (!navigationDrawerFragment.isDrawerOpen()) {
-//            getMenuInflater().inflate(R.menu.media_info, menu);
-//        }
-        getMenuInflater().inflate(R.menu.media_info, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_show_remote:
-                // Starts remote
-                Intent launchIntent = new Intent(this, RemoteActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(launchIntent);
-                return true;
             case android.R.id.home:
                 // Only respond to this if we are showing some details, which can be checked by
                 // checking if some id != -1, in which case we should go back to the previous
                 // fragment, which is the list.
                 // The default behaviour is handled by the nav drawer (open/close)
+                boolean respond = false;
                 if (selectedAlbumId != -1) {
                     selectedAlbumId = -1;
                     selectedAlbumTitle = null;
-                    setupActionBar(null, selectedArtistName, selectedGenreTitle, selectedMusicVideoTitle);
-                    getSupportFragmentManager().popBackStack();
-                    return true;
+                    respond = true;
                 } else if (selectedArtistId != -1) {
                     selectedArtistId = -1;
                     selectedArtistName = null;
-                    setupActionBar(selectedAlbumTitle, null, selectedGenreTitle, selectedMusicVideoTitle);
-                    getSupportFragmentManager().popBackStack();
-                    return true;
+                    respond = true;
                 } else if (selectedGenreId != -1) {
                     selectedGenreId = -1;
                     selectedGenreTitle = null;
-                    setupActionBar(selectedAlbumTitle, selectedArtistName, null, selectedMusicVideoTitle);
-                    getSupportFragmentManager().popBackStack();
-                    return true;
+                    respond = true;
                 } else if (selectedMusicVideoId != -1) {
                     selectedMusicVideoId = -1;
                     selectedMusicVideoTitle = null;
-                    setupActionBar(selectedAlbumTitle, selectedArtistName, selectedGenreTitle, null);
+                    respond = true;
+                }
+                if (respond) {
+                    if (selectedArtistId == -1 &&
+                        selectedGenreId == -1 &&
+                        selectedMusicVideoId == -1) {
+                        updateActionBar(getActionBarTitle(), false);
+                    } else {
+                        updateActionBar(getActionBarTitle(), true);
+                    }
                     getSupportFragmentManager().popBackStack();
                     return true;
                 }
@@ -189,57 +154,25 @@ public class MusicActivity extends BaseActivity
         if (selectedAlbumId != -1) {
             selectedAlbumId = -1;
             selectedAlbumTitle = null;
-            setupActionBar(null, selectedArtistName, selectedGenreTitle, selectedMusicVideoTitle);
         } else if (selectedArtistId != -1) {
             selectedArtistId = -1;
             selectedArtistName = null;
-            setupActionBar(selectedAlbumTitle, null, selectedGenreTitle, selectedMusicVideoTitle);
         } else if (selectedGenreId != -1) {
             selectedGenreId = -1;
             selectedGenreTitle = null;
-            setupActionBar(selectedAlbumTitle, selectedArtistName, null, selectedMusicVideoTitle);
         } else if (selectedMusicVideoId != -1) {
             selectedMusicVideoId = -1;
             selectedMusicVideoTitle = null;
-            setupActionBar(selectedAlbumTitle, selectedArtistName, selectedGenreTitle, null);
+        }
+
+        if (selectedArtistId == -1 &&
+            selectedGenreId == -1 &&
+            selectedMusicVideoId == -1) {
+            updateActionBar(getActionBarTitle(), false);
+        } else {
+            updateActionBar(getActionBarTitle(), true);
         }
         super.onBackPressed();
-    }
-
-    private boolean drawerIndicatorIsArrow = false;
-    private void setupActionBar(String albumTitle, String artistName, String genreTitle,
-                                String musicVideoTitle) {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
-        setSupportActionBar(toolbar);
-
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) return;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        if (albumTitle != null) {
-            actionBar.setTitle(albumTitle);
-        } else if (artistName != null) {
-            actionBar.setTitle(artistName);
-        } else if (genreTitle != null) {
-            actionBar.setTitle(genreTitle);
-        } else if (musicVideoTitle != null) {
-            actionBar.setTitle(musicVideoTitle);
-        } else {
-            actionBar.setTitle(R.string.music);
-        }
-
-        if ((albumTitle != null) || (artistName != null) || (genreTitle != null) || (musicVideoTitle != null)) {
-            if (!drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(true);
-                drawerIndicatorIsArrow = true;
-            }
-        } else {
-            if (drawerIndicatorIsArrow) {
-                navigationDrawerFragment.animateDrawerToggle(false);
-                drawerIndicatorIsArrow = false;
-            }
-        }
-
     }
 
     @TargetApi(21)
@@ -252,22 +185,9 @@ public class MusicActivity extends BaseActivity
         artistDetailsFragment.setDataHolder(vh.dataHolder);
         vh.dataHolder.setSquarePoster(true);
 
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-        // Setup animations
-        if (Utils.isLollipopOrLater()) {
-            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
-            sharedElementTransition.setupEnterTransition(this, fragTrans, artistDetailsFragment,
-                                                         vh.artView);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
-        }
+        showFragment(artistDetailsFragment, vh.artView, vh.dataHolder);
 
-        fragTrans.replace(R.id.fragment_container, artistDetailsFragment)
-                 .addToBackStack(null)
-                 .commit();
-
-        navigationDrawerFragment.animateDrawerToggle(true);
-        setupActionBar(null, selectedArtistName, null, null);
+        updateActionBar(selectedArtistName, true);
     }
 
     @TargetApi(21)
@@ -279,21 +199,10 @@ public class MusicActivity extends BaseActivity
         final AbstractInfoFragment albumInfoFragment = new AlbumInfoFragment();
         vh.dataHolder.setSquarePoster(true);
         albumInfoFragment.setDataHolder(vh.dataHolder);
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
-        // Set up transitions
-        if (Utils.isLollipopOrLater()) {
-            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
-            sharedElementTransition.setupEnterTransition(this, fragTrans, albumInfoFragment, vh.artView);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                                          R.anim.fragment_list_popenter, 0);
-        }
+        showFragment(albumInfoFragment, vh.artView, vh.dataHolder);
 
-        fragTrans.replace(R.id.fragment_container, albumInfoFragment)
-                 .addToBackStack(null)
-                 .commit();
-        setupActionBar(selectedAlbumTitle, null, null, null);
+        updateActionBar(selectedAlbumTitle, true);
     }
 
     public void onAudioGenreSelected(int genreId, String genreTitle) {
@@ -310,7 +219,8 @@ public class MusicActivity extends BaseActivity
                 .replace(R.id.fragment_container, albumListFragment)
                 .addToBackStack(null)
                 .commit();
-        setupActionBar(null, null, genreTitle, null);
+
+        updateActionBar(selectedGenreTitle, true);
     }
 
     @TargetApi(21)
@@ -323,20 +233,8 @@ public class MusicActivity extends BaseActivity
         vh.dataHolder.setSquarePoster(true);
         musicVideoInfoFragment.setDataHolder(vh.dataHolder);
 
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+        showFragment(musicVideoInfoFragment, vh.artView, vh.dataHolder);
 
-        // Set up transitions
-        if (Utils.isLollipopOrLater()) {
-            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
-            sharedElementTransition.setupEnterTransition(this, fragTrans, musicVideoInfoFragment, vh.artView);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                                          R.anim.fragment_list_popenter, 0);
-        }
-
-        fragTrans.replace(R.id.fragment_container, musicVideoInfoFragment)
-                 .addToBackStack(null)
-                 .commit();
-        setupActionBar(null, null, null, selectedMusicVideoTitle);
+        updateActionBar(selectedMusicVideoTitle, true);
     }
 }

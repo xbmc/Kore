@@ -15,90 +15,30 @@
  */
 package org.xbmc.kore.ui.sections.file;
 
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
-import android.transition.TransitionInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
+import android.support.v4.app.Fragment;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.ui.BaseActivity;
-import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
+import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.ui.OnBackPressedListener;
-import org.xbmc.kore.ui.sections.remote.RemoteActivity;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Handles listing of files fragments
  */
-public class FileActivity extends BaseActivity {
+public class FileActivity extends BaseMediaActivity {
+    @Override
+    protected String getActionBarTitle() {
+        return getString(R.string.file_browser);
+    }
 
-    private NavigationDrawerFragment navigationDrawerFragment;
+    @Override
+    protected Fragment createFragment() {
+        return new FileListFragment();
+    }
 
     OnBackPressedListener fragmentBackListener;
 
     public void setBackPressedListener(OnBackPressedListener listener) {
         fragmentBackListener = listener;
-    }
-
-    @TargetApi(21)
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // Request transitions on lollipop
-        if (Utils.isLollipopOrLater()) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_media);
-
-        // Set up the drawer.
-        navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        if (savedInstanceState == null) {
-            FileListFragment fileListFragment = new FileListFragment();
-
-            // Setup animations
-            if (Utils.isLollipopOrLater()) {
-                fileListFragment.setExitTransition(null);
-                fileListFragment.setReenterTransition(TransitionInflater
-                        .from(this)
-                        .inflateTransition(android.R.transition.fade));
-            }
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, fileListFragment)
-                    .commit();
-        }
-        setupActionBar(getString(R.string.file_browser));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.media_info, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_show_remote:
-                // Starts remote
-                Intent launchIntent = new Intent(this, RemoteActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(launchIntent);
-                return true;
-            default:
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -109,18 +49,6 @@ public class FileActivity extends BaseActivity {
             if (!handled)
                 super.onBackPressed();
         }
-
-    }
-
-    private void setupActionBar(String title) {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) return;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        navigationDrawerFragment.setDrawerIndicatorEnabled(true);
-        actionBar.setTitle(title);
 
     }
 }
