@@ -323,7 +323,7 @@ public class MediaFileListFragment extends AbstractListFragment {
 
         Files.GetDirectory action = new Files.GetDirectory(dir.file,
                 mediaType,
-                new ListType.Sort(ListType.Sort.SORT_METHOD_LABEL, true, true),
+                new ListType.Sort(ListType.Sort.SORT_METHOD_PATH, true, true),
                 properties);
         action.execute(hostManager.getConnection(), new ApiCallback<List<ListType.ItemFile>>() {
             @Override
@@ -717,9 +717,17 @@ public class MediaFileListFragment extends AbstractListFragment {
                     artUrl = itemFile.thumbnail;
                     break;
                 case ListType.ItemBase.TYPE_ALBUM:
+                    title = itemFile.displayartist + " | " + itemFile.album;
+                    details = itemFile.file.substring(itemFile.file.lastIndexOf("/", itemFile.file.length()-2)+1, itemFile.file.length()-1);
+                    artUrl = itemFile.thumbnail;
+                    sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
+                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
+                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                   (itemFile.duration > 0)? UIUtils.formatTime(itemFile.duration) : null;
+                    break;
                 case ListType.ItemBase.TYPE_SONG:
                     title = itemFile.label;
-                    details = itemFile.displayartist + " | " + itemFile.album;
+                    details = itemFile.file.substring(itemFile.file.lastIndexOf("/", itemFile.file.length())+1);
                     artUrl = itemFile.thumbnail;
                     sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
                                    UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
