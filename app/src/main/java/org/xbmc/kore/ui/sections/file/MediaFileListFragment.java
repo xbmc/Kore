@@ -512,16 +512,15 @@ public class MediaFileListFragment extends AbstractListFragment {
                                     case R.id.action_play_from_this_item:
                                         mediaQueueFileLocation.clear();
                                         FileLocation fl;
+                                        // start playing the selected one, then queue the rest
+                                        mediaQueueFileLocation.add(loc);
+                                        playMediaFile(loc.file);
                                         for (int i = position + 1; i < fileLocationItems.size(); i++) {
                                             fl = fileLocationItems.get(i);
                                             if (!fl.isDirectory) {
                                                 mediaQueueFileLocation.add(fl);
                                             }
                                         }
-                                        // start playing the selected one, then queue the rest make sure to queue
-                                        // the selected on last so the it does not lose its place in the queue
-                                        mediaQueueFileLocation.add(loc);
-                                        playMediaFile(loc.file);
                                         return true;
                                 }
                                 return false;
