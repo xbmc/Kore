@@ -54,6 +54,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.regex.Pattern;
+import java.io.File;
 
 /**
  * Presents a list of files of different types (Video/Music)
@@ -718,7 +719,7 @@ public class MediaFileListFragment extends AbstractListFragment {
                     break;
                 case ListType.ItemBase.TYPE_ALBUM:
                     title = itemFile.displayartist + " | " + itemFile.album;
-                    details = itemFile.file.substring(itemFile.file.lastIndexOf("/", itemFile.file.length()-2)+1, itemFile.file.length()-1);
+                    details = new File(itemFile.file).getName();
                     artUrl = itemFile.thumbnail;
                     sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
                                    UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
@@ -727,7 +728,7 @@ public class MediaFileListFragment extends AbstractListFragment {
                     break;
                 case ListType.ItemBase.TYPE_SONG:
                     title = itemFile.label;
-                    details = itemFile.file.substring(itemFile.file.lastIndexOf("/", itemFile.file.length())+1);
+                    details = new File(itemFile.file).getName();
                     artUrl = itemFile.thumbnail;
                     sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
                                    UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
