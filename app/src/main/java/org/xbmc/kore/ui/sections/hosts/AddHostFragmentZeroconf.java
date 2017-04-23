@@ -131,7 +131,7 @@ public class AddHostFragmentZeroconf extends Fragment {
         final Thread searchThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                WifiManager wifiManager = (WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
+                WifiManager wifiManager = (WifiManager)getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
                 WifiManager.MulticastLock multicastLock = null;
                 try {
