@@ -86,7 +86,8 @@ public class SyncMusicVideos extends SyncItem {
             @Override
             public void onSuccess(List<VideoType.DetailsMusicVideo> result) {
                 deleteMusicVideos(contentResolver, hostId);
-                insertMusicVideos(orchestrator, contentResolver, result);
+                insertMusicVideos(result, contentResolver);
+                orchestrator.syncItemFinished();
             }
 
             @Override
@@ -104,9 +105,7 @@ public class SyncMusicVideos extends SyncItem {
                                where, new String[]{String.valueOf(hostId)});
     }
 
-    private void insertMusicVideos(final SyncOrchestrator orchestrator,
-                                   final ContentResolver contentResolver,
-                                   final List<VideoType.DetailsMusicVideo> musicVideos) {
+    public void insertMusicVideos(List<VideoType.DetailsMusicVideo> musicVideos, ContentResolver contentResolver) {
         ContentValues musicVideosValuesBatch[] = new ContentValues[musicVideos.size()];
 
         // Iterate on each music video
@@ -117,6 +116,5 @@ public class SyncMusicVideos extends SyncItem {
 
         // Insert the movies
         contentResolver.bulkInsert(MediaContract.MusicVideos.CONTENT_URI, musicVideosValuesBatch);
-        orchestrator.syncItemFinished();
     }
 }

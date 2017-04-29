@@ -21,15 +21,23 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
+import org.hamcrest.Matcher;
 import org.xbmc.kore.R;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -37,10 +45,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.xbmc.kore.testhelpers.action.ViewActions.clearFocus;
 
 public class EspressoTestUtils {
@@ -163,5 +173,111 @@ public class EspressoTestUtils {
      */
     public static void checkSearchMenuCollapsed() {
         onView(isAssignableFrom(AutoCompleteTextView.class)).check(doesNotExist());
+    }
+
+    /**
+     * Returns the current active activity. Use this when the originally started activity
+     * started a new activity and you need the reference to the new activity.
+     * @return reference to the current active activity
+     */
+    public static Activity getActivity() {
+        final Activity[] activity = new Activity[1];
+        onView(allOf(withId(android.R.id.content), isDisplayed())).perform(new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(View.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "getting current activity";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                if (view.getContext() instanceof Activity) {
+                    activity[0] = ((Activity)view.getContext());
+                }
+            }
+        });
+        return activity[0];
+    }
+
+    /**
+     * Clicks the album tab in the music activity
+     */
+    public static void clickAlbumsTab() {
+        onView(withId(R.id.pager_tab_strip)).perform(swipeLeft());
+        onView(withText(R.string.albums)).perform(click());
+    }
+
+    /**
+     * Clicks the artists tab in the music activity
+     */
+    public static void clickArtistsTab() {
+        onView(withId(R.id.pager_tab_strip)).perform(swipeRight());
+        onView(withText(R.string.artists)).perform(click());
+    }
+
+    /**
+     * Clicks the genres tab in the music activity
+     */
+    public static void clickGenresTab() {
+        onView(withId(R.id.pager_tab_strip)).perform(swipeLeft());
+        onView(withText(R.string.genres)).perform(click());
+    }
+
+    /**
+     * Clicks the music videos tab in the music activity
+     */
+    public static void clickMusicVideosTab() {
+        onView(withId(R.id.pager_tab_strip)).perform(swipeLeft());
+        onView(withText(R.string.videos)).perform(click());
+    }
+
+    /**
+     * Selects an item in the list, then presses back and checks the action bar title
+     * @param item number (0 is first item) of the item that should be pressed
+     * @param listResourceId Resource identifier of the AdapterView
+     * @param actionbarTitle title that should be displayed in the action bar after pressing back
+     */
+    public static void selectListItemPressBackAndCheckActionbarTitle(int item,
+                                                                     int listResourceId,
+                                                                     String actionbarTitle) {
+        EspressoTestUtils.clickAdapterViewItem(item, listResourceId);
+        pressBack();
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
+                .check(matches(withText(actionbarTitle)));
+    }
+
+    /**
+     * Selects an item in the list, then rotates the device and checks the action bar title
+     * @param item number (0 is first item) of the item that should be pressed
+     * @param listResourceId Resource identifier of the AdapterView
+     * @param actionbarTitle title that should be displayed in the action bar after rotating
+     */
+    public static void selectListItemRotateDeviceAndCheckActionbarTitle(int item,
+                                                                        int listResourceId,
+                                                                        String actionbarTitle,
+                                                                        Activity activity) {
+        EspressoTestUtils.clickAdapterViewItem(item, listResourceId);
+        EspressoTestUtils.rotateDevice(activity);
+
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
+                .check(matches(withText(actionbarTitle)));
+    }
+
+    /**
+     * Selects an item in the list and then checks the action bar title
+     * @param item number (0 is first item) of the item that should be pressed
+     * @param listResourceId Resource identifier of the AdapterView
+     * @param actionbarTitle title that should be displayed in the action bar after selecting item
+     */
+    public static void selectListItemAndCheckActionbarTitle(int item,
+                                                            int listResourceId,
+                                                            String actionbarTitle) {
+        EspressoTestUtils.clickAdapterViewItem(item, listResourceId);
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
+                .check(matches(withText(actionbarTitle)));
     }
 }

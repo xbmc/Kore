@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.xbmc.kore.utils.LogUtils;
 
+import java.io.IOException;
+
 public abstract class JsonResponse {
     private final String TAG = LogUtils.makeLogTag(JsonResponse.class);
 
@@ -49,6 +51,12 @@ public abstract class JsonResponse {
 
     public JsonResponse(int id) {
         this();
+        jsonResponse.put(ID_NODE, id);
+    }
+
+    public JsonResponse(int id, String jsonString) throws IOException {
+        jsonResponse = (ObjectNode) objectMapper.readTree(jsonString);
+        jsonResponse.put(JSONRPC_NODE, "2.0");
         jsonResponse.put(ID_NODE, id);
     }
 

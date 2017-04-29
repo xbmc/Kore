@@ -1,0 +1,581 @@
+{
+   "id" : "libMovies",
+   "jsonrpc" : "2.0",
+   "result" : {
+      "musicvideos" : [
+         {
+            "album" : "...Baby One More Time",
+            "director" : [
+               "Nigel Dick"
+            ],
+            "art" : {
+               "poster" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fbaby-one-more-time-4dcff7453745a.jpg/"
+            },
+            "plot" : "\"(You Drive Me) Crazy\" is a song by American recording artist Britney Spears from her debut studio album, ...Baby One More Time (1999). Written and produced by Max Martin, Per Magnusson and David Kreuger, with additional writing by Jörgen Elofsson and remix by Martin and Rami Yacoub, it was released as the album's third single on August 23, 1999 by Jive Records. It was remixed for the soundtrack of Drive Me Crazy. \"(You Drive Me) Crazy\" is a teen pop song that draws influences from R&B and rock. The song garnered positive reviews from music critics, some of whom praised its simple formula and noted similarities to Spears' debut single, \"...Baby One More Time\".\n\n\"(You Drive Me) Crazy\" was a commercial success, and peaked inside the top ten on the singles charts of seventeen countries. In the United Kingdom, it became Spears' third consecutive single to peak inside the top five, while it reached number 10 in the United States' Hot 100, and peaked at number one in Belgium (Wallonia). An accompanying music video, directed by Nigel Dick, and portrayed Spears as a waitress of a dance club, and performed a highly choreographed dance routine with the other waitresses. The video premiered on MTV's Making the Video special, and featured cameo appearances of actors Melissa Joan Hart and Adrien Grenier. As part of promotion for the song, Spears performed the song at the 1999 MTV Europe Music Awards and 1999 Billboard Music Awards. It has also been included on five of her concert tours.",
+            "resume" : {
+               "position" : 0,
+               "total" : 0
+            },
+            "thumbnail" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fbaby-one-more-time-4dcff7453745a.jpg/",
+            "fanart" : "",
+            "rating" : 0,
+            "year" : 1999,
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/Britney Spears - (You Drive Me) Crazy (1999).mp4",
+            "dateadded" : "2016-12-29 16:50:28",
+            "userrating" : 0,
+            "artist" : [
+               "Britney Spears"
+            ],
+            "lastplayed" : "2017-02-28 11:07:15",
+            "studio" : [],
+            "tag" : [],
+            "title" : "(You Drive Me) Crazy",
+            "label" : "(You Drive Me) Crazy",
+            "runtime" : 12,
+            "track" : -1,
+            "genre" : [
+               "Pop"
+            ],
+            "streamdetails" : {
+               "audio" : [
+                  {
+                     "channels" : 2,
+                     "language" : "und",
+                     "codec" : "aac"
+                  }
+               ],
+               "video" : [
+                  {
+                     "width" : 480,
+                     "language" : "und",
+                     "height" : 360,
+                     "duration" : 12,
+                     "stereomode" : "",
+                     "aspect" : 1.33333301544189,
+                     "codec" : "h264"
+                  }
+               ],
+               "subtitle" : []
+            },
+            "musicvideoid" : 60,
+            "premiered" : "1999-01-01",
+            "playcount" : 1
+         },
+         {
+            "resume" : {
+               "total" : 0,
+               "position" : 0
+            },
+            "art" : {
+               "poster" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fsvpxyw1364737910.jpg/"
+            },
+            "director" : [],
+            "plot" : "",
+            "album" : "Rubber Factory",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/The Black Keys - 10 A.M. Automatic (2004).mp4",
+            "rating" : 0,
+            "year" : 2004,
+            "fanart" : "",
+            "thumbnail" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fsvpxyw1364737910.jpg/",
+            "track" : -1,
+            "label" : "10 A.M. Automatic",
+            "runtime" : 12,
+            "lastplayed" : "",
+            "studio" : [],
+            "title" : "10 A.M. Automatic",
+            "tag" : [],
+            "dateadded" : "2016-12-29 16:50:29",
+            "artist" : [
+               "The Black Keys"
+            ],
+            "userrating" : 0,
+            "premiered" : "2004-01-01",
+            "playcount" : 0,
+            "musicvideoid" : 370,
+            "streamdetails" : {
+               "subtitle" : [],
+               "audio" : [
+                  {
+                     "channels" : 2,
+                     "language" : "und",
+                     "codec" : "aac"
+                  }
+               ],
+               "video" : [
+                  {
+                     "language" : "",
+                     "height" : 360,
+                     "width" : 480,
+                     "duration" : 12,
+                     "stereomode" : "",
+                     "aspect" : 1.33333301544189,
+                     "codec" : "avc1"
+                  }
+               ]
+            },
+            "genre" : [
+               "Indie"
+            ]
+         },
+         {
+            "runtime" : 12,
+            "label" : "99 Problems",
+            "track" : -1,
+            "userrating" : 0,
+            "artist" : [
+               "Jay-Z"
+            ],
+            "dateadded" : "2016-12-29 16:50:28",
+            "title" : "99 Problems",
+            "tag" : [],
+            "studio" : [
+               "Anonymous Content"
+            ],
+            "lastplayed" : "",
+            "musicvideoid" : 164,
+            "streamdetails" : {
+               "audio" : [
+                  {
+                     "codec" : "aac",
+                     "channels" : 2,
+                     "language" : "und"
+                  }
+               ],
+               "video" : [
+                  {
+                     "aspect" : 1.33333301544189,
+                     "stereomode" : "",
+                     "codec" : "avc1",
+                     "duration" : 12,
+                     "width" : 480,
+                     "language" : "",
+                     "height" : 360
+                  }
+               ],
+               "subtitle" : []
+            },
+            "premiered" : "2003-01-01",
+            "playcount" : 0,
+            "genre" : [
+               "Hip-Hop"
+            ],
+            "director" : [
+               "Mark Romanek"
+            ],
+            "art" : {
+               "poster" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fthe-black-album-4ee5475d9f478.jpg/"
+            },
+            "plot" : "\"99 Problems\" is the third single released by American rapper Jay-Z in 2004 from The Black Album. The song was originally written by rapper Ice-T in 1993. Throughout the song Jay-Z tells a story about dealing with a racist police officer who wants to illegally search his car, dealing with rap critics, and dealing with an aggressor. The song reached number 30 on the Billboard Hot 100.\nThe track was produced by Rick Rubin, his first hip hop production in many years. Rubin provided Jay-Z with a guitar riff and stripped-down beat that were once his trademarks. In creating the track Rubin used some classic 1980s sample staples such as \"The Big Beat\" by Billy Squier, \"Long Red\" by Mountain, and \"Get Me Back On Time\" by Wilson Pickett. These songs were long coveted by early hip hop producers, in particular the drum beat from Big Beat, used most famously by Run–D.M.C. on \"Here We Go\" in 1985 and by British rapper Dizzee Rascal a year prior to Jay-Z on his break-through hit \"Fix Up, Look Sharp\". It also featured on the popular Ultimate Breaks and Beats series.\nWhile the song's meaning is widely debated, the chorus \"If you're having girl problems, I feel bad for you son/I've got 99 problems but a bitch ain't one\" was defined in Jay-Z's book, Decoded, as referring to a police dog. Jay-Z wrote that in 1994 he was pulled over by police while carrying cocaine in a secret compartment in his sunroof. Jay-Z refused to let the police search the car and the police called for the drug sniffing dogs. However, the dogs never showed up and the police had to let Jay-Z go. Moments after he drove away, he wrote that he saw a police car with the dogs drive by.\nThe title and chorus are taken from Ice-T's \"99 Problems\" from his 1993 album Home Invasion. The song featured Brother Marquis of 2 Live Crew. The original song was more profane and describes a wide range of sexual conquests. Portions of Ice-T's original lyrics were similarly quoted in a song by fellow rapper Trick Daddy on a track also titled \"99 Problems\" from his 2001 album Thugs Are Us. Jay-Z begins his third verse directly quoting lines from Bun B's opening verse off the track \"Touched\" from the UGK album Ridin' Dirty.",
+            "resume" : {
+               "position" : 0,
+               "total" : 0
+            },
+            "album" : "The Black Album",
+            "year" : 2003,
+            "rating" : 0,
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/Jay-Z - 99 Problems (2004).mp4",
+            "thumbnail" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fthe-black-album-4ee5475d9f478.jpg/",
+            "fanart" : ""
+         },
+         {
+            "album" : "Dirty",
+            "resume" : {
+               "total" : 0,
+               "position" : 0
+            },
+            "plot" : "",
+            "art" : {
+               "poster" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fdirty-50030abf884f2.jpg/"
+            },
+            "director" : [
+               "Tamra Davis"
+            ],
+            "fanart" : "",
+            "thumbnail" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fdirty-50030abf884f2.jpg/",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/Sonic Youth - 100% (1992).mp4",
+            "rating" : 0,
+            "year" : 1992,
+            "lastplayed" : "",
+            "studio" : [],
+            "tag" : [],
+            "title" : "100%",
+            "dateadded" : "2016-12-29 16:50:28",
+            "userrating" : 0,
+            "artist" : [
+               "Sonic Youth"
+            ],
+            "track" : -1,
+            "label" : "100%",
+            "runtime" : 12,
+            "genre" : [
+               "Alternative Rock"
+            ],
+            "premiered" : "1992-01-01",
+            "playcount" : 0,
+            "streamdetails" : {
+               "audio" : [
+                  {
+                     "language" : "und",
+                     "channels" : 2,
+                     "codec" : "aac"
+                  }
+               ],
+               "video" : [
+                  {
+                     "stereomode" : "",
+                     "aspect" : 1.33333301544189,
+                     "codec" : "avc1",
+                     "width" : 480,
+                     "language" : "",
+                     "height" : 360,
+                     "duration" : 12
+                  }
+               ],
+               "subtitle" : []
+            },
+            "musicvideoid" : 349
+         },
+         {
+            "resume" : {
+               "position" : 0,
+               "total" : 0
+            },
+            "art" : {
+               "thumb" : "image://video@%2fUsers%2fmartijn%2fProjects%2fdummymediafiles%2fmedia%2fmusicvideos%2fPeter%20Himmelman%20-%20245%20Days%20(1990).mp4/"
+            },
+            "director" : [],
+            "plot" : "",
+            "album" : "Synesthesia",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/Peter Himmelman - 245 Days (1990).mp4",
+            "year" : 1989,
+            "rating" : 0,
+            "fanart" : "",
+            "thumbnail" : "image://video@%2fUsers%2fmartijn%2fProjects%2fdummymediafiles%2fmedia%2fmusicvideos%2fPeter%20Himmelman%20-%20245%20Days%20(1990).mp4/",
+            "track" : -1,
+            "runtime" : 12,
+            "label" : "245 Days",
+            "tag" : [],
+            "title" : "245 Days",
+            "lastplayed" : "",
+            "studio" : [],
+            "artist" : [
+               "Peter Himmelman"
+            ],
+            "userrating" : 0,
+            "dateadded" : "2016-12-29 16:50:28",
+            "premiered" : "1989-01-01",
+            "playcount" : 0,
+            "streamdetails" : {
+               "audio" : [
+                  {
+                     "language" : "und",
+                     "channels" : 2,
+                     "codec" : "aac"
+                  }
+               ],
+               "video" : [
+                  {
+                     "stereomode" : "",
+                     "codec" : "avc1",
+                     "aspect" : 1.33333301544189,
+                     "duration" : 12,
+                     "width" : 480,
+                     "language" : "",
+                     "height" : 360
+                  }
+               ],
+               "subtitle" : []
+            },
+            "musicvideoid" : 297,
+            "genre" : [
+               "..."
+            ]
+         },
+         {
+            "dateadded" : "2016-12-29 16:50:28",
+            "artist" : [
+               "Public Enemy"
+            ],
+            "userrating" : 0,
+            "studio" : [],
+            "lastplayed" : "2017-03-02 10:43:26",
+            "tag" : [],
+            "title" : "911 Is a Joke",
+            "label" : "911 Is a Joke",
+            "runtime" : 12,
+            "track" : -1,
+            "genre" : [
+               "Hip-Hop"
+            ],
+            "streamdetails" : {
+               "subtitle" : [],
+               "audio" : [
+                  {
+                     "codec" : "aac",
+                     "language" : "und",
+                     "channels" : 2
+                  }
+               ],
+               "video" : [
+                  {
+                     "codec" : "h264",
+                     "stereomode" : "",
+                     "aspect" : 1.33333301544189,
+                     "language" : "und",
+                     "height" : 360,
+                     "width" : 480,
+                     "duration" : 12
+                  }
+               ]
+            },
+            "musicvideoid" : 306,
+            "premiered" : "1990-01-01",
+            "playcount" : 1,
+            "album" : "Fear of a Black Planet",
+            "director" : [],
+            "art" : {
+               "poster" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2ffear-of-a-black-planet-526965153a1e4.jpg/"
+            },
+            "plot" : "\"911 Is a Joke\" is a 1990 song by American hip hop group Public Enemy, from their third album, Fear of a Black Planet. The song is solely done by Flavor Flav. It was released as a single and became a hit in June 1990, reaching number 15 on the Hot R&B/Hip-Hop Singles & Tracks chart, and number 1 on the Hot Rap Singles chart, becoming their second number-one rap chart hit after \"Fight the Power\". It also reached number one on the Bubbling Under Hot 100 Singles chart. This was due largely to its sales, which were unusually high for the level of mainstream airplay it received; Billboard reported that only one of the stations on its Top 40 panel was playing it.\n\nThe song is about the lack of response to emergency calls in a black neighborhood, but specifically references the poor response by paramedic crews and not the police, which is a common misconception regarding the track; the \"911\" in the title of the song refers to 9-1-1, the emergency telephone number used in North America.",
+            "resume" : {
+               "total" : 0,
+               "position" : 0
+            },
+            "thumbnail" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2ffear-of-a-black-planet-526965153a1e4.jpg/",
+            "fanart" : "",
+            "rating" : 0,
+            "year" : 1990,
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/Public Enemy - 911 is a Joke (1990).mp4"
+         },
+         {
+            "label" : "A Case of You",
+            "runtime" : 12,
+            "track" : -1,
+            "dateadded" : "2016-12-29 16:50:28",
+            "userrating" : 0,
+            "artist" : [
+               "James Blake"
+            ],
+            "lastplayed" : "",
+            "studio" : [],
+            "tag" : [],
+            "title" : "A Case of You",
+            "streamdetails" : {
+               "audio" : [
+                  {
+                     "channels" : 2,
+                     "language" : "und",
+                     "codec" : "aac"
+                  }
+               ],
+               "video" : [
+                  {
+                     "width" : 480,
+                     "height" : 360,
+                     "language" : "",
+                     "duration" : 12,
+                     "stereomode" : "",
+                     "aspect" : 1.33333301544189,
+                     "codec" : "avc1"
+                  }
+               ],
+               "subtitle" : []
+            },
+            "musicvideoid" : 160,
+            "premiered" : "2011-01-01",
+            "playcount" : 0,
+            "genre" : [
+               "Electronic"
+            ],
+            "director" : [],
+            "plot" : "",
+            "art" : {
+               "poster" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2ftyswrr1377556931.jpg/"
+            },
+            "resume" : {
+               "total" : 0,
+               "position" : 0
+            },
+            "album" : "Enough Thunder",
+            "rating" : 0,
+            "year" : 2011,
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/James Blake - A Case Of You (2011).mp4",
+            "thumbnail" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2ftyswrr1377556931.jpg/",
+            "fanart" : ""
+         },
+         {
+            "track" : -1,
+            "label" : "A Little Respect",
+            "runtime" : 12,
+            "studio" : [],
+            "lastplayed" : "",
+            "tag" : [],
+            "title" : "A Little Respect",
+            "dateadded" : "2016-12-29 16:50:28",
+            "artist" : [
+               "Wheatus"
+            ],
+            "userrating" : 0,
+            "premiered" : "2000-01-01",
+            "playcount" : 0,
+            "musicvideoid" : 430,
+            "streamdetails" : {
+               "subtitle" : [],
+               "audio" : [
+                  {
+                     "channels" : 2,
+                     "language" : "und",
+                     "codec" : "aac"
+                  }
+               ],
+               "video" : [
+                  {
+                     "stereomode" : "",
+                     "codec" : "avc1",
+                     "aspect" : 1.33333301544189,
+                     "duration" : 12,
+                     "language" : "",
+                     "height" : 360,
+                     "width" : 480
+                  }
+               ]
+            },
+            "genre" : [
+               "Rock"
+            ],
+            "resume" : {
+               "total" : 0,
+               "position" : 0
+            },
+            "art" : {
+               "poster" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fwheatus-5144f1c42ea0a.jpg/"
+            },
+            "plot" : "",
+            "director" : [],
+            "album" : "Wheatus",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/Wheatus - A Little Respect (2000).mp4",
+            "rating" : 0,
+            "year" : 2000,
+            "fanart" : "",
+            "thumbnail" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2fwheatus-5144f1c42ea0a.jpg/"
+         },
+         {
+            "rating" : 0,
+            "year" : 1996,
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/Counting Crows - A Long December (1996).mp4",
+            "thumbnail" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2frecovering-the-satellites-4dcfda1792ec0.jpg/",
+            "fanart" : "",
+            "plot" : "",
+            "director" : [],
+            "art" : {
+               "poster" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2frecovering-the-satellites-4dcfda1792ec0.jpg/"
+            },
+            "resume" : {
+               "total" : 0,
+               "position" : 0
+            },
+            "album" : "Recovering the Satellites",
+            "musicvideoid" : 79,
+            "streamdetails" : {
+               "video" : [
+                  {
+                     "duration" : 12,
+                     "width" : 480,
+                     "height" : 360,
+                     "language" : "",
+                     "aspect" : 1.33333301544189,
+                     "stereomode" : "",
+                     "codec" : "avc1"
+                  }
+               ],
+               "audio" : [
+                  {
+                     "language" : "und",
+                     "channels" : 2,
+                     "codec" : "aac"
+                  }
+               ],
+               "subtitle" : []
+            },
+            "premiered" : "1996-01-01",
+            "playcount" : 0,
+            "genre" : [
+               "Alternative Rock"
+            ],
+            "label" : "A Long December",
+            "runtime" : 12,
+            "track" : -1,
+            "dateadded" : "2016-12-29 16:50:28",
+            "artist" : [
+               "Counting Crows"
+            ],
+            "userrating" : 0,
+            "studio" : [],
+            "lastplayed" : "",
+            "tag" : [],
+            "title" : "A Long December"
+         },
+         {
+            "genre" : [
+               "Folk"
+            ],
+            "premiered" : "1985-01-01",
+            "playcount" : 0,
+            "streamdetails" : {
+               "subtitle" : [],
+               "audio" : [
+                  {
+                     "channels" : 2,
+                     "language" : "und",
+                     "codec" : "aac"
+                  }
+               ],
+               "video" : [
+                  {
+                     "stereomode" : "",
+                     "aspect" : 1.33333301544189,
+                     "codec" : "avc1",
+                     "duration" : 12,
+                     "language" : "",
+                     "height" : 360,
+                     "width" : 480
+                  }
+               ]
+            },
+            "musicvideoid" : 390,
+            "tag" : [],
+            "title" : "A Pair of Brown Eyes",
+            "lastplayed" : "",
+            "studio" : [],
+            "artist" : [
+               "The Pogues"
+            ],
+            "userrating" : 0,
+            "dateadded" : "2016-12-29 16:50:28",
+            "track" : -1,
+            "runtime" : 12,
+            "label" : "A Pair of Brown Eyes",
+            "fanart" : "",
+            "thumbnail" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2frum-sodomy--the-lash-52f1dda495de3.jpg/",
+            "file" : "/Users/martijn/Projects/dummymediafiles/media/musicvideos/The Pogues - A Pair of Brown Eyes (1985).mp4",
+            "year" : 1985,
+            "rating" : 0,
+            "album" : "Rum Sodomy & the Lash",
+            "resume" : {
+               "position" : 0,
+               "total" : 0
+            },
+            "art" : {
+               "poster" : "image://http%3a%2f%2fwww.theaudiodb.com%2fimages%2fmedia%2falbum%2fthumb%2frum-sodomy--the-lash-52f1dda495de3.jpg/"
+            },
+            "director" : [],
+            "plot" : ""
+         }
+      ],
+      "limits" : {
+         "total" : 439,
+         "start" : 0,
+         "end" : 10
+      }
+   }
+}

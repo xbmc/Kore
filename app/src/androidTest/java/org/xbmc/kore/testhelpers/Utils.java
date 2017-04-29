@@ -22,6 +22,7 @@ import android.os.IBinder;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
@@ -54,10 +55,21 @@ public class Utils {
         });
     }
 
-    public static void initialize(ActivityTestRule<?> activityTestRule) throws Throwable {
+    public static void openDrawer(final ActivityTestRule<?> activityTestRule) throws Throwable {
+        activityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DrawerLayout drawerLayout = (DrawerLayout) activityTestRule.getActivity().findViewById(R.id.drawer_layout);
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+    }
+
+    public static void initialize(ActivityTestRule<?> activityTestRule, HostInfo info) throws Throwable {
         if (isInitialized)
             return;
 
+        hostInfo = info;
         context = activityTestRule.getActivity();
 
         disableAnimations();
@@ -66,7 +78,7 @@ public class Utils {
         mediaProvider.setContext(context);
         mediaProvider.onCreate();
 
-        hostInfo = Database.fill(context, context.getContentResolver());
+        Database.fill(hostInfo, context, context.getContentResolver());
 
         HostManager.getInstance(context).switchHost(hostInfo);
         Utils.closeDrawer(activityTestRule);

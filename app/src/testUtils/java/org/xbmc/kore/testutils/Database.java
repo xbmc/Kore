@@ -24,6 +24,7 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.ApiList;
+import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.AudioType;
@@ -31,6 +32,8 @@ import org.xbmc.kore.jsonrpc.type.LibraryType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.SyncMusic;
+import org.xbmc.kore.service.library.SyncMusicVideos;
+import org.xbmc.kore.service.library.SyncTVShows;
 import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -40,16 +43,19 @@ import java.util.ArrayList;
 public class Database {
     public static final String TAG = LogUtils.makeLogTag(Database.class);
 
-    public static HostInfo fill(Context context, ContentResolver contentResolver) throws ApiException, IOException {
-        HostInfo hostInfo = addHost(context);
-
+    public static HostInfo fill(HostInfo hostInfo, Context context, ContentResolver contentResolver) throws ApiException, IOException {
         SyncMusic syncMusic = new SyncMusic(hostInfo.getId(), null);
-
         insertMovies(context, contentResolver, hostInfo.getId());
         insertArtists(context, contentResolver, syncMusic);
         insertGenres(context, contentResolver, syncMusic);
         insertAlbums(context, contentResolver, syncMusic);
         insertSongs(context, contentResolver, syncMusic);
+
+        SyncTVShows syncTVShows = new SyncTVShows(hostInfo.getId(), null);
+        insertTVShows(context, contentResolver, syncTVShows);
+
+        SyncMusicVideos syncMusicVideos = new SyncMusicVideos(hostInfo.getId(), null);
+        insertMusicVideos(context, contentResolver, syncMusicVideos);
 
         return hostInfo;
     }
@@ -58,15 +64,24 @@ public class Database {
         contentResolver.delete(MediaContract.Hosts.buildHostUri(hostInfo.getId()), null, null);
     }
 
-    private static HostInfo addHost(Context context) {
-        return HostManager.getInstance(context).addHost("TestHost", "127.0.0.1", 1, 80, 9090, null,
-                                                        null, "52:54:00:12:35:02", 9, false, 9777,
-                                                        HostInfo.DEFAULT_KODI_VERSION_MAJOR, HostInfo.DEFAULT_KODI_VERSION_MINOR,
-                                                        HostInfo.DEFAULT_KODI_VERSION_REVISION, HostInfo.DEFAULT_KODI_VERSION_TAG,
+    public static HostInfo addHost(Context context) {
+        return addHost(context, "127.0.0.1", HostConnection.PROTOCOL_TCP,
+                           HostInfo.DEFAULT_HTTP_PORT, HostInfo.DEFAULT_TCP_PORT);
+
+    }
+
+    public static HostInfo addHost(Context context, String hostname, int protocol, int httpPort, int tcpPort) {
+        return HostManager.getInstance(context).addHost("TestHost", hostname, protocol, httpPort,
+                                                        tcpPort, null, null, "52:54:00:12:35:02", 9,
+                                                        false, HostInfo.DEFAULT_EVENT_SERVER_PORT,
+                                                        HostInfo.DEFAULT_KODI_VERSION_MAJOR,
+                                                        HostInfo.DEFAULT_KODI_VERSION_MINOR,
+                                                        HostInfo.DEFAULT_KODI_VERSION_REVISION,
+                                                        HostInfo.DEFAULT_KODI_VERSION_TAG,
                                                         false);
     }
 
-    public static void insertMovies(Context context, ContentResolver contentResolver, int hostId)
+    private static void insertMovies(Context context, ContentResolver contentResolver, int hostId)
             throws ApiException, IOException {
         VideoLibrary.GetMovies getMovies = new VideoLibrary.GetMovies();
         String result = FileUtils.readFile(context, "Video.Details.Movie.json");
@@ -130,5 +145,35 @@ public class Database {
                 getSongs.resultFromJson(FileUtils.readFile(context, "AudioLibrary.GetSongs.json")).items;
 
         syncMusic.insertSongsItems(songList, contentResolver);
+    }
+
+    private static void insertTVShows(Context context, ContentResolver contentResolver, SyncTVShows syncTVShows)
+            throws ApiException, IOException {
+        VideoLibrary.GetTVShows getTVShows = new VideoLibrary.GetTVShows();
+        String result = FileUtils.readFile(context, "VideoLibrary.GetTVShows.json");
+        ArrayList<VideoType.DetailsTVShow> tvShowList = (ArrayList) getTVShows.resultFromJson(result).items;
+
+        syncTVShows.insertTVShows(tvShowList, contentResolver);
+
+        for ( VideoType.DetailsTVShow tvShow : tvShowList ) {
+            VideoLibrary.GetSeasons getSeasons = new VideoLibrary.GetSeasons(tvShow.tvshowid);
+            result = FileUtils.readFile(context, "VideoLibrary.GetSeasons.json");
+            ArrayList<VideoType.DetailsSeason> detailsSeasons = (ArrayList) getSeasons.resultFromJson(result);
+            syncTVShows.insertSeason(tvShow.tvshowid, detailsSeasons, contentResolver);
+        }
+
+        VideoLibrary.GetEpisodes getEpisodes = new VideoLibrary.GetEpisodes(0);
+        result = FileUtils.readFile(context, "VideoLibrary.GetEpisodes.json");
+        ArrayList<VideoType.DetailsEpisode> detailsEpisodes = (ArrayList) getEpisodes.resultFromJson(result);
+        syncTVShows.insertEpisodes(detailsEpisodes, contentResolver);
+    }
+
+    private static void insertMusicVideos(Context context, ContentResolver contentResolver, SyncMusicVideos syncMusicVideos)
+        throws ApiException, IOException {
+        VideoLibrary.GetMusicVideos getMusicVideos = new VideoLibrary.GetMusicVideos();
+        String result = FileUtils.readFile(context, "VideoLibrary.GetMusicVideos.json");
+        ArrayList<VideoType.DetailsMusicVideo> musicVideoList = (ArrayList) getMusicVideos.resultFromJson(result);
+
+        syncMusicVideos.insertMusicVideos(musicVideoList, contentResolver);
     }
 }

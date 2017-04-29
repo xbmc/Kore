@@ -79,14 +79,17 @@ public abstract class BaseMediaActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-
+            String actionBarTitle;
+            boolean naviconIsArrow = false;
             if (savedInstanceState != null) {
-                updateActionBar(savedInstanceState.getString(ACTIONBAR_TITLE),
-                                savedInstanceState.getBoolean(NAVICON_ISARROW));
+                actionBarTitle = savedInstanceState.getString(ACTIONBAR_TITLE);
+                naviconIsArrow = savedInstanceState.getBoolean(NAVICON_ISARROW);
             } else {
-                updateActionBar(getActionBarTitle(), false);
+                actionBarTitle = getActionBarTitle();
             }
+
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            updateActionBar(actionBarTitle, naviconIsArrow);
         }
 
         String fragmentTitle = getActionBarTitle();
@@ -183,7 +186,5 @@ public abstract class BaseMediaActivity extends AppCompatActivity {
         fragTrans.replace(R.id.fragment_container, fragment, getActionBarTitle())
                  .addToBackStack(null)
                  .commit();
-
-        dataHolder.getBundle().putBoolean(NAVICON_ISARROW, true);
     }
 }

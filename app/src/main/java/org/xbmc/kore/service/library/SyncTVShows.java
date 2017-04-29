@@ -115,8 +115,9 @@ public class SyncTVShows extends SyncItem {
                     deleteTVShows(contentResolver, hostId, tvshowId);
                     List<VideoType.DetailsTVShow> tvShows = new ArrayList<>(1);
                     tvShows.add(result);
-                    insertTVShowsAndGetDetails(orchestrator, hostConnection, callbackHandler,
-                                               contentResolver, tvShows);
+                    insertTVShows(tvShows, contentResolver);
+                    chainSyncSeasons(orchestrator, hostConnection, callbackHandler,
+                                     contentResolver, tvShows, 0);
                     // insertTVShows calls syncItemFinished
                 }
 
@@ -157,8 +158,10 @@ public class SyncTVShows extends SyncItem {
                     // Ok, we have all the shows, insert them
                     LogUtils.LOGD(TAG, "syncAllTVShows: Got all tv shows. Total: " + allResults.size());
                     deleteTVShows(contentResolver, hostId, -1);
-                    insertTVShowsAndGetDetails(orchestrator, hostConnection, callbackHandler,
-                                               contentResolver, allResults);
+                    insertTVShows(allResults, contentResolver);
+
+                    chainSyncSeasons(orchestrator, hostConnection, callbackHandler,
+                                     contentResolver, allResults, 0);
                 }
             }
 
@@ -195,42 +198,6 @@ public class SyncTVShows extends SyncItem {
             contentResolver.delete(MediaContract.TVShows.buildTVShowUri(hostId, tvshowId),
                                    null, null);
         }
-    }
-
-    private void insertTVShowsAndGetDetails(final SyncOrchestrator orchestrator,
-                                            final HostConnection hostConnection,
-                                            final Handler callbackHandler,
-                                            final ContentResolver contentResolver,
-                                            List<VideoType.DetailsTVShow> tvShows) {
-        ContentValues tvshowsValuesBatch[] = new ContentValues[tvShows.size()];
-        int castCount = 0;
-
-        // Iterate on each show
-        for (int i = 0; i < tvShows.size(); i++) {
-            VideoType.DetailsTVShow tvshow = tvShows.get(i);
-            tvshowsValuesBatch[i] = SyncUtils.contentValuesFromTVShow(hostId, tvshow);
-            castCount += tvshow.cast.size();
-        }
-        // Insert the tvshows
-        contentResolver.bulkInsert(MediaContract.TVShows.CONTENT_URI, tvshowsValuesBatch);
-        LogUtils.LOGD(TAG, "Inserted " + tvShows.size() + " tv shows.");
-
-        ContentValues tvshowsCastValuesBatch[] = new ContentValues[castCount];
-        int count = 0;
-        // Iterate on each show/cast
-        for (VideoType.DetailsTVShow tvshow : tvShows) {
-            for (VideoType.Cast cast : tvshow.cast) {
-                tvshowsCastValuesBatch[count] = SyncUtils.contentValuesFromCast(hostId, cast);
-                tvshowsCastValuesBatch[count].put(MediaContract.TVShowCastColumns.TVSHOWID, tvshow.tvshowid);
-                count++;
-            }
-        }
-        // Insert the cast list for this movie
-        contentResolver.bulkInsert(MediaContract.TVShowCast.CONTENT_URI, tvshowsCastValuesBatch);
-
-        // Start the sequential syncing of seasons
-        chainSyncSeasons(orchestrator, hostConnection, callbackHandler,
-                         contentResolver, tvShows, 0);
     }
 
     private final static String seasonsProperties[] = {
@@ -270,27 +237,8 @@ public class SyncTVShows extends SyncItem {
             action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsSeason>>() {
                 @Override
                 public void onSuccess(List<VideoType.DetailsSeason> result) {
-                    ContentValues seasonsValuesBatch[] = new ContentValues[result.size()];
-                    int totalWatchedEpisodes = 0;
-                    for (int i = 0; i < result.size(); i++) {
-                        VideoType.DetailsSeason season = result.get(i);
-                        seasonsValuesBatch[i] = SyncUtils.contentValuesFromSeason(hostId, season);
 
-                        totalWatchedEpisodes += season.watchedepisodes;
-                    }
-                    // Insert the seasons
-                    contentResolver.bulkInsert(MediaContract.Seasons.CONTENT_URI, seasonsValuesBatch);
-
-                    if (getSyncType().equals(LibrarySyncService.SYNC_SINGLE_TVSHOW)) {
-                        // HACK: Update watched episodes count for the tvshow with the sum
-                        // of watched episodes from seasons, given that the value that we
-                        // got from XBMC from the call to GetTVShowDetails is wrong (note
-                        // that the value returned from GetTVShows is correct).
-                        Uri uri = MediaContract.TVShows.buildTVShowUri(hostId, tvShow.tvshowid);
-                        ContentValues tvshowUpdate = new ContentValues(1);
-                        tvshowUpdate.put(MediaContract.TVShowsColumns.WATCHEDEPISODES, totalWatchedEpisodes);
-                        contentResolver.update(uri, tvshowUpdate, null, null);
-                    }
+                    insertSeason(tvShow.tvshowid, result, contentResolver);
 
                     // Sync the next tv show
                     chainSyncSeasons(orchestrator, hostConnection, callbackHandler,
@@ -358,13 +306,8 @@ public class SyncTVShows extends SyncItem {
             action.execute(hostConnection, new ApiCallback<List<VideoType.DetailsEpisode>>() {
                 @Override
                 public void onSuccess(List<VideoType.DetailsEpisode> result) {
-                    ContentValues episodesValuesBatch[] = new ContentValues[result.size()];
-                    for (int i = 0; i < result.size(); i++) {
-                        VideoType.DetailsEpisode episode = result.get(i);
-                        episodesValuesBatch[i] = SyncUtils.contentValuesFromEpisode(hostId, episode);
-                    }
-                    // Insert the episodes
-                    contentResolver.bulkInsert(MediaContract.Episodes.CONTENT_URI, episodesValuesBatch);
+
+                    insertEpisodes(result, contentResolver);
 
                     chainSyncEpisodes(orchestrator, hostConnection, callbackHandler,
                                       contentResolver, tvShows, position + 1);
@@ -381,5 +324,68 @@ public class SyncTVShows extends SyncItem {
             LogUtils.LOGD(TAG, "Sync tv shows finished successfully");
             orchestrator.syncItemFinished();
         }
+    }
+
+    public void insertTVShows(List<VideoType.DetailsTVShow> tvShows, ContentResolver contentResolver) {
+        ContentValues tvshowsValuesBatch[] = new ContentValues[tvShows.size()];
+        int castCount = 0;
+
+        // Iterate on each show
+        for (int i = 0; i < tvShows.size(); i++) {
+            VideoType.DetailsTVShow tvshow = tvShows.get(i);
+            tvshowsValuesBatch[i] = SyncUtils.contentValuesFromTVShow(hostId, tvshow);
+            castCount += tvshow.cast.size();
+        }
+        // Insert the tvshows
+        contentResolver.bulkInsert(MediaContract.TVShows.CONTENT_URI, tvshowsValuesBatch);
+        LogUtils.LOGD(TAG, "Inserted " + tvShows.size() + " tv shows.");
+
+        ContentValues tvshowsCastValuesBatch[] = new ContentValues[castCount];
+        int count = 0;
+        // Iterate on each show/cast
+        for (VideoType.DetailsTVShow tvshow : tvShows) {
+            for (VideoType.Cast cast : tvshow.cast) {
+                tvshowsCastValuesBatch[count] = SyncUtils.contentValuesFromCast(hostId, cast);
+                tvshowsCastValuesBatch[count].put(MediaContract.TVShowCastColumns.TVSHOWID, tvshow.tvshowid);
+                count++;
+            }
+        }
+        // Insert the cast list for this movie
+        contentResolver.bulkInsert(MediaContract.TVShowCast.CONTENT_URI, tvshowsCastValuesBatch);
+
+    }
+
+    public void insertSeason(int tvshowId, List<VideoType.DetailsSeason> result, ContentResolver contentResolver) {
+        ContentValues seasonsValuesBatch[] = new ContentValues[result.size()];
+        int totalWatchedEpisodes = 0;
+        for (int i = 0; i < result.size(); i++) {
+            VideoType.DetailsSeason season = result.get(i);
+            seasonsValuesBatch[i] = SyncUtils.contentValuesFromSeason(hostId, season);
+
+            totalWatchedEpisodes += season.watchedepisodes;
+        }
+        // Insert the seasons
+        contentResolver.bulkInsert(MediaContract.Seasons.CONTENT_URI, seasonsValuesBatch);
+
+        if (getSyncType().equals(LibrarySyncService.SYNC_SINGLE_TVSHOW)) {
+            // HACK: Update watched episodes count for the tvshow with the sum
+            // of watched episodes from seasons, given that the value that we
+            // got from XBMC from the call to GetTVShowDetails is wrong (note
+            // that the value returned from GetTVShows is correct).
+            Uri uri = MediaContract.TVShows.buildTVShowUri(hostId, tvshowId);
+            ContentValues tvshowUpdate = new ContentValues(1);
+            tvshowUpdate.put(MediaContract.TVShowsColumns.WATCHEDEPISODES, totalWatchedEpisodes);
+            contentResolver.update(uri, tvshowUpdate, null, null);
+        }
+    }
+
+    public void insertEpisodes(List<VideoType.DetailsEpisode> episodes, ContentResolver contentResolver) {
+        ContentValues episodesValuesBatch[] = new ContentValues[episodes.size()];
+        for (int i = 0; i < episodes.size(); i++) {
+            VideoType.DetailsEpisode episode = episodes.get(i);
+            episodesValuesBatch[i] = SyncUtils.contentValuesFromEpisode(hostId, episode);
+        }
+        // Insert the episodes
+        contentResolver.bulkInsert(MediaContract.Episodes.CONTENT_URI, episodesValuesBatch);
     }
 }
