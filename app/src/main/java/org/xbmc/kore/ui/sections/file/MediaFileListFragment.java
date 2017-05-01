@@ -534,13 +534,13 @@ public class MediaFileListFragment extends AbstractListFragment {
                                         FileLocation fl;
                                         // start playing the selected one, then queue the rest
                                         mediaQueueFileLocation.add(loc);
-                                        playMediaFile(loc.file);
                                         for (int i = position + 1; i < fileLocationItems.size(); i++) {
                                             fl = fileLocationItems.get(i);
                                             if (!fl.isDirectory) {
                                                 mediaQueueFileLocation.add(fl);
                                             }
                                         }
+                                        playMediaFile(loc.file);
                                         return true;
                                 }
                                 return false;
