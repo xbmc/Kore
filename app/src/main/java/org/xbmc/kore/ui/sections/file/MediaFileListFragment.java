@@ -54,7 +54,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.regex.Pattern;
-import java.io.File;
 
 /**
  * Presents a list of files of different types (Video/Music)
@@ -475,6 +474,27 @@ public class MediaFileListFragment extends AbstractListFragment {
         return p;
     }
 
+    /**
+     * return the filename of a given path, if path is a directory, return directory name
+     * @param path of the current file
+     * @return filename or directory name
+     */
+    public static String getFilenameFromPath(final String path) {
+        String p = path;
+        String pathSymbol = "/";        // unix style
+        if (path.contains("\\")) {
+            pathSymbol = "\\";          // windows style
+        }
+        // if path ends with /, remove it
+        if (path.endsWith(pathSymbol)) {
+            p = path.substring(0, path.length() - 1);
+        }
+        if (p.lastIndexOf(pathSymbol) != -1) {
+            p = p.substring(p.lastIndexOf(pathSymbol)+1);
+        }
+        return p;
+    }
+
     @Override
     public void onRefresh() {
 
@@ -718,7 +738,7 @@ public class MediaFileListFragment extends AbstractListFragment {
                     break;
                 case ListType.ItemBase.TYPE_ALBUM:
                     title = itemFile.displayartist + " | " + itemFile.album;
-                    details = new File(itemFile.file).getName();
+                    details = getFilenameFromPath(itemFile.file);
                     artUrl = itemFile.thumbnail;
                     sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
                                    UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
@@ -727,7 +747,7 @@ public class MediaFileListFragment extends AbstractListFragment {
                     break;
                 case ListType.ItemBase.TYPE_SONG:
                     title = itemFile.label;
-                    details = new File(itemFile.file).getName();
+                    details = getFilenameFromPath(itemFile.file);
                     artUrl = itemFile.thumbnail;
                     sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
                                    UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
