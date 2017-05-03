@@ -18,6 +18,7 @@ package org.xbmc.kore.jsonrpc.method;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.type.ListType;
@@ -480,6 +481,19 @@ public class Player {
                     item.put("recordingid", itemId);
                     break;
             }
+            addParameterToRequest("item", item);
+        }
+
+        /**
+         * Starts playing from a file path.
+         * This path could also point to a media type provided by an addon. eg. Youtube
+         *
+         * @param path the path that the player will play from
+         */
+        public Open(String path) {
+            super();
+            final ObjectNode item = objectMapper.createObjectNode();
+            item.put("file", path);
             addParameterToRequest("item", item);
         }
 

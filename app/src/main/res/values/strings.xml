@@ -248,6 +248,7 @@
     <string name="no_music_videos_found_refresh">No videos found\n\nSwipe down to refresh</string>
     <string name="no_channel_groups_found_refresh">No channel groups found.\n\nSwipe down to refresh</string>
     <string name="no_channels_found_refresh">No channels found.\n\nSwipe down to refresh</string>
+    <string name="no_favourites_found_refresh">No favourites found.\n\nSwipe down to refresh</string>
     <string name="no_recordings_found_refresh">No recordings found.\n\nSwipe down to refresh</string>
     <string name="no_broadcasts_found_refresh">No broadcasts found.\n\nSwipe down to refresh</string>
     <string name="pull_to_refresh">Pull to refresh</string>
@@ -373,6 +374,7 @@
     <string name="error_getting_pvr_info">An error occurred while getting pvr info: %1$s</string>
     <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\nIf that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
     <string name="error_starting_channel">An error occurred starting channel playback: %1$s</string>
+    <string name="error_favourites">An error occurred while getting the favourites with description: %1$s</string>
     <string name="error_starting_recording">An error occurred starting a recording: %1$s</string>
     <string name="error_starting_to_record">An error occurred while recording: %1$s</string>
     <string name="channel_switching">Switching to channel %1$s</string>
@@ -388,6 +390,7 @@
     <string name="record">Record</string>
     <string name="pvr_epg">Guide</string>
     <string name="unable_to_move_item">Unable to move item</string>
+    <string name="unable_to_play_favourite_item">Unable to play favourite item. Unsupported Type</string>
     <string name="cannot_move_playing_item">Cannot move currently playing/paused item</string>
     <string name="no_connection_type_selected">No connection type selected in settings</string>
     <string name="single_column">Single column</string>
