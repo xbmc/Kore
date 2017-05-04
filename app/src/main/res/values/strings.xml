@@ -36,6 +36,10 @@
     <string name="files">Files</string>
     <string name="video">Video</string>
     <string name="videos">Videos</string>
+    <string name="media">Media</string>
+    <string name="window">Window</string>
+    <string name="script">Script</string>
+    <string name="unknown">Unknown</string>
     <string name="file_browser">File Browser</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Favourites</string>

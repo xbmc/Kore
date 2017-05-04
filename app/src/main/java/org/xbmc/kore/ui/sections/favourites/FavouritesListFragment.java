@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -169,7 +170,22 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
             vh.contextMenu.setVisibility(View.GONE);
 
             vh.titleView.setText(favouriteDetail.title);
-            vh.detailView.setText(favouriteDetail.type);
+
+            @StringRes final int typeRes;
+            switch (favouriteDetail.type) {
+                case FavouriteType.FavouriteTypeEnum.MEDIA:
+                    typeRes = R.string.media;
+                    break;
+                case FavouriteType.FavouriteTypeEnum.SCRIPT:
+                    typeRes = R.string.script;
+                    break;
+                case FavouriteType.FavouriteTypeEnum.WINDOW:
+                    typeRes = R.string.window;
+                    break;
+                default:
+                    typeRes = R.string.unknown;
+            }
+            vh.detailView.setText(typeRes);
 
             UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
                     favouriteDetail.thumbnail, favouriteDetail.title,
