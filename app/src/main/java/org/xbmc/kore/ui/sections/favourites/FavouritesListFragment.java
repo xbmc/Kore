@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,54 +26,27 @@ import org.xbmc.kore.jsonrpc.method.Favourites;
 import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.FavouriteType;
+import org.xbmc.kore.ui.AbstractListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
-public class FavouritesListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FavouritesListFragment extends AbstractListFragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "FavouritesListFragment";
 
     private Handler callbackHandler = new Handler();
 
-    private HostManager hostManager;
-    private FavouritesAdapter favouritesAdapter;
-
-    @InjectView(android.R.id.empty)
-    TextView emptyView;
-    @InjectView(R.id.list)
-    GridView gridView;
-    @InjectView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.fragment_generic_media_list, container, false);
-        ButterKnife.inject(this, root);
-
-        hostManager = HostManager.getInstance(getActivity());
-
-        emptyView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
-        gridView.setEmptyView(emptyView);
-
-        return root;
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        swipeRefreshLayout.setOnRefreshListener(this);
         getFavourites();
+    }
 
+    @Override
+    protected AdapterView.OnItemClickListener createOnItemClickListener() {
         final ApiCallback<String> genericApiCallback = new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -87,13 +58,11 @@ public class FavouritesListFragment extends Fragment implements SwipeRefreshLayo
                 Toast.makeText(getActivity(), description, Toast.LENGTH_SHORT).show();
             }
         };
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (favouritesAdapter == null) {
-                    return;
-                }
+                final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
+                final HostManager hostManager = HostManager.getInstance(getActivity());
 
                 final FavouriteType.DetailsFavourite detailsFavourite =
                         favouritesAdapter.getItem(position);
@@ -114,7 +83,12 @@ public class FavouritesListFragment extends Fragment implements SwipeRefreshLayo
                             Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        };
+    }
+
+    @Override
+    protected BaseAdapter createAdapter() {
+        return new FavouritesAdapter(getActivity(), HostManager.getInstance(getActivity()));
     }
 
     @Override
@@ -123,7 +97,9 @@ public class FavouritesListFragment extends Fragment implements SwipeRefreshLayo
     }
 
     private void getFavourites() {
+        final HostManager hostManager = HostManager.getInstance(getActivity());
         final Favourites.GetFavourites action = new Favourites.GetFavourites();
+
         hostManager.getConnection().execute(action, new ApiCallback<ApiList<FavouriteType.DetailsFavourite>>() {
             @Override
             public void onSuccess(ApiList<FavouriteType.DetailsFavourite> result) {
@@ -131,9 +107,9 @@ public class FavouritesListFragment extends Fragment implements SwipeRefreshLayo
                 LogUtils.LOGD(TAG, "Got Favourites");
 
                 // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(getString(R.string.no_channels_found_refresh));
+                getEmptyView().setText(getString(R.string.no_channels_found_refresh));
                 setupFavouritesList(result.items);
-                swipeRefreshLayout.setRefreshing(false);
+                hideRefreshAnimation();
             }
 
             @Override
@@ -141,10 +117,10 @@ public class FavouritesListFragment extends Fragment implements SwipeRefreshLayo
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting favourites: " + description);
 
-                emptyView.setText(getString(R.string.error_favourites, description));
+                getEmptyView().setText(getString(R.string.error_favourites, description));
                 Toast.makeText(getActivity(), getString(R.string.error_favourites, description),
                         Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
+                hideRefreshAnimation();
             }
         }, callbackHandler);
     }
@@ -155,12 +131,7 @@ public class FavouritesListFragment extends Fragment implements SwipeRefreshLayo
      * @param favourites the favourites list that is supplied to the GridView.
      */
     private void setupFavouritesList(List<FavouriteType.DetailsFavourite> favourites) {
-        if (favouritesAdapter == null) {
-            favouritesAdapter = new FavouritesAdapter(getActivity(), R.layout.grid_item_channel,
-                    hostManager);
-        }
-        gridView.setAdapter(favouritesAdapter);
-
+        final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
         favouritesAdapter.clear();
         favouritesAdapter.addAll(favourites);
         favouritesAdapter.notifyDataSetChanged();
@@ -171,8 +142,8 @@ public class FavouritesListFragment extends Fragment implements SwipeRefreshLayo
         private final HostManager hostManager;
         private final int artWidth, artHeight;
 
-        FavouritesAdapter(@NonNull Context context, @LayoutRes int resource, HostManager hostManager) {
-            super(context, resource);
+        FavouritesAdapter(@NonNull Context context, HostManager hostManager) {
+            super(context, R.layout.grid_item_channel);
             this.hostManager = hostManager;
             Resources resources = context.getResources();
             artWidth = (int) (resources.getDimension(R.dimen.channellist_art_width) /
