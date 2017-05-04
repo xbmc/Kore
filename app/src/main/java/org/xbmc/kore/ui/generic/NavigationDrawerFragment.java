@@ -82,10 +82,10 @@ public class NavigationDrawerFragment extends Fragment {
             ACTIVITY_TVSHOWS = 3,
             ACTIVITY_MUSIC = 4,
             ACTIVITY_PVR = 5,
-            ACTIVITY_FAVOURITES = 6,
-            ACTIVITY_FILES = 7,
-            ACTIVITY_ADDONS = 8,
-            ACTIVITY_SETTINGS = 9;
+            ACTIVITY_FILES = 6,
+            ACTIVITY_ADDONS = 7,
+            ACTIVITY_SETTINGS = 8,
+            ACTIVITY_FAVOURITES = 9;
 
 
     // The current selected item id (based on the activity)
@@ -146,10 +146,10 @@ public class NavigationDrawerFragment extends Fragment {
                 R.attr.iconTvShows,
                 R.attr.iconMusic,
                 R.attr.iconPVR,
-                R.attr.iconFavourites,
                 R.attr.iconFiles,
                 R.attr.iconAddons,
                 R.attr.iconSettings,
+                R.attr.iconFavourites
         });
 
         HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
