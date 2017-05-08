@@ -484,19 +484,6 @@ public class Player {
             addParameterToRequest("item", item);
         }
 
-        /**
-         * Starts playing from a file path.
-         * This path could also point to a media type provided by an addon. eg. Youtube
-         *
-         * @param path the path that the player will play from
-         */
-        public Open(String path) {
-            super();
-            final ObjectNode item = objectMapper.createObjectNode();
-            item.put("file", path);
-            addParameterToRequest("item", item);
-        }
-
         @Override
         public String getMethodName() { return METHOD_NAME; }
 

@@ -40,10 +40,11 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiList;
 import org.xbmc.kore.jsonrpc.method.Favourites;
 import org.xbmc.kore.jsonrpc.method.GUI;
-import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.FavouriteType;
+import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 import java.util.List;
@@ -92,8 +93,9 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
                     hostManager.getConnection().execute(activateWindow, genericApiCallback, callbackHandler);
                 } else if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.MEDIA)
                         && !TextUtils.isEmpty(detailsFavourite.path)) {
-                    Player.Open openPlayer = new Player.Open(detailsFavourite.path);
-                    hostManager.getConnection().execute(openPlayer, genericApiCallback, callbackHandler);
+                    final PlaylistType.Item playlistItem = new PlaylistType.Item();
+                    playlistItem.file = detailsFavourite.path;
+                    MediaPlayerUtils.play(FavouritesListFragment.this, playlistItem);
                 } else {
                     Toast.makeText(getActivity(), R.string.unable_to_play_favourite_item,
                             Toast.LENGTH_SHORT).show();
