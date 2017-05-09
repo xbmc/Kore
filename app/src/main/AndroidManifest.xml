@@ -63,6 +63,7 @@
         <activity android:name="org.xbmc.kore.ui.sections.file.FileActivity"/>
         <activity android:name="org.xbmc.kore.ui.sections.video.PVRActivity"/>
         <activity android:name="org.xbmc.kore.ui.sections.video.AllCastActivity"/>
+        <activity android:name=".ui.sections.favourites.FavouritesActivity" />
 
         <!-- Providers -->
         <provider
