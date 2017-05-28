@@ -35,8 +35,16 @@
     <string name="addons">Extensions</string>
     <string name="files">Fichiers</string>
     <string name="video">Vidéo</string>
+    <string name="videos">Vidéos</string>
+    <string name="media">Média</string>
+    <string name="window">Fenêtre</string>
+    <string name="script">Script</string>
+    <string name="unknown">Inconnu</string>
     <string name="file_browser">Fichiers</string>
     <string name="pvr">Magnétoscope</string>
+    <string name="favourites">Favoris</string>
+    <string name="weather">Météo</string>
+    <string name="system">Système</string>
 
     <string name="no_xbmc_configured">Aucun Centre Multimédia configuré</string>
     <string name="add_xbmc">Ajouter un Centre Multimédia</string>
@@ -195,6 +203,7 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s votes</string>
+    <string name="max_rating">/%1$s</string>
     <string name="max_rating_video">/10</string>
     <string name="max_rating_music">/5</string>
 
@@ -243,6 +252,7 @@
     <string name="no_music_videos_found_refresh">Aucune vidéo trouvée\n\nGlissez vers le bas pour actualiser</string>
     <string name="no_channel_groups_found_refresh">Aucun groupe de chaînes trouvés.\n\nGlissez vers le bas pour actualiser</string>
     <string name="no_channels_found_refresh">Aucune chaîne trouvée.\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_favourites_found_refresh">Aucun favori trouvé.\n\nGlissez vers le bas pour actualiser</string>
     <string name="no_recordings_found_refresh">Aucun enregistrement trouvé.\n\nGlissez vers le bas pour actualiser</string>
     <string name="no_broadcasts_found_refresh">Aucune émission trouvée.\n\nGlissez vers le bas pour actualiser</string>
     <string name="pull_to_refresh">Glissez vers le bas pour actualiser</string>
@@ -322,6 +332,13 @@
     <string name="ignore_prefixes">Ignorer les préfixes</string>
 
     <!-- Preferences strings -->
+    <string name="application">Application</string>
+
+    <!-- Preferences strings -->
+    <string name="title_remote">Télécommande</string>
+    <string name="title_application">Application</string>
+
+    <!-- Preferences strings -->
     <string name="theme">Thème</string>
     <string name="theme_night">Nuit</string>
     <string name="theme_day">Jour</string>
@@ -336,6 +353,7 @@
     <string name="pause_during_calls">Mettre en pause lors des appels téléphoniques</string>
     <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
     <string name="vibrate_on_remote">Vibrer à l\'appui</string>
+    <string name="remote_bar_items">Raccourcis de la barre inférieure</string>
     <string name="nav_drawer_items">Raccourcis du volet de navigation</string>
 
 
@@ -354,6 +372,7 @@
     <string name="error_getting_pvr_info">Erreur lors de l\'obtention des informations du magnétoscope numérique : %1$s</string>
     <string name="might_not_have_pvr">Erreur lors de l\'obtention des informations des chaînes, soit parce que votre Centre Multimédia n\'est pas équipé d\'un \"tuner\" soit parce qu\'il n\'est pas configuré.\n\nSi c\'est le cas et que vous souhaitez supprimer cette entrée du volet de navigation, vous pouvez le faire dans les Paramètres.</string>
     <string name="error_starting_channel">Erreur au démarrage de la lecture de la chaîne : %1$s</string>
+    <string name="error_favourites">Erreur lors de l\'obtention des favoris : %1$s</string>
     <string name="error_starting_recording">Erreur au démarrage de l\'enregistrement : %1$s</string>
     <string name="error_starting_to_record">Erreur lors de l\'enregistrement : %1$s</string>
     <string name="channel_switching">Passez à la chaîne %1$s</string>
@@ -369,6 +388,7 @@
     <string name="record">Enregistrer</string>
     <string name="pvr_epg">Guide</string>
     <string name="unable_to_move_item">Déplacement impossible</string>
+    <string name="unable_to_play_favourite_item">Lecture du favori impossible. Type non pris en charge</string>
     <string name="cannot_move_playing_item">Impossible de déplacer l\'élément en cours de lecture ou en pause</string>
     <string name="no_connection_type_selected">Aucune connexion définie dans les paramètres</string>
 
@@ -387,5 +407,9 @@
     <string name="by_artist">Par artiste</string>
     <string name="by_artist_and_year">Par artiste et par année</string>
     <string name="muted">en sourdine</string>
+    <string name="no_item_available_to_play">Erreur : Aucun élément à lire</string>
+    <string name="Refreshing_not_implemented_for_this_item">Impossible d\'actualise cet élément</string>
+    <string name="no_songs_found_refresh">Aucune piste musicale trouvée\\n\\nGlissez vers le bas pour actualiser</string>
+    <string name="not_implemented">Non installé</string>
 
 </resources>
