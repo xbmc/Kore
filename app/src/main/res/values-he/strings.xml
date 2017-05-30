@@ -35,8 +35,16 @@
     <string name="addons">הרחבות</string>
     <string name="files">קבצים</string>
     <string name="video">וידאו</string>
+    <string name="videos">סרטונים</string>
+    <string name="media">מדיה</string>
+    <string name="window">חלון</string>
+    <string name="script">סקריפט</string>
+    <string name="unknown">לא ידוע</string>
     <string name="file_browser">סייר קבצים</string>
     <string name="pvr">PVR</string>
+    <string name="favourites">מועדפים</string>
+    <string name="weather">מזג אוויר</string>
+    <string name="system">מערכת</string>
 
     <string name="no_xbmc_configured">לא מוגדר מרכז מדיה</string>
     <string name="add_xbmc">הוספת מרכז מדיה</string>
@@ -195,6 +203,7 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s קולות</string>
+    <string name="max_rating">/%1$s</string>
     <string name="max_rating_video">/10</string>
     <string name="max_rating_music">/5</string>
 
@@ -244,6 +253,7 @@
     <string name="no_music_videos_found_refresh">לא נמצאו סרטוניםים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_channel_groups_found_refresh">לא נמצאו קבוצות ערוצים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_channels_found_refresh">לא נמצאו ערוצים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="no_favourites_found_refresh">לא נמצאו מועדפים.\n\nיש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_recordings_found_refresh">לא נמצאו הקלטות\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_broadcasts_found_refresh">לא נמצאו שידורים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
     <string name="pull_to_refresh">יש למשוך כדי לרענן</string>
@@ -323,15 +333,15 @@
     <string name="ignore_prefixes">התעלמות מקידומות</string>
 
     <!-- Preferences strings -->
-    <string name="application">אפליקציה</string>
-
+    <string name="application">יישום</string>
+	
     <string name="theme">ערכת נושא</string>
     <string name="theme_night">לילה</string>
     <string name="theme_day">יום</string>
     <string name="theme_mist">ערפל</string>
     <string name="theme_solarized">זריחה</string>
     <string name="theme_solarized_dark">זריחה כהה</string>
-
+	
     <string name="switch_to_remote">הצגה עם הפעלת המדיה</string>
     <string name="keep_remote_above_lockscreen">הצגה על גבי מסך הנעילה</string>
     <string name="pref_keep_screen_on">להשאיר את המסך דולק</string>
@@ -339,6 +349,7 @@
     <string name="pause_during_calls">להשהות במהלך שיחת טלפון</string>
     <string name="use_hardware_volume_keys">שימוש בלחצני עצמת השמע של ההתקן</string>
     <string name="vibrate_on_remote">רטט בעת מגע</string>
+    <string name="remote_bar_items">קיצורי דרך בסרגל התחתון</string>
     <string name="nav_drawer_items">קיצורים בתפריט הצד</string>
 
     <string name="about">על אודות</string>
@@ -368,6 +379,7 @@
     <string name="error_getting_pvr_info">אירעה שגיאה בעת קבלת נתוני ה־pvr‏: %1$s</string>
     <string name="might_not_have_pvr">אירעה שגיאה בעת קבלת נתוני הערוצים, כנראה כיוון שלנגן המדיה שלך אין טיונר או שהוא לא מוגדר.\\n\\nאם זה המקרה וברצונך להסיר את הרשומה הזאת מתפריט הצד, ניתן לעשות זאת בהגדרות.</string>
     <string name="error_starting_channel">אירעה שגיאה בהתחלת נגינת הערוץ: %1$s</string>
+    <string name="error_favourites">אירעה שגיאה בעת קבלת המועדפים עם התיאור: %1$s</string>
     <string name="error_starting_recording">אירעה שגיאה בהתחלת ההקלטה: %1$s</string>
     <string name="error_starting_to_record">אירעה שגיאה בעת ההקלטה: %1$s</string>
     <string name="channel_switching">מעבר לערוץ %1$s</string>
@@ -383,6 +395,7 @@
     <string name="record">הקלטה</string>
     <string name="pvr_epg">מדריך</string>
     <string name="unable_to_move_item">לא ניתן להעביר פריט</string>
+    <string name="unable_to_play_favourite_item">לא ניתן לנגן פריט מהמועדפים. הסוג לא נתמך</string>
     <string name="cannot_move_playing_item">לא ניתן להכביר את הפריט שמתנגן/מושהה כעת</string>
     <string name="no_connection_type_selected">לא נבחר סוג חיבור בהגדרות</string>
     <string name="single_column">עמודה בודדת</string>
@@ -400,10 +413,9 @@
     <string name="by_artist">לפי אמן</string>
     <string name="by_artist_and_year">לפי אמן ושנה</string>
     <string name="muted">מושתק</string>
-    <string name="favourites">מועדפים</string>
-    <string name="remote_bar_items">קיצורים בפס התחתון</string>
-    <string name="system">הגדרות</string>
-    <string name="videos">וידאו</string>
-    <string name="weather">מזג אוויר</string>
+    <string name="no_item_available_to_play">שגיאה: אין פריט זמין לניגון.</string>
+    <string name="Refreshing_not_implemented_for_this_item">לא הוטמעה אפשרות לרענון לפריט זה</string>
+    <string name="no_songs_found_refresh">לא נמצאו שירים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
+    <string name="not_implemented">לא הוטמע</string>
 
 </resources>
