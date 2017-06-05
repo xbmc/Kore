@@ -4,7 +4,7 @@
     <string name="no_xbmc_found">Nem található médiaközpont</string>
     <string name="about">Névjegy</string>
     <string name="action_options">Beállítások</string>
-    <string name="about_desc"><![CDATA[         \u00A9 2015 XBMC Foundation.<br><br>         Kérjük értékelj minket a <b><a href="market://details?id=org.xbmc.kore">Google Play-en</a></b><br><br>          Ha segítségre van szükséged, keresd fel a <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">fórumunkat</a></b>     ]]></string>
+    <string name="about_desc"><![CDATA[         \u00A9 2017 XBMC Foundation<br><br>         Kérjük értékelj minket a <b><a href="market://details?id=org.xbmc.kore">Google Play-en</a></b><br><br>          Ha segítségre van szükséged, keresd fel a <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">fórumunkat</a></b>     ]]></string>
     <string name="action_search">Keresés</string>
     <string name="action_search_albums">Albumok keresése</string>
     <string name="action_search_artists">Előadók keresése</string>

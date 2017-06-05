@@ -242,6 +242,6 @@
   <string name="show_notification">Mostrar notificaciones durante la reproducción</string>
   <string name="use_hardware_volume_keys">Usar las teclas de volumen para el control de volumen</string>
   <string name="about">Acerca de</string>
-  <string name="about_desc"><![CDATA[         \u00A9 2015 XBMC Foundation. <br><br>Por favor calificanos en <b><a href="market://details?id=org.xbmc.kore"> Google Play</a></b> <br><br>Si necesitas ayuda, visita nuestro <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129"> foro</a></b>     ]]></string>
+  <string name="about_desc"><![CDATA[         \u00A9 2017 XBMC Foundation <br><br>Por favor calificanos en <b><a href="market://details?id=org.xbmc.kore"> Google Play</a></b> <br><br>Si necesitas ayuda, visita nuestro <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129"> foro</a></b>     ]]></string>
   <string name="play_on_kodi">Reproducir en Kodi</string>
 </resources>
