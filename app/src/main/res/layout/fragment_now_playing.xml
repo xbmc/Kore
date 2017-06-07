@@ -137,14 +137,6 @@
                     android:src="?attr/iconRewind"
                     android:contentDescription="@string/rewind"/>
                 <ImageButton
-                    android:id="@+id/stop"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconStop"
-                    android:contentDescription="@string/stop"/>
-                <ImageButton
                     android:id="@+id/play"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -152,6 +144,14 @@
                     style="@style/Widget.Button.Borderless"
                     android:src="?attr/iconPlay"
                     android:contentDescription="@string/play"/>
+                <ImageButton
+                    android:id="@+id/stop"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconStop"
+                    android:contentDescription="@string/stop"/>
                 <ImageButton
                     android:id="@+id/fast_forward"
                     android:layout_width="0dp"
