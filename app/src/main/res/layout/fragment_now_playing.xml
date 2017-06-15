@@ -81,7 +81,7 @@
                 android:scaleType="centerCrop"/>
 
             <!-- Progress bar -->
-            <LinearLayout
+            <org.xbmc.kore.ui.widgets.MediaProgressIndicator
                 android:id="@+id/progress_info"
                 android:layout_below="@id/media_undertitle"
                 android:layout_width="match_parent"
@@ -90,26 +90,7 @@
                 android:paddingRight="@dimen/small_padding"
                 android:paddingLeft="@dimen/small_padding"
                 android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor">
-                <TextView
-                    android:id="@+id/media_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    style="@style/TextAppearance.Media.Progress"/>
-                <SeekBar
-                    android:id="@+id/seek_bar"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"/>
-                <TextView
-                    android:id="@+id/media_duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    style="@style/TextAppearance.Media.Progress"/>
-            </LinearLayout>
+                android:background="?attr/contentBackgroundColor"/>
 
             <!-- Media control buttons -->
             <LinearLayout

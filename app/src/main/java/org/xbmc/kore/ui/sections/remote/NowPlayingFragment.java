@@ -56,6 +56,7 @@ import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.generic.GenericSelectDialog;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
+import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -73,7 +74,8 @@ import butterknife.OnClick;
 public class NowPlayingFragment extends Fragment
         implements HostConnectionObserver.PlayerEventsObserver,
                    HostConnectionObserver.ApplicationEventsObserver,
-        GenericSelectDialog.GenericSelectDialogListener {
+                   GenericSelectDialog.GenericSelectDialogListener,
+                   MediaProgressIndicator.OnProgressChangeListener {
     private static final String TAG = LogUtils.makeLogTag(NowPlayingFragment.class);
 
     /**
@@ -149,9 +151,7 @@ public class NowPlayingFragment extends Fragment
 
     @InjectView(R.id.media_title) TextView mediaTitle;
     @InjectView(R.id.media_undertitle) TextView mediaUndertitle;
-    @InjectView(R.id.media_duration) TextView mediaDuration;
-    @InjectView(R.id.media_progress) TextView mediaProgress;
-    @InjectView(R.id.seek_bar) SeekBar mediaSeekbar;
+    @InjectView(R.id.progress_info) MediaProgressIndicator mediaProgressIndicator;
 
     @InjectView(R.id.volume_bar) SeekBar volumeSeekBar;
     @InjectView(R.id.volume_text) TextView volumeTextView;
@@ -538,6 +538,23 @@ public class NowPlayingFragment extends Fragment
         nowPlayingListener.SwitchToRemotePanel();
     }
 
+    @Override
+    public void onProgressChanged(int progress) {
+        PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
+        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
+        seekAction.execute(hostManager.getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
+            @Override
+            public void onSuccess(PlayerType.SeekReturnType result) {
+                // Ignore
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                LogUtils.LOGD(TAG, "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
+            }
+        }, callbackHandler);
+    }
+
     /**
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
      */
@@ -716,8 +733,15 @@ public class NowPlayingFragment extends Fragment
         mediaTitle.setText(title);
         mediaUndertitle.setText(underTitle);
 
-        setDurationInfo(getItemResult.type, getPropertiesResult.time, getPropertiesResult.totaltime, getPropertiesResult.speed);
-        mediaSeekbar.setOnSeekBarChangeListener(seekbarChangeListener);
+        mediaProgressIndicator.setOnProgressChangeListener(this);
+        mediaProgressIndicator.setMaxProgress(getPropertiesResult.totaltime.ToSeconds());
+        mediaProgressIndicator.setProgress(getPropertiesResult.time.ToSeconds());
+
+        int speed = getPropertiesResult.speed;
+        //TODO: check if following is still necessary for PVR playback
+        if (getItemResult.type.equals(ListType.ItemsAll.TYPE_CHANNEL))
+            speed = 1;
+        mediaProgressIndicator.setSpeed(speed);
 
         if (!TextUtils.isEmpty(year) || !TextUtils.isEmpty(genreSeason)) {
             mediaYear.setVisibility(View.VISIBLE);
@@ -855,7 +879,8 @@ public class NowPlayingFragment extends Fragment
      */
     private void stopNowPlayingInfo() {
         // Just stop the seek bar handler callbacks
-        mediaSeekbar.removeCallbacks(seekBarUpdater);
+        mediaProgressIndicator.setSpeed(0);
+
         availableSubtitles = null;
         availableAudioStreams = null;
         currentSubtitleIndex = -1;
@@ -895,56 +920,6 @@ public class NowPlayingFragment extends Fragment
     private int mediaTotalTime = 0,
             mediaCurrentTime = 0; // s
     private static final int SEEK_BAR_UPDATE_INTERVAL = 1000; // ms
-
-    /**
-     * Seek bar runnable updater. Runs once a second
-     */
-    private Runnable seekBarUpdater = new Runnable() {
-        @Override
-        public void run() {
-            if ((mediaTotalTime == 0) || (mediaCurrentTime >= mediaTotalTime)) {
-                mediaSeekbar.removeCallbacks(this);
-                return;
-            }
-
-            mediaCurrentTime += 1;
-            mediaSeekbar.setProgress(mediaCurrentTime);
-
-            int hours = mediaCurrentTime / 3600;
-            int minutes = (mediaCurrentTime % 3600) / 60;
-            int seconds = (mediaCurrentTime % 3600) % 60;
-
-            mediaProgress.setText(UIUtils.formatTime(hours, minutes, seconds));
-            mediaSeekbar.postDelayed(this, SEEK_BAR_UPDATE_INTERVAL);
-        }
-    };
-
-    /**
-     * Sets the information about current media duration and sets seekbar
-     * @param type What is playing
-     * @param time Current time
-     * @param totalTime Total time
-     * @param speed Media speed
-     */
-    private void setDurationInfo(String type, GlobalType.Time time, GlobalType.Time totalTime, int speed) {
-        mediaTotalTime = totalTime.hours * 3600 +
-                         totalTime.minutes * 60 +
-                         totalTime.seconds;
-        mediaSeekbar.setMax(mediaTotalTime);
-        mediaDuration.setText(UIUtils.formatTime(totalTime));
-
-        mediaCurrentTime = time.hours * 3600 +
-                           time.minutes * 60 +
-                           time.seconds;
-        mediaSeekbar.setProgress(mediaCurrentTime);
-        mediaProgress.setText(UIUtils.formatTime(time));
-
-        // Only update when its playing
-        mediaSeekbar.removeCallbacks(seekBarUpdater);
-        if ((speed == 1) || (type.equals(ListType.ItemsAll.TYPE_CHANNEL))) {
-            mediaSeekbar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
-        }
-    }
 
     /**
      * Sets UI volume state
@@ -991,53 +966,6 @@ public class NowPlayingFragment extends Fragment
             new Application.SetVolume(seekBar.getProgress())
                     .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
 
-        }
-    };
-
-    /**
-     * Seekbar change listener. Sends seek commands to XBMC based on the seekbar position
-     */
-    private SeekBar.OnSeekBarChangeListener seekbarChangeListener = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (fromUser) {
-                mediaCurrentTime = progress;
-                int hours = mediaCurrentTime / 3600;
-                int minutes = (mediaCurrentTime % 3600) / 60;
-                int seconds = (mediaCurrentTime % 3600) % 60;
-
-                mediaProgress.setText(UIUtils.formatTime(hours, minutes, seconds));
-            }
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-            // Stop the seekbar updating
-            seekBar.removeCallbacks(seekBarUpdater);
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            int hours = mediaCurrentTime / 3600;
-            int minutes = (mediaCurrentTime % 3600) / 60;
-            int seconds = (mediaCurrentTime % 3600) % 60;
-
-            PlayerType.PositionTime positionTime = new PlayerType.PositionTime(hours, minutes, seconds, 0);
-            Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
-            seekAction.execute(hostManager.getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
-                @Override
-                public void onSuccess(PlayerType.SeekReturnType result) {
-                    // Ignore
-                }
-
-                @Override
-                public void onError(int errorCode, String description) {
-                    LogUtils.LOGD(TAG, "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
-                }
-            }, callbackHandler);
-
-            // Reset the updating
-            seekBar.postDelayed(seekBarUpdater, 1000);
         }
     };
 }
