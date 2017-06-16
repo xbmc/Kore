@@ -561,13 +561,23 @@ public class UIUtils {
         }
     }
 
-    public static void highlightImageView(Context context, ImageView view) {
-        Resources.Theme theme = context.getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
-                R.attr.colorAccent});
-        view.setColorFilter(
-                styledAttributes.getColor(0,
-                                          context.getResources().getColor(R.color.accent_default)));
-        styledAttributes.recycle();
+    /**
+     * Highlights an image view
+     * @param context
+     * @param view
+     * @param highlight true if the image view should be highlighted, false otherwise
+     */
+    public static void highlightImageView(Context context, ImageView view, boolean highlight) {
+        if (highlight) {
+            Resources.Theme theme = context.getTheme();
+            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
+                    R.attr.colorAccent});
+            view.setColorFilter(
+                    styledAttributes.getColor(styledAttributes.getIndex(0),
+                                              context.getResources().getColor(R.color.accent_default)));
+            styledAttributes.recycle();
+        } else {
+            view.clearColorFilter();
+        }
     }
 }

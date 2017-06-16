@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/vli_volume_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        style="@style/TextAppearance.Media.SmallDetails"
+        android:textSize="10sp"/>
+    <SeekBar
+        android:id="@+id/vli_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Button.Borderless"
+        android:layout_gravity="bottom"/>
+</merge>
