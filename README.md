@@ -69,5 +69,6 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
+Google Play and the Google Play logo are trademarks of Google Inc.
 
 [1]: https://play.google.com/store/apps/details?id=org.xbmc.kore
