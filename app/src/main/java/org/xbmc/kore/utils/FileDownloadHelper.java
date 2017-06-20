@@ -42,6 +42,9 @@ import java.util.List;
 public class FileDownloadHelper {
     private static final String TAG = LogUtils.makeLogTag(FileDownloadHelper.class);
 
+    // These chars cause problems with DownloadManager
+    private static final String RESERVED_CHARS_REGEX = "[?]";
+
     public static final int OVERWRITE_FILES = 0,
             DOWNLOAD_WITH_NEW_NAME = 1;
 
@@ -80,16 +83,18 @@ public class FileDownloadHelper {
 
         public String getAbsoluteDirectoryPath() {
             File externalFilesDir = Environment.getExternalStoragePublicDirectory(getExternalPublicDirType());
-            return externalFilesDir.getPath() + "/" + getRelativeDirectoryPath();
-
+            String filePath = externalFilesDir.getPath() + "/" + getRelativeDirectoryPath();
+            return filePath.replaceAll(RESERVED_CHARS_REGEX, "_");
         }
 
         public String getAbsoluteFilePath() {
-            return getAbsoluteDirectoryPath() + "/" + getDownloadFileName();
+            String filePath = getAbsoluteDirectoryPath() + "/" + getDownloadFileName();
+            return filePath.replaceAll(RESERVED_CHARS_REGEX, "_");
         }
 
         public String getRelativeFilePath() {
-            return getRelativeDirectoryPath() + "/" + getDownloadFileName();
+            String filePath = getRelativeDirectoryPath() + "/" + getDownloadFileName();
+            return filePath.replaceAll(RESERVED_CHARS_REGEX, "_");
         }
 
         public abstract String getExternalPublicDirType();
