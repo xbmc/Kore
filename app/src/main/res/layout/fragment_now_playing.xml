@@ -175,7 +175,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:orientation="vertical"/>
-                <ImageButton
+                <org.xbmc.kore.ui.widgets.RepeatModeButton
                     android:id="@+id/repeat"
                     android:layout_width="0dp"
                     android:layout_weight="1"
