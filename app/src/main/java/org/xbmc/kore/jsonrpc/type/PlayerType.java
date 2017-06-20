@@ -283,6 +283,19 @@ public class PlayerType {
             this.milliseconds = milliseconds;
         }
 
+        /**
+         * Converts second duration into a hour, minutes, seconds duration
+         * @param seconds
+         */
+        public PositionTime(int seconds) {
+            this.hours = seconds / 3600;
+            int remainder = seconds - (this.hours * 3600);
+            this.minutes = remainder / 60;
+            remainder = remainder - (this.minutes * 60);
+            this.seconds = remainder;
+            this.milliseconds = 0;
+        }
+
         public JsonNode toJsonNode() {
             final ObjectNode node = objectMapper.createObjectNode();
             node.put(HOURS, hours);

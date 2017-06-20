@@ -416,5 +416,6 @@
     <string name="Refreshing_not_implemented_for_this_item">Refreshing not implemented for this item</string>
     <string name="no_songs_found_refresh">No songs found\\n\\nSwipe down to refresh</string>
     <string name="not_implemented">Not implemented</string>
+    <string name="zeroprogress">0:00</string>
 
 </resources>
