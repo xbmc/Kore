@@ -161,7 +161,7 @@
                 style="@style/ButtonBar"
                 android:background="?attr/contentBackgroundColor">
 
-                <ImageButton
+                <org.xbmc.kore.ui.widgets.HighlightButton
                     android:id="@+id/volume_mute"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -183,7 +183,7 @@
                     style="@style/Widget.Button.Borderless"
                     android:src="?attr/iconRepeat"
                     android:contentDescription="@string/repeat"/>
-                <ImageButton
+                <org.xbmc.kore.ui.widgets.HighlightButton
                     android:id="@+id/shuffle"
                     android:layout_width="0dp"
                     android:layout_weight="1"
