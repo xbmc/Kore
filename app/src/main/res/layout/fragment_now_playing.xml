@@ -169,26 +169,12 @@
                     style="@style/Widget.Button.Borderless"
                     android:src="?attr/iconVolumeMute"
                     android:contentDescription="@string/volume_mute"/>
-                <LinearLayout
+                <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
+                    android:id="@+id/volume_level_indicator"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/volume_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|top"
-                        style="@style/TextAppearance.Media.SmallDetails"
-                        android:textSize="10sp"/>
-                    <SeekBar
-                        android:id="@+id/volume_bar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/Widget.Button.Borderless"
-                        android:layout_gravity="bottom"/>
-                </LinearLayout>
-
+                    android:orientation="vertical"/>
                 <ImageButton
                     android:id="@+id/repeat"
                     android:layout_width="0dp"

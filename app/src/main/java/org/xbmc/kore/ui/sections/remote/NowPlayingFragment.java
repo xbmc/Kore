@@ -34,7 +34,6 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +56,7 @@ import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.generic.GenericSelectDialog;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
+import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -153,8 +153,7 @@ public class NowPlayingFragment extends Fragment
     @InjectView(R.id.media_undertitle) TextView mediaUndertitle;
     @InjectView(R.id.progress_info) MediaProgressIndicator mediaProgressIndicator;
 
-    @InjectView(R.id.volume_bar) SeekBar volumeSeekBar;
-    @InjectView(R.id.volume_text) TextView volumeTextView;
+    @InjectView(R.id.volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
 
     @InjectView(R.id.media_details) RelativeLayout mediaDetailsPanel;
     @InjectView(R.id.rating) TextView mediaRating;
@@ -199,6 +198,14 @@ public class NowPlayingFragment extends Fragment
                 float y = mediaPanel.getScrollY();
                 float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
                 mediaArt.setAlpha(newAlpha);
+            }
+        });
+
+        volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
+            @Override
+            public void onVolumeChanged(int volume) {
+                new Application.SetVolume(volume).execute(hostManager.getConnection(),
+                                                          defaultIntActionCallback, new Handler());
             }
         });
 
@@ -300,18 +307,10 @@ public class NowPlayingFragment extends Fragment
         // the mute state on the host. We do this to make it clear to the user that the button
         // was pressed.
         HostConnectionObserver.HostState hostState = hostConnectionObserver.getHostState();
-        setVolumeState(!hostState.isVolumeMuted(), hostState.getVolumeLevel());
+        UIUtils.highlightImageView(getActivity(), volumeMuteButton, !hostState.isVolumeMuted());
 
         Application.SetMute action = new Application.SetMute();
-        action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
-            @Override
-            public void onSuccess(Boolean result) {
-                //We depend on the listener to correct the mute button state
-            }
-
-            @Override
-            public void onError(int errorCode, String description) { }
-        }, callbackHandler);
+        action.execute(hostManager.getConnection(), defaultBooleanActionCallback, new Handler());
     }
 
     @OnClick(R.id.shuffle)
@@ -618,7 +617,8 @@ public class NowPlayingFragment extends Fragment
 
     @Override
     public void applicationOnVolumeChanged(int volume, boolean muted) {
-        setVolumeState(muted, volume);
+        volumeLevelIndicator.setVolume(muted, volume);
+        UIUtils.highlightImageView(getActivity(), volumeMuteButton, muted);
     }
 
     // Ignore this
@@ -797,8 +797,6 @@ public class NowPlayingFragment extends Fragment
         }
         styledAttributes.recycle();
 
-        volumeSeekBar.setOnSeekBarChangeListener(volumeSeekbarChangeListener);
-
         Resources resources = getActivity().getResources();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -916,56 +914,4 @@ public class NowPlayingFragment extends Fragment
         if (plot == null) return null;
         return plot.replaceAll("\\[.*\\]", "");
     }
-
-    private int mediaTotalTime = 0,
-            mediaCurrentTime = 0; // s
-    private static final int SEEK_BAR_UPDATE_INTERVAL = 1000; // ms
-
-    /**
-     * Sets UI volume state
-     * @param muted whether volume is muted
-     * @param volume
-     */
-    private void setVolumeState(Boolean muted, int volume) {
-        if (!isAdded()) return;
-
-        if (muted) {
-            volumeSeekBar.setProgress(0);
-            volumeTextView.setText(R.string.muted);
-
-            Resources.Theme theme = getActivity().getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.colorAccent});
-            volumeMuteButton.setColorFilter(
-                    styledAttributes.getColor(0,
-                                              getActivity().getResources().getColor(R.color.accent_default)));
-            styledAttributes.recycle();
-
-        } else {
-            volumeSeekBar.setProgress(volume);
-            volumeTextView.setText(String.valueOf(volume));
-            volumeMuteButton.clearColorFilter();
-        }
-    }
-
-    private SeekBar.OnSeekBarChangeListener volumeSeekbarChangeListener = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (fromUser) {
-                volumeTextView.setText(String.valueOf(progress));
-            }
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            new Application.SetVolume(seekBar.getProgress())
-                    .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
-
-        }
-    };
 }
