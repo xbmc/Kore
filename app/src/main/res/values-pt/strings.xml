@@ -200,7 +200,9 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
   <string name="enable_disable">Ativar/desativar Extensão</string>
   <string name="addon_enabled">Extensão activada</string>
   <string name="addon_disabled">Extensão desactivada</string>
-  <string name="hide_watched">Ocultar vistos</string>
+  <string name="hide_watched">Ocultar visualizados</string>
+  <string name="show_watched_status">Assinalar visualizados</string>
+
   <string name="theme">Tema</string>
   <string name="theme_night">Noite</string>
   <string name="theme_day">Dia</string>
@@ -307,6 +309,7 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
   <string name="sort_by_last_played">Por data de reprodução</string>
   <string name="tvshow_next_episode">Próximos episódios</string>
   <string name="tvshow_seasons">Épocas</string>
+  <string name="Refreshing_not_implemented_for_this_item"></string>
 
   <!--<string name="buy_me_coffee">Oferecer um café</string>-->
   <!--<string name="expresso_please">Expresso, por favor. Obrigado!</string>-->

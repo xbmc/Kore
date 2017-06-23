@@ -92,6 +92,10 @@ public class Settings {
     public static final String KEY_PREF_MOVIES_SORT_ORDER = "movies_sort_order";
     public static final int DEFAULT_PREF_MOVIES_SORT_ORDER = SORT_BY_NAME;
 
+    // Show watched status on movie list
+    public static final String KEY_PREF_MOVIES_SHOW_WATCHED_STATUS = "movies_show_watched_status";
+    public static final boolean DEFAULT_PREF_MOVIES_SHOW_WATCHED_STATUS = true;
+
     // Sort order on albums
     public static final String KEY_PREF_ALBUMS_SORT_ORDER = "albums_sort_order";
     public static final int DEFAULT_PREF_ALBUMS_SORT_ORDER = SORT_BY_ALBUM;
@@ -115,6 +119,10 @@ public class Settings {
     // Ignore articles on tv show sorting
     public static final String KEY_PREF_TVSHOWS_IGNORE_PREFIXES = "tvshows_ignore_prefixes";
     public static final boolean DEFAULT_PREF_TVSHOWS_IGNORE_PREFIXES = false;
+
+    // Show watched status on movie list
+    public static final String KEY_PREF_TVSHOWS_SHOW_WATCHED_STATUS = "tvshows_show_watched_status";
+    public static final boolean DEFAULT_PREF_TVSHOWS_SHOW_WATCHED_STATUS = true;
 
     // Use hardware volume keys to control volume
     public static final String KEY_PREF_USE_HARDWARE_VOLUME_KEYS = "pref_use_hardware_volume_keys";

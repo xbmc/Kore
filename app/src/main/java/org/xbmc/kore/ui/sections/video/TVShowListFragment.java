@@ -57,11 +57,13 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowListFragment.class);
 
     public interface OnTVShowSelectedListener {
-        public void onTVShowSelected(TVShowListFragment.ViewHolder vh);
+        void onTVShowSelected(TVShowListFragment.ViewHolder vh);
     }
 
     // Activity listener
     private OnTVShowSelectedListener listenerActivity;
+
+    private boolean showWatchedStatus;
 
     @Override
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_TVSHOWS; }
@@ -101,6 +103,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                      .append("!=")
                      .append(MediaContract.TVShowsColumns.EPISODE);
         }
+
+        showWatchedStatus = preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_SHOW_WATCHED_STATUS, Settings.DEFAULT_PREF_TVSHOWS_SHOW_WATCHED_STATUS);
 
         String sortOrderStr;
         int sortOrder = preferences.getInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.DEFAULT_PREF_TVSHOWS_SORT_ORDER);
@@ -161,10 +165,12 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 sortByYear = menu.findItem(R.id.action_sort_by_year),
                 sortByRating = menu.findItem(R.id.action_sort_by_rating),
                 sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added),
-                sortByLastPlayed = menu.findItem(R.id.action_sort_by_last_played);
+                sortByLastPlayed = menu.findItem(R.id.action_sort_by_last_played),
+                showWatchedStatusMenuItem = menu.findItem(R.id.action_show_watched_status);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOWS_FILTER_HIDE_WATCHED));
+        showWatchedStatusMenuItem.setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_SHOW_WATCHED_STATUS, Settings.DEFAULT_PREF_TVSHOWS_SHOW_WATCHED_STATUS));
         ignoreArticles.setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_IGNORE_PREFIXES, Settings.DEFAULT_PREF_TVSHOWS_IGNORE_PREFIXES));
 
         int sortOrder = preferences.getInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.DEFAULT_PREF_TVSHOWS_SORT_ORDER);
@@ -198,6 +204,14 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 preferences.edit()
                            .putBoolean(Settings.KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED, item.isChecked())
                            .apply();
+                refreshList();
+                break;
+            case R.id.action_show_watched_status:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                           .putBoolean(Settings.KEY_PREF_TVSHOWS_SHOW_WATCHED_STATUS, item.isChecked())
+                           .apply();
+                showWatchedStatus = item.isChecked();
                 refreshList();
                 break;
             case R.id.action_ignore_prefixes:
@@ -277,20 +291,20 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         String SORT_BY_LAST_PLAYED = MediaContract.TVShows.LASTPLAYED + " DESC";
         String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.TVShows.TITLE) + " COLLATE NOCASE ASC";
 
-        final int ID = 0;
-        final int TVSHOWID = 1;
-        final int TITLE = 2;
-        final int THUMBNAIL = 3;
-        final int FANART = 4;
-        final int PREMIERED = 5;
-        final int STUDIO = 6;
-        final int EPISODE = 7;
-        final int WATCHEDEPISODES = 8;
-        final int RATING = 9;
-        final int PLOT = 10;
-        final int PLAYCOUNT = 11;
-        final int IMDBNUMBER = 12;
-        final int GENRES = 13;
+        int ID = 0;
+        int TVSHOWID = 1;
+        int TITLE = 2;
+        int THUMBNAIL = 3;
+        int FANART = 4;
+        int PREMIERED = 5;
+        int STUDIO = 6;
+        int EPISODE = 7;
+        int WATCHEDEPISODES = 8;
+        int RATING = 9;
+        int PLOT = 10;
+        int PLAYCOUNT = 11;
+        int IMDBNUMBER = 12;
+        int GENRES = 13;
     }
 
     private class TVShowsAdapter extends CursorAdapter {
@@ -371,7 +385,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                                                  viewHolder.dataHolder.getTitle(),
                                                  viewHolder.artView, artWidth, artHeight);
 
-            if (episode - watchedEpisodes == 0) {
+            if (showWatchedStatus && (episode - watchedEpisodes == 0)) {
                 viewHolder.checkmarkView.setVisibility(View.VISIBLE);
                 viewHolder.checkmarkView.setColorFilter(themeAccentColor);
             } else {

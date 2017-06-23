@@ -57,11 +57,13 @@ public class MovieListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(MovieListFragment.class);
 
     public interface OnMovieSelectedListener {
-        public void onMovieSelected(ViewHolder vh);
+        void onMovieSelected(ViewHolder vh);
     }
 
     // Activity listener
     private OnMovieSelectedListener listenerActivity;
+
+    private boolean showWatchedStatus;
 
     @Override
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MOVIES; }
@@ -99,6 +101,8 @@ public class MovieListFragment extends AbstractCursorListFragment {
             selection.append(MediaContract.MoviesColumns.PLAYCOUNT)
                      .append("=0");
         }
+
+        showWatchedStatus = preferences.getBoolean(Settings.KEY_PREF_MOVIES_SHOW_WATCHED_STATUS, Settings.DEFAULT_PREF_MOVIES_SHOW_WATCHED_STATUS);
 
         String sortOrderStr;
         int sortOrder = preferences.getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
@@ -160,11 +164,12 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 sortByRating = menu.findItem(R.id.action_sort_by_rating),
                 sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added),
                 sortByLastPlayed = menu.findItem(R.id.action_sort_by_last_played),
-                sortByLength = menu.findItem(R.id.action_sort_by_length);
-
+                sortByLength = menu.findItem(R.id.action_sort_by_length),
+                showWatchedStatusMenuItem = menu.findItem(R.id.action_show_watched_status);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED));
+        showWatchedStatusMenuItem.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_SHOW_WATCHED_STATUS, Settings.DEFAULT_PREF_MOVIES_SHOW_WATCHED_STATUS));
         ignoreArticles.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, Settings.DEFAULT_PREF_MOVIES_IGNORE_PREFIXES));
 
         int sortOrder = preferences.getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
@@ -201,6 +206,14 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 preferences.edit()
                            .putBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, item.isChecked())
                            .apply();
+                refreshList();
+                break;
+            case R.id.action_show_watched_status:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                           .putBoolean(Settings.KEY_PREF_MOVIES_SHOW_WATCHED_STATUS, item.isChecked())
+                           .apply();
+                showWatchedStatus = item.isChecked();
                 refreshList();
                 break;
             case R.id.action_ignore_prefixes:
@@ -285,16 +298,16 @@ public class MovieListFragment extends AbstractCursorListFragment {
         String SORT_BY_LENGTH = MediaContract.Movies.RUNTIME + " DESC";
         String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.Movies.TITLE) + " COLLATE NOCASE ASC";
 
-        final int ID = 0;
-        final int MOVIEID = 1;
-        final int TITLE = 2;
-        final int THUMBNAIL = 3;
-        final int YEAR = 4;
-        final int GENRES = 5;
-        final int RUNTIME = 6;
-        final int RATING = 7;
-        final int TAGLINE = 8;
-        final int PLAYCOUNT = 9;
+        int ID = 0;
+        int MOVIEID = 1;
+        int TITLE = 2;
+        int THUMBNAIL = 3;
+        int YEAR = 4;
+        int GENRES = 5;
+        int RUNTIME = 6;
+        int RATING = 7;
+        int TAGLINE = 8;
+        int PLAYCOUNT = 9;
     }
 
     private class MoviesAdapter extends CursorAdapter {
@@ -381,7 +394,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
                                                  viewHolder.dataHolder.getTitle(),
                                                  viewHolder.artView, artWidth, artHeight);
 
-            if (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0) {
+            if (showWatchedStatus && (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0)) {
                 viewHolder.checkmarkView.setVisibility(View.VISIBLE);
                 viewHolder.checkmarkView.setColorFilter(themeAccentColor);
             } else {

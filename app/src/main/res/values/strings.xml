@@ -330,6 +330,7 @@
     <string name="sort_by_date_added">By date added</string>
     <string name="sort_by_last_played">By last played</string>
     <string name="ignore_prefixes">Ignore prefixes</string>
+    <string name="show_watched_status">Show watched status</string>
 
     <!-- Preferences strings -->
     <string name="application">Application</string>
