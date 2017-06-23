@@ -20,8 +20,6 @@
     android:id="@+id/media_panel_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/remote_content_hmargin"
-    android:layout_marginRight="@dimen/remote_content_hmargin"
     android:paddingBottom="@dimen/default_padding"
     android:orientation="vertical">
 
