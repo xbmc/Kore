@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
@@ -272,6 +273,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 MediaContract.Movies.RUNTIME,
                 MediaContract.Movies.RATING,
                 MediaContract.Movies.TAGLINE,
+                MediaContract.Movies.PLAYCOUNT,
                 };
 
 
@@ -292,15 +294,27 @@ public class MovieListFragment extends AbstractCursorListFragment {
         final int RUNTIME = 6;
         final int RATING = 7;
         final int TAGLINE = 8;
+        final int PLAYCOUNT = 9;
     }
 
-    private static class MoviesAdapter extends CursorAdapter {
+    private class MoviesAdapter extends CursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
+        private int themeAccentColor;
 
         public MoviesAdapter(Context context) {
             super(context, null, false);
+
+            // Get the default accent color
+            Resources.Theme theme = context.getTheme();
+            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
+                    R.attr.colorAccent
+            });
+
+            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.accent_default));
+            styledAttributes.recycle();
+
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
@@ -324,6 +338,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
             viewHolder.titleView = (TextView)view.findViewById(R.id.title);
             viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
             viewHolder.durationView = (TextView)view.findViewById(R.id.duration);
+            viewHolder.checkmarkView = (ImageView)view.findViewById(R.id.checkmark);
             viewHolder.artView = (ImageView)view.findViewById(R.id.art);
 
             view.setTag(viewHolder);
@@ -366,6 +381,13 @@ public class MovieListFragment extends AbstractCursorListFragment {
                                                  viewHolder.dataHolder.getTitle(),
                                                  viewHolder.artView, artWidth, artHeight);
 
+            if (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0) {
+                viewHolder.checkmarkView.setVisibility(View.VISIBLE);
+                viewHolder.checkmarkView.setColorFilter(themeAccentColor);
+            } else {
+                viewHolder.checkmarkView.setVisibility(View.INVISIBLE);
+            }
+
             if (Utils.isLollipopOrLater()) {
                 viewHolder.artView.setTransitionName("a" + viewHolder.dataHolder.getId());
             }
@@ -379,6 +401,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         TextView titleView;
         TextView detailsView;
         TextView durationView;
+        ImageView checkmarkView;
         ImageView artView;
 
         AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
