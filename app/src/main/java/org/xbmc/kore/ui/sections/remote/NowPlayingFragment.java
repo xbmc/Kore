@@ -57,6 +57,7 @@ import org.xbmc.kore.ui.generic.GenericSelectDialog;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
+import org.xbmc.kore.ui.widgets.RepeatModeButton;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -137,7 +138,7 @@ public class NowPlayingFragment extends Fragment
 
     @InjectView(R.id.volume_mute) ImageButton volumeMuteButton;
     @InjectView(R.id.shuffle) ImageButton shuffleButton;
-    @InjectView(R.id.repeat) ImageButton repeatButton;
+    @InjectView(R.id.repeat) RepeatModeButton repeatButton;
     @InjectView(R.id.overflow) ImageButton overflowButton;
 
     @InjectView(R.id.info_panel) RelativeLayout infoPanel;
@@ -780,16 +781,9 @@ public class NowPlayingFragment extends Fragment
                 R.attr.iconRepeat,
                 R.attr.iconRepeatOne});
         int accentDefaultColor = getResources().getColor(R.color.accent_default);
-        if (getPropertiesResult.repeat.equals(PlayerType.Repeat.OFF)) {
-            repeatButton.setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
-            repeatButton.clearColorFilter();
-        } else if (getPropertiesResult.repeat.equals(PlayerType.Repeat.ONE)) {
-            repeatButton.setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_repeat_one_white_24dp));
-            repeatButton.setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(0), accentDefaultColor));
-        } else {
-            repeatButton.setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
-            repeatButton.setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(0), accentDefaultColor));
-        }
+
+        UIUtils.setRepeatButton(repeatButton, getPropertiesResult.repeat);
+
         if (!getPropertiesResult.shuffled) {
             shuffleButton.clearColorFilter();
         } else {
