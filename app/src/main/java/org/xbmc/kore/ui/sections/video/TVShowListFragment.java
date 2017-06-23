@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
@@ -292,13 +293,24 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         final int GENRES = 13;
     }
 
-    private static class TVShowsAdapter extends CursorAdapter {
+    private class TVShowsAdapter extends CursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
+        private int themeAccentColor;
 
         public TVShowsAdapter(Context context) {
             super(context, null, false);
+
+            // Get the default accent color
+            Resources.Theme theme = context.getTheme();
+            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
+                    R.attr.colorAccent
+            });
+
+            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.accent_default));
+            styledAttributes.recycle();
+
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
@@ -322,6 +334,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             viewHolder.titleView = (TextView)view.findViewById(R.id.title);
             viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
             viewHolder.premieredView = (TextView)view.findViewById(R.id.premiered);
+            viewHolder.checkmarkView = (ImageView)view.findViewById(R.id.checkmark);
             viewHolder.artView = (ImageView)view.findViewById(R.id.art);
 
             view.setTag(viewHolder);
@@ -358,6 +371,13 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                                                  viewHolder.dataHolder.getTitle(),
                                                  viewHolder.artView, artWidth, artHeight);
 
+            if (episode - watchedEpisodes == 0) {
+                viewHolder.checkmarkView.setVisibility(View.VISIBLE);
+                viewHolder.checkmarkView.setColorFilter(themeAccentColor);
+            } else {
+                viewHolder.checkmarkView.setVisibility(View.INVISIBLE);
+            }
+
             if (Utils.isLollipopOrLater()) {
                 viewHolder.artView.setTransitionName("a" + viewHolder.dataHolder.getId());
             }
@@ -371,6 +391,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         TextView titleView;
         TextView detailsView;
         TextView premieredView;
+        ImageView checkmarkView;
         ImageView artView;
 
         AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
