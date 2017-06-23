@@ -192,7 +192,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
                 MediaProvider.Qualified.ALBUMS_THUMBNAIL
         };
 
-        String SORT = MediaDatabase.sortCommonTokens(MediaProvider.Qualified.SONGS_TITLE) + " ASC";
+        String SORT = MediaDatabase.sortCommonTokens(MediaProvider.Qualified.SONGS_TITLE) + " COLLATE NOCASE ASC";
 
         int ID = 0;
         int TITLE = 1;

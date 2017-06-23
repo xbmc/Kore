@@ -117,7 +117,7 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
                 MediaContract.AudioGenres.THUMBNAIL,
         };
 
-        String SORT = MediaContract.AudioGenres.TITLE + " ASC";
+        String SORT = MediaContract.AudioGenres.TITLE + " COLLATE NOCASE ASC";
 
         final int ID = 0;
         final int GENREID = 1;
