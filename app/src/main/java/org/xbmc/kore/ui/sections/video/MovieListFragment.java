@@ -275,13 +275,13 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 };
 
 
-        String SORT_BY_NAME = MediaContract.Movies.TITLE + " ASC";
+        String SORT_BY_NAME = MediaContract.Movies.TITLE + " COLLATE NOCASE ASC";
         String SORT_BY_YEAR = MediaContract.Movies.YEAR + " ASC";
         String SORT_BY_RATING = MediaContract.Movies.RATING + " DESC";
         String SORT_BY_DATE_ADDED = MediaContract.Movies.DATEADDED + " DESC";
         String SORT_BY_LAST_PLAYED = MediaContract.Movies.LASTPLAYED + " DESC";
         String SORT_BY_LENGTH = MediaContract.Movies.RUNTIME + " DESC";
-        String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.Movies.TITLE) + " ASC";
+        String SORT_BY_NAME_IGNORE_ARTICLES = MediaDatabase.sortCommonTokens(MediaContract.Movies.TITLE) + " COLLATE NOCASE ASC";
 
         final int ID = 0;
         final int MOVIEID = 1;

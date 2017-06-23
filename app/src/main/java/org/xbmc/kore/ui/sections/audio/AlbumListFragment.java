@@ -248,10 +248,10 @@ public class AlbumListFragment extends AbstractCursorListFragment {
                 MediaContract.Albums.RATING,
                 };
 
-        String SORT_BY_ALBUM = MediaDatabase.sortCommonTokens(MediaContract.Albums.TITLE) + " ASC";
-        String SORT_BY_ARTIST = MediaDatabase.sortCommonTokens(MediaContract.Albums.DISPLAYARTIST) + " ASC";
+        String SORT_BY_ALBUM = MediaDatabase.sortCommonTokens(MediaContract.Albums.TITLE) + " COLLATE NOCASE ASC";
+        String SORT_BY_ARTIST = MediaDatabase.sortCommonTokens(MediaContract.Albums.DISPLAYARTIST) + " COLLATE NOCASE ASC";
         String SORT_BY_ARTIST_YEAR = MediaDatabase.sortCommonTokens(MediaContract.Albums.DISPLAYARTIST)
-                                     + " ASC, " + MediaContract.Albums.YEAR + " ASC";
+                                     + " COLLATE NOCASE ASC, " + MediaContract.Albums.YEAR + " ASC";
 
         int ID = 0;
         int ALBUMID = 1;

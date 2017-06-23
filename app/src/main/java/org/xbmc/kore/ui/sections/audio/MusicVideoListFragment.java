@@ -123,7 +123,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
                 MediaContract.MusicVideos.PLOT,
         };
 
-        String SORT = MediaDatabase.sortCommonTokens(MediaContract.MusicVideos.TITLE) + " ASC";
+        String SORT = MediaDatabase.sortCommonTokens(MediaContract.MusicVideos.TITLE) + " COLLATE NOCASE ASC";
 
         int ID = 0;
         int MUSICVIDEOID = 1;

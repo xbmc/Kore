@@ -124,7 +124,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
                 MediaContract.Artists.FANART
         };
 
-        String SORT = MediaDatabase.sortCommonTokens(MediaContract.Artists.ARTIST) + " ASC";
+        String SORT = MediaDatabase.sortCommonTokens(MediaContract.Artists.ARTIST) + " COLLATE NOCASE ASC";
 
         int ID = 0;
         int ARTISTID = 1;
