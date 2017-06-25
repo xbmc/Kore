@@ -17,7 +17,6 @@ package org.xbmc.kore.ui.sections.remote;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -55,9 +54,10 @@ import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.generic.GenericSelectDialog;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
+import org.xbmc.kore.ui.widgets.HighlightButton;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
-import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.ui.widgets.RepeatModeButton;
+import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -136,9 +136,9 @@ public class NowPlayingFragment extends Fragment
     @InjectView(R.id.rewind) ImageButton rewindButton;
     @InjectView(R.id.fast_forward) ImageButton fastForwardButton;
 
-    @InjectView(R.id.volume_mute) ImageButton volumeMuteButton;
-    @InjectView(R.id.shuffle) ImageButton shuffleButton;
     @InjectView(R.id.repeat) RepeatModeButton repeatButton;
+    @InjectView(R.id.volume_mute) HighlightButton volumeMuteButton;
+    @InjectView(R.id.shuffle) HighlightButton shuffleButton;
     @InjectView(R.id.overflow) ImageButton overflowButton;
 
     @InjectView(R.id.info_panel) RelativeLayout infoPanel;
@@ -775,21 +775,9 @@ public class NowPlayingFragment extends Fragment
             mediaDescription.setVisibility(View.GONE);
         }
 
-        Resources.Theme theme = getActivity().getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
-                R.attr.colorAccent,
-                R.attr.iconRepeat,
-                R.attr.iconRepeatOne});
-        int accentDefaultColor = getResources().getColor(R.color.accent_default);
-
         UIUtils.setRepeatButton(repeatButton, getPropertiesResult.repeat);
 
-        if (!getPropertiesResult.shuffled) {
-            shuffleButton.clearColorFilter();
-        } else {
-            shuffleButton.setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(0), accentDefaultColor));
-        }
-        styledAttributes.recycle();
+        shuffleButton.setHighlight(getPropertiesResult.shuffled);
 
         Resources resources = getActivity().getResources();
         DisplayMetrics displayMetrics = new DisplayMetrics();
