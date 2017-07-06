@@ -26,6 +26,7 @@ import android.support.v4.content.ContextCompat;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.notification.Player;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.utils.LogUtils;
@@ -148,6 +149,11 @@ public class ConnectionObserversManagerService extends Service
         if (mHostConnectionObserver != null) {
             mHostConnectionObserver.unregisterPlayerObserver(this);
         }
+    }
+
+    @Override
+    public void playerOnPropertyChanged(Player.NotificationsData notificationsData) {
+
     }
 
     /**

@@ -18,6 +18,8 @@ package org.xbmc.kore.ui.widgets;
 
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -25,6 +27,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 public class MediaProgressIndicator extends LinearLayout {
@@ -94,6 +97,24 @@ public class MediaProgressIndicator extends LinearLayout {
         });
     }
 
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        SavedState savedState = new SavedState(super.onSaveInstanceState());
+        savedState.progress = progress;
+        savedState.maxProgress = maxProgress;
+        return savedState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        progress = savedState.progress;
+        maxProgress = savedState.maxProgress;
+        setProgress(progress);
+        setMaxProgress(maxProgress);
+    }
+
     private Runnable seekBarUpdater = new Runnable() {
         @Override
         public void run() {
@@ -119,6 +140,10 @@ public class MediaProgressIndicator extends LinearLayout {
         progressTextView.setText(UIUtils.formatTime(progress));
     }
 
+    public int getProgress() {
+        return progress;
+    }
+
     public void setMaxProgress(int max) {
         maxProgress = max;
         seekBar.setMax(max);
@@ -139,5 +164,38 @@ public class MediaProgressIndicator extends LinearLayout {
         seekBar.removeCallbacks(seekBarUpdater);
         if (speed > 0)
             seekBar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
+    }
+
+    private static class SavedState extends BaseSavedState {
+        int progress;
+        int maxProgress;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            progress = in.readInt();
+            maxProgress = in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(progress);
+            out.writeInt(maxProgress);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR
+                = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 }

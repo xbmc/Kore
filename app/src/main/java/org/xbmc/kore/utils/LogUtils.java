@@ -33,8 +33,8 @@ public class LogUtils {
 
     // TODO: Remove this later
     private static final List<String> doNotLogTags = Arrays.asList(
-            HostConnection.TAG,
-            HostConnectionObserver.TAG
+//            HostConnection.TAG,
+//            HostConnectionObserver.TAG
     );
 
     public static String makeLogTag(String str) {

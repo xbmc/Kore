@@ -552,12 +552,17 @@ public class RemoteFragment extends Fragment
         @Override
         public void onSuccess(Integer result) {
             if (!isAdded()) return;
-            UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result);
+            UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result == 1);
         }
 
         @Override
         public void onError(int errorCode, String description) { }
     };
+
+    @Override
+    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+
+    }
 
     /**
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
@@ -569,7 +574,7 @@ public class RemoteFragment extends Fragment
         currentActivePlayerId = getActivePlayerResult.playerid;
         currentNowPlayingItemType = getItemResult.type;
         // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed == 1);
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
@@ -579,7 +584,7 @@ public class RemoteFragment extends Fragment
         currentActivePlayerId = getActivePlayerResult.playerid;
         currentNowPlayingItemType = getItemResult.type;
         // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed == 1);
     }
 
     public void playerOnStop() {

@@ -17,10 +17,8 @@ package org.xbmc.kore.service;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -36,6 +34,7 @@ import com.squareup.picasso.Target;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.notification.Player;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
@@ -66,6 +65,11 @@ public class NotificationObserver
         stackBuilder.addParentStack(RemoteActivity.class);
         stackBuilder.addNextIntent(new Intent(mService, RemoteActivity.class));
         mRemoteStartPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @Override
+    public void playerOnPropertyChanged(Player.NotificationsData notificationsData) {
+
     }
 
     /**

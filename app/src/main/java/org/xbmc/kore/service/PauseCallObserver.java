@@ -75,6 +75,11 @@ public class PauseCallObserver extends PhoneStateListener
     }
 
     @Override
+    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+
+    }
+
+    @Override
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {

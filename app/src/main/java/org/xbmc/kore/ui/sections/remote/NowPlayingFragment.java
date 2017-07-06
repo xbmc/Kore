@@ -84,7 +84,6 @@ public class NowPlayingFragment extends Fragment
      */
     public interface NowPlayingListener {
         public void SwitchToRemotePanel();
-        public void onShuffleClicked();
     }
 
     /**
@@ -126,19 +125,17 @@ public class NowPlayingFragment extends Fragment
     private int currentSubtitleIndex = -1;
     private int currentAudiostreamIndex = -1;
 
+    private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
+    private ApiCallback<Boolean> defaultBooleanActionCallback = ApiMethod.getDefaultActionCallback();
+
     /**
      * Injectable views
      */
     @InjectView(R.id.play) ImageButton playButton;
-    @InjectView(R.id.stop) ImageButton stopButton;
-    @InjectView(R.id.previous) ImageButton previousButton;
-    @InjectView(R.id.next) ImageButton nextButton;
-    @InjectView(R.id.rewind) ImageButton rewindButton;
-    @InjectView(R.id.fast_forward) ImageButton fastForwardButton;
 
-    @InjectView(R.id.repeat) RepeatModeButton repeatButton;
     @InjectView(R.id.volume_mute) HighlightButton volumeMuteButton;
     @InjectView(R.id.shuffle) HighlightButton shuffleButton;
+    @InjectView(R.id.repeat) RepeatModeButton repeatButton;
     @InjectView(R.id.overflow) ImageButton overflowButton;
 
     @InjectView(R.id.info_panel) RelativeLayout infoPanel;
@@ -156,7 +153,6 @@ public class NowPlayingFragment extends Fragment
 
     @InjectView(R.id.volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
 
-    @InjectView(R.id.media_details) RelativeLayout mediaDetailsPanel;
     @InjectView(R.id.rating) TextView mediaRating;
     @InjectView(R.id.max_rating) TextView mediaMaxRating;
     @InjectView(R.id.year) TextView mediaYear;
@@ -188,6 +184,16 @@ public class NowPlayingFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_now_playing, container, false);
         ButterKnife.inject(this, root);
+
+        volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
+            @Override
+            public void onVolumeChanged(int volume) {
+                new Application.SetVolume(volume)
+                        .execute(hostManager.getConnection(), defaultIntActionCallback, new Handler());
+            }
+        });
+
+        mediaProgressIndicator.setOnProgressChangeListener(this);
 
         // Setup dim the fanart when scroll changes
         // Full dim on 4 * iconSize dp
@@ -242,8 +248,6 @@ public class NowPlayingFragment extends Fragment
      * Default callback for methods that don't return anything
      */
     private ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
-    private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
-    private ApiCallback<Boolean> defaultBooleanActionCallback = ApiMethod.getDefaultActionCallback();
 
     /**
      * Callback for methods that change the play speed
@@ -252,7 +256,7 @@ public class NowPlayingFragment extends Fragment
         @Override
         public void onSuccess(Integer result) {
             if (!isAdded()) return;
-            UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result);
+            UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result == 1);
         }
 
         @Override
@@ -272,7 +276,7 @@ public class NowPlayingFragment extends Fragment
     public void onStopClicked(View v) {
         Player.Stop action = new Player.Stop(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, 0);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, false);
     }
 
     @OnClick(R.id.fast_forward)
@@ -299,17 +303,8 @@ public class NowPlayingFragment extends Fragment
         action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
     }
 
-    /**
-     * Calllbacks for media button toolbar
-     */
     @OnClick(R.id.volume_mute)
     public void onVolumeMuteClicked(View v) {
-        // We boldly set the mute button to the desired state before actually setting
-        // the mute state on the host. We do this to make it clear to the user that the button
-        // was pressed.
-        HostConnectionObserver.HostState hostState = hostConnectionObserver.getHostState();
-        UIUtils.highlightImageView(getActivity(), volumeMuteButton, !hostState.isVolumeMuted());
-
         Application.SetMute action = new Application.SetMute();
         action.execute(hostManager.getConnection(), defaultBooleanActionCallback, new Handler());
     }
@@ -323,7 +318,6 @@ public class NowPlayingFragment extends Fragment
                 if (!isAdded()) return;
                 // Force a refresh
                 hostConnectionObserver.forceRefreshResults();
-                nowPlayingListener.onShuffleClicked();
             }
 
             @Override
@@ -539,20 +533,12 @@ public class NowPlayingFragment extends Fragment
     }
 
     @Override
-    public void onProgressChanged(int progress) {
-        PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
-        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
-        seekAction.execute(hostManager.getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
-            @Override
-            public void onSuccess(PlayerType.SeekReturnType result) {
-                // Ignore
-            }
+    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+        if (notificationsData.property.shuffled != null)
+            shuffleButton.setHighlight(notificationsData.property.shuffled);
 
-            @Override
-            public void onError(int errorCode, String description) {
-                LogUtils.LOGD(TAG, "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
-            }
-        }, callbackHandler);
+        if (notificationsData.property.repeatMode != null)
+            UIUtils.setRepeatButton(repeatButton, notificationsData.property.repeatMode);
     }
 
     /**
@@ -561,19 +547,19 @@ public class NowPlayingFragment extends Fragment
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        setNowPlayingInfo(getPropertiesResult, getItemResult);
+        setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
         currentActivePlayerId = getActivePlayerResult.playerid;
         // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed == 1);
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
-        setNowPlayingInfo(getPropertiesResult, getItemResult);
+        setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
         currentActivePlayerId = getActivePlayerResult.playerid;
         // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed == 1);
     }
 
     public void playerOnStop() {
@@ -619,18 +605,38 @@ public class NowPlayingFragment extends Fragment
     @Override
     public void applicationOnVolumeChanged(int volume, boolean muted) {
         volumeLevelIndicator.setVolume(muted, volume);
-        UIUtils.highlightImageView(getActivity(), volumeMuteButton, muted);
+        volumeMuteButton.setHighlight(muted);
     }
 
     // Ignore this
     public void inputOnInputRequested(String title, String type, String value) {}
     public void observerOnStopObserving() {}
 
+    @Override
+    public void onProgressChanged(int progress) {
+        PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
+        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
+        seekAction.execute(HostManager.getInstance(getContext()).getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
+            @Override
+            public void onSuccess(PlayerType.SeekReturnType result) {
+                // Ignore
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                LogUtils.LOGD("MediaSeekBar", "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
+            }
+        }, new Handler());
+
+
+    }
+
     /**
      * Sets whats playing information
      * @param getItemResult Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
      */
-    private void setNowPlayingInfo(PlayerType.PropertyValue getPropertiesResult,
+    private void setNowPlayingInfo(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+                                   PlayerType.PropertyValue getPropertiesResult,
                                    final ListType.ItemsAll getItemResult) {
         final String title, underTitle, art, poster, genreSeason, year,
                 descriptionPlot, votes, maxRating;
@@ -776,7 +782,6 @@ public class NowPlayingFragment extends Fragment
         }
 
         UIUtils.setRepeatButton(repeatButton, getPropertiesResult.repeat);
-
         shuffleButton.setHighlight(getPropertiesResult.shuffled);
 
         Resources resources = getActivity().getResources();

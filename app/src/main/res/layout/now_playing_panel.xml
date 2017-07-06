@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2017 Martijn Brekhof. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="?attr/colorPrimaryDark">
+
+            <ImageView android:id="@+id/npp_poster"
+                       android:layout_width="@dimen/notification_art_slim_width"
+                       android:layout_height="@dimen/notification_art_slim_height"
+                       android:layout_weight="0"
+                       android:scaleType="centerInside"
+                       android:contentDescription="@string/poster"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/notification_art_slim_height"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/npp_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/small_padding"
+                    android:paddingRight="@dimen/small_padding"
+                    android:textAppearance="@style/TextAppearance.Notification.Title"
+                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    android:fadingEdge="horizontal"
+                    android:gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/npp_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/small_padding"
+                    android:paddingRight="@dimen/small_padding"
+                    android:textAppearance="@style/TextAppearance.Notification.Details"
+                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    android:fadingEdge="horizontal"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>
+            <org.xbmc.kore.ui.widgets.HighlightButton
+                android:id="@+id/npp_volume_muted_indicator"
+                android:layout_width="@dimen/notification_art_slim_height"
+                android:layout_height="@dimen/notification_art_slim_height"
+                style="@style/Widget.Button.Borderless"
+                android:src="?attr/iconVolumeMute"
+                android:contentDescription="@string/volume_mute"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/npp_previous"
+                android:layout_width="@dimen/notification_art_slim_height"
+                android:layout_height="@dimen/notification_art_slim_height"
+                style="@style/Widget.Button.Borderless"
+                android:src="?attr/iconPrevious"
+                android:contentDescription="@string/previous"/>
+
+            <ImageButton
+                android:id="@+id/npp_play"
+                android:layout_width="@dimen/notification_art_slim_height"
+                android:layout_height="@dimen/notification_art_slim_height"
+                style="@style/Widget.Button.Borderless"
+                android:src="?attr/iconPlay"
+                android:contentDescription="@string/play"/>
+
+            <ImageButton
+                android:id="@+id/npp_next"
+                android:layout_width="@dimen/notification_art_slim_height"
+                android:layout_height="@dimen/notification_art_slim_height"
+                style="@style/Widget.Button.Borderless"
+                android:src="?attr/iconNext"
+                android:contentDescription="@string/next"/>
+        </LinearLayout>
+        <org.xbmc.kore.ui.widgets.MediaProgressIndicator
+            android:id="@+id/npp_progress_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/default_padding"
+            android:paddingRight="@dimen/small_padding"
+            android:paddingLeft="@dimen/small_padding"
+            android:orientation="horizontal"
+            android:background="?attr/contentBackgroundColor"
+            style="@style/TextAppearance.Media.Progress"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/buttonbar_height"
+            android:orientation="horizontal"
+            style="@style/ButtonBar"
+            android:background="?attr/contentBackgroundColor">
+
+            <org.xbmc.kore.ui.widgets.HighlightButton
+                android:id="@+id/npp_volume_mute"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                style="@style/Widget.Button.Borderless"
+                android:src="?attr/iconVolumeMute"
+                android:contentDescription="@string/volume_mute"/>
+            <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
+                android:id="@+id/npp_volume_level_indicator"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+            </org.xbmc.kore.ui.widgets.VolumeLevelIndicator>
+
+            <org.xbmc.kore.ui.widgets.RepeatModeButton
+                android:id="@+id/npp_repeat"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                style="@style/Widget.Button.Borderless"
+                android:src="?attr/iconRepeat"
+                android:contentDescription="@string/repeat"/>
+            <org.xbmc.kore.ui.widgets.HighlightButton
+                android:id="@+id/npp_shuffle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                style="@style/Widget.Button.Borderless"
+                android:src="?attr/iconShuffle"
+                android:contentDescription="@string/shuffle"/>
+        </LinearLayout>
+    </LinearLayout>
+</merge>

@@ -17,42 +17,87 @@ package org.xbmc.kore.ui;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostConnectionObserver;
+import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.ApiMethod;
+import org.xbmc.kore.jsonrpc.method.Application;
+import org.xbmc.kore.jsonrpc.method.Player;
+import org.xbmc.kore.jsonrpc.type.ListType;
+import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
+import org.xbmc.kore.ui.widgets.NowPlayingPanel;
+import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
-public abstract class BaseMediaActivity extends AppCompatActivity {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+public abstract class BaseMediaActivity extends BaseActivity
+        implements HostConnectionObserver.ApplicationEventsObserver,
+                   HostConnectionObserver.PlayerEventsObserver,
+                   NowPlayingPanel.OnPanelButtonsClickListener,
+                   MediaProgressIndicator.OnProgressChangeListener {
     private static final String TAG = LogUtils.makeLogTag(BaseMediaActivity.class);
 
     private static final String NAVICON_ISARROW = "navstate";
     private static final String ACTIONBAR_TITLE = "actionbartitle";
 
+    @InjectView(R.id.now_playing_panel) NowPlayingPanel nowPlayingPanel;
+
     private NavigationDrawerFragment navigationDrawerFragment;
     private SharedElementTransition sharedElementTransition = new SharedElementTransition();
+
     private boolean drawerIndicatorIsArrow;
+    private int currentActivePlayerId = -1;
+
+    private HostManager hostManager;
+    private HostConnectionObserver hostConnectionObserver;
+
+    private boolean showNowPlayingPanel;
 
     protected abstract String getActionBarTitle();
     protected abstract Fragment createFragment();
+
+    /**
+     * Default callback for methods that don't return anything
+     */
+    private ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
+    private Handler callbackHandler = new Handler();
+    private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
+
+    private Runnable hidePanelRunnable = new Runnable() {
+        @Override
+        public void run() {
+            nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        }
+    };
 
     @Override
     @TargetApi(21)
@@ -61,13 +106,10 @@ public abstract class BaseMediaActivity extends AppCompatActivity {
         if (Utils.isLollipopOrLater()) {
             getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         }
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        setTheme(UIUtils.getThemeResourceId(
-                prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_generic_media);
+        ButterKnife.inject(this);
 
         // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
@@ -113,6 +155,8 @@ public abstract class BaseMediaActivity extends AppCompatActivity {
         if (Utils.isLollipopOrLater()) {
             sharedElementTransition.setupExitTransition(this, fragment);
         }
+
+        hostManager = HostManager.getInstance(this);
     }
 
     @Override
@@ -127,6 +171,38 @@ public abstract class BaseMediaActivity extends AppCompatActivity {
                 outState.putString(ACTIONBAR_TITLE, title.toString());
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showNowPlayingPanel = PreferenceManager.getDefaultSharedPreferences(this)
+                                               .getBoolean(Settings.KEY_PREF_SHOW_NOW_PLAYING_PANEL,
+                                                           Settings.DEFAULT_PREF_SHOW_NOW_PLAYING_PANEL);
+
+
+        if(showNowPlayingPanel) {
+            setupNowPlayingPanel();
+        } else {
+            //Hide it in case we were displaying the panel and user disabled showing
+            //the panel in Settings
+            nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(!showNowPlayingPanel)
+            return;
+
+        hostConnectionObserver = hostManager.getHostConnectionObserver();
+        if (hostConnectionObserver == null)
+            return;
+
+        hostConnectionObserver.unregisterApplicationObserver(this);
+        hostConnectionObserver.unregisterPlayerObserver(this);
     }
 
     public boolean getDrawerIndicatorIsArrow() {
@@ -186,5 +262,273 @@ public abstract class BaseMediaActivity extends AppCompatActivity {
         fragTrans.replace(R.id.fragment_container, fragment, getActionBarTitle())
                  .addToBackStack(null)
                  .commit();
+    }
+
+    @Override
+    public void applicationOnVolumeChanged(int volume, boolean muted) {
+        nowPlayingPanel.setVolume(volume, muted);
+    }
+
+    @Override
+    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+        if (notificationsData.property.shuffled != null)
+            nowPlayingPanel.setShuffled(notificationsData.property.shuffled);
+
+        if (notificationsData.property.repeatMode != null )
+            nowPlayingPanel.setRepeatMode(notificationsData.property.repeatMode);
+    }
+
+    @Override
+    public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+                             PlayerType.PropertyValue getPropertiesResult,
+                             ListType.ItemsAll getItemResult) {
+        currentActivePlayerId = getActivePlayerResult.playerid;
+
+        updateNowPlayingPanel(getPropertiesResult, getItemResult);
+    }
+
+    @Override
+    public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult, PlayerType.PropertyValue getPropertiesResult, ListType.ItemsAll getItemResult) {
+        currentActivePlayerId = getActivePlayerResult.playerid;
+
+        updateNowPlayingPanel(getPropertiesResult, getItemResult);
+    }
+
+    @Override
+    public void playerOnStop() {
+        //We delay hiding the panel to prevent hiding the panel when playing
+        // the next item in a playlist
+        callbackHandler.removeCallbacks(hidePanelRunnable);
+        callbackHandler.postDelayed(hidePanelRunnable, 1000);
+    }
+
+    @Override
+    public void playerOnConnectionError(int errorCode, String description) {
+
+    }
+
+    @Override
+    public void playerNoResultsYet() {
+    }
+
+    @Override
+    public void observerOnStopObserving() {
+        nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+    }
+
+    @Override
+    public void systemOnQuit() {
+        nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+    }
+
+    @Override
+    public void inputOnInputRequested(String title, String type, String value) {
+
+    }
+
+    @Override
+    public void onProgressChanged(int progress) {
+        PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
+        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
+        seekAction.execute(HostManager.getInstance(this).getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
+            @Override
+            public void onSuccess(PlayerType.SeekReturnType result) {
+                // Ignore
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                LogUtils.LOGE(TAG, "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
+            }
+        }, new Handler());
+    }
+
+    @Override
+    public void onPlayClicked() {
+        Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
+        action.execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
+    }
+
+    @Override
+    public void onPreviousClicked() {
+        Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
+        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+    }
+
+    @Override
+    public void onNextClicked() {
+        Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
+        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+    }
+
+    @Override
+    public void onVolumeMuteClicked() {
+        Application.SetMute action = new Application.SetMute();
+        action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                //We depend on the listener to correct the mute button state
+            }
+
+            @Override
+            public void onError(int errorCode, String description) { }
+        }, new Handler());
+    }
+
+    @Override
+    public void onShuffleClicked() {
+        Player.SetShuffle action = new Player.SetShuffle(currentActivePlayerId);
+        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                //We depend on the listener to correct the mute button state
+            }
+
+            @Override
+            public void onError(int errorCode, String description) { }
+        }, callbackHandler);
+    }
+
+    @Override
+    public void onRepeatClicked() {
+        Player.SetRepeat action = new Player.SetRepeat(currentActivePlayerId, PlayerType.Repeat.CYCLE);
+        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                //We depend on the listener to correct the mute button state
+            }
+
+            @Override
+            public void onError(int errorCode, String description) { }
+        }, callbackHandler);
+    }
+
+    @Override
+    public void onVolumeMutedIndicatorClicked() {
+        Application.SetMute action = new Application.SetMute();
+        action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                //We depend on the listener to correct the mute button state
+            }
+
+            @Override
+            public void onError(int errorCode, String description) { }
+        }, new Handler());
+    }
+
+    private void setupNowPlayingPanel() {
+        nowPlayingPanel.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
+            @Override
+            public void onVolumeChanged(int volume) {
+                new Application.SetVolume(volume)
+                        .execute(hostManager.getConnection(), defaultIntActionCallback, new Handler());
+            }
+        });
+
+        nowPlayingPanel.setOnPanelButtonsClickListener(this);
+        nowPlayingPanel.setOnProgressChangeListener(this);
+
+        hostConnectionObserver = hostManager.getHostConnectionObserver();
+        if (hostConnectionObserver == null)
+            return;
+
+        hostConnectionObserver.registerApplicationObserver(this, true);
+        hostConnectionObserver.registerPlayerObserver(this, true);
+
+        hostConnectionObserver.forceRefreshResults();
+    }
+
+    private void updateNowPlayingPanel(PlayerType.PropertyValue getPropertiesResult,
+                                       ListType.ItemsAll getItemResult) {
+        String title;
+        String poster;
+        String details = null;
+
+        callbackHandler.removeCallbacks(hidePanelRunnable);
+
+        // Only set state to collapsed if panel is currently hidden. This prevents collapsing
+        // the panel when the user expanded the panel and started playing the item from a paused
+        // state
+        if (nowPlayingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+            nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        }
+
+        nowPlayingPanel.setMediaProgress(getPropertiesResult.time, getPropertiesResult.totaltime);
+
+        nowPlayingPanel.setPlayButton(getPropertiesResult.speed > 0);
+        nowPlayingPanel.setShuffled(getPropertiesResult.shuffled);
+        nowPlayingPanel.setRepeatMode(getPropertiesResult.repeat);
+        nowPlayingPanel.setSpeed(getPropertiesResult.speed);
+
+        switch (getItemResult.type) {
+            case ListType.ItemsAll.TYPE_MOVIE:
+                title = getItemResult.title;
+                details = getItemResult.tagline;
+                poster = TextUtils.isEmpty(getItemResult.thumbnail) ? getItemResult.fanart
+                                                                    : getItemResult.thumbnail;
+                break;
+            case ListType.ItemsAll.TYPE_EPISODE:
+                title = getItemResult.title;
+                String seasonEpisode = String.format(getString(R.string.season_episode),
+                                                     getItemResult.season, getItemResult.episode);
+                details = String.format("%s | %s", getItemResult.showtitle, seasonEpisode);
+                poster = TextUtils.isEmpty(getItemResult.art.poster) ? getItemResult.art.fanart
+                                                                     : getItemResult.art.poster;
+                break;
+            case ListType.ItemsAll.TYPE_SONG:
+                title = getItemResult.title;
+                details = getItemResult.displayartist + " | " + getItemResult.album;
+                poster = TextUtils.isEmpty(getItemResult.thumbnail) ? getItemResult.fanart
+                                                                    : getItemResult.thumbnail;
+                break;
+            case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
+                title = getItemResult.title;
+                details = Utils.listStringConcat(getItemResult.artist, ", ") + " | " + getItemResult.album;
+                poster = TextUtils.isEmpty(getItemResult.thumbnail) ? getItemResult.fanart
+                                                                    : getItemResult.thumbnail;
+                break;
+            case ListType.ItemsAll.TYPE_CHANNEL:
+                title = getItemResult.label;
+                details = getItemResult.title;
+                poster = TextUtils.isEmpty(getItemResult.thumbnail) ? getItemResult.fanart
+                                                                    : getItemResult.thumbnail;
+                break;
+            default:
+                title = getItemResult.label;
+                poster = TextUtils.isEmpty(getItemResult.thumbnail) ? getItemResult.fanart
+                                                                    : getItemResult.thumbnail;
+                break;
+        }
+
+        if (title.contentEquals(nowPlayingPanel.getTitle()))
+            return; // Still showing same item as previous call
+
+        nowPlayingPanel.setTitle(title);
+
+        if (details != null) {
+            nowPlayingPanel.setDetails(details);
+        }
+
+        if ((getItemResult.type.contentEquals(ListType.ItemsAll.TYPE_MUSIC_VIDEO)) ||
+            (getItemResult.type.contentEquals(ListType.ItemsAll.TYPE_SONG))) {
+            nowPlayingPanel.setNextPrevVisibility(View.VISIBLE);
+        } else {
+            nowPlayingPanel.setNextPrevVisibility(View.GONE);
+        }
+
+        Resources resources = getResources();
+        int posterWidth = resources.getDimensionPixelOffset(R.dimen.notification_art_slim_width);
+        int posterHeight = resources.getDimensionPixelOffset(R.dimen.notification_art_slim_height);
+
+        // If not video, change aspect ration of poster to a square
+        boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
+                          (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE));
+
+        nowPlayingPanel.setSquarePoster(!isVideo);
+
+        UIUtils.loadImageWithCharacterAvatar(this, hostManager, poster, title,
+                                             nowPlayingPanel.getPoster(),
+                                             (isVideo) ? posterWidth : posterHeight, posterHeight);
     }
 }

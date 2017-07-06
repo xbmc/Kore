@@ -346,6 +346,8 @@
     <string name="keep_remote_above_lockscreen">Show over lockscreen</string>
     <string name="pref_keep_screen_on">Stay awake</string>
     <string name="show_notification">Show notification while playing</string>
+    <string name="show_now_playing_panel">Show now playing panel while playing</string>
+    <string name="show_now_playing_panel_summary">Displays an expandable panel at the bottom of the screen when media is playing or paused</string>
     <string name="pause_during_calls">Pause during phone call</string>
     <string name="use_hardware_volume_keys">Use device volume keys</string>
     <string name="vibrate_on_remote">Vibrate on touch</string>

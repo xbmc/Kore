@@ -194,6 +194,12 @@ public class PlaylistFragment extends Fragment
     private PlayerType.PropertyValue lastGetPropertiesResult;
     private List<ListType.ItemsAll> lastGetPlaylistItemsResult = null;
 
+    @Override
+    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+        if (notificationsData.property.shuffled != null)
+            setupPlaylistInfo(lastGetActivePlayerResult, lastGetPropertiesResult, lastGetItemResult);
+    }
+
     /**
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
      */

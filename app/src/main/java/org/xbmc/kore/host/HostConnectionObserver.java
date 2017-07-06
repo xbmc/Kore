@@ -22,6 +22,7 @@ import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.notification.Application;
+import org.xbmc.kore.jsonrpc.notification.Player.NotificationsData;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.System;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
@@ -72,6 +73,8 @@ public class HostConnectionObserver
                 PLAYER_IS_PLAYING = 2,
                 PLAYER_IS_PAUSED = 3,
                 PLAYER_IS_STOPPED = 4;
+
+        public void playerOnPropertyChanged(NotificationsData notificationsData);
 
         /**
          * Notifies that something is playing
@@ -178,15 +181,17 @@ public class HostConnectionObserver
             final int PING_AFTER_ERROR_CHECK_INTERVAL = 2000,
                     PING_AFTER_SUCCESS_CHECK_INTERVAL = 10000;
             // If no one is listening to this, just exit
-            if (playerEventsObservers.isEmpty()) return;
+            if (playerEventsObservers.isEmpty() && applicationEventsObservers.isEmpty()) return;
 
             JSONRPC.Ping ping = new JSONRPC.Ping();
             ping.execute(connection, new ApiCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    // Ok, we've got a ping, if we were in a error or uninitialized state, update
-                    if ((hostState.lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
-                        (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR)) {
+                    // Ok, we've got a ping, if there are playerEventsObservers and
+                    // we were in a error or uninitialized state, update
+                    if ((! playerEventsObservers.isEmpty()) &&
+                        ((hostState.lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
+                        (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR))) {
                         checkWhatsPlaying();
                     }
                     checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_SUCCESS_CHECK_INTERVAL);
@@ -244,9 +249,7 @@ public class HostConnectionObserver
         if (this.connection == null)
             return;
 
-        // Save this observer and a new handle to notify him
         playerEventsObservers.add(observer);
-//        observerHandlerMap.put(observer, new Handler());
 
         if (replyImmediately) replyWithLastResult(observer);
 
@@ -316,6 +319,7 @@ public class HostConnectionObserver
             // as a connection observer, which we will pass to the "real" observer
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
                 connection.registerApplicationNotificationsObserver(this, checkerHandler);
+                checkerHandler.post(tcpCheckerRunnable);
             } else {
                 checkerHandler.post(httpApplicationCheckerRunnable);
             }
@@ -337,7 +341,7 @@ public class HostConnectionObserver
             // No more observers, so unregister us from the host connection, or stop
             // the http checker thread
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
-                connection.unregisterApplicationotificationsObserver(this);
+                connection.unregisterApplicationNotificationsObserver(this);
             } else {
                 checkerHandler.removeCallbacks(httpApplicationCheckerRunnable);
             }
@@ -362,6 +366,14 @@ public class HostConnectionObserver
             checkerHandler.removeCallbacks(httpPlayerCheckerRunnable);
         }
         hostState.lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+    }
+
+    @Override
+    public void onPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.OnPropertyChanged notification) {
+        List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
+        for (final PlayerEventsObserver observer : allObservers) {
+            observer.playerOnPropertyChanged(notification.data);
+        }
     }
 
     /**
@@ -746,7 +758,7 @@ public class HostConnectionObserver
     /**
      * Replies to the observer with the last result we got.
      * If we have no result, nothing will be called on the observer interface.
-     * @param observer Obserser to call with last result
+     * @param observer Observer to call with last result
      */
     public void replyWithLastResult(PlayerEventsObserver observer) {
         switch (hostState.lastCallResult) {
