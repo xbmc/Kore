@@ -15,24 +15,14 @@
  */
 package org.xbmc.kore.ui.sections.remote;
 
-import android.annotation.TargetApi;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,8 +46,8 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
+import org.xbmc.kore.ui.widgets.ControlPad;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.RepeatListener;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
@@ -74,7 +64,8 @@ import butterknife.Optional;
  * Remote view
  */
 public class RemoteFragment extends Fragment
-        implements HostConnectionObserver.PlayerEventsObserver {
+        implements HostConnectionObserver.PlayerEventsObserver,
+                   ControlPad.OnPadButtonsListener {
     private static final String TAG = LogUtils.makeLogTag(RemoteFragment.class);
 
     /**
@@ -102,9 +93,35 @@ public class RemoteFragment extends Fragment
      */
     private String currentNowPlayingItemType = null;
 
+    private final Packet leftButtonPacket =
+            new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_LEFT, false, true,
+                             true, (short)0, (byte)0);
+    private final Packet rightButtonPacket =
+            new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_RIGHT, false, true,
+                             true, (short)0, (byte)0);
+    private final Packet upButtonPacket =
+            new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_UP, false, true,
+                             true, (short)0, (byte)0);
+    private final Packet downButtonPacket =
+            new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_DOWN, false, true,
+                             true, (short)0, (byte)0);
+    private final Packet selectButtonPack =
+            new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_SELECT, false, true,
+                             true, (short)0, (byte)0);
+
+    private final ApiMethod<String> downButtonAction = new Input.Down();
+    private final ApiMethod<String> leftButtonAction = new Input.Left();
+    private final ApiMethod<String> upButtonAction = new Input.Up();
+    private final ApiMethod<String> rightButtonAction = new Input.Right();
+    private final ApiMethod<String> selectButtonAction = new Input.Select();
+    private final ApiMethod<String> backButtonAction = new Input.Back();
+    private final ApiMethod<String> infoButtonAction = new Input.ExecuteAction(Input.ExecuteAction.INFO);
+    private final ApiMethod<String> contextButtonAction = new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU);
+    private final ApiMethod<String> osdButtonAction = new Input.ExecuteAction(Input.ExecuteAction.OSD);
+
     @InjectView(R.id.info_panel) RelativeLayout infoPanel;
     @InjectView(R.id.media_panel) RelativeLayout mediaPanel;
-    @InjectView(R.id.remote) RelativeLayout remotePanel;
+    @InjectView(R.id.remote) ControlPad controlPad;
 
     @InjectView(R.id.info_title) TextView infoTitle;
     @InjectView(R.id.info_message) TextView infoMessage;
@@ -126,16 +143,6 @@ public class RemoteFragment extends Fragment
     @Optional @InjectView(R.id.weather) ImageButton weatherButton;
     @Optional @InjectView(R.id.system) ImageButton systemButton;
 
-    @InjectView(R.id.select) ImageView selectButton;
-    @InjectView(R.id.left) ImageView leftButton;
-    @InjectView(R.id.right) ImageView rightButton;
-    @InjectView(R.id.up) ImageView upButton;
-    @InjectView(R.id.down) ImageView downButton;
-    @InjectView(R.id.back) ImageView backButton;
-    @InjectView(R.id.info) ImageView infoButton;
-    @InjectView(R.id.context) ImageView contextButton;
-    @InjectView(R.id.osd) ImageView osdButton;
-
     @InjectView(R.id.art) ImageView thumbnail;
     @InjectView(R.id.title) TextView nowPlayingTitle;
     @InjectView(R.id.details) TextView nowPlayingDetails;
@@ -144,11 +151,6 @@ public class RemoteFragment extends Fragment
     @InjectView(R.id.stop) ImageButton stopButton;
     @InjectView(R.id.rewind) ImageButton rewindButton;
     @InjectView(R.id.fast_forward) ImageButton fastForwardButton;
-
-    private Animation buttonInAnim;
-    private Animation buttonOutAnim;
-    // Touch listener that provides touch feedback
-    private View.OnTouchListener feedbackTouchListener;
 
     // EventServer connection
     private EventServerConnection eventServerConnection = null;
@@ -162,27 +164,7 @@ public class RemoteFragment extends Fragment
         hostManager = HostManager.getInstance(getActivity());
         hostConnectionObserver = hostManager.getHostConnectionObserver();
 
-        buttonInAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_in);
-        buttonOutAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_out);
-
         createEventServerConnection();
-
-        feedbackTouchListener = new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        buttonInAnim.setFillAfter(true);
-                        v.startAnimation(buttonInAnim);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        v.startAnimation(buttonOutAnim);
-                        break;
-                }
-                return false;
-            }
-        };
     }
 
     @Override
@@ -190,43 +172,9 @@ public class RemoteFragment extends Fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_remote, container, false);
         ButterKnife.inject(this, root);
 
-        if (hostManager.getHostInfo().getUseEventServer() &&
-            (eventServerConnection != null)) {
-            // Setup d-pad to use EventServer
-            setupEventServerButton(leftButton, ButtonCodes.REMOTE_LEFT);
-            setupEventServerButton(rightButton, ButtonCodes.REMOTE_RIGHT);
-            setupEventServerButton(upButton, ButtonCodes.REMOTE_UP);
-            setupEventServerButton(downButton, ButtonCodes.REMOTE_DOWN);
+        controlPad.setOnPadButtonsListener(this);
 
-            setupEventServerButton(selectButton, ButtonCodes.REMOTE_SELECT);
-        } else {
-            // Otherwise, use json-rpc
-            setupRepeatButton(leftButton, new Input.Left());
-            setupRepeatButton(rightButton, new Input.Right());
-            setupRepeatButton(upButton, new Input.Up());
-            setupRepeatButton(downButton, new Input.Down());
-
-            setupDefaultButton(selectButton, new Input.Select(), null);
-        }
-
-        // Other buttons
-        setupDefaultButton(backButton, new Input.Back(), null);
-        setupDefaultButton(osdButton, new Input.ExecuteAction(Input.ExecuteAction.OSD), null);
-        setupDefaultButton(contextButton, new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU), null);
-
-        // Info button, v17 uses a different window to display codec info so check version number
         HostInfo hostInfo = hostManager.getHostInfo();
-        if (hostInfo.getKodiVersionMajor() < 17) {
-            setupDefaultButton(infoButton,
-                               new Input.ExecuteAction(Input.ExecuteAction.INFO),
-                               new Input.ExecuteAction(Input.ExecuteAction.CODECINFO));
-        } else {
-            setupDefaultButton(infoButton,
-                               new Input.ExecuteAction(Input.ExecuteAction.INFO),
-                               new Input.ExecuteAction(Input.ExecuteAction.PLAYERPROCESSINFO));
-        }
-
-        adjustRemoteButtons();
 
         TypedArray styledAttributes = getActivity().getTheme().obtainStyledAttributes(new int[] {
                 R.attr.iconFastForward,
@@ -253,51 +201,7 @@ public class RemoteFragment extends Fragment
                 buttons[i].setVisibility(shownItems.contains(String.valueOf(i)) ? View.VISIBLE : View.GONE);
         }
 
-//        // Pad main content view to account for bottom system bar
-//        UIUtils.setPaddingForSystemBars(getActivity(), root, false, false, true);
-
-        // No clipping
-//        root.setClipToPadding(false);
-
         return root;
-    }
-
-    @TargetApi(21)
-    private void adjustRemoteButtons() {
-        Resources.Theme theme = getActivity().getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                R.attr.remoteButtonColorFilter,
-                R.attr.contentBackgroundColor});
-//                R.attr.remoteBackgroundColorFilter});
-        Resources resources = getResources();
-        int remoteButtonsColor =  styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.white)),
-            remoteBackgroundColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.dark_content_background_dim_70pct));
-        styledAttributes.recycle();
-
-        leftButton.setColorFilter(remoteButtonsColor);
-        rightButton.setColorFilter(remoteButtonsColor);
-        upButton.setColorFilter(remoteButtonsColor);
-        downButton.setColorFilter(remoteButtonsColor);
-
-        selectButton.setColorFilter(remoteButtonsColor);
-        backButton.setColorFilter(remoteButtonsColor);
-        infoButton.setColorFilter(remoteButtonsColor);
-        osdButton.setColorFilter(remoteButtonsColor);
-        contextButton.setColorFilter(remoteButtonsColor);
-
-
-        // On ICS the remote background isn't shown as the tinting isn't supported
-        //int backgroundResourceId = R.drawable.remote_background_square_black_alpha;
-        int backgroundResourceId = R.drawable.remote_background_square_black;
-        if (Utils.isLollipopOrLater()) {
-            remotePanel.setBackgroundTintList(ColorStateList.valueOf(remoteBackgroundColor));
-            remotePanel.setBackgroundResource(backgroundResourceId);
-        } else if (Utils.isJellybeanOrLater()) {
-            BitmapDrawable background = new BitmapDrawable(getResources(),
-                    BitmapFactory.decodeResource(getResources(), backgroundResourceId));
-            background.setColorFilter(new PorterDuffColorFilter(remoteBackgroundColor, PorterDuff.Mode.SRC_IN));
-            remotePanel.setBackground(background);
-        }
     }
 
     @Override
@@ -337,91 +241,6 @@ public class RemoteFragment extends Fragment
                     }
                 });
     }
-
-    private void setupRepeatButton(View button, final ApiMethod<String> action) {
-        button.setOnTouchListener(new RepeatListener(UIUtils.initialButtonRepeatInterval, UIUtils.buttonRepeatInterval,
-                                                     new View.OnClickListener() {
-                                                         @Override
-                                                         public void onClick(View v) {
-                                                             action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-                                                         }
-                                                     }, buttonInAnim, buttonOutAnim, getActivity().getApplicationContext()));
-    }
-
-    private void setupDefaultButton(View button,
-                                    final ApiMethod<String> clickAction,
-                                    final ApiMethod<String> longClickAction) {
-        // Set animation
-        button.setOnTouchListener(feedbackTouchListener);
-        if (clickAction != null) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    UIUtils.handleVibration(getActivity());
-                    clickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-                }
-            });
-        }
-        if (longClickAction != null) {
-            button.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    UIUtils.handleVibration(getActivity());
-                    longClickAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-                    return true;
-                }
-            });
-        }
-    }
-
-    private void setupEventServerButton(View button, final String action) {
-        final Packet packet =
-                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, false, true, true, (short)0, (byte)0);
-        button.setOnTouchListener(new RepeatListener(UIUtils.initialButtonRepeatInterval, UIUtils.buttonRepeatInterval,
-                                                     new View.OnClickListener() {
-                                                         @Override
-                                                         public void onClick(View v) {
-                                                             if (eventServerConnection != null)
-                                                                 eventServerConnection.sendPacket(packet);
-                                                         }
-                                                     }, buttonInAnim, buttonOutAnim, getActivity().getApplicationContext()));
-    }
-
-
-//    private void setupEventServerButton(View button, final String action) {
-//        short amount = 0;
-//        byte axis = 0;
-//        final Packet packetDown =
-//                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, true, true, false, amount, axis);
-//        final Packet packetUp =
-//                new PacketBUTTON(ButtonCodes.MAP_REMOTE, action, false, false, false, amount, axis);
-//
-//        // Set animation and packet
-//        button.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        buttonInAnim.setFillAfter(true);
-//                        v.startAnimation(buttonInAnim);
-//                        eventServerConnection.sendPacket(packetDown);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                    case MotionEvent.ACTION_CANCEL:
-//                        v.startAnimation(buttonOutAnim);
-//                        eventServerConnection.sendPacket(packetUp);
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Nothing to do
-//            }
-//        });
-//    }
 
     /**
      * Default callback for methods that don't return anything
@@ -731,11 +550,92 @@ public class RemoteFragment extends Fragment
         }
 
         if (showRemote) {
-            remotePanel.setVisibility(View.VISIBLE);
+            controlPad.setVisibility(View.VISIBLE);
             buttonBarPanel.setVisibility(View.VISIBLE);
         } else {
-            remotePanel.setVisibility(View.GONE);
+            controlPad.setVisibility(View.GONE);
             buttonBarPanel.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void leftButtonClicked() {
+        if (eventServerConnection != null) {
+            eventServerConnection.sendPacket(leftButtonPacket);
+        } else {
+            leftButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+        }
+    }
+
+    @Override
+    public void rightButtonClicked() {
+        if (eventServerConnection != null) {
+            eventServerConnection.sendPacket(rightButtonPacket);
+        } else {
+            rightButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+        }
+    }
+
+    @Override
+    public void upButtonClicked() {
+        if (eventServerConnection != null) {
+            eventServerConnection.sendPacket(upButtonPacket);
+        } else {
+            upButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+        }
+    }
+
+    @Override
+    public void downButtonClicked() {
+        if (eventServerConnection != null) {
+            eventServerConnection.sendPacket(downButtonPacket);
+        } else {
+            downButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+        }
+    }
+
+    @Override
+    public void selectButtonClicked() {
+        if (eventServerConnection != null) {
+            eventServerConnection.sendPacket(selectButtonPack);
+        } else {
+            selectButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+        }
+    }
+
+    @Override
+    public void backButtonClicked() {
+        backButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+    }
+
+    @Override
+    public void infoButtonClicked() {
+        infoButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+    }
+
+    @Override
+    public boolean infoButtonLongClicked() {
+        ApiMethod<String> action;
+        HostInfo hostInfo = hostManager.getHostInfo();
+
+        // Info button, v17 uses a different window to display codec info so check version number
+        if (hostInfo.getKodiVersionMajor() < 17) {
+            action = new Input.ExecuteAction(Input.ExecuteAction.CODECINFO);
+        } else {
+            action = new Input.ExecuteAction(Input.ExecuteAction.PLAYERPROCESSINFO);
+        }
+        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+
+        return true;
+    }
+
+    @Override
+    public void contextButtonClicked() {
+        contextButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+    }
+
+    @Override
+    public void osdButtonClicked() {
+        osdButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 }
