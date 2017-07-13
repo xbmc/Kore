@@ -190,82 +190,44 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     }
 
     private void setupButtonClickListeners() {
-        playButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonClickEvent(v);
-            }
-        });
-
-        previousButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonClickEvent(v);
-            }
-        });
-
-        nextButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonClickEvent(v);
-            }
-        });
-
-        volumeMuteButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonClickEvent(v);
-            }
-        });
-
-        shuffleButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonClickEvent(v);
-            }
-        });
-
-        repeatModeButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonClickEvent(v);
-            }
-        });
-
-        volumeMutedIndicatorButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonClickEvent(v);
-            }
-        });
+        playButton.setOnClickListener(handleButtonClickListener);
+        previousButton.setOnClickListener(handleButtonClickListener);
+        nextButton.setOnClickListener(handleButtonClickListener);
+        volumeMuteButton.setOnClickListener(handleButtonClickListener);
+        shuffleButton.setOnClickListener(handleButtonClickListener);
+        repeatModeButton.setOnClickListener(handleButtonClickListener);
+        volumeMutedIndicatorButton.setOnClickListener(handleButtonClickListener);
     }
 
-    private void handleButtonClickEvent(View view) {
-        if (onPanelButtonsClickListener == null)
-            return;
+    private OnClickListener handleButtonClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (onPanelButtonsClickListener == null)
+                return;
 
-        switch (view.getId()) {
-            case R.id.npp_previous:
-                onPanelButtonsClickListener.onPreviousClicked();
-                break;
-            case R.id.npp_next:
-                onPanelButtonsClickListener.onNextClicked();
-                break;
-            case R.id.npp_play:
-                onPanelButtonsClickListener.onPlayClicked();
-                break;
-            case R.id.npp_volume_mute:
-                onPanelButtonsClickListener.onVolumeMuteClicked();
-                break;
-            case R.id.npp_repeat:
-                onPanelButtonsClickListener.onRepeatClicked();
-                break;
-            case R.id.npp_shuffle:
-                onPanelButtonsClickListener.onShuffleClicked();
-                break;
-            case R.id.npp_volume_muted_indicator:
-                onPanelButtonsClickListener.onVolumeMutedIndicatorClicked();
-                break;
+            switch (view.getId()) {
+                case R.id.npp_previous:
+                    onPanelButtonsClickListener.onPreviousClicked();
+                    break;
+                case R.id.npp_next:
+                    onPanelButtonsClickListener.onNextClicked();
+                    break;
+                case R.id.npp_play:
+                    onPanelButtonsClickListener.onPlayClicked();
+                    break;
+                case R.id.npp_volume_mute:
+                    onPanelButtonsClickListener.onVolumeMuteClicked();
+                    break;
+                case R.id.npp_repeat:
+                    onPanelButtonsClickListener.onRepeatClicked();
+                    break;
+                case R.id.npp_shuffle:
+                    onPanelButtonsClickListener.onShuffleClicked();
+                    break;
+                case R.id.npp_volume_muted_indicator:
+                    onPanelButtonsClickListener.onVolumeMutedIndicatorClicked();
+                    break;
+            }
         }
-    }
+    };
 }
