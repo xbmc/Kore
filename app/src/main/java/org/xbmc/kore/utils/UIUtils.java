@@ -94,6 +94,21 @@ public class UIUtils {
     }
 
     /**
+     * Converts the time format from {@link #formatTime(int, int, int)} to seconds
+     * @param time
+     * @return
+     */
+    public static int timeToSeconds(String time) {
+        String[] items = time.split(":");
+        if (items.length > 2) {
+            return (Integer.parseInt(items[0]) * 3600) + (Integer.parseInt(items[1]) * 60) +
+                   (Integer.parseInt(items[2]));
+        } else {
+            return (Integer.parseInt(items[0]) * 60) + (Integer.parseInt(items[1]));
+        }
+    }
+
+    /**
      * Formats a file size, ISO prefixes
      */
     public static String formatFileSize(int bytes) {
@@ -198,9 +213,9 @@ public class UIUtils {
         char charAvatar = TextUtils.isEmpty(str) ?
                           ' ' : str.charAt(0);
         int avatarColorsIdx = TextUtils.isEmpty(str) ? 0 :
-                Math.max(Character.getNumericValue(str.charAt(0)) +
-                        Character.getNumericValue(str.charAt(str.length() - 1)) +
-                        str.length(), 0) % characterAvatarColors.length();
+                              Math.max(Character.getNumericValue(str.charAt(0)) +
+                                       Character.getNumericValue(str.charAt(str.length() - 1)) +
+                                       str.length(), 0) % characterAvatarColors.length();
         int color = characterAvatarColors.getColor(avatarColorsIdx, 0xff000000);
 //            avatarColorsIdx = randomGenerator.nextInt(characterAvatarColors.length());
         return new CharacterDrawable(charAvatar, color);
@@ -210,12 +225,12 @@ public class UIUtils {
     static int iconPauseResId = R.drawable.ic_pause_white_24dp,
             iconPlayResId = R.drawable.ic_play_arrow_white_24dp;
     /**
-     * Sets play/pause button icon on a ImageView, based on speed
+     * Sets play/pause button icon on a ImageView
      * @param context Activity
      * @param view ImageView/ImageButton
-     * @param speed Current player speed
+     * @param play true if playing, false if paused
      */
-    public static void setPlayPauseButtonIcon(Context context, ImageView view, int speed) {
+    public static void setPlayPauseButtonIcon(Context context, ImageView view, boolean play) {
 
         if (!playPauseIconsLoaded) {
             TypedArray styledAttributes = context.obtainStyledAttributes(new int[]{R.attr.iconPause, R.attr.iconPlay});
@@ -225,7 +240,7 @@ public class UIUtils {
             playPauseIconsLoaded = true;
         }
 
-        view.setImageResource((speed == 1) ? iconPauseResId: iconPlayResId);
+        view.setImageResource(play ? iconPauseResId : iconPlayResId );
     }
 
     /**

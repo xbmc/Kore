@@ -28,10 +28,17 @@
 
         <include layout="@layout/toolbar_default" />
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
+        <org.xbmc.kore.ui.widgets.NowPlayingPanel
+            xmlns:sothree="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/now_playing_panel"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            sothree:umanoPanelHeight="@dimen/notification_art_slim_height"
+            sothree:umanoShadowHeight="4dp"
+            sothree:umanoFadeColor="#00000000"
+            sothree:umanoInitialState="hidden"/>
     </LinearLayout>
 
     <fragment android:id="@+id/navigation_drawer"

@@ -42,6 +42,7 @@ Credits
 - [PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip)
 - [FloatingActionButton](https://github.com/makovkastar/FloatingActionButton)
 - [ExpandableTextView](https://github.com/Blogcat/Android-ExpandableTextView)
+- [AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel)
 
 Links
 -----

@@ -42,7 +42,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.Proxy;
 import java.net.Socket;
@@ -70,6 +69,7 @@ public class HostConnection {
      * Interface that an observer must implement to be notified of player notifications
      */
     public interface PlayerNotificationsObserver {
+        public void onPropertyChanged(Player.OnPropertyChanged notification);
         public void onPlay(Player.OnPlay notification);
         public void onPause(Player.OnPause notification);
         public void onSpeedChanged(Player.OnSpeedChanged notification);
@@ -274,7 +274,7 @@ public class HostConnection {
      * Unregisters and observer from the input notifications
      * @param observer The {@link InputNotificationsObserver}
      */
-    public void unregisterApplicationotificationsObserver(ApplicationNotificationsObserver observer) {
+    public void unregisterApplicationNotificationsObserver(ApplicationNotificationsObserver observer) {
         applicationNotificationsObservers.remove(observer);
     }
 
@@ -658,6 +658,18 @@ public class HostConnection {
                         @Override
                         public void run() {
                             observer.onStop(apiNotification);
+                        }
+                    });
+                }
+            } else if (notificationName.equals(Player.OnPropertyChanged.NOTIFICATION_NAME)) {
+                final Player.OnPropertyChanged apiNotification = new Player.OnPropertyChanged(params);
+                for (final PlayerNotificationsObserver observer :
+                        playerNotificationsObservers.keySet()) {
+                    Handler handler = playerNotificationsObservers.get(observer);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            observer.onPropertyChanged(apiNotification);
                         }
                     });
                 }

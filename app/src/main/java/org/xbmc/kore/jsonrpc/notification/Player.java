@@ -16,6 +16,7 @@
 package org.xbmc.kore.jsonrpc.notification;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xbmc.kore.jsonrpc.ApiNotification;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
@@ -25,6 +26,23 @@ import org.xbmc.kore.utils.JsonUtils;
  * All Player.* notifications
  */
 public class Player {
+
+    /**
+     * Player.OnPropertyChanged notification
+     * Player properties have changed. Such as repeat type and shuffle mode
+     */
+    public static class OnPropertyChanged extends ApiNotification {
+        public static final String  NOTIFICATION_NAME = "Player.OnPropertyChanged";
+
+        public final NotificationsData data;
+
+        public OnPropertyChanged(ObjectNode node) {
+            super(node);
+            data = new NotificationsData(node.get(NotificationsData.DATA_NODE));
+        }
+
+        public String getNotificationName() { return NOTIFICATION_NAME; }
+    }
 
     /**
      * Player.OnPause notification
@@ -179,15 +197,44 @@ public class Player {
         }
     }
 
+    /**
+     * Notification data for player properties
+     */
+    public static class NotificationsProperty {
+        public static final String PROPERTY_NODE = "property";
+
+        public final Boolean shuffled;
+        public final String repeatMode;
+
+        public NotificationsProperty(JsonNode node) {
+            JsonNode shuffledNode = node.get("shuffled");
+            if (shuffledNode != null)
+                shuffled = shuffledNode.asBoolean();
+            else
+                shuffled = null;
+
+            repeatMode = JsonUtils.stringFromJsonNode(node, "repeat");
+        }
+    }
+
     public static class NotificationsData {
         public static final String DATA_NODE = "data";
 
         public final NotificationsPlayer player;
         public final NotificationsItem item;
+        public final NotificationsProperty property;
 
         public NotificationsData(JsonNode node) {
-            item = new NotificationsItem((ObjectNode)node.get(NotificationsItem.ITEM_NODE));
-            player = new NotificationsPlayer((ObjectNode)node.get(NotificationsPlayer.PLAYER_NODE));
+            JsonNode jsonNode = node.get(NotificationsItem.ITEM_NODE);
+            item = (jsonNode != null) ? new NotificationsItem(jsonNode) : null;
+
+            jsonNode = node.get(NotificationsPlayer.PLAYER_NODE);
+            player = (jsonNode != null)
+                     ? new NotificationsPlayer(jsonNode)
+                     : null;
+
+            jsonNode = node.get(NotificationsProperty.PROPERTY_NODE);
+            property = (jsonNode != null) ? new NotificationsProperty(jsonNode) : null;
         }
     }
 

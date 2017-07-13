@@ -169,12 +169,14 @@
                     style="@style/Widget.Button.Borderless"
                     android:src="?attr/iconVolumeMute"
                     android:contentDescription="@string/volume_mute"/>
+
                 <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
                     android:id="@+id/volume_level_indicator"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
+
                 <org.xbmc.kore.ui.widgets.RepeatModeButton
                     android:id="@+id/repeat"
                     android:layout_width="0dp"

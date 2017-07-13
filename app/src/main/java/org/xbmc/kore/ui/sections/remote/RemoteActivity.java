@@ -610,6 +610,12 @@ public class RemoteActivity extends BaseActivity
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
      */
     private String lastImageUrl = null;
+
+    @Override
+    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+
+    }
+
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
@@ -688,11 +694,6 @@ public class RemoteActivity extends BaseActivity
      */
     public void SwitchToRemotePanel() {
         viewPager.setCurrentItem(1);
-    }
-
-    @Override
-    public void onShuffleClicked() {
-        refreshPlaylist();
     }
 
     private void refreshPlaylist() {
