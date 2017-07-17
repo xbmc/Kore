@@ -43,7 +43,7 @@ public class AddonsHandler implements JSONConnectionHandlerManager.ConnectionHan
     }
 
     @Override
-    public ArrayList<JsonResponse> getNotification() {
+    public ArrayList<JsonResponse> getNotifications() {
         return null;
     }
 

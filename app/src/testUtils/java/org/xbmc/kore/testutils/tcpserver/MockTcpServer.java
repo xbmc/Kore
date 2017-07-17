@@ -203,7 +203,7 @@ public class MockTcpServer {
                 try {
                     while (true) {
                         sendResponse();
-                        Thread.sleep(1000);
+                        Thread.sleep(100);
                         if ( serverSocket.isClosed() )
                             return;
                     }

@@ -17,10 +17,12 @@
 package org.xbmc.kore.tests.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -35,7 +37,10 @@ import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.testutils.Database;
 import org.xbmc.kore.testutils.tcpserver.MockTcpServer;
 import org.xbmc.kore.testutils.tcpserver.handlers.AddonsHandler;
+import org.xbmc.kore.testutils.tcpserver.handlers.ApplicationHandler;
 import org.xbmc.kore.testutils.tcpserver.handlers.JSONConnectionHandlerManager;
+import org.xbmc.kore.testutils.tcpserver.handlers.JSONRPCHandler;
+import org.xbmc.kore.testutils.tcpserver.handlers.PlayerHandler;
 
 import java.io.IOException;
 
@@ -50,10 +55,17 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
     private static MockTcpServer server;
     private static JSONConnectionHandlerManager manager;
     private AddonsHandler addonsHandler;
+    private static PlayerHandler playerHandler;
+    private static ApplicationHandler applicationHandler;
 
     @BeforeClass
     public static void setupMockTCPServer() throws Throwable {
+        playerHandler = new PlayerHandler();
+        applicationHandler = new ApplicationHandler();
         manager = new JSONConnectionHandlerManager();
+        manager.addHandler(playerHandler);
+        manager.addHandler(applicationHandler);
+        manager.addHandler(new JSONRPCHandler());
         server = new MockTcpServer(manager);
         server.start();
     }
@@ -79,6 +91,12 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
         loaderIdlingResource = new LoaderIdlingResource(activityTestRule.getActivity().getSupportLoaderManager());
         Espresso.registerIdlingResources(loaderIdlingResource);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
+
+        //Relaunch the activity for the changes (Host selections, preference reset) to take effect
         activityTestRule.launchActivity(new Intent());
 
         Utils.closeDrawer(activityTestRule);
@@ -88,6 +106,9 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
     public void tearDown() throws Exception {
         if ( loaderIdlingResource != null )
             Espresso.unregisterIdlingResources(loaderIdlingResource);
+
+        applicationHandler.reset();
+        playerHandler.reset();
 
         Utils.cleanup();
     }
@@ -102,5 +123,13 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
             return activityTestRule.getActivity();
         }
         return null;
+    }
+
+    public static PlayerHandler getPlayerHandler() {
+        return playerHandler;
+    }
+
+    public static ApplicationHandler getApplicationHandler() {
+        return applicationHandler;
     }
 }

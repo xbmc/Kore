@@ -27,8 +27,11 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
 import org.hamcrest.Matcher;
 import org.xbmc.kore.R;
+import org.xbmc.kore.testhelpers.action.ViewActions;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -43,6 +46,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.doesNotExis
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
@@ -60,8 +64,8 @@ public class EspressoTestUtils {
                 = activity.getResources().getConfiguration().orientation;
         activity.setRequestedOrientation(
                 (orientation == Configuration.ORIENTATION_PORTRAIT) ?
-                        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
-                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
+                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     /**
@@ -141,11 +145,11 @@ public class EspressoTestUtils {
     /**
      * Performs a click on an item in an adapter view, such as GridView or ListView
      * @param position
-     * @param resourceId
+     * @param resourceId of adapter view holding the item that should be clicked
      */
     public static void clickAdapterViewItem(int position, int resourceId) {
         onData(anything()).inAdapterView(allOf(withId(resourceId), isDisplayed()))
-                .atPosition(position).perform(click());
+                          .atPosition(position).perform(click());
     }
 
     /**
@@ -153,7 +157,7 @@ public class EspressoTestUtils {
      * @param query text that SearchView should contain
      */
     public static void checkTextInSearchQuery(String query) {
-       onView(isAssignableFrom(AutoCompleteTextView.class)).check(matches(withText(query)));
+        onView(isAssignableFrom(AutoCompleteTextView.class)).check(matches(withText(query)));
     }
 
     /**
@@ -279,5 +283,19 @@ public class EspressoTestUtils {
         EspressoTestUtils.clickAdapterViewItem(item, listResourceId);
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
                 .check(matches(withText(actionbarTitle)));
+    }
+
+    /**
+     * Waits for 10 seconds till panel has given state.
+     *
+     * @param panelState desired state of panel
+     */
+    public static void waitForPanelState(final SlidingUpPanelLayout.PanelState panelState) {
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.now_playing_panel, new ViewActions.CheckStatus() {
+            @Override
+            public boolean check(View v) {
+                return ((SlidingUpPanelLayout) v).getPanelState() == panelState;
+            }
+        }, 10000));
     }
 }
