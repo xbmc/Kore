@@ -33,9 +33,15 @@
     <style name="Widget.Button">
     </style>
 
+    <style name="Widget.Button.Notification">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+    </style>
+
     <style name="Widget.Button.Borderless">
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+        <item name="android:tint">?attr/defaultButtonColorFilter</item>
     </style>
 
     <style name="Widget.GridView">

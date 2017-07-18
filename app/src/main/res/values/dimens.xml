@@ -128,11 +128,14 @@
     <dimen name="notification_expanded_height">128dp</dimen>
     <dimen name="notification_art_default_height">64dp</dimen>
     <dimen name="notification_art_default_width">64dp</dimen>
-    <dimen name="notification_art_slim_width">31dp</dimen>
-    <dimen name="notification_art_slim_height">44dp</dimen>
     <dimen name="notification_expanded_art_default_height">128dp</dimen>
     <dimen name="notification_expanded_art_default_width">128dp</dimen>
     <dimen name="notification_expanded_art_slim_width">88dp</dimen>
+
+
+    <dimen name="now_playing_panel_height">64dp</dimen>
+    <dimen name="now_playing_panel_art_width">48dp</dimen>
+    <dimen name="now_playing_panel_art_height">64dp</dimen>
 
 
 </resources>

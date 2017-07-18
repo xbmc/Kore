@@ -19,6 +19,7 @@
     <attr name="appTextColorSecondary" format="reference|color" />
 
     <attr name="textColorOverPrimary" format="reference|color" />
+    <attr name="buttonColorOverPrimary" format="reference|color" />
 
     <attr name="colorAccentLight" format="reference|color" />
 

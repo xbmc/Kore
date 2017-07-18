@@ -67,7 +67,7 @@
 
         <ImageButton
             android:id="@+id/rewind"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Button.Notification"
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="match_parent"
             android:layout_marginLeft="2dp"
@@ -77,7 +77,7 @@
             android:contentDescription="@string/rewind"/>
         <ImageButton
             android:id="@+id/play"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Button.Notification"
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="match_parent"
             android:layout_marginLeft="2dp"
@@ -87,7 +87,7 @@
             android:contentDescription="@string/play"/>
         <ImageButton
             android:id="@+id/fast_forward"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Button.Notification"
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="match_parent"
             android:layout_marginLeft="2dp"

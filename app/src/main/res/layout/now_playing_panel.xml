@@ -29,19 +29,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="?attr/colorPrimaryDark">
+            android:background="?attr/colorPrimary">
 
             <ImageView android:id="@+id/npp_poster"
-                       android:layout_width="@dimen/notification_art_slim_width"
-                       android:layout_height="@dimen/notification_art_slim_height"
+                       android:layout_width="@dimen/now_playing_panel_art_width"
+                       android:layout_height="@dimen/now_playing_panel_art_height"
                        android:layout_weight="0"
                        android:scaleType="centerInside"
                        android:contentDescription="@string/poster"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/notification_art_slim_height"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1">
                 <TextView
                     android:id="@+id/npp_title"
@@ -69,8 +70,9 @@
             </LinearLayout>
             <org.xbmc.kore.ui.widgets.HighlightButton
                 android:id="@+id/npp_volume_muted_indicator"
-                android:layout_width="@dimen/notification_art_slim_height"
-                android:layout_height="@dimen/notification_art_slim_height"
+                android:layout_width="@dimen/default_icon_size"
+                android:layout_height="@dimen/default_icon_size"
+                android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
                 android:src="?attr/iconVolumeMute"
                 android:contentDescription="@string/volume_mute"
@@ -78,25 +80,31 @@
 
             <ImageButton
                 android:id="@+id/npp_previous"
-                android:layout_width="@dimen/notification_art_slim_height"
-                android:layout_height="@dimen/notification_art_slim_height"
+                android:layout_width="@dimen/default_icon_size"
+                android:layout_height="@dimen/default_icon_size"
+                android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
+                android:tint="?attr/buttonColorOverPrimary"
                 android:src="?attr/iconPrevious"
                 android:contentDescription="@string/previous"/>
 
             <ImageButton
                 android:id="@+id/npp_play"
-                android:layout_width="@dimen/notification_art_slim_height"
-                android:layout_height="@dimen/notification_art_slim_height"
+                android:layout_width="@dimen/default_icon_size"
+                android:layout_height="@dimen/default_icon_size"
+                android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
+                android:tint="?attr/buttonColorOverPrimary"
                 android:src="?attr/iconPlay"
                 android:contentDescription="@string/play"/>
 
             <ImageButton
                 android:id="@+id/npp_next"
-                android:layout_width="@dimen/notification_art_slim_height"
-                android:layout_height="@dimen/notification_art_slim_height"
+                android:layout_width="@dimen/default_icon_size"
+                android:layout_height="@dimen/default_icon_size"
+                android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
+                android:tint="?attr/buttonColorOverPrimary"
                 android:src="?attr/iconNext"
                 android:contentDescription="@string/next"/>
         </LinearLayout>

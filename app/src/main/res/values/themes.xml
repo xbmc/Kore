@@ -53,6 +53,7 @@
         <item name="appTextColorSecondary">@color/white_dim_50pct</item>
 
         <item name="textColorOverPrimary">@color/white</item>
+        <item name="buttonColorOverPrimary">@color/white</item>
 
         <item name="fabColorNormal">?attr/colorPrimary</item>
         <item name="fabColorPressed">?attr/colorPrimaryDark</item>
@@ -175,6 +176,7 @@
         <item name="appTextColorSecondary">@color/black_dim_54pct</item>
 
         <item name="textColorOverPrimary">@color/white</item>
+        <item name="buttonColorOverPrimary">@color/white</item>
 
         <item name="fabColorNormal">?attr/colorPrimary</item>
         <item name="fabColorPressed">?attr/colorPrimaryDark</item>
@@ -243,22 +245,22 @@
 
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
 
-        <item name="iconPlay">@drawable/ic_play_arrow_black_24dp</item>
-        <item name="iconPause">@drawable/ic_pause_black_24dp</item>
-        <item name="iconStop">@drawable/ic_stop_black_24dp</item>
-        <item name="iconFastForward">@drawable/ic_fast_forward_black_24dp</item>
-        <item name="iconRewind">@drawable/ic_fast_rewind_black_24dp</item>
-        <item name="iconNext">@drawable/ic_skip_next_black_24dp</item>
-        <item name="iconPrevious">@drawable/ic_skip_previous_black_24dp</item>
+        <item name="iconPlay">@drawable/ic_play_arrow_white_24dp</item>
+        <item name="iconPause">@drawable/ic_pause_white_24dp</item>
+        <item name="iconStop">@drawable/ic_stop_white_24dp</item>
+        <item name="iconFastForward">@drawable/ic_fast_forward_white_24dp</item>
+        <item name="iconRewind">@drawable/ic_fast_rewind_white_24dp</item>
+        <item name="iconNext">@drawable/ic_skip_next_white_24dp</item>
+        <item name="iconPrevious">@drawable/ic_skip_previous_white_24dp</item>
 
-        <item name="iconVolumeUp">@drawable/ic_volume_up_black_24dp</item>
-        <item name="iconVolumeDown">@drawable/ic_volume_down_black_24dp</item>
-        <item name="iconRepeat">@drawable/ic_repeat_black_24dp</item>
-        <item name="iconRepeatOne">@drawable/ic_repeat_one_black_24dp</item>
-        <item name="iconShuffle">@drawable/ic_shuffle_black_24dp</item>
-        <item name="iconVolumeMute">@drawable/ic_volume_off_black_24dp</item>
+        <item name="iconVolumeUp">@drawable/ic_volume_up_white_24dp</item>
+        <item name="iconVolumeDown">@drawable/ic_volume_down_white_24dp</item>
+        <item name="iconRepeat">@drawable/ic_repeat_white_24dp</item>
+        <item name="iconRepeatOne">@drawable/ic_repeat_one_white_24dp</item>
+        <item name="iconShuffle">@drawable/ic_shuffle_white_24dp</item>
+        <item name="iconVolumeMute">@drawable/ic_volume_off_white_24dp</item>
 
-        <item name="iconSubtitles">@drawable/ic_closed_caption_black_24dp</item>
+        <item name="iconSubtitles">@drawable/ic_closed_caption_white_24dp</item>
 
         <item name="iconOverflow">@drawable/ic_more_vert_black_24dp</item>
 
