@@ -7,7 +7,7 @@ Doxygen documentation [![Documentation](https://codedocs.xyz/xbmc/Kore.svg)](htt
 <a href="https://play.google.com/store/apps/details?id=org.xbmc.kore" target="_blank">
   <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="80"/>
 </a>
-<a href="https://f-droid.org/repository/browse/?fdfilter=kore&fdid=org.xbmc.kore" target="_blank">
+<a href="https://f-droid.org/packages/org.xbmc.kore/" target="_blank">
   <img src="https://f-droid.org/badge/get-it-on.png" height="80"/>
 </a>
 
