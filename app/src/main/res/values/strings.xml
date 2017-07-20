@@ -421,4 +421,6 @@
     <string name="not_implemented">Not implemented</string>
     <string name="zeroprogress">0:00</string>
 
+    <string name="toggle_expand">Expand/Collapse</string>
+
 </resources>

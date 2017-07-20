@@ -57,9 +57,7 @@
     <attr name="iconSystem" format="reference" />
 
     <attr name="iconNew" format="reference" />
-    <attr name="iconNewToolbar" format="reference" />
     <attr name="iconOnOff" format="reference" />
-    <attr name="iconOnOffToolbar" format="reference" />
     <attr name="iconKeyboard" format="reference" />
 
     <attr name="iconSettings" format="reference" />
@@ -102,7 +100,6 @@
     <attr name="iconExpand" format="reference" />
 
     <attr name="iconSearch" format="reference" />
-    <attr name="iconSearchToolbar" format="reference" />
 
     <attr name="iconDownload" format="reference" />
 

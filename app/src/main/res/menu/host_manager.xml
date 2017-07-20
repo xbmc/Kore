@@ -18,7 +18,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_add_host"
         android:title="@string/add_xbmc"
-        android:icon="?attr/iconNewToolbar"
+        android:icon="?attr/iconNew"
         android:orderInCategory="1"
         app:showAsAction="always" />
 </menu>

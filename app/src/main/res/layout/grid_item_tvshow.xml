@@ -70,7 +70,9 @@
             android:layout_height="@dimen/default_icon_size"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:padding="@dimen/default_icon_padding"
+            style="@style/Widget.Button.Borderless"
             android:src="?attr/iconSeen"
             android:contentDescription="@string/seen"/>
     </RelativeLayout>

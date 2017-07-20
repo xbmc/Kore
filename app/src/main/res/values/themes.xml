@@ -105,9 +105,7 @@
         <item name="iconWeather">@drawable/ic_sunny_white_24dp</item>
 
         <item name="iconNew">@drawable/ic_add_box_white_24dp</item>
-        <item name="iconNewToolbar">@drawable/ic_add_box_white_24dp</item>
         <item name="iconOnOff">@drawable/ic_settings_power_white_24dp</item>
-        <item name="iconOnOffToolbar">@drawable/ic_settings_power_white_24dp</item>
         <item name="iconKeyboard">@drawable/ic_keyboard_white_24dp</item>
 
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
@@ -144,7 +142,6 @@
         <item name="iconChevronRight">@drawable/ic_chevron_right_white_24dp</item>
 
         <item name="iconSearch">@drawable/ic_search_white_24dp</item>
-        <item name="iconSearchToolbar">@drawable/ic_search_white_24dp</item>
 
         <item name="iconOpenInNew">@drawable/ic_open_in_new_white_24dp</item>
 
@@ -237,11 +234,9 @@
         <item name="iconFavourites">@drawable/ic_star_white_24dp</item>
         <item name="iconWeather">@drawable/ic_sunny_white_24dp</item>
 
-        <item name="iconNew">@drawable/ic_add_box_black_24dp</item>
-        <item name="iconNewToolbar">@drawable/ic_add_box_white_24dp</item>
-        <item name="iconOnOff">@drawable/ic_settings_power_black_24dp</item>
-        <item name="iconOnOffToolbar">@drawable/ic_settings_power_white_24dp</item>
-        <item name="iconKeyboard">@drawable/ic_keyboard_black_24dp</item>
+        <item name="iconNew">@drawable/ic_add_box_white_24dp</item>
+        <item name="iconOnOff">@drawable/ic_settings_power_white_24dp</item>
+        <item name="iconKeyboard">@drawable/ic_keyboard_white_24dp</item>
 
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
 
@@ -262,24 +257,23 @@
 
         <item name="iconSubtitles">@drawable/ic_closed_caption_white_24dp</item>
 
-        <item name="iconOverflow">@drawable/ic_more_vert_black_24dp</item>
+        <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
 
-        <item name="iconAddToQueue">@drawable/ic_queue_black_24dp</item>
-        <item name="iconInfoWWW">@drawable/ic_open_in_new_black_24dp</item>
-        <item name="iconSeen">@drawable/ic_done_black_24dp</item>
+        <item name="iconAddToQueue">@drawable/ic_queue_white_24dp</item>
+        <item name="iconInfoWWW">@drawable/ic_open_in_new_white_24dp</item>
+        <item name="iconSeen">@drawable/ic_done_white_24dp</item>
 
-        <item name="iconCollapse">@drawable/ic_expand_less_black_24dp</item>
-        <item name="iconExpand">@drawable/ic_expand_more_black_24dp</item>
+        <item name="iconCollapse">@drawable/ic_expand_less_white_24dp</item>
+        <item name="iconExpand">@drawable/ic_expand_more_white_24dp</item>
 
-        <item name="iconDownload">@drawable/ic_get_app_black_24dp</item>
+        <item name="iconDownload">@drawable/ic_get_app_white_24dp</item>
 
-        <item name="iconChevronLeft">@drawable/ic_chevron_left_black_24dp</item>
-        <item name="iconChevronRight">@drawable/ic_chevron_right_black_24dp</item>
+        <item name="iconChevronLeft">@drawable/ic_chevron_left_white_24dp</item>
+        <item name="iconChevronRight">@drawable/ic_chevron_right_white_24dp</item>
 
-        <item name="iconSearch">@drawable/ic_search_black_24dp</item>
-        <item name="iconSearchToolbar">@drawable/ic_search_white_24dp</item>
+        <item name="iconSearch">@drawable/ic_search_white_24dp</item>
 
-        <item name="iconOpenInNew">@drawable/ic_open_in_new_black_24dp</item>
+        <item name="iconOpenInNew">@drawable/ic_open_in_new_white_24dp</item>
 
         <item name="iconBookmark">@drawable/ic_bookmark_24dp</item>
     </style>

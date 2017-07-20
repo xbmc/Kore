@@ -18,7 +18,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_on_off"
         android:title="@string/power"
-        android:icon="?attr/iconOnOffToolbar"
+        android:icon="?attr/iconOnOff"
         android:orderInCategory="1"
         app:showAsAction="ifRoom">
         <menu>

@@ -57,6 +57,7 @@
             android:layout_alignLeft="@id/episode_number"
             android:layout_alignStart="@id/episode_number"
             android:padding="@dimen/default_icon_padding"
+            style="@style/Widget.Button.Borderless"
             android:src="?attr/iconSeen"
             android:contentDescription="@string/seen"/>
 

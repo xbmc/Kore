@@ -224,7 +224,9 @@
                         android:layout_marginBottom="@dimen/small_padding"
                         android:layout_marginRight="@dimen/small_padding"
                         android:layout_marginEnd="@dimen/small_padding"
-                        android:src="?attr/iconExpand"/>
+                        style="@style/Widget.Button.Borderless"
+                        android:src="?attr/iconExpand"
+                        android:contentDescription="@string/toggle_expand"/>
                 </LinearLayout>
 
                 <View
