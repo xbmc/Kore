@@ -18,15 +18,19 @@ package org.xbmc.kore.ui.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class VolumeLevelIndicator extends LinearLayout {
-    private SeekBar volumeSeekBar;
-    private TextView volumeTextView;
+    @InjectView(R.id.vli_seek_bar) SeekBar volumeSeekBar;
+    @InjectView(R.id.vli_volume_text) TextView volumeTextView;
 
     private OnVolumeChangeListener onVolumeChangeListener;
 
@@ -44,17 +48,15 @@ public class VolumeLevelIndicator extends LinearLayout {
         initializeView(context);
     }
 
-    private void initializeView(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.volume_level_indicator, this);
+    public VolumeLevelIndicator(Context context, AttributeSet attributeSet, int defStyle) {
+        super(context, attributeSet, defStyle);
+        initializeView(context);
     }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        volumeSeekBar = (SeekBar) findViewById(R.id.vli_seek_bar);
-        volumeTextView = (TextView) findViewById(R.id.vli_volume_text);
+    private void initializeView(Context context) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.volume_level_indicator, this);
+        ButterKnife.inject(view);
 
         volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

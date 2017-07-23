@@ -32,6 +32,9 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.utils.UIUtils;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class NowPlayingPanel extends SlidingUpPanelLayout {
 
     public interface OnPanelButtonsClickListener {
@@ -46,18 +49,18 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
 
     private OnPanelButtonsClickListener onPanelButtonsClickListener;
 
-    private TextView title;
-    private TextView details;
-    private ImageView poster;
-    private ImageButton previousButton;
-    private ImageButton nextButton;
-    private ImageButton playButton;
-    private MediaProgressIndicator mediaProgressIndicator;
-    private VolumeLevelIndicator volumeLevelIndicator;
-    private HighlightButton volumeMuteButton;
-    private HighlightButton volumeMutedIndicatorButton;
-    private RepeatModeButton repeatModeButton;
-    private HighlightButton shuffleButton;
+    @InjectView(R.id.npp_title) TextView title;
+    @InjectView(R.id.npp_details) TextView details;
+    @InjectView(R.id.npp_poster) ImageView poster;
+    @InjectView(R.id.npp_previous) ImageButton previousButton;
+    @InjectView(R.id.npp_next) ImageButton nextButton;
+    @InjectView(R.id.npp_play) ImageButton playButton;
+    @InjectView(R.id.npp_progress_indicator) MediaProgressIndicator mediaProgressIndicator;
+    @InjectView(R.id.npp_volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
+    @InjectView(R.id.npp_volume_mute) HighlightButton volumeMuteButton;
+    @InjectView(R.id.npp_volume_muted_indicator) HighlightButton volumeMutedIndicatorButton;
+    @InjectView(R.id.npp_repeat) RepeatModeButton repeatModeButton;
+    @InjectView(R.id.npp_shuffle) HighlightButton shuffleButton;
 
     public NowPlayingPanel(Context context) {
         super(context);
@@ -75,26 +78,8 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
 
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.now_playing_panel, this);
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        title = (TextView) findViewById(R.id.npp_title);
-        details = (TextView) findViewById(R.id.npp_details);
-        poster = (ImageView) findViewById(R.id.npp_poster);
-        previousButton = (ImageButton) findViewById(R.id.npp_previous);
-        nextButton = (ImageButton) findViewById(R.id.npp_next);
-        playButton = (ImageButton) findViewById(R.id.npp_play);
-        mediaProgressIndicator = (MediaProgressIndicator) findViewById(R.id.npp_progress_indicator);
-        volumeLevelIndicator = (VolumeLevelIndicator) findViewById(R.id.npp_volume_level_indicator);
-        volumeMuteButton = (HighlightButton) findViewById(R.id.npp_volume_mute);
-        repeatModeButton = (RepeatModeButton) findViewById(R.id.npp_repeat);
-        shuffleButton = (HighlightButton) findViewById(R.id.npp_shuffle);
-        volumeMutedIndicatorButton = (HighlightButton) findViewById(R.id.npp_volume_muted_indicator);
-
+        View view = inflater.inflate(R.layout.now_playing_panel, this);
+        ButterKnife.inject(view);
         setupButtonClickListeners();
     }
 

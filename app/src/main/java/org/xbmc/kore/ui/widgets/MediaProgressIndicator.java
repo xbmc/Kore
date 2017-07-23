@@ -22,19 +22,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public class MediaProgressIndicator extends LinearLayout {
 
-    private SeekBar seekBar;
-    private TextView durationTextView;
-    private TextView progressTextView;
+    @InjectView(R.id.mpi_seek_bar) SeekBar seekBar;
+    @InjectView(R.id.mpi_duration) TextView durationTextView;
+    @InjectView(R.id.mpi_progress) TextView progressTextView;
+
     private int speed = 0;
     private int maxProgress;
     private int progress;
@@ -57,18 +61,15 @@ public class MediaProgressIndicator extends LinearLayout {
         initializeView(context);
     }
 
-    private void initializeView(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.media_progress_indicator, this);
+    public MediaProgressIndicator(Context context, AttributeSet attributeSet, int defStyle) {
+        super(context, attributeSet, defStyle);
+        initializeView(context);
     }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        seekBar = (SeekBar) findViewById(R.id.mpi_seek_bar);
-        progressTextView = (TextView) findViewById(R.id.mpi_progress);
-        durationTextView = (TextView) findViewById(R.id.mpi_duration);
+    private void initializeView(Context context) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.media_progress_indicator, this);
+        ButterKnife.inject(view);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

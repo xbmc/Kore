@@ -34,13 +34,19 @@ public class RepeatModeButton extends AppCompatImageButton {
     private static TypedArray styledAttributes;
     private static int accentDefaultColor;
 
+    public RepeatModeButton(Context context) {
+        super(context);
+        setStyle(context);
+    }
+
     public RepeatModeButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{
-                R.attr.colorAccent,
-                R.attr.iconRepeat,
-                R.attr.iconRepeatOne});
-        accentDefaultColor = getContext().getResources().getColor(R.color.accent_default);
+        setStyle(context);
+    }
+
+    public RepeatModeButton(Context context, AttributeSet attributeSet, int defStyle) {
+        super(context, attributeSet, defStyle);
+        setStyle(context);
     }
 
     public void setMode(MODE mode) {
@@ -64,5 +70,13 @@ public class RepeatModeButton extends AppCompatImageButton {
 
     public MODE getMode() {
         return mode;
+    }
+
+    private void setStyle(Context context) {
+        styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{
+                R.attr.colorAccent,
+                R.attr.iconRepeat,
+                R.attr.iconRepeatOne});
+        accentDefaultColor = getContext().getResources().getColor(R.color.accent_default);
     }
 }

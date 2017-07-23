@@ -16,7 +16,6 @@
 package org.xbmc.kore.ui.widgets;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
@@ -28,14 +27,19 @@ public class HighlightButton extends AppCompatImageButton {
 
     private boolean highlight;
 
+    public HighlightButton(Context context) {
+        super(context);
+        setStyle(context);
+    }
+
     public HighlightButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Resources.Theme theme = context.getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
-                R.attr.colorAccent});
-        colorFilter = styledAttributes.getColor(styledAttributes.getIndex(0),
-                                  context.getResources().getColor(R.color.accent_default));
-        styledAttributes.recycle();
+        setStyle(context);
+    }
+
+    public HighlightButton(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        setStyle(context);
     }
 
     public void setHighlight(boolean highlight) {
@@ -49,5 +53,13 @@ public class HighlightButton extends AppCompatImageButton {
 
     public boolean isHighlighted() {
         return highlight;
+    }
+
+    private void setStyle(Context context) {
+        TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{
+                R.attr.colorAccent});
+        colorFilter = styledAttributes.getColor(styledAttributes.getIndex(0),
+                                                context.getResources().getColor(R.color.accent_default));
+        styledAttributes.recycle();
     }
 }
