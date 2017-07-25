@@ -28,6 +28,8 @@
     <attr name="appSelectedCardBackgroundColor" format="reference|color" />
     <attr name="buttonBarBackgroundColor" format="reference|color" />
 
+    <attr name="colorToolbar" format="reference|color" />
+
     <attr name="fabColorNormal" format="reference|color" />
     <attr name="fabColorPressed" format="reference|color" />
 

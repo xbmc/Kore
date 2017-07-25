@@ -22,6 +22,7 @@
 
     <!--<color name="accent_default">@color/light_green_A700</color>-->
     <color name="accent_default">@color/orange_A400</color>
+    <color name="accent_default_dark">@color/orange_A700</color>
 
     <color name="white">#ffffffff</color>
     <color name="white_dim_50pct">#88ffffff</color>
@@ -34,6 +35,12 @@
     <color name="estuary_default_dark">#0a5b71</color>
     <!--<color name="estuary_default">#147a96</color>-->
     <!--<color name="estuary_default_dark">#0f4d5e</color>-->
+
+    <color name="day_accent">#e66000</color>
+    <color name="day_accent_dark">#cd5700</color>
+    <color name="day_primary">#b13956</color>
+    <color name="day_primary_dark">#873349</color>
+    <!--<color name="day_primary">#993a50</color>-->
 
     <!--<color name="dark_content_background">#ff222326</color>-->
     <!--<color name="dark_content_background_dim_70pct">#b4222326</color>-->

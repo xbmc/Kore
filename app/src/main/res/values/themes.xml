@@ -14,7 +14,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+           xmlns:tools="http://schemas.android.com/tools">
 
 	<!-- Base Dark theme. -->
 	<style name="NightTheme" parent="Theme.AppCompat.NoActionBar">
@@ -47,6 +48,9 @@
         <!--<item name="colorControlHighlight">@color/color_accent</item>-->
         <!--<item name="colorControlActivated">@color/color_accent</item>-->
 
+        <item name="colorToolbar">?attr/colorPrimary</item>
+        <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryDark</item>
+
         <item name="colorButtonNormal">?attr/colorPrimary</item>
 
         <item name="appTextColorPrimary">@color/white</item>
@@ -57,6 +61,8 @@
 
         <item name="fabColorNormal">?attr/colorPrimary</item>
         <item name="fabColorPressed">?attr/colorPrimaryDark</item>
+        <!--<item name="fabColorNormal">@color/accent_default</item>-->
+        <!--<item name="fabColorPressed">@color/accent_default_dark</item>-->
 
         <!-- Toolbar bar -->
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
@@ -159,9 +165,9 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
         <!-- Set AppCompat’s color theming attrs -->
-        <item name="colorPrimary">@color/deep_orange_500</item>
-        <item name="colorPrimaryDark">@color/deep_orange_700</item>
-        <item name="colorAccent">@color/light_blue_A700</item>
+        <item name="colorPrimary">@color/day_primary</item>
+        <item name="colorPrimaryDark">@color/day_primary_dark</item>
+        <item name="colorAccent">@color/day_accent</item>
          <!--<item name="colorControlHighlight">@color/color_accent</item>-->
         <!--<item name="colorControlActivated">@color/color_accent</item>-->
 
@@ -169,14 +175,17 @@
         is set to white but can have unintended consequences. Watch it -->
         <!--<item name="colorControlNormal">@color/white</item>-->
 
+        <item name="colorToolbar">?attr/colorPrimary</item>
+        <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryDark</item>
+
         <item name="appTextColorPrimary">@color/black_dim_87pct</item>
         <item name="appTextColorSecondary">@color/black_dim_54pct</item>
 
         <item name="textColorOverPrimary">@color/white</item>
         <item name="buttonColorOverPrimary">@color/white</item>
 
-        <item name="fabColorNormal">?attr/colorPrimary</item>
-        <item name="fabColorPressed">?attr/colorPrimaryDark</item>
+        <item name="fabColorNormal">@color/accent_default</item>
+        <item name="fabColorPressed">@color/accent_default_dark</item>
 
         <!-- Toolbar bar -->
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
