@@ -217,7 +217,7 @@ Por favor classifique-nos na <b><a href="market://details?id=org.xbmc.kore">Goog
 
 Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
 ]]></string>
-    <string name="audio_sync">Simcronizar audio</string>
+    <string name="audio_sync">Sincronizar audio</string>
     <string name="confirm_album_download">Tem a certeza que pretende transferir este álbum?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
     <string name="confirm_episode_download">Tem a certeza que pretende transferir este episódio?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
     <string name="confirm_movie_download">Tem a certeza que pretende transferir este filme?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
@@ -326,6 +326,9 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
   <string name="system">Sistema</string>
   <string name="remote_bar_items">Atalhos da barra inferior</string>
   <string name="script"></string>
+  <string name="show_now_playing_panel">Mostrar painel \"Em reprodução\"</string>
+  <string name="show_now_playing_panel_summary">Apresenta um painel de controlo na base do écran quando algo está em reprodução</string>
+  <string name="toggle_expand">Expandir/Colapsar</string>
 
   <!--<string name="buy_me_coffee">Oferecer um café</string>-->
   <!--<string name="expresso_please">Expresso, por favor. Obrigado!</string>-->
