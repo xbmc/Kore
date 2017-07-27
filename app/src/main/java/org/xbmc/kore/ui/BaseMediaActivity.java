@@ -470,7 +470,7 @@ public abstract class BaseMediaActivity extends BaseActivity
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
                 title = getItemResult.title;
-                String seasonEpisode = String.format(getString(R.string.season_episode),
+                String seasonEpisode = String.format(getString(R.string.season_episode_abbrev),
                                                      getItemResult.season, getItemResult.episode);
                 details = String.format("%s | %s", getItemResult.showtitle, seasonEpisode);
                 poster = TextUtils.isEmpty(getItemResult.art.poster) ? getItemResult.art.fanart
