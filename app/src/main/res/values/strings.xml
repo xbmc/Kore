@@ -203,7 +203,7 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s votes</string>
-    <string name="max_rating" translatable="false">/%1$s</string>
+    <string name="max_rating">/%1$s</string>
     <string name="max_rating_video">/10</string>
     <string name="max_rating_music">/5</string>
 
@@ -259,7 +259,7 @@
     <string name="no_cast_info">No cast info to display</string>
 
     <string name="minutes_abbrev">%1$s min</string>
-    <string name="minutes_abbrev2" translatable="false">%1$sm</string>
+    <string name="minutes_abbrev2">%1$sm</string>
     <string name="sync_successful">Sync successful</string>
     <string name="error_while_syncing">An error occurred while syncing: %1$s</string>
 
@@ -419,7 +419,7 @@
     <string name="Refreshing_not_implemented_for_this_item">Refreshing not implemented for this item</string>
     <string name="no_songs_found_refresh">No songs found\\n\\nSwipe down to refresh</string>
     <string name="not_implemented">Not implemented</string>
-    <string name="zeroprogress" translatable="false">0:00</string>
+    <string name="zeroprogress">0:00</string>
 
     <string name="toggle_expand">Expand/Collapse</string>
 
