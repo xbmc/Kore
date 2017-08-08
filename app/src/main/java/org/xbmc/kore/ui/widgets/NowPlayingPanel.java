@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -49,6 +50,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
 
     private OnPanelButtonsClickListener onPanelButtonsClickListener;
 
+    @InjectView(R.id.npp_collapsed_view) LinearLayout collapsedView;
     @InjectView(R.id.npp_title) TextView title;
     @InjectView(R.id.npp_details) TextView details;
     @InjectView(R.id.npp_poster) ImageView poster;
@@ -80,6 +82,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.now_playing_panel, this);
         ButterKnife.inject(view);
+        setDragView(collapsedView);
         setupButtonClickListeners();
     }
 

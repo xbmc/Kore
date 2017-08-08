@@ -25,7 +25,7 @@
         android:id="@+id/mpi_seek_bar"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="4dp"/>
     <TextView
         android:id="@+id/mpi_duration"
