@@ -83,6 +83,15 @@
                 style="@style/Widget.Button.Borderless"
                 android:src="?attr/iconFastForward"
                 android:contentDescription="@string/fast_forward"/>
+
+            <ImageButton
+                android:id="@+id/subtitles"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                style="@style/Widget.Button.Borderless"
+                android:src="?attr/iconSubtitles"
+                android:contentDescription="@string/subtitles"/>
         </LinearLayout>
 
         <TextView

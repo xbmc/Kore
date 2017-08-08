@@ -107,6 +107,16 @@
                 android:tint="?attr/buttonColorOverPrimary"
                 android:src="?attr/iconNext"
                 android:contentDescription="@string/next"/>
+
+            <ImageButton
+                android:id="@+id/npp_subtitles"
+                android:layout_width="@dimen/default_icon_size"
+                android:layout_height="@dimen/default_icon_size"
+                android:layout_gravity="center_vertical"
+                style="@style/Widget.Button.Borderless"
+                android:tint="?attr/buttonColorOverPrimary"
+                android:src="?attr/iconSubtitles"
+                android:contentDescription="@string/subtitles"/>
         </LinearLayout>
         <org.xbmc.kore.ui.widgets.MediaProgressIndicator
             android:id="@+id/npp_progress_indicator"

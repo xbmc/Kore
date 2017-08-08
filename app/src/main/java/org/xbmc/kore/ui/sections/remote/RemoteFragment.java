@@ -56,6 +56,7 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
+import org.xbmc.kore.ui.generic.SubtitlesOptionsDialog;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.RepeatListener;
 import org.xbmc.kore.utils.UIUtils;
@@ -74,7 +75,8 @@ import butterknife.Optional;
  * Remote view
  */
 public class RemoteFragment extends Fragment
-        implements HostConnectionObserver.PlayerEventsObserver {
+        implements HostConnectionObserver.PlayerEventsObserver,
+                    SubtitlesOptionsDialog.SubtitlesOptionsDialogListener{
     private static final String TAG = LogUtils.makeLogTag(RemoteFragment.class);
 
     /**
@@ -156,12 +158,15 @@ public class RemoteFragment extends Fragment
     // Icons for fastForward/Rewind or skipPrevious/skipNext
     int fastForwardIcon, rewindIcon, skipPreviousIcon, skipNextIcon;
 
+    private SubtitlesOptionsDialog subtitlesDialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hostManager = HostManager.getInstance(getActivity());
         hostConnectionObserver = hostManager.getHostConnectionObserver();
-
+        subtitlesDialog = new SubtitlesOptionsDialog(this.getActivity());
+        subtitlesDialog.addListener(this);
         buttonInAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_in);
         buttonOutAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_out);
 
@@ -545,6 +550,11 @@ public class RemoteFragment extends Fragment
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
+    @OnClick(R.id.subtitles)
+    public void onSubtitlesClicked(View v) {
+        subtitlesDialog.Show();
+    }
+
     /**
      * Callback for methods that change the play speed
      */
@@ -737,5 +747,10 @@ public class RemoteFragment extends Fragment
             remotePanel.setVisibility(View.GONE);
             buttonBarPanel.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onRemoteRequired() {
+
     }
 }
