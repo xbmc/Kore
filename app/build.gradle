@@ -162,3 +162,14 @@ afterEvaluate {
         }
     }
 }
+
+/**
+ * Android gradle plugin 2.3.x contains a bug where the assets for fullDebug
+ * are not copied. The task assembleFullDebug does copy the required assets,
+ * so this dependency fixes the issue.
+ */
+tasks.whenTaskAdded { task ->
+    if (task.name.contains("testFullDebugUnitTest")) {
+        task.dependsOn assembleFullDebug
+    }
+}
