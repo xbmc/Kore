@@ -344,6 +344,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 			if ((savedSearchFilter != null) && (!TextUtils.isEmpty(savedSearchFilter))){
 				searchMenuItem.expandActionView();
 				searchView.setQuery(savedSearchFilter, false);
+				//noinspection RestrictedApi
 				searchView.clearFocus();
 			}
 
