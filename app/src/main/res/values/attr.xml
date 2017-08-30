@@ -33,6 +33,9 @@
     <attr name="fabColorNormal" format="reference|color" />
     <attr name="fabColorPressed" format="reference|color" />
 
+    <attr name="colorinProgress" format="reference|color" />
+    <attr name="colorFinished" format="reference|color" />
+
     <attr name="separatorColor" format="reference|color" />
 
 	<attr name="drawerBackgroundColor" format="reference|color" />

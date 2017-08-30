@@ -18,7 +18,9 @@ package org.xbmc.kore.ui.sections.video;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +49,7 @@ import org.xbmc.kore.ui.generic.CastFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 public class TVShowProgressFragment extends AbstractAdditionalInfoFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(TVShowProgressFragment.class);
@@ -280,6 +283,17 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             int artHeight = (int)(resources.getDimension(R.dimen.seasonlist_art_heigth) /
                                   UIUtils.IMAGE_RESIZE_FACTOR);
 
+            // Get theme colors
+            Resources.Theme theme = getActivity().getTheme();
+            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
+                    R.attr.colorinProgress,
+                    R.attr.colorFinished
+            });
+
+            int inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.orange_500));
+            int finishedColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.green_400));
+            styledAttributes.recycle();
+
             seasonsList.removeAllViews();
             do {
                 int seasonNumber = cursor.getInt(SeasonsListQuery.SEASON);
@@ -299,6 +313,11 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                                                          numEpisodes, numEpisodes - watchedEpisodes));
                 seasonProgressBar.setMax(numEpisodes);
                 seasonProgressBar.setProgress(watchedEpisodes);
+
+                if (Utils.isLollipopOrLater()) {
+                    int watchedColor = (numEpisodes - watchedEpisodes == 0) ? finishedColor : inProgressColor;
+                    seasonProgressBar.setProgressTintList(ColorStateList.valueOf(watchedColor));
+                }
 
                 UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                      thumbnail,
