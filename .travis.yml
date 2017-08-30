@@ -5,6 +5,8 @@ sudo: false
 env:
   matrix:
     - ANDROID_TARGET=android-25
+  global:
+    - GRADLE_OPTS="-Xms128m"
 
 android:
   components:
