@@ -273,7 +273,7 @@
     <string name="confirm_episode_download">Wollen Sie diese Folge herunterladen?\nDie Folge wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
     <string name="confirm_album_download">Wollen Sie dieses Album herunterladen?\nDas Album wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
     <string name="confirm_artist_download">Wollen Sie alle Alben herunterladen?\nDie Alben werden dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
-    <string name="confirm_songs_download">Wollen Sie das Lied %1$d herunterladen?\nDas Lied wird im Hintergrung heruntergeladen. Dies kann eine Weile dauern.</string>
+    <string name="confirm_songs_download">Wollen Sie %1$d Lieder herunterladen?\nDiese Lieder werden dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
 
     <string name="download_file_exists">Datei existiert bereits.\nÜberschreiben oder unter neuem Namen speichern?</string>
     <string name="download_dir_exists">Download Ordner existiert bereits.\nBei Dateikonflikten überschreiben oder unter neuem Namen speichern?</string>
