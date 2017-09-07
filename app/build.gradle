@@ -115,7 +115,6 @@ dependencies {
     compile "com.android.support:cardview-v7:${supportLibVersion}"
     compile "com.android.support:preference-v14:${supportLibVersion}"
     compile "com.android.support:support-v13:${supportLibVersion}"
-    compile "com.android.support:gridlayout-v7:${supportLibVersion}"
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
     compile 'com.jakewharton:butterknife:6.1.0'
