@@ -18,7 +18,7 @@ android {
         applicationId "org.xbmc.kore"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 16
+        versionCode 17
         versionName = getVersionName()
     }
 

@@ -1,9 +1,10 @@
 Changelog
 ---------
 
-Version 2.3.0
+Version 2.3.1
 -------------
 - New slide up panel with media controls on information screens
+- Added new Favourites section to the navigation side panel
 - Remote bottom bar shortcuts now configurable through Settings
 - Added watched indicator to movies and tv shows list
 - Various UI tweaks, including new colors and icons
