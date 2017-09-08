@@ -14,33 +14,23 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
         android:id="@+id/context"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_columnWeight="1"
-        app:layout_rowWeight="1"
-        app:layout_gravity="fill"
         android:src="?attr/iconContext"
         android:contentDescription="@string/codec_info"/>
     <ImageView
         android:id="@+id/up"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_columnWeight="1"
-        app:layout_rowWeight="1"
-        app:layout_gravity="fill"
         android:src="?attr/iconUp"
         android:contentDescription="@string/up"/>
     <ImageView
         android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_columnWeight="1"
-        app:layout_rowWeight="1"
-        app:layout_gravity="fill"
         android:src="?attr/iconInfo"
         android:contentDescription="@string/info"/>
 
@@ -48,27 +38,18 @@
         android:id="@+id/left"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_columnWeight="1"
-        app:layout_rowWeight="1"
-        app:layout_gravity="fill"
         android:src="?attr/iconLeft"
         android:contentDescription="@string/left"/>
     <ImageView
         android:id="@+id/select"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_columnWeight="1"
-        app:layout_rowWeight="1"
-        app:layout_gravity="fill"
         android:src="?attr/iconSelect"
         android:contentDescription="@string/select"/>
     <ImageView
         android:id="@+id/right"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_columnWeight="1"
-        app:layout_rowWeight="1"
-        app:layout_gravity="fill"
         android:src="?attr/iconRight"
         android:contentDescription="@string/right"/>
 
@@ -76,27 +57,18 @@
         android:id="@+id/back"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_columnWeight="1"
-        app:layout_rowWeight="1"
-        app:layout_gravity="fill"
         android:src="?attr/iconBack"
         android:contentDescription="@string/back"/>
     <ImageView
         android:id="@+id/down"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_columnWeight="1"
-        app:layout_rowWeight="1"
-        app:layout_gravity="fill"
         android:src="?attr/iconDown"
         android:contentDescription="@string/down"/>
     <ImageView
         android:id="@+id/osd"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_columnWeight="1"
-        app:layout_rowWeight="1"
-        app:layout_gravity="fill"
         android:src="?attr/iconMenu"
         android:contentDescription="@string/osd"/>
 </merge>
