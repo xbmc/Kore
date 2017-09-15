@@ -15,121 +15,46 @@
  */
 package org.xbmc.kore.ui.viewgroups;
 
+
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.support.v7.widget.GridLayout;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 
-import org.xbmc.kore.R;
+import org.xbmc.kore.utils.LogUtils;
 
 /**
  * The square grid layout creates a square layout that will fit inside
- * the boundaries provided by the parent layout. Note that all cells
- * will have the same size.
- *
- * The attribute columnCount is available to specify the amount of columns
- * when using SquareGridLayout in a XML layout file.
+ * the boundaries provided by the parent layout.
  */
-public class SquareGridLayout extends ViewGroup {
-
-    private int columnCount = 1;
-    private int cellSize;
+public class SquareGridLayout extends GridLayout {
 
     public SquareGridLayout(Context context) {
-        this(context, null);
+        super(context);
+        fixForRelativeLayout();
     }
 
     public SquareGridLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        fixForRelativeLayout();
     }
 
     public SquareGridLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.SquareGridLayout, 0, 0);
-        setColumnCount(a.getInt(R.styleable.SquareGridLayout_columnCount, 1));
-        a.recycle();
         fixForRelativeLayout();
     }
 
-    public void setColumnCount(int columnCount) {
-        if (columnCount < 1) throw new IllegalArgumentException("Column count must be 1 or more");
-        this.columnCount = columnCount;
-    }
-
-    /**
-     * Methods overridden to make sure we pass in the correct layout parameters for the child views
-     */
     @Override
-    protected LayoutParams generateLayoutParams(LayoutParams p) {
-        return new MarginLayoutParams(p);
-    }
+    protected void onMeasure(int widthSpec, int heightSpec) {
+        int width = MeasureSpec.getSize(widthSpec);
+        int height = MeasureSpec.getSize(heightSpec);
+        int size = Math.min(width, height);
 
-    @Override
-    public LayoutParams generateLayoutParams(AttributeSet attrs) {
-        return new MarginLayoutParams(getContext(), attrs);
-    }
-
-    @Override
-    protected LayoutParams generateDefaultLayoutParams() {
-        return new MarginLayoutParams(MarginLayoutParams.WRAP_CONTENT,
-                                      MarginLayoutParams.WRAP_CONTENT);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-
-        int paddingWidth = getPaddingLeft() + getPaddingRight();
-        int paddingHeight = getPaddingTop() + getPaddingBottom();
-
-        int size;
-        int padding;
-        if ((width - paddingWidth) < (height - paddingHeight)) {
-            size = width;
-            padding = size - paddingWidth;
-        } else {
-            size = height;
-            padding = size - paddingHeight;
-        }
-
-        for (int y = 0; y < columnCount; y++) {
-            for (int x = 0; x < columnCount; x++) {
-                View child = getChildAt(y * size + x);
-                if (child != null) {
-                    measureChildWithMargins(child,
-                                            MeasureSpec.makeMeasureSpec((padding + x) / columnCount, MeasureSpec.EXACTLY),
-                                            0,
-                                            MeasureSpec.makeMeasureSpec((padding + y) / columnCount, MeasureSpec.EXACTLY),
-                                            0);
-                }
-            }
-        }
-
-        setMeasuredDimension(size, size);
-        cellSize = padding;
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        // top left is used to position child views
-        left = getPaddingLeft();
-        top = getPaddingTop();
-
-        for (int y = 0; y < columnCount; y++) {
-            for (int x = 0; x < columnCount; x++) {
-                View child = getChildAt(y * columnCount + x);
-                MarginLayoutParams childLayoutParams = (MarginLayoutParams) child.getLayoutParams();
-                child.layout(left + (cellSize *  x) / columnCount + childLayoutParams.leftMargin,
-                             top + (cellSize * y) / columnCount + childLayoutParams.topMargin,
-                             left + (cellSize * (x+1)) / columnCount - childLayoutParams.rightMargin,
-                             top + (cellSize * (y+1)) / columnCount - childLayoutParams.bottomMargin
-                            );
-            }
-        }
+        super.onMeasure(MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY));
     }
 
     /**
