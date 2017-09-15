@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-Version 2.3.1
+Version 2.3.2
 -------------
 - New slide up panel with media controls on information screens
 - Added new Favourites section to the navigation side panel
