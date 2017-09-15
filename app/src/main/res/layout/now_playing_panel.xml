@@ -14,9 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:sothree="http://schemas.android.com/apk/res-auto"
-       sothree:umanoPanelHeight="@dimen/now_playing_panel_height">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -36,7 +34,7 @@
 
             <ImageView android:id="@+id/npp_poster"
                        android:layout_width="@dimen/now_playing_panel_art_width"
-                       android:layout_height="@dimen/now_playing_panel_art_height"
+                       android:layout_height="@dimen/now_playing_panel_height"
                        android:layout_weight="0"
                        android:scaleType="centerInside"
                        android:contentDescription="@string/poster"/>
