@@ -60,7 +60,6 @@
 
     <dimen name="remote_poster_width">98dp</dimen>
     <dimen name="remote_poster_height">140dp</dimen>
-    <dimen name="remote_top_panel_height">164dp</dimen>
 
     <dimen name="now_playing_poster_width">112dp</dimen>
     <dimen name="now_playing_poster_height">160dp</dimen>

@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,7 +26,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
@@ -242,19 +240,5 @@ public class Utils {
                      .show();
             }
         }, callbackHandler);
-    }
-
-    /**
-     * Returns the smallest width in density independent pixel size.
-     * Useful to determine in which sw<SIZE>dp bucket the device is placed.
-     * @param activity
-     * @return the smallest width in density independent pixel size
-     */
-    public static int getSmallestWidthDP(Activity activity) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float widthDp = metrics.widthPixels / metrics.density;
-        float heightDp = metrics.heightPixels / metrics.density;
-        return (int) Math.min(widthDp, heightDp);
     }
 }
