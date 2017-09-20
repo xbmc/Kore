@@ -15,12 +15,18 @@
  */
 package org.xbmc.kore.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.method.Application;
+import org.xbmc.kore.jsonrpc.type.GlobalType;
+import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.utils.UIUtils;
 
 /**
@@ -28,18 +34,68 @@ import org.xbmc.kore.utils.UIUtils;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
+	/**
+	 * Host manager singleton
+	 */
+	protected HostManager hostManager = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         setTheme(UIUtils.getThemeResourceId(
                 prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
         super.onCreate(savedInstanceState);
+
+		hostManager = HostManager.getInstance(this);
+
+		// Check if we have any hosts setup
+		if (hostManager.getHostInfo() == null && !(this instanceof AddHostActivity)) {
+			final Intent intent = new Intent(this, AddHostActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+			finish();
+		}
 	}
 
     @Override
     public void onPause() {
         super.onPause();
     }
+
+	/**
+	 * Override hardware volume keys and send to Kodi
+	 */
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		// Check whether we should intercept this
+		boolean useVolumeKeys = android.support.v7.preference.PreferenceManager
+				.getDefaultSharedPreferences(this)
+				.getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+						Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+		if (useVolumeKeys) {
+			int action = event.getAction();
+			int keyCode = event.getKeyCode();
+			switch (keyCode) {
+				case KeyEvent.KEYCODE_VOLUME_UP:
+					if (action == KeyEvent.ACTION_DOWN) {
+						new Application
+								.SetVolume(GlobalType.IncrementDecrement.INCREMENT)
+								.execute(hostManager.getConnection(), null, null);
+					}
+					return true;
+				case KeyEvent.KEYCODE_VOLUME_DOWN:
+					if (action == KeyEvent.ACTION_DOWN) {
+						new Application
+								.SetVolume(GlobalType.IncrementDecrement.DECREMENT)
+								.execute(hostManager.getConnection(), null, null);
+					}
+					return true;
+			}
+		}
+
+		return super.dispatchKeyEvent(event);
+	}
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
