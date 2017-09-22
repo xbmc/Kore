@@ -34,13 +34,13 @@ import org.xbmc.kore.utils.UIUtils;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-	/**
-	 * Host manager singleton
-	 */
-	protected HostManager hostManager = null;
+    /**
+     * Host manager singleton
+     */
+    protected HostManager hostManager = null;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         setTheme(UIUtils.getThemeResourceId(
                 prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
@@ -58,7 +58,49 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
+    /**
+     * Override hardware volume keys and send to Kodi
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Check whether we should intercept this
+        boolean useVolumeKeys = android.support.v7.preference.PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+                        Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+        if (useVolumeKeys) {
+            int action = event.getAction();
+            int keyCode = event.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        interactWithNowPlayingPanel();
+                        new Application
+                                .SetVolume(GlobalType.IncrementDecrement.INCREMENT)
+                                .execute(hostManager.getConnection(), null, null);
+                    }
+                    return true;
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        interactWithNowPlayingPanel();
+                        new Application
+                                .SetVolume(GlobalType.IncrementDecrement.DECREMENT)
+                                .execute(hostManager.getConnection(), null, null);
+                    }
+                    return true;
+            }
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+
+    private void interactWithNowPlayingPanel() {
+        if (this instanceof BaseMediaActivity) {
+            ((BaseMediaActivity) this).expandNowPlayingPanel();
+        }
+    }
+
+    //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.global, menu);
 //        return super.onCreateOptionsMenu(menu);
@@ -67,8 +109,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        switch (item.getItemId()) {
-//			case R.id.action_settings:
-//				return true;
+//            case R.id.action_settings:
+//                return true;
 //            default:
 //                break;
 //        }

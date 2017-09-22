@@ -165,8 +165,6 @@ public abstract class BaseMediaActivity extends BaseActivity
         if (Utils.isLollipopOrLater()) {
             sharedElementTransition.setupExitTransition(this, fragment);
         }
-
-        hostManager = HostManager.getInstance(this);
     }
 
     @Override
@@ -212,42 +210,6 @@ public abstract class BaseMediaActivity extends BaseActivity
 
         hostConnectionObserver.unregisterApplicationObserver(this);
         hostConnectionObserver.unregisterPlayerObserver(this);
-    }
-
-    /**
-     * Override hardware volume keys and send to Kodi
-     */
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        // Check whether we should intercept this
-        boolean useVolumeKeys = android.support.v7.preference.PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
-                        Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
-        if (useVolumeKeys) {
-            int action = event.getAction();
-            int keyCode = event.getKeyCode();
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_VOLUME_UP:
-                    if (action == KeyEvent.ACTION_DOWN) {
-                        expandNowPlayingPanel();
-                        new Application
-                                .SetVolume(GlobalType.IncrementDecrement.INCREMENT)
-                                .execute(hostManager.getConnection(), null, null);
-                    }
-                    return true;
-                case KeyEvent.KEYCODE_VOLUME_DOWN:
-                    if (action == KeyEvent.ACTION_DOWN) {
-                        expandNowPlayingPanel();
-                        new Application
-                                .SetVolume(GlobalType.IncrementDecrement.DECREMENT)
-                                .execute(hostManager.getConnection(), null, null);
-                    }
-                    return true;
-            }
-        }
-
-        return super.dispatchKeyEvent(event);
     }
 
     public boolean getDrawerIndicatorIsArrow() {
