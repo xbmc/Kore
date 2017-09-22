@@ -28,6 +28,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.transition.TransitionInflater;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,7 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.Player;
+import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
@@ -64,10 +66,13 @@ public abstract class BaseMediaActivity extends BaseActivity
                    HostConnectionObserver.PlayerEventsObserver,
                    NowPlayingPanel.OnPanelButtonsClickListener,
                    MediaProgressIndicator.OnProgressChangeListener {
+
     private static final String TAG = LogUtils.makeLogTag(BaseMediaActivity.class);
 
     private static final String NAVICON_ISARROW = "navstate";
     private static final String ACTIONBAR_TITLE = "actionbartitle";
+
+    private static final int AUTO_COLLAPSE_DELAY = 2000;
 
     @InjectView(R.id.now_playing_panel) NowPlayingPanel nowPlayingPanel;
 
@@ -77,7 +82,6 @@ public abstract class BaseMediaActivity extends BaseActivity
     private boolean drawerIndicatorIsArrow;
     private int currentActivePlayerId = -1;
 
-    private HostManager hostManager;
     private HostConnectionObserver hostConnectionObserver;
 
     private boolean showNowPlayingPanel;
@@ -96,6 +100,12 @@ public abstract class BaseMediaActivity extends BaseActivity
         @Override
         public void run() {
             nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        }
+    };
+    private Runnable collapseNowPlayingPanel = new Runnable() {
+        @Override
+        public void run() {
+            nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         }
     };
 
@@ -180,7 +190,6 @@ public abstract class BaseMediaActivity extends BaseActivity
                                                .getBoolean(Settings.KEY_PREF_SHOW_NOW_PLAYING_PANEL,
                                                            Settings.DEFAULT_PREF_SHOW_NOW_PLAYING_PANEL);
 
-
         if(showNowPlayingPanel) {
             setupNowPlayingPanel();
         } else {
@@ -203,6 +212,42 @@ public abstract class BaseMediaActivity extends BaseActivity
 
         hostConnectionObserver.unregisterApplicationObserver(this);
         hostConnectionObserver.unregisterPlayerObserver(this);
+    }
+
+    /**
+     * Override hardware volume keys and send to Kodi
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Check whether we should intercept this
+        boolean useVolumeKeys = android.support.v7.preference.PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+                        Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+        if (useVolumeKeys) {
+            int action = event.getAction();
+            int keyCode = event.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        expandNowPlayingPanel();
+                        new Application
+                                .SetVolume(GlobalType.IncrementDecrement.INCREMENT)
+                                .execute(hostManager.getConnection(), null, null);
+                    }
+                    return true;
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        expandNowPlayingPanel();
+                        new Application
+                                .SetVolume(GlobalType.IncrementDecrement.DECREMENT)
+                                .execute(hostManager.getConnection(), null, null);
+                    }
+                    return true;
+            }
+        }
+
+        return super.dispatchKeyEvent(event);
     }
 
     public boolean getDrawerIndicatorIsArrow() {
@@ -345,24 +390,28 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void onPlayClicked() {
+        cancelAutoCollapse();
         Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
     }
 
     @Override
     public void onPreviousClicked() {
+        cancelAutoCollapse();
         Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
         action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
     }
 
     @Override
     public void onNextClicked() {
+        cancelAutoCollapse();
         Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
         action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
     }
 
     @Override
     public void onVolumeMuteClicked() {
+        cancelAutoCollapse();
         Application.SetMute action = new Application.SetMute();
         action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
             @Override
@@ -377,6 +426,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void onShuffleClicked() {
+        cancelAutoCollapse();
         Player.SetShuffle action = new Player.SetShuffle(currentActivePlayerId);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
@@ -391,6 +441,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void onRepeatClicked() {
+        cancelAutoCollapse();
         Player.SetRepeat action = new Player.SetRepeat(currentActivePlayerId, PlayerType.Repeat.CYCLE);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
@@ -405,6 +456,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void onVolumeMutedIndicatorClicked() {
+        cancelAutoCollapse();
         Application.SetMute action = new Application.SetMute();
         action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
             @Override
@@ -437,6 +489,22 @@ public abstract class BaseMediaActivity extends BaseActivity
         hostConnectionObserver.registerPlayerObserver(this, true);
 
         hostConnectionObserver.forceRefreshResults();
+    }
+
+    public void expandNowPlayingPanel() {
+        collapseNowPlayingPanelIfItWasNotExpanded();
+        nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+    }
+
+    private void collapseNowPlayingPanelIfItWasNotExpanded() {
+        SlidingUpPanelLayout.PanelState panelState = nowPlayingPanel.getPanelState();
+        if (panelState != SlidingUpPanelLayout.PanelState.EXPANDED) {
+            callbackHandler.postDelayed(collapseNowPlayingPanel, AUTO_COLLAPSE_DELAY);
+        }
+    }
+
+    private void cancelAutoCollapse() {
+        callbackHandler.removeCallbacks(collapseNowPlayingPanel);
     }
 
     private void updateNowPlayingPanel(PlayerType.PropertyValue getPropertiesResult,
