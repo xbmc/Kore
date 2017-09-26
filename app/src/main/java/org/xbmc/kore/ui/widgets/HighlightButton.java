@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import org.xbmc.kore.R;
 
 public class HighlightButton extends AppCompatImageButton {
+
     private int colorFilter;
 
     private boolean highlight;
@@ -56,10 +57,12 @@ public class HighlightButton extends AppCompatImageButton {
     }
 
     private void setStyle(Context context) {
-        TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{
-                R.attr.colorAccent});
-        colorFilter = styledAttributes.getColor(styledAttributes.getIndex(0),
-                                                context.getResources().getColor(R.color.accent_default));
-        styledAttributes.recycle();
+        if (!this.isInEditMode()) {
+            TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(
+                    new int[]{R.attr.colorAccent});
+            colorFilter = styledAttributes.getColor(styledAttributes.getIndex(0),
+                    context.getResources().getColor(R.color.accent_default));
+            styledAttributes.recycle();
+        }
     }
 }

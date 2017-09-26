@@ -48,6 +48,7 @@ import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.ui.volumecontrollers.VolumeControllerActivity;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.ui.widgets.NowPlayingPanel;
 import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
@@ -59,7 +60,7 @@ import org.xbmc.kore.utils.Utils;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public abstract class BaseMediaActivity extends BaseActivity
+public abstract class BaseMediaActivity extends VolumeControllerActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
                    HostConnectionObserver.PlayerEventsObserver,
                    NowPlayingPanel.OnPanelButtonsClickListener,
@@ -83,9 +84,9 @@ public abstract class BaseMediaActivity extends BaseActivity
     private HostConnectionObserver hostConnectionObserver;
 
     private boolean showNowPlayingPanel;
-	private long lastExpandRequest;
+    private long lastExpandRequest;
 
-	protected abstract String getActionBarTitle();
+    protected abstract String getActionBarTitle();
     protected abstract Fragment createFragment();
 
     /**
@@ -104,11 +105,10 @@ public abstract class BaseMediaActivity extends BaseActivity
     private Runnable collapseNowPlayingPanel = new Runnable() {
         @Override
         public void run() {
-	        if (System.currentTimeMillis() - lastExpandRequest > AUTO_COLLAPSE_DELAY) {
-		        nowPlayingPanel.setPanelState(
-				        currentActivePlayerId == -1 ? SlidingUpPanelLayout.PanelState.HIDDEN :
-						        SlidingUpPanelLayout.PanelState.COLLAPSED);
-	        }
+            long timeSinceLastEvent = System.currentTimeMillis() - lastExpandRequest;
+            if (timeSinceLastEvent >= AUTO_COLLAPSE_DELAY) {
+                nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
         }
     };
 
@@ -306,7 +306,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void playerOnStop() {
-	    currentActivePlayerId = -1;
+        currentActivePlayerId = -1;
         //We delay hiding the panel to prevent hiding the panel when playing
         // the next item in a playlist
         callbackHandler.removeCallbacks(hidePanelRunnable);
@@ -457,14 +457,28 @@ public abstract class BaseMediaActivity extends BaseActivity
         hostConnectionObserver.forceRefreshResults();
     }
 
-    public void expandNowPlayingPanel() {
-	    lastExpandRequest = System.currentTimeMillis();
-	    collapseOrHideNowPlayingPanel();
+    @Override
+    public void onHardwareVolumeKeyPressed() {
+        if (isPlayerActive()) {
+            expandNowPlayingPanel();
+        }
+        else {
+            super.onHardwareVolumeKeyPressed();
+        }
+    }
+
+    private boolean isPlayerActive() {
+        return currentActivePlayerId != -1;
+    }
+
+    private void expandNowPlayingPanel() {
+        lastExpandRequest = System.currentTimeMillis();
+        delayedCollapseOrHideNowPlayingPanel();
         nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
-    private void collapseOrHideNowPlayingPanel() {
-	    cancelAutoCollapse();
+    private void delayedCollapseOrHideNowPlayingPanel() {
+        cancelAutoCollapse();
         callbackHandler.postDelayed(collapseNowPlayingPanel, AUTO_COLLAPSE_DELAY);
     }
 

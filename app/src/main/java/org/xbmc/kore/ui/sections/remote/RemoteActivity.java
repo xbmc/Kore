@@ -27,7 +27,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
@@ -38,7 +37,6 @@ import android.widget.Toast;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
@@ -49,15 +47,13 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
-import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.ConnectionObserversManagerService;
-import org.xbmc.kore.ui.BaseActivity;
+import org.xbmc.kore.ui.volumecontrollers.VolumeControllerActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.SendTextDialogFragment;
-import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
@@ -74,7 +70,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class RemoteActivity extends BaseActivity
+public class RemoteActivity extends VolumeControllerActivity
         implements HostConnectionObserver.PlayerEventsObserver,
         NowPlayingFragment.NowPlayingListener,
         SendTextDialogFragment.SendTextDialogListener {
@@ -653,4 +649,16 @@ public class RemoteActivity extends BaseActivity
             playlistFragment.forceRefreshPlaylist();
         }
     }
+
+	@Override
+	public void onHardwareVolumeKeyPressed() {
+		int currentPage = viewPager.getCurrentItem();
+		if (!isPageWithVolumeController(currentPage)) {
+			super.onHardwareVolumeKeyPressed();
+		}
+	}
+
+	private boolean isPageWithVolumeController(int currentPage) {
+		return currentPage == 0;
+	}
 }
