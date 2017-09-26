@@ -83,7 +83,7 @@ public class FileUtils {
         if (!isWindows(osName)) {
             path = "//" + path;
         }
-        path = path.replaceAll("build/.*", "build/");
+        path = path.replaceAll("app/build/.*", "app/build/");
         return path;
     }
 
