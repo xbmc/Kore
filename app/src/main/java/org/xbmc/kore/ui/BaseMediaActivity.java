@@ -28,7 +28,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.transition.TransitionInflater;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +44,6 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.Player;
-import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
@@ -85,8 +83,9 @@ public abstract class BaseMediaActivity extends BaseActivity
     private HostConnectionObserver hostConnectionObserver;
 
     private boolean showNowPlayingPanel;
+	private long lastExpandRequest;
 
-    protected abstract String getActionBarTitle();
+	protected abstract String getActionBarTitle();
     protected abstract Fragment createFragment();
 
     /**
@@ -105,7 +104,11 @@ public abstract class BaseMediaActivity extends BaseActivity
     private Runnable collapseNowPlayingPanel = new Runnable() {
         @Override
         public void run() {
-            nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+	        if (System.currentTimeMillis() - lastExpandRequest > AUTO_COLLAPSE_DELAY) {
+		        nowPlayingPanel.setPanelState(
+				        currentActivePlayerId == -1 ? SlidingUpPanelLayout.PanelState.HIDDEN :
+						        SlidingUpPanelLayout.PanelState.COLLAPSED);
+	        }
         }
     };
 
@@ -303,6 +306,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void playerOnStop() {
+	    currentActivePlayerId = -1;
         //We delay hiding the panel to prevent hiding the panel when playing
         // the next item in a playlist
         callbackHandler.removeCallbacks(hidePanelRunnable);
@@ -454,15 +458,14 @@ public abstract class BaseMediaActivity extends BaseActivity
     }
 
     public void expandNowPlayingPanel() {
-        collapseNowPlayingPanelIfItWasNotExpanded();
+	    lastExpandRequest = System.currentTimeMillis();
+	    collapseOrHideNowPlayingPanel();
         nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
-    private void collapseNowPlayingPanelIfItWasNotExpanded() {
-        SlidingUpPanelLayout.PanelState panelState = nowPlayingPanel.getPanelState();
-        if (panelState != SlidingUpPanelLayout.PanelState.EXPANDED) {
-            callbackHandler.postDelayed(collapseNowPlayingPanel, AUTO_COLLAPSE_DELAY);
-        }
+    private void collapseOrHideNowPlayingPanel() {
+	    cancelAutoCollapse();
+        callbackHandler.postDelayed(collapseNowPlayingPanel, AUTO_COLLAPSE_DELAY);
     }
 
     private void cancelAutoCollapse() {
