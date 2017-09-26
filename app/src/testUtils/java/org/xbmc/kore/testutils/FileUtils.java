@@ -74,8 +74,18 @@ public class FileUtils {
         className = className + ".class";
         Object url = FileUtils.class.getResource(className);
         String path = url.toString();
-        path = path.replace("file:/", "");
+	    String fileSchemePrefix = "file:/";
+	    path = path.replace(fileSchemePrefix, "");
+
+        String osName = System.getProperty("os.name").toLowerCase();
+	    if (!isWindows(osName)) {
+		    path = "//" + path;
+        }
         path = path.replaceAll("build/.*", "build/");
         return path;
+    }
+
+    private static boolean isWindows(String osName) {
+        return (osName.contains("win"));
     }
 }
