@@ -38,6 +38,19 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.all {
+            // All the usual Gradle options.
+            testLogging {
+                events "failed", "standardOut", "standardError"
+                outputs.upToDateWhen {
+                    false
+                }
+                showStandardStreams = true
+            }
+        }
+    }
+    
     sourceSets {
         fullDebug {
             assets.srcDirs += 'src/testUtils/assets'

@@ -43,6 +43,7 @@ public class FileUtils {
     @SuppressLint("NewApi")
     static String readFile(String filename) throws IOException {
         String pathToFile = getPathToThisFile() + "assets" + File.separator + filename;
+        System.out.println("radFile: " + pathToFile);
         String fileContent;
 
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(pathToFile))) {
@@ -74,12 +75,12 @@ public class FileUtils {
         className = className + ".class";
         Object url = FileUtils.class.getResource(className);
         String path = url.toString();
-	    String fileSchemePrefix = "file:/";
-	    path = path.replace(fileSchemePrefix, "");
+        String fileSchemePrefix = "file:/";
+        path = path.replace(fileSchemePrefix, "");
 
         String osName = System.getProperty("os.name").toLowerCase();
-	    if (!isWindows(osName)) {
-		    path = "//" + path;
+        if (!isWindows(osName)) {
+            path = "//" + path;
         }
         path = path.replaceAll("build/.*", "build/");
         return path;
