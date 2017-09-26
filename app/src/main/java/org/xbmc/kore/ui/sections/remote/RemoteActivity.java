@@ -27,7 +27,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
@@ -38,7 +37,6 @@ import android.widget.Toast;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
@@ -49,15 +47,13 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
-import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.ConnectionObserversManagerService;
-import org.xbmc.kore.ui.BaseActivity;
+import org.xbmc.kore.ui.volumecontrollers.VolumeControllerActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.SendTextDialogFragment;
-import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
@@ -74,7 +70,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class RemoteActivity extends BaseActivity
+public class RemoteActivity extends VolumeControllerActivity
         implements HostConnectionObserver.PlayerEventsObserver,
         NowPlayingFragment.NowPlayingListener,
         SendTextDialogFragment.SendTextDialogListener {
@@ -84,11 +80,6 @@ public class RemoteActivity extends BaseActivity
     private static final int NOWPLAYING_FRAGMENT_ID = 1;
     private static final int REMOTE_FRAGMENT_ID = 2;
     private static final int PLAYLIST_FRAGMENT_ID = 3;
-
-    /**
-     * Host manager singleton
-     */
-    private HostManager hostManager = null;
 
     /**
      * To register for observing host events
@@ -111,18 +102,6 @@ public class RemoteActivity extends BaseActivity
 
         setContentView(R.layout.activity_remote);
         ButterKnife.inject(this);
-
-        hostManager = HostManager.getInstance(this);
-
-        // Check if we have any hosts setup
-        if (hostManager.getHostInfo() == null) {
-            final Intent intent = new Intent(this, AddHostActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-            return;
-        }
 
         // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
@@ -199,40 +178,6 @@ public class RemoteActivity extends BaseActivity
         super.onPause();
         if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
-    }
-
-    /**
-     * Override hardware volume keys and send to Kodi
-     */
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        // Check whether we should intercept this
-        boolean useVolumeKeys = PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
-                        Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
-        if (useVolumeKeys) {
-            int action = event.getAction();
-            int keyCode = event.getKeyCode();
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_VOLUME_UP:
-                    if (action == KeyEvent.ACTION_DOWN) {
-                        new Application
-                                .SetVolume(GlobalType.IncrementDecrement.INCREMENT)
-                                .execute(hostManager.getConnection(), null, null);
-                    }
-                    return true;
-                case KeyEvent.KEYCODE_VOLUME_DOWN:
-                    if (action == KeyEvent.ACTION_DOWN) {
-                        new Application
-                                .SetVolume(GlobalType.IncrementDecrement.DECREMENT)
-                                .execute(hostManager.getConnection(), null, null);
-                    }
-                    return true;
-            }
-        }
-
-        return super.dispatchKeyEvent(event);
     }
 
     @Override
@@ -704,4 +649,16 @@ public class RemoteActivity extends BaseActivity
             playlistFragment.forceRefreshPlaylist();
         }
     }
+
+	@Override
+	public void onHardwareVolumeKeyPressed() {
+		int currentPage = viewPager.getCurrentItem();
+		if (!isPageWithVolumeController(currentPage)) {
+			super.onHardwareVolumeKeyPressed();
+		}
+	}
+
+	private boolean isPageWithVolumeController(int currentPage) {
+		return currentPage == 0;
+	}
 }

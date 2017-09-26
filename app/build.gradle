@@ -160,6 +160,9 @@ afterEvaluate {
         if (task.name.startsWith('assembleInstrumentationTestDebugAndroidTest')) {
             task.dependsOn grantAnimationPermissionDev
         }
+        else if (task.name.endsWith('UnitTestSources')) {
+            task.dependsOn copyUnitTestResources
+        }
     }
 }
 
@@ -172,4 +175,9 @@ tasks.whenTaskAdded { task ->
     if (task.name.contains("testFullDebugUnitTest")) {
         task.dependsOn assembleFullDebug
     }
+}
+
+task copyUnitTestResources(type: Copy) {
+    from "$rootDir.absoluteFile/app/src/testUtils/assets";
+    into "$buildDir/assets"
 }

@@ -15,12 +15,18 @@
  */
 package org.xbmc.kore.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.method.Application;
+import org.xbmc.kore.jsonrpc.type.GlobalType;
+import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.utils.UIUtils;
 
 /**
@@ -28,20 +34,31 @@ import org.xbmc.kore.utils.UIUtils;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    /**
+     * Host manager singleton
+     */
+    protected HostManager hostManager = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         setTheme(UIUtils.getThemeResourceId(
                 prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
         super.onCreate(savedInstanceState);
-	}
 
-    @Override
-    public void onPause() {
-        super.onPause();
+        hostManager = HostManager.getInstance(this);
+
+        // Check if we have any hosts setup
+        if (hostManager.getHostInfo() == null && !(this instanceof AddHostActivity)) {
+            final Intent intent = new Intent(this, AddHostActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
-//    @Override
+    //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.global, menu);
 //        return super.onCreateOptionsMenu(menu);
@@ -50,8 +67,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        switch (item.getItemId()) {
-//			case R.id.action_settings:
-//				return true;
+//            case R.id.action_settings:
+//                return true;
 //            default:
 //                break;
 //        }
