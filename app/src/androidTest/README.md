@@ -7,7 +7,7 @@ You can run the tests as follows:
 ### Android Studio
 
 1. Select build variant "instrumentationTestDebug"
-2. Set the (Project view)[https://developer.android.com/studio/projects/index.html] to Android 
+2. Set the [Project view](https://developer.android.com/studio/projects/index.html) to Android
 3. Right-click on the directory "androidTest" and select "Run tests"
 
 ### Commandline

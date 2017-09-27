@@ -29,6 +29,16 @@ Building
 5. Gradle should be able to fetch all the other needed libraries.
 
 
+Testing
+-------
+
+1. Make sure you are able to build Kore as described in the previous section.
+2. To run the local tests see [README](https://github.com/xbmc/Kore/blob/master/app/src/test/README.md)
+3. To run the instrumented tests see [README](https://github.com/xbmc/Kore/blob/master/app/src/androidTest/README.md)
+
+We currently use [travis-ci](https://travis-ci.org/xbmc/Kore/) to automatically build
+and run the local tests for each pull request.
+
 Credits
 -------
 
