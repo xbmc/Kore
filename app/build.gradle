@@ -38,6 +38,19 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.all {
+            // All the usual Gradle options.
+            testLogging {
+                events "failed", "standardOut", "standardError"
+                outputs.upToDateWhen {
+                    false
+                }
+                showStandardStreams = true
+            }
+        }
+    }
+    
     sourceSets {
         fullDebug {
             assets.srcDirs += 'src/testUtils/assets'
@@ -160,6 +173,9 @@ afterEvaluate {
         if (task.name.startsWith('assembleInstrumentationTestDebugAndroidTest')) {
             task.dependsOn grantAnimationPermissionDev
         }
+        else if (task.name.endsWith('UnitTestSources')) {
+            task.dependsOn copyUnitTestResources
+        }
     }
 }
 
@@ -172,4 +188,9 @@ tasks.whenTaskAdded { task ->
     if (task.name.contains("testFullDebugUnitTest")) {
         task.dependsOn assembleFullDebug
     }
+}
+
+task copyUnitTestResources(type: Copy) {
+    from "$rootDir.absoluteFile/app/src/testUtils/assets";
+    into "$buildDir/assets"
 }

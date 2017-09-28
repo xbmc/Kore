@@ -16,8 +16,12 @@
 
 package org.xbmc.kore.testutils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -34,5 +38,56 @@ public class FileUtils {
         is.close();
 
         return new String(buffer, "UTF-8");
+    }
+
+    @SuppressLint("NewApi")
+    static String readFile(String filename) throws IOException {
+        String pathToFile = getPathToThisFile() + "assets" + File.separator + filename;
+        System.out.println("readFile: " + pathToFile);
+        String fileContent;
+
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(pathToFile))) {
+            StringBuilder stringBuilder = new StringBuilder();
+            String line = bufferedReader.readLine();
+
+            while (line != null) {
+                stringBuilder.append(line);
+                stringBuilder.append(System.lineSeparator());
+                line = bufferedReader.readLine();
+            }
+            fileContent = stringBuilder.toString();
+        }
+
+        return fileContent;
+    }
+
+    /**
+     * Returns the path of this file, there are some heavy assumptions here (tested on Windows)
+     *
+     * @return path to this file
+     */
+    private static String getPathToThisFile() {
+        String className = FileUtils.class.getName();
+        int i = className.lastIndexOf(".");
+        if (i > -1) {
+            className = className.substring(i + 1);
+        }
+        className = className + ".class";
+        Object url = FileUtils.class.getResource(className);
+        String path = url.toString();
+	    System.out.println("getPathToThisFile URL: " + path);
+        String fileSchemePrefix = "file:/";
+        path = path.replace(fileSchemePrefix, "");
+
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (!isWindows(osName)) {
+            path = "//" + path;
+        }
+        path = path.replaceAll("app/build/.*", "app/build/");
+        return path;
+    }
+
+    private static boolean isWindows(String osName) {
+        return (osName.contains("win"));
     }
 }

@@ -50,6 +50,6 @@ public class AbstractTestClass {
 
         hostInfo = Database.addHost(RuntimeEnvironment.application);
 
-        Database.fill(hostInfo, RuntimeEnvironment.application, contentResolver);
+        Database.fill(hostInfo, RuntimeEnvironment.application, contentResolver, true);
     }
 }
