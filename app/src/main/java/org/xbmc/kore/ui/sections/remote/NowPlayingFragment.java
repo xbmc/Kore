@@ -189,7 +189,7 @@ public class NowPlayingFragment extends Fragment
             @Override
             public void onVolumeChanged(int volume) {
                 new Application.SetVolume(volume)
-                        .execute(hostManager.getConnection(), defaultIntActionCallback, new Handler());
+                        .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
             }
         });
 
@@ -212,7 +212,7 @@ public class NowPlayingFragment extends Fragment
             @Override
             public void onVolumeChanged(int volume) {
                 new Application.SetVolume(volume).execute(hostManager.getConnection(),
-                                                          defaultIntActionCallback, new Handler());
+                                                          defaultIntActionCallback, callbackHandler);
             }
         });
 
@@ -306,7 +306,7 @@ public class NowPlayingFragment extends Fragment
     @OnClick(R.id.volume_mute)
     public void onVolumeMuteClicked(View v) {
         Application.SetMute action = new Application.SetMute();
-        action.execute(hostManager.getConnection(), defaultBooleanActionCallback, new Handler());
+        action.execute(hostManager.getConnection(), defaultBooleanActionCallback, callbackHandler);
     }
 
     @OnClick(R.id.shuffle)
@@ -626,7 +626,7 @@ public class NowPlayingFragment extends Fragment
             public void onError(int errorCode, String description) {
                 LogUtils.LOGD("MediaSeekBar", "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
             }
-        }, new Handler());
+        }, callbackHandler);
 
 
     }
