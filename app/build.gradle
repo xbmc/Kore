@@ -169,7 +169,7 @@ afterEvaluate {
  * so this dependency fixes the issue.
  */
 tasks.whenTaskAdded { task ->
-    if (task.name.contains("testFullDebugUnitTest")) {
+    if (task.name.contains("compileFullDebugUnitTestSources")) {
         task.dependsOn assembleFullDebug
     }
 }
