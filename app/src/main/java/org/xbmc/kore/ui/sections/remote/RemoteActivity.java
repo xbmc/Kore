@@ -49,7 +49,6 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
-import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
@@ -59,6 +58,9 @@ import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.SendTextDialogFragment;
 import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
+import org.xbmc.kore.ui.volumecontrollers.OnHardwareVolumeKeyPressedCallback;
+import org.xbmc.kore.ui.volumecontrollers.VolumeControllerDialogFragmentListener;
+import org.xbmc.kore.ui.volumecontrollers.VolumeKeyActionHandler;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
@@ -77,8 +79,8 @@ import butterknife.InjectView;
 public class RemoteActivity extends BaseActivity
         implements HostConnectionObserver.PlayerEventsObserver,
         NowPlayingFragment.NowPlayingListener,
-        SendTextDialogFragment.SendTextDialogListener {
-	private static final String TAG = LogUtils.makeLogTag(RemoteActivity.class);
+        SendTextDialogFragment.SendTextDialogListener, OnHardwareVolumeKeyPressedCallback {
+    private static final String TAG = LogUtils.makeLogTag(RemoteActivity.class);
 
 
     private static final int NOWPLAYING_FRAGMENT_ID = 1;
@@ -96,6 +98,8 @@ public class RemoteActivity extends BaseActivity
     private HostConnectionObserver hostConnectionObserver;
 
     private NavigationDrawerFragment navigationDrawerFragment;
+
+    private VolumeKeyActionHandler volumeKeyActionHandler;
 
     @InjectView(R.id.background_image) ImageView backgroundImage;
     @InjectView(R.id.pager_indicator) CirclePageIndicator pageIndicator;
@@ -201,54 +205,20 @@ public class RemoteActivity extends BaseActivity
         hostConnectionObserver = null;
     }
 
-    /**
-     * Override hardware volume keys and send to Kodi
-     */
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        // Check whether we should intercept this
-        boolean useVolumeKeys = PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
-                        Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
-        if (useVolumeKeys) {
-            int action = event.getAction();
-            int keyCode = event.getKeyCode();
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_VOLUME_UP:
-                    if (action == KeyEvent.ACTION_DOWN) {
-                        new Application
-                                .SetVolume(GlobalType.IncrementDecrement.INCREMENT)
-                                .execute(hostManager.getConnection(), null, null);
-                    }
-                    return true;
-                case KeyEvent.KEYCODE_VOLUME_DOWN:
-                    if (action == KeyEvent.ACTION_DOWN) {
-                        new Application
-                                .SetVolume(GlobalType.IncrementDecrement.DECREMENT)
-                                .execute(hostManager.getConnection(), null, null);
-                    }
-                    return true;
-            }
-        }
-
-        return super.dispatchKeyEvent(event);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		if (!navigationDrawerFragment.isDrawerOpen()) {
-			// Only show items in the action bar relevant to this screen if the drawer is not showing.
-			// Otherwise, let the drawer decide what to show in the action bar.
+        if (!navigationDrawerFragment.isDrawerOpen()) {
+            // Only show items in the action bar relevant to this screen if the drawer is not showing.
+            // Otherwise, let the drawer decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.remote, menu);
-		}
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
-		switch (item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_wake_up:
                 UIUtils.sendWolAsync(this, hostManager.getHostInfo());
                 return true;
@@ -298,11 +268,30 @@ public class RemoteActivity extends BaseActivity
                 AudioLibrary.Scan actionScanAudio = new AudioLibrary.Scan();
                 actionScanAudio.execute(hostManager.getConnection(), null, null);
                 return true;
-			default:
-				break;
-		}
+            default:
+                break;
+        }
 
-		return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Override hardware volume keys and send to Kodi
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (volumeKeyActionHandler == null) {
+            volumeKeyActionHandler = new VolumeKeyActionHandler(hostManager, this, this);
+        }
+        return volumeKeyActionHandler.handleDispatchKeyEvent(event) || super.dispatchKeyEvent(
+                event);
+    }
+
+    private void showVolumeChangeDialog() {
+        VolumeControllerDialogFragmentListener volumeControllerDialogFragment =
+                new VolumeControllerDialogFragmentListener();
+        volumeControllerDialogFragment.show(getSupportFragmentManager(),
+                VolumeControllerDialogFragmentListener.class.getName());
     }
 
     /**
@@ -703,5 +692,17 @@ public class RemoteActivity extends BaseActivity
         if (playlistFragment != null) {
             playlistFragment.forceRefreshPlaylist();
         }
+    }
+
+    @Override
+    public void onHardwareVolumeKeyPressed() {
+        int currentPage = viewPager.getCurrentItem();
+        if (!isPageWithVolumeController(currentPage)) {
+            showVolumeChangeDialog();
+        }
+    }
+
+    private boolean isPageWithVolumeController(int currentPage) {
+        return currentPage == 0;
     }
 }

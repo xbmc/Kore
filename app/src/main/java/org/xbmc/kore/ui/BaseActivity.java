@@ -28,20 +28,15 @@ import org.xbmc.kore.utils.UIUtils;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         setTheme(UIUtils.getThemeResourceId(
                 prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
         super.onCreate(savedInstanceState);
-	}
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
-//    @Override
+    //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.global, menu);
 //        return super.onCreateOptionsMenu(menu);
@@ -50,8 +45,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        switch (item.getItemId()) {
-//			case R.id.action_settings:
-//				return true;
+//            case R.id.action_settings:
+//                return true;
 //            default:
 //                break;
 //        }

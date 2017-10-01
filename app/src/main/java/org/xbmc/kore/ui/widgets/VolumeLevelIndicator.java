@@ -33,9 +33,15 @@ public class VolumeLevelIndicator extends LinearLayout {
     @InjectView(R.id.vli_volume_text) TextView volumeTextView;
 
     private OnVolumeChangeListener onVolumeChangeListener;
+    private VolumeBarTouchTrackerListener volumeBarTouchTrackerListener;
 
     public interface OnVolumeChangeListener {
         void onVolumeChanged(int volume);
+    }
+
+    public interface VolumeBarTouchTrackerListener {
+        void onStartTrackingTouch();
+        void onStopTrackingTouch();
     }
 
     public VolumeLevelIndicator(Context context) {
@@ -67,19 +73,30 @@ public class VolumeLevelIndicator extends LinearLayout {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                if (volumeBarTouchTrackerListener != null) {
+                    volumeBarTouchTrackerListener.onStartTrackingTouch();
+                }
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (onVolumeChangeListener != null)
+                if (onVolumeChangeListener != null) {
                     onVolumeChangeListener.onVolumeChanged(seekBar.getProgress());
+                    if (volumeBarTouchTrackerListener != null) {
+                        volumeBarTouchTrackerListener.onStopTrackingTouch();
+                    }
+                }
             }
         });
     }
 
     public void setOnVolumeChangeListener(OnVolumeChangeListener onVolumeChangeListener) {
         this.onVolumeChangeListener = onVolumeChangeListener;
+    }
+
+    public void setVolumeBarTouchTrackerListener(
+            VolumeBarTouchTrackerListener volumeBarTouchTrackerListener) {
+        this.volumeBarTouchTrackerListener = volumeBarTouchTrackerListener;
     }
 
     /**
