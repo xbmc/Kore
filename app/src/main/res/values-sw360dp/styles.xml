@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ControlPad.FrameLayout">
+        <item name="android:layout_width">@dimen/remote_size</item>
+        <item name="android:layout_height">@dimen/remote_size</item>
+        <item name="android:layout_marginBottom">@dimen/default_padding</item>
+    </style>
+    
+    <style name="ControlPad">
+        <item name="android:layout_width">@dimen/remote_size</item>
+        <item name="android:layout_height">@dimen/remote_size</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_gravity">bottom|center_horizontal</item>
+    </style>
+</resources>
