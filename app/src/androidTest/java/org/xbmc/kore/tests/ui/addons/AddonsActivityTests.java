@@ -73,7 +73,7 @@ public class AddonsActivityTests extends BaseMediaActivityTests<MoviesActivity> 
         super.setUp();
         //Start the AddonsActivity from the MoviesActivity
         Utils.openDrawer(getActivityTestRule());
-        EspressoTestUtils.clickAdapterViewItem(7, R.id.navigation_drawer);
+        EspressoTestUtils.clickAdapterViewItem(8, R.id.navigation_drawer);
     }
 
     /**
