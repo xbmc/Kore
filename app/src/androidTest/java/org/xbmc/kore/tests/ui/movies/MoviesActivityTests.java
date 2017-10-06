@@ -16,6 +16,7 @@
 
 package org.xbmc.kore.tests.ui.movies;
 
+import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.TextView;
 
@@ -37,9 +38,13 @@ import static org.xbmc.kore.testhelpers.EspressoTestUtils.selectListItemPressBac
 
 public class MoviesActivityTests extends BaseMediaActivityTests<MoviesActivity> {
 
+    @Rule
+    public ActivityTestRule<MoviesActivity> mActivityRule = new ActivityTestRule<>(
+            MoviesActivity.class);
+
     @Override
     protected ActivityTestRule<MoviesActivity> getActivityTestRule() {
-        return new ActivityTestRule<>(MoviesActivity.class, true, false);
+        return mActivityRule;
     }
 
     /**
