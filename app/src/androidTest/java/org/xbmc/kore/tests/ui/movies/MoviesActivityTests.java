@@ -37,13 +37,9 @@ import static org.xbmc.kore.testhelpers.EspressoTestUtils.selectListItemPressBac
 
 public class MoviesActivityTests extends BaseMediaActivityTests<MoviesActivity> {
 
-    @Rule
-    public ActivityTestRule<MoviesActivity> mActivityRule = new ActivityTestRule<>(
-            MoviesActivity.class);
-
     @Override
     protected ActivityTestRule<MoviesActivity> getActivityTestRule() {
-        return mActivityRule;
+        return new ActivityTestRule<>(MoviesActivity.class, true, false);
     }
 
     /**
@@ -80,7 +76,7 @@ public class MoviesActivityTests extends BaseMediaActivityTests<MoviesActivity> 
     public void restoreActionBarTitleOnConfigurationStateChanged() {
         EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
                                                                            "#Rookie93 Marc Marquez: Beyond the Smile",
-                                                                           mActivityRule.getActivity());
+                                                                           getActivity());
     }
 
     /**
@@ -94,6 +90,6 @@ public class MoviesActivityTests extends BaseMediaActivityTests<MoviesActivity> 
     @Test
     public void restoreActionBarTitleOnReturningFromMovie() {
         selectListItemPressBackAndCheckActionbarTitle(0, R.id.list,
-                                                      mActivityRule.getActivity().getString(R.string.movies));
+                                                      getActivity().getString(R.string.movies));
     }
 }
