@@ -28,6 +28,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.transition.TransitionInflater;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +49,9 @@ import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.ui.volumecontrollers.OnHardwareVolumeKeyPressedCallback;
+import org.xbmc.kore.ui.volumecontrollers.VolumeControllerDialogFragmentListener;
+import org.xbmc.kore.ui.volumecontrollers.VolumeKeyActionHandler;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.ui.widgets.NowPlayingPanel;
 import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
@@ -63,7 +67,8 @@ public abstract class BaseMediaActivity extends BaseActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
                    HostConnectionObserver.PlayerEventsObserver,
                    NowPlayingPanel.OnPanelButtonsClickListener,
-                   MediaProgressIndicator.OnProgressChangeListener {
+                   MediaProgressIndicator.OnProgressChangeListener,
+                   OnHardwareVolumeKeyPressedCallback {
     private static final String TAG = LogUtils.makeLogTag(BaseMediaActivity.class);
 
     private static final String NAVICON_ISARROW = "navstate";
@@ -79,6 +84,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     private HostManager hostManager;
     private HostConnectionObserver hostConnectionObserver;
+    private VolumeKeyActionHandler volumeKeyActionHandler;
 
     private boolean showNowPlayingPanel;
 
@@ -180,7 +186,6 @@ public abstract class BaseMediaActivity extends BaseActivity
                                                .getBoolean(Settings.KEY_PREF_SHOW_NOW_PLAYING_PANEL,
                                                            Settings.DEFAULT_PREF_SHOW_NOW_PLAYING_PANEL);
 
-
         if(showNowPlayingPanel) {
             setupNowPlayingPanel();
         } else {
@@ -203,6 +208,30 @@ public abstract class BaseMediaActivity extends BaseActivity
 
         hostConnectionObserver.unregisterApplicationObserver(this);
         hostConnectionObserver.unregisterPlayerObserver(this);
+    }
+
+    /**
+     * Override hardware volume keys and send to Kodi
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (volumeKeyActionHandler == null) {
+            volumeKeyActionHandler = new VolumeKeyActionHandler(hostManager, this, this);
+        }
+        return volumeKeyActionHandler.handleDispatchKeyEvent(event) || super.dispatchKeyEvent(
+                event);
+    }
+
+    @Override
+    public void onHardwareVolumeKeyPressed() {
+        showVolumeChangeDialog();
+    }
+
+    private void showVolumeChangeDialog() {
+        VolumeControllerDialogFragmentListener volumeControllerDialogFragment =
+                new VolumeControllerDialogFragmentListener();
+        volumeControllerDialogFragment.show(getSupportFragmentManager(),
+                VolumeControllerDialogFragmentListener.class.getName());
     }
 
     public boolean getDrawerIndicatorIsArrow() {
@@ -296,6 +325,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void playerOnStop() {
+        currentActivePlayerId = -1;
         //We delay hiding the panel to prevent hiding the panel when playing
         // the next item in a playlist
         callbackHandler.removeCallbacks(hidePanelRunnable);
