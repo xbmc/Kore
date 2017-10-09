@@ -97,6 +97,9 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
 
         Utils.clearSharedPreferences(context);
 
+        //Prevent drawer from opening when we start a new activity
+        Utils.setLearnedAboutDrawerPreference(context, true);
+
         loaderIdlingResource = new LoaderIdlingResource(activityTestRule.getActivity().getSupportLoaderManager());
         Espresso.registerIdlingResources(loaderIdlingResource);
 
@@ -110,8 +113,6 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
 
         //Relaunch the activity for the changes (Host selection and database fill) to take effect
         activityTestRule.launchActivity(new Intent());
-
-        Utils.closeDrawer(activityTestRule.getActivity());
     }
 
     @After

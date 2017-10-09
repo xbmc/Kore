@@ -31,10 +31,11 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.provider.MediaProvider;
-import org.xbmc.kore.testutils.Database;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.lang.reflect.Method;
+
+import static org.xbmc.kore.ui.generic.NavigationDrawerFragment.PREF_USER_LEARNED_DRAWER;
 
 public class Utils {
     private static final String TAG = LogUtils.makeLogTag(Utils.class);
@@ -81,6 +82,13 @@ public class Utils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
+        editor.commit();
+    }
+
+    public static void setLearnedAboutDrawerPreference(Context context, boolean learned) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(PREF_USER_LEARNED_DRAWER, true);
         editor.commit();
     }
 

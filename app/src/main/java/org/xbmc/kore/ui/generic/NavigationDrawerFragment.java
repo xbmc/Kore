@@ -74,7 +74,7 @@ public class NavigationDrawerFragment extends Fragment {
      * Per the design guidelines, you should show the drawer on launch until the user manually
      * expands it. This shared preference tracks this.
      */
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    public static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     public static final int ACTIVITY_HOSTS = 0,
             ACTIVITY_REMOTE = 1,
