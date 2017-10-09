@@ -27,6 +27,7 @@ import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.Utils;
 
 /**
  * Controls the presentation of Addons information (list, details)
@@ -127,8 +128,9 @@ public class AddonsActivity extends BaseMediaActivity
             ;
         addonDetailsFragment.setDataHolder(vh.dataHolder);
         vh.dataHolder.setSquarePoster(true);
-        vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
-
+        if(Utils.isLollipopOrLater()) {
+            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
+        }
         showFragment(addonDetailsFragment, vh.artView, vh.dataHolder);
 
         updateActionBar(getActionBarTitle(), true);
