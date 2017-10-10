@@ -16,6 +16,8 @@
 
 package org.xbmc.kore.tests.ui.addons;
 
+import android.content.Intent;
+import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ import org.xbmc.kore.testhelpers.EspressoTestUtils;
 import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.tests.ui.AbstractTestClass;
 import org.xbmc.kore.tests.ui.BaseMediaActivityTests;
+import org.xbmc.kore.ui.sections.addon.AddonsActivity;
 import org.xbmc.kore.ui.sections.video.MoviesActivity;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -71,9 +74,9 @@ public class AddonsActivityTests extends BaseMediaActivityTests<MoviesActivity> 
     @Override
     public void setUp() throws Throwable {
         super.setUp();
-        //Start the AddonsActivity from the MoviesActivity
-        Utils.openDrawer(getActivityTestRule());
-        EspressoTestUtils.clickAdapterViewItem(7, R.id.navigation_drawer);
+
+        Intent intent = new Intent(getActivity(), AddonsActivity.class);
+        getActivity().startActivity(intent);
     }
 
     /**

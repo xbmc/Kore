@@ -16,6 +16,7 @@
 
 package org.xbmc.kore.tests.ui.movies;
 
+import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.TextView;
 
@@ -80,7 +81,7 @@ public class MoviesActivityTests extends BaseMediaActivityTests<MoviesActivity> 
     public void restoreActionBarTitleOnConfigurationStateChanged() {
         EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
                                                                            "#Rookie93 Marc Marquez: Beyond the Smile",
-                                                                           mActivityRule.getActivity());
+                                                                           getActivity());
     }
 
     /**
@@ -94,6 +95,6 @@ public class MoviesActivityTests extends BaseMediaActivityTests<MoviesActivity> 
     @Test
     public void restoreActionBarTitleOnReturningFromMovie() {
         selectListItemPressBackAndCheckActionbarTitle(0, R.id.list,
-                                                      mActivityRule.getActivity().getString(R.string.movies));
+                                                      getActivity().getString(R.string.movies));
     }
 }

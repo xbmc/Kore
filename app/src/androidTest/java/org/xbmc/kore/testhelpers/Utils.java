@@ -16,25 +16,26 @@
 
 package org.xbmc.kore.testhelpers;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 
-import org.junit.internal.runners.statements.RunAfters;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.provider.MediaProvider;
-import org.xbmc.kore.testutils.Database;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.lang.reflect.Method;
+
+import static org.xbmc.kore.ui.generic.NavigationDrawerFragment.PREF_USER_LEARNED_DRAWER;
 
 public class Utils {
     private static final String TAG = LogUtils.makeLogTag(Utils.class);
@@ -43,16 +44,11 @@ public class Utils {
     private static final float DISABLED = 0.0f;
     private static final float DEFAULT = 1.0f;
 
-    private static boolean isInitialized;
-
-    private static HostInfo hostInfo;
-    private static Context context;
-
-    public static void closeDrawer(final ActivityTestRule<?> activityTestRule) throws Throwable {
-        activityTestRule.runOnUiThread(new Runnable() {
+    public static void closeDrawer(final Activity activity) throws Throwable {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                DrawerLayout drawerLayout = (DrawerLayout) activityTestRule.getActivity().findViewById(R.id.drawer_layout);
+                DrawerLayout drawerLayout = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
                 drawerLayout.closeDrawers();
             }
         });
@@ -73,43 +69,43 @@ public class Utils {
         }
     }
 
-    public static void initialize(ActivityTestRule<?> activityTestRule, HostInfo info) throws Throwable {
-        if (isInitialized)
-            return;
+    public static void switchHost(final Context context, Activity activity, final HostInfo hostInfo) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                HostManager.getInstance(context).switchHost(hostInfo);
+            }
+        });
+    }
 
-        hostInfo = info;
-        context = activityTestRule.getActivity();
+    public static void clearSharedPreferences(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
+    }
 
-        disableAnimations();
+    public static void setLearnedAboutDrawerPreference(Context context, boolean learned) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(PREF_USER_LEARNED_DRAWER, true);
+        editor.commit();
+    }
 
+    public static void setupMediaProvider(Context context) {
         MediaProvider mediaProvider = new MediaProvider();
         mediaProvider.setContext(context);
         mediaProvider.onCreate();
-
-        Database.fill(hostInfo, context, context.getContentResolver());
-
-        HostManager.getInstance(context).switchHost(hostInfo);
-        Utils.closeDrawer(activityTestRule);
-
-        isInitialized = true;
     }
 
-    public static void cleanup() {
-        Database.flush(context.getContentResolver(), hostInfo);
-
-        enableAnimations();
-
-        isInitialized = false;
-    }
-
-    private static void disableAnimations() {
+    public static void disableAnimations(Context context) {
         int permStatus = context.checkCallingOrSelfPermission(ANIMATION_PERMISSION);
         if (permStatus == PackageManager.PERMISSION_GRANTED) {
             setSystemAnimationsScale(DISABLED);
         }
     }
 
-    private static void enableAnimations() {
+    public static void enableAnimations(Context context) {
         int permStatus = context.checkCallingOrSelfPermission(ANIMATION_PERMISSION);
         if (permStatus == PackageManager.PERMISSION_GRANTED) {
             setSystemAnimationsScale(DEFAULT);

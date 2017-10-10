@@ -208,35 +208,53 @@ public class EspressoTestUtils {
     }
 
     /**
+     * Clicks on tab that contains the text given by stringResourceId.
+     * If the click fails tries again after a swipe left. If the click fails
+     * after that try once more after swiping right two times. The first swipe right
+     * is performed to negate the previous swipe left.
+     * @param stringResourceId text displayed in Tab that should be clicked
+     */
+    public static void clickTab(int stringResourceId) {
+        try {
+            onView(withText(stringResourceId)).perform(click());
+        } catch (Exception e1) {
+            try {
+                onView(withId(R.id.pager_tab_strip)).perform(swipeLeft());
+                onView(withText(stringResourceId)).perform(click());
+            } catch (Exception e2) {
+                onView(withId(R.id.pager_tab_strip)).perform(swipeRight());
+                onView(withId(R.id.pager_tab_strip)).perform(swipeRight());
+                onView(withText(stringResourceId)).perform(click());
+            }
+        }
+    }
+
+    /**
      * Clicks the album tab in the music activity
      */
     public static void clickAlbumsTab() {
-        onView(withId(R.id.pager_tab_strip)).perform(swipeLeft());
-        onView(withText(R.string.albums)).perform(click());
+        clickTab(R.string.albums);
     }
 
     /**
      * Clicks the artists tab in the music activity
      */
     public static void clickArtistsTab() {
-        onView(withId(R.id.pager_tab_strip)).perform(swipeRight());
-        onView(withText(R.string.artists)).perform(click());
+        clickTab(R.string.artists);
     }
 
     /**
      * Clicks the genres tab in the music activity
      */
     public static void clickGenresTab() {
-        onView(withId(R.id.pager_tab_strip)).perform(swipeLeft());
-        onView(withText(R.string.genres)).perform(click());
+        clickTab(R.string.genres);
     }
 
     /**
      * Clicks the music videos tab in the music activity
      */
     public static void clickMusicVideosTab() {
-        onView(withId(R.id.pager_tab_strip)).perform(swipeLeft());
-        onView(withText(R.string.videos)).perform(click());
+        clickTab(R.string.videos);
     }
 
     /**

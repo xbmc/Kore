@@ -120,15 +120,17 @@ public class JSONConnectionHandlerManager implements MockTcpServer.TcpServerConn
     @Override
     public String getResponse() {
         StringBuffer stringBuffer = new StringBuffer();
-        
-        //Handle responses
-        Collection<ArrayList<JsonResponse>> jsonResponses = clientResponses.values();
-        for(ArrayList<JsonResponse> arrayList : jsonResponses) {
-            for (JsonResponse response : arrayList) {
-                stringBuffer.append(response.toJsonString() + "\n");
+
+        synchronized (clientResponses) {
+            //Handle responses
+            Collection<ArrayList<JsonResponse>> jsonResponses = clientResponses.values();
+            for (ArrayList<JsonResponse> arrayList : jsonResponses) {
+                for (JsonResponse response : arrayList) {
+                    stringBuffer.append(response.toJsonString() + "\n");
+                }
             }
+            clientResponses.clear();
         }
-        clientResponses.clear();
 
         //Handle notifications
         for(ConnectionHandler handler : handlers) {
@@ -168,7 +170,9 @@ public class JSONConnectionHandlerManager implements MockTcpServer.TcpServerConn
         ArrayList<JsonResponse> responses = clientResponses.get(String.valueOf(id));
         if (responses == null) {
             responses = new ArrayList<>();
-            clientResponses.put(String.valueOf(id), responses);
+            synchronized (clientResponses) {
+                clientResponses.put(String.valueOf(id), responses);
+            }
         }
         responses.addAll(jsonResponses);
     }

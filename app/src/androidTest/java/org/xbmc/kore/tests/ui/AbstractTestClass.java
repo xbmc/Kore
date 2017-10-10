@@ -16,8 +16,10 @@
 
 package org.xbmc.kore.tests.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -31,7 +33,9 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.xbmc.kore.host.HostInfo;
+import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.testhelpers.LoaderIdlingResource;
 import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.testutils.Database;
@@ -58,6 +62,8 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
     private static PlayerHandler playerHandler;
     private static ApplicationHandler applicationHandler;
 
+    private HostInfo hostInfo;
+
     @BeforeClass
     public static void setupMockTCPServer() throws Throwable {
         playerHandler = new PlayerHandler();
@@ -75,31 +81,38 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
 
         activityTestRule = getActivityTestRule();
 
+//        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        final Context context = activityTestRule.getActivity();
+
         //Note: as the activity is not yet available in @BeforeClass we need
         //      to add the handler here
         if (addonsHandler == null) {
-            addonsHandler = new AddonsHandler(activityTestRule.getActivity());
+            addonsHandler = new AddonsHandler(context);
             manager.addHandler(addonsHandler);
         }
 
-        HostInfo hostInfo = Database.addHost(activityTestRule.getActivity(), server.getHostName(),
-                                                 HostConnection.PROTOCOL_TCP, HostInfo.DEFAULT_HTTP_PORT,
-                                                 server.getPort());
+        hostInfo = Database.addHost(context, server.getHostName(),
+                                    HostConnection.PROTOCOL_TCP, HostInfo.DEFAULT_HTTP_PORT,
+                                    server.getPort());
 
-        Utils.initialize(activityTestRule, hostInfo);
+        Utils.clearSharedPreferences(context);
+
+        //Prevent drawer from opening when we start a new activity
+        Utils.setLearnedAboutDrawerPreference(context, true);
 
         loaderIdlingResource = new LoaderIdlingResource(activityTestRule.getActivity().getSupportLoaderManager());
         Espresso.registerIdlingResources(loaderIdlingResource);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.commit();
+        Utils.disableAnimations(context);
 
-        //Relaunch the activity for the changes (Host selections, preference reset) to take effect
+        Utils.setupMediaProvider(context);
+
+        Database.fill(hostInfo, context, context.getContentResolver());
+
+        Utils.switchHost(context, activityTestRule.getActivity(), hostInfo);
+
+        //Relaunch the activity for the changes (Host selection and database fill) to take effect
         activityTestRule.launchActivity(new Intent());
-
-        Utils.closeDrawer(activityTestRule);
     }
 
     @After
@@ -110,7 +123,9 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
         applicationHandler.reset();
         playerHandler.reset();
 
-        Utils.cleanup();
+        Context context = activityTestRule.getActivity();
+        Database.flush(context.getContentResolver(), hostInfo);
+        Utils.enableAnimations(context);
     }
 
     @AfterClass
