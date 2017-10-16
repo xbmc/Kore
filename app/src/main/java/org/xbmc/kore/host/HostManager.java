@@ -22,32 +22,27 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.util.Base64;
 
-import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
-import org.xbmc.kore.BuildConfig;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
-import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.utils.BasicAuthUrlConnectionDownloader;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.NetUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Manages XBMC Hosts
@@ -57,6 +52,21 @@ import java.util.ArrayList;
  */
 public class HostManager {
 	private static final String TAG = LogUtils.makeLogTag(HostManager.class);
+
+    /**
+     * A block of code that is run in the background thread and receives a
+     * reference to the current host.
+     *
+     * @see #withCurrentHost(Session)
+     */
+    public interface Session<T> {
+        T using(HostConnection host) throws Exception;
+    }
+
+    /**
+     * Provides the thread where all sessions are run.
+     */
+    private static final ExecutorService SESSIONS = Executors.newSingleThreadExecutor();
 
 	// Singleton instance
 	private static volatile HostManager instance = null;
@@ -110,6 +120,32 @@ public class HostManager {
 		}
 		return instance;
 	}
+
+    /**
+     * Runs a session block.
+     * <p>
+     * This method provides a context for awaiting {@link org.xbmc.kore.jsonrpc.ApiFuture
+     * future} objects returned by callback-less remote method invocations. This
+     * enables a more natural style of doing a sequence of remote calls instead
+     * of nesting or chaining callbacks.
+     *
+     * @param session The function to run
+     * @param <T> The type of the value returned by the session
+     * @return a future wrapping the value returned (or exception thrown) by the
+     * session; null when there's no current host.
+     */
+    public <T> Future<T> withCurrentHost(final Session<T> session) {
+        final HostConnection conn = getConnection();
+        if (conn != null) {
+            return SESSIONS.submit(new Callable<T>() {
+                @Override
+                public T call() throws Exception {
+                    return session.using(conn);
+                }
+            });
+        }
+        return null;
+    }
 
 	/**
 	 * Returns the current host list
