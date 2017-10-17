@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -776,7 +777,7 @@ public class NowPlayingFragment extends Fragment
 
         if (!TextUtils.isEmpty(descriptionPlot)) {
             mediaDescription.setVisibility(View.VISIBLE);
-            mediaDescription.setText(descriptionPlot);
+            mediaDescription.setText(new KodiMarkupCode(getContext()).format(descriptionPlot));
         } else {
             mediaDescription.setVisibility(View.GONE);
         }
