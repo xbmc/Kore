@@ -346,28 +346,17 @@ public class RemoteActivity extends BaseActivity
                 !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_VIEW)))
             return;
 
-        Uri videoUri = null;
+        Uri videoUri;
         if (action.equals(Intent.ACTION_SEND)) {
             // Get the URI, which is stored in Extras
             videoUri = getYouTubeUri(intent.getStringExtra(Intent.EXTRA_TEXT));
-            if (videoUri == null) return;
-        } else if (action.equals(Intent.ACTION_VIEW)) {
-            if (intent.getData() == null) return;
-            videoUri = Uri.parse(intent.getData().toString());
-        }
-
-        final String videoId = getVideoId(videoUri);
-        String videoUrl;
-        if (videoId != null) {
-            if (videoUri.getHost().endsWith("svtplay.se")) {
-                videoUrl = "plugin://plugin.video.svtplay/?url=%2Fvideo%2F" + URLEncoder.encode(videoId) + "&mode=video";
-            } else if (videoUri.getHost().endsWith("vimeo.com")) {
-                videoUrl = "plugin://plugin.video.vimeo?video_id=" + videoId;
-            } else {
-                videoUrl = "plugin://plugin.video.youtube/play/?video_id=" + videoId;
-            }
-
         } else {
+            videoUri = intent.getData();
+        }
+        if (videoUri == null) return;
+
+        String videoUrl = toPluginUrl(videoUri);
+        if (videoUrl == null) {
             videoUrl = videoUri.toString();
         }
 
@@ -505,34 +494,41 @@ public class RemoteActivity extends BaseActivity
     }
 
     /**
-     * Returns the youtube/vimeo video ID from its URL
+     * Converts a video url to a Kodi plugin URL.
      *
-     * @param playuri Youtube/Vimeo URL
-     * @return Youtube/Vimeo Video ID
+     * @param playuri some URL
+     * @return plugin URL
      */
-    private String getVideoId(Uri playuri) {
-        if (playuri.getHost().endsWith("svtplay.se") || playuri.getHost().endsWith("youtube.com") || playuri.getHost().endsWith("youtu.be") || playuri.getHost().endsWith("vimeo.com")) {
-            // We'll need to get the v= parameter from the URL
-            final Pattern pattern;
-            if (playuri.getHost().endsWith("svtplay.se")) {
-                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+\\/.*)",
-                        Pattern.CASE_INSENSITIVE);
-            } else if (playuri.getHost().endsWith("vimeo.com")) {
-                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.|player\\.)?vimeo\\.com\\/(?:.*\\/)?(\\d+)(?:\\?.*)?$",
-                        Pattern.CASE_INSENSITIVE);
-            }
-            else {
-                pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:www\\.|m\\.)?youtu(?:\\.be\\/|be\\.com\\/watch\\?v=)([\\w-]+)(?:[\\?&].*)?$",
-                        Pattern.CASE_INSENSITIVE);
-            }
-            final Matcher matcher = pattern.matcher(playuri.toString());
+    private String toPluginUrl(Uri playuri) {
+        String host = playuri.getHost();
+        if (host.endsWith("svtplay.se")) {
+            Pattern pattern = Pattern.compile(
+                    "^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+\\/.*)",
+                    Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(playuri.toString());
             if (matcher.matches()) {
-                return matcher.group(1);
+                return "plugin://plugin.video.svtplay/?url=%2Fvideo%2F"
+                        + URLEncoder.encode(matcher.group(1)) + "&mode=video";
             }
+        } else if (host.endsWith("vimeo.com")) {
+            String last = playuri.getLastPathSegment();
+            if (last.matches("\\d+")) {
+                return "plugin://plugin.video.vimeo/play/?video_id=" + last;
+            }
+        } else if (host.endsWith("youtube.com")) {
+            if (playuri.getPathSegments().contains("playlist")) {
+                return "plugin://plugin.video.youtube/play/?order=default&playlist_id="
+                        + playuri.getQueryParameter("list");
+            } else {
+                return "plugin://plugin.video.youtube/play/?video_id="
+                        + playuri.getQueryParameter("v");
+            }
+        } else if (host.endsWith("youtu.be")) {
+            return "plugin://plugin.video.youtube/play/?video_id="
+                    + playuri.getLastPathSegment();
         }
         return null;
     }
-
 
     // Default page change listener, that doesn't scroll images
     ViewPager.OnPageChangeListener defaultOnPageChangeListener = new ViewPager.OnPageChangeListener() {
