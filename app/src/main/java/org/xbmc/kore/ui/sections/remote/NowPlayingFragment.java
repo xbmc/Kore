@@ -777,7 +777,7 @@ public class NowPlayingFragment extends Fragment
 
         if (!TextUtils.isEmpty(descriptionPlot)) {
             mediaDescription.setVisibility(View.VISIBLE);
-            mediaDescription.setText(new KodiMarkupCode(getContext()).format(descriptionPlot));
+            mediaDescription.setText(UIUtils.applyMarkup(getContext(), descriptionPlot));
         } else {
             mediaDescription.setVisibility(View.GONE);
         }

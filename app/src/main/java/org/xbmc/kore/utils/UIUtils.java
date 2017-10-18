@@ -30,7 +30,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -606,5 +608,99 @@ public class UIUtils {
         } else {
             button.setMode(RepeatModeButton.MODE.ALL);
         }
+    }
+
+    /**
+     * Replaces some BBCode-ish tagged text with styled spans.
+     * <p>
+     * Only replaces the common tags, namely B, I, CR and UPPERCASE. This is very strict/dumb,
+     * it only recognizes uppercase tags with no spaces around them.
+     *
+     * @param context Activity context needed to resolve the style resources
+     * @param src The text to style
+     * @return a styled CharSequence that can be passed to a {@link TextView#setText(CharSequence)}
+     * or derivatives.
+     */
+    public static SpannableStringBuilder applyMarkup(Context context, String src) {
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        int start = src.indexOf('[');
+        if (start == -1) {
+            sb.append(src);
+            return sb;
+        }
+        if (start > 0) {
+            sb.append(src, 0, start);
+        }
+        int capsStart = 0;
+        int boldStart = 0;
+        int italicStart = 0;
+        // count unclosed tags to know when to apply the styles
+        int openCaps = 0;
+        int openBold = 0;
+        int openItalics = 0;
+        TextAppearanceSpan bold = new TextAppearanceSpan(context, R.style.TextAppearance_Bold);
+        TextAppearanceSpan italic = new TextAppearanceSpan(context, R.style.TextAppearance_Italic);
+        for (int i = start, length = src.length(); i < length;) {
+            String s = src.substring(i);
+            int nextTag = s.indexOf('[');
+            if (nextTag == -1) {
+                sb.append(s);
+                break;
+            }
+            if (nextTag > 0) {
+                sb.append(s, 0, nextTag);
+                i += nextTag;
+            } else if (s.startsWith("[CR]")) {
+                sb.append('\n');
+                i += 4;
+            } else if (s.startsWith("[UPPERCASE]")) {
+                if (openCaps == 0) {
+                    capsStart = sb.length();
+                }
+                openCaps++;
+                i += 11;
+            } else if (s.startsWith("[B]")) {
+                if (openBold == 0) {
+                    boldStart = sb.length();
+                }
+                openBold++;
+                i += 3;
+            } else if (s.startsWith("[I]")) {
+                if (openItalics == 0) {
+                    italicStart = sb.length();
+                }
+                openItalics++;
+                i += 3;
+            } else if (s.startsWith("[/UPPERCASE]")) {
+                if (--openCaps == 0) {
+                    String sub = sb.subSequence(capsStart, sb.length()).toString();
+                    sb.replace(capsStart, sb.length(), sub.toUpperCase());
+                } else if (openCaps < 0) {
+                    sb.append("[/UPPERCASE]");
+                    openCaps = 0;
+                }
+                i += 12;
+            } else if (s.startsWith("[/B]")) {
+                if (--openBold == 0) {
+                    sb.setSpan(bold, boldStart, sb.length(), 0);
+                } else if (openBold < 0) {
+                    sb.append("[/B]");
+                    openBold = 0;
+                }
+                i += 4;
+            } else if (s.startsWith("[/I]")) {
+                if (--openItalics == 0) {
+                    sb.setSpan(italic, italicStart, sb.length(), 0);
+                } else if (openItalics < 0) {
+                    sb.append("[/I]");
+                    openItalics = 0;
+                }
+                i += 4;
+            } else {
+                sb.append('[');
+                i += 1;
+            }
+        }
+        return sb;
     }
 }
