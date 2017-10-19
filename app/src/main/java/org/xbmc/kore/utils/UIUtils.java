@@ -782,6 +782,7 @@ public class UIUtils {
     private static String toTitleCase(String text) {
         StringBuilder sb = new StringBuilder();
         for (String word : text.toLowerCase().split("\\b")) {
+            if (word.isEmpty()) continue;
             sb.append(Character.toUpperCase(word.charAt(0)));
             sb.append(word, 1, word.length());
         }
