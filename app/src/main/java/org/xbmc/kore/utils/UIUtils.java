@@ -615,8 +615,9 @@ public class UIUtils {
     /**
      * Replaces some BBCode-ish tagged text with styled spans.
      * <p>
-     * Only replaces the common tags, namely B, I, CR and UPPERCASE. This is very strict/dumb,
-     * it only recognizes uppercase tags with no spaces around them.
+     * Recognizes and styles CR, B, I, UPPERCASE, LOWERCASE and CAPITALIZE; recognizes
+     * and strips out LIGHT and COLOR. This is very strict/dumb, it only recognizes
+     * uppercase tags with no spaces around them.
      *
      * @param context Activity context needed to resolve the style resources
      * @param src The text to style
