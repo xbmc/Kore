@@ -30,7 +30,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +56,8 @@ import org.xbmc.kore.ui.widgets.RepeatModeButton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * General UI Utils
@@ -606,5 +610,182 @@ public class UIUtils {
         } else {
             button.setMode(RepeatModeButton.MODE.ALL);
         }
+    }
+
+    /**
+     * Replaces some BBCode-ish tagged text with styled spans.
+     * <p>
+     * Recognizes and styles CR, B, I, UPPERCASE, LOWERCASE and CAPITALIZE; recognizes
+     * and strips out LIGHT and COLOR. This is very strict/dumb, it only recognizes
+     * uppercase tags with no spaces around them.
+     *
+     * @param context Activity context needed to resolve the style resources
+     * @param src The text to style
+     * @return a styled CharSequence that can be passed to a {@link TextView#setText(CharSequence)}
+     * or derivatives.
+     */
+    public static SpannableStringBuilder applyMarkup(Context context, String src) {
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        int start = src.indexOf('[');
+        if (start == -1) {
+            sb.append(src);
+            return sb;
+        }
+        if (start > 0) {
+            sb.append(src, 0, start);
+        }
+        Nestable upper = new Nestable();
+        Nestable lower = new Nestable();
+        Nestable title = new Nestable();
+        Nestable bold = new Nestable();
+        Nestable italic = new Nestable();
+        Nestable light = new Nestable();
+        Nestable color = new Nestable();
+        Pattern colorTag = Pattern.compile("^\\[COLOR [^\\]]+\\]");
+        for (int i = start, length = src.length(); i < length;) {
+            String s = src.substring(i);
+            int nextTag = s.indexOf('[');
+            if (nextTag == -1) {
+                sb.append(s);
+                break;
+            }
+            if (nextTag > 0) {
+                sb.append(s, 0, nextTag);
+                i += nextTag;
+            } else if (s.startsWith("[CR]")) {
+                sb.append('\n');
+                i += 4;
+            } else if (s.startsWith("[UPPERCASE]")) {
+                if (upper.start()) {
+                    upper.index = sb.length();
+                }
+                i += 11;
+            } else if (s.startsWith("[/UPPERCASE]")) {
+                if (upper.end()) {
+                    String sub = sb.subSequence(upper.index, sb.length()).toString();
+                    sb.replace(upper.index, sb.length(), sub.toUpperCase());
+                } else if (upper.imbalanced()) {
+                    sb.append("[/UPPERCASE]");
+                }
+                i += 12;
+            } else if (s.startsWith("[B]")) {
+                if (bold.start()) {
+                    bold.index = sb.length();
+                }
+                i += 3;
+            } else if (s.startsWith("[/B]")) {
+                if (bold.end()) {
+                    sb.setSpan(new TextAppearanceSpan(context, R.style.TextAppearance_Bold),
+                            bold.index, sb.length(), 0);
+                } else if (bold.imbalanced()) {
+                    sb.append("[/B]");
+                }
+                i += 4;
+            } else if (s.startsWith("[I]")) {
+                if (italic.start()) {
+                    italic.index = sb.length();
+                }
+                i += 3;
+            } else if (s.startsWith("[/I]")) {
+                if (italic.end()) {
+                    sb.setSpan(new TextAppearanceSpan(context, R.style.TextAppearance_Italic),
+                            italic.index, sb.length(), 0);
+                } else if (italic.imbalanced()) {
+                    sb.append("[/I]");
+                }
+                i += 4;
+            } else if (s.startsWith("[LOWERCASE]")) {
+                if (lower.start()) {
+                    lower.index = sb.length();
+                }
+                i += 11;
+            } else if (s.startsWith("[/LOWERCASE]")) {
+                if (lower.end()) {
+                    String sub = sb.subSequence(lower.index, sb.length()).toString();
+                    sb.replace(lower.index, sb.length(), sub.toLowerCase());
+                } else if (lower.imbalanced()) {
+                    sb.append("[/LOWERCASE]");
+                }
+                i += 12;
+            } else if (s.startsWith("[CAPITALIZE]")) {
+                if (title.start()) {
+                    title.index = sb.length();
+                }
+                i += 12;
+            } else if (s.startsWith("[/CAPITALIZE]")) {
+                if (title.end()) {
+                    String sub = sb.subSequence(title.index, sb.length()).toString();
+                    sb.replace(title.index, sb.length(), toTitleCase(sub));
+                } else if (title.imbalanced()) {
+                    sb.append("[/CAPITALIZE]");
+                }
+                i += 13;
+            } else if (s.startsWith("[LIGHT]")) {
+                light.start();
+                i += 7;
+            } else if (s.startsWith("[/LIGHT]")) {
+                light.end();
+                if (light.imbalanced()) {
+                    sb.append("[/LIGHT]");
+                }
+                i += 8;
+            } else if (s.startsWith("[/COLOR]")) {
+                color.end();
+                if (color.imbalanced()) {
+                    sb.append("[/COLOR]");
+                }
+                i += 8;
+            } else {
+                Matcher m = colorTag.matcher(s);
+                if (m.find()) {
+                    color.start();
+                    i += m.end();
+                } else {
+                    sb.append('[');
+                    i += 1;
+                }
+            }
+        }
+        return sb;
+    }
+
+    private static class Nestable {
+        int index = 0;
+        int level = 0;
+
+        /**
+         * @return true if we just opened the first tag
+         */
+        boolean start() {
+            return level++ == 0;
+        }
+
+        /**
+         * @return true if we just closed the last open tag
+         */
+        boolean end() {
+            return --level == 0;
+        }
+
+        /**
+         * @return true if we found a close tag when there are no open tags
+         */
+        boolean imbalanced() {
+            if (level < 0) {
+                level = 0;
+                return true;
+            }
+            return false;
+        }
+    }
+
+    private static String toTitleCase(String text) {
+        StringBuilder sb = new StringBuilder();
+        for (String word : text.toLowerCase().split("\\b")) {
+            if (word.isEmpty()) continue;
+            sb.append(Character.toUpperCase(word.charAt(0)));
+            sb.append(word, 1, word.length());
+        }
+        return sb.toString();
     }
 }

@@ -325,5 +325,11 @@
         <item name="android:textSize">@dimen/text_size_xlarge</item>
     </style>
 
+    <style name="TextAppearance.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.Italic">
+        <item name="android:textStyle">italic</item>
+    </style>
 </resources>
 
