@@ -35,6 +35,7 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.type.PVRType;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -223,10 +224,11 @@ public class PVRChannelEPGListFragment extends Fragment
                 viewHolder.broadcastId = broadcastDetails.broadcastid;
                 viewHolder.title = broadcastDetails.title;
 
-                viewHolder.titleView.setText(broadcastDetails.title);
-                viewHolder.detailsView.setText(broadcastDetails.plot);
-                String duration = String.format(this.getContext().getString(R.string.minutes_abbrev2),
-                                                String.valueOf(broadcastDetails.runtime));
+                Context context = getContext();
+                viewHolder.titleView.setText(UIUtils.applyMarkup(context, broadcastDetails.title));
+                viewHolder.detailsView.setText(UIUtils.applyMarkup(context, broadcastDetails.plot));
+                String duration = context.getString(R.string.minutes_abbrev2,
+                                                    String.valueOf(broadcastDetails.runtime));
 
                 int flags = DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_TIME;
                 viewHolder.startTimeView.setText(DateUtils.formatDateTime(getActivity(), broadcastDetails.starttime.getTime(), flags));
