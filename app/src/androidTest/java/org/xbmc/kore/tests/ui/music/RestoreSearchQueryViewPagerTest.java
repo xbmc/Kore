@@ -17,6 +17,7 @@
 package org.xbmc.kore.tests.ui.music;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -26,6 +27,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
 import org.xbmc.kore.testhelpers.LoaderIdlingResource;
 import org.xbmc.kore.tests.ui.AbstractTestClass;
@@ -54,6 +56,16 @@ public class RestoreSearchQueryViewPagerTest extends AbstractTestClass<MusicActi
     @Override
     protected ActivityTestRule<MusicActivity> getActivityTestRule() {
         return mActivityRule;
+    }
+
+    @Override
+    protected void setSharedPreferences(Context context) {
+
+    }
+
+    @Override
+    protected void configureHostInfo(HostInfo hostInfo) {
+
     }
 
     /**

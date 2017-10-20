@@ -16,11 +16,14 @@
 
 package org.xbmc.kore.tests.ui;
 
+import android.content.Context;
 import android.support.test.espresso.Espresso;
+import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
 import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.ui.BaseMediaActivity;
@@ -36,6 +39,16 @@ import static org.xbmc.kore.testhelpers.EspressoTestUtils.rotateDevice;
  */
 @Ignore
 abstract public class BaseMediaActivityTests<T extends BaseMediaActivity> extends AbstractTestClass<T> {
+
+    @Override
+    protected void setSharedPreferences(Context context) {
+
+    }
+
+    @Override
+    protected void configureHostInfo(HostInfo hostInfo) {
+
+    }
 
     /**
      * Test if the initial state shows the hamburger icon

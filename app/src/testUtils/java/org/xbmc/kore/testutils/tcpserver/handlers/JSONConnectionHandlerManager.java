@@ -65,7 +65,7 @@ public class JSONConnectionHandlerManager implements MockTcpServer.TcpServerConn
 
         /**
          * Used to get any notifications from the handler.
-         * @return {@link JsonResponse} that should be sent to the client
+         * @return {@link JsonResponse} that should be sent to the client or null if there are no notifications
          */
         ArrayList<JsonResponse> getNotifications();
 

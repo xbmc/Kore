@@ -19,7 +19,6 @@ package org.xbmc.kore.tests.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -33,26 +32,41 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.HostConnection;
-import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.testhelpers.LoaderIdlingResource;
 import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.testutils.Database;
 import org.xbmc.kore.testutils.tcpserver.MockTcpServer;
 import org.xbmc.kore.testutils.tcpserver.handlers.AddonsHandler;
 import org.xbmc.kore.testutils.tcpserver.handlers.ApplicationHandler;
+import org.xbmc.kore.testutils.tcpserver.handlers.InputHandler;
 import org.xbmc.kore.testutils.tcpserver.handlers.JSONConnectionHandlerManager;
 import org.xbmc.kore.testutils.tcpserver.handlers.JSONRPCHandler;
 import org.xbmc.kore.testutils.tcpserver.handlers.PlayerHandler;
+import org.xbmc.kore.ui.sections.hosts.HostFragmentManualConfiguration;
+import org.xbmc.kore.utils.LogUtils;
 
 import java.io.IOException;
 
 @RunWith(AndroidJUnit4.class)
 @Ignore
 abstract public class AbstractTestClass<T extends AppCompatActivity> {
+    private static final String TAG = LogUtils.makeLogTag(AbstractTestClass.class);
 
     abstract protected ActivityTestRule<T> getActivityTestRule();
+
+    /**
+     * Method that can be used to change the shared preferences.
+     * This will be called before each test after clearing the settings
+     * in {@link #setUp()}
+     */
+    abstract protected void setSharedPreferences(Context context);
+
+    /**
+     * Called from {@link #setUp()} right after HostInfo has been created.
+     * @param hostInfo created HostInfo used by the activity under test
+     */
+    abstract protected void configureHostInfo(HostInfo hostInfo);
 
     private LoaderIdlingResource loaderIdlingResource;
     private ActivityTestRule<T> activityTestRule;
@@ -61,6 +75,7 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
     private AddonsHandler addonsHandler;
     private static PlayerHandler playerHandler;
     private static ApplicationHandler applicationHandler;
+    private static InputHandler inputHandler;
 
     private HostInfo hostInfo;
 
@@ -68,9 +83,11 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
     public static void setupMockTCPServer() throws Throwable {
         playerHandler = new PlayerHandler();
         applicationHandler = new ApplicationHandler();
+        inputHandler = new InputHandler();
         manager = new JSONConnectionHandlerManager();
         manager.addHandler(playerHandler);
         manager.addHandler(applicationHandler);
+        manager.addHandler(inputHandler);
         manager.addHandler(new JSONRPCHandler());
         server = new MockTcpServer(manager);
         server.start();
@@ -81,8 +98,15 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
 
         activityTestRule = getActivityTestRule();
 
-//        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         final Context context = activityTestRule.getActivity();
+        if (context == null)
+            throw new RuntimeException("Could not get context. Maybe activity failed to start?");
+
+        Utils.clearSharedPreferences(context);
+        //Prevent drawer from opening when we start a new activity
+        Utils.setLearnedAboutDrawerPreference(context, true);
+        //Allow each test to change the shared preferences
+        setSharedPreferences(context);
 
         //Note: as the activity is not yet available in @BeforeClass we need
         //      to add the handler here
@@ -91,14 +115,14 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
             manager.addHandler(addonsHandler);
         }
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean useEventServer = prefs.getBoolean(HostFragmentManualConfiguration.HOST_USE_EVENT_SERVER, false);
+
         hostInfo = Database.addHost(context, server.getHostName(),
                                     HostConnection.PROTOCOL_TCP, HostInfo.DEFAULT_HTTP_PORT,
-                                    server.getPort());
-
-        Utils.clearSharedPreferences(context);
-
-        //Prevent drawer from opening when we start a new activity
-        Utils.setLearnedAboutDrawerPreference(context, true);
+                                    server.getPort(), useEventServer);
+        //Allow each test to change the host info
+        configureHostInfo(hostInfo);
 
         loaderIdlingResource = new LoaderIdlingResource(activityTestRule.getActivity().getSupportLoaderManager());
         Espresso.registerIdlingResources(loaderIdlingResource);
@@ -111,7 +135,7 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
 
         Utils.switchHost(context, activityTestRule.getActivity(), hostInfo);
 
-        //Relaunch the activity for the changes (Host selection and database fill) to take effect
+        //Relaunch the activity for the changes (Host selection, preference changes, and database fill) to take effect
         activityTestRule.launchActivity(new Intent());
     }
 
@@ -146,5 +170,9 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
 
     public static ApplicationHandler getApplicationHandler() {
         return applicationHandler;
+    }
+
+    public static InputHandler getInputHandler() {
+        return inputHandler;
     }
 }
