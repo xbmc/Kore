@@ -625,6 +625,9 @@ public class UIUtils {
      * or derivatives.
      */
     public static SpannableStringBuilder applyMarkup(Context context, String src) {
+        if (src == null) {
+            return null;
+        }
         SpannableStringBuilder sb = new SpannableStringBuilder();
         int start = src.indexOf('[');
         if (start == -1) {
@@ -768,6 +771,7 @@ public class UIUtils {
         }
 
         /**
+         * This must be called after every {@link #end()}.
          * @return true if we found a close tag when there are no open tags
          */
         boolean imbalanced() {

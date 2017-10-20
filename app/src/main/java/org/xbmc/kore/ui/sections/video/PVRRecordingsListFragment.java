@@ -230,9 +230,10 @@ public class PVRRecordingsListFragment extends Fragment
             viewHolder.recordingId = recordingDetails.recordingid;
             viewHolder.title = recordingDetails.title;
 
-            viewHolder.titleView.setText(recordingDetails.title);
-            viewHolder.detailsView.setText(recordingDetails.channel);
-            UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
+            Context context = getContext();
+            viewHolder.titleView.setText(UIUtils.applyMarkup(context, recordingDetails.title));
+            viewHolder.detailsView.setText(UIUtils.applyMarkup(context, recordingDetails.channel));
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  (recordingDetails.art != null) ?
                                                          recordingDetails.art.poster : recordingDetails.icon,
                                                  recordingDetails.channel,
@@ -240,7 +241,7 @@ public class PVRRecordingsListFragment extends Fragment
             int runtime = recordingDetails.runtime / 60;
             String duration =
                     recordingDetails.starttime + " | " +
-                    String.format(this.getContext().getString(R.string.minutes_abbrev), String.valueOf(runtime));
+                    context.getString(R.string.minutes_abbrev, String.valueOf(runtime));
             viewHolder.durationView.setText(duration);
 
             return convertView;

@@ -479,11 +479,12 @@ public class PVRChannelsListFragment extends Fragment
             viewHolder.channelId = channelDetails.channelid;
             viewHolder.channelName = channelDetails.channel;
 
-            viewHolder.titleView.setText(channelDetails.channel);
+            Context context = getContext();
+            viewHolder.titleView.setText(UIUtils.applyMarkup(context, channelDetails.channel));
             String details = (channelDetails.broadcastnow != null)?
                     channelDetails.broadcastnow.title : null;
-            viewHolder.detailsView.setText(details);
-            UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
+            viewHolder.detailsView.setText(UIUtils.applyMarkup(context, details));
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  channelDetails.thumbnail, channelDetails.channel,
                                                  viewHolder.artView, artWidth, artHeight);
 
