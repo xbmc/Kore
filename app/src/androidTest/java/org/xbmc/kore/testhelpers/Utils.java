@@ -31,6 +31,7 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.provider.MediaProvider;
+import org.xbmc.kore.ui.sections.hosts.HostFragmentManualConfiguration;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.lang.reflect.Method;
@@ -88,7 +89,14 @@ public class Utils {
     public static void setLearnedAboutDrawerPreference(Context context, boolean learned) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(PREF_USER_LEARNED_DRAWER, true);
+        editor.putBoolean(PREF_USER_LEARNED_DRAWER, learned);
+        editor.commit();
+    }
+
+    public static void setUseEventServerPreference(Context context, boolean use) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(HostFragmentManualConfiguration.HOST_USE_EVENT_SERVER, use);
         editor.commit();
     }
 

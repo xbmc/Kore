@@ -66,14 +66,15 @@ public class Database {
 
     public static HostInfo addHost(Context context) {
         return addHost(context, "127.0.0.1", HostConnection.PROTOCOL_TCP,
-                           HostInfo.DEFAULT_HTTP_PORT, HostInfo.DEFAULT_TCP_PORT);
+                       HostInfo.DEFAULT_HTTP_PORT, HostInfo.DEFAULT_TCP_PORT, false);
 
     }
 
-    public static HostInfo addHost(Context context, String hostname, int protocol, int httpPort, int tcpPort) {
+    public static HostInfo addHost(Context context, String hostname, int protocol, int httpPort,
+                                   int tcpPort, boolean useEventServer) {
         return HostManager.getInstance(context).addHost("TestHost", hostname, protocol, httpPort,
                                                         tcpPort, null, null, "52:54:00:12:35:02", 9,
-                                                        false, HostInfo.DEFAULT_EVENT_SERVER_PORT,
+                                                        useEventServer, HostInfo.DEFAULT_EVENT_SERVER_PORT,
                                                         HostInfo.DEFAULT_KODI_VERSION_MAJOR,
                                                         HostInfo.DEFAULT_KODI_VERSION_MINOR,
                                                         HostInfo.DEFAULT_KODI_VERSION_REVISION,

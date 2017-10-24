@@ -17,6 +17,7 @@
 package org.xbmc.kore.tests.ui.music;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
@@ -31,6 +32,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.testhelpers.action.ViewActions;
 import org.xbmc.kore.tests.ui.AbstractTestClass;
@@ -66,6 +68,16 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     @Override
     protected ActivityTestRule<MusicActivity> getActivityTestRule() {
         return musicActivityActivityTestRule;
+    }
+
+    @Override
+    protected void setSharedPreferences(Context context) {
+
+    }
+
+    @Override
+    protected void configureHostInfo(HostInfo hostInfo) {
+
     }
 
     @Override
