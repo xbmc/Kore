@@ -501,7 +501,35 @@ public class RemoteActivity extends BaseActivity
      */
     private String toPluginUrl(Uri playuri) {
         String host = playuri.getHost();
-        if (host.endsWith("svtplay.se")) {
+        if (host.endsWith("youtube.com")) {
+            String videoId = playuri.getQueryParameter("v");
+            String playlistId = playuri.getQueryParameter("list");
+            Uri.Builder pluginUri = new Uri.Builder()
+                    .scheme("plugin")
+                    .authority("plugin.video.youtube")
+                    .path("play/");
+            boolean valid = false;
+            if (videoId != null) {
+                valid = true;
+                pluginUri.appendQueryParameter("video_id", videoId);
+            }
+            if (playlistId != null) {
+                valid = true;
+                pluginUri.appendQueryParameter("playlist_id", playlistId)
+                        .appendQueryParameter("order", "default");
+            }
+            if (valid) {
+                return pluginUri.build().toString();
+            }
+        } else if (host.endsWith("youtu.be")) {
+            return "plugin://plugin.video.youtube/play/?video_id="
+                    + playuri.getLastPathSegment();
+        } else if (host.endsWith("vimeo.com")) {
+            String last = playuri.getLastPathSegment();
+            if (last.matches("\\d+")) {
+                return "plugin://plugin.video.vimeo/play/?video_id=" + last;
+            }
+        } else if (host.endsWith("svtplay.se")) {
             Pattern pattern = Pattern.compile(
                     "^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+\\/.*)",
                     Pattern.CASE_INSENSITIVE);
@@ -510,22 +538,6 @@ public class RemoteActivity extends BaseActivity
                 return "plugin://plugin.video.svtplay/?url=%2Fvideo%2F"
                         + URLEncoder.encode(matcher.group(1)) + "&mode=video";
             }
-        } else if (host.endsWith("vimeo.com")) {
-            String last = playuri.getLastPathSegment();
-            if (last.matches("\\d+")) {
-                return "plugin://plugin.video.vimeo/play/?video_id=" + last;
-            }
-        } else if (host.endsWith("youtube.com")) {
-            if (playuri.getPathSegments().contains("playlist")) {
-                return "plugin://plugin.video.youtube/play/?order=default&playlist_id="
-                        + playuri.getQueryParameter("list");
-            } else {
-                return "plugin://plugin.video.youtube/play/?video_id="
-                        + playuri.getQueryParameter("v");
-            }
-        } else if (host.endsWith("youtu.be")) {
-            return "plugin://plugin.video.youtube/play/?video_id="
-                    + playuri.getLastPathSegment();
         }
         return null;
     }
