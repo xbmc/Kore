@@ -331,5 +331,16 @@
     <style name="TextAppearance.Italic">
         <item name="android:textStyle">italic</item>
     </style>
+
+    <style name="ControlPad.FrameLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="ControlPad">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
 </resources>
 

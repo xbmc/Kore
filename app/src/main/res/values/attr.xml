@@ -38,20 +38,20 @@
 
     <attr name="separatorColor" format="reference|color" />
 
-	<attr name="drawerBackgroundColor" format="reference|color" />
+    <attr name="drawerBackgroundColor" format="reference|color" />
 
     <attr name="remoteButtonColorFilter" format="reference|color" />
     <attr name="defaultButtonColorFilter" format="reference|color" />
     <!--<attr name="remoteBackgroundColorFilter" format="reference|color" />-->
 
     <!-- Icons -->
-	<attr name="iconHosts" format="reference" />
-	<attr name="iconRemote" format="reference" />
+    <attr name="iconHosts" format="reference" />
+    <attr name="iconRemote" format="reference" />
     <attr name="iconRemoteToolbar" format="reference" />
-	<attr name="iconMovies" format="reference" />
-	<attr name="iconTvShows" format="reference" />
-	<attr name="iconMusic" format="reference" />
-	<attr name="iconPicture" format="reference" />
+    <attr name="iconMovies" format="reference" />
+    <attr name="iconTvShows" format="reference" />
+    <attr name="iconMusic" format="reference" />
+    <attr name="iconPicture" format="reference" />
     <attr name="iconHome" format="reference" />
     <attr name="iconAddons" format="reference" />
     <attr name="iconFiles" format="reference" />
@@ -113,4 +113,8 @@
 
     <attr name="iconOpenInNew" format="reference" />
     <attr name="iconBookmark" format="reference" />
+
+    <declare-styleable name="SquareGridLayout">
+        <attr name="columnCount" format="integer"/>
+    </declare-styleable>
 </resources>

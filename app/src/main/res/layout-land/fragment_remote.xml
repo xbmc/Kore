@@ -15,218 +15,19 @@
    limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:baselineAligned="false">
-
-    <!-- For when nothing is playing or something not recognized is playing -->
-    <RelativeLayout
-        android:id="@+id/info_panel"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/remote_page_indicator_height"
-        android:layout_marginLeft="@dimen/remote_content_hmargin"
-        android:layout_marginRight="@dimen/remote_content_hmargin"
-        tools:ignore="InconsistentLayout"
-        tools:visibility="gone">
-        <!--android:background="?attr/cardBackground">-->
-
-        <TextView
-            android:id="@+id/info_title"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            style="@style/TextAppearance.Info.Title"
-            tools:ignore="InconsistentLayout"/>
-
-        <TextView
-            android:id="@+id/info_message"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            style="@style/TextAppearance.Info.Details"
-            android:layout_below="@id/info_title"
-            tools:ignore="InconsistentLayout"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/media_panel"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/remote_content_hmargin"
-        android:layout_marginRight="@dimen/remote_content_hmargin">
-
-        <ImageView
-            android:id="@+id/art"
-            android:layout_width="@dimen/remote_poster_width"
-            android:layout_height="@dimen/remote_poster_height"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/poster"/>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/art"
-            android:layout_toEndOf="@id/art"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            style="@style/TextAppearance.Media.Remote.Title"
-            android:background="?attr/contentBackgroundColor"/>
-        <TextView
-            android:id="@+id/details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/title"
-            android:layout_alignLeft="@id/title"
-            android:layout_alignStart="@id/title"
-            style="@style/TextAppearance.Media.Remote.Details"
-            android:background="?attr/contentBackgroundColor"/>
-        <LinearLayout
-            android:id="@+id/media_button_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_icon_size"
-            android:layout_below="@id/details"
-            android:layout_alignLeft="@id/details"
-            android:layout_alignStart="@id/details"
-            android:layout_alignBottom="@+id/art"
-            android:orientation="horizontal"
-            style="@style/ButtonBar"
-            android:background="?attr/contentBackgroundColor">
-            <ImageButton
-                android:id="@+id/rewind"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconRewind"
-                android:contentDescription="@string/rewind"/>
-            <ImageButton
-                android:id="@+id/play"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconPlay"
-                android:contentDescription="@string/play"/>
-            <ImageButton
-                android:id="@+id/stop"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconStop"
-                android:contentDescription="@string/stop"/>
-            <ImageButton
-                android:id="@+id/fast_forward"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconFastForward"
-                android:contentDescription="@string/fast_forward"/>
-        </LinearLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/remote"
-        android:layout_width="@dimen/remote_size"
-        android:layout_height="@dimen/remote_size"
-        android:layout_marginRight="@dimen/remote_content_hmargin"
-        android:layout_marginEnd="@dimen/remote_content_hmargin"
-        android:layout_gravity="center">
-
-        <ImageView
-            android:id="@+id/context"
-            android:layout_width="@dimen/remote_icon_size"
-            android:layout_height="@dimen/remote_icon_size"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:src="?attr/iconContext"
-            android:contentDescription="@string/codec_info"/>
-        <ImageView
-            android:id="@+id/up"
-            android:layout_width="@dimen/remote_icon_size"
-            android:layout_height="@dimen/remote_icon_size"
-            android:layout_toRightOf="@id/context"
-            android:layout_toEndOf="@id/context"
-            android:layout_alignTop="@id/context"
-            android:src="?attr/iconUp"
-            android:contentDescription="@string/up"/>
-        <ImageView
-            android:id="@+id/info"
-            android:layout_width="@dimen/remote_icon_size"
-            android:layout_height="@dimen/remote_icon_size"
-            android:layout_toRightOf="@id/up"
-            android:layout_toEndOf="@id/up"
-            android:layout_alignTop="@id/context"
-            android:src="?attr/iconInfo"
-            android:contentDescription="@string/info"/>
-
-        <ImageView
-            android:id="@+id/left"
-            android:layout_width="@dimen/remote_icon_size"
-            android:layout_height="@dimen/remote_icon_size"
-            android:layout_below="@id/context"
-            android:src="?attr/iconLeft"
-            android:contentDescription="@string/left"/>
-        <ImageView
-            android:id="@+id/select"
-            android:layout_width="@dimen/remote_icon_size"
-            android:layout_height="@dimen/remote_icon_size"
-            android:layout_toRightOf="@id/left"
-            android:layout_toEndOf="@id/left"
-            android:layout_alignTop="@id/left"
-            android:src="?attr/iconSelect"
-            android:contentDescription="@string/select"/>
-        <ImageView
-            android:id="@+id/right"
-            android:layout_width="@dimen/remote_icon_size"
-            android:layout_height="@dimen/remote_icon_size"
-            android:layout_toRightOf="@id/select"
-            android:layout_toEndOf="@id/select"
-            android:layout_alignTop="@id/left"
-            android:src="?attr/iconRight"
-            android:contentDescription="@string/right"/>
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="@dimen/remote_icon_size"
-            android:layout_height="@dimen/remote_icon_size"
-            android:layout_below="@id/left"
-            android:src="?attr/iconBack"
-            android:contentDescription="@string/back"/>
-        <ImageView
-            android:id="@+id/down"
-            android:layout_width="@dimen/remote_icon_size"
-            android:layout_height="@dimen/remote_icon_size"
-            android:layout_toRightOf="@id/back"
-            android:layout_toEndOf="@id/back"
-            android:layout_alignTop="@id/back"
-            android:src="?attr/iconDown"
-            android:contentDescription="@string/down"/>
-        <ImageView
-            android:id="@+id/osd"
-            android:layout_width="@dimen/remote_icon_size"
-            android:layout_height="@dimen/remote_icon_size"
-            android:layout_toRightOf="@id/down"
-            android:layout_toEndOf="@id/down"
-            android:layout_alignTop="@id/back"
-            android:src="?attr/iconMenu"
-            android:contentDescription="@string/osd"/>
-    </RelativeLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <!-- Right button bar -->
     <LinearLayout
         android:id="@+id/button_bar"
         android:layout_width="@dimen/buttonbar_height"
         android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:orientation="vertical"
         style="@style/ButtonBar.Bottom">
         <ImageButton
@@ -329,4 +130,128 @@
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/system"/>
     </LinearLayout>
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/button_bar"
+        android:layout_toStartOf="@+id/button_bar">
+
+        <!-- For when nothing is playing or something not recognized is playing -->
+        <RelativeLayout
+            android:id="@+id/info_panel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/remote_page_indicator_height"
+            android:layout_marginLeft="@dimen/remote_content_hmargin"
+            android:layout_marginRight="@dimen/remote_content_hmargin"
+            tools:ignore="InconsistentLayout"
+            tools:visibility="gone">
+            <!--android:background="?attr/cardBackground">-->
+
+            <TextView
+                android:id="@+id/info_title"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                style="@style/TextAppearance.Info.Title"
+                tools:ignore="InconsistentLayout"/>
+
+            <TextView
+                android:id="@+id/info_message"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                style="@style/TextAppearance.Info.Details"
+                android:layout_below="@id/info_title"
+                tools:ignore="InconsistentLayout"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/media_panel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/remote_content_hmargin">
+
+            <ImageView
+                android:id="@+id/art"
+                android:layout_width="@dimen/remote_poster_width"
+                android:layout_height="@dimen/remote_poster_height"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/poster"/>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/art"
+                android:layout_toEndOf="@id/art"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                style="@style/TextAppearance.Media.Remote.Title"
+                android:background="?attr/contentBackgroundColor"/>
+            <TextView
+                android:id="@+id/details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_alignLeft="@id/title"
+                android:layout_alignStart="@id/title"
+                style="@style/TextAppearance.Media.Remote.Details"
+                android:background="?attr/contentBackgroundColor"/>
+            <LinearLayout
+                android:id="@+id/media_button_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/default_icon_size"
+                android:layout_below="@id/details"
+                android:layout_alignLeft="@id/details"
+                android:layout_alignStart="@id/details"
+                android:layout_alignBottom="@+id/art"
+                android:orientation="horizontal"
+                style="@style/ButtonBar"
+                android:background="?attr/contentBackgroundColor">
+                <ImageButton
+                    android:id="@+id/rewind"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconRewind"
+                    android:contentDescription="@string/rewind"/>
+                <ImageButton
+                    android:id="@+id/play"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconPlay"
+                    android:contentDescription="@string/play"/>
+                <ImageButton
+                    android:id="@+id/stop"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconStop"
+                    android:contentDescription="@string/stop"/>
+                <ImageButton
+                    android:id="@+id/fast_forward"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconFastForward"
+                    android:contentDescription="@string/fast_forward"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <org.xbmc.kore.ui.widgets.ControlPad
+            android:id="@+id/remote"
+            style="@style/ControlPad"
+            app:columnCount="3"/>
+
+    </LinearLayout>
+</RelativeLayout>
