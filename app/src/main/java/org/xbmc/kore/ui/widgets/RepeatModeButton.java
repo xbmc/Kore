@@ -23,7 +23,7 @@ import android.util.AttributeSet;
 
 import org.xbmc.kore.R;
 
-public class RepeatModeButton extends AppCompatImageButton {
+public class RepeatModeButton extends HighlightButton {
     public enum MODE {
         OFF,
         ONE,
@@ -32,7 +32,6 @@ public class RepeatModeButton extends AppCompatImageButton {
 
     private MODE mode;
     private static TypedArray styledAttributes;
-    private static int accentDefaultColor;
 
     public RepeatModeButton(Context context) {
         super(context);
@@ -55,15 +54,15 @@ public class RepeatModeButton extends AppCompatImageButton {
         switch (mode) {
             case OFF:
                 setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
-                clearColorFilter();
+                setHighlight(false);
                 break;
             case ONE:
                 setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_repeat_one_white_24dp));
-                setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(0), accentDefaultColor));
+                setHighlight(true);
                 break;
             case ALL:
                 setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
-                setColorFilter(styledAttributes.getColor(styledAttributes.getIndex(0), accentDefaultColor));
+                setHighlight(true);
                 break;
         }
     }
@@ -77,6 +76,5 @@ public class RepeatModeButton extends AppCompatImageButton {
                 R.attr.colorAccent,
                 R.attr.iconRepeat,
                 R.attr.iconRepeatOne});
-        accentDefaultColor = getContext().getResources().getColor(R.color.accent_default);
     }
 }
