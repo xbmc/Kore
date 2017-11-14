@@ -423,5 +423,8 @@
     <string name="zeroprogress">0:00</string>
 
     <string name="toggle_expand">Expand/Collapse</string>
+    <string name="play_locally">Play Locally</string>
 
+    <string name="disable_local_playback_support">Disable local playback support</string>
+    <string name="disable_local_playback_support_summary">Disables support for playing media locally on the device running Kore.</string>
 </resources>

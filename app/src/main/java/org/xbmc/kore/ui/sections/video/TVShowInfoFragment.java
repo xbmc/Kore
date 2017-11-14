@@ -22,7 +22,6 @@ import android.provider.BaseColumns;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.widget.ImageButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -32,6 +31,7 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
+import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.LogUtils;
 
 /**
@@ -72,7 +72,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(ImageButton FAB) {
+    protected boolean setupFAB(FABSpeedDial FAB) {
         return false;
     }
 

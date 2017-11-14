@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
+        <org.xbmc.kore.ui.widgets.fabspeeddial.DialActionButton
+            android:id="@+id/play_local"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/play_locally"
+            app:iconFABDial="?attr/iconRemoteDevice"
+            app:fabSize="mini"
+            android:visibility="invisible"
+            />
+        <org.xbmc.kore.ui.widgets.fabspeeddial.DialActionButton
+            android:id="@+id/play_remote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/play_on_kodi"
+            app:iconFABDial="?attr/iconTvShows"
+            app:fabSize="mini"
+            android:visibility="invisible"
+            />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabspeeddial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="normal"
+            android:layout_gravity="end"
+            app:useCompatPadding="true"/>
+</merge>

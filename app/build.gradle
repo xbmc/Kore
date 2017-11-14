@@ -116,6 +116,7 @@ dependencies {
     compile "com.android.support:cardview-v7:${supportLibVersion}"
     compile "com.android.support:preference-v14:${supportLibVersion}"
     compile "com.android.support:support-v13:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
     compile 'com.jakewharton:butterknife:6.1.0'
@@ -124,7 +125,6 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'org.jmdns:jmdns:3.5.1'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'at.blogc:expandabletextview:1.0.3'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
 

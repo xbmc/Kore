@@ -14,7 +14,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+           xmlns:tools="http://schemas.android.com/tools">
 
 <!-- Text styles -->
 	<style name="TextAppearance">
@@ -330,6 +331,13 @@
     </style>
     <style name="TextAppearance.Italic">
         <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="TextAppearance.Label">
+        <item name="android:background">@drawable/rounded_corners_shape</item>
+        <item name="android:colorBackground">@drawable/rounded_corners_shape</item>
+        <item name="android:textColor">?attr/textColorOverPrimary</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ControlPad.FrameLayout">

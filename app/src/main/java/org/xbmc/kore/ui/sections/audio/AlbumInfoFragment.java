@@ -26,7 +26,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
@@ -40,6 +39,7 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
+import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -172,13 +172,13 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(ImageButton FAB) {
-        FAB.setOnClickListener(new View.OnClickListener() {
+    protected boolean setupFAB(FABSpeedDial FAB) {
+        FAB.setOnFabClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PlaylistType.Item item = new PlaylistType.Item();
                 item.albumid = getDataHolder().getId();
-                fabActionPlayItem(item);
+                playItemOnKodi(item);
             }
         });
         return true;
