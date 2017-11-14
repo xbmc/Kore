@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.jsonrpc;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Process;
 import android.text.TextUtils;
@@ -281,11 +282,13 @@ public class HostConnection {
     }
 
     /**
-	 * Calls the a method on the server
+	 * Calls the given method on the server
 	 * This call is always asynchronous. The results will be posted, through the
 	 * {@link ApiCallback callback} parameter, on the specified {@link android.os.Handler}.
-	 *
-	 * @param method Method object that represents the methood too call
+     * <BR/>
+     * If you need to update the callback and handler (e.g. due to a device configuration change)
+     * use {@link #updateClientCallback(int, ApiCallback, Handler)}
+     * @param method Method object that represents the methood too call
 	 * @param callback {@link ApiCallback} to post the response to
 	 * @param handler {@link Handler} to invoke callbacks on. When null, the
 	 *                callbacks are invoked on the same thread as the request.
@@ -297,13 +300,21 @@ public class HostConnection {
 		LogUtils.LOGD(TAG, "Starting method execute. Method: " + method.getMethodName() +
 			" on host: " + hostInfo.getJsonRpcHttpEndpoint());
 
+        if (protocol == PROTOCOL_TCP) {
+            /**
+             * Do not call this from the runnable below as it may cause a race condition
+             * with {@link #updateClientCallback(int, ApiCallback, Handler)}
+             */
+            // Save this method/callback for any later response
+            addClientCallback(method, callback, handler);
+        }
+
 		// Launch background thread
         Runnable command = new Runnable() {
             @Override
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 if (protocol == PROTOCOL_HTTP) {
-//                    executeThroughHttp(method, callback, handler);
                     executeThroughOkHttp(method, callback, handler);
                 } else {
                     executeThroughTcp(method, callback, handler);
@@ -343,6 +354,67 @@ public class HostConnection {
     }
 
     /**
+     * Updates the client callback for the given {@link ApiMethod} if it is still pending.
+     * This can be used when the activity or fragment has been destroyed and recreated and
+     * you are still interested in the result of any pending {@link ApiMethod}
+     * @param methodId for which a new callback needs to be attached
+     * @param callback new callback that needs to be called for the new activity or fragment
+     * @param handler used to execute the callback on the UI thread
+     * @param <T> result type
+     * @return true if the {@link ApiMethod} was still pending, false otherwise.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> boolean updateClientCallback(final int methodId, final ApiCallback<T> callback,
+                                            final Handler handler) {
+
+        if (getProtocol() == PROTOCOL_HTTP)
+            return false;
+
+        synchronized (clientCallbacks) {
+            String id = String.valueOf(methodId);
+            if (clientCallbacks.containsKey(id)) {
+                clientCallbacks.put(id, new MethodCallInfo<>((ApiMethod<T>) clientCallbacks.get(id).method,
+                                                             callback, handler));
+                return true;
+            }
+            return  false;
+        }
+    }
+
+    /**
+     * Stores the method and callback to handle asynchronous responses.
+     * Note this is only needed for requests over TCP.
+     * @param method
+     * @param callback
+     * @param handler
+     * @param <T>
+     */
+    private <T> void addClientCallback(final ApiMethod<T> method, final ApiCallback<T> callback,
+                                       final Handler handler) {
+
+        if (getProtocol() == PROTOCOL_HTTP)
+            return;
+
+        String methodId = String.valueOf(method.getId());
+
+        synchronized (clientCallbacks) {
+            if (clientCallbacks.containsKey(methodId)) {
+                if ((handler != null) && (callback != null)) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onError(ApiException.API_METHOD_WITH_SAME_ID_ALREADY_EXECUTING,
+                                             "A method with the same Id is already executing");
+                        }
+                    });
+                }
+                return;
+            }
+            clientCallbacks.put(methodId, new MethodCallInfo<T>(method, callback, handler));
+        }
+    }
+
+    /**
      * Sends the JSON RPC request through HTTP (using OkHttp library)
      */
     private <T> void executeThroughOkHttp(final ApiMethod<T> method, final ApiCallback<T> callback,
@@ -355,7 +427,6 @@ public class HostConnection {
                     .url(hostInfo.getJsonRpcHttpEndpoint())
                     .post(RequestBody.create(MEDIA_TYPE_JSON, jsonRequest))
                     .build();
-            LogUtils.LOGD(TAG, "Sending request via OkHttp: " + jsonRequest);
             Response response = sendOkHttpRequest(client, request);
             final T result = method.resultFromJson(parseJsonResponse(handleOkHttpResponse(response)));
 
@@ -517,25 +588,7 @@ public class HostConnection {
 	private <T> void executeThroughTcp(final ApiMethod<T> method, final ApiCallback<T> callback,
 									   final Handler handler) {
         String methodId = String.valueOf(method.getId());
-		try {
-			// Save this method/callback for later response
-            // Check if a method with this id is already running and raise an error if so
-            synchronized (clientCallbacks) {
-                if (clientCallbacks.containsKey(methodId)) {
-                    if (callback != null) {
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.onError(ApiException.API_METHOD_WITH_SAME_ID_ALREADY_EXECUTING,
-                                        "A method with the same Id is already executing");
-                            }
-                        });
-                    }
-                    return;
-                }
-                clientCallbacks.put(methodId, new MethodCallInfo<T>(method, callback, handler));
-            }
-
+        try {
             // TODO: Validate if this shouldn't be enclosed by a synchronized.
 			if (socket == null) {
 				// Open connection to the server and setup reader thread
@@ -843,6 +896,7 @@ public class HostConnection {
                         });
                     }
                 }
+
                 clientCallbacks.clear();
             }
         }
