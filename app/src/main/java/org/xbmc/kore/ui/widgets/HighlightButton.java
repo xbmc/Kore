@@ -19,12 +19,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
+import android.view.ViewTreeObserver;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.utils.Utils;
 
 public class HighlightButton extends AppCompatImageButton {
 
-    private int colorFilter;
+    private int highlightColorFilter;
 
     private boolean highlight;
 
@@ -36,16 +38,18 @@ public class HighlightButton extends AppCompatImageButton {
     public HighlightButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         setStyle(context);
+        fixThemeColorForPreLollipop(context);
     }
 
     public HighlightButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setStyle(context);
+        fixThemeColorForPreLollipop(context);
     }
 
     public void setHighlight(boolean highlight) {
         if (highlight) {
-            setColorFilter(colorFilter);
+            setColorFilter(highlightColorFilter);
         } else {
             clearColorFilter();
         }
@@ -58,11 +62,40 @@ public class HighlightButton extends AppCompatImageButton {
 
     private void setStyle(Context context) {
         if (!this.isInEditMode()) {
-            TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(
-                    new int[]{R.attr.colorAccent});
-            colorFilter = styledAttributes.getColor(styledAttributes.getIndex(0),
-                    context.getResources().getColor(R.color.accent_default));
+            TypedArray styledAttributes =
+                    context.getTheme().obtainStyledAttributes(new int[]{R.attr.colorAccent});
+            highlightColorFilter = styledAttributes.getColor(styledAttributes.getIndex(0),
+                                                             context.getResources().getColor(R.color.accent_default));
             styledAttributes.recycle();
         }
+    }
+
+    /**
+     * Hack!
+     * Tinting is not applied on pre-lollipop devices.
+     * As there is (AFAICT) no proper way to set this manually we simply
+     * apply the color filter each time the view has been laid out.
+     * @param context
+     */
+    private void fixThemeColorForPreLollipop(Context context) {
+        if (Utils.isLollipopOrLater() || this.isInEditMode())
+            return;
+
+        TypedArray styledAttributes =
+                context.getTheme().obtainStyledAttributes(new int[]{R.attr.defaultButtonColorFilter});
+        final int colorFilter = styledAttributes.getColor(styledAttributes.getIndex(0),
+                                                         context.getResources().getColor(R.color.white));
+        styledAttributes.recycle();
+
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (highlight) {
+                    setColorFilter(highlightColorFilter);
+                } else {
+                    setColorFilter(colorFilter);
+                }
+            }
+        });
     }
 }
