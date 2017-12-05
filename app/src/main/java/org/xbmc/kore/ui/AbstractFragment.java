@@ -22,9 +22,9 @@ import android.support.v4.app.Fragment;
 
 public class AbstractFragment extends Fragment {
 
-    private AbstractInfoFragment.DataHolder dataHolder;
+    private DataHolder dataHolder;
 
-    public void setDataHolder(AbstractInfoFragment.DataHolder dataHolder) {
+    public void setDataHolder(DataHolder dataHolder) {
         this.dataHolder = dataHolder;
         Bundle bundle = getArguments();
         if (bundle == null) {
@@ -34,7 +34,7 @@ public class AbstractFragment extends Fragment {
         }
     }
 
-    public AbstractInfoFragment.DataHolder getDataHolder() {
+    public DataHolder getDataHolder() {
         return dataHolder;
     }
 
@@ -43,7 +43,7 @@ public class AbstractFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if( this.dataHolder == null ) {
-            this.dataHolder = new AbstractInfoFragment.DataHolder(-1);
+            this.dataHolder = new DataHolder(-1);
         }
 
         this.dataHolder.setBundle(getArguments());
