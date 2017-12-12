@@ -330,6 +330,7 @@
     <string name="sort_by_date_added">Par date d\'ajout</string>
     <string name="sort_by_last_played">Par date de visionnage</string>
     <string name="ignore_prefixes">Ignorer les préfixes</string>
+    <string name="show_watched_status">Afficher l\'état \"Vu\"</string>
 
     <!-- Preferences strings -->
     <string name="application">Application</string>
@@ -346,6 +347,8 @@
     <string name="keep_remote_above_lockscreen">Conserver la télécommande sur l\'écran de déverrouillage</string>
     <string name="pref_keep_screen_on">Conserver l\'écran allumé lors de l\'utilisation de la télécommande</string>
     <string name="show_notification">Afficher les notifications pendant la lecture</string>
+    <string name="show_now_playing_panel">Volet \"Lecture en cours\"</string>
+    <string name="show_now_playing_panel_summary">Afficher un volet extensible en bas de l\'écran lors de la lecture de médias</string>
     <string name="pause_during_calls">Mettre en pause lors des appels téléphoniques</string>
     <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
     <string name="vibrate_on_remote">Vibrer à l\'appui</string>
@@ -407,5 +410,8 @@
     <string name="Refreshing_not_implemented_for_this_item">Impossible d\'actualise cet élément</string>
     <string name="no_songs_found_refresh">Aucune piste musicale trouvée\\n\\nGlissez vers le bas pour actualiser</string>
     <string name="not_implemented">Non installé</string>
+    <string name="zeroprogress">0:00</string>
+
+    <string name="toggle_expand">Ouvrir/Fermer</string>
 
 </resources>
