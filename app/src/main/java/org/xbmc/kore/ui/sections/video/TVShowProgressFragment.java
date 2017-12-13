@@ -259,6 +259,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
      *
      * @param cursor Cursor with the data
      */
+    @TargetApi(21)
     private void displaySeasonList(Cursor cursor) {
         TextView seasonsListTitle = (TextView) getActivity().findViewById(R.id.seasons_title);
         GridLayout seasonsList = (GridLayout) getActivity().findViewById(R.id.seasons_list);

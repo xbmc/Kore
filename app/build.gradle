@@ -83,9 +83,10 @@ android {
         // Too much trouble keeping all translations in sync
         disable 'MissingTranslation'
 
-        // okio generates a lint error which should be ignored. Demote it to warning
-        // See https://github.com/square/okio/issues/58
-        warning 'InvalidPackage'
+        //The xml launcher icon introduced in API 26 causes lint to generate
+        //an error that the icon is not a PNG format
+        //This reduces the error to a warning
+        warning 'IconLauncherFormat'
     }
 
 //    allprojects {

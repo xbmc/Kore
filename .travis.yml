@@ -27,4 +27,4 @@ android:
 before_script:
 
 script: 
-  - ./gradlew testFullDebugUnitTest assembleFullRelease
+  - ./gradlew lintFullRelease testFullDebugUnitTest assembleFullRelease
