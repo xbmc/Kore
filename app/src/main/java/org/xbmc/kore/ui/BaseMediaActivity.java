@@ -145,7 +145,7 @@ public abstract class BaseMediaActivity extends BaseActivity
         if (fragment == null) {
             fragment = createFragment();
 
-            if (Utils.isLollipopOrLater()) {
+            if (Utils.isLollipopAndPreOreo()) {
                 fragment.setExitTransition(null);
                 fragment.setReenterTransition(TransitionInflater
                                                       .from(this)
@@ -158,7 +158,7 @@ public abstract class BaseMediaActivity extends BaseActivity
                     .commit();
         }
 
-        if (Utils.isLollipopOrLater()) {
+        if (Utils.isLollipopAndPreOreo()) {
             sharedElementTransition.setupExitTransition(this, fragment);
         }
 
@@ -280,7 +280,7 @@ public abstract class BaseMediaActivity extends BaseActivity
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
-        if (Utils.isLollipopOrLater()) {
+        if (Utils.isLollipopAndPreOreo()) {
             dataHolder.setPosterTransitionName(sharedImageView.getTransitionName());
             sharedElementTransition.setupEnterTransition(this, fragTrans, fragment, sharedImageView);
         } else {
