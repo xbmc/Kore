@@ -64,6 +64,7 @@ import org.xbmc.kore.ui.volumecontrollers.VolumeKeyActionHandler;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -623,32 +624,20 @@ public class RemoteActivity extends BaseActivity
         }
         lastImageUrl = imageUrl;
 
-        // Start service that manages connection observers
-        LogUtils.LOGD(TAG, "Starting observer service");
-        startService(new Intent(this, ConnectionObserversManagerService.class));
-
-
-//        // Check whether we should show a notification
-//        boolean showNotification = PreferenceManager
-//                .getDefaultSharedPreferences(this)
-//                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION,
-//                            Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
-//        if (showNotification) {
-//            // Let's start the notification service
-//            LogUtils.LOGD(TAG, "Starting notification service");
-//            startService(new Intent(this, NotificationObserver.class));
-//        }
-//
-//        // Check whether we should react to phone state changes
-//        boolean shouldPause = PreferenceManager
-//                .getDefaultSharedPreferences(this)
-//                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
-//                            Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
-//        if (shouldPause) {
-//            // Let's start the listening service
-//            LogUtils.LOGD(TAG, "Starting phone state listener");
-//            startService(new Intent(this, PauseCallObserver.class));
-//        }
+        // Check whether we should show a notification
+        boolean showNotification = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION,
+                            Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
+        if (showNotification) {
+            // Start service that manages connection observers
+            LogUtils.LOGD(TAG, "Starting observer service");
+            if (Utils.isOreoOrLater()) {
+                startForegroundService(new Intent(this, ConnectionObserversManagerService.class));
+            } else {
+                startService(new Intent(this, ConnectionObserversManagerService.class));
+            }
+        }
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,

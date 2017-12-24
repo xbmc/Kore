@@ -65,15 +65,16 @@
             android:defaultValue="false"/>
 
         <SwitchPreferenceCompat
+            android:key="pref_pause_during_calls"
+            android:title="@string/pause_during_calls"
+            android:defaultValue="false"
+            android:dependency="pref_show_notification"/>
+
+        <SwitchPreferenceCompat
             android:key="pref_show_nowplayingpanel"
             android:title="@string/show_now_playing_panel"
             android:summary="@string/show_now_playing_panel_summary"
             android:defaultValue="true"/>
-
-        <SwitchPreferenceCompat
-            android:key="pref_pause_during_calls"
-            android:title="@string/pause_during_calls"
-            android:defaultValue="false"/>
 
         <MultiSelectListPreference
             android:key="pref_nav_drawer_items"
