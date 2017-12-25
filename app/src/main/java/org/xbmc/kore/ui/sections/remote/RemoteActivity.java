@@ -15,9 +15,11 @@
  */
 package org.xbmc.kore.ui.sections.remote;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
@@ -614,6 +616,7 @@ public class RemoteActivity extends BaseActivity
 
     }
 
+    @TargetApi(Build.VERSION_CODES.O)
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {

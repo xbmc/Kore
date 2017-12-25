@@ -69,7 +69,6 @@
             style="@style/TextAppearance.Medialist.Title"
             android:paddingRight="@dimen/small_padding"
             android:paddingEnd="@dimen/small_padding"
-            android:singleLine="false"
             android:ellipsize="middle"/>
         <TextView
             android:id="@+id/details"
