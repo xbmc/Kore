@@ -26,7 +26,8 @@ import org.xbmc.kore.utils.Utils;
 
 public class HighlightButton extends AppCompatImageButton {
 
-    private int highlightColorFilter;
+    private int highlightColor;
+    private int defaultColor;
 
     private boolean highlight;
 
@@ -49,9 +50,9 @@ public class HighlightButton extends AppCompatImageButton {
 
     public void setHighlight(boolean highlight) {
         if (highlight) {
-            setColorFilter(highlightColorFilter);
+            setColorFilter(highlightColor);
         } else {
-            clearColorFilter();
+            setColorFilter(defaultColor);
         }
         this.highlight = highlight;
     }
@@ -62,10 +63,13 @@ public class HighlightButton extends AppCompatImageButton {
 
     private void setStyle(Context context) {
         if (!this.isInEditMode()) {
-            TypedArray styledAttributes =
-                    context.getTheme().obtainStyledAttributes(new int[]{R.attr.colorAccent});
-            highlightColorFilter = styledAttributes.getColor(styledAttributes.getIndex(0),
-                                                             context.getResources().getColor(R.color.accent_default));
+            TypedArray styledAttributes = context.getTheme()
+                                                 .obtainStyledAttributes(new int[]{R.attr.colorAccent,
+                                                                                   R.attr.defaultButtonColorFilter});
+            highlightColor = styledAttributes.getColor(styledAttributes.getIndex(0),
+                                                       context.getResources().getColor(R.color.accent_default));
+            defaultColor = styledAttributes.getColor(styledAttributes.getIndex(1),
+                                                     context.getResources().getColor(R.color.white));
             styledAttributes.recycle();
         }
     }
@@ -81,19 +85,13 @@ public class HighlightButton extends AppCompatImageButton {
         if (Utils.isLollipopOrLater() || this.isInEditMode())
             return;
 
-        TypedArray styledAttributes =
-                context.getTheme().obtainStyledAttributes(new int[]{R.attr.defaultButtonColorFilter});
-        final int colorFilter = styledAttributes.getColor(styledAttributes.getIndex(0),
-                                                         context.getResources().getColor(R.color.white));
-        styledAttributes.recycle();
-
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if (highlight) {
-                    setColorFilter(highlightColorFilter);
+                    setColorFilter(highlightColor);
                 } else {
-                    setColorFilter(colorFilter);
+                    setColorFilter(defaultColor);
                 }
             }
         });
