@@ -23,15 +23,15 @@
     <string name="loading">Kargatzen…</string>
 
     <!-- Navigation drawer tips -->
-	<string name="navigation_drawer_open">Ireki nabigazioko tiradera</string>
-	<string name="navigation_drawer_close">Itxi nabigazioko tiradera</string>
+    <string name="navigation_drawer_open">Ireki nabigazioko tiradera</string>
+    <string name="navigation_drawer_close">Itxi nabigazioko tiradera</string>
 
-	<string name="xbmc_media_center">Multimedia zentroa</string>
-	<string name="home">Hasiera</string>
-	<string name="movies">Filmak</string>
-	<string name="tv_shows">TB saioak</string>
-	<string name="music">Musika</string>
-	<string name="pictures">Irudiak</string>
+    <string name="xbmc_media_center">Multimedia zentroa</string>
+    <string name="home">Hasiera</string>
+    <string name="movies">Filmak</string>
+    <string name="tv_shows">TB saioak</string>
+    <string name="music">Musika</string>
+    <string name="pictures">Irudiak</string>
     <string name="addons">Gehigarriak</string>
     <string name="files">Fitxategiak</string>
     <string name="video">Bideoa</string>
@@ -302,7 +302,7 @@
 
     <string name="addon_overview">Informazio orokorra</string>
     <string name="addon_content">Edukia</string>
-    
+
     <string name="artists">Artistak</string>
     <string name="albums">Albumak</string>
     <string name="genres">Generoak</string>
@@ -330,21 +330,24 @@
     <string name="sort_by_date_added">Gehitutako dataren arabera</string>
     <string name="sort_by_last_played">Azken erreprodukzioaren arabera</string>
     <string name="ignore_prefixes">Ez ikusi egin aurrizkiei</string>
+    <string name="show_watched_status">Erakutsi ikusitakoen egoera</string>
 
     <!-- Preferences strings -->
     <string name="application">Aplikazioa</string>
-
+	
     <string name="theme">Gaia</string>
     <string name="theme_night">Gaua</string>
     <string name="theme_day">Eguna</string>
     <string name="theme_mist">Lanbroa</string>
     <string name="theme_solarized">Alderantzikatua</string>
     <string name="theme_solarized_dark">Alderantzikatu iluna</string>
-
+	
     <string name="switch_to_remote">Aldatu urrunekora multimedia hastean</string>
     <string name="keep_remote_above_lockscreen">Erakutsi blokeatutako pantailaren gainean</string>
     <string name="pref_keep_screen_on">Mantendu aktibo</string>
     <string name="show_notification">Erakutsi jakinarazpenak erreproduzitzean</string>
+    <string name="show_now_playing_panel">Erakutsi orain erreproduzitzen panela erreproduzitzean</string>
+    <string name="show_now_playing_panel_summary">Panel zabalgarri bat erakusten du pantailaren behekaldean multimedia erreproduzitzean</string>
     <string name="pause_during_calls">Pausatu telefono deietan</string>
     <string name="use_hardware_volume_keys">Erabili bolumen teklak bolumena kontrolatzeko</string>
     <string name="vibrate_on_remote">Bibratu ukitzean</string>
@@ -416,5 +419,8 @@
     <string name="Refreshing_not_implemented_for_this_item">Freskatzea inplementatu gabe dago elementu honentzat</string>
     <string name="no_songs_found_refresh">Ez da kantarik aurkitu\\n\\nPasa hatza goitik behera freskatzeko</string>
     <string name="not_implemented">Inplementatu gabe</string>
+    <string name="zeroprogress">0:00</string>
+
+    <string name="toggle_expand">Zabaldu/Batu</string>
 
 </resources>
