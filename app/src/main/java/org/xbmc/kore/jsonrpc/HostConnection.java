@@ -32,6 +32,7 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.xbmc.kore.host.HostInfo;
+import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.notification.Application;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.Player;
@@ -48,6 +49,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -285,7 +287,9 @@ public class HostConnection {
 	 *
 	 * @param method Method object that represents the methood too call
 	 * @param callback {@link ApiCallback} to post the response to
-	 * @param handler {@link Handler} to invoke callbacks on
+	 * @param handler {@link Handler} to invoke callbacks on. When null, the
+	 *                callbacks are invoked on the same thread as the request.
+	 *                You cannot do UI manipulation in the callbacks when this is null.
 	 * @param <T> Method return type
 	 */
 	public <T> void execute(final ApiMethod<T> method, final ApiCallback<T> callback,
@@ -311,6 +315,34 @@ public class HostConnection {
 	}
 
     /**
+     * Executes the remote method in the background and returns a future that may be
+     * awaited on any thread.
+     * <p>
+     * Not a good idea to await on the UI thread although you can. The app will become
+     * unresponsive until the request is completed if you do. Android can't know that
+     * you're effectively doing a network request on the main thread so it won't stop you.
+     * <p>
+     * This is meant to be used in a background thread for doing requests that depend
+     * on the result of another. Nested callbacks make it hard to follow the logic,
+     * tend to make you repeat error handling at every level, and also slower because
+     * of constant switching between the worker and UI threads.
+     * <p>
+     * If you don't care about the result and just want to fire a request, you could
+     * call this but not call {@link Future#get()} on the result. It's safe to do
+     * in the UI thread but you wouldn't know if an error happened or not.
+     *
+     * @param method The remote method to invoke
+     * @param <T> The type of the return value of the method
+     * @return the future result of the method call. API errors will be wrapped in
+     * an {@link java.util.concurrent.ExecutionException ExecutionException} like
+     * regular futures.
+     * @see org.xbmc.kore.host.HostManager#withCurrentHost(HostManager.Session)
+     */
+    public <T> Future<T> execute(ApiMethod<T> method) {
+        return ApiFuture.from(this, method);
+    }
+
+    /**
      * Sends the JSON RPC request through HTTP (using OkHttp library)
      */
     private <T> void executeThroughOkHttp(final ApiMethod<T> method, final ApiCallback<T> callback,
@@ -327,8 +359,8 @@ public class HostConnection {
             Response response = sendOkHttpRequest(client, request);
             final T result = method.resultFromJson(parseJsonResponse(handleOkHttpResponse(response)));
 
-            if ((handler != null) && (callback != null)) {
-                handler.post(new Runnable() {
+            if (callback != null) {
+                postOrRunNow(handler, new Runnable() {
                     @Override
                     public void run() {
                         callback.onSuccess(result);
@@ -337,8 +369,8 @@ public class HostConnection {
             }
         } catch (final ApiException e) {
             // Got an error, call error handler
-            if ((handler != null) && (callback != null)) {
-                handler.post(new Runnable() {
+            if (callback != null) {
+                postOrRunNow(handler, new Runnable() {
                     @Override
                     public void run() {
                         callback.onError(e.getCode(), e.getMessage());
@@ -490,8 +522,8 @@ public class HostConnection {
             // Check if a method with this id is already running and raise an error if so
             synchronized (clientCallbacks) {
                 if (clientCallbacks.containsKey(methodId)) {
-                    if ((handler != null) && (callback != null)) {
-                        handler.post(new Runnable() {
+                    if (callback != null) {
+                        postOrRunNow(handler, new Runnable() {
                             @Override
                             public void run() {
                                 callback.onError(ApiException.API_METHOD_WITH_SAME_ID_ALREADY_EXECUTING,
@@ -606,7 +638,7 @@ public class HostConnection {
                 for (final PlayerNotificationsObserver observer :
                         playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onPause(apiNotification);
@@ -618,7 +650,7 @@ public class HostConnection {
                 for (final PlayerNotificationsObserver observer :
                         playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onPlay(apiNotification);
@@ -630,7 +662,7 @@ public class HostConnection {
                 for (final PlayerNotificationsObserver observer :
                         playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onSeek(apiNotification);
@@ -642,7 +674,7 @@ public class HostConnection {
                 for (final PlayerNotificationsObserver observer :
                         playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onSpeedChanged(apiNotification);
@@ -654,7 +686,7 @@ public class HostConnection {
                 for (final PlayerNotificationsObserver observer :
                         playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onStop(apiNotification);
@@ -666,7 +698,7 @@ public class HostConnection {
                 for (final PlayerNotificationsObserver observer :
                         playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onPropertyChanged(apiNotification);
@@ -678,7 +710,7 @@ public class HostConnection {
                 for (final SystemNotificationsObserver observer :
                         systemNotificationsObservers.keySet()) {
                     Handler handler = systemNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onQuit(apiNotification);
@@ -690,7 +722,7 @@ public class HostConnection {
                 for (final SystemNotificationsObserver observer :
                         systemNotificationsObservers.keySet()) {
                     Handler handler = systemNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onRestart(apiNotification);
@@ -702,7 +734,7 @@ public class HostConnection {
                 for (final SystemNotificationsObserver observer :
                         systemNotificationsObservers.keySet()) {
                     Handler handler = systemNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onSleep(apiNotification);
@@ -714,7 +746,7 @@ public class HostConnection {
                 for (final InputNotificationsObserver observer :
                         inputNotificationsObservers.keySet()) {
                     Handler handler = inputNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onInputRequested(apiNotification);
@@ -727,7 +759,7 @@ public class HostConnection {
                 for (final ApplicationNotificationsObserver observer :
                         applicationNotificationsObservers.keySet()) {
                     Handler handler = applicationNotificationsObservers.get(observer);
-                    handler.post(new Runnable() {
+                    postOrRunNow(handler, new Runnable() {
                         @Override
                         public void run() {
                             observer.onVolumeChanged(apiNotification);
@@ -755,8 +787,8 @@ public class HostConnection {
                         @SuppressWarnings("unchecked")
                         final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
 
-                        if ((methodCallInfo.handler != null) && (callback != null)) {
-                            methodCallInfo.handler.post(new Runnable() {
+                        if (callback != null) {
+                            postOrRunNow(methodCallInfo.handler, new Runnable() {
                                 @Override
                                 public void run() {
                                     callback.onSuccess(result);
@@ -785,8 +817,8 @@ public class HostConnection {
                     @SuppressWarnings("unchecked")
                     final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
 
-                    if ((methodCallInfo.handler != null) && (callback != null)) {
-                        methodCallInfo.handler.post(new Runnable() {
+                    if (callback != null) {
+                        postOrRunNow(methodCallInfo.handler, new Runnable() {
                             @Override
                             public void run() {
                                 callback.onError(error.getCode(), error.getMessage());
@@ -802,8 +834,8 @@ public class HostConnection {
                     @SuppressWarnings("unchecked")
                     final ApiCallback<T> callback = (ApiCallback<T>)methodCallInfo.callback;
 
-                    if ((methodCallInfo.handler != null) && (callback != null)) {
-                        methodCallInfo.handler.post(new Runnable() {
+                    if (callback != null) {
+                        postOrRunNow(methodCallInfo.handler, new Runnable() {
                             @Override
                             public void run() {
                                 callback.onError(error.getCode(), error.getMessage());
@@ -837,6 +869,14 @@ public class HostConnection {
 			socket = null;
 		}
 	}
+
+    private static void postOrRunNow(Handler handler, Runnable r) {
+        if (handler != null) {
+            handler.post(r);
+        } else {
+            r.run();
+        }
+    }
 
 	/**
 	 * Helper class to aggregate a method, callback and handler

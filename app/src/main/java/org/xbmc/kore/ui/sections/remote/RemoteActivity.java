@@ -21,7 +21,6 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -41,19 +40,15 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Input;
-import org.xbmc.kore.jsonrpc.method.Player;
-import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
-import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.ConnectionObserversManagerService;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
@@ -71,7 +66,8 @@ import org.xbmc.kore.utils.Utils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,6 +99,10 @@ public class RemoteActivity extends BaseActivity
     private NavigationDrawerFragment navigationDrawerFragment;
 
     private VolumeKeyActionHandler volumeKeyActionHandler;
+
+    private Future<Boolean> pendingShare;
+
+    private Future<Void> awaitingShare;
 
     @InjectView(R.id.background_image) ImageView backgroundImage;
     @InjectView(R.id.pager_indicator) CirclePageIndicator pageIndicator;
@@ -162,6 +162,9 @@ public class RemoteActivity extends BaseActivity
 //        // Only set top and right, to allow bottom to overlap in each fragment
 //        UIUtils.setPaddingForSystemBars(this, viewPager, true, true, false);
 //        UIUtils.setPaddingForSystemBars(this, pageIndicator, true, true, false);
+
+        //noinspection unchecked
+        pendingShare = (Future<Boolean>) getLastCustomNonConfigurationInstance();
     }
 
     @Override
@@ -206,6 +209,12 @@ public class RemoteActivity extends BaseActivity
         super.onPause();
         if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
+        if (awaitingShare != null) awaitingShare.cancel(true);
+    }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return pendingShare;
     }
 
     @Override
@@ -343,6 +352,11 @@ public class RemoteActivity extends BaseActivity
      * @param intent Start intent for the activity
      */
     private void handleStartIntent(Intent intent) {
+        if (pendingShare != null) {
+            awaitShare();
+            return;
+        }
+
         final String action = intent.getAction();
         // Check action
         if ((action == null) ||
@@ -363,112 +377,61 @@ public class RemoteActivity extends BaseActivity
             videoUrl = videoUri.toString();
         }
 
-        final String fvideoUrl = videoUrl;
-
-        // Check if any video player is active and clear the playlist before queuing if so
-        final HostConnection connection = hostManager.getConnection();
-        final Handler callbackHandler = new Handler();
-        Player.GetActivePlayers getActivePlayers = new Player.GetActivePlayers();
-        getActivePlayers.execute(connection, new ApiCallback<ArrayList<PlayerType.GetActivePlayersReturnType>>() {
-            @Override
-            public void onSuccess(ArrayList<PlayerType.GetActivePlayersReturnType> result) {
-                boolean videoIsPlaying = false;
-
-                for (PlayerType.GetActivePlayersReturnType player : result) {
-                    if (player.type.equals(PlayerType.GetActivePlayersReturnType.VIDEO))
-                        videoIsPlaying = true;
-                }
-
-                if (!videoIsPlaying) {
-                    // Clear the playlist
-                    clearPlaylistAndQueueFile(fvideoUrl, connection, callbackHandler);
-                } else {
-                    queueFile(fvideoUrl, false, connection, callbackHandler);
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                LogUtils.LOGD(TAG, "Couldn't get active player when handling start intent.");
-                Toast.makeText(RemoteActivity.this,
-                        String.format(getString(R.string.error_get_active_player), description),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }, callbackHandler);
+        String title = getString(R.string.app_name);
+        String text = getString(R.string.item_added_to_playlist);
+        pendingShare = hostManager.withCurrentHost(new OpenSharedUrl(videoUrl, title, text));
+        awaitShare();
         intent.setAction(null);
-
     }
 
     /**
-     * Clears Kodi's playlist, queues the given media file and starts the playlist
-     * @param file File to play
-     * @param connection Host connection
-     * @param callbackHandler Handler to use for posting callbacks
+     * Awaits the completion of the share request in the same background thread
+     * where the request is running.
+     * <p>
+     * This needs to run stuff in the UI thread so the activity reference is
+     * inevitable, but unlike the share request this doesn't need to outlive the
+     * activity. The resulting future __must__ be cancelled when the activity is
+     * paused (it will drop itself when cancelled or finished). This should be called
+     * again when the activity is resumed and a {@link #pendingShare} exists.
      */
-    private void clearPlaylistAndQueueFile(final String file,
-                                           final HostConnection connection, final Handler callbackHandler) {
-        LogUtils.LOGD(TAG, "Clearing video playlist");
-        Playlist.Clear action = new Playlist.Clear(PlaylistType.VIDEO_PLAYLISTID);
-        action.execute(connection, new ApiCallback<String>() {
+    private void awaitShare() {
+        awaitingShare = hostManager.withCurrentHost(new HostManager.Session<Void>() {
             @Override
-            public void onSuccess(String result) {
-                // Now queue and start the file
-                queueFile(file, true, connection, callbackHandler);
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                Toast.makeText(RemoteActivity.this,
-                               String.format(getString(R.string.error_queue_media_file), description),
-                               Toast.LENGTH_SHORT).show();
-            }
-        }, callbackHandler);
-    }
-
-    /**
-     * Queues the given media file and optionally starts the playlist
-     * @param file File to play
-     * @param startPlaylist Whether to start playing the playlist after add
-     * @param connection Host connection
-     * @param callbackHandler Handler to use for posting callbacks
-     */
-    private void queueFile(final String file, final boolean startPlaylist,
-                           final HostConnection connection, final Handler callbackHandler) {
-        LogUtils.LOGD(TAG, "Queing file");
-        PlaylistType.Item item = new PlaylistType.Item();
-        item.file = file;
-        Playlist.Add action = new Playlist.Add(PlaylistType.VIDEO_PLAYLISTID, item);
-        action.execute(connection, new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result ) {
-                if (startPlaylist) {
-                    Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, PlaylistType.VIDEO_PLAYLISTID);
-                    action.execute(connection, new ApiCallback<String>() {
+            public Void using(HostConnection host) throws Exception {
+                try {
+                    final boolean wasAlreadyPlaying = pendingShare.get();
+                    pendingShare = null;
+                    runOnUiThread(new Runnable() {
                         @Override
-                        public void onSuccess(String result) {
+                        public void run() {
+                            if (wasAlreadyPlaying) {
+                                Toast.makeText(RemoteActivity.this,
+                                        getString(R.string.item_added_to_playlist),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            refreshPlaylist();
                         }
-
+                    });
+                } catch (InterruptedException ignored) {
+                } catch (ExecutionException ex) {
+                    pendingShare = null;
+                    final OpenSharedUrl.Error e = (OpenSharedUrl.Error) ex.getCause();
+                    LogUtils.LOGE(TAG, "Share failed", e);
+                    runOnUiThread(new Runnable() {
                         @Override
-                        public void onError(int errorCode, String description) {
+                        public void run() {
                             Toast.makeText(RemoteActivity.this,
-                                    String.format(getString(R.string.error_play_media_file), description),
+                                    getString(e.stage, e.getMessage()),
                                     Toast.LENGTH_SHORT).show();
                         }
-                    }, callbackHandler);
+                    });
+                } finally {
+                    awaitingShare = null;
                 }
-
-                refreshPlaylist();
+                return null;
             }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                Toast.makeText(RemoteActivity.this,
-                        String.format(getString(R.string.error_queue_media_file), description),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }, callbackHandler);
+        });
     }
-
 
     /**
      * Returns the YouTube Uri that the YouTube app passes in EXTRA_TEXT
