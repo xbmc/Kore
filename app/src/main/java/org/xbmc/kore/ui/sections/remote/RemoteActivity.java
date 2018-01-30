@@ -55,9 +55,7 @@ import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.SendTextDialogFragment;
 import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
-import org.xbmc.kore.ui.volumecontrollers.OnHardwareVolumeKeyPressedCallback;
-import org.xbmc.kore.ui.volumecontrollers.VolumeControllerDialogFragmentListener;
-import org.xbmc.kore.ui.volumecontrollers.VolumeKeyActionHandler;
+import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
@@ -78,7 +76,7 @@ import butterknife.InjectView;
 public class RemoteActivity extends BaseActivity
         implements HostConnectionObserver.PlayerEventsObserver,
         NowPlayingFragment.NowPlayingListener,
-        SendTextDialogFragment.SendTextDialogListener, OnHardwareVolumeKeyPressedCallback {
+        SendTextDialogFragment.SendTextDialogListener {
     private static final String TAG = LogUtils.makeLogTag(RemoteActivity.class);
 
 
@@ -97,8 +95,6 @@ public class RemoteActivity extends BaseActivity
     private HostConnectionObserver hostConnectionObserver;
 
     private NavigationDrawerFragment navigationDrawerFragment;
-
-    private VolumeKeyActionHandler volumeKeyActionHandler;
 
     private Future<Boolean> pendingShare;
 
@@ -292,18 +288,15 @@ public class RemoteActivity extends BaseActivity
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (volumeKeyActionHandler == null) {
-            volumeKeyActionHandler = new VolumeKeyActionHandler(hostManager, this, this);
-        }
-        return volumeKeyActionHandler.handleDispatchKeyEvent(event) || super.dispatchKeyEvent(
-                event);
-    }
+        boolean handled = VolumeControllerDialogFragmentListener.handleVolumeKeyEvent(this, event);
 
-    private void showVolumeChangeDialog() {
-        VolumeControllerDialogFragmentListener volumeControllerDialogFragment =
-                new VolumeControllerDialogFragmentListener();
-        volumeControllerDialogFragment.show(getSupportFragmentManager(),
-                VolumeControllerDialogFragmentListener.class.getName());
+        // Show volume change dialog if the event was handled and we are not in
+        // first page, which already contains a volume control
+        if (handled && (viewPager.getCurrentItem() != 0)) {
+            new VolumeControllerDialogFragmentListener()
+                    .show(getSupportFragmentManager(), VolumeControllerDialogFragmentListener.class.getName());
+        }
+        return handled || super.dispatchKeyEvent(event);
     }
 
     /**
@@ -655,17 +648,5 @@ public class RemoteActivity extends BaseActivity
         if (playlistFragment != null) {
             playlistFragment.forceRefreshPlaylist();
         }
-    }
-
-    @Override
-    public void onHardwareVolumeKeyPressed() {
-        int currentPage = viewPager.getCurrentItem();
-        if (!isPageWithVolumeController(currentPage)) {
-            showVolumeChangeDialog();
-        }
-    }
-
-    private boolean isPageWithVolumeController(int currentPage) {
-        return currentPage == 0;
     }
 }
