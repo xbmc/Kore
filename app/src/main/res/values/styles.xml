@@ -334,9 +334,14 @@
     </style>
 
     <style name="TextAppearance.Label">
+        <item name="android:textColor">?attr/textColorOverPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Label.FAB">
         <item name="android:background">@drawable/rounded_corners_shape</item>
         <item name="android:colorBackground">@drawable/rounded_corners_shape</item>
-        <item name="android:textColor">?attr/textColorOverPrimary</item>
+        <item name="android:textColor">?attr/fabLabelTextColor</item>
         <item name="android:textStyle">bold</item>
     </style>
 
