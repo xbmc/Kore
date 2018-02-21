@@ -309,6 +309,7 @@
     <string name="music_videos">Vidéos</string>
 
     <string name="no_files_to_download">Aucun fichier à télécharger.</string>
+    <string name="no_files_to_play">Aucun fichier à lire</string>
     <string name="error_getting_file_information">Impossible d\'obtenir les informations pour télécharger le fichier %1$s.</string>
 
     <string name="author">Auteur\u00A0:</string>
@@ -413,5 +414,9 @@
     <string name="zeroprogress">0:00</string>
 
     <string name="toggle_expand">Ouvrir/Fermer</string>
+    <string name="play_locally">Lecture locale</string>
+
+    <string name="disable_local_playback_support">Support de la lecture locale</string>
+    <string name="disable_local_playback_support_summary">Désactive la prise en charge de la lecture locale de média sur l\'appareil exécutant Kore</string>
 
 </resources>
