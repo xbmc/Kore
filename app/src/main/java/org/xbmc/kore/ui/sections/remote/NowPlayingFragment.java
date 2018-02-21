@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -451,10 +450,10 @@ public class NowPlayingFragment extends Fragment
                     case 0:
                         // Download subtitles. First check host version to see which method to call
                         HostInfo hostInfo = hostManager.getHostInfo();
-                        if (hostInfo.getKodiVersionMajor() < 13) {
-                            showDownloadSubtitlesPreGotham();
-                        } else {
+                        if (hostInfo.isGothamOrLater()) {
                             showDownloadSubtitlesPostGotham();
+                        } else {
+                            showDownloadSubtitlesPreGotham();
                         }
                         break;
                     case 1:

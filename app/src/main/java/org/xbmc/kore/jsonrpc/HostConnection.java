@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.jsonrpc;
 
-import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Process;
 import android.text.TextUtils;
@@ -211,6 +210,14 @@ public class HostConnection {
 
     public static boolean isValidProtocol(int protocol) {
         return ((protocol == PROTOCOL_TCP) || (protocol == PROTOCOL_HTTP));
+    }
+
+    /**
+     * Returns this connection {@link HostInfo}
+     * @return This connection {@link HostInfo}
+     */
+    public HostInfo getHostInfo() {
+        return hostInfo;
     }
 
     /**
@@ -421,6 +428,7 @@ public class HostConnection {
                                           final Handler handler) {
         OkHttpClient client = getOkHttpClient();
         String jsonRequest = method.toJsonString();
+        LogUtils.LOGD(TAG, "Sending request via HTTP: " + jsonRequest);
 
         try {
             Request request = new Request.Builder()
