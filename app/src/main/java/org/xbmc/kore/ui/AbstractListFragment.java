@@ -52,7 +52,7 @@ public abstract class AbstractListFragment extends Fragment implements
 
 	private boolean gridViewUsesMultipleColumns;
 
-	@InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+	protected @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 	@InjectView(R.id.list) GridView gridView;
 	@InjectView(android.R.id.empty) TextView emptyView;
 
@@ -173,19 +173,6 @@ public abstract class AbstractListFragment extends Fragment implements
 		}
 		editor.apply();
 		adapter.notifyDataSetChanged(); //force gridView to redraw
-	}
-
-	public void showRefreshAnimation() {
-		/**
-		 * Fixes issue with refresh animation not showing when using appcompat library (from version 20?)
-		 * See https://code.google.com/p/android/issues/detail?id=77712
-		 */
-		swipeRefreshLayout.post(new Runnable() {
-			@Override
-			public void run() {
-				swipeRefreshLayout.setRefreshing(true);
-			}
-		});
 	}
 
 	public void hideRefreshAnimation() {

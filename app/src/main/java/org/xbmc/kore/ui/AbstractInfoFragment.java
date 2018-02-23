@@ -57,6 +57,7 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.library.LibrarySyncService;
+import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
@@ -282,10 +283,14 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             return;
         }
 
-        if (SyncUtils.isLibrarySyncing(librarySyncService,
-                                       HostManager.getInstance(getActivity()).getHostInfo(),
-                                       refreshItem.getSyncType())) {
-            UIUtils.showRefreshAnimation(swipeRefreshLayout);
+        SyncItem syncItem = SyncUtils.getCurrentSyncItem(librarySyncService,
+            HostManager.getInstance(getActivity()).getHostInfo(),
+            refreshItem.getSyncType());
+        if (syncItem != null) {
+            boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
+                syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
+            if (!silentRefresh)
+                UIUtils.showRefreshAnimation(swipeRefreshLayout);
             refreshItem.setSwipeRefreshLayout(swipeRefreshLayout);
             refreshItem.register();
         }
