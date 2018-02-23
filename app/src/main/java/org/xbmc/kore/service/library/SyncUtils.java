@@ -457,29 +457,28 @@ public class SyncUtils {
     };
 
     /**
-     * Checks if a running LibrarySyncService is syncing any given SyncType from a specific host
+     * Returns the first {@link SyncItem} of the given type that is currently
+     * syncing in a running {@link LibrarySyncService} for a specific host
      * @param service running LibrarySyncService. Use {@link #connectToLibrarySyncService(Context, OnServiceListener)} to connect to a running LibrarySyncService
      * @param hostInfo host to check for sync items currently running or queued
-     * @param syncTypes sync types to check
-     * @return true if any of the given syncTypes is running or queued, false otherwise
+     * @param syncType sync type to check
+     * @return The first {@link SyncItem} of the given syncType if any is running or queued, null otherwise
      */
-    public static boolean isLibrarySyncing(LibrarySyncService service, HostInfo hostInfo, String... syncTypes) {
-        if (service == null || hostInfo == null || syncTypes == null)
-            return false;
+    public static SyncItem getCurrentSyncItem(LibrarySyncService service, HostInfo hostInfo, String syncType) {
+        if (service == null || hostInfo == null || syncType == null)
+            return null;
 
         ArrayList<SyncItem> itemsSyncing = service.getItemsSyncing(hostInfo);
-        if( itemsSyncing == null )
-            return false;
+        if (itemsSyncing == null)
+            return null;
 
         for (SyncItem syncItem : itemsSyncing) {
-            for( String syncType : syncTypes ) {
-                if (syncItem.getSyncType().equals(syncType)) {
-                    return true;
-                }
+            if (syncItem.getSyncType().equals(syncType)) {
+                return syncItem;
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
