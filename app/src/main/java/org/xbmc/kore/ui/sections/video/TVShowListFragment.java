@@ -317,7 +317,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 inProgressColor, finishedColor;
 
         public TVShowsAdapter(Context context) {
-            super(context, null, false);
+            super(context, null, 0);
 
             // Get the default accent color
             Resources.Theme theme = context.getTheme();

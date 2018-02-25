@@ -143,7 +143,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
         private int artWidth, artHeight;
 
         public MusicVideosAdapter(Context context) {
-            super(context, null, false);
+            super(context, null, 0);
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions

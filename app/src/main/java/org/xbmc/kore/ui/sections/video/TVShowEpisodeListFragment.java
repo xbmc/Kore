@@ -225,7 +225,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         private int themeAccentColor;
 
         public SeasonsEpisodesAdapter(Context context) {
-            super(context, null, false);
+            super(context, null, 0);
 
             // Get the default accent color
             Resources.Theme theme = context.getTheme();
