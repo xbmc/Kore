@@ -204,9 +204,18 @@ public class NotificationObserver
                 poster = getItemResult.thumbnail;
                 smallIcon = R.drawable.ic_headset_white_24dp;
                 break;
+            case ListType.ItemsAll.TYPE_CHANNEL:
+                title = getItemResult.label;
+                underTitle = getItemResult.title;
+                poster = getItemResult.thumbnail;
+                smallIcon = R.drawable.ic_dvr_white_24dp;
+                break;
             default:
-                // We don't know what this is, forget it
-                return;
+                title = getItemResult.label;
+                underTitle = getItemResult.title;
+                poster = getItemResult.thumbnail;
+                smallIcon = R.drawable.ic_devices_white_24dp;
+                break;
         }
 
         switch (getPropertiesResult.speed) {
