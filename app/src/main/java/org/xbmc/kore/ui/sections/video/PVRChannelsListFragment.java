@@ -61,7 +61,7 @@ public class PVRChannelsListFragment extends Fragment
     public static final String SINGLECHANNELGROUP = "singlechannelgroup";
 
     public interface OnPVRChannelSelectedListener {
-        void onChannelGuideSelected(int channelId, String channelTitle);
+        void onChannelGuideSelected(int channelId, String channelTitle, boolean singleChannelGroup);
         void onChannelGroupSelected(int channelGroupId, String channelGroupTitle);
     }
 
@@ -435,7 +435,7 @@ public class PVRChannelsListFragment extends Fragment
                                 }, callbackHandler);
                                 return true;
                             case R.id.action_epg_item:
-                                listenerActivity.onChannelGuideSelected(channelId, channelName);
+                                listenerActivity.onChannelGuideSelected(channelId, channelName, singleChannelGroup);
                                 return true;
                         }
                         return false;
