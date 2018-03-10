@@ -629,10 +629,10 @@ public class RemoteFragment extends Fragment
         HostInfo hostInfo = hostManager.getHostInfo();
 
         // Info button, v17 uses a different window to display codec info so check version number
-        if (hostInfo.getKodiVersionMajor() < 17) {
-            action = new Input.ExecuteAction(Input.ExecuteAction.CODECINFO);
-        } else {
+        if (hostInfo.isKryptonOrLater()) {
             action = new Input.ExecuteAction(Input.ExecuteAction.PLAYERPROCESSINFO);
+        } else {
+            action = new Input.ExecuteAction(Input.ExecuteAction.CODECINFO);
         }
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
 

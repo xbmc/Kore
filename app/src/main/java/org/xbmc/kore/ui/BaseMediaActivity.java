@@ -49,9 +49,7 @@ import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
-import org.xbmc.kore.ui.volumecontrollers.OnHardwareVolumeKeyPressedCallback;
-import org.xbmc.kore.ui.volumecontrollers.VolumeControllerDialogFragmentListener;
-import org.xbmc.kore.ui.volumecontrollers.VolumeKeyActionHandler;
+import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.ui.widgets.NowPlayingPanel;
 import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
@@ -67,8 +65,7 @@ public abstract class BaseMediaActivity extends BaseActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
                    HostConnectionObserver.PlayerEventsObserver,
                    NowPlayingPanel.OnPanelButtonsClickListener,
-                   MediaProgressIndicator.OnProgressChangeListener,
-                   OnHardwareVolumeKeyPressedCallback {
+                   MediaProgressIndicator.OnProgressChangeListener {
     private static final String TAG = LogUtils.makeLogTag(BaseMediaActivity.class);
 
     private static final String NAVICON_ISARROW = "navstate";
@@ -84,7 +81,6 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     private HostManager hostManager;
     private HostConnectionObserver hostConnectionObserver;
-    private VolumeKeyActionHandler volumeKeyActionHandler;
 
     private boolean showNowPlayingPanel;
 
@@ -122,7 +118,7 @@ public abstract class BaseMediaActivity extends BaseActivity
                 .findFragmentById(R.id.navigation_drawer);
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
+        Toolbar toolbar = findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -145,7 +141,7 @@ public abstract class BaseMediaActivity extends BaseActivity
         if (fragment == null) {
             fragment = createFragment();
 
-            if (Utils.isLollipopOrLater()) {
+            if (Utils.isLollipopAndPreOreo()) {
                 fragment.setExitTransition(null);
                 fragment.setReenterTransition(TransitionInflater
                                                       .from(this)
@@ -158,7 +154,7 @@ public abstract class BaseMediaActivity extends BaseActivity
                     .commit();
         }
 
-        if (Utils.isLollipopOrLater()) {
+        if (Utils.isLollipopAndPreOreo()) {
             sharedElementTransition.setupExitTransition(this, fragment);
         }
 
@@ -215,23 +211,12 @@ public abstract class BaseMediaActivity extends BaseActivity
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (volumeKeyActionHandler == null) {
-            volumeKeyActionHandler = new VolumeKeyActionHandler(hostManager, this, this);
+        boolean handled = VolumeControllerDialogFragmentListener.handleVolumeKeyEvent(this, event);
+        if (handled) {
+            new VolumeControllerDialogFragmentListener()
+                    .show(getSupportFragmentManager(), VolumeControllerDialogFragmentListener.class.getName());
         }
-        return volumeKeyActionHandler.handleDispatchKeyEvent(event) || super.dispatchKeyEvent(
-                event);
-    }
-
-    @Override
-    public void onHardwareVolumeKeyPressed() {
-        showVolumeChangeDialog();
-    }
-
-    private void showVolumeChangeDialog() {
-        VolumeControllerDialogFragmentListener volumeControllerDialogFragment =
-                new VolumeControllerDialogFragmentListener();
-        volumeControllerDialogFragment.show(getSupportFragmentManager(),
-                VolumeControllerDialogFragmentListener.class.getName());
+        return handled || super.dispatchKeyEvent(event);
     }
 
     public boolean getDrawerIndicatorIsArrow() {
@@ -240,7 +225,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     /**
      * Sets the title and drawer indicator of the toolbar
-     * @param title
+     * @param title toolbar title
      * @param showArrowIndicator true if the toolbar should show the back arrow indicator,
      *                               false if it should show the drawer icon
      */
@@ -280,7 +265,7 @@ public abstract class BaseMediaActivity extends BaseActivity
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
-        if (Utils.isLollipopOrLater()) {
+        if (Utils.isLollipopAndPreOreo()) {
             dataHolder.setPosterTransitionName(sharedImageView.getTransitionName());
             sharedElementTransition.setupEnterTransition(this, fragTrans, fragment, sharedImageView);
         } else {

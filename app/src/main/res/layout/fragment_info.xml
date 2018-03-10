@@ -15,11 +15,12 @@
    limitations under the License.
 -->
 
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipChildren="false">
 
     <ImageView
         android:id="@+id/art"
@@ -28,6 +29,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:contentDescription="@string/thumbnail"
+        app:layout_behavior="org.xbmc.kore.ui.behaviors.FadeOutOnVerticalScrollBehavior"
         android:scaleType="centerCrop"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -35,7 +37,8 @@
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.melnykov.fab.ObservableScrollView
+
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/media_panel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -244,22 +247,18 @@
                     android:layout_marginTop="@dimen/default_padding"/>
 
             </RelativeLayout>
-        </com.melnykov.fab.ObservableScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <com.melnykov.fab.FloatingActionButton
+    <org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="@dimen/default_padding"
-        android:layout_marginRight="@dimen/double_padding"
-        android:layout_marginEnd="@dimen/double_padding"
-        android:src="@drawable/ic_play_arrow_white_24dp"
-        app:fab_colorNormal="?attr/fabColorNormal"
-        app:fab_colorPressed="?attr/fabColorPressed"
+        app:layout_anchor="@id/media_panel"
+        app:layout_anchorGravity="bottom|end|right"
+        app:layout_behavior="org.xbmc.kore.ui.behaviors.FABSpeedDialBehavior"
+        app:layout_scrollFlags="scroll|enterAlways"
+        android:orientation="vertical"
         android:visibility="gone"/>
 
     <!-- View that will be shown with the circularReveal when user presses the FAB -->
@@ -269,4 +268,4 @@
         android:layout_height="match_parent"
         android:background="?attr/fabColorNormal"
         android:visibility="invisible"/>
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

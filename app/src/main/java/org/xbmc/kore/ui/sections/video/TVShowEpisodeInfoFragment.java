@@ -28,7 +28,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -40,6 +39,7 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
+import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
@@ -134,13 +134,18 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(ImageButton FAB) {
-        FAB.setOnClickListener(new View.OnClickListener() {
+    protected boolean setupFAB(FABSpeedDial FAB) {
+        FAB.setOnDialItemClickListener(new FABSpeedDial.DialListener() {
             @Override
-            public void onClick(View v) {
+            public void onLocalPlayClicked() {
+                playItemLocally(fileDownloadHelper.getMediaUrl(getHostInfo()), "video/*");
+            }
+
+            @Override
+            public void onRemotePlayClicked() {
                 PlaylistType.Item item = new PlaylistType.Item();
                 item.episodeid = getDataHolder().getId();
-                fabActionPlayItem(item);
+                playItemOnKodi(item);
             }
         });
         return true;
@@ -198,10 +203,10 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                         director = getActivity().getResources().getString(R.string.directors) + " " + director;
                     }
                     int runtime = cursor.getInt(EpisodeDetailsQuery.RUNTIME) / 60;
-                    String durationPremiered =  runtime > 0 ?
-                                                String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                                                "  |  " + cursor.getString(EpisodeDetailsQuery.FIRSTAIRED) :
-                                                cursor.getString(EpisodeDetailsQuery.FIRSTAIRED);
+                    String durationPremiered = runtime > 0 ?
+                                               String.format(getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                                               "  |  " + cursor.getString(EpisodeDetailsQuery.FIRSTAIRED) :
+                                               cursor.getString(EpisodeDetailsQuery.FIRSTAIRED);
                     String season = String.format(getString(R.string.season_episode),
                                                   cursor.getInt(EpisodeDetailsQuery.SEASON),
                                                   cursor.getInt(EpisodeDetailsQuery.EPISODE));
@@ -228,6 +233,8 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                     break;
             }
         }
+
+        getFabButton().enableLocalPlay(fileDownloadHelper != null);
     }
 
     /** {@inheritDoc} */
@@ -237,13 +244,6 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     }
 
     private void downloadEpisode() {
-        final FileDownloadHelper.TVShowInfo tvshowDownloadInfo = new FileDownloadHelper.TVShowInfo(
-                cursor.getString(EpisodeDetailsQuery.SHOWTITLE),
-                cursor.getInt(EpisodeDetailsQuery.SEASON),
-                cursor.getInt(EpisodeDetailsQuery.EPISODE),
-                cursor.getString(EpisodeDetailsQuery.TITLE),
-                cursor.getString(EpisodeDetailsQuery.FILE));
-
         DialogInterface.OnClickListener noopClickListener =
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -251,7 +251,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                 };
 
         // Check if the directory exists and whether to overwrite it
-        File file = new File(tvshowDownloadInfo.getAbsoluteFilePath());
+        File file = new File(fileDownloadHelper.getAbsoluteFilePath());
         if (file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.download)
@@ -261,7 +261,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                                           @Override
                                           public void onClick(DialogInterface dialog, int which) {
                                               FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                               tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               fileDownloadHelper, FileDownloadHelper.OVERWRITE_FILES,
                                                                                callbackHandler);
                                           }
                                       })
@@ -270,7 +270,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                                          @Override
                                          public void onClick(DialogInterface dialog, int which) {
                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                              tvshowDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                              fileDownloadHelper, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
                                                                               callbackHandler);
                                          }
                                      })
@@ -286,7 +286,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                                           @Override
                                           public void onClick(DialogInterface dialog, int which) {
                                               FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                               tvshowDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                               fileDownloadHelper, FileDownloadHelper.OVERWRITE_FILES,
                                                                                callbackHandler);
                                           }
                                       })

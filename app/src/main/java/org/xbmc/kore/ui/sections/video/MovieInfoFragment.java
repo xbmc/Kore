@@ -28,7 +28,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
@@ -44,6 +43,7 @@ import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.CastFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
+import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
@@ -241,13 +241,18 @@ public class MovieInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(ImageButton FAB) {
-        FAB.setOnClickListener(new View.OnClickListener() {
+    protected boolean setupFAB(final FABSpeedDial FAB) {
+        FAB.setOnDialItemClickListener(new FABSpeedDial.DialListener() {
             @Override
-            public void onClick(View v) {
+            public void onLocalPlayClicked() {
+                playItemLocally(movieDownloadInfo.getMediaUrl(getHostInfo()), "video/*");
+            }
+
+            @Override
+            public void onRemotePlayClicked() {
                 PlaylistType.Item item = new PlaylistType.Item();
                 item.movieid = getDataHolder().getId();
-                fabActionPlayItem(item);
+                playItemOnKodi(item);
             }
         });
         return true;
@@ -332,6 +337,8 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     break;
             }
         }
+
+        getFabButton().enableLocalPlay(movieDownloadInfo != null);
     }
 
     /** {@inheritDoc} */

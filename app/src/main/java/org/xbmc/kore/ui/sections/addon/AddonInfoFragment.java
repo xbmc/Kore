@@ -20,7 +20,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
@@ -30,6 +29,7 @@ import org.xbmc.kore.jsonrpc.type.AddonType;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
+import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.util.Collections;
@@ -86,20 +86,23 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     @Override
-    protected boolean setupFAB(ImageButton FAB) {
-        FAB.setOnClickListener(new View.OnClickListener() {
+    protected boolean setupFAB(final FABSpeedDial FAB) {
+        FAB.setOnFabClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FAB.enableBusyAnimation(true);
                 Addons.ExecuteAddon action = new Addons.ExecuteAddon(addonId);
                 action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
-                        // Do nothing
+                        if (!isAdded()) return;
+                        FAB.enableBusyAnimation(false);
                     }
 
                     @Override
                     public void onError(int errorCode, String description) {
                         if (!isAdded()) return;
+                        FAB.enableBusyAnimation(false);
                         // Got an error, show toast
                         Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
                              .show();

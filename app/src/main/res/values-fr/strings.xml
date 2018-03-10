@@ -309,6 +309,7 @@
     <string name="music_videos">Vidéos</string>
 
     <string name="no_files_to_download">Aucun fichier à télécharger.</string>
+    <string name="no_files_to_play">Aucun fichier à lire</string>
     <string name="error_getting_file_information">Impossible d\'obtenir les informations pour télécharger le fichier %1$s.</string>
 
     <string name="author">Auteur\u00A0:</string>
@@ -330,6 +331,7 @@
     <string name="sort_by_date_added">Par date d\'ajout</string>
     <string name="sort_by_last_played">Par date de visionnage</string>
     <string name="ignore_prefixes">Ignorer les préfixes</string>
+    <string name="show_watched_status">Afficher l\'état \"Vu\"</string>
 
     <!-- Preferences strings -->
     <string name="application">Application</string>
@@ -346,6 +348,8 @@
     <string name="keep_remote_above_lockscreen">Conserver la télécommande sur l\'écran de déverrouillage</string>
     <string name="pref_keep_screen_on">Conserver l\'écran allumé lors de l\'utilisation de la télécommande</string>
     <string name="show_notification">Afficher les notifications pendant la lecture</string>
+    <string name="show_now_playing_panel">Volet \"Lecture en cours\"</string>
+    <string name="show_now_playing_panel_summary">Afficher un volet extensible en bas de l\'écran lors de la lecture de médias</string>
     <string name="pause_during_calls">Mettre en pause lors des appels téléphoniques</string>
     <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
     <string name="vibrate_on_remote">Vibrer à l\'appui</string>
@@ -355,7 +359,7 @@
 
     <string name="about">À propos</string>
     <string name="about_desc"><![CDATA[
-        \u00A9 2017 XBMC Foundation<br><br>
+        \u00A9 2018 XBMC Foundation<br><br>
         Évaluez-nous sur <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
         Si vous avez besoin d\'aide, consultez notre <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
@@ -407,5 +411,12 @@
     <string name="Refreshing_not_implemented_for_this_item">Impossible d\'actualise cet élément</string>
     <string name="no_songs_found_refresh">Aucune piste musicale trouvée\\n\\nGlissez vers le bas pour actualiser</string>
     <string name="not_implemented">Non installé</string>
+    <string name="zeroprogress">0:00</string>
+
+    <string name="toggle_expand">Ouvrir/Fermer</string>
+    <string name="play_locally">Lecture locale</string>
+
+    <string name="disable_local_playback_support">Support de la lecture locale</string>
+    <string name="disable_local_playback_support_summary">Désactive la prise en charge de la lecture locale de média sur l\'appareil exécutant Kore</string>
 
 </resources>

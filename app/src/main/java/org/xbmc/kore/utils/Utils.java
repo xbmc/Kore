@@ -69,6 +69,15 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
+    public static boolean isOreoOrLater() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
+
+    public static boolean isLollipopAndPreOreo() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) &&
+               (Build.VERSION.SDK_INT < 27);
+    }
+
     /**
      * Concats a list of strings...
      * @param list

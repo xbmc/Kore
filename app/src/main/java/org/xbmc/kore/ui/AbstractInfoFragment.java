@@ -17,11 +17,14 @@
 package org.xbmc.kore.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -30,6 +33,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -39,16 +43,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.melnykov.fab.FloatingActionButton;
-import com.melnykov.fab.ObservableScrollView;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -58,8 +57,10 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.library.LibrarySyncService;
+import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.ui.generic.RefreshItem;
+import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
@@ -79,9 +80,11 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                    SharedElementTransition.SharedElement {
     private static final String TAG = LogUtils.makeLogTag(AbstractInfoFragment.class);
 
+    private static final String BUNDLE_KEY_APIMETHOD_PENDING = "pending_apimethod";
+
     // Detail views
     @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(R.id.media_panel) ScrollView panelScrollView;
+    @InjectView(R.id.media_panel) NestedScrollView panelScrollView;
     @InjectView(R.id.art) ImageView artImageView;
     @InjectView(R.id.poster) ImageView posterImageView;
     @InjectView(R.id.media_title) TextView titleTextView;
@@ -101,7 +104,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     @InjectView(R.id.media_description) ExpandableTextView descriptionExpandableTextView;
     @InjectView(R.id.media_description_container) LinearLayout descriptionContainer;
     @InjectView(R.id.show_all) ImageView expansionImage;
-    @InjectView(R.id.fab) ImageButton fabButton;
+    @InjectView(R.id.fab) FABSpeedDial fabButton;
     @InjectView(R.id.exit_transition_view) View exitTransitionView;
 
     private HostManager hostManager;
@@ -109,6 +112,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private ServiceConnection serviceConnection;
     private RefreshItem refreshItem;
     private boolean expandDescription;
+    private int methodId;
 
     /**
      * Handler on which to post RPC callbacks
@@ -144,17 +148,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_info, container, false);
         ButterKnife.inject(this, root);
 
-        // Setup dim the fanart when scroll changes. Full dim on 4 * iconSize dp
         Resources resources = getActivity().getResources();
-        final int pixelsToTransparent  = 4 * resources.getDimensionPixelSize(R.dimen.default_icon_size);
-        panelScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                float y = panelScrollView.getScrollY();
-                float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
-                artImageView.setAlpha(newAlpha);
-            }
-        });
 
         DataHolder dataHolder = getDataHolder();
 
@@ -170,9 +164,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         } else {
             swipeRefreshLayout.setEnabled(false);
         }
-
-        FloatingActionButton fab = (FloatingActionButton)fabButton;
-        fab.attachToScrollView((ObservableScrollView) panelScrollView);
 
         if(Utils.isLollipopOrLater()) {
             posterImageView.setTransitionName(dataHolder.getPosterTransitionName());
@@ -207,6 +198,14 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+
+        if (savedInstanceState != null) {
+            int methodId = savedInstanceState.getInt(BUNDLE_KEY_APIMETHOD_PENDING);
+
+            fabButton.enableBusyAnimation(HostManager.getInstance(getContext()).getConnection()
+                       .updateClientCallback(methodId, createPlayItemOnKodiCallback(),
+                                             callbackHandler));
+        }
     }
 
     @Override
@@ -246,6 +245,13 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(BUNDLE_KEY_APIMETHOD_PENDING, methodId);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
@@ -277,10 +283,14 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             return;
         }
 
-        if (SyncUtils.isLibrarySyncing(librarySyncService,
-                                       HostManager.getInstance(getActivity()).getHostInfo(),
-                                       refreshItem.getSyncType())) {
-            UIUtils.showRefreshAnimation(swipeRefreshLayout);
+        SyncItem syncItem = SyncUtils.getCurrentSyncItem(librarySyncService,
+            HostManager.getInstance(getActivity()).getHostInfo(),
+            refreshItem.getSyncType());
+        if (syncItem != null) {
+            boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
+                syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
+            if (!silentRefresh)
+                UIUtils.showRefreshAnimation(swipeRefreshLayout);
             refreshItem.setSwipeRefreshLayout(swipeRefreshLayout);
             refreshItem.register();
         }
@@ -294,37 +304,24 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         }
     }
 
-    protected void fabActionPlayItem(PlaylistType.Item item) {
+    protected void playItemLocally(String url, String type) {
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setDataAndType(uri, type);
+        startActivity(intent);
+    }
+
+    protected void playItemOnKodi(PlaylistType.Item item) {
         if (item == null) {
             Toast.makeText(getActivity(), R.string.no_item_available_to_play, Toast.LENGTH_SHORT).show();
             return;
         }
 
+        fabButton.enableBusyAnimation(true);
         Player.Open action = new Player.Open(item);
-        action.execute(HostManager.getInstance(getActivity()).getConnection(), new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                if (!isAdded()) return;
-                // Check whether we should switch to the remote
-                boolean switchToRemote = PreferenceManager
-                        .getDefaultSharedPreferences(getActivity())
-                        .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
-                                    Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
-                if (switchToRemote) {
-                    int cx = (fabButton.getLeft() + fabButton.getRight()) / 2;
-                    int cy = (fabButton.getTop() + fabButton.getBottom()) / 2;
-                    UIUtils.switchToRemoteWithAnimation(getActivity(), cx, cy, exitTransitionView);
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                // Got an error, show toast
-                Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
-            }
-        }, callbackHandler);
+        methodId = action.getId();
+        action.execute(HostManager.getInstance(getActivity()).getConnection(),
+                       createPlayItemOnKodiCallback(), callbackHandler);
     }
 
     @Override
@@ -366,6 +363,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     /**
      * Call this when you are ready to provide the titleTextView, undertitle, details, descriptionExpandableTextView, etc. etc.
      */
+    @SuppressLint("StringFormatInvalid")
     protected void updateView(DataHolder dataHolder) {
         titleTextView.setText(dataHolder.getTitle());
         underTitleTextView.setText(dataHolder.getUnderTitle());
@@ -497,7 +495,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
     /**
      * Uses colors to show to the user the item has been downloaded
-     * @param state true if item has been watched/listened too, false otherwise
+     * @param state true if item has been downloaded, false otherwise
      */
     protected void setDownloadButtonState(boolean state) {
         UIUtils.highlightImageView(getActivity(), downloadButton, state);
@@ -558,6 +556,41 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         this.expandDescription = expandDescription;
     }
 
+    public FABSpeedDial getFabButton() {
+        return fabButton;
+    }
+
+    private ApiCallback<String> createPlayItemOnKodiCallback() {
+        return new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                if (!isAdded()) return;
+                fabButton.enableBusyAnimation(false);
+
+                // Check whether we should switch to the remote
+                boolean switchToRemote = PreferenceManager
+                        .getDefaultSharedPreferences(getActivity())
+                        .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
+                                    Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
+                if (switchToRemote) {
+                    int cx = (fabButton.getLeft() + fabButton.getRight()) / 2;
+                    int cy = (fabButton.getTop() + fabButton.getBottom()) / 2;
+                    UIUtils.switchToRemoteWithAnimation(getActivity(), cx, cy, exitTransitionView);
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                if (!isAdded()) return;
+                fabButton.enableBusyAnimation(false);
+
+                // Got an error, show toast
+                Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
+                     .show();
+            }
+        };
+    }
+
     abstract protected AbstractAdditionalInfoFragment getAdditionalInfoFragment();
 
     /**
@@ -586,5 +619,5 @@ abstract public class AbstractInfoFragment extends AbstractFragment
      * Called when the fab button is available
      * @return true to enable the Floating Action Button, false otherwise
      */
-    abstract protected boolean setupFAB(ImageButton FAB);
+    abstract protected boolean setupFAB(FABSpeedDial FAB);
 }

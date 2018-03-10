@@ -15,10 +15,14 @@
  */
 package org.xbmc.kore.ui.sections.settings;
 
+import android.annotation.TargetApi;
 import android.Manifest;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.TaskStackBuilder;
@@ -39,6 +43,8 @@ import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.lang.reflect.Method;
+
+import static org.xbmc.kore.service.NotificationObserver.NOTIFICATION_ID;
 
 /**
  * Simple fragment to display preferences screen
@@ -117,6 +123,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    @TargetApi(Build.VERSION_CODES.O)
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Update summaries
@@ -144,12 +151,22 @@ public class SettingsFragment extends PreferenceFragmentCompat
             }
         }
 
-            // If one of the settings that use the observer service are modified, restart it
+        // If one of the settings that use the observer service are modified, restart it
         if (key.equals(Settings.KEY_PREF_SHOW_NOTIFICATION) || key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS)) {
             LogUtils.LOGD(TAG, "Stoping connection observer service");
             Intent intent = new Intent(getActivity(), ConnectionObserversManagerService.class);
             getActivity().stopService(intent);
-            getActivity().startService(intent);
+            if (sharedPreferences.getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION, Settings.DEFAULT_PREF_SHOW_NOTIFICATION)) {
+                if (Utils.isOreoOrLater()) {
+                    getActivity().startForegroundService(intent);
+                } else {
+                    getActivity().startService(intent);
+                }
+            } else {
+                NotificationManager notificationManager =
+                        (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(NOTIFICATION_ID);
+            }
         }
     }
 

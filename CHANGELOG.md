@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+Version 2.3.3
+-------------
+- Fixes for Android Oreo
+- Make control pad scalable on smaller devices
+- Improve showing text with markup codes on the Now Playing and PVR sections
+- Handle playlists shared from YouTube app
+- Option to use volume hardware keys anywhere inside Kore
+- Bug fixes
+
 Version 2.3.2
 -------------
 - New slide up panel with media controls on information screens

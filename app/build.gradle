@@ -18,7 +18,7 @@ android {
         applicationId "org.xbmc.kore"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 18
+        versionCode 19
         versionName = getVersionName()
     }
 
@@ -83,9 +83,10 @@ android {
         // Too much trouble keeping all translations in sync
         disable 'MissingTranslation'
 
-        // okio generates a lint error which should be ignored. Demote it to warning
-        // See https://github.com/square/okio/issues/58
-        warning 'InvalidPackage'
+        //The xml launcher icon introduced in API 26 causes lint to generate
+        //an error that the icon is not a PNG format
+        //This reduces the error to a warning
+        warning 'IconLauncherFormat'
     }
 
 //    allprojects {
@@ -115,6 +116,7 @@ dependencies {
     compile "com.android.support:cardview-v7:${supportLibVersion}"
     compile "com.android.support:preference-v14:${supportLibVersion}"
     compile "com.android.support:support-v13:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
     compile 'com.jakewharton:butterknife:6.1.0'
@@ -123,7 +125,6 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'org.jmdns:jmdns:3.5.1'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'at.blogc:expandabletextview:1.0.3'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
 

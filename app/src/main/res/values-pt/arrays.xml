@@ -15,9 +15,11 @@
    limitations under the License.
 -->
 <resources>
-    <!--<style name="DarkThemeImmersive" parent="DarkTheme">-->
-        <!--&lt;!&ndash; For transparent status, nav and action bar &ndash;&gt;-->
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
-        <!--<item name="android:windowTranslucentNavigation">true</item>-->
-    <!--</style>-->
+    <!-- Download connection types -->
+    <string-array name="entries_download_media_items">
+        <item>Wi-Fi</item>
+        <item>Rede Móvel</item>
+        <item>Todas</item>
+    </string-array>
+
 </resources>

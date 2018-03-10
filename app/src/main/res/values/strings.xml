@@ -309,6 +309,7 @@
     <string name="music_videos">Videos</string>
 
     <string name="no_files_to_download">No files to download.</string>
+    <string name="no_files_to_play">No files to play.</string>
     <string name="error_getting_file_information">Couldn\'t get information to download file %1$s.</string>
 
     <string name="author">Author:</string>
@@ -356,7 +357,7 @@
 
     <string name="about">About</string>
     <string name="about_desc"><![CDATA[
-        \u00A9 2017 XBMC Foundation<br><br>
+        \u00A9 2018 XBMC Foundation<br><br>
         Please rate us on <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
         If you need help, check our <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
@@ -422,5 +423,8 @@
     <string name="zeroprogress">0:00</string>
 
     <string name="toggle_expand">Expand/Collapse</string>
+    <string name="play_locally">Play Locally</string>
 
+    <string name="disable_local_playback_support">Disable local playback support</string>
+    <string name="disable_local_playback_support_summary">Disables support for playing media locally on the device running Kore.</string>
 </resources>

@@ -240,7 +240,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
         private int artWidth, artHeight;
 
         public SongsAdapter(Context context) {
-            super(context, null, false);
+            super(context, null, 0);
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
@@ -321,7 +321,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
     private class AlbumSongsAdapter extends CursorAdapter {
 
         public AlbumSongsAdapter(Context context) {
-            super(context, null, false);
+            super(context, null, 0);
         }
 
         @Override

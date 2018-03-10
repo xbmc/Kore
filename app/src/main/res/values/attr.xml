@@ -31,7 +31,14 @@
     <attr name="colorToolbar" format="reference|color" />
 
     <attr name="fabColorNormal" format="reference|color" />
+    <attr name="fabColorFocused" format="reference|color" />
     <attr name="fabColorPressed" format="reference|color" />
+
+    <attr name="fabLabelColorNormal" format="reference|color" />
+    <attr name="fabLabelColorFocused" format="reference|color" />
+    <attr name="fabLabelColorPressed" format="reference|color" />
+
+    <attr name="fabLabelTextColor" format="reference|color" />
 
     <attr name="colorinProgress" format="reference|color" />
     <attr name="colorFinished" format="reference|color" />
@@ -50,6 +57,7 @@
     <attr name="iconRemoteToolbar" format="reference" />
     <attr name="iconMovies" format="reference" />
     <attr name="iconTvShows" format="reference" />
+    <attr name="iconRemoteDevice" format="reference" />
     <attr name="iconMusic" format="reference" />
     <attr name="iconPicture" format="reference" />
     <attr name="iconHome" format="reference" />
@@ -114,7 +122,12 @@
     <attr name="iconOpenInNew" format="reference" />
     <attr name="iconBookmark" format="reference" />
 
+    <attr name="iconFABDialsOpenClose" format="reference" />
+    <attr name="iconFABDefault" format="reference" />
+    <attr name="iconFABDial" format="integer"/>
+
     <declare-styleable name="SquareGridLayout">
         <attr name="columnCount" format="integer"/>
     </declare-styleable>
 </resources>
+

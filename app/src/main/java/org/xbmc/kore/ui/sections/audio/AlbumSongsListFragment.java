@@ -322,7 +322,7 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
     private class AlbumSongsAdapter extends CursorAdapter {
 
         public AlbumSongsAdapter(Context context) {
-            super(context, null, false);
+            super(context, null, 0);
         }
 
         @Override

@@ -277,7 +277,7 @@ public class ListType {
             track = JsonUtils.intFromJsonNode(node, TRACK, 0);
             trailer = JsonUtils.stringFromJsonNode(node, TRAILER, null);
             tvshowid = JsonUtils.intFromJsonNode(node, TVSHOWID, -1);
-            type = JsonUtils.stringFromJsonNode(node, TYPE, null);
+            type = JsonUtils.stringFromJsonNode(node, TYPE, TYPE_UNKNOWN);
 //            uniqueid = getStringMap(node, UNIQUEID);
             votes = JsonUtils.stringFromJsonNode(node, VOTES, null);
             watchedepisodes = JsonUtils.intFromJsonNode(node, WATCHEDEPISODES, -1);
