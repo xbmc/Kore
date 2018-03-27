@@ -53,8 +53,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Fragment to manage the list oof registered hosts.
@@ -65,11 +66,11 @@ public class HostListFragment extends Fragment {
     private ArrayList<HostInfoRow> hostInfoRows = new ArrayList<HostInfoRow>();
     private HostListAdapter adapter = null;
     private Context context;
-
+    private Unbinder unbinder;
     private Handler callbackHandler = new Handler();
 
-    @InjectView(R.id.list) GridView hostGridView;
-    @InjectView(R.id.action_add_host) Button addHostButton;
+    @BindView(R.id.list) GridView hostGridView;
+    @BindView(R.id.action_add_host) Button addHostButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class HostListFragment extends Fragment {
         context = inflater.getContext();
 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_host_list, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         // Get the host list
         // TODO: This is being done synchronously !!!
@@ -158,6 +159,12 @@ public class HostListFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**

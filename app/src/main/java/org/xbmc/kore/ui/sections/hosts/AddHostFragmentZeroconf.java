@@ -50,7 +50,8 @@ import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 /**
  * Fragment that searchs foor XBMCs using Zeroconf
@@ -75,19 +76,20 @@ public class AddHostFragmentZeroconf extends Fragment {
     }
 
     private AddHostZeroconfListener listener;
+    private Unbinder unbinder;
 
-    @InjectView(R.id.search_host_title) TextView titleTextView;
-    @InjectView(R.id.search_host_message) TextView messageTextView;
-    @InjectView(R.id.next) Button nextButton;
-    @InjectView(R.id.previous) Button previousButton;
+    @BindView(R.id.search_host_title) TextView titleTextView;
+    @BindView(R.id.search_host_message) TextView messageTextView;
+    @BindView(R.id.next) Button nextButton;
+    @BindView(R.id.previous) Button previousButton;
 
-    @InjectView(R.id.progress_bar) ProgressBar progressBar;
-    @InjectView(R.id.list) GridView hostListGridView;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.list) GridView hostListGridView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_add_host_zeroconf, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         return root;
     }
@@ -110,6 +112,12 @@ public class AddHostFragmentZeroconf extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement AddHostZeroconfListener interface.");
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     // Whether the user cancelled the search

@@ -300,11 +300,11 @@ public class HostInfo {
     }
 
     public boolean isGothamOrLater() {
-        return kodiVersionMajor > KODI_V13_GOTHAM;
+        return kodiVersionMajor >= KODI_V13_GOTHAM;
     }
 
     public boolean isKryptonOrLater() {
-        return kodiVersionMajor > KODI_V17_KRYPTON;
+        return kodiVersionMajor >= KODI_V17_KRYPTON;
     }
 
     /**

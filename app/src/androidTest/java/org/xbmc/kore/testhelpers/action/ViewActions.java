@@ -22,6 +22,7 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.MotionEvents;
 import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.ScrollToAction;
 import android.support.test.espresso.util.HumanReadables;
 import android.support.test.espresso.util.TreeIterables;
 import android.view.View;
@@ -48,6 +49,19 @@ public final class ViewActions {
      */
     public static ViewAction clearFocus() {
         return actionWithAssertions(new ClearFocus());
+    }
+
+    /**
+     * Returns an action that scrolls to the view in a nested scroll view.<br>
+     * <br>
+     * View preconditions:
+     * <ul>
+     * <li>must be a descendant of NestedScrollView
+     * <li>must have visibility set to View.VISIBLE
+     * <ul></ul>
+     */
+    public static ViewAction nestedScrollTo() {
+        return actionWithAssertions(new NestedScrollTo());
     }
 
     public interface CheckStatus {

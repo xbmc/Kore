@@ -48,7 +48,8 @@ import org.xbmc.kore.utils.UIUtils;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 /**
  * Fragment that presents the movie list
@@ -70,9 +71,9 @@ public class PVRChannelsListFragment extends Fragment
 
     private HostManager hostManager;
 
-    @InjectView(R.id.list) GridView gridView;
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(android.R.id.empty) TextView emptyView;
+    @BindView(R.id.list) GridView gridView;
+    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(android.R.id.empty) TextView emptyView;
 
     /**
      * Handler on which to post RPC callbacks
@@ -86,6 +87,8 @@ public class PVRChannelsListFragment extends Fragment
     private int currentListType;
     private boolean singleChannelGroup = false;
 
+    private Unbinder unbinder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +97,7 @@ public class PVRChannelsListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         if (savedInstanceState != null) {
             selectedChannelGroupId = savedInstanceState.getInt(CHANNELGROUPID);
@@ -163,6 +166,12 @@ public class PVRChannelsListFragment extends Fragment
         super.onSaveInstanceState(outState);
         outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
         outState.putBoolean(SINGLECHANNELGROUP, singleChannelGroup);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**

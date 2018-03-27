@@ -26,7 +26,8 @@ import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragment
         implements HostConnectionObserver.ApplicationEventsObserver,
@@ -35,13 +36,11 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     private static final String TAG = LogUtils.makeLogTag(VolumeControllerDialogFragmentListener.class);
     private static final int AUTO_DISMISS_DELAY = 2000;
 
-    @InjectView(R.id.npp_volume_mute)
-    HighlightButton volumeMuteButton;
-    @InjectView(R.id.npp_volume_muted_indicator)
-    HighlightButton volumeMutedIndicatorButton;
-    @InjectView(R.id.npp_volume_level_indicator)
-    VolumeLevelIndicator volumeLevelIndicator;
+    @BindView(R.id.npp_volume_mute) HighlightButton volumeMuteButton;
+    @BindView(R.id.npp_volume_muted_indicator) HighlightButton volumeMutedIndicatorButton;
+    @BindView(R.id.npp_volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
 
+    private Unbinder unbinder;
     private Handler callbackHandler = new Handler();
     private HostManager hostManager = null;
     private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
@@ -100,7 +99,7 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.volume_controller_dialog, container, false);
-        ButterKnife.inject(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         return rootView;
     }
@@ -121,6 +120,12 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
         registerObserver();
         // for orientation change
         delayedDismissDialog();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     private void registerObserver() {

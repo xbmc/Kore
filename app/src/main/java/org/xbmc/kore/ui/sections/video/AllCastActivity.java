@@ -46,7 +46,7 @@ import org.xbmc.kore.utils.Utils;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 /**
  * Activity that presents all cast of a movie or TV Show
@@ -65,8 +65,8 @@ public class AllCastActivity extends BaseActivity {
 
     NavigationDrawerFragment navigationDrawerFragment;
 
-    @InjectView(R.id.cast_list) GridView castGridView;
-    @InjectView(android.R.id.empty) TextView emptyView;
+    @BindView(R.id.cast_list) GridView castGridView;
+    @BindView(android.R.id.empty) TextView emptyView;
 
     /**
      * Returns an intent that can be used to start this activity, with all the correct parameters
@@ -87,7 +87,7 @@ public class AllCastActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_cast);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()

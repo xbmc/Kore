@@ -17,54 +17,31 @@ package org.xbmc.kore.ui.sections.file;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import com.astuetz.PagerSlidingTabStrip;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.method.Files;
+import org.xbmc.kore.ui.AbstractTabsFragment;
 import org.xbmc.kore.ui.OnBackPressedListener;
 import org.xbmc.kore.utils.TabsAdapter;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Manages the viewpager of files
  */
-public class FileListFragment extends Fragment
+public class FileListFragment extends AbstractTabsFragment
         implements OnBackPressedListener {
 
-    @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
-    @InjectView(R.id.pager) ViewPager viewPager;
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_media_list, container, false);
-        ButterKnife.inject(this, root);
-
+    protected TabsAdapter createTabsAdapter(DataHolder dataHolder) {
         Bundle videoFileListArgs = new Bundle();
         videoFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.VIDEO);
         Bundle musicFileListArgs = new Bundle();
         musicFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.MUSIC);
         Bundle pictureFileListArgs = new Bundle();
         pictureFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.PICTURES);
-        TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
+        return new TabsAdapter(getActivity(), getChildFragmentManager())
                 .addTab(MediaFileListFragment.class, videoFileListArgs, R.string.video, 1)
                 .addTab(MediaFileListFragment.class, musicFileListArgs, R.string.music, 2)
                 .addTab(MediaFileListFragment.class, pictureFileListArgs, R.string.pictures, 3);
-        viewPager.setAdapter(tabsAdapter);
-        pagerTabStrip.setViewPager(viewPager);
-        return root;
-    }
-
-    @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setHasOptionsMenu(false);
     }
 
     @Override
@@ -81,8 +58,8 @@ public class FileListFragment extends Fragment
     @Override
     public boolean onBackPressed() {
         // Tell current fragment to move up one directory, if possible
-        MediaFileListFragment curPage = (MediaFileListFragment)((TabsAdapter)viewPager.getAdapter())
-                .getStoredFragment(viewPager.getCurrentItem());
+        MediaFileListFragment curPage = (MediaFileListFragment)((TabsAdapter)getViewPager().getAdapter())
+                .getStoredFragment(getViewPager().getCurrentItem());
         if ((curPage != null) && !curPage.atRootDirectory()) {
             curPage.onBackPressed();
             return true;

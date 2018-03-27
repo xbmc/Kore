@@ -55,6 +55,12 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
         hostInfo.setKodiVersionMajor(17);
     }
 
+    @Override
+    public void setUp() throws Throwable {
+        setKodiMajorVersion(HostInfo.KODI_V17_KRYPTON);
+        super.setUp();
+    }
+
     @Test
     public void leftControlPadButtonTest() throws InterruptedException {
         onView(withId(R.id.left)).perform(click());

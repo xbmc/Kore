@@ -43,7 +43,8 @@ import org.xbmc.kore.utils.UIUtils;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 /**
  * Fragment that presents the PVR recordings list
@@ -54,9 +55,9 @@ public class PVRRecordingsListFragment extends Fragment
 
     private HostManager hostManager;
 
-    @InjectView(R.id.list) GridView gridView;
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(android.R.id.empty) TextView emptyView;
+    @BindView(R.id.list) GridView gridView;
+    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(android.R.id.empty) TextView emptyView;
 
     /**
      * Handler on which to post RPC callbacks
@@ -64,6 +65,8 @@ public class PVRRecordingsListFragment extends Fragment
     private Handler callbackHandler = new Handler();
 
     private RecordingsAdapter recordingsAdapter = null;
+
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +76,7 @@ public class PVRRecordingsListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         hostManager = HostManager.getInstance(getActivity());
 
@@ -95,6 +98,12 @@ public class PVRRecordingsListFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
         browseRecordings();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**

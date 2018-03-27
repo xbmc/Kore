@@ -37,11 +37,11 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.utils.Utils;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class DialActionButton extends LinearLayout {
-    @InjectView(R.id.dial_label) AppCompatTextView label;
-    @InjectView(R.id.dial_action_button) FloatingActionButton button;
+    @BindView(R.id.dial_label) AppCompatTextView label;
+    @BindView(R.id.dial_action_button) FloatingActionButton button;
 
     private View anchorView;
     private boolean isHiding;
@@ -171,7 +171,7 @@ public class DialActionButton extends LinearLayout {
     private void initializeView(Context context, AttributeSet attrs, int defStyleAttr) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.dial_action_button, this);
-        ButterKnife.inject(view);
+        ButterKnife.bind(view);
 
         // Make sure shadow is not clipped
         setClipToPadding(false);

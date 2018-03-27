@@ -70,7 +70,8 @@ import java.util.Locale;
 
 import at.blogc.android.views.ExpandableTextView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 import static android.view.View.GONE;
 
@@ -83,29 +84,29 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private static final String BUNDLE_KEY_APIMETHOD_PENDING = "pending_apimethod";
 
     // Detail views
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(R.id.media_panel) NestedScrollView panelScrollView;
-    @InjectView(R.id.art) ImageView artImageView;
-    @InjectView(R.id.poster) ImageView posterImageView;
-    @InjectView(R.id.media_title) TextView titleTextView;
-    @InjectView(R.id.media_undertitle) TextView underTitleTextView;
-    @InjectView(R.id.rating_container) LinearLayout ratingContainer;
-    @InjectView(R.id.rating) TextView ratingTextView;
-    @InjectView(R.id.rating_votes) TextView ratingVotesTextView;
-    @InjectView(R.id.max_rating) TextView maxRatingTextView;
-    @InjectView(R.id.media_details_right) TextView detailsRightTextView;
-    @InjectView(R.id.media_details) LinearLayout mediaDetailsContainer;
-    @InjectView(R.id.media_action_download) ImageButton downloadButton;
-    @InjectView(R.id.media_action_pin_unpin) ImageButton pinUnpinButton;
-    @InjectView(R.id.media_action_add_to_playlist) ImageButton addToPlaylistButton;
-    @InjectView(R.id.media_action_seen) ImageButton seenButton;
-    @InjectView(R.id.media_action_go_to_imdb) ImageButton imdbButton;
-    @InjectView(R.id.media_actions_bar) LinearLayout mediaActionsBar;
-    @InjectView(R.id.media_description) ExpandableTextView descriptionExpandableTextView;
-    @InjectView(R.id.media_description_container) LinearLayout descriptionContainer;
-    @InjectView(R.id.show_all) ImageView expansionImage;
-    @InjectView(R.id.fab) FABSpeedDial fabButton;
-    @InjectView(R.id.exit_transition_view) View exitTransitionView;
+    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.media_panel) NestedScrollView panelScrollView;
+    @BindView(R.id.art) ImageView artImageView;
+    @BindView(R.id.poster) ImageView posterImageView;
+    @BindView(R.id.media_title) TextView titleTextView;
+    @BindView(R.id.media_undertitle) TextView underTitleTextView;
+    @BindView(R.id.rating_container) LinearLayout ratingContainer;
+    @BindView(R.id.rating) TextView ratingTextView;
+    @BindView(R.id.rating_votes) TextView ratingVotesTextView;
+    @BindView(R.id.max_rating) TextView maxRatingTextView;
+    @BindView(R.id.media_details_right) TextView detailsRightTextView;
+    @BindView(R.id.media_details) LinearLayout mediaDetailsContainer;
+    @BindView(R.id.media_action_download) ImageButton downloadButton;
+    @BindView(R.id.media_action_pin_unpin) ImageButton pinUnpinButton;
+    @BindView(R.id.media_action_add_to_playlist) ImageButton addToPlaylistButton;
+    @BindView(R.id.media_action_seen) ImageButton seenButton;
+    @BindView(R.id.media_action_go_to_imdb) ImageButton imdbButton;
+    @BindView(R.id.media_actions_bar) LinearLayout mediaActionsBar;
+    @BindView(R.id.media_description) ExpandableTextView descriptionExpandableTextView;
+    @BindView(R.id.media_description_container) LinearLayout descriptionContainer;
+    @BindView(R.id.show_all) ImageView expansionImage;
+    @BindView(R.id.fab) FABSpeedDial fabButton;
+    @BindView(R.id.exit_transition_view) View exitTransitionView;
 
     private HostManager hostManager;
     private HostInfo hostInfo;
@@ -113,6 +114,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private RefreshItem refreshItem;
     private boolean expandDescription;
     private int methodId;
+    private Unbinder unbinder;
 
     /**
      * Handler on which to post RPC callbacks
@@ -146,7 +148,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         }
 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_info, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         Resources resources = getActivity().getResources();
 
@@ -242,6 +244,12 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     public void onStop() {
         super.onStop();
         SyncUtils.disconnectFromLibrarySyncService(getActivity(), serviceConnection);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

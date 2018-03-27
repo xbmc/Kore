@@ -69,6 +69,12 @@ public class KodiPreV17Tests extends AbstractTestClass<RemoteActivity> {
         mockEventServer.start();
     }
 
+    @Override
+    public void setUp() throws Throwable {
+        setKodiMajorVersion(HostInfo.KODI_V16_JARVIS);
+        super.setUp();
+    }
+
     @After
     public void resetState() {
         mockEventServer.reset();

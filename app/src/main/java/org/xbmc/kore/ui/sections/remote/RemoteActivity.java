@@ -53,9 +53,9 @@ import org.xbmc.kore.service.ConnectionObserversManagerService;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.SendTextDialogFragment;
+import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
-import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
@@ -69,8 +69,8 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 
 public class RemoteActivity extends BaseActivity
@@ -100,10 +100,10 @@ public class RemoteActivity extends BaseActivity
 
     private Future<Void> awaitingShare;
 
-    @InjectView(R.id.background_image) ImageView backgroundImage;
-    @InjectView(R.id.pager_indicator) CirclePageIndicator pageIndicator;
-    @InjectView(R.id.pager) ViewPager viewPager;
-    @InjectView(R.id.default_toolbar) Toolbar toolbar;
+    @BindView(R.id.background_image) ImageView backgroundImage;
+    @BindView(R.id.pager_indicator) CirclePageIndicator pageIndicator;
+    @BindView(R.id.pager) ViewPager viewPager;
+    @BindView(R.id.default_toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +113,7 @@ public class RemoteActivity extends BaseActivity
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         setContentView(R.layout.activity_remote);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         hostManager = HostManager.getInstance(this);
 

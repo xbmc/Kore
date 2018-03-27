@@ -41,7 +41,8 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 public abstract class AbstractListFragment extends Fragment implements
 															SwipeRefreshLayout.OnRefreshListener {
@@ -51,10 +52,11 @@ public abstract class AbstractListFragment extends Fragment implements
 	private final String BUNDLE_SAVEDINSTANCE_LISTPOSITION = "lposition";
 
 	private boolean gridViewUsesMultipleColumns;
+	private Unbinder unbinder;
 
-	protected @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-	@InjectView(R.id.list) GridView gridView;
-	@InjectView(android.R.id.empty) TextView emptyView;
+	protected @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+	@BindView(R.id.list) GridView gridView;
+	@BindView(android.R.id.empty) TextView emptyView;
 
 	abstract protected AdapterView.OnItemClickListener createOnItemClickListener();
 	abstract protected BaseAdapter createAdapter();
@@ -70,7 +72,7 @@ public abstract class AbstractListFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
-		ButterKnife.inject(this, root);
+		unbinder = ButterKnife.bind(this, root);
 
 		swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -111,6 +113,12 @@ public abstract class AbstractListFragment extends Fragment implements
 		setHasOptionsMenu(true);
 
 		return root;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		unbinder.unbind();
 	}
 
 	@Override

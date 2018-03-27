@@ -33,8 +33,9 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.utils.UIUtils;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Unbinder;
 
 public class NowPlayingPanel extends SlidingUpPanelLayout {
 
@@ -49,20 +50,21 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     }
 
     private OnPanelButtonsClickListener onPanelButtonsClickListener;
+    private Unbinder unbinder;
 
-    @InjectView(R.id.npp_collapsed_view) LinearLayout collapsedView;
-    @InjectView(R.id.npp_title) TextView title;
-    @InjectView(R.id.npp_details) TextView details;
-    @InjectView(R.id.npp_poster) ImageView poster;
-    @InjectView(R.id.npp_previous) ImageButton previousButton;
-    @InjectView(R.id.npp_next) ImageButton nextButton;
-    @InjectView(R.id.npp_play) ImageButton playButton;
-    @InjectView(R.id.npp_progress_indicator) MediaProgressIndicator mediaProgressIndicator;
-    @InjectView(R.id.npp_volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
-    @InjectView(R.id.npp_volume_mute) HighlightButton volumeMuteButton;
-    @InjectView(R.id.npp_volume_muted_indicator) HighlightButton volumeMutedIndicatorButton;
-    @InjectView(R.id.npp_repeat) RepeatModeButton repeatModeButton;
-    @InjectView(R.id.npp_shuffle) HighlightButton shuffleButton;
+    @BindView(R.id.npp_collapsed_view) LinearLayout collapsedView;
+    @BindView(R.id.npp_title) TextView title;
+    @BindView(R.id.npp_details) TextView details;
+    @BindView(R.id.npp_poster) ImageView poster;
+    @BindView(R.id.npp_previous) ImageButton previousButton;
+    @BindView(R.id.npp_next) ImageButton nextButton;
+    @BindView(R.id.npp_play) ImageButton playButton;
+    @BindView(R.id.npp_progress_indicator) MediaProgressIndicator mediaProgressIndicator;
+    @BindView(R.id.npp_volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
+    @BindView(R.id.npp_volume_mute) HighlightButton volumeMuteButton;
+    @BindView(R.id.npp_volume_muted_indicator) HighlightButton volumeMutedIndicatorButton;
+    @BindView(R.id.npp_repeat) RepeatModeButton repeatModeButton;
+    @BindView(R.id.npp_shuffle) HighlightButton shuffleButton;
 
     public NowPlayingPanel(Context context) {
         super(context);
@@ -81,9 +83,19 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.now_playing_panel, this);
-        ButterKnife.inject(view);
+        unbinder = ButterKnife.bind(this, view);
+
         setDragView(collapsedView);
         setupButtonClickListeners();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        unbinder.unbind();
+
+        onPanelButtonsClickListener = null;
     }
 
     public void setOnPanelButtonsClickListener(OnPanelButtonsClickListener listener) {
