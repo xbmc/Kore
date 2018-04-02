@@ -1,0 +1,60 @@
+Kore™ aims to be a simple, easy to use and beautiful remote that lets you control your Kodi® / XBMC™ media center from your Android™ device.
+
+
+With Kore you can
+– Control your media center with an easy to use remote;
+– Including several colour themes;
+– See what’s currently playing, including relevant information (movies, TV shows, music, pictures and addons);
+– Change, sync or download subtitles;
+– Switch to the desired audio streams;
+– All the usual playback and volume controls at your disposal;
+– Toggle back and forth between windows or full screen playback in Kodi
+– Add, check and manage the current playlist;
+– View what is in your media library with details about your movies, TV shows, music and add-ons;
+– Direct link to relevant IMDb website for extensive information;
+– Library maintenance like clean and update;
+– Wake-on-LAN and other power control actions that the selected device supports;
+– Send YouTube videos to your currently selected media center;
+– Send text to the instead of using the keyboard in Kodi;
+– Switch to live TV channels and trigger recording on your PVR/DVR setup;
+
+Currently not added yet
+– Browsing smartplaylists
+These features will be added in future versions
+
+Works with
+– Kodi 14.x "Helix" and higher;
+– XBMC 12.x "Frodo" and 13.x Gotham;
+
+Current supported interface languages
+– Basque
+– Bulgarian
+– Chinese
+– Czech
+– Dutch
+– French
+– German
+– Italian
+– Portuguese
+– Portuguese (Brazil)
+– Spanish
+– Russian
+
+License and development
+Kodi® and Kore™ are trademarks of the XBMC Foundation. For further details you can visit http://kodi.wiki/view/Official:Trademark_Policy
+
+
+Kore™ is fully Open-Source and released under the Apache License 2.0
+Should you wish to help on future development you can do so by visiting https://github.com/xbmc/Kore for code contributions.
+
+Permissions
+Storage: is needed for possible downloading of content from Kodi
+Telephone: is needed to be able to pause Kodi when an incoming call is detected.
+
+Kore does not collect or share information to the outside.
+
+Need help or have any problems?
+Please visit our forum at http://forum.kodi.tv/forumdisplay.php?fid=129
+
+Images shown on screenshots are Copyright Blender Foundation (http://www.blender.org/), used under a Creative Commons 3.0 License
+Kodi™ / XBMC™ are trademarks of the XBMC Foundation
