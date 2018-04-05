@@ -64,7 +64,7 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
 
     @Override
     protected void configureHostInfo(HostInfo hostInfo) {
-        hostInfo.setKodiVersionMajor(17);
+
     }
 
     @BeforeClass
@@ -72,6 +72,12 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
         mockEventServer = new MockEventServer();
         mockEventServer.setListenPort(HostInfo.DEFAULT_EVENT_SERVER_PORT);
         mockEventServer.start();
+    }
+
+    @Override
+    public void setUp() throws Throwable {
+        setKodiMajorVersion(HostInfo.KODI_V17_KRYPTON);
+        super.setUp();
     }
 
     @After

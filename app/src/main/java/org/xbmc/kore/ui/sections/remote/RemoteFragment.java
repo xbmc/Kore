@@ -19,6 +19,7 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,9 +57,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.Optional;
+import butterknife.Unbinder;
 
 /**
  * Remote view
@@ -119,44 +121,46 @@ public class RemoteFragment extends Fragment
     private final ApiMethod<String> contextButtonAction = new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU);
     private final ApiMethod<String> osdButtonAction = new Input.ExecuteAction(Input.ExecuteAction.OSD);
 
-    @InjectView(R.id.info_panel) RelativeLayout infoPanel;
-    @InjectView(R.id.media_panel) RelativeLayout mediaPanel;
-    @InjectView(R.id.remote) ControlPad controlPad;
+    @BindView(R.id.info_panel) RelativeLayout infoPanel;
+    @BindView(R.id.media_panel) RelativeLayout mediaPanel;
+    @BindView(R.id.remote) ControlPad controlPad;
 
-    @InjectView(R.id.info_title) TextView infoTitle;
-    @InjectView(R.id.info_message) TextView infoMessage;
+    @BindView(R.id.info_title) TextView infoTitle;
+    @BindView(R.id.info_message) TextView infoMessage;
 
-    @InjectView(R.id.button_bar) LinearLayout buttonBarPanel;
+    @BindView(R.id.button_bar) LinearLayout buttonBarPanel;
 
     /**
      * Buttons
      */
-    @Optional @InjectView(R.id.home) ImageButton homeButton;
-    @Optional @InjectView(R.id.movies) ImageButton moviesButton;
-    @Optional @InjectView(R.id.tv_shows) ImageButton tvShowsButton;
-    @Optional @InjectView(R.id.music) ImageButton musicButton;
-    @Optional @InjectView(R.id.pvr) ImageButton pvrButton;
-    @Optional @InjectView(R.id.pictures) ImageButton picturesButton;
-    @Optional @InjectView(R.id.videos) ImageButton videosButton;
-    //@Optional @InjectView(R.id.favourites) ImageButton favouritesButton;
-    @Optional @InjectView(R.id.addons) ImageButton addonsButton;
-    @Optional @InjectView(R.id.weather) ImageButton weatherButton;
-    @Optional @InjectView(R.id.system) ImageButton systemButton;
+    @Nullable @BindView(R.id.home) ImageButton homeButton;
+    @Nullable @BindView(R.id.movies) ImageButton moviesButton;
+    @Nullable @BindView(R.id.tv_shows) ImageButton tvShowsButton;
+    @Nullable @BindView(R.id.music) ImageButton musicButton;
+    @Nullable @BindView(R.id.pvr) ImageButton pvrButton;
+    @Nullable @BindView(R.id.pictures) ImageButton picturesButton;
+    @Nullable @BindView(R.id.videos) ImageButton videosButton;
+    //@Nullable @BindView(R.id.favourites) ImageButton favouritesButton;
+    @Nullable @BindView(R.id.addons) ImageButton addonsButton;
+    @Nullable @BindView(R.id.weather) ImageButton weatherButton;
+    @Nullable @BindView(R.id.system) ImageButton systemButton;
 
-    @InjectView(R.id.art) ImageView thumbnail;
-    @InjectView(R.id.title) TextView nowPlayingTitle;
-    @InjectView(R.id.details) TextView nowPlayingDetails;
+    @BindView(R.id.art) ImageView thumbnail;
+    @BindView(R.id.title) TextView nowPlayingTitle;
+    @BindView(R.id.details) TextView nowPlayingDetails;
 
-    @InjectView(R.id.play) ImageButton playButton;
-    @InjectView(R.id.stop) ImageButton stopButton;
-    @InjectView(R.id.rewind) ImageButton rewindButton;
-    @InjectView(R.id.fast_forward) ImageButton fastForwardButton;
+    @BindView(R.id.play) ImageButton playButton;
+    @BindView(R.id.stop) ImageButton stopButton;
+    @BindView(R.id.rewind) ImageButton rewindButton;
+    @BindView(R.id.fast_forward) ImageButton fastForwardButton;
 
     // EventServer connection
     private EventServerConnection eventServerConnection = null;
 
     // Icons for fastForward/Rewind or skipPrevious/skipNext
     int fastForwardIcon, rewindIcon, skipPreviousIcon, skipNextIcon;
+
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -171,7 +175,7 @@ public class RemoteFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_remote, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         controlPad.setOnPadButtonsListener(this);
 
@@ -227,6 +231,12 @@ public class RemoteFragment extends Fragment
             eventServerConnection.quit();
             eventServerConnection = null;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**

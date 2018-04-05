@@ -18,6 +18,7 @@ package org.xbmc.kore.tests.ui.music;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -180,6 +181,7 @@ public class RestoreSearchQueryViewPagerTest extends AbstractTestClass<MusicActi
         clickAlbumsTab();
         EspressoTestUtils.rotateDevice(activity);
         EspressoTestUtils.clickMenuItem(activity, activity.getString(R.string.action_search), R.id.action_search);
+        Espresso.closeSoftKeyboard();
 
         EspressoTestUtils.checkTextInSearchQuery("");
         EspressoTestUtils.checkListMatchesSearchQuery("", ALBUM_COMPLETE_LIST_SIZE, R.id.list);

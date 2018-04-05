@@ -20,8 +20,8 @@
 
 # Butterknife
 -dontwarn butterknife.internal.**
--keep class **$$ViewInjector { *; }
--keepnames class * { @butterknife.InjectView *;}
+-keep class **$$ViewBinder { *; }
+-keepnames class * { @butterknife.BindView *;}
 
 # Jackson
 -dontskipnonpubliclibraryclassmembers

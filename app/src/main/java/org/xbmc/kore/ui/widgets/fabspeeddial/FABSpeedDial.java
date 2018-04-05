@@ -39,7 +39,8 @@ import org.xbmc.kore.ui.animators.ChangeImageFadeAnimation;
 import org.xbmc.kore.ui.animators.PulsateAnimation;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 /**
  * The Floating Action Button Speed Dial uses a {@link FloatingActionButton} and can
@@ -63,9 +64,9 @@ import butterknife.InjectView;
  * </p>
  */
 public class FABSpeedDial extends LinearLayout {
-    @InjectView(R.id.fabspeeddial) FloatingActionButton FABMain;
-    @InjectView(R.id.play_local) DialActionButton FABPlayLocal;
-    @InjectView(R.id.play_remote) DialActionButton FABPlayRemote;
+    @BindView(R.id.fabspeeddial) FloatingActionButton FABMain;
+    @BindView(R.id.play_local) DialActionButton FABPlayLocal;
+    @BindView(R.id.play_remote) DialActionButton FABPlayRemote;
 
     private final String BUNDLE_KEY_EXPANDED = "expanded";
     private final String BUNDLE_KEY_PARENT = "parent";
@@ -81,6 +82,8 @@ public class FABSpeedDial extends LinearLayout {
 
     private OvershootInterpolator showDialsInterpolator = new OvershootInterpolator();
     private AccelerateInterpolator hideDialsInterpolator = new AccelerateInterpolator();
+
+    private Unbinder unbinder;
 
     public interface DialListener {
         void onLocalPlayClicked();
@@ -107,6 +110,15 @@ public class FABSpeedDial extends LinearLayout {
     public FABSpeedDial(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initializeView(context);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        unbinder.unbind();
+
+        dialListener = null;
+        fabListener = null;
     }
 
     /**
@@ -246,7 +258,7 @@ public class FABSpeedDial extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.fab_speed_dial, this);
 
-        ButterKnife.inject(view);
+        unbinder = ButterKnife.bind(view);
 
         // Makes sure shadow is not clipped
         setClipToPadding(false);

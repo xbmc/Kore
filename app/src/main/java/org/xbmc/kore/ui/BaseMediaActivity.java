@@ -59,7 +59,7 @@ import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public abstract class BaseMediaActivity extends BaseActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
@@ -71,7 +71,7 @@ public abstract class BaseMediaActivity extends BaseActivity
     private static final String NAVICON_ISARROW = "navstate";
     private static final String ACTIONBAR_TITLE = "actionbartitle";
 
-    @InjectView(R.id.now_playing_panel) NowPlayingPanel nowPlayingPanel;
+    @BindView(R.id.now_playing_panel) NowPlayingPanel nowPlayingPanel;
 
     private NavigationDrawerFragment navigationDrawerFragment;
     private SharedElementTransition sharedElementTransition = new SharedElementTransition();
@@ -111,7 +111,7 @@ public abstract class BaseMediaActivity extends BaseActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_generic_media);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()

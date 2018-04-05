@@ -119,7 +119,8 @@ dependencies {
     compile "com.android.support:design:${supportLibVersion}"
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
-    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.greenrobot:eventbus:2.4.0'

@@ -57,7 +57,8 @@ import org.xbmc.kore.utils.Utils;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 /**
  * Playlist view
@@ -96,14 +97,16 @@ public class PlaylistFragment extends Fragment
      */
     private PlayListAdapter playListAdapter;
 
+    private Unbinder unbinder;
+
     /**
      * Injectable views
      */
-    @InjectView(R.id.info_panel) RelativeLayout infoPanel;
-    @InjectView(R.id.playlist) DynamicListView playlistListView;
+    @BindView(R.id.info_panel) RelativeLayout infoPanel;
+    @BindView(R.id.playlist) DynamicListView playlistListView;
 
-    @InjectView(R.id.info_title) TextView infoTitle;
-    @InjectView(R.id.info_message) TextView infoMessage;
+    @BindView(R.id.info_title) TextView infoTitle;
+    @BindView(R.id.info_message) TextView infoMessage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +118,7 @@ public class PlaylistFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_playlist, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         playListAdapter = new PlayListAdapter();
         playlistListView.setAdapter(playListAdapter);
@@ -155,6 +158,12 @@ public class PlaylistFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.playlist, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

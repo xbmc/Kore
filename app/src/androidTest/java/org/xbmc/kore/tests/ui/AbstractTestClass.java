@@ -76,7 +76,7 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
     private static PlayerHandler playerHandler;
     private static ApplicationHandler applicationHandler;
     private static InputHandler inputHandler;
-
+    private int kodiMajorVersion = HostInfo.DEFAULT_KODI_VERSION_MAJOR;
     private HostInfo hostInfo;
 
     @BeforeClass
@@ -120,7 +120,7 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
 
         hostInfo = Database.addHost(context, server.getHostName(),
                                     HostConnection.PROTOCOL_TCP, HostInfo.DEFAULT_HTTP_PORT,
-                                    server.getPort(), useEventServer);
+                                    server.getPort(), useEventServer, kodiMajorVersion);
         //Allow each test to change the host info
         configureHostInfo(hostInfo);
 
@@ -162,6 +162,17 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
             return activityTestRule.getActivity();
         }
         return null;
+    }
+
+    /**
+     * Use this to set the major version of Kodi.
+     * <br/>
+     * NOTE: be sure to call this before {@link #setUp()} is called to have the version correctly
+     * set in the database.
+     * @param kodiMajorVersion
+     */
+    protected void setKodiMajorVersion(int kodiMajorVersion) {
+        this.kodiMajorVersion = kodiMajorVersion;
     }
 
     public static PlayerHandler getPlayerHandler() {

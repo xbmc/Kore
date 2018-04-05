@@ -66,8 +66,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Now playing view
@@ -128,39 +129,41 @@ public class NowPlayingFragment extends Fragment
     private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
     private ApiCallback<Boolean> defaultBooleanActionCallback = ApiMethod.getDefaultActionCallback();
 
+    private Unbinder unbinder;
+
     /**
      * Injectable views
      */
-    @InjectView(R.id.play) ImageButton playButton;
+    @BindView(R.id.play) ImageButton playButton;
 
-    @InjectView(R.id.volume_mute) HighlightButton volumeMuteButton;
-    @InjectView(R.id.shuffle) HighlightButton shuffleButton;
-    @InjectView(R.id.repeat) RepeatModeButton repeatButton;
-    @InjectView(R.id.overflow) ImageButton overflowButton;
+    @BindView(R.id.volume_mute) HighlightButton volumeMuteButton;
+    @BindView(R.id.shuffle) HighlightButton shuffleButton;
+    @BindView(R.id.repeat) RepeatModeButton repeatButton;
+    @BindView(R.id.overflow) ImageButton overflowButton;
 
-    @InjectView(R.id.info_panel) RelativeLayout infoPanel;
-    @InjectView(R.id.media_panel) ScrollView mediaPanel;
+    @BindView(R.id.info_panel) RelativeLayout infoPanel;
+    @BindView(R.id.media_panel) ScrollView mediaPanel;
 
-    @InjectView(R.id.info_title) TextView infoTitle;
-    @InjectView(R.id.info_message) TextView infoMessage;
+    @BindView(R.id.info_title) TextView infoTitle;
+    @BindView(R.id.info_message) TextView infoMessage;
 
-    @InjectView(R.id.art) ImageView mediaArt;
-    @InjectView(R.id.poster) ImageView mediaPoster;
+    @BindView(R.id.art) ImageView mediaArt;
+    @BindView(R.id.poster) ImageView mediaPoster;
 
-    @InjectView(R.id.media_title) TextView mediaTitle;
-    @InjectView(R.id.media_undertitle) TextView mediaUndertitle;
-    @InjectView(R.id.progress_info) MediaProgressIndicator mediaProgressIndicator;
+    @BindView(R.id.media_title) TextView mediaTitle;
+    @BindView(R.id.media_undertitle) TextView mediaUndertitle;
+    @BindView(R.id.progress_info) MediaProgressIndicator mediaProgressIndicator;
 
-    @InjectView(R.id.volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
+    @BindView(R.id.volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
 
-    @InjectView(R.id.rating) TextView mediaRating;
-    @InjectView(R.id.max_rating) TextView mediaMaxRating;
-    @InjectView(R.id.year) TextView mediaYear;
-    @InjectView(R.id.genres) TextView mediaGenreSeason;
-    @InjectView(R.id.rating_votes) TextView mediaRatingVotes;
+    @BindView(R.id.rating) TextView mediaRating;
+    @BindView(R.id.max_rating) TextView mediaMaxRating;
+    @BindView(R.id.year) TextView mediaYear;
+    @BindView(R.id.genres) TextView mediaGenreSeason;
+    @BindView(R.id.rating_votes) TextView mediaRatingVotes;
 
-    @InjectView(R.id.media_description) TextView mediaDescription;
-    @InjectView(R.id.cast_list) GridLayout videoCastList;
+    @BindView(R.id.media_description) TextView mediaDescription;
+    @BindView(R.id.cast_list) GridLayout videoCastList;
 
     @Override
     public void onAttach(Activity activity) {
@@ -183,7 +186,7 @@ public class NowPlayingFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_now_playing, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
             @Override
@@ -242,6 +245,12 @@ public class NowPlayingFragment extends Fragment
         stopNowPlayingInfo();
         hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver.unregisterApplicationObserver(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**
