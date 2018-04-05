@@ -1,83 +1,85 @@
+/**
+ * Copyright 2017 XBMC Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.xbmc.kore.jsonrpc;
 
 import android.support.annotation.NonNull;
 
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
+import org.xbmc.kore.MainApp;
+import org.xbmc.kore.R;
+
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
  * A Java future wrapping the result of a Kodi remote method call.
- * <p>
- * Instantiable only through {@link HostConnection#execute(ApiMethod)}.
  *
  * @param <T> The type of the result of the remote method call.
  */
-class ApiFuture<T> implements Future<T> {
-    private enum Status { WAITING, OK, ERROR, CANCELLED }
-    private final Object lock = new Object();
+public class ApiFuture<T> implements Future<T> {
+    public enum Status { WAITING, OK, ERROR, CANCELLED }
     private Status status = Status.WAITING;
-    private T ok;
-    private Throwable error;
-
-    static <T> Future<T> from(HostConnection host, ApiMethod<T> method) {
-        final ApiFuture<T> future = new ApiFuture<>();
-        host.execute(method, new ApiCallback<T>() {
-            @Override
-            public void onSuccess(T result) {
-                synchronized (future.lock) {
-                    future.ok = result;
-                    future.status = Status.OK;
-                    future.lock.notifyAll();
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                synchronized (future.lock) {
-                    future.error = new ApiException(errorCode, description);
-                    future.status = Status.ERROR;
-                    future.lock.notifyAll();
-                }
-            }
-        }, null);
-        return future;
-    }
+    private final Object lock = new Object();
+    private T result;
+    private ApiException error;
+    private ApiMethod<T> apiMethod;
 
     private ApiFuture() {}
 
+    public ApiFuture(ApiMethod<T> method) {
+        apiMethod = method;
+    }
+
     @Override
-    public T get() throws InterruptedException, ExecutionException {
+    public T get() throws InterruptedException {
         try {
             return get(0, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
-            throw new IllegalStateException("impossible");
+            throw new IllegalStateException("Request timed out. This should not happen when time out is disabled!");
         }
     }
 
     @Override
     public T get(long timeout, @NonNull TimeUnit unit)
-            throws InterruptedException, ExecutionException, TimeoutException
+            throws TimeoutException, InterruptedException
     {
         boolean timed = timeout > 0;
         long remaining = unit.toNanos(timeout);
         while (true) synchronized (lock) {
             switch (status) {
-                case OK: return ok;
-                case ERROR: throw new ExecutionException(error);
-                case CANCELLED: throw new CancellationException();
+                case ERROR:
+                case OK:
+                case CANCELLED:
+                    return this.result;
                 case WAITING:
                     if (timed && remaining <= 0) {
-                        throw new TimeoutException();
+                        throw new TimeoutException(MainApp.getContext().getString(R.string.api_method_timedout,
+                                                                                   getApiMethod().getMethodName()));
                     }
-                    if (!timed) {
-                        lock.wait();
-                    } else {
-                        long start = System.nanoTime();
-                        TimeUnit.NANOSECONDS.timedWait(lock, remaining);
-                        remaining -= System.nanoTime() - start;
+                    try {
+                        if (!timed) {
+                            lock.wait();
+                        } else {
+                            long start = System.nanoTime();
+                            TimeUnit.NANOSECONDS.timedWait(lock, remaining);
+                            remaining -= System.nanoTime() - start;
+                        }
+                    } catch (InterruptedException e) {
+                        throw new InterruptedException(MainApp.getContext().getString(R.string.api_method_wait_interrupted,
+                                                                                      getApiMethod().getMethodName()));
                     }
             }
         }
@@ -88,11 +90,12 @@ class ApiFuture<T> implements Future<T> {
         if (status != Status.WAITING) {
             return false;
         }
+
         synchronized (lock) {
             status = Status.CANCELLED;
             lock.notifyAll();
-            return true;
         }
+        return true;
     }
 
     @Override
@@ -105,4 +108,35 @@ class ApiFuture<T> implements Future<T> {
         return status != Status.WAITING;
     }
 
+    public ApiMethod<T> getApiMethod() {
+        return apiMethod;
+    }
+
+    /**
+     * Finishes the Future after which {{@link #get()}} or {@link #get(long, TimeUnit)} can be used
+     * to retrieve the result.
+     * @param result the result that this future should hold when finished
+     * @param error any error that occured. If null status of this Future will be set to Status.OK,
+     *              otherwise it will be set to Status.ERROR
+     */
+    public void setResult(T result, ApiException error) {
+        synchronized (lock) {
+            this.result = result;
+            this.status = error == null ? Status.OK : Status.ERROR;
+            this.error = error;
+            lock.notifyAll();
+        }
+    }
+
+    public T getResult() {
+        return result;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public ApiException getError() {
+        return error;
+    }
 }

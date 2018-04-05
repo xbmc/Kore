@@ -21,15 +21,20 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
+import android.util.SparseArray;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.actions.HostAction;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
@@ -39,10 +44,8 @@ import org.xbmc.kore.utils.NetUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Manages XBMC Hosts
@@ -53,20 +56,18 @@ import java.util.concurrent.Future;
 public class HostManager {
 	private static final String TAG = LogUtils.makeLogTag(HostManager.class);
 
-    /**
-     * A block of code that is run in the background thread and receives a
-     * reference to the current host.
-     *
-     * @see #withCurrentHost(Session)
-     */
-    public interface Session<T> {
-        T using(HostConnection host) throws Exception;
+    public interface OnActionListener<T> {
+        void onSuccess(T result);
+        void onError(ApiException e);
     }
+
+    private final SparseArray<OnActionListener> actionListeners = new SparseArray<>();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     /**
      * Provides the thread where all sessions are run.
      */
-    private static final ExecutorService SESSIONS = Executors.newSingleThreadExecutor();
+    private static final ExecutorService SINGLE_THREAD_EXECUTOR = Executors.newSingleThreadExecutor();
 
 	// Singleton instance
 	private static volatile HostManager instance = null;
@@ -122,29 +123,77 @@ public class HostManager {
 	}
 
     /**
-     * Runs a session block.
-     * <p>
-     * This method provides a context for awaiting {@link org.xbmc.kore.jsonrpc.ApiFuture
-     * future} objects returned by callback-less remote method invocations. This
-     * enables a more natural style of doing a sequence of remote calls instead
-     * of nesting or chaining callbacks.
-     *
-     * @param session The function to run
-     * @param <T> The type of the value returned by the session
-     * @return a future wrapping the value returned (or exception thrown) by the
-     * session; null when there's no current host.
+     * Updates the listener for any pending {@link HostAction}
+     * @param actionId action identifier returned by {@link HostAction#getId()} of action for which
+     *                 the listener must be updated
+     * @param listener new listener that should be called when {@link HostAction} finishes.
+     * @param <T> Type of original {@link OnActionListener} set through {@link #withCurrentHost(HostAction, OnActionListener)}.
+     *           If a different is given the listener will not be updated.
      */
-    public <T> Future<T> withCurrentHost(final Session<T> session) {
+    public <T> void updateActionListener(int actionId, OnActionListener<T> listener) {
+        synchronized (actionListeners) {
+            //Prevent updating existing listener with a different type
+            OnActionListener l = actionListeners.get(actionId);
+            if (l == null || l.getClass().isInstance(listener))
+                actionListeners.put(actionId, listener);
+        }
+    }
+
+    public <T> void removeActionListener(int actionId) {
+        actionListeners.delete(actionId);
+    }
+    /**
+     * Executes the action on the currently connected host.
+     * @param action the action to perform on the host
+     * @param listener called to return the result of the action. Note: this will be executed on the UI thread.
+     * @param <T>
+     */
+    public <T> void withCurrentHost(@NonNull final HostAction<T> action,
+                                    @NonNull final OnActionListener<T> listener) {
         final HostConnection conn = getConnection();
         if (conn != null) {
-            return SESSIONS.submit(new Callable<T>() {
+            synchronized (actionListeners) {
+                actionListeners.put(action.getId(), listener);
+            }
+            SINGLE_THREAD_EXECUTOR.submit(new Runnable() {
                 @Override
-                public T call() throws Exception {
-                    return session.using(conn);
+                public void run() {
+                    try {
+                        final T result = action.using(conn);
+                        final OnActionListener l;
+                        synchronized (actionListeners) {
+                            l = actionListeners.get(action.getId());
+                        }
+                        if (l == null)
+                            return;
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                l.onSuccess(result);
+                            }
+                        });
+                    } catch (final ApiException e) {
+                        final OnActionListener l;
+                        synchronized (actionListeners) {
+                            l = actionListeners.get(action.getId());
+                        }
+                        if (l == null)
+                            return;
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                    l.onError(e);
+                            }
+                        });
+                    }
+                    synchronized (actionListeners) {
+                        actionListeners.delete(action.getId());
+                    }
                 }
             });
         }
-        return null;
     }
 
 	/**

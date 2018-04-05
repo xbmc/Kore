@@ -75,6 +75,11 @@ public class ApiException extends Exception {
      */
     public static int API_METHOD_WITH_SAME_ID_ALREADY_EXECUTING = 102;
 
+	/**
+	 * Waiting for the result of an API method took more then the given timeout.
+	 */
+	public static int API_WAIT_TIMEDOUT = 103;
+
     private int code;
 
 	/**

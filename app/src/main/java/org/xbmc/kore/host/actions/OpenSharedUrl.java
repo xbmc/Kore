@@ -1,11 +1,23 @@
-package org.xbmc.kore.ui.sections.remote;
-
-/*
- * This file is a part of the Kore project.
+/**
+ * Copyright 2017 XBMC Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+package org.xbmc.kore.host.actions;
 
+import org.xbmc.kore.MainApp;
 import org.xbmc.kore.R;
-import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
@@ -14,29 +26,11 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Sends a series of commands to Kodi in a background thread to open the video.
- * <p>
- * This is meant to be passed to {@link HostManager#withCurrentHost(HostManager.Session)}
- * and the resulting future should be awaited in a background thread as well (if you're
- * interested in the result), either in an {@link android.os.AsyncTask} or another
- * {@link HostManager.Session}.
  */
-public class OpenSharedUrl implements HostManager.Session<Boolean> {
-
-    /**
-     * Indicates the stage where the error happened.
-     */
-    public static class Error extends Exception {
-        public final int stage;
-
-        public Error(int stage, Throwable cause) {
-            super(cause);
-            this.stage = stage;
-        }
-    }
+public class OpenSharedUrl extends HostAction<Boolean> {
 
     private static final String TAG = LogUtils.makeLogTag(OpenSharedUrl.class);
     private final String pluginUrl;
@@ -60,12 +54,10 @@ public class OpenSharedUrl implements HostManager.Session<Boolean> {
      * @param host The host to send the commands to
      * @return whether the host is currently playing a video. If so, the shared url
      * is added to the playlist and not played immediately.
-     * @throws Error when any of the commands sent fails
-     * @throws InterruptedException when {@code cancel(true)} is called on the resulting
-     * future while waiting on one of the internal futures.
+     * @throws ApiException when any of the commands sent fails
      */
     @Override
-    public Boolean using(HostConnection host) throws Error, InterruptedException {
+    public Boolean using(HostConnection host) throws ApiException {
         int stage = R.string.error_get_active_player;
         try {
             List<PlayerType.GetActivePlayersReturnType> players =
@@ -99,10 +91,8 @@ public class OpenSharedUrl implements HostManager.Session<Boolean> {
             }
 
             return videoIsPlaying;
-        } catch (ExecutionException e) {
-            throw new Error(stage, e.getCause());
-        } catch (RuntimeException e) {
-            throw new Error(stage, e);
+        } catch (RuntimeException|InterruptedException e) {
+            throw new ApiException(ApiException.API_ERROR, MainApp.getContext().getString(stage));
         }
     }
 }

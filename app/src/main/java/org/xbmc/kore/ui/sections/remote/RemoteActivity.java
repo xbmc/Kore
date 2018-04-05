@@ -40,7 +40,8 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.actions.OpenSharedUrl;
+import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.method.GUI;
@@ -53,9 +54,9 @@ import org.xbmc.kore.service.ConnectionObserversManagerService;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.SendTextDialogFragment;
+import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
-import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
@@ -64,8 +65,6 @@ import org.xbmc.kore.utils.Utils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,9 +95,7 @@ public class RemoteActivity extends BaseActivity
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
-    private Future<Boolean> pendingShare;
-
-    private Future<Void> awaitingShare;
+    private OpenSharedUrl openSharedUrl;
 
     @InjectView(R.id.background_image) ImageView backgroundImage;
     @InjectView(R.id.pager_indicator) CirclePageIndicator pageIndicator;
@@ -159,8 +156,9 @@ public class RemoteActivity extends BaseActivity
 //        UIUtils.setPaddingForSystemBars(this, viewPager, true, true, false);
 //        UIUtils.setPaddingForSystemBars(this, pageIndicator, true, true, false);
 
-        //noinspection unchecked
-        pendingShare = (Future<Boolean>) getLastCustomNonConfigurationInstance();
+        openSharedUrl = (OpenSharedUrl) getLastCustomNonConfigurationInstance();
+        if (openSharedUrl != null)
+            hostManager.updateActionListener(openSharedUrl.getId(), createOpenSharedUrlActionListener());
     }
 
     @Override
@@ -205,12 +203,11 @@ public class RemoteActivity extends BaseActivity
         super.onPause();
         if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
-        if (awaitingShare != null) awaitingShare.cancel(true);
     }
 
     @Override
     public Object onRetainCustomNonConfigurationInstance() {
-        return pendingShare;
+        return openSharedUrl;
     }
 
     @Override
@@ -345,11 +342,6 @@ public class RemoteActivity extends BaseActivity
      * @param intent Start intent for the activity
      */
     private void handleStartIntent(Intent intent) {
-        if (pendingShare != null) {
-            awaitShare();
-            return;
-        }
-
         final String action = intent.getAction();
         // Check action
         if ((action == null) ||
@@ -372,58 +364,29 @@ public class RemoteActivity extends BaseActivity
 
         String title = getString(R.string.app_name);
         String text = getString(R.string.item_added_to_playlist);
-        pendingShare = hostManager.withCurrentHost(new OpenSharedUrl(videoUrl, title, text));
-        awaitShare();
+        openSharedUrl = new OpenSharedUrl(videoUrl, title, text);
+        hostManager.withCurrentHost(openSharedUrl, createOpenSharedUrlActionListener());
+
         intent.setAction(null);
     }
 
-    /**
-     * Awaits the completion of the share request in the same background thread
-     * where the request is running.
-     * <p>
-     * This needs to run stuff in the UI thread so the activity reference is
-     * inevitable, but unlike the share request this doesn't need to outlive the
-     * activity. The resulting future __must__ be cancelled when the activity is
-     * paused (it will drop itself when cancelled or finished). This should be called
-     * again when the activity is resumed and a {@link #pendingShare} exists.
-     */
-    private void awaitShare() {
-        awaitingShare = hostManager.withCurrentHost(new HostManager.Session<Void>() {
+    private HostManager.OnActionListener<Boolean> createOpenSharedUrlActionListener() {
+        return new HostManager.OnActionListener<Boolean>() {
             @Override
-            public Void using(HostConnection host) throws Exception {
-                try {
-                    final boolean wasAlreadyPlaying = pendingShare.get();
-                    pendingShare = null;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (wasAlreadyPlaying) {
-                                Toast.makeText(RemoteActivity.this,
-                                        getString(R.string.item_added_to_playlist),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                            refreshPlaylist();
-                        }
-                    });
-                } catch (InterruptedException ignored) {
-                } catch (ExecutionException ex) {
-                    pendingShare = null;
-                    final OpenSharedUrl.Error e = (OpenSharedUrl.Error) ex.getCause();
-                    LogUtils.LOGE(TAG, "Share failed", e);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(RemoteActivity.this,
-                                    getString(e.stage, e.getMessage()),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } finally {
-                    awaitingShare = null;
+            public void onSuccess(Boolean wasAlreadyPlaying) {
+                if (wasAlreadyPlaying) {
+                    Toast.makeText(RemoteActivity.this,
+                                   getString(R.string.item_added_to_playlist),
+                                   Toast.LENGTH_SHORT).show();
                 }
-                return null;
+                refreshPlaylist();
             }
-        });
+
+            @Override
+            public void onError(ApiException e) {
+                Toast.makeText(RemoteActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     /**
