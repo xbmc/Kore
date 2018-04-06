@@ -52,7 +52,6 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
 
     @Override
     protected void configureHostInfo(HostInfo hostInfo) {
-        hostInfo.setKodiVersionMajor(17);
     }
 
     @Override

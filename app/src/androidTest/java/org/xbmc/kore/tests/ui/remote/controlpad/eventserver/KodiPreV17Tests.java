@@ -59,7 +59,6 @@ public class KodiPreV17Tests extends AbstractTestClass<RemoteActivity> {
 
     @Override
     protected void configureHostInfo(HostInfo hostInfo) {
-        hostInfo.setKodiVersionMajor(16);
     }
 
     @BeforeClass
