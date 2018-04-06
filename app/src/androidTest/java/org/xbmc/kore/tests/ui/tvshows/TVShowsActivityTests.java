@@ -96,7 +96,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
     @Test
     public void setActionBarTitleOnSeasonList() {
         EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
-        onView( withId(R.id.seasons_list)).perform( nestedScrollTo(), click());
+        onView( withId(R.id.seasons_list)).perform(nestedScrollTo(), click());
 
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
                 .check(matches(withText("Season 01")));
