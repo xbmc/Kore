@@ -82,6 +82,8 @@
     <attr name="iconRewind" format="reference" />
     <attr name="iconNext" format="reference" />
     <attr name="iconPrevious" format="reference" />
+    <attr name="iconSkipForward" format="reference" />
+    <attr name="iconSkipBackward" format="reference" />
 
     <attr name="iconInfo" format="reference" />
     <attr name="iconBack" format="reference" />
