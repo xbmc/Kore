@@ -211,6 +211,8 @@
     <string name="poster">Poster</string>
     <string name="thumbnail">Thumbnail</string>
 
+    <string name="api_method_timedout">Executing %1$s timed out.</string>
+    <string name="api_method_wait_interrupted">Waiting on %1$s was interrupted.</string>
     <string name="error_getting_properties">Couldn\'t get Kodi/XBMC properties.\nError message:
         %1$s.</string>
     <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\nError message: %1$s.</string>

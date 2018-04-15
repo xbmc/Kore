@@ -33,6 +33,7 @@ import com.squareup.okhttp.Response;
 
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.host.actions.HostAction;
 import org.xbmc.kore.jsonrpc.notification.Application;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.Player;
@@ -272,8 +273,8 @@ public class HostConnection {
     }
 
     /**
-     * Registers an observer for input notifications
-     * @param observer The {@link InputNotificationsObserver}
+     * Registers an observer for application notifications
+     * @param observer The {@link ApplicationNotificationsObserver}
      */
     public void registerApplicationNotificationsObserver(ApplicationNotificationsObserver observer,
                                                    Handler handler) {
@@ -281,8 +282,8 @@ public class HostConnection {
     }
 
     /**
-     * Unregisters and observer from the input notifications
-     * @param observer The {@link InputNotificationsObserver}
+     * Unregisters and observer from the application notifications
+     * @param observer The {@link ApplicationNotificationsObserver}
      */
     public void unregisterApplicationNotificationsObserver(ApplicationNotificationsObserver observer) {
         applicationNotificationsObservers.remove(observer);
@@ -306,15 +307,6 @@ public class HostConnection {
 							final Handler handler) {
 		LogUtils.LOGD(TAG, "Starting method execute. Method: " + method.getMethodName() +
 			" on host: " + hostInfo.getJsonRpcHttpEndpoint());
-
-        if (protocol == PROTOCOL_TCP) {
-            /**
-             * Do not call this from the runnable below as it may cause a race condition
-             * with {@link #updateClientCallback(int, ApiCallback, Handler)}
-             */
-            // Save this method/callback for any later response
-            addClientCallback(method, callback, handler);
-        }
 
 		// Launch background thread
         Runnable command = new Runnable() {
@@ -354,10 +346,39 @@ public class HostConnection {
      * @return the future result of the method call. API errors will be wrapped in
      * an {@link java.util.concurrent.ExecutionException ExecutionException} like
      * regular futures.
-     * @see org.xbmc.kore.host.HostManager#withCurrentHost(HostManager.Session)
+     * @see org.xbmc.kore.host.HostManager#withCurrentHost(HostAction, HostManager.OnActionListener)
      */
-    public <T> Future<T> execute(ApiMethod<T> method) {
-        return ApiFuture.from(this, method);
+    public <T> ApiFuture<T> execute(ApiMethod<T> method) {
+        ApiFuture<T> apiFuture = new ApiFuture<>(method);
+        execute(apiFuture);
+        return apiFuture;
+    }
+
+    /**
+     * Executes the API method from the API future in the background.
+     *
+     * The result of the API method will be set in the ApiFuture and
+     * you can use the {@link ApiFuture#get()} method to wait on the result.
+     * <br/>
+     * See {@link #execute(ApiMethod)} for more info on waiting on the result.
+     *
+     * @param apiFuture future holding the remote method to invoke and the result
+     * @param <T> The type of the return value of the API method
+     *
+     * @see org.xbmc.kore.host.HostManager#withCurrentHost(HostAction, HostManager.OnActionListener)
+     */
+    public <T> void execute(final ApiFuture<T> apiFuture) {
+        execute(apiFuture.getApiMethod(), new ApiCallback<T>() {
+            @Override
+            public void onSuccess(T result) {
+                apiFuture.setResult(result, null);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                apiFuture.setResult(null, new ApiException(errorCode, description));
+            }
+        }, null);
     }
 
     /**
@@ -398,10 +419,6 @@ public class HostConnection {
      */
     private <T> void addClientCallback(final ApiMethod<T> method, final ApiCallback<T> callback,
                                        final Handler handler) {
-
-        if (getProtocol() == PROTOCOL_HTTP)
-            return;
-
         String methodId = String.valueOf(method.getId());
 
         synchronized (clientCallbacks) {
@@ -595,7 +612,11 @@ public class HostConnection {
 	 */
 	private <T> void executeThroughTcp(final ApiMethod<T> method, final ApiCallback<T> callback,
 									   final Handler handler) {
-        String methodId = String.valueOf(method.getId());
+        synchronized (clientCallbacks) {
+            // Save this method/callback for any later response
+            addClientCallback(method, callback, handler);
+        }
+
         try {
             // TODO: Validate if this shouldn't be enclosed by a synchronized.
 			if (socket == null) {
@@ -608,6 +629,7 @@ public class HostConnection {
 			// Write request
 			sendTcpRequest(socket, method.toJsonString());
 		} catch (final ApiException e) {
+            String methodId = String.valueOf(method.getId());
 			callErrorCallback(methodId, e);
 		}
 	}
@@ -837,7 +859,7 @@ public class HostConnection {
 				// Error response
 				callErrorCallback(methodId, new ApiException(ApiException.API_ERROR, jsonResponse));
 			} else {
-				// Sucess response
+				// Success response
 				final MethodCallInfo<?> methodCallInfo = clientCallbacks.get(methodId);
 //				LogUtils.LOGD(TAG, "Sending response to method: " + methodCallInfo.method.getMethodName());
 
