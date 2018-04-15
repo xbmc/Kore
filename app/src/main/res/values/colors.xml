@@ -15,6 +15,8 @@
    limitations under the License.
 -->
 <resources>
+    <color name="ic_launcher_background">#0BB1E6</color>
+
 	<color name="dark_background">#ff121314</color>
     <color name="light_background">#ffeeeeee</color>
     <!--<color name="blue_grey_background">#ff212b30</color>-->
