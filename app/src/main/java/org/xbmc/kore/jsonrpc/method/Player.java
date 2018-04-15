@@ -242,6 +242,12 @@ public class Player {
         public final static String METHOD_NAME = "Player.Seek";
 
         /**
+         * Seek constants
+         */
+        public static final String BACKWARD = "smallbackward";
+        public static final String FORWARD = "smallforward";
+
+        /**
          * Seek through the playing item (by time)
          * @param playerId Player id for which to stop playback
          * @param value Where to seek
@@ -258,6 +264,17 @@ public class Player {
          * @param value Percentage
          */
         public Seek(int playerId, int value) {
+            super();
+            addParameterToRequest("playerid", playerId);
+            addParameterToRequest("value", value);
+        }
+
+        /**
+         * Seek through the playing item (by step)
+         * @param playerId Player id for which to stop playback
+         * @param value step (smallbackward/smallforward)
+         */
+        public Seek(int playerId, String value) {
             super();
             addParameterToRequest("playerid", playerId);
             addParameterToRequest("value", value);
