@@ -242,9 +242,9 @@ public class NotificationObserver
             ffIcon = R.drawable.ic_skip_next_white_24dp;
         } else if (useSeekJump) {
             rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_JUMP_BACKWARD);
-            rewindIcon = R.drawable.ic_chevron_left_white_24dp;
+            rewindIcon = R.drawable.ic_skip_backward_white_24dp;
             ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_JUMP_FORWARD);
-            ffIcon = R.drawable.ic_chevron_right_white_24dp;
+            ffIcon = R.drawable.ic_skip_forward_white_24dp;
         } else {
             rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_REWIND);
             rewindIcon = R.drawable.ic_fast_rewind_white_24dp;
