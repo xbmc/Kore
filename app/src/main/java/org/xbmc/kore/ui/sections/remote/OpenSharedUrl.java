@@ -5,7 +5,6 @@ package org.xbmc.kore.ui.sections.remote;
  */
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
@@ -14,17 +13,17 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Sends a series of commands to Kodi in a background thread to open the video.
  * <p>
- * This is meant to be passed to {@link HostManager#withCurrentHost(HostManager.Session)}
+ * This is meant to be passed to {@link java.util.concurrent.Executor}
  * and the resulting future should be awaited in a background thread as well (if you're
- * interested in the result), either in an {@link android.os.AsyncTask} or another
- * {@link HostManager.Session}.
+ * interested in the result).
  */
-public class OpenSharedUrl implements HostManager.Session<Boolean> {
+public class OpenSharedUrl implements Callable<Boolean> {
 
     /**
      * Indicates the stage where the error happened.
@@ -39,6 +38,7 @@ public class OpenSharedUrl implements HostManager.Session<Boolean> {
     }
 
     private static final String TAG = LogUtils.makeLogTag(OpenSharedUrl.class);
+    private final HostConnection hostConnection;
     private final String pluginUrl;
     private final String notificationTitle;
     private final String notificationText;
@@ -50,14 +50,14 @@ public class OpenSharedUrl implements HostManager.Session<Boolean> {
      * @param notificationText The notification to be shown when the host is currently
      *                         playing a video
      */
-    public OpenSharedUrl(String pluginUrl, String notificationTitle, String notificationText) {
+    public OpenSharedUrl(HostConnection hostConnection, String pluginUrl, String notificationTitle, String notificationText) {
+        this.hostConnection = hostConnection;
         this.pluginUrl = pluginUrl;
         this.notificationTitle = notificationTitle;
         this.notificationText = notificationText;
     }
 
     /**
-     * @param host The host to send the commands to
      * @return whether the host is currently playing a video. If so, the shared url
      * is added to the playlist and not played immediately.
      * @throws Error when any of the commands sent fails
@@ -65,11 +65,12 @@ public class OpenSharedUrl implements HostManager.Session<Boolean> {
      * future while waiting on one of the internal futures.
      */
     @Override
-    public Boolean using(HostConnection host) throws Error, InterruptedException {
+    public Boolean call() throws Error, InterruptedException {
         int stage = R.string.error_get_active_player;
         try {
             List<PlayerType.GetActivePlayersReturnType> players =
-                    host.execute(new Player.GetActivePlayers()).get();
+                    hostConnection.execute(new Player.GetActivePlayers())
+                        .get();
             boolean videoIsPlaying = false;
             for (PlayerType.GetActivePlayersReturnType player : players) {
                 if (player.type.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
@@ -81,21 +82,23 @@ public class OpenSharedUrl implements HostManager.Session<Boolean> {
             stage = R.string.error_queue_media_file;
             if (!videoIsPlaying) {
                 LogUtils.LOGD(TAG, "Clearing video playlist");
-                host.execute(new Playlist.Clear(PlaylistType.VIDEO_PLAYLISTID)).get();
+                hostConnection.execute(new Playlist.Clear(PlaylistType.VIDEO_PLAYLISTID))
+                    .get();
             }
 
             LogUtils.LOGD(TAG, "Queueing file");
             PlaylistType.Item item = new PlaylistType.Item();
             item.file = pluginUrl;
-            host.execute(new Playlist.Add(PlaylistType.VIDEO_PLAYLISTID, item)).get();
+            hostConnection.execute(new Playlist.Add(PlaylistType.VIDEO_PLAYLISTID, item))
+                .get();
 
             if (!videoIsPlaying) {
                 stage = R.string.error_play_media_file;
-                host.execute(new Player
-                        .Open(Player.Open.TYPE_PLAYLIST, PlaylistType.VIDEO_PLAYLISTID)).get();
+                hostConnection.execute(new Player.Open(Player.Open.TYPE_PLAYLIST, PlaylistType.VIDEO_PLAYLISTID))
+                    .get();
             } else {
                 // no get() to ignore the exception that will be thrown by OkHttp
-                host.execute(new Player.Notification(notificationTitle, notificationText));
+                hostConnection.execute(new Player.Notification(notificationTitle, notificationText));
             }
 
             return videoIsPlaying;

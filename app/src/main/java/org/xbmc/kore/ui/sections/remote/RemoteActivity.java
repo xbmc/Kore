@@ -40,7 +40,6 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.method.GUI;
@@ -64,7 +63,10 @@ import org.xbmc.kore.utils.Utils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -341,6 +343,17 @@ public class RemoteActivity extends BaseActivity
     }
 
     /**
+     * Provides the thread where the intent will be handled
+     */
+    private static ExecutorService SHARE_EXECUTOR = null;
+    private static ExecutorService getShareExecutor() {
+        if (SHARE_EXECUTOR == null) {
+            SHARE_EXECUTOR = Executors.newSingleThreadExecutor();
+        }
+        return SHARE_EXECUTOR;
+    }
+
+    /**
      * Handles the intent that started this activity, namely to start playing something on Kodi
      * @param intent Start intent for the activity
      */
@@ -372,7 +385,7 @@ public class RemoteActivity extends BaseActivity
 
         String title = getString(R.string.app_name);
         String text = getString(R.string.item_added_to_playlist);
-        pendingShare = hostManager.withCurrentHost(new OpenSharedUrl(videoUrl, title, text));
+        pendingShare = getShareExecutor().submit(new OpenSharedUrl(hostManager.getConnection(), videoUrl, title, text));
         awaitShare();
         intent.setAction(null);
     }
@@ -388,9 +401,9 @@ public class RemoteActivity extends BaseActivity
      * again when the activity is resumed and a {@link #pendingShare} exists.
      */
     private void awaitShare() {
-        awaitingShare = hostManager.withCurrentHost(new HostManager.Session<Void>() {
+        awaitingShare = getShareExecutor().submit(new Callable<Void>() {
             @Override
-            public Void using(HostConnection host) throws Exception {
+            public Void call() throws Exception {
                 try {
                     final boolean wasAlreadyPlaying = pendingShare.get();
                     pendingShare = null;
@@ -399,8 +412,9 @@ public class RemoteActivity extends BaseActivity
                         public void run() {
                             if (wasAlreadyPlaying) {
                                 Toast.makeText(RemoteActivity.this,
-                                        getString(R.string.item_added_to_playlist),
-                                        Toast.LENGTH_SHORT).show();
+                                    getString(R.string.item_added_to_playlist),
+                                    Toast.LENGTH_SHORT)
+                                    .show();
                             }
                             refreshPlaylist();
                         }
@@ -414,8 +428,8 @@ public class RemoteActivity extends BaseActivity
                         @Override
                         public void run() {
                             Toast.makeText(RemoteActivity.this,
-                                    getString(e.stage, e.getMessage()),
-                                    Toast.LENGTH_SHORT).show();
+                                getString(e.stage, e.getMessage()),
+                                Toast.LENGTH_SHORT).show();
                         }
                     });
                 } finally {

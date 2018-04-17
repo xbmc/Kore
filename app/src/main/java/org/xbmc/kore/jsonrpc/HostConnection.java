@@ -32,7 +32,6 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.notification.Application;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.Player;
@@ -354,7 +353,6 @@ public class HostConnection {
      * @return the future result of the method call. API errors will be wrapped in
      * an {@link java.util.concurrent.ExecutionException ExecutionException} like
      * regular futures.
-     * @see org.xbmc.kore.host.HostManager#withCurrentHost(HostManager.Session)
      */
     public <T> Future<T> execute(ApiMethod<T> method) {
         return ApiFuture.from(this, method);
