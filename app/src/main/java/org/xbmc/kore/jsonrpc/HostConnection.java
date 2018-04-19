@@ -355,7 +355,19 @@ public class HostConnection {
      * regular futures.
      */
     public <T> Future<T> execute(ApiMethod<T> method) {
-        return ApiFuture.from(this, method);
+        final ApiFuture<T> future = new ApiFuture<>();
+        execute(method, new ApiCallback<T>() {
+            @Override
+            public void onSuccess(T result) {
+                future.complete(result);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                future.completeExceptionally(new ApiException(errorCode, description));
+            }
+        }, null);
+        return future;
     }
 
     /**

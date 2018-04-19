@@ -9,11 +9,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * A Java future wrapping the result of a Kodi remote method call.
+ * A Java future implementation, with explicit methods to complete the Future
  * <p>
- * Instantiable only through {@link HostConnection#execute(ApiMethod)}.
+ * Don't forget that a call to {@link ApiFuture#get()} blocks the current
+ * thread until it's unblocked by {@link ApiFuture#cancel(boolean)},
+ * {@link ApiFuture#complete(Object)}  or {@link ApiFuture#completeExceptionally(Throwable)}
  *
- * @param <T> The type of the result of the remote method call.
+ * @param <T> The type of the result returned by {@link ApiFuture#get()}
  */
 class ApiFuture<T> implements Future<T> {
     private enum Status { WAITING, OK, ERROR, CANCELLED }
@@ -22,38 +24,14 @@ class ApiFuture<T> implements Future<T> {
     private T ok;
     private Throwable error;
 
-    static <T> Future<T> from(HostConnection host, ApiMethod<T> method) {
-        final ApiFuture<T> future = new ApiFuture<>();
-        host.execute(method, new ApiCallback<T>() {
-            @Override
-            public void onSuccess(T result) {
-                synchronized (future.lock) {
-                    future.ok = result;
-                    future.status = Status.OK;
-                    future.lock.notifyAll();
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                synchronized (future.lock) {
-                    future.error = new ApiException(errorCode, description);
-                    future.status = Status.ERROR;
-                    future.lock.notifyAll();
-                }
-            }
-        }, null);
-        return future;
-    }
-
-    private ApiFuture() {}
+    ApiFuture() {}
 
     @Override
     public T get() throws InterruptedException, ExecutionException {
         try {
             return get(0, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
-            throw new IllegalStateException("impossible");
+            throw new IllegalStateException("Request timed out. This should not happen when time out is disabled!");
         }
     }
 
@@ -83,16 +61,24 @@ class ApiFuture<T> implements Future<T> {
         }
     }
 
-    @Override
-    public boolean cancel(boolean b) {
-        if (status != Status.WAITING) {
-            return false;
-        }
+    private boolean setResultAndNotify(Status status, T ok, Throwable error) {
         synchronized (lock) {
-            status = Status.CANCELLED;
-            lock.notifyAll();
+            if (this.status != Status.WAITING) {
+                return false;
+            }
+
+            this.status = status;
+            if (status == Status.OK) this.ok = ok;
+            if (status == Status.ERROR) this.error = error;
+
+            this.lock.notifyAll();
             return true;
         }
+    }
+
+    @Override
+    public boolean cancel(boolean b) {
+        return setResultAndNotify(Status.CANCELLED, null, null);
     }
 
     @Override
@@ -105,4 +91,21 @@ class ApiFuture<T> implements Future<T> {
         return status != Status.WAITING;
     }
 
+    /**
+     * If not already completed, sets the value returned by get() to the given value.
+     * @param value - the result value
+     * @return true if this invocation caused this CompletableFuture to transition to a completed state, else false
+     */
+    public boolean complete(T value) {
+        return setResultAndNotify(Status.OK, value, null);
+    }
+
+    /**
+     * If not already completed, causes invocations of get() to throw the given exception.
+     * @param ex = the exception
+     * @return true if this invocation caused this CompletableFuture to transition to a completed state, else false
+     */
+    public boolean completeExceptionally(Throwable ex) {
+        return setResultAndNotify(Status.ERROR, null, ex);
+    }
 }
