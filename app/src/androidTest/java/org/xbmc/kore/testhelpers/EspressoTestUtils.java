@@ -39,8 +39,6 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.swipeLeft;
-import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -209,24 +207,10 @@ public class EspressoTestUtils {
 
     /**
      * Clicks on tab that contains the text given by stringResourceId.
-     * If the click fails tries again after a swipe left. If the click fails
-     * after that try once more after swiping right two times. The first swipe right
-     * is performed to negate the previous swipe left.
      * @param stringResourceId text displayed in Tab that should be clicked
      */
     public static void clickTab(int stringResourceId) {
-        try {
-            onView(withText(stringResourceId)).perform(click());
-        } catch (Exception e1) {
-            try {
-                onView(withId(R.id.pager_tab_strip)).perform(swipeLeft());
-                onView(withText(stringResourceId)).perform(click());
-            } catch (Exception e2) {
-                onView(withId(R.id.pager_tab_strip)).perform(swipeRight());
-                onView(withId(R.id.pager_tab_strip)).perform(swipeRight());
-                onView(withText(stringResourceId)).perform(click());
-            }
-        }
+        onView(withId(R.id.pager)).perform(ViewActions.setCurrentViewPagerItem(stringResourceId));
     }
 
     /**

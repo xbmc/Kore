@@ -23,8 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.astuetz.PagerSlidingTabStrip;
-
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
@@ -39,7 +37,6 @@ abstract public class AbstractTabsFragment extends AbstractFragment
         implements SharedElementTransition.SharedElement {
     private static final String TAG = LogUtils.makeLogTag(AbstractTabsFragment.class);
 
-    @BindView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
     @BindView(R.id.pager) ViewPager viewPager;
 
     private Unbinder unbinder;
@@ -64,8 +61,6 @@ abstract public class AbstractTabsFragment extends AbstractFragment
         unbinder = ButterKnife.bind(this, root);
 
         viewPager.setAdapter(createTabsAdapter(getDataHolder()));
-        pagerTabStrip.setViewPager(viewPager);
-
         return root;
     }
 

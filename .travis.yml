@@ -14,9 +14,9 @@ android:
     # "tools" always refers to the latest build tools version. Remove this
     # when travis is able to parse "build-tools-23.0.3" correctly.
     # See https://github.com/travis-ci/travis-ci/issues/5036
-    - tools
+    # - tools
     # needed build tools
-    - build-tools-26.0.2
+    - build-tools-27.0.3
 
     # The SDK version used to compile your project
     - android-26
@@ -27,4 +27,4 @@ android:
 before_script:
 
 script: 
-  - ./gradlew lintFullRelease testFullDebugUnitTest assembleFullRelease
+  - ./gradlew assembleRelease lintRelease testDebugUnitTest 
