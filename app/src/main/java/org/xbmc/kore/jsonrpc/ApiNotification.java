@@ -54,16 +54,25 @@ public abstract class ApiNotification {
         ObjectNode params = (ObjectNode)node.get(PARAMS_NODE);
 
         ApiNotification result = null;
-        if (method.equals(Player.OnPause.NOTIFICATION_NAME)) {
+        switch (method) {
+        case Player.OnPause.NOTIFICATION_NAME:
             result = new Player.OnPause(params);
-        } else if (method.equals(Player.OnPlay.NOTIFICATION_NAME)) {
+            break;
+        case Player.OnPlay.NOTIFICATION_NAME:
             result = new Player.OnPlay(params);
-        } else if (method.equals(Player.OnSeek.NOTIFICATION_NAME)) {
+            break;
+        case Player.OnResume.NOTIFICATION_NAME:
+            result = new Player.OnResume(params);
+            break;
+        case Player.OnSeek.NOTIFICATION_NAME:
             result = new Player.OnSeek(params);
-        } else if (method.equals(Player.OnSpeedChanged.NOTIFICATION_NAME)) {
+            break;
+        case Player.OnSpeedChanged.NOTIFICATION_NAME:
             result = new Player.OnSpeedChanged(params);
-        } else if (method.equals(Player.OnStop.NOTIFICATION_NAME)) {
+            break;
+        case Player.OnStop.NOTIFICATION_NAME:
             result = new Player.OnStop(params);
+            break;
         }
 
         return result;

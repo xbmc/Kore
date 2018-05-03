@@ -384,14 +384,17 @@ public class HostConnectionObserver
         chainCallGetActivePlayers();
     }
 
-    public void onPause(org.xbmc.kore.jsonrpc.notification.Player.OnPause
-                                notification) {
+    public void onResume(org.xbmc.kore.jsonrpc.notification.Player.OnResume notification) {
         // Just start our chain calls
         chainCallGetActivePlayers();
     }
 
-    public void onSpeedChanged(org.xbmc.kore.jsonrpc.notification.Player
-                                       .OnSpeedChanged notification) {
+    public void onPause(org.xbmc.kore.jsonrpc.notification.Player.OnPause notification) {
+        // Just start our chain calls
+        chainCallGetActivePlayers();
+    }
+
+    public void onSpeedChanged(org.xbmc.kore.jsonrpc.notification.Player.OnSpeedChanged notification) {
         // Just start our chain calls
         chainCallGetActivePlayers();
     }
