@@ -101,15 +101,6 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:textColor">@color/white</item>
-        <item name="pstsDividerColor">@android:color/transparent</item>
-        <item name="pstsIndicatorColor">@color/white</item>
-        <!--<item name="pstsTabPaddingLeftRight">32dp</item>-->
-        <!--<item name="pstsTabBackground">?attr/systemBarsTopColor</item>-->
-        <item name="pstsUnderlineColor">@color/white_dim_50pct</item>
-        <item name="pstsUnderlineHeight">0dp</item>
-        <item name="pstsIndicatorHeight">2dp</item>
-        <item name="pstsShouldExpand">false</item>
-        <item name="pstsTextAllCaps">true</item>
     </style>
 
     <style name="ViewPagerIndicator">

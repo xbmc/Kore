@@ -16,23 +16,16 @@
 package org.xbmc.kore.ui.sections.audio;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.astuetz.PagerSlidingTabStrip;
-
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
-import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractTabsFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
 
 /**
  * Container for the various music lists

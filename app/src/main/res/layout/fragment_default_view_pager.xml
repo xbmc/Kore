@@ -21,15 +21,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.astuetz.PagerSlidingTabStrip
-        android:id="@+id/pager_tab_strip"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tab_strip_height"
-        style="@style/TabStrip"/>
-
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pager_tab_strip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_strip_height"
+            style="@style/TabStrip"/>
+
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>

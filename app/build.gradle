@@ -12,7 +12,7 @@ def getVersionName = { ->
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "org.xbmc.kore"
@@ -20,6 +20,8 @@ android {
         targetSdkVersion 26
         versionCode 19
         versionName = getVersionName()
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     File keystoreFile = file('keystore.properties')
@@ -38,38 +40,22 @@ android {
         }
     }
 
-    sourceSets {
-        fullDebug {
-            assets.srcDirs += 'src/testUtils/assets'
-        }
-        test {
-            java.srcDirs += 'src/testUtils/java'
-        }
-        androidTest {
-            java.srcDirs += 'src/testUtils/java'
-        }
-        instrumentationTest {
-            assets.srcDirs += 'src/testUtils/assets'
-        }
-    }
+//    sourceSets {
+//        test {
+//            java.srcDirs += 'src/testUtils/java'
+//            assets.srcDirs += 'src/testUtils/assets'
+//        }
+//        androidTest {
+//            java.srcDirs += 'src/testUtils/java'
+//            assets.srcDirs += 'src/testUtils/assets'
+//        }
+//    }
 
-    productFlavors {
-        full {
-        }
-
-        instrumentationTest {
-            applicationId "org.xbmc.kore.instrumentationtest"
-            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-            proguardFiles 'proguardTest-rules.pro'
-        }
+    testOptions {
+        execution 'ANDROID_TEST_ORCHESTRATOR'
     }
 
     buildTypes {
-//        debug {
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
-
         release {
             if (keystoreFile.exists()) {
                 signingConfig signingConfigs.release
@@ -86,7 +72,7 @@ android {
         //The xml launcher icon introduced in API 26 causes lint to generate
         //an error that the icon is not a PNG format
         //This reduces the error to a warning
-        warning 'IconLauncherFormat'
+//        warning 'IconLauncherFormat'
     }
 
 //    allprojects {
@@ -111,66 +97,56 @@ ext {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:${supportLibVersion}"
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile "com.android.support:cardview-v7:${supportLibVersion}"
-    compile "com.android.support:preference-v14:${supportLibVersion}"
-    compile "com.android.support:support-v13:${supportLibVersion}"
-    compile "com.android.support:design:${supportLibVersion}"
+    implementation "com.android.support:support-v4:${supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation "com.android.support:cardview-v7:${supportLibVersion}"
+    implementation "com.android.support:preference-v14:${supportLibVersion}"
+    implementation "com.android.support:support-v13:${supportLibVersion}"
+    implementation "com.android.support:design:${supportLibVersion}"
 
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'org.jmdns:jmdns:3.5.1'
-    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    compile 'at.blogc:expandabletextview:1.0.3'
-    compile 'com.sothree.slidinguppanel:library:3.3.1'
+    implementation 'com.squareup.okhttp:okhttp:2.3.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'de.greenrobot:eventbus:2.4.0'
+    implementation 'org.jmdns:jmdns:3.5.1'
+    implementation 'at.blogc:expandabletextview:1.0.3'
+    implementation 'com.sothree.slidinguppanel:library:3.3.1'
 
-    androidTestCompile 'com.android.support.test:runner:1.0.1'
-    androidTestCompile 'com.android.support.test:rules:1.0.1'
-    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
-    androidTestCompile "com.android.support:support-v13:${supportLibVersion}"
-    instrumentationTestCompile 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.1'
+    androidTestUtil 'com.android.support.test:orchestrator:1.0.1'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation "com.android.support:support-v13:${supportLibVersion}"
+    androidTestImplementation 'junit:junit:4.12'
 
-    testCompile 'org.robolectric:robolectric:3.1.1'
-    testCompile 'junit:junit:4.12'
-
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'org.robolectric:robolectric:3.1.1'
+    debugImplementation 'junit:junit:4.12'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-// Get the path to ADB.  Required when running tests directly from Android Studio.
-// Source: http://stackoverflow.com/a/26771087/112705
-def adb = android.getAdbExe().toString()
-
-// Source: http://stackoverflow.com/q/29908110/112705
+def adb = android.getAdbExecutable().toString()
 afterEvaluate {
-    task grantAnimationPermissionDev(type: Exec, dependsOn: 'installInstrumentationTestDebug') {
+    task grantAnimationPermissionDev(type: Exec, dependsOn: installDebug) {
         doFirst {
-            println("Executing: $adb shell pm grant $android.productFlavors.instrumentationTest.applicationId android.permission.SET_ANIMATION_SCALE")
-            commandLine "$adb shell pm grant $android.productFlavors.instrumentationTest.applicationId android.permission.SET_ANIMATION_SCALE".split(' ')
+            println("Executing: $adb shell pm grant $android.defaultConfig.applicationId android.permission.SET_ANIMATION_SCALE")
+            commandLine "$adb shell pm grant $android.defaultConfig.applicationId android.permission.SET_ANIMATION_SCALE".split(' ')
         }
     }
-
-    // When launching individual tests from Android Studio, it seems that only the assemble tasks
-    // get called directly, not the install* versions
     tasks.each { task ->
-        if (task.name.startsWith('assembleInstrumentationTestDebugAndroidTest')) {
+        if (task.name.startsWith('connectedDebugAndroidTest')) {
             task.dependsOn grantAnimationPermissionDev
         }
     }
 }
 
 /**
- * Android gradle plugin 2.3.x contains a bug where the assets for fullDebug
- * are not copied. The task assembleFullDebug does copy the required assets,
- * so this dependency fixes the issue.
+ * Makes sure assets are copied before running the unit tests
  */
 tasks.whenTaskAdded { task ->
-    if (task.name.contains("compileFullDebugUnitTestSources")) {
-        task.dependsOn assembleFullDebug
+    if (task.name.contains("testDebugUnitTest")) {
+        task.dependsOn assembleDebug
     }
 }
