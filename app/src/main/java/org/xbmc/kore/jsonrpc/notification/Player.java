@@ -16,8 +16,8 @@
 package org.xbmc.kore.jsonrpc.notification;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.xbmc.kore.jsonrpc.ApiNotification;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.utils.JsonUtils;
@@ -72,6 +72,23 @@ public class Player {
         public final NotificationsData data;
 
         public OnPlay(ObjectNode node) {
+            super(node);
+            data = new NotificationsData(node.get(NotificationsData.DATA_NODE));
+        }
+
+        public String getNotificationName() { return NOTIFICATION_NAME; }
+    }
+
+    /**
+     * Player.OnResume notification
+     * Playback of a media item has been resumed. If there is no ID available extra information will be provided.
+     */
+    public static class OnResume extends ApiNotification {
+        public static final String  NOTIFICATION_NAME = "Player.OnResume";
+
+        public final NotificationsData data;
+
+        public OnResume(ObjectNode node) {
             super(node);
             data = new NotificationsData(node.get(NotificationsData.DATA_NODE));
         }

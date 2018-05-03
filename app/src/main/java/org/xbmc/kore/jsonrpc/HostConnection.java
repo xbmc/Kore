@@ -70,32 +70,33 @@ public class HostConnection {
      * Interface that an observer must implement to be notified of player notifications
      */
     public interface PlayerNotificationsObserver {
-        public void onPropertyChanged(Player.OnPropertyChanged notification);
-        public void onPlay(Player.OnPlay notification);
-        public void onPause(Player.OnPause notification);
-        public void onSpeedChanged(Player.OnSpeedChanged notification);
-        public void onSeek(Player.OnSeek notification);
-        public void onStop(Player.OnStop notification);
+        void onPropertyChanged(Player.OnPropertyChanged notification);
+        void onPlay(Player.OnPlay notification);
+        void onResume(Player.OnResume notification);
+        void onPause(Player.OnPause notification);
+        void onSpeedChanged(Player.OnSpeedChanged notification);
+        void onSeek(Player.OnSeek notification);
+        void onStop(Player.OnStop notification);
     }
 
     /**
      * Interface that an observer must implement to be notified of System notifications
      */
     public interface SystemNotificationsObserver {
-        public void onQuit(System.OnQuit notification);
-        public void onRestart(System.OnRestart notification);
-        public void onSleep(System.OnSleep notification);
+        void onQuit(System.OnQuit notification);
+        void onRestart(System.OnRestart notification);
+        void onSleep(System.OnSleep notification);
     }
 
     /**
      * Interface that an observer must implement to be notified of Input notifications
      */
     public interface InputNotificationsObserver {
-        public void onInputRequested(Input.OnInputRequested notification);
+        void onInputRequested(Input.OnInputRequested notification);
     }
 
     public interface ApplicationNotificationsObserver {
-        public void onVolumeChanged(Application.OnVolumeChanged notification);
+        void onVolumeChanged(Application.OnVolumeChanged notification);
     }
 
     /**
@@ -725,6 +726,18 @@ public class HostConnection {
                         @Override
                         public void run() {
                             observer.onPlay(apiNotification);
+                        }
+                    });
+                }
+            } else if (notificationName.equals(Player.OnResume.NOTIFICATION_NAME)) {
+                final Player.OnResume apiNotification = new Player.OnResume(params);
+                for (final PlayerNotificationsObserver observer :
+                    playerNotificationsObservers.keySet()) {
+                    Handler handler = playerNotificationsObservers.get(observer);
+                    postOrRunNow(handler, new Runnable() {
+                        @Override
+                        public void run() {
+                            observer.onResume(apiNotification);
                         }
                     });
                 }
