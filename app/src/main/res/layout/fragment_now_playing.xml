@@ -16,6 +16,7 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -107,7 +108,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconPrevious"
+                    app:srcCompat="?attr/iconPrevious"
                     android:contentDescription="@string/previous"/>
                 <ImageButton
                     android:id="@+id/rewind"
@@ -115,7 +116,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconRewind"
+                    app:srcCompat="?attr/iconRewind"
                     android:contentDescription="@string/rewind"/>
                 <ImageButton
                     android:id="@+id/play"
@@ -123,7 +124,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconPlay"
+                    app:srcCompat="?attr/iconPlay"
                     android:contentDescription="@string/play"/>
                 <ImageButton
                     android:id="@+id/stop"
@@ -131,7 +132,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconStop"
+                    app:srcCompat="?attr/iconStop"
                     android:contentDescription="@string/stop"/>
                 <ImageButton
                     android:id="@+id/fast_forward"
@@ -139,7 +140,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconFastForward"
+                    app:srcCompat="?attr/iconFastForward"
                     android:contentDescription="@string/fast_forward"/>
                 <ImageButton
                     android:id="@+id/next"
@@ -147,7 +148,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconNext"
+                    app:srcCompat="?attr/iconNext"
                     android:contentDescription="@string/next"/>
             </LinearLayout>
 
@@ -167,7 +168,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconVolumeMute"
+                    app:srcCompat="?attr/iconVolumeMute"
                     android:contentDescription="@string/volume_mute"/>
 
                 <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
@@ -183,7 +184,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconRepeat"
+                    app:srcCompat="?attr/iconRepeat"
                     android:contentDescription="@string/repeat"/>
                 <org.xbmc.kore.ui.widgets.HighlightButton
                     android:id="@+id/shuffle"
@@ -191,7 +192,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconShuffle"
+                    app:srcCompat="?attr/iconShuffle"
                     android:contentDescription="@string/shuffle"/>
                 <ImageButton
                     android:id="@+id/overflow"
@@ -199,7 +200,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconOverflow"
+                    app:srcCompat="?attr/iconOverflow"
                     android:contentDescription="@string/subtitles"/>
             </LinearLayout>
 

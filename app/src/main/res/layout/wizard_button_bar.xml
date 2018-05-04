@@ -32,12 +32,6 @@
         android:paddingLeft="@dimen/large_padding"
         android:paddingRight="@dimen/large_padding"
         android:text="@string/previous"/>
-    <!--android:drawableLeft="?attr/iconChevronLeft"-->
-
-    <!--<View-->
-        <!--style="@style/DefaultDividerV"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginBottom="8dp"/>-->
 
     <Button
         android:id="@+id/next"
@@ -48,7 +42,5 @@
         android:gravity="end|center_vertical"
         android:paddingLeft="@dimen/large_padding"
         android:paddingRight="@dimen/large_padding"
-        android:text="@string/next"
-        android:drawableRight="?attr/iconChevronRight"
-        android:drawableEnd="?attr/iconChevronRight"/>
+        android:text="@string/next"/>
 </LinearLayout>

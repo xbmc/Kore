@@ -65,7 +65,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:contentDescription="@string/rewind"
-                    android:src="?attr/iconRewind"/>
+                    app:srcCompat="?attr/iconRewind"/>
 
                 <ImageButton
                     android:id="@+id/play"
@@ -74,7 +74,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:contentDescription="@string/play"
-                    android:src="?attr/iconPlay"/>
+                    app:srcCompat="?attr/iconPlay"/>
 
                 <ImageButton
                     android:id="@+id/stop"
@@ -83,7 +83,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:contentDescription="@string/stop"
-                    android:src="?attr/iconStop"/>
+                    app:srcCompat="?attr/iconStop"/>
 
                 <ImageButton
                     android:id="@+id/fast_forward"
@@ -92,7 +92,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:contentDescription="@string/fast_forward"
-                    android:src="?attr/iconFastForward"/>
+                    app:srcCompat="?attr/iconFastForward"/>
             </LinearLayout>
 
             <TextView
@@ -132,7 +132,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconHome"
+            app:srcCompat="?attr/iconHome"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/home"/>
         <ImageButton
@@ -141,7 +141,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconMovies"
+            app:srcCompat="?attr/iconMovies"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/movies"/>
         <ImageButton
@@ -150,7 +150,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconTvShows"
+            app:srcCompat="?attr/iconTvShows"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/tv_shows"/>
         <ImageButton
@@ -159,7 +159,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconMusic"
+            app:srcCompat="?attr/iconMusic"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/music"/>
         <ImageButton
@@ -168,7 +168,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconPVR"
+            app:srcCompat="?attr/iconPVR"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/pvr"/>
         <ImageButton
@@ -177,7 +177,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconPicture"
+            app:srcCompat="?attr/iconPicture"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/pictures"/>
         <ImageButton
@@ -186,7 +186,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconVideo"
+            app:srcCompat="?attr/iconVideo"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/videos"/>
         <!-- <ImageButton
@@ -195,7 +195,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconFavourites"
+            app:srcCompat="?attr/iconFavourites"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/favourites"/> -->
         <ImageButton
@@ -204,7 +204,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconAddons"
+            app:srcCompat="?attr/iconAddons"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/addons"/>
         <ImageButton
@@ -213,7 +213,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconWeather"
+            app:srcCompat="?attr/iconWeather"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/weather"/>
         <ImageButton
@@ -222,7 +222,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconSettings"
+            app:srcCompat="?attr/iconSettings"
             android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/system"/>
     </LinearLayout>

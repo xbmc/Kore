@@ -34,6 +34,7 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -109,14 +110,14 @@
                         android:layout_width="@dimen/buttonbar_button_width"
                         android:layout_height="match_parent"
                         style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconBookmark"
+                        app:srcCompat="?attr/iconBookmark"
                         android:contentDescription="@string/enable_disable"/>
                     <ImageButton
                         android:id="@+id/media_action_add_to_playlist"
                         android:layout_width="@dimen/buttonbar_button_width"
                         android:layout_height="match_parent"
                         style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconAddToQueue"
+                        app:srcCompat="?attr/iconAddToQueue"
                         android:contentDescription="@string/add_to_playlist"
                         android:visibility="gone"/>
                     <ImageButton
@@ -124,7 +125,7 @@
                         android:layout_width="@dimen/buttonbar_button_width"
                         android:layout_height="match_parent"
                         style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconDownload"
+                        app:srcCompat="?attr/iconDownload"
                         android:contentDescription="@string/download"
                         android:visibility="gone"/>
                     <ImageButton
@@ -132,7 +133,7 @@
                         android:layout_width="@dimen/buttonbar_button_width"
                         android:layout_height="match_parent"
                         style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconInfoWWW"
+                        app:srcCompat="?attr/iconInfoWWW"
                         android:contentDescription="@string/imdb"
                         android:visibility="gone"/>
                     <ImageButton
@@ -140,7 +141,7 @@
                         android:layout_width="@dimen/buttonbar_button_width"
                         android:layout_height="match_parent"
                         style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconSeen"
+                        app:srcCompat="?attr/iconSeen"
                         android:contentDescription="@string/seen"
                         android:visibility="gone"/>
                 </LinearLayout>
@@ -228,7 +229,7 @@
                         android:layout_marginRight="@dimen/small_padding"
                         android:layout_marginEnd="@dimen/small_padding"
                         style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconExpand"
+                        app:srcCompat="?attr/iconExpand"
                         android:contentDescription="@string/toggle_expand"/>
                 </LinearLayout>
 

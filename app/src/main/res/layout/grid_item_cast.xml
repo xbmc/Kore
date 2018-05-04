@@ -16,6 +16,7 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
@@ -29,13 +30,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:contentDescription="@string/poster"/>
-        <!--android:src="?attr/iconPerson"/>-->
+        <!--app:srcCompat="?attr/iconPerson"/>-->
 
     <!--&lt;!&ndash; Shade to make text easier to read &ndash;&gt;-->
     <!--<ImageView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
-        <!--android:src="?attr/imageViewShade"/>-->
+        <!--app:srcCompat="?attr/imageViewShade"/>-->
 
     <!--
     Somehow i can't make the TextViews work correctly, one below the other when this RelativeLayout is inside a
@@ -79,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="?attr/iconOpenInNew"
+            app:srcCompat="?attr/iconOpenInNew"
             android:contentDescription="@string/poster"/>
         <TextView
             android:id="@+id/remaining_cast_count"

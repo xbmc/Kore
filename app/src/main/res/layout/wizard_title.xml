@@ -15,7 +15,8 @@
    limitations under the License.
 -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/wizard_title"
@@ -23,6 +24,6 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/wizard_title"
-        android:src="@drawable/drawer_image"
+        app:srcCompat="@drawable/drawer_image"
         android:scaleType="centerCrop"/>
 </merge>

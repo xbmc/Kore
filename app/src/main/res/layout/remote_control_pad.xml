@@ -20,21 +20,21 @@
         android:id="@+id/context"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconContext"
+        app:srcCompat="?attr/iconContext"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/codec_info"/>
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/up"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconUp"
+        app:srcCompat="?attr/iconUp"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/up"/>
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconInfo"
+        app:srcCompat="?attr/iconInfo"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/info"/>
 
@@ -42,21 +42,21 @@
         android:id="@+id/left"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconLeft"
+        app:srcCompat="?attr/iconLeft"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/left"/>
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/select"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconSelect"
+        app:srcCompat="?attr/iconSelect"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/select"/>
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/right"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconRight"
+        app:srcCompat="?attr/iconRight"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/right"/>
 
@@ -64,21 +64,21 @@
         android:id="@+id/back"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconBack"
+        app:srcCompat="?attr/iconBack"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/back"/>
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/down"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconDown"
+        app:srcCompat="?attr/iconDown"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/down"/>
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/osd"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconMenu"
+        app:srcCompat="?attr/iconMenu"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/osd"/>
 </merge>
