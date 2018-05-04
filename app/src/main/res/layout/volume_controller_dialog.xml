@@ -2,6 +2,7 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,7 +16,7 @@
         android:layout_width="@dimen/default_icon_size"
         android:layout_height="@dimen/default_icon_size"
         android:contentDescription="@string/volume_mute"
-        android:src="?attr/iconVolumeMute"
+        app:srcCompat="?attr/iconVolumeMute"
         tools:src="@drawable/ic_volume_off_white_24dp" />
 
     <org.xbmc.kore.ui.widgets.HighlightButton
@@ -24,7 +25,7 @@
         android:layout_width="@dimen/default_icon_size"
         android:layout_height="@dimen/default_icon_size"
         android:contentDescription="@string/volume_mute"
-        android:src="?attr/iconVolumeMute"
+        app:srcCompat="?attr/iconVolumeMute"
         android:visibility="gone"
         tools:src="@drawable/ic_volume_off_white_24dp" />
 

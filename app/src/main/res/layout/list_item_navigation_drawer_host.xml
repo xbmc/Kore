@@ -17,6 +17,7 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/navigation_drawer_item_hosts_height"
@@ -32,7 +33,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/drawer_image"/>
+            app:srcCompat="@drawable/drawer_image"/>
 
         <ImageView
             android:id="@+id/drawer_item_icon"
@@ -42,7 +43,7 @@
             android:layout_marginLeft="@dimen/default_padding"
             android:layout_marginRight="@dimen/default_padding"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_launcher"/>
+            app:srcCompat="@mipmap/ic_launcher"/>
 
         <TextView
             android:id="@+id/drawer_item_title"

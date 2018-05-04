@@ -17,6 +17,7 @@
 
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -48,7 +49,7 @@
             android:layout_height="@dimen/default_icon_size"
             android:padding="@dimen/default_icon_padding"
             style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconOverflow"
+            app:srcCompat="?attr/iconOverflow"
             android:contentDescription="@string/action_options"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

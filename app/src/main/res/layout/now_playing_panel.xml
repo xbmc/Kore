@@ -14,7 +14,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -75,7 +76,7 @@
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconVolumeMute"
+                app:srcCompat="?attr/iconVolumeMute"
                 android:contentDescription="@string/volume_mute"
                 android:visibility="gone"/>
 
@@ -86,7 +87,7 @@
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
                 android:tint="?attr/buttonColorOverPrimary"
-                android:src="?attr/iconPrevious"
+                app:srcCompat="?attr/iconPrevious"
                 android:contentDescription="@string/previous"/>
 
             <ImageButton
@@ -96,7 +97,7 @@
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
                 android:tint="?attr/buttonColorOverPrimary"
-                android:src="?attr/iconPlay"
+                app:srcCompat="?attr/iconPlay"
                 android:contentDescription="@string/play"/>
 
             <ImageButton
@@ -106,7 +107,7 @@
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
                 android:tint="?attr/buttonColorOverPrimary"
-                android:src="?attr/iconNext"
+                app:srcCompat="?attr/iconNext"
                 android:contentDescription="@string/next"/>
         </LinearLayout>
         <org.xbmc.kore.ui.widgets.MediaProgressIndicator
@@ -131,7 +132,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconVolumeMute"
+                app:srcCompat="?attr/iconVolumeMute"
                 android:contentDescription="@string/volume_mute"/>
             <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
                 android:id="@+id/npp_volume_level_indicator"
@@ -147,7 +148,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconRepeat"
+                app:srcCompat="?attr/iconRepeat"
                 android:contentDescription="@string/repeat"/>
             <org.xbmc.kore.ui.widgets.HighlightButton
                 android:id="@+id/npp_shuffle"
@@ -155,7 +156,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconShuffle"
+                app:srcCompat="?attr/iconShuffle"
                 android:contentDescription="@string/shuffle"/>
         </LinearLayout>
     </LinearLayout>
