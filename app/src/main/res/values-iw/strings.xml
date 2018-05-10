@@ -310,7 +310,6 @@
     <string name="music_videos">סרטונים</string>
 
     <string name="no_files_to_download">אין קבצים להורדה.</string>
-    <string name="no_files_to_play">אין קבצים לנגינה.</string>
     <string name="error_getting_file_information">לא ניתן לקבל מידע לצורך הורדת הקובץ %1$s.</string>
 
     <string name="author">יוצר:</string>
