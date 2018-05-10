@@ -309,7 +309,6 @@
     <string name="music_videos">Vidéos</string>
 
     <string name="no_files_to_download">Aucun fichier à télécharger.</string>
-    <string name="no_files_to_play">Aucun fichier à lire</string>
     <string name="error_getting_file_information">Impossible d\'obtenir les informations pour télécharger le fichier %1$s.</string>
 
     <string name="author">Auteur\u00A0:</string>
