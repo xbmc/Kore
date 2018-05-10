@@ -15,13 +15,15 @@
  */
 package org.xbmc.kore.ui.sections.addon;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.ui.AbstractTabsFragment;
+import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.ui.AbstractInfoFragment;
+import org.xbmc.kore.ui.AbstractTabsFragment;
 import org.xbmc.kore.ui.sections.file.MediaFileListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
@@ -44,13 +46,15 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
         if (arguments == null)
             arguments = new Bundle();
 
+        int hostId = HostManager.getInstance(getContext()).getHostInfo().getId();
+
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager());
-        SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
-        Set<String> bookmarked = prefs.getStringSet("bookmarked", Collections.<String>emptySet());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Set<String> bookmarked = prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.<String>emptySet());
         long baseFragmentId = 70 + bookmarked.size() * 100;
         tabsAdapter.addTab(AddonListFragment.class, new Bundle(), R.string.addons, baseFragmentId);
         for (String path: bookmarked) {
-            String name = prefs.getString("name_" + path, "Content");
+            String name = prefs.getString(Settings.getNameBookmarkedAddonsPrefKey(hostId) + path, Settings.DEFAULT_PREF_NAME_BOOKMARKED_ADDON);
             arguments.putParcelable(MediaFileListFragment.ROOT_PATH,
                                     new MediaFileListFragment.FileLocation(name, "plugin://" + path, true));
             tabsAdapter.addTab(MediaFileListFragment.class, arguments, name, ++baseFragmentId);

@@ -187,4 +187,18 @@ public class Settings {
         }
         return result;
     }
+
+    /**
+     * Keys for bookmarked addons stored in preferences
+     */
+    private static final String KEY_PREF_BOOKMARKED_ADDONS = "bookmarked";
+    public static String getBookmarkedAddonsPrefKey(int hostId) {
+        return Settings.KEY_PREF_BOOKMARKED_ADDONS + hostId;
+    }
+    private static final String KEY_PREF_NAME_BOOKMARKED_ADDON = "name_";
+    public static String getNameBookmarkedAddonsPrefKey(int hostId) {
+        return Settings.KEY_PREF_NAME_BOOKMARKED_ADDON + hostId + "_";
+    }
+    public static final String DEFAULT_PREF_NAME_BOOKMARKED_ADDON = "Content";
+
 }
