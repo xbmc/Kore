@@ -329,6 +329,12 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
   <string name="show_now_playing_panel">Mostrar painel \"Em reprodução\"</string>
   <string name="show_now_playing_panel_summary">Apresenta um painel de controlo na base do écran quando algo está em reprodução</string>
   <string name="toggle_expand">Expandir/Colapsar</string>
+    <string name="play_locally">Reproduzir localmente</string>
+  <string name="disable_local_playback_support">Desativar reprodução local</string>
+  <string name="disable_local_playback_support_summary">Desativa a opção de reproduzir localmente neste aparelho</string>
+  <string name="notification_seek_jump">Avançar/Recuar por passos</string>
+  <string name="notification_seek_jump_step">Usar passos para avançar/recuar a partir da notificação</string>
+  <string name="notification_seek_jump_speed">Mudar velocidade de reprodução a partir da notificação</string>
 
   <!--<string name="buy_me_coffee">Oferecer um café</string>-->
   <!--<string name="expresso_please">Expresso, por favor. Obrigado!</string>-->
