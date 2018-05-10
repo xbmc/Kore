@@ -15,14 +15,16 @@
  */
 package org.xbmc.kore.ui.sections.addon;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Addons;
 import org.xbmc.kore.jsonrpc.type.AddonType;
@@ -167,6 +169,8 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     private void setupPinButton() {
+        final int hostId = HostManager.getInstance(getContext()).getHostInfo().getId();
+
         setOnPinClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,23 +179,23 @@ public class AddonInfoFragment extends AbstractInfoFragment {
                 String name = getDataHolder().getTitle();
                 String path = addonId;
 
-                SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
-                Set<String> bookmarks = new HashSet<>(prefs.getStringSet("bookmarked", Collections.<String>emptySet()));
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                Set<String> bookmarks = new HashSet<>(prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.<String>emptySet()));
                 if (isBookmarked)
                     bookmarks.add(path);
                 else
                     bookmarks.remove(path);
                 prefs.edit()
-                     .putStringSet("bookmarked", bookmarks)
-                     .putString("name_" + path, name)
+                     .putStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), bookmarks)
+                     .putString(Settings.getNameBookmarkedAddonsPrefKey(hostId) + path, name)
                      .apply();
                 Toast.makeText(getActivity(), isBookmarked ? R.string.addon_pinned : R.string.addon_unpinned, Toast.LENGTH_SHORT).show();
                 setPinButtonState(!isBookmarked);
             }
         });
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("addons", Context.MODE_PRIVATE);
-        Set<String> bookmarked = prefs.getStringSet("bookmarked", Collections.<String>emptySet());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Set<String> bookmarked = prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.<String>emptySet());
         setPinButtonState(bookmarked.contains(addonId));
     }
 }

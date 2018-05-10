@@ -45,7 +45,7 @@ public class AddonsActivity extends BaseMediaActivity
 
     @Override
     protected Fragment createFragment() {
-        return new AddonListFragment();
+        return new AddonListContainerFragment();
     }
 
     @Override
