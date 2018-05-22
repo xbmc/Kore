@@ -349,6 +349,9 @@
     <string name="show_notification">הצגת התרעות בזמן הנגינה</string>
     <string name="show_now_playing_panel">הצגת הלוח למה שמתנגן כעת בזמן הנגינה</string>
     <string name="show_now_playing_panel_summary">הצגת לוח מתרחב בתחתית המסך בזמן נגינת מדיה</string>
+    <string name="notification_seek_jump">שימוש בצעדים בעת איתור</string>
+    <string name="notification_seek_jump_speed">שינוי מהירות הנגינה בעת איתור דרך ההתרעות</string>
+    <string name="notification_seek_jump_step">שימוש בצעדי דילוג בעת איתור מההתרעות</string>
     <string name="pause_during_calls">להשהות במהלך שיחת טלפון</string>
     <string name="use_hardware_volume_keys">שימוש בלחצני עצמת השמע של ההתקן</string>
     <string name="vibrate_on_remote">רטט בעת מגע</string>
