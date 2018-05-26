@@ -18,7 +18,7 @@ android {
         applicationId "org.xbmc.kore"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 19
+        versionCode 20
         versionName = getVersionName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

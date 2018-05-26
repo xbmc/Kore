@@ -1,6 +1,13 @@
 Changelog
 ---------
 
+Version 2.4.0
+-------------
+- Enable playing movies locally on device
+- Add new setting to use skip steps instead of seeking in the notification
+- Improve sharing from youtube
+- Bug fixes and UI tweaks
+
 Version 2.3.3
 -------------
 - Fixes for Android Oreo
