@@ -13,7 +13,9 @@ SIGN_STOREPASS=$2
 SIGN_KEY=$3
 SIGN_KEYPASS=$4 
 
+
+
 echo "Signing..."
-$ZIPALIGN_JENKINS -f 4 $WORKSPACE/app/build/outputs/apk/app-full-release-unsigned.apk $WORKSPACE/kore-release.apk
+$ZIPALIGN_JENKINS -f 4 $WORKSPACE/app/build/outputs/apk/release/app-release-unsigned.apk $WORKSPACE/kore-release.apk
 $APKSIGNER_JENKINS sign --ks $SIGN_STORE --ks-key-alias $SIGN_KEY --ks-pass pass:$SIGN_STOREPASS $WORKSPACE/kore-release.apk
 echo "$WORKSPACE/kore-release.apk created"
