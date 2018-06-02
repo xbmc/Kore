@@ -36,9 +36,9 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     private static final String TAG = LogUtils.makeLogTag(VolumeControllerDialogFragmentListener.class);
     private static final int AUTO_DISMISS_DELAY = 2000;
 
-    @BindView(R.id.npp_volume_mute) HighlightButton volumeMuteButton;
-    @BindView(R.id.npp_volume_muted_indicator) HighlightButton volumeMutedIndicatorButton;
-    @BindView(R.id.npp_volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
+    @BindView(R.id.vcd_volume_mute) HighlightButton volumeMuteButton;
+    @BindView(R.id.vcd_volume_muted_indicator) HighlightButton volumeMutedIndicatorButton;
+    @BindView(R.id.vcd_volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
 
     private Unbinder unbinder;
     private Handler callbackHandler = new Handler();
@@ -125,6 +125,11 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        HostConnectionObserver hostConnectionObserver = hostManager.getHostConnectionObserver();
+        if (hostConnectionObserver != null) {
+            hostConnectionObserver.unregisterApplicationObserver(this);
+        }
         unbinder.unbind();
     }
 
