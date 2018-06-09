@@ -684,6 +684,19 @@ public class HostConnectionObserver
         observer.playerOnStop();
     }
 
+    private boolean getPropertiesResultChanged(PlayerType.PropertyValue getPropertiesResult) {
+        return (hostState.lastGetPropertiesResult == null) ||
+                (hostState.lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
+                (hostState.lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
+                (!hostState.lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat));
+    }
+
+    private boolean getItemResultChanged(ListType.ItemsAll getItemResult) {
+        return (hostState.lastGetItemResult == null) ||
+                (hostState.lastGetItemResult.id != getItemResult.id) ||
+                (!hostState.lastGetItemResult.label.equals(getItemResult.label));
+    }
+
     /**
      * Something is playing or paused, notify observers
      * Only notifies them if the result is different from the last one
@@ -700,11 +713,8 @@ public class HostConnectionObserver
                 PlayerEventsObserver.PLAYER_IS_PAUSED : PlayerEventsObserver.PLAYER_IS_PLAYING;
         if (forceReply ||
                 (hostState.lastCallResult != currentCallResult) ||
-                (hostState.lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
-                (hostState.lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
-                (!hostState.lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat)) ||
-                (hostState.lastGetItemResult.id != getItemResult.id) ||
-                (!hostState.lastGetItemResult.label.equals(getItemResult.label))) {
+                getPropertiesResultChanged(getPropertiesResult) ||
+                getItemResultChanged(getItemResult)) {
             hostState.lastCallResult = currentCallResult;
             hostState.lastGetActivePlayerResult = getActivePlayersResult;
             hostState.lastGetPropertiesResult = getPropertiesResult;
