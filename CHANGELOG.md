@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-Version 2.4.0
+Version 2.4.1
 -------------
 - Enable playing movies locally on device
 - Add new setting to use skip steps instead of seeking in the notification
