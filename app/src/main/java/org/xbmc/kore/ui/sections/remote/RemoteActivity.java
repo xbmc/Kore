@@ -290,6 +290,9 @@ public class RemoteActivity extends BaseActivity
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() != KeyEvent.ACTION_DOWN)
+            return false;
+
         boolean handled = VolumeControllerDialogFragmentListener.handleVolumeKeyEvent(this, event);
 
         // Show volume change dialog if the event was handled and we are not in
