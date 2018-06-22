@@ -124,13 +124,12 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         HostConnectionObserver hostConnectionObserver = hostManager.getHostConnectionObserver();
         if (hostConnectionObserver != null) {
             hostConnectionObserver.unregisterApplicationObserver(this);
         }
         unbinder.unbind();
+        super.onDestroyView();
     }
 
     private void registerObserver() {
