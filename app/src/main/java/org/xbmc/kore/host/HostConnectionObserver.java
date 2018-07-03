@@ -16,6 +16,7 @@
 package org.xbmc.kore.host;
 
 import android.os.Handler;
+import android.os.Looper;
 
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -145,7 +146,8 @@ public class HostConnectionObserver
 //     */
 //    private Map<PlayerEventsObserver, Handler> observerHandlerMap = new HashMap<PlayerEventsObserver, Handler>();
 
-    private Handler checkerHandler = new Handler();
+    // Associate the Handler with the UI thread
+    private Handler checkerHandler = new Handler(Looper.getMainLooper());
     private Runnable httpPlayerCheckerRunnable = new Runnable() {
         @Override
         public void run() {
