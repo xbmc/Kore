@@ -77,7 +77,8 @@ public class NowPlayingFragment extends Fragment
         implements HostConnectionObserver.PlayerEventsObserver,
                    HostConnectionObserver.ApplicationEventsObserver,
                    GenericSelectDialog.GenericSelectDialogListener,
-                   MediaProgressIndicator.OnProgressChangeListener {
+                   MediaProgressIndicator.OnProgressChangeListener,
+                   ViewTreeObserver.OnScrollChangedListener {
     private static final String TAG = LogUtils.makeLogTag(NowPlayingFragment.class);
 
     /**
@@ -130,6 +131,8 @@ public class NowPlayingFragment extends Fragment
     private ApiCallback<Boolean> defaultBooleanActionCallback = ApiMethod.getDefaultActionCallback();
 
     private Unbinder unbinder;
+
+    private int pixelsToTransparent;
 
     /**
      * Injectable views
@@ -198,19 +201,6 @@ public class NowPlayingFragment extends Fragment
 
         mediaProgressIndicator.setOnProgressChangeListener(this);
 
-        // Setup dim the fanart when scroll changes
-        // Full dim on 4 * iconSize dp
-        Resources resources = getActivity().getResources();
-        final int pixelsToTransparent  = 4 * resources.getDimensionPixelSize(R.dimen.default_icon_size);
-        mediaPanel.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                float y = mediaPanel.getScrollY();
-                float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
-                mediaArt.setAlpha(newAlpha);
-            }
-        });
-
         volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
             @Override
             public void onVolumeChanged(int volume) {
@@ -230,6 +220,13 @@ public class NowPlayingFragment extends Fragment
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
+
+        /** Setup dim the fanart when scroll changes
+         * Full dim on 4 * iconSize dp
+         * @see {@link #onScrollChanged()}
+         */
+        pixelsToTransparent  = 4 * getActivity().getResources().getDimensionPixelSize(R.dimen.default_icon_size);
+        mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
     }
 
     @Override
@@ -249,6 +246,7 @@ public class NowPlayingFragment extends Fragment
 
     @Override
     public void onDestroyView() {
+        mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(this);
         super.onDestroyView();
         unbinder.unbind();
     }
@@ -271,6 +269,13 @@ public class NowPlayingFragment extends Fragment
         @Override
         public void onError(int errorCode, String description) { }
     };
+
+    @Override
+    public void onScrollChanged() {
+        float y = mediaPanel.getScrollY();
+        float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
+        mediaArt.setAlpha(newAlpha);
+    }
 
     /**
      * Callbacks for bottom button bar
