@@ -47,7 +47,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 /**
  * Fragment that presents the welcome message
@@ -84,18 +85,19 @@ public class HostFragmentManualConfiguration extends Fragment {
     public static String CANCEL_BUTTON_LABEL_ARG = PREFIX + ".cancel_button_label";
     private HostManualConfigurationListener listener;
     private ProgressDialog progressDialog;
+    private Unbinder unbinder;
 
-    @InjectView(R.id.xbmc_name) EditText xbmcNameEditText;
-    @InjectView(R.id.xbmc_ip_address) EditText xbmcIpAddressEditText;
-    @InjectView(R.id.xbmc_http_port) EditText xbmcHttpPortEditText;
-    @InjectView(R.id.xbmc_tcp_port) EditText xbmcTcpPortEditText;
-    @InjectView(R.id.xbmc_username) EditText xbmcUsernameEditText;
-    @InjectView(R.id.xbmc_password) EditText xbmcPasswordEditText;
-    @InjectView(R.id.xbmc_mac_address) EditText xbmcMacAddressEditText;
-    @InjectView(R.id.xbmc_wol_port) EditText xbmcWolPortEditText;
-    @InjectView(R.id.xbmc_use_tcp) CheckBox xbmcUseTcpCheckbox;
-    @InjectView(R.id.xbmc_use_event_server) CheckBox xbmcUseEventServerCheckbox;
-    @InjectView(R.id.xbmc_event_server_port) EditText xbmcEventServerPortEditText;
+    @BindView(R.id.xbmc_name) EditText xbmcNameEditText;
+    @BindView(R.id.xbmc_ip_address) EditText xbmcIpAddressEditText;
+    @BindView(R.id.xbmc_http_port) EditText xbmcHttpPortEditText;
+    @BindView(R.id.xbmc_tcp_port) EditText xbmcTcpPortEditText;
+    @BindView(R.id.xbmc_username) EditText xbmcUsernameEditText;
+    @BindView(R.id.xbmc_password) EditText xbmcPasswordEditText;
+    @BindView(R.id.xbmc_mac_address) EditText xbmcMacAddressEditText;
+    @BindView(R.id.xbmc_wol_port) EditText xbmcWolPortEditText;
+    @BindView(R.id.xbmc_use_tcp) CheckBox xbmcUseTcpCheckbox;
+    @BindView(R.id.xbmc_use_event_server) CheckBox xbmcUseEventServerCheckbox;
+    @BindView(R.id.xbmc_event_server_port) EditText xbmcEventServerPortEditText;
 
     // Handler for callbacks
     final Handler handler = new Handler();
@@ -103,7 +105,7 @@ public class HostFragmentManualConfiguration extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_add_host_manual_configuration, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         // By default, use TCP
         xbmcUseTcpCheckbox.setChecked(true);
@@ -213,6 +215,12 @@ public class HostFragmentManualConfiguration extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement AddHostManualConfigurationListener interface.");
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     private static boolean isValidPort(int port) {

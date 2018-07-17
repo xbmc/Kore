@@ -16,6 +16,7 @@
 package org.xbmc.kore.host;
 
 import android.os.Handler;
+import android.os.Looper;
 
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -145,7 +146,8 @@ public class HostConnectionObserver
 //     */
 //    private Map<PlayerEventsObserver, Handler> observerHandlerMap = new HashMap<PlayerEventsObserver, Handler>();
 
-    private Handler checkerHandler = new Handler();
+    // Associate the Handler with the UI thread
+    private Handler checkerHandler = new Handler(Looper.getMainLooper());
     private Runnable httpPlayerCheckerRunnable = new Runnable() {
         @Override
         public void run() {
@@ -384,14 +386,17 @@ public class HostConnectionObserver
         chainCallGetActivePlayers();
     }
 
-    public void onPause(org.xbmc.kore.jsonrpc.notification.Player.OnPause
-                                notification) {
+    public void onResume(org.xbmc.kore.jsonrpc.notification.Player.OnResume notification) {
         // Just start our chain calls
         chainCallGetActivePlayers();
     }
 
-    public void onSpeedChanged(org.xbmc.kore.jsonrpc.notification.Player
-                                       .OnSpeedChanged notification) {
+    public void onPause(org.xbmc.kore.jsonrpc.notification.Player.OnPause notification) {
+        // Just start our chain calls
+        chainCallGetActivePlayers();
+    }
+
+    public void onSpeedChanged(org.xbmc.kore.jsonrpc.notification.Player.OnSpeedChanged notification) {
         // Just start our chain calls
         chainCallGetActivePlayers();
     }
@@ -681,6 +686,19 @@ public class HostConnectionObserver
         observer.playerOnStop();
     }
 
+    private boolean getPropertiesResultChanged(PlayerType.PropertyValue getPropertiesResult) {
+        return (hostState.lastGetPropertiesResult == null) ||
+                (hostState.lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
+                (hostState.lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
+                (!hostState.lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat));
+    }
+
+    private boolean getItemResultChanged(ListType.ItemsAll getItemResult) {
+        return (hostState.lastGetItemResult == null) ||
+                (hostState.lastGetItemResult.id != getItemResult.id) ||
+                (!hostState.lastGetItemResult.label.equals(getItemResult.label));
+    }
+
     /**
      * Something is playing or paused, notify observers
      * Only notifies them if the result is different from the last one
@@ -697,11 +715,8 @@ public class HostConnectionObserver
                 PlayerEventsObserver.PLAYER_IS_PAUSED : PlayerEventsObserver.PLAYER_IS_PLAYING;
         if (forceReply ||
                 (hostState.lastCallResult != currentCallResult) ||
-                (hostState.lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
-                (hostState.lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
-                (!hostState.lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat)) ||
-                (hostState.lastGetItemResult.id != getItemResult.id) ||
-                (!hostState.lastGetItemResult.label.equals(getItemResult.label))) {
+                getPropertiesResultChanged(getPropertiesResult) ||
+                getItemResultChanged(getItemResult)) {
             hostState.lastCallResult = currentCallResult;
             hostState.lastGetActivePlayerResult = getActivePlayersResult;
             hostState.lastGetPropertiesResult = getPropertiesResult;

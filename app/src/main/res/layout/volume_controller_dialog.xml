@@ -10,7 +10,7 @@
     tools:background="@color/dark_content_background_dim_70pct">
 
     <org.xbmc.kore.ui.widgets.HighlightButton
-        android:id="@+id/npp_volume_mute"
+        android:id="@+id/vcd_volume_mute"
         style="@style/Widget.Button.Borderless"
         android:layout_width="@dimen/default_icon_size"
         android:layout_height="@dimen/default_icon_size"
@@ -19,7 +19,7 @@
         tools:src="@drawable/ic_volume_off_white_24dp" />
 
     <org.xbmc.kore.ui.widgets.HighlightButton
-        android:id="@+id/npp_volume_muted_indicator"
+        android:id="@+id/vcd_volume_muted_indicator"
         style="@style/Widget.Button.Borderless"
         android:layout_width="@dimen/default_icon_size"
         android:layout_height="@dimen/default_icon_size"
@@ -29,11 +29,12 @@
         tools:src="@drawable/ic_volume_off_white_24dp" />
 
     <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
-        android:id="@+id/npp_volume_level_indicator"
+        android:id="@+id/vcd_volume_level_indicator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_toRightOf="@id/npp_volume_mute"
+        android:layout_toRightOf="@id/vcd_volume_mute"
+        android:layout_toEndOf="@id/vcd_volume_mute"
         android:orientation="vertical">
     </org.xbmc.kore.ui.widgets.VolumeLevelIndicator>
 </RelativeLayout>

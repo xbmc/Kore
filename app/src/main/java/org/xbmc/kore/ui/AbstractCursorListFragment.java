@@ -46,8 +46,10 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.service.library.LibrarySyncService;
+import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.UIUtils;
 
 import de.greenrobot.event.EventBus;
 
@@ -217,7 +219,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
                         .show();
                 }
             } else if (!silentSync) {
-				String msg = (event.errorCode == ApiException.API_ERROR) ?
+			    String msg = (event.errorCode == ApiException.API_ERROR) ?
 					String.format(getString(R.string.error_while_syncing), event.errorMessage) :
 					getString(R.string.unable_to_connect_to_xbmc);
 				Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
@@ -228,8 +230,12 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
     @Override
     public void onServiceConnected(LibrarySyncService librarySyncService) {
         HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
-        if(SyncUtils.isLibrarySyncing(librarySyncService, hostInfo, getListSyncType())) {
-            showRefreshAnimation();
+        SyncItem syncItem = SyncUtils.getCurrentSyncItem(librarySyncService, hostInfo, getListSyncType());
+        if (syncItem != null) {
+            boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
+                syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
+            if (!silentRefresh)
+                UIUtils.showRefreshAnimation(swipeRefreshLayout);
         }
     }
 
@@ -247,7 +253,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	@Override
     public void onRefresh() {
-		showRefreshAnimation();
+		UIUtils.showRefreshAnimation(swipeRefreshLayout);
 		Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
         syncIntent.putExtra(getListSyncType(), true);
 

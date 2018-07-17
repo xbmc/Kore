@@ -140,7 +140,7 @@ public class LibrarySyncService extends Service {
         // Sync all music
         boolean syncAllMusic = intent.getBooleanExtra(SYNC_ALL_MUSIC, false);
         if (syncAllMusic) {
-            syncOrchestrator.addSyncItem(new SyncMusic(hostInfo.getId(), syncExtras));
+            syncOrchestrator.addSyncItem(new SyncMusic(syncExtras));
         }
 
         // Sync all music videos

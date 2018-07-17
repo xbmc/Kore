@@ -59,7 +59,6 @@ public class KodiPreV17Tests extends AbstractTestClass<RemoteActivity> {
 
     @Override
     protected void configureHostInfo(HostInfo hostInfo) {
-        hostInfo.setKodiVersionMajor(16);
     }
 
     @BeforeClass
@@ -67,6 +66,12 @@ public class KodiPreV17Tests extends AbstractTestClass<RemoteActivity> {
         mockEventServer = new MockEventServer();
         mockEventServer.setListenPort(HostInfo.DEFAULT_EVENT_SERVER_PORT);
         mockEventServer.start();
+    }
+
+    @Override
+    public void setUp() throws Throwable {
+        setKodiMajorVersion(HostInfo.KODI_V16_JARVIS);
+        super.setUp();
     }
 
     @After

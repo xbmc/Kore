@@ -348,6 +348,9 @@
     <string name="show_notification">Show notification while playing</string>
     <string name="show_now_playing_panel">Show now playing panel while playing</string>
     <string name="show_now_playing_panel_summary">Displays an expandable panel at the bottom of the screen when media is playing</string>
+    <string name="notification_seek_jump">Use steps for seeking</string>
+    <string name="notification_seek_jump_speed">Change playback speed when seeking from notification</string>
+    <string name="notification_seek_jump_step">Use skip steps when seeking from notification</string>
     <string name="pause_during_calls">Pause during phone call</string>
     <string name="use_hardware_volume_keys">Use device volume keys</string>
     <string name="vibrate_on_remote">Vibrate on touch</string>
@@ -422,5 +425,8 @@
     <string name="zeroprogress">0:00</string>
 
     <string name="toggle_expand">Expand/Collapse</string>
+    <string name="play_locally">Play Locally</string>
 
+    <string name="disable_local_playback_support">Disable local playback support</string>
+    <string name="disable_local_playback_support_summary">Disables support for playing media locally on the device running Kore.</string>
 </resources>

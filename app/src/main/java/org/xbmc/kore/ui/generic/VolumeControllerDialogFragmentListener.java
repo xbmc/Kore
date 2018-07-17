@@ -1,45 +1,47 @@
-package org.xbmc.kore.ui.volumecontrollers;
+package org.xbmc.kore.ui.generic;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.method.Application;
+import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.ui.widgets.HighlightButton;
 import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragment
         implements HostConnectionObserver.ApplicationEventsObserver,
-        OnHardwareVolumeKeyPressedCallback, VolumeLevelIndicator.VolumeBarTouchTrackerListener {
+        VolumeLevelIndicator.VolumeBarTouchTrackerListener {
 
     private static final String TAG = LogUtils.makeLogTag(VolumeControllerDialogFragmentListener.class);
     private static final int AUTO_DISMISS_DELAY = 2000;
 
-    @InjectView(R.id.npp_volume_mute)
-    HighlightButton volumeMuteButton;
-    @InjectView(R.id.npp_volume_muted_indicator)
-    HighlightButton volumeMutedIndicatorButton;
-    @InjectView(R.id.npp_volume_level_indicator)
-    VolumeLevelIndicator volumeLevelIndicator;
+    @BindView(R.id.vcd_volume_mute) HighlightButton volumeMuteButton;
+    @BindView(R.id.vcd_volume_muted_indicator) HighlightButton volumeMutedIndicatorButton;
+    @BindView(R.id.vcd_volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
 
+    private Unbinder unbinder;
     private Handler callbackHandler = new Handler();
-    private VolumeKeyActionHandler volumeKeyActionHandler;
     private HostManager hostManager = null;
     private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
     private View.OnClickListener onMuteToggleOnClickListener = new View.OnClickListener() {
@@ -79,15 +81,15 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     @Override
     public void onResume() {
         super.onResume();
-        if (volumeKeyActionHandler == null) {
-            volumeKeyActionHandler = new VolumeKeyActionHandler(hostManager, getContext(), this);
-        }
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(android.content.DialogInterface dialog, int keyCode,
                     android.view.KeyEvent event) {
-
-                return volumeKeyActionHandler.handleDispatchKeyEvent(event);
+                boolean handled = handleVolumeKeyEvent(getContext(), event);
+                if (handled) {
+                    delayedDismissDialog();
+                }
+                return handled;
             }
         });
     }
@@ -97,7 +99,7 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.volume_controller_dialog, container, false);
-        ButterKnife.inject(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         return rootView;
     }
@@ -118,6 +120,16 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
         registerObserver();
         // for orientation change
         delayedDismissDialog();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        HostConnectionObserver hostConnectionObserver = hostManager.getHostConnectionObserver();
+        if (hostConnectionObserver != null) {
+            hostConnectionObserver.unregisterApplicationObserver(this);
+        }
+        unbinder.unbind();
     }
 
     private void registerObserver() {
@@ -156,11 +168,6 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
         volumeMuteButton.setHighlight(muted);
     }
 
-    @Override
-    public void onHardwareVolumeKeyPressed() {
-        delayedDismissDialog();
-    }
-
     private void delayedDismissDialog() {
         cancelDismissDialog();
         callbackHandler.postDelayed(dismissDialog, AUTO_DISMISS_DELAY);
@@ -180,4 +187,28 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     public void onStopTrackingTouch() {
         delayedDismissDialog();
     }
+
+    public static boolean handleVolumeKeyEvent(Context context, KeyEvent event) {
+        boolean shouldInterceptKey =
+                android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(context)
+                        .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+                                Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+
+        if (shouldInterceptKey) {
+            int action = event.getAction();
+            int keyCode = event.getKeyCode();
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                String volume = (keyCode == KeyEvent.KEYCODE_VOLUME_UP)?
+                        GlobalType.IncrementDecrement.INCREMENT:
+                        GlobalType.IncrementDecrement.DECREMENT;
+                if (action == KeyEvent.ACTION_DOWN) {
+                    new Application.SetVolume(volume)
+                            .execute(HostManager.getInstance(context).getConnection(), null, null);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

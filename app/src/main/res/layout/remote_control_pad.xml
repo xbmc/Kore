@@ -14,61 +14,71 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/context"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="?attr/iconContext"
+        app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/codec_info"/>
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/up"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="?attr/iconUp"
+        app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/up"/>
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="?attr/iconInfo"
+        app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/info"/>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/left"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="?attr/iconLeft"
+        app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/left"/>
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/select"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="?attr/iconSelect"
+        app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/select"/>
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/right"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="?attr/iconRight"
+        app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/right"/>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/back"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="?attr/iconBack"
+        app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/back"/>
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/down"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="?attr/iconDown"
+        app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/down"/>
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/osd"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="?attr/iconMenu"
+        app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/osd"/>
 </merge>

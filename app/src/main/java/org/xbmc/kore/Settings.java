@@ -81,6 +81,10 @@ public class Settings {
     public static final String KEY_PREF_SHOW_NOW_PLAYING_PANEL = "pref_show_nowplayingpanel";
     public static final boolean DEFAULT_PREF_SHOW_NOW_PLAYING_PANEL = true;
 
+    // Seek mode
+    public static final String KEY_PREF_NOTIFICATION_SEEK_JUMP = "pref_notification_seek_jump";
+    public static final boolean DEFAULT_PREF_NOTIFICATION_SEEK_JUMP = false;
+    
     // Pause during calls
     public static final String KEY_PREF_PAUSE_DURING_CALLS = "pref_pause_during_calls";
     public static final boolean DEFAULT_PREF_PAUSE_DURING_CALLS = false;
@@ -155,6 +159,10 @@ public class Settings {
     public static final String KEY_PREF_SINGLE_COLUMN = "pref_single_multi_column";
     public static final boolean DEFAULT_PREF_SINGLE_COLUMN = false;
 
+    // Switch to remote
+    public static final String KEY_PREF_DISABLE_LOCAL_PLAY = "pref_disable_local_play";
+    public static final boolean DEFAULT_PREF_DISABLE_LOCAL_PLAY = false;
+
     /**
      * Determines the bit flags used by {@link DownloadManager.Request} to correspond to the enabled network connections
      * from the settings screen.
@@ -179,4 +187,18 @@ public class Settings {
         }
         return result;
     }
+
+    /**
+     * Keys for bookmarked addons stored in preferences
+     */
+    private static final String KEY_PREF_BOOKMARKED_ADDONS = "bookmarked";
+    public static String getBookmarkedAddonsPrefKey(int hostId) {
+        return Settings.KEY_PREF_BOOKMARKED_ADDONS + hostId;
+    }
+    private static final String KEY_PREF_NAME_BOOKMARKED_ADDON = "name_";
+    public static String getNameBookmarkedAddonsPrefKey(int hostId) {
+        return Settings.KEY_PREF_NAME_BOOKMARKED_ADDON + hostId + "_";
+    }
+    public static final String DEFAULT_PREF_NAME_BOOKMARKED_ADDON = "Content";
+
 }

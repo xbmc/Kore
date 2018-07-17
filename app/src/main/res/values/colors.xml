@@ -15,6 +15,8 @@
    limitations under the License.
 -->
 <resources>
+    <color name="ic_launcher_background">#0BB1E6</color>
+
 	<color name="dark_background">#ff121314</color>
     <color name="light_background">#ffeeeeee</color>
     <!--<color name="blue_grey_background">#ff212b30</color>-->
@@ -23,6 +25,7 @@
     <!--<color name="accent_default">@color/light_green_A700</color>-->
     <color name="accent_default">@color/orange_A400</color>
     <color name="accent_default_dark">@color/orange_A700</color>
+    <color name="accent_default_light">@color/orange_A100</color>
 
     <color name="white">#ffffffff</color>
     <color name="white_dim_50pct">#88ffffff</color>
@@ -32,6 +35,7 @@
     <color name="black_dim_54pct">#8a000000</color>
 
     <color name="estuary_default">#0f85a5</color>
+    <color name="estuary_default_light">#17cdff</color>
     <color name="estuary_default_dark">#0a5b71</color>
     <!--<color name="estuary_default">#147a96</color>-->
     <!--<color name="estuary_default_dark">#0f4d5e</color>-->

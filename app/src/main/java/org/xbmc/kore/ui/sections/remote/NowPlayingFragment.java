@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -67,8 +66,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Now playing view
@@ -77,7 +77,8 @@ public class NowPlayingFragment extends Fragment
         implements HostConnectionObserver.PlayerEventsObserver,
                    HostConnectionObserver.ApplicationEventsObserver,
                    GenericSelectDialog.GenericSelectDialogListener,
-                   MediaProgressIndicator.OnProgressChangeListener {
+                   MediaProgressIndicator.OnProgressChangeListener,
+                   ViewTreeObserver.OnScrollChangedListener {
     private static final String TAG = LogUtils.makeLogTag(NowPlayingFragment.class);
 
     /**
@@ -129,39 +130,43 @@ public class NowPlayingFragment extends Fragment
     private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
     private ApiCallback<Boolean> defaultBooleanActionCallback = ApiMethod.getDefaultActionCallback();
 
+    private Unbinder unbinder;
+
+    private int pixelsToTransparent;
+
     /**
      * Injectable views
      */
-    @InjectView(R.id.play) ImageButton playButton;
+    @BindView(R.id.play) ImageButton playButton;
 
-    @InjectView(R.id.volume_mute) HighlightButton volumeMuteButton;
-    @InjectView(R.id.shuffle) HighlightButton shuffleButton;
-    @InjectView(R.id.repeat) RepeatModeButton repeatButton;
-    @InjectView(R.id.overflow) ImageButton overflowButton;
+    @BindView(R.id.volume_mute) HighlightButton volumeMuteButton;
+    @BindView(R.id.shuffle) HighlightButton shuffleButton;
+    @BindView(R.id.repeat) RepeatModeButton repeatButton;
+    @BindView(R.id.overflow) ImageButton overflowButton;
 
-    @InjectView(R.id.info_panel) RelativeLayout infoPanel;
-    @InjectView(R.id.media_panel) ScrollView mediaPanel;
+    @BindView(R.id.info_panel) RelativeLayout infoPanel;
+    @BindView(R.id.media_panel) ScrollView mediaPanel;
 
-    @InjectView(R.id.info_title) TextView infoTitle;
-    @InjectView(R.id.info_message) TextView infoMessage;
+    @BindView(R.id.info_title) TextView infoTitle;
+    @BindView(R.id.info_message) TextView infoMessage;
 
-    @InjectView(R.id.art) ImageView mediaArt;
-    @InjectView(R.id.poster) ImageView mediaPoster;
+    @BindView(R.id.art) ImageView mediaArt;
+    @BindView(R.id.poster) ImageView mediaPoster;
 
-    @InjectView(R.id.media_title) TextView mediaTitle;
-    @InjectView(R.id.media_undertitle) TextView mediaUndertitle;
-    @InjectView(R.id.progress_info) MediaProgressIndicator mediaProgressIndicator;
+    @BindView(R.id.media_title) TextView mediaTitle;
+    @BindView(R.id.media_undertitle) TextView mediaUndertitle;
+    @BindView(R.id.progress_info) MediaProgressIndicator mediaProgressIndicator;
 
-    @InjectView(R.id.volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
+    @BindView(R.id.volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
 
-    @InjectView(R.id.rating) TextView mediaRating;
-    @InjectView(R.id.max_rating) TextView mediaMaxRating;
-    @InjectView(R.id.year) TextView mediaYear;
-    @InjectView(R.id.genres) TextView mediaGenreSeason;
-    @InjectView(R.id.rating_votes) TextView mediaRatingVotes;
+    @BindView(R.id.rating) TextView mediaRating;
+    @BindView(R.id.max_rating) TextView mediaMaxRating;
+    @BindView(R.id.year) TextView mediaYear;
+    @BindView(R.id.genres) TextView mediaGenreSeason;
+    @BindView(R.id.rating_votes) TextView mediaRatingVotes;
 
-    @InjectView(R.id.media_description) TextView mediaDescription;
-    @InjectView(R.id.cast_list) GridLayout videoCastList;
+    @BindView(R.id.media_description) TextView mediaDescription;
+    @BindView(R.id.cast_list) GridLayout videoCastList;
 
     @Override
     public void onAttach(Activity activity) {
@@ -184,7 +189,7 @@ public class NowPlayingFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_now_playing, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
             @Override
@@ -195,19 +200,6 @@ public class NowPlayingFragment extends Fragment
         });
 
         mediaProgressIndicator.setOnProgressChangeListener(this);
-
-        // Setup dim the fanart when scroll changes
-        // Full dim on 4 * iconSize dp
-        Resources resources = getActivity().getResources();
-        final int pixelsToTransparent  = 4 * resources.getDimensionPixelSize(R.dimen.default_icon_size);
-        mediaPanel.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                float y = mediaPanel.getScrollY();
-                float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
-                mediaArt.setAlpha(newAlpha);
-            }
-        });
 
         volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
             @Override
@@ -228,6 +220,13 @@ public class NowPlayingFragment extends Fragment
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
+
+        /** Setup dim the fanart when scroll changes
+         * Full dim on 4 * iconSize dp
+         * @see {@link #onScrollChanged()}
+         */
+        pixelsToTransparent  = 4 * getActivity().getResources().getDimensionPixelSize(R.dimen.default_icon_size);
+        mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
     }
 
     @Override
@@ -243,6 +242,13 @@ public class NowPlayingFragment extends Fragment
         stopNowPlayingInfo();
         hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver.unregisterApplicationObserver(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(this);
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**
@@ -263,6 +269,13 @@ public class NowPlayingFragment extends Fragment
         @Override
         public void onError(int errorCode, String description) { }
     };
+
+    @Override
+    public void onScrollChanged() {
+        float y = mediaPanel.getScrollY();
+        float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
+        mediaArt.setAlpha(newAlpha);
+    }
 
     /**
      * Callbacks for bottom button bar
@@ -451,10 +464,10 @@ public class NowPlayingFragment extends Fragment
                     case 0:
                         // Download subtitles. First check host version to see which method to call
                         HostInfo hostInfo = hostManager.getHostInfo();
-                        if (hostInfo.getKodiVersionMajor() < 13) {
-                            showDownloadSubtitlesPreGotham();
-                        } else {
+                        if (hostInfo.isGothamOrLater()) {
                             showDownloadSubtitlesPostGotham();
+                        } else {
+                            showDownloadSubtitlesPreGotham();
                         }
                         break;
                     case 1:

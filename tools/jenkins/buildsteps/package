@@ -1,4 +1,4 @@
-WORKSPACE=${WORKSPACE:-$( cd $(dirname $0)/../.. ; pwd -P )}
+WORKSPACE=${WORKSPACE:-$( cd $(dirname $0)/../../.. ; pwd -P )}
 
 $RUN_SIGNSTEP
 
@@ -52,4 +52,4 @@ function getBuildRevDateStr ()
 #rename for upload
 #e.x. kore-20130314-8c2fb31.apk.
 UPLOAD_FILENAME="kore-$(getBuildRevDateStr).apk"
-cd $WORKSPACE;mv *.apk $UPLOAD_FILENAME
+cd $WORKSPACE;mv app/build/outputs/apk/release/*.apk $UPLOAD_FILENAME

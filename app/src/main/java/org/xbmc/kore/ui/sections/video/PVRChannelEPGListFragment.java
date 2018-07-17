@@ -43,7 +43,8 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 /**
  * Fragment that presents the Guide for a channel
@@ -55,9 +56,9 @@ public class PVRChannelEPGListFragment extends Fragment
     private HostManager hostManager;
     private int channelId;
 
-    @InjectView(R.id.list) ListView listView;
-    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(android.R.id.empty) TextView emptyView;
+    @BindView(R.id.list) ListView listView;
+    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(android.R.id.empty) TextView emptyView;
 
     /**
      * Handler on which to post RPC callbacks
@@ -67,6 +68,8 @@ public class PVRChannelEPGListFragment extends Fragment
     private BoadcastsAdapter boadcastsAdapter = null;
 
     private static final String BUNDLE_KEY_CHANNELID = "bundle_key_channelid";
+
+    private Unbinder unbinder;
 
     /**
      * Create a new instance of this, initialized to show the current channel
@@ -88,7 +91,7 @@ public class PVRChannelEPGListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_list, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         Bundle bundle = getArguments();
         channelId = bundle.getInt(BUNDLE_KEY_CHANNELID, -1);
@@ -118,6 +121,12 @@ public class PVRChannelEPGListFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
         browseEPG();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**

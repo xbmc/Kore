@@ -61,8 +61,13 @@
 
         <item name="fabColorNormal">?attr/colorPrimary</item>
         <item name="fabColorPressed">?attr/colorPrimaryDark</item>
-        <!--<item name="fabColorNormal">@color/accent_default</item>-->
-        <!--<item name="fabColorPressed">@color/accent_default_dark</item>-->
+        <item name="fabColorFocused">@color/estuary_default_light</item>
+
+        <item name="fabLabelColorNormal">?attr/colorPrimary</item>
+        <item name="fabLabelColorPressed">?attr/colorPrimaryDark</item>
+        <item name="fabLabelColorFocused">@color/estuary_default_light</item>
+
+        <item name="fabLabelTextColor">@color/white</item>
 
         <item name="colorinProgress">@color/yellow_800</item>
         <item name="colorFinished">@color/green_600</item>
@@ -87,6 +92,9 @@
         <!--<item name="remoteBackgroundColorFilter">@color/dark_content_background</item>-->
 
         <!-- Icons -->
+        <item name="iconFABDialsOpenClose">@drawable/ic_plus_white_24dp</item>
+        <item name="iconFABDefault">@drawable/ic_play_arrow_white_24dp</item>
+        <item name="iconRemoteDevice">@drawable/ic_cellphone_android_white_24dp</item>
         <item name="iconInfo">@drawable/remote_info_white</item>
         <item name="iconBack">@drawable/remote_back_white</item>
         <item name="iconMenu">@drawable/remote_menu_white</item>
@@ -126,6 +134,8 @@
         <item name="iconRewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item name="iconNext">@drawable/ic_skip_next_white_24dp</item>
         <item name="iconPrevious">@drawable/ic_skip_previous_white_24dp</item>
+        <item name="iconSkipForward">@drawable/ic_skip_forward_white_24dp</item>
+        <item name="iconSkipBackward">@drawable/ic_skip_backward_white_24dp</item>
 
         <item name="iconVolumeUp">@drawable/ic_volume_up_white_24dp</item>
         <item name="iconVolumeDown">@drawable/ic_volume_down_white_24dp</item>
@@ -187,8 +197,15 @@
         <item name="textColorOverPrimary">@color/white</item>
         <item name="buttonColorOverPrimary">@color/white</item>
 
-        <item name="fabColorNormal">@color/accent_default</item>
-        <item name="fabColorPressed">@color/accent_default_dark</item>
+        <item name="fabColorNormal">?attr/colorPrimary</item>
+        <item name="fabColorPressed">?attr/colorPrimaryDark</item>
+        <item name="fabColorFocused">@color/accent_default_light</item>
+
+        <item name="fabLabelColorNormal">?attr/colorPrimary</item>
+        <item name="fabLabelColorPressed">?attr/colorPrimaryDark</item>
+        <item name="fabLabelColorFocused">@color/accent_default_light</item>
+
+        <item name="fabLabelTextColor">@color/white</item>
 
         <item name="colorinProgress">@color/yellow_800</item>
         <item name="colorFinished">@color/light_green_600</item>
@@ -213,6 +230,9 @@
         <!--<item name="remoteBackgroundColorFilter">@color/light_content_background</item>-->
 
         <!-- Icons, same for all themes, will be colored dynamically -->
+        <item name="iconFABDialsOpenClose">@drawable/ic_plus_white_24dp</item>
+        <item name="iconFABDefault">@drawable/ic_play_arrow_white_24dp</item>
+        <item name="iconRemoteDevice">@drawable/ic_cellphone_android_white_24dp</item>
         <item name="iconInfo">@drawable/remote_info_white</item>
         <item name="iconBack">@drawable/remote_back_white</item>
         <item name="iconMenu">@drawable/remote_menu_white</item>
@@ -262,6 +282,8 @@
         <item name="iconRewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item name="iconNext">@drawable/ic_skip_next_white_24dp</item>
         <item name="iconPrevious">@drawable/ic_skip_previous_white_24dp</item>
+        <item name="iconSkipForward">@drawable/ic_skip_forward_white_24dp</item>
+        <item name="iconSkipBackward">@drawable/ic_skip_backward_white_24dp</item>
 
         <item name="iconVolumeUp">@drawable/ic_volume_up_white_24dp</item>
         <item name="iconVolumeDown">@drawable/ic_volume_down_white_24dp</item>

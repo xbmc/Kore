@@ -137,4 +137,7 @@
     <dimen name="now_playing_panel_height">64dp</dimen>
     <dimen name="now_playing_panel_art_width">48dp</dimen>
 
+    <dimen name="fab_normal_margin">8dp</dimen>
+    <dimen name="fab_mini_margin">16dp</dimen>
+
 </resources>

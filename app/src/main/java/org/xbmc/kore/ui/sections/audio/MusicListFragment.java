@@ -16,53 +16,35 @@
 package org.xbmc.kore.ui.sections.audio;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.astuetz.PagerSlidingTabStrip;
-
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.AbstractTabsFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Container for the various music lists
  */
-public class MusicListFragment extends Fragment {
+public class MusicListFragment extends AbstractTabsFragment {
     private static final String TAG = LogUtils.makeLogTag(MusicListFragment.class);
 
-    private TabsAdapter tabsAdapter;
-
     private int currentItem;
-
-    @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
-    @InjectView(R.id.pager) ViewPager viewPager;
+    private TabsAdapter tabsAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_default_view_pager, container, false);
-        ButterKnife.inject(this, root);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        if (view == null)
+            return view;
 
-        tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
-                .addTab(ArtistListFragment.class, getArguments(), R.string.artists, 1)
-                .addTab(AlbumListFragment.class, getArguments(), R.string.albums, 2)
-                .addTab(AudioGenresListFragment.class, getArguments(), R.string.genres, 3)
-                .addTab(SongsListFragment.class, getArguments(), R.string.songs, 4)
-                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 5);
+        currentItem = getViewPager().getCurrentItem();
 
-        viewPager.setAdapter(tabsAdapter);
-        pagerTabStrip.setViewPager(viewPager);
-
-        currentItem = viewPager.getCurrentItem();
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        getViewPager().addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -75,19 +57,31 @@ public class MusicListFragment extends Fragment {
                 if (f != null) {
                     f.saveSearchState();
                 }
-                currentItem = viewPager.getCurrentItem();
+                currentItem = getViewPager().getCurrentItem();
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
             }
         });
-        return root;
+
+        return view;
     }
 
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
+    }
+
+    @Override
+    protected TabsAdapter createTabsAdapter(DataHolder dataHolder) {
+        tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
+                .addTab(ArtistListFragment.class, getArguments(), R.string.artists, 1)
+                .addTab(AlbumListFragment.class, getArguments(), R.string.albums, 2)
+                .addTab(AudioGenresListFragment.class, getArguments(), R.string.genres, 3)
+                .addTab(SongsListFragment.class, getArguments(), R.string.songs, 4)
+                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 5);
+        return tabsAdapter;
     }
 }

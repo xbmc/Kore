@@ -31,14 +31,16 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.utils.UIUtils;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 public class MediaProgressIndicator extends LinearLayout {
 
-    @InjectView(R.id.mpi_seek_bar) SeekBar seekBar;
-    @InjectView(R.id.mpi_duration) TextView durationTextView;
-    @InjectView(R.id.mpi_progress) TextView progressTextView;
+    @BindView(R.id.mpi_seek_bar) SeekBar seekBar;
+    @BindView(R.id.mpi_duration) TextView durationTextView;
+    @BindView(R.id.mpi_progress) TextView progressTextView;
 
+    private Unbinder unbinder;
     private int speed = 0;
     private int maxProgress;
     private int progress;
@@ -69,7 +71,8 @@ public class MediaProgressIndicator extends LinearLayout {
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.media_progress_indicator, this);
-        ButterKnife.inject(view);
+
+        unbinder = ButterKnife.bind(this, view);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -99,6 +102,17 @@ public class MediaProgressIndicator extends LinearLayout {
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        seekBar.removeCallbacks(seekBarUpdater);
+
+        unbinder.unbind();
+
+        onProgressChangeListener = null;
+    }
+
+    @Override
     protected Parcelable onSaveInstanceState() {
         SavedState savedState = new SavedState(super.onSaveInstanceState());
         savedState.progress = progress;
@@ -119,6 +133,9 @@ public class MediaProgressIndicator extends LinearLayout {
     private Runnable seekBarUpdater = new Runnable() {
         @Override
         public void run() {
+            if (seekBar == null) // prevent NPE when Butterknife unbinds the view while there was still a runnable pending
+                return;
+
             if ((maxProgress == 0) || (progress >= maxProgress)) {
                 seekBar.removeCallbacks(this);
                 return;

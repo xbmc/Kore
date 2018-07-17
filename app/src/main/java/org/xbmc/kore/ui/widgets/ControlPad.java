@@ -40,7 +40,8 @@ import org.xbmc.kore.utils.RepeatListener;
 import org.xbmc.kore.utils.Utils;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 public class ControlPad extends SquareGridLayout
         implements View.OnClickListener, View.OnLongClickListener {
@@ -63,16 +64,17 @@ public class ControlPad extends SquareGridLayout
     }
 
     private OnPadButtonsListener onPadButtonsListener;
+    private Unbinder unbinder;
 
-    @InjectView(R.id.select) ImageView selectButton;
-    @InjectView(R.id.left) ImageView leftButton;
-    @InjectView(R.id.right) ImageView rightButton;
-    @InjectView(R.id.up) ImageView upButton;
-    @InjectView(R.id.down) ImageView downButton;
-    @InjectView(R.id.back) ImageView backButton;
-    @InjectView(R.id.info) ImageView infoButton;
-    @InjectView(R.id.context) ImageView contextButton;
-    @InjectView(R.id.osd) ImageView osdButton;
+    @BindView(R.id.select) ImageView selectButton;
+    @BindView(R.id.left) ImageView leftButton;
+    @BindView(R.id.right) ImageView rightButton;
+    @BindView(R.id.up) ImageView upButton;
+    @BindView(R.id.down) ImageView downButton;
+    @BindView(R.id.back) ImageView backButton;
+    @BindView(R.id.info) ImageView infoButton;
+    @BindView(R.id.context) ImageView contextButton;
+    @BindView(R.id.osd) ImageView osdButton;
 
     public ControlPad(Context context) {
         super(context);
@@ -105,11 +107,18 @@ public class ControlPad extends SquareGridLayout
 
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.remote_control_pad, this);
-        ButterKnife.inject(this, this);
+        View view = inflater.inflate(R.layout.remote_control_pad, this);
+        unbinder = ButterKnife.bind(this, view);
 
-        applyTheme();
+        setBackgroundImage();
         setupListeners(context);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        unbinder.unbind();
+        onPadButtonsListener = null;
     }
 
     @Override
@@ -160,27 +169,12 @@ public class ControlPad extends SquareGridLayout
     }
 
     @TargetApi(21)
-    private void applyTheme() {
+    private void setBackgroundImage() {
         Resources.Theme theme = getContext().getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                R.attr.remoteButtonColorFilter,
-                R.attr.contentBackgroundColor});
-        Resources resources = getResources();
-        int remoteButtonsColor =  styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.white)),
-                remoteBackgroundColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.dark_content_background_dim_70pct));
+        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {R.attr.contentBackgroundColor});
+        int remoteBackgroundColor = styledAttributes.getColor(styledAttributes.getIndex(0),
+                                                              getResources().getColor(R.color.dark_content_background_dim_70pct));
         styledAttributes.recycle();
-
-        leftButton.setColorFilter(remoteButtonsColor);
-        rightButton.setColorFilter(remoteButtonsColor);
-        upButton.setColorFilter(remoteButtonsColor);
-        downButton.setColorFilter(remoteButtonsColor);
-
-        selectButton.setColorFilter(remoteButtonsColor);
-        backButton.setColorFilter(remoteButtonsColor);
-        infoButton.setColorFilter(remoteButtonsColor);
-        osdButton.setColorFilter(remoteButtonsColor);
-        contextButton.setColorFilter(remoteButtonsColor);
-
 
         // On ICS the remote background isn't shown as the tinting isn't supported
         //int backgroundResourceId = R.drawable.remote_background_square_black_alpha;

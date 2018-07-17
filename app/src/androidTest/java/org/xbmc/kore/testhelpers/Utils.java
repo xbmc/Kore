@@ -117,6 +117,8 @@ public class Utils {
         int permStatus = context.checkCallingOrSelfPermission(ANIMATION_PERMISSION);
         if (permStatus == PackageManager.PERMISSION_GRANTED) {
             setSystemAnimationsScale(DEFAULT);
+        } else {
+            LogUtils.LOGD(TAG, "disableAnimations: permission " + ANIMATION_PERMISSION + " not granted");
         }
     }
 

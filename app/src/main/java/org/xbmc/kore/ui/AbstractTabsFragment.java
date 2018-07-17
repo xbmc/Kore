@@ -23,23 +23,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.astuetz.PagerSlidingTabStrip;
-
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Unbinder;
 
 abstract public class AbstractTabsFragment extends AbstractFragment
         implements SharedElementTransition.SharedElement {
     private static final String TAG = LogUtils.makeLogTag(AbstractTabsFragment.class);
 
-    @InjectView(R.id.pager_tab_strip) PagerSlidingTabStrip pagerTabStrip;
-    @InjectView(R.id.pager) ViewPager viewPager;
+    @BindView(R.id.pager) ViewPager viewPager;
+
+    private Unbinder unbinder;
 
     /**
      * Use {@link #setDataHolder(AbstractInfoFragment.DataHolder)} to provide the required info
@@ -58,11 +58,9 @@ abstract public class AbstractTabsFragment extends AbstractFragment
         }
 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_default_view_pager, container, false);
-        ButterKnife.inject(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         viewPager.setAdapter(createTabsAdapter(getDataHolder()));
-        pagerTabStrip.setViewPager(viewPager);
-
         return root;
     }
 
@@ -70,6 +68,12 @@ abstract public class AbstractTabsFragment extends AbstractFragment
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -90,6 +94,10 @@ abstract public class AbstractTabsFragment extends AbstractFragment
         }
 
         return false;
+    }
+
+    protected ViewPager getViewPager() {
+        return viewPager;
     }
 
     /**

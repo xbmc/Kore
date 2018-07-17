@@ -24,13 +24,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.utils.LogUtils;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 public class VolumeLevelIndicator extends LinearLayout {
-    @InjectView(R.id.vli_seek_bar) SeekBar volumeSeekBar;
-    @InjectView(R.id.vli_volume_text) TextView volumeTextView;
+    public static final String TAG = LogUtils.makeLogTag(VolumeLevelIndicator.class);
+
+    @BindView(R.id.vli_seek_bar) SeekBar volumeSeekBar;
+    @BindView(R.id.vli_volume_text) TextView volumeTextView;
 
     private OnVolumeChangeListener onVolumeChangeListener;
     private VolumeBarTouchTrackerListener volumeBarTouchTrackerListener;
@@ -59,10 +63,17 @@ public class VolumeLevelIndicator extends LinearLayout {
         initializeView(context);
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        onVolumeChangeListener = null;
+        volumeBarTouchTrackerListener = null;
+    }
+
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.volume_level_indicator, this);
-        ButterKnife.inject(view);
+        ButterKnife.bind(view);
 
         volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

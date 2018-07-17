@@ -28,13 +28,13 @@ import org.xbmc.kore.ui.sections.video.TVShowsActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.xbmc.kore.testhelpers.action.ViewActions.nestedScrollTo;
 
 public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity> {
 
@@ -79,7 +79,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
     @Test
     public void setActionBarTitleOnNextEpisode() {
         EspressoTestUtils.clickAdapterViewItem(1, R.id.list);
-        onView( withId(R.id.next_episode_list)).perform( scrollTo(), click());
+        onView( withId(R.id.next_episode_list)).perform( nestedScrollTo(), click());
 
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
                 .check(matches(withText("3")));
@@ -96,7 +96,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
     @Test
     public void setActionBarTitleOnSeasonList() {
         EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
-        onView( withId(R.id.seasons_list)).perform( scrollTo(), click());
+        onView( withId(R.id.seasons_list)).perform(nestedScrollTo(), click());
 
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
                 .check(matches(withText("Season 01")));
@@ -114,7 +114,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
     @Test
     public void setActionBarTitleOnSeasonListEpisode() {
         EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
-        onView( withId(R.id.seasons_list)).perform( scrollTo(), click());
+        onView( withId(R.id.seasons_list)).perform( nestedScrollTo(), click());
         EspressoTestUtils.selectListItemAndCheckActionbarTitle(0, R.id.list, "11.22.63");
     }
 
@@ -145,7 +145,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
     @Test
     public void restoreActionBarTitleSeasonListOnConfigurationStateChanged() {
         EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
-        onView( withId(R.id.seasons_list)).perform( scrollTo(), click());
+        onView( withId(R.id.seasons_list)).perform( nestedScrollTo(), click());
         EspressoTestUtils.rotateDevice(mActivityRule.getActivity());
 
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
@@ -165,7 +165,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
     @Test
     public void restoreActionBarTitleSeasonListEpisodeOnConfigurationStateChanged() {
         EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
-        onView( withId(R.id.seasons_list)).perform( scrollTo(), click());
+        onView( withId(R.id.seasons_list)).perform( nestedScrollTo(), click());
         EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
                                                                            "11.22.63",
                                                                            mActivityRule.getActivity());
@@ -183,7 +183,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
     @Test
     public void restoreActionBarTitleNextEpisodeOnConfigurationStateChanged() {
         EspressoTestUtils.clickAdapterViewItem(1, R.id.list);
-        onView( withId(R.id.next_episode_list)).perform( scrollTo() );
+        onView( withId(R.id.next_episode_list)).perform( nestedScrollTo() );
         onView( withText("You'll See the Sparkle")).perform( click() );
         EspressoTestUtils.rotateDevice(mActivityRule.getActivity());
 

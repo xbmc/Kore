@@ -44,12 +44,12 @@ public class Database {
     public static final String TAG = LogUtils.makeLogTag(Database.class);
 
     public static HostInfo fill(HostInfo hostInfo, Context context, ContentResolver contentResolver) throws ApiException, IOException {
-        SyncMusic syncMusic = new SyncMusic(hostInfo.getId(), null);
+        SyncMusic syncMusic = new SyncMusic(null);
         insertMovies(context, contentResolver, hostInfo.getId());
-        insertArtists(context, contentResolver, syncMusic);
-        insertGenres(context, contentResolver, syncMusic);
-        insertAlbums(context, contentResolver, syncMusic);
-        insertSongs(context, contentResolver, syncMusic);
+        insertArtists(context, contentResolver, syncMusic, hostInfo.getId());
+        insertGenres(context, contentResolver, syncMusic, hostInfo.getId());
+        insertAlbums(context, contentResolver, syncMusic, hostInfo.getId());
+        insertSongs(context, contentResolver, syncMusic, hostInfo.getId());
 
         SyncTVShows syncTVShows = new SyncTVShows(hostInfo.getId(), null);
         insertTVShows(context, contentResolver, syncTVShows);
@@ -66,16 +66,17 @@ public class Database {
 
     public static HostInfo addHost(Context context) {
         return addHost(context, "127.0.0.1", HostConnection.PROTOCOL_TCP,
-                       HostInfo.DEFAULT_HTTP_PORT, HostInfo.DEFAULT_TCP_PORT, false);
+                       HostInfo.DEFAULT_HTTP_PORT, HostInfo.DEFAULT_TCP_PORT, false,
+                       HostInfo.DEFAULT_KODI_VERSION_MAJOR);
 
     }
 
     public static HostInfo addHost(Context context, String hostname, int protocol, int httpPort,
-                                   int tcpPort, boolean useEventServer) {
+                                   int tcpPort, boolean useEventServer, int kodiMajorVersion) {
         return HostManager.getInstance(context).addHost("TestHost", hostname, protocol, httpPort,
                                                         tcpPort, null, null, "52:54:00:12:35:02", 9,
                                                         useEventServer, HostInfo.DEFAULT_EVENT_SERVER_PORT,
-                                                        HostInfo.DEFAULT_KODI_VERSION_MAJOR,
+                                                        kodiMajorVersion,
                                                         HostInfo.DEFAULT_KODI_VERSION_MINOR,
                                                         HostInfo.DEFAULT_KODI_VERSION_REVISION,
                                                         HostInfo.DEFAULT_KODI_VERSION_TAG,
@@ -115,37 +116,37 @@ public class Database {
         contentResolver.bulkInsert(MediaContract.MovieCast.CONTENT_URI, movieCastValuesBatch);
     }
 
-    private static void insertArtists(Context context, ContentResolver contentResolver, SyncMusic syncMusic) throws ApiException, IOException {
+    private static void insertArtists(Context context, ContentResolver contentResolver, SyncMusic syncMusic, int hostId) throws ApiException, IOException {
         AudioLibrary.GetArtists getArtists = new AudioLibrary.GetArtists(false);
         String result = FileUtils.readFile(context, "AudioLibrary.GetArtists.json");
         ArrayList<AudioType.DetailsArtist> artistList = (ArrayList) getArtists.resultFromJson(result).items;
 
-        syncMusic.insertArtists(artistList, contentResolver);
+        syncMusic.insertArtists(hostId, artistList, contentResolver);
     }
 
-    private static void insertGenres(Context context, ContentResolver contentResolver, SyncMusic syncMusic) throws ApiException, IOException {
+    private static void insertGenres(Context context, ContentResolver contentResolver, SyncMusic syncMusic, int hostId) throws ApiException, IOException {
         AudioLibrary.GetGenres getGenres = new AudioLibrary.GetGenres();
         ArrayList<LibraryType.DetailsGenre> genreList =
                 (ArrayList) getGenres.resultFromJson(FileUtils.readFile(context,
                                                                         "AudioLibrary.GetGenres.json"));
 
-        syncMusic.insertGenresItems(genreList, contentResolver);
+        syncMusic.insertGenresItems(hostId, genreList, contentResolver);
     }
 
-    private static void insertAlbums(Context context, ContentResolver contentResolver, SyncMusic syncMusic) throws ApiException, IOException {
+    private static void insertAlbums(Context context, ContentResolver contentResolver, SyncMusic syncMusic, int hostId) throws ApiException, IOException {
         AudioLibrary.GetAlbums getAlbums = new AudioLibrary.GetAlbums();
         String result = FileUtils.readFile(context, "AudioLibrary.GetAlbums.json");
         ArrayList<AudioType.DetailsAlbum> albumList = (ArrayList) getAlbums.resultFromJson(result).items;
 
-        syncMusic.insertAlbumsItems(albumList, contentResolver);
+        syncMusic.insertAlbumsItems(hostId, albumList, contentResolver);
     }
 
-    private static void insertSongs(Context context, ContentResolver contentResolver, SyncMusic syncMusic) throws ApiException, IOException {
+    private static void insertSongs(Context context, ContentResolver contentResolver, SyncMusic syncMusic, int hostId) throws ApiException, IOException {
         AudioLibrary.GetSongs getSongs = new AudioLibrary.GetSongs();
         ArrayList<AudioType.DetailsSong> songList = (ArrayList)
                 getSongs.resultFromJson(FileUtils.readFile(context, "AudioLibrary.GetSongs.json")).items;
 
-        syncMusic.insertSongsItems(songList, contentResolver);
+        syncMusic.insertSongsItems(hostId, songList, contentResolver);
     }
 
     private static void insertTVShows(Context context, ContentResolver contentResolver, SyncTVShows syncTVShows)

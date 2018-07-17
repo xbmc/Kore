@@ -53,6 +53,12 @@ public class KodiPreV17Tests extends AbstractTestClass<RemoteActivity> {
         hostInfo.setKodiVersionMajor(16);
     }
 
+    @Override
+    public void setUp() throws Throwable {
+        setKodiMajorVersion(HostInfo.KODI_V16_JARVIS);
+        super.setUp();
+    }
+
     @Test
     public void infoControlPadButtonLongClickTest() throws InterruptedException {
         onView(withId(R.id.info)).perform(longClick());

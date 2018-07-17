@@ -22,8 +22,11 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.MotionEvents;
 import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.ScrollToAction;
 import android.support.test.espresso.util.HumanReadables;
 import android.support.test.espresso.util.TreeIterables;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -48,6 +51,19 @@ public final class ViewActions {
      */
     public static ViewAction clearFocus() {
         return actionWithAssertions(new ClearFocus());
+    }
+
+    /**
+     * Returns an action that scrolls to the view in a nested scroll view.<br>
+     * <br>
+     * View preconditions:
+     * <ul>
+     * <li>must be a descendant of NestedScrollView
+     * <li>must have visibility set to View.VISIBLE
+     * <ul></ul>
+     */
+    public static ViewAction nestedScrollTo() {
+        return actionWithAssertions(new NestedScrollTo());
     }
 
     public interface CheckStatus {
@@ -140,6 +156,44 @@ public final class ViewActions {
                 }
 
                 MotionEvents.sendUp(uiController, downResultHolder.down, startPos);
+            }
+        };
+    }
+
+    public static ViewAction setCurrentViewPagerItem(final int pageTitleResourceId) {
+        return new ViewAction() {
+
+            @Override
+            public Matcher<View> getConstraints() {
+                return new TypeSafeMatcher<View>() {
+                    @Override
+                    protected boolean matchesSafely(View item) {
+                        return item instanceof ViewPager;
+                    }
+
+                    @Override
+                    public void describeTo(Description description) {
+                        description.appendText("is a SeekBar.");
+                    }
+                };
+            }
+
+            @Override
+            public String getDescription() {
+                return null;
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                ViewPager viewPager = (ViewPager) view;
+                String expectedTitle = view.getResources().getString(pageTitleResourceId);
+                PagerAdapter pagerAdapter = viewPager.getAdapter();
+                for(int i = 0; i < pagerAdapter.getCount(); i++) {
+                    if (expectedTitle.contentEquals(pagerAdapter.getPageTitle(i))) {
+                        viewPager.setCurrentItem(i);
+                        return;
+                    }
+                }
             }
         };
     }

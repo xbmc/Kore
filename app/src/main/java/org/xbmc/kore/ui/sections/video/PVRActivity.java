@@ -40,6 +40,7 @@ public class PVRActivity extends BaseMediaActivity
 
     public static final String CHANNELGROUPID = "channelgroupid";
     public static final String CHANNELGROUPTITLE = "channelgrouptitle";
+    public static final String SINGLECHANNELGROUPTITLE = "singlechannelgrouptitle";
 
     private static final String LISTFRAGMENTTAG = "listfragmenttag";
 
@@ -48,6 +49,8 @@ public class PVRActivity extends BaseMediaActivity
 
     private int selectedChannelGroupId = -1;
     private String selectedChannelGroupTitle = null;
+
+    private boolean singleChannelGroup = false;
 
     @Override
     protected String getActionBarTitle() {
@@ -72,6 +75,8 @@ public class PVRActivity extends BaseMediaActivity
 
             selectedChannelGroupId = savedInstanceState.getInt(CHANNELGROUPID, -1);
             selectedChannelGroupTitle = savedInstanceState.getString(CHANNELGROUPTITLE, null);
+
+            singleChannelGroup = savedInstanceState.getBoolean(SINGLECHANNELGROUPTITLE, false);
         }
         super.onCreate(savedInstanceState);
     }
@@ -84,6 +89,8 @@ public class PVRActivity extends BaseMediaActivity
 
         outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
         outState.putString(CHANNELGROUPTITLE, selectedChannelGroupTitle);
+
+        outState.putBoolean(SINGLECHANNELGROUPTITLE, singleChannelGroup);
     }
 
     @Override
@@ -94,7 +101,7 @@ public class PVRActivity extends BaseMediaActivity
                 if (selectedChannelId != -1) {
                     selectedChannelId = -1;
                     selectedChannelTitle = null;
-                    updateActionBar(getActionBarTitle(), true);
+                    updateActionBar(getActionBarTitle(), !singleChannelGroup);
                     getSupportFragmentManager().popBackStack();
                     return true;
                 } else if (selectedChannelGroupId != -1) {
@@ -123,7 +130,7 @@ public class PVRActivity extends BaseMediaActivity
         if (selectedChannelId != -1) {
             selectedChannelId = -1;
             selectedChannelTitle = null;
-            updateActionBar(getActionBarTitle(), true);
+            updateActionBar(getActionBarTitle(), !singleChannelGroup);
         } else {
             if (selectedChannelGroupId != -1) {
                 selectedChannelGroupId = -1;
@@ -146,9 +153,10 @@ public class PVRActivity extends BaseMediaActivity
      * @param channelTitle Title
      */
     @TargetApi(21)
-    public void onChannelGuideSelected(int channelId, String channelTitle) {
-        selectedChannelId = channelId;
-        selectedChannelTitle = channelTitle;
+    public void onChannelGuideSelected(int channelId, String channelTitle, boolean singleChannelGroup) {
+        this.selectedChannelId = channelId;
+        this.selectedChannelTitle = channelTitle;
+        this.singleChannelGroup = singleChannelGroup;
 
         // Replace list fragment
         PVRChannelEPGListFragment pvrEPGFragment = PVRChannelEPGListFragment.newInstance(channelId);

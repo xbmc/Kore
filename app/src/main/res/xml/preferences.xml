@@ -64,6 +64,14 @@
             android:title="@string/show_notification"
             android:defaultValue="false"/>
 
+        <SwitchPreference
+            android:key="pref_notification_seek_jump"
+            android:dependency="pref_show_notification"
+            android:title="@string/notification_seek_jump"
+            android:summaryOff="@string/notification_seek_jump_speed"
+            android:summaryOn="@string/notification_seek_jump_step"
+            android:defaultValue="false"/>
+
         <SwitchPreferenceCompat
             android:key="pref_pause_during_calls"
             android:title="@string/pause_during_calls"
@@ -75,6 +83,12 @@
             android:title="@string/show_now_playing_panel"
             android:summary="@string/show_now_playing_panel_summary"
             android:defaultValue="true"/>
+
+        <SwitchPreferenceCompat
+            android:key="pref_disable_local_play"
+            android:title="@string/disable_local_playback_support"
+            android:summary="@string/disable_local_playback_support_summary"
+            android:defaultValue="false"/>
 
         <MultiSelectListPreference
             android:key="pref_nav_drawer_items"

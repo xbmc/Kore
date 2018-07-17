@@ -16,7 +16,6 @@
 package org.xbmc.kore.host;
 
 import org.xbmc.kore.jsonrpc.HostConnection;
-import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -55,10 +54,19 @@ public class HostInfo {
 	 */
 	public static final int DEFAULT_EVENT_SERVER_PORT = 9777;
 
-    public static final int DEFAULT_KODI_VERSION_MAJOR = 16;
+	public static final int KODI_V12_FRODO = 12;
+	public static final int KODI_V13_GOTHAM = 13;
+	public static final int KODI_V14_HELIX = 14;
+	public static final int KODI_V15_ISENGARD = 15;
+	public static final int KODI_V16_JARVIS = 16;
+	public static final int KODI_V17_KRYPTON = 17;
+	public static final int KODI_V18_LEIA = 18;
+
+	public static final int DEFAULT_KODI_VERSION_MAJOR = KODI_V16_JARVIS;
     public static final int DEFAULT_KODI_VERSION_MINOR = 1;
     public static final String DEFAULT_KODI_VERSION_REVISION = "Unknown";
     public static final String DEFAULT_KODI_VERSION_TAG = "stable";
+
 
     /**
 	 * Internal id of the host
@@ -289,6 +297,14 @@ public class HostInfo {
 
     public void setKodiVersionTag(String kodiVersionTag) {
         this.kodiVersionTag = kodiVersionTag;
+    }
+
+    public boolean isGothamOrLater() {
+        return kodiVersionMajor >= KODI_V13_GOTHAM;
+    }
+
+    public boolean isKryptonOrLater() {
+        return kodiVersionMajor >= KODI_V17_KRYPTON;
     }
 
     /**

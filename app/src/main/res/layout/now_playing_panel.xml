@@ -52,7 +52,7 @@
                     android:paddingLeft="@dimen/small_padding"
                     android:paddingRight="@dimen/small_padding"
                     android:textAppearance="@style/TextAppearance.Notification.Title"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
                     android:gravity="center_vertical"/>
@@ -64,7 +64,7 @@
                     android:paddingLeft="@dimen/small_padding"
                     android:paddingRight="@dimen/small_padding"
                     android:textAppearance="@style/TextAppearance.Notification.Details"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
                     android:gravity="center_vertical"/>

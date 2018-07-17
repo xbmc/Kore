@@ -18,7 +18,7 @@
     <fade>
         <targets>
             <target android:targetId="@id/art"/>
-            <target android:targetId="@id/pager_tab_strip"/>
+            <target android:targetId="@id/pager"/>
         </targets>
     </fade>
 
@@ -26,7 +26,7 @@
         <targets>
             <target android:excludeId="@id/art"/>
             <target android:excludeId="@id/fab"/>
-            <target android:excludeId="@id/pager_tab_strip"/>
+            <target android:excludeId="@id/pager"/>
         </targets>
     </slide>
 

@@ -130,7 +130,8 @@ public class AddonListFragment extends AbstractListFragment {
     private void callGetAddonsAndSetup() {
         final AddonsAdapter adapter = (AddonsAdapter) getAdapter();
 
-        showRefreshAnimation();
+        UIUtils.showRefreshAnimation(swipeRefreshLayout);
+
         // Get the addon list, this is done asyhnchronously
         String[] properties = new String[] {
                 AddonType.Fields.NAME, AddonType.Fields.VERSION, AddonType.Fields.SUMMARY,
@@ -141,51 +142,52 @@ public class AddonListFragment extends AbstractListFragment {
         };
         Addons.GetAddons action = new Addons.GetAddons(properties);
         action.execute(HostManager.getInstance(getActivity()).getConnection(),
-                       new ApiCallback<List<AddonType.Details>>() {
-                           @Override
-                           public void onSuccess(List<AddonType.Details> result) {
-                               if (!isAdded()) return;
+            new ApiCallback<List<AddonType.Details>>() {
+                @Override
+                public void onSuccess(List<AddonType.Details> result) {
+                    if (!isAdded()) return;
 
-                               for (AddonType.Details addon : result) {
-                                   String regex = "\\[.*?\\]";
-                                   addon.name = addon.name.replaceAll(regex, "");
-                                   addon.description = addon.description.replaceAll(regex, "");
-                                   addon.summary = addon.summary.replaceAll(regex, "");
-                                   addon.author = addon.author.replaceAll(regex, "");
-                               }
-                               Collections.sort(result, new AddonNameComparator());
+                    for (AddonType.Details addon : result) {
+                        String regex = "\\[.*?\\]";
+                        addon.name = addon.name.replaceAll(regex, "");
+                        addon.description = addon.description.replaceAll(regex, "");
+                        addon.summary = addon.summary.replaceAll(regex, "");
+                        addon.author = addon.author.replaceAll(regex, "");
+                    }
+                    Collections.sort(result, new AddonNameComparator());
 
-                               adapter.clear();
-                               for (AddonType.Details addon : result) {
-                                   if (addon.type.equals(AddonType.Types.UNKNOWN) ||
-                                       addon.type.equals(AddonType.Types.XBMC_PYTHON_PLUGINSOURCE) ||
-                                       addon.type.equals(AddonType.Types.XBMC_PYTHON_SCRIPT) ||
-                                       addon.type.equals(AddonType.Types.XBMC_ADDON_AUDIO) ||
-                                       addon.type.equals(AddonType.Types.XBMC_ADDON_EXECUTABLE) ||
-                                       addon.type.equals(AddonType.Types.XBMC_ADDON_VIDEO) ||
-                                       addon.type.equals(AddonType.Types.XBMC_ADDON_IMAGE)) {
-                                       adapter.add(addon);
-                                   }
-                               }
+                    adapter.clear();
+                    for (AddonType.Details addon : result) {
+                        if (addon.type.equals(AddonType.Types.UNKNOWN) ||
+                            addon.type.equals(AddonType.Types.XBMC_PYTHON_PLUGINSOURCE) ||
+                            addon.type.equals(AddonType.Types.XBMC_PYTHON_SCRIPT) ||
+                            addon.type.equals(AddonType.Types.XBMC_ADDON_AUDIO) ||
+                            addon.type.equals(AddonType.Types.XBMC_ADDON_EXECUTABLE) ||
+                            addon.type.equals(AddonType.Types.XBMC_ADDON_VIDEO) ||
+                            addon.type.equals(AddonType.Types.XBMC_ADDON_IMAGE)) {
+                            adapter.add(addon);
+                        }
+                    }
 
-                               adapter.notifyDataSetChanged();
-                               hideRefreshAnimation();
+                    adapter.notifyDataSetChanged();
+                    hideRefreshAnimation();
 
-                               if(adapter.getCount() == 0) {
-                                   getEmptyView().setText(R.string.no_addons_found_refresh);
-                               }
-                           }
+                    if (adapter.getCount() == 0) {
+                        getEmptyView().setText(R.string.no_addons_found_refresh);
+                    }
+                }
 
-                           @Override
-                           public void onError(int errorCode, String description) {
-                               if (!isAdded()) return;
+                @Override
+                public void onError(int errorCode, String description) {
+                    if (!isAdded()) return;
 
-                               Toast.makeText(getActivity(),
-                                              String.format(getString(R.string.error_getting_addon_info), description),
-                                              Toast.LENGTH_SHORT).show();
-                               hideRefreshAnimation();
-                           }
-                       }, callbackHandler);
+                    Toast.makeText(getActivity(),
+                        String.format(getString(R.string.error_getting_addon_info), description),
+                        Toast.LENGTH_SHORT).show();
+                    hideRefreshAnimation();
+                }
+            },
+            callbackHandler);
     }
 
     private class AddonsAdapter extends ArrayAdapter<AddonType.Details> {
