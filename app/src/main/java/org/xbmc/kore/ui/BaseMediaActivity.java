@@ -48,8 +48,8 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
-import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
+import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.ui.widgets.NowPlayingPanel;
 import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
@@ -58,8 +58,8 @@ import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public abstract class BaseMediaActivity extends BaseActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
@@ -141,7 +141,7 @@ public abstract class BaseMediaActivity extends BaseActivity
         if (fragment == null) {
             fragment = createFragment();
 
-            if (Utils.isLollipopAndPreOreo()) {
+            if (Utils.isLollipopOrLater()) {
                 fragment.setExitTransition(null);
                 fragment.setReenterTransition(TransitionInflater
                                                       .from(this)
@@ -154,7 +154,7 @@ public abstract class BaseMediaActivity extends BaseActivity
                     .commit();
         }
 
-        if (Utils.isLollipopAndPreOreo()) {
+        if (Utils.isLollipopOrLater()) {
             sharedElementTransition.setupExitTransition(this, fragment);
         }
 
@@ -265,7 +265,7 @@ public abstract class BaseMediaActivity extends BaseActivity
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
-        if (Utils.isLollipopAndPreOreo()) {
+        if (Utils.isLollipopOrLater()) {
             dataHolder.setPosterTransitionName(sharedImageView.getTransitionName());
             sharedElementTransition.setupEnterTransition(this, fragTrans, fragment, sharedImageView);
         } else {

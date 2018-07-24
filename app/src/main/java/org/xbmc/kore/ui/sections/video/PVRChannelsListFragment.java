@@ -47,8 +47,8 @@ import org.xbmc.kore.utils.UIUtils;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
@@ -96,7 +96,7 @@ public class PVRChannelsListFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_pvr_list, container, false);
         unbinder = ButterKnife.bind(this, root);
 
         if (savedInstanceState != null) {

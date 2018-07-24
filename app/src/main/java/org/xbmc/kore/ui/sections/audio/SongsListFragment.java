@@ -34,7 +34,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -48,6 +47,7 @@ import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -67,7 +67,8 @@ public class SongsListFragment extends AbstractCursorListFragment {
 
     private int artistId = -1;
     private int albumId = -1;
-    private String albumTitle = "";
+    private static String albumTitle = "";
+
 
     private Handler callbackHandler = new Handler();
 
@@ -96,11 +97,21 @@ public class SongsListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     @Override
-    protected CursorAdapter createAdapter() {
+    protected RecyclerViewCursorAdapter createCursorAdapter() {
         if (albumId != -1 ) {
-            return new AlbumSongsAdapter(getActivity());
+            return new AlbumSongsAdapter(getContext(), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopupMenu(v);
+                }
+            });
         } else {
-            return new SongsAdapter(getActivity());
+            return new SongsAdapter(getContext(), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopupMenu(v);
+                }
+            });
         }
     }
 
@@ -234,15 +245,17 @@ public class SongsListFragment extends AbstractCursorListFragment {
         int DISC = 7;
     }
 
-    private class SongsAdapter extends CursorAdapter {
+    private static class SongsAdapter extends RecyclerViewCursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
+        private Context context;
+        private View.OnClickListener contextMenuClickListener;
 
-        public SongsAdapter(Context context) {
-            super(context, null, 0);
+        public SongsAdapter(Context context, View.OnClickListener contextMenuClickListener) {
             this.hostManager = HostManager.getInstance(context);
-
+            this.context = context;
+            this.contextMenuClickListener = contextMenuClickListener;
             // Get the art dimensions
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
@@ -251,46 +264,103 @@ public class SongsListFragment extends AbstractCursorListFragment {
             artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
-        /** {@inheritDoc} */
         @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.grid_item_song, parent, false);
+                                      .inflate(R.layout.grid_item_song, parent, false);
 
-            // Setup View holder pattern
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.title = (TextView)view.findViewById(R.id.title);
-            viewHolder.details = (TextView)view.findViewById(R.id.details);
-            viewHolder.art = (ImageView)view.findViewById(R.id.art);
-            viewHolder.artist = (TextView)view.findViewById(R.id.artist);
-            viewHolder.songInfo = new FileDownloadHelper.SongInfo();
-            viewHolder.contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
+            return new SongViewHolder(view, context, hostManager, artWidth, artHeight,
+                                      contextMenuClickListener);
+        }
+    }
 
-            view.setTag(viewHolder);
-            return view;
+    private static class AlbumSongsAdapter extends RecyclerViewCursorAdapter {
+        private Context context;
+        private View.OnClickListener contextMenuClickListener;
+
+        public AlbumSongsAdapter(Context context, View.OnClickListener contextMenuClickListener) {
+            this.context = context;
+            this.contextMenuClickListener = contextMenuClickListener;
         }
 
-        /** {@inheritDoc} */
         @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            final ViewHolder viewHolder = (ViewHolder)view.getTag();
+        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(context)
+                                      .inflate(R.layout.list_item_song, parent, false);
+
+            return new AlbumViewHolder(view, contextMenuClickListener);
+        }
+    }
+
+    /**
+     * View holder pattern
+     */
+    abstract static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
+        ImageView art;
+        TextView detailsTextView;
+        TextView artistTextView;
+        ImageView contextMenu;
+
+        FileDownloadHelper.SongInfo songInfo;
+
+        ViewHolder(View itemView, View.OnClickListener contextMenuClickListener) {
+            super(itemView);
+            art = itemView.findViewById(R.id.art);
+            artistTextView = itemView.findViewById(R.id.artist);
+            detailsTextView = itemView.findViewById(R.id.details);
+            contextMenu = itemView.findViewById(R.id.list_context_menu);
+            songInfo = new FileDownloadHelper.SongInfo();
+
+            contextMenu.setTag(this);
+            contextMenu.setOnClickListener(contextMenuClickListener);
+        }
+
+        @Override
+        public void bindView(Cursor cursor) {
+            songInfo.songId = cursor.getInt(SongsListQuery.SONGID);
+            songInfo.title = cursor.getString(SongsListQuery.TITLE);
+            songInfo.fileName = cursor.getString(SongsListQuery.FILE);
+            songInfo.track = cursor.getInt(SongsListQuery.TRACK);
+        }
+    }
+
+    public static class SongViewHolder extends ViewHolder {
+        HostManager hostManager;
+        int artWidth;
+        int artHeight;
+        Context context;
+
+        TextView titleTextView;
+
+        SongViewHolder(View itemView, Context context, HostManager hostManager,
+                       int artWidth, int artHeight, View.OnClickListener contextMenuClickListener) {
+            super(itemView, contextMenuClickListener);
+            this.context = context;
+            this.hostManager = hostManager;
+            this.artWidth = artWidth;
+            this.artHeight = artHeight;
+
+            titleTextView = itemView.findViewById(R.id.title);
+        }
+
+        @Override
+        public void bindView(Cursor cursor) {
+            super.bindView(cursor);
 
             String title = cursor.getString(SongsListQuery.TITLE);
+            titleTextView.setText(title);
 
-            viewHolder.title.setText(title);
-
-            String artist = cursor.getString(SongsListQuery.SONGDISPLAYARTIST);
-            viewHolder.artist.setText(artist);
+            artistTextView.setText(cursor.getString(SongsListQuery.SONGDISPLAYARTIST));
 
             String albumTitle = cursor.getString(SongsListQuery.ALBUMTITLE);
             int year = cursor.getInt(SongsListQuery.YEAR);
             if (year > 0) {
-                setDetails(viewHolder.details,
+                setDetails(detailsTextView,
                            albumTitle,
                            String.valueOf(year),
                            cursor.getString(SongsListQuery.GENRE));
             } else {
-                setDetails(viewHolder.details,
+                setDetails(detailsTextView,
                            albumTitle,
                            cursor.getString(SongsListQuery.GENRE));
             }
@@ -298,92 +368,51 @@ public class SongsListFragment extends AbstractCursorListFragment {
             String thumbnail = cursor.getString(SongsListQuery.THUMBNAIL);
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  thumbnail, title,
-                                                 viewHolder.art, artWidth, artHeight);
+                                                 art, artWidth, artHeight);
+        }
 
-            viewHolder.songInfo.artist = artist;
-            viewHolder.songInfo.album = albumTitle;
-            viewHolder.songInfo.songId = cursor.getInt(SongsListQuery.SONGID);
-            viewHolder.songInfo.title = cursor.getString(SongsListQuery.TITLE);
-            viewHolder.songInfo.fileName = cursor.getString(SongsListQuery.FILE);
-            viewHolder.songInfo.track = cursor.getInt(SongsListQuery.TRACK);
+        private void setDetails(TextView textView, String... elements) {
+            if ((elements == null) || (elements.length < 1)) {
+                return;
+            }
 
-            // For the popupmenu
-            viewHolder.contextMenu.setTag(viewHolder);
-            viewHolder.contextMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    showPopupMenu(v);
-                }
-            });
+            ArrayList<String> details = new ArrayList<>();
+            for (int i = 0; i < elements.length; i++) {
+                if (!TextUtils.isEmpty(elements[i]))
+                    details.add(elements[i]);
+            }
+
+            textView.setText(TextUtils.join(" | ", details.toArray()));
         }
     }
 
-    private class AlbumSongsAdapter extends CursorAdapter {
+    public static class AlbumViewHolder extends ViewHolder {
+        TextView trackNumberTextView;
+        TextView titleTextView;
 
-        public AlbumSongsAdapter(Context context) {
-            super(context, null, 0);
+        AlbumViewHolder(View itemView, View.OnClickListener contextMenuClickListener) {
+            super(itemView, contextMenuClickListener);
+            trackNumberTextView = itemView.findViewById(R.id.track_number);
+            titleTextView = itemView.findViewById(R.id.song_title);
         }
 
         @Override
-        public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-            View view = LayoutInflater.from(context)
-                                      .inflate(R.layout.list_item_song, viewGroup, false);
-            // Setup View holder pattern
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.trackNumber = (TextView)view.findViewById(R.id.track_number);
-            viewHolder.title = (TextView)view.findViewById(R.id.song_title);
-            viewHolder.details = (TextView)view.findViewById(R.id.details);
-            viewHolder.contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
-            viewHolder.songInfo = new FileDownloadHelper.SongInfo();
+        public void bindView(Cursor cursor) {
+            super.bindView(cursor);
 
-            view.setTag(viewHolder);
+            trackNumberTextView.setText(String.valueOf(songInfo.track));
 
-            return view;
-        }
-
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
             String artist = cursor.getString(AlbumSongsListQuery.ARTIST);
 
-            ViewHolder vh = (ViewHolder) view.getTag();
+            titleTextView.setText(cursor.getString(AlbumSongsListQuery.TITLE));
 
-            vh.title.setText(cursor.getString(AlbumSongsListQuery.TITLE));
-
-            vh.songInfo.artist = artist;
-            vh.songInfo.album = albumTitle;
-            vh.songInfo.songId = cursor.getInt(SongsListQuery.SONGID);
-            vh.songInfo.title = cursor.getString(SongsListQuery.TITLE);
-            vh.songInfo.fileName = cursor.getString(SongsListQuery.FILE);
-            vh.songInfo.track = cursor.getInt(SongsListQuery.TRACK);
-
-            vh.trackNumber.setText(String.valueOf(vh.songInfo.track));
+            songInfo.artist = artist;
+            songInfo.album = albumTitle;
 
             String duration = UIUtils.formatTime(cursor.getInt(AlbumSongsListQuery.DURATION));
             String detailsText = TextUtils.isEmpty(artist) ? duration : duration + "  |  " + artist;
-            vh.details.setText(detailsText);
-
-            vh.contextMenu.setTag(vh);
-            vh.contextMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    showPopupMenu(v);
-                }
-            });
+            detailsTextView.setText(detailsText);
         }
-    }
-
-    /**
-     * View holder pattern
-     */
-    public static class ViewHolder {
-        ImageView art;
-        TextView title;
-        TextView details;
-        TextView artist;
-        TextView trackNumber;
-        ImageView contextMenu;
-
-        FileDownloadHelper.SongInfo songInfo;
     }
 
     private void showPopupMenu(View v) {
@@ -392,7 +421,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
         final PlaylistType.Item playListItem = new PlaylistType.Item();
         playListItem.songid = viewHolder.songInfo.songId;
 
-        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+        final PopupMenu popupMenu = new PopupMenu(getContext(), v);
         popupMenu.getMenuInflater().inflate(R.menu.song_item, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -407,29 +436,14 @@ public class SongsListFragment extends AbstractCursorListFragment {
                     case R.id.download:
                         ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
                         songInfoList.add(viewHolder.songInfo);
-                        UIUtils.downloadSongs(getActivity(),
+                        UIUtils.downloadSongs(getContext(),
                                               songInfoList,
-                                              HostManager.getInstance(getActivity()).getHostInfo(),
+                                              HostManager.getInstance(getContext()).getHostInfo(),
                                               callbackHandler);
                 }
                 return false;
             }
         });
         popupMenu.show();
-    }
-
-
-    private void setDetails(TextView textView, String... elements) {
-        if ((elements == null) || (elements.length < 1)) {
-            return;
-        }
-
-        ArrayList<String> details = new ArrayList<>();
-        for (int i = 0; i < elements.length; i++) {
-            if (!TextUtils.isEmpty(elements[i]))
-                details.add(elements[i]);
-        }
-
-        textView.setText(TextUtils.join(" | ", details.toArray()));
     }
 }

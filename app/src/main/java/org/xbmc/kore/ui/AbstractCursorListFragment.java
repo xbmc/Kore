@@ -27,6 +27,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -35,8 +36,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -48,6 +47,7 @@ import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
+import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -78,6 +78,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	abstract protected void onListItemClicked(View view);
 	abstract protected CursorLoader createCursorLoader();
+	abstract protected RecyclerViewCursorAdapter createCursorAdapter();
 
 	@TargetApi(16)
 	@Nullable
@@ -136,14 +137,19 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	}
 
 	@Override
-	protected AdapterView.OnItemClickListener createOnItemClickListener() {
-		return new AdapterView.OnItemClickListener() {
+	protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+		return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(View view, int position) {
 				saveSearchState();
 				onListItemClicked(view);
 			}
 		};
+	}
+
+	@Override
+	final protected RecyclerView.Adapter createAdapter() {
+		return createCursorAdapter();
 	}
 
 	@Override
@@ -305,7 +311,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
 		loaderLoading = false;
-		((CursorAdapter) getAdapter()).swapCursor(cursor);
+		((RecyclerViewCursorAdapter) getAdapter()).swapCursor(cursor);
 		if (TextUtils.isEmpty(searchFilter)) {
 			// To prevent the empty text from appearing on the first load, set it now
 			emptyView.setText(getString(R.string.swipe_down_to_refresh));
@@ -316,7 +322,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	/** {@inheritDoc} */
 	@Override
 	public void onLoaderReset(Loader<Cursor> cursorLoader) {
-		((CursorAdapter) getAdapter()).swapCursor(null);
+		((RecyclerViewCursorAdapter) getAdapter()).swapCursor(null);
 	}
 
 	/**

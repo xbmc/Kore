@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -25,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -33,7 +33,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -48,6 +47,7 @@ import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
+import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -162,8 +162,8 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    protected CursorAdapter createAdapter() {
-        return new AlbumsAdapter(getActivity());
+    protected RecyclerViewCursorAdapter createCursorAdapter() {
+        return new AlbumsAdapter(this);
     }
 
     @Override
@@ -263,113 +263,119 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         int RATING = 7;
     }
 
-    private class AlbumsAdapter extends CursorAdapter {
+    private static class AlbumsAdapter extends RecyclerViewCursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
+        private Fragment fragment;
 
-        public AlbumsAdapter(Context context) {
-            super(context, null, 0);
-            this.hostManager = HostManager.getInstance(context);
+        public AlbumsAdapter(Fragment fragment) {
+            this.hostManager = HostManager.getInstance(fragment.getContext());
+            this.fragment = fragment;
 
             // Get the art dimensions
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
-            Resources resources = context.getResources();
+            Resources resources = fragment.getContext().getResources();
             artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
             artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
-        /** {@inheritDoc} */
         @Override
-        public View newView(Context context, final Cursor cursor, ViewGroup parent) {
-            final View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.grid_item_album, parent, false);
+        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(fragment.getContext())
+                                      .inflate(R.layout.grid_item_album, parent, false);
 
-            // Setup View holder pattern
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.titleView = (TextView)view.findViewById(R.id.title);
-            viewHolder.artistView = (TextView)view.findViewById(R.id.name);
-            viewHolder.genresView = (TextView)view.findViewById(R.id.genres);
-            viewHolder.artView = (ImageView)view.findViewById(R.id.art);
-
-            view.setTag(viewHolder);
-            return view;
+            return new ViewHolder(view, fragment.getContext(), hostManager, artWidth, artHeight,
+                                  albumlistItemMenuClickListener);
         }
 
-        /** {@inheritDoc} */
-        @TargetApi(21)
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            final ViewHolder viewHolder = (ViewHolder)view.getTag();
+        private View.OnClickListener albumlistItemMenuClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final ViewHolder viewHolder = (ViewHolder)v.getTag();
 
-            viewHolder.dataHolder.setId(cursor.getInt(AlbumListQuery.ALBUMID));
-            viewHolder.dataHolder.setTitle(cursor.getString(AlbumListQuery.TITLE));
-            viewHolder.dataHolder.setUndertitle(cursor.getString(AlbumListQuery.DISPLAYARTIST));
+                final PlaylistType.Item playListItem = new PlaylistType.Item();
+                playListItem.albumid = viewHolder.dataHolder.getId();
 
-            viewHolder.titleView.setText(viewHolder.dataHolder.getTitle());
-            viewHolder.artistView.setText(viewHolder.dataHolder.getUnderTitle());
-            int year = cursor.getInt(AlbumListQuery.YEAR);
-            String genres = cursor.getString(AlbumListQuery.GENRE);
-            String desc = (genres != null) ?
-                          ((year > 0) ? genres + "  |  " + year : genres) :
-                          String.valueOf(year);
-            viewHolder.dataHolder.setDescription(desc);
-            viewHolder.genresView.setText(desc);
-
-            viewHolder.dataHolder.setPosterUrl(cursor.getString(AlbumListQuery.THUMBNAIL));
-            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                                                 viewHolder.dataHolder.getPosterUrl(),
-                                                 viewHolder.dataHolder.getTitle(),
-                                                 viewHolder.artView, artWidth, artHeight);
-
-            // For the popupmenu
-            ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
-            contextMenu.setTag(viewHolder);
-            contextMenu.setOnClickListener(albumlistItemMenuClickListener);
-
-            if (Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("al"+viewHolder.dataHolder.getId());
+                final PopupMenu popupMenu = new PopupMenu(fragment.getContext(), v);
+                popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_play:
+                                MediaPlayerUtils.play(fragment, playListItem);
+                                return true;
+                            case R.id.action_queue:
+                                MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
             }
-        }
+        };
     }
 
     /**
      * View holder pattern
      */
-    public static class ViewHolder {
+    public static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
         TextView titleView;
         TextView artistView;
         TextView genresView;
         ImageView artView;
+        HostManager hostManager;
+        int artWidth;
+        int artHeight;
+        Context context;
+
         AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
-    }
 
-    private View.OnClickListener albumlistItemMenuClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            final ViewHolder viewHolder = (ViewHolder)v.getTag();
+        ViewHolder(View itemView, Context context, HostManager hostManager, int artWidth, int artHeight,
+                   View.OnClickListener contextMenuClickListener) {
+            super(itemView);
+            this.context = context;
+            this.hostManager = hostManager;
+            this.artWidth = artWidth;
+            this.artHeight = artHeight;
+            titleView = itemView.findViewById(R.id.title);
+            artistView = itemView.findViewById(R.id.name);
+            genresView = itemView.findViewById(R.id.genres);
+            artView = itemView.findViewById(R.id.art);
 
-            final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.albumid = viewHolder.dataHolder.getId();
-
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_play:
-                            MediaPlayerUtils.play(AlbumListFragment.this, playListItem);
-                            return true;
-                        case R.id.action_queue:
-                            MediaPlayerUtils.queue(AlbumListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                            return true;
-                    }
-                    return false;
-                }
-            });
-            popupMenu.show();
+            // For the popupmenu
+            ImageView contextMenu = itemView.findViewById(R.id.list_context_menu);
+            contextMenu.setTag(this);
+            contextMenu.setOnClickListener(contextMenuClickListener);
         }
-    };
+        @Override
+        public void bindView(Cursor cursor) {
+            dataHolder.setId(cursor.getInt(AlbumListQuery.ALBUMID));
+            dataHolder.setTitle(cursor.getString(AlbumListQuery.TITLE));
+            dataHolder.setUndertitle(cursor.getString(AlbumListQuery.DISPLAYARTIST));
+
+            titleView.setText(dataHolder.getTitle());
+            artistView.setText(dataHolder.getUnderTitle());
+            int year = cursor.getInt(AlbumListQuery.YEAR);
+            String genres = cursor.getString(AlbumListQuery.GENRE);
+            String desc = (genres != null) ?
+                          ((year > 0) ? genres + "  |  " + year : genres) :
+                          String.valueOf(year);
+            dataHolder.setDescription(desc);
+            genresView.setText(desc);
+
+            dataHolder.setPosterUrl(cursor.getString(AlbumListQuery.THUMBNAIL));
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 dataHolder.getPosterUrl(),
+                                                 dataHolder.getTitle(),
+                                                 artView, artWidth, artHeight);
+
+            if (Utils.isLollipopOrLater()) {
+                artView.setTransitionName("al"+dataHolder.getId());
+            }
+        }
+    }
 }

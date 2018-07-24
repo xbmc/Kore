@@ -15,6 +15,8 @@
    limitations under the License.
 -->
 
+<!-- TODO: replace gridview with RecyclerViewEmptyViewSupport -->
+
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -27,11 +29,19 @@
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport
+        <GridView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/GridLayoutRecyclerView"/>
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingRight="@dimen/small_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingBottom="@dimen/default_padding"
+            android:clipToPadding="false"
+            android:choiceMode="none"
+            android:listSelector="?attr/selectableItemBackground"
+            android:drawSelectorOnTop="true"
+            style="@style/Widget.GridView"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

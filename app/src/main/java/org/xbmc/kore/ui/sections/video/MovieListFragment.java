@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.video;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -33,7 +32,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,7 +43,8 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
-import org.xbmc.kore.ui.AbstractInfoFragment;
+import org.xbmc.kore.ui.AbstractFragment;
+import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -63,7 +62,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
     // Activity listener
     private OnMovieSelectedListener listenerActivity;
 
-    private boolean showWatchedStatus;
+    private static boolean showWatchedStatus;
 
     @Override
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MOVIES; }
@@ -77,7 +76,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    protected CursorAdapter createAdapter() {
+    protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new MoviesAdapter(getActivity());
     }
 
@@ -310,15 +309,13 @@ public class MovieListFragment extends AbstractCursorListFragment {
         int PLAYCOUNT = 9;
     }
 
-    private class MoviesAdapter extends CursorAdapter {
+    private class MoviesAdapter extends RecyclerViewCursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
         private int themeAccentColor;
 
-        public MoviesAdapter(Context context) {
-            super(context, null, 0);
-
+        MoviesAdapter(Context context) {
             // Get the default accent color
             Resources.Theme theme = context.getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
@@ -340,83 +337,90 @@ public class MovieListFragment extends AbstractCursorListFragment {
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
-        /** {@inheritDoc} */
         @Override
-        public View newView(Context context, final Cursor cursor, ViewGroup parent) {
-            final View view = LayoutInflater.from(context)
+        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            final View view = LayoutInflater.from(getContext())
                                             .inflate(R.layout.grid_item_movie, parent, false);
 
-            // Setup View holder pattern
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.titleView = (TextView)view.findViewById(R.id.title);
-            viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
-            viewHolder.durationView = (TextView)view.findViewById(R.id.duration);
-            viewHolder.checkmarkView = (ImageView)view.findViewById(R.id.checkmark);
-            viewHolder.artView = (ImageView)view.findViewById(R.id.art);
-
-            view.setTag(viewHolder);
-            return view;
-        }
-
-        /** {@inheritDoc} */
-        @TargetApi(21)
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            final ViewHolder viewHolder = (ViewHolder)view.getTag();
-
-            // Save the movie id
-            viewHolder.dataHolder.setId(cursor.getInt(MovieListQuery.MOVIEID));
-            viewHolder.dataHolder.setTitle(cursor.getString(MovieListQuery.TITLE));
-            viewHolder.dataHolder.setUndertitle(cursor.getString(MovieListQuery.TAGLINE));
-
-            int movieYear = cursor.getInt(MovieListQuery.YEAR);
-            viewHolder.dataHolder.setRating(cursor.getDouble(MovieListQuery.RATING));
-            viewHolder.dataHolder.setMaxRating(10);
-
-            viewHolder.titleView.setText(viewHolder.dataHolder.getTitle());
-
-            String genres = cursor.getString(MovieListQuery.GENRES);
-            String details = TextUtils.isEmpty(viewHolder.dataHolder.getUnderTitle()) ?
-                             genres : viewHolder.dataHolder.getUnderTitle();
-            viewHolder.detailsView.setText(details);
-
-            int runtime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
-            String duration =  runtime > 0 ?
-                               String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                               "  |  " + movieYear :
-                               String.valueOf(movieYear);
-            viewHolder.durationView.setText(duration);
-            viewHolder.dataHolder.setDetails(duration + "\n" + details);
-
-            viewHolder.dataHolder.setPosterUrl(cursor.getString(MovieListQuery.THUMBNAIL));
-            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                                                 viewHolder.dataHolder.getPosterUrl(),
-                                                 viewHolder.dataHolder.getTitle(),
-                                                 viewHolder.artView, artWidth, artHeight);
-
-            if (showWatchedStatus && (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0)) {
-                viewHolder.checkmarkView.setVisibility(View.VISIBLE);
-                viewHolder.checkmarkView.setColorFilter(themeAccentColor);
-            } else {
-                viewHolder.checkmarkView.setVisibility(View.INVISIBLE);
-            }
-
-            if (Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("a" + viewHolder.dataHolder.getId());
-            }
+            return new ViewHolder(view, getContext(), themeAccentColor, hostManager, artWidth, artHeight);
         }
     }
 
     /**
      * View holder pattern
      */
-    public static class ViewHolder {
+    public static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
         TextView titleView;
         TextView detailsView;
         TextView durationView;
         ImageView checkmarkView;
         ImageView artView;
+        HostManager hostManager;
+        int artWidth;
+        int artHeight;
+        Context context;
+        int themeAccentColor;
 
-        AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
+        AbstractFragment.DataHolder dataHolder = new AbstractFragment.DataHolder(0);
+
+        ViewHolder(View itemView, Context context, int themeAccentColor,
+                   HostManager hostManager,
+                   int artWidth, int artHeight) {
+            super(itemView);
+            this.context = context;
+            this.themeAccentColor = themeAccentColor;
+            this.hostManager = hostManager;
+            this.artWidth = artWidth;
+            this.artHeight = artHeight;
+            titleView = itemView.findViewById(R.id.title);
+            detailsView = itemView.findViewById(R.id.details);
+            durationView = itemView.findViewById(R.id.duration);
+            checkmarkView = itemView.findViewById(R.id.checkmark);
+            artView = itemView.findViewById(R.id.art);
+        }
+
+        @Override
+        public void bindView(Cursor cursor) {
+            // Save the movie id
+            dataHolder.setId(cursor.getInt(MovieListQuery.MOVIEID));
+            dataHolder.setTitle(cursor.getString(MovieListQuery.TITLE));
+            dataHolder.setUndertitle(cursor.getString(MovieListQuery.TAGLINE));
+
+            int movieYear = cursor.getInt(MovieListQuery.YEAR);
+            dataHolder.setRating(cursor.getDouble(MovieListQuery.RATING));
+            dataHolder.setMaxRating(10);
+
+            titleView.setText(dataHolder.getTitle());
+
+            String genres = cursor.getString(MovieListQuery.GENRES);
+            String details = TextUtils.isEmpty(dataHolder.getUnderTitle()) ?
+                             genres : dataHolder.getUnderTitle();
+            detailsView.setText(details);
+
+            int runtime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
+            String duration =  runtime > 0 ?
+                               String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                               "  |  " + movieYear :
+                               String.valueOf(movieYear);
+            durationView.setText(duration);
+            dataHolder.setDetails(duration + "\n" + details);
+
+            dataHolder.setPosterUrl(cursor.getString(MovieListQuery.THUMBNAIL));
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 dataHolder.getPosterUrl(),
+                                                 dataHolder.getTitle(),
+                                                 artView, artWidth, artHeight);
+
+            if (showWatchedStatus && (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0)) {
+                checkmarkView.setVisibility(View.VISIBLE);
+                checkmarkView.setColorFilter(themeAccentColor);
+            } else {
+                checkmarkView.setVisibility(View.INVISIBLE);
+            }
+
+            if (Utils.isLollipopOrLater()) {
+                artView.setTransitionName("a" + dataHolder.getId());
+            }
+        }
     }
 }

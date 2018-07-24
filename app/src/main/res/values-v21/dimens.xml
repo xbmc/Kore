@@ -16,6 +16,8 @@
 -->
 <resources>
     <!-- Default spacing because cardview on lollipop doesn't add padding -->
-    <dimen name="default_grid_horizontal_spacing">8dp</dimen>
-    <dimen name="default_grid_vertical_spacing">8dp</dimen>
+    <dimen name="default_grid_horizontal_spacing">4dp</dimen>
+    <dimen name="default_grid_vertical_spacing">4dp</dimen>
+
+    <dimen name="default_card_margin">8dp</dimen>
 </resources>

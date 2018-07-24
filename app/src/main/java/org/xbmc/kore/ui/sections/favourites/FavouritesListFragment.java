@@ -23,13 +23,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,13 +41,13 @@ import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.type.FavouriteType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
+import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.ButterKnife;
 
 public class FavouritesListFragment extends AbstractListFragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "FavouritesListFragment";
@@ -63,7 +61,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
     }
 
     @Override
-    protected AdapterView.OnItemClickListener createOnItemClickListener() {
+    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
         final ApiCallback<String> genericApiCallback = new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -75,9 +73,9 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
                 Toast.makeText(getActivity(), description, Toast.LENGTH_SHORT).show();
             }
         };
-        return new AdapterView.OnItemClickListener() {
+        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(View view, int position) {
                 final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
                 final HostManager hostManager = HostManager.getInstance(getActivity());
 
@@ -105,7 +103,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
     }
 
     @Override
-    protected BaseAdapter createAdapter() {
+    protected RecyclerView.Adapter createAdapter() {
         return new FavouritesAdapter(getActivity(), HostManager.getInstance(getActivity()));
     }
 
@@ -126,7 +124,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
 
                 // To prevent the empty text from appearing on the first load, set it now
                 getEmptyView().setText(getString(R.string.no_channels_found_refresh));
-                setupFavouritesList(result.items);
+                ((FavouritesAdapter) getAdapter()).setFavouriteItems(result.items);
                 hideRefreshAnimation();
             }
 
@@ -143,25 +141,15 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
         }, callbackHandler);
     }
 
-    /**
-     * Called to set the GridView with the favourites that are coming from the host.
-     *
-     * @param favourites the favourites list that is supplied to the GridView.
-     */
-    private void setupFavouritesList(List<FavouriteType.DetailsFavourite> favourites) {
-        final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
-        favouritesAdapter.clear();
-        favouritesAdapter.addAll(favourites);
-        favouritesAdapter.notifyDataSetChanged();
-    }
-
-    private static class FavouritesAdapter extends ArrayAdapter<FavouriteType.DetailsFavourite> {
+    private static class FavouritesAdapter extends RecyclerView.Adapter {
 
         private final HostManager hostManager;
         private final int artWidth, artHeight;
+        private Context context;
+        private ArrayList<FavouriteType.DetailsFavourite> favouriteItems = new ArrayList<>();
 
         FavouritesAdapter(@NonNull Context context, HostManager hostManager) {
-            super(context, R.layout.grid_item_channel);
+            this.context = context;
             this.hostManager = hostManager;
             Resources resources = context.getResources();
             artWidth = (int) (resources.getDimension(R.dimen.channellist_art_width) /
@@ -170,23 +158,59 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
                     UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
-        @NonNull
+        public void setFavouriteItems(List<FavouriteType.DetailsFavourite> favouriteItems) {
+            this.favouriteItems.clear();
+            this.favouriteItems.addAll(favouriteItems);
+            notifyDataSetChanged();
+        }
+
+        public FavouriteType.DetailsFavourite getItem(int position) {
+            return favouriteItems.get(position);
+        }
+
         @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_channel,
-                        parent, false);
-                final FavouriteItemViewHolder vh = new FavouriteItemViewHolder(convertView);
-                convertView.setTag(vh);
-            }
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(context).inflate(R.layout.grid_item_channel,
+                                                                    parent, false);
+            return new ViewHolder(view, context, hostManager, artWidth, artHeight);
+        }
 
-            final FavouriteItemViewHolder vh = (FavouriteItemViewHolder) convertView.getTag();
-            final FavouriteType.DetailsFavourite favouriteDetail = getItem(position);
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            ((ViewHolder) holder).bindView(favouriteItems.get(position));
+        }
 
-            // We don't need the context menu here.
-            vh.contextMenu.setVisibility(View.GONE);
+        @Override
+        public int getItemCount() {
+            return favouriteItems.size();
+        }
+    }
 
-            vh.titleView.setText(favouriteDetail.title);
+    private static class ViewHolder extends RecyclerView.ViewHolder {
+        final ImageView artView;
+        final TextView titleView;
+        final TextView detailView;
+        HostManager hostManager;
+        int artWidth;
+        int artHeight;
+        Context context;
+
+        ViewHolder(View itemView, Context context, HostManager hostManager, int artWidth, int artHeight) {
+            super(itemView);
+            this.context = context;
+            this.hostManager = hostManager;
+            this.artWidth = artWidth;
+            this.artHeight = artHeight;
+            artView = itemView.findViewById(R.id.art);
+            titleView = itemView.findViewById(R.id.title);
+            detailView = itemView.findViewById(R.id.details);
+
+            View contextMenu = itemView.findViewById(R.id.list_context_menu);
+            contextMenu.setVisibility(View.GONE);
+        }
+
+        void bindView(FavouriteType.DetailsFavourite favouriteDetail) {
+            titleView.setText(favouriteDetail.title);
 
             @StringRes final int typeRes;
             switch (favouriteDetail.type) {
@@ -202,27 +226,11 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
                 default:
                     typeRes = R.string.unknown;
             }
-            vh.detailView.setText(typeRes);
+            detailView.setText(typeRes);
 
-            UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
-                    favouriteDetail.thumbnail, favouriteDetail.title,
-                    vh.artView, artWidth, artHeight);
-
-            return convertView;
-        }
-    }
-
-    private static class FavouriteItemViewHolder {
-        final ImageView artView;
-        final ImageView contextMenu;
-        final TextView titleView;
-        final TextView detailView;
-
-        FavouriteItemViewHolder(View v) {
-            artView = ButterKnife.findById(v, R.id.art);
-            contextMenu = ButterKnife.findById(v, R.id.list_context_menu);
-            titleView = ButterKnife.findById(v, R.id.title);
-            detailView = ButterKnife.findById(v, R.id.details);
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 favouriteDetail.thumbnail, favouriteDetail.title,
+                                                 artView, artWidth, artHeight);
         }
     }
 }

@@ -23,43 +23,37 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.Utils;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public abstract class AbstractListFragment extends Fragment implements
 															SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
-	private BaseAdapter adapter;
+	private RecyclerView.Adapter adapter;
 
-	private final String BUNDLE_SAVEDINSTANCE_LISTPOSITION = "lposition";
-
-	private boolean gridViewUsesMultipleColumns;
 	private Unbinder unbinder;
 
 	protected @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-	@BindView(R.id.list) GridView gridView;
+	@BindView(R.id.list) RecyclerViewEmptyViewSupport recyclerView;
 	@BindView(android.R.id.empty) TextView emptyView;
 
-	abstract protected AdapterView.OnItemClickListener createOnItemClickListener();
-	abstract protected BaseAdapter createAdapter();
+	abstract protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener();
+	abstract protected RecyclerViewEmptyViewSupport.Adapter createAdapter();
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,40 +70,18 @@ public abstract class AbstractListFragment extends Fragment implements
 
 		swipeRefreshLayout.setOnRefreshListener(this);
 
-		gridView.setEmptyView(emptyView);
-		gridView.setOnItemClickListener(createOnItemClickListener());
-		gridView.setAdapter(adapter);
+		recyclerView.setEmptyView(emptyView);
+		recyclerView.setOnItemClickListener(createOnItemClickListener());
 
-		if (savedInstanceState != null) {
-			final int listPosition = savedInstanceState.getInt(BUNDLE_SAVEDINSTANCE_LISTPOSITION);
-			gridView.post(new Runnable() {
-				@Override
-				public void run() {
-					gridView.setSelection(listPosition);
-				}
-			});
+		if (PreferenceManager
+				.getDefaultSharedPreferences(getActivity())
+				.getBoolean(Settings.KEY_PREF_SINGLE_COLUMN,
+							Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
+			recyclerView.setColumnCount(1);
 		}
 
-		//Listener added to be able to determine if multiple-columns is at all possible for the current grid
-		//We use this information to enable/disable the menu item to switch between multiple and single columns
-		gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-			@Override
-			public void onGlobalLayout() {
-				if (gridView.getNumColumns() > 1) {
-					gridViewUsesMultipleColumns = true;
-				}
-
-				if (Utils.isJellybeanOrLater()) {
-					gridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-				} else {
-					gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-				}
-
-				//Make sure menu is update	d if it was already created
-				getActivity().invalidateOptionsMenu();
-			}
-		});
-
+		recyclerView.setAdapter(adapter);
+		
 		setHasOptionsMenu(true);
 
 		return root;
@@ -122,33 +94,22 @@ public abstract class AbstractListFragment extends Fragment implements
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (gridView != null) {
-			outState.putInt(BUNDLE_SAVEDINSTANCE_LISTPOSITION, gridView.getFirstVisiblePosition());
-		}
-	}
-
-	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.abstractlistfragment, menu);
 
-		if(gridViewUsesMultipleColumns) {
+		if(recyclerView.isMultiColumnSupported()) {
 			if (PreferenceManager
 					.getDefaultSharedPreferences(getActivity())
 					.getBoolean(Settings.KEY_PREF_SINGLE_COLUMN,
 								Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
-				gridView.setNumColumns(1);
+				recyclerView.setColumnCount(1);
 				adapter.notifyDataSetChanged();
 
 				MenuItem item = menu.findItem(R.id.action_multi_single_columns);
 				item.setTitle(R.string.multi_column);
 			}
 		} else {
-			//Default number of columns for GridView is set to AUTO_FIT.
-			//When this leads to a single column it is not possible
-			//to switch to multiple columns. We therefore disable
-			//the menu item.
+			//Disable menu item when mult-column is not supported
 			MenuItem item = menu.findItem(R.id.action_multi_single_columns);
 			item.setTitle(R.string.multi_column);
 			item.setEnabled(false);
@@ -170,14 +131,14 @@ public abstract class AbstractListFragment extends Fragment implements
 	private void toggleAmountOfColumns(MenuItem item) {
 		SharedPreferences.Editor editor = PreferenceManager
 				.getDefaultSharedPreferences(getActivity()).edit();
-		if (gridView.getNumColumns() == 1) {
+		if (recyclerView.getColumnCount() == 1) {
 			editor.putBoolean(Settings.KEY_PREF_SINGLE_COLUMN, false);
 			item.setTitle(R.string.single_column);
-			gridView.setNumColumns(GridView.AUTO_FIT);
+			recyclerView.setColumnCount(RecyclerViewEmptyViewSupport.AUTO_FIT);
 		} else {
 			editor.putBoolean(Settings.KEY_PREF_SINGLE_COLUMN, true);
 			item.setTitle(R.string.multi_column);
-			gridView.setNumColumns(1);
+			recyclerView.setColumnCount(1);
 		}
 		editor.apply();
 		adapter.notifyDataSetChanged(); //force gridView to redraw
@@ -187,7 +148,7 @@ public abstract class AbstractListFragment extends Fragment implements
 		swipeRefreshLayout.setRefreshing(false);
 	}
 
-	public BaseAdapter getAdapter() {
+	public RecyclerView.Adapter getAdapter() {
 		return adapter;
 	}
 

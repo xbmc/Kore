@@ -37,6 +37,7 @@
 
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="default_card_elevation">2dp</dimen>
+    <dimen name="default_card_margin">2dp</dimen>
 
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_medium">14sp</dimen>

@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.video;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -34,7 +33,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,6 +46,7 @@ import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
+import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -65,7 +64,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     // Activity listener
     private OnTVShowSelectedListener listenerActivity;
 
-    private boolean showWatchedStatus;
+    private static boolean showWatchedStatus;
 
     @Override
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_TVSHOWS; }
@@ -79,7 +78,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    protected CursorAdapter createAdapter() {
+    protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new TVShowsAdapter(getActivity());
     }
 
@@ -309,7 +308,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         int GENRES = 13;
     }
 
-    private class TVShowsAdapter extends CursorAdapter {
+    private class TVShowsAdapter extends RecyclerViewCursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
@@ -317,8 +316,6 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 inProgressColor, finishedColor;
 
         public TVShowsAdapter(Context context) {
-            super(context, null, 0);
-
             // Get the default accent color
             Resources.Theme theme = context.getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
@@ -344,82 +341,98 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
-        /** {@inheritDoc} */
         @Override
-        public View newView(Context context, final Cursor cursor, ViewGroup parent) {
-            final View view = LayoutInflater.from(context)
+        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            final View view = LayoutInflater.from(getContext())
                                             .inflate(R.layout.grid_item_tvshow, parent, false);
 
             // Setup View holder pattern
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.titleView = (TextView)view.findViewById(R.id.title);
-            viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
-            viewHolder.premieredView = (TextView)view.findViewById(R.id.premiered);
-            viewHolder.artView = (ImageView)view.findViewById(R.id.art);
-            viewHolder.watchedProgressView = (ProgressBar)view.findViewById(R.id.tv_shows_progress_bar);
+            ViewHolder viewHolder = new ViewHolder(view, getContext(),
+                                                   themeAccentColor, inProgressColor, finishedColor,
+                                                   hostManager,
+                                                   artWidth, artHeight);
 
-            view.setTag(viewHolder);
-            return view;
-        }
-
-        /** {@inheritDoc} */
-        @TargetApi(21)
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            final ViewHolder vh = (ViewHolder)view.getTag();
-
-            // Save the movie id
-            vh.dataHolder.setId(cursor.getInt(TVShowListQuery.TVSHOWID));
-            vh.dataHolder.setTitle(cursor.getString(TVShowListQuery.TITLE));
-            vh.dataHolder.setDescription(cursor.getString(TVShowListQuery.PLOT));
-            vh.dataHolder.setRating(cursor.getInt(TVShowListQuery.RATING));
-            int numEpisodes = cursor.getInt(TVShowListQuery.EPISODE);
-            int watchedEpisodes = cursor.getInt(TVShowListQuery.WATCHEDEPISODES);
-
-            vh.titleView.setText(vh.dataHolder.getTitle());
-            String details = String.format(context.getString(R.string.num_episodes),
-                                           numEpisodes, numEpisodes - watchedEpisodes);
-            vh.detailsView.setText(details);
-            vh.dataHolder.setUndertitle(details);
-
-            String premiered = String.format(context.getString(R.string.premiered),
-                                             cursor.getString(TVShowListQuery.PREMIERED));
-            vh.premieredView.setText(premiered);
-            vh.dataHolder.setDetails(premiered);
-            vh.dataHolder.setPosterUrl(cursor.getString(TVShowListQuery.THUMBNAIL));
-            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                                                 vh.dataHolder.getPosterUrl(),
-                                                 vh.dataHolder.getTitle(),
-                                                 vh.artView, artWidth, artHeight);
-
-            if (showWatchedStatus) {
-                vh.watchedProgressView.setVisibility(View.VISIBLE);
-                vh.watchedProgressView.setMax(numEpisodes);
-                vh.watchedProgressView.setProgress(watchedEpisodes);
-            } else {
-                vh.watchedProgressView.setVisibility(View.INVISIBLE);
-            }
-
-            if (Utils.isLollipopOrLater()) {
-                if (showWatchedStatus) {
-                    int watchedColor = (numEpisodes - watchedEpisodes == 0)? finishedColor : inProgressColor;
-                    vh.watchedProgressView.setProgressTintList(ColorStateList.valueOf(watchedColor));
-                }
-                vh.artView.setTransitionName("a" + vh.dataHolder.getId());
-            }
+            return viewHolder;
         }
     }
 
     /**
      * View holder pattern
      */
-    public static class ViewHolder {
+    public static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
         TextView titleView;
         TextView detailsView;
         TextView premieredView;
         ImageView artView;
         ProgressBar watchedProgressView;
+        Context context;
+        int themeAccentColor, inProgressColor, finishedColor;
+        HostManager hostManager;
+        int artWidth;
+        int artHeight;
 
         AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
+
+        ViewHolder(View itemView, Context context,
+                   int themeAccentColor, int inProgressColor, int finishedColor,
+                   HostManager hostManager,
+                   int artWidth, int artHeight) {
+            super(itemView);
+            this.hostManager = hostManager;
+            this.context = context;
+            this.artHeight = artHeight;
+            this.artWidth = artWidth;
+            this.themeAccentColor = themeAccentColor;
+            this.inProgressColor = inProgressColor;
+            this.finishedColor = finishedColor;
+            titleView = itemView.findViewById(R.id.title);
+            detailsView = itemView.findViewById(R.id.details);
+            premieredView = itemView.findViewById(R.id.premiered);
+            artView = itemView.findViewById(R.id.art);
+            watchedProgressView = itemView.findViewById(R.id.tv_shows_progress_bar);
+        }
+
+        @Override
+        public void bindView(Cursor cursor) {
+            // Save the movie id
+            dataHolder.setId(cursor.getInt(TVShowListQuery.TVSHOWID));
+            dataHolder.setTitle(cursor.getString(TVShowListQuery.TITLE));
+            dataHolder.setDescription(cursor.getString(TVShowListQuery.PLOT));
+            dataHolder.setRating(cursor.getInt(TVShowListQuery.RATING));
+            int numEpisodes = cursor.getInt(TVShowListQuery.EPISODE);
+            int watchedEpisodes = cursor.getInt(TVShowListQuery.WATCHEDEPISODES);
+
+            titleView.setText(dataHolder.getTitle());
+            String details = String.format(context.getString(R.string.num_episodes),
+                                           numEpisodes, numEpisodes - watchedEpisodes);
+            detailsView.setText(details);
+            dataHolder.setUndertitle(details);
+
+            String premiered = String.format(context.getString(R.string.premiered),
+                                             cursor.getString(TVShowListQuery.PREMIERED));
+            premieredView.setText(premiered);
+            dataHolder.setDetails(premiered);
+            dataHolder.setPosterUrl(cursor.getString(TVShowListQuery.THUMBNAIL));
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 dataHolder.getPosterUrl(),
+                                                 dataHolder.getTitle(),
+                                                 artView, artWidth, artHeight);
+
+            if (showWatchedStatus) {
+                watchedProgressView.setVisibility(View.VISIBLE);
+                watchedProgressView.setMax(numEpisodes);
+                watchedProgressView.setProgress(watchedEpisodes);
+            } else {
+                watchedProgressView.setVisibility(View.INVISIBLE);
+            }
+
+            if (Utils.isLollipopOrLater()) {
+                if (showWatchedStatus) {
+                    int watchedColor = (numEpisodes - watchedEpisodes == 0)? finishedColor : inProgressColor;
+                    watchedProgressView.setProgressTintList(ColorStateList.valueOf(watchedColor));
+                }
+                artView.setTransitionName("a" + dataHolder.getId());
+            }
+        }
     }
 }

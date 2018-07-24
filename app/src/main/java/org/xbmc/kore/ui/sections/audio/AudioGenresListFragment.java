@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -39,6 +38,7 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -68,7 +68,7 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    protected CursorAdapter createAdapter() {
+    protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new AudioGenresAdapter(getActivity());
     }
 
@@ -125,13 +125,12 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
         final int THUMBNAIL = 3;
     }
 
-    private class AudioGenresAdapter extends CursorAdapter {
+    private class AudioGenresAdapter extends RecyclerViewCursorAdapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
 
         public AudioGenresAdapter(Context context) {
-            super(context, null, 0);
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
@@ -142,52 +141,56 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
                              UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
-        /** {@inheritDoc} */
         @Override
-        public View newView(Context context, final Cursor cursor, ViewGroup parent) {
-            final View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.grid_item_audio_genre, parent, false);
+        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(getContext())
+                                      .inflate(R.layout.grid_item_audio_genre, parent, false);
 
-            // Setup View holder pattern
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.titleView = (TextView)view.findViewById(R.id.title);
-            viewHolder.artView = (ImageView)view.findViewById(R.id.art);
-
-            view.setTag(viewHolder);
-            return view;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            final ViewHolder viewHolder = (ViewHolder)view.getTag();
-
-            viewHolder.genreId = cursor.getInt(AudioGenreListQuery.GENREID);
-            viewHolder.genreTitle = cursor.getString(AudioGenreListQuery.TITLE);
-
-            viewHolder.titleView.setText(viewHolder.genreTitle);
-
-            String thumbnail = cursor.getString(AudioGenreListQuery.THUMBNAIL);
-            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                    thumbnail, viewHolder.genreTitle,
-                    viewHolder.artView, artWidth, artHeight);
-
-            // For the popupmenu
-            ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
-            contextMenu.setTag(viewHolder);
-            contextMenu.setOnClickListener(genrelistItemMenuClickListener);
+            return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight, genrelistItemMenuClickListener);
         }
     }
 
     /**
      * View holder pattern
      */
-    private static class ViewHolder {
+    private static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
         TextView titleView;
         ImageView artView;
-
+        HostManager hostManager;
+        int artWidth;
+        int artHeight;
+        Context context;
         int genreId;
         String genreTitle;
+
+        ViewHolder(View itemView, Context context, HostManager hostManager, int artWidth, int artHeight,
+                   View.OnClickListener contextMenuClickListener) {
+            super(itemView);
+            this.context = context;
+            this.hostManager = hostManager;
+            this.artWidth = artWidth;
+            this.artHeight = artHeight;
+            titleView = itemView.findViewById(R.id.title);
+            artView = itemView.findViewById(R.id.art);
+
+            ImageView contextMenu = itemView.findViewById(R.id.list_context_menu);
+            contextMenu.setTag(this);
+            contextMenu.setOnClickListener(contextMenuClickListener);
+        }
+
+        @Override
+        public void bindView(Cursor cursor) {
+            genreId = cursor.getInt(AudioGenreListQuery.GENREID);
+            genreTitle = cursor.getString(AudioGenreListQuery.TITLE);
+
+            titleView.setText(genreTitle);
+
+            String thumbnail = cursor.getString(AudioGenreListQuery.THUMBNAIL);
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 thumbnail, genreTitle, artView, artWidth, artHeight);
+
+
+        }
     }
 
     private View.OnClickListener genrelistItemMenuClickListener = new View.OnClickListener() {
