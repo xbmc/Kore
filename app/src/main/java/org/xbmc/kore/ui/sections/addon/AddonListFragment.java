@@ -15,18 +15,15 @@
  */
 package org.xbmc.kore.ui.sections.addon;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,10 +35,12 @@ import org.xbmc.kore.jsonrpc.method.Addons;
 import org.xbmc.kore.jsonrpc.type.AddonType;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.AbstractListFragment;
+import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -65,10 +64,10 @@ public class AddonListFragment extends AbstractListFragment {
     private Handler callbackHandler = new Handler();
 
     @Override
-    protected AdapterView.OnItemClickListener createOnItemClickListener() {
-        return new AdapterView.OnItemClickListener() {
+    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(View view, int position) {
                 // Get the movie id from the tag
                 ViewHolder tag = (ViewHolder) view.getTag();
                 // Notify the activity
@@ -77,10 +76,9 @@ public class AddonListFragment extends AbstractListFragment {
         };
     }
 
-
     @Override
-    protected BaseAdapter createAdapter() {
-        return new AddonsAdapter(getActivity(), R.layout.grid_item_addon);
+    protected RecyclerView.Adapter createAdapter() {
+        return new AddonsAdapter(getActivity());
     }
 
     @Override
@@ -88,7 +86,7 @@ public class AddonListFragment extends AbstractListFragment {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(false);
 
-        if (getAdapter().getCount() == 0)
+        if (getAdapter().getItemCount() == 0)
             callGetAddonsAndSetup();
     }
 
@@ -172,7 +170,7 @@ public class AddonListFragment extends AbstractListFragment {
                     adapter.notifyDataSetChanged();
                     hideRefreshAnimation();
 
-                    if (adapter.getCount() == 0) {
+                    if (adapter.getItemCount() == 0) {
                         getEmptyView().setText(R.string.no_addons_found_refresh);
                     }
                 }
@@ -190,15 +188,16 @@ public class AddonListFragment extends AbstractListFragment {
             callbackHandler);
     }
 
-    private class AddonsAdapter extends ArrayAdapter<AddonType.Details> {
+    private static class AddonsAdapter extends RecyclerView.Adapter {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
-        private String author;
-        private String version;
+        private Context context;
 
-        public AddonsAdapter(Context context, int resource) {
-            super(context, resource);
+        private ArrayList<AddonType.Details> items = new ArrayList<>();
+
+        public AddonsAdapter(Context context) {
+            this.context = context;
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
@@ -207,63 +206,96 @@ public class AddonListFragment extends AbstractListFragment {
             Resources resources = context.getResources();
             artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
             artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
-
-            author = context.getString(R.string.author);
-            version = context.getString(R.string.version);
         }
 
-        /** {@inheritDoc} */
-        @TargetApi(21)
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getActivity())
-                                            .inflate(R.layout.grid_item_addon, parent, false);
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(context)
+                                        .inflate(R.layout.grid_item_addon, parent, false);
 
-                // Setup View holder pattern
-                ViewHolder viewHolder = new ViewHolder();
-                viewHolder.titleView = (TextView)convertView.findViewById(R.id.title);
-                viewHolder.detailsView = (TextView)convertView.findViewById(R.id.details);
-                viewHolder.artView = (ImageView)convertView.findViewById(R.id.art);
-                convertView.setTag(viewHolder);
-            }
+            return new ViewHolder(view, context, hostManager, artWidth, artHeight);
+        }
 
-            final ViewHolder viewHolder = (ViewHolder)convertView.getTag();
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             AddonType.Details addonDetails = this.getItem(position);
+            ((ViewHolder) holder).onBind(addonDetails);
+        }
 
-            viewHolder.dataHolder.setTitle(addonDetails.name);
-            viewHolder.dataHolder.setDescription(addonDetails.description);
-            viewHolder.dataHolder.setUndertitle(addonDetails.summary);
-            viewHolder.dataHolder.setFanArtUrl(addonDetails.fanart);
-            viewHolder.dataHolder.setPosterUrl(addonDetails.thumbnail);
-            viewHolder.dataHolder.setDetails(author + " " + addonDetails.author + "\n" +
-                                             version + " " +addonDetails.version);
-            viewHolder.dataHolder.getBundle().putString(AddonInfoFragment.BUNDLE_KEY_ADDONID, addonDetails.addonid);
-            viewHolder.dataHolder.getBundle().putBoolean(AddonInfoFragment.BUNDLE_KEY_BROWSABLE,
-                                                         AddonType.Types.XBMC_PYTHON_PLUGINSOURCE.equals(addonDetails.type));
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
 
-            viewHolder.titleView.setText(viewHolder.dataHolder.getTitle());
-            viewHolder.detailsView.setText(addonDetails.summary);
+        public void clear() {
+            items.clear();
+        }
 
-            UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
-                                                 addonDetails.thumbnail, viewHolder.dataHolder.getTitle(),
-                                                 viewHolder.artView, artWidth, artHeight);
+        public void add(AddonType.Details item) {
+            items.add(item);
+        }
 
-            if(Utils.isLollipopOrLater()) {
-                viewHolder.artView.setTransitionName("a"+addonDetails.addonid);
-            }
-            return convertView;
+        public AddonType.Details getItem(int position) {
+            return items.get(position);
         }
     }
 
     /**
      * View holder pattern
      */
-    public static class ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleView;
         TextView detailsView;
         ImageView artView;
+        private static String author;
+        private static String version;
+        private HostManager hostManager;
+        int artWidth;
+        int artHeight;
+        Context context;
 
         AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
+
+        ViewHolder(View itemView, Context context, HostManager hostManager, int artWidth, int artHeight) {
+            super(itemView);
+            this.context = context;
+            this.hostManager = hostManager;
+            this.artWidth = artWidth;
+            this.artHeight = artHeight;
+            if( author == null ) {
+                author = context.getString(R.string.author);
+                version = context.getString(R.string.version);
+            }
+
+            titleView = itemView.findViewById(R.id.title);
+            detailsView = itemView.findViewById(R.id.details);
+            artView = itemView.findViewById(R.id.art);
+
+            itemView.setTag(this);
+        }
+
+        public void onBind(AddonType.Details addonDetails) {
+            dataHolder.setTitle(addonDetails.name);
+            dataHolder.setDescription(addonDetails.description);
+            dataHolder.setUndertitle(addonDetails.summary);
+            dataHolder.setFanArtUrl(addonDetails.fanart);
+            dataHolder.setPosterUrl(addonDetails.thumbnail);
+            dataHolder.setDetails(author + " " + addonDetails.author + "\n" +
+                                  version + " " +addonDetails.version);
+            dataHolder.getBundle().putString(AddonInfoFragment.BUNDLE_KEY_ADDONID, addonDetails.addonid);
+            dataHolder.getBundle().putBoolean(AddonInfoFragment.BUNDLE_KEY_BROWSABLE,
+                                              AddonType.Types.XBMC_PYTHON_PLUGINSOURCE.equals(addonDetails.type));
+
+            titleView.setText(dataHolder.getTitle());
+            detailsView.setText(addonDetails.summary);
+
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 addonDetails.thumbnail, dataHolder.getTitle(),
+                                                 artView, artWidth, artHeight);
+
+            if(Utils.isLollipopOrLater()) {
+                artView.setTransitionName("a"+addonDetails.addonid);
+            }
+        }
     }
 }

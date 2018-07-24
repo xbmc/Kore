@@ -54,6 +54,21 @@
         <item name="android:fastScrollEnabled">true</item>
     </style>
 
+    <style name="GridLayoutRecyclerView">
+        <item name="android:clipToPadding">false</item>
+         <item name="android:scrollbars">vertical</item>
+        <item name="android:paddingBottom">@dimen/default_padding</item>
+        <item name="android:paddingLeft">@dimen/default_card_margin</item>
+        <item name="android:columnWidth">@dimen/default_grid_column_width</item>
+    </style>
+
+    <style name="Widget.CardView">
+        <item name="cardElevation">@dimen/default_card_elevation</item>
+        <item name="cardBackgroundColor">?attr/appCardBackgroundColor</item>
+        <item name="android:layout_marginRight">@dimen/default_card_margin</item>
+        <item name="android:layout_marginTop">@dimen/default_card_margin</item>
+    </style>
+    
     <style name="Widget.ListView">
         <item name="android:fastScrollEnabled">true</item>
         <item name="android:divider">@null</item>

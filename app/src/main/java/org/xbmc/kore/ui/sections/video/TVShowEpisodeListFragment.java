@@ -33,7 +33,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -46,7 +45,8 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
-import org.xbmc.kore.ui.AbstractInfoFragment;
+import org.xbmc.kore.ui.AbstractFragment;
+import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -114,9 +114,8 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         listenerActivity.onEpisodeSelected(tvshowId, tag);
     }
 
-
     @Override
-    protected CursorAdapter createAdapter() {
+    protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new SeasonsEpisodesAdapter(getActivity());
     }
 
@@ -136,7 +135,6 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         return new CursorLoader(getActivity(), uri,
                                 EpisodesListQuery.PROJECTION, selection.toString(), null, EpisodesListQuery.SORT);
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -218,25 +216,23 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     }
 
 
-    private class SeasonsEpisodesAdapter extends CursorAdapter {
+    private class SeasonsEpisodesAdapter extends RecyclerViewCursorAdapter {
 
-        private HostManager hostManager;
-        private int artWidth, artHeight;
         private int themeAccentColor;
+        private HostManager hostManager;
+        private int artWidth;
+        private int artHeight;
 
-        public SeasonsEpisodesAdapter(Context context) {
-            super(context, null, 0);
-
+        SeasonsEpisodesAdapter(Context context) {
             // Get the default accent color
             Resources.Theme theme = context.getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.colorAccent
             });
-
             themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.accent_default));
             styledAttributes.recycle();
 
-            this.hostManager = HostManager.getInstance(context);
+            hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
             Resources resources = context.getResources();
@@ -246,77 +242,84 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
-        /** {@inheritDoc} */
         @Override
-        public View newView(Context context, final Cursor cursor, ViewGroup parent) {
-            final View view = LayoutInflater.from(context)
-                                            .inflate(R.layout.list_item_episode, parent, false);
-
-            // Setup View holder pattern
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.titleView = (TextView)view.findViewById(R.id.title);
-            viewHolder.detailsView = (TextView)view.findViewById(R.id.details);
-            viewHolder.episodenumberView = (TextView)view.findViewById(R.id.episode_number);
-            viewHolder.contextMenuView = (ImageView)view.findViewById(R.id.list_context_menu);
-            viewHolder.checkmarkView = (ImageView)view.findViewById(R.id.checkmark);
-            viewHolder.artView = (ImageView)view.findViewById(R.id.art);
-
-            view.setTag(viewHolder);
-            return view;
-        }
-
-        /** {@inheritDoc} */
-        @TargetApi(21)
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            final ViewHolder viewHolder = (ViewHolder)view.getTag();
-
-            // Save the episode id
-            viewHolder.dataHolder.setId(cursor.getInt(EpisodesListQuery.EPISODEID));
-            viewHolder.dataHolder.setTitle(cursor.getString(EpisodesListQuery.TITLE));
-
-            viewHolder.episodenumberView.setText(
-                    String.format(context.getString(R.string.episode_number),
-                                  cursor.getInt(EpisodesListQuery.EPISODE)));
-            int runtime = cursor.getInt(EpisodesListQuery.RUNTIME) / 60;
-            String duration =  runtime > 0 ?
-                               String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                               "  |  " + cursor.getString(EpisodesListQuery.FIRSTAIRED) :
-                               cursor.getString(EpisodesListQuery.FIRSTAIRED);
-            viewHolder.titleView.setText(cursor.getString(EpisodesListQuery.TITLE));
-            viewHolder.detailsView.setText(duration);
-
-            if (cursor.getInt(EpisodesListQuery.PLAYCOUNT) > 0) {
-                viewHolder.checkmarkView.setVisibility(View.VISIBLE);
-                viewHolder.checkmarkView.setColorFilter(themeAccentColor);
-            } else {
-                viewHolder.checkmarkView.setVisibility(View.INVISIBLE);
-            }
-
-            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                                                 cursor.getString(EpisodesListQuery.THUMBNAIL),
-                                                 viewHolder.dataHolder.getTitle(),
-                                                 viewHolder.artView, artWidth, artHeight);
-
-            // For the popupmenu
-            ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
-            contextMenu.setTag(viewHolder);
-            contextMenu.setOnClickListener(contextlistItemMenuClickListener);
+        public RecyclerViewCursorAdapter.CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(getActivity())
+                                      .inflate(R.layout.list_item_episode, parent, false);
+            return new ViewHolder(view, getActivity(), themeAccentColor,
+                                  contextlistItemMenuClickListener, hostManager,
+                                  artWidth, artHeight);
         }
     }
 
     /**
      * View holder pattern, only for episodes
      */
-    public static class ViewHolder {
+    static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
         TextView titleView;
         TextView detailsView;
         TextView episodenumberView;
         ImageView contextMenuView;
         ImageView checkmarkView;
         ImageView artView;
+        HostManager hostManager;
+        int artWidth;
+        int artHeight;
+        Context context;
+        int themeAccentColor;
 
-        AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
+        AbstractFragment.DataHolder dataHolder = new AbstractFragment.DataHolder(0);
+
+        ViewHolder(View itemView, Context context, int themeAccentColor,
+                   View.OnClickListener contextlistItemMenuClickListener,
+                   HostManager hostManager,
+                   int artWidth, int artHeight) {
+            super(itemView);
+            this.context = context;
+            this.themeAccentColor = themeAccentColor;
+            this.hostManager = hostManager;
+            this.artWidth = artWidth;
+            this.artHeight = artHeight;
+            titleView = itemView.findViewById(R.id.title);
+            detailsView = itemView.findViewById(R.id.details);
+            episodenumberView = itemView.findViewById(R.id.episode_number);
+            contextMenuView = itemView.findViewById(R.id.list_context_menu);
+            checkmarkView = itemView.findViewById(R.id.checkmark);
+            artView = itemView.findViewById(R.id.art);
+            contextMenuView.setOnClickListener(contextlistItemMenuClickListener);
+        }
+
+        @Override
+        public void bindView(Cursor cursor) {
+            // Save the episode id
+            dataHolder.setId(cursor.getInt(EpisodesListQuery.EPISODEID));
+            dataHolder.setTitle(cursor.getString(EpisodesListQuery.TITLE));
+
+            episodenumberView.setText(
+                    String.format(context.getString(R.string.episode_number),
+                                  cursor.getInt(EpisodesListQuery.EPISODE)));
+            int runtime = cursor.getInt(EpisodesListQuery.RUNTIME) / 60;
+            String duration = runtime > 0 ?
+                              String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
+                              "  |  " + cursor.getString(EpisodesListQuery.FIRSTAIRED) :
+                              cursor.getString(EpisodesListQuery.FIRSTAIRED);
+            titleView.setText(cursor.getString(EpisodesListQuery.TITLE));
+            detailsView.setText(duration);
+
+            if (cursor.getInt(EpisodesListQuery.PLAYCOUNT) > 0) {
+                checkmarkView.setVisibility(View.VISIBLE);
+                checkmarkView.setColorFilter(themeAccentColor);
+            } else {
+                checkmarkView.setVisibility(View.INVISIBLE);
+            }
+
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 cursor.getString(EpisodesListQuery.THUMBNAIL),
+                                                 dataHolder.getTitle(),
+                                                 artView, artWidth, artHeight);
+
+            contextMenuView.setTag(this);
+        }
     }
 
     private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {

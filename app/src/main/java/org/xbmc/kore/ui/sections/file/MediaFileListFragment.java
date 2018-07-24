@@ -21,14 +21,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +43,7 @@ import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
+import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -112,17 +111,17 @@ public class MediaFileListFragment extends AbstractListFragment {
     }
 
     @Override
-    protected AdapterView.OnItemClickListener createOnItemClickListener() {
-        return new AdapterView.OnItemClickListener() {
+    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(View view, int position) {
                 handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(position));
             }
         };
     }
 
     @Override
-    protected BaseAdapter createAdapter() {
+    protected RecyclerView.Adapter createAdapter() {
         return new MediaFileListAdapter(getActivity(), R.layout.grid_item_file);
     }
 
@@ -211,7 +210,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     }
 
     public boolean atRootDirectory() {
-        if (getAdapter().getCount() == 0)
+        if (getAdapter().getItemCount() == 0)
             return true;
         FileLocation fl = ((MediaFileListAdapter) getAdapter()).getItem(0);
         if (fl == null)
@@ -500,11 +499,11 @@ public class MediaFileListFragment extends AbstractListFragment {
 
     }
 
-    private class MediaFileListAdapter extends BaseAdapter implements ListAdapter {
+    private class MediaFileListAdapter extends RecyclerView.Adapter {
 
         Context ctx;
         int resource;
-        List<FileLocation> fileLocationItems = null;
+        List<FileLocation> fileLocationItems;
 
         int artWidth;
         int artHeight;
@@ -552,7 +551,7 @@ public class MediaFileListFragment extends AbstractListFragment {
             }
         };
 
-        public MediaFileListAdapter(Context context, int resource) {
+        MediaFileListAdapter(Context context, int resource) {
             super();
             this.ctx = context;
             this.resource = resource;
@@ -580,20 +579,10 @@ public class MediaFileListFragment extends AbstractListFragment {
 
         public List<FileLocation> getFileItemList() {
             if (fileLocationItems == null)
-                return new ArrayList<FileLocation>();
-            return new ArrayList<FileLocation>(fileLocationItems);
+                return new ArrayList<>();
+            return new ArrayList<>(fileLocationItems);
         }
 
-        @Override
-        public int getCount() {
-            if (fileLocationItems == null) {
-                return 0;
-            } else {
-                return fileLocationItems.size();
-            }
-        }
-
-        @Override
         public FileLocation getItem(int position) {
             if (fileLocationItems == null) {
                 return null;
@@ -603,73 +592,79 @@ public class MediaFileListFragment extends AbstractListFragment {
         }
 
         @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(ctx)
+                                        .inflate(resource, parent, false);
+            return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight, itemMenuClickListener);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            FileLocation fileLocation = this.getItem(position);
+            ((ViewHolder) holder).bindView(fileLocation, position);
+        }
+
+        @Override
         public long getItemId(int position) {
             return position;
         }
 
         @Override
-        public int getViewTypeCount () {
-            return 1;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(ctx)
-                        .inflate(resource, parent, false);
-
-                // Setup View holder pattern
-                viewHolder = new ViewHolder();
-                viewHolder.art = (ImageView) convertView.findViewById(R.id.art);
-                viewHolder.title = (TextView) convertView.findViewById(R.id.title);
-                viewHolder.details = (TextView) convertView.findViewById(R.id.details);
-                viewHolder.contextMenu = (ImageView) convertView.findViewById(R.id.list_context_menu);
-                viewHolder.sizeDuration = (TextView) convertView.findViewById(R.id.size_duration);
-
-                convertView.setTag(viewHolder);
-            }
-
-            viewHolder = (ViewHolder) convertView.getTag();
-            FileLocation fileLocation = this.getItem(position);
-
-//            if (fileLocation.isDirectory) {
-//                viewHolder.title.setText(fileLocation.title);
-//                viewHolder.details.setText("");
-//            } else {
-//                viewHolder.title.setText("");
-//                viewHolder.details.setText(fileLocation.title);
-//            }
-            viewHolder.title.setText(fileLocation.title);
-            viewHolder.details.setText(fileLocation.details);
-            viewHolder.sizeDuration.setText(fileLocation.sizeDuration);
-
-            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                    fileLocation.artUrl, fileLocation.title,
-                    viewHolder.art, artWidth, artHeight);
-            // For the popup menu
-            if (fileLocation.isDirectory) {
-                viewHolder.contextMenu.setVisibility(View.GONE);
+        public int getItemCount() {
+            if (fileLocationItems == null) {
+                return 0;
             } else {
-                viewHolder.contextMenu.setVisibility(View.VISIBLE);
-                viewHolder.contextMenu.setTag(position);
-                viewHolder.contextMenu.setOnClickListener(itemMenuClickListener);
+                return fileLocationItems.size();
             }
-
-            return convertView;
         }
     }
 
     /**
      * View holder pattern
      */
-    private static class ViewHolder {
+    private static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView art;
         TextView title;
         TextView details;
         TextView sizeDuration;
         ImageView contextMenu;
+        HostManager hostManager;
+        int artWidth;
+        int artHeight;
+        Context context;
+
+        ViewHolder(View itemView, Context context, HostManager hostManager, int artWidth, int artHeight,
+                   View.OnClickListener itemMenuClickListener) {
+            super(itemView);
+            this.context = context;
+            this.hostManager = hostManager;
+            this.artWidth = artWidth;
+            this.artHeight = artHeight;
+            art = itemView.findViewById(R.id.art);
+            title = itemView.findViewById(R.id.title);
+            details = itemView.findViewById(R.id.details);
+            contextMenu = itemView.findViewById(R.id.list_context_menu);
+            sizeDuration = itemView.findViewById(R.id.size_duration);
+            contextMenu.setOnClickListener(itemMenuClickListener);
+        }
+
+        public void bindView(FileLocation fileLocation, int position) {
+            title.setText(fileLocation.title);
+            details.setText(fileLocation.details);
+            sizeDuration.setText(fileLocation.sizeDuration);
+
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                                                 fileLocation.artUrl, fileLocation.title,
+                                                 art, artWidth, artHeight);
+            // For the popup menu
+            if (fileLocation.isDirectory) {
+                contextMenu.setVisibility(View.GONE);
+            } else {
+                contextMenu.setVisibility(View.VISIBLE);
+                contextMenu.setTag(position);
+
+            }
+        }
     }
 
     public static class FileLocation implements Parcelable {
