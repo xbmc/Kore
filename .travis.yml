@@ -10,11 +10,6 @@ env:
 
 android:
   components:
-    # following added as quick fix to get support for 23.0.3 build tools
-    # "tools" always refers to the latest build tools version. Remove this
-    # when travis is able to parse "build-tools-23.0.3" correctly.
-    # See https://github.com/travis-ci/travis-ci/issues/5036
-    # - tools
     # needed build tools
     - build-tools-27.0.3
 

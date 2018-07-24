@@ -23,6 +23,8 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
@@ -39,18 +41,21 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.xbmc.kore.testhelpers.action.ViewActions.clearFocus;
@@ -108,9 +113,7 @@ public class EspressoTestUtils {
         EspressoTestUtils.clickMenuItem(activity, activity.getString(R.string.action_search), R.id.action_search);
 
         onView(isAssignableFrom(AutoCompleteTextView.class))
-                .perform(click(), typeText(query), clearFocus());
-
-        Espresso.closeSoftKeyboard();
+                .perform(click(), typeText(query), clearFocus(), closeSoftKeyboard());
     }
 
     /**
@@ -121,9 +124,7 @@ public class EspressoTestUtils {
         EspressoTestUtils.clickMenuItem(activity, activity.getString(R.string.action_search), R.id.action_search);
 
         onView(isAssignableFrom(AutoCompleteTextView.class))
-                .perform(click(), clearText());
-
-        Espresso.closeSoftKeyboard();
+                .perform(click(), clearText(), closeSoftKeyboard());
     }
 
     /**
@@ -150,7 +151,21 @@ public class EspressoTestUtils {
                           .atPosition(position).perform(click());
     }
 
-    /**
+
+    public static void clickRecyclerViewItem(int position, int resourceId) {
+        onView(withId(resourceId)).perform(RecyclerViewActions.actionOnItemAtPosition(position, click()));
+    }
+
+    public static void clickRecyclerViewItem(String text, int resourceId) {
+        ViewInteraction viewInteraction = onView(allOf(withId(resourceId),
+                                                       hasDescendant(withText(containsString(text))),
+                                                       isDisplayed()));
+        viewInteraction.perform(RecyclerViewActions.scrollTo(hasDescendant(withText(containsString(text)))));
+        viewInteraction.perform(RecyclerViewActions.actionOnItem(hasDescendant(withText(containsString(text))),
+                                                                 click()));
+    }
+
+     /**
      * Checks that SearchView contains the given text
      * @param query text that SearchView should contain
      */
@@ -165,9 +180,9 @@ public class EspressoTestUtils {
      */
     public static void checkListMatchesSearchQuery(String query, int listSize, int resourceId) {
         onView(allOf(withId(resourceId), isDisplayed()))
-                .check(matches(Matchers.withOnlyMatchingDataItems(Matchers.withItemContent(containsString(query)))));
+                .check(matches(Matchers.withOnlyMatchingDataItems(hasDescendant(withText(containsString(query))))));
         onView(allOf(withId(resourceId), isDisplayed()))
-                .check(matches(Matchers.withAdapterSize(listSize)));
+                .check(matches(Matchers.withRecyclerViewSize(listSize)));
     }
 
     /**
@@ -250,39 +265,54 @@ public class EspressoTestUtils {
     public static void selectListItemPressBackAndCheckActionbarTitle(int item,
                                                                      int listResourceId,
                                                                      String actionbarTitle) {
-        EspressoTestUtils.clickAdapterViewItem(item, listResourceId);
+        EspressoTestUtils.clickRecyclerViewItem(item, listResourceId);
         pressBack();
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
                 .check(matches(withText(actionbarTitle)));
     }
 
     /**
+     * Selects an item in the list, then presses back and checks the action bar title
+     * @param itemText the text the item that must be pressed should contain
+     * @param listResourceId Resource identifier of the AdapterView
+     * @param actionbarTitle title that should be displayed in the action bar after pressing back
+     */
+    public static void selectListItemPressBackAndCheckActionbarTitle(String itemText,
+                                                                     int listResourceId,
+                                                                     String actionbarTitle) {
+        EspressoTestUtils.clickRecyclerViewItem(itemText, listResourceId);
+        pressBack();
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
+                .check(matches(withText(containsString(actionbarTitle))));
+    }
+
+    /**
      * Selects an item in the list, then rotates the device and checks the action bar title
-     * @param item number (0 is first item) of the item that should be pressed
+     * @param itemText the text the item that must be pressed should contain
      * @param listResourceId Resource identifier of the AdapterView
      * @param actionbarTitle title that should be displayed in the action bar after rotating
      */
-    public static void selectListItemRotateDeviceAndCheckActionbarTitle(int item,
+    public static void selectListItemRotateDeviceAndCheckActionbarTitle(String itemText,
                                                                         int listResourceId,
                                                                         String actionbarTitle,
                                                                         Activity activity) {
-        EspressoTestUtils.clickAdapterViewItem(item, listResourceId);
+        EspressoTestUtils.clickRecyclerViewItem(itemText, listResourceId);
         EspressoTestUtils.rotateDevice(activity);
 
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
-                .check(matches(withText(actionbarTitle)));
+                .check(matches(withText(containsString(actionbarTitle))));
     }
 
     /**
      * Selects an item in the list and then checks the action bar title
-     * @param item number (0 is first item) of the item that should be pressed
+     * @param itemText the text the item that must be pressed should contain
      * @param listResourceId Resource identifier of the AdapterView
      * @param actionbarTitle title that should be displayed in the action bar after selecting item
      */
-    public static void selectListItemAndCheckActionbarTitle(int item,
+    public static void selectListItemAndCheckActionbarTitle(String itemText,
                                                             int listResourceId,
                                                             String actionbarTitle) {
-        EspressoTestUtils.clickAdapterViewItem(item, listResourceId);
+        EspressoTestUtils.clickRecyclerViewItem(itemText, listResourceId);
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
                 .check(matches(withText(actionbarTitle)));
     }

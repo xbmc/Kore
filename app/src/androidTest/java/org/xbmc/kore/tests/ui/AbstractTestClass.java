@@ -72,7 +72,6 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
     private ActivityTestRule<T> activityTestRule;
     private static MockTcpServer server;
     private static JSONConnectionHandlerManager manager;
-    private AddonsHandler addonsHandler;
     private static PlayerHandler playerHandler;
     private static ApplicationHandler applicationHandler;
     private static InputHandler inputHandler;
@@ -88,6 +87,7 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
         manager.addHandler(playerHandler);
         manager.addHandler(applicationHandler);
         manager.addHandler(inputHandler);
+        manager.addHandler(new AddonsHandler());
         manager.addHandler(new JSONRPCHandler());
         server = new MockTcpServer(manager);
         server.start();
@@ -107,13 +107,6 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
         Utils.setLearnedAboutDrawerPreference(context, true);
         //Allow each test to change the shared preferences
         setSharedPreferences(context);
-
-        //Note: as the activity is not yet available in @BeforeClass we need
-        //      to add the handler here
-        if (addonsHandler == null) {
-            addonsHandler = new AddonsHandler(context);
-            manager.addHandler(addonsHandler);
-        }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean useEventServer = prefs.getBoolean(HostFragmentManualConfiguration.HOST_USE_EVENT_SERVER, false);
@@ -136,6 +129,7 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
         Utils.switchHost(context, activityTestRule.getActivity(), hostInfo);
 
         //Relaunch the activity for the changes (Host selection, preference changes, and database fill) to take effect
+        activityTestRule.finishActivity();
         activityTestRule.launchActivity(new Intent());
     }
 

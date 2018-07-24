@@ -95,7 +95,7 @@ public class RestoreSearchQueryListFragmentTest extends AbstractTestClass<Movies
     public void searchClickBackTest() {
         EspressoTestUtils.clearSearchQuery(mActivityRule.getActivity());
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), SEARCH_QUERY);
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        EspressoTestUtils.clickRecyclerViewItem(0, R.id.list);
         Espresso.pressBack();
 
         EspressoTestUtils.checkTextInSearchQuery(SEARCH_QUERY);
@@ -117,7 +117,7 @@ public class RestoreSearchQueryListFragmentTest extends AbstractTestClass<Movies
     public void searchClickRotateBackTest() {
         EspressoTestUtils.clearSearchQuery(mActivityRule.getActivity());
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), SEARCH_QUERY);
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        EspressoTestUtils.clickRecyclerViewItem(0, R.id.list);
         EspressoTestUtils.rotateDevice(mActivityRule.getActivity());
         Espresso.pressBack();
 
@@ -141,10 +141,10 @@ public class RestoreSearchQueryListFragmentTest extends AbstractTestClass<Movies
     @Test
     public void searchClickBackClearSearchClickBackTest() {
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), SEARCH_QUERY);
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        EspressoTestUtils.clickRecyclerViewItem(0, R.id.list);
         Espresso.pressBack();
         EspressoTestUtils.clearSearchQuery(mActivityRule.getActivity());
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        EspressoTestUtils.clickRecyclerViewItem(0, R.id.list);
         Espresso.pressBack();
 
         EspressoTestUtils.checkSearchMenuCollapsed();
@@ -164,7 +164,7 @@ public class RestoreSearchQueryListFragmentTest extends AbstractTestClass<Movies
     @Test
     public void searchClickBackBackTest() {
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), SEARCH_QUERY);
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        EspressoTestUtils.clickRecyclerViewItem(0, R.id.list);
         Espresso.pressBack();
         Espresso.pressBack();
 
@@ -201,7 +201,7 @@ public class RestoreSearchQueryListFragmentTest extends AbstractTestClass<Movies
     @Test
     public void searchClickBackUpTest() {
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), SEARCH_QUERY);
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        EspressoTestUtils.clickRecyclerViewItem(0, R.id.list);
         Espresso.pressBack();
         EspressoTestUtils.clickToolbarCollapseButton();
         EspressoTestUtils.checkSearchMenuCollapsed();
