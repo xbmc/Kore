@@ -16,14 +16,17 @@
 
 package org.xbmc.kore.tests.ui.tvshows;
 
+import android.content.Context;
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.TextView;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
-import org.xbmc.kore.tests.ui.BaseMediaActivityTests;
+import org.xbmc.kore.tests.ui.AbstractTestClass;
 import org.xbmc.kore.ui.sections.video.TVShowsActivity;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -34,9 +37,15 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickRecyclerViewItem;
+import static org.xbmc.kore.testhelpers.EspressoTestUtils.rotateDevice;
 import static org.xbmc.kore.testhelpers.action.ViewActions.nestedScrollTo;
 
-public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity> {
+public class TVShowsActivityTests extends AbstractTestClass<TVShowsActivity> {
+    private final String TV_SHOW_TITLE = "11.22.63";
+    private final String EPISODE_TITLE = "The Rabbit Hole";
 
     @Rule
     public ActivityTestRule<TVShowsActivity> mActivityRule = new ActivityTestRule<>(
@@ -45,6 +54,16 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
     @Override
     protected ActivityTestRule<TVShowsActivity> getActivityTestRule() {
         return mActivityRule;
+    }
+
+    @Override
+    protected void setSharedPreferences(Context context) {
+
+    }
+
+    @Override
+    protected void configureHostInfo(HostInfo hostInfo) {
+
     }
 
     /**
@@ -65,7 +84,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
      */
     @Test
     public void setActionBarTitle() {
-        EspressoTestUtils.selectListItemAndCheckActionbarTitle(0, R.id.list, "11.22.63");
+        EspressoTestUtils.selectListItemAndCheckActionbarTitle(TV_SHOW_TITLE, R.id.list, TV_SHOW_TITLE);
     }
 
     /**
@@ -78,7 +97,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
      */
     @Test
     public void setActionBarTitleOnNextEpisode() {
-        EspressoTestUtils.clickAdapterViewItem(1, R.id.list);
+        clickRecyclerViewItem(1, R.id.list);
         onView( withId(R.id.next_episode_list)).perform( nestedScrollTo(), click());
 
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
@@ -95,7 +114,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
      */
     @Test
     public void setActionBarTitleOnSeasonList() {
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        clickRecyclerViewItem(0, R.id.list);
         onView( withId(R.id.seasons_list)).perform(nestedScrollTo(), click());
 
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
@@ -113,9 +132,9 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
      */
     @Test
     public void setActionBarTitleOnSeasonListEpisode() {
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        clickRecyclerViewItem(0, R.id.list);
         onView( withId(R.id.seasons_list)).perform( nestedScrollTo(), click());
-        EspressoTestUtils.selectListItemAndCheckActionbarTitle(0, R.id.list, "11.22.63");
+        EspressoTestUtils.selectListItemAndCheckActionbarTitle(EPISODE_TITLE, R.id.list, TV_SHOW_TITLE);
     }
 
     /**
@@ -128,8 +147,8 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
      */
     @Test
     public void restoreActionBarTitleOnConfigurationStateChanged() {
-        EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
-                                                                           "11.22.63",
+        EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle(TV_SHOW_TITLE, R.id.list,
+                                                                           TV_SHOW_TITLE,
                                                                            mActivityRule.getActivity());
     }
 
@@ -144,7 +163,7 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
      */
     @Test
     public void restoreActionBarTitleSeasonListOnConfigurationStateChanged() {
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        clickRecyclerViewItem(0, R.id.list);
         onView( withId(R.id.seasons_list)).perform( nestedScrollTo(), click());
         EspressoTestUtils.rotateDevice(mActivityRule.getActivity());
 
@@ -164,10 +183,10 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
      */
     @Test
     public void restoreActionBarTitleSeasonListEpisodeOnConfigurationStateChanged() {
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        clickRecyclerViewItem(0, R.id.list);
         onView( withId(R.id.seasons_list)).perform( nestedScrollTo(), click());
-        EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
-                                                                           "11.22.63",
+        EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle(EPISODE_TITLE, R.id.list,
+                                                                           TV_SHOW_TITLE,
                                                                            mActivityRule.getActivity());
     }
 
@@ -182,12 +201,87 @@ public class TVShowsActivityTests extends BaseMediaActivityTests<TVShowsActivity
      */
     @Test
     public void restoreActionBarTitleNextEpisodeOnConfigurationStateChanged() {
-        EspressoTestUtils.clickAdapterViewItem(1, R.id.list);
+        clickRecyclerViewItem(1, R.id.list);
         onView( withId(R.id.next_episode_list)).perform( nestedScrollTo() );
         onView( withText("You'll See the Sparkle")).perform( click() );
         EspressoTestUtils.rotateDevice(mActivityRule.getActivity());
 
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.default_toolbar))))
                 .check(matches(withText("3")));
+    }
+
+    /**
+     * Test if the initial state shows the hamburger icon
+     */
+    @Test
+    public void showHamburgerInInitialState() {
+        assertFalse(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is changed to an arrow when selecting a list item
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Result: navigation icon should be an arrow
+     */
+    @Test
+    public void showArrowWhenSelectingListItem() {
+        clickRecyclerViewItem(0, R.id.list);
+
+        assertTrue(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is changed to an arrow when selecting a list item
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Press back
+     *   3. Result: navigation icon should be a hamburger
+     */
+    @Test
+    public void showHamburgerWhenSelectingListItemAndReturn() {
+        clickRecyclerViewItem(0, R.id.list);
+        Espresso.pressBack();
+
+        assertFalse(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is restored to an arrow when selecting a list item
+     * and rotating the device
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Rotate device
+     *   3. Result: navigation icon should be an arrow
+     */
+    @Test
+    public void restoreArrowOnConfigurationChange() {
+        clickRecyclerViewItem(0, R.id.list);
+        rotateDevice(getActivity());
+
+        assertTrue(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is restored to an hamburger when selecting a list item
+     * and rotating the device and returning to the list
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Rotate device
+     *   3. Press back
+     *   4. Result: navigation icon should be a hamburger
+     */
+    @Test
+    public void restoreHamburgerOnConfigurationChangeOnReturn() {
+        clickRecyclerViewItem(0, R.id.list);
+        rotateDevice(getActivity());
+        Espresso.pressBack();
+
+        assertTrue(EspressoTestUtils.getActivity() instanceof TVShowsActivity);
+        assertFalse(((TVShowsActivity) EspressoTestUtils.getActivity()).getDrawerIndicatorIsArrow());
     }
 }

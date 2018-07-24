@@ -19,11 +19,10 @@ package org.xbmc.kore.testhelpers;
 import android.database.Cursor;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.espresso.matcher.CursorMatchers;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -31,8 +30,8 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.xbmc.kore.ui.widgets.RepeatModeButton;
 import org.xbmc.kore.ui.widgets.HighlightButton;
+import org.xbmc.kore.ui.widgets.RepeatModeButton;
 import org.xbmc.kore.utils.UIUtils;
 
 public class Matchers {
@@ -70,33 +69,32 @@ public class Matchers {
         };
     }
 
-    public static Matcher<View> withAdapterSize(final int size) {
+    public static Matcher<View> withRecyclerViewSize(final int size) {
         return new TypeSafeMatcher<View>() {
             @Override
             protected boolean matchesSafely(View view) {
-                if (!(view instanceof AdapterView))
-                    return false;
-
-                return ((AdapterView) view).getCount() == size;
+                return (view instanceof RecyclerView) &&
+                        ((RecyclerView) view).getAdapter().getItemCount() == size;
             }
 
             @Override
             public void describeTo(Description description) {
-                description.appendText("Adapter should have " + size + " item(s)");
+                description.appendText("RecyclerView should have " + size + " item(s)");
             }
         };
     }
 
-    public static Matcher<View> withOnlyMatchingDataItems(final Matcher<Object> dataMatcher) {
+    public static Matcher<View> withOnlyMatchingDataItems(final Matcher<View> dataMatcher) {
         return new TypeSafeMatcher<View>() {
             @Override
             protected boolean matchesSafely(View view) {
-                if (!(view instanceof AdapterView))
+                if (!(view instanceof RecyclerView))
                     return false;
 
-                Adapter adapter = ((AdapterView) view).getAdapter();
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    if (! dataMatcher.matches(adapter.getItem(i))) {
+                RecyclerView recyclerView = (RecyclerView) view;
+                for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                    RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(i);
+                    if (! dataMatcher.matches(viewHolder.itemView)) {
                         return false;
                     }
                 }

@@ -46,6 +46,15 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
         if (arguments == null)
             arguments = new Bundle();
 
+        /**
+         * Following check required to support testing AddonsActivity.
+         * The database with host info is setup after initializing AddonsActivity using
+         * ActivityTestRule from the test support library. This means getHostInfo() will
+         * return null as long as the database info has not been set.
+         */
+        if (HostManager.getInstance(getContext()).getHostInfo() == null)
+            return null;
+
         int hostId = HostManager.getInstance(getContext()).getHostInfo().getId();
 
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager());

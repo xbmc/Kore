@@ -16,29 +16,34 @@
 
 package org.xbmc.kore.tests.ui.addons;
 
-import android.content.Intent;
-import android.os.SystemClock;
+import android.content.Context;
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
+import android.view.View;
 import android.widget.TextView;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
-import org.xbmc.kore.testhelpers.Utils;
+import org.xbmc.kore.testhelpers.action.ViewActions;
 import org.xbmc.kore.tests.ui.AbstractTestClass;
-import org.xbmc.kore.tests.ui.BaseMediaActivityTests;
 import org.xbmc.kore.ui.sections.addon.AddonsActivity;
-import org.xbmc.kore.ui.sections.video.MoviesActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickRecyclerViewItem;
+import static org.xbmc.kore.testhelpers.EspressoTestUtils.rotateDevice;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.selectListItemPressBackAndCheckActionbarTitle;
 
 /**
@@ -59,24 +64,35 @@ import static org.xbmc.kore.testhelpers.EspressoTestUtils.selectListItemPressBac
  * added in {@link super#setUp()} which is never started by Espresso as it waits for
  * {@link org.xbmc.kore.ui.sections.addon.AddonsActivity} to become idle.
  */
-public class AddonsActivityTests extends BaseMediaActivityTests<MoviesActivity> {
+public class AddonsActivityTests extends AbstractTestClass<AddonsActivity> {
 
     @Rule
-    public ActivityTestRule<MoviesActivity> mActivityRule = new ActivityTestRule<>(
-            MoviesActivity.class);
+    public ActivityTestRule<AddonsActivity> mActivityRule = new ActivityTestRule<>(AddonsActivity.class);
 
     @Override
-    protected ActivityTestRule<MoviesActivity> getActivityTestRule() {
+    protected ActivityTestRule<AddonsActivity> getActivityTestRule() {
         return mActivityRule;
     }
 
-    @Before
     @Override
+    protected void setSharedPreferences(Context context) {
+
+    }
+
+    @Override
+    protected void configureHostInfo(HostInfo hostInfo) {
+
+    }
+
+    @Before
     public void setUp() throws Throwable {
         super.setUp();
-
-        Intent intent = new Intent(getActivity(), AddonsActivity.class);
-        getActivity().startActivity(intent);
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.list, new ViewActions.CheckStatus() {
+            @Override
+            public boolean check(View v) {
+                return v.isShown();
+            }
+        },10000));
     }
 
     /**
@@ -97,7 +113,7 @@ public class AddonsActivityTests extends BaseMediaActivityTests<MoviesActivity> 
      */
     @Test
     public void setActionBarTitle() {
-        EspressoTestUtils.selectListItemAndCheckActionbarTitle(0, R.id.list,
+        EspressoTestUtils.selectListItemAndCheckActionbarTitle("Dumpert", R.id.list,
                                                                "Dumpert");
     }
 
@@ -111,7 +127,7 @@ public class AddonsActivityTests extends BaseMediaActivityTests<MoviesActivity> 
      */
     @Test
     public void restoreActionBarTitleOnConfigurationStateChanged() {
-        EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
+        EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle("Dumpert", R.id.list,
                                                                            "Dumpert",
                                                                            getActivity());
     }
@@ -128,5 +144,80 @@ public class AddonsActivityTests extends BaseMediaActivityTests<MoviesActivity> 
     public void restoreActionBarTitleOnReturningFromMovie() {
         selectListItemPressBackAndCheckActionbarTitle(0, R.id.list,
                                                       getActivity().getString(R.string.addons));
+    }
+
+    /**
+     * Test if the initial state shows the hamburger icon
+     */
+    @Test
+    public void showHamburgerInInitialState() {
+        assertFalse(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is changed to an arrow when selecting a list item
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Result: navigation icon should be an arrow
+     */
+    @Test
+    public void showArrowWhenSelectingListItem() {
+        clickRecyclerViewItem(0, R.id.list);
+
+        assertTrue(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is changed to an arrow when selecting a list item
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Press back
+     *   3. Result: navigation icon should be a hamburger
+     */
+    @Test
+    public void showHamburgerWhenSelectingListItemAndReturn() {
+        clickRecyclerViewItem(0, R.id.list);
+        Espresso.pressBack();
+
+        assertFalse(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is restored to an arrow when selecting a list item
+     * and rotating the device
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Rotate device
+     *   3. Result: navigation icon should be an arrow
+     */
+    @Test
+    public void restoreArrowOnConfigurationChange() {
+        clickRecyclerViewItem(0, R.id.list);
+        rotateDevice(getActivity());
+
+        assertTrue(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is restored to an hamburger when selecting a list item
+     * and rotating the device and returning to the list
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Rotate device
+     *   3. Press back
+     *   4. Result: navigation icon should be a hamburger
+     */
+    @Test
+    public void restoreHamburgerOnConfigurationChangeOnReturn() {
+        clickRecyclerViewItem(0, R.id.list);
+        rotateDevice(getActivity());
+        Espresso.pressBack();
+
+        assertTrue(EspressoTestUtils.getActivity() instanceof AddonsActivity);
+        assertFalse(((AddonsActivity) EspressoTestUtils.getActivity()).getDrawerIndicatorIsArrow());
     }
 }

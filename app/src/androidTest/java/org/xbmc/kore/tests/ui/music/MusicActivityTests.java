@@ -16,14 +16,18 @@
 
 package org.xbmc.kore.tests.ui.music;
 
+import android.content.Context;
+import android.os.SystemClock;
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.TextView;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
-import org.xbmc.kore.tests.ui.BaseMediaActivityTests;
+import org.xbmc.kore.tests.ui.AbstractTestClass;
 import org.xbmc.kore.ui.sections.audio.MusicActivity;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -33,15 +37,17 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickAlbumsTab;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickGenresTab;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickMusicVideosTab;
+import static org.xbmc.kore.testhelpers.EspressoTestUtils.rotateDevice;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.selectListItemAndCheckActionbarTitle;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.selectListItemPressBackAndCheckActionbarTitle;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.selectListItemRotateDeviceAndCheckActionbarTitle;
 
-public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
-
+public class MusicActivityTests extends AbstractTestClass<MusicActivity> {
     @Rule
     public ActivityTestRule<MusicActivity> musicActivityActivityTestRule =
             new ActivityTestRule<>(MusicActivity.class);
@@ -49,6 +55,16 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Override
     protected ActivityTestRule<MusicActivity> getActivityTestRule() {
         return musicActivityActivityTestRule;
+    }
+
+    @Override
+    protected void setSharedPreferences(Context context) {
+
+    }
+
+    @Override
+    protected void configureHostInfo(HostInfo hostInfo) {
+
     }
 
     /**
@@ -69,7 +85,7 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
      */
     @Test
     public void setActionBarTitleArtist() {
-        selectListItemAndCheckActionbarTitle(0, R.id.list, "ABC Orch");
+        selectListItemAndCheckActionbarTitle(ArtistTestData.title, R.id.list, ArtistTestData.title);
     }
 
     /**
@@ -83,7 +99,7 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Test
     public void setActionBarTitleAlbum() {
         clickAlbumsTab();
-        selectListItemAndCheckActionbarTitle(0, R.id.list, "1958 - The Fabulous Johnny Cash");
+        selectListItemAndCheckActionbarTitle(AlbumTestData.title, R.id.list, AlbumTestData.title);
     }
 
     /**
@@ -97,7 +113,7 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Test
     public void setActionBarTitleGenre() {
         clickGenresTab();
-        selectListItemAndCheckActionbarTitle(0, R.id.list, "Ambient");
+        selectListItemAndCheckActionbarTitle(GenreTestData.title, R.id.list, GenreTestData.title);
     }
 
     /**
@@ -111,7 +127,7 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Test
     public void setActionBarTitleVideo() {
         clickMusicVideosTab();
-        selectListItemAndCheckActionbarTitle(0, R.id.list, "(You Drive Me) Crazy");
+        selectListItemAndCheckActionbarTitle(MusicVideoTestData.title, R.id.list, MusicVideoTestData.title);
     }
 
     /**
@@ -125,8 +141,9 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
      */
     @Test
     public void restoreActionBarTitleArtistOnConfigurationStateChanged() {
-        selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
-                                                         "ABC Orch", getActivity());
+        SystemClock.sleep(10000);
+        selectListItemRotateDeviceAndCheckActionbarTitle(ArtistTestData.title, R.id.list,
+                                                         ArtistTestData.title, getActivity());
     }
 
     /**
@@ -142,8 +159,8 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Test
     public void restoreActionBarTitleAlbumOnConfigurationStateChanged() {
         clickAlbumsTab();
-        selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
-                                                         "1958 - The Fabulous Johnny Cash",
+        selectListItemRotateDeviceAndCheckActionbarTitle(AlbumTestData.title, R.id.list,
+                                                         AlbumTestData.title,
                                                          getActivity());
     }
 
@@ -160,8 +177,8 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Test
     public void restoreActionBarTitleGenreOnConfigurationStateChanged() {
         clickGenresTab();
-        selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
-                                                         "Ambient", getActivity());
+        selectListItemRotateDeviceAndCheckActionbarTitle(GenreTestData.title, R.id.list,
+                                                         GenreTestData.title, getActivity());
     }
 
     /**
@@ -177,8 +194,8 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Test
     public void restoreActionBarTitleMusicVideoOnConfigurationStateChanged() {
         clickMusicVideosTab();
-        selectListItemRotateDeviceAndCheckActionbarTitle(0, R.id.list,
-                                                         "(You Drive Me) Crazy",
+        selectListItemRotateDeviceAndCheckActionbarTitle(MusicVideoTestData.title, R.id.list,
+                                                         MusicVideoTestData.title,
                                                          getActivity());
     }
 
@@ -192,7 +209,7 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
      */
     @Test
     public void restoreActionBarTitleOnReturningFromArtist() {
-        selectListItemPressBackAndCheckActionbarTitle(0, R.id.list,
+        selectListItemPressBackAndCheckActionbarTitle(ArtistTestData.title, R.id.list,
                                                       getActivity().getString(R.string.music));
     }
 
@@ -208,9 +225,9 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
      */
     @Test
     public void restoreActionBarTitleOnArtistOnReturningFromAlbum() {
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        EspressoTestUtils.clickRecyclerViewItem(ArtistTestData.title, R.id.list);
         clickAlbumsTab();
-        selectListItemPressBackAndCheckActionbarTitle(0, R.id.list, "ABC Orch");
+        selectListItemPressBackAndCheckActionbarTitle(ArtistTestData.album, R.id.list, ArtistTestData.title);
     }
 
     /**
@@ -224,7 +241,7 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Test
     public void restoreActionBarTitleOnReturningFromMusicVideo() {
         clickMusicVideosTab();
-        selectListItemPressBackAndCheckActionbarTitle(0, R.id.list,
+        selectListItemPressBackAndCheckActionbarTitle(MusicVideoTestData.title, R.id.list,
                                                       getActivity().getString(R.string.music));
     }
 
@@ -239,7 +256,7 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Test
     public void restoreActionBarTitleOnReturningFromGenre() {
         clickGenresTab();
-        selectListItemPressBackAndCheckActionbarTitle(0, R.id.list,
+        selectListItemPressBackAndCheckActionbarTitle(GenreTestData.title, R.id.list,
                                                       getActivity().getString(R.string.music));
     }
 
@@ -254,7 +271,101 @@ public class MusicActivityTests extends BaseMediaActivityTests<MusicActivity> {
     @Test
     public void restoreActionBarTitleOnReturningFromAlbum() {
         clickAlbumsTab();
-        selectListItemPressBackAndCheckActionbarTitle(0, R.id.list,
+        selectListItemPressBackAndCheckActionbarTitle(AlbumTestData.title, R.id.list,
                                                       getActivity().getString(R.string.music));
+    }
+
+    /**
+     * Test if the initial state shows the hamburger icon
+     */
+    @Test
+    public void showHamburgerInInitialState() {
+        assertFalse(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is changed to an arrow when selecting a list item
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Result: navigation icon should be an arrow
+     */
+    @Test
+    public void showArrowWhenSelectingListItem() {
+        EspressoTestUtils.clickRecyclerViewItem(ArtistTestData.title, R.id.list);
+
+        assertTrue(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is changed to an arrow when selecting a list item
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Press back
+     *   3. Result: navigation icon should be a hamburger
+     */
+    @Test
+    public void showHamburgerWhenSelectingListItemAndReturn() {
+        EspressoTestUtils.clickRecyclerViewItem(ArtistTestData.title, R.id.list);
+
+        Espresso.pressBack();
+
+        assertFalse(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is restored to an arrow when selecting a list item
+     * and rotating the device
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Rotate device
+     *   3. Result: navigation icon should be an arrow
+     */
+    @Test
+    public void restoreArrowOnConfigurationChange() {
+        EspressoTestUtils.clickRecyclerViewItem(ArtistTestData.title, R.id.list);
+
+        rotateDevice(getActivity());
+
+        assertTrue(getActivity().getDrawerIndicatorIsArrow());
+    }
+
+    /**
+     * Test if navigation icon is restored to an hamburger when selecting a list item
+     * and rotating the device and returning to the list
+     *
+     * UI interaction flow tested:
+     *   1. Click on list item
+     *   2. Rotate device
+     *   3. Press back
+     *   4. Result: navigation icon should be a hamburger
+     */
+    @Test
+    public void restoreHamburgerOnConfigurationChangeOnReturn() {
+        EspressoTestUtils.clickRecyclerViewItem(ArtistTestData.title, R.id.list);
+        rotateDevice(getActivity());
+        Espresso.pressBack();
+
+        assertTrue(EspressoTestUtils.getActivity() instanceof MusicActivity);
+        assertFalse(((MusicActivity) EspressoTestUtils.getActivity()).getDrawerIndicatorIsArrow());
+    }
+
+    private static class ArtistTestData {
+        static String title = "ABC Orch Conducted by Herschel Burke Gilbert";
+        static String album = "Songs Of The West";
+    }
+
+    private static class AlbumTestData {
+        static String title = "1958 - The Fabulous Johnny Cash";
+    }
+
+    private static class GenreTestData {
+        static String title = "Ambient";
+    }
+
+    private static class MusicVideoTestData {
+        static String title = "(You Drive Me) Crazy";
     }
 }

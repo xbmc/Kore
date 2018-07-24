@@ -18,7 +18,6 @@ package org.xbmc.kore.tests.ui.music;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -43,6 +42,7 @@ public class RestoreSearchQueryViewPagerTest extends AbstractTestClass<MusicActi
 
     private final String ARTIST_SEARCH_QUERY = "Ben";
     private final int ARTIST_SEARCH_QUERY_LIST_SIZE = 2;
+    private final String ARTIST_MATCHING_SEARCH_QUERY = "Ben E. King";
     private final String ALBUMS_SEARCH_QUERY = "tes";
     private final int ALBUM_SEARCH_QUERY_LIST_SIZE = 3;
     private final int ARTIST_COMPLETE_LIST_SIZE = 229;
@@ -113,7 +113,7 @@ public class RestoreSearchQueryViewPagerTest extends AbstractTestClass<MusicActi
     @Test
     public void searchClickBackTest() {
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), ARTIST_SEARCH_QUERY);
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        EspressoTestUtils.clickRecyclerViewItem(ARTIST_MATCHING_SEARCH_QUERY, R.id.list);
         Espresso.pressBack();
 
         EspressoTestUtils.checkTextInSearchQuery(ARTIST_SEARCH_QUERY);
@@ -134,7 +134,7 @@ public class RestoreSearchQueryViewPagerTest extends AbstractTestClass<MusicActi
     @Test
     public void searchClickRotateBackTest() {
         EspressoTestUtils.enterSearchQuery(mActivityRule.getActivity(), ARTIST_SEARCH_QUERY);
-        EspressoTestUtils.clickAdapterViewItem(0, R.id.list);
+        EspressoTestUtils.clickRecyclerViewItem(ARTIST_MATCHING_SEARCH_QUERY, R.id.list);
         EspressoTestUtils.rotateDevice(mActivityRule.getActivity());
         Espresso.pressBack();
 
