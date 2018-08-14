@@ -290,16 +290,16 @@ public class RemoteActivity extends BaseActivity
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() != KeyEvent.ACTION_DOWN)
-            return false;
+        boolean handled = false;
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            handled = VolumeControllerDialogFragmentListener.handleVolumeKeyEvent(this, event);
 
-        boolean handled = VolumeControllerDialogFragmentListener.handleVolumeKeyEvent(this, event);
-
-        // Show volume change dialog if the event was handled and we are not in
-        // first page, which already contains a volume control
-        if (handled && (viewPager.getCurrentItem() != 0)) {
-            new VolumeControllerDialogFragmentListener()
-                    .show(getSupportFragmentManager(), VolumeControllerDialogFragmentListener.class.getName());
+            // Show volume change dialog if the event was handled and we are not in
+            // first page, which already contains a volume control
+            if (handled && (viewPager.getCurrentItem() != 0)) {
+                new VolumeControllerDialogFragmentListener()
+                        .show(getSupportFragmentManager(), VolumeControllerDialogFragmentListener.class.getName());
+            }
         }
         return handled || super.dispatchKeyEvent(event);
     }
