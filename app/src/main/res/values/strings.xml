@@ -307,6 +307,7 @@
     <string name="albums">Albums</string>
     <string name="genres">Genres</string>
     <string name="music_videos">Videos</string>
+    <string name="music_playlists">Playlists</string>
 
     <string name="no_files_to_download">No files to download.</string>
     <string name="error_getting_file_information">Couldn\'t get information to download file %1$s.</string>

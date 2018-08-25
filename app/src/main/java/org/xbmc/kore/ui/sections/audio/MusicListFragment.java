@@ -81,7 +81,8 @@ public class MusicListFragment extends AbstractTabsFragment {
                 .addTab(AlbumListFragment.class, getArguments(), R.string.albums, 2)
                 .addTab(AudioGenresListFragment.class, getArguments(), R.string.genres, 3)
                 .addTab(SongsListFragment.class, getArguments(), R.string.songs, 4)
-                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 5);
+                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 5)
+                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_playlists, 5);
         return tabsAdapter;
     }
 }
