@@ -44,6 +44,7 @@ public class MediaContract {
     public static final String PATH_EPISODES = "episodes";
     public static final String PATH_ARTISTS = "artists";
     public static final String PATH_ALBUMS = "albums";
+    public static final String PATH_PLAYLISTS = "playlists";
     public static final String PATH_AUDIO_GENRES = "audio_genres";
     public static final String PATH_SONGS = "songs";
     public static final String PATH_SONG_ARTISTS = "song_artists";
@@ -588,6 +589,76 @@ public class MediaContract {
                 YEAR, ALBUMLABEL, DESCRIPTION, PLAYCOUNT, GENRE
         };
     }
+
+    //TODO Change this for playlists
+    /**
+     * Columns for Playlists table
+     * For XBMC reference/unique key use HOST_ID + PLAYLISTID
+     */
+    public interface PlaylistsColumns {
+        String HOST_ID = "host_id";
+        String PLAYLISTID = "playlistid";
+
+        String TITLE = "title";
+        String DESCRIPTION = "description";
+    }
+
+    public static class Playlist implements BaseColumns, SyncColumns, AlbumsColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PLAYLISTS).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.org.xbmc." + PATH_PLAYLISTS;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/vnd.org.xbmc." + PATH_PLAYLISTS;
+
+        /** Build {@link Uri} for playlists list. */
+        public static Uri buildPlaylistsListUri(long hostId) {
+            return Hosts.buildHostUri(hostId).buildUpon()
+                    // TODO This path cannot be right. Playlist path is based on files
+                    .appendPath(PATH_PLAYLISTS)
+                    .build();
+        }
+
+        // topas-rec: Sorting not needed, removed. Sort by playlist by default
+//        /** Build {@link Uri} for albums artists list. */
+//        public static Uri buildAlbumArtistsListUri(long hostId, long albumId) {
+//            return Hosts.buildHostUri(hostId).buildUpon()
+//                    .appendPath(PATH_ALBUMS)
+//                    .appendPath(String.valueOf(albumId))
+//                    .appendPath(PATH_ARTISTS)
+//                    .build();
+//        }
+
+        // topas-rec: Sorting not needed, removed. Sort by playlist by default
+//        /** Build {@link Uri} for albums genres list. */
+//        public static Uri buildAlbumGenresListUri(long hostId, long albumId) {
+//            return Hosts.buildHostUri(hostId).buildUpon()
+//                    .appendPath(PATH_ALBUMS)
+//                    .appendPath(String.valueOf(albumId))
+//                    .appendPath(PATH_AUDIO_GENRES)
+//                    .build();
+//        }
+
+        // topas-rec: Sorting not needed, removed. Sort by playlist by default
+//        /** Build {@link Uri} for requested {@link #_ID}. */
+//        public static Uri buildAlbumUri(long hostId, long albumId) {
+//            return Hosts.buildHostUri(hostId).buildUpon()
+//                    .appendPath(PATH_ALBUMS)
+//                    .appendPath(String.valueOf(albumId))
+//                    .build();
+//        }
+
+        /** Read {@link #_ID} from {@link Albums} {@link Uri}. */
+        public static String getPlaylistId(Uri uri) {
+            return uri.getPathSegments().get(3);
+        }
+
+        public final static String[] ALL_COLUMNS = {
+                _ID, TITLE, DESCRIPTION
+        };
+    }
+
 
     /**
      * Columns for Songs table
