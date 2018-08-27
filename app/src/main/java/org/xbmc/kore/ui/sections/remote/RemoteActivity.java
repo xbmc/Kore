@@ -39,6 +39,7 @@ import android.widget.Toast;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
@@ -384,6 +385,18 @@ public class RemoteActivity extends BaseActivity
         String videoUrl = toPluginUrl(videoUri);
         if (videoUrl == null) {
             videoUrl = videoUri.toString();
+        }
+
+        // If a host was passed from the intent use it
+        int hostId = intent.getIntExtra("hostId", 0);
+        if (hostId > 0) {
+            HostManager hostManager = HostManager.getInstance(this);
+            for (HostInfo host : hostManager.getHosts()) {
+                if (host.getId() == hostId) {
+                    hostManager.switchHost(host);
+                    break;
+                }
+            }
         }
 
         String title = getString(R.string.app_name);
