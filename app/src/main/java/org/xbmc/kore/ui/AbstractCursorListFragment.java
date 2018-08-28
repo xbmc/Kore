@@ -75,6 +75,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	private boolean supportsSearch;
 
 	private SearchView searchView;
+	private boolean isPaused;
 
 	abstract protected void onListItemClicked(View view);
 	abstract protected CursorLoader createCursorLoader();
@@ -99,7 +100,6 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	@Override
 	public void onActivityCreated (Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		getLoaderManager().initLoader(LOADER, null, this);
 	}
 
@@ -113,12 +113,14 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	public void onResume() {
 		bus.register(this);
 		super.onResume();
+		isPaused = false;
 	}
 
 	@Override
 	public void onPause() {
 		bus.unregister(this);
 		super.onPause();
+		isPaused = true;
 	}
 
 	@Override
@@ -283,6 +285,13 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 			return true;
 		}
 
+		/**
+		 * When this fragment is paused, onQueryTextChange is called with an empty string.
+		 * This causes problems restoring the list fragment when returning.
+		 */
+		if (isPaused)
+			return true;
+
 		searchFilter = newText;
 
 		restartLoader();
@@ -310,7 +319,6 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	/** {@inheritDoc} */
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-		loaderLoading = false;
 		((RecyclerViewCursorAdapter) getAdapter()).swapCursor(cursor);
 		if (TextUtils.isEmpty(searchFilter)) {
 			// To prevent the empty text from appearing on the first load, set it now
@@ -353,7 +361,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 			searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
 			searchView.setOnQueryTextListener(this);
 			searchView.setQueryHint(getString(R.string.action_search));
-			if ((savedSearchFilter != null) && (!TextUtils.isEmpty(savedSearchFilter))){
+			if (!TextUtils.isEmpty(savedSearchFilter)) {
 				searchMenuItem.expandActionView();
 				searchView.setQuery(savedSearchFilter, false);
 				//noinspection RestrictedApi
