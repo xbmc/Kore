@@ -32,6 +32,7 @@ import org.xbmc.kore.utils.LogUtils;
 public class MusicActivity extends BaseMediaActivity
         implements ArtistListFragment.OnArtistSelectedListener,
                    AlbumListFragment.OnAlbumSelectedListener,
+                   PlaylistsListFragment.OnPlaylistSelectedListener,
                    AudioGenresListFragment.OnAudioGenreSelectedListener,
                    MusicVideoListFragment.OnMusicVideoSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(MusicActivity.class);
@@ -203,6 +204,22 @@ public class MusicActivity extends BaseMediaActivity
         showFragment(albumInfoFragment, vh.artView, vh.dataHolder);
 
         updateActionBar(selectedAlbumTitle, true);
+    }
+
+    @TargetApi(21)
+    public void onPlaylistSelected(PlaylistsListFragment.ViewHolder vh) {
+        // TODO Implement slection of a playlist
+//        selectedAlbumId = vh.dataHolder.getId();
+//        selectedAlbumTitle = vh.dataHolder.getTitle();
+//
+//        // Replace list fragment
+//        final AbstractInfoFragment albumInfoFragment = new AlbumInfoFragment();
+//        vh.dataHolder.setSquarePoster(true);
+//        albumInfoFragment.setDataHolder(vh.dataHolder);
+//
+//        showFragment(albumInfoFragment, vh.artView, vh.dataHolder);
+//
+//        updateActionBar(selectedAlbumTitle, true);
     }
 
     public void onAudioGenreSelected(int genreId, String genreTitle) {
