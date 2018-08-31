@@ -49,7 +49,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
@@ -113,7 +112,8 @@ public class EspressoTestUtils {
         EspressoTestUtils.clickMenuItem(activity, activity.getString(R.string.action_search), R.id.action_search);
 
         onView(isAssignableFrom(AutoCompleteTextView.class))
-                .perform(click(), typeText(query), clearFocus(), closeSoftKeyboard());
+                .perform(click(), typeText(query), closeSoftKeyboard());
+        onView(isRoot()).perform(clearFocus());
     }
 
     /**
