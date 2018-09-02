@@ -251,7 +251,7 @@
     <string name="no_addons_found_refresh">Ez da gehigarririk aurkitu edo ez dago konektatuta\n\nPasa hatza goitik behera freskatzeko</string>
     <string name="no_music_videos_found_refresh">Ez da bideorik aurkitu\n\nPasa hatza goitik behera freskatzeko</string>
     <string name="no_channel_groups_found_refresh">Ez da kanal talderik aurkitu.\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_channels_found_refresh">No channels found.\n\nSwipe down to refresh</string>
+    <string name="no_channels_found_refresh">Ez da kanalik aurkitu.\n\nSwipe down to refresh</string>
     <string name="no_favourites_found_refresh">Ez da gogokorik aurkitu.\n\nPasa hatza goitik behera freskatzeko</string>
     <string name="no_recordings_found_refresh">Ez da grabaziorik aurkitu.\n\nPasa hatza goitik behera freskatzeko</string>
     <string name="no_broadcasts_found_refresh">Ez da transmisiorik aurkitu.\n\nPasa hatza goitik behera freskatzeko</string>
@@ -348,6 +348,9 @@
     <string name="show_notification">Erakutsi jakinarazpenak erreproduzitzean</string>
     <string name="show_now_playing_panel">Erakutsi orain erreproduzitzen panela erreproduzitzean</string>
     <string name="show_now_playing_panel_summary">Panel zabalgarri bat erakusten du pantailaren behekaldean multimedia erreproduzitzean</string>
+    <string name="notification_seek_jump">Erabili pausoak bilaketarako</string>
+    <string name="notification_seek_jump_speed">Aldatu erreprodukzioaren abiadura jakinarazpenen bila dagoenean</string>
+    <string name="notification_seek_jump_step">Erabili saltatu pausoak jakinarazpenen bila dagoenean</string>
     <string name="pause_during_calls">Pausatu telefono deietan</string>
     <string name="use_hardware_volume_keys">Erabili bolumen teklak bolumena kontrolatzeko</string>
     <string name="vibrate_on_remote">Bibratu ukitzean</string>
@@ -386,7 +389,7 @@
     <string name="error_starting_to_record">Errore bat gertatu da grabatzean: %1$s</string>
     <string name="channel_switching">%1$s kanalera aldatzen</string>
     <string name="starting_recording">%1$s grabazioa hasten</string>
-    <string name="refresh">Refresh</string>
+    <string name="refresh">Freskatu</string>
 
     <string name="tv">TB</string>
     <string name="radio">Irratia</string>
@@ -422,5 +425,8 @@
     <string name="zeroprogress">0:00</string>
 
     <string name="toggle_expand">Zabaldu/Batu</string>
+    <string name="play_locally">Erreproduzitu lokalki</string>
 
+    <string name="disable_local_playback_support">Desgaitu erreprodukzio lokalaren sostengua</string>
+    <string name="disable_local_playback_support_summary">Kore exekutatzen duen gailuan lokalki dituen media-fitxategiak erreproduzitzeko sostengua desgaitzen du.</string>
 </resources>
