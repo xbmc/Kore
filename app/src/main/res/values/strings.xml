@@ -322,6 +322,7 @@
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Hide watched</string>
+    <string name="hide_disabled">Hide disabled</string>
     <string name="sort_order">Sort</string>
     <string name="sort_by_name">By name</string>
     <string name="sort_by_year">By year</string>
@@ -331,6 +332,7 @@
     <string name="sort_by_last_played">By last played</string>
     <string name="ignore_prefixes">Ignore prefixes</string>
     <string name="show_watched_status">Show watched status</string>
+    <string name="show_disabled_status">Show disabled status</string>
 
     <!-- Preferences strings -->
     <string name="application">Application</string>
