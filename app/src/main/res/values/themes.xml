@@ -151,6 +151,7 @@
         <item name="iconAddToQueue">@drawable/ic_queue_white_24dp</item>
         <item name="iconInfoWWW">@drawable/ic_open_in_new_white_24dp</item>
         <item name="iconSeen">@drawable/ic_done_white_24dp</item>
+        <item name="iconDisabled">@drawable/ic_cancel_white_24dp</item>
 
         <item name="iconCollapse">@drawable/ic_expand_less_white_24dp</item>
         <item name="iconExpand">@drawable/ic_expand_more_white_24dp</item>
@@ -299,6 +300,7 @@
         <item name="iconAddToQueue">@drawable/ic_queue_white_24dp</item>
         <item name="iconInfoWWW">@drawable/ic_open_in_new_white_24dp</item>
         <item name="iconSeen">@drawable/ic_done_white_24dp</item>
+        <item name="iconDisabled">@drawable/ic_cancel_white_24dp</item>
 
         <item name="iconCollapse">@drawable/ic_expand_less_white_24dp</item>
         <item name="iconExpand">@drawable/ic_expand_more_white_24dp</item>

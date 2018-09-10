@@ -247,6 +247,7 @@ public class AddonListFragment extends AbstractListFragment {
         TextView titleView;
         TextView detailsView;
         ImageView artView;
+        ImageView disabledView;
         private static String author;
         private static String version;
         private HostManager hostManager;
@@ -270,6 +271,7 @@ public class AddonListFragment extends AbstractListFragment {
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
             artView = itemView.findViewById(R.id.art);
+            disabledView = itemView.findViewById(R.id.disabled);
 
             itemView.setTag(this);
         }
@@ -288,6 +290,7 @@ public class AddonListFragment extends AbstractListFragment {
 
             titleView.setText(dataHolder.getTitle());
             detailsView.setText(addonDetails.summary);
+            disabledView.setVisibility(addonDetails.enabled ? View.INVISIBLE : View.VISIBLE);
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  addonDetails.thumbnail, dataHolder.getTitle(),
