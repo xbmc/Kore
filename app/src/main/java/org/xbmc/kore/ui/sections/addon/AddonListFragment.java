@@ -70,7 +70,6 @@ public class AddonListFragment extends AbstractListFragment {
     private Handler callbackHandler = new Handler();
 
     private static boolean hideDisabledAddons;
-    private static boolean showDisabledStatus;
 
     @Override
     protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
@@ -132,14 +131,11 @@ public class AddonListFragment extends AbstractListFragment {
         inflater.inflate(R.menu.addon_list, menu);
 
         // Setup filters
-        MenuItem hideDisabled = menu.findItem(R.id.action_hide_disabled),
-                showDisabledStatusMenuItem = menu.findItem(R.id.action_show_disabled_status);
+        MenuItem hideDisabled = menu.findItem(R.id.action_hide_disabled);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         hideDisabledAddons = preferences.getBoolean(Settings.KEY_PREF_ADDONS_FILTER_HIDE_DISABLED, Settings.DEFAULT_PREF_ADDONS_FILTER_HIDE_DISABLED);
         hideDisabled.setChecked(hideDisabledAddons);
-        showDisabledStatus = preferences.getBoolean(Settings.KEY_PREF_ADDONS_SHOW_DISABLED_STATUS, Settings.DEFAULT_PREF_ADDONS_SHOW_DISABLED_STATUS);
-        showDisabledStatusMenuItem.setChecked(showDisabledStatus);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -154,14 +150,6 @@ public class AddonListFragment extends AbstractListFragment {
                         .putBoolean(Settings.KEY_PREF_ADDONS_FILTER_HIDE_DISABLED, item.isChecked())
                         .apply();
                 hideDisabledAddons = item.isChecked();
-                callGetAddonsAndSetup();
-                break;
-            case R.id.action_show_disabled_status:
-                item.setChecked(!item.isChecked());
-                preferences.edit()
-                        .putBoolean(Settings.KEY_PREF_ADDONS_SHOW_DISABLED_STATUS, item.isChecked())
-                        .apply();
-                showDisabledStatus = item.isChecked();
                 callGetAddonsAndSetup();
                 break;
             default:
@@ -211,14 +199,7 @@ public class AddonListFragment extends AbstractListFragment {
 
                     adapter.clear();
                     for (AddonType.Details addon : result) {
-                        if ((addon.type.equals(AddonType.Types.UNKNOWN) ||
-                             addon.type.equals(AddonType.Types.XBMC_PYTHON_PLUGINSOURCE) ||
-                             addon.type.equals(AddonType.Types.XBMC_PYTHON_SCRIPT) ||
-                             addon.type.equals(AddonType.Types.XBMC_ADDON_AUDIO) ||
-                             addon.type.equals(AddonType.Types.XBMC_ADDON_EXECUTABLE) ||
-                             addon.type.equals(AddonType.Types.XBMC_ADDON_VIDEO) ||
-                             addon.type.equals(AddonType.Types.XBMC_ADDON_IMAGE)) &&
-                            (!hideDisabledAddons || addon.enabled)) {
+                        if (isAddonSupported(addon) && (!hideDisabledAddons || addon.enabled)) {
                             adapter.add(addon);
                         }
                     }
@@ -242,6 +223,16 @@ public class AddonListFragment extends AbstractListFragment {
                 }
             },
             callbackHandler);
+    }
+
+    private boolean isAddonSupported(AddonType.Details addon) {
+        return (addon.type.equals(AddonType.Types.UNKNOWN) ||
+                addon.type.equals(AddonType.Types.XBMC_PYTHON_PLUGINSOURCE) ||
+                addon.type.equals(AddonType.Types.XBMC_PYTHON_SCRIPT) ||
+                addon.type.equals(AddonType.Types.XBMC_ADDON_AUDIO) ||
+                addon.type.equals(AddonType.Types.XBMC_ADDON_EXECUTABLE) ||
+                addon.type.equals(AddonType.Types.XBMC_ADDON_VIDEO) ||
+                addon.type.equals(AddonType.Types.XBMC_ADDON_IMAGE));
     }
 
     private static class AddonsAdapter extends RecyclerView.Adapter {
@@ -346,7 +337,7 @@ public class AddonListFragment extends AbstractListFragment {
 
             titleView.setText(dataHolder.getTitle());
             detailsView.setText(addonDetails.summary);
-            disabledView.setVisibility(showDisabledStatus && !addonDetails.enabled ? View.VISIBLE : View.INVISIBLE);
+            disabledView.setVisibility(addonDetails.enabled ? View.INVISIBLE : View.VISIBLE);
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  addonDetails.thumbnail, dataHolder.getTitle(),

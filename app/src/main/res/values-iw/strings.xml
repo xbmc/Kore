@@ -333,7 +333,6 @@
     <string name="sort_by_last_played">לפי מועד הנגינה האחרון</string>
     <string name="ignore_prefixes">התעלמות מקידומות</string>
     <string name="show_watched_status">הצגת מצב הצפייה</string>
-    <string name="show_disabled_status">הצגת מצב מנוטרל</string>
 
     <!-- Preferences strings -->
     <string name="application">יישום</string>

@@ -136,10 +136,6 @@ public class Settings {
     public static final String KEY_PREF_ADDONS_FILTER_HIDE_DISABLED = "addons_filter_hide_disabled";
     public static final boolean DEFAULT_PREF_ADDONS_FILTER_HIDE_DISABLED = false;
 
-    // Show disabled status on addon list
-    public static final String KEY_PREF_ADDONS_SHOW_DISABLED_STATUS = "addons_show_disabled_status";
-    public static final boolean DEFAULT_PREF_ADDONS_SHOW_DISABLED_STATUS = true;
-
     // Use hardware volume keys to control volume
     public static final String KEY_PREF_USE_HARDWARE_VOLUME_KEYS = "pref_use_hardware_volume_keys";
     public static final boolean DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS = true;
