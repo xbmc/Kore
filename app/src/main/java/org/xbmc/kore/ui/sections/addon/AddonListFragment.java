@@ -17,11 +17,16 @@ package org.xbmc.kore.ui.sections.addon;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Addons;
@@ -63,6 +69,8 @@ public class AddonListFragment extends AbstractListFragment {
      */
     private Handler callbackHandler = new Handler();
 
+    private static boolean hideDisabledAddons;
+
     @Override
     protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
         return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
@@ -84,7 +92,7 @@ public class AddonListFragment extends AbstractListFragment {
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
 
         if (getAdapter().getItemCount() == 0)
             callGetAddonsAndSetup();
@@ -116,6 +124,41 @@ public class AddonListFragment extends AbstractListFragment {
                  .show();
         }
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.addon_list, menu);
+
+        // Setup filters
+        MenuItem hideDisabled = menu.findItem(R.id.action_hide_disabled);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        hideDisabledAddons = preferences.getBoolean(Settings.KEY_PREF_ADDONS_FILTER_HIDE_DISABLED, Settings.DEFAULT_PREF_ADDONS_FILTER_HIDE_DISABLED);
+        hideDisabled.setChecked(hideDisabledAddons);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        switch (item.getItemId()) {
+            case R.id.action_hide_disabled:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                        .putBoolean(Settings.KEY_PREF_ADDONS_FILTER_HIDE_DISABLED, item.isChecked())
+                        .apply();
+                hideDisabledAddons = item.isChecked();
+                callGetAddonsAndSetup();
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public class AddonNameComparator implements Comparator<AddonType.Details>
     {
         public int compare(AddonType.Details left, AddonType.Details right) {
@@ -156,13 +199,7 @@ public class AddonListFragment extends AbstractListFragment {
 
                     adapter.clear();
                     for (AddonType.Details addon : result) {
-                        if (addon.type.equals(AddonType.Types.UNKNOWN) ||
-                            addon.type.equals(AddonType.Types.XBMC_PYTHON_PLUGINSOURCE) ||
-                            addon.type.equals(AddonType.Types.XBMC_PYTHON_SCRIPT) ||
-                            addon.type.equals(AddonType.Types.XBMC_ADDON_AUDIO) ||
-                            addon.type.equals(AddonType.Types.XBMC_ADDON_EXECUTABLE) ||
-                            addon.type.equals(AddonType.Types.XBMC_ADDON_VIDEO) ||
-                            addon.type.equals(AddonType.Types.XBMC_ADDON_IMAGE)) {
+                        if (isAddonSupported(addon) && (!hideDisabledAddons || addon.enabled)) {
                             adapter.add(addon);
                         }
                     }
@@ -186,6 +223,16 @@ public class AddonListFragment extends AbstractListFragment {
                 }
             },
             callbackHandler);
+    }
+
+    private boolean isAddonSupported(AddonType.Details addon) {
+        return (addon.type.equals(AddonType.Types.UNKNOWN) ||
+                addon.type.equals(AddonType.Types.XBMC_PYTHON_PLUGINSOURCE) ||
+                addon.type.equals(AddonType.Types.XBMC_PYTHON_SCRIPT) ||
+                addon.type.equals(AddonType.Types.XBMC_ADDON_AUDIO) ||
+                addon.type.equals(AddonType.Types.XBMC_ADDON_EXECUTABLE) ||
+                addon.type.equals(AddonType.Types.XBMC_ADDON_VIDEO) ||
+                addon.type.equals(AddonType.Types.XBMC_ADDON_IMAGE));
     }
 
     private static class AddonsAdapter extends RecyclerView.Adapter {
@@ -247,6 +294,7 @@ public class AddonListFragment extends AbstractListFragment {
         TextView titleView;
         TextView detailsView;
         ImageView artView;
+        ImageView disabledView;
         private static String author;
         private static String version;
         private HostManager hostManager;
@@ -270,6 +318,7 @@ public class AddonListFragment extends AbstractListFragment {
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
             artView = itemView.findViewById(R.id.art);
+            disabledView = itemView.findViewById(R.id.disabled);
 
             itemView.setTag(this);
         }
@@ -288,6 +337,7 @@ public class AddonListFragment extends AbstractListFragment {
 
             titleView.setText(dataHolder.getTitle());
             detailsView.setText(addonDetails.summary);
+            disabledView.setVisibility(addonDetails.enabled ? View.INVISIBLE : View.VISIBLE);
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  addonDetails.thumbnail, dataHolder.getTitle(),

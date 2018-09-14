@@ -110,6 +110,7 @@
     <attr name="iconAddToQueue" format="reference" />
     <attr name="iconInfoWWW" format="reference" />
     <attr name="iconSeen" format="reference" />
+    <attr name="iconDisabled" format="reference" />
 
     <attr name="iconCollapse" format="reference" />
     <attr name="iconExpand" format="reference" />

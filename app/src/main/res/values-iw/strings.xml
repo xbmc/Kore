@@ -323,6 +323,7 @@
 
     <!-- Filters on list menus -->
     <string name="hide_watched">הסתרת אלו שראיתי</string>
+    <string name="hide_disabled">הסתרת הרחבות מנוטרלות</string>
     <string name="sort_order">סידור</string>
     <string name="sort_by_name">לפי שם</string>
     <string name="sort_by_year">לפי שנה </string>

@@ -132,6 +132,10 @@ public class Settings {
     public static final String KEY_PREF_TVSHOWS_SHOW_WATCHED_STATUS = "tvshows_show_watched_status";
     public static final boolean DEFAULT_PREF_TVSHOWS_SHOW_WATCHED_STATUS = true;
 
+    // Filter disabled addons on addons list
+    public static final String KEY_PREF_ADDONS_FILTER_HIDE_DISABLED = "addons_filter_hide_disabled";
+    public static final boolean DEFAULT_PREF_ADDONS_FILTER_HIDE_DISABLED = false;
+
     // Use hardware volume keys to control volume
     public static final String KEY_PREF_USE_HARDWARE_VOLUME_KEYS = "pref_use_hardware_volume_keys";
     public static final boolean DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS = true;
