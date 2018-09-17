@@ -322,6 +322,7 @@
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Masquer les visionnés</string>
+    <string name="hide_disabled">Masquer les désactivés</string>
     <string name="sort_order">Trier</string>
     <string name="sort_by_name">Par nom</string>
     <string name="sort_by_year">Par année</string>
