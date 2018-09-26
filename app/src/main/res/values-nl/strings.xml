@@ -25,7 +25,7 @@
   <string name="navigation_drawer_close">Close navigation drawer</string>
   <string name="xbmc_media_center">Mediacenter</string>
   <string name="home">Beginscherm</string>
-  <string name="movies">Speelfilms</string>
+  <string name="movies">Films</string>
   <string name="tv_shows">TV-programma\'s</string>
   <string name="music">Muziek</string>
   <string name="pictures">Afbeeldingen</string>
@@ -184,7 +184,7 @@
   <string name="playlist_empty">Afspeellijst leeg</string>
   <string name="clear_playlist">Afspeellijst leegmaken</string>
   <string name="source_empty">Mediabron is leeg</string>
-  <string name="no_movies_found_refresh">Geen speelfilms gevonden.\n\nVeeg omlaag om te vernieuwen</string>
+  <string name="no_movies_found_refresh">Geen films gevonden.\n\nVeeg omlaag om te vernieuwen</string>
   <string name="no_tvshows_found_refresh">Geen tv-programma\'s gevonden.\n\nVeeg omlaag om te vernieuwen</string>
   <string name="no_episodes_found">Geen afleveringen gevonden</string>
   <string name="no_artists_found_refresh">Geen artiesten gevonden\n\nVeeg omlaag om te vernieuwen</string>
@@ -197,7 +197,7 @@
   <string name="sync_successful">Synchronisatie geslaagd</string>
   <string name="error_while_syncing">Er is een fout opgetreden bij het synchroniseren: %1$s</string>
   <string name="action_search">Zoeken</string>
-  <string name="action_search_movies">Speelfilms zoeken</string>
+  <string name="action_search_movies">Films zoeken</string>
   <string name="action_search_tvshows">TV-programma\'s zoeken</string>
   <string name="action_search_albums">Albums zoeken</string>
   <string name="action_search_artists">Artiesten zoeken</string>
