@@ -26,7 +26,7 @@
   <string name="xbmc_media_center">Mediacenter</string>
   <string name="home">Beginscherm</string>
   <string name="movies">Films</string>
-  <string name="tv_shows">TV-programma\'s</string>
+  <string name="tv_shows">Series</string>
   <string name="music">Muziek</string>
   <string name="pictures">Afbeeldingen</string>
   <string name="addons">Add-ons</string>
@@ -185,7 +185,7 @@
   <string name="clear_playlist">Afspeellijst leegmaken</string>
   <string name="source_empty">Mediabron is leeg</string>
   <string name="no_movies_found_refresh">Geen films gevonden.\n\nVeeg omlaag om te vernieuwen</string>
-  <string name="no_tvshows_found_refresh">Geen tv-programma\'s gevonden.\n\nVeeg omlaag om te vernieuwen</string>
+  <string name="no_tvshows_found_refresh">Geen series gevonden.\n\nVeeg omlaag om te vernieuwen</string>
   <string name="no_episodes_found">Geen afleveringen gevonden</string>
   <string name="no_artists_found_refresh">Geen artiesten gevonden\n\nVeeg omlaag om te vernieuwen</string>
   <string name="no_albums_found_refresh">Geen albums gevonden\n\nVeeg omlaag om te vernieuwen</string>
@@ -198,7 +198,7 @@
   <string name="error_while_syncing">Er is een fout opgetreden bij het synchroniseren: %1$s</string>
   <string name="action_search">Zoeken</string>
   <string name="action_search_movies">Films zoeken</string>
-  <string name="action_search_tvshows">TV-programma\'s zoeken</string>
+  <string name="action_search_tvshows">Series zoeken</string>
   <string name="action_search_albums">Albums zoeken</string>
   <string name="action_search_artists">Artiesten zoeken</string>
   <string name="action_search_genres">Genres zoeken</string>
@@ -332,7 +332,7 @@
   <string name="unable_to_move_item">Het item kan niet worden verplaatst</string>
   <string name="cannot_move_playing_item">Kan een item dat wordt afgespeeld niet verplaatsen</string>
   <string name="unable_to_play_favourite_item">Kan het favoriete item niet afspelen. Type wordt niet ondersteund</string>
-  <string name="pvr_epg">Programmagids</string>
+  <string name="pvr_epg">TV-gids</string>
   <string name="record">Opnemen</string>
   <string name="starting_recording">Opname wordt gestart %1$s</string>
   <string name="pause_call_incoming_message">Bekijk je gsm, iemand probeert je te bellen</string>
