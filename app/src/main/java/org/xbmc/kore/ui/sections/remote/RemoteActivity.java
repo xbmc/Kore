@@ -47,6 +47,7 @@ import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
+import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.service.ConnectionObserversManagerService;
@@ -641,6 +642,11 @@ public class RemoteActivity extends BaseActivity
             setImageViewBackground(null);
         }
         lastImageUrl = null;
+    }
+
+    @Override
+    public void playerOnSeek(GlobalType.Time time, GlobalType.Time seekOffset) {
+
     }
 
     public void playerNoResultsYet() {

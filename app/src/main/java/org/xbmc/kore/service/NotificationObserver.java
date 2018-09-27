@@ -40,6 +40,7 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.notification.Player;
+import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
@@ -104,6 +105,11 @@ public class NotificationObserver
 
     public void playerOnStop() {
         notifyNothingPlaying();
+    }
+
+    @Override
+    public void playerOnSeek(GlobalType.Time time, GlobalType.Time seekOffset) {
+
     }
 
     public void playerNoResultsYet() {

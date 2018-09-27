@@ -45,6 +45,7 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.Player;
+import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
@@ -315,6 +316,11 @@ public abstract class BaseMediaActivity extends BaseActivity
         // the next item in a playlist
         callbackHandler.removeCallbacks(hidePanelRunnable);
         callbackHandler.postDelayed(hidePanelRunnable, 1000);
+    }
+
+    @Override
+    public void playerOnSeek(GlobalType.Time time, GlobalType.Time seekOffset) {
+        nowPlayingPanel.setMediaProgress(time);
     }
 
     @Override

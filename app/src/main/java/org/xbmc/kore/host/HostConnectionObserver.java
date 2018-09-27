@@ -27,6 +27,7 @@ import org.xbmc.kore.jsonrpc.notification.Player.NotificationsData;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.System;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
+import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.utils.LogUtils;
@@ -101,6 +102,13 @@ public class HostConnectionObserver
          * Notifies that media is stopped/nothing is playing
          */
         public void playerOnStop();
+
+        /**
+         * Notifies player seeking
+         * @param time New time
+         * @param seekOffset Offset relative to the previous time
+         */
+        public void playerOnSeek(GlobalType.Time time, GlobalType.Time seekOffset);
 
         /**
          * Called when we get a connection error
@@ -403,7 +411,12 @@ public class HostConnectionObserver
 
     public void onSeek(org.xbmc.kore.jsonrpc.notification.Player.OnSeek notification) {
         // Just start our chain calls
-        chainCallGetActivePlayers();
+        // chainCallGetActivePlayers();
+
+        List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
+        for (final PlayerEventsObserver observer : allObservers) {
+            observer.playerOnSeek(notification.time, notification.seekoffset);
+        }
     }
 
     public void onStop(org.xbmc.kore.jsonrpc.notification.Player.OnStop notification) {
