@@ -40,8 +40,22 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/art"
             android:layout_toEndOf="@id/art"
+            android:layout_toLeftOf="@id/list_context_menu"
+            android:layout_toStartOf="@id/list_context_menu"
             android:layout_alignTop="@id/art"
             style="@style/TextAppearance.Medialist.Title"/>
+
+        <ImageView
+            android:id="@+id/list_context_menu"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_alignTop="@id/art"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/default_icon_padding"
+            style="@style/Widget.Button.Borderless"
+            android:src="?attr/iconOverflow"
+            android:contentDescription="@string/action_options"/>
 
         <ProgressBar
             android:id="@+id/tv_shows_progress_bar"

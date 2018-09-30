@@ -430,4 +430,6 @@
 
     <string name="disable_local_playback_support">Disable local playback support</string>
     <string name="disable_local_playback_support_summary">Disables support for playing media locally on the device running Kore.</string>
+    <string name="mark_watched">Mark watched</string>
+    <string name="mark_unwatched">Mark unwatched</string>
 </resources>

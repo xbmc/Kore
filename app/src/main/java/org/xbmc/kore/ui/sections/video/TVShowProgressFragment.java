@@ -17,13 +17,16 @@
 package org.xbmc.kore.ui.sections.video;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -40,9 +43,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
+import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.CastFragment;
@@ -50,6 +57,8 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
+
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TVShowProgressFragment extends AbstractAdditionalInfoFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(TVShowProgressFragment.class);
@@ -61,8 +70,9 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     private int itemId = -1;
     private CastFragment castFragment;
 
-    public static final int LOADER_NEXT_EPISODES = 1,
-            LOADER_SEASONS = 2;
+    public static final int LOADER_NEXT_EPISODES = 1;
+    public static final int LOADER_SEASONS = 2;
+    public static final int LOADER_SEASON_EPISODES = 3;
 
     public interface TVShowProgressActionListener {
         void onSeasonSelected(int tvshowId, int season);
@@ -260,7 +270,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
      * @param cursor Cursor with the data
      */
     @TargetApi(21)
-    private void displaySeasonList(Cursor cursor) {
+    private void displaySeasonList(final Cursor cursor) {
         TextView seasonsListTitle = (TextView) getActivity().findViewById(R.id.seasons_title);
         GridLayout seasonsList = (GridLayout) getActivity().findViewById(R.id.seasons_list);
 
@@ -291,27 +301,28 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                     R.attr.colorFinished
             });
 
-            int inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.orange_500));
-            int finishedColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.green_400));
+            final int inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.orange_500));
+            final int finishedColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.green_400));
             styledAttributes.recycle();
 
             seasonsList.removeAllViews();
             do {
-                int seasonNumber = cursor.getInt(SeasonsListQuery.SEASON);
+                final int seasonNumber = cursor.getInt(SeasonsListQuery.SEASON);
                 String thumbnail = cursor.getString(SeasonsListQuery.THUMBNAIL);
-                int numEpisodes = cursor.getInt(SeasonsListQuery.EPISODE);
+                final int numEpisodes = cursor.getInt(SeasonsListQuery.EPISODE);
                 int watchedEpisodes = cursor.getInt(SeasonsListQuery.WATCHEDEPISODES);
 
                 View seasonView = LayoutInflater.from(getActivity()).inflate(R.layout.grid_item_season, seasonsList, false);
 
                 ImageView seasonPictureView = (ImageView) seasonView.findViewById(R.id.art);
                 TextView seasonNumberView = (TextView) seasonView.findViewById(R.id.season);
-                TextView seasonEpisodesView = (TextView) seasonView.findViewById(R.id.episodes);
-                ProgressBar seasonProgressBar = (ProgressBar) seasonView.findViewById(R.id.season_progress_bar);
+                final TextView seasonEpisodesView = (TextView) seasonView.findViewById(R.id.episodes);
+                final ProgressBar seasonProgressBar = (ProgressBar) seasonView.findViewById(R.id.season_progress_bar);
+                ImageView contextMenu = (ImageView) seasonView.findViewById(R.id.list_context_menu);
+                final String numEpisodesFormat = getActivity().getString(R.string.num_episodes);
 
                 seasonNumberView.setText(String.format(getActivity().getString(R.string.season_number), seasonNumber));
-                seasonEpisodesView.setText(String.format(getActivity().getString(R.string.num_episodes),
-                                                         numEpisodes, numEpisodes - watchedEpisodes));
+                seasonEpisodesView.setText(String.format(numEpisodesFormat, numEpisodes, numEpisodes - watchedEpisodes));
                 seasonProgressBar.setMax(numEpisodes);
                 seasonProgressBar.setProgress(watchedEpisodes);
 
@@ -319,6 +330,40 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                     int watchedColor = (numEpisodes - watchedEpisodes == 0) ? finishedColor : inProgressColor;
                     seasonProgressBar.setProgressTintList(ColorStateList.valueOf(watchedColor));
                 }
+
+                final ReentrantLock viewUpdatLock = new ReentrantLock();
+
+                View.OnClickListener contextSeasonItemMenuClickListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+
+                        final PlaylistType.Item playListItem = new PlaylistType.Item();
+                        playListItem.episodeid = (int) v.getTag();
+
+                        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+                        popupMenu.getMenuInflater().inflate(R.menu.tvshow_season_list_item, popupMenu.getMenu());
+                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                switch (item.getItemId()) {
+                                    case R.id.action_queue:
+                                        MediaPlayerUtils.queue(TVShowProgressFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
+                                        return true;
+                                    case R.id.action_mark_watched:
+                                        markSeasonWatched(true, seasonNumber, seasonEpisodesView, seasonProgressBar, numEpisodesFormat, finishedColor, viewUpdatLock);
+                                        return true;
+                                    case R.id.action_mark_unwatched:
+                                        markSeasonWatched(false, seasonNumber, seasonEpisodesView, seasonProgressBar, numEpisodesFormat, inProgressColor, viewUpdatLock);
+                                        return true;
+                                }
+                                return false;
+                            }
+                        });
+                        popupMenu.show();
+                    }
+                };
+                contextMenu.setTag(seasonNumber);
+                contextMenu.setOnClickListener(contextSeasonItemMenuClickListener);
 
                 UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                      thumbnail,
@@ -336,6 +381,76 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
         }
     }
 
+    private void markSeasonWatched(final boolean watched, final int seasonNumber, final TextView seasonEpisodesView, final ProgressBar progressBar,
+                                   final String numEpisodesFormat, final int finalColor, final ReentrantLock viewUpdatLock) {
+
+        getLoaderManager().restartLoader(LOADER_SEASON_EPISODES, null,
+                new LoaderManager.LoaderCallbacks<Cursor>() {
+                    @Override
+                    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+                        Uri uri = MediaContract.Episodes.buildTVShowSeasonEpisodesListUri(hostInfo.getId(), itemId, seasonNumber);
+                        String filter = MediaContract.EpisodesColumns.PLAYCOUNT;
+                        filter += watched ? "=0" : ">0";
+                        return new CursorLoader(getActivity(), uri, EpisodesListQuery.PROJECTION, filter, null, null);
+                    }
+
+                    @Override
+                    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                        if (data.moveToFirst()) {
+                            do {
+                                VideoLibrary.SetEpisodeDetails action = new VideoLibrary.SetEpisodeDetails(data.getInt(
+                                        EpisodesListQuery.EPISODEID), watched ? 1 : 0, null);
+                                action.execute(HostManager.getInstance(getActivity()).getConnection(), new ApiCallback<String>() {
+                                    @Override
+                                    public void onSuccess(String result) {
+                                        viewUpdatLock.lock();
+                                        int watchedEpisodes = progressBar.getProgress() + (watched ? 1 : -1);
+                                        int numEpisodes = progressBar.getMax();
+                                        progressBar.setProgress(watchedEpisodes);
+                                        seasonEpisodesView.setText(String.format(numEpisodesFormat, numEpisodes, numEpisodes - watchedEpisodes));
+                                        boolean done = false;
+                                        if (watched) {
+                                            done = watchedEpisodes == numEpisodes;
+                                            if (Utils.isLollipopOrLater() && done) {
+                                                progressBar.setProgressTintList(ColorStateList.valueOf(finalColor));
+                                            }
+                                        } else {
+                                            done = watchedEpisodes == 0;
+                                            if (Utils.isLollipopOrLater() && (watchedEpisodes + 1 == numEpisodes)) {
+                                                progressBar.setProgressTintList(ColorStateList.valueOf(finalColor));
+                                            }
+                                        }
+
+                                        if (done) {
+                                            Activity activity = getActivity();
+                                            if (activity != null) {
+                                                Intent syncIntent = new Intent(activity, LibrarySyncService.class);
+                                                syncIntent.putExtra(LibrarySyncService.SYNC_SINGLE_TVSHOW, true);
+                                                syncIntent.putExtra(LibrarySyncService.SYNC_TVSHOWID, itemId);
+                                                activity.startService(syncIntent);
+                                            }
+                                        }
+                                        viewUpdatLock.unlock();
+                                    }
+
+                                    @Override
+                                    public void onError(int errorCode, String description) {
+
+                                    }
+                                }, null);
+                            } while (data.moveToNext());
+                        }
+
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<Cursor> loader) {
+
+                    }
+                });
+    }
+
     private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
@@ -343,7 +458,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             playListItem.episodeid = (int)v.getTag();
 
             final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.tvshow_episode_list_item, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
@@ -410,5 +525,20 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
         int THUMBNAIL = 2;
         int EPISODE = 3;
         int WATCHEDEPISODES = 4;
+    }
+
+    /**
+     * Episodes list query parameters.
+     */
+    private interface EpisodesListQuery {
+        String[] PROJECTION = {
+                BaseColumns._ID,
+                MediaContract.Episodes.EPISODEID,
+                MediaContract.Episodes.PLAYCOUNT
+        };
+
+        int ID = 0;
+        int EPISODEID = 1;
+        int PLAYCOUNT = 2;
     }
 }

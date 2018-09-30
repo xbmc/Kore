@@ -331,7 +331,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
             playListItem.episodeid = viewHolder.dataHolder.getId();
 
             final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.tvshow_episode_list_item, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
