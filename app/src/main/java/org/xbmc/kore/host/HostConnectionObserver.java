@@ -403,6 +403,7 @@ public class HostConnectionObserver
 
     public void onSeek(org.xbmc.kore.jsonrpc.notification.Player.OnSeek notification) {
         // Just start our chain calls
+        forceReply = true;
         chainCallGetActivePlayers();
     }
 
