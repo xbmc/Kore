@@ -434,11 +434,6 @@ public class RemoteFragment extends Fragment
         infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
     }
 
-    @Override
-    public void playerOnSeek(GlobalType.Time time, GlobalType.Time seekOffset) {
-
-    }
-
     public void playerOnConnectionError(int errorCode, String description) {
         HostInfo hostInfo = hostManager.getHostInfo();
 

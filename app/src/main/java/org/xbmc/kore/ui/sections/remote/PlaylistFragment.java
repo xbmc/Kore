@@ -46,7 +46,6 @@ import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
-import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
@@ -262,11 +261,6 @@ public class PlaylistFragment extends Fragment
         infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
 
         lastCallResult = PLAYER_IS_STOPPED;
-    }
-
-    @Override
-    public void playerOnSeek(GlobalType.Time time, GlobalType.Time seekOffset) {
-
     }
 
     public void playerOnConnectionError(int errorCode, String description) {

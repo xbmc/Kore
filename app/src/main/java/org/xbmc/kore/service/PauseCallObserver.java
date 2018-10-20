@@ -23,7 +23,6 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.method.Player;
-import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.utils.LogUtils;
@@ -111,11 +110,6 @@ public class PauseCallObserver extends PhoneStateListener
         isPlaying = false;
         shouldResume = false;
         stopListener();
-    }
-
-    @Override
-    public void playerOnSeek(GlobalType.Time time, GlobalType.Time seekOffset) {
-
     }
 
     @Override

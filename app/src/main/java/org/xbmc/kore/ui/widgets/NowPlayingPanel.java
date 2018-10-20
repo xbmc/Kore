@@ -144,10 +144,6 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
         mediaProgressIndicator.setProgress(time.ToSeconds());
     }
 
-    public void setMediaProgress(GlobalType.Time time) {
-        mediaProgressIndicator.setProgress(time.ToSeconds());
-    }
-
     /**
      * Returns the progression indicator used for media progression
      * @return
