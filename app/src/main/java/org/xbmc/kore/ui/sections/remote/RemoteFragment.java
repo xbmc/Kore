@@ -301,7 +301,7 @@ public class RemoteFragment extends Fragment
     @Optional
     @OnClick(R.id.pvr)
     public void onRadioClicked(View v) {
-        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.PVR);
+        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.TVCHANNELS);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
