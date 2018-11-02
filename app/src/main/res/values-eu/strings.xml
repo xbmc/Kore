@@ -322,6 +322,7 @@
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Ezkutatu ikusitakoak</string>
+    <string name="hide_disabled">Ezkutatu desgaitutakoak</string>
     <string name="sort_order">Sailkatu</string>
     <string name="sort_by_name">Izenaren arabera</string>
     <string name="sort_by_year">Urtearen arabera</string>
