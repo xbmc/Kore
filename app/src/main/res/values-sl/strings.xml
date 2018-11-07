@@ -39,7 +39,7 @@
     <string name="connecting_to">Povezujem z %1$s (%2$s)…</string>
     <string name="wizard_welcome">Dobrodošli</string>
     <string name="wizard_welcome_message"><![CDATA[
-    Začnimo z dodajanjem medijskega centra. Prepričajte se, da vaša koda / XBMC deluje pravilno, je pravilno nastavljena in v istem omrežju kot vaša naprava.<br/><br/>
+    Začnimo z dodajanjem medijskega centra. Prepričajte se, da vaš Kodi / XBMC deluje pravilno, je pravilno nastavljena in v istem omrežju kot vaša naprava.<br/><br/>
     Pomoč za nastavitev najdete <a href="http://syncedsynapse.com/kore/kore-faq/>tukaj</a>.<br/><br/>
     Ko ste pripravljeni, pritisnite <b><i>Naprej</i></b>.
     ]]></string>
@@ -76,7 +76,7 @@
     <string name="wizard_xbmc_event_server_port">ES vrata (9777)</string>
     <string name="wizard_xbmc_use_event_server">Uporabi EventServer</string>
     <string name="wizard_no_name_specified">Navedite ime za ta medijski center, tako da ga lahko kasneje prepoznate.</string>
-    <string name="wizard_no_address_specified">Prosim, navedite naslov tega medijskega centra, zato ga lahko poiščem.</string>
+    <string name="wizard_no_address_specified">Prosim, navedite naslov tega medijskega centra, da ga lahko poiščem.</string>
     <string name="wizard_invalid_http_port_specified">Navedite veljavna HTTP vrata za ta medijski center.</string>
     <string name="wizard_invalid_tcp_port_specified">Navedite veljavna TCP vrata za ta medijski center.</string>
     <string name="wizard_invalid_es_port_specified">Navedite veljavna EventServer vrata  za ta medijski center.</string>
@@ -122,7 +122,7 @@
     <string name="osd">Meni</string>
     <string name="back">Nazaj</string>
     <string name="previous">Prejšnji</string>
-    <string name="next">Naslednji</string>
+    <string name="next">Naprej</string>
     <string name="finish">Končaj</string>
     <string name="test_connection">Testiraj</string>
     <string name="search_again">Ponovno iskanje</string>
