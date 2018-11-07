@@ -76,7 +76,7 @@
     <string name="wizard_xbmc_event_server_port">ES vrata (9777)</string>
     <string name="wizard_xbmc_use_event_server">Uporabi EventServer</string>
     <string name="wizard_no_name_specified">Navedite ime za ta medijski center, tako da ga lahko kasneje prepoznate.</string>
-    <string name="wizard_no_address_specified">Prosim, navedite naslov tega medijskega centra, zato ga lahko poiščem.</string>
+    <string name="wizard_no_address_specified">Prosim, navedite naslov tega medijskega centra, da ga lahko poiščem.</string>
     <string name="wizard_invalid_http_port_specified">Navedite veljavna HTTP vrata za ta medijski center.</string>
     <string name="wizard_invalid_tcp_port_specified">Navedite veljavna TCP vrata za ta medijski center.</string>
     <string name="wizard_invalid_es_port_specified">Navedite veljavna EventServer vrata  za ta medijski center.</string>
