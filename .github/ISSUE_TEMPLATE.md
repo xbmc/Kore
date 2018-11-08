@@ -45,7 +45,6 @@ Steps to reproduce the behavior:
 
 ### Debuglog
 <!--- Put your text below this line -->
-<!--- A debuglog is always mandatory when creating an issue. Provide one! -->
 The debuglog can be found here:
 
 
