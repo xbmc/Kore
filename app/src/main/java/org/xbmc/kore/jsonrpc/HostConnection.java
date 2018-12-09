@@ -158,13 +158,22 @@ public class HostConnection {
 
     private static final int DEFAULT_CONNECT_TIMEOUT = 5000; // ms
 
-    private static final int TCP_READ_TIMEOUT = 30000; // ms
+    public static final int TCP_READ_TIMEOUT = 30000; // ms
 
     /**
      * OkHttpClient. Make sure it is initialized, by calling {@link #getOkHttpClient()}
      */
     private OkHttpClient httpClient = null;
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+
+    /**
+     * Flag to indicate that the tcp response have to be ignored.
+     */
+    private boolean ignoreTcpResponse = false;
+
+    public void setIgnoreTcpResponse(boolean ignoreTcpResponse) {
+        this.ignoreTcpResponse = ignoreTcpResponse;
+    }
 
     /**
      * Creates a new host connection
@@ -698,7 +707,19 @@ public class HostConnection {
 		});
 	}
 
+    private boolean shouldIgnoreTcpResponse(ObjectNode jsonResponse) {
+        boolean ignore = false;
+        if (jsonResponse.has(ApiMethod.ID_NODE) && ignoreTcpResponse) {
+            ignoreTcpResponse = false;
+            ignore = true;
+        }
+        LogUtils.LOGD(TAG, "ignore tcp response - " + ignore);
+        return ignore;
+    }
+
 	private <T> void handleTcpResponse(ObjectNode jsonResponse) {
+        if (shouldIgnoreTcpResponse(jsonResponse))
+            return;
 
 		if (!jsonResponse.has(ApiMethod.ID_NODE)) {
             // It's a notification, notify observers
