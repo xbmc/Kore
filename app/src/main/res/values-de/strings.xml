@@ -377,7 +377,7 @@
     <string name="error_getting_pvr_info">Ein Fehler ist aufgetreten während des Empfangens der PVR Informationen: %1$s</string>
     <string name="might_not_have_pvr">Ein Fehler ist während des Empfangens der Kanalinformationen aufgetreten, möglicherweise weil Ihr Media Center keinen Empfänger hat oder dieser falsch konfiguriert ist.\n\nWenn das der Fall ist und Sie diesen Eintrag aus dem Seitenmenü entfernen möchten, können Sie es in den Einstellungen tun.</string>
     <string name="error_starting_channel">Ein Fehler ist beim Starten des Abspielens aufgetreten: %1$s</string>
-    <string name="error_favourites"></string>Ein Fehler ist während des Empfangens der Favoriten und deren Informationen aufgetreten: %1$s</string>
+    <string name="error_favourites">Ein Fehler ist während des Empfangens der Favoriten und deren Informationen aufgetreten: %1$s</string>
 	<string name="error_starting_recording">Ein Fehler ist beim Starten der Aufnahme aufgetreten: %1$s</string>
     <string name="error_starting_to_record">Während der Aufnahme ist ein Fehler aufgetreten: %1$s</string>
     <string name="channel_switching">Wechseln zum Kanal %1$s</string>
