@@ -35,8 +35,12 @@
     <string name="addons">Anwendungen</string>
     <string name="files">Dateien</string>
     <string name="video">Videos</string>
+	<string name="window">Fenster</string>
+	<string name="unknown">Unbekannt</string>
     <string name="file_browser">Datei-Browser</string>
     <string name="pvr">PVR</string>
+	<string name="favourites">Favoriten</string>
+    <string name="weather">Wetter</string>
 
     <string name="no_xbmc_configured">Kein Media Center konfiguriert</string>
     <string name="add_xbmc">Media Center hinzufügen</string>
@@ -134,7 +138,7 @@
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
     <string name="fast_forward">schneller Vorlauf</string>
-    <string name="rewind">zurückspulen</string>
+    <string name="rewind">Zurückspulen</string>
 
     <string name="repeat">Wiederholen</string>
     <string name="shuffle">Zufallswiedergabe</string>
@@ -243,7 +247,8 @@
     <string name="no_music_videos_found_refresh">Keine Videos gefunden\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_channel_groups_found_refresh">Keine Kanalgruppen gefunden.\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_channels_found_refresh">Keine Kanäle gefunden.\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_recordings_found_refresh">Keine Aufnahmen gefunden.\n\nZum Aktualisieren herunterziehen</string>
+    <string name="no_favourites_found_refresh">Keine Favoriten gefunden.\n\nZum Aktualisieren herunterziehen</string>
+	<string name="no_recordings_found_refresh">Keine Aufnahmen gefunden.\n\nZum Aktualisieren herunterziehen</string>
     <string name="no_broadcasts_found_refresh">Keine Sendungen gefunden.\n\nZum Aktualisieren herunterziehen</string>
     <string name="pull_to_refresh">Zum Aktualisieren ziehen</string>
     <string name="no_cast_info">Keine Informationen zur Besetzung</string>
@@ -312,6 +317,7 @@
 
     <!-- Filters on list menus -->
     <string name="hide_watched">Gesehene verbergen</string>
+	<string name="hide_disabled">Deaktivierte verbergen</string>
     <string name="sort_order">Sortierung</string>
     <string name="sort_by_name">Nach Name</string>
     <string name="sort_by_year">Nach Jahr</string>
@@ -322,6 +328,8 @@
     <string name="ignore_prefixes">Präfixe ignorieren</string>
 
     <!-- Preferences strings -->
+	<string name="application">Applikation</string>
+	
     <string name="theme">Thema</string>
     <string name="theme_night">Nacht</string>
     <string name="theme_day">Tag</string>
@@ -333,10 +341,14 @@
     <string name="keep_remote_above_lockscreen">Fernbedienung auf dem Sperrbildschirm anzeigen</string>
     <string name="pref_keep_screen_on">Bildschirm nicht während der Nutzung als Fernbedienung ausschalten</string>
     <string name="show_notification">Nachricht mit aktueller Wiedergabe anzeigen</string>
-    <string name="pause_during_calls">Bei Anruf Wiedergabe pausieren</string>
+    <string name="show_now_playing_panel"></string>
+	<string name="show_now_playing_panel_summary">Zeigt ein ausklappbares Feld am unteren Rand des Bildschirms an, während Medien wiedergegeben werden</string>
+	<string name="notification_seek_jump">Benutze Schritte zum Suchen</string>
+	<string name="notification_seek_jump_speed">Während des Suchens von einer Benachrichtigung die Wiedergabegeschwindigkeit ändern</string>
+	<string name="pause_during_calls">Bei Anruf Wiedergabe pausieren</string>
     <string name="use_hardware_volume_keys">Lautstärketasten verwenden</string>
     <string name="vibrate_on_remote">Auf Fernbedienungs-Knopfdruck vibrieren</string>
-    <string name="nav_drawer_items">Seitenmenü-Verknüpfungen</string>
+	<string name="nav_drawer_items">Seitenmenü-Verknüpfungen</string>
 
     <string name="about">Über</string>
     <string name="about_desc"><![CDATA[
@@ -365,7 +377,8 @@
     <string name="error_getting_pvr_info">Ein Fehler ist aufgetreten während des Empfangens der PVR Informationen: %1$s</string>
     <string name="might_not_have_pvr">Ein Fehler ist während des Empfangens der Kanalinformationen aufgetreten, möglicherweise weil Ihr Media Center keinen Empfänger hat oder dieser falsch konfiguriert ist.\n\nWenn das der Fall ist und Sie diesen Eintrag aus dem Seitenmenü entfernen möchten, können Sie es in den Einstellungen tun.</string>
     <string name="error_starting_channel">Ein Fehler ist beim Starten des Abspielens aufgetreten: %1$s</string>
-    <string name="error_starting_recording">Ein Fehler ist beim Starten der Aufnahme aufgetreten: %1$s</string>
+    <string name="error_favourites">Ein Fehler ist während des Empfangens der Favoriten und deren Informationen aufgetreten: %1$s</string>
+	<string name="error_starting_recording">Ein Fehler ist beim Starten der Aufnahme aufgetreten: %1$s</string>
     <string name="error_starting_to_record">Während der Aufnahme ist ein Fehler aufgetreten: %1$s</string>
     <string name="channel_switching">Wechseln zum Kanal %1$s</string>
     <string name="starting_recording">Aufnahme von %1$s starten</string>
@@ -397,5 +410,12 @@
     <string name="by_artist">Nach Künstler</string>
     <string name="by_artist_and_year">Nach Künstler und Jahr</string>
     <string name="muted">stumm geschalten</string>
-
+	<string name="no_songs_found_refresh">Keine Lieder gefunden\\n\\nNach unten wischen zum Aktualisieren</string>
+	<string name="not_implemented">Nicht implementiert</string>
+	
+	<string name="toggle_expand">Ausklappen/Einklappen</string>
+	<string name="play_locally">Lokal abspielen</string>
+	
+	<string name="disable_local_playback_support">Lokale Unterstüzung für die Wiedergabe deaktivieren</string>
+    <string name="disable_local_playback_support_summary">Deaktiviert die Unterstützung für das lokale Abspielen von Medien auf dem Gerät, auf dem Kore ausgeführt wird.</string>
 </resources>
