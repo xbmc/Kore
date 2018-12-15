@@ -35,6 +35,7 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.notification.Application;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.Player;
+import org.xbmc.kore.jsonrpc.notification.Playlist;
 import org.xbmc.kore.jsonrpc.notification.System;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -46,10 +47,13 @@ import java.net.ProtocolException;
 import java.net.Proxy;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Class responsible for communicating with the host.
@@ -101,6 +105,12 @@ public class HostConnection {
         void onVolumeChanged(Application.OnVolumeChanged notification);
     }
 
+    public interface PlaylistNotificationsObserver {
+        void onPlaylistCleared(Playlist.OnClear notification);
+        void onPlaylistItemAdded(Playlist.OnAdd notification);
+        void onPlaylistItemRemoved(Playlist.OnRemove notification);
+    }
+
     /**
 	 * Host to connect too
 	 */
@@ -119,10 +129,6 @@ public class HostConnection {
 	 * Socket used to communicate through TCP
 	 */
 	private Socket socket = null;
-	/**
-	 * Listener {@link Thread} that will be listening on the TCP socket
-	 */
-	private Thread listenerThread = null;
 
 	/**
 	 * {@link java.util.HashMap} that will hold the {@link MethodCallInfo} with the information
@@ -154,6 +160,12 @@ public class HostConnection {
     private final HashMap<ApplicationNotificationsObserver, Handler> applicationNotificationsObservers =
             new HashMap<>();
 
+    /**
+     * The observers that will be notified of playlist notifications
+     */
+    private final HashMap<PlaylistNotificationsObserver, Handler> playlistNotificationsObservers =
+            new HashMap<>();
+
     private ExecutorService executorService;
 
     private final int connectTimeout;
@@ -161,6 +173,8 @@ public class HostConnection {
     private static final int DEFAULT_CONNECT_TIMEOUT = 5000; // ms
 
     public static final int TCP_READ_TIMEOUT = 30000; // ms
+
+    private static final int CALLABLE_TIMEOUT = 30000; // ms
 
     /**
      * OkHttpClient. Make sure it is initialized, by calling {@link #getOkHttpClient()}
@@ -195,7 +209,7 @@ public class HostConnection {
         // Start with the default host protocol
         this.protocol = hostInfo.getProtocol();
         // Create a single threaded executor
-        this.executorService = Executors.newSingleThreadExecutor();
+        this.executorService = Executors.newFixedThreadPool(10);
         // Set timeout
         this.connectTimeout = connectTimeout;
     }
@@ -283,7 +297,7 @@ public class HostConnection {
     }
 
     /**
-     * Registers an observer for input notifications
+     * Registers an observer for application notifications
      * @param observer The {@link InputNotificationsObserver}
      */
     public void registerApplicationNotificationsObserver(ApplicationNotificationsObserver observer,
@@ -292,11 +306,28 @@ public class HostConnection {
     }
 
     /**
-     * Unregisters and observer from the input notifications
+     * Unregisters and observer from the application notifications
      * @param observer The {@link InputNotificationsObserver}
      */
     public void unregisterApplicationNotificationsObserver(ApplicationNotificationsObserver observer) {
         applicationNotificationsObservers.remove(observer);
+    }
+
+    /**
+     * Registers an observer for playlist notifications
+     * @param observer The {@link InputNotificationsObserver}
+     */
+    public void registerPlaylistNotificationsObserver(PlaylistNotificationsObserver observer,
+                                                         Handler handler) {
+        playlistNotificationsObservers.put(observer, handler);
+    }
+
+    /**
+     * Unregisters and observer from the playlist notifications
+     * @param observer The {@link InputNotificationsObserver}
+     */
+    public void unregisterPlaylistNotificationsObserver(PlaylistNotificationsObserver observer) {
+        playlistNotificationsObservers.remove(observer);
     }
 
     /**
@@ -334,7 +365,7 @@ public class HostConnection {
                 if (protocol == PROTOCOL_HTTP) {
                     executeThroughOkHttp(method, callback, handler);
                 } else {
-                    executeThroughTcp(method, callback, handler);
+                    executeThroughTcp(method);
                 }
             }
         };
@@ -379,6 +410,51 @@ public class HostConnection {
             }
         }, null);
         return future;
+    }
+    
+    /**
+     * Executes the {@link Callable} and waits for it to finish on a background thread. The
+     * result is returned using the {@link ApiCallback} and handler
+     * @param callable executed using an {@link ExecutorService}
+     * @param apiCallback used to return the result of the callable
+     * @param handler used to execute the {@link ApiCallback} methods
+     * @param <T>
+     */
+    public <T> void execute(Callable<T> callable, final ApiCallback<T> apiCallback, final Handler handler) {
+        final Future<T> future = executorService.submit(callable);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    T result = future.get(CALLABLE_TIMEOUT, TimeUnit.MILLISECONDS);
+                    handleSuccess(result);
+                } catch (ExecutionException e) {
+                    handleError(ApiException.API_ERROR, e.getMessage());
+                } catch (InterruptedException e) {
+                    handleError(ApiException.API_WAITING_ON_RESULT_INTERRUPTED, e.getMessage());
+                } catch (TimeoutException e) {
+                    handleError(ApiException.API_WAITING_ON_RESULT_TIMEDOUT, e.getMessage());
+                }
+            }
+
+            private void handleSuccess(final T result) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        apiCallback.onSuccess(result);
+                    }
+                });
+            }
+
+            private void handleError(final int errorCode, final String message) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        apiCallback.onError(errorCode, message);
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -614,16 +690,14 @@ public class HostConnection {
 	 * Sends the JSON RPC request through TCP
 	 * Keeps a background thread running, listening on a socket
 	 */
-	private <T> void executeThroughTcp(final ApiMethod<T> method, final ApiCallback<T> callback,
-									   final Handler handler) {
+	private <T> void executeThroughTcp(final ApiMethod<T> method) {
         String methodId = String.valueOf(method.getId());
         try {
             // TODO: Validate if this shouldn't be enclosed by a synchronized.
 			if (socket == null) {
 				// Open connection to the server and setup reader thread
 				socket = openTcpConnection(hostInfo);
-				listenerThread = newListenerThread(socket);
-				listenerThread.start();
+				startListenerThread(socket);
 			}
 
 			// Write request
@@ -677,9 +751,8 @@ public class HostConnection {
 		}
 	}
 
-	private Thread newListenerThread(final Socket socket) {
-		// Launch a new thread to read from the socket
-		return new Thread(new Runnable() {
+	private void startListenerThread(final Socket socket) {
+		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
@@ -728,189 +801,235 @@ public class HostConnection {
             ObjectNode params = (ObjectNode)jsonResponse.get(ApiNotification.PARAMS_NODE);
 
             switch (notificationName) {
-            case Player.OnPause.NOTIFICATION_NAME: {
-                final Player.OnPause apiNotification = new Player.OnPause(params);
-                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
-                    Handler handler = playerNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onPause(apiNotification);
-                        }
-                    });
+                case Player.OnPause.NOTIFICATION_NAME: {
+                    final Player.OnPause apiNotification = new Player.OnPause(params);
+                    for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                        Handler handler = playerNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onPause(apiNotification);
+                            }
+                        });
+                    }
+                    break;
                 }
-                break;
+                case Player.OnPlay.NOTIFICATION_NAME: {
+                    final Player.OnPlay apiNotification = new Player.OnPlay(params);
+                    for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                        Handler handler = playerNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onPlay(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Player.OnResume.NOTIFICATION_NAME: {
+                    final Player.OnResume apiNotification = new Player.OnResume(params);
+                    for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                        Handler handler = playerNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onResume(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Player.OnSeek.NOTIFICATION_NAME: {
+                    final Player.OnSeek apiNotification = new Player.OnSeek(params);
+                    for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                        Handler handler = playerNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onSeek(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Player.OnSpeedChanged.NOTIFICATION_NAME: {
+                    final Player.OnSpeedChanged apiNotification = new Player.OnSpeedChanged(params);
+                    for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                        Handler handler = playerNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onSpeedChanged(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Player.OnStop.NOTIFICATION_NAME: {
+                    final Player.OnStop apiNotification = new Player.OnStop(params);
+                    for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                        Handler handler = playerNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onStop(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Player.OnAVStart.NOTIFICATION_NAME: {
+                    final Player.OnAVStart apiNotification = new Player.OnAVStart(params);
+                    for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                        Handler handler = playerNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onAVStart(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Player.OnAVChange.NOTIFICATION_NAME: {
+                    final Player.OnAVChange apiNotification = new Player.OnAVChange(params);
+                    for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                        Handler handler = playerNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onAVChange(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Player.OnPropertyChanged.NOTIFICATION_NAME: {
+                    final Player.OnPropertyChanged apiNotification = new Player.OnPropertyChanged(params);
+                    for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                        Handler handler = playerNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onPropertyChanged(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case System.OnQuit.NOTIFICATION_NAME: {
+                    final System.OnQuit apiNotification = new System.OnQuit(params);
+                    for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
+                        Handler handler = systemNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onQuit(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case System.OnRestart.NOTIFICATION_NAME: {
+                    final System.OnRestart apiNotification = new System.OnRestart(params);
+                    for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
+                        Handler handler = systemNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onRestart(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case System.OnSleep.NOTIFICATION_NAME: {
+                    final System.OnSleep apiNotification = new System.OnSleep(params);
+                    for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
+                        Handler handler = systemNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onSleep(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Input.OnInputRequested.NOTIFICATION_NAME: {
+                    final Input.OnInputRequested apiNotification = new Input.OnInputRequested(params);
+                    for (final InputNotificationsObserver observer : inputNotificationsObservers.keySet()) {
+                        Handler handler = inputNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onInputRequested(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Application.OnVolumeChanged.NOTIFICATION_NAME: {
+                    final Application.OnVolumeChanged apiNotification = new Application.OnVolumeChanged(params);
+                    for (final ApplicationNotificationsObserver observer : applicationNotificationsObservers.keySet()) {
+                        Handler handler = applicationNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onVolumeChanged(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Playlist.OnClear.NOTIFICATION_NAME: {
+                    final Playlist.OnClear apiNotification =
+                            new Playlist.OnClear(params);
+                    for (final PlaylistNotificationsObserver observer :
+                            playlistNotificationsObservers.keySet()) {
+                        Handler handler = playlistNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onPlaylistCleared(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Playlist.OnAdd.NOTIFICATION_NAME: {
+                    final Playlist.OnAdd apiNotification =
+                            new Playlist.OnAdd(params);
+                    for (final PlaylistNotificationsObserver observer :
+                            playlistNotificationsObservers.keySet()) {
+                        Handler handler = playlistNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onPlaylistItemAdded(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
+                case Playlist.OnRemove.NOTIFICATION_NAME: {
+                    final Playlist.OnRemove apiNotification =
+                            new Playlist.OnRemove(params);
+                    for (final PlaylistNotificationsObserver observer :
+                            playlistNotificationsObservers.keySet()) {
+                        Handler handler = playlistNotificationsObservers.get(observer);
+                        postOrRunNow(handler, new Runnable() {
+                            @Override
+                            public void run() {
+                                observer.onPlaylistItemRemoved(apiNotification);
+                            }
+                        });
+                    }
+                    break;
+                }
             }
-            case Player.OnPlay.NOTIFICATION_NAME: {
-                final Player.OnPlay apiNotification = new Player.OnPlay(params);
-                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
-                    Handler handler = playerNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onPlay(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case Player.OnResume.NOTIFICATION_NAME: {
-                final Player.OnResume apiNotification = new Player.OnResume(params);
-                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
-                    Handler handler = playerNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onResume(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case Player.OnSeek.NOTIFICATION_NAME: {
-                final Player.OnSeek apiNotification = new Player.OnSeek(params);
-                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
-                    Handler handler = playerNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onSeek(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case Player.OnSpeedChanged.NOTIFICATION_NAME: {
-                final Player.OnSpeedChanged apiNotification = new Player.OnSpeedChanged(params);
-                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
-                    Handler handler = playerNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onSpeedChanged(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case Player.OnStop.NOTIFICATION_NAME: {
-                final Player.OnStop apiNotification = new Player.OnStop(params);
-                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
-                    Handler handler = playerNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onStop(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case Player.OnAVStart.NOTIFICATION_NAME: {
-                final Player.OnAVStart apiNotification = new Player.OnAVStart(params);
-                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
-                    Handler handler = playerNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onAVStart(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case Player.OnAVChange.NOTIFICATION_NAME: {
-                final Player.OnAVChange apiNotification = new Player.OnAVChange(params);
-                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
-                    Handler handler = playerNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onAVChange(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case Player.OnPropertyChanged.NOTIFICATION_NAME: {
-                final Player.OnPropertyChanged apiNotification = new Player.OnPropertyChanged(params);
-                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
-                    Handler handler = playerNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onPropertyChanged(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case System.OnQuit.NOTIFICATION_NAME: {
-                final System.OnQuit apiNotification = new System.OnQuit(params);
-                for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
-                    Handler handler = systemNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onQuit(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case System.OnRestart.NOTIFICATION_NAME: {
-                final System.OnRestart apiNotification = new System.OnRestart(params);
-                for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
-                    Handler handler = systemNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onRestart(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case System.OnSleep.NOTIFICATION_NAME: {
-                final System.OnSleep apiNotification = new System.OnSleep(params);
-                for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
-                    Handler handler = systemNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onSleep(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case Input.OnInputRequested.NOTIFICATION_NAME: {
-                final Input.OnInputRequested apiNotification = new Input.OnInputRequested(params);
-                for (final InputNotificationsObserver observer : inputNotificationsObservers.keySet()) {
-                    Handler handler = inputNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onInputRequested(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }
-            case Application.OnVolumeChanged.NOTIFICATION_NAME: {
-                final Application.OnVolumeChanged apiNotification = new Application.OnVolumeChanged(params);
-                for (final ApplicationNotificationsObserver observer : applicationNotificationsObservers.keySet()) {
-                    Handler handler = applicationNotificationsObservers.get(observer);
-                    postOrRunNow(handler, new Runnable() {
-                        @Override
-                        public void run() {
-                            observer.onVolumeChanged(apiNotification);
-                        }
-                    });
-                }
-                break;
-            }}
-			LogUtils.LOGD(TAG, "Got a notification: " + jsonResponse.get("method").textValue());
+            LogUtils.LOGD(TAG, "Got a notification: " + jsonResponse.get("method").textValue());
 		} else {
 			String methodId = jsonResponse.get(ApiMethod.ID_NODE).asText();
 
@@ -918,9 +1037,8 @@ public class HostConnection {
 				// Error response
 				callErrorCallback(methodId, new ApiException(ApiException.API_ERROR, jsonResponse));
 			} else {
-				// Sucess response
+				// Success response
 				final MethodCallInfo<?> methodCallInfo = clientCallbacks.get(methodId);
-//				LogUtils.LOGD(TAG, "Sending response to method: " + methodCallInfo.method.getMethodName());
 
                 if (methodCallInfo != null) {
                     try {
@@ -1002,6 +1120,7 @@ public class HostConnection {
 		try {
 			if (socket != null) {
 				// Remove pending calls
+                clientCallbacks.clear();
 				if (!socket.isClosed()) {
 					socket.close();
 				}

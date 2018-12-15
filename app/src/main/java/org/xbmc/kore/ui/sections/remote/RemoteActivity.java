@@ -432,7 +432,6 @@ public class RemoteActivity extends BaseActivity
                                     Toast.LENGTH_SHORT)
                                     .show();
                             }
-                            refreshPlaylist();
                         }
                     });
                 } catch (InterruptedException ignored) {
@@ -669,14 +668,5 @@ public class RemoteActivity extends BaseActivity
      */
     public void SwitchToRemotePanel() {
         viewPager.setCurrentItem(1);
-    }
-
-    private void refreshPlaylist() {
-        String tag = "android:switcher:" + viewPager.getId() + ":" + PLAYLIST_FRAGMENT_ID;
-        PlaylistFragment playlistFragment = (PlaylistFragment)getSupportFragmentManager()
-                .findFragmentByTag(tag);
-        if (playlistFragment != null) {
-            playlistFragment.forceRefreshPlaylist();
-        }
     }
 }

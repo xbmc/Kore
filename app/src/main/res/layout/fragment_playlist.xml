@@ -15,20 +15,35 @@
    limitations under the License.
 -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include layout="@layout/remote_info_panel"/>
+
+    <org.xbmc.kore.ui.widgets.PlaylistsBar
+        android:id="@+id/playlists_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/buttonbar_height"
+        android:layout_alignParentBottom="true"
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        app:tabTextColor="@color/white_dim_50pct"
+        app:tabSelectedTextColor="@color/white"
+        app:tabBackground="?attr/contentBackgroundColor"
+        style="@style/Widget.Button.Borderless"
+        android:tint="?attr/defaultButtonColorFilter"
+        android:elevation="2dp"/>
 
     <!-- Playlist -->
     <org.xbmc.kore.ui.viewgroups.DynamicListView
         android:id="@+id/playlist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:layout_above="@id/playlists_bar"
         android:paddingLeft="@dimen/small_padding"
         android:paddingRight="@dimen/small_padding"
         android:paddingTop="@dimen/remote_page_indicator_height"
