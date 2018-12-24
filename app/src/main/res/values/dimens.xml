@@ -141,4 +141,7 @@
     <dimen name="fab_normal_margin">8dp</dimen>
     <dimen name="fab_mini_margin">16dp</dimen>
 
+    <dimen name="remote_icon_size">84dp</dimen>
+    <dimen name="remote_size">252dp</dimen>
+
 </resources>
