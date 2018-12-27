@@ -335,8 +335,9 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
   <string name="notification_seek_jump">Avançar/Recuar por passos</string>
   <string name="notification_seek_jump_step">Usar passos para avançar/recuar a partir da notificação</string>
   <string name="notification_seek_jump_speed">Mudar velocidade de reprodução a partir da notificação</string>
+    <string name="hide_disabled">Ocultar desactivados</string>
 
-  <!--<string name="buy_me_coffee">Oferecer um café</string>-->
+    <!--<string name="buy_me_coffee">Oferecer um café</string>-->
   <!--<string name="expresso_please">Expresso, por favor. Obrigado!</string>-->
   <!--<string name="thanks_for_coffe">Obrigado pelo café!</string>-->
   <!--<string name="remove_coffee_message">Pressione para ocultar esta configuração</string>-->
