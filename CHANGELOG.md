@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+Version 2.4.5
+-------------
+- Improved addons list
+- Enable direct sharing of a URL to a specific host
+- Bug fixes and UI tweaks
+
 Version 2.4.4
 -------------
 - Enable playing movies locally on device
