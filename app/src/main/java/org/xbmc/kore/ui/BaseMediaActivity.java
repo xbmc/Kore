@@ -338,7 +338,6 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void inputOnInputRequested(String title, String type, String value) {
-
     }
 
     @Override

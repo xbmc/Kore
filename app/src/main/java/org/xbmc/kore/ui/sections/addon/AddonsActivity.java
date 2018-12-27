@@ -19,29 +19,42 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.text.TextDirectionHeuristicsCompat;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.Utils;
 
+import org.xbmc.kore.ui.generic.SendTextDialogFragment;
+
+import java.util.concurrent.TimeUnit;
+
 /**
  * Controls the presentation of Addons information (list, details)
  * All the information is presented by specific fragments
  */
 public class AddonsActivity extends BaseMediaActivity
-        implements AddonListFragment.OnAddonSelectedListener {
+        implements AddonListFragment.OnAddonSelectedListener,
+        SendTextDialogFragment.SendTextDialogListener  {
     private static final String TAG = LogUtils.makeLogTag(AddonsActivity.class);
 
     public static final String ADDONID = "addon_id";
     public static final String ADDONTITLE = "addon_title";
+    
+    private static final String DUMMY_INPUT = "kore_dummy_input";
 
     private String selectedAddonId;
     private String selectedAddonTitle;
+
+    private boolean dialogShown;
 
     @Override
     protected Fragment createFragment() {
@@ -134,5 +147,57 @@ public class AddonsActivity extends BaseMediaActivity
         showFragment(addonDetailsFragment, vh.artView, vh.dataHolder);
 
         updateActionBar(getActionBarTitle(), true);
+    }
+
+    @Override
+    public void inputOnInputRequested(String title, String type, String value) {
+        final SendTextDialogFragment dialog =
+                SendTextDialogFragment.newInstance(title);
+        dialog.show(getSupportFragmentManager(), null);
+        dialogShown = true;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(HostConnection.TCP_READ_TIMEOUT - 2000);
+                    if (dialogShown) {
+                        dialog.dismissAllowingStateLoss();
+                        sendTextInput(DUMMY_INPUT, true, true);
+                    }
+                } catch (InterruptedException e) {
+                    // ignore
+                }
+            }
+        });
+        t.start();
+    }
+
+    /**
+     * Callbacks from Send text dialog
+     */
+    @Override
+    public void onSendTextFinished(String text, boolean done) {
+        dialogShown = false;
+        if (TextDirectionHeuristicsCompat.FIRSTSTRONG_LTR.isRtl(text, 0, text.length())) {
+            text = new StringBuilder(text).reverse().toString();
+        }
+        sendTextInput(text,done, false);
+    }
+
+    @Override
+    public void onSendTextCancel() {
+        dialogShown = false;
+        sendTextInput(DUMMY_INPUT, true, true);
+    }
+
+    private void sendTextInput(String text, boolean done, boolean isDummy) {
+        HostManager hostManager = HostManager.getInstance(this);
+        hostManager.getConnection().setIgnoreTcpResponse(isDummy);
+
+        HostConnection httpHostConnection = new HostConnection(hostManager.getHostInfo());
+        httpHostConnection.setProtocol(HostConnection.PROTOCOL_HTTP);
+
+        Input.SendText action = new Input.SendText(text, done);
+        action.execute(httpHostConnection, null, null);
     }
 }
