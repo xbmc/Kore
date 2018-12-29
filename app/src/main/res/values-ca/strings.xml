@@ -213,7 +213,7 @@
     <string name="download_with_new_name">Nom nou</string>
     <string name="download_file_description">Descarregat des del Centre Multimèdia</string>
     <string name="num_episodes">%1$d episodis | %2$d no visionats</string>
-    <string name="premiered">Estrenada: %1%s</string>
+    <string name="premiered">Estrenada: %1$s</string>
     <string name="tvshow_overview">Sumari</string>
     <string name="tvshow_episodes">Episodis</string>
     <string name="tvshow_seasons">Temporades</string>
