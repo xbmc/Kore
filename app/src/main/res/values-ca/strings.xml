@@ -63,7 +63,7 @@
     <string name="window">Finestra</string>
     <string name="unknown">Desconegut</string>
     <string name="script">Guió</string>
-    <string name="wizard_manual_configuration_message">Introduïu la configuració pel Centre Multimèdia:</string>
+    <string name="wizard_manual_configuration_message">Introduïu la configuració del Centre Multimèdia:</string>
     <string name="wizard_manual_configuration_message_advanced">Configuració avançada (deixeu-ho en blanc per valors predeterminats)</string>
     <string name="wizard_xbmc_name">Nom del Centre Multimèdia</string>
     <string name="wizard_xbmc_ip">Adreça</string>
@@ -118,8 +118,8 @@
     <string name="codec_info">Codificador</string>
     <string name="context">Context</string>
     <string name="osd">Menú</string>
-    <string name="back">Anterior</string>
-    <string name="previous">Previ</string>
+    <string name="back">Enrera</string>
+    <string name="previous">Anterior</string>
     <string name="next">Següent</string>
     <string name="finish">Acaba</string>
     <string name="test_connection">Test</string>
@@ -296,7 +296,7 @@
     <string name="read_phone_state_permission_denied">Permís denegat. No podreu aturar les reproduccions mentre truqueu.</string>
     <string name="write_storage_permission_denied">Permís denegat. No podreu descarregar fitxers.</string>
     <string name="show_now_playing_panel_summary">Mostra un panell ampliable a la part inferior de la pantalla quan s\'està reproduint</string>
-    <string name="notification_seek_jump">Utilitza passes per cercar</string>
+    <string name="notification_seek_jump">Utilitza salts per cercar</string>
     <string name="notification_seek_jump_speed">Canvia la velocitat de reproducció quan es cerqui una notificació</string>
     <string name="error_favourites">S\'ha produït un error mentre s\'obtenia els preferits amb descripció: %1$s</string>
     <string name="no_songs_to_download">Cap cançó per descarregar</string>
@@ -308,8 +308,8 @@
     <string name="not_implemented">"No implementat "</string>
     <string name="toggle_expand">Desplega/Plega</string>
     <string name="play_locally">Reprodueix localment</string>
-    <string name="disable_local_playback_support">Desactiva compatibilitat de la reproducció local</string>
-    <string name="disable_local_playback_support_summary">Desactiva compatibilitat per reproduir localment en el dispositiu que executa el Kore</string>
+    <string name="disable_local_playback_support">Desactiva la reproducció local</string>
+    <string name="disable_local_playback_support_summary">Desactiva la funció de reproducció local en el dispositiu que executa el Kore</string>
     <string name="notification_seek_jump_step">Utilitza salts mentre es cerqui una notificació</string>
     <string name="remote_bar_items">Barra inferior de dreceres</string>
     <string name="unable_to_play_favourite_item">Impossible reproduir elements preferits. Tipus incompatible</string>
