@@ -35,7 +35,7 @@
     <dimen name="small_icon_size">24dp</dimen>
     <dimen name="medium_icon_size">32dp</dimen>
 
-    <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="default_card_elevation">2dp</dimen>
     <dimen name="default_card_margin">2dp</dimen>
 
@@ -43,7 +43,10 @@
     <dimen name="text_size_medium">14sp</dimen>
     <dimen name="text_size_large">16sp</dimen>
     <dimen name="text_size_xlarge">20sp</dimen>
-    <dimen name="text_size_xxlarge">34sp</dimen>
+    <dimen name="text_size_xxlarge">32sp</dimen>
+
+    <dimen name="fastscroll_popup_size">80dp</dimen>
+    <dimen name="fastscroll_text_size">36sp</dimen>
 
     <dimen name="default_list_item_height">56dp</dimen>
 

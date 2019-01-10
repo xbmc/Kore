@@ -47,6 +47,7 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
+import org.xbmc.kore.ui.sections.audio.SongsListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -133,12 +134,12 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context ctx) {
+        super.onAttach(ctx);
         try {
-            listenerActivity = (OnTVShowSelectedListener) activity;
+            listenerActivity = (OnTVShowSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnTVShowSelectedListener");
+            throw new ClassCastException(ctx.toString() + " must implement OnTVShowSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -354,6 +355,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
 
             return viewHolder;
         }
+
+        protected int getSectionColumnIdx() { return TVShowListQuery.TITLE; }
     }
 
     /**

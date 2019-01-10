@@ -87,7 +87,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
 
     /**
      * Use this to display all albums for a specific genre
-     * @param genreId
+     * @param genreId genre id
      */
     public void setGenre(int genreId) {
         Bundle args = new Bundle();
@@ -216,12 +216,12 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context ctx) {
+        super.onAttach(ctx);
         try {
-            listenerActivity = (OnAlbumSelectedListener) activity;
+            listenerActivity = (OnAlbumSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnAlbumSelectedListener");
+            throw new ClassCastException(ctx.toString() + " must implement OnAlbumSelectedListener");
         }
 
         setSupportsSearch(true);
@@ -317,6 +317,8 @@ public class AlbumListFragment extends AbstractCursorListFragment {
                 popupMenu.show();
             }
         };
+
+        protected int getSectionColumnIdx() { return AlbumListQuery.TITLE; }
     }
 
     /**

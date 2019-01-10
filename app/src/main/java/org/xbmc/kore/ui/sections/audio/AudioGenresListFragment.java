@@ -90,12 +90,12 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context ctx) {
+        super.onAttach(ctx);
         try {
-            listenerActivity = (OnAudioGenreSelectedListener) activity;
+            listenerActivity = (OnAudioGenreSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnAudioGenreSelectedListener");
+            throw new ClassCastException(ctx.toString() + " must implement OnAudioGenreSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -119,10 +119,10 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
 
         String SORT = MediaContract.AudioGenres.TITLE + " COLLATE NOCASE ASC";
 
-        final int ID = 0;
-        final int GENREID = 1;
-        final int TITLE = 2;
-        final int THUMBNAIL = 3;
+        int ID = 0;
+        int GENREID = 1;
+        int TITLE = 2;
+        int THUMBNAIL = 3;
     }
 
     private class AudioGenresAdapter extends RecyclerViewCursorAdapter {
@@ -148,6 +148,8 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
 
             return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight, genrelistItemMenuClickListener);
         }
+
+        protected int getSectionColumnIdx() { return AudioGenreListQuery.TITLE; }
     }
 
     /**

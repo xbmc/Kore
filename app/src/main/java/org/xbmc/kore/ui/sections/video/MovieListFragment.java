@@ -45,6 +45,7 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
 import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
+import org.xbmc.kore.ui.sections.audio.SongsListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -129,12 +130,12 @@ public class MovieListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context ctx) {
+        super.onAttach(ctx);
         try {
-            listenerActivity = (OnMovieSelectedListener) activity;
+            listenerActivity = (OnMovieSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnMovieSelectedListener");
+            throw new ClassCastException(ctx.toString() + " must implement OnMovieSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -344,6 +345,8 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
             return new ViewHolder(view, getContext(), themeAccentColor, hostManager, artWidth, artHeight);
         }
+
+        protected int getSectionColumnIdx() { return MovieListQuery.TITLE; }
     }
 
     /**

@@ -94,12 +94,12 @@ public class ArtistListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            listenerActivity = (OnArtistSelectedListener) activity;
+            listenerActivity = (OnArtistSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnArtistSelectedListener");
+            throw new ClassCastException(context.toString() + " must implement OnArtistSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -154,7 +154,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
         @Override
         public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(fragment.getContext())
-                                      .inflate(R.layout.grid_item_artist, parent, false);
+                    .inflate(R.layout.grid_item_artist, parent, false);
 
             return new ViewHolder(view, fragment.getContext(), hostManager, artWidth, artHeight, artistlistItemMenuClickListener);
         }
@@ -186,6 +186,8 @@ public class ArtistListFragment extends AbstractCursorListFragment {
                 popupMenu.show();
             }
         };
+
+        protected int getSectionColumnIdx() { return ArtistListQuery.ARTIST; }
     }
 
     /**

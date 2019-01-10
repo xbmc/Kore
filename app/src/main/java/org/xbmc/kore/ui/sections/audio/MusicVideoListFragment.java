@@ -89,12 +89,12 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context ctx) {
+        super.onAttach(ctx);
         try {
-            listenerActivity = (OnMusicVideoSelectedListener) activity;
+            listenerActivity = (OnMusicVideoSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnMusicVideoSelectedListener");
+            throw new ClassCastException(ctx.toString() + " must implement OnMusicVideoSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -159,6 +159,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
                                       .inflate(R.layout.grid_item_music_video, parent, false);
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);
         }
+        protected int getSectionColumnIdx() { return MusicVideosListQuery.TITLE; }
     }
 
     /**

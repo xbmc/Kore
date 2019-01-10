@@ -47,6 +47,7 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
 import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
+import org.xbmc.kore.ui.sections.audio.SongsListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -250,6 +251,8 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
                                   contextlistItemMenuClickListener, hostManager,
                                   artWidth, artHeight);
         }
+
+        protected int getSectionColumnIdx() { return EpisodesListQuery.TITLE; }
     }
 
     /**
