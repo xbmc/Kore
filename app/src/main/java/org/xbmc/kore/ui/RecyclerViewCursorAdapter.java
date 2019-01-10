@@ -20,11 +20,15 @@ import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-abstract public class RecyclerViewCursorAdapter extends RecyclerView.Adapter<RecyclerViewCursorAdapter.CursorViewHolder> {
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
-    private boolean dataValid;
+abstract public class RecyclerViewCursorAdapter
+        extends RecyclerView.Adapter<RecyclerViewCursorAdapter.CursorViewHolder>
+        implements FastScrollRecyclerView.SectionedAdapter {
+
+    protected boolean dataValid;
     private int rowIDColumn;
-    private Cursor cursor;
+    protected Cursor cursor;
 
     @Override
     public void onBindViewHolder(CursorViewHolder holder, int position) {
@@ -58,6 +62,25 @@ abstract public class RecyclerViewCursorAdapter extends RecyclerView.Adapter<Rec
 
         return cursor.getLong(rowIDColumn);
     }
+
+    public String getSectionName(int position) {
+        if (!dataValid) {
+            throw new IllegalStateException("Cursor is in an invalid state.");
+        }
+        if (!cursor.moveToPosition(position)) {
+            throw new IllegalStateException("Could not move cursor to position " + position);
+        }
+
+        return cursor.getString(getSectionColumnIdx()).substring(0, 1).toUpperCase();
+    }
+
+    /**
+     * Should return the cursor column index that contains the corresponding field to be used
+     * on the fastscroller. Should be a string!
+     *
+     * @return Cursor column index of the field to show in the fastscroller
+     */
+    abstract protected int getSectionColumnIdx();
 
     public void swapCursor(Cursor newCursor) {
         if (newCursor == cursor) {

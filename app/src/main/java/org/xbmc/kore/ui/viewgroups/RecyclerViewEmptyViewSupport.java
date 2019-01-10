@@ -26,6 +26,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
+
 /**
  * <p>A Recycler view using a grid layout that supports auto sizing and showing an empty view when the adapter
  * has no items.
@@ -40,7 +42,7 @@ import android.view.View;
  *
  * Inspired by <a href="http://blog.sqisland.com/2014/12/recyclerview-autofit-grid.html">RecyclerView: Autofit grid</a>
  */
-public class RecyclerViewEmptyViewSupport extends RecyclerView {
+public class RecyclerViewEmptyViewSupport extends FastScrollRecyclerView {
 
     public final static int AUTO_FIT = -1;
 

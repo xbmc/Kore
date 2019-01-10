@@ -55,14 +55,22 @@
     </style>
 
     <style name="GridLayoutRecyclerView">
+        <item name="fastScrollPopupBgColor">?attr/colorPrimary</item>
+        <item name="fastScrollPopupTextColor">?attr/textColorOverPrimary</item>
+        <item name="fastScrollPopupTextSize">@dimen/fastscroll_text_size</item>
+        <item name="fastScrollPopupBackgroundSize">@dimen/fastscroll_popup_size</item>
+        <item name="fastScrollThumbColor">?attr/colorPrimary</item>
+        <item name="fastScrollThumbInactiveColor">?attr/fastscrollHandleColor</item>
+        <item name="fastScrollPopupPosition">adjacent</item>
+
         <item name="android:clipToPadding">false</item>
-         <item name="android:scrollbars">vertical</item>
         <item name="android:paddingBottom">@dimen/default_padding</item>
         <item name="android:paddingLeft">@dimen/default_card_margin</item>
         <item name="android:columnWidth">@dimen/default_grid_column_width</item>
     </style>
 
     <style name="Widget.CardView">
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
         <item name="cardElevation">@dimen/default_card_elevation</item>
         <item name="cardBackgroundColor">?attr/appCardBackgroundColor</item>
         <item name="android:layout_marginRight">@dimen/default_card_margin</item>

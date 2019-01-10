@@ -153,9 +153,9 @@ public class SongsListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Context context) {
         setSupportsSearch(true);
-        super.onAttach(activity);
+        super.onAttach(context);
     }
 
     @Override
@@ -272,6 +272,8 @@ public class SongsListFragment extends AbstractCursorListFragment {
             return new SongViewHolder(view, context, hostManager, artWidth, artHeight,
                                       contextMenuClickListener);
         }
+
+        protected int getSectionColumnIdx() { return SongsListQuery.TITLE; }
     }
 
     private static class AlbumSongsAdapter extends RecyclerViewCursorAdapter {
@@ -290,6 +292,8 @@ public class SongsListFragment extends AbstractCursorListFragment {
 
             return new AlbumViewHolder(view, contextMenuClickListener);
         }
+
+        protected int getSectionColumnIdx() { return AlbumSongsListQuery.TITLE; }
     }
 
     /**

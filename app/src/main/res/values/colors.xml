@@ -63,6 +63,9 @@
     <color name="dark_separator">#ff505050</color>
     <color name="light_separator">#ffafafaf</color>
 
+    <color name="dark_fastscroll_handle">#ff505050</color>
+    <color name="light_fastscroll_handle">#ff606060</color>
+
     <!-- Drawer colors -->
 	<color name="dark_drawer_background">@color/dark_content_background</color>
     <color name="light_drawer_background">@color/light_content_background</color>

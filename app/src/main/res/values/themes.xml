@@ -86,6 +86,7 @@
 		<item name="drawerBackgroundColor">@color/dark_drawer_background</item>
 
         <item name="separatorColor">@color/dark_separator</item>
+        <item name="fastscrollHandleColor">@color/dark_fastscroll_handle</item>
 
         <item name="remoteButtonColorFilter">@color/white</item>
         <item name="defaultButtonColorFilter">@color/white</item>
@@ -225,6 +226,7 @@
         <item name="drawerBackgroundColor">@color/light_drawer_background</item>
 
         <item name="separatorColor">@color/light_separator</item>
+        <item name="fastscrollHandleColor">@color/light_fastscroll_handle</item>
 
         <item name="remoteButtonColorFilter">@color/black_dim_54pct</item>
         <item name="defaultButtonColorFilter">@color/black_dim_54pct</item>
