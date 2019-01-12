@@ -28,11 +28,13 @@
     <color name="accent_default_light">@color/orange_A100</color>
 
     <color name="white">#ffffffff</color>
+    <color name="white_dim_26pct">#43ffffff</color>
     <color name="white_dim_50pct">#88ffffff</color>
     <color name="white_dim_70pct">#b3ffffff</color>
 
     <color name="black_dim_87pct">#de000000</color>
     <color name="black_dim_54pct">#8a000000</color>
+    <color name="black_dim_26pct">#43000000</color>
 
     <color name="estuary_default">#0f85a5</color>
     <color name="estuary_default_light">#17cdff</color>

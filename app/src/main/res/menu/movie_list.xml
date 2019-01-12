@@ -73,4 +73,12 @@
             android:title="@string/show_watched_status"
             app:showAsAction="never"/>
     </group>
+
+    <group
+        android:checkableBehavior="all">
+    <item
+        android:id="@+id/action_show_rating"
+        android:title="@string/show_rating"
+        app:showAsAction="never"/>
+    </group>
 </menu>

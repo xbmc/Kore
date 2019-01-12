@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.video;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -45,10 +44,12 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
 import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
-import org.xbmc.kore.ui.sections.audio.SongsListFragment;
+import org.xbmc.kore.ui.views.RatingBar;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
+
+import java.util.ArrayList;
 
 /**
  * Fragment that presents the movie list
@@ -64,6 +65,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
     private OnMovieSelectedListener listenerActivity;
 
     private static boolean showWatchedStatus;
+    private static boolean showRating;
 
     @Override
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MOVIES; }
@@ -103,6 +105,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         }
 
         showWatchedStatus = preferences.getBoolean(Settings.KEY_PREF_MOVIES_SHOW_WATCHED_STATUS, Settings.DEFAULT_PREF_MOVIES_SHOW_WATCHED_STATUS);
+        showRating = preferences.getBoolean(Settings.KEY_PREF_MOVIES_SHOW_RATING, Settings.DEFAULT_PREF_MOVIES_SHOW_RATING);
 
         String sortOrderStr;
         int sortOrder = preferences.getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
@@ -165,12 +168,14 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added),
                 sortByLastPlayed = menu.findItem(R.id.action_sort_by_last_played),
                 sortByLength = menu.findItem(R.id.action_sort_by_length),
-                showWatchedStatusMenuItem = menu.findItem(R.id.action_show_watched_status);
+                showWatchedStatusMenuItem = menu.findItem(R.id.action_show_watched_status),
+                showRatingMenuItem = menu.findItem(R.id.action_show_rating);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED));
         showWatchedStatusMenuItem.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_SHOW_WATCHED_STATUS, Settings.DEFAULT_PREF_MOVIES_SHOW_WATCHED_STATUS));
         ignoreArticles.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, Settings.DEFAULT_PREF_MOVIES_IGNORE_PREFIXES));
+        showRatingMenuItem.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_SHOW_RATING, Settings.DEFAULT_PREF_MOVIES_SHOW_RATING));
 
         int sortOrder = preferences.getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
         switch (sortOrder) {
@@ -214,6 +219,14 @@ public class MovieListFragment extends AbstractCursorListFragment {
                            .putBoolean(Settings.KEY_PREF_MOVIES_SHOW_WATCHED_STATUS, item.isChecked())
                            .apply();
                 showWatchedStatus = item.isChecked();
+                refreshList();
+                break;
+            case R.id.action_show_rating:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                        .putBoolean(Settings.KEY_PREF_MOVIES_SHOW_RATING, item.isChecked())
+                        .apply();
+                showRating = item.isChecked();
                 refreshList();
                 break;
             case R.id.action_ignore_prefixes:
@@ -355,7 +368,8 @@ public class MovieListFragment extends AbstractCursorListFragment {
     public static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
         TextView titleView;
         TextView detailsView;
-        TextView durationView;
+        TextView metaInfoView;
+        RatingBar ratingBar;
         ImageView checkmarkView;
         ImageView artView;
         HostManager hostManager;
@@ -377,9 +391,10 @@ public class MovieListFragment extends AbstractCursorListFragment {
             this.artHeight = artHeight;
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
-            durationView = itemView.findViewById(R.id.duration);
+            metaInfoView = itemView.findViewById(R.id.meta_info);
             checkmarkView = itemView.findViewById(R.id.checkmark);
             artView = itemView.findViewById(R.id.art);
+            ratingBar = itemView.findViewById(R.id.rating_bar);
         }
 
         @Override
@@ -389,7 +404,6 @@ public class MovieListFragment extends AbstractCursorListFragment {
             dataHolder.setTitle(cursor.getString(MovieListQuery.TITLE));
             dataHolder.setUndertitle(cursor.getString(MovieListQuery.TAGLINE));
 
-            int movieYear = cursor.getInt(MovieListQuery.YEAR);
             dataHolder.setRating(cursor.getDouble(MovieListQuery.RATING));
             dataHolder.setMaxRating(10);
 
@@ -400,13 +414,17 @@ public class MovieListFragment extends AbstractCursorListFragment {
                              genres : dataHolder.getUnderTitle();
             detailsView.setText(details);
 
-            int runtime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
-            String duration =  runtime > 0 ?
-                               String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
-                               "  |  " + movieYear :
-                               String.valueOf(movieYear);
-            durationView.setText(duration);
-            dataHolder.setDetails(duration + "\n" + details);
+            String metaInfo = getMetaInfo(cursor);
+            metaInfoView.setText(metaInfo);
+            dataHolder.setDetails(metaInfo + "\n" + details);
+
+            if (showRating && dataHolder.getRating() > 0) {
+                ratingBar.setMaxRating(dataHolder.getMaxRating());
+                ratingBar.setRating(dataHolder.getRating());
+                ratingBar.setVisibility(View.VISIBLE);
+            } else {
+                ratingBar.setVisibility(View.GONE);
+            }
 
             dataHolder.setPosterUrl(cursor.getString(MovieListQuery.THUMBNAIL));
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
@@ -424,6 +442,19 @@ public class MovieListFragment extends AbstractCursorListFragment {
             if (Utils.isLollipopOrLater()) {
                 artView.setTransitionName("a" + dataHolder.getId());
             }
+        }
+
+        private String getMetaInfo(Cursor cursor) {
+            int runtime = cursor.getInt(MovieListQuery.RUNTIME) / 60;
+            int movieYear = cursor.getInt(MovieListQuery.YEAR);
+
+            ArrayList<String> duration = new ArrayList<>();
+            if (runtime > 0)
+                duration.add(String.format(context.getString(R.string.minutes_abbrev),
+                                           String.valueOf(runtime)));
+            duration.add(String.valueOf(movieYear));
+
+            return TextUtils.join(" | ", duration);
         }
     }
 }
