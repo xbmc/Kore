@@ -159,6 +159,11 @@
         <item name="android:paddingTop">@dimen/default_padding</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:scrollHorizontally">true</item>
     </style>
 
     <style name="TextAppearance.Media.Remote.Details">
