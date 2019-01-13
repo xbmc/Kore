@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 /**
  * Base activity, where common behaviour is implemented
@@ -33,7 +34,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         setTheme(UIUtils.getThemeResourceId(
                 prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
+
+        setPreferredLocale();
         super.onCreate(savedInstanceState);
+    }
+
+    private void setPreferredLocale() {
+        String preferredLocale = android.preference.PreferenceManager.getDefaultSharedPreferences(this)
+                                                                     .getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
+        if (! preferredLocale.isEmpty()) {
+            Utils.setLocale(this, preferredLocale);
+        }
     }
 
     //    @Override

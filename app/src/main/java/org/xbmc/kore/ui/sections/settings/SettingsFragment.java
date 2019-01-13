@@ -15,8 +15,8 @@
  */
 package org.xbmc.kore.ui.sections.settings;
 
-import android.annotation.TargetApi;
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +33,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.TwoStatePreference;
 import android.widget.Toast;
 
+import org.xbmc.kore.BuildConfig;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
@@ -43,8 +44,12 @@ import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Locale;
 
 import static org.xbmc.kore.service.NotificationObserver.NOTIFICATION_ID;
+import static org.xbmc.kore.utils.Utils.getLocale;
 
 /**
  * Simple fragment to display preferences screen
@@ -60,7 +65,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
         // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.preferences);
+        setPreferencesFromResource(R.xml.preferences, null);
 
         // Get the preference for side menu items and change its Id to include
         // the current host
@@ -105,6 +110,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
         }
 
         setupPreferences();
+
+        ListPreference languagePref = (ListPreference) findPreference(Settings.KEY_PREF_LANGUAGE);
+        Locale currentLocale = getCurrentLocale();
+        languagePref.setSummary(currentLocale.getDisplayLanguage(currentLocale));
+        languagePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                setupLanguagePreference((ListPreference) preference);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -130,15 +146,15 @@ public class SettingsFragment extends PreferenceFragmentCompat
         setupPreferences();
 
         if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.getNavDrawerItemsPrefKey(hostId))
-                || key.equals((Settings.getRemoteBarItemsPrefKey(hostId)))) {
+            || key.equals((Settings.getRemoteBarItemsPrefKey(hostId)))) {
             // Explicitly clear cache of resource ids that is maintained in the activity
             UIUtils.playPauseIconsLoaded = false;
 
             // restart to apply new theme (actually build an entirely new task stack)
             TaskStackBuilder.create(getActivity())
-                    .addNextIntent(new Intent(getActivity(), RemoteActivity.class))
-                    .addNextIntent(new Intent(getActivity(), SettingsActivity.class))
-                    .startActivities();
+                            .addNextIntent(new Intent(getActivity(), RemoteActivity.class))
+                            .addNextIntent(new Intent(getActivity(), SettingsActivity.class))
+                            .startActivities();
         }
 
         // If the pause during call is selected, make sure we have permission to read phone state
@@ -203,7 +219,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         String nameAndVersion = getActivity().getString(R.string.app_name);
         try {
             nameAndVersion += " " +
-                    getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+                              getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException exc) {
         }
         Preference aboutPreference = findPreference(Settings.KEY_PREF_ABOUT);
@@ -216,5 +232,78 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 return true;
             }
         });
+    }
+
+    private void setupLanguagePreference(final ListPreference languagePref) {
+        Locale[] locales = getLocales();
+
+        final Locale currentLocale = getCurrentLocale();
+        Arrays.sort(locales, new Comparator<Locale>() {
+            @Override
+            public int compare(Locale o1, Locale o2) {
+                return o1.getDisplayName().compareToIgnoreCase(o2.getDisplayName());
+            }
+        });
+
+        String[] displayNames = new String[locales.length];
+        String[] entryValues = new String[locales.length];
+        for(int index = 0; index < locales.length; index++) {
+            Locale locale = locales[index];
+            displayNames[index] = locale.getDisplayName(locale);
+            entryValues[index] = getLanguageCountryCode(locale);
+        }
+
+        languagePref.setValue(getLanguageCountryCode(currentLocale));
+        languagePref.setEntries(displayNames);
+        languagePref.setEntryValues(entryValues);
+        languagePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                languagePref.setValue(o.toString());
+                updatePreferredLanguage(o.toString());
+                return true;
+            }
+        });
+    }
+
+    private String getLanguageCountryCode(Locale locale) {
+        String result = locale.getLanguage();
+        if (!locale.getCountry().isEmpty()) {
+            result += "-" + locale.getCountry();
+        }
+        return result;
+    }
+
+    /**
+     * Converts the locale names into a list of Locale objects
+     */
+    private Locale[] getLocales() {
+        Locale[] locales = new Locale[BuildConfig.SUPPORTED_LOCALES.length];
+        for (int index = 0; index < BuildConfig.SUPPORTED_LOCALES.length; index++) {
+            locales[index] = getLocale(BuildConfig.SUPPORTED_LOCALES[index]);
+        }
+        return locales;
+    }
+
+    private void updatePreferredLanguage(String localeName) {
+        getPreferenceManager().getSharedPreferences().edit().putString(Settings.KEY_PREF_SELECTED_LANGUAGE, localeName).apply();
+
+        // Restart app to apply locale change
+        Intent i = getContext().getPackageManager().getLaunchIntentForPackage( getContext().getPackageName() );
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
+
+    private Locale getCurrentLocale() {
+        String currentLocaleName = getPreferenceManager().getSharedPreferences().getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
+
+        Locale currentLocale;
+        if (currentLocaleName == null || currentLocaleName.isEmpty()) {
+            currentLocale = getResources().getConfiguration().locale;
+        } else {
+            currentLocale = getLocale(currentLocaleName);
+        }
+
+        return currentLocale;
     }
 }

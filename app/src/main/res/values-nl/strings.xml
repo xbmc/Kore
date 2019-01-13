@@ -362,4 +362,5 @@
   <string name="show_now_playing_panel_summary">Toont een uitvouwbare balk onderaan het scherm wanneer media wordt afgespeeld</string>
   <string name="notification_seek_jump_speed">De weergavesnelheid wijzigen met de afspeelmelding</string>
   <string name="notification_seek_jump_step">In grote stappen vooruit of terug springen met de afspeelmelding</string>
+    <string name="language">Taal</string>
 </resources>
