@@ -206,6 +206,12 @@ public class RemoteFragment extends Fragment
                 buttons[i].setVisibility(shownItems.contains(String.valueOf(i)) ? View.VISIBLE : View.GONE);
         }
 
+        nowPlayingTitle.setClickable(true);
+        nowPlayingTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { v.setSelected(!v.isSelected()); }
+        });
+
         return root;
     }
 
