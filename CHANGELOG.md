@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-Version 2.4.5
+Version 2.4.6
 -------------
 - Improved addons list
 - Enable direct sharing of a URL to a specific host
