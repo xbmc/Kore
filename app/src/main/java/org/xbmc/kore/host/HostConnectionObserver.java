@@ -23,8 +23,8 @@ import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.notification.Application;
-import org.xbmc.kore.jsonrpc.notification.Player.NotificationsData;
 import org.xbmc.kore.jsonrpc.notification.Input;
+import org.xbmc.kore.jsonrpc.notification.Player.NotificationsData;
 import org.xbmc.kore.jsonrpc.notification.System;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.ListType;
@@ -52,6 +52,9 @@ public class HostConnectionObserver
                    HostConnection.ApplicationNotificationsObserver {
     public static final String TAG = LogUtils.makeLogTag(HostConnectionObserver.class);
 
+    /**
+     * Interface that an observer has to implement to receive playlist events
+     */
     public interface ApplicationEventsObserver {
         /**
          * Notifies the observer that volume has changed
@@ -148,55 +151,57 @@ public class HostConnectionObserver
 
     // Associate the Handler with the UI thread
     private Handler checkerHandler = new Handler(Looper.getMainLooper());
-    private Runnable httpPlayerCheckerRunnable = new Runnable() {
+    private Runnable httpCheckerRunnable = new Runnable() {
         @Override
         public void run() {
             final int HTTP_NOTIFICATION_CHECK_INTERVAL = 3000;
-            // If no one is listening to this, just exit
-            if (playerEventsObservers.isEmpty()) return;
+            boolean keepChecking = false;
+            if ( ! playerEventsObservers.isEmpty() ) {
+                keepChecking = true;
+                checkWhatsPlaying();
+            }
 
-            // Check whats playing
-            checkWhatsPlaying();
+            if ( ! applicationEventsObservers.isEmpty() ) {
+                keepChecking = true;
+                getApplicationProperties();
+            }
 
-            // Keep checking
-            checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
-        }
-    };
-
-    private Runnable httpApplicationCheckerRunnable = new Runnable() {
-        @Override
-        public void run() {
-            final int HTTP_NOTIFICATION_CHECK_INTERVAL = 3000;
-            // If no one is listening to this, just exit
-            if (applicationEventsObservers.isEmpty()) return;
-
-            getApplicationProperties();
-
-            // Keep checking
-            checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
+            if (keepChecking)
+                checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
         }
     };
 
     private Runnable tcpCheckerRunnable = new Runnable() {
         @Override
         public void run() {
+            // If no one is listening to this, just exit
+            if (playerEventsObservers.isEmpty() && applicationEventsObservers.isEmpty())
+                return;
+
             final int PING_AFTER_ERROR_CHECK_INTERVAL = 2000,
                     PING_AFTER_SUCCESS_CHECK_INTERVAL = 10000;
-            // If no one is listening to this, just exit
-            if (playerEventsObservers.isEmpty() && applicationEventsObservers.isEmpty()) return;
-
             JSONRPC.Ping ping = new JSONRPC.Ping();
             ping.execute(connection, new ApiCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
+                    boolean keepChecking = false;
+
                     // Ok, we've got a ping, if there are playerEventsObservers and
                     // we were in a error or uninitialized state, update
                     if ((! playerEventsObservers.isEmpty()) &&
                         ((hostState.lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
                         (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR))) {
                         checkWhatsPlaying();
+                        keepChecking = true;
                     }
-                    checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_SUCCESS_CHECK_INTERVAL);
+
+                    if ( ! applicationEventsObservers.isEmpty() ) {
+                        getApplicationProperties();
+                        keepChecking = true;
+                    }
+
+                    if (keepChecking)
+                        checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_SUCCESS_CHECK_INTERVAL);
                 }
 
                 @Override
@@ -206,12 +211,6 @@ public class HostConnectionObserver
                     checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_ERROR_CHECK_INTERVAL);
                 }
             }, checkerHandler);
-//            if ((lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
-//                (lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR)) {
-//                checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_ERROR_CHECK_INTERVAL);
-//            } else {
-//                checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_SUCCESS_CHECK_INTERVAL);
-//            }
         }
     };
 
@@ -251,7 +250,8 @@ public class HostConnectionObserver
         if (this.connection == null)
             return;
 
-        playerEventsObservers.add(observer);
+        if ( ! playerEventsObservers.contains(observer) )
+            playerEventsObservers.add(observer);
 
         if (replyImmediately) replyWithLastResult(observer);
 
@@ -262,12 +262,10 @@ public class HostConnectionObserver
                 connection.registerPlayerNotificationsObserver(this, checkerHandler);
                 connection.registerSystemNotificationsObserver(this, checkerHandler);
                 connection.registerInputNotificationsObserver(this, checkerHandler);
-                // Start the ping checker
-                checkerHandler.post(tcpCheckerRunnable);
-            } else {
-                checkerHandler.post(httpPlayerCheckerRunnable);
             }
         }
+
+        startCheckerHandler();
     }
 
     /**
@@ -289,9 +287,6 @@ public class HostConnectionObserver
                 connection.unregisterPlayerNotificationsObserver(this);
                 connection.unregisterSystemNotificationsObserver(this);
                 connection.unregisterInputNotificationsObserver(this);
-                checkerHandler.removeCallbacks(tcpCheckerRunnable);
-            } else {
-                checkerHandler.removeCallbacks(httpPlayerCheckerRunnable);
             }
             hostState.lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
         }
@@ -306,7 +301,8 @@ public class HostConnectionObserver
         if (this.connection == null)
             return;
 
-        applicationEventsObservers.add(observer);
+        if (! applicationEventsObservers.contains(observer) )
+            applicationEventsObservers.add(observer);
 
         if (replyImmediately) {
             if( hostState.volumeLevel == -1 ) {
@@ -321,11 +317,10 @@ public class HostConnectionObserver
             // as a connection observer, which we will pass to the "real" observer
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
                 connection.registerApplicationNotificationsObserver(this, checkerHandler);
-                checkerHandler.post(tcpCheckerRunnable);
-            } else {
-                checkerHandler.post(httpApplicationCheckerRunnable);
             }
         }
+
+        startCheckerHandler();
     }
 
     /**
@@ -344,8 +339,6 @@ public class HostConnectionObserver
             // the http checker thread
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
                 connection.unregisterApplicationNotificationsObserver(this);
-            } else {
-                checkerHandler.removeCallbacks(httpApplicationCheckerRunnable);
             }
         }
     }
@@ -363,9 +356,8 @@ public class HostConnectionObserver
             connection.unregisterPlayerNotificationsObserver(this);
             connection.unregisterSystemNotificationsObserver(this);
             connection.unregisterInputNotificationsObserver(this);
+            connection.unregisterApplicationNotificationsObserver(this);
             checkerHandler.removeCallbacks(tcpCheckerRunnable);
-        } else {
-            checkerHandler.removeCallbacks(httpPlayerCheckerRunnable);
         }
         hostState.lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
     }
@@ -456,6 +448,18 @@ public class HostConnectionObserver
         }
     }
 
+    private void startCheckerHandler() {
+        // Check if checkerHandler is already running, to prevent multiple runnables to be posted
+        // when multiple observers are registered.
+        if ( checkerHandler.hasMessages(0) )
+            return;
+
+        if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
+            checkerHandler.post(tcpCheckerRunnable);
+        } else {
+            checkerHandler.post(httpCheckerRunnable);
+        }
+    }
     private void getApplicationProperties() {
         org.xbmc.kore.jsonrpc.method.Application.GetProperties getProperties =
                 new org.xbmc.kore.jsonrpc.method.Application.GetProperties(org.xbmc.kore.jsonrpc.method.Application.GetProperties.VOLUME,
