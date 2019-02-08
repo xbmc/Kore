@@ -151,7 +151,7 @@ public class RemoteActivity extends BaseActivity
         setupActionBar();
 
         // Periodic Check of Kodi version
-        hostManager.checkAndUpdateKodiVersion(hostManager.getHostInfo());
+        hostManager.checkAndUpdateKodiVersion();
 
         // If we should start playing something
 

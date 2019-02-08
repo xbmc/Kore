@@ -474,41 +474,39 @@ public class HostManager {
         }
     }
 
-    // Check Kodi's version every 2 days
-    private final static long KODI_VERSION_CHECK_INTERVAL_MILLIS = 2 * DateUtils.DAY_IN_MILLIS;
+    // Check Kodi's version every 2 hours
+    private final static long KODI_VERSION_CHECK_INTERVAL_MILLIS = 2 * DateUtils.HOUR_IN_MILLIS;
 
     /**
      * Periodic checks Kodi's version and updates the DB to reflect that.
      * This should be called somewhere that gets executed periodically
      *
-     * @param hostInfo Host for which to check version
      */
-    public void checkAndUpdateKodiVersion(final HostInfo hostInfo) {
-        if (hostInfo == null) return;
+    public void checkAndUpdateKodiVersion() {
+        if (currentHostInfo == null) {
+            currentHostInfo = getHostInfo();
+            if (currentHostInfo == null) return;
+        }
 
-        if (hostInfo.getUpdated() + KODI_VERSION_CHECK_INTERVAL_MILLIS < java.lang.System.currentTimeMillis()) {
+        if (currentHostInfo.getUpdated() + KODI_VERSION_CHECK_INTERVAL_MILLIS < java.lang.System.currentTimeMillis()) {
             LogUtils.LOGD(TAG, "Checking Kodi version...");
-            final HostConnection hostConnection = new HostConnection(hostInfo);
             final Application.GetProperties getProperties = new Application.GetProperties(Application.GetProperties.VERSION);
-            getProperties.execute(hostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
+            getProperties.execute(getConnection(), new ApiCallback<ApplicationType.PropertyValue>() {
                 @Override
                 public void onSuccess(ApplicationType.PropertyValue result) {
                     LogUtils.LOGD(TAG, "Successfully checked Kodi version.");
-                    hostInfo.setKodiVersionMajor(result.version.major);
-                    hostInfo.setKodiVersionMinor(result.version.minor);
-                    hostInfo.setKodiVersionRevision(result.version.revision);
-                    hostInfo.setKodiVersionTag(result.version.tag);
+                    currentHostInfo.setKodiVersionMajor(result.version.major);
+                    currentHostInfo.setKodiVersionMinor(result.version.minor);
+                    currentHostInfo.setKodiVersionRevision(result.version.revision);
+                    currentHostInfo.setKodiVersionTag(result.version.tag);
 
-                    editHost(hostInfo.getId(), hostInfo);
-
-                    hostConnection.disconnect();
+                    currentHostInfo = editHost(currentHostInfo.getId(), currentHostInfo);
                 }
 
                 @Override
                 public void onError(int errorCode, String description) {
                     // Couldn't get Kodi version... Ignore
                     LogUtils.LOGD(TAG, "Couldn't get Kodi version. Error: " + description);
-                    hostConnection.disconnect();
                 }
             }, new Handler());
         }
