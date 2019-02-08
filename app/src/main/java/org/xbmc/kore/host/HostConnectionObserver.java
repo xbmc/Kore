@@ -58,10 +58,10 @@ public class HostConnectionObserver
     public interface ApplicationEventsObserver {
         /**
          * Notifies the observer that volume has changed
-         * @param volume
-         * @param muted
+         * @param volume Volume level
+         * @param muted Is muted
          */
-        public void applicationOnVolumeChanged(int volume, boolean muted);
+        void applicationOnVolumeChanged(int volume, boolean muted);
     }
 
     /**
@@ -72,13 +72,13 @@ public class HostConnectionObserver
          * Constants for possible events. Useful to save the last event and compare with the
          * current one to check for differences
          */
-        public static final int PLAYER_NO_RESULT = 0,
+        int PLAYER_NO_RESULT = 0,
                 PLAYER_CONNECTION_ERROR = 1,
                 PLAYER_IS_PLAYING = 2,
                 PLAYER_IS_PAUSED = 3,
                 PLAYER_IS_STOPPED = 4;
 
-        public void playerOnPropertyChanged(NotificationsData notificationsData);
+        void playerOnPropertyChanged(NotificationsData notificationsData);
 
         /**
          * Notifies that something is playing
@@ -86,7 +86,7 @@ public class HostConnectionObserver
          * @param getPropertiesResult Properties obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetProperties}
          * @param getItemResult Currently playing item, obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
          */
-        public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+        void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                  PlayerType.PropertyValue getPropertiesResult,
                                  ListType.ItemsAll getItemResult);
 
@@ -96,41 +96,41 @@ public class HostConnectionObserver
          * @param getPropertiesResult Properties obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetProperties}
          * @param getItemResult Currently paused item, obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
          */
-        public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+        void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                   PlayerType.PropertyValue getPropertiesResult,
                                   ListType.ItemsAll getItemResult);
 
         /**
          * Notifies that media is stopped/nothing is playing
          */
-        public void playerOnStop();
+        void playerOnStop();
 
         /**
          * Called when we get a connection error
-         * @param errorCode
-         * @param description
+         * @param errorCode Code
+         * @param description Description
          */
-        public void playerOnConnectionError(int errorCode, String description);
+        void playerOnConnectionError(int errorCode, String description);
 
         /**
          * Notifies that we don't have a result yet
          */
-        public void playerNoResultsYet();
+        void playerNoResultsYet();
 
         /**
          * Notifies that XBMC has quit/shutdown/sleep
          */
-        public void systemOnQuit();
+        void systemOnQuit();
 
         /**
          * Notifies that XBMC has requested input
          */
-        public void inputOnInputRequested(String title, String type, String value);
+        void inputOnInputRequested(String title, String type, String value);
 
         /**
          * Notifies the observer that it this is stopping
          */
-        public void observerOnStopObserving();
+        void observerOnStopObserving();
     }
 
     /**
@@ -141,33 +141,26 @@ public class HostConnectionObserver
     /**
      * The list of observers
      */
-    private List<PlayerEventsObserver> playerEventsObservers = new ArrayList<PlayerEventsObserver>();
+    private List<PlayerEventsObserver> playerEventsObservers = new ArrayList<>();
     private List<ApplicationEventsObserver> applicationEventsObservers = new ArrayList<>();
-
-//    /**
-//     * Handlers for which observer, on which to notify them
-//     */
-//    private Map<PlayerEventsObserver, Handler> observerHandlerMap = new HashMap<PlayerEventsObserver, Handler>();
 
     // Associate the Handler with the UI thread
     private Handler checkerHandler = new Handler(Looper.getMainLooper());
     private Runnable httpCheckerRunnable = new Runnable() {
         @Override
         public void run() {
-            final int HTTP_NOTIFICATION_CHECK_INTERVAL = 3000;
-            boolean keepChecking = false;
-            if ( ! playerEventsObservers.isEmpty() ) {
-                keepChecking = true;
+            final int HTTP_NOTIFICATION_CHECK_INTERVAL = 2000;
+            // If no one is listening to this, just exit
+            if (playerEventsObservers.isEmpty() && applicationEventsObservers.isEmpty())
+                return;
+
+            if (!playerEventsObservers.isEmpty())
                 checkWhatsPlaying();
-            }
 
-            if ( ! applicationEventsObservers.isEmpty() ) {
-                keepChecking = true;
+            if (!applicationEventsObservers.isEmpty())
                 getApplicationProperties();
-            }
 
-            if (keepChecking)
-                checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
+            checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
         }
     };
 
@@ -184,24 +177,16 @@ public class HostConnectionObserver
             ping.execute(connection, new ApiCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    boolean keepChecking = false;
-
                     // Ok, we've got a ping, if there are playerEventsObservers and
                     // we were in a error or uninitialized state, update
-                    if ((! playerEventsObservers.isEmpty()) &&
+                    if ((!playerEventsObservers.isEmpty()) &&
                         ((hostState.lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
                         (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR))) {
+                        LogUtils.LOGD(TAG, "Checking what's playing because we don't have info about it");
                         checkWhatsPlaying();
-                        keepChecking = true;
                     }
 
-                    if ( ! applicationEventsObservers.isEmpty() ) {
-                        getApplicationProperties();
-                        keepChecking = true;
-                    }
-
-                    if (keepChecking)
-                        checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_SUCCESS_CHECK_INTERVAL);
+                    checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_SUCCESS_CHECK_INTERVAL);
                 }
 
                 @Override
@@ -235,8 +220,6 @@ public class HostConnectionObserver
 
     public HostState hostState;
 
-    private HostConnectionObserver() {}
-
     public HostConnectionObserver(HostConnection connection) {
         this.hostState = new HostState();
         this.connection = connection;
@@ -250,7 +233,7 @@ public class HostConnectionObserver
         if (this.connection == null)
             return;
 
-        if ( ! playerEventsObservers.contains(observer) )
+        if (!playerEventsObservers.contains(observer))
             playerEventsObservers.add(observer);
 
         if (replyImmediately) replyWithLastResult(observer);
@@ -263,9 +246,8 @@ public class HostConnectionObserver
                 connection.registerSystemNotificationsObserver(this, checkerHandler);
                 connection.registerInputNotificationsObserver(this, checkerHandler);
             }
+            startCheckerHandler();
         }
-
-        startCheckerHandler();
     }
 
     /**
@@ -274,7 +256,6 @@ public class HostConnectionObserver
      */
     public void unregisterPlayerObserver(PlayerEventsObserver observer) {
         playerEventsObservers.remove(observer);
-//        observerHandlerMap.remove(observer);
 
         LogUtils.LOGD(TAG, "Unregistering player observer " + observer.getClass().getSimpleName() +
                            ". Still got " + playerEventsObservers.size() +
@@ -295,13 +276,13 @@ public class HostConnectionObserver
     /**
      * Registers a new observer that will be notified about application events
      * @param observer Observer
-     * @param replyImmediately
+     * @param replyImmediately Wether to immediatlely issue a reply with the current status
      */
     public void registerApplicationObserver(ApplicationEventsObserver observer, boolean replyImmediately) {
         if (this.connection == null)
             return;
 
-        if (! applicationEventsObservers.contains(observer) )
+        if (!applicationEventsObservers.contains(observer))
             applicationEventsObservers.add(observer);
 
         if (replyImmediately) {
@@ -318,9 +299,8 @@ public class HostConnectionObserver
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
                 connection.registerApplicationNotificationsObserver(this, checkerHandler);
             }
+            startCheckerHandler();
         }
-
-        startCheckerHandler();
     }
 
     /**
@@ -340,6 +320,19 @@ public class HostConnectionObserver
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
                 connection.unregisterApplicationNotificationsObserver(this);
             }
+        }
+    }
+
+    private void startCheckerHandler() {
+        // Check if checkerHandler is already running, to prevent multiple runnables to be posted
+        // when multiple observers are registered.
+        if (checkerHandler.hasMessages(0))
+            return;
+
+        if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
+            checkerHandler.post(tcpCheckerRunnable);
+        } else {
+            checkerHandler.post(httpCheckerRunnable);
         }
     }
 
@@ -372,35 +365,48 @@ public class HostConnectionObserver
 
     /**
      * The {@link HostConnection.PlayerNotificationsObserver} interface methods
+     * Start the chain calls to get whats playing
      */
     public void onPlay(org.xbmc.kore.jsonrpc.notification.Player.OnPlay notification) {
-        // Just start our chain calls
-        chainCallGetActivePlayers();
+        // Ignore this if Kodi is Leia or higher, as we'll be properly notified via OnAVStart
+        // See https://github.com/xbmc/Kore/issues/602 and https://github.com/xbmc/xbmc/pull/13726
+        if (connection.getHostInfo().isLeiaOrLater()) {
+            LogUtils.LOGD(TAG, "OnPlay notification ignored. Will wait for OnAVStart.");
+            return;
+        }
+        checkWhatsPlaying();
     }
 
     public void onResume(org.xbmc.kore.jsonrpc.notification.Player.OnResume notification) {
-        // Just start our chain calls
-        chainCallGetActivePlayers();
+        checkWhatsPlaying();
     }
 
     public void onPause(org.xbmc.kore.jsonrpc.notification.Player.OnPause notification) {
-        // Just start our chain calls
-        chainCallGetActivePlayers();
+        checkWhatsPlaying();
     }
 
     public void onSpeedChanged(org.xbmc.kore.jsonrpc.notification.Player.OnSpeedChanged notification) {
-        // Just start our chain calls
-        chainCallGetActivePlayers();
+        checkWhatsPlaying();
     }
 
     public void onSeek(org.xbmc.kore.jsonrpc.notification.Player.OnSeek notification) {
-        // Just start our chain calls
-        chainCallGetActivePlayers();
+        checkWhatsPlaying();
     }
 
     public void onStop(org.xbmc.kore.jsonrpc.notification.Player.OnStop notification) {
-        // Just start our chain calls
-        notifyNothingIsPlaying(playerEventsObservers);
+        // We could directly notify that nothing is playing here, but in Kodi Leia everytime
+        // there's a playlist change, onStop is triggered, which caused the UI to display
+        // that nothing was being played. Checking what's playing prevents this.
+        checkWhatsPlaying();
+    }
+
+    public void onAVStart(org.xbmc.kore.jsonrpc.notification.Player.OnAVStart notification) {
+        checkWhatsPlaying();
+    }
+
+    public void onAVChange(org.xbmc.kore.jsonrpc.notification.Player.OnAVChange notification) {
+        // Just ignore this, as it is fired by Kodi very often, and we're only
+        // interested in play/resume/stop changes
     }
 
     /**
@@ -448,18 +454,6 @@ public class HostConnectionObserver
         }
     }
 
-    private void startCheckerHandler() {
-        // Check if checkerHandler is already running, to prevent multiple runnables to be posted
-        // when multiple observers are registered.
-        if ( checkerHandler.hasMessages(0) )
-            return;
-
-        if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
-            checkerHandler.post(tcpCheckerRunnable);
-        } else {
-            checkerHandler.post(httpCheckerRunnable);
-        }
-    }
     private void getApplicationProperties() {
         org.xbmc.kore.jsonrpc.method.Application.GetProperties getProperties =
                 new org.xbmc.kore.jsonrpc.method.Application.GetProperties(org.xbmc.kore.jsonrpc.method.Application.GetProperties.VOLUME,
@@ -484,9 +478,22 @@ public class HostConnectionObserver
     }
 
     /**
+     * Indicator set when we are calling Kodi to check what's playing, so that we don't call it
+     * while there are still pending calls
+     */
+    private boolean checkingWhatsPlaying = false;
+
+    /**
      * Checks whats playing and notifies observers
      */
     private void checkWhatsPlaying() {
+        // We don't properly protect this against race conditions because it's
+        // not worth the trouble - we can safely call Kodi multiple times.
+        if (checkingWhatsPlaying) {
+            LogUtils.LOGD(TAG, "Already checking whats playing, returning");
+            return;
+        }
+        checkingWhatsPlaying = true;
         LogUtils.LOGD(TAG, "Checking whats playing");
 
         // Start the calls: Player.GetActivePlayers -> Player.GetProperties -> Player.GetItem
@@ -627,6 +634,7 @@ public class HostConnectionObserver
      * @param observers List of observers
      */
     private void notifyConnectionError(final int errorCode, final String description, List<PlayerEventsObserver> observers) {
+        checkingWhatsPlaying = false;
         // Reply if different from last result
         if (forceReply ||
             (hostState.lastCallResult != PlayerEventsObserver.PLAYER_CONNECTION_ERROR) ||
@@ -652,15 +660,7 @@ public class HostConnectionObserver
      */
     private void notifyConnectionError(final int errorCode, final String description, PlayerEventsObserver observer) {
         observer.playerOnConnectionError(errorCode, description);
-//                Handler observerHandler = observerHandlerMap.get(observer);
-//                observerHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        observer.playerOnConnectionError(errorCode, description);
-//                    }
-//                });
     }
-
 
     /**
      * Nothing is playing, notify observers calling playerOnStop
@@ -668,6 +668,7 @@ public class HostConnectionObserver
      * @param observers List of observers
      */
     private void notifyNothingIsPlaying(List<PlayerEventsObserver> observers) {
+        checkingWhatsPlaying = false;
         // Reply if forced or different from last result
         if (forceReply ||
             (hostState.lastCallResult != PlayerEventsObserver.PLAYER_IS_STOPPED)) {
@@ -706,15 +707,16 @@ public class HostConnectionObserver
     /**
      * Something is playing or paused, notify observers
      * Only notifies them if the result is different from the last one
-     * @param getActivePlayersResult
-     * @param getPropertiesResult
-     * @param getItemResult
+     * @param getActivePlayersResult Previous call result
+     * @param getPropertiesResult Previous call result
+     * @param getItemResult Previous call result
      * @param observers List of observers
      */
     private void notifySomethingIsPlaying(final PlayerType.GetActivePlayersReturnType getActivePlayersResult,
                                           final PlayerType.PropertyValue getPropertiesResult,
                                           final ListType.ItemsAll getItemResult,
                                           List<PlayerEventsObserver> observers) {
+        checkingWhatsPlaying = false;
         int currentCallResult = (getPropertiesResult.speed == 0) ?
                 PlayerEventsObserver.PLAYER_IS_PAUSED : PlayerEventsObserver.PLAYER_IS_PLAYING;
         if (forceReply ||
@@ -740,7 +742,7 @@ public class HostConnectionObserver
         if ((currentCallResult == PlayerEventsObserver.PLAYER_IS_PLAYING) &&
             (connection.getProtocol() == HostConnection.PROTOCOL_TCP) &&
             (getPropertiesResult.time.ToSeconds() == 0)) {
-            LogUtils.LOGD(TAG, "Scheduling new call to check what's playing.");
+            LogUtils.LOGD(TAG, "Scheduling new call to check what's playing because time is 0.");
             final int RECHECK_INTERVAL = 3000;
             checkerHandler.postDelayed(new Runnable() {
                 @Override
@@ -750,15 +752,14 @@ public class HostConnectionObserver
                 }
             }, RECHECK_INTERVAL);
         }
-
     }
 
     /**
      * Something is playing or paused, notify a specific observer
      * Always notifies the observer, and doesn't save results in last call
-     * @param getActivePlayersResult
-     * @param getPropertiesResult
-     * @param getItemResult
+     * @param getActivePlayersResult Previous call result
+     * @param getPropertiesResult Previous call result
+     * @param getItemResult Previous call result
      * @param observer Specific observer
      */
     private void notifySomethingIsPlaying(final PlayerType.GetActivePlayersReturnType getActivePlayersResult,
@@ -801,8 +802,9 @@ public class HostConnectionObserver
      * Forces a refresh of the current cached results
      */
     public void forceRefreshResults() {
+        LogUtils.LOGD(TAG, "Forcing a refresh");
         forceReply = true;
-        chainCallGetActivePlayers();
+        checkWhatsPlaying();
     }
 
     public HostState getHostState() {

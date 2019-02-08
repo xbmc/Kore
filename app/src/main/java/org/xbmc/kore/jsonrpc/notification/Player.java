@@ -159,6 +159,42 @@ public class Player {
     }
 
     /**
+     * Player.OnAVStart notification
+     * Will be triggered on playback start if the first frame was drawn.
+     * If there is no ID available extra information will be provided
+     */
+    public static class OnAVStart extends ApiNotification {
+        public static final String  NOTIFICATION_NAME = "Player.OnAVStart";
+
+        public final NotificationsData data;
+
+        public OnAVStart(ObjectNode node) {
+            super(node);
+            data = new NotificationsData(node.get(NotificationsData.DATA_NODE));
+        }
+
+        public String getNotificationName() { return NOTIFICATION_NAME; }
+    }
+
+    /**
+     * Player.OnAVChange notification
+     * Audio- or videostream has changed.
+     * If there is no ID available extra information will be provided
+     */
+    public static class OnAVChange extends ApiNotification {
+        public static final String  NOTIFICATION_NAME = "Player.OnAVChange";
+
+        public final NotificationsData data;
+
+        public OnAVChange(ObjectNode node) {
+            super(node);
+            data = new NotificationsData(node.get(NotificationsData.DATA_NODE));
+        }
+
+        public String getNotificationName() { return NOTIFICATION_NAME; }
+    }
+
+    /**
      * Notification data for Player
      */
     public static class NotificationsPlayer {
