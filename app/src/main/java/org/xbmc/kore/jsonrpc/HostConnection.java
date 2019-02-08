@@ -77,6 +77,8 @@ public class HostConnection {
         void onSpeedChanged(Player.OnSpeedChanged notification);
         void onSeek(Player.OnSeek notification);
         void onStop(Player.OnStop notification);
+        void onAVStart(Player.OnAVStart notification);
+        void onAVChange(Player.OnAVChange notification);
     }
 
     /**
@@ -126,25 +128,25 @@ public class HostConnection {
 	 * {@link java.util.HashMap} that will hold the {@link MethodCallInfo} with the information
 	 * necessary to respond to clients (TCP only)
 	 */
-	private final HashMap<String, MethodCallInfo<?>> clientCallbacks = new HashMap<String, MethodCallInfo<?>>();
+	private final HashMap<String, MethodCallInfo<?>> clientCallbacks = new HashMap<>();
 
     /**
      * The observers that will be notified of player notifications
      */
     private final HashMap<PlayerNotificationsObserver, Handler> playerNotificationsObservers =
-            new HashMap<PlayerNotificationsObserver, Handler>();
+            new HashMap<>();
 
     /**
      * The observers that will be notified of system notifications
      */
     private final HashMap<SystemNotificationsObserver, Handler> systemNotificationsObservers =
-            new HashMap<SystemNotificationsObserver, Handler>();
+            new HashMap<>();
 
     /**
      * The observers that will be notified of input notifications
      */
     private final HashMap<InputNotificationsObserver, Handler> inputNotificationsObservers =
-            new HashMap<InputNotificationsObserver, Handler>();
+            new HashMap<>();
 
     /**
      * The observers that will be notified of application notifications
@@ -317,10 +319,9 @@ public class HostConnection {
 			" on host: " + hostInfo.getJsonRpcHttpEndpoint());
 
         if (protocol == PROTOCOL_TCP) {
-            /**
-             * Do not call this from the runnable below as it may cause a race condition
-             * with {@link #updateClientCallback(int, ApiCallback, Handler)}
-             */
+            // Do not call this from the runnable below as it may cause a race condition
+            // with {@link #updateClientCallback(int, ApiCallback, Handler)}
+            //
             // Save this method/callback for any later response
             addClientCallback(method, callback, handler);
         }
@@ -411,10 +412,10 @@ public class HostConnection {
     /**
      * Stores the method and callback to handle asynchronous responses.
      * Note this is only needed for requests over TCP.
-     * @param method
-     * @param callback
-     * @param handler
-     * @param <T>
+     * @param method Method
+     * @param callback Callback
+     * @param handler Handler
+     * @param <T> Method/Callback type
      */
     private <T> void addClientCallback(final ApiMethod<T> method, final ApiCallback<T> callback,
                                        final Handler handler) {
@@ -437,7 +438,7 @@ public class HostConnection {
                 }
                 return;
             }
-            clientCallbacks.put(methodId, new MethodCallInfo<T>(method, callback, handler));
+            clientCallbacks.put(methodId, new MethodCallInfo<>(method, callback, handler));
         }
     }
 
@@ -489,7 +490,7 @@ public class HostConnection {
 
             httpClient.setAuthenticator(new Authenticator() {
                 @Override
-                public Request authenticate(Proxy proxy, Response response) throws IOException {
+                public Request authenticate(Proxy proxy, Response response) {
                     if (TextUtils.isEmpty(hostInfo.getUsername()))
                         return null;
 
@@ -498,7 +499,7 @@ public class HostConnection {
                 }
 
                 @Override
-                public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
+                public Request authenticateProxy(Proxy proxy, Response response) {
                     return null;
                 }
             });
@@ -517,7 +518,7 @@ public class HostConnection {
     /**
      * Send an OkHttp POST request
      * @param request Request to send
-     * @throws ApiException
+     * @throws ApiException {@link ApiException} if request can't be sent
      */
     private Response sendOkHttpRequest(final OkHttpClient client, final Request request) throws ApiException {
         try {
@@ -543,7 +544,7 @@ public class HostConnection {
      * Reads the response from the server
      * @param response Response from OkHttp
      * @return Response body string
-     * @throws ApiException
+     * @throws ApiException {@link ApiException} if response can't be read/processed
      */
     private String handleOkHttpResponse(Response response) throws ApiException {
         try {
@@ -582,7 +583,7 @@ public class HostConnection {
 	 * If it is an error (contains the error tag), returns an {@link ApiException} with the info.
 	 * @param response JSON response
 	 * @return {@link com.fasterxml.jackson.databind.node.ObjectNode} constructed
-	 * @throws ApiException
+	 * @throws ApiException Exception trown if we can't parse the response
 	 */
 	private ObjectNode parseJsonResponse(String response) throws ApiException {
 //		LogUtils.LOGD(TAG, "Parsing JSON response");
@@ -661,7 +662,7 @@ public class HostConnection {
 	 * Send a TCP request
 	 * @param socket Socket to write to
 	 * @param request Request to send
-	 * @throws ApiException
+	 * @throws ApiException Exception if can't send
 	 */
 	private void sendTcpRequest(Socket socket, String request) throws ApiException {
 		try {
@@ -713,7 +714,7 @@ public class HostConnection {
             ignoreTcpResponse = false;
             ignore = true;
         }
-        LogUtils.LOGD(TAG, "ignore tcp response - " + ignore);
+        //LogUtils.LOGD(TAG, "ignore tcp response - " + ignore);
         return ignore;
     }
 
@@ -726,10 +727,10 @@ public class HostConnection {
             String notificationName = jsonResponse.get(ApiNotification.METHOD_NODE).asText();
             ObjectNode params = (ObjectNode)jsonResponse.get(ApiNotification.PARAMS_NODE);
 
-            if (notificationName.equals(Player.OnPause.NOTIFICATION_NAME)) {
+            switch (notificationName) {
+            case Player.OnPause.NOTIFICATION_NAME: {
                 final Player.OnPause apiNotification = new Player.OnPause(params);
-                for (final PlayerNotificationsObserver observer :
-                        playerNotificationsObservers.keySet()) {
+                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -738,10 +739,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(Player.OnPlay.NOTIFICATION_NAME)) {
+                break;
+            }
+            case Player.OnPlay.NOTIFICATION_NAME: {
                 final Player.OnPlay apiNotification = new Player.OnPlay(params);
-                for (final PlayerNotificationsObserver observer :
-                        playerNotificationsObservers.keySet()) {
+                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -750,10 +752,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(Player.OnResume.NOTIFICATION_NAME)) {
+                break;
+            }
+            case Player.OnResume.NOTIFICATION_NAME: {
                 final Player.OnResume apiNotification = new Player.OnResume(params);
-                for (final PlayerNotificationsObserver observer :
-                    playerNotificationsObservers.keySet()) {
+                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -762,10 +765,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(Player.OnSeek.NOTIFICATION_NAME)) {
+                break;
+            }
+            case Player.OnSeek.NOTIFICATION_NAME: {
                 final Player.OnSeek apiNotification = new Player.OnSeek(params);
-                for (final PlayerNotificationsObserver observer :
-                        playerNotificationsObservers.keySet()) {
+                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -774,10 +778,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(Player.OnSpeedChanged.NOTIFICATION_NAME)) {
+                break;
+            }
+            case Player.OnSpeedChanged.NOTIFICATION_NAME: {
                 final Player.OnSpeedChanged apiNotification = new Player.OnSpeedChanged(params);
-                for (final PlayerNotificationsObserver observer :
-                        playerNotificationsObservers.keySet()) {
+                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -786,10 +791,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(Player.OnStop.NOTIFICATION_NAME)) {
+                break;
+            }
+            case Player.OnStop.NOTIFICATION_NAME: {
                 final Player.OnStop apiNotification = new Player.OnStop(params);
-                for (final PlayerNotificationsObserver observer :
-                        playerNotificationsObservers.keySet()) {
+                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -798,10 +804,37 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(Player.OnPropertyChanged.NOTIFICATION_NAME)) {
+                break;
+            }
+            case Player.OnAVStart.NOTIFICATION_NAME: {
+                final Player.OnAVStart apiNotification = new Player.OnAVStart(params);
+                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                    Handler handler = playerNotificationsObservers.get(observer);
+                    postOrRunNow(handler, new Runnable() {
+                        @Override
+                        public void run() {
+                            observer.onAVStart(apiNotification);
+                        }
+                    });
+                }
+                break;
+            }
+            case Player.OnAVChange.NOTIFICATION_NAME: {
+                final Player.OnAVChange apiNotification = new Player.OnAVChange(params);
+                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
+                    Handler handler = playerNotificationsObservers.get(observer);
+                    postOrRunNow(handler, new Runnable() {
+                        @Override
+                        public void run() {
+                            observer.onAVChange(apiNotification);
+                        }
+                    });
+                }
+                break;
+            }
+            case Player.OnPropertyChanged.NOTIFICATION_NAME: {
                 final Player.OnPropertyChanged apiNotification = new Player.OnPropertyChanged(params);
-                for (final PlayerNotificationsObserver observer :
-                        playerNotificationsObservers.keySet()) {
+                for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                     Handler handler = playerNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -810,10 +843,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(System.OnQuit.NOTIFICATION_NAME)) {
+                break;
+            }
+            case System.OnQuit.NOTIFICATION_NAME: {
                 final System.OnQuit apiNotification = new System.OnQuit(params);
-                for (final SystemNotificationsObserver observer :
-                        systemNotificationsObservers.keySet()) {
+                for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
                     Handler handler = systemNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -822,10 +856,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(System.OnRestart.NOTIFICATION_NAME)) {
+                break;
+            }
+            case System.OnRestart.NOTIFICATION_NAME: {
                 final System.OnRestart apiNotification = new System.OnRestart(params);
-                for (final SystemNotificationsObserver observer :
-                        systemNotificationsObservers.keySet()) {
+                for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
                     Handler handler = systemNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -834,10 +869,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(System.OnSleep.NOTIFICATION_NAME)) {
+                break;
+            }
+            case System.OnSleep.NOTIFICATION_NAME: {
                 final System.OnSleep apiNotification = new System.OnSleep(params);
-                for (final SystemNotificationsObserver observer :
-                        systemNotificationsObservers.keySet()) {
+                for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
                     Handler handler = systemNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -846,10 +882,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(Input.OnInputRequested.NOTIFICATION_NAME)) {
+                break;
+            }
+            case Input.OnInputRequested.NOTIFICATION_NAME: {
                 final Input.OnInputRequested apiNotification = new Input.OnInputRequested(params);
-                for (final InputNotificationsObserver observer :
-                        inputNotificationsObservers.keySet()) {
+                for (final InputNotificationsObserver observer : inputNotificationsObservers.keySet()) {
                     Handler handler = inputNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -858,11 +895,11 @@ public class HostConnection {
                         }
                     });
                 }
-            } else if (notificationName.equals(Application.OnVolumeChanged.NOTIFICATION_NAME)) {
-                final Application.OnVolumeChanged apiNotification =
-                        new Application.OnVolumeChanged(params);
-                for (final ApplicationNotificationsObserver observer :
-                        applicationNotificationsObservers.keySet()) {
+                break;
+            }
+            case Application.OnVolumeChanged.NOTIFICATION_NAME: {
+                final Application.OnVolumeChanged apiNotification = new Application.OnVolumeChanged(params);
+                for (final ApplicationNotificationsObserver observer : applicationNotificationsObservers.keySet()) {
                     Handler handler = applicationNotificationsObservers.get(observer);
                     postOrRunNow(handler, new Runnable() {
                         @Override
@@ -871,8 +908,8 @@ public class HostConnection {
                         }
                     });
                 }
-            }
-
+                break;
+            }}
 			LogUtils.LOGD(TAG, "Got a notification: " + jsonResponse.get("method").textValue());
 		} else {
 			String methodId = jsonResponse.get(ApiMethod.ID_NODE).asText();

@@ -307,7 +307,11 @@ public class HostInfo {
         return kodiVersionMajor >= KODI_V17_KRYPTON;
     }
 
-    /**
+	public boolean isLeiaOrLater() {
+		return kodiVersionMajor >= KODI_V18_LEIA;
+	}
+
+	/**
 	 * Returns the URL of the host
 	 * @return HTTP URL eg. http://192.168.1.1:8080
 	 */
