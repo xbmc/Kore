@@ -35,7 +35,7 @@
             android:contentDescription="@string/poster"
             android:scaleType="centerCrop"/>
         <TextView
-            android:id="@+id/duration"
+            android:id="@+id/meta_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -73,7 +73,7 @@
             android:layout_below="@id/title"
             android:layout_toRightOf="@id/art"
             android:layout_toEndOf="@id/art"
-            android:layout_toLeftOf="@id/duration"
+            android:layout_toLeftOf="@id/meta_info"
             android:layout_toStartOf="@id/size_duration"
             style="@style/TextAppearance.Playlist.Details"/>
     </RelativeLayout>

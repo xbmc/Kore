@@ -92,6 +92,9 @@
         <item name="defaultButtonColorFilter">@color/white</item>
         <!--<item name="remoteBackgroundColorFilter">@color/dark_content_background</item>-->
 
+        <item name="ratingBarStarBackgroundColor">@color/white_dim_26pct</item>
+        <item name="ratingBarStarForegroundColor">?attr/colorAccent</item>
+
         <!-- Icons -->
         <item name="iconFABDialsOpenClose">@drawable/ic_plus_white_24dp</item>
         <item name="iconFABDefault">@drawable/ic_play_arrow_white_24dp</item>
@@ -153,6 +156,7 @@
         <item name="iconInfoWWW">@drawable/ic_open_in_new_white_24dp</item>
         <item name="iconSeen">@drawable/ic_done_white_24dp</item>
         <item name="iconDisabled">@drawable/ic_cancel_white_24dp</item>
+        <item name="iconRating">@drawable/ic_star_white_24dp</item>
 
         <item name="iconCollapse">@drawable/ic_expand_less_white_24dp</item>
         <item name="iconExpand">@drawable/ic_expand_more_white_24dp</item>
@@ -232,6 +236,10 @@
         <item name="defaultButtonColorFilter">@color/black_dim_54pct</item>
         <!--<item name="remoteBackgroundColorFilter">@color/light_content_background</item>-->
 
+        <!-- Rating bar -->
+        <item name="ratingBarStarBackgroundColor">@color/black_dim_26pct</item>
+        <item name="ratingBarStarForegroundColor">?attr/colorAccent</item>
+
         <!-- Icons, same for all themes, will be colored dynamically -->
         <item name="iconFABDialsOpenClose">@drawable/ic_plus_white_24dp</item>
         <item name="iconFABDefault">@drawable/ic_play_arrow_white_24dp</item>
@@ -303,6 +311,7 @@
         <item name="iconInfoWWW">@drawable/ic_open_in_new_white_24dp</item>
         <item name="iconSeen">@drawable/ic_done_white_24dp</item>
         <item name="iconDisabled">@drawable/ic_cancel_white_24dp</item>
+        <item name="iconRating">@drawable/ic_star_white_24dp</item>
 
         <item name="iconCollapse">@drawable/ic_expand_less_white_24dp</item>
         <item name="iconExpand">@drawable/ic_expand_more_white_24dp</item>

@@ -52,6 +52,9 @@
     <attr name="defaultButtonColorFilter" format="reference|color" />
     <!--<attr name="remoteBackgroundColorFilter" format="reference|color" />-->
 
+    <attr name="ratingBarStarBackgroundColor" format="reference|color"/>
+    <attr name="ratingBarStarForegroundColor" format="reference|color"/>
+
     <!-- Icons -->
     <attr name="iconHosts" format="reference" />
     <attr name="iconRemote" format="reference" />
@@ -112,6 +115,7 @@
     <attr name="iconInfoWWW" format="reference" />
     <attr name="iconSeen" format="reference" />
     <attr name="iconDisabled" format="reference" />
+    <attr name="iconRating" format="reference" />
 
     <attr name="iconCollapse" format="reference" />
     <attr name="iconExpand" format="reference" />
@@ -132,6 +136,13 @@
 
     <declare-styleable name="SquareGridLayout">
         <attr name="columnCount" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="RatingBar">
+        <attr name="backgroundColor" format="reference|color"/>
+        <attr name="foregroundColor" format="reference|color"/>
+        <attr name="iconCount" format="integer"/>
+        <attr name="icon" format="reference"/>
     </declare-styleable>
 </resources>
 

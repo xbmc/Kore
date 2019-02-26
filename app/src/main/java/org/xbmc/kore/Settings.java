@@ -104,6 +104,10 @@ public class Settings {
     public static final String KEY_PREF_MOVIES_SHOW_WATCHED_STATUS = "movies_show_watched_status";
     public static final boolean DEFAULT_PREF_MOVIES_SHOW_WATCHED_STATUS = true;
 
+    // Show watched status on movie list
+    public static final String KEY_PREF_MOVIES_SHOW_RATING = "movies_show_rating";
+    public static final boolean DEFAULT_PREF_MOVIES_SHOW_RATING = true;
+
     // Sort order on albums
     public static final String KEY_PREF_ALBUMS_SORT_ORDER = "albums_sort_order";
     public static final int DEFAULT_PREF_ALBUMS_SORT_ORDER = SORT_BY_ALBUM;
