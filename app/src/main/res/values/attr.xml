@@ -144,5 +144,8 @@
         <attr name="iconCount" format="integer"/>
         <attr name="icon" format="reference"/>
     </declare-styleable>
+
+    <attr name="dimmedNeutralColor" format="reference|color" />
+
 </resources>
 

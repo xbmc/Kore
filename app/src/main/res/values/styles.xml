@@ -370,6 +370,7 @@
 
     <style name="RatingBar">
         <item name="android:layout_marginBottom">@dimen/small_padding</item>
+        <item name="android:layout_marginRight">@dimen/small_padding</item>
     </style>
 </resources>
 
