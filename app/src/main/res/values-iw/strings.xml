@@ -323,7 +323,7 @@
 
     <!-- Filters on list menus -->
     <string name="hide_watched">הסתרת אלו שראיתי</string>
-    <string name="hide_disabled">הסתרת הרחבות מנוטרלות</string>
+    <string name="hide_disabled">הסתרת מושבתים</string>
     <string name="sort_order">סידור</string>
     <string name="sort_by_name">לפי שם</string>
     <string name="sort_by_year">לפי שנה </string>
@@ -333,6 +333,7 @@
     <string name="sort_by_last_played">לפי מועד הנגינה האחרון</string>
     <string name="ignore_prefixes">התעלמות מקידומות</string>
     <string name="show_watched_status">הצגת מצב הצפייה</string>
+    <string name="show_rating">הצגת דירוג</string>
 
     <!-- Preferences strings -->
     <string name="application">יישום</string>
