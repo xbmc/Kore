@@ -24,7 +24,7 @@
     tools:layout_width="match_parent"
     tools:layout_height="100dp">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -44,10 +44,10 @@
             style="@style/TextAppearance.Medialist.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/art"
-            app:layout_constraintStart_toEndOf="@id/art"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/art"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@id/art"
             app:layout_constraintTop_toTopOf="@id/art" />
 
         <TextView
@@ -55,10 +55,10 @@
             style="@style/TextAppearance.Medialist.Details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="@id/title"
-            app:layout_constraintLeft_toLeftOf="@id/title"
-            app:layout_constraintStart_toStartOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/title"
+            app:layout_constraintRight_toRightOf="@id/title"
+            app:layout_constraintStart_toStartOf="@id/title"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
         <TextView
@@ -67,32 +67,34 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/title"
-            app:layout_constraintEnd_toStartOf="@id/rating_bar"/>
+            app:layout_constraintEnd_toStartOf="@id/rating_bar"
+            app:layout_constraintStart_toStartOf="@id/title" />
 
         <org.xbmc.kore.ui.views.RatingBar
             android:id="@+id/rating_bar"
             style="@style/RatingBar"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/meta_info"
-            app:layout_constraintRight_toLeftOf="@id/checkmark"
-            app:layout_constraintEnd_toStartOf="@id/checkmark"
-            app:layout_constraintTop_toTopOf="@id/meta_info"
             app:backgroundColor="?attr/ratingBarStarBackgroundColor"
             app:foregroundColor="?attr/ratingBarStarForegroundColor"
-            app:icon="?attr/iconRating"/>
+            app:icon="?attr/iconRating"
+            app:layout_constraintBottom_toBottomOf="@id/meta_info"
+            app:layout_constraintEnd_toStartOf="@id/checkmark"
+            app:layout_constraintRight_toLeftOf="@id/checkmark"
+            app:layout_constraintTop_toTopOf="@id/meta_info" />
 
         <ImageView
             android:id="@+id/checkmark"
             style="@style/Widget.Button.Borderless"
-            android:layout_width="@dimen/default_icon_size"
-            android:layout_height="@dimen/default_icon_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_padding"
+            android:layout_marginRight="@dimen/small_padding"
+            android:layout_marginBottom="@dimen/small_padding"
             android:contentDescription="@string/seen"
-            android:padding="@dimen/default_icon_padding"
             android:src="?attr/iconSeen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@id/meta_info"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

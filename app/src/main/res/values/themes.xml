@@ -95,6 +95,8 @@
         <item name="ratingBarStarBackgroundColor">@color/white_dim_26pct</item>
         <item name="ratingBarStarForegroundColor">?attr/colorAccent</item>
 
+        <item name="dimmedNeutralColor">@color/white_dim_26pct</item>
+
         <!-- Icons -->
         <item name="iconFABDialsOpenClose">@drawable/ic_plus_white_24dp</item>
         <item name="iconFABDefault">@drawable/ic_play_arrow_white_24dp</item>
@@ -239,6 +241,8 @@
         <!-- Rating bar -->
         <item name="ratingBarStarBackgroundColor">@color/black_dim_26pct</item>
         <item name="ratingBarStarForegroundColor">?attr/colorAccent</item>
+
+        <item name="dimmedNeutralColor">@color/black_dim_26pct</item>
 
         <!-- Icons, same for all themes, will be colored dynamically -->
         <item name="iconFABDialsOpenClose">@drawable/ic_plus_white_24dp</item>

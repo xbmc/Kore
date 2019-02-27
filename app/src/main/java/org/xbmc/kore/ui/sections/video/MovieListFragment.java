@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
@@ -327,16 +328,18 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
         private HostManager hostManager;
         private int artWidth, artHeight;
-        private int themeAccentColor;
+        private int themeAccentColor, dimmedNeutralColor;
 
         MoviesAdapter(Context context) {
             // Get the default accent color
             Resources.Theme theme = context.getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.colorAccent
+                R.attr.colorAccent, R.attr.dimmedNeutralColor
+
             });
 
             themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.accent_default));
+            dimmedNeutralColor = styledAttributes.getColor(styledAttributes.getIndex(1), getResources().getColor(R.color.white_dim_26pct));
             styledAttributes.recycle();
 
             this.hostManager = HostManager.getInstance(context);
@@ -356,7 +359,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
             final View view = LayoutInflater.from(getContext())
                                             .inflate(R.layout.grid_item_movie, parent, false);
 
-            return new ViewHolder(view, getContext(), themeAccentColor, hostManager, artWidth, artHeight);
+            return new ViewHolder(view, getContext(), themeAccentColor, dimmedNeutralColor, hostManager, artWidth, artHeight);
         }
 
         protected int getSectionColumnIdx() { return MovieListQuery.TITLE; }
@@ -376,16 +379,17 @@ public class MovieListFragment extends AbstractCursorListFragment {
         int artWidth;
         int artHeight;
         Context context;
-        int themeAccentColor;
+        int themeAccentColor, dimmedNeutralColor;
 
         AbstractFragment.DataHolder dataHolder = new AbstractFragment.DataHolder(0);
 
-        ViewHolder(View itemView, Context context, int themeAccentColor,
+        ViewHolder(View itemView, Context context, int themeAccentColor, int dimmedNeutralColor,
                    HostManager hostManager,
                    int artWidth, int artHeight) {
             super(itemView);
             this.context = context;
             this.themeAccentColor = themeAccentColor;
+            this.dimmedNeutralColor = dimmedNeutralColor;
             this.hostManager = hostManager;
             this.artWidth = artWidth;
             this.artHeight = artHeight;
@@ -432,11 +436,16 @@ public class MovieListFragment extends AbstractCursorListFragment {
                                                  dataHolder.getTitle(),
                                                  artView, artWidth, artHeight);
 
-            if (showWatchedStatus && (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0)) {
+            if (showWatchedStatus) {
                 checkmarkView.setVisibility(View.VISIBLE);
-                checkmarkView.setColorFilter(themeAccentColor);
-            } else {
-                checkmarkView.setVisibility(View.INVISIBLE);
+                if (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0) {
+                    checkmarkView.setColorFilter(themeAccentColor);
+                } else {
+                    checkmarkView.setColorFilter(dimmedNeutralColor, PorterDuff.Mode.SRC_IN);
+                }
+            }
+            else {
+                checkmarkView.setVisibility(View.GONE);
             }
 
             if (Utils.isLollipopOrLater()) {
