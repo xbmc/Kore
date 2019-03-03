@@ -332,6 +332,7 @@
     <string name="sort_by_last_played">Par date de visionnage</string>
     <string name="ignore_prefixes">Ignorer les préfixes</string>
     <string name="show_watched_status">Afficher l\'état \"Vu\"</string>
+    <string name="show_rating">Afficher les évaluations</string>
 
     <!-- Preferences strings -->
     <string name="application">Application</string>
