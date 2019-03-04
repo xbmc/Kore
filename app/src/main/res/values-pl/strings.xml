@@ -367,17 +367,17 @@
          Jeśli potrzebujesz pomocy, odwiedź nasze <b><a href=\"http://forum.kodi.tv/forumdisplay.php?fid=129\">forum</a></b>
     ]]></string>
 
-    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
-    <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
-    <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
-    <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
-    <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
-    <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
+    <!--&lt;!&ndash; Zaproszenie na kawę &ndash;&gt;-->
+    <!--<string name="buy_me_coffee">Kup mi kawę</string>-->
+    <!--<string name="expresso_please">Espresso poproszę. Dzięki!</string>-->
+    <!--<string name="thanks_for_coffe">Dzięki za kawę!</string>-->
+    <!--<string name="remove_coffee_message">Stuknij, aby ukryć ten komunikat</string>-->
+    <!--<string name="buy_coffee_to_unlock_themes">Kup mi kawę, a odblokujesz więcej motywów</string>-->
 
-    <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
-    <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
-    <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
-    <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <!--<string name="error_setting_up_billing">Nie można skonfigurować usługi rozliczeniowej Google Play:\n%s</string>-->
+    <!--<string name="error_querying_inventory">Błąd podczas odczytywania koszyka.</string>-->
+    <!--<string name="error_during_purchased">Wystąpił błąd podczas zakupu.</string>-->
+    <!--<string name="purchase_thanks">Dziękuję za wsparcie!</string>-->
 
     <string name="play_on_kodi">Odtwórz w Kodi</string>
     <string name="pause_call_incoming_title">Połączenie przychodzące</string>
