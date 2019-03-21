@@ -30,8 +30,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.view.View;
-import android.widget.RemoteViews;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -58,7 +56,7 @@ public class NotificationObserver
     public static final String TAG = LogUtils.makeLogTag(NotificationObserver.class);
 
     public static final int NOTIFICATION_ID = 1;
-    public static final String NOTIFICATION_CHANNEL = "KORE";
+    private static final String NOTIFICATION_CHANNEL = "KORE";
 
     private PendingIntent mRemoteStartPendingIntent;
     private Service mService;
@@ -139,7 +137,8 @@ public class NotificationObserver
 
         NotificationManager notificationManager =
                 (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.createNotificationChannel(channel);
+        if (notificationManager != null)
+            notificationManager.createNotificationChannel(channel);
     }
 
     // Picasso target that will be used to load images
@@ -252,48 +251,20 @@ public class NotificationObserver
             ffIcon = R.drawable.ic_fast_forward_white_24dp;
         }
 
-        // Setup the collpased and expanded notifications
-        final RemoteViews collapsedRV = new RemoteViews(mService.getPackageName(), R.layout.notification_colapsed);
-        collapsedRV.setImageViewResource(R.id.rewind, rewindIcon);
-        collapsedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingIntent);
-        collapsedRV.setImageViewResource(R.id.play, playPauseIcon);
-        collapsedRV.setOnClickPendingIntent(R.id.play, playPausePendingIntent);
-        collapsedRV.setImageViewResource(R.id.fast_forward, ffIcon);
-        collapsedRV.setOnClickPendingIntent(R.id.fast_forward, ffPendingIntent);
-        collapsedRV.setTextViewText(R.id.title, title);
-        collapsedRV.setTextViewText(R.id.text2, underTitle);
-
-        final RemoteViews expandedRV = new RemoteViews(mService.getPackageName(), R.layout.notification_expanded);
-        expandedRV.setImageViewResource(R.id.rewind, rewindIcon);
-        expandedRV.setOnClickPendingIntent(R.id.rewind, rewindPendingIntent);
-        expandedRV.setImageViewResource(R.id.play, playPauseIcon);
-        expandedRV.setOnClickPendingIntent(R.id.play, playPausePendingIntent);
-        expandedRV.setImageViewResource(R.id.fast_forward, ffIcon);
-        expandedRV.setOnClickPendingIntent(R.id.fast_forward, ffPendingIntent);
-        expandedRV.setTextViewText(R.id.title, title);
-        expandedRV.setTextViewText(R.id.text2, underTitle);
-        final int expandedIconResId;
-        if (isVideo) {
-            expandedIconResId = R.id.icon_slim;
-            expandedRV.setViewVisibility(R.id.icon_slim, View.VISIBLE);
-            expandedRV.setViewVisibility(R.id.icon_square, View.GONE);
-        } else {
-            expandedIconResId = R.id.icon_square;
-            expandedRV.setViewVisibility(R.id.icon_slim, View.GONE);
-            expandedRV.setViewVisibility(R.id.icon_square, View.VISIBLE);
-        }
-
-        // Build the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mService, NOTIFICATION_CHANNEL);
-        final Notification notification = builder
+        final NotificationCompat.Builder builder =
+            new NotificationCompat.Builder(mService, NOTIFICATION_CHANNEL)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSmallIcon(smallIcon)
                 .setShowWhen(false)
                 .setOngoing(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setCategory(NotificationCompat.CATEGORY_TRANSPORT)
+                .addAction(rewindIcon, mService.getString(R.string.rewind), rewindPendingIntent) // #0
+                .addAction(playPauseIcon, mService.getString(R.string.play), playPausePendingIntent)  // #1
+                .addAction(ffIcon, mService.getString(R.string.fast_forward), ffPendingIntent)     // #2
+                .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+                              .setShowActionsInCompactView(0, 1, 2))
                 .setContentIntent(mRemoteStartPendingIntent)
-                .setContent(collapsedRV)
-                .build();
+                .setContentTitle(title)
+                .setContentText(underTitle);
 
         // This is a convoluted way of loading the image and showing the
         // notification, but it's what works with Picasso and is efficient.
@@ -336,15 +307,11 @@ public class NotificationObserver
                 public void onPrepareLoad(Drawable placeHolderDrawable) { }
 
                 private void showNotification(Bitmap bitmap) {
-                    collapsedRV.setImageViewBitmap(R.id.icon, bitmap);
-                    if (Utils.isJellybeanOrLater()) {
-                        notification.bigContentView = expandedRV;
-                        expandedRV.setImageViewBitmap(expandedIconResId, bitmap);
-                    }
-
+                    builder.setLargeIcon(bitmap);
                     NotificationManager notificationManager =
                             (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.notify(NOTIFICATION_ID, notification);
+                    if (notificationManager != null)
+                        notificationManager.notify(NOTIFICATION_ID, builder.build());
                     picassoTarget = null;
                 }
             };
@@ -367,14 +334,16 @@ public class NotificationObserver
     }
 
     private void removeNotification() {
-        NotificationManager  notificationManager =
-                (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(NOTIFICATION_ID);
+        NotificationManager notificationManager =
+                (NotificationManager)mService.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null)
+            notificationManager.cancel(NOTIFICATION_ID);
     }
 
     private void notifyNothingPlaying() {
         NotificationManager notificationManager =
-                (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, mNothingPlayingNotification);
+            (NotificationManager)mService.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null)
+            notificationManager.notify(NOTIFICATION_ID, mNothingPlayingNotification);
     }
 }
