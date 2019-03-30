@@ -63,6 +63,12 @@ import org.xbmc.kore.utils.LogUtils;
  * When the hover cell is either above or below the bounds of the listview, this
  * listview also scrolls on its own so as to reveal additional content.
  */
+
+/**
+ * TODO Replace with RecyclerView and ItemTouchHelper
+ * https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf
+ */
+
 public class DynamicListView extends ListView {
     private static final String TAG = LogUtils.makeLogTag(DynamicListView.class);
 
@@ -99,6 +105,7 @@ public class DynamicListView extends ListView {
     private int mScrollState = OnScrollListener.SCROLL_STATE_IDLE;
 
     private boolean itemBeingDragged;
+    private boolean itemDraggingEnabled;
 
     public interface DynamicListAdapter extends ListAdapter {
 
@@ -148,6 +155,10 @@ public class DynamicListView extends ListView {
         super.setAdapter(adapter);
     }
 
+    public void enableItemDragging(boolean enable) {
+        this.itemDraggingEnabled = enable;
+    }
+
     /**
      * Use this to determine if an item is being repositioned in the list.
      * The data in the adapter must not be updated other then through the
@@ -167,6 +178,9 @@ public class DynamicListView extends ListView {
     private AdapterView.OnItemLongClickListener mOnItemLongClickListener =
             new AdapterView.OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long id) {
+                    if (!itemDraggingEnabled)
+                        return false;
+
                     mTotalOffset = 0;
 
                     mOriginalPosition = position;

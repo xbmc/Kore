@@ -1,0 +1,42 @@
+@startuml
+(*) --> "OnResume"
+"OnResume" --> "Register Player Observer"
+"OnResume" --> "Register Playlist Observer"
+"Register Playlist Observer" --> ===A1===
+===A1=== --> "playlistsAvailable"
+"playlistsAvailable" --> "Store playlists"
+"Store playlists" --> "Set tab icons to playlist available"
+"Set tab icons to playlist available" --> "Check player state"
+"Check player state" --> ===A2===
+===A2=== --> "Stopped after playing"
+--> "Update playlist"
+===A2=== --> "Nothing played yet"
+--> if "User selected tab?"
+        --> [No] "Switch to first available playlist"
+    else
+        --> [Yes] "Update playlist"
+    endif
+===A2=== --> "Paused"
+--> "Update playlist"
+===A2=== --> "Playing"
+--> "Do nothing"
+===A1=== --> "playlistOnClear"
+"playlistOnClear" --> "Remove playlist"
+"Remove playlist" --> "Show empty playlist message"
+"Register Player Observer" --> ===B1===
+===B1=== --> "playerOnConnectionError"
+===B1=== --> "playerOnPause"
+===B1=== --> "playerOnPlay"
+===B1=== --> "playerOnStop"
+"playerOnStop" --> "Keep showing current playlist"
+"Keep showing current playlist" --> "Set tab icon to NOT playing"
+"playerOnConnectionError" --> "Clear local playlists"
+"Clear local playlists" --> "Show error message"
+"Show error message" --> "Set tab icons to no_playlist state"
+"playerOnPause" --> ===B2===
+"playerOnPlay" --> ===B2===
+===B2=== --> "Set tab icon to playing"
+--> if "User did not select a tab?"
+        --> [Yes] "Switch to tab for given playlist"
+endif
+@enduml

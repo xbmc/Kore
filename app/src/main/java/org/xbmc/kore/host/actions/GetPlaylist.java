@@ -1,0 +1,174 @@
+/*
+ * Copyright 2018 Martijn Brekhof. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.xbmc.kore.host.actions;
+
+
+import org.xbmc.kore.jsonrpc.ApiMethod;
+import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.jsonrpc.method.Playlist;
+import org.xbmc.kore.jsonrpc.type.ListType;
+import org.xbmc.kore.jsonrpc.type.PlaylistType;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+
+/**
+ * Retrieves the playlist items for the first non-empty playlist or null if no playlists are
+ * available.
+ */
+public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistResult>> {
+
+    private final static String[] propertiesToGet = new String[] {
+            ListType.FieldsAll.ART,
+            ListType.FieldsAll.ARTIST,
+            ListType.FieldsAll.ALBUMARTIST,
+            ListType.FieldsAll.ALBUM,
+            ListType.FieldsAll.DISPLAYARTIST,
+            ListType.FieldsAll.EPISODE,
+            ListType.FieldsAll.FANART,
+            ListType.FieldsAll.FILE,
+            ListType.FieldsAll.SEASON,
+            ListType.FieldsAll.SHOWTITLE,
+            ListType.FieldsAll.STUDIO,
+            ListType.FieldsAll.TAGLINE,
+            ListType.FieldsAll.THUMBNAIL,
+            ListType.FieldsAll.TITLE,
+            ListType.FieldsAll.TRACK,
+            ListType.FieldsAll.DURATION,
+            ListType.FieldsAll.RUNTIME,
+            };
+
+    static private HashMap<String, Integer> playlistsTypesAndIds;
+    private String playlistType;
+    private int playlistId = -1;
+    private HostConnection hostConnection;
+
+    /**
+     * Use this to get the first non-empty playlist
+     * @param hostConnection
+     */
+    public GetPlaylist(HostConnection hostConnection) {
+        this.hostConnection = hostConnection;
+    }
+
+    /**
+     * Use this to get a playlist for a specific playlist type
+     * @param hostConnection
+     * @param playlistType should be one of the types from {@link org.xbmc.kore.jsonrpc.type.PlaylistType.GetPlaylistsReturnType}.
+     *                     If null the first non-empty playlist is returned.
+     */
+    public GetPlaylist(HostConnection hostConnection, String playlistType) {
+        this.hostConnection = hostConnection;
+        this.playlistType = playlistType;
+    }
+
+    /**
+     * Use this to get a playlist for a specific playlist id
+     * @param hostConnection
+     * @param playlistId
+     */
+    public GetPlaylist(HostConnection hostConnection, int playlistId) {
+        this.hostConnection = hostConnection;
+        this.playlistId = playlistId;
+    }
+
+    @Override
+    public ArrayList<GetPlaylistResult> call() throws ExecutionException, InterruptedException {
+        if (playlistsTypesAndIds == null)
+            playlistsTypesAndIds = getPlaylists(hostConnection);
+
+        if (playlistType != null) {
+            GetPlaylistResult getPlaylistResult = retrievePlaylistItemsForType(playlistType);
+            ArrayList<GetPlaylistResult> playlists = new ArrayList<>();
+            playlists.add(getPlaylistResult);
+            return playlists;
+        } else if (playlistId > -1 ) {
+            GetPlaylistResult getPlaylistResult = retrievePlaylistItemsForId(playlistId);
+            ArrayList<GetPlaylistResult> playlists = new ArrayList<>();
+            playlists.add(getPlaylistResult);
+            return playlists;
+        } else
+            return retrieveNonEmptyPlaylists();
+    }
+
+    private GetPlaylistResult retrievePlaylistItemsForId(int playlistId) throws InterruptedException,
+                                                                                ExecutionException {
+        List<ListType.ItemsAll> playlistItems = retrievePlaylistItems(hostConnection, playlistId);
+        return new GetPlaylistResult(playlistId, getPlaylistType(playlistId), playlistItems);
+    }
+
+    private GetPlaylistResult retrievePlaylistItemsForType(String type) throws InterruptedException,
+                                                                     ExecutionException {
+        List<ListType.ItemsAll> playlistItems = retrievePlaylistItems(hostConnection, playlistsTypesAndIds.get(type));
+        return new GetPlaylistResult(playlistsTypesAndIds.get(type), type, playlistItems);
+    }
+
+    private ArrayList<GetPlaylistResult> retrieveNonEmptyPlaylists() throws InterruptedException,
+                                                                     ExecutionException {
+        ArrayList<GetPlaylistResult> playlists = new ArrayList<>();
+
+        for (String type : playlistsTypesAndIds.keySet()) {
+            List<ListType.ItemsAll> playlistItems = retrievePlaylistItems(hostConnection,
+                                                                          playlistsTypesAndIds.get(type));
+            if (!playlistItems.isEmpty())
+                playlists.add(new GetPlaylistResult(playlistsTypesAndIds.get(type), type, playlistItems));
+        }
+        return playlists;
+    }
+
+    private HashMap<String, Integer> getPlaylists(HostConnection hostConnection)
+            throws ExecutionException, InterruptedException {
+        HashMap<String, Integer> playlistsHashMap = new HashMap<>();
+        ArrayList<PlaylistType.GetPlaylistsReturnType> playlistsReturnTypes = hostConnection.execute(new Playlist.GetPlaylists()).get();
+        for (PlaylistType.GetPlaylistsReturnType type : playlistsReturnTypes) {
+            playlistsHashMap.put(type.type, type.playlistid);
+        }
+        return playlistsHashMap;
+    }
+
+    private List<ListType.ItemsAll> retrievePlaylistItems(HostConnection hostConnection,
+                                                                     int playlistId)
+            throws InterruptedException, ExecutionException {
+
+        ApiMethod<List<ListType.ItemsAll>> apiMethod = new Playlist.GetItems(playlistId,
+                                                                             propertiesToGet);
+        return hostConnection.execute(apiMethod).get();
+    }
+
+    private String getPlaylistType(int playlistId) {
+        for (String key : playlistsTypesAndIds.keySet()) {
+            if (playlistsTypesAndIds.get(key) == playlistId)
+                return key;
+        }
+        return null;
+    }
+
+    public static class GetPlaylistResult {
+        final public String type;
+        final public int id;
+        final public List<ListType.ItemsAll> items;
+
+        private GetPlaylistResult(int playlistId, String type, List<ListType.ItemsAll> items) {
+            this.id = playlistId;
+            this.type = type;
+            this.items = items;
+        }
+    }
+}

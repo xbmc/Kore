@@ -18,6 +18,7 @@ package org.xbmc.kore.host;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.xbmc.kore.host.actions.GetPlaylist;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
@@ -25,6 +26,7 @@ import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.notification.Application;
 import org.xbmc.kore.jsonrpc.notification.Input;
 import org.xbmc.kore.jsonrpc.notification.Player.NotificationsData;
+import org.xbmc.kore.jsonrpc.notification.Playlist;
 import org.xbmc.kore.jsonrpc.notification.System;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.ListType;
@@ -49,8 +51,25 @@ public class HostConnectionObserver
         implements HostConnection.PlayerNotificationsObserver,
                    HostConnection.SystemNotificationsObserver,
                    HostConnection.InputNotificationsObserver,
-                   HostConnection.ApplicationNotificationsObserver {
+                   HostConnection.ApplicationNotificationsObserver,
+                   HostConnection.PlaylistNotificationsObserver {
     public static final String TAG = LogUtils.makeLogTag(HostConnectionObserver.class);
+
+    public interface PlaylistEventsObserver {
+        /**
+         * @param playlistId of playlist that has been cleared
+         */
+        void playlistOnClear(int playlistId);
+
+        void playlistChanged(int playlistId);
+
+        /**
+         * @param playlists the available playlists on the server
+         */
+        void playlistsAvailable(ArrayList<GetPlaylist.GetPlaylistResult> playlists);
+
+        void playlistOnError(int errorCode, String description);
+    }
 
     /**
      * Interface that an observer has to implement to receive playlist events
@@ -87,8 +106,8 @@ public class HostConnectionObserver
          * @param getItemResult Currently playing item, obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
          */
         void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
-                                 PlayerType.PropertyValue getPropertiesResult,
-                                 ListType.ItemsAll getItemResult);
+                          PlayerType.PropertyValue getPropertiesResult,
+                          ListType.ItemsAll getItemResult);
 
         /**
          * Notifies that something is paused
@@ -97,8 +116,8 @@ public class HostConnectionObserver
          * @param getItemResult Currently paused item, obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
          */
         void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
-                                  PlayerType.PropertyValue getPropertiesResult,
-                                  ListType.ItemsAll getItemResult);
+                           PlayerType.PropertyValue getPropertiesResult,
+                           ListType.ItemsAll getItemResult);
 
         /**
          * Notifies that media is stopped/nothing is playing
@@ -143,15 +162,19 @@ public class HostConnectionObserver
      */
     private List<PlayerEventsObserver> playerEventsObservers = new ArrayList<>();
     private List<ApplicationEventsObserver> applicationEventsObservers = new ArrayList<>();
+    private List<PlaylistEventsObserver> playlistEventsObservers = new ArrayList<>();
 
     // Associate the Handler with the UI thread
+    int checkPlaylistCounter = 0;
     private Handler checkerHandler = new Handler(Looper.getMainLooper());
     private Runnable httpCheckerRunnable = new Runnable() {
         @Override
         public void run() {
             final int HTTP_NOTIFICATION_CHECK_INTERVAL = 2000;
             // If no one is listening to this, just exit
-            if (playerEventsObservers.isEmpty() && applicationEventsObservers.isEmpty())
+            if (playerEventsObservers.isEmpty()
+                && applicationEventsObservers.isEmpty()
+                && playlistEventsObservers.isEmpty())
                 return;
 
             if (!playerEventsObservers.isEmpty())
@@ -159,6 +182,12 @@ public class HostConnectionObserver
 
             if (!applicationEventsObservers.isEmpty())
                 getApplicationProperties();
+
+            if (!playlistEventsObservers.isEmpty() && checkPlaylistCounter > 1) {
+                checkPlaylist();
+                checkPlaylistCounter = 0;
+            }
+            checkPlaylistCounter++;
 
             checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
         }
@@ -168,7 +197,8 @@ public class HostConnectionObserver
         @Override
         public void run() {
             // If no one is listening to this, just exit
-            if (playerEventsObservers.isEmpty() && applicationEventsObservers.isEmpty())
+            if (playerEventsObservers.isEmpty() && applicationEventsObservers.isEmpty() &&
+                playlistEventsObservers.isEmpty())
                 return;
 
             final int PING_AFTER_ERROR_CHECK_INTERVAL = 2000,
@@ -181,9 +211,14 @@ public class HostConnectionObserver
                     // we were in a error or uninitialized state, update
                     if ((!playerEventsObservers.isEmpty()) &&
                         ((hostState.lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
-                        (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR))) {
+                         (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR))) {
                         LogUtils.LOGD(TAG, "Checking what's playing because we don't have info about it");
                         checkWhatsPlaying();
+                    }
+
+                    if ((!playlistEventsObservers.isEmpty()) &&
+                        (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR)) {
+                        checkPlaylist();
                     }
 
                     checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_SUCCESS_CHECK_INTERVAL);
@@ -323,16 +358,44 @@ public class HostConnectionObserver
         }
     }
 
-    private void startCheckerHandler() {
-        // Check if checkerHandler is already running, to prevent multiple runnables to be posted
-        // when multiple observers are registered.
-        if (checkerHandler.hasMessages(0))
+    /**
+     * Registers a new observer that will be notified about playlist events
+     * @param observer Observer
+     * @param replyImmediately Whether to immediately issue a request if there are playlists available
+     */
+    public void registerPlaylistObserver(PlaylistEventsObserver observer, boolean replyImmediately) {
+        if (this.connection == null)
             return;
 
-        if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
-            checkerHandler.post(tcpCheckerRunnable);
-        } else {
-            checkerHandler.post(httpCheckerRunnable);
+        if ( ! playlistEventsObservers.contains(observer) ) {
+            playlistEventsObservers.add(observer);
+        }
+
+        if (playlistEventsObservers.size() == 1) {
+            if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
+                connection.registerPlaylistNotificationsObserver(this, checkerHandler);
+            }
+
+            startCheckerHandler();
+        }
+
+        if (replyImmediately)
+            checkPlaylist();
+    }
+
+    public void unregisterPlaylistObserver(PlayerEventsObserver observer) {
+        playlistEventsObservers.remove(observer);
+
+        LogUtils.LOGD(TAG, "Unregistering playlist observer " + observer.getClass().getSimpleName() +
+                           ". Still got " + playlistEventsObservers.size() +
+                           " observers.");
+
+        if (playlistEventsObservers.isEmpty()) {
+            // No more observers, so unregister us from the host connection, or stop
+            // the http checker thread
+            if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
+                connection.unregisterPlaylistNotificationsObserver(this);
+            }
         }
     }
 
@@ -350,6 +413,7 @@ public class HostConnectionObserver
             connection.unregisterSystemNotificationsObserver(this);
             connection.unregisterInputNotificationsObserver(this);
             connection.unregisterApplicationNotificationsObserver(this);
+            connection.unregisterPlaylistNotificationsObserver(this);
             checkerHandler.removeCallbacks(tcpCheckerRunnable);
         }
         hostState.lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
@@ -370,7 +434,9 @@ public class HostConnectionObserver
     public void onPlay(org.xbmc.kore.jsonrpc.notification.Player.OnPlay notification) {
         // Ignore this if Kodi is Leia or higher, as we'll be properly notified via OnAVStart
         // See https://github.com/xbmc/Kore/issues/602 and https://github.com/xbmc/xbmc/pull/13726
-        if (connection.getHostInfo().isLeiaOrLater()) {
+        // Note: OnPlay is still required for picture items.
+        if (connection.getHostInfo().isLeiaOrLater() &&
+            ! notification.data.item.type.contentEquals("picture") ) {
             LogUtils.LOGD(TAG, "OnPlay notification ignored. Will wait for OnAVStart.");
             return;
         }
@@ -454,6 +520,40 @@ public class HostConnectionObserver
         }
     }
 
+    @Override
+    public void onPlaylistCleared(Playlist.OnClear notification) {
+        for (PlaylistEventsObserver observer : playlistEventsObservers) {
+            observer.playlistOnClear(notification.playlistId);
+        }
+    }
+
+    @Override
+    public void onPlaylistItemAdded(Playlist.OnAdd notification) {
+        for (PlaylistEventsObserver observer : playlistEventsObservers) {
+            observer.playlistChanged(notification.playlistId);
+        }
+    }
+
+    @Override
+    public void onPlaylistItemRemoved(Playlist.OnRemove notification) {
+        for (PlaylistEventsObserver observer : playlistEventsObservers) {
+            observer.playlistChanged(notification.playlistId);
+        }
+    }
+
+    private void startCheckerHandler() {
+        // Check if checkerHandler is already running, to prevent multiple runnables to be posted
+        // when multiple observers are registered.
+        if (checkerHandler.hasMessages(0))
+            return;
+
+        if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
+            checkerHandler.post(tcpCheckerRunnable);
+        } else {
+            checkerHandler.post(httpCheckerRunnable);
+        }
+    }
+
     private void getApplicationProperties() {
         org.xbmc.kore.jsonrpc.method.Application.GetProperties getProperties =
                 new org.xbmc.kore.jsonrpc.method.Application.GetProperties(org.xbmc.kore.jsonrpc.method.Application.GetProperties.VOLUME,
@@ -475,6 +575,62 @@ public class HostConnectionObserver
                 notifyConnectionError(errorCode, description, playerEventsObservers);
             }
         }, checkerHandler);
+    }
+
+    private ArrayList<GetPlaylist.GetPlaylistResult> prevGetPlaylistResults = new ArrayList<>();
+    private boolean isCheckingPlaylist = false;
+    private void checkPlaylist() {
+        if (isCheckingPlaylist)
+            return;
+
+        isCheckingPlaylist = true;
+
+        connection.execute(new GetPlaylist(connection), new ApiCallback<ArrayList<GetPlaylist.GetPlaylistResult>>() {
+            @Override
+            public void onSuccess(ArrayList<GetPlaylist.GetPlaylistResult> result) {
+                isCheckingPlaylist = false;
+
+                if (result.isEmpty()) {
+                    callPlaylistsOnClear(prevGetPlaylistResults);
+                    return;
+                }
+
+                for (PlaylistEventsObserver observer : playlistEventsObservers) {
+                    observer.playlistsAvailable(result);
+                }
+
+                // Handle onClear for HTTP only connections
+                for (GetPlaylist.GetPlaylistResult getPlaylistResult : result) {
+                    for (int i = 0; i < prevGetPlaylistResults.size(); i++) {
+                        if (getPlaylistResult.id == prevGetPlaylistResults.get(i).id) {
+                            prevGetPlaylistResults.remove(i);
+                            break;
+                        }
+                    }
+                }
+
+                callPlaylistsOnClear(prevGetPlaylistResults);
+
+                prevGetPlaylistResults = result;
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                isCheckingPlaylist = false;
+
+                for (PlaylistEventsObserver observer : playlistEventsObservers) {
+                    observer.playlistOnError(errorCode, description);
+                }
+            }
+        }, new Handler());
+    }
+
+    private void callPlaylistsOnClear(ArrayList<GetPlaylist.GetPlaylistResult> clearedPlaylists) {
+        for (GetPlaylist.GetPlaylistResult getPlaylistResult : clearedPlaylists) {
+            for (PlaylistEventsObserver observer : playlistEventsObservers) {
+                observer.playlistOnClear(getPlaylistResult.id);
+            }
+        }
     }
 
     /**
@@ -544,7 +700,7 @@ public class HostConnectionObserver
                 PlayerType.PropertyName.AUDIOSTREAMS,
                 PlayerType.PropertyName.SUBTITLES,
                 PlayerType.PropertyName.PLAYLISTID,
-        };
+                };
 
         Player.GetProperties getProperties = new Player.GetProperties(getActivePlayersResult.playerid, propertiesToGet);
         getProperties.execute(connection, new ApiCallback<PlayerType.PropertyValue>() {
@@ -606,7 +762,7 @@ public class HostConnectionObserver
                 ListType.FieldsAll.WRITER,
                 ListType.FieldsAll.YEAR,
                 ListType.FieldsAll.DESCRIPTION,
-        };
+                };
 //        propertiesToGet = ListType.FieldsAll.allValues;
         Player.GetItem getItem = new Player.GetItem(getActivePlayersResult.playerid, propertiesToGet);
         getItem.execute(connection, new ApiCallback<ListType.ItemsAll>() {
@@ -693,15 +849,15 @@ public class HostConnectionObserver
 
     private boolean getPropertiesResultChanged(PlayerType.PropertyValue getPropertiesResult) {
         return (hostState.lastGetPropertiesResult == null) ||
-                (hostState.lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
-                (hostState.lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
-                (!hostState.lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat));
+               (hostState.lastGetPropertiesResult.speed != getPropertiesResult.speed) ||
+               (hostState.lastGetPropertiesResult.shuffled != getPropertiesResult.shuffled) ||
+               (!hostState.lastGetPropertiesResult.repeat.equals(getPropertiesResult.repeat));
     }
 
     private boolean getItemResultChanged(ListType.ItemsAll getItemResult) {
         return (hostState.lastGetItemResult == null) ||
-                (hostState.lastGetItemResult.id != getItemResult.id) ||
-                (!hostState.lastGetItemResult.label.equals(getItemResult.label));
+               (hostState.lastGetItemResult.id != getItemResult.id) ||
+               (!hostState.lastGetItemResult.label.equals(getItemResult.label));
     }
 
     /**
@@ -718,11 +874,11 @@ public class HostConnectionObserver
                                           List<PlayerEventsObserver> observers) {
         checkingWhatsPlaying = false;
         int currentCallResult = (getPropertiesResult.speed == 0) ?
-                PlayerEventsObserver.PLAYER_IS_PAUSED : PlayerEventsObserver.PLAYER_IS_PLAYING;
+                                PlayerEventsObserver.PLAYER_IS_PAUSED : PlayerEventsObserver.PLAYER_IS_PLAYING;
         if (forceReply ||
-                (hostState.lastCallResult != currentCallResult) ||
-                getPropertiesResultChanged(getPropertiesResult) ||
-                getItemResultChanged(getItemResult)) {
+            (hostState.lastCallResult != currentCallResult) ||
+            getPropertiesResultChanged(getPropertiesResult) ||
+            getItemResultChanged(getItemResult)) {
             hostState.lastCallResult = currentCallResult;
             hostState.lastGetActivePlayerResult = getActivePlayersResult;
             hostState.lastGetPropertiesResult = getPropertiesResult;
