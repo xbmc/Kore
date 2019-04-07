@@ -87,13 +87,12 @@ public class SquareGridLayout extends ViewGroup {
         int paddingHeight = getPaddingTop() + getPaddingBottom();
 
         int size;
-        int padding;
         if ((width - paddingWidth) < (height - paddingHeight)) {
             size = width;
-            padding = size - paddingWidth;
+            cellSize = (size - paddingWidth) / columnCount;
         } else {
             size = height;
-            padding = size - paddingHeight;
+            cellSize = (size - paddingHeight) / columnCount;
         }
 
         for (int y = 0; y < columnCount; y++) {
@@ -101,16 +100,15 @@ public class SquareGridLayout extends ViewGroup {
                 View child = getChildAt(y * size + x);
                 if (child != null) {
                     measureChildWithMargins(child,
-                                            MeasureSpec.makeMeasureSpec((padding + x) / columnCount, MeasureSpec.EXACTLY),
+                                            MeasureSpec.makeMeasureSpec(cellSize, MeasureSpec.EXACTLY),
                                             0,
-                                            MeasureSpec.makeMeasureSpec((padding + y) / columnCount, MeasureSpec.EXACTLY),
+                                            MeasureSpec.makeMeasureSpec(cellSize, MeasureSpec.EXACTLY),
                                             0);
                 }
             }
         }
 
         setMeasuredDimension(size, size);
-        cellSize = padding;
     }
 
     @Override
@@ -123,10 +121,10 @@ public class SquareGridLayout extends ViewGroup {
             for (int x = 0; x < columnCount; x++) {
                 View child = getChildAt(y * columnCount + x);
                 MarginLayoutParams childLayoutParams = (MarginLayoutParams) child.getLayoutParams();
-                child.layout(left + (cellSize *  x) / columnCount + childLayoutParams.leftMargin,
-                             top + (cellSize * y) / columnCount + childLayoutParams.topMargin,
-                             left + (cellSize * (x+1)) / columnCount - childLayoutParams.rightMargin,
-                             top + (cellSize * (y+1)) / columnCount - childLayoutParams.bottomMargin
+                child.layout(left + (cellSize * x) + childLayoutParams.leftMargin,
+                             top + (cellSize * y) + childLayoutParams.topMargin,
+                             left + (cellSize * (x+1)) - childLayoutParams.rightMargin,
+                             top + (cellSize * (y+1)) - childLayoutParams.bottomMargin
                             );
             }
         }
