@@ -35,6 +35,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.TextViewCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -374,6 +375,21 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     @SuppressLint("StringFormatInvalid")
     protected void updateView(DataHolder dataHolder) {
         titleTextView.setText(dataHolder.getTitle());
+        titleTextView.post(new Runnable() {
+            @Override
+            public void run() {
+                int lines = titleTextView.getLineCount();
+                int maxLines = TextViewCompat.getMaxLines(titleTextView);
+                if (lines > maxLines) {
+                    titleTextView.setHorizontallyScrolling(true);
+                    titleTextView.setClickable(true);
+                    titleTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) { v.setSelected(!v.isSelected()); }
+                    });
+                }
+            }
+        });
         underTitleTextView.setText(dataHolder.getUnderTitle());
         detailsRightTextView.setText(dataHolder.getDetails());
 
