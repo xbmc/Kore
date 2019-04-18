@@ -381,11 +381,21 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                 int lines = titleTextView.getLineCount();
                 int maxLines = TextViewCompat.getMaxLines(titleTextView);
                 if (lines > maxLines) {
-                    titleTextView.setHorizontallyScrolling(true);
+                    titleTextView.setEllipsize(TextUtils.TruncateAt.END);
                     titleTextView.setClickable(true);
                     titleTextView.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v) { v.setSelected(!v.isSelected()); }
+                        public void onClick(View v) {
+                            v.setSelected(!v.isSelected());
+                            TextUtils.TruncateAt ellipsize;
+                            if (v.isSelected()) {
+                                ellipsize = TextUtils.TruncateAt.MARQUEE;
+                            } else {
+                                ellipsize = TextUtils.TruncateAt.END;
+                            }
+                            titleTextView.setEllipsize(ellipsize);
+                            titleTextView.setHorizontallyScrolling(v.isSelected());
+                        }
                     });
                 }
             }

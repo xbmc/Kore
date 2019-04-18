@@ -759,11 +759,21 @@ public class NowPlayingFragment extends Fragment
                 int lines = mediaTitle.getLineCount();
                 int maxLines = TextViewCompat.getMaxLines(mediaTitle);
                 if (lines > maxLines) {
-                    mediaTitle.setHorizontallyScrolling(true);
+                    mediaTitle.setEllipsize(TextUtils.TruncateAt.END);
                     mediaTitle.setClickable(true);
                     mediaTitle.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v) { v.setSelected(!v.isSelected()); }
+                        public void onClick(View v) {
+                            v.setSelected(!v.isSelected());
+                            TextUtils.TruncateAt ellipsize;
+                            if (v.isSelected()) {
+                                ellipsize = TextUtils.TruncateAt.MARQUEE;
+                            } else {
+                                ellipsize = TextUtils.TruncateAt.END;
+                            }
+                            mediaTitle.setEllipsize(ellipsize);
+                            mediaTitle.setHorizontallyScrolling(v.isSelected());
+                        }
                     });
                 }
             }
