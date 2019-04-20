@@ -29,6 +29,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -610,6 +611,42 @@ public class UIUtils {
         } else {
             button.setMode(RepeatModeButton.MODE.ALL);
         }
+    }
+
+    /**
+     * Returns a {@link Runnable} that sets up toggleable scrolling behavior on a {@link TextView}
+     * if the number of lines to be displayed exceeds the maximum lines limit supported by the TextView.
+     * Can be applied by using {@link View#post(Runnable)}.
+     *
+     * @param textView TextView that the Runnable should apply against
+     * @return Runnable
+     */
+    public static Runnable getMarqueeToggleableAction(final TextView textView) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                int lines = textView.getLineCount();
+                int maxLines = TextViewCompat.getMaxLines(textView);
+                if (lines > maxLines) {
+                    textView.setEllipsize(TextUtils.TruncateAt.END);
+                    textView.setClickable(true);
+                    textView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            v.setSelected(!v.isSelected());
+                            TextUtils.TruncateAt ellipsize;
+                            if (v.isSelected()) {
+                                ellipsize = TextUtils.TruncateAt.MARQUEE;
+                            } else {
+                                ellipsize = TextUtils.TruncateAt.END;
+                            }
+                            textView.setEllipsize(ellipsize);
+                            textView.setHorizontallyScrolling(v.isSelected());
+                        }
+                    });
+                }
+            }
+        };
     }
 
     /**
