@@ -20,7 +20,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -753,31 +752,7 @@ public class NowPlayingFragment extends Fragment
         }
 
         mediaTitle.setText(title);
-        mediaTitle.post(new Runnable() {
-            @Override
-            public void run() {
-                int lines = mediaTitle.getLineCount();
-                int maxLines = TextViewCompat.getMaxLines(mediaTitle);
-                if (lines > maxLines) {
-                    mediaTitle.setEllipsize(TextUtils.TruncateAt.END);
-                    mediaTitle.setClickable(true);
-                    mediaTitle.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            v.setSelected(!v.isSelected());
-                            TextUtils.TruncateAt ellipsize;
-                            if (v.isSelected()) {
-                                ellipsize = TextUtils.TruncateAt.MARQUEE;
-                            } else {
-                                ellipsize = TextUtils.TruncateAt.END;
-                            }
-                            mediaTitle.setEllipsize(ellipsize);
-                            mediaTitle.setHorizontallyScrolling(v.isSelected());
-                        }
-                    });
-                }
-            }
-        });
+        mediaTitle.post(UIUtils.getMarqueeToggleableAction(mediaTitle));
         mediaUndertitle.setText(underTitle);
 
         mediaProgressIndicator.setOnProgressChangeListener(this);
