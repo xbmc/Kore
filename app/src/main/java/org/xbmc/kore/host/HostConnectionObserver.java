@@ -857,7 +857,8 @@ public class HostConnectionObserver
     private boolean getItemResultChanged(ListType.ItemsAll getItemResult) {
         return (hostState.lastGetItemResult == null) ||
                (hostState.lastGetItemResult.id != getItemResult.id) ||
-               (!hostState.lastGetItemResult.label.equals(getItemResult.label));
+               ((hostState.lastGetItemResult.label != null &&
+                 !hostState.lastGetItemResult.label.equals(getItemResult.label)));
     }
 
     /**
