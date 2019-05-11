@@ -49,13 +49,13 @@ public class ConnectionObserversManagerService extends Service
         implements HostConnectionObserver.PlayerEventsObserver {
     public static final String TAG = LogUtils.makeLogTag(ConnectionObserversManagerService.class);
 
-    private HostConnectionObserver mHostConnectionObserver = null;
+    private HostConnectionObserver hostConnectionObserver = null;
 
-    private List<HostConnectionObserver.PlayerEventsObserver> mConnectionObservers = new ArrayList<>();
-    private NotificationObserver mNotificationObserver;
+    private List<HostConnectionObserver.PlayerEventsObserver> observers = new ArrayList<>();
+    private NotificationObserver notificationObserver;
 
-    private boolean somethingPlaying = false;
-    private Handler mStopHandler = new Handler();
+    private boolean somethingIsPlaying = false;
+    private Handler stopHandler = new Handler();
 
     @Override
     public void onCreate() {
@@ -67,59 +67,39 @@ public class ConnectionObserversManagerService extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogUtils.LOGD(TAG, "onStartCommand");
-        // Create the observers we are managing
-        createObservers();
 
-        // If no observers created, stop immediately
-        if (mConnectionObservers.isEmpty()) {
-            LogUtils.LOGD(TAG, "No observers, stopping observer service.");
-            stopSelf();
-            return START_NOT_STICKY;
+        // Create the observers we are managing and immediatelly call
+        // startForeground() to avoid ANRs
+        if (observers.isEmpty()) {
+            createObservers();
+        }
+        startForeground(NotificationObserver.NOTIFICATION_ID,
+                notificationObserver.getCurrentNotification());
+
+        HostConnectionObserver connectionObserver =
+                HostManager.getInstance(this).getHostConnectionObserver();
+
+        if (hostConnectionObserver == null) {
+            hostConnectionObserver = connectionObserver;
+            hostConnectionObserver.registerPlayerObserver(this, true);
+        } else if (hostConnectionObserver != connectionObserver) {
+            // There has been a change in hosts.
+            // Unregister the previous one and register the current one
+            hostConnectionObserver.unregisterPlayerObserver(this);
+            hostConnectionObserver = connectionObserver;
+            hostConnectionObserver.registerPlayerObserver(this, true);
         }
 
-        // Get the connection observer here, not on create to check if
-        // there has been a change in hosts, and if so unregister the previous one
-        HostConnectionObserver connectionObserver = HostManager.getInstance(this).getHostConnectionObserver();
-
-        // If we are already initialized and the same host, exit
-        if (mHostConnectionObserver == connectionObserver) {
-            LogUtils.LOGD(TAG, "Already initialized");
-            return START_STICKY;
-        }
-
-        // Create the observers we are managing
-        createObservers();
-        if (mConnectionObservers.isEmpty()) {
-            stopForeground(true);
-            stopSelf();
-            return START_NOT_STICKY;
-        }
-
-        startForeground(NotificationObserver.NOTIFICATION_ID, mNotificationObserver.getNothingPlayingNotification());
-
-        // If there's a change in hosts, unregister from the previous one
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
-        }
-
-        // Register us on the connection observer
-        mHostConnectionObserver = connectionObserver;
-        mHostConnectionObserver.registerPlayerObserver(this, true);
-
-        // If we get killed, after returning from here, don't restart
+        // If we get killed after returning from here, restart
         return START_STICKY;
     }
 
     private void createObservers() {
-        mConnectionObservers = new ArrayList<>();
+        observers = new ArrayList<>();
 
         // Always show a notification
-//        boolean showNotification = PreferenceManager
-//                .getDefaultSharedPreferences(this)
-//                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION,
-//                            Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
-        mNotificationObserver = new NotificationObserver(this);
-        mConnectionObservers.add(mNotificationObserver);
+        notificationObserver = new NotificationObserver(this);
+        observers.add(notificationObserver);
 
         // Check whether we should react to phone state changes and wether
         // we have permissions to do so
@@ -128,9 +108,10 @@ public class ConnectionObserversManagerService extends Service
                 .getBoolean(Settings.KEY_PREF_PAUSE_DURING_CALLS,
                             Settings.DEFAULT_PREF_PAUSE_DURING_CALLS);
         boolean hasPhonePermission =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) ==
+                        PackageManager.PERMISSION_GRANTED;
         if (shouldPause && hasPhonePermission) {
-            mConnectionObservers.add(new PauseCallObserver(this));
+            observers.add(new PauseCallObserver(this));
         }
     }
 
@@ -143,13 +124,13 @@ public class ConnectionObserversManagerService extends Service
     @Override
     public void onTaskRemoved (Intent rootIntent) {
         // Gracefully stop
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.playerOnConnectionError(0, "Task removed");
         }
 
         LogUtils.LOGD(TAG, "Shutting down observer service - Task removed");
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
+        if (hostConnectionObserver != null) {
+            hostConnectionObserver.unregisterPlayerObserver(this);
         }
         stopForeground(true);
         stopSelf();
@@ -158,12 +139,12 @@ public class ConnectionObserversManagerService extends Service
     @Override
     public void onDestroy() {
         // Gracefully stop
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.playerOnConnectionError(0, "Service destroyed");
         }
         LogUtils.LOGD(TAG, "Shutting down observer service - destroyed");
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
+        if (hostConnectionObserver != null) {
+            hostConnectionObserver.unregisterPlayerObserver(this);
         }
     }
 
@@ -178,36 +159,36 @@ public class ConnectionObserversManagerService extends Service
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.playerOnPlay(getActivePlayerResult, getPropertiesResult, getItemResult);
         }
-        somethingPlaying = true;
+        somethingIsPlaying = true;
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.playerOnPause(getActivePlayerResult, getPropertiesResult, getItemResult);
         }
-        somethingPlaying = true;
+        somethingIsPlaying = true;
     }
 
     public void playerOnStop() {
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.playerOnStop();
         }
 
-        somethingPlaying = false;
+        somethingIsPlaying = false;
 
         // Stop service if nothing starts in a couple of seconds
-        mStopHandler.postDelayed(new Runnable() {
+        stopHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!somethingPlaying) {
+                if (!somethingIsPlaying) {
                     LogUtils.LOGD(TAG, "Stopping service");
-                    if (mHostConnectionObserver != null) {
-                        mHostConnectionObserver.unregisterPlayerObserver(ConnectionObserversManagerService.this);
+                    if (hostConnectionObserver != null) {
+                        hostConnectionObserver.unregisterPlayerObserver(ConnectionObserversManagerService.this);
                     }
                     stopForeground(true);
                     stopSelf();
@@ -217,37 +198,37 @@ public class ConnectionObserversManagerService extends Service
     }
 
     public void playerNoResultsYet() {
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.playerNoResultsYet();
         }
-        somethingPlaying = false;
+        somethingIsPlaying = false;
     }
 
     public void playerOnConnectionError(int errorCode, String description) {
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.playerOnConnectionError(errorCode, description);
         }
-        somethingPlaying = false;
+        somethingIsPlaying = false;
 
         // Stop service
         LogUtils.LOGD(TAG, "Shutting down observer service - Connection error");
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
+        if (hostConnectionObserver != null) {
+            hostConnectionObserver.unregisterPlayerObserver(this);
         }
         stopForeground(true);
         stopSelf();
     }
 
     public void systemOnQuit() {
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.systemOnQuit();
         }
-        somethingPlaying = false;
+        somethingIsPlaying = false;
 
         // Stop service
         LogUtils.LOGD(TAG, "Shutting down observer service - System quit");
-        if (mHostConnectionObserver != null) {
-            mHostConnectionObserver.unregisterPlayerObserver(this);
+        if (hostConnectionObserver != null) {
+            hostConnectionObserver.unregisterPlayerObserver(this);
         }
         stopForeground(true);
         stopSelf();
@@ -255,13 +236,13 @@ public class ConnectionObserversManagerService extends Service
 
     // Ignore this
     public void inputOnInputRequested(String title, String type, String value) {
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.inputOnInputRequested(title, type, value);
         }
     }
 
     public void observerOnStopObserving() {
-        for (HostConnectionObserver.PlayerEventsObserver observer : mConnectionObservers) {
+        for (HostConnectionObserver.PlayerEventsObserver observer : observers) {
             observer.observerOnStopObserving();
         }
         // Called when the user changes host

@@ -58,26 +58,26 @@ public class NotificationObserver
     public static final int NOTIFICATION_ID = 1;
     private static final String NOTIFICATION_CHANNEL = "KORE";
 
-    private PendingIntent mRemoteStartPendingIntent;
-    private Service mService;
+    private PendingIntent remoteStartPendingIntent;
+    private Service service;
 
-    private Notification mNothingPlayingNotification;
-
+    private Notification nothingPlayingNotification;
+    private Notification currentNotification = null;
 
     public NotificationObserver(Service service) {
-        this.mService = service;
+        this.service = service;
 
         // Create the intent to start the remote when the user taps the notification
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mService);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this.service);
         stackBuilder.addParentStack(RemoteActivity.class);
-        stackBuilder.addNextIntent(new Intent(mService, RemoteActivity.class));
-        mRemoteStartPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        stackBuilder.addNextIntent(new Intent(this.service, RemoteActivity.class));
+        remoteStartPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Create the notification channel
         if (Utils.isOreoOrLater()) {
             buildNotificationChannel();
         }
-        mNothingPlayingNotification = buildNothingPlayingNotification();
+        nothingPlayingNotification = buildNothingPlayingNotification();
     }
 
     @Override
@@ -129,14 +129,14 @@ public class NotificationObserver
 
         NotificationChannel channel =
                 new NotificationChannel(NOTIFICATION_CHANNEL,
-                        mService.getString(R.string.app_name),
+                        service.getString(R.string.app_name),
                         NotificationManager.IMPORTANCE_LOW);
         channel.enableLights(false);
         channel.enableVibration(false);
         channel.setShowBadge(false);
 
         NotificationManager notificationManager =
-                (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null)
             notificationManager.createNotificationChannel(channel);
     }
@@ -147,25 +147,28 @@ public class NotificationObserver
     private Notification buildNothingPlayingNotification() {
         int smallIcon = R.drawable.ic_devices_white_24dp;
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mService, NOTIFICATION_CHANNEL);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL);
         return builder
                 .setSmallIcon(smallIcon)
                 .setShowWhen(false)
                 .setOngoing(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_TRANSPORT)
-                .setContentIntent(mRemoteStartPendingIntent)
-                .setContentTitle(String.format(mService.getString(R.string.connected_to),
-                        HostManager.getInstance(mService).getHostInfo().getName()))
-                .setContentText(mService.getString(R.string.nothing_playing))
+                .setContentIntent(remoteStartPendingIntent)
+                .setContentTitle(String.format(service.getString(R.string.connected_to),
+                        HostManager.getInstance(service).getHostInfo().getName()))
+                .setContentText(service.getString(R.string.nothing_playing))
                 .build();
     }
 
-    public Notification getNothingPlayingNotification() {
-        if (mNothingPlayingNotification == null) {
-            mNothingPlayingNotification = buildNothingPlayingNotification();
+    public Notification getCurrentNotification() {
+        if (currentNotification == null) {
+            if (nothingPlayingNotification == null) {
+                nothingPlayingNotification = buildNothingPlayingNotification();
+            }
+            currentNotification = nothingPlayingNotification;
         }
-        return mNothingPlayingNotification;
+        return currentNotification;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -187,7 +190,7 @@ public class NotificationObserver
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
                 title = getItemResult.title;
-                String seasonEpisode = String.format(mService.getString(R.string.season_episode_abbrev),
+                String seasonEpisode = String.format(service.getString(R.string.season_episode_abbrev),
                                                      getItemResult.season, getItemResult.episode);
                 underTitle = String.format("%s | %s", getItemResult.showtitle, seasonEpisode);
                 poster = getItemResult.art.poster;
@@ -232,7 +235,7 @@ public class NotificationObserver
         PendingIntent rewindPendingIntent, ffPendingIntent, playPausePendingIntent;
         playPausePendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_PLAY_PAUSE);
         boolean useSeekJump = PreferenceManager
-                .getDefaultSharedPreferences(this.mService)
+                .getDefaultSharedPreferences(this.service)
                 .getBoolean(Settings.KEY_PREF_NOTIFICATION_SEEK_JUMP, Settings.DEFAULT_PREF_NOTIFICATION_SEEK_JUMP);
         if (getItemResult.type.equals(ListType.ItemsAll.TYPE_SONG)) {
             rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_PREVIOUS);
@@ -252,17 +255,17 @@ public class NotificationObserver
         }
 
         final NotificationCompat.Builder builder =
-            new NotificationCompat.Builder(mService, NOTIFICATION_CHANNEL)
+            new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSmallIcon(smallIcon)
                 .setShowWhen(false)
                 .setOngoing(true)
-                .addAction(rewindIcon, mService.getString(R.string.rewind), rewindPendingIntent) // #0
-                .addAction(playPauseIcon, mService.getString(R.string.play), playPausePendingIntent)  // #1
-                .addAction(ffIcon, mService.getString(R.string.fast_forward), ffPendingIntent)     // #2
+                .addAction(rewindIcon, service.getString(R.string.rewind), rewindPendingIntent) // #0
+                .addAction(playPauseIcon, service.getString(R.string.play), playPausePendingIntent)  // #1
+                .addAction(ffIcon, service.getString(R.string.fast_forward), ffPendingIntent)     // #2
                 .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
                               .setShowActionsInCompactView(0, 1, 2))
-                .setContentIntent(mRemoteStartPendingIntent)
+                .setContentIntent(remoteStartPendingIntent)
                 .setContentTitle(title)
                 .setContentText(underTitle);
 
@@ -285,7 +288,7 @@ public class NotificationObserver
         //
         // 4. We specifically resize the image to the same dimensions used in
         // the remote, so that Picasso reuses it in the remote and here from the cache
-        Resources resources = mService.getResources();
+        Resources resources = service.getResources();
         final int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
         final int posterHeight = isVideo?
                 resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height):
@@ -299,7 +302,7 @@ public class NotificationObserver
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
-                    CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(mService, title);
+                    CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(service, title);
                     showNotification(Utils.drawableToBitmap(avatarDrawable, posterWidth, posterHeight));
                 }
 
@@ -309,15 +312,17 @@ public class NotificationObserver
                 private void showNotification(Bitmap bitmap) {
                     builder.setLargeIcon(bitmap);
                     NotificationManager notificationManager =
-                            (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
-                    if (notificationManager != null)
-                        notificationManager.notify(NOTIFICATION_ID, builder.build());
+                            (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
+                    if (notificationManager != null) {
+                        currentNotification = builder.build();
+                        notificationManager.notify(NOTIFICATION_ID, currentNotification);
+                    }
                     picassoTarget = null;
                 }
             };
 
             // Load the image
-            HostManager hostManager = HostManager.getInstance(mService);
+            HostManager hostManager = HostManager.getInstance(service);
             hostManager.getPicasso()
                     .load(hostManager.getHostInfo().getImageUrl(poster))
                     .resize(posterWidth, posterHeight)
@@ -326,24 +331,28 @@ public class NotificationObserver
     }
 
     private PendingIntent buildActionPendingIntent(int playerId, String action) {
-        Intent intent = new Intent(mService, IntentActionsService.class)
+        Intent intent = new Intent(service, IntentActionsService.class)
                 .setAction(action)
                 .putExtra(IntentActionsService.EXTRA_PLAYER_ID, playerId);
 
-        return PendingIntent.getService(mService, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void removeNotification() {
         NotificationManager notificationManager =
-                (NotificationManager)mService.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null)
+                (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
             notificationManager.cancel(NOTIFICATION_ID);
+            currentNotification = null;
+        }
     }
 
     private void notifyNothingPlaying() {
         NotificationManager notificationManager =
-            (NotificationManager)mService.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null)
-            notificationManager.notify(NOTIFICATION_ID, mNothingPlayingNotification);
+            (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify(NOTIFICATION_ID, nothingPlayingNotification);
+            currentNotification = nothingPlayingNotification;
+        }
     }
 }
