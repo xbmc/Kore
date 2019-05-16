@@ -18,13 +18,14 @@ package org.xbmc.kore.tests.jsonrpc.method;
 
 import android.os.Handler;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.xbmc.kore.BuildConfig;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -35,13 +36,11 @@ import org.xbmc.kore.testutils.tcpserver.handlers.ApplicationHandler;
 import org.xbmc.kore.testutils.tcpserver.handlers.JSONConnectionHandlerManager;
 import org.xbmc.kore.utils.RoboThreadRunner;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23)
+@RunWith(AndroidJUnit4.class)
 public class ApplicationTest {
 
     private HostConnection hostConnection;

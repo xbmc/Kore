@@ -31,10 +31,10 @@ import static org.junit.Assert.assertTrue;
 public class AlbumsTest extends AbstractTestClass {
 
     @Test
-    public void queryAllAlbumsTest() {
+    public void queryAllAlbumsTest() throws Exception {
         Uri uri = MediaContract.Albums.buildAlbumsListUri(hostInfo.getId());
 
-        Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
+        Cursor cursor = client.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 235, cursor.getCount());
@@ -45,10 +45,10 @@ public class AlbumsTest extends AbstractTestClass {
     }
 
     @Test
-    public void queryAlbumTest() {
+    public void queryAlbumTest() throws Exception {
         Uri uri = MediaContract.Albums.buildAlbumUri(hostInfo.getId(), TestValues.Album.albumId);
 
-        Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
+        Cursor cursor = client.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());
@@ -57,11 +57,11 @@ public class AlbumsTest extends AbstractTestClass {
     }
 
     @Test
-    public void queryAlbumsForArtistTest() {
+    public void queryAlbumsForArtistTest() throws Exception {
         Uri uri = MediaContract.AlbumArtists.buildAlbumsForArtistListUri(hostInfo.getId(),
                                                                          TestValues.Artist.artistId);
 
-        Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
+        Cursor cursor = client.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());
@@ -70,11 +70,11 @@ public class AlbumsTest extends AbstractTestClass {
     }
 
     @Test
-    public void queryAlbumsForArtistWithVariousArtistsTest() {
+    public void queryAlbumsForArtistWithVariousArtistsTest() throws Exception {
         Uri uri = MediaContract.AlbumArtists.buildAlbumsForArtistListUri(hostInfo.getId(),
                                                                          TestValues.AlbumWithVariousArtists.artistId);
 
-        Cursor cursor = shadowContentResolver.query(uri, TestValues.AlbumWithVariousArtists.PROJECTION, null, null, null);
+        Cursor cursor = client.query(uri, TestValues.AlbumWithVariousArtists.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 2, cursor.getCount());
@@ -92,11 +92,11 @@ public class AlbumsTest extends AbstractTestClass {
     }
 
     @Test
-    public void queryAlbumWithoutArtist() {
+    public void queryAlbumWithoutArtist() throws Exception {
         Uri uri = MediaContract.Albums.buildAlbumUri(hostInfo.getId(),
                                                      TestValues.AlbumWithoutArtist.albumId);
 
-        Cursor cursor = shadowContentResolver.query(uri, TestValues.AlbumWithoutArtist.PROJECTION, null, null, null);
+        Cursor cursor = client.query(uri, TestValues.AlbumWithoutArtist.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());
@@ -105,11 +105,11 @@ public class AlbumsTest extends AbstractTestClass {
     }
 
     @Test
-    public void queryAlbumWithMultipleArtists() {
+    public void queryAlbumWithMultipleArtists() throws Exception {
         Uri uri = MediaContract.Albums.buildAlbumUri(hostInfo.getId(),
                                                      TestValues.AlbumWithMultipleArtists.albumId);
 
-        Cursor cursor = shadowContentResolver.query(uri, TestValues.AlbumWithMultipleArtists.PROJECTION,
+        Cursor cursor = client.query(uri, TestValues.AlbumWithMultipleArtists.PROJECTION,
                                                     null, null, null);
 
         assertNotNull(cursor);
