@@ -293,8 +293,6 @@
     <string name="theme_night">深夜风格</string>
     <string name="theme_day">晨间风格</string>
     <string name="theme_mist">迷雾风格</string>
-    <string name="theme_solarized">太阳能亮色调</string>
-    <string name="theme_solarized_dark">太阳能暗色调</string>
 
     <string name="switch_to_remote">媒体播放后切换到遥控器</string>
     <string name="show_notification">播放时显示通知</string>

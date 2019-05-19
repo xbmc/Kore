@@ -334,14 +334,11 @@
     <string name="theme_night">Nacht</string>
     <string name="theme_day">Tag</string>
     <string name="theme_mist">Nebel</string>
-    <string name="theme_solarized">Solarized</string>
-    <string name="theme_solarized_dark">Solarized dunkel</string>
 
     <string name="switch_to_remote">Nach dem Abspielen eines Mediums zur Fernbedienung wechseln</string>
     <string name="keep_remote_above_lockscreen">Fernbedienung auf dem Sperrbildschirm anzeigen</string>
     <string name="pref_keep_screen_on">Bildschirm nicht während der Nutzung als Fernbedienung ausschalten</string>
     <string name="show_notification">Nachricht mit aktueller Wiedergabe anzeigen</string>
-    <string name="show_now_playing_panel"></string>
 	<string name="show_now_playing_panel_summary">Zeigt ein ausklappbares Feld am unteren Rand des Bildschirms an, während Medien wiedergegeben werden</string>
 	<string name="notification_seek_jump">Benutze Schritte zum Suchen</string>
 	<string name="notification_seek_jump_speed">Während des Suchens von einer Benachrichtigung die Wiedergabegeschwindigkeit ändern</string>

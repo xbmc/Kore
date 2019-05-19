@@ -326,8 +326,6 @@
     <string name="theme_night">Naktis</string>
     <string name="theme_day">Diena</string>
     <string name="theme_mist">Rūkas</string>
-    <string name="theme_solarized">Ryški</string>
-    <string name="theme_solarized_dark">Ryški tamsi</string>
 
     <string name="switch_to_remote">Atidaryti pultą paleidus media</string>
     <string name="keep_remote_above_lockscreen">Rodyti pultą užrakintame ekrane</string>

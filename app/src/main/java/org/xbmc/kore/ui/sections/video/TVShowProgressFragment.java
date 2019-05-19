@@ -287,7 +287,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             // Get theme colors
             Resources.Theme theme = getActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.colorinProgress,
+                    R.attr.colorInProgress,
                     R.attr.colorFinished
             });
 

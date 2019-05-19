@@ -243,8 +243,6 @@
   <string name="theme_night">Nacht</string>
   <string name="theme_day">Dag</string>
   <string name="theme_mist">Mist</string>
-  <string name="theme_solarized">Zonnig</string>
-  <string name="theme_solarized_dark">Zonnig donker</string>
   <string name="switch_to_remote">Tonen bij starten van media</string>
   <string name="show_notification">Afspeelmelding tonen tijdens afspelen</string>
   <string name="use_hardware_volume_keys">Fysieke volumeknoppen gebruiken</string>

@@ -341,8 +341,8 @@
     <string name="theme_night">Night</string>
     <string name="theme_day">Day</string>
     <string name="theme_mist">Mist</string>
-    <string name="theme_solarized">Solarized</string>
-    <string name="theme_solarized_dark">Solarized Dark</string>
+    <string name="theme_sunrise">Sunrise</string>
+    <string name="theme_sunset">Sunset</string>
 	
     <string name="switch_to_remote">Show on media start</string>
     <string name="keep_remote_above_lockscreen">Show over lockscreen</string>

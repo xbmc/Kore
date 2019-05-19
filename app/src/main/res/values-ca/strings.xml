@@ -250,8 +250,6 @@
     <string name="theme_night">Nit</string>
     <string name="theme_day">Dia</string>
     <string name="theme_mist">Boira</string>
-    <string name="theme_solarized">Solaritzat</string>
-    <string name="theme_solarized_dark">Solaritzat fosc</string>
     <string name="switch_to_remote">Mostra al iniciar el dispositiu</string>
     <string name="keep_remote_above_lockscreen">Mostra sobre la pantalla de bloqueig</string>
     <string name="pref_keep_screen_on">Estigues pendent</string>

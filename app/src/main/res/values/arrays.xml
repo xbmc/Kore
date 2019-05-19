@@ -30,15 +30,15 @@
         <item>@string/theme_night</item>
         <item>@string/theme_day</item>
         <item>@string/theme_mist</item>
-        <item>@string/theme_solarized</item>
-        <!--<item>@string/theme_solarized_dark</item>-->
+        <item>@string/theme_sunrise</item>
+        <item>@string/theme_sunset</item>
     </string-array>
     <string-array translatable="false" name="themes_values_array">
         <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
-        <!--<item>4</item>-->
+        <item>4</item>
     </string-array>
 
     <!-- Remote Bar items -->

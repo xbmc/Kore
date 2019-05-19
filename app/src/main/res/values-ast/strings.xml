@@ -262,8 +262,6 @@ Primi <b><i>Finar</i></b> p\'apenzar a usar el mandu.
   <string name="theme_night">Nueche</string>
   <string name="theme_day">Día</string>
   <string name="theme_mist">Caín</string>
-  <string name="theme_solarized">Soleyeru</string>
-  <string name="theme_solarized_dark">Escuridá soleyero</string>
   <string name="switch_to_remote">Camudar al mandu dempués del aniciu de medios</string>
   <string name="keep_remote_above_lockscreen">Caltener el mandu enriba la pantalla de bloquéu</string>
   <string name="show_notification">Amosar avisu entrín se reproduz</string>

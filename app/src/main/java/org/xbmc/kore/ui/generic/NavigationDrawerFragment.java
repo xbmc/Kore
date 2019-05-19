@@ -475,7 +475,7 @@ public class NavigationDrawerFragment extends Fragment {
                             R.attr.textColorOverPrimary
                     });
             Resources resources = context.getResources();
-            selectedItemColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.accent_default));
+            selectedItemColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.default_accent));
             hostItemColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.white));
             styledAttributes.recycle();
         }

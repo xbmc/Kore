@@ -320,8 +320,6 @@
     <string name="theme_night">Нощ</string>
     <string name="theme_day">Ден</string>
     <string name="theme_mist">Мъгла</string>
-    <string name="theme_solarized">Соларизирана</string>
-    <string name="theme_solarized_dark">Соларизирана (Тъмна)</string>
 
     <string name="switch_to_remote">Към дистанционното след стартиране</string>
     <string name="keep_remote_above_lockscreen">Показвай дистанционното над заключения екран</string>

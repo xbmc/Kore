@@ -293,8 +293,6 @@
     <string name="theme_night">Ночь</string>
     <string name="theme_day">День</string>
     <string name="theme_mist">Туман</string>
-    <string name="theme_solarized">Solarized</string>
-    <string name="theme_solarized_dark">Solarized Dark</string>
 
     <string name="switch_to_remote">Переходить к управлению при старте воспроизведения</string>
     <string name="show_notification">Показывать уведомление при воспроизведении</string>

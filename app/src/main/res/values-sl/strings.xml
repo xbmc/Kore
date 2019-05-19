@@ -246,8 +246,6 @@
     <string name="theme_night">Noč</string>
     <string name="theme_day">Dan</string>
     <string name="theme_mist">Megla</string>
-    <string name="theme_solarized">Solarizirano</string>
-    <string name="theme_solarized_dark">Solarizirano Temno</string>
     <string name="switch_to_remote">Prikaži ob pričetku medija</string>
     <string name="keep_remote_above_lockscreen">Pokaži nad zaklenjenim zaslonom</string>
     <string name="show_notification">Med predvajanjem prikaži obvestilo</string>

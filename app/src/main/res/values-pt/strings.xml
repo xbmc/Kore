@@ -207,8 +207,8 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
   <string name="theme_night">Noite</string>
   <string name="theme_day">Dia</string>
   <string name="theme_mist">Neblina</string>
-  <string name="theme_solarized">Solarized</string>
-  <string name="theme_solarized_dark">Solarized escuro</string>
+  <string name="theme_sunrise">Madrugada</string>
+  <string name="theme_sunset">Crepúsculo</string>
   <string name="switch_to_remote">Mostrar ao iniciar reprodução</string>
   <string name="about">Sobre</string>
   <string name="about_desc"><![CDATA[

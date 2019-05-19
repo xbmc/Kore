@@ -236,8 +236,6 @@
   <string name="theme_night">Noche</string>
   <string name="theme_day">Día</string>
   <string name="theme_mist">Niebla</string>
-  <string name="theme_solarized">Soleado</string>
-  <string name="theme_solarized_dark">Soleado oscuro</string>
   <string name="switch_to_remote">Cambiar a control remoto después de que inicie la reproducción</string>
   <string name="show_notification">Mostrar notificaciones durante la reproducción</string>
   <string name="use_hardware_volume_keys">Usar las teclas de volumen para el control de volumen</string>

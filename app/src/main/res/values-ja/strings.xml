@@ -326,8 +326,6 @@
     <string name="theme_night">夜間</string>
     <string name="theme_day">日中</string>
     <string name="theme_mist">ミスト</string>
-    <string name="theme_solarized">ソラリゼーション</string>
-    <string name="theme_solarized_dark">ソラリゼーションダーク</string>
 
     <string name="switch_to_remote">メディア開始時に表示</string>
     <string name="keep_remote_above_lockscreen">ロック画面上に表示</string>

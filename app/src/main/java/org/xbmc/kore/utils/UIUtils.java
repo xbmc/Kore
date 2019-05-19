@@ -405,9 +405,9 @@ public class UIUtils {
             case 2:
                 return R.style.MistTheme;
             case 3:
-                return R.style.SolarizedLightTheme;
+                return R.style.SunriseTheme;
             case 4:
-                return R.style.SolarizedDarkTheme;
+                return R.style.SunsetTheme;
             default:
                 return R.style.NightTheme;
         }
@@ -596,7 +596,7 @@ public class UIUtils {
                     R.attr.colorAccent});
             view.setColorFilter(
                     styledAttributes.getColor(styledAttributes.getIndex(0),
-                                              context.getResources().getColor(R.color.accent_default)));
+                                              context.getResources().getColor(R.color.default_accent)));
             styledAttributes.recycle();
         } else {
             view.clearColorFilter();

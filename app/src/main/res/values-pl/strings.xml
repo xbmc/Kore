@@ -341,9 +341,7 @@
     <string name="theme_night">Noc</string>
     <string name="theme_day">Dzień</string>
     <string name="theme_mist">Mgła</string>
-    <string name="theme_solarized">Prześwietlony</string>
-    <string name="theme_solarized_dark">Ciemny prześwietlony</string>
-	
+
     <string name="switch_to_remote">Przełącz do zdalnego sterowania po uruchomieniu odtwarzania</string>
     <string name="keep_remote_above_lockscreen">Pilot nad blokadą ekranu</string>
     <string name="pref_keep_screen_on">Nie wyłączaj ekranu podczas używania pilota</string>
