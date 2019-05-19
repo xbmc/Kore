@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/contentBackgroundColor"
     android:minWidth="200dp"
-    tools:background="@color/dark_content_background_dim_70pct">
+    tools:background="@color/dark_content_background_dim">
 
     <org.xbmc.kore.ui.widgets.HighlightButton
         android:id="@+id/vcd_volume_mute"

@@ -173,7 +173,7 @@ public class ControlPad extends SquareGridLayout
         Resources.Theme theme = getContext().getTheme();
         TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {R.attr.contentBackgroundColor});
         int remoteBackgroundColor = styledAttributes.getColor(styledAttributes.getIndex(0),
-                                                              getResources().getColor(R.color.dark_content_background_dim_70pct));
+                                                              getResources().getColor(R.color.dark_content_background_dim));
         styledAttributes.recycle();
 
         // On ICS the remote background isn't shown as the tinting isn't supported

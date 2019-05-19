@@ -47,7 +47,6 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
 import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
-import org.xbmc.kore.ui.sections.audio.SongsListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -230,7 +229,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.colorAccent
             });
-            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.accent_default));
+            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.default_accent));
             styledAttributes.recycle();
 
             hostManager = HostManager.getInstance(context);

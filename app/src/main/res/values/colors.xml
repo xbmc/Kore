@@ -17,50 +17,109 @@
 <resources>
     <color name="ic_launcher_background">#0BB1E6</color>
 
-	<color name="dark_background">#ff121314</color>
-    <color name="light_background">#ffeeeeee</color>
-    <!--<color name="blue_grey_background">#ff212b30</color>-->
-    <color name="blue_grey_background">#ff192227</color>
+    <!-- Night Theme colors -->
+    <color name="dark_background">#ff1b1b1b</color>
+    <color name="dark_content_background">#ff333333</color>
+    <color name="dark_content_background_dim">#b4333333</color>
+    <color name="dark_selected_content_background">#ff404040</color>
 
-    <!--<color name="accent_default">@color/light_green_A700</color>-->
-    <color name="accent_default">@color/orange_A400</color>
-    <color name="accent_default_dark">@color/orange_A700</color>
-    <color name="accent_default_light">@color/orange_A100</color>
+    <color name="default_accent_lighter">#FFB05F</color>
+    <color name="default_accent_light">#FF9A34</color>
+    <color name="default_accent">#FF8100</color>
+    <color name="default_accent_dark">#C66400</color>
+    <color name="default_accent_darker">#9C4F00</color>
 
-    <color name="white">#ffffffff</color>
+    <color name="estuary_blue_lighter">#499FB8</color>
+    <color name="estuary_blue_light">#278BA8</color>
+    <color name="estuary_blue">#0f85a5</color>
+    <color name="estuary_blue_dark">#04617B</color>
+    <color name="estuary_blue_darker">#024C61</color>
+
+    <!-- Day Theme colors -->
+    <color name="light_background">#ffebebeb</color>
+    <color name="light_content_background">#ffffffff</color>
+    <color name="light_content_background_dim">#c4ffffff</color>
+    <color name="light_selected_content_background">#fff3f3f3</color>
+
+    <color name="day_accent_lighter">#69BD57</color>
+    <color name="day_accent_light">#449F31</color>
+    <color name="day_accent">#2B8519</color>
+    <color name="day_accent_dark">#156604</color>
+    <color name="day_accent_darker">#0C4300</color>
+
+    <color name="day_primary_lighter">#DB6470</color>
+    <color name="day_primary_light">#B83945</color>
+    <color name="day_primary">#9A1C28</color>
+    <color name="day_primary_darker">#76040F</color>
+    <color name="day_primary_dark">#4D0007</color>
+    <!--<color name="day_primary">#b13956</color>-->
+    <!--<color name="day_primary_dark">#873349</color>-->
+
+    <!-- Mist Theme colors -->
+    <color name="mist_background">#ff192227</color>
+    <color name="mist_content_background">#ff263238</color>
+    <color name="mist_content_background_dim">#b4263238</color>
+    <color name="mist_selected_content_background">#ff43575d</color>
+
+    <color name="mist_accent_lighter">#FFE9CF</color>
+    <color name="mist_accent_light">#DEBC96</color>
+    <color name="mist_accent">#B99163</color>
+    <color name="mist_accent_dark">#966E40</color>
+    <color name="mist_accent_darker">#7A5021</color>
+
+    <color name="mist_primary_lighter">#8CA1AB</color>
+    <color name="mist_primary_light">#617E8C</color>
+    <color name="mist_primary">#416475</color>
+    <color name="mist_primary_dark">#2B4E5F</color>
+    <color name="mist_primary_darker">#173C4D</color>
+
+    <!-- Sunrise Theme colors -->
+    <color name="sunrise_background">#ffededed</color>
+    <color name="sunrise_content_background">#fffefefe</color>
+    <color name="sunrise_content_background_dim">#c4fefefe</color>
+    <color name="sunrise_selected_content_background">#fffefefe</color>
+
+    <color name="sunrise_primary">#FF813A</color>
+    <color name="sunrise_primary_dark">#ED5B09</color>
+    <!--<color name="sunrise_primary">#0085a0</color>-->
+    <!--<color name="sunrise_primary_dark">#005871</color>-->
+
+    <!--<color name="sunrise_accent_light">#e95379</color>-->
+    <color name="sunrise_accent_light">#44BA99</color>
+    <color name="sunrise_accent">#26A783</color>
+    <color name="sunrise_accent_dark">#069C72</color>
+
+    <!-- Sunset Theme colors -->
+    <color name="sunset_background">#ff1D2126</color>
+    <color name="sunset_content_background">#ff262C33</color>
+    <color name="sunset_content_background_dim">#b4262C33</color>
+    <color name="sunset_selected_content_background">#ff303740</color>
+    <!--<color name="sunset_background">#ff1c1e26</color>-->
+    <!--<color name="sunset_content_background">#ff232530</color>-->
+    <!--<color name="sunset_content_background_dim">#b4232530</color>-->
+    <!--<color name="sunset_selected_content_background">#ff2E303E</color>-->
+
+    <color name="sunset_primary">#995AC7</color>
+    <color name="sunset_primary_dark">#7E3AAF</color>
+    <!--<color name="sunset_primary">#9f68bf</color>-->
+    <!--<color name="sunset_primary_dark">#6f3b8e</color>-->
+
+    <color name="sunset_accent_light">#B3CB65</color>
+    <color name="sunset_accent">#89A236</color>
+    <color name="sunset_accent_dark">#627A14</color>
+    <!--<color name="sunset_accent_light">#ffffc5b3</color>-->
+    <!--<color name="sunset_accent">#ffF09483</color>-->
+    <!--<color name="sunset_accent_dark">#ffbb6556</color>-->
+
+    <!-- General colors -->
+    <color name="white">@android:color/white</color>
     <color name="white_dim_26pct">#43ffffff</color>
     <color name="white_dim_50pct">#88ffffff</color>
-    <color name="white_dim_70pct">#b3ffffff</color>
-
+    <color name="white_dim_70pct">#b4ffffff</color>
+    <color name="white_dim_87pct">#deffffff</color>
     <color name="black_dim_87pct">#de000000</color>
     <color name="black_dim_54pct">#8a000000</color>
     <color name="black_dim_26pct">#43000000</color>
-
-    <color name="estuary_default">#0f85a5</color>
-    <color name="estuary_default_light">#17cdff</color>
-    <color name="estuary_default_dark">#0a5b71</color>
-    <!--<color name="estuary_default">#147a96</color>-->
-    <!--<color name="estuary_default_dark">#0f4d5e</color>-->
-
-    <color name="day_accent">#e66000</color>
-    <color name="day_accent_dark">#cd5700</color>
-    <color name="day_primary">#b13956</color>
-    <color name="day_primary_dark">#873349</color>
-    <!--<color name="day_primary">#993a50</color>-->
-
-    <!--<color name="dark_content_background">#ff222326</color>-->
-    <!--<color name="dark_content_background_dim_70pct">#b4222326</color>-->
-    <color name="dark_content_background">#ff323232</color>
-    <color name="dark_content_background_dim_70pct">#b4323232</color>
-    <color name="dark_selected_content_background">#ff505050</color>
-
-    <color name="light_content_background">#ffffffff</color>
-    <color name="light_content_background_dim_70pct">#b4ffffff</color>
-    <color name="light_selected_content_background">#ffd1d1d1</color>
-
-    <color name="blue_grey_content_background">#ff263238</color>
-    <color name="blue_grey_content_background_dim_70pct">#b4263238</color>
-    <color name="blue_grey_selected_content_background">#ff43575d</color>
 
     <color name="dark_separator">#ff505050</color>
     <color name="light_separator">#ffafafaf</color>
@@ -68,39 +127,13 @@
     <color name="dark_fastscroll_handle">#ff505050</color>
     <color name="light_fastscroll_handle">#ff606060</color>
 
-    <!-- Drawer colors -->
-	<color name="dark_drawer_background">@color/dark_content_background</color>
-    <color name="light_drawer_background">@color/light_content_background</color>
-    <color name="blue_grey_drawer_background">@color/blue_grey_content_background</color>
+    <color name="dark_in_progress">#51cc93</color>
+    <color name="light_in_progress">#51cc93</color>
+    <!--<color name="dark_in_progress">@color/default_accent_light</color>-->
+    <!--<color name="light_in_progress">@color/day_accent_light</color>-->
 
     <color name="host_status_connecting">#ffff8800</color>
     <color name="host_status_available">#ff669900</color>
     <color name="host_status_unavailable">#ffcc0000</color>
-
-    <color name="solarized_base03">#ff002b36</color>
-    <color name="solarized_base02">#ff073642</color>
-    <color name="solarized_base01">#ff586e75</color>
-    <color name="solarized_base00">#ff657b83</color>
-    <color name="solarized_base0">#ff839496</color>
-    <color name="solarized_base1">#ff93a1a1</color>
-    <color name="solarized_base2">#ffeee8d5</color>
-    <color name="solarized_base3">#fffdf6e3</color>
-    <color name="solarized_yellow">#ffb58900</color>
-    <color name="solarized_orange">#ffcb4b16</color>
-    <color name="solarized_red">#ffdc322f</color>
-    <color name="solarized_magenta">#ffd33682</color>
-    <color name="solarized_violet">#ff6c71c4</color>
-    <color name="solarized_blue">#ff268bd2</color>
-    <color name="solarized_cyan">#ff2aa198</color>
-    <color name="solarized_green">#ff859900</color>
-
-    <color name="solarized_base03_dim70pct">#b4002b36</color>
-    <color name="solarized_base02_dim70pct">#b4073642</color>
-    <color name="solarized_base3_dim70pct">#b4fdf6e3</color>
-    <color name="solarized_base2_dim70pct">#b4eee8d5</color>
-
-    <color name="solarized_orange_dark">#ffc73a00</color>
-
-    <color name="notification_backgroup">@color/background_floating_material_dark</color>
 
 </resources>

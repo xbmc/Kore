@@ -168,7 +168,7 @@ public class PlaylistsBar extends TabLayout {
                     .obtainStyledAttributes(new int[]{R.attr.colorAccent,
                             R.attr.defaultButtonColorFilter});
             highlightColor = styledAttributes.getColor(styledAttributes.getIndex(0),
-                                                       context.getResources().getColor(R.color.accent_default));
+                                                       context.getResources().getColor(R.color.default_accent));
             defaultColor = styledAttributes.getColor(styledAttributes.getIndex(1),
                                                      context.getResources().getColor(R.color.white));
             styledAttributes.recycle();

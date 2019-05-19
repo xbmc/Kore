@@ -40,7 +40,7 @@
 
     <attr name="fabLabelTextColor" format="reference|color" />
 
-    <attr name="colorinProgress" format="reference|color" />
+    <attr name="colorInProgress" format="reference|color" />
     <attr name="colorFinished" format="reference|color" />
 
     <attr name="separatorColor" format="reference|color" />

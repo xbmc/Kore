@@ -332,8 +332,6 @@
     <string name="theme_night">Ніч</string>
     <string name="theme_day">День</string>
     <string name="theme_mist">Туман</string>
-    <string name="theme_solarized">Solarized</string>
-    <string name="theme_solarized_dark">Solarized Dark</string>
 
     <string name="switch_to_remote">Відображати при початку відтворення</string>
     <string name="keep_remote_above_lockscreen">Відображати на екрані блокування</string>

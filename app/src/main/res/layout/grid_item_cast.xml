@@ -80,7 +80,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="?attr/iconOpenInNew"
-            android:contentDescription="@string/poster"/>
+            android:contentDescription="@string/poster"
+            android:tint="?attr/defaultButtonColorFilter"/>
         <TextView
             android:id="@+id/remaining_cast_count"
             android:layout_width="match_parent"

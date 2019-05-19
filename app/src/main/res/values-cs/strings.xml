@@ -340,9 +340,7 @@
     <string name="theme_night">Noc</string>
     <string name="theme_day">Den</string>
     <string name="theme_mist">Mlha</string>
-    <string name="theme_solarized">Solarized</string>
-    <string name="theme_solarized_dark">Solarized Dark</string>
-	
+
     <string name="switch_to_remote">Show on media start</string>
     <string name="keep_remote_above_lockscreen">Show over lockscreen</string>
     <string name="pref_keep_screen_on">Zůstat vzhůru</string>

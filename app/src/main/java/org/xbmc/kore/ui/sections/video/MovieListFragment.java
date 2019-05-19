@@ -338,7 +338,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
             });
 
-            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.accent_default));
+            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.default_accent));
             dimmedNeutralColor = styledAttributes.getColor(styledAttributes.getIndex(1), getResources().getColor(R.color.white_dim_26pct));
             styledAttributes.recycle();
 

@@ -304,8 +304,6 @@
     <string name="theme_night">Noite</string>
     <string name="theme_day">Dia</string>
     <string name="theme_mist">Neblina</string>
-    <string name="theme_solarized">Solarized</string>
-    <string name="theme_solarized_dark">Solarized escuro</string>
 
     <string name="switch_to_remote">Mudar para o controle remoto ao iniciar reprodução</string>
     <string name="show_notification">Mostrar notificação enquanto estiver em reprodução</string>

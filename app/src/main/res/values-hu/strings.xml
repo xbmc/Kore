@@ -178,8 +178,6 @@
     <string name="text_to_send">Küldendő szöveg</string>
     <string name="theme_day">Nappal</string>
     <string name="theme_mist">Köd</string>
-    <string name="theme_solarized">Szolarizált</string>
-    <string name="theme_solarized_dark">Sötét szolarizált</string>
     <string name="thumbnail">Miniatűr</string>
     <string name="votes">%1$s szavazat</string>
     <string name="pull_to_refresh">Húzd lefelé a frissítéshez</string>

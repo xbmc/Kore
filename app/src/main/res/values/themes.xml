@@ -23,28 +23,18 @@
 		<item name="android:colorBackground">@color/dark_background</item>
         <item name="android:windowBackground">@color/dark_background</item>
         <!--<item name="android:windowActionBarOverlay">true</item>-->
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/dark_background</item>
 
         <item name="preferenceTheme">@style/PrefTheme</item>
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
         <!-- Set AppCompat’s color theming attrs -->
-        <!--<item name="colorPrimary">@color/light_green_800</item>-->
-        <!--<item name="colorPrimaryDark">@color/light_green_900</item>-->
-        <!--<item name="colorPrimary">@color/teal_500</item>-->
-        <!--<item name="colorPrimaryDark">@color/teal_700</item>-->
-        <!--<item name="colorPrimary">@color/green_500</item>-->
-        <!--<item name="colorPrimaryDark">@color/green_700</item>-->
-        <!--<item name="colorPrimary">@color/orange_700</item>-->
-        <!--<item name="colorPrimaryDark">@color/orange_800</item>-->
-        <!--<item name="colorPrimary">@color/deep_orange_700</item>-->
-        <!--<item name="colorPrimaryDark">@color/deep_orange_900</item>-->
-        <!--<item name="colorPrimary">@color/blue_grey_500</item>-->
-        <!--<item name="colorPrimaryDark">@color/blue_grey_700</item>-->
-        <item name="colorPrimary">@color/estuary_default</item>
-        <item name="colorPrimaryDark">@color/estuary_default_dark</item>
+        <item name="colorPrimary">@color/estuary_blue</item>
+        <item name="colorPrimaryDark">@color/estuary_blue_dark</item>
 
-        <item name="colorAccent">@color/accent_default</item>
+        <item name="colorAccent">@color/default_accent</item>
+        <item name="colorAccentLight">@color/default_accent_light</item>
         <!--<item name="colorControlHighlight">@color/color_accent</item>-->
         <!--<item name="colorControlActivated">@color/color_accent</item>-->
 
@@ -54,36 +44,36 @@
         <item name="colorButtonNormal">?attr/colorPrimary</item>
 
         <item name="appTextColorPrimary">@color/white</item>
-        <item name="appTextColorSecondary">@color/white_dim_50pct</item>
+        <item name="appTextColorSecondary">@color/white_dim_70pct</item>
 
         <item name="textColorOverPrimary">@color/white</item>
         <item name="buttonColorOverPrimary">@color/white</item>
 
         <item name="fabColorNormal">?attr/colorPrimary</item>
         <item name="fabColorPressed">?attr/colorPrimaryDark</item>
-        <item name="fabColorFocused">@color/estuary_default_light</item>
+        <item name="fabColorFocused">?attr/colorPrimary</item>
 
         <item name="fabLabelColorNormal">?attr/colorPrimary</item>
         <item name="fabLabelColorPressed">?attr/colorPrimaryDark</item>
-        <item name="fabLabelColorFocused">@color/estuary_default_light</item>
+        <item name="fabLabelColorFocused">?attr/colorPrimary</item>
 
         <item name="fabLabelTextColor">@color/white</item>
 
-        <item name="colorinProgress">@color/yellow_800</item>
-        <item name="colorFinished">@color/green_600</item>
+        <item name="colorInProgress">@color/default_accent</item>
+        <item name="colorFinished">@color/default_accent_darker</item>
 
         <!-- Toolbar bar -->
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
 
-        <item name="contentBackgroundColor">@color/dark_content_background_dim_70pct</item>
+        <item name="contentBackgroundColor">@color/dark_content_background_dim</item>
         <item name="appCardBackgroundColor">@color/dark_content_background</item>
         <item name="appSelectedCardBackgroundColor">@color/dark_selected_content_background</item>
         <!--<item name="myCardBackgroundDrawable">@drawable/card_background_dark</item>-->
-        <item name="buttonBarBackgroundColor">@color/dark_content_background_dim_70pct</item>
+        <item name="buttonBarBackgroundColor">@color/dark_content_background_dim</item>
 
         <!-- Color for the Navigation Drawer -->
-		<item name="drawerBackgroundColor">@color/dark_drawer_background</item>
+		<item name="drawerBackgroundColor">@color/dark_background</item>
 
         <item name="separatorColor">@color/dark_separator</item>
         <item name="fastscrollHandleColor">@color/dark_fastscroll_handle</item>
@@ -180,6 +170,7 @@
 
         <item name="android:colorBackground">@color/light_background</item>
         <item name="android:windowBackground">@color/light_background</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/light_background</item>
 
         <item name="preferenceTheme">@style/PrefTheme</item>
 
@@ -188,7 +179,9 @@
         <!-- Set AppCompat’s color theming attrs -->
         <item name="colorPrimary">@color/day_primary</item>
         <item name="colorPrimaryDark">@color/day_primary_dark</item>
+
         <item name="colorAccent">@color/day_accent</item>
+        <item name="colorAccentLight">@color/day_accent_light</item>
          <!--<item name="colorControlHighlight">@color/color_accent</item>-->
         <!--<item name="colorControlActivated">@color/color_accent</item>-->
 
@@ -207,29 +200,29 @@
 
         <item name="fabColorNormal">?attr/colorPrimary</item>
         <item name="fabColorPressed">?attr/colorPrimaryDark</item>
-        <item name="fabColorFocused">@color/accent_default_light</item>
+        <item name="fabColorFocused">?attr/colorPrimary</item>
 
         <item name="fabLabelColorNormal">?attr/colorPrimary</item>
         <item name="fabLabelColorPressed">?attr/colorPrimaryDark</item>
-        <item name="fabLabelColorFocused">@color/accent_default_light</item>
+        <item name="fabLabelColorFocused">?attr/colorPrimary</item>
 
         <item name="fabLabelTextColor">@color/white</item>
 
-        <item name="colorinProgress">@color/yellow_800</item>
-        <item name="colorFinished">@color/light_green_600</item>
+        <item name="colorInProgress">@color/day_accent</item>
+        <item name="colorFinished">@color/day_accent_dark</item>
 
         <!-- Toolbar bar -->
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
-        <item name="contentBackgroundColor">@color/light_content_background_dim_70pct</item>
+        <item name="contentBackgroundColor">@color/light_content_background_dim</item>
         <item name="appCardBackgroundColor">@color/light_content_background</item>
         <item name="appSelectedCardBackgroundColor">@color/light_selected_content_background</item>
         <!--<item name="myCardBackgroundDrawable">@drawable/card_background_light</item>-->
-        <item name="buttonBarBackgroundColor">@color/light_content_background_dim_70pct</item>
+        <item name="buttonBarBackgroundColor">@color/light_content_background_dim</item>
 
         <!-- Color for the Navigation Drawer -->
-        <item name="drawerBackgroundColor">@color/light_drawer_background</item>
+        <item name="drawerBackgroundColor">@color/light_content_background</item>
 
         <item name="separatorColor">@color/light_separator</item>
         <item name="fastscrollHandleColor">@color/light_fastscroll_handle</item>
@@ -334,75 +327,76 @@
 
     <!-- Blue Grey theme. -->
     <style name="MistTheme" parent="NightTheme">
-        <item name="android:colorBackground">@color/blue_grey_background</item>
-        <item name="android:windowBackground">@color/blue_grey_background</item>
+        <item name="android:colorBackground">@color/mist_background</item>
+        <item name="android:windowBackground">@color/mist_background</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/mist_background</item>
 
-        <!-- Set AppCompat’s color theming attrs -->
         <!--<item name="colorPrimary">@color/light_blue_700</item>-->
         <!--<item name="colorPrimaryDark">@color/light_blue_800</item>-->
-        <item name="colorPrimary">@color/blue_grey_500</item>
-        <item name="colorPrimaryDark">@color/blue_grey_700</item>
-        <item name="colorAccent">@color/light_blue_A400</item>
+        <item name="colorPrimary">@color/mist_primary</item>
+        <item name="colorPrimaryDark">@color/mist_primary_dark</item>
 
-        <item name="contentBackgroundColor">@color/blue_grey_content_background_dim_70pct</item>
-        <item name="appCardBackgroundColor">@color/blue_grey_content_background</item>
-        <item name="appSelectedCardBackgroundColor">@color/blue_grey_selected_content_background</item>
-        <item name="buttonBarBackgroundColor">@color/blue_grey_content_background_dim_70pct</item>
+        <item name="colorAccent">@color/mist_accent</item>
+        <item name="colorAccentLight">@color/mist_accent_light</item>
 
-        <!-- Color for the Navigation Drawer -->
-        <item name="drawerBackgroundColor">@color/blue_grey_drawer_background</item>
+        <item name="contentBackgroundColor">@color/mist_content_background_dim</item>
+        <item name="appCardBackgroundColor">@color/mist_content_background</item>
+        <item name="appSelectedCardBackgroundColor">@color/mist_selected_content_background</item>
+        <item name="buttonBarBackgroundColor">@color/mist_content_background_dim</item>
 
+        <item name="drawerBackgroundColor">@color/mist_background</item>
+
+        <item name="colorInProgress">@color/mist_accent</item>
+        <item name="colorFinished">@color/mist_accent_darker</item>
         <!--<item name="remoteBackgroundColorFilter">@color/blue_grey_content_background</item>-->
         <!--<item name="separatorColor">@color/dark_separator</item>-->
     </style>
 
-    <!-- Solarized Light theme. -->
-    <style name="SolarizedLightTheme" parent="DayTheme">
-        <item name="android:colorBackground">@color/solarized_base2</item>
-        <item name="android:windowBackground">@color/solarized_base2</item>
+    <!-- Sunrise theme. -->
+    <style name="SunriseTheme" parent="DayTheme">
+        <item name="android:colorBackground">@color/sunrise_background</item>
+        <item name="android:windowBackground">@color/sunrise_background</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/sunrise_background</item>
 
-        <!-- Set AppCompat’s color theming attrs -->
-        <item name="colorPrimary">@color/solarized_orange</item>
-        <item name="colorPrimaryDark">@color/solarized_orange_dark</item>
-        <item name="colorAccent">@color/solarized_blue</item>
+        <item name="colorPrimary">@color/sunrise_primary</item>
+        <item name="colorPrimaryDark">@color/sunrise_primary_dark</item>
 
-        <item name="contentBackgroundColor">@color/solarized_base3_dim70pct</item>
-        <item name="appCardBackgroundColor">@color/solarized_base3</item>
-        <item name="appSelectedCardBackgroundColor">@color/white</item>
-        <item name="buttonBarBackgroundColor">@color/solarized_base3_dim70pct</item>
+        <item name="colorAccent">@color/sunrise_accent</item>
+        <item name="colorAccentLight">@color/sunrise_accent_light</item>
 
-        <!-- Color for the Navigation Drawer -->
-        <item name="drawerBackgroundColor">@color/solarized_base2</item>
+        <item name="contentBackgroundColor">@color/sunrise_content_background_dim</item>
+        <item name="appCardBackgroundColor">@color/sunrise_content_background</item>
+        <item name="buttonBarBackgroundColor">@color/sunrise_content_background_dim</item>
+        <item name="appSelectedCardBackgroundColor">@color/sunrise_selected_content_background</item>
 
-        <item name="appTextColorPrimary">@color/solarized_base01</item>
-        <item name="appTextColorSecondary">@color/solarized_base0</item>
+        <item name="drawerBackgroundColor">@color/sunrise_background</item>
 
-        <!--<item name="remoteBackgroundColorFilter">@color/solarized_base3</item>-->
+        <item name="colorInProgress">@color/sunrise_accent_dark</item>
+        <item name="colorFinished">@color/sunrise_accent_light</item>
         <!--<item name="separatorColor">@color/dark_separator</item>-->
     </style>
 
-    <!-- Solarized Dark theme. -->
-    <style name="SolarizedDarkTheme" parent="NightTheme">
-        <item name="android:colorBackground">@color/solarized_base03</item>
+    <!-- Sunset theme. -->
+    <style name="SunsetTheme" parent="NightTheme">
+        <item name="android:colorBackground">@color/sunset_background</item>
+        <item name="android:windowBackground">@color/sunset_background</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/sunset_background</item>
 
-        <!-- Set AppCompat’s color theming attrs -->
-        <item name="colorPrimary">@color/solarized_orange</item>
-        <item name="colorPrimaryDark">@color/solarized_orange_dark</item>
-        <item name="colorAccent">@color/solarized_blue</item>
+        <item name="colorPrimary">@color/sunset_primary</item>
+        <item name="colorPrimaryDark">@color/sunset_primary_dark</item>
 
-        <item name="contentBackgroundColor">@color/solarized_base02_dim70pct</item>
-        <item name="appCardBackgroundColor">@color/solarized_base02</item>
-        <item name="buttonBarBackgroundColor">@color/solarized_base02_dim70pct</item>
-        <item name="appSelectedCardBackgroundColor">@color/solarized_base01</item>
+        <item name="colorAccentLight">@color/sunset_accent_light</item>
+        <item name="colorAccent">@color/sunset_accent</item>
 
-        <!-- Color for the Navigation Drawer -->
-        <item name="drawerBackgroundColor">@color/solarized_base02</item>
+        <item name="contentBackgroundColor">@color/sunset_content_background_dim</item>
+        <item name="appCardBackgroundColor">@color/sunset_content_background</item>
+        <item name="buttonBarBackgroundColor">@color/sunset_content_background_dim</item>
+        <item name="appSelectedCardBackgroundColor">@color/sunset_selected_content_background</item>
 
-        <item name="appTextColorPrimary">@color/solarized_base1</item>
-        <item name="appTextColorSecondary">@color/solarized_base00</item>
+        <item name="drawerBackgroundColor">@color/sunset_background</item>
 
-        <item name="textColorOverPrimary">@color/white</item>
-
+        <item name="colorInProgress">@color/sunset_accent_light</item>
+        <item name="colorFinished">@color/sunset_accent_dark</item>
         <!--<item name="separatorColor">@color/dark_separator</item>-->
     </style>
 
