@@ -22,6 +22,7 @@ import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
+import org.xbmc.kore.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ import java.util.concurrent.ExecutionException;
  * available.
  */
 public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistResult>> {
+    private static final String TAG = LogUtils.makeLogTag(GetPlaylist.class);
 
     private final static String[] propertiesToGet = new String[] {
             ListType.FieldsAll.ART,
@@ -62,7 +64,7 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
 
     /**
      * Use this to get the first non-empty playlist
-     * @param hostConnection
+     * @param hostConnection {@link HostConnection} to use
      */
     public GetPlaylist(HostConnection hostConnection) {
         this.hostConnection = hostConnection;
@@ -70,7 +72,7 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
 
     /**
      * Use this to get a playlist for a specific playlist type
-     * @param hostConnection
+     * @param hostConnection {@link HostConnection} to use
      * @param playlistType should be one of the types from {@link org.xbmc.kore.jsonrpc.type.PlaylistType.GetPlaylistsReturnType}.
      *                     If null the first non-empty playlist is returned.
      */
@@ -81,8 +83,8 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
 
     /**
      * Use this to get a playlist for a specific playlist id
-     * @param hostConnection
-     * @param playlistId
+     * @param hostConnection {@link HostConnection} to use
+     * @param playlistId Kodi's playlist id
      */
     public GetPlaylist(HostConnection hostConnection, int playlistId) {
         this.hostConnection = hostConnection;

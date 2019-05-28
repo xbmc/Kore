@@ -138,8 +138,8 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
             return;
         }
 
-        hostConnectionObserver.registerApplicationObserver(this, true);
-        hostConnectionObserver.forceRefreshResults();
+        hostConnectionObserver.registerApplicationObserver(this);
+        hostConnectionObserver.refreshWhatsPlaying();
     }
 
     private void setListeners() {

@@ -232,8 +232,8 @@ public class NowPlayingFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        hostConnectionObserver.registerPlayerObserver(this, true);
-        hostConnectionObserver.registerApplicationObserver(this, true);
+        hostConnectionObserver.registerPlayerObserver(this);
+        hostConnectionObserver.registerApplicationObserver(this);
     }
 
     @Override
@@ -331,7 +331,7 @@ public class NowPlayingFragment extends Fragment
             public void onSuccess(String result) {
                 if (!isAdded()) return;
                 // Force a refresh
-                hostConnectionObserver.forceRefreshResults();
+                hostConnectionObserver.refreshWhatsPlaying();
             }
 
             @Override
@@ -346,7 +346,7 @@ public class NowPlayingFragment extends Fragment
             @Override
             public void onSuccess(String result) {
                 if (!isAdded()) return;
-                hostConnectionObserver.forceRefreshResults();
+                hostConnectionObserver.refreshWhatsPlaying();
             }
 
             @Override

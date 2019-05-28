@@ -176,9 +176,10 @@ public class RemoteActivity extends BaseActivity
     public void onResume() {
         super.onResume();
         hostConnectionObserver = hostManager.getHostConnectionObserver();
-        hostConnectionObserver.registerPlayerObserver(this, true);
-        // Force a refresh, mainly to update the time elapsed on the fragments
-        hostConnectionObserver.forceRefreshResults();
+        hostConnectionObserver.registerPlayerObserver(this);
+        // Force a refresh, specifically to update the time elapsed on the fragments
+        hostConnectionObserver.refreshWhatsPlaying();
+        hostConnectionObserver.refreshPlaylists();
 
         // Check whether we should keep the remote activity above the lockscreen
         boolean keepAboveLockscreen = PreferenceManager

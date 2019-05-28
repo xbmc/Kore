@@ -57,17 +57,22 @@ public class HostConnectionObserver
 
     public interface PlaylistEventsObserver {
         /**
+         * Notifies that a playlist has been cleared
          * @param playlistId of playlist that has been cleared
          */
         void playlistOnClear(int playlistId);
 
-        void playlistChanged(int playlistId);
-
         /**
-         * @param playlists the available playlists on the server
+         * Notifies about the available playlists on Kodi
+         * @param playlists Available playlists
          */
         void playlistsAvailable(ArrayList<GetPlaylist.GetPlaylistResult> playlists);
 
+        /**
+         * Notifies that an error occured when fetching playlists
+         * @param errorCode Error code
+         * @param description Error description
+         */
         void playlistOnError(int errorCode, String description);
     }
 
@@ -164,8 +169,11 @@ public class HostConnectionObserver
     private List<ApplicationEventsObserver> applicationEventsObservers = new ArrayList<>();
     private List<PlaylistEventsObserver> playlistEventsObservers = new ArrayList<>();
 
+    // This controls the frequency with wich the playlist is checked.
+    // It's checked everytime it reaches 0, being reset afterwards
+    private int checkPlaylistFrequencyCounter = 0;
+
     // Associate the Handler with the UI thread
-    int checkPlaylistCounter = 0;
     private Handler checkerHandler = new Handler(Looper.getMainLooper());
     private Runnable httpCheckerRunnable = new Runnable() {
         @Override
@@ -183,11 +191,15 @@ public class HostConnectionObserver
             if (!applicationEventsObservers.isEmpty())
                 getApplicationProperties();
 
-            if (!playlistEventsObservers.isEmpty() && checkPlaylistCounter > 1) {
-                checkPlaylist();
-                checkPlaylistCounter = 0;
+            if (!playlistEventsObservers.isEmpty()) {
+                if (checkPlaylistFrequencyCounter <= 0) {
+                    // Check playlist and reset the frequency counter
+                    checkPlaylist();
+                    checkPlaylistFrequencyCounter = 1;
+                } else {
+                    checkPlaylistFrequencyCounter--;
+                }
             }
-            checkPlaylistCounter++;
 
             checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
         }
@@ -234,26 +246,18 @@ public class HostConnectionObserver
         }
     };
 
-    public class HostState {
-        private int lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
-        private PlayerType.GetActivePlayersReturnType lastGetActivePlayerResult = null;
-        private PlayerType.PropertyValue lastGetPropertiesResult = null;
-        private ListType.ItemsAll lastGetItemResult = null;
-        private boolean volumeMuted = false;
-        private int volumeLevel = -1;  // -1 indicates no volumeLevel known
-        private int lastErrorCode;
-        private String lastErrorDescription;
-
-        public int getVolumeLevel() {
-            return volumeLevel;
-        }
-
-        public boolean isVolumeMuted() {
-            return volumeMuted;
-        }
+    private static class HostState {
+        int lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+        PlayerType.GetActivePlayersReturnType lastGetActivePlayerResult = null;
+        PlayerType.PropertyValue lastGetPropertiesResult = null;
+        ListType.ItemsAll lastGetItemResult = null;
+        boolean volumeMuted = false;
+        int volumeLevel = -1;  // -1 indicates no volumeLevel known
+        int lastErrorCode;
+        String lastErrorDescription;
+        ArrayList<GetPlaylist.GetPlaylistResult> lastGetPlaylistResults = null;
     }
-
-    public HostState hostState;
+    private HostState hostState;
 
     public HostConnectionObserver(HostConnection connection) {
         this.hostState = new HostState();
@@ -264,14 +268,15 @@ public class HostConnectionObserver
      * Registers a new observer that will be notified about player events
      * @param observer Observer
      */
-    public void registerPlayerObserver(PlayerEventsObserver observer, boolean replyImmediately) {
+    public void registerPlayerObserver(PlayerEventsObserver observer) {
         if (this.connection == null)
             return;
 
         if (!playerEventsObservers.contains(observer))
             playerEventsObservers.add(observer);
 
-        if (replyImmediately) replyWithLastResult(observer);
+        // Reply immediatelly
+        replyWithLastResult(observer);
 
         if (playerEventsObservers.size() == 1) {
             // If this is the first observer, start checking through HTTP or register us
@@ -297,8 +302,7 @@ public class HostConnectionObserver
                            " observers.");
 
         if (playerEventsObservers.isEmpty()) {
-            // No more observers, so unregister us from the host connection, or stop
-            // the http checker thread
+            // No more observers. If through TCP unregister us from the host connection
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
                 connection.unregisterPlayerNotificationsObserver(this);
                 connection.unregisterSystemNotificationsObserver(this);
@@ -311,22 +315,16 @@ public class HostConnectionObserver
     /**
      * Registers a new observer that will be notified about application events
      * @param observer Observer
-     * @param replyImmediately Wether to immediatlely issue a reply with the current status
      */
-    public void registerApplicationObserver(ApplicationEventsObserver observer, boolean replyImmediately) {
+    public void registerApplicationObserver(ApplicationEventsObserver observer) {
         if (this.connection == null)
             return;
 
         if (!applicationEventsObservers.contains(observer))
             applicationEventsObservers.add(observer);
 
-        if (replyImmediately) {
-            if( hostState.volumeLevel == -1 ) {
-                getApplicationProperties();
-            } else {
-                observer.applicationOnVolumeChanged(hostState.volumeLevel, hostState.volumeMuted);
-            }
-        }
+        // Reply immediatelly
+        replyWithLastResult(observer);
 
         if (applicationEventsObservers.size() == 1) {
             // If this is the first observer, start checking through HTTP or register us
@@ -350,8 +348,7 @@ public class HostConnectionObserver
                            " observers.");
 
         if (applicationEventsObservers.isEmpty()) {
-            // No more observers, so unregister us from the host connection, or stop
-            // the http checker thread
+            // No more observers. If through TCP unregister us from the host connection
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
                 connection.unregisterApplicationNotificationsObserver(this);
             }
@@ -361,29 +358,27 @@ public class HostConnectionObserver
     /**
      * Registers a new observer that will be notified about playlist events
      * @param observer Observer
-     * @param replyImmediately Whether to immediately issue a request if there are playlists available
      */
-    public void registerPlaylistObserver(PlaylistEventsObserver observer, boolean replyImmediately) {
+    public void registerPlaylistObserver(PlaylistEventsObserver observer) {
         if (this.connection == null)
             return;
 
-        if ( ! playlistEventsObservers.contains(observer) ) {
+        if (!playlistEventsObservers.contains(observer) ) {
             playlistEventsObservers.add(observer);
         }
+
+        // Reply immediatelly
+        replyWithLastResult(observer);
 
         if (playlistEventsObservers.size() == 1) {
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
                 connection.registerPlaylistNotificationsObserver(this, checkerHandler);
             }
-
             startCheckerHandler();
         }
-
-        if (replyImmediately)
-            checkPlaylist();
     }
 
-    public void unregisterPlaylistObserver(PlayerEventsObserver observer) {
+    public void unregisterPlaylistObserver(PlaylistEventsObserver observer) {
         playlistEventsObservers.remove(observer);
 
         LogUtils.LOGD(TAG, "Unregistering playlist observer " + observer.getClass().getSimpleName() +
@@ -391,11 +386,11 @@ public class HostConnectionObserver
                            " observers.");
 
         if (playlistEventsObservers.isEmpty()) {
-            // No more observers, so unregister us from the host connection, or stop
-            // the http checker thread
+            // No more observers. If through TCP unregister us from the host connection
             if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
                 connection.unregisterPlaylistNotificationsObserver(this);
             }
+            hostState.lastGetPlaylistResults = null;
         }
     }
 
@@ -407,6 +402,8 @@ public class HostConnectionObserver
             observer.observerOnStopObserving();
 
         playerEventsObservers.clear();
+        playlistEventsObservers.clear();
+        applicationEventsObservers.clear();
 
         if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
             connection.unregisterPlayerNotificationsObserver(this);
@@ -416,7 +413,7 @@ public class HostConnectionObserver
             connection.unregisterPlaylistNotificationsObserver(this);
             checkerHandler.removeCallbacks(tcpCheckerRunnable);
         }
-        hostState.lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+        hostState = new HostState();
     }
 
     @Override
@@ -522,6 +519,11 @@ public class HostConnectionObserver
 
     @Override
     public void onPlaylistCleared(Playlist.OnClear notification) {
+        if (hostState.lastGetPlaylistResults != null)
+            hostState.lastGetPlaylistResults.clear();
+        else
+            hostState.lastGetPlaylistResults = new ArrayList<>();
+
         for (PlaylistEventsObserver observer : playlistEventsObservers) {
             observer.playlistOnClear(notification.playlistId);
         }
@@ -529,16 +531,12 @@ public class HostConnectionObserver
 
     @Override
     public void onPlaylistItemAdded(Playlist.OnAdd notification) {
-        for (PlaylistEventsObserver observer : playlistEventsObservers) {
-            observer.playlistChanged(notification.playlistId);
-        }
+        checkPlaylist();
     }
 
     @Override
     public void onPlaylistItemRemoved(Playlist.OnRemove notification) {
-        for (PlaylistEventsObserver observer : playlistEventsObservers) {
-            observer.playlistChanged(notification.playlistId);
-        }
+        checkPlaylist();
     }
 
     private void startCheckerHandler() {
@@ -577,7 +575,6 @@ public class HostConnectionObserver
         }, checkerHandler);
     }
 
-    private ArrayList<GetPlaylist.GetPlaylistResult> prevGetPlaylistResults = new ArrayList<>();
     private boolean isCheckingPlaylist = false;
     private void checkPlaylist() {
         if (isCheckingPlaylist)
@@ -588,10 +585,12 @@ public class HostConnectionObserver
         connection.execute(new GetPlaylist(connection), new ApiCallback<ArrayList<GetPlaylist.GetPlaylistResult>>() {
             @Override
             public void onSuccess(ArrayList<GetPlaylist.GetPlaylistResult> result) {
+                LogUtils.LOGD(TAG, "Checked playlist, got results: " + result.size());
                 isCheckingPlaylist = false;
 
                 if (result.isEmpty()) {
-                    callPlaylistsOnClear(prevGetPlaylistResults);
+                    callPlaylistsOnClear(hostState.lastGetPlaylistResults);
+                    hostState.lastGetPlaylistResults = result;
                     return;
                 }
 
@@ -599,19 +598,19 @@ public class HostConnectionObserver
                     observer.playlistsAvailable(result);
                 }
 
-                // Handle onClear for HTTP only connections
-                for (GetPlaylist.GetPlaylistResult getPlaylistResult : result) {
-                    for (int i = 0; i < prevGetPlaylistResults.size(); i++) {
-                        if (getPlaylistResult.id == prevGetPlaylistResults.get(i).id) {
-                            prevGetPlaylistResults.remove(i);
-                            break;
+                // Handle cleared playlists
+                if (hostState.lastGetPlaylistResults != null) {
+                    for (GetPlaylist.GetPlaylistResult getPlaylistResult : result) {
+                        for (int i = 0; i < hostState.lastGetPlaylistResults.size(); i++) {
+                            if (getPlaylistResult.id == hostState.lastGetPlaylistResults.get(i).id) {
+                                hostState.lastGetPlaylistResults.remove(i);
+                                break;
+                            }
                         }
                     }
+                    callPlaylistsOnClear(hostState.lastGetPlaylistResults);
                 }
-
-                callPlaylistsOnClear(prevGetPlaylistResults);
-
-                prevGetPlaylistResults = result;
+                hostState.lastGetPlaylistResults = result;
             }
 
             @Override
@@ -622,10 +621,11 @@ public class HostConnectionObserver
                     observer.playlistOnError(errorCode, description);
                 }
             }
-        }, new Handler());
+        }, checkerHandler);
     }
 
     private void callPlaylistsOnClear(ArrayList<GetPlaylist.GetPlaylistResult> clearedPlaylists) {
+        if (clearedPlaylists == null) return;
         for (GetPlaylist.GetPlaylistResult getPlaylistResult : clearedPlaylists) {
             for (PlaylistEventsObserver observer : playlistEventsObservers) {
                 observer.playlistOnClear(getPlaylistResult.id);
@@ -935,11 +935,11 @@ public class HostConnectionObserver
     }
 
     /**
-     * Replies to the observer with the last result we got.
+     * Replies to the player observer with the last result we got.
      * If we have no result, nothing will be called on the observer interface.
-     * @param observer Observer to call with last result
+     * @param observer Player observer to call with last result
      */
-    public void replyWithLastResult(PlayerEventsObserver observer) {
+    private void replyWithLastResult(PlayerEventsObserver observer) {
         switch (hostState.lastCallResult) {
             case PlayerEventsObserver.PLAYER_CONNECTION_ERROR:
                 notifyConnectionError(hostState.lastErrorCode, hostState.lastErrorDescription, observer);
@@ -958,15 +958,40 @@ public class HostConnectionObserver
     }
 
     /**
+     * Replies to the application observer with the last result we got.
+     * If we have no result, nothing will be called on the observer interface.
+     * @param observer Application observer to call with last result
+     */
+    private void replyWithLastResult(ApplicationEventsObserver observer) {
+        if (hostState.volumeLevel == -1) {
+            getApplicationProperties();
+        } else {
+            observer.applicationOnVolumeChanged(hostState.volumeLevel, hostState.volumeMuted);
+        }
+    }
+    /**
+     * Replies to the playlist observer with the last result we got.
+     * If we have no result, nothing will be called on the observer interface.
+     * @param observer Playlist observer to call with last result
+     */
+    private void replyWithLastResult(PlaylistEventsObserver observer) {
+        if (hostState.lastGetPlaylistResults != null)
+            observer.playlistsAvailable(hostState.lastGetPlaylistResults);
+        else
+            checkPlaylist();
+    }
+
+    /**
      * Forces a refresh of the current cached results
      */
-    public void forceRefreshResults() {
-        LogUtils.LOGD(TAG, "Forcing a refresh");
+    public void refreshWhatsPlaying() {
+        LogUtils.LOGD(TAG, "Forcing a refresh of what's playing");
         forceReply = true;
         checkWhatsPlaying();
     }
 
-    public HostState getHostState() {
-        return hostState;
+    public void refreshPlaylists() {
+        LogUtils.LOGD(TAG, "Forcing a refresh of playlists");
+        checkPlaylist();
     }
 }

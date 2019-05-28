@@ -81,13 +81,13 @@ public class ConnectionObserversManagerService extends Service
 
         if (hostConnectionObserver == null) {
             hostConnectionObserver = connectionObserver;
-            hostConnectionObserver.registerPlayerObserver(this, true);
+            hostConnectionObserver.registerPlayerObserver(this);
         } else if (hostConnectionObserver != connectionObserver) {
             // There has been a change in hosts.
             // Unregister the previous one and register the current one
             hostConnectionObserver.unregisterPlayerObserver(this);
             hostConnectionObserver = connectionObserver;
-            hostConnectionObserver.registerPlayerObserver(this, true);
+            hostConnectionObserver.registerPlayerObserver(this);
         }
 
         // If we get killed after returning from here, restart

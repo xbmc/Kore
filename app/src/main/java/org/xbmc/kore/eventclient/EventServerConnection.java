@@ -81,13 +81,17 @@ public class EventServerConnection {
     /**
      * Constructor. Starts the thread that keeps the connection alive. Make sure to call quit() when done.
      * @param hostInfo Host to connect to
+     * @param callback Callback to call with the connection result
+     * @param callbackHandler Handler on which to call the callback
      */
-    public EventServerConnection(final HostInfo hostInfo, final EventServerConnectionCallback callback) {
+    public EventServerConnection(final HostInfo hostInfo,
+                                 final EventServerConnectionCallback callback,
+                                 final Handler callbackHandler) {
         this.hostInfo = hostInfo;
 
         LogUtils.LOGD(TAG, "Starting EventServer Thread");
         // Handler thread that will keep pinging and send the requests to Kodi
-        handlerThread = new HandlerThread("EventServerConnection", Process.THREAD_PRIORITY_DEFAULT);
+        handlerThread = new HandlerThread("EventServerConnection", Process.THREAD_PRIORITY_BACKGROUND);
         handlerThread.start();
 
         // Get the HandlerThread's Looper and use it for our Handler
@@ -103,12 +107,22 @@ public class EventServerConnection {
                     LogUtils.LOGD(TAG, "Got an UnknownHostException, disabling EventServer");
                     hostInetAddress = null;
                 }
-                callback.OnConnectResult(hostInetAddress != null);
+                // Call the callback on the caller's thread
+                callbackHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.OnConnectResult(hostInetAddress != null);
+                    }
+                });
+                if (hostInetAddress != null) {
+                    // Start pinging
+                    commHandler.postDelayed(pingRunnable, PING_INTERVAL);
+                } else {
+                    quitHandlerThread(handlerThread);
+                }
             }
         });
 
-        // Start pinging
-        commHandler.postDelayed(pingRunnable, PING_INTERVAL);
     }
 
 

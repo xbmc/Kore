@@ -224,7 +224,7 @@ public class RemoteFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        hostConnectionObserver.registerPlayerObserver(this, true);
+        hostConnectionObserver.registerPlayerObserver(this);
         if (eventServerConnection == null)
             eventServerConnection = createEventServerConnection();
     }
@@ -265,7 +265,7 @@ public class RemoteFragment extends Fragment
                             eventServerConnection = null;
                         }
                     }
-                });
+                }, callbackHandler);
     }
 
     /**
