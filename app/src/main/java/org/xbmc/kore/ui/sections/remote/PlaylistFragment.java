@@ -182,8 +182,8 @@ public class PlaylistFragment extends Fragment
     public void onResume() {
         super.onResume();
 
-        hostConnectionObserver.registerPlayerObserver(this, true);
-        hostConnectionObserver.registerPlaylistObserver(this, true);
+        hostConnectionObserver.registerPlayerObserver(this);
+        hostConnectionObserver.registerPlaylistObserver(this);
     }
 
     @Override
@@ -246,7 +246,7 @@ public class PlaylistFragment extends Fragment
                     public void onError(int errorCode, String description) {
                         refreshingPlaylist = false;
 
-                        displayErrorGettingPlaylistMessage(description);
+                        playerOnConnectionError(errorCode, description);
                     }
                 }, callbackHandler);
     }
@@ -366,7 +366,7 @@ public class PlaylistFragment extends Fragment
         Iterator<String> it = playlists.keySet().iterator();
         while (it.hasNext()) {
             String key = it.next();
-            if ( playlists.get(key).getPlaylistResult.id == playlistId ) {
+            if (playlists.get(key).getPlaylistResult.id == playlistId) {
                 it.remove();
                 playlistsBar.setHasPlaylistAvailable(key, false);
                 playlistsBar.setIsPlaying(key, false);
@@ -376,15 +376,12 @@ public class PlaylistFragment extends Fragment
     }
 
     @Override
-    public void playlistChanged(int playlistId) {
-        refreshPlaylist(new GetPlaylist(hostManager.getConnection(), playlistId));
-    }
-
-    @Override
     public void playlistsAvailable(ArrayList<GetPlaylist.GetPlaylistResult> playlists) {
         updatePlaylists(playlists);
 
-        if ( playerState == PLAYER_STATE.PLAYING ) // if item is currently playing displaying is already handled by playerOnPlay callback
+        if ((playerState == PLAYER_STATE.PLAYING) &&
+            (hostManager.getConnection().getProtocol() == HostConnection.PROTOCOL_TCP))
+            // if item is currently playing displaying is already handled by playerOnPlay callback
             return;
 
         // BUG: When playing movies playlist stops, audio tab gets selected when it contains a playlist.
@@ -398,7 +395,7 @@ public class PlaylistFragment extends Fragment
 
     @Override
     public void playlistOnError(int errorCode, String description) {
-        displayErrorGettingPlaylistMessage(description);
+        playerOnConnectionError(errorCode, description);
     }
 
     private void updatePlaylists(ArrayList<GetPlaylist.GetPlaylistResult> playlists) {
@@ -486,16 +483,6 @@ public class PlaylistFragment extends Fragment
                 playlistListView.setVisibility(View.VISIBLE);
                 break;
         }
-    }
-
-    /**
-     * Displays an error on the info panel
-     * @param details Details message
-     */
-    private void displayErrorGettingPlaylistMessage(String details) {
-        switchToPanel(R.id.info_panel);
-        infoTitle.setText(R.string.error_getting_playlist);
-        infoMessage.setText(String.format(getString(R.string.error_message), details));
     }
 
     /**

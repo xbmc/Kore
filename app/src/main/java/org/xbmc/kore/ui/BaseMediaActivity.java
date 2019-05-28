@@ -447,10 +447,10 @@ public abstract class BaseMediaActivity extends BaseActivity
         if (hostConnectionObserver == null)
             return;
 
-        hostConnectionObserver.registerApplicationObserver(this, true);
-        hostConnectionObserver.registerPlayerObserver(this, true);
+        hostConnectionObserver.registerApplicationObserver(this);
+        hostConnectionObserver.registerPlayerObserver(this);
 
-        hostConnectionObserver.forceRefreshResults();
+        hostConnectionObserver.refreshWhatsPlaying();
     }
 
     private void updateNowPlayingPanel(PlayerType.PropertyValue getPropertiesResult,

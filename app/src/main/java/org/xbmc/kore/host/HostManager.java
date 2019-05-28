@@ -198,10 +198,14 @@ public class HostManager {
 	 */
 	public HostConnection getConnection() {
         if (currentHostConnection == null) {
-            currentHostInfo = getHostInfo();
+            synchronized (this) {
+                if (currentHostConnection == null) {
+                    currentHostInfo = getHostInfo();
 
-            if (currentHostInfo != null) {
-                currentHostConnection = new HostConnection(currentHostInfo);
+                    if (currentHostInfo != null) {
+                        currentHostConnection = new HostConnection(currentHostInfo);
+                    }
+                }
             }
         }
 		return currentHostConnection;

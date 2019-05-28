@@ -130,8 +130,13 @@ public class HostConnection {
 	 */
 	private Socket socket = null;
 
+    /**
+     * Listener thread that will be listening on the TCP socket
+     */
+    private Thread tcpListenerThread = null;
+
 	/**
-	 * {@link java.util.HashMap} that will hold the {@link MethodCallInfo} with the information
+	 * {@link HashMap} that will hold the {@link MethodCallInfo} with the information
 	 * necessary to respond to clients (TCP only)
 	 */
 	private final HashMap<String, MethodCallInfo<?>> clientCallbacks = new HashMap<>();
@@ -209,7 +214,7 @@ public class HostConnection {
         // Start with the default host protocol
         this.protocol = hostInfo.getProtocol();
         // Create a single threaded executor
-        this.executorService = Executors.newFixedThreadPool(10);
+        this.executorService = Executors.newFixedThreadPool(5);
         // Set timeout
         this.connectTimeout = connectTimeout;
     }
@@ -226,7 +231,7 @@ public class HostConnection {
      * Overrides the protocol for this connection
      * @param protocol {@link #PROTOCOL_HTTP} or {@link #PROTOCOL_TCP}
      */
-    public void setProtocol(int protocol) {
+    public synchronized void setProtocol(int protocol) {
         if (!isValidProtocol(protocol)) {
             throw new IllegalArgumentException("Invalid protocol specified.");
         }
@@ -393,8 +398,7 @@ public class HostConnection {
      * @param method The remote method to invoke
      * @param <T> The type of the return value of the method
      * @return the future result of the method call. API errors will be wrapped in
-     * an {@link java.util.concurrent.ExecutionException ExecutionException} like
-     * regular futures.
+     * an {@link ExecutionException} like regular futures.
      */
     public <T> Future<T> execute(ApiMethod<T> method) {
         final ApiFuture<T> future = new ApiFuture<>();
@@ -418,9 +422,9 @@ public class HostConnection {
      * @param callable executed using an {@link ExecutorService}
      * @param apiCallback used to return the result of the callable
      * @param handler used to execute the {@link ApiCallback} methods
-     * @param <T>
+     * @param <T> The callable return type
      */
-    public <T> void execute(Callable<T> callable, final ApiCallback<T> apiCallback, final Handler handler) {
+    public <T> void execute(final Callable<T> callable, final ApiCallback<T> apiCallback, final Handler handler) {
         final Future<T> future = executorService.submit(callable);
         executorService.execute(new Runnable() {
             @Override
@@ -559,7 +563,7 @@ public class HostConnection {
     /**
      * Initializes this class OkHttpClient
      */
-    public OkHttpClient getOkHttpClient() {
+    public synchronized OkHttpClient getOkHttpClient() {
         if (httpClient == null) {
             httpClient = new OkHttpClient();
             httpClient.setConnectTimeout(connectTimeout, TimeUnit.MILLISECONDS);
@@ -693,15 +697,16 @@ public class HostConnection {
 	private <T> void executeThroughTcp(final ApiMethod<T> method) {
         String methodId = String.valueOf(method.getId());
         try {
-            // TODO: Validate if this shouldn't be enclosed by a synchronized.
-			if (socket == null) {
-				// Open connection to the server and setup reader thread
-				socket = openTcpConnection(hostInfo);
-				startListenerThread(socket);
-			}
+            synchronized (this) {
+                if (socket == null) {
+                    // Open connection to the server and setup reader thread
+                    socket = openTcpConnection(hostInfo);
+                    startListenerThread(socket);
+                }
 
-			// Write request
-			sendTcpRequest(socket, method.toJsonString());
+                // Write request
+                sendTcpRequest(socket, method.toJsonString());
+            }
 		} catch (final ApiException e) {
 			callErrorCallback(methodId, e);
 		}
@@ -712,7 +717,7 @@ public class HostConnection {
 	 * This method calls connect() so that any errors are cathced
 	 * @param hostInfo Host info
 	 * @return Connection set up
-	 * @throws ApiException
+	 * @throws ApiException Exception if open is unsucessful
 	 */
 	private Socket openTcpConnection(HostInfo hostInfo) throws ApiException {
 		try {
@@ -730,7 +735,6 @@ public class HostConnection {
 			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_CONNECTING, e);
 		}
 	}
-
 
 	/**
 	 * Send a TCP request
@@ -752,12 +756,12 @@ public class HostConnection {
 	}
 
 	private void startListenerThread(final Socket socket) {
-		executorService.execute(new Runnable() {
+	    tcpListenerThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 try {
-					LogUtils.LOGD(TAG, "Starting socket listener thread...");
+					LogUtils.LOGD(TAG, "Starting TCP socket listener thread from thread: " + Thread.currentThread().getName());
 					// We're going to read from the socket. This will be a blocking call and
 					// it will keep on going until disconnect() is called on this object.
 					// Note: Mind the objects used here: we use createParser because it doesn't
@@ -774,11 +778,13 @@ public class HostConnection {
 					callErrorCallback(null, new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e));
 				} catch (IOException e) {
 					LogUtils.LOGW(TAG, "Error reading from socket.", e);
-                    disconnect();
 					callErrorCallback(null, new ApiException(ApiException.IO_EXCEPTION_WHILE_READING_RESPONSE, e));
-				}
+				} finally {
+                    disconnect();
+                }
 			}
 		});
+	    tcpListenerThread.start();
 	}
 
     private boolean shouldIgnoreTcpResponse(ObjectNode jsonResponse) {
@@ -1113,7 +1119,7 @@ public class HostConnection {
 	 * Cleans up used resources.
 	 * This method should always be called if the protocol used is TCP, so we can shutdown gracefully
 	 */
-    public void disconnect() {
+    public synchronized void disconnect() {
 		if (protocol == PROTOCOL_HTTP)
 			return;
 
