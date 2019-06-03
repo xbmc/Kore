@@ -31,10 +31,10 @@ import static org.junit.Assert.assertTrue;
 public class ArtistsTest extends AbstractTestClass {
 
     @Test
-    public void queryAllArtistsTest() {
+    public void queryAllArtistsTest() throws Exception {
         Uri uri = MediaContract.Artists.buildArtistsListUri(hostInfo.getId());
 
-        Cursor cursor = shadowContentResolver.query(uri, TestValues.Artist.PROJECTION, null, null, null);
+        Cursor cursor = client.query(uri, TestValues.Artist.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 229, cursor.getCount());
@@ -46,10 +46,10 @@ public class ArtistsTest extends AbstractTestClass {
     }
 
     @Test
-    public void queryArtistTest() {
+    public void queryArtistTest() throws Exception {
         Uri uri = MediaContract.Artists.buildArtistUri(hostInfo.getId(), TestValues.Artist.artistId);
 
-        Cursor cursor = shadowContentResolver.query(uri, TestValues.Artist.PROJECTION, null, null, null);
+        Cursor cursor = client.query(uri, TestValues.Artist.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 1, cursor.getCount());

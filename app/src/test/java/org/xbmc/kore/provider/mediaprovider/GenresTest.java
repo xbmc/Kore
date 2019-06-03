@@ -28,12 +28,12 @@ import static org.junit.Assert.assertNotNull;
 
 public class GenresTest extends AbstractTestClass {
     @Test
-    public void queryAllGenresTest() {
+    public void queryAllGenresTest() throws Exception {
         Uri uri = MediaContract.AudioGenres.buildAudioGenresListUri(hostInfo.getId());
 
-        Cursor cursor = shadowContentResolver.query(uri,
-                                                    new String[] {MediaContract.AudioGenresColumns.GENREID},
-                                                    null, null, null);
+        Cursor cursor = client.query(uri,
+                                     new String[] {MediaContract.AudioGenresColumns.GENREID},
+                                     null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 39, cursor.getCount());
@@ -43,11 +43,11 @@ public class GenresTest extends AbstractTestClass {
     }
 
     @Test
-    public void queryAlbumsForGenreTest() {
+    public void queryAlbumsForGenreTest() throws Exception {
         int genreId = 13;
         Uri uri = MediaContract.AlbumGenres.buildAlbumsForGenreListUri(hostInfo.getId(), genreId);
 
-        Cursor cursor = shadowContentResolver.query(uri, TestValues.Album.PROJECTION, null, null, null);
+        Cursor cursor = client.query(uri, TestValues.Album.PROJECTION, null, null, null);
 
         assertNotNull(cursor);
         assertEquals("cursor size ", 31, cursor.getCount());

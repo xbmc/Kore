@@ -17,39 +17,42 @@
 package org.xbmc.kore.provider.mediaprovider;
 
 
+import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.pm.ProviderInfo;
+
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowContentResolver;
-import org.xbmc.kore.BuildConfig;
+import org.robolectric.Robolectric;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.testutils.Database;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23)
+@RunWith(AndroidJUnit4.class)
 @Ignore
 public class AbstractTestClass {
     protected static HostInfo hostInfo;
-    protected static ShadowContentResolver shadowContentResolver;
+    private static ContentResolver contentResolver = ApplicationProvider.getApplicationContext().getContentResolver();
+    private static final String AUTHORITY = "org.xbmc.kore.provider";
+    ContentProviderClient client;
 
     @Before
     public void setUp() throws Exception {
         MediaProvider provider = new MediaProvider();
-        ContentResolver contentResolver = RuntimeEnvironment.application.getContentResolver();
-        provider.onCreate();
-        shadowContentResolver = Shadows.shadowOf(contentResolver);
-        ShadowContentResolver.registerProvider("org.xbmc.kore.provider", provider);
         provider.onCreate();
 
-        hostInfo = Database.addHost(RuntimeEnvironment.application);
+        ProviderInfo info = new ProviderInfo();
+        info.authority = AUTHORITY;
+        Robolectric.buildContentProvider(MediaProvider.class).create(info);
 
-        Database.fill(hostInfo, RuntimeEnvironment.application, contentResolver);
+        client = contentResolver.acquireContentProviderClient(AUTHORITY);
+
+        hostInfo = Database.addHost(ApplicationProvider.getApplicationContext());
+
+        Database.fill(hostInfo, ApplicationProvider.getApplicationContext(), contentResolver);
     }
 }

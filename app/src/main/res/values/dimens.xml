@@ -53,6 +53,9 @@
     <dimen name="tab_strip_height">48dp</dimen>
     <dimen name="view_pager_indicator_height">12dp</dimen>
 
+    <dimen name="remote_icon_size">67dp</dimen>
+    <dimen name="remote_size">202dp</dimen>
+
     <dimen name="remote_page_indicator_height">24dp</dimen>
     <dimen name="remote_content_hmargin">8dp</dimen>
 
