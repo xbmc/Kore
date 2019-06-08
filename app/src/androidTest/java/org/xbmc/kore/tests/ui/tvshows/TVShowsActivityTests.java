@@ -61,11 +61,6 @@ public class TVShowsActivityTests extends AbstractTestClass<TVShowsActivity> {
 
     }
 
-    @Override
-    protected void configureHostInfo(HostInfo hostInfo) {
-
-    }
-
     /**
      * Test if action bar title initially displays TV Shows
      */

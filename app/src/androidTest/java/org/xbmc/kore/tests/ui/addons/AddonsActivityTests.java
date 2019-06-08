@@ -79,11 +79,6 @@ public class AddonsActivityTests extends AbstractTestClass<AddonsActivity> {
 
     }
 
-    @Override
-    protected void configureHostInfo(HostInfo hostInfo) {
-
-    }
-
     @Before
     public void setUp() throws Throwable {
         super.setUp();

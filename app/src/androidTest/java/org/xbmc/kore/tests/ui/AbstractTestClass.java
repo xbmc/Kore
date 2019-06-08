@@ -62,12 +62,6 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
      */
     abstract protected void setSharedPreferences(Context context);
 
-    /**
-     * Called from {@link #setUp()} right after HostInfo has been created.
-     * @param hostInfo created HostInfo used by the activity under test
-     */
-    abstract protected void configureHostInfo(HostInfo hostInfo);
-
     private LoaderIdlingResource loaderIdlingResource;
     private ActivityTestRule<T> activityTestRule;
     private static MockTcpServer server;
@@ -114,8 +108,6 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
         hostInfo = Database.addHost(context, server.getHostName(),
                                     HostConnection.PROTOCOL_TCP, HostInfo.DEFAULT_HTTP_PORT,
                                     server.getPort(), useEventServer, kodiMajorVersion);
-        //Allow each test to change the host info
-        configureHostInfo(hostInfo);
 
         loaderIdlingResource = new LoaderIdlingResource(activityTestRule.getActivity().getSupportLoaderManager());
         IdlingRegistry.getInstance().register(loaderIdlingResource);
