@@ -60,8 +60,8 @@ public class Database {
         return hostInfo;
     }
 
-    public static void flush(ContentResolver contentResolver, HostInfo hostInfo) {
-        contentResolver.delete(MediaContract.Hosts.buildHostUri(hostInfo.getId()), null, null);
+    public static void flush(ContentResolver contentResolver) {
+        contentResolver.delete(MediaContract.Hosts.CONTENT_URI, null, null);
     }
 
     public static HostInfo addHost(Context context) {

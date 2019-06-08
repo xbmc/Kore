@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Simulates JSON RPC JSON-RPC API
  */
-public class JSONRPCHandler implements JSONConnectionHandlerManager.ConnectionHandler {
+public class JSONRPCHandler extends ConnectionHandler {
 
     @Override
     public String[] getType() {
@@ -35,19 +35,9 @@ public class JSONRPCHandler implements JSONConnectionHandlerManager.ConnectionHa
     }
 
     @Override
-    public ArrayList<JsonResponse> getResponse(String method, ObjectNode jsonRequest) {
+    public ArrayList<JsonResponse> createResponse(String method, ObjectNode jsonRequest) {
         ArrayList<JsonResponse> jsonResponses =  new ArrayList<>();
         jsonResponses.add(new Ping(jsonRequest.get("id").asInt()));
         return jsonResponses;
-    }
-
-    @Override
-    public ArrayList<JsonResponse> getNotifications() {
-        return null;
-    }
-
-    @Override
-    public void reset() {
-
     }
 }

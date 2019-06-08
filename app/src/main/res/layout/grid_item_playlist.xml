@@ -55,7 +55,7 @@
             android:contentDescription="@string/action_options"/>
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/playlist_item_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/art"
@@ -68,9 +68,9 @@
             android:id="@+id/details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/title"
-            android:layout_alignStart="@id/title"
-            android:layout_below="@id/title"
+            android:layout_alignLeft="@id/playlist_item_title"
+            android:layout_alignStart="@id/playlist_item_title"
+            android:layout_below="@id/playlist_item_title"
             android:layout_toRightOf="@id/art"
             android:layout_toEndOf="@id/art"
             android:layout_toLeftOf="@id/list_context_menu"

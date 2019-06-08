@@ -133,6 +133,10 @@ public abstract class JsonResponse {
         return data;
     }
 
+    protected void setResultToResponse(JsonNode value) {
+        jsonResponse.set(RESULT_NODE, value);
+    }
+
     protected void setResultToResponse(boolean value) {
         jsonResponse.put(RESULT_NODE, value);
     }
@@ -143,6 +147,15 @@ public abstract class JsonResponse {
 
     protected void setResultToResponse(String value) {
         jsonResponse.put(RESULT_NODE, value);
+    }
+
+    protected void setLimits(int start, int end, int total) {
+        ObjectNode limits = createObjectNode();
+        limits.put("start", start);
+        limits.put("end", end);
+        limits.put("total", total);
+
+        ((ObjectNode) getResultNode(TYPE.OBJECT)).set("limits", limits);
     }
 
     /**
@@ -189,6 +202,20 @@ public abstract class JsonResponse {
         }
     }
 
+    protected void addToArrayNode(ObjectNode node, String key, JsonNode value) {
+        JsonNode jsonNode = node.get(key);
+        if (jsonNode == null) {
+            jsonNode = objectMapper.createArrayNode();
+            node.set(key, jsonNode);
+        }
+
+        if (jsonNode.isArray()) {
+            ((ArrayNode) jsonNode).add(value);
+        } else {
+            LogUtils.LOGE(TAG, "JsonNode at key: " + key + " not of type ArrayNode." );
+        }
+    }
+
     protected void addDataToResponse(String parameter, boolean value) {
         getDataNode().put(parameter, value);
     }
@@ -211,6 +238,18 @@ public abstract class JsonResponse {
 
     public ObjectNode getResponseNode() {
         return jsonResponse;
+    }
+
+    public JsonNode getResultNode() {
+        return jsonResponse.get(RESULT_NODE);
+    }
+
+    public String getId() {
+        return jsonResponse.get(ID_NODE).asText();
+    }
+
+    public String getMethod() {
+        return jsonResponse.get(METHOD_NODE).asText();
     }
 
     public String toJsonString() {

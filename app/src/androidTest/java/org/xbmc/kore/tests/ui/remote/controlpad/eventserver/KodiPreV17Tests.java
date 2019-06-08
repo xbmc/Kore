@@ -26,7 +26,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.tests.ui.AbstractTestClass;

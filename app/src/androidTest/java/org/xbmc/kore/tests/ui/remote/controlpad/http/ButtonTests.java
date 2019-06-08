@@ -57,49 +57,49 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
     }
 
     @Test
-    public void leftControlPadButtonTest() throws InterruptedException {
+    public void leftControlPadButtonTest() {
         onView(withId(R.id.left)).perform(click());
 
         TestUtils.testHTTPEvent(Input.Left.METHOD_NAME, null);
     }
 
     @Test
-    public void rightControlPadButtonTest() throws InterruptedException {
+    public void rightControlPadButtonTest() {
         onView(withId(R.id.right)).perform(click());
 
         TestUtils.testHTTPEvent(Input.Right.METHOD_NAME, null);
     }
 
     @Test
-    public void upControlPadButtonTest() throws InterruptedException {
+    public void upControlPadButtonTest() {
         onView(withId(R.id.up)).perform(click());
 
         TestUtils.testHTTPEvent(Input.Up.METHOD_NAME, null);
     }
 
     @Test
-    public void downControlPadButtonTest() throws InterruptedException {
+    public void downControlPadButtonTest() {
         onView(withId(R.id.down)).perform(click());
 
         TestUtils.testHTTPEvent(Input.Down.METHOD_NAME, null);
     }
 
     @Test
-    public void selectPadButtonTest() throws InterruptedException {
+    public void selectPadButtonTest() {
         onView(withId(R.id.select)).perform(click());
 
         TestUtils.testHTTPEvent(Input.Select.METHOD_NAME, null);
     }
 
     @Test
-    public void contextControlPadButtonTest() throws InterruptedException {
+    public void contextControlPadButtonTest() {
         onView(withId(R.id.context)).perform(click());
 
         TestUtils.testHTTPEvent(Input.ExecuteAction.METHOD_NAME, Input.ExecuteAction.CONTEXTMENU);
     }
 
     @Test
-    public void infoControlPadButtonTest() throws InterruptedException {
+    public void infoControlPadButtonTest() {
         HostManager.getInstance(getActivity()).getHostInfo().setKodiVersionMajor(17);
 
         onView(withId(R.id.info)).perform(click());
@@ -108,21 +108,21 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
     }
 
     @Test
-    public void infoControlPadButtonLongClickTest() throws InterruptedException {
+    public void infoControlPadButtonLongClickTest() {
         onView(withId(R.id.info)).perform(longClick());
 
         TestUtils.testHTTPEvent(Input.ExecuteAction.METHOD_NAME, Input.ExecuteAction.PLAYERPROCESSINFO);
     }
 
     @Test
-    public void osdControlPadButtonTest() throws InterruptedException {
+    public void osdControlPadButtonTest() {
         onView(withId(R.id.osd)).perform(click());
 
         TestUtils.testHTTPEvent(Input.ExecuteAction.METHOD_NAME, Input.ExecuteAction.OSD);
     }
 
     @Test
-    public void backControlPadButtonTest() throws InterruptedException {
+    public void backControlPadButtonTest() {
         onView(withId(R.id.back)).perform(click());
 
         TestUtils.testHTTPEvent(Input.Back.METHOD_NAME, null);

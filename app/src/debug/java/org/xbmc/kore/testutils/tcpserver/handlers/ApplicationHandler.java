@@ -31,7 +31,7 @@ import static org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.response.notifi
 /**
  * Simulates Application JSON-RPC API
  */
-public class ApplicationHandler implements JSONConnectionHandlerManager.ConnectionHandler {
+public class ApplicationHandler extends ConnectionHandler {
     private static final String TAG = LogUtils.makeLogTag(ApplicationHandler.class);
 
     private boolean muted;
@@ -39,8 +39,6 @@ public class ApplicationHandler implements JSONConnectionHandlerManager.Connecti
     private static final String ID_NODE = "id";
     private static final String PARAMS_NODE = "params";
     private static final String PROPERTIES_NODE = "properties";
-
-    private ArrayList<JsonResponse> jsonNotifications = new ArrayList<>();
 
     /**
      * Sets the muted state and sends a notification
@@ -51,7 +49,7 @@ public class ApplicationHandler implements JSONConnectionHandlerManager.Connecti
         this.muted = muted;
 
         if (notify)
-            jsonNotifications.add(new OnVolumeChanged(muted, volume));
+            addNotification(new OnVolumeChanged(muted, volume));
     }
 
     /**
@@ -63,7 +61,7 @@ public class ApplicationHandler implements JSONConnectionHandlerManager.Connecti
         this.volume = volume;
 
         if (notify)
-            jsonNotifications.add(new OnVolumeChanged(muted, volume));
+            addNotification(new OnVolumeChanged(muted, volume));
     }
 
     public int getVolume() {
@@ -71,14 +69,8 @@ public class ApplicationHandler implements JSONConnectionHandlerManager.Connecti
     }
 
     @Override
-    public ArrayList<JsonResponse> getNotifications() {
-        ArrayList<JsonResponse> jsonResponses = new ArrayList<>(jsonNotifications);
-        jsonNotifications.clear();
-        return jsonResponses;
-    }
-
-    @Override
     public void reset() {
+        super.reset();
         this.volume = 0;
         this.muted = false;
     }
@@ -91,7 +83,7 @@ public class ApplicationHandler implements JSONConnectionHandlerManager.Connecti
     }
 
     @Override
-    public ArrayList<JsonResponse> getResponse(String method, ObjectNode jsonRequest) {
+    public ArrayList<JsonResponse> createResponse(String method, ObjectNode jsonRequest) {
         ArrayList<JsonResponse> jsonResponses = new ArrayList<>();
 
         int methodId = jsonRequest.get(ID_NODE).asInt(-1);

@@ -876,6 +876,7 @@ public class HostConnectionObserver
         checkingWhatsPlaying = false;
         int currentCallResult = (getPropertiesResult.speed == 0) ?
                                 PlayerEventsObserver.PLAYER_IS_PAUSED : PlayerEventsObserver.PLAYER_IS_PLAYING;
+
         if (forceReply ||
             (hostState.lastCallResult != currentCallResult) ||
             getPropertiesResultChanged(getPropertiesResult) ||
@@ -887,6 +888,7 @@ public class HostConnectionObserver
             forceReply = false;
             // Copy list to prevent ConcurrentModificationExceptions
             List<PlayerEventsObserver> allObservers = new ArrayList<>(observers);
+
             for (final PlayerEventsObserver observer : allObservers) {
                 notifySomethingIsPlaying(getActivePlayersResult, getPropertiesResult, getItemResult, observer);
             }
