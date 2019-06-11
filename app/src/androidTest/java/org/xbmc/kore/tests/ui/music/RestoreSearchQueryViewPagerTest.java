@@ -19,7 +19,6 @@ package org.xbmc.kore.tests.ui.music;
 import android.app.Activity;
 import android.content.Context;
 import android.support.test.espresso.Espresso;
-import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -27,7 +26,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.xbmc.kore.R;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
 import org.xbmc.kore.testhelpers.LoaderIdlingResource;
 import org.xbmc.kore.tests.ui.AbstractTestClass;
@@ -37,7 +35,6 @@ import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickAlbumsTab;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickArtistsTab;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class RestoreSearchQueryViewPagerTest extends AbstractTestClass<MusicActivity> {
 
     private final String ARTIST_SEARCH_QUERY = "Ben";
@@ -61,11 +58,6 @@ public class RestoreSearchQueryViewPagerTest extends AbstractTestClass<MusicActi
 
     @Override
     protected void setSharedPreferences(Context context) {
-
-    }
-
-    @Override
-    protected void configureHostInfo(HostInfo hostInfo) {
 
     }
 

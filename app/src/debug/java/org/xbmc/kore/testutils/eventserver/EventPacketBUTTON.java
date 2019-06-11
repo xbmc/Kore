@@ -16,9 +16,12 @@
 
 package org.xbmc.kore.testutils.eventserver;
 
+import org.xbmc.kore.utils.LogUtils;
+
 import java.nio.ByteBuffer;
 
 public class EventPacketBUTTON extends EventPacket {
+    private final static String TAG = LogUtils.makeLogTag(EventPacketBUTTON.class);
 
     private short code;
     private String mapName;
@@ -34,14 +37,19 @@ public class EventPacketBUTTON extends EventPacket {
         super(packet);
 
         byte[] payload = getPayload();
-        code = ByteBuffer.wrap(payload, 0, 2).getShort();
-        flags = ByteBuffer.wrap(payload, 2, 2).getShort();
-        amount = ByteBuffer.wrap(payload, 4, 2).getShort();
 
-        mapName = getStringFromPayload(payload, 6);
+        try {
+            code = ByteBuffer.wrap(payload, 0, 2).getShort();
+            flags = ByteBuffer.wrap(payload, 2, 2).getShort();
+            amount = ByteBuffer.wrap(payload, 4, 2).getShort();
 
-        int nextStringPosition = 6 + mapName.getBytes().length + 1;
-        buttonName = getStringFromPayload(payload, nextStringPosition);
+            mapName = getStringFromPayload(payload, 6);
+
+            int nextStringPosition = 6 + mapName.getBytes().length + 1;
+            buttonName = getStringFromPayload(payload, nextStringPosition);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LogUtils.LOGE(TAG, "Error handling payload " + new String(payload));
+        }
     }
 
     public String getButtonName() {

@@ -33,8 +33,6 @@ import org.xbmc.kore.tests.ui.AbstractTestClass;
 import org.xbmc.kore.testutils.eventserver.MockEventServer;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 
-import java.io.IOException;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -57,12 +55,8 @@ public class KodiPreV17Tests extends AbstractTestClass<RemoteActivity> {
         Utils.setUseEventServerPreference(context, true);
     }
 
-    @Override
-    protected void configureHostInfo(HostInfo hostInfo) {
-    }
-
     @BeforeClass
-    public static void setupEventServer() throws Throwable {
+    public static void setupEventServer() {
         mockEventServer = new MockEventServer();
         mockEventServer.setListenPort(HostInfo.DEFAULT_EVENT_SERVER_PORT);
         mockEventServer.start();
@@ -80,14 +74,12 @@ public class KodiPreV17Tests extends AbstractTestClass<RemoteActivity> {
     }
 
     @AfterClass
-    public static void cleanup() throws IOException {
+    public static void cleanup() {
         mockEventServer.shutdown();
     }
 
     @Test
-    public void infoControlPadButtonLongClickTest() throws InterruptedException {
-        HostManager.getInstance(getActivity()).getHostInfo().setKodiVersionMajor(16);
-
+    public void infoControlPadButtonLongClickTest() {
         onView(withId(R.id.info)).perform(longClick());
 
         String actionReceived = getInputHandler().getAction();

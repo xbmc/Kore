@@ -22,7 +22,6 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.MotionEvents;
 import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.ScrollToAction;
 import android.support.test.espresso.util.HumanReadables;
 import android.support.test.espresso.util.TreeIterables;
 import android.support.v4.view.PagerAdapter;
@@ -92,7 +91,6 @@ public final class ViewActions {
 
             @Override
             public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
                 final long endTime = System.currentTimeMillis() + millis;
                 do {
                     for (View child : TreeIterables.breadthFirstViewTraversal(view)) {

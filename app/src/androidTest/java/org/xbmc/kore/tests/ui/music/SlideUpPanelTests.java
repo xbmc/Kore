@@ -32,7 +32,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.testhelpers.action.ViewActions;
 import org.xbmc.kore.tests.ui.AbstractTestClass;
@@ -72,11 +71,6 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
 
     @Override
     protected void setSharedPreferences(Context context) {
-
-    }
-
-    @Override
-    protected void configureHostInfo(HostInfo hostInfo) {
 
     }
 
@@ -409,7 +403,12 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
 
         rotateDevice(getActivity());
 
-        onView(withId(R.id.vli_seek_bar)).check(matches(withProgress(volume)));
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.vli_seek_bar, new ViewActions.CheckStatus() {
+            @Override
+            public boolean check(View v) {
+                return ((SeekBar) v).getProgress() == volume;
+            }
+        }, 10000));
         onView(withId(R.id.vli_volume_text)).check(matches(withText(String.valueOf(volume))));
         assertTrue(getApplicationHandler().getVolume() == volume);
     }
@@ -486,9 +485,14 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         getPlayerHandler().startPlay();
 
         SeekBar seekBar = (SeekBar) getActivity().findViewById(R.id.mpi_seek_bar);
-        int progress = seekBar.getProgress();
-        SystemClock.sleep(1000); //wait one second to check if progression has indeed progressed
-        assertTrue(seekBar.getProgress() > progress);
+        final int progress = seekBar.getProgress();
+        onView(isRoot()).perform(ViewActions.waitForView(
+                R.id.mpi_seek_bar, new ViewActions.CheckStatus() {
+                    @Override
+                    public boolean check(View v) {
+                        return ((SeekBar) v).getProgress() > progress;
+                    }
+                }, 10000));
     }
 
     /**
@@ -502,11 +506,15 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     public void progressionUpdaterStartedAfterPlay() {
         expandPanel();
         SeekBar seekBar = (SeekBar) getActivity().findViewById(R.id.mpi_seek_bar);
-        int progress = seekBar.getProgress();
+        final int progress = seekBar.getProgress();
 
-        SystemClock.sleep(1000); //wait one second to check if progression has indeed progressed
-
-        assertTrue(seekBar.getProgress() > progress);
+        onView(isRoot()).perform(ViewActions.waitForView(
+                R.id.mpi_seek_bar, new ViewActions.CheckStatus() {
+                    @Override
+                    public boolean check(View v) {
+                        return ((SeekBar) v).getProgress() > progress;
+                    }
+                }, 10000));
     }
 
     /**

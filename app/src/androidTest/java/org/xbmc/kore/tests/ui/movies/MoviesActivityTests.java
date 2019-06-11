@@ -58,11 +58,6 @@ public class MoviesActivityTests extends AbstractTestClass<MoviesActivity> {
 
     }
 
-    @Override
-    protected void configureHostInfo(HostInfo hostInfo) {
-
-    }
-
     /**
      * Test if action bar title initially displays Movies
      */

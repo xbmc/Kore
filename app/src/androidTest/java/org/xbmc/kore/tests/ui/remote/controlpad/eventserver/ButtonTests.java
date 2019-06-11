@@ -37,8 +37,6 @@ import org.xbmc.kore.testutils.eventserver.EventPacketBUTTON;
 import org.xbmc.kore.testutils.eventserver.MockEventServer;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 
-import java.io.IOException;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
@@ -62,13 +60,8 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
         Utils.setUseEventServerPreference(context, true);
     }
 
-    @Override
-    protected void configureHostInfo(HostInfo hostInfo) {
-
-    }
-
     @BeforeClass
-    public static void setupEventServer() throws Throwable {
+    public static void setupEventServer() {
         mockEventServer = new MockEventServer();
         mockEventServer.setListenPort(HostInfo.DEFAULT_EVENT_SERVER_PORT);
         mockEventServer.start();
@@ -86,40 +79,40 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
     }
 
     @AfterClass
-    public static void cleanup() throws IOException {
+    public static void cleanup() {
         mockEventServer.shutdown();
     }
 
     @Test
-    public void leftControlPadButtonTest() throws InterruptedException {
+    public void leftControlPadButtonTest() {
         onView(withId(R.id.left)).perform(click());
 
         testRemoteButton(ButtonCodes.REMOTE_LEFT);
     }
 
     @Test
-    public void rightControlPadButtonTest() throws InterruptedException {
+    public void rightControlPadButtonTest() {
         onView(withId(R.id.right)).perform(click());
 
         testRemoteButton(ButtonCodes.REMOTE_RIGHT);
     }
 
     @Test
-    public void upControlPadButtonTest() throws InterruptedException {
+    public void upControlPadButtonTest() {
         onView(withId(R.id.up)).perform(click());
 
         testRemoteButton(ButtonCodes.REMOTE_UP);
     }
 
     @Test
-    public void downControlPadButtonTest() throws InterruptedException {
+    public void downControlPadButtonTest() {
         onView(withId(R.id.down)).perform(click());
 
         testRemoteButton(ButtonCodes.REMOTE_DOWN);
     }
 
     @Test
-    public void selectPadButtonTest() throws InterruptedException {
+    public void selectPadButtonTest() {
         onView(withId(R.id.select)).perform(click());
 
         testRemoteButton(ButtonCodes.REMOTE_SELECT);
@@ -128,14 +121,14 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
     //The following tests do not use the event server. They're included here
     //to make sure they still work when the event server is enabled.
     @Test
-    public void contextControlPadButtonTest() throws InterruptedException {
+    public void contextControlPadButtonTest() {
         onView(withId(R.id.context)).perform(click());
 
         TestUtils.testHTTPEvent(Input.ExecuteAction.METHOD_NAME, Input.ExecuteAction.CONTEXTMENU);
     }
 
     @Test
-    public void infoControlPadButtonTest() throws InterruptedException {
+    public void infoControlPadButtonTest() {
         HostManager.getInstance(getActivity()).getHostInfo().setKodiVersionMajor(17);
 
         onView(withId(R.id.info)).perform(click());
@@ -144,21 +137,21 @@ public class ButtonTests extends AbstractTestClass<RemoteActivity> {
     }
 
     @Test
-    public void infoControlPadButtonLongClickTest() throws InterruptedException {
+    public void infoControlPadButtonLongClickTest() {
         onView(withId(R.id.info)).perform(longClick());
 
         TestUtils.testHTTPEvent(Input.ExecuteAction.METHOD_NAME, Input.ExecuteAction.PLAYERPROCESSINFO);
     }
 
     @Test
-    public void osdControlPadButtonTest() throws InterruptedException {
+    public void osdControlPadButtonTest() {
         onView(withId(R.id.osd)).perform(click());
 
         TestUtils.testHTTPEvent(Input.ExecuteAction.METHOD_NAME, Input.ExecuteAction.OSD);
     }
 
     @Test
-    public void backControlPadButtonTest() throws InterruptedException {
+    public void backControlPadButtonTest() {
         onView(withId(R.id.back)).perform(click());
 
         TestUtils.testHTTPEvent(Input.Back.METHOD_NAME, null);

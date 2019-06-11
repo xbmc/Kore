@@ -62,11 +62,6 @@ public class MusicActivityTests extends AbstractTestClass<MusicActivity> {
 
     }
 
-    @Override
-    protected void configureHostInfo(HostInfo hostInfo) {
-
-    }
-
     /**
      * Test if action bar title initially displays Music
      */
