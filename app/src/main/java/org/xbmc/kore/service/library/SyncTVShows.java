@@ -82,7 +82,7 @@ public class SyncTVShows extends SyncItem {
         return syncExtras;
     }
 
-    private final static String getTVShowsProperties[] = {
+    private final static String[] getTVShowsProperties = {
             VideoType.FieldsTVShow.TITLE, VideoType.FieldsTVShow.GENRE,
             //VideoType.FieldsTVShow.YEAR,
             VideoType.FieldsTVShow.RATING, VideoType.FieldsTVShow.PLOT,
@@ -158,10 +158,15 @@ public class SyncTVShows extends SyncItem {
                     // Ok, we have all the shows, insert them
                     LogUtils.LOGD(TAG, "syncAllTVShows: Got all tv shows. Total: " + allResults.size());
                     deleteTVShows(contentResolver, hostId, -1);
-                    insertTVShows(allResults, contentResolver);
+                    // Remove TV Shows that have no episodes
+                    List<VideoType.DetailsTVShow> cleanedResults = new ArrayList<>(allResults.size());
+                    for (VideoType.DetailsTVShow tvshow: allResults) {
+                        if (tvshow.episode > 0) cleanedResults.add(tvshow);
+                    }
+                    insertTVShows(cleanedResults, contentResolver);
 
                     chainSyncSeasons(orchestrator, hostConnection, callbackHandler,
-                                     contentResolver, allResults, 0);
+                                     contentResolver, cleanedResults, 0);
                 }
             }
 
@@ -200,7 +205,7 @@ public class SyncTVShows extends SyncItem {
         }
     }
 
-    private final static String seasonsProperties[] = {
+    private final static String[] seasonsProperties = {
             VideoType.FieldsSeason.SEASON, VideoType.FieldsSeason.SHOWTITLE,
             //VideoType.FieldsSeason.PLAYCOUNT,
             VideoType.FieldsSeason.EPISODE,
@@ -258,7 +263,7 @@ public class SyncTVShows extends SyncItem {
         }
     }
 
-    private final static String getEpisodesProperties[] = {
+    private final static String[] getEpisodesProperties = {
             VideoType.FieldsEpisode.TITLE, VideoType.FieldsEpisode.PLOT,
             //VideoType.FieldsEpisode.VOTES,
             VideoType.FieldsEpisode.RATING,
@@ -327,7 +332,7 @@ public class SyncTVShows extends SyncItem {
     }
 
     public void insertTVShows(List<VideoType.DetailsTVShow> tvShows, ContentResolver contentResolver) {
-        ContentValues tvshowsValuesBatch[] = new ContentValues[tvShows.size()];
+        ContentValues[] tvshowsValuesBatch = new ContentValues[tvShows.size()];
         int castCount = 0;
 
         // Iterate on each show
@@ -340,7 +345,7 @@ public class SyncTVShows extends SyncItem {
         contentResolver.bulkInsert(MediaContract.TVShows.CONTENT_URI, tvshowsValuesBatch);
         LogUtils.LOGD(TAG, "Inserted " + tvShows.size() + " tv shows.");
 
-        ContentValues tvshowsCastValuesBatch[] = new ContentValues[castCount];
+        ContentValues[] tvshowsCastValuesBatch = new ContentValues[castCount];
         int count = 0;
         // Iterate on each show/cast
         for (VideoType.DetailsTVShow tvshow : tvShows) {
@@ -356,7 +361,7 @@ public class SyncTVShows extends SyncItem {
     }
 
     public void insertSeason(int tvshowId, List<VideoType.DetailsSeason> result, ContentResolver contentResolver) {
-        ContentValues seasonsValuesBatch[] = new ContentValues[result.size()];
+        ContentValues[] seasonsValuesBatch = new ContentValues[result.size()];
         int totalWatchedEpisodes = 0;
         for (int i = 0; i < result.size(); i++) {
             VideoType.DetailsSeason season = result.get(i);
@@ -380,7 +385,7 @@ public class SyncTVShows extends SyncItem {
     }
 
     public void insertEpisodes(List<VideoType.DetailsEpisode> episodes, ContentResolver contentResolver) {
-        ContentValues episodesValuesBatch[] = new ContentValues[episodes.size()];
+        ContentValues[] episodesValuesBatch = new ContentValues[episodes.size()];
         for (int i = 0; i < episodes.size(); i++) {
             VideoType.DetailsEpisode episode = episodes.get(i);
             episodesValuesBatch[i] = SyncUtils.contentValuesFromEpisode(hostId, episode);
