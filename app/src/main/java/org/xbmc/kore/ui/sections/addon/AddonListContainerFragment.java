@@ -22,6 +22,8 @@ import android.preference.PreferenceManager;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.method.Files;
+import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.AbstractTabsFragment;
 import org.xbmc.kore.ui.sections.file.MediaFileListFragment;
@@ -46,7 +48,7 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
         if (arguments == null)
             arguments = new Bundle();
 
-        /**
+        /*
          * Following check required to support testing AddonsActivity.
          * The database with host info is setup after initializing AddonsActivity using
          * ActivityTestRule from the test support library. This means getHostInfo() will
@@ -66,6 +68,7 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
             String name = prefs.getString(Settings.getNameBookmarkedAddonsPrefKey(hostId) + path, Settings.DEFAULT_PREF_NAME_BOOKMARKED_ADDON);
             arguments.putParcelable(MediaFileListFragment.ROOT_PATH,
                                     new MediaFileListFragment.FileLocation(name, "plugin://" + path, true));
+            arguments.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.FILES);
             tabsAdapter.addTab(MediaFileListFragment.class, arguments, name, ++baseFragmentId);
         }
 
