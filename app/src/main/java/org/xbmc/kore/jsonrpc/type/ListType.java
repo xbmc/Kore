@@ -15,6 +15,9 @@
  */
 package org.xbmc.kore.jsonrpc.type;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -580,7 +583,7 @@ public class ListType {
     /**
      * List.Sort
      */
-    public static class Sort implements ApiParameter {
+    public static class Sort implements ApiParameter, Parcelable {
         public static final String SORT_METHOD_NONE = "none";
         public static final String SORT_METHOD_LABEL = "label";
         public static final String SORT_METHOD_DATE = "date";
@@ -588,7 +591,7 @@ public class ListType {
         public static final String SORT_METHOD_FILE = "file";
         public static final String SORT_METHOD_PATH = "path";
         public static final String SORT_METHOD_DRIVETYPE = "drivetype";
-        public static final String SORT_METHOD_TYPE = "title";
+        public static final String SORT_METHOD_TITLE = "title";
         public static final String SORT_METHOD_TRACK = "track";
         public static final String SORT_METHOD_TIME = "time";
         public static final String SORT_METHOD_ARTIST = "artist";
@@ -642,6 +645,22 @@ public class ListType {
             node.put(IGNORE_ARTICLE, ignore_article);
             node.put(METHOD, sort_method);
             return node;
+        }
+
+        private Sort(Parcel in) {
+            this.sort_method = in.readString();
+            this.ascending_order = (in.readInt() != 0);
+            this.ignore_article = (in.readInt() != 0);
+        }
+
+        public int describeContents() {
+            return 0;
+        }
+
+        public void writeToParcel(Parcel out, int flags) {
+            out.writeString(sort_method);
+            out.writeInt(ascending_order ? 1 : 0);
+            out.writeInt(ignore_article ? 1 : 0);
         }
     }
 }
