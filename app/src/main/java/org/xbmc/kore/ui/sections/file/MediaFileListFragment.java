@@ -61,6 +61,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(MediaFileListFragment.class);
 
     public static final String MEDIA_TYPE = "mediaType";
+    public static final String SORT_METHOD = "sortMethod";
     public static final String PATH_CONTENTS = "pathContents";
     public static final String ROOT_PATH_CONTENTS = "rootPathContents";
     public static final String ROOT_VISITED = "rootVisited";
@@ -74,32 +75,22 @@ public class MediaFileListFragment extends AbstractListFragment {
      */
     private Handler callbackHandler = new Handler();
 
-    String mediaType = Files.Media.MUSIC;
+    String mediaType = Files.Media.FILES;
+    ListType.Sort sortMethod = null;
     String parentDirectory = null;
     int playlistId = PlaylistType.MUSIC_PLAYLISTID;             // this is the ID of the music player
 //    private MediaFileListAdapter adapter = null;
     boolean browseRootAlready = false;
     FileLocation loadOnVisible = null;
 
-    ArrayList<FileLocation> rootFileLocation = new ArrayList<FileLocation>();
+    ArrayList<FileLocation> rootFileLocation = new ArrayList<>();
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
-
-//    @InjectView(R.id.list) GridView folderGridView;
-//    @InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-//    @InjectView(android.R.id.empty) TextView emptyView;
-
-    public static MediaFileListFragment newInstance(final String media) {
-        MediaFileListFragment fragment = new MediaFileListFragment();
-        Bundle args = new Bundle();
-        args.putString(MEDIA_TYPE, media);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(MEDIA_TYPE, mediaType);
+        outState.putParcelable(SORT_METHOD, sortMethod);
         try {
             outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList<FileLocation>) ((MediaFileListAdapter) getAdapter()).getFileItemList());
         } catch (NullPointerException npe) {
@@ -138,6 +129,7 @@ public class MediaFileListFragment extends AbstractListFragment {
             } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
                 playlistId = PlaylistType.PICTURE_PLAYLISTID;
             }
+            sortMethod = args.getParcelable(SORT_METHOD);
         }
 
         hostManager = HostManager.getInstance(getActivity());
@@ -151,13 +143,14 @@ public class MediaFileListFragment extends AbstractListFragment {
         });
 
         if (savedInstanceState != null) {
-            mediaType = savedInstanceState.getString(MEDIA_TYPE);
+            mediaType = savedInstanceState.getString(MEDIA_TYPE, Files.Media.FILES);
             //currentPath = savedInstanceState.getString(CURRENT_PATH);
             if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
                 playlistId = PlaylistType.VIDEO_PLAYLISTID;
             } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
                 playlistId = PlaylistType.PICTURE_PLAYLISTID;
             }
+            sortMethod = savedInstanceState.getParcelable(SORT_METHOD);
             ArrayList<FileLocation> list = savedInstanceState.getParcelableArrayList(PATH_CONTENTS);
             rootFileLocation = savedInstanceState.getParcelableArrayList(ROOT_PATH_CONTENTS);
             browseRootAlready = savedInstanceState.getBoolean(ROOT_VISITED);
@@ -217,7 +210,8 @@ public class MediaFileListFragment extends AbstractListFragment {
             return true;
         else
             // if we still see "..", it is not the real root directory
-            return fl.isRootDir() && (fl.title.contentEquals("..") == false);
+            return fl.isRootDir() &&
+                   (fl.title != null) && !fl.title.contentEquals("..");
     }
 
     /**
@@ -234,7 +228,8 @@ public class MediaFileListFragment extends AbstractListFragment {
                 rootFileLocation.clear();
                 FileLocation fl;
                 for (ItemType.Source item : result) {
-                    if (!item.file.contains(ADDON_SOURCE)) {
+                    if ((item.file != null) &&
+                        (!item.file.contains(ADDON_SOURCE))) {
                         fl = new FileLocation(item.label, item.file, true);
                         fl.setRootDir(true);
                         rootFileLocation.add(fl);
@@ -271,7 +266,8 @@ public class MediaFileListFragment extends AbstractListFragment {
             String path;
             for (FileLocation fl : rootFileLocation) {
                 path = fl.file;
-                if (dir.file.contentEquals(path))    {
+                if ((path != null) && (dir.file != null) &&
+                    (dir.file.contentEquals(path))) {
                     rootPath = fl.file;
                     break;
                 }
@@ -279,7 +275,7 @@ public class MediaFileListFragment extends AbstractListFragment {
             if (rootPath != null) {
                 parentDirectory = rootPath;
                 dir.setRootDir(true);
-            } else {
+            } else if (dir.file != null) {
                 parentDirectory = getParentDirectory(dir.file);
             }
         }
@@ -322,14 +318,14 @@ public class MediaFileListFragment extends AbstractListFragment {
 
         Files.GetDirectory action = new Files.GetDirectory(dir.file,
                 mediaType,
-                new ListType.Sort(ListType.Sort.SORT_METHOD_PATH, true, true),
+                sortMethod,
                 properties);
         action.execute(hostManager.getConnection(), new ApiCallback<List<ListType.ItemFile>>() {
             @Override
             public void onSuccess(List<ListType.ItemFile> result) {
                 if (!isAdded()) return;
 
-                ArrayList<FileLocation> flList = new ArrayList<FileLocation>();
+                ArrayList<FileLocation> flList = new ArrayList<>();
 
                 if (dir.hasParent) {
                     // insert the parent directory as the first item in the list

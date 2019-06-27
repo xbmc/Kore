@@ -20,6 +20,7 @@ import android.os.Bundle;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.method.Files;
+import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.ui.AbstractTabsFragment;
 import org.xbmc.kore.ui.OnBackPressedListener;
 import org.xbmc.kore.utils.TabsAdapter;
@@ -32,12 +33,20 @@ public class FileListFragment extends AbstractTabsFragment
 
     @Override
     protected TabsAdapter createTabsAdapter(DataHolder dataHolder) {
+        ListType.Sort sortMethod = new ListType.Sort(ListType.Sort.SORT_METHOD_PATH, true, true);
+
         Bundle videoFileListArgs = new Bundle();
         videoFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.VIDEO);
+        videoFileListArgs.putParcelable(MediaFileListFragment.SORT_METHOD, sortMethod);
+
         Bundle musicFileListArgs = new Bundle();
         musicFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.MUSIC);
+        musicFileListArgs.putParcelable(MediaFileListFragment.SORT_METHOD, sortMethod);
+
         Bundle pictureFileListArgs = new Bundle();
         pictureFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.PICTURES);
+        pictureFileListArgs.putParcelable(MediaFileListFragment.SORT_METHOD, sortMethod);
+
         return new TabsAdapter(getActivity(), getChildFragmentManager())
                 .addTab(MediaFileListFragment.class, videoFileListArgs, R.string.video, 1)
                 .addTab(MediaFileListFragment.class, musicFileListArgs, R.string.music, 2)
