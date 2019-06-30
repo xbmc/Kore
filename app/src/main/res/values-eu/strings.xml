@@ -340,6 +340,8 @@
     <string name="theme_night">Gaua</string>
     <string name="theme_day">Eguna</string>
     <string name="theme_mist">Lanbroa</string>
+    <string name="theme_sunrise">Egunsentia</string>
+    <string name="theme_sunset">Ilunabarra</string>
 
     <string name="switch_to_remote">Aldatu urrunekora multimedia hastean</string>
     <string name="keep_remote_above_lockscreen">Erakutsi blokeatutako pantailaren gainean</string>
