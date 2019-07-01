@@ -454,6 +454,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             ratingContainer.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(dataHolder.getDetails())) {
             mediaDetailsContainer.setVisibility(View.GONE);
+        } else {
+            mediaDetailsContainer.setVisibility(View.VISIBLE);
         }
     }
 
