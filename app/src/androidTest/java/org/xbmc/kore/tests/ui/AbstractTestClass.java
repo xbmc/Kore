@@ -43,6 +43,7 @@ import org.xbmc.kore.testutils.tcpserver.handlers.InputHandler;
 import org.xbmc.kore.testutils.tcpserver.handlers.JSONConnectionHandlerManager;
 import org.xbmc.kore.testutils.tcpserver.handlers.JSONRPCHandler;
 import org.xbmc.kore.testutils.tcpserver.handlers.PlayerHandler;
+import org.xbmc.kore.testutils.tcpserver.handlers.PlaylistHandler;
 import org.xbmc.kore.ui.sections.hosts.HostFragmentManualConfiguration;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -69,6 +70,7 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
     private static PlayerHandler playerHandler;
     private static ApplicationHandler applicationHandler;
     private static InputHandler inputHandler;
+    private static PlaylistHandler playlistHandler;
     private int kodiMajorVersion = HostInfo.DEFAULT_KODI_VERSION_MAJOR;
     private HostInfo hostInfo;
 
@@ -77,11 +79,13 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
         playerHandler = new PlayerHandler();
         applicationHandler = new ApplicationHandler();
         inputHandler = new InputHandler();
+        playlistHandler = new PlaylistHandler();
         manager = new JSONConnectionHandlerManager();
         manager.addHandler(playerHandler);
         manager.addHandler(applicationHandler);
         manager.addHandler(inputHandler);
         manager.addHandler(new AddonsHandler());
+        manager.addHandler(playlistHandler);
         manager.addHandler(new JSONRPCHandler());
         server = new MockTcpServer(manager);
         server.start();
@@ -134,7 +138,7 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
         playerHandler.reset();
 
         Context context = activityTestRule.getActivity();
-        Database.flush(context.getContentResolver(), hostInfo);
+        Database.flush(context.getContentResolver());
         Utils.enableAnimations(context);
     }
 
@@ -161,6 +165,10 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
         this.kodiMajorVersion = kodiMajorVersion;
     }
 
+    public static JSONConnectionHandlerManager getConnectionHandlerManager() {
+        return manager;
+    }
+
     public static PlayerHandler getPlayerHandler() {
         return playerHandler;
     }
@@ -171,5 +179,9 @@ abstract public class AbstractTestClass<T extends AppCompatActivity> {
 
     public static InputHandler getInputHandler() {
         return inputHandler;
+    }
+
+    public static PlaylistHandler getPlaylistHandler() {
+        return playlistHandler;
     }
 }

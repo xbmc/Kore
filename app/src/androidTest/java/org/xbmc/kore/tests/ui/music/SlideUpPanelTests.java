@@ -36,10 +36,14 @@ import org.xbmc.kore.testhelpers.Utils;
 import org.xbmc.kore.testhelpers.action.ViewActions;
 import org.xbmc.kore.tests.ui.AbstractTestClass;
 import org.xbmc.kore.testutils.tcpserver.handlers.PlayerHandler;
+import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.response.methods.Application;
 import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.response.methods.Player;
+import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.response.methods.Playlist;
 import org.xbmc.kore.ui.sections.audio.MusicActivity;
 import org.xbmc.kore.ui.widgets.HighlightButton;
 import org.xbmc.kore.ui.widgets.RepeatModeButton;
+
+import java.util.concurrent.TimeoutException;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -50,13 +54,17 @@ import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.clickAdapterViewItem;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.rotateDevice;
 import static org.xbmc.kore.testhelpers.EspressoTestUtils.waitForPanelState;
 import static org.xbmc.kore.testhelpers.Matchers.withHighlightState;
 import static org.xbmc.kore.testhelpers.Matchers.withProgress;
+import static org.xbmc.kore.testutils.TestUtils.createMusicItem;
+import static org.xbmc.kore.testutils.TestUtils.createMusicVideoItem;
+import static org.xbmc.kore.testutils.TestUtils.createVideoItem;
 
 public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
 
@@ -78,8 +86,14 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     public void setUp() throws Throwable {
         super.setUp();
 
+        getPlaylistHandler().reset();
+        getPlaylistHandler().addItemToPlaylist(Playlist.playlistID.AUDIO, createMusicItem(0, 0));
+        getPlaylistHandler().addItemToPlaylist(Playlist.playlistID.VIDEO, createVideoItem(0, 1));
+        getPlaylistHandler().addItemToPlaylist(Playlist.playlistID.VIDEO, createMusicVideoItem(0, 2));
+
         getPlayerHandler().reset();
-        getPlayerHandler().startPlay();
+        getPlayerHandler().setPlaylists(getPlaylistHandler().getPlaylists());
+        getPlayerHandler().startPlay(Playlist.playlistID.AUDIO, 0);
 
         waitForPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
@@ -120,8 +134,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
      */
     @Test
     public void panelButtonsMoviesTest() {
-        getPlayerHandler().setMediaType(PlayerHandler.TYPE.MOVIE);
-        getPlayerHandler().startPlay();
+        getPlayerHandler().startPlay(Playlist.playlistID.VIDEO, 0);
         Player.GetItem item = getPlayerHandler().getMediaItem();
         final String title = item.getTitle();
         onView(isRoot()).perform(ViewActions.waitForView(
@@ -146,8 +159,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
      */
     @Test
     public void panelButtonsMusicVideoTest() {
-        getPlayerHandler().setMediaType(PlayerHandler.TYPE.MUSICVIDEO);
-        getPlayerHandler().startPlay();
+        getPlayerHandler().startPlay(Playlist.playlistID.VIDEO, 1);
         Player.GetItem item = getPlayerHandler().getMediaItem();
         final String title = item.getTitle();
         onView(isRoot()).perform(ViewActions.waitForView(
@@ -374,7 +386,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
      *   4. Result: Volume indicator should show volume level and server should be set to new volume level
      */
     @Test
-    public void changeVolume() {
+    public void changeVolume() throws TimeoutException {
         final int volume = 16;
         expandPanel();
 
@@ -382,7 +394,10 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
 
         onView(withId(R.id.vli_seek_bar)).check(matches(withProgress(volume)));
         onView(withId(R.id.vli_volume_text)).check(matches(withText(String.valueOf(volume))));
-        assertTrue(getApplicationHandler().getVolume() == volume);
+
+        getConnectionHandlerManager().waitForMethodHandled(Application.SetVolume.METHOD_NAME, 10000);
+        assertTrue("applicationHandler volume: "+ getApplicationHandler().getVolume()
+                   + " != " + volume, getApplicationHandler().getVolume() == volume);
     }
 
     /**
@@ -396,13 +411,15 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
      *   4. Result: Volume indicator should show volume level and server should be set to new volume level
      */
     @Test
-    public void restoreVolumeIndicatorOnRotate() {
+    public void restoreVolumeIndicatorOnRotate() throws TimeoutException {
         final int volume = 16;
         expandPanel();
         onView(withId(R.id.vli_seek_bar)).perform(ViewActions.slideSeekBar(volume));
 
         rotateDevice(getActivity());
 
+        assertTrue("applicationHandler volume: "+ getApplicationHandler().getVolume()
+                   + " != " + volume, getApplicationHandler().getVolume() == volume);
         onView(isRoot()).perform(ViewActions.waitForView(R.id.vli_seek_bar, new ViewActions.CheckStatus() {
             @Override
             public boolean check(View v) {
@@ -410,7 +427,6 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
             }
         }, 10000));
         onView(withId(R.id.vli_volume_text)).check(matches(withText(String.valueOf(volume))));
-        assertTrue(getApplicationHandler().getVolume() == volume);
     }
 
     /**
@@ -434,7 +450,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         onView(withId(R.id.mpi_seek_bar)).perform(ViewActions.slideSeekBar(progress));
 
         onView(withId(R.id.mpi_progress)).check(matches(withText(progressText)));
-        assertTrue(getPlayerHandler().getPosition() == progress);
+        assertTrue(getPlayerHandler().getTimeElapsed() == progress);
     }
 
     /**
@@ -458,7 +474,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         onView(withId(R.id.mpi_seek_bar)).perform(ViewActions.slideSeekBar(progress));
         rotateDevice(getActivity());
 
-        assertTrue(getPlayerHandler().getPosition() == progress);
+        assertEquals(getPlayerHandler().getTimeElapsed(), progress);
         onView(withId(R.id.mpi_progress)).check(matches(withProgress(progressText)));
         onView(withId(R.id.mpi_seek_bar)).check(matches(withProgress(progress)));
     }
@@ -560,7 +576,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     public void pausePlayback() {
         onView(withId(R.id.npp_play)).perform(click());
 
-        assertFalse(getPlayerHandler().isPlaying());
+        assertSame(getPlayerHandler().getPlayState(), PlayerHandler.PLAY_STATE.PAUSED);
 
         expandPanel();
         final int progress = ((SeekBar) getActivity().findViewById(R.id.mpi_seek_bar)).getProgress();

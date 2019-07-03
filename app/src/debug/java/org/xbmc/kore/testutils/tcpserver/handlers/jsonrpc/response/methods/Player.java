@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.JsonResponse;
 import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.JsonUtils;
@@ -29,10 +28,30 @@ import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.nodes.SubtitleDetailsN
 import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.nodes.VideoDetailsNode;
 import org.xbmc.kore.utils.LogUtils;
 
+import java.io.IOException;
+
 /**
  * Serverside JSON RPC responses in Methods.Player.*
  */
 public class Player {
+
+    /**
+     * JSON response for Player.Open request
+     *
+     * Example:
+     * Query:   {"jsonrpc":"2.0","method":"Player.Open","id":77,"params":{"item":{"playlistid":0,"position":2}}}
+     * Answer:  {"id":77,"jsonrpc":"2.0","result":"OK"}
+     *
+     * @return JSON string
+     */
+    public static class Open extends JsonResponse {
+        public final static String METHOD_NAME = "Player.Open";
+
+        public Open(int methodId) {
+            super(methodId);
+            setResultToResponse("OK");
+        }
+    }
 
     /**
      * JSON response for Player.Seek request
@@ -82,8 +101,17 @@ public class Player {
         }
     }
 
+    public static class Stop extends JsonResponse {
+        public final static String METHOD_NAME = "Player.Stop";
+    }
+
     public static class GetActivePlayers extends JsonResponse {
         public final static String METHOD_NAME = "Player.GetActivePlayers";
+
+        public GetActivePlayers(int methodId) {
+            super(methodId);
+            getResultNode(TYPE.ARRAY);
+        }
 
         public GetActivePlayers(int methodId, int playerId, String type) {
             super(methodId);
@@ -93,6 +121,7 @@ public class Player {
             ((ArrayNode) getResultNode(TYPE.ARRAY)).add(objectNode);
         }
     }
+
 
     public static class GetProperties extends JsonResponse {
         public final static String METHOD_NAME = "Player.GetProperties";
@@ -199,6 +228,11 @@ public class Player {
         }
     }
 
+    /**
+     * Example:
+     * query: {"jsonrpc":"2.0","method":"Player.GetItem","id":4119,"params":{"playerid":0,"properties":["art","artist","albumartist","album","cast","director","displayartist","duration","episode","fanart","file","firstaired","genre","imdbnumber","plot","premiered","rating","resume","runtime","season","showtitle","streamdetails","studio","tagline","thumbnail","title","top250","track","votes","writer","year","description"]}}
+     * answer: {"id":4119,"jsonrpc":"2.0","result":{"item":{"album":"My Time Is the Right Time","albumartist":["Alton Ellis"],"art":{"artist.fanart":"image://http%3a%2f%2fmedia.theaudiodb.com%2fimages%2fmedia%2fartist%2ffanart%2fxpptss1381301172.jpg/"},"artist":["Alton Ellis"],"displayartist":"Alton Ellis","duration":5,"fanart":"image://http%3a%2f%2fmedia.theaudiodb.com%2fimages%2fmedia%2fartist%2ffanart%2fxpptss1381301172.jpg/","file":"/Users/martijn/Projects/dummymediafiles/media/music/Alton Ellis/My Time Is The Right Time/06-Rock Steady.mp3","genre":["Reggae"],"id":14769,"label":"Rock Steady","rating":0,"thumbnail":"","title":"Rock Steady","track":6,"type":"song","votes":0,"year":2000}}}
+     */
     public static class GetItem extends JsonResponse {
         public final static String METHOD_NAME = "Player.GetItem";
 
@@ -238,62 +272,64 @@ public class Player {
         final static String DESCRIPTION = "description";
         final static String LABEL = "label";
 
-        public enum TYPE { UNKNOWN,
-            MOVIE,
-            EPISODE,
-            MUSICVIDEO,
-            SONG,
-            PICTURE,
-            CHANNEL
+        public enum TYPE { unknown,
+            movie,
+            episode,
+            musicvideo,
+            song,
+            picture,
+            channel
         }
 
         private ObjectNode itemNode;
 
         public GetItem() {
             super();
-            ObjectNode resultNode = ((ObjectNode) getResultNode(JsonResponse.TYPE.OBJECT));
-            itemNode = createObjectNode();
-            resultNode.set(ITEM, itemNode);
+            setupItemNode();
         }
 
         public GetItem(int methodId) {
             super(methodId);
+            setupItemNode();
+        }
+
+        public GetItem(int methodId, String jsonString) throws IOException {
+            super(methodId, jsonString);
+            ObjectNode resultNode = ((ObjectNode) getResultNode(JsonResponse.TYPE.OBJECT));
+            if (resultNode.has(ITEM)) {
+                itemNode = (ObjectNode) resultNode.get(ITEM);
+            } else {
+                setupItemNode();
+            }
+        }
+
+        private void setupItemNode() {
             ObjectNode resultNode = ((ObjectNode) getResultNode(JsonResponse.TYPE.OBJECT));
             itemNode = createObjectNode();
             resultNode.set(ITEM, itemNode);
         }
 
-        public void setMethodId(int methodId) {
-            getResponseNode().put(ID_NODE, methodId);
+        public void addLibraryId(int id) {
+            itemNode.put(ID_NODE, id);
+        }
+
+        /**
+         * @return library identifier or -1 if not set
+         */
+        public int getLibraryId() {
+            JsonNode idNode = itemNode.get(ID_NODE);
+            if (idNode != null)
+                return idNode.asInt();
+            else
+                return -1;
         }
 
         public void addType(TYPE type) {
-            String strType;
-            switch (type) {
-                case MOVIE:
-                    strType = "movie";
-                    break;
-                case EPISODE:
-                    strType = "episode";
-                    break;
-                case MUSICVIDEO:
-                    strType = "musicvideo";
-                    break;
-                case SONG:
-                    strType = "song";
-                    break;
-                case PICTURE:
-                    strType = "picture";
-                    break;
-                case CHANNEL:
-                    strType = "channel";
-                    break;
-                case UNKNOWN:
-                default:
-                    strType = "unknown";
-                    break;
-            }
-            itemNode.put(TYPE, strType);
+            itemNode.put(TYPE, type.name());
+        }
+
+        public String getType() {
+            return itemNode.get(TYPE).textValue();
         }
 
         public void addArt(String banner, String poster, String fanart, String thumbnail) {
@@ -327,6 +363,10 @@ public class Player {
 
         public void addDuration(int duration) {
             itemNode.put(DURATION, duration);
+        }
+
+        public int getDuration() {
+            return itemNode.get(DURATION).asInt();
         }
 
         public void addEpisode(int episode) {
@@ -367,6 +407,10 @@ public class Player {
 
         public void addResume(int position, int total) {
             itemNode.putObject(RESUME).setAll(createResumeNode(position, total));
+        }
+
+        public int getRuntime() {
+            return itemNode.get(RUNTIME).asInt();
         }
 
         public void addRuntime(int runtime) {

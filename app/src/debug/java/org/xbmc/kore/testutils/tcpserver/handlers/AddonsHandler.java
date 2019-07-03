@@ -28,7 +28,7 @@ import java.util.ArrayList;
 /**
  * Simulates Addons JSON-RPC API
  */
-public class AddonsHandler implements JSONConnectionHandlerManager.ConnectionHandler {
+public class AddonsHandler extends ConnectionHandler {
     private static final String TAG = LogUtils.makeLogTag(AddonsHandler.class);
 
     private static final String ID_NODE = "id";
@@ -36,21 +36,12 @@ public class AddonsHandler implements JSONConnectionHandlerManager.ConnectionHan
     public AddonsHandler() { }
 
     @Override
-    public ArrayList<JsonResponse> getNotifications() {
-        return null;
-    }
-
-    @Override
-    public void reset() {
-    }
-
-    @Override
     public String[] getType() {
         return new String[]{Addons.GetAddons.METHOD_NAME};
     }
 
     @Override
-    public ArrayList<JsonResponse> getResponse(String method, ObjectNode jsonRequest) {
+    public ArrayList<JsonResponse> createResponse(String method, ObjectNode jsonRequest) {
         ArrayList<JsonResponse> jsonResponses = new ArrayList<>();
 
         int methodId = jsonRequest.get(ID_NODE).asInt(-1);

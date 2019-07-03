@@ -24,15 +24,6 @@ import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.JsonUtils;
 public class Player {
 
     abstract public static class PlayPause extends JsonResponse {
-        public static String TYPE_SONG = "song";
-        public static String TYPE_EPISODE = "episode";
-        public static String TYPE_MOVIE = "movie";
-        public static String TYPE_MUSICVIDEO = "musicvideo";
-        public static String TYPE_VIDEO = "video";
-        public static String TYPE_UNKNOWN = "unknown";
-        public static String TYPE_PICTURE = "picture";
-        public static String TYPE_CHANNEL = "channel";
-
         private PlayPause(String methodName, int itemId, String itemType, int playerId, int speed) {
             addMethodToResponse(methodName);
 
@@ -94,6 +85,30 @@ public class Player {
     }
 
     /**
+     * JSON response for Player.OnStop notification
+     *
+     * Example:
+     * {"jsonrpc":"2.0","method":"Player.OnStop","params":{"data":{"end":false,"item":{"id":14765,"type":"song"}},"sender":"xbmc"}}
+     */
+    public static class OnStop extends JsonResponse {
+        public final static String METHOD_NAME = "Player.OnStop";
+
+        public OnStop(int itemId, String itemType, boolean ended) {
+            super();
+            addMethodToResponse(METHOD_NAME);
+
+            addDataToResponse("end", false);
+
+            ObjectNode itemNode = createObjectNode();
+            itemNode.put("id", itemId);
+            itemNode.put("type", itemType);
+            addDataToResponse("item", itemNode);
+
+            addParameterToResponse("sender", "xbmc");
+        }
+    }
+
+    /**
      * JSON response for Player.OnPropertyChanged notification
      *
      * Example:
@@ -127,7 +142,7 @@ public class Player {
     }
 
     /**
-     * JSON response for Player.OnPropertyChanged notification
+     * JSON response for Player.OnSeek notification
      *
      * Example:
      * {"jsonrpc":"2.0","method":"Player.OnSeek", "params":{ "data":{"item":{ "id":127,"type":"episode" },"player":{ "playerid":1,"seekoffset":{ "hours":0,"milliseconds":0, "minutes":0,"seconds":-14 },"speed":0, "time":{"hours":0, "milliseconds":0,"minutes":0, "seconds":2} }},"sender":"xbmc" }}
@@ -152,6 +167,24 @@ public class Player {
             addDataToResponse("player", playerNode);
 
             addParameterToResponse("sender", "xbmc");
+        }
+    }
+
+    /**
+     * JSON response for Player.OnAVStart notification
+     *
+     * Example:
+     * {"jsonrpc":"2.0","method":"Player.OnAVStart",
+     *  "params":{"data":{
+     *              "item":{"id":1502,"type":"song"},
+     *              "player":{"playerid":0,"speed":1}},
+     *              "sender":"xbmc"}}
+     */
+    public static class OnAVStart extends PlayPause {
+        public final static String METHOD_NAME = "Player.OnAVStart";
+
+        public OnAVStart(int itemId, String itemType, int playerId, int speed) {
+            super(METHOD_NAME, itemId, itemType, playerId, speed);
         }
     }
 }

@@ -177,10 +177,26 @@ public class EspressoTestUtils {
      * Checks that the list contains item(s) matching search query
      * @param query text each element must contain
      * @param listSize amount of elements expected in list
+     * @param resourceId resource identifier or list view
      */
     public static void checkListMatchesSearchQuery(String query, int listSize, int resourceId) {
+        onView(isRoot()).perform(ViewActions.waitForView(resourceId, new ViewActions.CheckStatus() {
+            @Override
+            public boolean check(View v) {
+                return v.isShown();
+            }
+        }, 10000));
+
         onView(allOf(withId(resourceId), isDisplayed()))
                 .check(matches(Matchers.withOnlyMatchingDataItems(hasDescendant(withText(containsString(query))))));
+        checkRecyclerViewListsize(listSize, resourceId);
+    }
+
+    /**
+     * Checks that the list size matches the given list size
+     * @param listSize amount of elements expected in list
+     */
+    public static void checkRecyclerViewListsize(int listSize, int resourceId) {
         onView(allOf(withId(resourceId), isDisplayed()))
                 .check(matches(Matchers.withRecyclerViewSize(listSize)));
     }
@@ -294,7 +310,7 @@ public class EspressoTestUtils {
      */
     public static void selectListItemRotateDeviceAndCheckActionbarTitle(String itemText,
                                                                         int listResourceId,
-                                                                        String actionbarTitle,
+                                                                        final String actionbarTitle,
                                                                         Activity activity) {
         EspressoTestUtils.clickRecyclerViewItem(itemText, listResourceId);
         EspressoTestUtils.rotateDevice(activity);

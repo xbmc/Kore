@@ -55,7 +55,7 @@ public class KodiPreV17Tests extends AbstractTestClass<RemoteActivity> {
     }
 
     @Test
-    public void infoControlPadButtonLongClickTest() throws InterruptedException {
+    public void infoControlPadButtonLongClickTest() {
         onView(withId(R.id.info)).perform(longClick());
 
         TestUtils.testHTTPEvent(Input.ExecuteAction.METHOD_NAME, Input.ExecuteAction.CODECINFO);

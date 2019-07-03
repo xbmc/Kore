@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Simulates Input JSON-RPC API
  */
-public class InputHandler implements JSONConnectionHandlerManager.ConnectionHandler {
+public class InputHandler extends ConnectionHandler {
     private static final String TAG = LogUtils.makeLogTag(InputHandler.class);
 
     private static final String ACTION = "action";
@@ -35,15 +35,6 @@ public class InputHandler implements JSONConnectionHandlerManager.ConnectionHand
 
     private String action;
     private String methodName;
-
-    @Override
-    public ArrayList<JsonResponse> getNotifications() {
-        return null;
-    }
-
-    @Override
-    public void reset() {
-    }
 
     @Override
     public String[] getType() {
@@ -58,7 +49,7 @@ public class InputHandler implements JSONConnectionHandlerManager.ConnectionHand
     }
 
     @Override
-    public ArrayList<JsonResponse> getResponse(String method, ObjectNode jsonRequest) {
+    public ArrayList<JsonResponse> createResponse(String method, ObjectNode jsonRequest) {
         ArrayList<JsonResponse> jsonResponses = new ArrayList<>();
 
         methodName = method;

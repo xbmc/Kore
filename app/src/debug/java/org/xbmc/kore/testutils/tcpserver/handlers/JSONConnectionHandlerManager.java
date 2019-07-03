@@ -25,10 +25,13 @@ import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.JsonResponse;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import static org.xbmc.kore.jsonrpc.ApiMethod.ID_NODE;
@@ -37,143 +40,218 @@ import static org.xbmc.kore.jsonrpc.ApiMethod.METHOD_NODE;
 public class JSONConnectionHandlerManager implements MockTcpServer.TcpServerConnectionHandler {
     public static final String TAG = LogUtils.makeLogTag(JSONConnectionHandlerManager.class);
 
-    private HashMap<String, ConnectionHandler> handlersByType = new HashMap<>();
-    private HashSet<ConnectionHandler> handlers = new HashSet<>();
-    private StringBuffer buffer = new StringBuffer();
+    private final HashMap<String, ConnectionHandler> handlersByType = new HashMap<>();
     private int amountOfOpenBrackets = 0;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private int responseCount;
+    //HashMap used to prevent adding duplicate responses for the same methodId when invoking
+    //a handler multiple times.
+    private final HashMap<String, ArrayList<JsonResponse>> clientResponses = new HashMap<>();
 
-    private HashMap<String, ArrayList<JsonResponse>> clientResponses = new HashMap<>();
+    private final HashMap<String, MethodPendingState> methodIdsHandled = new HashMap<>();
+    private final HashSet<String> notificationsHandled = new HashSet<>();
 
-    public interface ConnectionHandler {
-        /**
-         * Used to determine which methods the handler implements
-         * @return list of JSON method names
-         */
-        String[] getType();
-
-        /**
-         * Used to get the response from a handler implementing the requested
-         * method.
-         * @param method requested method
-         * @param jsonRequest json node containing the original request
-         * @return {@link JsonResponse} that should be sent to the client
-         */
-        ArrayList<JsonResponse> getResponse(String method, ObjectNode jsonRequest);
-
-        /**
-         * Used to get any notifications from the handler.
-         * @return {@link JsonResponse} that should be sent to the client or null if there are no notifications
-         */
-        ArrayList<JsonResponse> getNotifications();
-
-        /**
-         * Should set the state of the handler to its initial state
-         */
-        void reset();
-    }
-
-    public void addHandler(ConnectionHandler handler) throws Exception {
-        for(String type : handler.getType()) {
-            handlersByType.put(type, handler);
+    public void addHandler(ConnectionHandler handler) {
+        synchronized (handlersByType) {
+            for (String type : handler.getType()) {
+                handlersByType.put(type, handler);
+            }
         }
-        handlers.add(handler);
     }
 
     @Override
-    public void processInput(char c) {
-        buffer.append(c);
+    public void processInput(Socket socket) {
+        StringBuilder stringBuffer = new StringBuilder();
+
+        try {
+            InputStreamReader in = new InputStreamReader(socket.getInputStream());
+            int i;
+            while (!socket.isClosed() && (i = in.read()) != -1) {
+                stringBuffer.append((char) i);
+                if (isEndOfJSONStringReached((char) i)) {
+                    processJSONInput(stringBuffer.toString());
+                    stringBuffer = new StringBuilder();
+                }
+            }
+        } catch (SocketException e) {
+            // Socket closed
+        } catch (IOException e) {
+            LogUtils.LOGD(TAG, "processInput: error reading from socket: " + socket +
+                               ", buffer holds: " + stringBuffer);
+            LogUtils.LOGE(TAG, e.getMessage());
+        }
+    }
+
+    /**
+     * Processes JSON input on individual characters.
+     * Each iteration should start with an opening accolade { and
+     * end with a closing accolade to indicate a complete JSON string has been
+     * fully processed.
+     * @param c
+     * @return true if a JSON string was fully processed, false otherwise
+     */
+    private boolean isEndOfJSONStringReached(char c) {
+        //We simply assume well formed JSON input so it should always start with
+        //a {. If we need to filter out other input we need to add an additional check
+        //to detect the first opening accolade.
         if ( c == '{' ) {
             amountOfOpenBrackets++;
         } else if ( c == '}' ) {
             amountOfOpenBrackets--;
         }
 
-        if ( amountOfOpenBrackets == 0 ) {
-            String input = buffer.toString();
-            buffer = new StringBuffer();
-            processJSONInput(input);
-        }
+        return amountOfOpenBrackets == 0;
     }
 
     private void processJSONInput(String input) {
         try {
-            JsonParser parser = objectMapper.getFactory().createParser(input);
-            ObjectNode jsonRequest = objectMapper.readTree(parser);
+            synchronized (clientResponses) {
+                LogUtils.LOGD(TAG, "processJSONInput: " + input);
+                JsonParser parser = objectMapper.getFactory().createParser(input);
+                ObjectNode jsonRequest = objectMapper.readTree(parser);
 
-            int methodId = jsonRequest.get(ID_NODE).asInt();
-            String method = jsonRequest.get(METHOD_NODE).asText();
-            ConnectionHandler connectionHandler = handlersByType.get(method);
-            if ( connectionHandler != null ) {
-                ArrayList<JsonResponse> responses = connectionHandler.getResponse(method, jsonRequest);
-                if (responses != null) {
-                    addResponse(methodId, responses);
+                int methodId = jsonRequest.get(ID_NODE).asInt();
+                String method = jsonRequest.get(METHOD_NODE).asText();
+
+                methodIdsHandled.put(String.valueOf(methodId), new MethodPendingState(method));
+
+                if (clientResponses.get(String.valueOf(methodId)) != null)
+                    return;
+
+                ConnectionHandler connectionHandler = handlersByType.get(method);
+                if (connectionHandler != null) {
+                    ArrayList<JsonResponse> responses = connectionHandler.getResponse(method, jsonRequest);
+                    if (responses != null) {
+                        clientResponses.put(String.valueOf(methodId), responses);
+                    }
                 }
+
+                parser.close();
             }
         } catch (IOException e) {
-            LogUtils.LOGE(getClass().getSimpleName(), e.getMessage());
+            LogUtils.LOGD(TAG, "processJSONInput: error parsing: " + input);
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
     @Override
     public String getResponse() {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
 
+        //Handle client responses
         synchronized (clientResponses) {
-            //Handle responses
-            Collection<ArrayList<JsonResponse>> jsonResponses = clientResponses.values();
-            for (ArrayList<JsonResponse> arrayList : jsonResponses) {
-                for (JsonResponse response : arrayList) {
-                    stringBuffer.append(response.toJsonString() + "\n");
+            for(Map.Entry<String, ArrayList <JsonResponse>> clientResponse : clientResponses.entrySet()) {
+                for (JsonResponse jsonResponse : clientResponse.getValue()) {
+                    LogUtils.LOGD(TAG, "sending response: " + jsonResponse.toJsonString());
+                    try {
+                        MethodPendingState methodPending = methodIdsHandled.get(jsonResponse.getId());
+                        methodPending.handled = true;
+                        stringBuilder.append(jsonResponse.toJsonString()).append("\n");
+                    } catch (Exception e) {
+                        LogUtils.LOGD(TAG, "getResponse: Error handling response: " + jsonResponse.toJsonString());
+                        LogUtils.LOGW(TAG, "getResponse: " + e);
+                    }
                 }
             }
             clientResponses.clear();
         }
 
-        //Handle notifications
-        for(ConnectionHandler handler : handlers) {
-            ArrayList<JsonResponse> jsonNotifications = handler.getNotifications();
-            if (jsonNotifications != null) {
+        synchronized (handlersByType) {
+            //Build a new set to make sure we only handle each handler once, even if it handles
+            //multiple types.
+            HashSet<ConnectionHandler> uniqueHandlers = new HashSet<>(handlersByType.values());
+
+            //Handle notifications
+            for (ConnectionHandler handler : uniqueHandlers) {
+                ArrayList<JsonResponse> jsonNotifications = handler.getNotifications();
                 for (JsonResponse jsonResponse : jsonNotifications) {
-                    stringBuffer.append(jsonResponse.toJsonString() +"\n");
+                    try {
+                        notificationsHandled.add(jsonResponse.getMethod());
+                        stringBuilder.append(jsonResponse.toJsonString()).append("\n");
+                    } catch (Exception e) {
+                        LogUtils.LOGD(TAG, "getResponse: Error handling notification: " + jsonResponse.toJsonString());
+                    }
                 }
             }
         }
-        responseCount++;
-        if (stringBuffer.length() > 0) {
-            return stringBuffer.toString();
+        if (stringBuilder.length() > 0) {
+            return stringBuilder.toString();
         } else {
             return null;
         }
     }
 
+    public void reset() {
+        synchronized (clientResponses) {
+            clearNotificationsHandled();
+            clearMethodsHandled();
+            clientResponses.clear();
+        }
+    }
+
+    public void clearMethodsHandled() {
+        methodIdsHandled.clear();
+    }
+
     /**
      * Waits until at least one response has been processed before returning
      */
-    public void waitForNextResponse(long timeOutMillis) throws TimeoutException {
-        responseCount = 0;
-        while ((responseCount < 2) && (timeOutMillis > 0)) {
+    public void waitForMethodHandled(String methodName, long timeOutMillis) throws TimeoutException {
+        while (! isMethodHandled(methodName) && (timeOutMillis > 0)) {
             try {
                 Thread.sleep(500);
                 timeOutMillis -= 500;
             } catch (InterruptedException e) {
-
+                LogUtils.LOGW(TAG, "waitForNextResponse got interrupted");
             }
         }
-        if (timeOutMillis < 0)
+        if (timeOutMillis <= 0)
+            throw new TimeoutException();
+    }
+
+    public void clearNotificationsHandled() {
+        notificationsHandled.clear();
+    }
+
+    /**
+     * Waits until at least one response has been processed before returning
+     */
+    public void waitForNotification(String methodName, long timeOutMillis) throws TimeoutException {
+        while (! notificationsHandled.contains(methodName) && (timeOutMillis > 0)) {
+            try {
+                Thread.sleep(500);
+                timeOutMillis -= 500;
+            } catch (InterruptedException e) {
+                LogUtils.LOGW(TAG, "waitForNextResponse got interrupted");
+            }
+        }
+        if (timeOutMillis <= 0)
             throw new TimeoutException();
     }
 
     private void addResponse(int id, ArrayList<JsonResponse> jsonResponses) {
-        ArrayList<JsonResponse> responses = clientResponses.get(String.valueOf(id));
-        if (responses == null) {
-            responses = new ArrayList<>();
-            synchronized (clientResponses) {
-                clientResponses.put(String.valueOf(id), responses);
+
+    }
+
+    private boolean isMethodHandled(String methodName) {
+        for(MethodPendingState methodPending : methodIdsHandled.values()) {
+            if (methodName.contentEquals(methodPending.name)) {
+                return methodPending.handled;
             }
         }
-        responses.addAll(jsonResponses);
+        return false;
+    }
+
+    private void setMethodHandled(String methodId) {
+
+    }
+
+    private static class MethodPendingState {
+        boolean handled;
+        String name;
+
+        MethodPendingState(String name) {
+            this.name = name;
+        }
     }
 }

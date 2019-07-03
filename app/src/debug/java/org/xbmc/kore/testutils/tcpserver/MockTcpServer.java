@@ -21,13 +21,13 @@ import com.squareup.okhttp.internal.Util;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.io.IOException;
+
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
@@ -45,7 +45,7 @@ public class MockTcpServer {
 
     private ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
     private ServerSocket serverSocket;
-    private boolean started;
+    private boolean running;
     private ExecutorService executor;
     private int port = -1;
     private InetSocketAddress inetSocketAddress;
@@ -62,10 +62,10 @@ public class MockTcpServer {
     public interface TcpServerConnectionHandler {
         /**
          * Processes received input
-         * @param c character received
+         * @param socket
          * @return id of associated response if any, -1 if more input is needed.
          */
-        void processInput(char c);
+        void processInput(Socket socket);
 
         /**
          * Gets the answer for this handler that should be returned to the server after input has been
@@ -93,8 +93,8 @@ public class MockTcpServer {
      * @throws IOException
      */
     public void start(InetSocketAddress inetSocketAddress) throws IOException {
-        if (started) throw new IllegalStateException("start() already called");
-        started = true;
+        if (running) throw new IllegalStateException("start() already called");
+        running = true;
         this.inetSocketAddress = inetSocketAddress;
 
         serverSocket = serverSocketFactory.createServerSocket();
@@ -106,46 +106,50 @@ public class MockTcpServer {
 
         port = serverSocket.getLocalPort();
 
+        LogUtils.LOGD(TAG, "start: server started on " + serverSocket.getInetAddress() + ":" + port);
+
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                try {
-                    acceptConnection();
-                } catch (Throwable e) {
-                    LogUtils.LOGE(TAG, " failed unexpectedly: " + e);
+                while (running) {
+                    try {
+                        Socket socket = acceptConnection();
+                        serveConnection(socket);
+                    } catch(IOException e){
+                        //Socket closed
+                        LogUtils.LOGD(TAG, "acceptConnection: " + e.getMessage());
+                    }
                 }
-
-                // Release all sockets and all threads, even if any close fails.
-                Util.closeQuietly(serverSocket);
-                for (Iterator<Socket> s = openClientSockets.iterator(); s.hasNext(); ) {
-                    Util.closeQuietly(s.next());
-                    s.remove();
-                }
-
-                executor.shutdown();
             }
 
-            private void acceptConnection() throws Exception {
-                while (true) {
-                    Socket socket;
-                    try {
-                        socket = serverSocket.accept();
-                    } catch (SocketException e) {
-                        //Socket closed
-                        return;
-                    }
+            private Socket acceptConnection() throws IOException {
+                Socket socket = serverSocket.accept();
+
+                synchronized (openClientSockets) {
                     openClientSockets.add(socket);
-                    serveConnection(socket);
                 }
+
+                return socket;
             }
         });
     }
 
     public synchronized void shutdown() throws IOException {
-        if (!started) return;
+        if (!running) return;
+
         if (serverSocket == null) throw new IllegalStateException("shutdown() before start()");
 
-        serverSocket.close();
+        running = false;
+
+        // Release all sockets and all threads, even if any close fails.
+        for (Iterator<Socket> s = openClientSockets.iterator(); s.hasNext(); ) {
+            Socket socket = s.next();
+            Util.closeQuietly(socket);
+            s.remove();
+        }
+        Util.closeQuietly(serverSocket);
+
+        executor.shutdown();
 
         // Await shutdown.
         try {
@@ -153,7 +157,7 @@ public class MockTcpServer {
                 throw new IOException("Gave up waiting for executor to shut down");
             }
         } catch (InterruptedException e) {
-            throw new AssertionError();
+            LogUtils.LOGD(TAG, "shutdown: " + e.getMessage());
         }
     }
 
@@ -178,22 +182,18 @@ public class MockTcpServer {
             @Override
             public void run() {
                 try {
-                    handleInput();
+                    LogUtils.LOGD(TAG, "serveConnection: handling client " + socket.getInetAddress()
+                                       + ":" + socket.getLocalPort());
+
+                    connectionHandler.processInput(socket);
+                    socket.close();
+
+                    synchronized (openClientSockets) {
+                        openClientSockets.remove(socket);
+                    }
                 } catch (IOException e) {
                     LogUtils.LOGW(TAG, "processing input from " + socket.getInetAddress() + " failed: " + e);
                 }
-            }
-
-            private void handleInput() throws IOException {
-                InputStreamReader in = new InputStreamReader(socket.getInputStream());
-
-                int i;
-                while ((i = in.read()) != -1) {
-                    connectionHandler.processInput((char) i);
-                }
-
-                socket.close();
-                openClientSockets.remove(socket);
             }
         });
 
@@ -201,11 +201,9 @@ public class MockTcpServer {
             @Override
             public void run() {
                 try {
-                    while (true) {
+                    while ( ! (serverSocket.isClosed() || socket.isClosed()) ) {
                         sendResponse();
                         Thread.sleep(100);
-                        if ( serverSocket.isClosed() )
-                            return;
                     }
                 } catch (IOException e) {
                     LogUtils.LOGW(TAG, " sending response from " + socket.getInetAddress() + " failed: " + e);
@@ -216,9 +214,10 @@ public class MockTcpServer {
 
             private void sendResponse() throws IOException {
                 PrintWriter out =
-                        new PrintWriter(socket.getOutputStream(), true);
+                        new PrintWriter(socket.getOutputStream(), false);
                 String answer = connectionHandler.getResponse();
                 if (answer != null) {
+                    LogUtils.LOGD(TAG, "serveConnection: sendResponse: " +answer);
                     out.print(answer);
                     out.flush();
                 }

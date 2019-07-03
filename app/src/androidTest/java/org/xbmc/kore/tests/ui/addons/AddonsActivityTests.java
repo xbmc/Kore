@@ -26,7 +26,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.xbmc.kore.R;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.testhelpers.EspressoTestUtils;
 import org.xbmc.kore.testhelpers.action.ViewActions;
 import org.xbmc.kore.tests.ui.AbstractTestClass;
@@ -65,7 +64,6 @@ import static org.xbmc.kore.testhelpers.EspressoTestUtils.selectListItemPressBac
  * {@link org.xbmc.kore.ui.sections.addon.AddonsActivity} to become idle.
  */
 public class AddonsActivityTests extends AbstractTestClass<AddonsActivity> {
-
     @Rule
     public ActivityTestRule<AddonsActivity> mActivityRule = new ActivityTestRule<>(AddonsActivity.class);
 
