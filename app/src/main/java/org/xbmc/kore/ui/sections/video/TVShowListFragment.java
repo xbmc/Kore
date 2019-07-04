@@ -354,7 +354,25 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             return viewHolder;
         }
 
-        protected int getSectionColumnIdx() { return TVShowListQuery.TITLE; }
+        protected int getSectionColumnIdx() {
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .getInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.DEFAULT_PREF_TVSHOWS_SORT_ORDER);
+            if (sortOrder == Settings.SORT_BY_YEAR) {
+                return TVShowListQuery.PREMIERED;
+            } else {
+                return TVShowListQuery.TITLE;
+            }
+        }
+
+        protected int getSectionType() {
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .getInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.DEFAULT_PREF_TVSHOWS_SORT_ORDER);
+            if (sortOrder == Settings.SORT_BY_YEAR) {
+                return RecyclerViewCursorAdapter.SECTION_TYPE_DATE_STRING;
+            } else {
+                return RecyclerViewCursorAdapter.SECTION_TYPE_ALPHANUMERIC;
+            }
+        }
     }
 
     /**

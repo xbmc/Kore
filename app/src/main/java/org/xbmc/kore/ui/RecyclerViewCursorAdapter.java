@@ -30,6 +30,11 @@ abstract public class RecyclerViewCursorAdapter
     private int rowIDColumn;
     protected Cursor cursor;
 
+    // Section types
+    public static final int SECTION_TYPE_ALPHANUMERIC = 0,
+            SECTION_TYPE_YEAR_INTEGER = 1,
+            SECTION_TYPE_DATE_STRING = 2;
+
     @Override
     public void onBindViewHolder(CursorViewHolder holder, int position) {
         if (!dataValid) {
@@ -71,7 +76,21 @@ abstract public class RecyclerViewCursorAdapter
             throw new IllegalStateException("Could not move cursor to position " + position);
         }
 
-        return cursor.getString(getSectionColumnIdx()).substring(0, 1).toUpperCase();
+        int sectionType = getSectionType();
+        int sectionColumnIdx = getSectionColumnIdx();
+        String sectionName = "";
+        if (sectionType == SECTION_TYPE_YEAR_INTEGER) {
+            sectionName = String.format("%02d", cursor.getInt(sectionColumnIdx) % 100);
+        } else if (sectionType == SECTION_TYPE_DATE_STRING) {
+            String dateStr = cursor.getString(sectionColumnIdx);
+            if (dateStr.length() >= 4) {
+                sectionName = dateStr.substring(2, 4);
+            }
+        } else {
+            sectionName = cursor.getString(sectionColumnIdx).substring(0, 1).toUpperCase();
+        }
+
+        return sectionName;
     }
 
     /**
@@ -81,6 +100,10 @@ abstract public class RecyclerViewCursorAdapter
      * @return Cursor column index of the field to show in the fastscroller
      */
     abstract protected int getSectionColumnIdx();
+
+    protected int getSectionType() {
+        return SECTION_TYPE_ALPHANUMERIC;
+    }
 
     public void swapCursor(Cursor newCursor) {
         if (newCursor == cursor) {
