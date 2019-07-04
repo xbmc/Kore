@@ -104,6 +104,18 @@ public class EspressoTestUtils {
     }
 
     /**
+     * Clicks the button with given resourceId and checks if the
+     * button is displayed. As we occasionally use the same identifiers
+     * in multiple fragments, we need to check if it is visible as well
+     * to prevent Espresso from finding multiple views that match the
+     * resource identifier.
+     * @param resourceId
+     */
+    public static void clickButton(int resourceId) {
+        onView(allOf(withId(resourceId), isDisplayed())).perform(click());
+    }
+
+    /**
      * Clicks on the search menu item and enters the given search query
      * @param activity
      * @param query
@@ -199,6 +211,15 @@ public class EspressoTestUtils {
     public static void checkRecyclerViewListsize(int listSize, int resourceId) {
         onView(allOf(withId(resourceId), isDisplayed()))
                 .check(matches(Matchers.withRecyclerViewSize(listSize)));
+    }
+
+    /**
+     * Checks that the list size matches the given list size
+     * @param listSize amount of elements expected in list
+     */
+    public static void checkListViewSize(int listSize, int resourceId) {
+        onView(allOf(withId(resourceId), isDisplayed()))
+                .check(matches(Matchers.withListViewSize(listSize)));
     }
 
     /**

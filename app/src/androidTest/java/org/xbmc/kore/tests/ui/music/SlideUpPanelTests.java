@@ -87,9 +87,9 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         super.setUp();
 
         getPlaylistHandler().reset();
-        getPlaylistHandler().addItemToPlaylist(Playlist.playlistID.AUDIO, createMusicItem(0, 0));
-        getPlaylistHandler().addItemToPlaylist(Playlist.playlistID.VIDEO, createVideoItem(0, 1));
-        getPlaylistHandler().addItemToPlaylist(Playlist.playlistID.VIDEO, createMusicVideoItem(0, 2));
+        getPlaylistHandler().addItemToPlaylist(Playlist.playlistID.AUDIO, createMusicItem(0, 0), true);
+        getPlaylistHandler().addItemToPlaylist(Playlist.playlistID.VIDEO, createVideoItem(0, 1), false);
+        getPlaylistHandler().addItemToPlaylist(Playlist.playlistID.VIDEO, createMusicVideoItem(0, 2), false);
 
         getPlayerHandler().reset();
         getPlayerHandler().setPlaylists(getPlaylistHandler().getPlaylists());
