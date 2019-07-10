@@ -673,12 +673,12 @@ public class PlaylistFragment extends Fragment
                                             .inflate(R.layout.grid_item_playlist, parent, false);
                 // ViewHolder pattern
                 viewHolder = new ViewHolder();
-                viewHolder.art = (ImageView)convertView.findViewById(R.id.art);
-                viewHolder.title = (TextView)convertView.findViewById(R.id.title);
-                viewHolder.details = (TextView)convertView.findViewById(R.id.details);
-                viewHolder.contextMenu = (ImageView)convertView.findViewById(R.id.list_context_menu);
-                viewHolder.duration = (TextView)convertView.findViewById(R.id.duration);
-                viewHolder.card = (CardView)convertView.findViewById(R.id.card);
+                viewHolder.art = convertView.findViewById(R.id.art);
+                viewHolder.title = convertView.findViewById(R.id.playlist_item_title);
+                viewHolder.details = convertView.findViewById(R.id.details);
+                viewHolder.contextMenu = convertView.findViewById(R.id.list_context_menu);
+                viewHolder.duration = convertView.findViewById(R.id.duration);
+                viewHolder.card = convertView.findViewById(R.id.card);
 
                 convertView.setTag(viewHolder);
             } else {
