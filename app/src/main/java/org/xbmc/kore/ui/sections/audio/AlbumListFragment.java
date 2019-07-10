@@ -333,7 +333,25 @@ public class AlbumListFragment extends AbstractCursorListFragment {
             }
         };
 
-        protected int getSectionColumnIdx() { return AlbumListQuery.TITLE; }
+        protected int getSectionColumnIdx() {
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(fragment.getContext())
+                    .getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
+            if (sortOrder == Settings.SORT_BY_YEAR) {
+                return AlbumListQuery.YEAR;
+            } else {
+                return AlbumListQuery.TITLE;
+            }
+        }
+
+        protected int getSectionType() {
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(fragment.getContext())
+                    .getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
+            if (sortOrder == Settings.SORT_BY_YEAR) {
+                return RecyclerViewCursorAdapter.SECTION_TYPE_YEAR_INTEGER;
+            } else {
+                return RecyclerViewCursorAdapter.SECTION_TYPE_ALPHANUMERIC;
+            }
+        }
     }
 
     /**

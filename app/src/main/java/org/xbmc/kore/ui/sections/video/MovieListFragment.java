@@ -362,7 +362,25 @@ public class MovieListFragment extends AbstractCursorListFragment {
             return new ViewHolder(view, getContext(), themeAccentColor, dimmedNeutralColor, hostManager, artWidth, artHeight);
         }
 
-        protected int getSectionColumnIdx() { return MovieListQuery.TITLE; }
+        protected int getSectionColumnIdx() {
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
+            if (sortOrder == Settings.SORT_BY_YEAR) {
+                return MovieListQuery.YEAR;
+            } else {
+                return MovieListQuery.TITLE;
+            }
+        }
+
+        protected int getSectionType() {
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
+            if (sortOrder == Settings.SORT_BY_YEAR) {
+                return RecyclerViewCursorAdapter.SECTION_TYPE_YEAR_INTEGER;
+            } else {
+                return RecyclerViewCursorAdapter.SECTION_TYPE_ALPHANUMERIC;
+            }
+        }
     }
 
     /**
