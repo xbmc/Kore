@@ -79,14 +79,14 @@
     <string name="wizard_welcome">ברוך בואך</string>
     <string name="wizard_welcome_message"><![CDATA[
     נוכל להתחיל בהוספת מרכז מדיה. נא לוודא כי Kodi/XBMC פעיל, מוגדר כראוי ובאותה הרשת עם ההתקן שלך.<br/><br/>
-    ניתן לקבל עזרה בהגדרות <a href=\"http://syncedsynapse.com/kore/kore-faq/>כאן</a>.<br/><br/>
+    ניתן לקבל עזרה בהגדרות <a href=\"http://syncedsynapse.com/kore/kore-faq/">כאן</a>.<br/><br/>
     לאחר סיום ההכנות יש ללחוץ <b>כאן</b>.
     ]]></string>
     <string name="wizard_search_message"><![CDATA[
     מתבצע חיפוש אחר מרכזי מדיה ברשת המקומית שלך…<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
-    לא נמצאו מרכזי מדיה ברשת שלך.<br/>אם נדרשת לך עזרה בהגדרה, כדאי לעיין <a href=\"http://syncedsynapse.com/kore/kore-faq/>כאן</a>.<br/><br/>
+    לא נמצאו מרכזי מדיה ברשת שלך.<br/>אם נדרשת לך עזרה בהגדרה, כדאי לעיין <a href=\"http://syncedsynapse.com/kore/kore-faq/">כאן</a>.<br/><br/>
     יש ללחוץ על <b>חיפוש</b> כדי לחפש שוב או על <b>הבא</b> לצורך הגדרה ידנית.
     ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[

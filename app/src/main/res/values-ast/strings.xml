@@ -47,14 +47,14 @@
   <string name="wizard_welcome">Bienllegáu</string>
   <string name="wizard_welcome_message"><![CDATA[
 Vamos entamar amestando un centru multimedia. Asegúrate que\'l to Kodi/XBMC ta executándose, configuráu afayadizamente y na mesma rede que\'l to preséu.<br/><br/>
-<a href=\"http://syncedsynapse.com/kore/kore-faq/>Equí</a> pues consiguir ayuda configurándolu.<br/><br/> 
+<a href=\"http://syncedsynapse.com/kore/kore-faq/">Equí</a> pues consiguir ayuda configurándolu.<br/><br/>
 Cuando teas preparáu primi <b><i>Siguiente</i></b>.
 ]]></string>
   <string name="wizard_search_message"><![CDATA[
 Guetando centros multimedia na to rede llocal…<br/>
 ]]></string>
   <string name="wizard_search_no_host_found"><![CDATA[
-Nun pudi alcontrar centru multimedia dalu na to rede.<br/>Si precises ayuda configurándolu, mira <a href=\"http://syncedsynapse.com/kore/kore-faq/>equí</a>.<br/><br/>
+Nun pudi alcontrar centru multimedia dalu na to rede.<br/>Si precises ayuda configurándolu, mira <a href=\"http://syncedsynapse.com/kore/kore-faq/">equí</a>.<br/><br/>
 Primi <i>Guetar</i> pa guetar de nueves o <i>Siguiente</i> pa la configuración manual.
 ]]></string>
   <string name="wizard_search_no_network_connection"><![CDATA[

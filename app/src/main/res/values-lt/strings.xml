@@ -71,14 +71,14 @@
     <string name="wizard_welcome">Sveiki</string>
     <string name="wizard_welcome_message"><![CDATA[
     Pirmiausia pridėkite media centrą. Įsitikinkite, kad Kodi/XBMC paleistas, teisingai sukonfigūruotas ir yra tame pačiame tinkle kaip ir jūsų įrenginys.<br/><br/>
-    Kaip jį sukonfigūruoti, galite rasti <a href="http://syncedsynapse.com/kore/kore-faq/>čia</a>.<br/><br/>
+    Kaip jį sukonfigūruoti, galite rasti <a href="http://syncedsynapse.com/kore/kore-faq/">čia</a>.<br/><br/>
     Kai būsite pasiruošę, spauskite <b><i>Toliau</i></b>.
     ]]></string>
     <string name="wizard_search_message"><![CDATA[
     Ieškoma media centrų vietiniame tinkle…<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
-    Nepavyko rasti jokio media centro jūsų tinkle.<br/>Jei reikia pagalbos jį konfigūruojant, spauskite <a href="http://syncedsynapse.com/kore/kore-faq/>čia</a>.<br/><br/>
+    Nepavyko rasti jokio media centro jūsų tinkle.<br/>Jei reikia pagalbos jį konfigūruojant, spauskite <a href="http://syncedsynapse.com/kore/kore-faq/">čia</a>.<br/><br/>
     Spauskite <i>Ieškoti</i> norėdami ieškoti dar kartą arba <i>Toliau</i> norėdami konfigūruoti rankiniu būdu.
     ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[

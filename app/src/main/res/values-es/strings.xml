@@ -57,13 +57,13 @@
   <string name="wizard_welcome">Bienvenido</string>
   <string name="wizard_welcome_message"><![CDATA[
     Empecemos añadiendo un centro multimedia. Asegúrate que Kodi/XBMC está correctamente configurado y funcionando y en la misma red que este dispositivo.<br/><br/>
-    Puedes obtener ayuda para configurarlo <a href="http://syncedsynapse.com/kore/kore-faq/>aquí</a>.<br/><br/>
+    Puedes obtener ayuda para configurarlo <a href="http://syncedsynapse.com/kore/kore-faq/">aquí</a>.<br/><br/>
     Cuando estés listo pulsa <b><i>Siguiente</i></b>.
     ]]></string>
   <string name="wizard_search_message"><![CDATA[
     Buscando centros multimedia en tu red local…<br/>
     ]]></string>
-  <string name="wizard_search_no_host_found"><![CDATA[     No se encontraron centrosequipos en tu red. <br/> Si necesitas ayuda para configurarlo, Pulsa <a href="http://syncedsynapse.com/kore/kore-faq/>aquí</a>.<br/><br/>
+  <string name="wizard_search_no_host_found"><![CDATA[     No se encontraron centrosequipos en tu red. <br/> Si necesitas ayuda para configurarlo, Pulsa <a href="http://syncedsynapse.com/kore/kore-faq/">aquí</a>.<br/><br/>
     Pulsa <i>Buscar</i> para buscar de nuevo o <i>Siguiente</i> para configuración manual.
         ]]></string>
   <string name="wizard_search_host_found"><![CDATA[Se encontraron estos centros multimedia en su red.<br/><br/>Seleccione uno para añadir o presione <i>Siguiente</i> para añadir manualmente uno.]]></string>

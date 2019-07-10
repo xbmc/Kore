@@ -70,14 +70,14 @@
     <string name="wizard_welcome">Benvenuto</string>
     <string name="wizard_welcome_message"><![CDATA[
     Cominciamo aggiungendo un media center. Assicurati che il tuo Kodi/XBMC sia in esecuzione, correttamente configurato e sulla stessa rete del tuo dispositivo.<br/><br/>
-    Puoi trovare aiuto per la configurazione <a href="http://syncedsynapse.com/kore/kore-faq/>qui</a>.<br/><br/>
+    Puoi trovare aiuto per la configurazione <a href="http://syncedsynapse.com/kore/kore-faq/">qui</a>.<br/><br/>
     Quando sei pronto premi su <b><i>Avanti</i></b>.
     ]]></string>
     <string name="wizard_search_message"><![CDATA[
     Ricerca dei media center sulla tua rete locale…<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
-    Non riesco a trovare media center sulla tua rete.<br/>Se hai bisogno di aiuto per la configurazione, controlla <a href="http://syncedsynapse.com/kore/kore-faq/>qui</a>.<br/><br/>
+    Non riesco a trovare media center sulla tua rete.<br/>Se hai bisogno di aiuto per la configurazione, controlla <a href="http://syncedsynapse.com/kore/kore-faq/">qui</a>.<br/><br/>
     Clicca su <i>Ricerca</i> per cercare ancora o <i>Avanti</i> per la configurazione manuale.
     ]]></string>
     <string name="wizard_search_host_found"><![CDATA[
