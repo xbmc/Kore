@@ -674,7 +674,7 @@ public class PlaylistFragment extends Fragment
                 // ViewHolder pattern
                 viewHolder = new ViewHolder();
                 viewHolder.art = (ImageView)convertView.findViewById(R.id.art);
-                viewHolder.title = (TextView)convertView.findViewById(R.id.title);
+                viewHolder.title = (TextView)convertView.findViewById(R.id.playlist_item_title);
                 viewHolder.details = (TextView)convertView.findViewById(R.id.details);
                 viewHolder.contextMenu = (ImageView)convertView.findViewById(R.id.list_context_menu);
                 viewHolder.duration = (TextView)convertView.findViewById(R.id.duration);
