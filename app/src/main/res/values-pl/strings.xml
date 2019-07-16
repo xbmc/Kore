@@ -87,7 +87,7 @@
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
     Nie znaleziono żadnych odtwarzaczy w sieci.<br/>Jeśli potrzebujesz pomocy w konfiguracji, wejdź <a href=\"http://syncedsynapse.com/kore/kore-faq/">tutaj</a>.<br/><br/>
-    Kliknij <i>Wyszukaj</i>, aby wyszukać ponownie lub <i>Dalej</i>, aby przejść do ręcznej konfiguracji..
+    Kliknij <i>Wyszukaj</i>, aby wyszukać ponownie lub <i>Dalej</i>, aby przejść do ręcznej konfiguracji.
     ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     Przed wyszukiwaniem odtwarzaczy włącz połączenie sieciowe.<br/>
