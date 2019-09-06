@@ -80,293 +80,293 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Vitajte</string>
     <string name="wizard_welcome_message"><![CDATA[
-    Let\'s start by adding a media center. Make sure your Kodi/XBMC is running, properly configured and on the same network as your device.<br/><br/>
-    You can get help configuring it <a href="http://syncedsynapse.com/kore/kore-faq/">here</a>.<br/><br/>
-    When you\'re ready press <b><i>Next</i></b>.
+    Začnite pridaním multimediálneho centra. Uistite sa, že rozhranie Kodi/XBMC je spustené, správne nastavené a na rovnakej sieti, ako toto zariadenie.<br/><br/>
+    Pomoc s nastavením nájdete <a href="http://syncedsynapse.com/kore/kore-faq/">na tejto adrese</a>.<br/><br/>
+    Ak ste pripravený, pokračujte tlačidlom <b><i>Ďalej</i></b>.
     ]]></string>
     <string name="wizard_search_message"><![CDATA[
-    Searching for media centers on your local network…<br/>
+    Hľadajú sa multimediálne centrá vo vašej lokálnej sieti…<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
-    I couldn\'t find any media center on your network.<br/>If you need help configuring it, check <a href="http://syncedsynapse.com/kore/kore-faq/">here</a>.<br/><br/>
-    Click <i>Search</i> to search again or <i>Next</i> for manual configuration.
+    Nenašli sa multimediálne centrá vo vašej sieti.<br/>Ak potrebujete pomoc s nastavením, nájdete ju <a href="http://syncedsynapse.com/kore/kore-faq/">na tejto adrese</a>.<br/><br/>
+    Pokračujte tlačidlom <i>Hľadať</i>, ak chcete hľadanie opakovať, alebo tlačidlom <i>Ďalej</i> pre ručné nastavenie.
     ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[
-    Please enable a network connection before searching for media centers.<br/>
+    Prosím, pred hľadaním multimediálnych centier povolte sieťové pripojenie.<br/>
     ]]></string>
     <string name="wizard_search_host_found"><![CDATA[
-    I found these media centers on your network.<br/><br/>Select one to add or press <i>Next</i> to manually add a new one.
+    Našli sa tieto multimediálne centrá vo vašej sieti.<br/><br/>Vyberte jedno a pridajte ho, alebo použite tlačidlo <i>Ďalej</i> na ručné pridanie iného centra.
     ]]></string>
-    <string name="no_network_connection">No network connection</string>
-    <string name="searching">Searching…</string>
-    <string name="no_xbmc_found">No media center found</string>
-    <string name="xbmc_found">Media center found</string>
-    <string name="wizard_manual_configuration">Manual configuration</string>
-    <string name="wizard_manual_configuration_message">Enter your media center configuration:</string>
-    <string name="wizard_manual_configuration_message_advanced">Advanced configuration (leave blank for defaults)</string>
-    <string name="wizard_xbmc_name">Media center name</string>
-    <string name="wizard_xbmc_ip">Address</string>
+    <string name="no_network_connection">Žiadne pripojenie k sieti</string>
+    <string name="searching">Vyhľadávanie…</string>
+    <string name="no_xbmc_found">Nenašlo sa multimediálne centrum</string>
+    <string name="xbmc_found">Našlo sa multimediálne centrum</string>
+    <string name="wizard_manual_configuration">Ručné nastavenie</string>
+    <string name="wizard_manual_configuration_message">Zadajte nastavenia vášho multimediálneho centra:</string>
+    <string name="wizard_manual_configuration_message_advanced">Pokročilé nastavenia (ponechajte prázdne pre východzie)</string>
+    <string name="wizard_xbmc_name">Názov multimediálneho centra</string>
+    <string name="wizard_xbmc_ip">Adresa</string>
     <string name="wizard_xbmc_port">Port</string>
-    <string name="wizard_xbmc_username">Username</string>
-    <string name="wizard_xbmc_password">Password</string>
+    <string name="wizard_xbmc_username">Používateľské meno</string>
+    <string name="wizard_xbmc_password">Heslo</string>
     <string name="wizard_xbmc_tcp_port">TCP port (9090)</string>
-    <string name="wizard_xbmc_mac_address">MAC address</string>
+    <string name="wizard_xbmc_mac_address">MAC adresa</string>
     <string name="wizard_xbmc_wol_port">WoL port (9)</string>
-    <string name="wizard_xbmc_use_tcp">Use TCP</string>
+    <string name="wizard_xbmc_use_tcp">Použiť TCP</string>
     <string name="wizard_xbmc_event_server_port">ES Port (9777)</string>
-    <string name="wizard_xbmc_use_event_server">Use EventServer</string>
+    <string name="wizard_xbmc_use_event_server">Použiť EventServer</string>
 
-    <string name="wizard_no_name_specified">Please specify a name for this media center, so you can identify it later.</string>
-    <string name="wizard_no_address_specified">Please specify the address of this media center, so I can locate it.</string>
-    <string name="wizard_invalid_http_port_specified">Please specify a valid HTTP port for this media center.</string>
-    <string name="wizard_invalid_tcp_port_specified">Please specify a valid TCP port for this media center.</string>
-    <string name="wizard_invalid_es_port_specified">Please specify a valid EventServer port for this media center.</string>
+    <string name="wizard_no_name_specified">Prosím, zadajte názov tohto multimediálneho centra, aby ste ho neskôr mohli rozoznať.</string>
+    <string name="wizard_no_address_specified">Prosím, zadajte adresu tohto multimediálneho centra, aby som ho mohol nájsť.</string>
+    <string name="wizard_invalid_http_port_specified">Prosím, zadajte platný HTTP port tohto multimediálneho centra.</string>
+    <string name="wizard_invalid_tcp_port_specified">Prosím, zadajte platný TCP port tohto multimediálneho centra.</string>
+    <string name="wizard_invalid_es_port_specified">Prosím, zadajte platný EventServer port tohto multimediálneho centra.</string>
 
-    <string name="wizard_connecting_to_xbmc_title">Connecting to %1$s…</string>
-    <string name="wizard_connecting_to_xbmc_message">Please wait while I try to connect to your media center…</string>
+    <string name="wizard_connecting_to_xbmc_title">Pripája sa k %1$s…</string>
+    <string name="wizard_connecting_to_xbmc_message">Pripájam sa k vášmu multimediálnemu centru. Prosím, čakajte…</string>
 
-    <string name="wizard_empty_authentication">Kodi/XBMC requires authentication.\nPlease specify a username and password.</string>
-    <string name="wizard_incorrect_authentication">Wrong username and/or password.\nPlease check your credentials.</string>
-    <string name="wizard_success_connecting">Connected to Kodi/XBMC.</string>
-    <string name="wizard_error_connecting">Couldn\'t connect to Kodi/XBMC.\nPlease check the configuration.</string>
+    <string name="wizard_empty_authentication">Kodi/XBMC vyžaduje prihlásenie.\nProsím, zadajte používateľské meno a heslo.</string>
+    <string name="wizard_incorrect_authentication">Nesprávne používateľské meno a/alebo heslo.\nProsím, skontrolujte vaše prihlasovacie údaje.</string>
+    <string name="wizard_success_connecting">Pripojený ku Kodi/XBMC.</string>
+    <string name="wizard_error_connecting">Nepodarilo sa pripojiť ku Kodi/XBMC.\nProsím, skontrolujte nastavenia.</string>
 
     <string name="wizard_done">All done!</string>
     <string name="wizard_done_message"><![CDATA[
-    Your media center is configured.<br/>
-    You can now use the remote to control it. Your library is being synced, and should be available in a few moments.<br/><br/>
-    Press <b><i>Finish</i></b> to start using the remote.
+    Vaše multimediálne centrum je nastavené.<br/>
+    Môžete použiť diaľkový ovládač na jeho správu. Vaša knižnica bola synchronizovaná a bude prístupná o chvíľu.<br/><br/>
+    Použite tlačidlo <b><i>Dokončiť</i></b> a spravujte vaše multimediálne centrum týmto diaľkovým ovládačom.
     ]]></string>
 
-    <string name="wizard_zeroconf_no_host_address">Couldn\'t get this media center address!</string>
-    <string name="wizard_zeroconf_cant_connect_no_host_address">Can\'t connect to this media center because i wasn\'t able to discover its address.</string>
+    <string name="wizard_zeroconf_no_host_address">Nepodarilo sa získať adresu tohto multimediálneho centra!</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Nepodarilo sa pripojiť k tomuto multimediálnemu centru, pretože nebolo možné získať jeho adresu.</string>
 
-    <string name="play">Play</string>
-    <string name="pause">Pause</string>
+    <string name="play">Prehrať</string>
+    <string name="pause">Pauza</string>
     <string name="stop">Stop</string>
-    <string name="fast_forward">Fast Forward</string>
-    <string name="rewind">Rewind</string>
+    <string name="fast_forward">Pretočiť dopredu</string>
+    <string name="rewind">Pretočiť dozadu</string>
 
-    <string name="repeat">Repeat</string>
-    <string name="shuffle">Shuffle</string>
-    <string name="volume_up">Volume up</string>
-    <string name="volume_down">Volume down</string>
-    <string name="volume_mute">Mute</string>
-    <string name="subtitles">Subtitles</string>
-    <string name="audiostreams">Audiostreams</string>
-    <string name="no_audiostream">No audiostream available</string>
-    <string name="download_subtitle">Download subtitles</string>
-    <string name="none">None</string>
-    <string name="audio_sync">Sync audio</string>
-    <string name="subtitle_sync">Sync subtitles</string>
+    <string name="repeat">Opakovať</string>
+    <string name="shuffle">Náhodne</string>
+    <string name="volume_up">Hlasnejšie</string>
+    <string name="volume_down">Tichšie</string>
+    <string name="volume_mute">Stlmiť</string>
+    <string name="subtitles">Titulky</string>
+    <string name="audiostreams">Zvukové stopy</string>
+    <string name="no_audiostream">Žiadne zvukové stopy</string>
+    <string name="download_subtitle">Stiahnuť titulky</string>
+    <string name="none">Žiadne</string>
+    <string name="audio_sync">Synchronizovať audio</string>
+    <string name="subtitle_sync">Synchronizovať titulky</string>
 
-    <string name="left">Left</string>
-    <string name="right">Right</string>
-    <string name="up">Up</string>
-    <string name="down">Down</string>
-    <string name="select">Select</string>
+    <string name="left">Vľavo</string>
+    <string name="right">Vpravo</string>
+    <string name="up">Hore</string>
+    <string name="down">Dole</string>
+    <string name="select">Vybrať</string>
     <string name="info">Info</string>
-    <string name="codec_info">Codec</string>
-    <string name="context">Context</string>
+    <string name="codec_info">Kodek</string>
+    <string name="context">Kontext</string>
     <string name="osd">Menu</string>
-    <string name="back">Back</string>
+    <string name="back">Späť</string>
 
-    <string name="previous">Previous</string>
-    <string name="next">Next</string>
-    <string name="finish">Finish</string>
+    <string name="previous">Predošlé</string>
+    <string name="next">Ďalej</string>
+    <string name="finish">Dokončiť</string>
     <string name="test_connection">Test</string>
-    <string name="search_again">Search again</string>
+    <string name="search_again">Opakovať hľadanie</string>
 
-    <string name="remove">Remove</string>
-    <string name="edit">Edit</string>
-    <string name="wake_up">Wake up</string>
-    <string name="edit_xbmc">Edit media center</string>
-    <string name="delete_xbmc">Delete media center</string>
-    <string name="delete_xbmc_confirm">Are you sure you want to delete this media center?</string>
-    <string name="queue_file">Queue</string>
-    <string name="play_file">Play</string>
-    <string name="play_from_here">Play From Here</string>
+    <string name="remove">Odstrániť</string>
+    <string name="edit">Upraviť</string>
+    <string name="wake_up">Zobudiť</string>
+    <string name="edit_xbmc">Upraviť multimediálne centrum</string>
+    <string name="delete_xbmc">Vymazať multimediálne centrum</string>
+    <string name="delete_xbmc_confirm">Určite chcete vymazať toto multimediálne centrum?</string>
+    <string name="queue_file">Fronta</string>
+    <string name="play_file">Prehrať</string>
+    <string name="play_from_here">Prehrať odtiaľto</string>
 
-    <string name="connecting_to_xbmc">Connecting…</string>
-    <string name="unable_to_connect_to_xbmc">Unable to connect to media center</string>
-    <string name="connected_to_xbmc">Connected</string>
-    <string name="xbmc_available">Available</string>
-    <string name="xbmc_unavailable">Unavailable</string>
+    <string name="connecting_to_xbmc">Pripája sa…</string>
+    <string name="unable_to_connect_to_xbmc">Nepodarilo sa pripojiť k multimediálnemu centru</string>
+    <string name="connected_to_xbmc">Pripojené</string>
+    <string name="xbmc_available">Dostupné</string>
+    <string name="xbmc_unavailable">Nedostupné</string>
 
-    <string name="nothing_playing">Nothing playing</string>
+    <string name="nothing_playing">Nič sa neprehráva</string>
 
     <!-- Main view tabs -->
-    <string name="now_playing">Now playing</string>
-    <string name="remote">Remote</string>
-    <string name="playlist">Playlist</string>
+    <string name="now_playing">Práve sa prehráva</string>
+    <string name="remote">Ovládač</string>
+    <string name="playlist">Zoznam</string>
 
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
-    <string name="season_episode">Season %1$02d | Episode %2$02d</string>
-    <string name="season_number">Season %1$02d</string>
+    <string name="season_episode">Séria %1$02d | Epizóda %2$02d</string>
+    <string name="season_number">Séria %1$02d</string>
     <string name="episode_number">%1$d</string>
 
-    <string name="votes">%1$s votes</string>
+    <string name="votes">Hlasov: %1$s</string>
     <string name="max_rating">/%1$s</string>
     <string name="max_rating_video">/10</string>
     <string name="max_rating_music">/5</string>
 
     <string name="fanart">Fanart</string>
-    <string name="poster">Poster</string>
-    <string name="thumbnail">Thumbnail</string>
+    <string name="poster">Plagát</string>
+    <string name="thumbnail">Miniatúra</string>
 
-    <string name="error_getting_properties">Couldn\'t get Kodi/XBMC properties.\nError message:
+    <string name="error_getting_properties">Nepodarilo sa načítať nastavenia Kodi/XBMC.\nChybové hlásenie:
         %1$s.</string>
-    <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\nError message: %1$s.</string>
-    <string name="error_getting_addon_info">Couldn\'t get Addon information.\nError message:
+    <string name="error_executing_subtitles">Nepodarilo sa spustiť rozšírenie pre titulky.\nChybové hlásenie: %1$s.</string>
+    <string name="error_getting_addon_info">Nepodarilo sa získať informácie o rozšírení.\nChybové hlásenie:
         %1$s.</string>
-    <string name="error_getting_source_info">Couldn\'t browse files.\nError message:
+    <string name="error_getting_source_info">Nepodarilo sa načítať zoznam súborov.\nChybové hlásenie:
         %1$s.</string>
-    <string name="error_play_media_file">Couldn\'t play media file.\nError message:
+    <string name="error_play_media_file">Nepodarilo sa prehrať multimediálny súbor.\nChybové hlásenie:
         %1$s.</string>
-    <string name="error_queue_media_file">Couldn\'t queue media file.\nError message:
+    <string name="error_queue_media_file">Nepodarilo sa zaradiť súbor do fronty.\nChybové hlásenie:
         %1$s.</string>
-    <string name="error_get_active_player">Couldn\'t get active player.\nError message:
+    <string name="error_get_active_player">Nepodarilo sa aktivovať prehrávač.\nChybové hlásenie:
         %1$s.</string>
-    <string name="error_share_video">Couldn\'t share video to Kodi/XBMC.</string>
+    <string name="error_share_video">Nepodarilo sa zdielať video do Kodi/XBMC.</string>
 
-    <string name="directors">Directors:</string>
-    <string name="studio">Studio:</string>
-    <string name="cast">Cast</string>
-    <string name="additional_cast">Additional cast</string>
-    <string name="cast_list_text">%1$s as %2$s</string>
+    <string name="directors">Réžia:</string>
+    <string name="studio">Štúdio:</string>
+    <string name="cast">Obsadenie</string>
+    <string name="additional_cast">Ďalšie obsadenie</string>
+    <string name="cast_list_text">%1$s ako %2$s</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
-    <string name="remaining_cast_count">%d more</string>
+    <string name="remaining_cast_count">ešte %d</string>
 
-    <string name="general_error_executing_action">Error executing action: %1$s</string>
-    <string name="error_getting_playlist">Error fetching playlist</string>
-    <string name="error_message">Error message: %1$s</string>
-    <string name="playlist_empty">Playlist empty</string>
-    <string name="clear_playlist">Clear playlist</string>
-    <string name="source_empty">Media source empty</string>
+    <string name="general_error_executing_action">Chyba pri uskutočnení akcie: %1$s</string>
+    <string name="error_getting_playlist">Chyba pri načítaní zoznamu</string>
+    <string name="error_message">Chybové hlásenie: %1$s</string>
+    <string name="playlist_empty">Zoznam je prázdny</string>
+    <string name="clear_playlist">Vyčistiť zoznam</string>
+    <string name="source_empty">Zdroj médií je prázdny</string>
 
-    <string name="no_movies_found_refresh">No movies found\n\nSwipe down to refresh</string>
-    <string name="no_tvshows_found_refresh">No TV Shows found\n\nSwipe down to refresh</string>
-    <string name="no_episodes_found">No episodes found</string>
-    <string name="swipe_down_to_refresh">Swipe down to refresh</string>
-    <string name="no_artists_found_refresh">No artists found\n\nSwipe down to refresh</string>
-    <string name="no_albums_found_refresh">No albums found\n\nSwipe down to refresh</string>
-    <string name="no_genres_found_refresh">No genres found\n\nSwipe down to refresh</string>
-    <string name="no_addons_found_refresh">No addons found or not connected\n\nSwipe down to refresh</string>
-    <string name="no_music_videos_found_refresh">No videos found\n\nSwipe down to refresh</string>
-    <string name="no_channel_groups_found_refresh">No channel groups found.\n\nSwipe down to refresh</string>
-    <string name="no_channels_found_refresh">No channels found.\n\nSwipe down to refresh</string>
-    <string name="no_favourites_found_refresh">No favourites found.\n\nSwipe down to refresh</string>
-    <string name="no_recordings_found_refresh">No recordings found.\n\nSwipe down to refresh</string>
-    <string name="no_broadcasts_found_refresh">No broadcasts found.\n\nSwipe down to refresh</string>
-    <string name="pull_to_refresh">Pull to refresh</string>
-    <string name="no_cast_info">No cast info to display</string>
+    <string name="no_movies_found_refresh">Žiadne filmy\n\nObnovte potiahnutím dolu</string>
+    <string name="no_tvshows_found_refresh">Žiadne TV šou\n\nObnovte potiahnutím dolu</string>
+    <string name="no_episodes_found">Žiadne epizódy</string>
+    <string name="swipe_down_to_refresh">Obnovte potiahnutím dolu</string>
+    <string name="no_artists_found_refresh">Žiadni umelci\n\nObnovte potiahnutím dolu</string>
+    <string name="no_albums_found_refresh">Žiadne albumy\n\nObnovte potiahnutím dolu</string>
+    <string name="no_genres_found_refresh">Žiadne žánre\n\nObnovte potiahnutím dolu</string>
+    <string name="no_addons_found_refresh">Žiadne rozšírenia alebo nepripojené\n\nObnovte potiahnutím dolu</string>
+    <string name="no_music_videos_found_refresh">Žiadne videá\n\nObnovte potiahnutím dolu</string>
+    <string name="no_channel_groups_found_refresh">Žiadne skupiny kanálov\n\nObnovte potiahnutím dolu</string>
+    <string name="no_channels_found_refresh">Žiadne kanály.\n\nObnovte potiahnutím dolu</string>
+    <string name="no_favourites_found_refresh">Žiadne obľúbené\n\nObnovte potiahnutím dolu</string>
+    <string name="no_recordings_found_refresh">Žiadne nahrávky\n\nObnovte potiahnutím dolu</string>
+    <string name="no_broadcasts_found_refresh">Žiadne vysielania\n\nObnovte potiahnutím dolu</string>
+    <string name="pull_to_refresh">Obnovte potiahnutím</string>
+    <string name="no_cast_info">Žiadne informácie o obsadení</string>
 
     <string name="minutes_abbrev">%1$s min</string>
     <string name="minutes_abbrev2">%1$sm</string>
-    <string name="sync_successful">Sync successful</string>
-    <string name="error_while_syncing">An error occurred while syncing: %1$s</string>
+    <string name="sync_successful">Synchronizácia úspešná</string>
+    <string name="error_while_syncing">Počas synchronizácie nastala chyba: %1$s</string>
 
-    <string name="action_search">Search</string>
-    <string name="action_search_movies">Search movies</string>
-    <string name="action_search_tvshows">Search TV shows</string>
-    <string name="action_search_albums">Search albums</string>
-    <string name="action_search_artists">Search artists</string>
-    <string name="action_search_genres">Search genres</string>
-    <string name="action_search_music_videos">Search videos</string>
+    <string name="action_search">Hľadať</string>
+    <string name="action_search_movies">Hľadať filmy</string>
+    <string name="action_search_tvshows">Hľadať TV šou</string>
+    <string name="action_search_albums">Hľadať albumy</string>
+    <string name="action_search_artists">Hľadať umelcov</string>
+    <string name="action_search_genres">Hľadať žánre</string>
+    <string name="action_search_music_videos">Hľadať videá</string>
 
-    <string name="add_to_playlist">Add to playlist</string>
-    <string name="item_added_to_playlist">Added to playlist</string>
-    <string name="no_suitable_playlist">No suitable playlist found to add media type.</string>
+    <string name="add_to_playlist">Pridať do zoznamu</string>
+    <string name="item_added_to_playlist">Pridané do zoznamu</string>
+    <string name="no_suitable_playlist">Pre tento typ média nebol nájdený žiadny zoznam.</string>
 
     <string name="imdb">IMDb</string>
-    <string name="seen">Seen</string>
-    <string name="download">Download</string>
+    <string name="seen">Počet videní</string>
+    <string name="download">Stiahnuť</string>
 
-    <string name="confirm_movie_download">Are you sure you want to download this movie?\nThe movie will be downloaded in the background, but it can take a while to finish.</string>
-    <string name="confirm_episode_download">Are you sure you want to download this episode?\nThe episode will be downloaded in the background, but it can take a while to finish.</string>
-    <string name="confirm_album_download">Are you sure you want to download this album?\nThe album will be downloaded in the background, but it can take a while to finish.</string>
-    <string name="confirm_artist_download">Are you sure you want to download all albums?\nThe albums will be downloaded in the background, but it can take a while to finish.</string>
-    <string name="confirm_songs_download">Are you sure you want to download %1$d songs?\nThe songs will be downloaded in the background, but it can take a while to finish.</string>
+    <string name="confirm_movie_download">Určite chcete stiahnuť tento film?\nFilm bude stiahnutý na pozadí, ale môže to chvíľu trvať.</string>
+    <string name="confirm_episode_download">Určite chcete stiahnuť túto epizódu?\nEpizóda bude stiahnutá na pozadí, ale môže to chvíľu trvať.</string>
+    <string name="confirm_album_download">Určite chcete stiahnuť tento album?\nAlbum bude stiahnutý na pozadí, ale môže to chvíľu trvať.</string>
+    <string name="confirm_artist_download">Určite chcete stiahnuť všetky albumy?\nAlbumy budú stiahnuté na pozadí, ale môže to chvíľu trvať.</string>
+    <string name="confirm_songs_download">Určite chcete stiahnuť počet skladieb %1$d?\nSkladby budú stiahnuté na pozadí, ale môže to chvíľu trvať.</string>
 
-    <string name="download_file_exists">File already exists.\nDo you want to overwrite it or download with a new name?</string>
-    <string name="download_dir_exists">Download directory already exists.\nIf any files have the same name, do you want to overwrite them or download them with a new name?</string>
-    <string name="download_files_exists">One or more files already exist.\nIf any files have the same name, do you want to overwrite them or download them with a new name?</string>
-    <string name="overwrite">Overwrite</string>
-    <string name="download_with_new_name">New name</string>
-    <string name="download_file_description">Downloaded from your media center</string>
+    <string name="download_file_exists">Súbor už existuje.\nChcete ho prepísať alebo uložiť pod iným názvom?</string>
+    <string name="download_dir_exists">Priečinok pre stiahnutie už existuje.\nAk súbory majú rovnaký názov, majú sa prepísať alebo uložiť pod iným názvom?</string>
+    <string name="download_files_exists">Jeden alebo viacero súbor už existuje.\nAk súbory majú rovnaký názov, majú sa prepísať alebo uložiť pod iným názvom?</string>
+    <string name="overwrite">Prepísať</string>
+    <string name="download_with_new_name">Iný názov</string>
+    <string name="download_file_description">Stiahnuť z vášho multimediálneho centra</string>
 
-    <string name="num_episodes">%1$d episodes  |  %2$d unwatched</string>
-    <string name="premiered">Premiered: %1$s</string>
+    <string name="num_episodes">Epizód: %1$d  |  Nevidených: %2$d</string>
+    <string name="premiered">Premiéra: %1$s</string>
 
-    <string name="tvshow_overview">Overview</string>
-    <string name="tvshow_episodes">Episodes</string>
-    <string name="tvshow_seasons">Seasons</string>
-    <string name="tvshow_next_episode">Next Episodes</string>
+    <string name="tvshow_overview">Prehľad</string>
+    <string name="tvshow_episodes">Epizódy</string>
+    <string name="tvshow_seasons">Série</string>
+    <string name="tvshow_next_episode">Ďalšie epizódy</string>
 
-    <string name="addon_overview">Overview</string>
-    <string name="addon_content">Content</string>
+    <string name="addon_overview">Prehľad</string>
+    <string name="addon_content">Obsah</string>
 
-    <string name="artists">Artists</string>
-    <string name="albums">Albums</string>
-    <string name="genres">Genres</string>
-    <string name="music_videos">Videos</string>
+    <string name="artists">Umelci</string>
+    <string name="albums">Albumy</string>
+    <string name="genres">Žánre</string>
+    <string name="music_videos">Videá</string>
 
-    <string name="no_files_to_download">No files to download.</string>
-    <string name="error_getting_file_information">Couldn\'t get information to download file %1$s.</string>
+    <string name="no_files_to_download">Žiadne súbory na stiahnutie.</string>
+    <string name="error_getting_file_information">Nepodarilo sa získať informácie o súbore na stiahnutie: %1$s.</string>
 
-    <string name="author">Author:</string>
-    <string name="version">Version:</string>
-    <string name="enable_disable">Enable/Disable Addon</string>
-    <string name="addon_enabled">Addon enabled</string>
-    <string name="addon_disabled">Addon disabled</string>
-    <string name="pin_unpin">Pin/Unpin Addon</string>
-    <string name="addon_pinned">Addon pinned</string>
-    <string name="addon_unpinned">Addon unpinned</string>
+    <string name="author">Autor:</string>
+    <string name="version">Verzia:</string>
+    <string name="enable_disable">Povoliť/Zakázať rozšírenie</string>
+    <string name="addon_enabled">Rozšírenie povolené</string>
+    <string name="addon_disabled">Rozšírenie zakázané</string>
+    <string name="pin_unpin">Pripnpť/Odopnúť rozšírenie</string>
+    <string name="addon_pinned">Rozšírenie pripnuté</string>
+    <string name="addon_unpinned">Rozšírenie odopnuté</string>
 
     <!-- Filters on list menus -->
-    <string name="hide_watched">Hide watched</string>
-    <string name="hide_disabled">Hide disabled</string>
-    <string name="sort_order">Sort</string>
-    <string name="sort_by_name">By name</string>
-    <string name="sort_by_year">By year</string>
-    <string name="sort_by_rating">By rating</string>
-    <string name="sort_by_length">By length</string>
-    <string name="sort_by_date_added">By date added</string>
-    <string name="sort_by_last_played">By last played</string>
-    <string name="ignore_prefixes">Ignore prefixes</string>
-    <string name="show_watched_status">Show watched status</string>
-    <string name="show_rating">Show rating</string>
+    <string name="hide_watched">Skryť videné</string>
+    <string name="hide_disabled">Skryť zakázané</string>
+    <string name="sort_order">Zoradiť</string>
+    <string name="sort_by_name">podľa názvu</string>
+    <string name="sort_by_year">podľa roku</string>
+    <string name="sort_by_rating">podľa hodnotenia</string>
+    <string name="sort_by_length">podľa dĺžky trvania</string>
+    <string name="sort_by_date_added">podľa dátumu pridania</string>
+    <string name="sort_by_last_played">podľa naposledy prehraté</string>
+    <string name="ignore_prefixes">Ignorovať predpony</string>
+    <string name="show_watched_status">Zobraziť stav videných</string>
+    <string name="show_rating">Zobraziť hodnotenie</string>
 
     <!-- Preferences strings -->
-    <string name="application">Application</string>
+    <string name="application">Aplikácia</string>
 	
-    <string name="theme">Theme</string>
-    <string name="theme_night">Night</string>
-    <string name="theme_day">Day</string>
-    <string name="theme_mist">Mist</string>
-    <string name="theme_sunrise">Sunrise</string>
-    <string name="theme_sunset">Sunset</string>
+    <string name="theme">Vzhľad</string>
+    <string name="theme_night">Noc</string>
+    <string name="theme_day">Deň</string>
+    <string name="theme_mist">Hmla</string>
+    <string name="theme_sunrise">Východ slnka</string>
+    <string name="theme_sunset">Západ slnka</string>
 	
-    <string name="switch_to_remote">Show on media start</string>
-    <string name="keep_remote_above_lockscreen">Show over lockscreen</string>
-    <string name="pref_keep_screen_on">Stay awake</string>
-    <string name="show_notification">Show notification while playing</string>
-    <string name="show_now_playing_panel">Show now playing panel while playing</string>
-    <string name="show_now_playing_panel_summary">Displays an expandable panel at the bottom of the screen when media is playing</string>
-    <string name="notification_seek_jump">Use steps for seeking</string>
-    <string name="notification_seek_jump_speed">Change playback speed when seeking from notification</string>
-    <string name="notification_seek_jump_step">Use skip steps when seeking from notification</string>
-    <string name="pause_during_calls">Pause during phone call</string>
-    <string name="use_hardware_volume_keys">Use device volume keys</string>
-    <string name="vibrate_on_remote">Vibrate on touch</string>
-    <string name="remote_bar_items">Bottom bar shortcuts</string>
-    <string name="nav_drawer_items">Side menu shortcuts</string>
+    <string name="switch_to_remote">Zobraziť pri spustení multimédia</string>
+    <string name="keep_remote_above_lockscreen">Zobraziť na zamknutej obrazovke</string>
+    <string name="pref_keep_screen_on">Nezamknúť obrazovku</string>
+    <string name="show_notification">Zobrazovať upozornenia počas prehrávania</string>
+    <string name="show_now_playing_panel">Zobraziť panel prebiehajúceho prehrávania počas prehrávania</string>
+    <string name="show_now_playing_panel_summary">Zobraziť prídavný panel v dolnej časti obrazovky počas prehrávania</string>
+    <string name="notification_seek_jump">Použiť krokovanie pri hľadaní</string>
+    <string name="notification_seek_jump_speed">Zmeniť rýchlosť prehrávania, keď sa hľadá z upozornenia</string>
+    <string name="notification_seek_jump_step">Použiť preskakovanie krokov, keď sa hľadá z upozornenia</string>
+    <string name="pause_during_calls">Počas telefonovania pozastaviť</string>
+    <string name="use_hardware_volume_keys">Použiť tlačidlá hlasitosti zaradenia</string>
+    <string name="vibrate_on_remote">Pri dotyku vybrovať</string>
+    <string name="remote_bar_items">Zástupci na spodnom paneli</string>
+    <string name="nav_drawer_items">Zástupci na bočnom menu</string>
 
-    <string name="about">About</string>
+    <string name="about">O aplikácii</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2018 XBMC Foundation<br><br>
-        Please rate us on <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
+        Prosím, ohodnoďte nás v obchode <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
 
-        If you need help, check our <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
+        Ak potrebujete pomoc, skúste <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">fórum</a></b>
     ]]></string>
 
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
@@ -381,56 +381,56 @@
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
-    <string name="play_on_kodi">Play on Kodi</string>
-    <string name="pause_call_incoming_title">Incoming call</string>
-    <string name="pause_call_incoming_message">Check your phone, someone is calling you</string>
+    <string name="play_on_kodi">Prehrať v Kodi</string>
+    <string name="pause_call_incoming_title">Prichádzajúci hovor</string>
+    <string name="pause_call_incoming_message">Pozrite sa na váš telefón, niekto vám volá.</string>
 
-    <string name="error_getting_pvr_info">An error occurred while getting pvr info: %1$s</string>
-    <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\nIf that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
-    <string name="error_starting_channel">An error occurred starting channel playback: %1$s</string>
-    <string name="error_favourites">An error occurred while getting the favourites with description: %1$s</string>
-    <string name="error_starting_recording">An error occurred starting a recording: %1$s</string>
-    <string name="error_starting_to_record">An error occurred while recording: %1$s</string>
-    <string name="channel_switching">Switching to channel %1$s</string>
-    <string name="starting_recording">Starting recording %1$s</string>
-    <string name="refresh">Refresh</string>
+    <string name="error_getting_pvr_info">Počas preberania pvr informácií nastala chyba: %1$s</string>
+    <string name="might_not_have_pvr">Počas preberania informácií o kanáloch nastala chyba. Vaše multimediálne centrum pravdepodobne nemá tuner alebo tuner nie je nastavený\n\nAk je to tak, odoberte túto položku z bočného menu v nastaveniach.</string>
+    <string name="error_starting_channel">Pri prehrávaní kanála došlo k chybe: %1$s</string>
+    <string name="error_favourites">Počas preberania obľúbených s popisom došlo k chybe: %1$s</string>
+    <string name="error_starting_recording">Pri nahrávaní došlo k chybe: %1$s</string>
+    <string name="error_starting_to_record">Počas nahrávania došlo k chybe: %1$s</string>
+    <string name="channel_switching">Prepína sa na kanál %1$s</string>
+    <string name="starting_recording">Začína nahrávanie %1$s</string>
+    <string name="refresh">Obnoviť</string>
 
     <string name="tv">TV</string>
-    <string name="radio">Radio</string>
-    <string name="recordings">Recordings</string>
-    <string name="tv_channels">TV Channels</string>
-    <string name="radio_channels">Radio Channels</string>
+    <string name="radio">Rádio</string>
+    <string name="recordings">Nahrávky</string>
+    <string name="tv_channels">TV kanály</string>
+    <string name="radio_channels">Rádio kanály</string>
 
-    <string name="record">Record</string>
-    <string name="pvr_epg">Guide</string>
-    <string name="unable_to_move_item">Unable to move item</string>
-    <string name="unable_to_play_favourite_item">Unable to play favourite item. Unsupported Type</string>
-    <string name="cannot_move_playing_item">Cannot move currently playing/paused item</string>
-    <string name="no_connection_type_selected">No connection type selected in settings</string>
-    <string name="single_column">Single column</string>
-    <string name="multi_column">Multi-column</string>
+    <string name="record">Nahrať</string>
+    <string name="pvr_epg">Návod</string>
+    <string name="unable_to_move_item">Nepodarilo sa premiestniť položku</string>
+    <string name="unable_to_play_favourite_item">Nepodarilo sa prehrať obľúbenú položku. Nepodporovaný typ.</string>
+    <string name="cannot_move_playing_item">Nie je možné premiestniť aktuálne prehrávanú/pozastavenú položku</string>
+    <string name="no_connection_type_selected">V nastaveniach nebol zvolený typ pripojenia</string>
+    <string name="single_column">Jeden stĺpec</string>
+    <string name="multi_column">Viacero stĺpcov</string>
 
-    <string name="download_network_types_title">Restrict media downloads</string>
-    <string name="download_network_types_summary">Select network types over which media downloads are allowed</string>
-    <string name="songs">Songs</string>
+    <string name="download_network_types_title">Zakázať sťahovanie multimédií</string>
+    <string name="download_network_types_summary">Vyberte typ siete, cez ktoré bude povolené sťahovanie multimédií</string>
+    <string name="songs">Skladby</string>
 
-    <string name="read_phone_state_permission_denied">Permission denied. Won\'t be able to pause playback during calls.</string>
-    <string name="write_storage_permission_denied">Permission denied. Won\'t be able to download files.</string>
+    <string name="read_phone_state_permission_denied">Povolenie zamiestnuté. Nebude možné pozastaviť prehrávanie počas telefonického hovoru.</string>
+    <string name="write_storage_permission_denied">Povolenie zamiestnuté. Nebude možné sťahovať súbory.</string>
 
-    <string name="no_songs_to_download">No songs to download</string>
-    <string name="by_album">By album</string>
-    <string name="by_artist">By artist</string>
-    <string name="by_artist_and_year">By artist and year</string>
-    <string name="muted">muted</string>
-    <string name="no_item_available_to_play">Error: no item available to play.</string>
-    <string name="Refreshing_not_implemented_for_this_item">Refreshing not implemented for this item</string>
-    <string name="no_songs_found_refresh">No songs found\\n\\nSwipe down to refresh</string>
-    <string name="not_implemented">Not implemented</string>
+    <string name="no_songs_to_download">Žiadne skladby na stiahnutie</string>
+    <string name="by_album">Podľa albumu</string>
+    <string name="by_artist">Podľa umelca</string>
+    <string name="by_artist_and_year">Podľa umelca a roku</string>
+    <string name="muted">stlmené</string>
+    <string name="no_item_available_to_play">Chyba: žiadne položka na prehrávanie.</string>
+    <string name="Refreshing_not_implemented_for_this_item">Obnovenie nie je funkčné pre túto položku</string>
+    <string name="no_songs_found_refresh">Žiadne skladby\\n\\nObnovte potiahnutím dolu</string>
+    <string name="not_implemented">Nie je funkčné</string>
     <string name="zeroprogress">0:00</string>
 
-    <string name="toggle_expand">Expand/Collapse</string>
-    <string name="play_locally">Play Locally</string>
+    <string name="toggle_expand">Rozbaliť/Zbaliť</string>
+    <string name="play_locally">Prehať lokálne</string>
 
-    <string name="disable_local_playback_support">Disable local playback support</string>
-    <string name="disable_local_playback_support_summary">Disables support for playing media locally on the device running Kore.</string>
+    <string name="disable_local_playback_support">Zakázať podporu lokálneho prehrávania</string>
+    <string name="disable_local_playback_support_summary">Zakáže podporu prehrávania multimédií lokálne na zariadení s nainštalovaným diaľkovým ovládačom Kore.</string>
 </resources>
