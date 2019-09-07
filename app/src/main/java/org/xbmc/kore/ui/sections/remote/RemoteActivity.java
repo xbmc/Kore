@@ -526,6 +526,9 @@ public class RemoteActivity extends BaseActivity
                 return "plugin://plugin.video.svtplay/?url=%2Fvideo%2F"
                         + URLEncoder.encode(matcher.group(1)) + "&mode=video";
             }
+        } else if (host.endsWith("soundcloud.com")) {
+            return "plugin://plugin.audio.soundcloud/play/?url="
+                    + URLEncoder.encode(playuri.toString());
         }
         return null;
     }

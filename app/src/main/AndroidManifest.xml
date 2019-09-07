@@ -50,6 +50,8 @@
                 <data android:host="www.vimeo.com"/>
                 <data android:host="player.vimeo.com"/>
                 <data android:host="www.svtplay.se"/>
+                <data android:host="soundcloud.com"/>
+                <data android:host="m.soundcloud.com"/>
             </intent-filter>
 
             <meta-data android:name="android.service.chooser.chooser_target_service"
