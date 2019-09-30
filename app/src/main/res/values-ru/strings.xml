@@ -62,7 +62,7 @@
 
     <string name="toggle_fullscreen">Вкл/выкл полный экран</string>
 
-    <string name="connected_to">Подключен к to %1$s</string>
+    <string name="connected_to">Подключен к %1$s</string>
     <string name="connecting">Идет подключение…</string>
     <string name="connecting_to">Идет подключение к %1$s (%2$s)…</string>
 
@@ -223,7 +223,7 @@
 
     <string name="no_movies_found_refresh">Фильмы не найдены\n\nПроведите пальцем вниз для обновления</string>
     <string name="no_tvshows_found_refresh">ТВ программы не найдены\n\nПроведите пальцем вниз для обновления</string>
-    <string name="no_episodes_found">No episodes found</string>
+    <string name="no_episodes_found">Эпизоды не найдены</string>
     <string name="no_artists_found_refresh">Исполнители не найдены\n\nПроведите пальцем вниз для обновления</string>
     <string name="no_albums_found_refresh">Альбомы не найдены\n\nПроведите пальцем вниз для обновления</string>
     <string name="no_genres_found_refresh">Жанры не найдены\n\nПроведите пальцем вниз для обновления</string>
