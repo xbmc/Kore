@@ -71,7 +71,7 @@ public class PlayerHandler extends ConnectionHandler {
         this.elapsedTime = 0;
         this.playState = STOPPED;
         playerType = PlayerType.GetActivePlayersReturnType.AUDIO;
-        playlists.clear();
+        playlists = null;
         setMediaType(Player.GetItem.TYPE.unknown);
     }
 
@@ -160,7 +160,7 @@ public class PlayerHandler extends ConnectionHandler {
      * Starts playing current item in the playlist
      */
     public void startPlay() {
-        if (playlists.size() > 0 && activePlaylistId != null) {
+        if (playlists != null && playlists.size() > 0 && activePlaylistId != null) {
             mediaItem = playlists.get(activePlaylistId.ordinal()).getCurrentItem();
 
             if (mediaItem != null) {
@@ -178,6 +178,8 @@ public class PlayerHandler extends ConnectionHandler {
     }
 
     public void startPlay(Playlist.playlistID playlistId, int playlistPosition) {
+        if (playlists == null) return;
+
         activePlaylistId = playlistId;
 
         PlaylistHolder playlistHolder = playlists.get(playlistId.ordinal());
@@ -275,7 +277,7 @@ public class PlayerHandler extends ConnectionHandler {
     }
 
     private JsonResponse handleGetItem(int methodId) {
-        if (playlists.size() > 0) {
+        if (playlists != null && playlists.size() > 0) {
             mediaItem = playlists.get(activePlaylistId.ordinal()).getCurrentItem();
         }
 

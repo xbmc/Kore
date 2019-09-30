@@ -22,7 +22,7 @@ import android.support.test.espresso.matcher.CursorMatchers;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -54,13 +54,11 @@ public class Matchers {
         public void describeTo(Description description) { }
     }
 
-    public static Matcher<View> withListSize(final int size) {
+    public static Matcher<View> withListViewSize(final int size) {
         return new TypeSafeMatcher<View>() {
             @Override public boolean matchesSafely(final View view) {
-                if (!(view instanceof  ViewGroup))
-                    return false;
-
-                return ((ViewGroup) view).getChildCount() == size;
+                return (view instanceof ListView) &&
+                        ((ListView) view).getAdapter().getCount() == size;
             }
 
             @Override public void describeTo(final Description description) {

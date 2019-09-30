@@ -111,7 +111,7 @@ public class PlaylistHandler extends ConnectionHandler {
         playlists.get(playlistId).clear();
     }
 
-    public void addItemToPlaylist(Playlist.playlistID id, Player.GetItem item) {
+    public void addItemToPlaylist(Playlist.playlistID id, Player.GetItem item, boolean sentNotification) {
         int playlistId = id.ordinal();
 
         while (playlists.size() <= playlistId) {
@@ -125,7 +125,9 @@ public class PlaylistHandler extends ConnectionHandler {
         }
         playlist.add(item);
 
-        OnAdd onAddNotification = new OnAdd(item.getLibraryId(), item.getType(), playlistId, playlist.getIndexOf(item));
-        addNotification(onAddNotification);
+        if (sentNotification) {
+            OnAdd onAddNotification = new OnAdd(item.getLibraryId(), item.getType(), playlistId, playlist.getIndexOf(item));
+            addNotification(onAddNotification);
+        }
     }
 }
