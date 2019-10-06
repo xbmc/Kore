@@ -165,7 +165,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     }
 
     public void setTitle(String title) {
-        this.title.setText(title);
+        this.title.setText(UIUtils.applyMarkup(getContext(), title));
     }
 
     public void setDetails(String details) {

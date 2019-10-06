@@ -718,7 +718,7 @@ public class PlaylistFragment extends Fragment
                     break;
             }
 
-            viewHolder.title.setText(title);
+            viewHolder.title.setText(UIUtils.applyMarkup(getContext(), title));
             viewHolder.details.setText(details);
             viewHolder.duration.setText((duration > 0) ? UIUtils.formatTime(duration) : "");
             viewHolder.position = position;

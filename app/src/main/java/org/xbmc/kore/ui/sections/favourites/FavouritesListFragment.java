@@ -210,7 +210,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
         }
 
         void bindView(FavouriteType.DetailsFavourite favouriteDetail) {
-            titleView.setText(favouriteDetail.title);
+            titleView.setText(UIUtils.applyMarkup(context, favouriteDetail.title));
 
             @StringRes final int typeRes;
             switch (favouriteDetail.type) {

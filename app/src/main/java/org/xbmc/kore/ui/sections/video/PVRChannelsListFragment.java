@@ -389,7 +389,7 @@ public class PVRChannelsListFragment extends Fragment
             viewHolder.channelGroupId = channelGroupDetails.channelgroupid;
             viewHolder.channelGroupName = channelGroupDetails.label;
 
-            viewHolder.titleView.setText(viewHolder.channelGroupName);
+            viewHolder.titleView.setText(UIUtils.applyMarkup(getContext(), viewHolder.channelGroupName));
             return convertView;
         }
     }

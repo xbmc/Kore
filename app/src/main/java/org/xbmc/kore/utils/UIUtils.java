@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -31,8 +32,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -652,8 +655,8 @@ public class UIUtils {
     /**
      * Replaces some BBCode-ish tagged text with styled spans.
      * <p>
-     * Recognizes and styles CR, B, I, UPPERCASE, LOWERCASE and CAPITALIZE; recognizes
-     * and strips out LIGHT and COLOR. This is very strict/dumb, it only recognizes
+     * Recognizes and styles COLOR, CR, B, I, UPPERCASE, LOWERCASE and CAPITALIZE; recognizes
+     * and strips out LIGHT. This is very strict/dumb, it only recognizes
      * uppercase tags with no spaces around them.
      *
      * @param context Activity context needed to resolve the style resources
@@ -681,7 +684,8 @@ public class UIUtils {
         Nestable italic = new Nestable();
         Nestable light = new Nestable();
         Nestable color = new Nestable();
-        Pattern colorTag = Pattern.compile("^\\[COLOR [^\\]]+\\]");
+        Pattern colorTag = Pattern.compile("^\\[COLOR ([^\\]]+)\\]");
+        String colorName = "white";
         for (int i = start, length = src.length(); i < length;) {
             String s = src.substring(i);
             int nextTag = s.indexOf('[');
@@ -770,8 +774,17 @@ public class UIUtils {
                 }
                 i += 8;
             } else if (s.startsWith("[/COLOR]")) {
-                color.end();
-                if (color.imbalanced()) {
+                if(color.end()) {
+                    int colorId = context.getResources().getIdentifier(colorName, "color", context.getPackageName());
+                    ForegroundColorSpan foregroundColorSpan;
+                    try{
+                        foregroundColorSpan = new ForegroundColorSpan(context.getResources().getColor(colorId));
+                    }catch (Resources.NotFoundException nfe){
+                        foregroundColorSpan = new ForegroundColorSpan(Color.WHITE);
+                    }
+                    sb.setSpan(foregroundColorSpan, color.index, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                else if (color.imbalanced()) {
                     sb.append("[/COLOR]");
                 }
                 i += 8;
@@ -779,6 +792,8 @@ public class UIUtils {
                 Matcher m = colorTag.matcher(s);
                 if (m.find()) {
                     color.start();
+                    colorName = m.group(1);
+                    color.index = sb.length();
                     i += m.end();
                 } else {
                     sb.append('[');
