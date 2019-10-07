@@ -751,7 +751,7 @@ public class NowPlayingFragment extends Fragment
                 break;
         }
 
-        mediaTitle.setText(title);
+        mediaTitle.setText(UIUtils.applyMarkup(getContext(), title));
         mediaTitle.post(UIUtils.getMarqueeToggleableAction(mediaTitle));
         mediaUndertitle.setText(underTitle);
 

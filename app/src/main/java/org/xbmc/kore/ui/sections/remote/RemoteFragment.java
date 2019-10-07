@@ -540,7 +540,7 @@ public class RemoteFragment extends Fragment
                 break;
         }
 
-        nowPlayingTitle.setText(title);
+        nowPlayingTitle.setText(UIUtils.applyMarkup(getContext(), title));
         nowPlayingDetails.setText(underTitle);
 
         fastForwardButton.setImageResource(currentFastForwardIcon);
