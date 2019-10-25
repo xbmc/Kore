@@ -67,6 +67,7 @@
         <activity android:name="org.xbmc.kore.ui.sections.addon.AddonsActivity"/>
         <activity android:name="org.xbmc.kore.ui.sections.settings.SettingsActivity"/>
         <activity android:name="org.xbmc.kore.ui.sections.file.FileActivity"/>
+        <activity android:name="org.xbmc.kore.ui.sections.localfile.LocalFileActivity"/>
         <activity android:name="org.xbmc.kore.ui.sections.video.PVRActivity"/>
         <activity android:name="org.xbmc.kore.ui.sections.video.AllCastActivity"/>
         <activity android:name=".ui.sections.favourites.FavouritesActivity" />
