@@ -48,6 +48,7 @@ public class HttpApp extends NanoHTTPD {
             fis = new FileInputStream(filePath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return newFixedLengthResponse(Response.Status.FORBIDDEN, "", "");
         }
         String mimeType = this.mimeType;
         return newChunkedResponse(Response.Status.OK, mimeType, fis);
