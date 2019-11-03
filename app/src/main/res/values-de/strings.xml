@@ -406,7 +406,7 @@
     <string name="by_album">Nach Album</string>
     <string name="by_artist">Nach Künstler</string>
     <string name="by_artist_and_year">Nach Künstler und Jahr</string>
-    <string name="muted">stumm geschalten</string>
+    <string name="muted">stumm geschaltet</string>
 	<string name="no_songs_found_refresh">Keine Lieder gefunden\\n\\nNach unten wischen zum Aktualisieren</string>
 	<string name="not_implemented">Nicht implementiert</string>
 	
