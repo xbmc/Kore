@@ -1,5 +1,6 @@
 /*
  * Copyright 2015 DanhDroid. All rights reserved.
+ * Copyright 2019 Upabjojr. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +37,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -46,10 +49,12 @@ import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
-import org.xbmc.kore.ui.AbstractListFragment;
+import org.xbmc.kore.ui.AbstractFileListFragment;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.utils.CharacterDrawable;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import java.io.File;
 
@@ -65,7 +70,7 @@ import java.util.regex.Pattern;
 /**
  * Presents a list of files of different types (Video/Music)
  */
-public class LocalPictureListFragment extends AbstractListFragment {
+public class LocalPictureListFragment extends AbstractFileListFragment {
     private static final String TAG = LogUtils.makeLogTag(LocalPictureListFragment.class);
 
     public static final String MEDIA_TYPE = "mediaType";
@@ -133,26 +138,23 @@ public class LocalPictureListFragment extends AbstractListFragment {
         Bundle args = getArguments();
         FileLocation rootPath = null;
 
-
-        if (ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to read files was not granted,
             // prompt the user for storage access permissions:
             ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    42);
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    Utils.PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
         }
 
         try {
             if (http_app == null) {
-                HttpApp.setActivity(getActivity());
-                HttpApp.setPort(8080);
-                http_app = HttpApp.getInstance();
-            } else {
-                http_app.start();
+                http_app = HttpApp.getInstance(getContext(), 8080);
             }
         } catch (IOException ioe) {
-            Toast.makeText(getContext(), "Could not create HTTP server.", Toast.LENGTH_LONG);
+            Toast.makeText(getContext(),
+                    getString(R.string.error_starting_http_server),
+                    Toast.LENGTH_LONG);
         }
 
         if (args != null) {
@@ -252,7 +254,8 @@ public class LocalPictureListFragment extends AbstractListFragment {
     /**
      * Gets and presents the list of media sources
      */
-    private void browseSources() {
+    @Override
+    protected void browseSources() {
         File directory = null;
         if (rootFileLocation != null) {
             directory = new File(rootPathLocation);
@@ -262,7 +265,9 @@ public class LocalPictureListFragment extends AbstractListFragment {
         File[] files = directory.listFiles();
 
         if (files == null) {
-            Toast.makeText(getActivity(), "Did you give Kore permission to access file storage?", Toast.LENGTH_LONG);
+            Toast.makeText(getActivity(),
+                    getString(R.string.error_reading_local_storage),
+                    Toast.LENGTH_LONG);
             return;
         }
         Arrays.sort(files);
@@ -340,26 +345,12 @@ public class LocalPictureListFragment extends AbstractListFragment {
         browseRootAlready = false;
     }
 
-    private String getFileMimeType(final String filename) {
-        String mimeType = null;
-        if (mediaType == "video") {
-            mimeType = "video/mp4";
-        } else if (mediaType == "image") {
-            mimeType = "image/jpeg";
-        } else if (mediaType == "audio") {
-            mimeType = "audio/mp3";
-        }
-        mimeType = "image/jpeg";
-        return mimeType;
-    }
-
     /**
      * Starts playing the given media file
      * @param filename Filename to start playing
      */
     private void playMediaFile(final String filename, final String path) {
-        String mimeType = getFileMimeType(filename);
-        http_app.addLocalFilePath(filename, path, mimeType);
+        http_app.addLocalFilePath(filename, path);
         String url = http_app.getLinkToFile();
 
         PlaylistType.Item item = new PlaylistType.Item();
@@ -494,11 +485,6 @@ public class LocalPictureListFragment extends AbstractListFragment {
             p = p.substring(p.lastIndexOf(pathSymbol)+1);
         }
         return p;
-    }
-
-    @Override
-    public void onRefresh() {
-
     }
 
     private class MediaPictureListAdapter extends RecyclerView.Adapter {
@@ -642,7 +628,6 @@ public class LocalPictureListFragment extends AbstractListFragment {
         int artWidth;
         int artHeight;
         Context context;
-        ThumbnailLoader thumbnailLoader = null;
 
         ViewHolder(View itemView, Context context, HostManager hostManager, int artWidth, int artHeight,
                    View.OnClickListener itemMenuClickListener) {
@@ -657,7 +642,6 @@ public class LocalPictureListFragment extends AbstractListFragment {
             contextMenu = itemView.findViewById(R.id.list_context_menu);
             sizeDuration = itemView.findViewById(R.id.size_duration);
             contextMenu.setOnClickListener(itemMenuClickListener);
-            thumbnailLoader = null;
         }
 
         public void bindView(FileLocation fileLocation, int position) {
@@ -665,20 +649,15 @@ public class LocalPictureListFragment extends AbstractListFragment {
             details.setText(fileLocation.details);
             sizeDuration.setText(fileLocation.sizeDuration);
 
+            CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(context, fileLocation.title);
             File file_path = new File(fileLocation.file);
-            // If there is an asynchronous task loading the thumbnail,
-            // stop it:
-            if (thumbnailLoader != null) {
-                thumbnailLoader.cancel(true);
-                thumbnailLoader = null;
-            }
-            // Clear thumbnail (don't show the old one)
-            art.setImageResource(0);
 
-            if (checkFileIsPicture(file_path)) {
-                thumbnailLoader = new ThumbnailLoader(art, artWidth, artHeight);
-                thumbnailLoader.execute(file_path.getAbsolutePath());
-            }
+            Picasso.with(context)
+                    .load(file_path)
+                    .placeholder(avatarDrawable)
+                    .resize(artWidth, artHeight)
+                    .centerCrop()
+                    .into(art);
 
             // For the popup menu
             if (fileLocation.isDirectory) {

@@ -64,6 +64,7 @@
         <item>@string/pvr</item>
         <item>@string/favourites</item>
         <item>@string/files</item>
+        <item>@string/local_files</item>
         <item>@string/addons</item>
     </string-array>
 

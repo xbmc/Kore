@@ -42,6 +42,7 @@ import org.xbmc.kore.jsonrpc.type.ItemType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
+import org.xbmc.kore.ui.AbstractFileListFragment;
 import org.xbmc.kore.ui.AbstractListFragment;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
@@ -57,7 +58,7 @@ import java.util.regex.Pattern;
 /**
  * Presents a list of files of different types (Video/Music)
  */
-public class MediaFileListFragment extends AbstractListFragment {
+public class MediaFileListFragment extends AbstractFileListFragment {
     private static final String TAG = LogUtils.makeLogTag(MediaFileListFragment.class);
 
     public static final String MEDIA_TYPE = "mediaType";
@@ -217,7 +218,8 @@ public class MediaFileListFragment extends AbstractListFragment {
     /**
      * Gets and presents the list of media sources
      */
-    private void browseSources() {
+    @Override
+    protected void browseSources() {
         Files.GetSources action = new Files.GetSources(mediaType);
         action.execute(hostManager.getConnection(), new ApiCallback<List<ItemType.Source>>() {
             @Override

@@ -2,8 +2,12 @@ package org.xbmc.kore.ui.sections.localfile;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
+
+import org.xbmc.kore.utils.LogUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,19 +25,17 @@ import static android.content.Context.WIFI_SERVICE;
 
 public class HttpApp extends NanoHTTPD {
 
-    public HttpApp(Activity activity, int port) throws IOException {
+    private HttpApp(Context applicationContext, int port) throws IOException {
         super(port);
-        this.port = port;
-        this.activity = activity;
+        this.applicationContext = applicationContext;
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
     }
 
-    static int port;
-    static Activity activity;
+    private Context applicationContext;
 
-    String fileName = null;
-    String filePath = null;
-    String mimeType = null;
+    private String fileName = null;
+    private String filePath = null;
+    private String mimeType = null;
 
     @Override
     public Response serve(IHTTPSession session) {
@@ -47,11 +49,23 @@ public class HttpApp extends NanoHTTPD {
         try {
             fis = new FileInputStream(filePath);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LogUtils.LOGW(LogUtils.makeLogTag(HttpApp.class), e.toString());
             return newFixedLengthResponse(Response.Status.FORBIDDEN, "", "");
         }
         String mimeType = this.mimeType;
         return newChunkedResponse(Response.Status.OK, mimeType, fis);
+    }
+
+    private String getFileMimeType(final String filename) {
+        String extension = MimeTypeMap.getFileExtensionFromUrl(filename);
+        if (extension == null) {
+            return null;
+        }
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+    }
+
+    public void addLocalFilePath(String fileName, String filePath) {
+        addLocalFilePath(fileName, filePath, getFileMimeType(fileName));
     }
 
     public void addLocalFilePath(String filename, String filePath, String mimeType) {
@@ -61,7 +75,7 @@ public class HttpApp extends NanoHTTPD {
     }
 
     private String getIpAddress() throws UnknownHostException {
-        WifiManager wm = (WifiManager) activity.getApplicationContext().getSystemService(WIFI_SERVICE);
+        WifiManager wm = (WifiManager) applicationContext.getSystemService(WIFI_SERVICE);
         byte[] byte_address = BigInteger.valueOf(wm.getConnectionInfo().getIpAddress()).toByteArray();
         // Reverse `byte_address`:
         for (int i = 0; i < byte_address.length/2; i++) {
@@ -88,26 +102,22 @@ public class HttpApp extends NanoHTTPD {
             if (!isAlive())
                 start();
         } catch (IOException ioe) {
-            Log.e(ioe.getClass().toString(), ioe.getMessage());
+            LogUtils.LOGE(LogUtils.makeLogTag(HttpApp.class), ioe.getMessage());
         }
-        return "http://" + ip + ":" + String.valueOf(port) + "/" + fileName;
+        return "http://" + ip + ":" + String.valueOf(getListeningPort()) + "/" + fileName;
     }
 
     private static HttpApp http_app = null;
 
-    public static HttpApp getInstance() throws IOException {
+    public static HttpApp getInstance(Context applicationContext, int port) throws IOException {
         if (http_app == null) {
-            http_app = new HttpApp(activity, port);
+            synchronized (HttpApp.class) {
+                if (http_app == null) {
+                    http_app = new HttpApp(applicationContext, port);
+                }
+            }
         }
         return http_app;
-    }
-
-    public static void setActivity(Activity activity) {
-        HttpApp.activity = activity;
-    }
-
-    public static void setPort(int port) {
-        HttpApp.port = port;
     }
 
 }

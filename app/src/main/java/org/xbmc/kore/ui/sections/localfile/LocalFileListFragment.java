@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 DanhDroid. All rights reserved.
+ * Copyright 2019 Upabjojr. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,16 @@ public class LocalFileListFragment extends AbstractTabsFragment
         dcimFileListArgs.putString(LocalPictureListFragment.ROOT_PATH_LOCATION, dcim);
         dcimFileListArgs.putParcelable(LocalPictureListFragment.SORT_METHOD, sortMethod);
 
+        Bundle directoryMusicFileListArgs = new Bundle();
+        String directoryMusic = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
+        directoryMusicFileListArgs.putString(LocalPictureListFragment.ROOT_PATH_LOCATION, directoryMusic);
+        directoryMusicFileListArgs.putParcelable(LocalPictureListFragment.SORT_METHOD, sortMethod);
+
+        Bundle directoryMoviesFileListArgs = new Bundle();
+        String directoryMovies = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath();
+        directoryMoviesFileListArgs.putString(LocalPictureListFragment.ROOT_PATH_LOCATION, directoryMovies);
+        directoryMoviesFileListArgs.putParcelable(LocalPictureListFragment.SORT_METHOD, sortMethod);
+
         Bundle externalStorageFileListArgs = new Bundle();
         String externalStorage = Environment.getExternalStorageDirectory().getAbsolutePath();
         externalStorageFileListArgs.putString(LocalPictureListFragment.ROOT_PATH_LOCATION, externalStorage);
@@ -53,7 +63,9 @@ public class LocalFileListFragment extends AbstractTabsFragment
 
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
                 .addTab(LocalPictureListFragment.class, dcimFileListArgs, R.string.dcim, 1)
-                .addTab(LocalPictureListFragment.class, externalStorageFileListArgs, R.string.external_storage, 2);
+                .addTab(LocalPictureListFragment.class, directoryMusicFileListArgs, "Music", 2)
+                .addTab(LocalPictureListFragment.class, directoryMoviesFileListArgs, "Movies", 3)
+                .addTab(LocalPictureListFragment.class, externalStorageFileListArgs, R.string.external_storage, 4);
         Environment.getRootDirectory();
         File[] externalFilesDirs = ContextCompat.getExternalFilesDirs(getActivity(),null);
         for (int i = 0; i < externalFilesDirs.length; i++) {

@@ -231,6 +231,9 @@
     <string name="error_get_active_player">Couldn\'t get active player.\nError message:
         %1$s.</string>
     <string name="error_share_video">Couldn\'t share video to Kodi/XBMC.</string>
+    <string name="error_reading_local_storage">Couldn\'t read the local storage.
+        Did you give Kore permission to access file storage?</string>
+    <string name="error_starting_http_server">Couldn\'t create or start HTTP server.</string>
 
     <string name="directors">Directors:</string>
     <string name="studio">Studio:</string>
