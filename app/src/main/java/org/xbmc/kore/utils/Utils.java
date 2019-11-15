@@ -17,6 +17,8 @@ package org.xbmc.kore.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -37,6 +39,7 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Because every project needs one of these
@@ -249,5 +252,29 @@ public class Utils {
                      .show();
             }
         }, callbackHandler);
+    }
+
+    public static void setLocale(Context context, String localeName) {
+        Locale locale = getLocale(localeName);
+
+        Locale.setDefault(locale);
+
+        Resources resources = context.getResources();
+
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = locale;
+
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+    }
+
+    public static Locale getLocale(String localeName) {
+        Locale locale;
+        String[] languageAndRegion = localeName.split("-", 2);
+        if (languageAndRegion.length > 1) {
+            locale = new Locale(languageAndRegion[0], languageAndRegion[1]);
+        } else {
+            locale = new Locale(localeName);
+        }
+        return locale;
     }
 }

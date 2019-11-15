@@ -54,6 +54,10 @@
             android:entryValues="@array/themes_values_array"
             android:defaultValue="0"/>
 
+        <ListPreference
+            android:key="pref_language"
+            android:title="@string/language"/>
+        
         <SwitchPreferenceCompat
             android:key="pref_keep_screen_on"
             android:title="@string/pref_keep_screen_on"

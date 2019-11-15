@@ -21,6 +21,12 @@ android {
         versionCode 25
         versionName = getVersionName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        def supportedLocales = ["en", "ast", "ru", "it", "ca", "cs", "zh-CN", "ja", "pt", "pt-BR",
+                                "pl", "sl", "sk", "lt", "eu", "iw", "fr", "es", "hr", "hu", "nl",
+                                "bg", "de", "ko", "uk"]
+        buildConfigField "String[]", "SUPPORTED_LOCALES", "new String[]{\""+
+                supportedLocales.join("\",\"")+"\"}"
     }
 
     File keystoreFile = file('keystore.properties')
