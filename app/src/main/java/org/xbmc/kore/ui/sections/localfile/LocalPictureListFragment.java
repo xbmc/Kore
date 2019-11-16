@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -94,13 +93,12 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
     String mediaType = Files.Media.FILES;
     ListType.Sort sortMethod = null;
     String parentDirectory = null;
-    int playlistId = PlaylistType.MUSIC_PLAYLISTID;             // this is the ID of the music player
 //    private MediaPictureListAdapter adapter = null;
     boolean browseRootAlready = false;
-    LocalPictureListFragment.FileLocation loadOnVisible = null;
+    LocalFileLocation loadOnVisible = null;
 
-    ArrayList<FileLocation> rootFileLocation = new ArrayList<>();
-    Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
+    ArrayList<LocalFileLocation> rootFileLocation = new ArrayList<>();
+    Queue<LocalFileLocation> mediaQueueFileLocation = new LinkedList<>();
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -108,7 +106,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
         outState.putString(MEDIA_TYPE, mediaType);
         outState.putParcelable(SORT_METHOD, sortMethod);
         try {
-            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList<FileLocation>) ((MediaPictureListAdapter) getAdapter()).getFileItemList());
+            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList<LocalFileLocation>) ((MediaPictureListAdapter) getAdapter()).getFileItemList());
         } catch (NullPointerException npe) {
             // adapter is null probably nothing was save in bundle because the directory is empty
             // ignore this so that the empty message would display later on
@@ -136,7 +134,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         Bundle args = getArguments();
-        FileLocation rootPath = null;
+        LocalFileLocation rootPath = null;
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -161,11 +159,6 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
             rootPath = args.getParcelable(ROOT_PATH);
             this.rootPathLocation = args.getString(ROOT_PATH_LOCATION);
             mediaType = args.getString(MEDIA_TYPE, Files.Media.FILES);
-            if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
-                playlistId = PlaylistType.VIDEO_PLAYLISTID;
-            } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
-                playlistId = PlaylistType.PICTURE_PLAYLISTID;
-            }
             sortMethod = args.getParcelable(SORT_METHOD);
         }
 
@@ -182,13 +175,8 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
         if (savedInstanceState != null) {
             mediaType = savedInstanceState.getString(MEDIA_TYPE, Files.Media.FILES);
             //currentPath = savedInstanceState.getString(CURRENT_PATH);
-            if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
-                playlistId = PlaylistType.VIDEO_PLAYLISTID;
-            } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
-                playlistId = PlaylistType.PICTURE_PLAYLISTID;
-            }
             sortMethod = savedInstanceState.getParcelable(SORT_METHOD);
-            ArrayList<FileLocation> list = savedInstanceState.getParcelableArrayList(PATH_CONTENTS);
+            ArrayList<LocalFileLocation> list = savedInstanceState.getParcelableArrayList(PATH_CONTENTS);
             rootFileLocation = savedInstanceState.getParcelableArrayList(ROOT_PATH_CONTENTS);
             browseRootAlready = savedInstanceState.getBoolean(ROOT_VISITED);
             ((MediaPictureListAdapter) getAdapter()).setFilelistItems(list);
@@ -208,14 +196,14 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
     public void setUserVisibleHint (boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && loadOnVisible != null) {
-            FileLocation rootPath = loadOnVisible;
+            LocalFileLocation rootPath = loadOnVisible;
             loadOnVisible = null;
             browseRootAlready = true;
             browseDirectory(rootPath);
         }
     }
 
-    void handleFileSelect(FileLocation f) {
+    void handleFileSelect(LocalFileLocation f) {
         // if selection is a directory, browse the the level below
         if (f.isDirectory) {
             // a directory - store the path of this directory so that we can reverse travel if
@@ -230,7 +218,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
                 browseDirectory(f);
             }
         } else {
-            playMediaFile(f.title, f.file);
+            playMediaFile(f);
         }
     }
 
@@ -242,13 +230,13 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
     public boolean atRootDirectory() {
         if (getAdapter().getItemCount() == 0)
             return true;
-        FileLocation fl = ((MediaPictureListAdapter) getAdapter()).getItem(0);
+        LocalFileLocation fl = ((MediaPictureListAdapter) getAdapter()).getItem(0);
         if (fl == null)
             return true;
         else
             // if we still see "..", it is not the real root directory
             return fl.isRootDir() &&
-                   (fl.title != null) && !fl.title.contentEquals("..");
+                   (fl.fileName != null) && !fl.fileName.contentEquals("..");
     }
 
     /**
@@ -277,7 +265,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
         for (File file : files) {
             boolean isDir = file.isDirectory();
             rootFileLocation.add(
-                    new FileLocation(file.getName(), file.getAbsolutePath(), isDir)
+                    new LocalFileLocation(file.getName(), file.getAbsolutePath(), isDir)
             );
         }
         ((MediaPictureListAdapter) getAdapter()).setFilelistItems(rootFileLocation);
@@ -288,47 +276,47 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
      * Gets and presents the files of the specified directory
      * @param dir Directory to browse
      */
-    private void browseDirectory(final FileLocation dir) {
+    private void browseDirectory(final LocalFileLocation dir) {
         if (dir.isRootDir()) {
             // this is a root directory
-            parentDirectory = dir.file;
+            parentDirectory = dir.fullPath;
         } else {
             // check to make sure that this is not our root path
             String rootPath = null;
             String path;
-            for (FileLocation fl : rootFileLocation) {
-                path = fl.file;
-                if ((path != null) && (dir.file != null) &&
-                    (dir.file.contentEquals(path))) {
-                    rootPath = fl.file;
+            for (LocalFileLocation fl : rootFileLocation) {
+                path = fl.fullPath;
+                if ((path != null) && (dir.fullPath != null) &&
+                    (dir.fullPath.contentEquals(path))) {
+                    rootPath = fl.fullPath;
                     break;
                 }
             }
             if (rootPath != null) {
                 parentDirectory = rootPath;
                 dir.setRootDir(true);
-            } else if (dir.file != null) {
-                parentDirectory = getParentDirectory(dir.file);
+            } else if (dir.fullPath != null) {
+                parentDirectory = getParentDirectory(dir.fullPath);
             }
         }
 
         // TODO: maybe async task here?
-        File[] files = (new File(dir.file)).listFiles();
+        File[] files = (new File(dir.fullPath)).listFiles();
         Arrays.sort(files);
 
-        ArrayList<FileLocation> dir_list = new ArrayList<>();
-        ArrayList<FileLocation> file_list = new ArrayList<>();
+        ArrayList<LocalFileLocation> dir_list = new ArrayList<>();
+        ArrayList<LocalFileLocation> file_list = new ArrayList<>();
 
         if (dir.hasParent) {
             // insert the parent directory as the first item in the list
-            parentDirectory = getParentDirectory(dir.file);
-            FileLocation fl = new FileLocation("..", parentDirectory, true);
+            parentDirectory = getParentDirectory(dir.fullPath);
+            LocalFileLocation fl = new LocalFileLocation("..", parentDirectory, true);
             fl.setRootDir(dir.isRootDir());
             dir_list.add(0, fl);
         }
 
         for (File file : files) {
-            FileLocation fl = new FileLocation(file.getName(), file.getAbsolutePath(), file.isDirectory());
+            LocalFileLocation fl = new LocalFileLocation(file.getName(), file.getAbsolutePath(), file.isDirectory());
             if (fl.isDirectory) {
                 dir_list.add(fl);
             } else {
@@ -337,7 +325,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
         }
 
         // TODO: use sortMethod here
-        ArrayList<FileLocation> full_list = new ArrayList<>();
+        ArrayList<LocalFileLocation> full_list = new ArrayList<>();
         full_list.addAll(dir_list);
         full_list.addAll(file_list);
 
@@ -347,10 +335,10 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
 
     /**
      * Starts playing the given media file
-     * @param filename Filename to start playing
+     * @param localFileLocation LocalFileLocation to start playing
      */
-    private void playMediaFile(final String filename, final String path) {
-        http_app.addLocalFilePath(filename, path);
+    private void playMediaFile(final LocalFileLocation localFileLocation) {
+        http_app.addLocalFilePath(localFileLocation);
         String url = http_app.getLinkToFile();
 
         PlaylistType.Item item = new PlaylistType.Item();
@@ -360,7 +348,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
             @Override
             public void onSuccess(String result) {
                 while (!mediaQueueFileLocation.isEmpty()) {
-                    queueMediaFile(mediaQueueFileLocation.poll().file);
+                    queueMediaFile(mediaQueueFileLocation.poll());
                 }
             }
 
@@ -376,18 +364,20 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
 
     /**
      * Queues the given media file on the active playlist, and starts it if nothing is playing
-     * @param filename File to queue
+     * @param localFileLocation LocalFileLocation to queue
      */
-    private void queueMediaFile(final String filename) {
-        Toast.makeText(getContext(), "Media not really implemented for local device files.", Toast.LENGTH_LONG);
+    private void queueMediaFile(final LocalFileLocation localFileLocation) {
+        http_app.addLocalFilePath(localFileLocation);
+        String url = http_app.getLinkToFile();
+
         final HostConnection connection = hostManager.getConnection();
         PlaylistType.Item item = new PlaylistType.Item();
-        item.file = filename;
-        Playlist.Add action = new Playlist.Add(playlistId, item);
+        item.file = url;
+        Playlist.Add action = new Playlist.Add(localFileLocation.getPlaylistTypeId(), item);
         action.execute(connection, new ApiCallback<String>() {
             @Override
-            public void onSuccess(String result ) {
-                startPlaylistIfNoActivePlayers(connection, playlistId, callbackHandler);
+            public void onSuccess(String result) {
+                startPlaylistIfNoActivePlayers(connection, localFileLocation.getPlaylistTypeId(), callbackHandler);
             }
 
             @Override
@@ -491,7 +481,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
 
         Context ctx;
         int resource;
-        List<FileLocation> fileLocationItems;
+        List<LocalFileLocation> fileLocationItems;
 
         int artWidth;
         int artHeight;
@@ -501,7 +491,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
             public void onClick(View v) {
                 final int position = (Integer)v.getTag();
                 if (fileLocationItems != null) {
-                    final FileLocation loc = fileLocationItems.get(position);
+                    final LocalFileLocation loc = fileLocationItems.get(position);
                     if (!loc.isDirectory) {
                         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
                         popupMenu.getMenuInflater().inflate(R.menu.filelist_item, popupMenu.getMenu());
@@ -511,14 +501,14 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
 
                                 switch (item.getItemId()) {
                                     case R.id.action_queue_item:
-                                        queueMediaFile(loc.file);
+                                        queueMediaFile(loc);
                                         return true;
                                     case R.id.action_play_item:
-                                        playMediaFile(loc.title, loc.file);
+                                        playMediaFile(loc);
                                         return true;
                                     case R.id.action_play_from_this_item:
                                         mediaQueueFileLocation.clear();
-                                        FileLocation fl;
+                                        LocalFileLocation fl;
                                         // start playing the selected one, then queue the rest
                                         mediaQueueFileLocation.add(loc);
                                         for (int i = position + 1; i < fileLocationItems.size(); i++) {
@@ -527,7 +517,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
                                                 mediaQueueFileLocation.add(fl);
                                             }
                                         }
-                                        playMediaFile(loc.title, loc.file);
+                                        playMediaFile(loc);
                                         return true;
                                 }
                                 return false;
@@ -560,18 +550,18 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
          *
          * @param items list of files/directories
          */
-        public void setFilelistItems(List<FileLocation> items) {
+        public void setFilelistItems(List<LocalFileLocation> items) {
             this.fileLocationItems = items;
             notifyDataSetChanged();
         }
 
-        public List<FileLocation> getFileItemList() {
+        public List<LocalFileLocation> getFileItemList() {
             if (fileLocationItems == null)
                 return new ArrayList<>();
             return new ArrayList<>(fileLocationItems);
         }
 
-        public FileLocation getItem(int position) {
+        public LocalFileLocation getItem(int position) {
             if (fileLocationItems == null) {
                 return null;
             } else {
@@ -588,7 +578,7 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            FileLocation fileLocation = this.getItem(position);
+            LocalFileLocation fileLocation = this.getItem(position);
             ((ViewHolder) holder).bindView(fileLocation, position);
         }
 
@@ -644,13 +634,13 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
             contextMenu.setOnClickListener(itemMenuClickListener);
         }
 
-        public void bindView(FileLocation fileLocation, int position) {
-            title.setText(fileLocation.title);
+        public void bindView(LocalFileLocation fileLocation, int position) {
+            title.setText(fileLocation.fileName);
             details.setText(fileLocation.details);
             sizeDuration.setText(fileLocation.sizeDuration);
 
-            CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(context, fileLocation.title);
-            File file_path = new File(fileLocation.file);
+            CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(context, fileLocation.fileName);
+            File file_path = new File(fileLocation.fullPath);
 
             Picasso.with(context)
                     .load(file_path)
@@ -670,76 +660,4 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
     }
 
     HttpApp http_app = null;
-
-    public static class FileLocation implements Parcelable {
-        public final String title;
-        public final String details;
-        public final String sizeDuration;
-        public final String artUrl;
-
-        public final String file;
-        public final boolean isDirectory;
-        public final boolean hasParent;
-        private boolean isRoot;
-
-
-        public boolean isRootDir() { return this.isRoot; }
-        public void setRootDir(boolean root) { this.isRoot = root; }
-
-        public FileLocation(String title, String path, boolean isDir) {
-            this(title, path, isDir, null, null, null);
-        }
-
-        static final Pattern noParent = Pattern.compile("plugin://[^/]*/?");
-        public FileLocation(String title, String path, boolean isDir, String details, String sizeDuration, String artUrl) {
-            this.title = title;
-            this.file = path;
-            this.isDirectory = isDir;
-            this.hasParent = !noParent.matcher(path).matches();
-
-            this.isRoot = false;
-
-            this.details = details;
-            this.sizeDuration = sizeDuration;
-            this.artUrl = artUrl;
-        }
-
-        private FileLocation(Parcel in) {
-            this.title = in.readString();
-            this.file = in.readString();
-            this.isDirectory = (in.readInt() != 0);
-            this.hasParent = (in.readInt() != 0);
-            this.isRoot = (in.readInt() != 0);
-
-            this.details = in.readString();
-            this.sizeDuration = in.readString();
-            this.artUrl = in.readString();
-        }
-
-        public int describeContents() {
-            return 0;
-        }
-
-        public void writeToParcel(Parcel out, int flags) {
-            out.writeString(title);
-            out.writeString(file);
-            out.writeInt(isDirectory ? 1 : 0);
-            out.writeInt(hasParent ? 1 : 0);
-            out.writeInt(isRoot ? 1 : 0);
-
-            out.writeString(details);
-            out.writeString(sizeDuration);
-            out.writeString(artUrl);
-        }
-
-        public static final Creator<FileLocation> CREATOR = new Creator<FileLocation>() {
-            public FileLocation createFromParcel(Parcel in) {
-                return new FileLocation(in);
-            }
-
-            public FileLocation[] newArray(int size) {
-                return new FileLocation[size];
-            }
-        };
-    }
 }

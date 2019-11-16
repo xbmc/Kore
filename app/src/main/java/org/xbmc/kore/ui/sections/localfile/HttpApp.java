@@ -1,11 +1,8 @@
 package org.xbmc.kore.ui.sections.localfile;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.WifiManager;
-import android.util.Log;
-import android.webkit.MimeTypeMap;
 
 import org.xbmc.kore.utils.LogUtils;
 
@@ -15,6 +12,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,50 +26,48 @@ public class HttpApp extends NanoHTTPD {
     private HttpApp(Context applicationContext, int port) throws IOException {
         super(port);
         this.applicationContext = applicationContext;
+        this.localFileLocationList = new LinkedList<>();
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
     }
 
     private Context applicationContext;
-
-    private String fileName = null;
-    private String filePath = null;
-    private String mimeType = null;
+    private LinkedList<LocalFileLocation> localFileLocationList = null;
+    private int currentIndex;
 
     @Override
     public Response serve(IHTTPSession session) {
 
-        Map<String, List<String>> parms = session.getParameters();
-        if (filePath == null) {
+        Map<String, List<String>> params = session.getParameters();
+        if (localFileLocationList == null) {
             return newFixedLengthResponse(Response.Status.FORBIDDEN, "", "");
         }
 
+        if (!params.containsKey("number")) {
+            return null;
+        }
+
+        int file_number = Integer.parseInt(params.get("number").get(0));
+
         FileInputStream fis = null;
+        LocalFileLocation localFileLocation = localFileLocationList.get(file_number);
         try {
-            fis = new FileInputStream(filePath);
+            fis = new FileInputStream(localFileLocation.fullPath);
         } catch (FileNotFoundException e) {
             LogUtils.LOGW(LogUtils.makeLogTag(HttpApp.class), e.toString());
             return newFixedLengthResponse(Response.Status.FORBIDDEN, "", "");
         }
-        String mimeType = this.mimeType;
+        String mimeType = localFileLocation.getMimeType();
         return newChunkedResponse(Response.Status.OK, mimeType, fis);
     }
 
-    private String getFileMimeType(final String filename) {
-        String extension = MimeTypeMap.getFileExtensionFromUrl(filename);
-        if (extension == null) {
-            return null;
+    public void addLocalFilePath(LocalFileLocation localFileLocation) {
+        if (localFileLocationList.contains(localFileLocation)) {
+            // Path already exists, get its index:
+            currentIndex = localFileLocationList.indexOf(localFileLocation);
+        } else {
+            this.localFileLocationList.add(localFileLocation);
+            currentIndex = localFileLocationList.size() - 1;
         }
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-    }
-
-    public void addLocalFilePath(String fileName, String filePath) {
-        addLocalFilePath(fileName, filePath, getFileMimeType(fileName));
-    }
-
-    public void addLocalFilePath(String filename, String filePath, String mimeType) {
-        this.fileName = filename;
-        this.filePath = filePath;
-        this.mimeType = mimeType;
     }
 
     private String getIpAddress() throws UnknownHostException {
@@ -104,7 +100,7 @@ public class HttpApp extends NanoHTTPD {
         } catch (IOException ioe) {
             LogUtils.LOGE(LogUtils.makeLogTag(HttpApp.class), ioe.getMessage());
         }
-        return "http://" + ip + ":" + String.valueOf(getListeningPort()) + "/" + fileName;
+        return "http://" + ip + ":" + getListeningPort() + "/" + localFileLocationList.get(currentIndex).fileName + "?number=" + currentIndex;
     }
 
     private static HttpApp http_app = null;

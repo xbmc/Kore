@@ -23,7 +23,7 @@ public abstract class AbstractFileListFragment extends AbstractListFragment {
 
     @Override
     public void onRefresh() {
-        browseSources();
+        // browseDirectory(currentDirectory);
     }
 
 }
