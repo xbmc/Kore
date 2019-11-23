@@ -342,6 +342,8 @@
     <string name="theme_night">Nuit</string>
     <string name="theme_day">Jour</string>
     <string name="theme_mist">Brouillard</string>
+    <string name="theme_sunrise">Lever de soleil</string>
+    <string name="theme_sunset">Coucher de soleil</string>
 
     <string name="switch_to_remote">Basculer sur la télécommande après le début de la lecture</string>
     <string name="keep_remote_above_lockscreen">Conserver la télécommande sur l\'écran de déverrouillage</string>
@@ -420,5 +422,6 @@
 
     <string name="disable_local_playback_support">Support de la lecture locale</string>
     <string name="disable_local_playback_support_summary">Désactive la prise en charge de la lecture locale de média sur l\'appareil exécutant Kore</string>
+    <string name="language">Langue</string>
 
 </resources>
