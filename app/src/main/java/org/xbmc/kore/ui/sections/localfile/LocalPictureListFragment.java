@@ -22,9 +22,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.v4.app.ActivityCompat;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,7 +46,7 @@ import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
-import org.xbmc.kore.ui.AbstractFileListFragment;
+import org.xbmc.kore.ui.AbstractListFragment;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.CharacterDrawable;
 import org.xbmc.kore.utils.LogUtils;
@@ -63,13 +61,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.regex.Pattern;
 
 
 /**
  * Presents a list of files of different types (Video/Music)
  */
-public class LocalPictureListFragment extends AbstractFileListFragment {
+public class LocalPictureListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(LocalPictureListFragment.class);
 
     public static final String MEDIA_TYPE = "mediaType";
@@ -89,6 +86,8 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
      * Handler on which to post RPC callbacks
      */
     private Handler callbackHandler = new Handler();
+
+    private LocalFileLocation currentDirectory = null;
 
     String mediaType = Files.Media.FILES;
     ListType.Sort sortMethod = null;
@@ -131,19 +130,46 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
     }
 
     @Override
+    public void onRefresh() {
+        browseDirectory(currentDirectory);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Utils.PERMISSION_REQUEST_READ_EXTERNAL_STORAGE:
+            // If request is cancelled, the result arrays are empty.
+            if ((grantResults.length > 0) &&
+                    (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                browseSources();
+            } else {
+                Toast.makeText(getActivity(), R.string.read_storage_permission_denied, Toast.LENGTH_SHORT)
+                        .show();
+            }
+            break;
+        }
+    }
+
+    private boolean checkReadStoragePermission() {
+        boolean hasStoragePermission =
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        if (!hasStoragePermission) {
+            requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
+                    Utils.PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         Bundle args = getArguments();
         LocalFileLocation rootPath = null;
 
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission to read files was not granted,
-            // prompt the user for storage access permissions:
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    Utils.PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
-        }
+        checkReadStoragePermission();
 
         try {
             if (http_app == null) {
@@ -228,22 +254,13 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
     }
 
     public boolean atRootDirectory() {
-        if (getAdapter().getItemCount() == 0)
-            return true;
-        LocalFileLocation fl = ((MediaPictureListAdapter) getAdapter()).getItem(0);
-        if (fl == null)
-            return true;
-        else
-            // if we still see "..", it is not the real root directory
-            return fl.isRootDir() &&
-                   (fl.fileName != null) && !fl.fileName.contentEquals("..");
+        return currentDirectory.fullPath.equals(rootPathLocation);
     }
 
     /**
      * Gets and presents the list of media sources
      */
-    @Override
-    protected void browseSources() {
+    private void browseSources() {
         File directory = null;
         if (rootFileLocation != null) {
             directory = new File(rootPathLocation);
@@ -300,8 +317,16 @@ public class LocalPictureListFragment extends AbstractFileListFragment {
             }
         }
 
-        // TODO: maybe async task here?
+        currentDirectory = dir;
+
         File[] files = (new File(dir.fullPath)).listFiles();
+        if (files == null) {
+            Toast.makeText(
+                getContext(),
+                String.format(getString(R.string.error_getting_source_info), "listFiles() failed"),
+                Toast.LENGTH_LONG);
+            return;
+        }
         Arrays.sort(files);
 
         ArrayList<LocalFileLocation> dir_list = new ArrayList<>();

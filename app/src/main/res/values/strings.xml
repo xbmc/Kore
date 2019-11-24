@@ -423,6 +423,7 @@
 
     <string name="read_phone_state_permission_denied">Permission denied. Won\'t be able to pause playback during calls.</string>
     <string name="write_storage_permission_denied">Permission denied. Won\'t be able to download files.</string>
+    <string name="read_storage_permission_denied">Permission denied. Won\'t be able to read files.</string>
 
     <string name="no_songs_to_download">No songs to download</string>
     <string name="by_album">By album</string>
