@@ -66,8 +66,8 @@ import java.util.Queue;
 /**
  * Presents a list of files of different types (Video/Music)
  */
-public class LocalPictureListFragment extends AbstractListFragment {
-    private static final String TAG = LogUtils.makeLogTag(LocalPictureListFragment.class);
+public class LocalMediaFileListFragment extends AbstractListFragment {
+    private static final String TAG = LogUtils.makeLogTag(LocalMediaFileListFragment.class);
 
     public static final String MEDIA_TYPE = "mediaType";
     public static final String SORT_METHOD = "sortMethod";

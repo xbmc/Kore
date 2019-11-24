@@ -21,15 +21,12 @@ import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.jsonrpc.method.Files;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.ui.AbstractTabsFragment;
 import org.xbmc.kore.ui.OnBackPressedListener;
 import org.xbmc.kore.utils.TabsAdapter;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 /**
  * Manages the viewpager of files
@@ -43,29 +40,29 @@ public class LocalFileListFragment extends AbstractTabsFragment
 
         Bundle dcimFileListArgs = new Bundle();
         String dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
-        dcimFileListArgs.putString(LocalPictureListFragment.ROOT_PATH_LOCATION, dcim);
-        dcimFileListArgs.putParcelable(LocalPictureListFragment.SORT_METHOD, sortMethod);
+        dcimFileListArgs.putString(LocalMediaFileListFragment.ROOT_PATH_LOCATION, dcim);
+        dcimFileListArgs.putParcelable(LocalMediaFileListFragment.SORT_METHOD, sortMethod);
 
         Bundle directoryMusicFileListArgs = new Bundle();
         String directoryMusic = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
-        directoryMusicFileListArgs.putString(LocalPictureListFragment.ROOT_PATH_LOCATION, directoryMusic);
-        directoryMusicFileListArgs.putParcelable(LocalPictureListFragment.SORT_METHOD, sortMethod);
+        directoryMusicFileListArgs.putString(LocalMediaFileListFragment.ROOT_PATH_LOCATION, directoryMusic);
+        directoryMusicFileListArgs.putParcelable(LocalMediaFileListFragment.SORT_METHOD, sortMethod);
 
         Bundle directoryMoviesFileListArgs = new Bundle();
         String directoryMovies = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath();
-        directoryMoviesFileListArgs.putString(LocalPictureListFragment.ROOT_PATH_LOCATION, directoryMovies);
-        directoryMoviesFileListArgs.putParcelable(LocalPictureListFragment.SORT_METHOD, sortMethod);
+        directoryMoviesFileListArgs.putString(LocalMediaFileListFragment.ROOT_PATH_LOCATION, directoryMovies);
+        directoryMoviesFileListArgs.putParcelable(LocalMediaFileListFragment.SORT_METHOD, sortMethod);
 
         Bundle externalStorageFileListArgs = new Bundle();
         String externalStorage = Environment.getExternalStorageDirectory().getAbsolutePath();
-        externalStorageFileListArgs.putString(LocalPictureListFragment.ROOT_PATH_LOCATION, externalStorage);
-        externalStorageFileListArgs.putParcelable(LocalPictureListFragment.SORT_METHOD, sortMethod);
+        externalStorageFileListArgs.putString(LocalMediaFileListFragment.ROOT_PATH_LOCATION, externalStorage);
+        externalStorageFileListArgs.putParcelable(LocalMediaFileListFragment.SORT_METHOD, sortMethod);
 
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
-                .addTab(LocalPictureListFragment.class, dcimFileListArgs, R.string.dcim, 1)
-                .addTab(LocalPictureListFragment.class, directoryMusicFileListArgs, "Music", 2)
-                .addTab(LocalPictureListFragment.class, directoryMoviesFileListArgs, "Movies", 3)
-                .addTab(LocalPictureListFragment.class, externalStorageFileListArgs, R.string.external_storage, 4);
+                .addTab(LocalMediaFileListFragment.class, dcimFileListArgs, R.string.dcim, 1)
+                .addTab(LocalMediaFileListFragment.class, directoryMusicFileListArgs, "Music", 2)
+                .addTab(LocalMediaFileListFragment.class, directoryMoviesFileListArgs, "Movies", 3)
+                .addTab(LocalMediaFileListFragment.class, externalStorageFileListArgs, R.string.external_storage, 4);
         Environment.getRootDirectory();
         File[] externalFilesDirs = ContextCompat.getExternalFilesDirs(getActivity(),null);
         for (int i = 0; i < externalFilesDirs.length; i++) {
@@ -74,10 +71,10 @@ public class LocalFileListFragment extends AbstractTabsFragment
             if (file.getAbsolutePath().equals(externalStorage))
                 continue;
             Bundle bundle = new Bundle();
-            bundle.putString(LocalPictureListFragment.ROOT_PATH_LOCATION, file.getAbsolutePath());
-            bundle.putParcelable(LocalPictureListFragment.SORT_METHOD, sortMethod);
+            bundle.putString(LocalMediaFileListFragment.ROOT_PATH_LOCATION, file.getAbsolutePath());
+            bundle.putParcelable(LocalMediaFileListFragment.SORT_METHOD, sortMethod);
 
-            tabsAdapter.addTab(LocalPictureListFragment.class, bundle, file.getName(),i+2);
+            tabsAdapter.addTab(LocalMediaFileListFragment.class, bundle, file.getName(),i+2);
         }
 
         return tabsAdapter;
@@ -97,7 +94,7 @@ public class LocalFileListFragment extends AbstractTabsFragment
     @Override
     public boolean onBackPressed() {
         // Tell current fragment to move up one directory, if possible
-        LocalPictureListFragment curPage = (LocalPictureListFragment)((TabsAdapter)getViewPager().getAdapter())
+        LocalMediaFileListFragment curPage = (LocalMediaFileListFragment)((TabsAdapter)getViewPager().getAdapter())
                 .getStoredFragment(getViewPager().getCurrentItem());
         if ((curPage != null) && !curPage.atRootDirectory()) {
             curPage.onBackPressed();
