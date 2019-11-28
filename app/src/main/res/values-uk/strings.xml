@@ -351,7 +351,7 @@
     <string name="show_now_playing_panel_summary">Відображає панель, що розгортається в нижній частині екрана під час відтворення медіа</string>
     <string name="notification_seek_jump">Використовувати кроки для пошуку</string>
     <string name="notification_seek_jump_speed">Змінювати швидкість відтворення під час пошуку зі сповіщення</string>
-    <string name="notification_seek_jump_step">Використовувати кроки пропуску під час пошуку з сповіщення</string>
+    <string name="notification_seek_jump_step">Використовувати кроки пропуску під час пошуку зі сповіщення</string>
     <string name="pause_during_calls">Призупиняти під час дзвінків</string>
     <string name="use_hardware_volume_keys">Використовувати кнопки гучності</string>
     <string name="vibrate_on_remote">Вібрувати при натисканні</string>
@@ -421,7 +421,7 @@
     <string name="muted">без звуку</string>
     <string name="no_item_available_to_play">Помилка: немає елементів, доступних для відтворення</string>
     <string name="Refreshing_not_implemented_for_this_item">Оновлення не реалізовано для цього елементу</string>
-    <string name="no_songs_found_refresh">Треки не знайдено\\n\\nПроведіть пальцем вниз для оновлення</string>
+    <string name="no_songs_found_refresh">Треків не знайдено\\n\\nПроведіть пальцем вниз для оновлення</string>
     <string name="not_implemented">Не реалізовано</string>
     <string name="zeroprogress">0:00</string>
 
