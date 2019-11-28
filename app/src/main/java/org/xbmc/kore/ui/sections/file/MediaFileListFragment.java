@@ -645,8 +645,8 @@ public class MediaFileListFragment extends AbstractListFragment {
         }
 
         public void bindView(FileLocation fileLocation, int position) {
-            title.setText(fileLocation.title);
-            details.setText(fileLocation.details);
+            title.setText(UIUtils.applyMarkup(context, fileLocation.title));
+            details.setText(UIUtils.applyMarkup(context, fileLocation.details));
             sizeDuration.setText(fileLocation.sizeDuration);
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
