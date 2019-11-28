@@ -178,7 +178,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         } catch (IOException ioe) {
             Toast.makeText(getContext(),
                     getString(R.string.error_starting_http_server),
-                    Toast.LENGTH_LONG);
+                    Toast.LENGTH_LONG).show();
         }
 
         if (args != null) {
@@ -272,7 +272,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         if (files == null) {
             Toast.makeText(getActivity(),
                     getString(R.string.error_reading_local_storage),
-                    Toast.LENGTH_LONG);
+                    Toast.LENGTH_LONG).show();
             return;
         }
         Arrays.sort(files);
@@ -324,7 +324,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
             Toast.makeText(
                 getContext(),
                 String.format(getString(R.string.error_getting_source_info), "listFiles() failed"),
-                Toast.LENGTH_LONG);
+                Toast.LENGTH_LONG).show();
             return;
         }
         Arrays.sort(files);

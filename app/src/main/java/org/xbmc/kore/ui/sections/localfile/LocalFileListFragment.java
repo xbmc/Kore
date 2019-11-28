@@ -60,8 +60,8 @@ public class LocalFileListFragment extends AbstractTabsFragment
 
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
                 .addTab(LocalMediaFileListFragment.class, dcimFileListArgs, R.string.dcim, 1)
-                .addTab(LocalMediaFileListFragment.class, directoryMusicFileListArgs, "Music", 2)
-                .addTab(LocalMediaFileListFragment.class, directoryMoviesFileListArgs, "Movies", 3)
+                .addTab(LocalMediaFileListFragment.class, directoryMusicFileListArgs, R.string.music, 2)
+                .addTab(LocalMediaFileListFragment.class, directoryMoviesFileListArgs, R.string.movies, 3)
                 .addTab(LocalMediaFileListFragment.class, externalStorageFileListArgs, R.string.external_storage, 4);
         Environment.getRootDirectory();
         File[] externalFilesDirs = ContextCompat.getExternalFilesDirs(getActivity(),null);
