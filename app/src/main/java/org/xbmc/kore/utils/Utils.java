@@ -31,6 +31,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -254,7 +255,15 @@ public class Utils {
         }, callbackHandler);
     }
 
-    public static void setLocale(Context context, String localeName) {
+    public static void setPreferredLocale(Context context) {
+        String preferredLocale = android.preference.PreferenceManager.getDefaultSharedPreferences(context)
+                                                                     .getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
+        if (! preferredLocale.isEmpty()) {
+            Utils.setLocale(context, preferredLocale);
+        }
+    }
+
+    private static void setLocale(Context context, String localeName) {
         Locale locale = getLocale(localeName);
 
         Locale.setDefault(locale);
