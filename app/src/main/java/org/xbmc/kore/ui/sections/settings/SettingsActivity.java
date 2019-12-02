@@ -28,6 +28,7 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 /**
  * Presents the Preferences fragment
@@ -41,6 +42,8 @@ public class SettingsActivity extends AppCompatActivity {
         setTheme(UIUtils.getThemeResourceId(
                 prefs.getString(Settings.KEY_PREF_THEME,
                         Settings.DEFAULT_PREF_THEME)));
+        Utils.setPreferredLocale(this);
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
