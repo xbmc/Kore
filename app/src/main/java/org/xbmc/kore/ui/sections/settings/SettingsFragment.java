@@ -85,20 +85,22 @@ public class SettingsFragment extends PreferenceFragmentCompat
             Class iterClass = sideMenuItems.getClass();
             try {
                 @SuppressWarnings("unchecked")
-                Method m = iterClass.getDeclaredMethod("onSetInitialValue", boolean.class, Object.class);
+                Method m = iterClass.getDeclaredMethod("onSetInitialValue", Object.class);
                 m.setAccessible(true);
-                m.invoke(sideMenuItems, true, null);
+                m.invoke(sideMenuItems, (Object)null);
             } catch (Exception e) {
+                LogUtils.LOGD(TAG, "Error while setting default Nav Drawer shortcuts: " + e.toString());
             }
         }
         if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getRemoteBarItemsPrefKey(hostId), null) != null) {
             Class iterClass = remoteBarItems.getClass();
             try {
                 @SuppressWarnings("unchecked")
-                Method m = iterClass.getDeclaredMethod("onSetInitialValue", boolean.class, Object.class);
+                Method m = iterClass.getDeclaredMethod("onSetInitialValue", Object.class);
                 m.setAccessible(true);
-                m.invoke(remoteBarItems, true, null);
+                m.invoke(remoteBarItems, (Object)null);
             } catch (Exception e) {
+                LogUtils.LOGD(TAG, "Error while setting default bottom bar shortcuts: " + e.toString());
             }
         }
 
