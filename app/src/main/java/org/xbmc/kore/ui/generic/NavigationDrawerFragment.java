@@ -83,11 +83,11 @@ public class NavigationDrawerFragment extends Fragment {
             ACTIVITY_TVSHOWS = 3,
             ACTIVITY_MUSIC = 4,
             ACTIVITY_PVR = 5,
-            ACTIVITY_LOCAL_FILES = 6,
+            ACTIVITY_FILES = 6,
             ACTIVITY_ADDONS = 7,
             ACTIVITY_SETTINGS = 8,
             ACTIVITY_FAVOURITES = 9,
-            ACTIVITY_FILES = 10;
+            ACTIVITY_LOCAL_FILES = 10;
 
 
     // The current selected item id (based on the activity)
