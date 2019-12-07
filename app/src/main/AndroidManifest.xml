@@ -29,6 +29,14 @@
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
 
+            <intent-filter android:label="@string/play_on_kodi">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+
             <!-- Intent filter for sharing from youtube player -->
             <intent-filter android:label="@string/play_on_kodi">
                 <action android:name="android.intent.action.SEND" />
