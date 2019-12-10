@@ -282,6 +282,7 @@
 
     <string name="add_to_playlist">Add to playlist</string>
     <string name="item_added_to_playlist">Added to playlist</string>
+    <string name="item_sent_to_kodi">Sent to Kodi</string>
     <string name="no_suitable_playlist">No suitable playlist found to add media type.</string>
 
     <string name="imdb">IMDb</string>
@@ -389,6 +390,7 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Play on Kodi</string>
+    <string name="queue_on_kodi">Queue on Kodi</string>
     <string name="pause_call_incoming_title">Incoming call</string>
     <string name="pause_call_incoming_message">Check your phone, someone is calling you</string>
 
