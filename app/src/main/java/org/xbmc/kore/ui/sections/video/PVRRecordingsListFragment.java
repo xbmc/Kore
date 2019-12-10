@@ -16,12 +16,17 @@
 package org.xbmc.kore.ui.sections.video;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.PVR;
@@ -96,7 +102,7 @@ public class PVRRecordingsListFragment extends Fragment
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
         browseRecordings();
     }
 
@@ -105,6 +111,90 @@ public class PVRRecordingsListFragment extends Fragment
         super.onDestroyView();
         unbinder.unbind();
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!isAdded()) {
+            // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
+            // copied from MovieListFragment#onCreateOptionsMenu
+            super.onCreateOptionsMenu(menu, inflater);
+            return;
+        }
+
+        inflater.inflate(R.menu.pvr_recording_list, menu);
+
+        // Setup filters
+        MenuItem hideWatched = menu.findItem(R.id.action_hide_watched),
+                sortByNameAndDate = menu.findItem(R.id.action_sort_by_name_and_date_added),
+                sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added),
+                unsorted = menu.findItem(R.id.action_unsorted);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED));
+
+        int sortOrder = preferences.getInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.DEFAULT_PREF_PVR_RECORDINGS_SORT_ORDER);
+        switch (sortOrder) {
+            case Settings.SORT_BY_DATE_ADDED:
+                sortByDateAdded.setChecked(true);
+                break;
+            case Settings.SORT_BY_NAME:
+                sortByNameAndDate.setChecked(true);
+                break;
+            default:
+                unsorted.setChecked(true);
+                break;
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    /**
+     * Use this to reload the items in the list
+     */
+    public void refreshList() {
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        switch (item.getItemId()) {
+            case R.id.action_hide_watched:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                        .putBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, item.isChecked())
+                        .apply();
+                refreshList();
+                break;
+            case R.id.action_sort_by_name_and_date_added:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.SORT_BY_NAME)
+                        .apply();
+                refreshList();
+                break;
+            case R.id.action_sort_by_date_added:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
+                        .apply();
+                refreshList();
+                break;
+            case R.id.action_unsorted:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.UNSORTED)
+                        .apply();
+                refreshList();
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     /**
      * Swipe refresh layout callback
