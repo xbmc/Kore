@@ -46,6 +46,9 @@ import org.xbmc.kore.jsonrpc.type.PVRType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -154,6 +157,7 @@ public class PVRRecordingsListFragment extends Fragment
      * Use this to reload the items in the list
      */
     public void refreshList() {
+       onRefresh();
     }
 
     @Override
@@ -224,8 +228,88 @@ public class PVRRecordingsListFragment extends Fragment
 
                 // To prevent the empty text from appearing on the first load, set it now
                 emptyView.setText(getString(R.string.no_recordings_found_refresh));
-                setupRecordingsGridview(result);
+
+                // As the JSON RPC API does not support sorting or filter parameters for PVR.GetRecordings
+                // we apply the sorting and filtering right here.
+                // See https://kodi.wiki/view/JSON-RPC_API/v9#PVR.GetRecordings
+                List<PVRType.DetailsRecording> finalResult = filter(result);
+                sort(finalResult);
+
+                setupRecordingsGridview(finalResult);
                 swipeRefreshLayout.setRefreshing(false);
+            }
+
+            private List<PVRType.DetailsRecording> filter(List<PVRType.DetailsRecording> itemList) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                boolean hideWatched = preferences.getBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED);
+
+                boolean filter = hideWatched;
+
+                List<PVRType.DetailsRecording> result;
+                if(filter) {
+                    result = new ArrayList<>(itemList.size());
+                    for(PVRType.DetailsRecording item:itemList) {
+                        if(hideWatched) {
+                            if(item.playcount > 0) {
+                                continue; // Skip this item as it is played.
+                            } else {
+                                // Heuristic: Try to guess if it's play from resume timestamp.
+                                double resumePosition = item.resume.position;
+                                int runtime = item.runtime;
+                                if(runtime < resumePosition) {
+                                    // Tv show duration is smaller than resume positions.
+                                    // The tv show likely has been watched.
+                                    // It's still possible some minutes have not yet been watched
+                                    // at the end of the show as some minutes at the
+                                    // recording start do not belong to the show.
+                                    // Never the less skip this item.
+                                    continue;
+                                }
+                            }
+                        }
+                        result.add(item);
+                    }
+                }else {
+                    result = itemList;
+                }
+
+                return result;
+            }
+
+            private void sort(List<PVRType.DetailsRecording> itemList) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+                int sortOrder = preferences.getInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.DEFAULT_PREF_PVR_RECORDINGS_SORT_ORDER);
+
+                Comparator<PVRType.DetailsRecording> comparator;
+                switch (sortOrder) {
+                    case Settings.SORT_BY_DATE_ADDED:
+                        // sort by recording start time descending (most current first)
+                        // luckily the starttime is in sortable format yyyy-MM-dd hh:mm:ss
+                        comparator = new Comparator<PVRType.DetailsRecording>() {
+                            @Override
+                            public int compare(PVRType.DetailsRecording a, PVRType.DetailsRecording b) {
+                                return  b.starttime.compareTo(a.starttime);
+                            }
+                        };
+                        Collections.sort(itemList, comparator);
+                        break;
+                    case Settings.SORT_BY_NAME:
+                        // sort by recording title and start time
+                        comparator = new Comparator<PVRType.DetailsRecording>() {
+                            @Override
+                            public int compare(PVRType.DetailsRecording a, PVRType.DetailsRecording b) {
+                                int result = a.title.compareToIgnoreCase(b.title);
+                                if(0 == result) { // note the yoda condition ;)
+                                    // sort by starttime descending (most current first)
+                                    result = b.starttime.compareTo(a.starttime);
+                                }
+                                return result;
+                            }
+                        };
+                        Collections.sort(itemList, comparator);
+                        break;
+                }
             }
 
             @Override
