@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,6 +44,7 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
+import org.xbmc.kore.ui.AbstractSearchableFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -58,7 +60,7 @@ import butterknife.Unbinder;
 /**
  * Fragment that presents the PVR recordings list
  */
-public class PVRRecordingsListFragment extends Fragment
+public class PVRRecordingsListFragment extends AbstractSearchableFragment
         implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(PVRRecordingsListFragment.class);
 
@@ -85,6 +87,7 @@ public class PVRRecordingsListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_pvr_list, container, false);
+
         unbinder = ButterKnife.bind(this, root);
 
         hostManager = HostManager.getInstance(getActivity());
@@ -99,6 +102,8 @@ public class PVRRecordingsListFragment extends Fragment
         });
         gridView.setEmptyView(emptyView);
 
+        super.onCreateView(inflater, container, savedInstanceState);
+
         return root;
     }
 
@@ -106,6 +111,7 @@ public class PVRRecordingsListFragment extends Fragment
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+        setSupportsSearch(true);
         browseRecordings();
     }
 
@@ -161,6 +167,11 @@ public class PVRRecordingsListFragment extends Fragment
     }
 
     @Override
+    protected void restartLoader() {
+        onRefresh();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         switch (item.getItemId()) {
@@ -198,7 +209,6 @@ public class PVRRecordingsListFragment extends Fragment
 
         return super.onOptionsItemSelected(item);
     }
-
 
     /**
      * Swipe refresh layout callback
@@ -243,7 +253,12 @@ public class PVRRecordingsListFragment extends Fragment
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 boolean hideWatched = preferences.getBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED);
 
-                if (!hideWatched) {
+                String searchFilter = getSearchFilter();
+                boolean hasSearchFilter = !TextUtils.isEmpty(searchFilter);
+                // Split searchFilter to multiple lowercase words
+                String[] lcWords= hasSearchFilter ? searchFilter.toLowerCase().split(" ") : null;
+
+                if (!(hideWatched || hasSearchFilter)) {
                     return itemList;
                 }
 
@@ -268,12 +283,32 @@ public class PVRRecordingsListFragment extends Fragment
                         }
                     }
 
-                    // more conditions may be added here
+                    if (hasSearchFilter) {
+                        // Require all lowercase words to match the item:
+                        boolean allWordsMatch = true;
+                        for (String lcWord:lcWords) {
+                            if (!searchFilterWordMatches(lcWord, item)) {
+                                allWordsMatch = false;
+                                break;
+                            }
+                        }
+                        if (!allWordsMatch) {
+                            continue; // skip this item
+                        }
+                    }
 
                     result.add(item);
                 }
 
                 return result;
+            }
+
+            private boolean searchFilterWordMatches(String lcWord, PVRType.DetailsRecording item) {
+                if (item.title.toLowerCase().contains(lcWord)
+                        || item.channel.toLowerCase().contains(lcWord)) {
+                    return true;
+                }
+                return false;
             }
 
             private void sort(List<PVRType.DetailsRecording> itemList) {
