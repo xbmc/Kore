@@ -39,22 +39,26 @@ public class OpenSharedUrl implements Callable<Boolean> {
 
     private static final String TAG = LogUtils.makeLogTag(OpenSharedUrl.class);
     private final HostConnection hostConnection;
-    private final String pluginUrl;
+    private final String url;
     private final String notificationTitle;
     private final String notificationText;
+    private boolean queue;
+    private int playlistType;
 
     /**
-     * @param pluginUrl The url to play
+     * @param url The url to play
      * @param notificationTitle The title of the notification to be shown when the
      *                          host is currently playing a video
      * @param notificationText The notification to be shown when the host is currently
      *                         playing a video
      */
-    public OpenSharedUrl(HostConnection hostConnection, String pluginUrl, String notificationTitle, String notificationText) {
+    public OpenSharedUrl(HostConnection hostConnection, String url, String notificationTitle, String notificationText, boolean queue, int playlistType) {
         this.hostConnection = hostConnection;
-        this.pluginUrl = pluginUrl;
+        this.url = url;
         this.notificationTitle = notificationTitle;
         this.notificationText = notificationText;
+        this.queue = queue;
+        this.playlistType = playlistType;
     }
 
     /**
@@ -71,37 +75,46 @@ public class OpenSharedUrl implements Callable<Boolean> {
             List<PlayerType.GetActivePlayersReturnType> players =
                     hostConnection.execute(new Player.GetActivePlayers())
                         .get();
-            boolean videoIsPlaying = false;
+            boolean mediaIsPlaying = false;
             for (PlayerType.GetActivePlayersReturnType player : players) {
                 if (player.type.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
-                    videoIsPlaying = true;
+                    mediaIsPlaying = true;
                     break;
                 }
             }
 
             stage = R.string.error_queue_media_file;
-            if (!videoIsPlaying) {
-                LogUtils.LOGD(TAG, "Clearing video playlist");
-                hostConnection.execute(new Playlist.Clear(PlaylistType.VIDEO_PLAYLISTID))
+            if (!mediaIsPlaying) {
+                LogUtils.LOGD(TAG, "Clearing playlist number " + playlistType);
+                hostConnection.execute(new Playlist.Clear(playlistType))
                     .get();
             }
 
-            LogUtils.LOGD(TAG, "Queueing file");
-            PlaylistType.Item item = new PlaylistType.Item();
-            item.file = pluginUrl;
-            hostConnection.execute(new Playlist.Add(PlaylistType.VIDEO_PLAYLISTID, item))
-                .get();
+            if (queue) {
+                // Queue media file to playlist:
 
-            if (!videoIsPlaying) {
-                stage = R.string.error_play_media_file;
-                hostConnection.execute(new Player.Open(Player.Open.TYPE_PLAYLIST, PlaylistType.VIDEO_PLAYLISTID))
-                    .get();
+                LogUtils.LOGD(TAG, "Queueing file");
+                PlaylistType.Item item = new PlaylistType.Item();
+                item.file = url;
+                hostConnection.execute(new Playlist.Add(playlistType, item))
+                        .get();
+
+                if (!mediaIsPlaying) {
+                    stage = R.string.error_play_media_file;
+                    hostConnection.execute(new Player.Open(Player.Open.TYPE_PLAYLIST, playlistType))
+                            .get();
+                } else {
+                    // no get() to ignore the exception that will be thrown by OkHttp
+                    hostConnection.execute(new Player.Notification(notificationTitle, notificationText));
+                }
             } else {
-                // no get() to ignore the exception that will be thrown by OkHttp
-                hostConnection.execute(new Player.Notification(notificationTitle, notificationText));
+                // Don't queue, just play the media file directly:
+                PlaylistType.Item item = new PlaylistType.Item();
+                item.file = url;
+                hostConnection.execute(new Player.Open(item));
             }
 
-            return videoIsPlaying;
+            return mediaIsPlaying;
         } catch (ExecutionException e) {
             throw new Error(stage, e.getCause());
         } catch (RuntimeException e) {

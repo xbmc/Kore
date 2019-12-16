@@ -29,6 +29,14 @@
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
 
+            <intent-filter android:label="@string/play_on_kodi">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+
             <!-- Intent filter for sharing from youtube player -->
             <intent-filter android:label="@string/play_on_kodi">
                 <action android:name="android.intent.action.SEND" />
@@ -56,6 +64,43 @@
 
             <meta-data android:name="android.service.chooser.chooser_target_service"
                 android:value=".service.HostChooserTargetService" />
+        </activity>
+
+        <activity android:name=".ui.sections.remote.QueueActivity">
+
+            <intent-filter android:label="@string/queue_on_kodi">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+
+            <!-- Intent filter for sharing from youtube player -->
+            <intent-filter android:label="@string/queue_on_kodi">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+
+            <!-- Intent filter for sharing youtube URLs -->
+            <intent-filter android:label="@string/queue_on_kodi">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="youtube.com"/>
+                <data android:host="m.youtube.com"/>
+                <data android:host="www.youtube.com"/>
+                <data android:host="vimeo.com"/>
+                <data android:host="www.vimeo.com"/>
+                <data android:host="player.vimeo.com"/>
+                <data android:host="www.svtplay.se"/>
+                <data android:host="soundcloud.com"/>
+                <data android:host="m.soundcloud.com"/>
+            </intent-filter>
+
         </activity>
 
         <activity android:name="org.xbmc.kore.ui.sections.hosts.HostManagerActivity"/>
