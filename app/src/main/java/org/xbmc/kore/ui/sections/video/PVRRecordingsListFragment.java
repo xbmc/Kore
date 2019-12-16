@@ -243,34 +243,34 @@ public class PVRRecordingsListFragment extends Fragment
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 boolean hideWatched = preferences.getBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED);
 
-                boolean filter = hideWatched;
+                if (!hideWatched) {
+                    return itemList;
+                }
 
-                List<PVRType.DetailsRecording> result;
-                if(filter) {
-                    result = new ArrayList<>(itemList.size());
-                    for(PVRType.DetailsRecording item:itemList) {
-                        if(hideWatched) {
-                            if(item.playcount > 0) {
-                                continue; // Skip this item as it is played.
-                            } else {
-                                // Heuristic: Try to guess if it's play from resume timestamp.
-                                double resumePosition = item.resume.position;
-                                int runtime = item.runtime;
-                                if(runtime < resumePosition) {
-                                    // Tv show duration is smaller than resume positions.
-                                    // The tv show likely has been watched.
-                                    // It's still possible some minutes have not yet been watched
-                                    // at the end of the show as some minutes at the
-                                    // recording start do not belong to the show.
-                                    // Never the less skip this item.
-                                    continue;
-                                }
+                List<PVRType.DetailsRecording> result = new ArrayList<>(itemList.size());
+                for (PVRType.DetailsRecording item:itemList) {
+                    if (hideWatched) {
+                        if (item.playcount > 0) {
+                            continue; // Skip this item as it is played.
+                        } else {
+                            // Heuristic: Try to guess if it's play from resume timestamp.
+                            double resumePosition = item.resume.position;
+                            int runtime = item.runtime;
+                            if (runtime < resumePosition) {
+                                // Tv show duration is smaller than resume position.
+                                // The tv show likely has been watched.
+                                // It's still possible some minutes have not yet been watched
+                                // at the end of the show as some minutes at the
+                                // recording start do not belong to the show.
+                                // Never the less skip this item.
+                                continue;
                             }
                         }
-                        result.add(item);
                     }
-                }else {
-                    result = itemList;
+
+                    // more conditions may be added here
+
+                    result.add(item);
                 }
 
                 return result;
@@ -300,7 +300,7 @@ public class PVRRecordingsListFragment extends Fragment
                             @Override
                             public int compare(PVRType.DetailsRecording a, PVRType.DetailsRecording b) {
                                 int result = a.title.compareToIgnoreCase(b.title);
-                                if(0 == result) { // note the yoda condition ;)
+                                if (0 == result) { // note the yoda condition ;)
                                     // sort by starttime descending (most current first)
                                     result = b.starttime.compareTo(a.starttime);
                                 }
