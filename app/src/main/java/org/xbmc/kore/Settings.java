@@ -49,7 +49,8 @@ public class Settings {
             SORT_BY_ALBUM = 5,
             SORT_BY_ARTIST = 6,
             SORT_BY_ARTIST_YEAR = 7,
-            SORT_BY_LAST_PLAYED = 8;
+            SORT_BY_LAST_PLAYED = 8,
+            UNSORTED = 9;
 
     /**
      * Preferences keys.
@@ -135,6 +136,14 @@ public class Settings {
     // Show watched status on movie list
     public static final String KEY_PREF_TVSHOWS_SHOW_WATCHED_STATUS = "tvshows_show_watched_status";
     public static final boolean DEFAULT_PREF_TVSHOWS_SHOW_WATCHED_STATUS = true;
+
+    // Filter watched pvr recordings on movie list
+    public static final String KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED = "pvr_recordings_filter_hide_watched";
+    public static final boolean DEFAULT_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED = false;
+
+    // Sort order on pvr recordings
+    public static final String KEY_PREF_PVR_RECORDINGS_SORT_ORDER = "pvr_recordings_sort_order";
+    public static final int DEFAULT_PREF_PVR_RECORDINGS_SORT_ORDER = UNSORTED;
 
     // Filter disabled addons on addons list
     public static final String KEY_PREF_ADDONS_FILTER_HIDE_DISABLED = "addons_filter_hide_disabled";
