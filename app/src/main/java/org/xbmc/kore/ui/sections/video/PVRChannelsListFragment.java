@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -179,7 +178,7 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
     }
 
     @Override
-    protected void restartLoader() {
+    protected void refreshList() {
         onRefresh();
     }
 
@@ -269,7 +268,7 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
         }
 
         // Split searchFilter to multiple lowercase words
-        String[] lcWords  = searchFilter.toLowerCase().split(" ");;
+        String[] lcWords = searchFilter.toLowerCase().split(" ");;
 
         List<PVRType.DetailsChannel> result = new ArrayList<>(itemList.size());
         for(PVRType.DetailsChannel item:itemList) {

@@ -19,8 +19,6 @@ import android.widget.EditText;
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 
-import de.greenrobot.event.EventBus;
-
 public abstract class AbstractSearchableFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private String searchFilter = null;
@@ -28,7 +26,6 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
     private boolean supportsSearch;
     private boolean isPaused;
 
-    private EventBus bus;
     private SearchView searchView;
 
     private final String BUNDLE_KEY_SEARCH_QUERY = "search_query";
@@ -37,8 +34,6 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
-
-        bus = EventBus.getDefault();
 
         if (savedInstanceState != null) {
             savedSearchFilter = savedInstanceState.getString(BUNDLE_KEY_SEARCH_QUERY);
@@ -109,7 +104,7 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
                 @Override
                 public boolean onMenuItemActionCollapse(MenuItem item) {
                     searchFilter = savedSearchFilter = null;
-                    restartLoader();
+                    refreshList();
                     return true;
                 }
             });
@@ -125,7 +120,7 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
                     editText.setText("");
                     searchView.setQuery("", false);
                     searchFilter = savedSearchFilter = "";
-                    restartLoader();
+                    refreshList();
                 }
             });
         }
@@ -156,7 +151,7 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
 
         searchFilter = newText;
 
-        restartLoader();
+        refreshList();
 
         return true;
     }
@@ -172,7 +167,7 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_refresh:
-                restartLoader();
+                refreshList();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -182,14 +177,12 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
 
     @Override
     public void onResume() {
- //       bus.register(this);
         super.onResume();
         isPaused = false;
     }
 
     @Override
     public void onPause() {
-//        bus.unregister(this);
         super.onPause();
         isPaused = true;
     }
@@ -207,5 +200,8 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
 
     }
 
-    protected abstract void restartLoader();
+    /**
+     * Use this to reload the items in the list
+     */
+    protected abstract void refreshList();
 }

@@ -21,7 +21,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -159,16 +158,9 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
     }
 
 
-    /**
-     * Use this to reload the items in the list
-     */
+    @Override
     public void refreshList() {
        onRefresh();
-    }
-
-    @Override
-    protected void restartLoader() {
-        onRefresh();
     }
 
     @Override
@@ -256,7 +248,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 String searchFilter = getSearchFilter();
                 boolean hasSearchFilter = !TextUtils.isEmpty(searchFilter);
                 // Split searchFilter to multiple lowercase words
-                String[] lcWords= hasSearchFilter ? searchFilter.toLowerCase().split(" ") : null;
+                String[] lcWords = hasSearchFilter ? searchFilter.toLowerCase().split(" ") : null;
 
                 if (!(hideWatched || hasSearchFilter)) {
                     return itemList;
