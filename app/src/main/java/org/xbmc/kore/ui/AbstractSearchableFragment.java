@@ -140,11 +140,7 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
 
         /**
          * When this fragment is paused, onQueryTextChange is called with an empty string.
-         * This causes problems restoring the list fragment when returning. On return the fragment
-         * is recreated, which will cause the cursor adapter to be recreated. Although
-         * the search view will have the query restored to its saved state, the CursorAdapter
-         * will use the empty search filter. This is due to the fact that we don't restart the
-         * loader when it is still loading after its been created.
+         * This causes problems restoring the list fragment when returning.
          */
         if (isPaused)
             return true;
