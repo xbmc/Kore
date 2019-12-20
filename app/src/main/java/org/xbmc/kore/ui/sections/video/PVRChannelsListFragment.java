@@ -120,6 +120,8 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
         });
         gridView.setEmptyView(emptyView);
 
+        super.onCreateView(inflater, container, savedInstanceState);
+
         return root;
     }
 
@@ -271,16 +273,16 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
         String[] lcWords = searchFilter.toLowerCase().split(" ");;
 
         List<PVRType.DetailsChannel> result = new ArrayList<>(itemList.size());
-        for(PVRType.DetailsChannel item:itemList) {
+        for (PVRType.DetailsChannel item:itemList) {
             // Require all words to match the item:
             boolean allWordsMatch = true;
-            for(String lcWord:lcWords) {
-                if(!searchFilterWordMatches(lcWord, item)) {
+            for (String lcWord:lcWords) {
+                if (!searchFilterWordMatches(lcWord, item)) {
                     allWordsMatch = false;
                     break;
                 }
             }
-            if(!allWordsMatch) {
+            if (!allWordsMatch) {
                 continue; // skip this item
             }
 
@@ -291,10 +293,10 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
     }
 
     public boolean searchFilterWordMatches(String lcWord, PVRType.DetailsChannel item) {
-        if(item.label.toLowerCase().contains(lcWord)) {
+        if (item.label.toLowerCase().contains(lcWord)) {
             return true;
         }
-        if(item.broadcastnow != null && item.broadcastnow.title.toLowerCase().contains(lcWord)){
+        if (item.broadcastnow != null && item.broadcastnow.title.toLowerCase().contains(lcWord)){
             return true;
         }
         return false;
