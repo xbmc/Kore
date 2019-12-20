@@ -183,6 +183,15 @@ public abstract class AbstractSearchableFragment extends Fragment implements Sea
         isPaused = true;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (!TextUtils.isEmpty(searchFilter)) {
+            savedSearchFilter = searchFilter;
+        }
+        outState.putString(BUNDLE_KEY_SEARCH_QUERY, savedSearchFilter);
+        super.onSaveInstanceState(outState);
+    }
+
     /**
      * Event bus post. Called when the syncing process ended
      *
