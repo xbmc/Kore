@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.type.PVRType;
+import org.xbmc.kore.ui.AbstractSearchableFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -49,7 +51,7 @@ import butterknife.Unbinder;
 /**
  * Fragment that presents the Guide for a channel
  */
-public class PVRChannelEPGListFragment extends Fragment
+public class PVRChannelEPGListFragment extends AbstractSearchableFragment
         implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(PVRChannelEPGListFragment.class);
 
@@ -113,13 +115,16 @@ public class PVRChannelEPGListFragment extends Fragment
         });
         listView.setEmptyView(emptyView);
 
+        super.onCreateView(inflater, container, savedInstanceState);
+
         return root;
     }
 
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
+        setSupportsSearch(true);
         browseEPG();
     }
 
@@ -144,6 +149,11 @@ public class PVRChannelEPGListFragment extends Fragment
         }
     }
 
+    @Override
+    protected void refreshList() {
+        onRefresh();
+    }
+
     /**
      * Get the EPF for the channel and setup the listview
      */
@@ -155,7 +165,10 @@ public class PVRChannelEPGListFragment extends Fragment
                 if (!isAdded()) return;
                 // To prevent the empty text from appearing on the first load, set it now
                 emptyView.setText(getString(R.string.no_broadcasts_found_refresh));
-                setupEPGListview(result);
+
+                List<PVRType.DetailsBroadcast> finalResult = filter(result);
+
+                setupEPGListview(finalResult);
                 swipeRefreshLayout.setRefreshing(false);
             }
 
@@ -171,6 +184,47 @@ public class PVRChannelEPGListFragment extends Fragment
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, callbackHandler);
+    }
+
+
+    private List<PVRType.DetailsBroadcast> filter(List<PVRType.DetailsBroadcast> itemList) {
+        String searchFilter = getSearchFilter();
+
+        if (TextUtils.isEmpty(searchFilter)) {
+            return itemList;
+        }
+
+        // Split searchFilter to multiple lowercase words
+        String[] lcWords = searchFilter.toLowerCase().split(" ");;
+
+        List<PVRType.DetailsBroadcast> result = new ArrayList<>(itemList.size());
+        for (PVRType.DetailsBroadcast item:itemList) {
+            // Require all words to match the item:
+            boolean allWordsMatch = true;
+            for (String lcWord:lcWords) {
+                if (!searchFilterWordMatches(lcWord, item)) {
+                    allWordsMatch = false;
+                    break;
+                }
+            }
+            if (!allWordsMatch) {
+                continue; // skip this item
+            }
+
+            result.add(item);
+        }
+
+        return result;
+    }
+
+    public boolean searchFilterWordMatches(String lcWord, PVRType.DetailsBroadcast item) {
+        if (item.title.toLowerCase().contains(lcWord)) {
+            return true;
+        }
+        if (item.plot.toLowerCase().contains(lcWord)){
+            return true;
+        }
+        return false;
     }
 
     /**
