@@ -20,8 +20,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,10 +41,12 @@ import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
+import org.xbmc.kore.ui.AbstractSearchableFragment;
 import org.xbmc.kore.ui.OnBackPressedListener;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,7 +56,7 @@ import butterknife.Unbinder;
 /**
  * Fragment that presents the movie list
  */
-public class PVRChannelsListFragment extends Fragment
+public class PVRChannelsListFragment extends AbstractSearchableFragment
         implements SwipeRefreshLayout.OnRefreshListener, OnBackPressedListener {
     private static final String TAG = LogUtils.makeLogTag(PVRChannelsListFragment.class);
 
@@ -118,13 +120,16 @@ public class PVRChannelsListFragment extends Fragment
         });
         gridView.setEmptyView(emptyView);
 
+        super.onCreateView(inflater, container, savedInstanceState);
+
         return root;
     }
 
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
+        setSupportsSearch(true);
 
         if (selectedChannelGroupId == -1) {
             if ((channelGroupAdapter == null) ||
@@ -172,6 +177,11 @@ public class PVRChannelsListFragment extends Fragment
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    protected void refreshList() {
+        onRefresh();
     }
 
     /**
@@ -252,6 +262,46 @@ public class PVRChannelsListFragment extends Fragment
         }, callbackHandler);
     }
 
+    private List<PVRType.DetailsChannel> filter(List<PVRType.DetailsChannel> itemList) {
+        String searchFilter = getSearchFilter();
+
+        if (TextUtils.isEmpty(searchFilter)) {
+            return itemList;
+        }
+
+        // Split searchFilter to multiple lowercase words
+        String[] lcWords = searchFilter.toLowerCase().split(" ");;
+
+        List<PVRType.DetailsChannel> result = new ArrayList<>(itemList.size());
+        for (PVRType.DetailsChannel item:itemList) {
+            // Require all words to match the item:
+            boolean allWordsMatch = true;
+            for (String lcWord:lcWords) {
+                if (!searchFilterWordMatches(lcWord, item)) {
+                    allWordsMatch = false;
+                    break;
+                }
+            }
+            if (!allWordsMatch) {
+                continue; // skip this item
+            }
+
+            result.add(item);
+        }
+
+        return result;
+    }
+
+    public boolean searchFilterWordMatches(String lcWord, PVRType.DetailsChannel item) {
+        if (item.label.toLowerCase().contains(lcWord)) {
+            return true;
+        }
+        if (item.broadcastnow != null && item.broadcastnow.title.toLowerCase().contains(lcWord)){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Called when we get the channel groups
      *
@@ -296,7 +346,10 @@ public class PVRChannelsListFragment extends Fragment
 
                 // To prevent the empty text from appearing on the first load, set it now
                 emptyView.setText(getString(R.string.no_channels_found_refresh));
-                setupChannelsGridview(result);
+
+                List<PVRType.DetailsChannel> finalResult = filter(result);
+
+                setupChannelsGridview(finalResult);
                 swipeRefreshLayout.setRefreshing(false);
             }
 
