@@ -49,18 +49,21 @@ import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
+import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.ConnectionObserversManagerService;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.SendTextDialogFragment;
 import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
+import org.xbmc.kore.ui.sections.localfile.HttpApp;
 import org.xbmc.kore.ui.views.CirclePageIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -362,9 +365,13 @@ public class RemoteActivity extends BaseActivity
      * Handles the intent that started this activity, namely to start playing something on Kodi
      * @param intent Start intent for the activity
      */
-    private void handleStartIntent(Intent intent) {
+    protected void handleStartIntent(Intent intent) {
+        handleStartIntent(intent, false);
+    }
+
+    protected void handleStartIntent(Intent intent, boolean queue) {
         if (pendingShare != null) {
-            awaitShare();
+            awaitShare(queue);
             return;
         }
 
@@ -381,11 +388,16 @@ public class RemoteActivity extends BaseActivity
         } else {
             videoUri = intent.getData();
         }
-        if (videoUri == null) return;
 
-        String videoUrl = toPluginUrl(videoUri);
-        if (videoUrl == null) {
-            videoUrl = videoUri.toString();
+        String url;
+        if (videoUri == null) {
+            url = getShareLocalUri(intent);
+        } else {
+            url = toPluginUrl(videoUri);
+        }
+
+        if (url == null) {
+            url = videoUri.toString();
         }
 
         // If a host was passed from the intent use it
@@ -400,11 +412,60 @@ public class RemoteActivity extends BaseActivity
             }
         }
 
+        // Determine which playlist to use
+        String intentType = intent.getType();
+        int playlistType;
+        if (intentType == null) {
+            playlistType = PlaylistType.VIDEO_PLAYLISTID;
+        } else {
+            if (intentType.matches("audio.*")) {
+                playlistType = PlaylistType.MUSIC_PLAYLISTID;
+            } else if (intentType.matches("video.*")) {
+                playlistType = PlaylistType.VIDEO_PLAYLISTID;
+            } else if (intentType.matches("image.*")) {
+                playlistType = PlaylistType.PICTURE_PLAYLISTID;
+            } else {
+                // Generic links? Default to video:
+                playlistType = PlaylistType.VIDEO_PLAYLISTID;
+            }
+        }
+
         String title = getString(R.string.app_name);
         String text = getString(R.string.item_added_to_playlist);
-        pendingShare = getShareExecutor().submit(new OpenSharedUrl(hostManager.getConnection(), videoUrl, title, text));
-        awaitShare();
+        pendingShare = getShareExecutor().submit(
+                new OpenSharedUrl(hostManager.getConnection(), url, title, text, queue, playlistType));
+
+        awaitShare(queue);
         intent.setAction(null);
+
+        // Don't display Kore after sharing content from another app:
+        finish();
+    }
+
+    private String getShareLocalUri(Intent intent) {
+        Uri contentUri = intent.getData();
+
+        if (contentUri == null) {
+            Bundle bundle = intent.getExtras();
+            contentUri = (Uri) bundle.get(Intent.EXTRA_STREAM);
+        }
+        if (contentUri == null) {
+            return null;
+        }
+
+        HttpApp http_app = null;
+        try {
+            http_app = HttpApp.getInstance(getApplicationContext(), 8080);
+        } catch (IOException ioe) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.error_starting_http_server),
+                    Toast.LENGTH_LONG).show();
+            return null;
+        }
+        http_app.addUri(contentUri);
+        String url = http_app.getLinkToFile();
+
+        return url;
     }
 
     /**
@@ -417,7 +478,7 @@ public class RemoteActivity extends BaseActivity
      * paused (it will drop itself when cancelled or finished). This should be called
      * again when the activity is resumed and a {@link #pendingShare} exists.
      */
-    private void awaitShare() {
+    private void awaitShare(final boolean queue) {
         awaitingShare = getShareExecutor().submit(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -428,8 +489,14 @@ public class RemoteActivity extends BaseActivity
                         @Override
                         public void run() {
                             if (wasAlreadyPlaying) {
+                                String msg;
+                                if (queue) {
+                                    msg = getString(R.string.item_added_to_playlist);
+                                } else {
+                                    msg = getString(R.string.item_sent_to_kodi);
+                                }
                                 Toast.makeText(RemoteActivity.this,
-                                    getString(R.string.item_added_to_playlist),
+                                    msg,
                                     Toast.LENGTH_SHORT)
                                     .show();
                             }

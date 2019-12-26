@@ -35,16 +35,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         setTheme(UIUtils.getThemeResourceId(
                 prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
 
-        setPreferredLocale();
+        Utils.setPreferredLocale(this);
         super.onCreate(savedInstanceState);
-    }
-
-    private void setPreferredLocale() {
-        String preferredLocale = android.preference.PreferenceManager.getDefaultSharedPreferences(this)
-                                                                     .getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
-        if (! preferredLocale.isEmpty()) {
-            Utils.setLocale(this, preferredLocale);
-        }
     }
 
     //    @Override

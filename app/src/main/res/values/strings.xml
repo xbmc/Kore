@@ -32,8 +32,11 @@
     <string name="tv_shows">TV Shows</string>
     <string name="music">Music</string>
     <string name="pictures">Pictures</string>
+    <string name="dcim">DCIM</string>
+    <string name="external_storage">Storage</string>
     <string name="addons">Addons</string>
     <string name="files">Files</string>
+    <string name="local_files">Local Files</string>
     <string name="video">Video</string>
     <string name="videos">Videos</string>
     <string name="media">Media</string>
@@ -41,6 +44,7 @@
     <string name="script">Script</string>
     <string name="unknown">Unknown</string>
     <string name="file_browser">File Browser</string>
+    <string name="local_file_browser">Local File Browser</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Favourites</string>
     <string name="weather">Weather</string>
@@ -220,11 +224,16 @@
         %1$s.</string>
     <string name="error_play_media_file">Couldn\'t play media file.\nError message:
         %1$s.</string>
+    <string name="error_play_local_file">Couldn\'t play local media file.\nError message:
+        %1$s.</string>
     <string name="error_queue_media_file">Couldn\'t queue media file.\nError message:
         %1$s.</string>
     <string name="error_get_active_player">Couldn\'t get active player.\nError message:
         %1$s.</string>
     <string name="error_share_video">Couldn\'t share video to Kodi/XBMC.</string>
+    <string name="error_reading_local_storage">Couldn\'t read the local storage.
+        Did you give Kore permission to access file storage?</string>
+    <string name="error_starting_http_server">Couldn\'t create or start HTTP server.</string>
 
     <string name="directors">Directors:</string>
     <string name="studio">Studio:</string>
@@ -273,6 +282,7 @@
 
     <string name="add_to_playlist">Add to playlist</string>
     <string name="item_added_to_playlist">Added to playlist</string>
+    <string name="item_sent_to_kodi">Sent to Kodi</string>
     <string name="no_suitable_playlist">No suitable playlist found to add media type.</string>
 
     <string name="imdb">IMDb</string>
@@ -330,6 +340,7 @@
     <string name="sort_by_length">By length</string>
     <string name="sort_by_date_added">By date added</string>
     <string name="sort_by_last_played">By last played</string>
+    <string name="unsorted">Unsorted</string>
     <string name="ignore_prefixes">Ignore prefixes</string>
     <string name="show_watched_status">Show watched status</string>
     <string name="show_rating">Show rating</string>
@@ -380,6 +391,7 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Play on Kodi</string>
+    <string name="queue_on_kodi">Queue on Kodi</string>
     <string name="pause_call_incoming_title">Incoming call</string>
     <string name="pause_call_incoming_message">Check your phone, someone is calling you</string>
 
@@ -414,6 +426,7 @@
 
     <string name="read_phone_state_permission_denied">Permission denied. Won\'t be able to pause playback during calls.</string>
     <string name="write_storage_permission_denied">Permission denied. Won\'t be able to download files.</string>
+    <string name="read_storage_permission_denied">Permission denied. Won\'t be able to read files.</string>
 
     <string name="no_songs_to_download">No songs to download</string>
     <string name="by_album">By album</string>

@@ -16,12 +16,17 @@
 package org.xbmc.kore.ui.sections.video;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,14 +37,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
+import org.xbmc.kore.ui.AbstractSearchableFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,7 +59,7 @@ import butterknife.Unbinder;
 /**
  * Fragment that presents the PVR recordings list
  */
-public class PVRRecordingsListFragment extends Fragment
+public class PVRRecordingsListFragment extends AbstractSearchableFragment
         implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(PVRRecordingsListFragment.class);
 
@@ -76,6 +86,7 @@ public class PVRRecordingsListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_pvr_list, container, false);
+
         unbinder = ButterKnife.bind(this, root);
 
         hostManager = HostManager.getInstance(getActivity());
@@ -90,13 +101,16 @@ public class PVRRecordingsListFragment extends Fragment
         });
         gridView.setEmptyView(emptyView);
 
+        super.onCreateView(inflater, container, savedInstanceState);
+
         return root;
     }
 
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
+        setSupportsSearch(true);
         browseRecordings();
     }
 
@@ -104,6 +118,88 @@ public class PVRRecordingsListFragment extends Fragment
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!isAdded()) {
+            // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
+            // copied from MovieListFragment#onCreateOptionsMenu
+            super.onCreateOptionsMenu(menu, inflater);
+            return;
+        }
+
+        inflater.inflate(R.menu.pvr_recording_list, menu);
+
+        // Setup filters
+        MenuItem hideWatched = menu.findItem(R.id.action_hide_watched),
+                sortByNameAndDate = menu.findItem(R.id.action_sort_by_name_and_date_added),
+                sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added),
+                unsorted = menu.findItem(R.id.action_unsorted);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED));
+
+        int sortOrder = preferences.getInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.DEFAULT_PREF_PVR_RECORDINGS_SORT_ORDER);
+        switch (sortOrder) {
+            case Settings.SORT_BY_DATE_ADDED:
+                sortByDateAdded.setChecked(true);
+                break;
+            case Settings.SORT_BY_NAME:
+                sortByNameAndDate.setChecked(true);
+                break;
+            default:
+                unsorted.setChecked(true);
+                break;
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public void refreshList() {
+       onRefresh();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        switch (item.getItemId()) {
+            case R.id.action_hide_watched:
+                item.setChecked(!item.isChecked());
+                preferences.edit()
+                        .putBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, item.isChecked())
+                        .apply();
+                refreshList();
+                break;
+            case R.id.action_sort_by_name_and_date_added:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.SORT_BY_NAME)
+                        .apply();
+                refreshList();
+                break;
+            case R.id.action_sort_by_date_added:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
+                        .apply();
+                refreshList();
+                break;
+            case R.id.action_unsorted:
+                item.setChecked(true);
+                preferences.edit()
+                        .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.UNSORTED)
+                        .apply();
+                refreshList();
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -134,8 +230,113 @@ public class PVRRecordingsListFragment extends Fragment
 
                 // To prevent the empty text from appearing on the first load, set it now
                 emptyView.setText(getString(R.string.no_recordings_found_refresh));
-                setupRecordingsGridview(result);
+
+                // As the JSON RPC API does not support sorting or filter parameters for PVR.GetRecordings
+                // we apply the sorting and filtering right here.
+                // See https://kodi.wiki/view/JSON-RPC_API/v9#PVR.GetRecordings
+                List<PVRType.DetailsRecording> finalResult = filter(result);
+                sort(finalResult);
+
+                setupRecordingsGridview(finalResult);
                 swipeRefreshLayout.setRefreshing(false);
+            }
+
+            private List<PVRType.DetailsRecording> filter(List<PVRType.DetailsRecording> itemList) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                boolean hideWatched = preferences.getBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED);
+
+                String searchFilter = getSearchFilter();
+                boolean hasSearchFilter = !TextUtils.isEmpty(searchFilter);
+                // Split searchFilter to multiple lowercase words
+                String[] lcWords = hasSearchFilter ? searchFilter.toLowerCase().split(" ") : null;
+
+                if (!(hideWatched || hasSearchFilter)) {
+                    return itemList;
+                }
+
+                List<PVRType.DetailsRecording> result = new ArrayList<>(itemList.size());
+                for (PVRType.DetailsRecording item:itemList) {
+                    if (hideWatched) {
+                        if (item.playcount > 0) {
+                            continue; // Skip this item as it is played.
+                        } else {
+                            // Heuristic: Try to guess if it's play from resume timestamp.
+                            double resumePosition = item.resume.position;
+                            int runtime = item.runtime;
+                            if (runtime < resumePosition) {
+                                // Tv show duration is smaller than resume position.
+                                // The tv show likely has been watched.
+                                // It's still possible some minutes have not yet been watched
+                                // at the end of the show as some minutes at the
+                                // recording start do not belong to the show.
+                                // Never the less skip this item.
+                                continue;
+                            }
+                        }
+                    }
+
+                    if (hasSearchFilter) {
+                        // Require all lowercase words to match the item:
+                        boolean allWordsMatch = true;
+                        for (String lcWord:lcWords) {
+                            if (!searchFilterWordMatches(lcWord, item)) {
+                                allWordsMatch = false;
+                                break;
+                            }
+                        }
+                        if (!allWordsMatch) {
+                            continue; // skip this item
+                        }
+                    }
+
+                    result.add(item);
+                }
+
+                return result;
+            }
+
+            private boolean searchFilterWordMatches(String lcWord, PVRType.DetailsRecording item) {
+                if (item.title.toLowerCase().contains(lcWord)
+                        || item.channel.toLowerCase().contains(lcWord)) {
+                    return true;
+                }
+                return false;
+            }
+
+            private void sort(List<PVRType.DetailsRecording> itemList) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+                int sortOrder = preferences.getInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.DEFAULT_PREF_PVR_RECORDINGS_SORT_ORDER);
+
+                Comparator<PVRType.DetailsRecording> comparator;
+                switch (sortOrder) {
+                    case Settings.SORT_BY_DATE_ADDED:
+                        // sort by recording start time descending (most current first)
+                        // luckily the starttime is in sortable format yyyy-MM-dd hh:mm:ss
+                        comparator = new Comparator<PVRType.DetailsRecording>() {
+                            @Override
+                            public int compare(PVRType.DetailsRecording a, PVRType.DetailsRecording b) {
+                                return  b.starttime.compareTo(a.starttime);
+                            }
+                        };
+                        Collections.sort(itemList, comparator);
+                        break;
+                    case Settings.SORT_BY_NAME:
+                        // sort by recording title and start time
+                        comparator = new Comparator<PVRType.DetailsRecording>() {
+                            @Override
+                            public int compare(PVRType.DetailsRecording a, PVRType.DetailsRecording b) {
+                                int result = a.title.compareToIgnoreCase(b.title);
+                                if (0 == result) { // note the yoda condition ;)
+                                    // sort by starttime descending (most current first)
+                                    result = b.starttime.compareTo(a.starttime);
+                                }
+                                return result;
+                            }
+                        };
+                        Collections.sort(itemList, comparator);
+                        break;
+                }
             }
 
             @Override

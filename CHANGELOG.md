@@ -1,6 +1,22 @@
 Changelog
 ---------
 
+Version 2.5.0
+-------------
+- Include search option in PVR section
+- Allow sorting PVR recordings and optionally hiding watched items
+- Added support for sharing local files to Kodi, either by going into the side menu option "Local Files", or by choosing Kore as the share target (when accessing the file, for instance via a file browser)
+- Allow changing Kore's language in Settings
+- Add support to sharing from Soundcloud to Kodi
+- New sort option for albums, movies and tv shows: by year
+- Added new color themes (Sunrise and Sunset) and tweaked the others
+- Scroll titles, when these are too long to fit (in the Now Playing and Info screens)
+- Kore now shows all the available playlists, even when nothing's playing
+- Update notifications to use the default Android style
+- Movie ratings added to movie list
+- New translations (Korean, Slovak)
+- Bug fixes and UI tweaks
+
 Version 2.4.7
 -------------
 - Improved addons list

@@ -50,6 +50,7 @@ import org.xbmc.kore.ui.sections.audio.MusicActivity;
 import org.xbmc.kore.ui.sections.favourites.FavouritesActivity;
 import org.xbmc.kore.ui.sections.file.FileActivity;
 import org.xbmc.kore.ui.sections.hosts.HostManagerActivity;
+import org.xbmc.kore.ui.sections.localfile.LocalFileActivity;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.ui.sections.settings.SettingsActivity;
 import org.xbmc.kore.ui.sections.video.MoviesActivity;
@@ -85,7 +86,8 @@ public class NavigationDrawerFragment extends Fragment {
             ACTIVITY_FILES = 6,
             ACTIVITY_ADDONS = 7,
             ACTIVITY_SETTINGS = 8,
-            ACTIVITY_FAVOURITES = 9;
+            ACTIVITY_FAVOURITES = 9,
+            ACTIVITY_LOCAL_FILES = 10;
 
 
     // The current selected item id (based on the activity)
@@ -149,7 +151,8 @@ public class NavigationDrawerFragment extends Fragment {
                 R.attr.iconFiles,
                 R.attr.iconAddons,
                 R.attr.iconSettings,
-                R.attr.iconFavourites
+                R.attr.iconFavourites,
+                R.attr.iconFiles
         });
 
         HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
@@ -189,8 +192,13 @@ public class NavigationDrawerFragment extends Fragment {
                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_FAVOURITES), 0)));
         if (shownItems.contains(String.valueOf(ACTIVITY_FILES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,
-                                     getString(R.string.files),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_FILES), 0)));
+                    getString(R.string.files),
+                    styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_FILES), 0)));
+        if (shownItems.contains(String.valueOf(ACTIVITY_LOCAL_FILES)))
+            items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_LOCAL_FILES,
+                    getString(R.string.local_files),
+                    styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_LOCAL_FILES), 0)));
+
         if (shownItems.contains(String.valueOf(ACTIVITY_ADDONS)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_ADDONS,
                                      getString(R.string.addons),
@@ -356,6 +364,8 @@ public class NavigationDrawerFragment extends Fragment {
             return ACTIVITY_FAVOURITES;
         else if (activity instanceof FileActivity)
             return ACTIVITY_FILES;
+        else if (activity instanceof LocalFileActivity)
+            return ACTIVITY_LOCAL_FILES;
         else if (activity instanceof AddonsActivity)
             return ACTIVITY_ADDONS;
         else if (activity instanceof SettingsActivity)
@@ -369,13 +379,14 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private static final SparseArray<Class> activityItemIdMap;
     static {
-        activityItemIdMap = new SparseArray<>(10);
+        activityItemIdMap = new SparseArray<>(11);
         activityItemIdMap.put(ACTIVITY_HOSTS, HostManagerActivity.class);
         activityItemIdMap.put(ACTIVITY_REMOTE, RemoteActivity.class);
         activityItemIdMap.put(ACTIVITY_MOVIES, MoviesActivity.class);
         activityItemIdMap.put(ACTIVITY_MUSIC, MusicActivity.class);
         activityItemIdMap.put(ACTIVITY_FAVOURITES, FavouritesActivity.class);
         activityItemIdMap.put(ACTIVITY_FILES, FileActivity.class);
+        activityItemIdMap.put(ACTIVITY_LOCAL_FILES, LocalFileActivity.class);
         activityItemIdMap.put(ACTIVITY_TVSHOWS, TVShowsActivity.class);
         activityItemIdMap.put(ACTIVITY_PVR, PVRActivity.class);
         activityItemIdMap.put(ACTIVITY_ADDONS, AddonsActivity.class);

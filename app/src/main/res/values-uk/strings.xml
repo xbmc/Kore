@@ -79,14 +79,14 @@
     <string name="wizard_welcome">Вітаємо</string>
     <string name="wizard_welcome_message"><![CDATA[
 Почніть з додавання медіа центру. Переконайтесь, що Kodi/XBMC працює, правильно налаштовано та в одній мережі з вашим пристроєм.<br/><br/>
- Докладніше про налаштування ви можете прочитати <a href=\"http://syncedsynapse.com/kore/kore-faq/\">тут</a>.<br/><br/>
+ Докладніше про налаштування ви можете прочитати <a href="http://syncedsynapse.com/kore/kore-faq/">тут</a>.<br/><br/>
 Коли будете готові, натисніть <b><i>Далі</i></b>.
 ]]></string>
     <string name="wizard_search_message"><![CDATA[
     Пошук медіа центрів в локальній мережі…<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
- У мережі не знайдено медіа центрів.<br/>Якщо вам потрібна допомога з налаштуванням, перейдіть <a href=\"http://syncedsynapse.com/kore/kore-faq/\">сюди</a>.<br/><br/>
+ У мережі не знайдено медіа центрів.<br/>Якщо вам потрібна допомога з налаштуванням, перейдіть <a href="http://syncedsynapse.com/kore/kore-faq/">сюди</a>.<br/><br/>
  Натисніть <i>Пошук</i>, щоб шукати ще раз, або <i>Далі</i>, щоб перейти до налаштування вручну.
 ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[
