@@ -32,8 +32,11 @@
     <string name="tv_shows">Серіали</string>
     <string name="music">Музика</string>
     <string name="pictures">Фото</string>
+    <string name="dcim">DCIM</string>
+    <string name="external_storage">Накопичувач</string>
     <string name="addons">Надбудови</string>
     <string name="files">Файли</string>
+    <string name="local_files">Локальні файли</string>
     <string name="video">Відео</string>
     <string name="videos">Відео</string>
     <string name="media">Медіа</string>
@@ -41,6 +44,7 @@
     <string name="script">Сценарій</string>
     <string name="unknown">Невідомий</string>
     <string name="file_browser">Файл-менеджер</string>
+    <string name="local_file_browser">Менеджер локальних файлів</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Обране</string>
     <string name="weather">Погода</string>
@@ -219,11 +223,16 @@
         %1$s.</string>
     <string name="error_play_media_file">Не вдалося відтворити медіа файл.\nПомилка:
         %1$s.</string>
+    <string name="error_play_local_file">Не вдалося відтворити локальний медіа-файл.\nПомилка:
+%1$s.</string>
     <string name="error_queue_media_file">Не вдалося додати до черги.\nПомилка:
         %1$s.</string>
     <string name="error_get_active_player">Не вдається отримати активний програвач.\nПомилка:
         %1$s.</string>
     <string name="error_share_video">Не вдається відправити відео в Kodi/XBMC.</string>
+    <string name="error_reading_local_storage">Не вдалося прочитати локальний накопичувач.
+Ви надали Kore дозвіл на доступ до внутрішньої пам\'яті?</string>
+    <string name="error_starting_http_server">Не вдається створити або запустити сервер HTTP.</string>
 
     <string name="directors">Режисери:</string>
     <string name="studio">Студія:</string>
@@ -272,6 +281,7 @@
 
     <string name="add_to_playlist">Додати в плейліст</string>
     <string name="item_added_to_playlist">Додано до плейлісту</string>
+    <string name="item_sent_to_kodi">Надіслано в Kodi</string>
     <string name="no_suitable_playlist">Не знайдено плейлісту, що підходить для цього типу медіа.</string>
 
     <string name="imdb">IMDb</string>
@@ -329,6 +339,7 @@
     <string name="sort_by_length">За тривалістю</string>
     <string name="sort_by_date_added">За датою додавання</string>
     <string name="sort_by_last_played">За останнім відтворенням</string>
+    <string name="unsorted">Несортоване</string>
     <string name="ignore_prefixes">Ігнорувати префікси</string>
     <string name="show_watched_status">Показати стан перегляду</string>
     <string name="show_rating">Показати рейтинг</string>
@@ -378,7 +389,8 @@
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
-    <string name="play_on_kodi">Відтворити на Kodi</string>
+    <string name="play_on_kodi">Відтворити в Kodi</string>
+    <string name="queue_on_kodi">До черги в Kodi</string>
     <string name="pause_call_incoming_title">Вхідний дзвінок</string>
     <string name="pause_call_incoming_message">Перевірте ваш телефон, хтось телефонує вам</string>
 
@@ -413,6 +425,7 @@
 
     <string name="read_phone_state_permission_denied">Доступ заборонено. Неможливо зупиняти відтворення під час телефонних дзвінків.</string>
     <string name="write_storage_permission_denied">Доступ заборонено. Неможливо завантажувати файли.</string>
+    <string name="read_storage_permission_denied">Доступ заборонено. Не вдається прочитати файли.</string>
 
     <string name="no_songs_to_download">Немає треків для завантаження</string>
     <string name="by_album">За альбомом</string>
