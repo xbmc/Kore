@@ -24,8 +24,12 @@
         android:title="@string/play_file"
         android:orderInCategory="2"
         app:showAsAction="never" />
+    <item android:id="@+id/action_play_local_item"
+        android:title="@string/play_locally"
+        android:orderInCategory="3"
+        app:showAsAction="never" />
     <item android:id="@+id/action_play_from_this_item"
         android:title="@string/play_from_here"
-        android:orderInCategory="3"
+        android:orderInCategory="4"
         app:showAsAction="never" />
 </menu>

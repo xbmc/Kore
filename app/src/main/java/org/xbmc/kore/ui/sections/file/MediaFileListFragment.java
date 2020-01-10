@@ -17,10 +17,12 @@ package org.xbmc.kore.ui.sections.file;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -47,6 +49,7 @@ import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
+import org.xbmc.kore.utils.FileDownloadHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -379,6 +382,26 @@ public class MediaFileListFragment extends AbstractListFragment {
     }
 
     /**
+     * Starts playing the given media file on the local device
+     * @param filename Filename to start playing
+     */
+    private void playMediaFileLocally(final String filename) {
+        FileDownloadHelper.MovieInfo movieDownloadInfo = new FileDownloadHelper.MovieInfo(null, filename);
+        Uri uri = Uri.parse(movieDownloadInfo.getMediaUrl(hostManager.getHostInfo()));
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        if (mediaType.equalsIgnoreCase(Files.Media.VIDEO)) {
+            intent.setDataAndType(uri, "video/*");
+        } else if (mediaType.equalsIgnoreCase(Files.Media.MUSIC)) {
+            intent.setDataAndType(uri, "audio/*");
+        } else if (mediaType.equalsIgnoreCase(Files.Media.PICTURES)) {
+            intent.setDataAndType(uri, "image/*");
+        } else {
+            intent.setDataAndType(uri, "application/*");
+        }
+        startActivity(intent);
+    }
+
+    /**
      * Queues the given media file on the active playlist, and starts it if nothing is playing
      * @param filename File to queue
      */
@@ -523,6 +546,9 @@ public class MediaFileListFragment extends AbstractListFragment {
                                         return true;
                                     case R.id.action_play_item:
                                         playMediaFile(loc.file);
+                                        return true;
+                                    case R.id.action_play_local_item:
+                                        playMediaFileLocally(loc.file);
                                         return true;
                                     case R.id.action_play_from_this_item:
                                         mediaQueueFileLocation.clear();
