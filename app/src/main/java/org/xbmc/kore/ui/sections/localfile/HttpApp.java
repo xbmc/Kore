@@ -160,7 +160,8 @@ public class HttpApp extends NanoHTTPD {
         }
         String path = null;
         if (currentIsFile) {
-            path = localFileLocationList.get(currentIndex).fileName + "?number=" + currentIndex;
+            String filename = localFileLocationList.get(currentIndex).fileName;
+            path = Uri.encode(filename) + "?number=" + currentIndex;
         } else {
             Uri uri = localUriList.get(currentIndex);
             String filename = getFileNameFromUri(uri);
