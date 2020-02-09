@@ -32,8 +32,11 @@
     <string name="tv_shows">Séries TV</string>
     <string name="music">Musique</string>
     <string name="pictures">Images</string>
+    <string name="dcim">Photos</string>
+    <string name="external_storage">Espace de stockage</string>
     <string name="addons">Extensions</string>
     <string name="files">Fichiers</string>
+    <string name="local_files">Fichiers locaux</string>
     <string name="video">Vidéo</string>
     <string name="videos">Vidéos</string>
     <string name="media">Média</string>
@@ -41,6 +44,7 @@
     <string name="script">Script</string>
     <string name="unknown">Inconnu</string>
     <string name="file_browser">Fichiers</string>
+    <string name="local_file_browser">Navigateur de fichier local</string>
     <string name="pvr">Magnétoscope</string>
     <string name="favourites">Favoris</string>
     <string name="weather">Météo</string>
@@ -221,11 +225,16 @@
         %1$s.</string>
     <string name="error_play_media_file">Impossible de lire ce fichier multimédia.\nMessage d\'erreur\u00A0:
         %1$s.</string>
+    <string name="error_play_local_file">Impossible de lire ce fichier multimédia.\nMessage d\'erreur\u00A0:
+        %1$s.</string>
     <string name="error_queue_media_file">Impossible d\'ajouter ce fichier multimédia à la liste de lecture.\nMessage d\'erreur\u00A0:
         %1$s.</string>
      <string name="error_get_active_player">Impossible de récupérer le lecteur actif.\nMessage d\'erreur\u00A0:
         %1$s.</string>
     <string name="error_share_video">Impossible de partager la vidéo avec Kodi/XBMC.</string>
+    <string name="error_reading_local_storage">Impossible de lire le stockage local.
+        Avez-vous autorisé Kore à accéder au stockage de fichiers ?</string>
+    <string name="error_starting_http_server">Impossible de créer ou de démarrer le serveur HTTP.</string>
 
     <string name="directors">Réalisateur\u00A0:</string>
     <string name="studio">Studio\u00A0:</string>
@@ -273,6 +282,7 @@
 
     <string name="add_to_playlist">Ajouter à la liste de lecture</string>
     <string name="item_added_to_playlist">Ajouté à la liste de lecture</string>
+    <string name="item_sent_to_kodi">Envoyé à Kodi</string>
     <string name="no_suitable_playlist">Aucune liste de lecture appropriée trouvée pour ce type de media.</string>
 
     <string name="imdb">IMDb</string>
@@ -330,6 +340,7 @@
     <string name="sort_by_length">Par durée</string>
     <string name="sort_by_date_added">Par date d\'ajout</string>
     <string name="sort_by_last_played">Par date de visionnage</string>
+    <string name="unsorted">Non trié</string>
     <string name="ignore_prefixes">Ignorer les préfixes</string>
     <string name="show_watched_status">Afficher l\'état \"Vu\"</string>
     <string name="show_rating">Afficher les évaluations</string>
@@ -370,6 +381,7 @@
     ]]></string>
 
     <string name="play_on_kodi">Lire sur Kodi</string>
+    <string name="queue_on_kodi">Ajouter à la liste de lecture sur Kodi</string>
     <string name="pause_call_incoming_title">Appel entrant</string>
     <string name="pause_call_incoming_message">Vérifiez votre téléphone, quelqu\'un vous appelle</string>
 
@@ -402,6 +414,7 @@
 
     <string name="read_phone_state_permission_denied">Autorisation refusée. Impossible de mettre de la lecture en pause pendant les appels téléphoniques.</string>
     <string name="write_storage_permission_denied">Autorisation refusée. Impossible de télécharger des fichiers.</string>
+    <string name="read_storage_permission_denied">Autorisation refusée. Impossible de lire les fichiers.</string>
 
     <string name="single_column">Une colonne</string>
     <string name="multi_column">Plusieurs colonnes</string>
