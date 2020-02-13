@@ -975,7 +975,7 @@ public class HostConnectionObserver
      * @param observer Playlist observer to call with last result
      */
     private void replyWithLastResult(PlaylistEventsObserver observer) {
-        if (hostState.lastGetPlaylistResults != null)
+        if (hostState.lastGetPlaylistResults != null && !hostState.lastGetPlaylistResults.isEmpty())
             observer.playlistsAvailable(hostState.lastGetPlaylistResults);
         else
             checkPlaylist();
