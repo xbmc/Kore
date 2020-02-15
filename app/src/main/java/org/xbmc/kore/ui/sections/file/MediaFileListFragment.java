@@ -79,7 +79,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     ListType.Sort sortMethod = null;
     String parentDirectory = null;
     int playlistId = PlaylistType.MUSIC_PLAYLISTID;             // this is the ID of the music player
-//    private MediaFileListAdapter adapter = null;
+    //    private MediaFileListAdapter adapter = null;
     boolean browseRootAlready = false;
     FileLocation loadOnVisible = null;
 
@@ -246,8 +246,8 @@ public class MediaFileListFragment extends AbstractListFragment {
                 if (!isAdded()) return;
 
                 Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_getting_source_info), description),
-                        Toast.LENGTH_SHORT).show();
+                               String.format(getString(R.string.error_getting_source_info), description),
+                               Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
     }
@@ -317,9 +317,9 @@ public class MediaFileListFragment extends AbstractListFragment {
         };
 
         Files.GetDirectory action = new Files.GetDirectory(dir.file,
-                mediaType,
-                sortMethod,
-                properties);
+                                                           mediaType,
+                                                           sortMethod,
+                                                           properties);
         action.execute(hostManager.getConnection(), new ApiCallback<List<ListType.ItemFile>>() {
             @Override
             public void onSuccess(List<ListType.ItemFile> result) {
@@ -345,8 +345,8 @@ public class MediaFileListFragment extends AbstractListFragment {
                 if (!isAdded()) return;
 
                 Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_getting_source_info), description),
-                        Toast.LENGTH_SHORT).show();
+                               String.format(getString(R.string.error_getting_source_info), description),
+                               Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
 
@@ -363,20 +363,47 @@ public class MediaFileListFragment extends AbstractListFragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                while (!mediaQueueFileLocation.isEmpty()) {
-                    queueMediaFile(mediaQueueFileLocation.poll().file);
-                }
+                HostConnection connection = hostManager.getConnection();
+                startPlaylistIfNoActivePlayers(connection, playlistId, callbackHandler);
+                callbackHandler.post(queueMediaQueueFileLocations);
             }
 
             @Override
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_play_media_file), description),
-                        Toast.LENGTH_SHORT).show();
+                               String.format(getString(R.string.error_play_media_file), description),
+                               Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
     }
+
+    private Runnable queueMediaQueueFileLocations = new Runnable() {
+        @Override
+        public void run() {
+            if (!mediaQueueFileLocation.isEmpty()) {
+                final HostConnection connection = hostManager.getConnection();
+                PlaylistType.Item item = new PlaylistType.Item();
+                item.file = mediaQueueFileLocation.poll().file;
+                Playlist.Add action = new Playlist.Add(playlistId, item);
+                action.execute(connection, new ApiCallback<String>() {
+                    @Override
+                    public void onSuccess(String result ) {
+                        callbackHandler.post(queueMediaQueueFileLocations);
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String description) {
+                        if (!isAdded()) return;
+                        Toast.makeText(getActivity(),
+                                       String.format(getString(R.string.error_queue_media_file), description),
+                                       Toast.LENGTH_SHORT).show();
+                        callbackHandler.post(queueMediaQueueFileLocations);
+                    }
+                }, callbackHandler);
+            }
+        }
+    };
 
     /**
      * Queues the given media file on the active playlist, and starts it if nothing is playing
@@ -397,8 +424,8 @@ public class MediaFileListFragment extends AbstractListFragment {
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_queue_media_file), description),
-                        Toast.LENGTH_SHORT).show();
+                               String.format(getString(R.string.error_queue_media_file), description),
+                               Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
     }
@@ -427,8 +454,8 @@ public class MediaFileListFragment extends AbstractListFragment {
                         public void onError(int errorCode, String description) {
                             if (!isAdded()) return;
                             Toast.makeText(getActivity(),
-                                    String.format(getString(R.string.error_play_media_file), description),
-                                    Toast.LENGTH_SHORT).show();
+                                           String.format(getString(R.string.error_play_media_file), description),
+                                           Toast.LENGTH_SHORT).show();
                         }
                     }, callbackHandler);
                 }
@@ -438,8 +465,8 @@ public class MediaFileListFragment extends AbstractListFragment {
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_get_active_player), description),
-                        Toast.LENGTH_SHORT).show();
+                               String.format(getString(R.string.error_get_active_player), description),
+                               Toast.LENGTH_SHORT).show();
             }
         }, callbackHandler);
 
@@ -556,9 +583,9 @@ public class MediaFileListFragment extends AbstractListFragment {
             // Get the art dimensions
             Resources resources = context.getResources();
             artWidth = (int)(resources.getDimension(R.dimen.filelist_art_width) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
+                             UIUtils.IMAGE_RESIZE_FACTOR);
             artHeight = (int)(resources.getDimension(R.dimen.filelist_art_heigth) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
+                              UIUtils.IMAGE_RESIZE_FACTOR);
 
         }
 
@@ -590,7 +617,7 @@ public class MediaFileListFragment extends AbstractListFragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(ctx)
-                                        .inflate(resource, parent, false);
+                                      .inflate(resource, parent, false);
             return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight, itemMenuClickListener);
         }
 
@@ -755,8 +782,8 @@ public class MediaFileListFragment extends AbstractListFragment {
             }
 
             return new FileLocation(title, itemFile.file,
-                    itemFile.filetype.equalsIgnoreCase(ListType.ItemFile.FILETYPE_DIRECTORY),
-                    details, sizeDuration, artUrl);
+                                    itemFile.filetype.equalsIgnoreCase(ListType.ItemFile.FILETYPE_DIRECTORY),
+                                    details, sizeDuration, artUrl);
         }
 
         private FileLocation(Parcel in) {
