@@ -390,6 +390,21 @@ public class RemoteActivity extends BaseActivity
             videoUri = intent.getData();
         }
 
+        if (videoUri == null) {
+            // Some apps hide the link in the clip, try to detect any link by casting the intent
+            // to string a looking with a regular expression:
+
+            Matcher matcher = Pattern.compile("https?://[^\\s]+").matcher(intent.toString());
+            String matchedString = null;
+            if (matcher.find()) {
+                matchedString = matcher.group(0);
+                if (matchedString.endsWith("}")) {
+                    matchedString = matchedString.substring(0, matchedString.length() - 1);
+                }
+                videoUri = Uri.parse(matchedString);
+            }
+        }
+
         String url;
         if (videoUri == null) {
             url = getShareLocalUri(intent);
@@ -598,6 +613,12 @@ public class RemoteActivity extends BaseActivity
         } else if (host.endsWith("soundcloud.com")) {
             return "plugin://plugin.audio.soundcloud/play/?url="
                     + URLEncoder.encode(playuri.toString());
+        } else if (host.startsWith("app.primevideo.com")) {
+            Matcher amazonMatcher = Pattern.compile("gti=([^&]+)").matcher(playuri.toString());
+            if (amazonMatcher.find()) {
+                String gti = amazonMatcher.group(1);
+                return "plugin://plugin.video.amazon-test/?asin=" + gti + "&mode=PlayVideo&adult=0&name=&trailer=0&selbitrate=0";
+            }
         }
         return null;
     }
