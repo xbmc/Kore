@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <string name="app_name">Kore</string>
+    <string name="app_name" translatable="false">Kore</string>
     <string name="settings">Settings</string>
     <string name="action_options">Options</string>
 
