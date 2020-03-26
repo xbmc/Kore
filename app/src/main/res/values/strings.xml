@@ -84,20 +84,20 @@
     <string name="wizard_welcome_message"><![CDATA[
     Let\'s start by adding a media center. Make sure your Kodi is running, properly configured and on the same network as your device.<br/><br/>
     You can get help configuring it <a href="http://syncedsynapse.com/kore/kore-faq/">here</a>.<br/><br/>
-    When you\'re ready press <b><i>Next</i></b>.
+    When you\'re ready press <b>Next</b>.
     ]]></string>
     <string name="wizard_search_message"><![CDATA[
     Searching for media centers on your local network…<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
     I couldn\'t find any media center on your network.<br/>If you need help configuring it, check <a href="http://syncedsynapse.com/kore/kore-faq/">here</a>.<br/><br/>
-    Click <i>Search</i> to search again or <i>Next</i> for manual configuration.
+    Click <b>Search again</b> or <b>Next</b> for manual configuration.
     ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     Please enable a network connection before searching for media centers.<br/>
     ]]></string>
     <string name="wizard_search_host_found"><![CDATA[
-    I found these media centers on your network.<br/><br/>Select one to add or press <i>Next</i> to manually add a new one.
+    I found these media centers on your network.<br/><br/>Select one to add or press <b>Next</b> to manually add a new one.
     ]]></string>
     <string name="no_network_connection">No network connection</string>
     <string name="searching">Searching…</string>
@@ -136,7 +136,7 @@
     <string name="wizard_done_message"><![CDATA[
     Your media center is configured.<br/>
     You can now use the remote to control it. Your library is being synced, and should be available in a few moments.<br/><br/>
-    Press <b><i>Finish</i></b> to start using the remote.
+    Press <b>Finish</b> to start using the remote.
     ]]></string>
 
     <string name="wizard_zeroconf_no_host_address">Couldn\'t get this media center address!</string>
