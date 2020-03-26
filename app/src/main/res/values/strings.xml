@@ -82,7 +82,7 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Welcome</string>
     <string name="wizard_welcome_message"><![CDATA[
-    Let\'s start by adding a media center. Make sure your Kodi/XBMC is running, properly configured and on the same network as your device.<br/><br/>
+    Let\'s start by adding a media center. Make sure your Kodi is running, properly configured and on the same network as your device.<br/><br/>
     You can get help configuring it <a href="http://syncedsynapse.com/kore/kore-faq/">here</a>.<br/><br/>
     When you\'re ready press <b><i>Next</i></b>.
     ]]></string>
@@ -127,10 +127,10 @@
     <string name="wizard_connecting_to_xbmc_title">Connecting to %1$s…</string>
     <string name="wizard_connecting_to_xbmc_message">Please wait while I try to connect to your media center…</string>
 
-    <string name="wizard_empty_authentication">Kodi/XBMC requires authentication.\nPlease specify a username and password.</string>
+    <string name="wizard_empty_authentication">Kodi requires authentication.\nPlease specify a username and password.</string>
     <string name="wizard_incorrect_authentication">Wrong username and/or password.\nPlease check your credentials.</string>
-    <string name="wizard_success_connecting">Connected to Kodi/XBMC.</string>
-    <string name="wizard_error_connecting">Couldn\'t connect to Kodi/XBMC.\nPlease check the configuration.</string>
+    <string name="wizard_success_connecting">Connected to Kodi.</string>
+    <string name="wizard_error_connecting">Couldn\'t connect to Kodi.\nPlease check the configuration.</string>
 
     <string name="wizard_done">All done!</string>
     <string name="wizard_done_message"><![CDATA[
@@ -215,7 +215,7 @@
     <string name="poster">Poster</string>
     <string name="thumbnail">Thumbnail</string>
 
-    <string name="error_getting_properties">Couldn\'t get Kodi/XBMC properties.\nError message:
+    <string name="error_getting_properties">Couldn\'t get Kodi properties.\nError message:
         %1$s.</string>
     <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\nError message: %1$s.</string>
     <string name="error_getting_addon_info">Couldn\'t get Addon information.\nError message:
@@ -230,7 +230,7 @@
         %1$s.</string>
     <string name="error_get_active_player">Couldn\'t get active player.\nError message:
         %1$s.</string>
-    <string name="error_share_video">Couldn\'t share video to Kodi/XBMC.</string>
+    <string name="error_share_video">Couldn\'t share video to Kodi.</string>
     <string name="error_reading_local_storage">Couldn\'t read the local storage.
         Did you give Kore permission to access file storage?</string>
     <string name="error_starting_http_server">Couldn\'t create or start HTTP server.</string>
