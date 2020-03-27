@@ -37,6 +37,19 @@
                 <data android:mimeType="video/*" />
                 <data android:mimeType="audio/*" />
             </intent-filter>
+            
+            <!-- Intent filter for HTTP(S) links with MIME type -->
+            <intent-filter android:label="@string/play_on_kodi">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="*" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="application/vnd.apple.mpegurl" />
+            </intent-filter>
 
             <!-- Intent filter for sharing from youtube player -->
             <intent-filter android:label="@string/play_on_kodi">
@@ -52,6 +65,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
+                <data android:host="youtu.be"/>
                 <data android:host="youtube.com"/>
                 <data android:host="m.youtube.com"/>
                 <data android:host="www.youtube.com"/>
@@ -83,6 +97,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain"/>
             </intent-filter>
+            
+            <!-- Intent filter for HTTP(S) links with MIME type -->
+            <intent-filter android:label="@string/queue_on_kodi">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="*" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="application/vnd.apple.mpegurl" />
+            </intent-filter>
 
             <!-- Intent filter for sharing youtube URLs -->
             <intent-filter android:label="@string/queue_on_kodi">
@@ -91,6 +118,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
+                <data android:host="youtu.be"/>
                 <data android:host="youtube.com"/>
                 <data android:host="m.youtube.com"/>
                 <data android:host="www.youtube.com"/>
