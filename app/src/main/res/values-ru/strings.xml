@@ -45,7 +45,7 @@
     <string name="unknown">Неизвестно</string>
     <string name="file_browser">Файлы</string>
     <string name="local_file_browser">Локальные файлы</string>
-    <string name="pvr">Запись</string>
+    <string name="pvr">Запись эфира</string>
     <string name="favourites">Избранные</string>
     <string name="weather">Погода</string>
     <string name="system">Система</string>
