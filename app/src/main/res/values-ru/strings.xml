@@ -20,7 +20,7 @@
     <string name="settings">Настройки</string>
     <string name="action_options">Параметры</string>
 
-    <string name="loading">Загружается...</string>
+    <string name="loading">Загружается…</string>
 
     <!-- Navigation drawer tips -->
     <string name="navigation_drawer_open">Открыть панель навигации</string>
@@ -43,8 +43,8 @@
     <string name="window">Окно</string>
     <string name="script">Скрипт</string>
     <string name="unknown">Неизвестно</string>
-    <string name="file_browser">Обозреватель файлов</string>
-    <string name="local_file_browser">Обозреватель локальных файлов</string>
+    <string name="file_browser">Файлы</string>
+    <string name="local_file_browser">Локальные файлы</string>
     <string name="pvr">Запись</string>
     <string name="favourites">Избранные</string>
     <string name="weather">Погода</string>
@@ -76,8 +76,8 @@
     <string name="toggle_fullscreen">Переключить полный экран</string>
 
     <string name="connected_to">Подключён к %1$s</string>
-    <string name="connecting">Подключается...</string>
-    <string name="connecting_to">Подключается к %1$s (%2$s)...</string>
+    <string name="connecting">Подключается…</string>
+    <string name="connecting_to">Подключается к %1$s (%2$s)…</string>
 
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Добро пожаловать!</string>
@@ -87,7 +87,7 @@
     Когда будете готовы, нажмите <b>Далее</b>.
     ]]></string>
     <string name="wizard_search_message"><![CDATA[
-    Идёт поиск медиацентров в локальной сети...<br/>
+    Идёт поиск медиацентров в локальной сети…<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
     Не удалось найти ни одного медиацентра в вашей сети.<br/>
@@ -102,7 +102,7 @@
     Выберите один из них или нажмите <b>Далее</b>, чтобы добавить центр вручную.
     ]]></string>
     <string name="no_network_connection">Нет подключения к сети</string>
-    <string name="searching">Идёт поиск...</string>
+    <string name="searching">Идёт поиск…</string>
     <string name="no_xbmc_found">На найдено ни одного медиацентра</string>
     <string name="xbmc_found">Найден медиацентр</string>
     <string name="wizard_manual_configuration">Ручная настройка</string>
@@ -127,7 +127,7 @@
     <string name="wizard_invalid_es_port_specified">Укажите EventServer-порт медиацентра</string>
 
     <string name="wizard_connecting_to_xbmc_title">Подключается к %1$s…</string>
-    <string name="wizard_connecting_to_xbmc_message">Подождите, пока идёт подключение к медиасерверу...</string>
+    <string name="wizard_connecting_to_xbmc_message">Подождите, пока идёт подключение к медиасерверу…</string>
 
     <string name="wizard_empty_authentication">Kodi требует аутентификации.\n
     Укажите имя пользователя и пароль.</string>
@@ -173,7 +173,7 @@
     <string name="select">Выбрать</string>
     <string name="info">Информация</string>
     <string name="codec_info">Кодек</string>
-    <string name="context">Контекст</string>
+    <string name="context">Контекстное меню</string>
     <string name="osd">Меню</string>
     <string name="back">Назад</string>
     <string name="previous">Назад</string>
@@ -193,7 +193,7 @@
     <string name="play_file">Воспроизвести</string>
     <string name="play_from_here">Воспроизвести с этого</string>
 
-    <string name="connecting_to_xbmc">Подключается...</string>
+    <string name="connecting_to_xbmc">Подключается…</string>
     <string name="unable_to_connect_to_xbmc">Не удаётся подключиться к медиацентру</string>
     <string name="connected_to_xbmc">Подключён</string>
     <string name="xbmc_available">Доступен</string>
