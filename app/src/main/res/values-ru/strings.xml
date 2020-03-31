@@ -323,6 +323,7 @@
     Альбомы будут загружаться в фоне, это может занять некоторое время.</string>
     <string name="confirm_songs_download">Вы уверены, что хотите загрузить %1$d песен?\n
     Песни будут загружаться в фоне, это может занять некоторое время.</string>
+
     <string name="download_file_exists">Файл уже существует.\n
     Вы хотите перезаписать файл или сохранить под другим именем?</string>
     <string name="download_dir_exists">Загружаемая папка уже существует.\n
@@ -414,6 +415,7 @@
     <string name="thanks_for_coffe">Thanks for the coffee!</string>
     <string name="remove_coffee_message">Tap to hide this setting</string>
     <string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>
+
     <string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>
     <string name="error_querying_inventory">Failed to query inventory.</string>
     <string name="error_during_purchased">An error occurred during purchase.</string>
