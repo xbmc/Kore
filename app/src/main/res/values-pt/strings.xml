@@ -34,7 +34,7 @@
   <string name="xbmc_quit">Centro multimédia a encerrar.</string>
   <string name="wol_sent">Pedido enviado.</string>
   <string name="power">Energia</string>
-  <string name="quit">Encerrar</string>
+  <string name="quit">Sair</string>
   <string name="suspend">Suspender</string>
     <string name="reboot">Reiniciar</string>
   <string name="shutdown">Desligar</string>
