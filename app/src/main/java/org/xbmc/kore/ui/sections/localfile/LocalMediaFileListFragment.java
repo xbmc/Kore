@@ -22,11 +22,12 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -34,9 +35,10 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.GridItemPictureBinding;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -61,7 +63,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
 
 /**
  * Presents a list of files of different types (Video/Music)
@@ -99,8 +100,10 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     ArrayList<LocalFileLocation> rootFileLocation = new ArrayList<>();
     Queue<LocalFileLocation> mediaQueueFileLocation = new LinkedList<>();
 
+    private GridItemPictureBinding binding;
+
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(MEDIA_TYPE, mediaType);
         outState.putParcelable(SORT_METHOD, sortMethod);
@@ -116,12 +119,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
     @Override
     protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
-        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                handleFileSelect(((MediaPictureListAdapter) getAdapter()).getItem(position));
-            }
-        };
+        return (view, position) -> handleFileSelect(((MediaPictureListAdapter) getAdapter()).getItem(position));
     }
 
     @Override
@@ -135,7 +133,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case Utils.PERMISSION_REQUEST_READ_EXTERNAL_STORAGE:
             // If request is cancelled, the result arrays are empty.
@@ -164,8 +162,9 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateView(inflater, container, savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //View root = super.onCreateView(inflater, container, savedInstanceState);
+        binding = GridItemPictureBinding.inflate(inflater, container, false);
         Bundle args = getArguments();
         LocalFileLocation rootPath = null;
 
@@ -190,12 +189,9 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
         hostManager = HostManager.getInstance(getActivity());
 
-        getEmptyView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!atRootDirectory())
-                    browseSources();
-            }
+        getEmptyView().setOnClickListener(v -> {
+            if (!atRootDirectory())
+                browseSources();
         });
 
         if (savedInstanceState != null) {
@@ -215,7 +211,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         else {
             browseSources();
         }
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -520,33 +516,30 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
                     if (!loc.isDirectory) {
                         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
                         popupMenu.getMenuInflater().inflate(R.menu.filelist_item, popupMenu.getMenu());
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
+                        popupMenu.setOnMenuItemClickListener(item -> {
 
-                                switch (item.getItemId()) {
-                                    case R.id.action_queue_item:
-                                        queueMediaFile(loc);
-                                        return true;
-                                    case R.id.action_play_item:
-                                        playMediaFile(loc);
-                                        return true;
-                                    case R.id.action_play_from_this_item:
-                                        mediaQueueFileLocation.clear();
-                                        LocalFileLocation fl;
-                                        // start playing the selected one, then queue the rest
-                                        mediaQueueFileLocation.add(loc);
-                                        for (int i = position + 1; i < fileLocationItems.size(); i++) {
-                                            fl = fileLocationItems.get(i);
-                                            if (!fl.isDirectory) {
-                                                mediaQueueFileLocation.add(fl);
-                                            }
+                            switch (item.getItemId()) {
+                                case R.id.action_queue_item:
+                                    queueMediaFile(loc);
+                                    return true;
+                                case R.id.action_play_item:
+                                    playMediaFile(loc);
+                                    return true;
+                                case R.id.action_play_from_this_item:
+                                    mediaQueueFileLocation.clear();
+                                    LocalFileLocation fl;
+                                    // start playing the selected one, then queue the rest
+                                    mediaQueueFileLocation.add(loc);
+                                    for (int i = position + 1; i < fileLocationItems.size(); i++) {
+                                        fl = fileLocationItems.get(i);
+                                        if (!fl.isDirectory) {
+                                            mediaQueueFileLocation.add(fl);
                                         }
-                                        playMediaFile(loc);
-                                        return true;
-                                }
-                                return false;
+                                    }
+                                    playMediaFile(loc);
+                                    return true;
                             }
+                            return false;
                         });
                         popupMenu.show();
                     }
@@ -594,15 +587,16 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
             }
         }
 
+        @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(ctx)
                                         .inflate(resource, parent, false);
             return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight, itemMenuClickListener);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             LocalFileLocation fileLocation = this.getItem(position);
             ((ViewHolder) holder).bindView(fileLocation, position);
         }
@@ -667,10 +661,10 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
             CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(context, fileLocation.fileName);
             File file_path = new File(fileLocation.fullPath);
 
-            Picasso.with(context)
+            Glide.with(context)
                     .load(file_path)
                     .placeholder(avatarDrawable)
-                    .resize(artWidth, artHeight)
+                    .override(artWidth, artHeight)
                     .centerCrop()
                     .into(art);
 

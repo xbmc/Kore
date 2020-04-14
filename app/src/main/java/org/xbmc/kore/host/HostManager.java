@@ -24,9 +24,9 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 
-import com.squareup.okhttp.OkHttpClient;
+/*import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso;*/
 
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -39,6 +39,8 @@ import org.xbmc.kore.utils.NetUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Manages XBMC Hosts
@@ -71,7 +73,7 @@ public class HostManager {
     /**
      * Picasso to download images from current XBMC
      */
-    private Picasso currentPicasso = null;
+    //private Picasso currentPicasso = null;
 
     /**
      * Current connection observer
@@ -215,10 +217,10 @@ public class HostManager {
      * Returns the current host {@link Picasso} image downloader
      * @return {@link Picasso} instance suitable to download images from the current xbmc
      */
-    public Picasso getPicasso() {
+    /*public Picasso getPicasso() {
         if (currentPicasso == null) {
             currentHostInfo = getHostInfo();
-            if (currentHostInfo != null) {
+            if (currentHostInfo != null) {*/
 //                currentPicasso = new Picasso.Builder(context)
 //                        .downloader(new BasicAuthUrlConnectionDownloader(context,
 //                                currentHostInfo.getUsername(), currentHostInfo.getPassword()))
@@ -226,7 +228,8 @@ public class HostManager {
 //                        .build();
 
                 // Http client should already handle authentication
-                OkHttpClient picassoClient = getConnection().getOkHttpClient().clone();
+                /*OkHttpClient picassoClient = getConnection().getOkHttpClient();
+                picassoClient.cache()*/
 
 //                OkHttpClient picassoClient = new OkHttpClient();
 //                // Set authentication on the client
@@ -246,18 +249,22 @@ public class HostManager {
 //                }
 
                 // Set cache
-                File cacheDir = NetUtils.createDefaultCacheDir(context);
+                /*File cacheDir = NetUtils.createDefaultCacheDir(context);
                 long cacheSize = NetUtils.calculateDiskCacheSize(cacheDir);
                 picassoClient.setCache(new com.squareup.okhttp.Cache(cacheDir,cacheSize));
 
                 currentPicasso = new Picasso.Builder(context)
                         .downloader(new OkHttpDownloader(picassoClient))
 //                        .indicatorsEnabled(BuildConfig.DEBUG)
-                        .build();
-            }
+                        .build();*/
+            /*}
         }
 
         return currentPicasso;
+    }*/
+
+    public Context getContext() {
+        return this.context;
     }
 
     /**
@@ -366,7 +373,7 @@ public class HostManager {
 
         Uri newUri = context.getContentResolver()
                             .insert(MediaContract.Hosts.CONTENT_URI, values);
-        long newId = Long.valueOf(MediaContract.Hosts.getHostId(newUri));
+        long newId = Long.parseLong(MediaContract.Hosts.getHostId(newUri));
 
 		// Refresh the list and return the created host
 		hosts = getHosts(true);
@@ -428,13 +435,8 @@ public class HostManager {
      */
 	public void deleteHost(final int hostId) {
         // Async call delete. The triggers to delete all host information can take some time
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                context.getContentResolver()
-                       .delete(MediaContract.Hosts.buildHostUri(hostId), null, null);
-            }
-        }).start();
+        new Thread(() -> context.getContentResolver()
+               .delete(MediaContract.Hosts.buildHostUri(hostId), null, null)).start();
 
         // Refresh information
         int index = -1;
@@ -468,14 +470,14 @@ public class HostManager {
             currentHostConnection = null;
         }
 
-        if (currentPicasso != null) {
+        //if (currentPicasso != null) {
             // Calling shutdown here causes a picasso error:
             // Handler (com.squareup.picasso.Stats$StatsHandler) {41b13d40} sending message to a Handler on a dead thread
             // Check: https://github.com/square/picasso/issues/445
             // So, for now, just let it be...
 //            currentPicasso.shutdown();
-            currentPicasso = null;
-        }
+          /*  currentPicasso = null;
+        }*/
     }
 
     // Check Kodi's version every 2 hours

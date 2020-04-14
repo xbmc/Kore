@@ -18,18 +18,14 @@ package org.xbmc.kore.jsonrpc;
 import android.os.Handler;
 import android.os.Process;
 import android.text.TextUtils;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.notification.Application;
@@ -44,7 +40,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.ProtocolException;
-import java.net.Proxy;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -54,6 +49,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import okhttp3.Credentials;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Class responsible for communicating with the host.
@@ -363,15 +365,12 @@ public class HostConnection {
         }
 
 		// Launch background thread
-        Runnable command = new Runnable() {
-            @Override
-            public void run() {
-                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                if (protocol == PROTOCOL_HTTP) {
-                    executeThroughOkHttp(method, callback, handler);
-                } else {
-                    executeThroughTcp(method);
-                }
+        Runnable command = () -> {
+            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+            if (protocol == PROTOCOL_HTTP) {
+                executeThroughOkHttp(method, callback, handler);
+            } else {
+                executeThroughTcp(method);
             }
         };
 
@@ -442,21 +441,11 @@ public class HostConnection {
             }
 
             private void handleSuccess(final T result) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        apiCallback.onSuccess(result);
-                    }
-                });
+                handler.post(() -> apiCallback.onSuccess(result));
             }
 
             private void handleError(final int errorCode, final String message) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        apiCallback.onError(errorCode, message);
-                    }
-                });
+                handler.post(() -> apiCallback.onError(errorCode, message));
             }
         });
     }
@@ -508,13 +497,8 @@ public class HostConnection {
         synchronized (clientCallbacks) {
             if (clientCallbacks.containsKey(methodId)) {
                 if ((handler != null) && (callback != null)) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            callback.onError(ApiException.API_METHOD_WITH_SAME_ID_ALREADY_EXECUTING,
-                                             "A method with the same Id is already executing");
-                        }
-                    });
+                    handler.post(() -> callback.onError(ApiException.API_METHOD_WITH_SAME_ID_ALREADY_EXECUTING,
+                                     "A method with the same Id is already executing"));
                 }
                 return;
             }
@@ -540,22 +524,12 @@ public class HostConnection {
             final T result = method.resultFromJson(parseJsonResponse(handleOkHttpResponse(response)));
 
             if (callback != null) {
-                postOrRunNow(handler, new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onSuccess(result);
-                    }
-                });
+                postOrRunNow(handler, () -> callback.onSuccess(result));
             }
         } catch (final ApiException e) {
             // Got an error, call error handler
             if (callback != null) {
-                postOrRunNow(handler, new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onError(e.getCode(), e.getMessage());
-                    }
-                });
+                postOrRunNow(handler, () -> callback.onError(e.getCode(), e.getMessage()));
             }
         }
     }
@@ -565,10 +539,20 @@ public class HostConnection {
      */
     public synchronized OkHttpClient getOkHttpClient() {
         if (httpClient == null) {
-            httpClient = new OkHttpClient();
-            httpClient.setConnectTimeout(connectTimeout, TimeUnit.MILLISECONDS);
+            /*httpClient = new OkHttpClient();
+            httpClient.setConnectTimeout(connectTimeout, TimeUnit.MILLISECONDS);*/
+            httpClient = new OkHttpClient.Builder()
+                    .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
+                    .authenticator((route, response) -> {
+                        if (TextUtils.isEmpty(hostInfo.getUsername()))
+                            return null;
 
-            httpClient.setAuthenticator(new Authenticator() {
+                        String credential = Credentials.basic(hostInfo.getUsername(), hostInfo.getPassword());
+                        return response.request().newBuilder().header("Authorization", credential).build();
+                    })
+                    .build();
+
+            /*httpClient.setAuthenticator(new Authenticator() {
                 @Override
                 public Request authenticate(Proxy proxy, Response response) {
                     if (TextUtils.isEmpty(hostInfo.getUsername()))
@@ -582,7 +566,7 @@ public class HostConnection {
                 public Request authenticateProxy(Proxy proxy, Response response) {
                     return null;
                 }
-            });
+            });*/
         }
         return httpClient;
     }
@@ -682,9 +666,6 @@ public class HostConnection {
 
 			return jsonResponse;
 		} catch (JsonProcessingException e) {
-			LogUtils.LOGW(TAG, "Got an exception while parsing JSON response.", e);
-			throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
-		} catch (IOException e) {
 			LogUtils.LOGW(TAG, "Got an exception while parsing JSON response.", e);
 			throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
 		}
@@ -811,12 +792,7 @@ public class HostConnection {
                     final Player.OnPause apiNotification = new Player.OnPause(params);
                     for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                         Handler handler = playerNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onPause(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onPause(apiNotification));
                     }
                     break;
                 }
@@ -824,12 +800,7 @@ public class HostConnection {
                     final Player.OnPlay apiNotification = new Player.OnPlay(params);
                     for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                         Handler handler = playerNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onPlay(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onPlay(apiNotification));
                     }
                     break;
                 }
@@ -863,12 +834,7 @@ public class HostConnection {
                     final Player.OnSpeedChanged apiNotification = new Player.OnSpeedChanged(params);
                     for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                         Handler handler = playerNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onSpeedChanged(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onSpeedChanged(apiNotification));
                     }
                     break;
                 }
@@ -876,12 +842,7 @@ public class HostConnection {
                     final Player.OnStop apiNotification = new Player.OnStop(params);
                     for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                         Handler handler = playerNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onStop(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onStop(apiNotification));
                     }
                     break;
                 }
@@ -889,12 +850,7 @@ public class HostConnection {
                     final Player.OnAVStart apiNotification = new Player.OnAVStart(params);
                     for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                         Handler handler = playerNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onAVStart(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onAVStart(apiNotification));
                     }
                     break;
                 }
@@ -902,12 +858,7 @@ public class HostConnection {
                     final Player.OnAVChange apiNotification = new Player.OnAVChange(params);
                     for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                         Handler handler = playerNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onAVChange(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onAVChange(apiNotification));
                     }
                     break;
                 }
@@ -915,12 +866,7 @@ public class HostConnection {
                     final Player.OnPropertyChanged apiNotification = new Player.OnPropertyChanged(params);
                     for (final PlayerNotificationsObserver observer : playerNotificationsObservers.keySet()) {
                         Handler handler = playerNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onPropertyChanged(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onPropertyChanged(apiNotification));
                     }
                     break;
                 }
@@ -928,12 +874,7 @@ public class HostConnection {
                     final System.OnQuit apiNotification = new System.OnQuit(params);
                     for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
                         Handler handler = systemNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onQuit(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onQuit(apiNotification));
                     }
                     break;
                 }
@@ -941,12 +882,7 @@ public class HostConnection {
                     final System.OnRestart apiNotification = new System.OnRestart(params);
                     for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
                         Handler handler = systemNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onRestart(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onRestart(apiNotification));
                     }
                     break;
                 }
@@ -954,12 +890,7 @@ public class HostConnection {
                     final System.OnSleep apiNotification = new System.OnSleep(params);
                     for (final SystemNotificationsObserver observer : systemNotificationsObservers.keySet()) {
                         Handler handler = systemNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onSleep(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onSleep(apiNotification));
                     }
                     break;
                 }
@@ -967,12 +898,7 @@ public class HostConnection {
                     final Input.OnInputRequested apiNotification = new Input.OnInputRequested(params);
                     for (final InputNotificationsObserver observer : inputNotificationsObservers.keySet()) {
                         Handler handler = inputNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onInputRequested(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onInputRequested(apiNotification));
                     }
                     break;
                 }
@@ -980,12 +906,7 @@ public class HostConnection {
                     final Application.OnVolumeChanged apiNotification = new Application.OnVolumeChanged(params);
                     for (final ApplicationNotificationsObserver observer : applicationNotificationsObservers.keySet()) {
                         Handler handler = applicationNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onVolumeChanged(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onVolumeChanged(apiNotification));
                     }
                     break;
                 }
@@ -995,12 +916,7 @@ public class HostConnection {
                     for (final PlaylistNotificationsObserver observer :
                             playlistNotificationsObservers.keySet()) {
                         Handler handler = playlistNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onPlaylistCleared(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onPlaylistCleared(apiNotification));
                     }
                     break;
                 }
@@ -1010,12 +926,7 @@ public class HostConnection {
                     for (final PlaylistNotificationsObserver observer :
                             playlistNotificationsObservers.keySet()) {
                         Handler handler = playlistNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onPlaylistItemAdded(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onPlaylistItemAdded(apiNotification));
                     }
                     break;
                 }
@@ -1025,12 +936,7 @@ public class HostConnection {
                     for (final PlaylistNotificationsObserver observer :
                             playlistNotificationsObservers.keySet()) {
                         Handler handler = playlistNotificationsObservers.get(observer);
-                        postOrRunNow(handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                observer.onPlaylistItemRemoved(apiNotification);
-                            }
-                        });
+                        postOrRunNow(handler, () -> observer.onPlaylistItemRemoved(apiNotification));
                     }
                     break;
                 }
@@ -1054,12 +960,7 @@ public class HostConnection {
                         final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
 
                         if (callback != null) {
-                            postOrRunNow(methodCallInfo.handler, new Runnable() {
-                                @Override
-                                public void run() {
-                                    callback.onSuccess(result);
-                                }
-                            });
+                            postOrRunNow(methodCallInfo.handler, () -> callback.onSuccess(result));
                         }
 
                         // We've replied, remove the client from the list
@@ -1084,12 +985,7 @@ public class HostConnection {
                     final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
 
                     if (callback != null) {
-                        postOrRunNow(methodCallInfo.handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.onError(error.getCode(), error.getMessage());
-                            }
-                        });
+                        postOrRunNow(methodCallInfo.handler, () -> callback.onError(error.getCode(), error.getMessage()));
                     }
                 }
                 clientCallbacks.remove(methodId);
@@ -1101,12 +997,7 @@ public class HostConnection {
                     final ApiCallback<T> callback = (ApiCallback<T>)methodCallInfo.callback;
 
                     if (callback != null) {
-                        postOrRunNow(methodCallInfo.handler, new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.onError(error.getCode(), error.getMessage());
-                            }
-                        });
+                        postOrRunNow(methodCallInfo.handler, () -> callback.onError(error.getCode(), error.getMessage()));
                     }
                 }
 

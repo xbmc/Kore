@@ -20,8 +20,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;

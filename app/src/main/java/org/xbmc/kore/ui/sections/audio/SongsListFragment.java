@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -23,10 +22,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.loader.content.CursorLoader;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -99,25 +101,15 @@ public class SongsListFragment extends AbstractCursorListFragment {
     @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
         if (albumId != -1 ) {
-            return new AlbumSongsAdapter(getContext(), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showPopupMenu(v);
-                }
-            });
+            return new AlbumSongsAdapter(getContext(), (View v) -> showPopupMenu(v));
         } else {
-            return new SongsAdapter(getContext(), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showPopupMenu(v);
-                }
-            });
+            return new SongsAdapter(getContext(), (View v) -> showPopupMenu(v));
         }
     }
 
     @Override
     protected void onListItemClicked(View view) {
-        ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
+        ImageView contextMenu = view.findViewById(R.id.list_context_menu);
         showPopupMenu(contextMenu);
     }
 
@@ -136,7 +128,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
         }
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE + " LIKE ?";
@@ -153,7 +145,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         setSupportsSearch(true);
         super.onAttach(context);
     }
@@ -170,7 +162,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         if (!isAdded()) {
             // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
             super.onCreateOptionsMenu(menu, inflater);
@@ -264,8 +256,9 @@ public class SongsListFragment extends AbstractCursorListFragment {
             artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
                                       .inflate(R.layout.grid_item_song, parent, false);
 
@@ -285,8 +278,9 @@ public class SongsListFragment extends AbstractCursorListFragment {
             this.contextMenuClickListener = contextMenuClickListener;
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
                                       .inflate(R.layout.list_item_song, parent, false);
 
@@ -381,9 +375,9 @@ public class SongsListFragment extends AbstractCursorListFragment {
             }
 
             ArrayList<String> details = new ArrayList<>();
-            for (int i = 0; i < elements.length; i++) {
-                if (!TextUtils.isEmpty(elements[i]))
-                    details.add(elements[i]);
+            for (String element : elements) {
+                if (!TextUtils.isEmpty(element))
+                    details.add(element);
             }
 
             textView.setText(TextUtils.join(" | ", details.toArray()));
@@ -427,26 +421,23 @@ public class SongsListFragment extends AbstractCursorListFragment {
 
         final PopupMenu popupMenu = new PopupMenu(getContext(), v);
         popupMenu.getMenuInflater().inflate(R.menu.song_item, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_play_song:
-                        MediaPlayerUtils.play(SongsListFragment.this, playListItem);
-                        return true;
-                    case R.id.action_add_to_playlist:
-                        MediaPlayerUtils.queue(SongsListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                        return true;
-                    case R.id.download:
-                        ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
-                        songInfoList.add(viewHolder.songInfo);
-                        UIUtils.downloadSongs(getContext(),
-                                              songInfoList,
-                                              HostManager.getInstance(getContext()).getHostInfo(),
-                                              callbackHandler);
-                }
-                return false;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_play_song:
+                    MediaPlayerUtils.play(SongsListFragment.this, playListItem);
+                    return true;
+                case R.id.action_add_to_playlist:
+                    MediaPlayerUtils.queue(SongsListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                    return true;
+                case R.id.download:
+                    ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
+                    songInfoList.add(viewHolder.songInfo);
+                    UIUtils.downloadSongs(getContext(),
+                                          songInfoList,
+                                          HostManager.getInstance(getContext()).getHostInfo(),
+                                          callbackHandler);
             }
+            return false;
         });
         popupMenu.show();
     }

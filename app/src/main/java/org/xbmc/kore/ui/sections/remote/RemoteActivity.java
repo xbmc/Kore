@@ -21,23 +21,25 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.text.TextDirectionHeuristicsCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
+import androidx.viewpager.widget.ViewPager;
+
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.ActivityRemoteBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -57,7 +59,6 @@ import org.xbmc.kore.ui.generic.SendTextDialogFragment;
 import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.sections.localfile.HttpApp;
-import org.xbmc.kore.ui.views.CirclePageIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
@@ -67,17 +68,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 
 public class RemoteActivity extends BaseActivity
         implements HostConnectionObserver.PlayerEventsObserver,
@@ -106,10 +102,7 @@ public class RemoteActivity extends BaseActivity
 
     private Future<Void> awaitingShare;
 
-    @BindView(R.id.background_image) ImageView backgroundImage;
-    @BindView(R.id.pager_indicator) CirclePageIndicator pageIndicator;
-    @BindView(R.id.pager) ViewPager viewPager;
-    @BindView(R.id.default_toolbar) Toolbar toolbar;
+    private ActivityRemoteBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +111,9 @@ public class RemoteActivity extends BaseActivity
         // Set default values for the preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        setContentView(R.layout.activity_remote);
-        ButterKnife.bind(this);
+        binding = ActivityRemoteBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
 
         hostManager = HostManager.getInstance(this);
 
@@ -144,12 +138,12 @@ public class RemoteActivity extends BaseActivity
                 .addTab(RemoteFragment.class, null, R.string.remote, REMOTE_FRAGMENT_ID)
                 .addTab(PlaylistFragment.class, null, R.string.playlist, PLAYLIST_FRAGMENT_ID);
 
-        viewPager.setAdapter(tabsAdapter);
-        pageIndicator.setViewPager(viewPager);
-        pageIndicator.setOnPageChangeListener(defaultOnPageChangeListener);
+        binding.pager.setAdapter(tabsAdapter);
+        binding.pagerIndicator.setViewPager(binding.pager);
+        binding.pagerIndicator.setOnPageChangeListener(defaultOnPageChangeListener);
 
-        viewPager.setCurrentItem(1);
-        viewPager.setOffscreenPageLimit(2);
+        binding.pager.setCurrentItem(1);
+        binding.pager.setOffscreenPageLimit(2);
 
         setupActionBar();
 
@@ -213,6 +207,12 @@ public class RemoteActivity extends BaseActivity
         if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
         if (awaitingShare != null) awaitingShare.cancel(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
     @Override
@@ -301,7 +301,7 @@ public class RemoteActivity extends BaseActivity
 
             // Show volume change dialog if the event was handled and we are not in
             // first page, which already contains a volume control
-            if (handled && (viewPager.getCurrentItem() != 0)) {
+            if (handled && (binding.pager.getCurrentItem() != 0)) {
                 new VolumeControllerDialogFragmentListener()
                         .show(getSupportFragmentManager(), VolumeControllerDialogFragmentListener.class.getName());
             }
@@ -326,8 +326,8 @@ public class RemoteActivity extends BaseActivity
 
 
     private void setupActionBar() {
-        setToolbarTitle(toolbar, NOWPLAYING_FRAGMENT_ID);
-        setSupportActionBar(toolbar);
+        setToolbarTitle(binding.toolbar.defaultToolbar, NOWPLAYING_FRAGMENT_ID);
+        setSupportActionBar(binding.toolbar.defaultToolbar);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) return;
@@ -479,47 +479,36 @@ public class RemoteActivity extends BaseActivity
      * again when the activity is resumed and a {@link #pendingShare} exists.
      */
     private void awaitShare(final boolean queue) {
-        awaitingShare = getShareExecutor().submit(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                try {
-                    final boolean wasAlreadyPlaying = pendingShare.get();
-                    pendingShare = null;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (wasAlreadyPlaying) {
-                                String msg;
-                                if (queue) {
-                                    msg = getString(R.string.item_added_to_playlist);
-                                } else {
-                                    msg = getString(R.string.item_sent_to_kodi);
-                                }
-                                Toast.makeText(RemoteActivity.this,
-                                    msg,
-                                    Toast.LENGTH_SHORT)
-                                    .show();
-                            }
+        awaitingShare = getShareExecutor().submit(() -> {
+            try {
+                final boolean wasAlreadyPlaying = pendingShare.get();
+                pendingShare = null;
+                runOnUiThread(() -> {
+                    if (wasAlreadyPlaying) {
+                        String msg;
+                        if (queue) {
+                            msg = getString(R.string.item_added_to_playlist);
+                        } else {
+                            msg = getString(R.string.item_sent_to_kodi);
                         }
-                    });
-                } catch (InterruptedException ignored) {
-                } catch (ExecutionException ex) {
-                    pendingShare = null;
-                    final OpenSharedUrl.Error e = (OpenSharedUrl.Error) ex.getCause();
-                    LogUtils.LOGE(TAG, "Share failed", e);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(RemoteActivity.this,
-                                getString(e.stage, e.getMessage()),
-                                Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } finally {
-                    awaitingShare = null;
-                }
-                return null;
+                        Toast.makeText(RemoteActivity.this,
+                            msg,
+                            Toast.LENGTH_SHORT)
+                            .show();
+                    }
+                });
+            } catch (InterruptedException ignored) {
+            } catch (ExecutionException ex) {
+                pendingShare = null;
+                final OpenSharedUrl.Error e = (OpenSharedUrl.Error) ex.getCause();
+                LogUtils.LOGE(TAG, "Share failed", e);
+                runOnUiThread(() -> Toast.makeText(RemoteActivity.this,
+                    getString(e.stage, e.getMessage()),
+                    Toast.LENGTH_SHORT).show());
+            } finally {
+                awaitingShare = null;
             }
+            return null;
         });
     }
 
@@ -608,7 +597,7 @@ public class RemoteActivity extends BaseActivity
 
         @Override
         public void onPageSelected(int position) {
-            setToolbarTitle(toolbar, position);
+            setToolbarTitle(binding.toolbar.defaultToolbar, position);
         }
 
         @Override
@@ -624,29 +613,29 @@ public class RemoteActivity extends BaseActivity
             Point displaySize = new Point();
             getWindowManager().getDefaultDisplay().getSize(displaySize);
 
-            UIUtils.loadImageIntoImageview(hostManager, url, backgroundImage,
+            UIUtils.loadImageIntoImageview(hostManager, url, binding.backgroundImage,
                     displaySize.x, displaySize.y / 2);
 
             final int pixelsPerPage = displaySize.x / 4;
 
-            backgroundImage.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            binding.backgroundImage.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
-                    backgroundImage.getViewTreeObserver().removeOnPreDrawListener(this);
+                    binding.backgroundImage.getViewTreeObserver().removeOnPreDrawListener(this);
                     // Position the image
-                    int offsetX =  (viewPager.getCurrentItem() - 1) * pixelsPerPage;
-                    backgroundImage.scrollTo(offsetX, 0);
+                    int offsetX =  (binding.pager.getCurrentItem() - 1) * pixelsPerPage;
+                    binding.backgroundImage.scrollTo(offsetX, 0);
 
-                    pageIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    binding.pagerIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                         @Override
                         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                             int offsetX = (int) ((position - 1 + positionOffset) * pixelsPerPage);
-                            backgroundImage.scrollTo(offsetX, 0);
+                            binding.backgroundImage.scrollTo(offsetX, 0);
                         }
 
                         @Override
                         public void onPageSelected(int position) {
-                            setToolbarTitle(toolbar, position);
+                            setToolbarTitle(binding.toolbar.defaultToolbar, position);
                         }
 
                         @Override
@@ -657,8 +646,8 @@ public class RemoteActivity extends BaseActivity
                 }
             });
         } else {
-            backgroundImage.setImageDrawable(null);
-            pageIndicator.setOnPageChangeListener(defaultOnPageChangeListener);
+            binding.backgroundImage.setImageDrawable(null);
+            binding.pagerIndicator.setOnPageChangeListener(defaultOnPageChangeListener);
         }
     }
 
@@ -738,6 +727,6 @@ public class RemoteActivity extends BaseActivity
      * Now playing fragment listener
      */
     public void SwitchToRemotePanel() {
-        viewPager.setCurrentItem(1);
+        binding.pager.setCurrentItem(1);
     }
 }

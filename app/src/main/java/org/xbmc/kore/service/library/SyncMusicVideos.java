@@ -65,7 +65,7 @@ public class SyncMusicVideos extends SyncItem {
                      final HostConnection hostConnection,
                      final Handler callbackHandler,
                      final ContentResolver contentResolver) {
-        String properties[] = {
+        String[] properties = {
                 VideoType.FieldsMusicVideo.TITLE, VideoType.FieldsMusicVideo.PLAYCOUNT,
                 VideoType.FieldsMusicVideo.RUNTIME, VideoType.FieldsMusicVideo.DIRECTOR,
                 VideoType.FieldsMusicVideo.STUDIO, VideoType.FieldsMusicVideo.YEAR,
@@ -106,7 +106,7 @@ public class SyncMusicVideos extends SyncItem {
     }
 
     public void insertMusicVideos(List<VideoType.DetailsMusicVideo> musicVideos, ContentResolver contentResolver) {
-        ContentValues musicVideosValuesBatch[] = new ContentValues[musicVideos.size()];
+        ContentValues[] musicVideosValuesBatch = new ContentValues[musicVideos.size()];
 
         // Iterate on each music video
         for (int i = 0; i < musicVideos.size(); i++) {

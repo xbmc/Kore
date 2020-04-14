@@ -15,19 +15,20 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
@@ -77,7 +78,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
         Uri uri = MediaContract.MusicVideos.buildMusicVideosListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.MusicVideosColumns.TITLE + " LIKE ?";
@@ -89,7 +90,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnMusicVideoSelectedListener) ctx;
@@ -153,8 +154,9 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
             artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
                                       .inflate(R.layout.grid_item_music_video, parent, false);
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);

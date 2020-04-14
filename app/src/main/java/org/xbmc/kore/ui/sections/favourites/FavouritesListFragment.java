@@ -19,11 +19,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +26,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
@@ -73,32 +74,31 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
                 Toast.makeText(getActivity(), description, Toast.LENGTH_SHORT).show();
             }
         };
-        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
-                final HostManager hostManager = HostManager.getInstance(getActivity());
+        return (View view, int position) -> {
 
-                final FavouriteType.DetailsFavourite detailsFavourite =
-                        favouritesAdapter.getItem(position);
-                if (detailsFavourite == null) {
-                    return;
-                }
-                if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.WINDOW)
-                        && !TextUtils.isEmpty(detailsFavourite.window)) {
-                    GUI.ActivateWindow activateWindow = new GUI.ActivateWindow(detailsFavourite.window,
-                            detailsFavourite.windowParameter);
-                    hostManager.getConnection().execute(activateWindow, genericApiCallback, callbackHandler);
-                } else if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.MEDIA)
-                        && !TextUtils.isEmpty(detailsFavourite.path)) {
-                    final PlaylistType.Item playlistItem = new PlaylistType.Item();
-                    playlistItem.file = detailsFavourite.path;
-                    MediaPlayerUtils.play(FavouritesListFragment.this, playlistItem);
-                } else {
-                    Toast.makeText(getActivity(), R.string.unable_to_play_favourite_item,
-                            Toast.LENGTH_SHORT).show();
-                }
+            final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
+            final HostManager hostManager = HostManager.getInstance(getActivity());
+
+            final FavouriteType.DetailsFavourite detailsFavourite =
+                    favouritesAdapter.getItem(position);
+            if (detailsFavourite == null) {
+                return;
             }
+            if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.WINDOW)
+                    && !TextUtils.isEmpty(detailsFavourite.window)) {
+                GUI.ActivateWindow activateWindow = new GUI.ActivateWindow(detailsFavourite.window,
+                        detailsFavourite.windowParameter);
+                hostManager.getConnection().execute(activateWindow, genericApiCallback, callbackHandler);
+            } else if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.MEDIA)
+                    && !TextUtils.isEmpty(detailsFavourite.path)) {
+                final PlaylistType.Item playlistItem = new PlaylistType.Item();
+                playlistItem.file = detailsFavourite.path;
+                MediaPlayerUtils.play(FavouritesListFragment.this, playlistItem);
+            } else {
+                Toast.makeText(getActivity(), R.string.unable_to_play_favourite_item,
+                        Toast.LENGTH_SHORT).show();
+            }
+
         };
     }
 
@@ -168,15 +168,16 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
             return favouriteItems.get(position);
         }
 
+        @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.grid_item_channel,
                                                                     parent, false);
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             ((ViewHolder) holder).bindView(favouriteItems.get(position));
         }
 

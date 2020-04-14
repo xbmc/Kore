@@ -21,13 +21,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -70,17 +72,16 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
         setExpandDescription(true);
     }
 
+
+
     @Override
     protected RefreshItem createRefreshItem() {
         RefreshItem refreshItem = new RefreshItem(getActivity(),
                                                   LibrarySyncService.SYNC_ALL_MUSIC_VIDEOS);
-        refreshItem.setListener(new RefreshItem.RefreshItemListener() {
-            @Override
-            public void onSyncProcessEnded(MediaSyncEvent event) {
-                if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                    getLoaderManager().restartLoader(LOADER_MUSIC_VIDEO, null,
-                                                     MusicVideoInfoFragment.this);
-                }
+        refreshItem.setListener((MediaSyncEvent event) -> {
+            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+                getLoaderManager().restartLoader(LOADER_MUSIC_VIDEO, null,
+                                                 MusicVideoInfoFragment.this);
             }
         });
 
@@ -89,32 +90,17 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
 
     @Override
     protected boolean setupMediaActionBar() {
-        setOnAddToPlaylistListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addToPlaylist(getDataHolder().getId());
-            }
-        });
-
-        setOnDownloadListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                download();
-            }
-        });
-
+        setOnAddToPlaylistListener((View view) -> addToPlaylist(getDataHolder().getId()));
+        setOnDownloadListener((View view) -> download());
         return true;
     }
 
     @Override
     protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlaylistType.Item item = new PlaylistType.Item();
-                item.musicvideoid = getDataHolder().getId();
-                playItemOnKodi(item);
-            }
+        FAB.setOnFabClickListener((View v) -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.musicvideoid = getDataHolder().getId();
+            playItemOnKodi(item);
         });
         return true;
     }
@@ -131,6 +117,7 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
      * Loader callbacks
      */
     /** {@inheritDoc} */
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri;
@@ -145,9 +132,14 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
         }
     }
 
+    /*@Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+
+    }*/
+
     /** {@inheritDoc} */
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             switch (cursorLoader.getId()) {
                 case LOADER_MUSIC_VIDEO:
@@ -184,7 +176,7 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
     }
 
@@ -252,30 +244,19 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
             builder.setTitle(R.string.download)
                    .setMessage(R.string.download_file_exists)
                    .setPositiveButton(R.string.overwrite,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                               musicVideoDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
+                      (DialogInterface dialog, int which) ->
+                          FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                               musicVideoDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                               callbackHandler))
                    .setNeutralButton(R.string.download_with_new_name,
-                                     new DialogInterface.OnClickListener() {
-                                         @Override
-                                         public void onClick(DialogInterface dialog, int which) {
-                                             FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                              musicVideoDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                              callbackHandler);
-                                         }
-                                     })
+                      (DialogInterface dialog, int which) ->
+                         FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                              musicVideoDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                              callbackHandler))
                    .setNegativeButton(android.R.string.cancel,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              // Nothing to do
-                                          }
-                                      })
+                      (DialogInterface dialog, int which) -> {
+                        // Nothing to do
+                      })
                    .show();
         } else {
             FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),

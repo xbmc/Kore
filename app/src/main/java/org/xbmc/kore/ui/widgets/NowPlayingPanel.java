@@ -16,26 +16,19 @@
 
 package org.xbmc.kore.ui.widgets;
 
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.NowPlayingPanelBinding;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.utils.UIUtils;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class NowPlayingPanel extends SlidingUpPanelLayout {
 
@@ -50,21 +43,8 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     }
 
     private OnPanelButtonsClickListener onPanelButtonsClickListener;
-    private Unbinder unbinder;
 
-    @BindView(R.id.npp_collapsed_view) LinearLayout collapsedView;
-    @BindView(R.id.npp_title) TextView title;
-    @BindView(R.id.npp_details) TextView details;
-    @BindView(R.id.npp_poster) ImageView poster;
-    @BindView(R.id.npp_previous) ImageButton previousButton;
-    @BindView(R.id.npp_next) ImageButton nextButton;
-    @BindView(R.id.npp_play) ImageButton playButton;
-    @BindView(R.id.npp_progress_indicator) MediaProgressIndicator mediaProgressIndicator;
-    @BindView(R.id.npp_volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
-    @BindView(R.id.npp_volume_mute) HighlightButton volumeMuteButton;
-    @BindView(R.id.npp_volume_muted_indicator) HighlightButton volumeMutedIndicatorButton;
-    @BindView(R.id.npp_repeat) RepeatModeButton repeatModeButton;
-    @BindView(R.id.npp_shuffle) HighlightButton shuffleButton;
+    private NowPlayingPanelBinding binding;
 
     public NowPlayingPanel(Context context) {
         super(context);
@@ -82,10 +62,10 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
 
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.now_playing_panel, this);
-        unbinder = ButterKnife.bind(this, view);
 
-        setDragView(collapsedView);
+        binding = NowPlayingPanelBinding.inflate(inflater, this);
+
+        setDragView(binding.nppCollapsedView);
         setupButtonClickListeners();
     }
 
@@ -93,7 +73,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        unbinder.unbind();
+        binding = null;
 
         onPanelButtonsClickListener = null;
     }
@@ -103,32 +83,32 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     }
 
     public void setOnVolumeChangeListener(VolumeLevelIndicator.OnVolumeChangeListener listener) {
-        volumeLevelIndicator.setOnVolumeChangeListener(listener);
+        binding.nppVolumeLevelIndicator.setOnVolumeChangeListener(listener);
     }
 
     public void setOnProgressChangeListener(MediaProgressIndicator.OnProgressChangeListener listener) {
-        mediaProgressIndicator.setOnProgressChangeListener(listener);
+        binding.nppProgressIndicator.setOnProgressChangeListener(listener);
     }
 
     public void setVolume(int volume, boolean muted) {
-        volumeLevelIndicator.setVolume(muted, volume);
+        binding.nppVolumeLevelIndicator.setVolume(muted, volume);
 
         if (muted) {
-            volumeMutedIndicatorButton.setVisibility(View.VISIBLE);
+            binding.nppVolumeMutedIndicator.setVisibility(View.VISIBLE);
         } else {
-            volumeMutedIndicatorButton.setVisibility(View.GONE);
+            binding.nppVolumeMutedIndicator.setVisibility(View.GONE);
         }
 
-        volumeMutedIndicatorButton.setHighlight(muted);
-        volumeMuteButton.setHighlight(muted);
+        binding.nppVolumeMutedIndicator.setHighlight(muted);
+        binding.nppVolumeMute.setHighlight(muted);
     }
 
     public void setRepeatMode(String repeatMode) {
-        UIUtils.setRepeatButton(repeatModeButton, repeatMode);
+        UIUtils.setRepeatButton(binding.nppRepeat, repeatMode);
     }
 
     public void setShuffled(boolean shuffled) {
-        shuffleButton.setHighlight(shuffled);
+        binding.nppShuffle.setHighlight(shuffled);
     }
 
     /**
@@ -136,12 +116,12 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
      * @param play true if playing, false if paused
      */
     public void setPlayButton(boolean play) {
-        UIUtils.setPlayPauseButtonIcon(getContext(), playButton, play);
+        UIUtils.setPlayPauseButtonIcon(getContext(), binding.nppPlay, play);
     }
 
     public void setMediaProgress(GlobalType.Time time, GlobalType.Time totalTime) {
-        mediaProgressIndicator.setMaxProgress(totalTime.ToSeconds());
-        mediaProgressIndicator.setProgress(time.ToSeconds());
+        binding.nppProgressIndicator.setMaxProgress(totalTime.ToSeconds());
+        binding.nppProgressIndicator.setProgress(time.ToSeconds());
     }
 
     /**
@@ -149,7 +129,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
      * @return
      */
     public MediaProgressIndicator getMediaProgress() {
-        return mediaProgressIndicator;
+        return binding.nppProgressIndicator;
     }
 
     /**
@@ -157,77 +137,76 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
      * @param speed
      */
     public void setSpeed(int speed) {
-        mediaProgressIndicator.setSpeed(speed);
+        binding.nppProgressIndicator.setSpeed(speed);
     }
 
     public CharSequence getTitle() {
-        return title.getText();
+        return binding.nppTitle.getText();
     }
 
     public void setTitle(String title) {
-        this.title.setText(UIUtils.applyMarkup(getContext(), title));
+        binding.nppTitle.setText(UIUtils.applyMarkup(getContext(), title));
     }
 
     public void setDetails(String details) {
-        this.details.setText(details);
+        binding.nppDetails.setText(details);
     }
 
     public void setNextPrevVisibility(int visibility) {
-        nextButton.setVisibility(visibility);
-        previousButton.setVisibility(visibility);
+        binding.nppNext.setVisibility(visibility);
+        binding.nppPrevious.setVisibility(visibility);
     }
 
     public void setSquarePoster(boolean square) {
         if (square) {
-            ViewGroup.LayoutParams layoutParams = poster.getLayoutParams();
+            ViewGroup.LayoutParams layoutParams = binding.nppPoster.getLayoutParams();
             layoutParams.width = layoutParams.height;
-            poster.setLayoutParams(layoutParams);
+            binding.nppPoster.setLayoutParams(layoutParams);
         }
     }
 
     public ImageView getPoster() {
-        return poster;
+        return binding.nppPoster;
     }
 
     private void setupButtonClickListeners() {
-        playButton.setOnClickListener(handleButtonClickListener);
-        previousButton.setOnClickListener(handleButtonClickListener);
-        nextButton.setOnClickListener(handleButtonClickListener);
-        volumeMuteButton.setOnClickListener(handleButtonClickListener);
-        shuffleButton.setOnClickListener(handleButtonClickListener);
-        repeatModeButton.setOnClickListener(handleButtonClickListener);
-        volumeMutedIndicatorButton.setOnClickListener(handleButtonClickListener);
+        binding.nppPlay.setOnClickListener(handleButtonClickListener);
+        binding.nppPrevious.setOnClickListener(handleButtonClickListener);
+        binding.nppNext.setOnClickListener(handleButtonClickListener);
+        binding.nppVolumeMute.setOnClickListener(handleButtonClickListener);
+        binding.nppShuffle.setOnClickListener(handleButtonClickListener);
+        binding.nppRepeat.setOnClickListener(handleButtonClickListener);
+        binding.nppVolumeMutedIndicator.setOnClickListener(handleButtonClickListener);
     }
 
-    private OnClickListener handleButtonClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (onPanelButtonsClickListener == null)
-                return;
+    private OnClickListener handleButtonClickListener = (View view) -> {
 
-            switch (view.getId()) {
-                case R.id.npp_previous:
-                    onPanelButtonsClickListener.onPreviousClicked();
-                    break;
-                case R.id.npp_next:
-                    onPanelButtonsClickListener.onNextClicked();
-                    break;
-                case R.id.npp_play:
-                    onPanelButtonsClickListener.onPlayClicked();
-                    break;
-                case R.id.npp_volume_mute:
-                    onPanelButtonsClickListener.onVolumeMuteClicked();
-                    break;
-                case R.id.npp_repeat:
-                    onPanelButtonsClickListener.onRepeatClicked();
-                    break;
-                case R.id.npp_shuffle:
-                    onPanelButtonsClickListener.onShuffleClicked();
-                    break;
-                case R.id.npp_volume_muted_indicator:
-                    onPanelButtonsClickListener.onVolumeMutedIndicatorClicked();
-                    break;
-            }
+        if (onPanelButtonsClickListener == null)
+            return;
+
+        switch (view.getId()) {
+            case R.id.npp_previous:
+                onPanelButtonsClickListener.onPreviousClicked();
+                break;
+            case R.id.npp_next:
+                onPanelButtonsClickListener.onNextClicked();
+                break;
+            case R.id.npp_play:
+                onPanelButtonsClickListener.onPlayClicked();
+                break;
+            case R.id.npp_volume_mute:
+                onPanelButtonsClickListener.onVolumeMuteClicked();
+                break;
+            case R.id.npp_repeat:
+                onPanelButtonsClickListener.onRepeatClicked();
+                break;
+            case R.id.npp_shuffle:
+                onPanelButtonsClickListener.onShuffleClicked();
+                break;
+            case R.id.npp_volume_muted_indicator:
+                onPanelButtonsClickListener.onVolumeMutedIndicatorClicked();
+                break;
         }
+
     };
 }

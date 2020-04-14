@@ -22,7 +22,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -30,6 +29,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -54,7 +56,7 @@ public class AddHostFragmentFinish extends Fragment {
      * Callback interface to communicate with the encolsing activity
      */
     public interface AddHostFinishListener {
-        public void onAddHostFinish();
+        void onAddHostFinish();
     }
 
     private AddHostFinishListener listener;
@@ -70,22 +72,17 @@ public class AddHostFragmentFinish extends Fragment {
         if (getView() == null)
             return;
 
-        TextView message = (TextView)getView().findViewById(R.id.done_message);
+        TextView message = getView().findViewById(R.id.done_message);
         message.setText(Html.fromHtml(getString(R.string.wizard_done_message)));
         message.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Finish button
-        Button next = (Button)getView().findViewById(R.id.next);
+        Button next = getView().findViewById(R.id.next);
         next.setText(R.string.finish);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddHostFinish();
-            }
-        });
+        next.setOnClickListener((View v) -> listener.onAddHostFinish());
 
         // Previous button
-        Button previous = (Button)getView().findViewById(R.id.previous);
+        Button previous = getView().findViewById(R.id.previous);
         previous.setText(null);
         previous.setEnabled(false);
 
@@ -112,7 +109,7 @@ public class AddHostFragmentFinish extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             listener = (AddHostFinishListener) activity;

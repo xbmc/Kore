@@ -24,6 +24,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import androidx.annotation.NonNull;
+
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SelectionBuilder;
 
@@ -239,7 +241,7 @@ public class MediaProvider extends ContentProvider {
 
     /** {@inheritDoc} */
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         final int match = sUriMatcher.match(uri);
 
         switch (match) {
@@ -319,7 +321,7 @@ public class MediaProvider extends ContentProvider {
 
     /** {@inheritDoc} */
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
         LogUtils.LOGV(TAG, "query(uri=" + uri + ", proj=" + Arrays.toString(projection) + ")");
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
@@ -341,7 +343,7 @@ public class MediaProvider extends ContentProvider {
 
     /** {@inheritDoc} */
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         LogUtils.LOGV(TAG, "insert(uri=" + uri + ", values=" + values.toString() + ")");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
@@ -364,7 +366,7 @@ public class MediaProvider extends ContentProvider {
 
     /** {@inheritDoc} */
     @Override
-    public int bulkInsert(Uri uri, ContentValues[] values) {
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         long startTime = System.currentTimeMillis();
         final int match = sUriMatcher.match(uri);
 
@@ -463,7 +465,7 @@ public class MediaProvider extends ContentProvider {
 
     /** {@inheritDoc} */
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         LogUtils.LOGD(TAG, "update(uri=" + uri + ", values=" + values.toString() + ")");
         final int match = sUriMatcher.match(uri);
 
@@ -497,7 +499,7 @@ public class MediaProvider extends ContentProvider {
 
     /** {@inheritDoc} */
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         final int match = sUriMatcher.match(uri);
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final SelectionBuilder builder = buildQuerySelection(uri, match);

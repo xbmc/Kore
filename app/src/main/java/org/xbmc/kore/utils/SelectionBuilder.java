@@ -27,6 +27,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,9 +44,9 @@ public class SelectionBuilder {
     private static final String TAG = LogUtils.makeLogTag(SelectionBuilder.class);
 
     private String mTable = null;
-    private Map<String, String> mProjectionMap = new HashMap<String, String>();
+    private Map<String, String> mProjectionMap = new HashMap<>();
     private StringBuilder mSelection = new StringBuilder();
-    private ArrayList<String> mSelectionArgs = new ArrayList<String>();
+    private ArrayList<String> mSelectionArgs = new ArrayList<>();
     private StringBuilder mGroupBy = new StringBuilder();
     /**
      * Reset any internal state, allowing this builder to be recycled.
@@ -145,6 +147,7 @@ public class SelectionBuilder {
         }
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "SelectionBuilder[table=" + mTable + ", selection=" + getSelection()

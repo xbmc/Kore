@@ -68,7 +68,7 @@ public class SyncUtils {
             if (movie.streamdetails.audio.size() > 0) {
                 // Get the stream with the most channels and concat all the languages
                 VideoType.Streams.Audio selectedStream = movie.streamdetails.audio.get(0);
-                List<String> languages = new ArrayList<String>(movie.streamdetails.audio.size());
+                List<String> languages = new ArrayList<>(movie.streamdetails.audio.size());
                 for (int j = 0; j < movie.streamdetails.audio.size(); j++) {
                     VideoType.Streams.Audio stream = movie.streamdetails.audio.get(0);
                     if (stream.channels > selectedStream.channels) {
@@ -83,7 +83,7 @@ public class SyncUtils {
             }
             if (movie.streamdetails.subtitle.size() > 0) {
                 // Concat all subtitle languages
-                ArrayList<String> subtitles = new ArrayList<String>(movie.streamdetails.subtitle.size());
+                ArrayList<String> subtitles = new ArrayList<>(movie.streamdetails.subtitle.size());
                 for (int j = 0; j < movie.streamdetails.subtitle.size(); j++) {
                     subtitles.add(movie.streamdetails.subtitle.get(j).language);
                 }
@@ -227,7 +227,7 @@ public class SyncUtils {
         if (episode.streamdetails.audio.size() > 0) {
             // Get the stream with the most channels and concat all the languages
             VideoType.Streams.Audio selectedStream = episode.streamdetails.audio.get(0);
-            List<String> languages = new ArrayList<String>(episode.streamdetails.audio.size());
+            List<String> languages = new ArrayList<>(episode.streamdetails.audio.size());
             for (int j = 0; j < episode.streamdetails.audio.size(); j++) {
                 VideoType.Streams.Audio stream = episode.streamdetails.audio.get(0);
                 if (stream.channels > selectedStream.channels) {
@@ -241,7 +241,7 @@ public class SyncUtils {
         }
         if (episode.streamdetails.subtitle.size() > 0) {
             // Concat all subtitle languages
-            ArrayList<String> subtitles = new ArrayList<String>(episode.streamdetails.subtitle.size());
+            ArrayList<String> subtitles = new ArrayList<>(episode.streamdetails.subtitle.size());
             for (int j = 0; j < episode.streamdetails.subtitle.size(); j++) {
                 subtitles.add(episode.streamdetails.subtitle.get(j).language);
             }
@@ -367,7 +367,7 @@ public class SyncUtils {
             if (musicVideo.streamdetails.audio.size() > 0) {
                 // Get the stream with the most channels and concat all the languages
                 VideoType.Streams.Audio selectedStream = musicVideo.streamdetails.audio.get(0);
-                List<String> languages = new ArrayList<String>(musicVideo.streamdetails.audio.size());
+                List<String> languages = new ArrayList<>(musicVideo.streamdetails.audio.size());
                 for (int j = 0; j < musicVideo.streamdetails.audio.size(); j++) {
                     VideoType.Streams.Audio stream = musicVideo.streamdetails.audio.get(0);
                     if (stream.channels > selectedStream.channels) {
@@ -382,7 +382,7 @@ public class SyncUtils {
             }
             if (musicVideo.streamdetails.subtitle.size() > 0) {
                 // Concat all subtitle languages
-                ArrayList<String> subtitles = new ArrayList<String>(musicVideo.streamdetails.subtitle.size());
+                ArrayList<String> subtitles = new ArrayList<>(musicVideo.streamdetails.subtitle.size());
                 for (int j = 0; j < musicVideo.streamdetails.subtitle.size(); j++) {
                     subtitles.add(musicVideo.streamdetails.subtitle.get(j).language);
                 }

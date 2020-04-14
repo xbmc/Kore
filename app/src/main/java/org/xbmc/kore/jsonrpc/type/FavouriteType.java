@@ -16,7 +16,6 @@
 package org.xbmc.kore.jsonrpc.type;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import org.xbmc.kore.utils.JsonUtils;
 
 /**

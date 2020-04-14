@@ -18,9 +18,10 @@ package org.xbmc.kore.utils;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.SharedElementCallback;
+import androidx.core.app.SharedElementCallback;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.View;
@@ -87,7 +88,7 @@ public class SharedElementTransition {
             return;
         }
 
-        android.support.v4.app.SharedElementCallback seCallback = new android.support.v4.app.SharedElementCallback() {
+        androidx.core.app.SharedElementCallback seCallback = new androidx.core.app.SharedElementCallback() {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 // On returning, onMapSharedElements for the exiting fragment is called before the onMapSharedElements

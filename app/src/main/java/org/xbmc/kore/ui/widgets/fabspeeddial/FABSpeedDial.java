@@ -22,25 +22,23 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.FabSpeedDialBinding;
 import org.xbmc.kore.ui.animators.ChangeImageFadeAnimation;
 import org.xbmc.kore.ui.animators.PulsateAnimation;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * The Floating Action Button Speed Dial uses a {@link FloatingActionButton} and can
@@ -64,9 +62,8 @@ import butterknife.Unbinder;
  * </p>
  */
 public class FABSpeedDial extends LinearLayout {
-    @BindView(R.id.fabspeeddial) FloatingActionButton FABMain;
-    @BindView(R.id.play_local) DialActionButton FABPlayLocal;
-    @BindView(R.id.play_remote) DialActionButton FABPlayRemote;
+
+    private FabSpeedDialBinding binding;
 
     private final String BUNDLE_KEY_EXPANDED = "expanded";
     private final String BUNDLE_KEY_PARENT = "parent";
@@ -82,8 +79,6 @@ public class FABSpeedDial extends LinearLayout {
 
     private OvershootInterpolator showDialsInterpolator = new OvershootInterpolator();
     private AccelerateInterpolator hideDialsInterpolator = new AccelerateInterpolator();
-
-    private Unbinder unbinder;
 
     public interface DialListener {
         void onLocalPlayClicked();
@@ -115,7 +110,7 @@ public class FABSpeedDial extends LinearLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        unbinder.unbind();
+        binding = null;
 
         dialListener = null;
         fabListener = null;
@@ -188,16 +183,16 @@ public class FABSpeedDial extends LinearLayout {
         if (enable) {
             busyAnimation.start();
             if (dialSelected != null) {
-                changeFABIcon(FABMain.getDrawable(), dialSelected.getDrawable());
+                changeFABIcon(binding.fabspeeddial.getDrawable(), dialSelected.getDrawable());
             }
-            FABMain.setEnabled(false);
+            binding.fabspeeddial.setEnabled(false);
         } else {
             busyAnimation.stop();
             if (dialSelected != null) {
                 changeFABIcon(true);
                 dialSelected = null;
             }
-            FABMain.setEnabled(true);
+            binding.fabspeeddial.setEnabled(true);
         }
     }
 
@@ -206,22 +201,22 @@ public class FABSpeedDial extends LinearLayout {
     }
 
     public void enableLocalPlay(boolean enable) {
-        FABPlayLocal.setEnabled(enable);
+        binding.playLocal.setEnabled(enable);
     }
 
     public void showDials(boolean show) {
         dialsVisible = show;
 
         if (show) {
-            FABMain.animate().setInterpolator(showDialsInterpolator);
-            FABMain.animate().rotation(-45f);
-            FABPlayLocal.show();
-            FABPlayRemote.show();
+            binding.fabspeeddial.animate().setInterpolator(showDialsInterpolator);
+            binding.fabspeeddial.animate().rotation(-45f);
+            binding.playLocal.show();
+            binding.playRemote.show();
         } else {
-            FABMain.animate().setInterpolator(hideDialsInterpolator);
-            FABMain.animate().rotation(0f);
-            FABPlayLocal.hide();
-            FABPlayRemote.hide();
+            binding.fabspeeddial.animate().setInterpolator(hideDialsInterpolator);
+            binding.fabspeeddial.animate().rotation(0f);
+            binding.playLocal.hide();
+            binding.playRemote.hide();
         }
     }
 
@@ -246,8 +241,8 @@ public class FABSpeedDial extends LinearLayout {
             showDials(bundle.getBoolean(BUNDLE_KEY_EXPANDED));
 
             CharSequence charSequence = bundle.getCharSequence(BUNDLE_KEY_DIALCLICKED);
-            if ((charSequence != null) && (! charSequence.equals(FABPlayLocal.getLabel().getText()))) {
-                dialSelected = FABPlayRemote;
+            if ((charSequence != null) && (! charSequence.equals(binding.playLocal.getLabel().getText()))) {
+                dialSelected = binding.playRemote;
 
                 enableBusyAnimation(true);
             }
@@ -256,9 +251,8 @@ public class FABSpeedDial extends LinearLayout {
 
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.fab_speed_dial, this);
 
-        unbinder = ButterKnife.bind(view);
+        binding = FabSpeedDialBinding.inflate(inflater, this);
 
         // Makes sure shadow is not clipped
         setClipToPadding(false);
@@ -271,8 +265,8 @@ public class FABSpeedDial extends LinearLayout {
         setupListeners();
 
         setupFABIcon(context);
-        setupDial(FABPlayLocal);
-        setupDial(FABPlayRemote);
+        setupDial(binding.playLocal);
+        setupDial(binding.playRemote);
     }
 
     private void setupFABIcon(Context context) {
@@ -283,7 +277,7 @@ public class FABSpeedDial extends LinearLayout {
         context.getTheme().resolveAttribute(R.attr.iconFABDefault, tv, false);
         iconFABDefault = AppCompatResources.getDrawable(context, tv.data);
 
-        FABMain.setImageDrawable(dialsEnabled ? iconFABOpenClose : iconFABDefault);
+        binding.fabspeeddial.setImageDrawable(dialsEnabled ? iconFABOpenClose : iconFABDefault);
 
         ColorStateList colorStateList = AppCompatResources.getColorStateList(context, R.color.fabspeeddial);
         int fabColorNormal = colorStateList.getColorForState(new int[] {android.R.attr.state_enabled},
@@ -291,58 +285,49 @@ public class FABSpeedDial extends LinearLayout {
         int fabColorPressed = colorStateList.getColorForState(new int[] {android.R.attr.state_pressed},
                                                               R.attr.colorPrimary);
 
-        busyAnimation = new PulsateAnimation(FABMain, fabColorNormal, fabColorPressed);
+        busyAnimation = new PulsateAnimation(binding.fabspeeddial, fabColorNormal, fabColorPressed);
 
-        FABMain.setBackgroundTintList(colorStateList);
+        binding.fabspeeddial.setBackgroundTintList(colorStateList);
     }
 
     private void setupDial(DialActionButton dialActionButton) {
-        dialActionButton.setAnchorView(FABMain);
+        dialActionButton.setAnchorView(binding.fabspeeddial);
         dialActionButton.setShowInterpolator(showDialsInterpolator);
         dialActionButton.setHideInterpolator(hideDialsInterpolator);
     }
 
     private void setupListeners() {
-        FABMain.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dialsEnabled) {
-                    showDials(!FABPlayLocal.isShown());
-                } else {
-                    if (fabListener != null) {
-                        fabListener.onClick(v);
-                    } else if (dialListener != null) {
-                        /**
-                         * We take remote play as default and we try to fallback if dev misconfigured
-                         * the FAB in {@link org.xbmc.kore.ui.AbstractInfoFragment#setupFAB(FABSpeedDial)}.
-                         * This is also needed to support disabling local playback through settings.
-                         */
-                        dialListener.onRemotePlayClicked();
-                    }
-                }
-            }
-        });
-
-        FABPlayLocal.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialSelected = FABPlayLocal;
-                if (dialListener != null) {
-                    dialListener.onLocalPlayClicked();
-                    showDials(false);
-                }
-            }
-        });
-
-
-        FABPlayRemote.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialSelected = FABPlayRemote;
-                if (dialListener != null) {
+        binding.fabspeeddial.setOnClickListener(v -> {
+            if (dialsEnabled) {
+                showDials(!binding.playLocal.isShown());
+            } else {
+                if (fabListener != null) {
+                    fabListener.onClick(v);
+                } else if (dialListener != null) {
+                    /**
+                     * We take remote play as default and we try to fallback if dev misconfigured
+                     * the FAB in {@link org.xbmc.kore.ui.AbstractInfoFragment#setupFAB(FABSpeedDial)}.
+                     * This is also needed to support disabling local playback through settings.
+                     */
                     dialListener.onRemotePlayClicked();
-                    showDials(false);
                 }
+            }
+        });
+
+        binding.playLocal.setOnClickListener(v -> {
+            dialSelected = binding.playLocal;
+            if (dialListener != null) {
+                dialListener.onLocalPlayClicked();
+                showDials(false);
+            }
+        });
+
+
+        binding.playRemote.setOnClickListener(v -> {
+            dialSelected = binding.playRemote;
+            if (dialListener != null) {
+                dialListener.onRemotePlayClicked();
+                showDials(false);
             }
         });
     }
@@ -354,7 +339,7 @@ public class FABSpeedDial extends LinearLayout {
         if (changeImageFadeAnimation != null)
             changeImageFadeAnimation.cancel();
 
-        changeImageFadeAnimation = new ChangeImageFadeAnimation(FABMain, from, to);
+        changeImageFadeAnimation = new ChangeImageFadeAnimation(binding.fabspeeddial, from, to);
         changeImageFadeAnimation.start();
     }
 
@@ -366,9 +351,9 @@ public class FABSpeedDial extends LinearLayout {
         Drawable drawable = dialsEnabled ? iconFABOpenClose : iconFABDefault;
 
         if (animate) {
-            changeFABIcon(FABMain.getDrawable(), drawable);
+            changeFABIcon(binding.fabspeeddial.getDrawable(), drawable);
         } else {
-            FABMain.setImageDrawable(drawable);
+            binding.fabspeeddial.setImageDrawable(drawable);
         }
     }
 }

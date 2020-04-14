@@ -22,25 +22,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
-import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.MediaProgressIndicatorBinding;
 import org.xbmc.kore.utils.UIUtils;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.Unbinder;
 
 public class MediaProgressIndicator extends LinearLayout {
 
-    @BindView(R.id.mpi_seek_bar) SeekBar seekBar;
-    @BindView(R.id.mpi_duration) TextView durationTextView;
-    @BindView(R.id.mpi_progress) TextView progressTextView;
-
-    private Unbinder unbinder;
     private int speed = 0;
     private int maxProgress;
     private int progress;
@@ -48,6 +37,8 @@ public class MediaProgressIndicator extends LinearLayout {
     private int progressIncrement;
 
     private OnProgressChangeListener onProgressChangeListener;
+
+    private MediaProgressIndicatorBinding binding;
 
     public interface OnProgressChangeListener {
         void onProgressChanged(int progress);
@@ -69,18 +60,17 @@ public class MediaProgressIndicator extends LinearLayout {
     }
 
     private void initializeView(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.media_progress_indicator, this);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);;
 
-        unbinder = ButterKnife.bind(this, view);
+        binding = MediaProgressIndicatorBinding.inflate(inflater, this);
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.mpiSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     MediaProgressIndicator.this.progress = progress;
 
-                    progressTextView.setText(UIUtils.formatTime(MediaProgressIndicator.this.progress));
+                    binding.mpiProgress.setText(UIUtils.formatTime(MediaProgressIndicator.this.progress));
                 }
             }
 
@@ -105,9 +95,9 @@ public class MediaProgressIndicator extends LinearLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        seekBar.removeCallbacks(seekBarUpdater);
+        binding.mpiSeekBar.removeCallbacks(seekBarUpdater);
 
-        unbinder.unbind();
+        binding = null;
 
         onProgressChangeListener = null;
     }
@@ -133,18 +123,18 @@ public class MediaProgressIndicator extends LinearLayout {
     private Runnable seekBarUpdater = new Runnable() {
         @Override
         public void run() {
-            if (seekBar == null) // prevent NPE when Butterknife unbinds the view while there was still a runnable pending
+            if (binding.mpiSeekBar == null) // prevent NPE when Butterknife unbinds the view while there was still a runnable pending
                 return;
 
             if ((maxProgress == 0) || (progress >= maxProgress)) {
-                seekBar.removeCallbacks(this);
+                binding.mpiSeekBar.removeCallbacks(this);
                 return;
             }
 
             progress += progressIncrement;
             setProgress(progress);
 
-            seekBar.postDelayed(this, SEEK_BAR_UPDATE_INTERVAL);
+            binding.mpiSeekBar.postDelayed(this, SEEK_BAR_UPDATE_INTERVAL);
         }
     };
 
@@ -154,8 +144,8 @@ public class MediaProgressIndicator extends LinearLayout {
 
     public void setProgress(int progress) {
         this.progress = progress;
-        seekBar.setProgress(progress);
-        progressTextView.setText(UIUtils.formatTime(progress));
+        binding.mpiSeekBar.setProgress(progress);
+        binding.mpiProgress.setText(UIUtils.formatTime(progress));
     }
 
     public int getProgress() {
@@ -164,8 +154,8 @@ public class MediaProgressIndicator extends LinearLayout {
 
     public void setMaxProgress(int max) {
         maxProgress = max;
-        seekBar.setMax(max);
-        durationTextView.setText(UIUtils.formatTime(max));
+        binding.mpiSeekBar.setMax(max);
+        binding.mpiDuration.setText(UIUtils.formatTime(max));
     }
 
     /**
@@ -179,9 +169,9 @@ public class MediaProgressIndicator extends LinearLayout {
         this.speed = speed;
         this.progressIncrement = speed * (SEEK_BAR_UPDATE_INTERVAL/1000);
 
-        seekBar.removeCallbacks(seekBarUpdater);
+        binding.mpiSeekBar.removeCallbacks(seekBarUpdater);
         if (speed > 0)
-            seekBar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
+            binding.mpiSeekBar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
     }
 
     private static class SavedState extends BaseSavedState {

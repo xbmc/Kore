@@ -24,24 +24,21 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.RemoteControlPadBinding;
 import org.xbmc.kore.ui.viewgroups.SquareGridLayout;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.RepeatListener;
 import org.xbmc.kore.utils.Utils;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.Unbinder;
 
 public class ControlPad extends SquareGridLayout
         implements View.OnClickListener, View.OnLongClickListener {
@@ -49,6 +46,8 @@ public class ControlPad extends SquareGridLayout
 
     private static final int initialButtonRepeatInterval = 400; // ms
     private static final int buttonRepeatInterval = 80; // ms
+
+    private RemoteControlPadBinding binding;
 
     public interface OnPadButtonsListener {
         void leftButtonClicked();
@@ -64,17 +63,6 @@ public class ControlPad extends SquareGridLayout
     }
 
     private OnPadButtonsListener onPadButtonsListener;
-    private Unbinder unbinder;
-
-    @BindView(R.id.select) ImageView selectButton;
-    @BindView(R.id.left) ImageView leftButton;
-    @BindView(R.id.right) ImageView rightButton;
-    @BindView(R.id.up) ImageView upButton;
-    @BindView(R.id.down) ImageView downButton;
-    @BindView(R.id.back) ImageView backButton;
-    @BindView(R.id.info) ImageView infoButton;
-    @BindView(R.id.context) ImageView contextButton;
-    @BindView(R.id.osd) ImageView osdButton;
 
     public ControlPad(Context context) {
         super(context);
@@ -107,8 +95,8 @@ public class ControlPad extends SquareGridLayout
 
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.remote_control_pad, this);
-        unbinder = ButterKnife.bind(this, view);
+
+        binding = RemoteControlPadBinding.inflate(inflater, this);
 
         setBackgroundImage();
         setupListeners(context);
@@ -117,7 +105,7 @@ public class ControlPad extends SquareGridLayout
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        unbinder.unbind();
+        binding = null;
         onPadButtonsListener = null;
     }
 
@@ -178,7 +166,7 @@ public class ControlPad extends SquareGridLayout
 
         // On ICS the remote background isn't shown as the tinting isn't supported
         //int backgroundResourceId = R.drawable.remote_background_square_black_alpha;
-        int backgroundResourceId = R.drawable.remote_background_square_black;
+        int backgroundResourceId = R.drawable.ic_remote_background_square_black;
         if (Utils.isLollipopOrLater()) {
             setBackgroundTintList(ColorStateList.valueOf(remoteBackgroundColor));
             setBackgroundResource(backgroundResourceId);
@@ -215,15 +203,15 @@ public class ControlPad extends SquareGridLayout
             }
         };
 
-        leftButton.setOnTouchListener(repeatListener);
-        rightButton.setOnTouchListener(repeatListener);
-        upButton.setOnTouchListener(repeatListener);
-        downButton.setOnTouchListener(repeatListener);
-        setupButton(selectButton, feedbackTouchListener);
-        setupButton(backButton, feedbackTouchListener);
-        setupButton(infoButton, feedbackTouchListener);
-        setupButton(contextButton, feedbackTouchListener);
-        setupButton(osdButton, feedbackTouchListener);
+        binding.left.setOnTouchListener(repeatListener);
+        binding.right.setOnTouchListener(repeatListener);
+        binding.up.setOnTouchListener(repeatListener);
+        binding.down.setOnTouchListener(repeatListener);
+        setupButton(binding.select, feedbackTouchListener);
+        setupButton(binding.back, feedbackTouchListener);
+        setupButton(binding.info, feedbackTouchListener);
+        setupButton(binding.context, feedbackTouchListener);
+        setupButton(binding.osd, feedbackTouchListener);
     }
 
     private void setupButton(View button, OnTouchListener feedbackTouchListener) {

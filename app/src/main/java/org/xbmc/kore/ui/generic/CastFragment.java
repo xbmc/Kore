@@ -20,14 +20,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
@@ -73,6 +75,7 @@ public class CastFragment extends AbstractAdditionalInfoFragment implements Load
         getLoaderManager().initLoader(bundle.getInt(BUNDLE_LOADER_TYPE), null, this);
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         int hostId = HostManager.getInstance(getActivity()).getHostInfo().getId();
@@ -92,7 +95,7 @@ public class CastFragment extends AbstractAdditionalInfoFragment implements Load
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         if (! cursor.moveToFirst()) {
             return;
         }
@@ -108,14 +111,14 @@ public class CastFragment extends AbstractAdditionalInfoFragment implements Load
         }
 
         UIUtils.setupCastInfo(getActivity(), castArrayList,
-                              (GridLayout) getView().findViewById(R.id.cast_list),
+                              getView().findViewById(R.id.cast_list),
                               AllCastActivity.buildLaunchIntent(getActivity(),
                                                                 getArguments().getString(BUNDLE_TITLE),
                                                                 castArrayList));
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 

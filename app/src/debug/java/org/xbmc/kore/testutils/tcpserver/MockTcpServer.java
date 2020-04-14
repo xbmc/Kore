@@ -16,13 +16,13 @@
 
 package org.xbmc.kore.testutils.tcpserver;
 
-import com.squareup.okhttp.internal.Util;
+// TODO: set util
+//import com.squareup.okhttp.internal.Util;
 
 import org.xbmc.kore.utils.LogUtils;
 
 import java.io.IOException;
 
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -37,8 +37,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ServerSocketFactory;
-
-
 
 public class MockTcpServer {
     public static final String TAG = LogUtils.makeLogTag(MockTcpServer.class);
@@ -102,7 +100,8 @@ public class MockTcpServer {
         serverSocket.setReuseAddress(inetSocketAddress.getPort() != 0);
         serverSocket.bind(inetSocketAddress, 50);
 
-        executor = Executors.newCachedThreadPool(Util.threadFactory("MockTcpServer", false));
+        // TODO: set executor
+        //executor = Executors.newCachedThreadPool(Util.threadFactory("MockTcpServer", false));
 
         port = serverSocket.getLocalPort();
 
@@ -144,10 +143,12 @@ public class MockTcpServer {
         // Release all sockets and all threads, even if any close fails.
         for (Iterator<Socket> s = openClientSockets.iterator(); s.hasNext(); ) {
             Socket socket = s.next();
-            Util.closeQuietly(socket);
+            // TODO: set util
+            //Util.closeQuietly(socket);
             s.remove();
         }
-        Util.closeQuietly(serverSocket);
+        // TODO: set util
+        //Util.closeQuietly(serverSocket);
 
         executor.shutdown();
 
@@ -177,23 +178,19 @@ public class MockTcpServer {
     }
 
     private void serveConnection(final Socket socket) {
-        executor.execute(new Runnable() {
+        executor.execute(() -> {
+            try {
+                LogUtils.LOGD(TAG, "serveConnection: handling client " + socket.getInetAddress()
+                                   + ":" + socket.getLocalPort());
 
-            @Override
-            public void run() {
-                try {
-                    LogUtils.LOGD(TAG, "serveConnection: handling client " + socket.getInetAddress()
-                                       + ":" + socket.getLocalPort());
+                connectionHandler.processInput(socket);
+                socket.close();
 
-                    connectionHandler.processInput(socket);
-                    socket.close();
-
-                    synchronized (openClientSockets) {
-                        openClientSockets.remove(socket);
-                    }
-                } catch (IOException e) {
-                    LogUtils.LOGW(TAG, "processing input from " + socket.getInetAddress() + " failed: " + e);
+                synchronized (openClientSockets) {
+                    openClientSockets.remove(socket);
                 }
+            } catch (IOException e) {
+                LogUtils.LOGW(TAG, "processing input from " + socket.getInetAddress() + " failed: " + e);
             }
         });
 

@@ -37,13 +37,12 @@ public class HttpApp extends NanoHTTPD {
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
     }
 
-    private final int TOKEN_LENGTH = 12;
-
     private String generateToken() {
         String token = "";
 
         SecureRandom sr = new SecureRandom();
 
+        int TOKEN_LENGTH = 12;
         for (int i = 0; i < TOKEN_LENGTH; i++) {
             int n = sr.nextInt(26*2 + 10);
             if (n < 26) {

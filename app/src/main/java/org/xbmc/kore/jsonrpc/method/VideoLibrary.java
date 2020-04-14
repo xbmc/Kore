@@ -127,9 +127,9 @@ public class VideoLibrary {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ApiList<>(new ArrayList<VideoType.DetailsMovie>(0), limits);
+                return new ApiList<>(new ArrayList<>(0), limits);
             }
-            ArrayList<VideoType.DetailsMovie> result = new ArrayList<VideoType.DetailsMovie>(items.size());
+            ArrayList<VideoType.DetailsMovie> result = new ArrayList<>(items.size());
 
             for (JsonNode item : items) {
                 result.add(new VideoType.DetailsMovie(item));
@@ -245,7 +245,7 @@ public class VideoLibrary {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ApiList<>(new ArrayList<VideoType.DetailsTVShow>(0), limits);
+                return new ApiList<>(new ArrayList<>(0), limits);
             }
             ArrayList<VideoType.DetailsTVShow> result = new ArrayList<>(items.size());
 
@@ -351,9 +351,9 @@ public class VideoLibrary {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<VideoType.DetailsSeason>(0);
+                return new ArrayList<>(0);
             }
-            ArrayList<VideoType.DetailsSeason> result = new ArrayList<VideoType.DetailsSeason>(items
+            ArrayList<VideoType.DetailsSeason> result = new ArrayList<>(items
                     .size());
 
             for (JsonNode item : items) {
@@ -412,9 +412,9 @@ public class VideoLibrary {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<VideoType.DetailsEpisode>(0);
+                return new ArrayList<>(0);
             }
-            ArrayList<VideoType.DetailsEpisode> result = new ArrayList<VideoType.DetailsEpisode>(items
+            ArrayList<VideoType.DetailsEpisode> result = new ArrayList<>(items
                     .size());
 
             for (JsonNode item : items) {
@@ -456,10 +456,10 @@ public class VideoLibrary {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<VideoType.DetailsMusicVideo>(0);
+                return new ArrayList<>(0);
             }
             ArrayList<VideoType.DetailsMusicVideo> result =
-                    new ArrayList<VideoType.DetailsMusicVideo>(items.size());
+                    new ArrayList<>(items.size());
 
             for (JsonNode item : items) {
                 result.add(new VideoType.DetailsMusicVideo(item));

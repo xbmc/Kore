@@ -19,19 +19,17 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.FragmentRemoteBinding;
 import org.xbmc.kore.eventclient.ButtonCodes;
 import org.xbmc.kore.eventclient.EventServerConnection;
 import org.xbmc.kore.eventclient.Packet;
@@ -55,12 +53,6 @@ import org.xbmc.kore.utils.Utils;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.Optional;
-import butterknife.Unbinder;
 
 /**
  * Remote view
@@ -121,46 +113,15 @@ public class RemoteFragment extends Fragment
     private final ApiMethod<String> contextButtonAction = new Input.ExecuteAction(Input.ExecuteAction.CONTEXTMENU);
     private final ApiMethod<String> osdButtonAction = new Input.ExecuteAction(Input.ExecuteAction.OSD);
 
-    @BindView(R.id.info_panel) RelativeLayout infoPanel;
-    @BindView(R.id.media_panel) RelativeLayout mediaPanel;
-    @BindView(R.id.remote) ControlPad controlPad;
-
-    @BindView(R.id.info_title) TextView infoTitle;
-    @BindView(R.id.info_message) TextView infoMessage;
-
-    @BindView(R.id.button_bar) LinearLayout buttonBarPanel;
-
-    /**
-     * Buttons
-     */
-    @Nullable @BindView(R.id.home) ImageButton homeButton;
-    @Nullable @BindView(R.id.movies) ImageButton moviesButton;
-    @Nullable @BindView(R.id.tv_shows) ImageButton tvShowsButton;
-    @Nullable @BindView(R.id.music) ImageButton musicButton;
-    @Nullable @BindView(R.id.pvr) ImageButton pvrButton;
-    @Nullable @BindView(R.id.pictures) ImageButton picturesButton;
-    @Nullable @BindView(R.id.videos) ImageButton videosButton;
-    //@Nullable @BindView(R.id.favourites) ImageButton favouritesButton;
-    @Nullable @BindView(R.id.addons) ImageButton addonsButton;
-    @Nullable @BindView(R.id.weather) ImageButton weatherButton;
-    @Nullable @BindView(R.id.system) ImageButton systemButton;
-
-    @BindView(R.id.art) ImageView thumbnail;
-    @BindView(R.id.title) TextView nowPlayingTitle;
-    @BindView(R.id.details) TextView nowPlayingDetails;
-
-    @BindView(R.id.play) ImageButton playButton;
-    @BindView(R.id.stop) ImageButton stopButton;
-    @BindView(R.id.rewind) ImageButton rewindButton;
-    @BindView(R.id.fast_forward) ImageButton fastForwardButton;
-
     // EventServer connection
     private EventServerConnection eventServerConnection = null;
 
     // Icons for fastForward/Rewind or skipPrevious/skipNext
     int fastForwardIcon, rewindIcon, skipPreviousIcon, skipNextIcon;
 
-    private Unbinder unbinder;
+    //private Unbinder unbinder;
+
+    private FragmentRemoteBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -168,16 +129,14 @@ public class RemoteFragment extends Fragment
         hostManager = HostManager.getInstance(getActivity());
         hostConnectionObserver = hostManager.getHostConnectionObserver();
 
-
         eventServerConnection = createEventServerConnection();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_remote, container, false);
-        unbinder = ButterKnife.bind(this, root);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentRemoteBinding.inflate(inflater, container, false);
 
-        controlPad.setOnPadButtonsListener(this);
+        binding.remote.setOnPadButtonsListener(this);
 
         HostInfo hostInfo = hostManager.getHostInfo();
 
@@ -198,21 +157,33 @@ public class RemoteFragment extends Fragment
                 .getStringSet(Settings.getRemoteBarItemsPrefKey(hostInfo.getId()),
                         new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.default_values_remote_bar_items))));
         ImageButton[] buttons = {
-                homeButton, moviesButton, tvShowsButton, musicButton, pvrButton, picturesButton,
-                videosButton, addonsButton, weatherButton, systemButton
+                binding.home, binding.movies, binding.tvShows, binding.music, binding.pvr, binding.pictures,
+                binding.pictures, binding.addons, binding.weather, binding.system
         };
         for (int i = 0; i < buttons.length; i++) {
             if (buttons[i] != null)
                 buttons[i].setVisibility(shownItems.contains(String.valueOf(i)) ? View.VISIBLE : View.GONE);
         }
 
-        nowPlayingTitle.setClickable(true);
-        nowPlayingTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { v.setSelected(!v.isSelected()); }
-        });
+        binding.title.setClickable(true);
+        binding.title.setOnClickListener(v -> v.setSelected(!v.isSelected()));
 
-        return root;
+        binding.home.setOnClickListener(this::onHomeClicked);
+        binding.movies.setOnClickListener(this::onMoviedClicked);
+        binding.tvShows.setOnClickListener(this::onTvShowsClicked);
+        binding.music.setOnClickListener(this::onMusicClicked);
+        binding.pvr.setOnClickListener(this::onRadioClicked);
+        binding.pictures.setOnClickListener(this::onPicturesClicked);
+        binding.videos.setOnClickListener(this::onVideosClicked);
+        binding.addons.setOnClickListener(this::onAddonsClicked);
+        binding.weather.setOnClickListener(this::onWeatherClicked);
+        binding.system.setOnClickListener(this::onSystemClicked);
+        binding.fastForward.setOnClickListener(this::onFastForwardClicked);
+        binding.rewind.setOnClickListener(this::onRewindClicked);
+        binding.play.setOnClickListener(this::onPlayClicked);
+        binding.stop.setOnClickListener(this::onStopClicked);
+
+        return binding.getRoot();
     }
 
     @Override
@@ -242,7 +213,7 @@ public class RemoteFragment extends Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
     /**
@@ -251,19 +222,16 @@ public class RemoteFragment extends Fragment
      * @return EventServerConnection or null if usage is disabled
      */
     private EventServerConnection createEventServerConnection() {
-        if (! hostManager.getHostInfo().getUseEventServer()) {
+        if (!hostManager.getHostInfo().getUseEventServer()) {
             return null;
         }
 
         return new EventServerConnection(
                 hostManager.getHostInfo(),
-                new EventServerConnection.EventServerConnectionCallback() {
-                    @Override
-                    public void OnConnectResult(boolean success) {
-                        if (!success) {
-                            LogUtils.LOGD(TAG, "Couldn\'t setup EventServer, disabling it");
-                            eventServerConnection = null;
-                        }
+                success -> {
+                    if (!success) {
+                        LogUtils.LOGD(TAG, "Couldn't setup EventServer, disabling it");
+                        eventServerConnection = null;
                     }
                 }, callbackHandler);
     }
@@ -276,50 +244,36 @@ public class RemoteFragment extends Fragment
     /**
      * Callbacks for bottom button bar
      */
-    @Optional
-    @OnClick(R.id.home)
     public void onHomeClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.HOME);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    @Optional
-    @OnClick(R.id.movies)
     public void onMoviedClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_MOVIE_TITLES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    @Optional
-    @OnClick(R.id.tv_shows)
     public void onTvShowsClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_TV_SHOWS_TITLES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    @Optional
-    @OnClick(R.id.music)
     public void onMusicClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.MUSIC, GUI.ActivateWindow.PARAM_ROOT);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    @Optional
-    @OnClick(R.id.pvr)
     public void onRadioClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.TVCHANNELS);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    @Optional
-    @OnClick(R.id.pictures)
     public void onPicturesClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.PICTURES);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    @Optional
-    @OnClick(R.id.videos)
     public void onVideosClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.VIDEOS, GUI.ActivateWindow.PARAM_ROOT);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
@@ -332,22 +286,16 @@ public class RemoteFragment extends Fragment
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }*/
 
-    @Optional
-    @OnClick(R.id.addons)
     public void onAddonsClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.ADDONBROWSER);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    @Optional
-    @OnClick(R.id.weather)
     public void onWeatherClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.WEATHER);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }
 
-    @Optional
-    @OnClick(R.id.system)
     public void onSystemClicked(View v) {
         GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.SETTINGS);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
@@ -356,7 +304,6 @@ public class RemoteFragment extends Fragment
     /**
      * Calllbacks for media control buttons
      */
-    @OnClick(R.id.fast_forward)
     public void onFastForwardClicked(View v) {
         if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
             Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
@@ -367,7 +314,6 @@ public class RemoteFragment extends Fragment
         }
     }
 
-    @OnClick(R.id.rewind)
     public void onRewindClicked(View v) {
         if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
             Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
@@ -378,13 +324,11 @@ public class RemoteFragment extends Fragment
         }
     }
 
-    @OnClick(R.id.play)
     public void onPlayClicked(View v) {
         Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
     }
 
-    @OnClick(R.id.stop)
     public void onStopClicked(View v) {
         Player.Stop action = new Player.Stop(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
@@ -397,7 +341,7 @@ public class RemoteFragment extends Fragment
         @Override
         public void onSuccess(Integer result) {
             if (!isAdded()) return;
-            UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result == 1);
+            UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, result == 1);
         }
 
         @Override
@@ -419,7 +363,7 @@ public class RemoteFragment extends Fragment
         currentActivePlayerId = getActivePlayerResult.playerid;
         currentNowPlayingItemType = getItemResult.type;
         // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed == 1);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, getPropertiesResult.speed == 1);
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
@@ -429,15 +373,15 @@ public class RemoteFragment extends Fragment
         currentActivePlayerId = getActivePlayerResult.playerid;
         currentNowPlayingItemType = getItemResult.type;
         // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed == 1);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, getPropertiesResult.speed == 1);
     }
 
     public void playerOnStop() {
         HostInfo hostInfo = hostManager.getHostInfo();
 
         switchToPanel(R.id.info_panel, true);
-        infoTitle.setText(R.string.nothing_playing);
-        infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
+        binding.infoTitle.setText(R.string.nothing_playing);
+        binding.infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
     }
 
     public void playerOnConnectionError(int errorCode, String description) {
@@ -445,12 +389,12 @@ public class RemoteFragment extends Fragment
 
         switchToPanel(R.id.info_panel, true);
         if (hostInfo != null) {
-            infoTitle.setText(R.string.connecting);
+            binding.infoTitle.setText(R.string.connecting);
             // TODO: check error code
-            infoMessage.setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
+            binding.infoMessage.setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
         } else {
-            infoTitle.setText(R.string.no_xbmc_configured);
-            infoMessage.setText(null);
+            binding.infoTitle.setText(R.string.no_xbmc_configured);
+            binding.infoMessage.setText(null);
         }
     }
 
@@ -459,11 +403,11 @@ public class RemoteFragment extends Fragment
         switchToPanel(R.id.info_panel, true);
         HostInfo hostInfo = hostManager.getHostInfo();
         if (hostInfo != null) {
-            infoTitle.setText(R.string.connecting);
+            binding.infoTitle.setText(R.string.connecting);
         } else {
-            infoTitle.setText(R.string.no_xbmc_configured);
+            binding.infoTitle.setText(R.string.no_xbmc_configured);
         }
-        infoMessage.setText(null);
+        binding.infoMessage.setText(null);
     }
 
     public void systemOnQuit() {
@@ -540,11 +484,11 @@ public class RemoteFragment extends Fragment
                 break;
         }
 
-        nowPlayingTitle.setText(UIUtils.applyMarkup(getContext(), title));
-        nowPlayingDetails.setText(underTitle);
+        binding.title.setText(UIUtils.applyMarkup(getContext(), title));
+        binding.title.setText(underTitle);
 
-        fastForwardButton.setImageResource(currentFastForwardIcon);
-        rewindButton.setImageResource(currentRewindIcon);
+        binding.fastForward.setImageResource(currentFastForwardIcon);
+        binding.rewind.setImageResource(currentRewindIcon);
 //        // If not video, change aspect ration of poster to a square
 //        boolean isVideo = (nowPlaying.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
 //                (nowPlaying.type.equals(ListType.ItemsAll.TYPE_EPISODE));
@@ -556,7 +500,7 @@ public class RemoteFragment extends Fragment
 
         UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                 thumbnailUrl, title,
-                thumbnail, thumbnail.getWidth(), thumbnail.getHeight());
+                binding.art, binding.art.getWidth(), binding.art.getHeight());
     }
 
     /**
@@ -566,21 +510,21 @@ public class RemoteFragment extends Fragment
     private void switchToPanel(int panelResId, boolean showRemote) {
         switch (panelResId) {
             case R.id.info_panel:
-                mediaPanel.setVisibility(View.GONE);
-                infoPanel.setVisibility(View.VISIBLE);
+                binding.mediaPanel.setVisibility(View.GONE);
+                binding.infoPanel.setVisibility(View.VISIBLE);
                 break;
             case R.id.media_panel:
-                infoPanel.setVisibility(View.GONE);
-                mediaPanel.setVisibility(View.VISIBLE);
+                binding.infoPanel.setVisibility(View.GONE);
+                binding.mediaPanel.setVisibility(View.VISIBLE);
                 break;
         }
 
         if (showRemote) {
-            controlPad.setVisibility(View.VISIBLE);
-            buttonBarPanel.setVisibility(View.VISIBLE);
+            binding.remote.setVisibility(View.VISIBLE);
+            binding.buttonBar.setVisibility(View.VISIBLE);
         } else {
-            controlPad.setVisibility(View.GONE);
-            buttonBarPanel.setVisibility(View.GONE);
+            binding.remote.setVisibility(View.GONE);
+            binding.buttonBar.setVisibility(View.GONE);
         }
     }
 

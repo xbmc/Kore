@@ -29,22 +29,22 @@ public class AudioType {
      * Enums for Video.Fields.Artists
      */
     public interface FieldsArtists {
-        public final String INSTRUMENT = "instrument";
-        public final String STYLE = "style";
-        public final String MOOD = "mood";
-        public final String BORN = "born";
-        public final String FORMED = "formed";
-        public final String DESCRIPTION = "description";
-        public final String GENRE = "genre";
-        public final String DIED = "died";
-        public final String DISBANDED = "disbanded";
-        public final String YEARSACTIVE = "yearsactive";
-        public final String MUSICBRAINZARTISTID = "musicbrainzartistid";
-        public final String FANART = "fanart";
-        public final String THUMBNAIL = "thumbnail";
-        public final String COMPILATIONARTIST = "compilationartist";
+        String INSTRUMENT = "instrument";
+        String STYLE = "style";
+        String MOOD = "mood";
+        String BORN = "born";
+        String FORMED = "formed";
+        String DESCRIPTION = "description";
+        String GENRE = "genre";
+        String DIED = "died";
+        String DISBANDED = "disbanded";
+        String YEARSACTIVE = "yearsactive";
+        String MUSICBRAINZARTISTID = "musicbrainzartistid";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String COMPILATIONARTIST = "compilationartist";
 
-        public final static String[] allValues = new String[]{
+        String[] allValues = new String[]{
                 INSTRUMENT, STYLE, MOOD, BORN, FORMED, DESCRIPTION, GENRE, DIED, DISBANDED,
                 YEARSACTIVE, MUSICBRAINZARTISTID, FANART, THUMBNAIL, COMPILATIONARTIST
         };
@@ -166,27 +166,27 @@ public class AudioType {
      * Enums for Audio.Fields.Album
      */
     public interface FieldsAlbum {
-        public final String TITLE = "title";
-        public final String DESCRIPTION = "description";
-        public final String ARTIST = "artist";
-        public final String GENRE = "genre";
-        public final String THEME = "theme";
-        public final String MOOD = "mood";
-        public final String STYLE = "style";
-        public final String TYPE = "type";
-        public final String ALBUMLABEL = "albumlabel";
-        public final String RATING = "rating";
-        public final String YEAR = "year";
-        public final String MUSICBRAINZALBUMID = "musicbrainzalbumid";
-        public final String MUSICBRAINZALBUMARTISTID = "musicbrainzalbumartistid";
-        public final String FANART = "fanart";
-        public final String THUMBNAIL = "thumbnail";
-        public final String PLAYCOUNT = "playcount";
-        public final String GENREID = "genreid";
-        public final String ARTISTID = "artistid";
-        public final String DISPLAYARTIST = "displayartist";
+        String TITLE = "title";
+        String DESCRIPTION = "description";
+        String ARTIST = "artist";
+        String GENRE = "genre";
+        String THEME = "theme";
+        String MOOD = "mood";
+        String STYLE = "style";
+        String TYPE = "type";
+        String ALBUMLABEL = "albumlabel";
+        String RATING = "rating";
+        String YEAR = "year";
+        String MUSICBRAINZALBUMID = "musicbrainzalbumid";
+        String MUSICBRAINZALBUMARTISTID = "musicbrainzalbumartistid";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String PLAYCOUNT = "playcount";
+        String GENREID = "genreid";
+        String ARTISTID = "artistid";
+        String DISPLAYARTIST = "displayartist";
 
-        public final static String[] allValues = new String[]{
+        String[] allValues = new String[]{
                 TITLE, DESCRIPTION, ARTIST, GENRE, THEME, MOOD, STYLE, TYPE, ALBUMLABEL, RATING,
                 YEAR, MUSICBRAINZALBUMID, MUSICBRAINZALBUMARTISTID, FANART, THUMBNAIL,
                 PLAYCOUNT, GENREID, ARTISTID, DISPLAYARTIST
@@ -236,34 +236,34 @@ public class AudioType {
      * Enums for Audio.Fields.Song
      */
     public interface FieldsSong {
-        public final String TITLE = "title";
-        public final String ARTIST = "artist";
-        public final String ALBUMARTIST = "albumartist";
-        public final String GENRE = "genre";
-        public final String YEAR = "year";
-        public final String RATING = "rating";
-        public final String ALBUM = "album";
-        public final String TRACK = "track";
-        public final String DURATION = "duration";
-        public final String COMMENT = "comment";
-        public final String LYRICS = "lyrics";
-        public final String MUSICBRAINZTRACKID = "musicbrainztrackid";
-        public final String MUSICBRAINZARTISTID = "musicbrainzartistid";
-        public final String MUSICBRAINZALBUMID = "musicbrainzalbumid";
-        public final String MUSICBRAINZALBUMARTISTID = "musicbrainzalbumartistid";
-        public final String PLAYCOUNT = "playcount";
-        public final String FANART = "fanart";
-        public final String THUMBNAIL = "thumbnail";
-        public final String FILE = "file";
-        public final String ALBUMID = "albumid";
-        public final String LASTPLAYED = "lastplayed";
-        public final String DISC = "disc";
-        public final String GENREID = "genreid";
-        public final String ARTISTID = "artistid";
-        public final String DISPLAYARTIST = "displayartist";
-        public final String ALBUMARTISTID = "albumartistid";
+        String TITLE = "title";
+        String ARTIST = "artist";
+        String ALBUMARTIST = "albumartist";
+        String GENRE = "genre";
+        String YEAR = "year";
+        String RATING = "rating";
+        String ALBUM = "album";
+        String TRACK = "track";
+        String DURATION = "duration";
+        String COMMENT = "comment";
+        String LYRICS = "lyrics";
+        String MUSICBRAINZTRACKID = "musicbrainztrackid";
+        String MUSICBRAINZARTISTID = "musicbrainzartistid";
+        String MUSICBRAINZALBUMID = "musicbrainzalbumid";
+        String MUSICBRAINZALBUMARTISTID = "musicbrainzalbumartistid";
+        String PLAYCOUNT = "playcount";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String FILE = "file";
+        String ALBUMID = "albumid";
+        String LASTPLAYED = "lastplayed";
+        String DISC = "disc";
+        String GENREID = "genreid";
+        String ARTISTID = "artistid";
+        String DISPLAYARTIST = "displayartist";
+        String ALBUMARTISTID = "albumartistid";
 
-        public final static String[] allValues = new String[]{
+        String[] allValues = new String[]{
                 TITLE, ARTIST, ALBUMARTIST, GENRE, YEAR, RATING, ALBUM, TRACK, DURATION,
                 COMMENT, LYRICS, MUSICBRAINZTRACKID, MUSICBRAINZARTISTID, MUSICBRAINZALBUMID,
                 MUSICBRAINZALBUMARTISTID, PLAYCOUNT, FANART, THUMBNAIL, FILE, ALBUMID,

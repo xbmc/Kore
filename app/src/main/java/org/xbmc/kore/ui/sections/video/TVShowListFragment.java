@@ -24,7 +24,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,6 +34,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -87,7 +89,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         Uri uri = MediaContract.TVShows.buildTVShowsListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         StringBuilder selection = new StringBuilder();
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection.append(MediaContract.TVShowsColumns.TITLE + " LIKE ?");
@@ -132,7 +134,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnTVShowSelectedListener) ctx;
@@ -149,7 +151,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         if (!isAdded()) {
             // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
             super.onCreateOptionsMenu(menu, inflater);
@@ -340,18 +342,18 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(getContext())
                                             .inflate(R.layout.grid_item_tvshow, parent, false);
 
             // Setup View holder pattern
-            ViewHolder viewHolder = new ViewHolder(view, getContext(),
+
+            return new ViewHolder(view, getContext(),
                                                    themeAccentColor, inProgressColor, finishedColor,
                                                    hostManager,
                                                    artWidth, artHeight);
-
-            return viewHolder;
         }
 
         protected int getSectionColumnIdx() {

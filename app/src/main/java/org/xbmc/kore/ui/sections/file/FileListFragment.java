@@ -18,6 +18,8 @@ package org.xbmc.kore.ui.sections.file;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.method.Files;
 import org.xbmc.kore.jsonrpc.type.ListType;
@@ -54,7 +56,7 @@ public class FileListFragment extends AbstractTabsFragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             FileActivity listenerActivity = (FileActivity) activity;

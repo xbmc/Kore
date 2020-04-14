@@ -26,10 +26,10 @@ public class LibraryType {
      * Enums for Library.Fields.Genre
      */
     public interface FieldsGenre {
-        public final String TITLE = "title";
-        public final String THUMBNAIL = "thumbnail";
+        String TITLE = "title";
+        String THUMBNAIL = "thumbnail";
 
-        public final static String[] allValues = new String[]{
+        String[] allValues = new String[]{
                 TITLE, THUMBNAIL
         };
     }

@@ -91,16 +91,16 @@
         <item name="iconFABDialsOpenClose">@drawable/ic_plus_white_24dp</item>
         <item name="iconFABDefault">@drawable/ic_play_arrow_white_24dp</item>
         <item name="iconRemoteDevice">@drawable/ic_cellphone_android_white_24dp</item>
-        <item name="iconInfo">@drawable/remote_info_white</item>
-        <item name="iconBack">@drawable/remote_back_white</item>
-        <item name="iconMenu">@drawable/remote_menu_white</item>
-        <item name="iconContext">@drawable/remote_context_white</item>
+        <item name="iconInfo">@drawable/ic_remote_info_white</item>
+        <item name="iconBack">@drawable/ic_remote_back_white</item>
+        <item name="iconMenu">@drawable/ic_remote_menu_white</item>
+        <item name="iconContext">@drawable/ic_remote_context_white</item>
 
-        <item name="iconLeft">@drawable/remote_left_white</item>
-        <item name="iconRight">@drawable/remote_right_white</item>
-        <item name="iconUp">@drawable/remote_up_white</item>
-        <item name="iconDown">@drawable/remote_down_white</item>
-        <item name="iconSelect">@drawable/remote_select_white</item>
+        <item name="iconLeft">@drawable/ic_remote_left_white</item>
+        <item name="iconRight">@drawable/ic_remote_right_white</item>
+        <item name="iconUp">@drawable/ic_remote_up_white</item>
+        <item name="iconDown">@drawable/ic_remote_down_white</item>
+        <item name="iconSelect">@drawable/ic_remote_select_white</item>
 
 		<item name="iconHosts">@drawable/ic_devices_white_24dp</item>
         <item name="iconRemote">@drawable/ic_games_white_24dp</item>
@@ -241,16 +241,16 @@
         <item name="iconFABDialsOpenClose">@drawable/ic_plus_white_24dp</item>
         <item name="iconFABDefault">@drawable/ic_play_arrow_white_24dp</item>
         <item name="iconRemoteDevice">@drawable/ic_cellphone_android_white_24dp</item>
-        <item name="iconInfo">@drawable/remote_info_white</item>
-        <item name="iconBack">@drawable/remote_back_white</item>
-        <item name="iconMenu">@drawable/remote_menu_white</item>
-        <item name="iconContext">@drawable/remote_context_white</item>
+        <item name="iconInfo">@drawable/ic_remote_info_white</item>
+        <item name="iconBack">@drawable/ic_remote_back_white</item>
+        <item name="iconMenu">@drawable/ic_remote_menu_white</item>
+        <item name="iconContext">@drawable/ic_remote_context_white</item>
 
-        <item name="iconLeft">@drawable/remote_left_white</item>
-        <item name="iconRight">@drawable/remote_right_white</item>
-        <item name="iconUp">@drawable/remote_up_white</item>
-        <item name="iconDown">@drawable/remote_down_white</item>
-        <item name="iconSelect">@drawable/remote_select_white</item>
+        <item name="iconLeft">@drawable/ic_remote_left_white</item>
+        <item name="iconRight">@drawable/ic_remote_right_white</item>
+        <item name="iconUp">@drawable/ic_remote_up_white</item>
+        <item name="iconDown">@drawable/ic_remote_down_white</item>
+        <item name="iconSelect">@drawable/ic_remote_select_white</item>
         <!--<item name="iconInfo">@drawable/remote_info_black</item>-->
         <!--<item name="iconBack">@drawable/remote_back_black</item>-->
         <!--<item name="iconMenu">@drawable/remote_menu_black</item>-->

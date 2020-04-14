@@ -24,13 +24,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.TwoStatePreference;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.TaskStackBuilder;
+import androidx.core.content.ContextCompat;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.TwoStatePreference;
+
 import android.widget.Toast;
 
 import org.xbmc.kore.BuildConfig;
@@ -116,12 +118,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
         ListPreference languagePref = (ListPreference) findPreference(Settings.KEY_PREF_LANGUAGE);
         Locale currentLocale = getCurrentLocale();
         languagePref.setSummary(currentLocale.getDisplayLanguage(currentLocale));
-        languagePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                setupLanguagePreference((ListPreference) preference);
-                return true;
-            }
+        languagePref.setOnPreferenceClickListener(preference -> {
+            setupLanguagePreference((ListPreference) preference);
+            return true;
         });
     }
 
@@ -189,7 +188,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case Utils.PERMISSION_REQUEST_READ_PHONE_STATE:
                 // If request is cancelled, the result arrays are empty.
@@ -226,13 +225,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
         }
         Preference aboutPreference = findPreference(Settings.KEY_PREF_ABOUT);
         aboutPreference.setSummary(nameAndVersion);
-        aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                AboutDialogFragment aboutDialog = new AboutDialogFragment();
-                aboutDialog.show(getFragmentManager(), null);
-                return true;
-            }
+        aboutPreference.setOnPreferenceClickListener(preference -> {
+            AboutDialogFragment aboutDialog = new AboutDialogFragment();
+            aboutDialog.show(getFragmentManager(), null);
+            return true;
         });
     }
 
@@ -240,12 +236,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Locale[] locales = getLocales();
 
         final Locale currentLocale = getCurrentLocale();
-        Arrays.sort(locales, new Comparator<Locale>() {
-            @Override
-            public int compare(Locale o1, Locale o2) {
-                return o1.getDisplayName().compareToIgnoreCase(o2.getDisplayName());
-            }
-        });
+        Arrays.sort(locales, (o1, o2) -> o1.getDisplayName().compareToIgnoreCase(o2.getDisplayName()));
 
         String[] displayNames = new String[locales.length];
         String[] entryValues = new String[locales.length];
@@ -258,13 +249,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
         languagePref.setValue(getLanguageCountryCode(currentLocale));
         languagePref.setEntries(displayNames);
         languagePref.setEntryValues(entryValues);
-        languagePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                languagePref.setValue(o.toString());
-                updatePreferredLanguage(o.toString());
-                return true;
-            }
+        languagePref.setOnPreferenceChangeListener((preference, o) -> {
+            languagePref.setValue(o.toString());
+            updatePreferredLanguage(o.toString());
+            return true;
         });
     }
 

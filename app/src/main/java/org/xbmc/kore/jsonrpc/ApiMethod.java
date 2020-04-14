@@ -15,8 +15,8 @@
  */
 package org.xbmc.kore.jsonrpc;
 
-
 import android.os.Handler;
+import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,8 +25,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xbmc.kore.jsonrpc.type.ApiParameter;
 import org.xbmc.kore.utils.LogUtils;
-
-import java.io.IOException;
 
 /**
  * Abstract class base of all the JSON RPC API calls
@@ -161,9 +159,9 @@ public abstract class ApiMethod<T> {
     protected void addParameterToRequest(String parameter, String[] values) {
         if (values != null) {
             final ArrayNode arrayNode = objectMapper.createArrayNode();
-            for (int i = 0; i < values.length; i++) {
-                arrayNode.add(values[i]);
-            }
+			for (String value : values) {
+				arrayNode.add(value);
+			}
             getParametersNode().put(parameter, arrayNode);
         }
     }
@@ -256,10 +254,9 @@ public abstract class ApiMethod<T> {
 	 */
 	public T resultFromJson(String jsonResult) throws ApiException{
 		try {
-			return resultFromJson((ObjectNode)objectMapper.readTree(jsonResult));
+			Log.d("PIKETY", objectMapper.readTree(jsonResult).toString());
+			return resultFromJson((ObjectNode) objectMapper.readTree(jsonResult));
 		} catch (JsonProcessingException e) {
-			throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
-		} catch (IOException e) {
 			throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
 		}
 	}

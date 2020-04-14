@@ -95,12 +95,7 @@ public class LibrarySyncService extends Service {
 
         SyncOrchestrator syncOrchestrator = new SyncOrchestrator(this, startId, hostInfo,
                 callbackHandler, getContentResolver());
-        syncOrchestrator.setListener(new SyncOrchestrator.OnSyncListener() {
-            @Override
-            public void onSyncFinished(SyncOrchestrator syncOrchestrator) {
-                stopSelf(startId);
-            }
-        });
+        syncOrchestrator.setListener(syncOrchestrator1 -> stopSelf(startId));
 
         syncOrchestrators.add(syncOrchestrator);
 

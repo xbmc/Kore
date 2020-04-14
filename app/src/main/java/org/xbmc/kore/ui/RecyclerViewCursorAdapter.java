@@ -17,8 +17,10 @@
 package org.xbmc.kore.ui;
 
 import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -36,7 +38,7 @@ abstract public class RecyclerViewCursorAdapter
             SECTION_TYPE_DATE_STRING = 2;
 
     @Override
-    public void onBindViewHolder(CursorViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CursorViewHolder holder, int position) {
         if (!dataValid) {
             throw new IllegalStateException("Cannot bind viewholder when cursor is in invalid state.");
         }
@@ -68,6 +70,7 @@ abstract public class RecyclerViewCursorAdapter
         return cursor.getLong(rowIDColumn);
     }
 
+    @NonNull
     public String getSectionName(int position) {
         if (!dataValid) {
             throw new IllegalStateException("Cursor is in an invalid state.");

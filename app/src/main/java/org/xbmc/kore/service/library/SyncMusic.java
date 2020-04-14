@@ -158,7 +158,7 @@ public class SyncMusic extends SyncItem {
     }
 
 
-    private final static String getGenresProperties[] = {
+    private final static String[] getGenresProperties = {
             LibraryType.FieldsGenre.TITLE, LibraryType.FieldsGenre.THUMBNAIL
     };
     /**
@@ -190,7 +190,7 @@ public class SyncMusic extends SyncItem {
         }, callbackHandler);
     }
 
-    private static final String getAlbumsProperties[] = {
+    private static final String[] getAlbumsProperties = {
             AudioType.FieldsAlbum.TITLE, AudioType.FieldsAlbum.DESCRIPTION,
             AudioType.FieldsAlbum.ARTIST, AudioType.FieldsAlbum.GENRE,
             //AudioType.FieldsAlbum.THEME, AudioType.FieldsAlbum.MOOD,
@@ -259,7 +259,7 @@ public class SyncMusic extends SyncItem {
         }, callbackHandler);
     }
 
-    private static final String getSongsProperties[] = {
+    private static final String[] getSongsProperties = {
             AudioType.FieldsSong.TITLE,
             //AudioType.FieldsSong.ARTIST, AudioType.FieldsSong.ALBUMARTIST, AudioType.FieldsSong.GENRE,
             //AudioType.FieldsSong.YEAR, AudioType.FieldsSong.RATING,
@@ -330,7 +330,7 @@ public class SyncMusic extends SyncItem {
     }
 
     public void insertArtists(int hostId, List<AudioType.DetailsArtist> items, ContentResolver contentResolver) {
-        ContentValues artistValuesBatch[] = new ContentValues[items.size()];
+        ContentValues[] artistValuesBatch = new ContentValues[items.size()];
         for (int i = 0; i < items.size(); i++) {
             AudioType.DetailsArtist artist = items.get(i);
             artistValuesBatch[i] = SyncUtils.contentValuesFromArtist(hostId, artist);
@@ -339,7 +339,7 @@ public class SyncMusic extends SyncItem {
     }
 
     public void insertGenresItems(int hostId, List<LibraryType.DetailsGenre> items, ContentResolver contentResolver) {
-        ContentValues genresValuesBatch[] = new ContentValues[items.size()];
+        ContentValues[] genresValuesBatch = new ContentValues[items.size()];
 
         for (int i = 0; i < items.size(); i++) {
             LibraryType.DetailsGenre genre = items.get(i);
@@ -351,7 +351,7 @@ public class SyncMusic extends SyncItem {
     }
 
     public void insertAlbumsItems(int hostId, List<AudioType.DetailsAlbum> items, ContentResolver contentResolver) {
-        ContentValues albumValuesBatch[] = new ContentValues[items.size()];
+        ContentValues[] albumValuesBatch = new ContentValues[items.size()];
         int artistsCount = 0;
         for (int i = 0; i < items.size(); i++) {
             AudioType.DetailsAlbum album = items.get(i);
@@ -362,7 +362,7 @@ public class SyncMusic extends SyncItem {
         contentResolver.bulkInsert(MediaContract.Albums.CONTENT_URI, albumValuesBatch);
 
         // Iterate on each album, collect the artists and insert them
-        ContentValues albumArtistsValuesBatch[] = new ContentValues[artistsCount];
+        ContentValues[] albumArtistsValuesBatch = new ContentValues[artistsCount];
         int artistCount = 0;
         for (AudioType.DetailsAlbum album : items) {
             for (int artistId : album.artistid) {
@@ -378,7 +378,7 @@ public class SyncMusic extends SyncItem {
     }
 
     public void insertSongsItems(int hostId, List<AudioType.DetailsSong> items, ContentResolver contentResolver) {
-        ContentValues songValuesBatch[] = new ContentValues[items.size()];
+        ContentValues[] songValuesBatch = new ContentValues[items.size()];
         int totalArtistsCount = 0, totalGenresCount = 0;
         for (int i = 0; i < items.size(); i++) {
             AudioType.DetailsSong song = items.get(i);
@@ -390,8 +390,8 @@ public class SyncMusic extends SyncItem {
         contentResolver.bulkInsert(MediaContract.Songs.CONTENT_URI, songValuesBatch);
 
         // Iterate on each song, collect the artists and the genres and insert them
-        ContentValues songArtistsValuesBatch[] = new ContentValues[totalArtistsCount];
-        ContentValues songGenresValuesBatch[] = new ContentValues[totalGenresCount];
+        ContentValues[] songArtistsValuesBatch = new ContentValues[totalArtistsCount];
+        ContentValues[] songGenresValuesBatch = new ContentValues[totalGenresCount];
         int artistCount = 0, genreCount = 0;
         for (AudioType.DetailsSong song : items) {
             for (int artistId : song.artistid) {

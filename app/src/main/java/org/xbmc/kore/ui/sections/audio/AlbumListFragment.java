@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -24,8 +23,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +33,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -96,7 +97,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.album_list, menu);
 
         MenuItem sortByAlbum = menu.findItem(R.id.action_sort_by_album),
@@ -192,7 +193,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         }
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.Albums.TITLE + " LIKE ?";
@@ -218,7 +219,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
         if (args != null) {
             genreId = getArguments().getInt(BUNDLE_KEY_GENREID, -1);
@@ -229,7 +230,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnAlbumSelectedListener) ctx;
@@ -296,8 +297,9 @@ public class AlbumListFragment extends AbstractCursorListFragment {
             artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(fragment.getContext())
                                       .inflate(R.layout.grid_item_album, parent, false);
 

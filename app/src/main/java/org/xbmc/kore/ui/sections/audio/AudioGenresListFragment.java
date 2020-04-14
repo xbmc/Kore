@@ -15,13 +15,11 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -30,6 +28,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
@@ -78,7 +79,7 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
         Uri uri = MediaContract.AudioGenres.buildAudioGenresListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.AudioGenres.TITLE + " LIKE ?";
@@ -90,7 +91,7 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnAudioGenreSelectedListener) ctx;
@@ -141,8 +142,9 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
                              UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext())
                                       .inflate(R.layout.grid_item_audio_genre, parent, false);
 
@@ -195,31 +197,25 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
         }
     }
 
-    private View.OnClickListener genrelistItemMenuClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            final ViewHolder viewHolder = (ViewHolder)v.getTag();
+    private View.OnClickListener genrelistItemMenuClickListener = v -> {
+        final ViewHolder viewHolder = (ViewHolder)v.getTag();
 
-            final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.genreid = viewHolder.genreId;
+        final PlaylistType.Item playListItem = new PlaylistType.Item();
+        playListItem.genreid = viewHolder.genreId;
 
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_play:
-                            MediaPlayerUtils.play(AudioGenresListFragment.this, playListItem);
-                            return true;
-                        case R.id.action_queue:
-                            MediaPlayerUtils.queue(AudioGenresListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                            return true;
-                    }
-                    return false;
-                }
-            });
-            popupMenu.show();
-        }
+        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_play:
+                    MediaPlayerUtils.play(AudioGenresListFragment.this, playListItem);
+                    return true;
+                case R.id.action_queue:
+                    MediaPlayerUtils.queue(AudioGenresListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                    return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     };
 }

@@ -23,7 +23,6 @@ import android.provider.BaseColumns;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.utils.LogUtils;
 
-
 /**
  * Manages the XBMC local database. Info is stored in a {@link SQLiteDatabase}.
  */
@@ -509,10 +508,10 @@ public class MediaDatabase extends SQLiteOpenHelper {
             case DB_VERSION_PRE_HOST_VERSION:
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_MAJOR +
-                           " INTEGER DEFAULT " + String.valueOf(HostInfo.DEFAULT_KODI_VERSION_MAJOR) + ";");
+                           " INTEGER DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_MAJOR + ";");
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_MINOR +
-                           " INTEGER DEFAULT " + String.valueOf(HostInfo.DEFAULT_KODI_VERSION_MINOR) + ";");
+                           " INTEGER DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_MINOR + ";");
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_REVISION +
                            " TEXT DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_REVISION + ";");

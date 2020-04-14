@@ -18,8 +18,11 @@ package org.xbmc.kore.ui.sections.addon;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.text.TextDirectionHeuristicsCompat;
+
+import androidx.annotation.NonNull;
+import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.fragment.app.Fragment;
+
 import android.text.TextUtils;
 import android.view.MenuItem;
 
@@ -77,7 +80,7 @@ public class AddonsActivity extends BaseMediaActivity
     }
 
     @Override
-    protected void onSaveInstanceState (Bundle outState) {
+    protected void onSaveInstanceState (@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ADDONID, selectedAddonId);
         outState.putString(ADDONTITLE, selectedAddonTitle);

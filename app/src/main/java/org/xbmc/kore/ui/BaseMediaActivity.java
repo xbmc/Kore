@@ -21,11 +21,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.transition.TransitionInflater;
 import android.view.KeyEvent;
@@ -35,10 +30,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.ActivityGenericMediaBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -52,14 +54,10 @@ import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.ui.widgets.NowPlayingPanel;
-import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public abstract class BaseMediaActivity extends BaseActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
@@ -70,8 +68,6 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     private static final String NAVICON_ISARROW = "navstate";
     private static final String ACTIONBAR_TITLE = "actionbartitle";
-
-    @BindView(R.id.now_playing_panel) NowPlayingPanel nowPlayingPanel;
 
     private NavigationDrawerFragment navigationDrawerFragment;
     private SharedElementTransition sharedElementTransition = new SharedElementTransition();
@@ -87,6 +83,8 @@ public abstract class BaseMediaActivity extends BaseActivity
     protected abstract String getActionBarTitle();
     protected abstract Fragment createFragment();
 
+    private ActivityGenericMediaBinding binding;
+
     /**
      * Default callback for methods that don't return anything
      */
@@ -94,12 +92,7 @@ public abstract class BaseMediaActivity extends BaseActivity
     private Handler callbackHandler = new Handler();
     private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
 
-    private Runnable hidePanelRunnable = new Runnable() {
-        @Override
-        public void run() {
-            nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        }
-    };
+    private Runnable hidePanelRunnable = () -> binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 
     @Override
     @TargetApi(21)
@@ -110,13 +103,14 @@ public abstract class BaseMediaActivity extends BaseActivity
         }
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_generic_media);
-        ButterKnife.bind(this);
+        binding = ActivityGenericMediaBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
 
         // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        navigationDrawerFragment.setUp(R.id.navigation_drawer, findViewById(R.id.drawer_layout));
 
         Toolbar toolbar = findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
@@ -162,7 +156,7 @@ public abstract class BaseMediaActivity extends BaseActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(NAVICON_ISARROW, drawerIndicatorIsArrow);
 
@@ -187,7 +181,7 @@ public abstract class BaseMediaActivity extends BaseActivity
         } else {
             //Hide it in case we were displaying the panel and user disabled showing
             //the panel in Settings
-            nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
 
     }
@@ -280,16 +274,16 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void applicationOnVolumeChanged(int volume, boolean muted) {
-        nowPlayingPanel.setVolume(volume, muted);
+        binding.nowPlayingPanel.setVolume(volume, muted);
     }
 
     @Override
     public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
         if (notificationsData.property.shuffled != null)
-            nowPlayingPanel.setShuffled(notificationsData.property.shuffled);
+            binding.nowPlayingPanel.setShuffled(notificationsData.property.shuffled);
 
         if (notificationsData.property.repeatMode != null )
-            nowPlayingPanel.setRepeatMode(notificationsData.property.repeatMode);
+            binding.nowPlayingPanel.setRepeatMode(notificationsData.property.repeatMode);
     }
 
     @Override
@@ -328,12 +322,12 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void observerOnStopObserving() {
-        nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
     public void systemOnQuit() {
-        nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
@@ -432,16 +426,11 @@ public abstract class BaseMediaActivity extends BaseActivity
     }
 
     private void setupNowPlayingPanel() {
-        nowPlayingPanel.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
-            @Override
-            public void onVolumeChanged(int volume) {
-                new Application.SetVolume(volume)
-                        .execute(hostManager.getConnection(), defaultIntActionCallback, new Handler());
-            }
-        });
+        binding.nowPlayingPanel.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
+                .execute(hostManager.getConnection(), defaultIntActionCallback, new Handler()));
 
-        nowPlayingPanel.setOnPanelButtonsClickListener(this);
-        nowPlayingPanel.setOnProgressChangeListener(this);
+        binding.nowPlayingPanel.setOnPanelButtonsClickListener(this);
+        binding.nowPlayingPanel.setOnProgressChangeListener(this);
 
         hostConnectionObserver = hostManager.getHostConnectionObserver();
         if (hostConnectionObserver == null)
@@ -464,16 +453,16 @@ public abstract class BaseMediaActivity extends BaseActivity
         // Only set state to collapsed if panel is currently hidden. This prevents collapsing
         // the panel when the user expanded the panel and started playing the item from a paused
         // state
-        if (nowPlayingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
-            nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        if (binding.nowPlayingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+            binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         }
 
-        nowPlayingPanel.setMediaProgress(getPropertiesResult.time, getPropertiesResult.totaltime);
+        binding.nowPlayingPanel.setMediaProgress(getPropertiesResult.time, getPropertiesResult.totaltime);
 
-        nowPlayingPanel.setPlayButton(getPropertiesResult.speed > 0);
-        nowPlayingPanel.setShuffled(getPropertiesResult.shuffled);
-        nowPlayingPanel.setRepeatMode(getPropertiesResult.repeat);
-        nowPlayingPanel.setSpeed(getPropertiesResult.speed);
+        binding.nowPlayingPanel.setPlayButton(getPropertiesResult.speed > 0);
+        binding.nowPlayingPanel.setShuffled(getPropertiesResult.shuffled);
+        binding.nowPlayingPanel.setRepeatMode(getPropertiesResult.repeat);
+        binding.nowPlayingPanel.setSpeed(getPropertiesResult.speed);
 
         switch (getItemResult.type) {
             case ListType.ItemsAll.TYPE_MOVIE:
@@ -515,20 +504,20 @@ public abstract class BaseMediaActivity extends BaseActivity
                 break;
         }
 
-        if (title.contentEquals(nowPlayingPanel.getTitle()))
+        if (title.contentEquals(binding.nowPlayingPanel.getTitle()))
             return; // Still showing same item as previous call
 
-        nowPlayingPanel.setTitle(title);
+        binding.nowPlayingPanel.setTitle(title);
 
         if (details != null) {
-            nowPlayingPanel.setDetails(details);
+            binding.nowPlayingPanel.setDetails(details);
         }
 
         if ((getItemResult.type.contentEquals(ListType.ItemsAll.TYPE_MUSIC_VIDEO)) ||
             (getItemResult.type.contentEquals(ListType.ItemsAll.TYPE_SONG))) {
-            nowPlayingPanel.setNextPrevVisibility(View.VISIBLE);
+            binding.nowPlayingPanel.setNextPrevVisibility(View.VISIBLE);
         } else {
-            nowPlayingPanel.setNextPrevVisibility(View.GONE);
+            binding.nowPlayingPanel.setNextPrevVisibility(View.GONE);
         }
 
         Resources resources = getResources();
@@ -539,10 +528,8 @@ public abstract class BaseMediaActivity extends BaseActivity
         boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
                           (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE));
 
-        nowPlayingPanel.setSquarePoster(!isVideo);
+        binding.nowPlayingPanel.setSquarePoster(!isVideo);
 
-        UIUtils.loadImageWithCharacterAvatar(this, hostManager, poster, title,
-                                             nowPlayingPanel.getPoster(),
-                                             (isVideo) ? posterWidth : posterHeight, posterHeight);
+        UIUtils.loadImageWithCharacterAvatar(this, hostManager, poster, title, binding.nowPlayingPanel.getPoster(), (isVideo) ? posterWidth : posterHeight, posterHeight);
     }
 }

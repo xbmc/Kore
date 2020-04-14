@@ -22,7 +22,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +31,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -73,14 +75,11 @@ public class AddonListFragment extends AbstractListFragment {
 
     @Override
     protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
-        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                // Get the movie id from the tag
-                ViewHolder tag = (ViewHolder) view.getTag();
-                // Notify the activity
-                listenerActivity.onAddonSelected(tag);
-            }
+        return (view, position) -> {
+            // Get the movie id from the tag
+            ViewHolder tag = (ViewHolder) view.getTag();
+            // Notify the activity
+            listenerActivity.onAddonSelected(tag);
         };
     }
 
@@ -99,7 +98,7 @@ public class AddonListFragment extends AbstractListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             listenerActivity = (OnAddonSelectedListener) activity;
@@ -127,7 +126,7 @@ public class AddonListFragment extends AbstractListFragment {
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.addon_list, menu);
 
         // Setup filters
@@ -171,7 +170,7 @@ public class AddonListFragment extends AbstractListFragment {
     private void callGetAddonsAndSetup() {
         final AddonsAdapter adapter = (AddonsAdapter) getAdapter();
 
-        UIUtils.showRefreshAnimation(swipeRefreshLayout);
+        UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
 
         // Get the addon list, this is done asyhnchronously
         String[] properties = new String[] {
@@ -255,8 +254,9 @@ public class AddonListFragment extends AbstractListFragment {
             artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
                                         .inflate(R.layout.grid_item_addon, parent, false);
 
@@ -264,7 +264,7 @@ public class AddonListFragment extends AbstractListFragment {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             AddonType.Details addonDetails = this.getItem(position);
             ((ViewHolder) holder).onBind(addonDetails);
         }

@@ -16,10 +16,12 @@
 package org.xbmc.kore.ui.sections.audio;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.ViewPager;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
@@ -37,7 +39,7 @@ public class MusicListFragment extends AbstractTabsFragment {
     private TabsAdapter tabsAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view == null)
             return view;

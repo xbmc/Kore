@@ -686,7 +686,7 @@ public class HostConnectionObserver
      * On success chains execution to chainCallGetItem
      */
     private void chainCallGetPlayerProperties(final PlayerType.GetActivePlayersReturnType getActivePlayersResult) {
-        String propertiesToGet[] = new String[] {
+        String[] propertiesToGet = new String[] {
                 // Check is something more is needed
                 PlayerType.PropertyName.SPEED,
                 PlayerType.PropertyName.PERCENTAGE,

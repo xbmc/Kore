@@ -19,8 +19,9 @@ package org.xbmc.kore.ui.generic;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.Toast;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
@@ -31,7 +32,7 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public class RefreshItem {
     private final String TAG = LogUtils.makeLogTag(RefreshItem.class);

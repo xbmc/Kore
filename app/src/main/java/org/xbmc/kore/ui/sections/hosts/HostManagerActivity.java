@@ -17,11 +17,13 @@ package org.xbmc.kore.ui.sections.hosts;
 
 
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.BaseActivity;
@@ -35,20 +37,18 @@ import org.xbmc.kore.utils.LogUtils;
 public class HostManagerActivity extends BaseActivity {
     private static final String TAG = LogUtils.makeLogTag(HostManagerActivity.class);
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment navigationDrawerFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_manager);
 
         // Set up the drawer.
-        navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
+        /**
+         * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+         */
+        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        navigationDrawerFragment.setUp(R.id.navigation_drawer, findViewById(R.id.drawer_layout));
 
         // Action bar
         setupToolbar();
@@ -68,7 +68,7 @@ public class HostManagerActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 //        switch (item.getItemId()) {
 //            default:
 //                break;
@@ -77,7 +77,7 @@ public class HostManagerActivity extends BaseActivity {
     }
 
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
+        Toolbar toolbar = findViewById(R.id.default_toolbar);
         toolbar.setTitle(R.string.xbmc_media_center);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

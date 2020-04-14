@@ -30,7 +30,7 @@ public interface ApiCallback<T> {
      * Callback that will be called after a sucessfull reponse from the XBMC JSON RPC method
      * @param result The result that was obtained and sucessfully parsed from XBMC
      */
-	public abstract void onSuccess(T result);
+	void onSuccess(T result);
 
     /**
      * Calllback that will be called when an error occurs executing the method on XBMC.
@@ -39,5 +39,5 @@ public interface ApiCallback<T> {
      * @param errorCode Error code. Check {@link ApiException} for detailed error codes
      * @param description Error description
      */
-	public abstract void onError(int errorCode, String description);
+	void onError(int errorCode, String description);
 }

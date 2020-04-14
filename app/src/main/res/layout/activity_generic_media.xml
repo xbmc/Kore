@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<android.support.v4.widget.DrawerLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -47,4 +47,4 @@
               android:layout_gravity="start"
               android:name="org.xbmc.kore.ui.generic.NavigationDrawerFragment"/>
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

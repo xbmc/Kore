@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources>
+
+    <string name="app_name" translatable="false">Kore</string>
+    <string name="settings">Настройки</string>
+    <string name="action_options">Параметры</string>
+
+    <string name="loading">Загружается…</string>
+
+    <!-- Navigation drawer tips -->
+    <string name="navigation_drawer_open">Открыть панель навигации</string>
+    <string name="navigation_drawer_close">Закрыть панель навигации</string>
+
+    <string name="xbmc_media_center">Медиацентр</string>
+    <string name="home">Главный экран</string>
+    <string name="movies">Фильмы</string>
+    <string name="tv_shows">Сериалы</string>
+    <string name="music">Музыка</string>
+    <string name="pictures">Изображения</string>
+    <string name="dcim">Фотографии</string>
+    <string name="external_storage">Хранилище</string>
+    <string name="addons">Дополнения</string>
+    <string name="files">Файлы</string>
+    <string name="local_files">Локальные файлы</string>
+    <string name="video">Видео</string>
+    <string name="videos">Видео</string>
+    <string name="media">Медиаданные</string>
+    <string name="window">Окно</string>
+    <string name="script">Скрипт</string>
+    <string name="unknown">Неизвестно</string>
+    <string name="file_browser">Файлы</string>
+    <string name="local_file_browser">Локальные файлы</string>
+    <string name="pvr">Запись эфира</string>
+    <string name="favourites">Избранные</string>
+    <string name="weather">Погода</string>
+    <string name="system">Система</string>
+
+    <string name="no_xbmc_configured">Медиацентры не настроены</string>
+    <string name="add_xbmc">Добавить медиацентр</string>
+
+    <string name="xbmc_quit">Медиацентр отключается.</string>
+    <string name="wol_sent">Команда пробуждения отправлена на медиацентр.</string>
+
+    <string name="power">Питание</string>
+    <string name="quit">Выйти</string>
+    <string name="suspend">В сон</string>
+    <string name="reboot">Перезагрузить</string>
+    <string name="shutdown">Выключить</string>
+
+    <string name="send">Отправить</string>
+    <string name="send_text">Отправить текст на медиацентр</string>
+    <string name="text_to_send">Текст</string>
+    <string name="finish_after_send">Закончить после отправки</string>
+
+    <string name="library_actions">Обслуживание каталога</string>
+    <string name="clean_video_library">Очистить видеокаталог</string>
+    <string name="clean_audio_library">Очистить аудиокаталог</string>
+    <string name="update_video_library">Обновить видеокаталог</string>
+    <string name="update_audio_library">Обновить аудиокаталог</string>
+
+    <string name="toggle_fullscreen">Переключить полный экран</string>
+
+    <string name="connected_to">Подключён к %1$s</string>
+    <string name="connecting">Подключается…</string>
+    <string name="connecting_to">Подключается к %1$s (%2$s)…</string>
+
+    <!-- String used in add host wizard -->
+    <string name="wizard_welcome">Добро пожаловать!</string>
+    <string name="wizard_welcome_message"><![CDATA[
+    Начнём с добавления медиацентра. Убедитесь, что Kodi включён, настроен и находится в той же сети, что и это устройство.<br/><br/>
+    Получить справку по настройке вы можете <a href="http://syncedsynapse.com/kore/kore-faq/">здесь</a>.<br/><br/>
+    Когда будете готовы, нажмите <b>Далее</b>.
+    ]]></string>
+    <string name="wizard_search_message"><![CDATA[
+    Идёт поиск медиацентров в локальной сети…<br/>
+    ]]></string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+    Не удалось найти ни одного медиацентра в вашей сети.<br/>
+    Для помощи в настройке обратитесь <a href="http://syncedsynapse.com/kore/kore-faq/">сюда</a>.<br/><br/>
+    Нажмите <b>Искать снова</b> или <b>Далее</b> для ручной настройки.
+    ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    Перед поиском медиацентров подключитесь к сети.<br/>
+    ]]></string>
+    <string name="wizard_search_host_found"><![CDATA[
+    В вашей сети найдены медиацентры.<br/><br/>
+    Выберите один из них или нажмите <b>Далее</b>, чтобы добавить центр вручную.
+    ]]></string>
+    <string name="no_network_connection">Нет подключения к сети</string>
+    <string name="searching">Идёт поиск…</string>
+    <string name="no_xbmc_found">На найдено ни одного медиацентра</string>
+    <string name="xbmc_found">Найден медиацентр</string>
+    <string name="wizard_manual_configuration">Ручная настройка</string>
+    <string name="wizard_manual_configuration_message">Введите параметры медиацентра:</string>
+    <string name="wizard_manual_configuration_message_advanced">Дополнительные параметры</string>
+    <string name="wizard_xbmc_name">Название медиацентра</string>
+    <string name="wizard_xbmc_ip">Адрес</string>
+    <string name="wizard_xbmc_port">Порт</string>
+    <string name="wizard_xbmc_username">Имя пользователя</string>
+    <string name="wizard_xbmc_password">Пароль</string>
+    <string name="wizard_xbmc_tcp_port">TCP-порт (9090)</string>
+    <string name="wizard_xbmc_mac_address">MAC-адрес</string>
+    <string name="wizard_xbmc_wol_port">WoL-порт (9)</string>
+    <string name="wizard_xbmc_use_tcp">Использовать TCP</string>
+    <string name="wizard_xbmc_event_server_port">ES-порт (9777)</string>
+    <string name="wizard_xbmc_use_event_server">Использовать EventServer</string>
+
+    <string name="wizard_no_name_specified">Придумайте название для этого медиацентра</string>
+    <string name="wizard_no_address_specified">Укажите адрес медиацентра</string>
+    <string name="wizard_invalid_http_port_specified">Укажите HTTP-порт медиацентра</string>
+    <string name="wizard_invalid_tcp_port_specified">Укажите TCP-порт медиацентра</string>
+    <string name="wizard_invalid_es_port_specified">Укажите EventServer-порт медиацентра</string>
+
+    <string name="wizard_connecting_to_xbmc_title">Подключается к %1$s…</string>
+    <string name="wizard_connecting_to_xbmc_message">Подождите, пока идёт подключение к медиасерверу…</string>
+
+    <string name="wizard_empty_authentication">Kodi требует аутентификации.\n
+    Укажите имя пользователя и пароль.</string>
+    <string name="wizard_incorrect_authentication">Неправильное имя пользователя или пароль.\n
+    Проверьте введённые данные.</string>
+    <string name="wizard_success_connecting">Подключён к Kodi.</string>
+    <string name="wizard_error_connecting">Не удалось подключится к Kodi.\n
+    Проверьте параметры.</string>
+
+    <string name="wizard_done">Всё готово!</string>
+    <string name="wizard_done_message"><![CDATA[
+    Медиацентр настроен.<br/>
+    Теперь вы можете управлять им с помощью Kore. Ваш медиакаталог синхронизируется и скоро будет доступен.<br/><br/>
+    Нажмите <b>Готово</b>, чтобы начать пользоваться пультом.
+    ]]></string>
+
+    <string name="wizard_zeroconf_no_host_address">Не удалось получить адрес медиацентра.</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Не удаётся подключиться к медиацентру, потому что не удалось обнаружить его адрес.</string>
+
+    <string name="play">Воспроизвести</string>
+    <string name="pause">На паузу</string>
+    <string name="stop">Стоп</string>
+    <string name="fast_forward">Перемотать вперёд</string>
+    <string name="rewind">Перемотать назад</string>
+
+    <string name="repeat">Повторять</string>
+    <string name="shuffle">Перемешать</string>
+    <string name="volume_up">Громче</string>
+    <string name="volume_down">Тише</string>
+    <string name="volume_mute">Выключить звук</string>
+    <string name="subtitles">Субтитры</string>
+    <string name="audiostreams">Аудиодорожки</string>
+    <string name="no_audiostream">Нет аудиодорожек</string>
+    <string name="download_subtitle">Загрузить субтитры</string>
+    <string name="none">Отключены</string>
+    <string name="audio_sync">Синхронизировать звук</string>
+    <string name="subtitle_sync">Синхронизировать субтитры</string>
+
+    <string name="left">Влево</string>
+    <string name="right">Вправо</string>
+    <string name="up">Вверх</string>
+    <string name="down">Вниз</string>
+    <string name="select">Выбрать</string>
+    <string name="info">Информация</string>
+    <string name="codec_info">Кодек</string>
+    <string name="context">Контекстное меню</string>
+    <string name="osd">Меню</string>
+    <string name="back">Назад</string>
+    <string name="previous">Назад</string>
+
+    <string name="next">Далее</string>
+    <string name="finish">Готово</string>
+    <string name="test_connection">Проверить</string>
+    <string name="search_again">Искать снова</string>
+
+    <string name="remove">Удалить</string>
+    <string name="edit">Править</string>
+    <string name="wake_up">Разбудить</string>
+    <string name="edit_xbmc">Править медиацентр</string>
+    <string name="delete_xbmc">Удалить медиацентр</string>
+    <string name="delete_xbmc_confirm">Уверены, что хотите удалить медиацентр?</string>
+    <string name="queue_file">В очередь</string>
+    <string name="play_file">Воспроизвести</string>
+    <string name="play_from_here">Воспроизвести с этого</string>
+
+    <string name="connecting_to_xbmc">Подключается…</string>
+    <string name="unable_to_connect_to_xbmc">Не удаётся подключиться к медиацентру</string>
+    <string name="connected_to_xbmc">Подключён</string>
+    <string name="xbmc_available">Доступен</string>
+    <string name="xbmc_unavailable">Недоступен</string>
+
+    <string name="nothing_playing">Ничего не воспроизводится</string>
+
+    <!-- Main view tabs -->
+    <string name="now_playing">Сейчас воспроизводится</string>
+    <string name="remote">Пульт</string>
+    <string name="playlist">Список воспроизведения</string>
+
+    <string name="season_episode_abbrev">С%1$02dс%2$02d</string>
+    <string name="season_episode">Сезон %1$02d | серия %2$02d</string>
+    <string name="season_number">Сезон %1$02d</string>
+    <string name="episode_number">%1$d</string>
+
+    <string name="votes">%1$s оценок</string>
+    <string name="max_rating">/%1$s</string>
+    <string name="max_rating_video">/10</string>
+    <string name="max_rating_music">/5</string>
+
+    <string name="fanart">Фанарт</string>
+    <string name="poster">Постер</string>
+    <string name="thumbnail">Миниатюра</string>
+
+    <string name="error_getting_properties">Не удалось получить параметры Kodi.\n
+    Ошибка:
+    %1$s.</string>
+    <string name="error_executing_subtitles">Не удалось запустить дополнение для субтитров.\n
+    Ошибка:
+    %1$s.</string>
+    <string name="error_getting_addon_info">Не удалось получить данные о дополнении.\n
+    Ошибка:
+    %1$s.</string>
+    <string name="error_getting_source_info">Не удалось получить список файлов.\n
+    Ошибка:
+    %1$s.</string>
+    <string name="error_play_media_file">Не удалось воспроизвести медиафайл.\n
+    Ошибка:
+    %1$s.</string>
+    <string name="error_play_local_file">Не удалось воспроизвести локальный медиафайл.\n
+    Ошибка:
+    %1$s.</string>
+    <string name="error_queue_media_file">Не удалось добавить медиафайл в очередь.\n
+    Ошибка:
+    %1$s.</string>
+    <string name="error_get_active_player">Не удалось получить активный плеер.\n
+    Ошибка:
+    %1$s.</string>
+    <string name="error_share_video">Не удалось отправить видео на Kodi.</string>
+    <string name="error_reading_local_storage">Не удалось получить доступ к локальному хранилищу. Вы предоставили Kore права доступа к хранилищу?</string>
+    <string name="error_starting_http_server">Не удалось создать или запустить HTTP-сервер.</string>
+
+    <string name="directors">Режиссёры:</string>
+    <string name="studio">Студия:</string>
+    <string name="cast">Роли</string>
+    <string name="additional_cast">Другие роли</string>
+    <string name="cast_list_text">%1$s — %2$s</string>
+
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <string name="remaining_cast_count">ещё %d</string>
+    <string name="general_error_executing_action">Ошибка при выполнении действия: %1$s</string>
+    <string name="error_getting_playlist">Ошибка при получении списка воспроизведения</string>
+    <string name="error_message">Ошибка: %1$s</string>
+    <string name="playlist_empty">Список воспроизведения пуст</string>
+    <string name="clear_playlist">Очистить список</string>
+    <string name="source_empty">Медиаисточник пуст</string>
+
+    <string name="swipe_down_to_refresh">Потяните вниз, чтобы обновить</string>
+    <string name="no_movies_found_refresh">Фильмов нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_tvshows_found_refresh">Сериалов нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_episodes_found">Серий нет</string>
+    <string name="no_artists_found_refresh">Исполнителей нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_albums_found_refresh">Альбомов нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_genres_found_refresh">Жанров нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_addons_found_refresh">Дополнений нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_music_videos_found_refresh">Клипов нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_channel_groups_found_refresh">Групп каналов нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_channels_found_refresh">Каналов нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_favourites_found_refresh">Избранных нет</string>
+    <string name="no_recordings_found_refresh">Записей нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="no_broadcasts_found_refresh">Передач нет\n\n
+    Потяните вниз, чтобы обновить</string>
+    <string name="pull_to_refresh">Потяните вниз, чтобы обновить</string>
+    <string name="no_cast_info">Нет информации</string>
+
+    <string name="minutes_abbrev">%1$s мин.</string>
+    <string name="minutes_abbrev2">%1$s мин.</string>
+    <string name="sync_successful">Синхронизация прошла успешно</string>
+    <string name="error_while_syncing">Во время синхронизации произошла ошибка: %1$s</string>
+
+    <string name="action_search">Искать</string>
+    <string name="action_search_movies">Искать фильмы</string>
+    <string name="action_search_tvshows">Искать сериалы</string>
+    <string name="action_search_albums">Искать альбомы</string>
+    <string name="action_search_artists">Искать исполнителей</string>
+    <string name="action_search_genres">Искать жанры</string>
+    <string name="action_search_music_videos">Искать клипы</string>
+
+    <string name="add_to_playlist">Добавить в список воспроизведения</string>
+    <string name="item_added_to_playlist">Добавлен в список</string>
+    <string name="item_sent_to_kodi">Отправить на Kodi</string>
+    <string name="no_suitable_playlist">Не был найден список воспроизведения, подходящий для этого типа медиа.</string>
+
+    <string name="imdb">IMDb</string>
+    <string name="seen">Просмотрен</string>
+    <string name="download">Загрузить</string>
+
+    <string name="confirm_movie_download">Вы уверены, что хотите загрузить этот фильм?\n
+    Фильм будет загружаться в фоне, это может занять некоторое время.</string>
+    <string name="confirm_episode_download">Вы уверены, что хотите загрузить эту серию?\n
+    Серия будет загружаться в фоне, это может занять некоторое время.</string>
+    <string name="confirm_album_download">Вы уверены, что хотите загрузить этот альбом?\n
+    Альбом будет загружаться в фоне, это может занять некоторое время.</string>
+    <string name="confirm_artist_download">Вы уверены, что хотите загрузить все альбомы?\n
+    Альбомы будут загружаться в фоне, это может занять некоторое время.</string>
+    <string name="confirm_songs_download">Вы уверены, что хотите загрузить %1$d песен?\n
+    Песни будут загружаться в фоне, это может занять некоторое время.</string>
+
+    <string name="download_file_exists">Файл уже существует.\n
+    Вы хотите перезаписать файл или сохранить под другим именем?</string>
+    <string name="download_dir_exists">Загружаемая папка уже существует.\n
+    Если какой-нибудь загружаемый файл имеет такое же имя, что и существующий, перезаписать существующий файл или сохранить загружаемый под другим именем?</string>
+    <string name="download_files_exists">Один или несколько файлов уже существуют.\n
+    Если какой-нибудь загружаемый файл имеет такое же имя, что и существующий, тогда перезаписать существующий файл или сохранить загружаемый под другим именем?</string>
+    <string name="overwrite">Перезаписать</string>
+    <string name="download_with_new_name">Дать другое имя</string>
+    <string name="download_file_description">Загружен с вашего медиацентра</string>
+
+    <string name="num_episodes">%1$d серий | %2$d не просмотрено</string>
+    <string name="premiered">Премьера: %1$s</string>
+
+    <string name="tvshow_overview">Обзор</string>
+    <string name="tvshow_episodes">Серии</string>
+    <string name="tvshow_seasons">Сезоны</string>
+    <string name="tvshow_next_episode">Следующие серии</string>
+
+    <string name="addon_overview">Обзор</string>
+    <string name="addon_content">Содержимое</string>
+
+    <string name="artists">Исполнители</string>
+    <string name="albums">Альбомы</string>
+    <string name="genres">Жанры</string>
+    <string name="music_videos">Клипы</string>
+
+    <string name="no_files_to_download">Нет файлов для загрузки.</string>
+    <string name="error_getting_file_information">Не удалось получить информацию для загрузки файла %1$s.</string>
+
+    <string name="author">Автор:</string>
+    <string name="version">Версия:</string>
+    <string name="enable_disable">Переключить дополнение</string>
+    <string name="addon_enabled">Дополнение включено</string>
+    <string name="addon_disabled">Дополнение выключено</string>
+    <string name="pin_unpin">Закрепить дополнение</string>
+    <string name="addon_pinned">Дополнение закреплено</string>
+    <string name="addon_unpinned">Дополнение откреплено</string>
+
+    <!-- Filters on list menus -->
+    <string name="hide_watched">Скрыть просмотренные</string>
+    <string name="hide_disabled">Скрыть выключенные</string>
+    <string name="sort_order">Сортировать</string>
+    <string name="sort_by_name">По имени</string>
+    <string name="sort_by_year">По году</string>
+    <string name="sort_by_rating">По рейтингу</string>
+    <string name="sort_by_length">По длине</string>
+    <string name="sort_by_date_added">По дате добавления</string>
+    <string name="sort_by_last_played">По дате воспроизведения</string>
+    <string name="unsorted">Без сортировки</string>
+    <string name="ignore_prefixes">Игнорировать префиксы</string>
+    <string name="show_watched_status">Показывать статус просмотра</string>
+    <string name="show_rating">Показывать рейтинг</string>
+
+    <!-- Preferences strings -->
+    <string name="application">Приложение</string>
+
+    <string name="theme">Тема</string>
+    <string name="theme_night">Ночь</string>
+    <string name="theme_day">День</string>
+    <string name="theme_mist">Туман</string>
+    <string name="theme_sunrise">Восход</string>
+    <string name="theme_sunset">Закат</string>
+
+    <string name="switch_to_remote">Показывать при произведении</string>
+    <string name="keep_remote_above_lockscreen">Показывать поверх экрана блокировки</string>
+    <string name="pref_keep_screen_on">Не отключать экран</string>
+    <string name="show_notification">Показывать уведомление при воспроизведении</string>
+    <string name="show_now_playing_panel">Показыть панель «Сейчас воспроизводится» во время воспроизведения</string>
+    <string name="show_now_playing_panel_summary">Показывать выдвижную панель внизу экрана во время вопсроизведения</string>
+    <string name="notification_seek_jump">Перематывать рывками</string>
+    <string name="notification_seek_jump_speed">Изменяет скорость воспроизведения при управлении через уведомление</string>
+    <string name="notification_seek_jump_step">Перематывает рывками при управлении через уведомление</string>
+    <string name="pause_during_calls">Ставить на паузу во время звонков</string>
+    <string name="use_hardware_volume_keys">Использовать кнопки громкости устройства</string>
+    <string name="vibrate_on_remote">Вибрировать при нажатии</string>
+    <string name="remote_bar_items">Ярлыки нижней панели</string>
+    <string name="nav_drawer_items">Ярлыки бокового меню</string>
+
+    <string name="about">О приложении</string>
+    <string name="about_desc"><![CDATA[
+    \u00A9 2018 Фонд XBMC.<br><br>
+    Пожалуйста, оцените нас в <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>у
+    Если вам нужна помощь с приложением, зайдите на <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">наш форум</a></b>
+    ]]></string>
+
+    <!-- &lt;!&ndash; String for coffee &ndash;&gt;
+    <string name="buy_me_coffee">Buy me a coffee</string>
+    <string name="expresso_please">Espresso, please. Thanks!</string>
+    <string name="thanks_for_coffe">Thanks for the coffee!</string>
+    <string name="remove_coffee_message">Tap to hide this setting</string>
+    <string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>
+
+    <string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>
+    <string name="error_querying_inventory">Failed to query inventory.</string>
+    <string name="error_during_purchased">An error occurred during purchase.</string>
+    <string name="purchase_thanks">Thanks for your support!</string> -->
+
+    <string name="play_on_kodi">Воспроизвести на Kodi</string>
+    <string name="queue_on_kodi">В очередь на Kodi</string>
+    <string name="pause_call_incoming_title">Входящий звонок</string>
+    <string name="pause_call_incoming_message">Проверьте ваш телефон, вам звонят</string>
+
+    <string name="error_getting_pvr_info">При получения информации о записи произошла ошибка: %1$s</string>
+    <string name="might_not_have_pvr">Во время получения информации о каналах произошла ошибка. Возможно, у вашего медиацентра нет тюнера, или он не настроен.\n
+    Если это так, этот пункт можно убрать из бокового меню. Это можно сделать в настройках.</string>
+    <string name="error_starting_channel">При включении канала произошла ошибка: %1$s</string>
+    <string name="error_favourites">При получении избранных произошла ошибка: %1$s</string>
+    <string name="error_starting_recording">При начале записи произошла ошибка: %1$s</string>
+    <string name="error_starting_to_record">Во время записи произошла ошибка: %1$s</string>
+    <string name="channel_switching">Переключается на канал %1$s</string>
+    <string name="starting_recording">Начинается запись %1$s</string>
+    <string name="refresh">Обновить</string>
+
+    <string name="tv">ТВ</string>
+    <string name="radio">Радио</string>
+    <string name="recordings">Записи</string>
+    <string name="tv_channels">Телеканалы</string>
+    <string name="radio_channels">Радиостанции</string>
+
+    <string name="record">Запись</string>
+    <string name="pvr_epg">Телепрограмма</string>
+    <string name="unable_to_move_item">Невозможно переместить объект</string>
+    <string name="unable_to_play_favourite_item">Невозможно воспроизвести избранное. Тип не поддерживается</string>
+    <string name="cannot_move_playing_item">Невозможно переместить воспроизводимое</string>
+    <string name="no_connection_type_selected">В настройках не указан тип соединения</string>
+    <string name="single_column">Один столбец</string>
+    <string name="multi_column">Несколько столбцов</string>
+
+    <string name="download_network_types_title">Ограничить загрузку медиаданных</string>
+    <string name="download_network_types_summary">Выберите типы сетей, через которые можно загружать медиаданные</string>
+    <string name="songs">Песни</string>
+
+    <string name="read_phone_state_permission_denied">Разрешение не получено. Не получится ставить на паузу во время звонков.</string>
+    <string name="write_storage_permission_denied">Разрешение не получено. Не получится загружать файлы.</string>
+    <string name="read_storage_permission_denied">Разрешение не получено. Не получится прочитать файлы.</string>
+
+    <string name="no_songs_to_download">Нет песен для загрузки</string>
+    <string name="by_album">По альбому</string>
+    <string name="by_artist">По исполнителю</string>
+    <string name="by_artist_and_year">По исполнителю и году</string>
+    <string name="muted">Звук выключен</string>
+    <string name="no_item_available_to_play">Ошибка: нечего воспроизводить.</string>
+    <string name="Refreshing_not_implemented_for_this_item">Для этого элемента обновление ещё не реализовано</string>
+    <string name="no_songs_found_refresh">Песен нет\n\n
+    Потяние вниз, чтобы обновить</string>
+    <string name="not_implemented">Не реализовано</string>
+
+    <string name="toggle_expand">Развернуть/свернуть</string>
+    <string name="play_locally">Воспроизвести локально</string>
+
+    <string name="disable_local_playback_support">Отключить локальное воспроизведение</string>
+    <string name="disable_local_playback_support_summary">Отключает локальное воспроизведения медиаданных на устройстве с работающим Kore</string>
+    <string name="language">Язык</string>
+</resources>

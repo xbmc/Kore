@@ -17,10 +17,12 @@ package org.xbmc.kore.utils;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +81,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
         return tabInfos.size();
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         TabInfo info = tabInfos.get(position);
@@ -90,15 +93,16 @@ public class TabsAdapter extends FragmentPagerAdapter {
      */
     private HashMap<Integer, Fragment> createdFragments = new HashMap<>(5);
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         Fragment fragment = (Fragment)super.instantiateItem(container, position);
         createdFragments.put(position, fragment);
         return fragment;
     }
 
     @Override
-    public void destroyItem (ViewGroup container, int position, Object object) {
+    public void destroyItem (@NonNull ViewGroup container, int position, @NonNull Object object) {
         super.destroyItem(container, position, object);
         createdFragments.remove(position);
     }

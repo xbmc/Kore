@@ -25,11 +25,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +33,13 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
@@ -87,7 +89,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
@@ -99,7 +101,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Bundle arguments = getArguments();
         if (arguments == null) {
             throw new IllegalStateException("Use setArgs to set required item id");
@@ -132,6 +134,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
         listenerActivity = null;
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri uri;
@@ -155,7 +158,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if (data != null) {
             switch (loader.getId()) {
                 case LOADER_NEXT_EPISODES:
@@ -169,7 +172,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 
@@ -180,8 +183,8 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
      */
     @TargetApi(21)
     private void displayNextEpisodeList(Cursor cursor) {
-        TextView nextEpisodeTitle = (TextView) getActivity().findViewById(R.id.next_episode_title);
-        GridLayout nextEpisodeList = (GridLayout) getActivity().findViewById(R.id.next_episode_list);
+        TextView nextEpisodeTitle = getActivity().findViewById(R.id.next_episode_title);
+        GridLayout nextEpisodeList = getActivity().findViewById(R.id.next_episode_list);
 
         if (cursor.moveToFirst()) {
             nextEpisodeTitle.setVisibility(View.VISIBLE);
@@ -189,12 +192,9 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
             HostManager hostManager = HostManager.getInstance(getActivity());
 
-            View.OnClickListener episodeClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AbstractInfoFragment.DataHolder vh = (AbstractInfoFragment.DataHolder) v.getTag();
-                    listenerActivity.onNextEpisodeSelected(itemId, vh);
-                }
+            View.OnClickListener episodeClickListener = v -> {
+                DataHolder vh = (DataHolder) v.getTag();
+                listenerActivity.onNextEpisodeSelected(itemId, vh);
             };
 
             // Get the art dimensions
@@ -221,10 +221,10 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 View episodeView = LayoutInflater.from(getActivity())
                                                  .inflate(R.layout.list_item_next_episode, nextEpisodeList, false);
 
-                ImageView artView = (ImageView)episodeView.findViewById(R.id.art);
-                TextView titleView = (TextView)episodeView.findViewById(R.id.title);
-                TextView detailsView = (TextView)episodeView.findViewById(R.id.details);
-                TextView durationView = (TextView)episodeView.findViewById(R.id.duration);
+                ImageView artView = episodeView.findViewById(R.id.art);
+                TextView titleView = episodeView.findViewById(R.id.title);
+                TextView detailsView = episodeView.findViewById(R.id.details);
+                TextView durationView = episodeView.findViewById(R.id.duration);
 
                 titleView.setText(title);
                 detailsView.setText(seasonEpisode);
@@ -241,7 +241,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 episodeView.setOnClickListener(episodeClickListener);
 
                 // For the popupmenu
-                ImageView contextMenu = (ImageView)episodeView.findViewById(R.id.list_context_menu);
+                ImageView contextMenu = episodeView.findViewById(R.id.list_context_menu);
                 contextMenu.setTag(episodeId);
                 contextMenu.setOnClickListener(contextlistItemMenuClickListener);
 
@@ -261,8 +261,8 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
      */
     @TargetApi(21)
     private void displaySeasonList(Cursor cursor) {
-        TextView seasonsListTitle = (TextView) getActivity().findViewById(R.id.seasons_title);
-        GridLayout seasonsList = (GridLayout) getActivity().findViewById(R.id.seasons_list);
+        TextView seasonsListTitle = getActivity().findViewById(R.id.seasons_title);
+        GridLayout seasonsList = getActivity().findViewById(R.id.seasons_list);
 
         if (cursor.moveToFirst()) {
             seasonsListTitle.setVisibility(View.VISIBLE);
@@ -270,12 +270,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
             HostManager hostManager = HostManager.getInstance(getActivity());
 
-            View.OnClickListener seasonListClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listenerActivity.onSeasonSelected(itemId, (int)v.getTag());
-                }
-            };
+            View.OnClickListener seasonListClickListener = v -> listenerActivity.onSeasonSelected(itemId, (int)v.getTag());
 
             // Get the art dimensions
             Resources resources = getActivity().getResources();
@@ -304,10 +299,10 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
                 View seasonView = LayoutInflater.from(getActivity()).inflate(R.layout.grid_item_season, seasonsList, false);
 
-                ImageView seasonPictureView = (ImageView) seasonView.findViewById(R.id.art);
-                TextView seasonNumberView = (TextView) seasonView.findViewById(R.id.season);
-                TextView seasonEpisodesView = (TextView) seasonView.findViewById(R.id.episodes);
-                ProgressBar seasonProgressBar = (ProgressBar) seasonView.findViewById(R.id.season_progress_bar);
+                ImageView seasonPictureView = seasonView.findViewById(R.id.art);
+                TextView seasonNumberView = seasonView.findViewById(R.id.season);
+                TextView seasonEpisodesView = seasonView.findViewById(R.id.episodes);
+                ProgressBar seasonProgressBar = seasonView.findViewById(R.id.season_progress_bar);
 
                 seasonNumberView.setText(String.format(getActivity().getString(R.string.season_number), seasonNumber));
                 seasonEpisodesView.setText(String.format(getActivity().getString(R.string.num_episodes),
@@ -336,30 +331,24 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
         }
     }
 
-    private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.episodeid = (int)v.getTag();
+    private View.OnClickListener contextlistItemMenuClickListener = v -> {
+        final PlaylistType.Item playListItem = new PlaylistType.Item();
+        playListItem.episodeid = (int)v.getTag();
 
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_play:
-                            MediaPlayerUtils.play(TVShowProgressFragment.this, playListItem);
-                            return true;
-                        case R.id.action_queue:
-                            MediaPlayerUtils.queue(TVShowProgressFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
-                            return true;
-                    }
-                    return false;
-                }
-            });
-            popupMenu.show();
-        }
+        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_play:
+                    MediaPlayerUtils.play(TVShowProgressFragment.this, playListItem);
+                    return true;
+                case R.id.action_queue:
+                    MediaPlayerUtils.queue(TVShowProgressFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
+                    return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     };
 
     /**

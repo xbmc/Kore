@@ -90,7 +90,7 @@ public class Database {
         ApiList<VideoType.DetailsMovie> movieList = getMovies.resultFromJson(result);
 
 
-        ContentValues movieValuesBatch[] = new ContentValues[movieList.items.size()];
+        ContentValues[] movieValuesBatch = new ContentValues[movieList.items.size()];
         int castCount = 0;
 
         // Iterate on each movie
@@ -102,7 +102,7 @@ public class Database {
 
         contentResolver.bulkInsert(MediaContract.Movies.CONTENT_URI, movieValuesBatch);
 
-        ContentValues movieCastValuesBatch[] = new ContentValues[castCount];
+        ContentValues[] movieCastValuesBatch = new ContentValues[castCount];
         int count = 0;
         // Iterate on each movie/cast
         for (VideoType.DetailsMovie movie : movieList.items) {

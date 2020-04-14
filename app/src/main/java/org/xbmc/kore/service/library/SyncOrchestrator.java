@@ -28,7 +28,7 @@ import org.xbmc.kore.utils.LogUtils;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public class SyncOrchestrator {
     public static final String TAG = LogUtils.makeLogTag(SyncOrchestrator.class);
@@ -64,7 +64,7 @@ public class SyncOrchestrator {
                             final Handler callbackHandler,
                             final ContentResolver contentResolver) {
         this.syncService = syncService;
-        this.syncItems = new ArrayDeque<SyncItem>();
+        this.syncItems = new ArrayDeque<>();
         this.serviceStartId = startId;
         this.hostInfo = hostInfo;
         this.callbackHandler = callbackHandler;

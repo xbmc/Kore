@@ -114,14 +114,14 @@ public class DynamicListView extends ListView {
          * @param positionOne position of first item
          * @param positionTwo position of second item.
          */
-        public void onSwapItems(int positionOne, int positionTwo);
+        void onSwapItems(int positionOne, int positionTwo);
 
         /**
          * Called when the user releases the dragged item
          * @param originalPostion original position of the dragged item
          * @param finalPosition new position of the dragged item
          */
-        public void onSwapFinished(int originalPostion, int finalPosition);
+        void onSwapFinished(int originalPostion, int finalPosition);
     }
 
     public DynamicListView(Context context) {
@@ -176,30 +176,29 @@ public class DynamicListView extends ListView {
      * been selected, the hover cell is created and set up.
      */
     private AdapterView.OnItemLongClickListener mOnItemLongClickListener =
-            new AdapterView.OnItemLongClickListener() {
-                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long id) {
-                    if (!itemDraggingEnabled)
-                        return false;
+        (AdapterView<?> arg0, View arg1, int position, long id) -> {
+            if (!itemDraggingEnabled)
+                return false;
 
-                    mTotalOffset = 0;
+            mTotalOffset = 0;
 
-                    mOriginalPosition = position;
+            mOriginalPosition = position;
 
-                    int itemNum = position - getFirstVisiblePosition();
+            int itemNum = position - getFirstVisiblePosition();
 
-                    View selectedView = getChildAt(itemNum);
-                    mMobileItemId = getAdapter().getItemId(position);
-                    mHoverCell = getAndAddHoverView(selectedView);
-                    selectedView.setVisibility(INVISIBLE);
+            View selectedView = getChildAt(itemNum);
+            mMobileItemId = getAdapter().getItemId(position);
+            mHoverCell = getAndAddHoverView(selectedView);
+            selectedView.setVisibility(INVISIBLE);
 
-                    mCellIsMobile = true;
+            mCellIsMobile = true;
 
-                    itemBeingDragged = true;
+            itemBeingDragged = true;
 
-                    updateNeighborViewsForID(mMobileItemId);
-                    return true;
-                }
-            };
+            updateNeighborViewsForID(mMobileItemId);
+            return true;
+
+        };
 
     /**
      * Creates the hover cell with the appropriate bitmap and of appropriate
@@ -471,12 +470,7 @@ public class DynamicListView extends ListView {
 
             ObjectAnimator hoverViewAnimator = ObjectAnimator.ofObject(mHoverCell, "bounds",
                                                                        sBoundEvaluator, mHoverCellCurrentBounds);
-            hoverViewAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    invalidate();
-                }
-            });
+            hoverViewAnimator.addUpdateListener(valueAnimator -> invalidate());
             hoverViewAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {

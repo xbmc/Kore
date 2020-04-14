@@ -22,13 +22,16 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +42,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -51,7 +56,7 @@ import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public abstract class AbstractCursorListFragment extends AbstractListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor>,
@@ -84,7 +89,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	@TargetApi(16)
 	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View root = super.onCreateView(inflater, container, savedInstanceState);
 
 		bus = EventBus.getDefault();
@@ -111,6 +116,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	@Override
 	public void onResume() {
+		// TODO: Eventbus
 		bus.register(this);
 		super.onResume();
 		isPaused = false;
@@ -118,6 +124,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	@Override
 	public void onPause() {
+		// TODO: Eventbus
 		bus.unregister(this);
 		super.onPause();
 		isPaused = true;
@@ -130,7 +137,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(@NonNull Bundle outState) {
 		if (!TextUtils.isEmpty(searchFilter)) {
 			savedSearchFilter = searchFilter;
 		}
@@ -140,12 +147,9 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	@Override
 	protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
-		return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-			@Override
-			public void onItemClick(View view, int position) {
-				saveSearchState();
-				onListItemClicked(view);
-			}
+		return (view, position) -> {
+			saveSearchState();
+			onListItemClicked(view);
 		};
 	}
 
@@ -155,7 +159,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.abstractcursorlistfragment, menu);
 
 		if (supportsSearch) {
@@ -204,6 +208,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	 *
 	 * @param event Refreshes data
 	 */
+	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onEventMainThread(MediaSyncEvent event) {
 		onSyncProcessEnded(event);
 	}
@@ -243,7 +248,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
             boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
                 syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
             if (!silentRefresh)
-                UIUtils.showRefreshAnimation(swipeRefreshLayout);
+                UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
         }
     }
 
@@ -261,7 +266,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	@Override
     public void onRefresh() {
-		UIUtils.showRefreshAnimation(swipeRefreshLayout);
+		UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
 		Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
         syncIntent.putExtra(getListSyncType(), true);
 
@@ -314,6 +319,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	 * Loader callbacks
 	 */
 	/** {@inheritDoc} */
+	@NonNull
 	@Override
 	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 		loaderLoading = true;
@@ -322,18 +328,18 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	/** {@inheritDoc} */
 	@Override
-	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+	public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
 		((RecyclerViewCursorAdapter) getAdapter()).swapCursor(cursor);
 		if (TextUtils.isEmpty(searchFilter)) {
 			// To prevent the empty text from appearing on the first load, set it now
-			emptyView.setText(getString(R.string.swipe_down_to_refresh));
+			getEmptyView().setText(getString(R.string.swipe_down_to_refresh));
 		}
 		loaderLoading = false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void onLoaderReset(Loader<Cursor> cursorLoader) {
+	public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
 		((RecyclerViewCursorAdapter) getAdapter()).swapCursor(null);
 	}
 
@@ -390,15 +396,12 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		//Handle clearing search query using the close button (X button).
 		View view = searchView.findViewById(R.id.search_close_btn);
 		if (view != null) {
-			view.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					EditText editText = (EditText) searchView.findViewById(R.id.search_src_text);
-					editText.setText("");
-					searchView.setQuery("", false);
-					searchFilter = savedSearchFilter = "";
-					restartLoader();
-				}
+			view.setOnClickListener(v -> {
+				EditText editText = searchView.findViewById(R.id.search_src_text);
+				editText.setText("");
+				searchView.setQuery("", false);
+				searchFilter = savedSearchFilter = "";
+				restartLoader();
 			});
 		}
 	}

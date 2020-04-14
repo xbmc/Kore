@@ -19,9 +19,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * Dialog fragment that presents a list options to the user.
@@ -103,7 +104,7 @@ public class GenericSelectDialog
      * @param activity Context activity that implements GenericSelectDialogListener
      */
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
 
 //        // Try class cast
@@ -138,13 +139,10 @@ public class GenericSelectDialog
         if (getArguments().containsKey(ARRAY_ID_KEY)) {
             final int arrayId = args.getInt(ARRAY_ID_KEY);
             builder.setSingleChoiceItems(arrayId, selectedItem,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (mListener != null)
-                                mListener.onDialogSelect(token, which);
-                            dialog.dismiss();
-                        }
+                    (dialog, which) -> {
+                        if (mListener != null)
+                            mListener.onDialogSelect(token, which);
+                        dialog.dismiss();
                     });
         } else {
             final CharSequence[] items = args.getCharSequenceArray(ARRAY_ITEMS);
@@ -160,13 +158,10 @@ public class GenericSelectDialog
 //                        }
 //                    });
 
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (mListener != null)
-                        mListener.onDialogSelect(token, which);
-                    dialog.dismiss();
-                }
+            builder.setItems(items, (dialog, which) -> {
+                if (mListener != null)
+                    mListener.onDialogSelect(token, which);
+                dialog.dismiss();
             });
 
         }

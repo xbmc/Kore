@@ -20,10 +20,6 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,25 +28,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.preference.AndroidResources;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.FragmentGenericMediaListBinding;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public abstract class AbstractListFragment extends Fragment implements
 															SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
 	private RecyclerView.Adapter adapter;
 
-	private Unbinder unbinder;
+	//protected @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+	//@BindView(android.R.id.empty) TextView emptyView;*/
 
-	protected @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-	@BindView(R.id.list) RecyclerViewEmptyViewSupport recyclerView;
-	@BindView(android.R.id.empty) TextView emptyView;
+	protected FragmentGenericMediaListBinding binding;
 
 	abstract protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener();
 	abstract protected RecyclerViewEmptyViewSupport.Adapter createAdapter();
@@ -64,45 +63,44 @@ public abstract class AbstractListFragment extends Fragment implements
 	@TargetApi(16)
 	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_generic_media_list, container, false);
-		unbinder = ButterKnife.bind(this, root);
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding = FragmentGenericMediaListBinding.inflate(inflater, container, false);
 
-		swipeRefreshLayout.setOnRefreshListener(this);
+		binding.swipeRefreshLayout.setOnRefreshListener(this);
 
-		recyclerView.setEmptyView(emptyView);
-		recyclerView.setOnItemClickListener(createOnItemClickListener());
+		binding.list.setEmptyView(binding.list.getEmptyView());
+		binding.list.setOnItemClickListener(createOnItemClickListener());
 
 		if (PreferenceManager
 				.getDefaultSharedPreferences(getActivity())
 				.getBoolean(Settings.KEY_PREF_SINGLE_COLUMN,
 							Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
-			recyclerView.setColumnCount(1);
+			binding.list.setColumnCount(1);
 		}
 
-		recyclerView.setAdapter(adapter);
+		binding.list.setAdapter(adapter);
 		
 		setHasOptionsMenu(true);
 
-		return root;
+		return binding.getRoot();
 	}
 
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		unbinder.unbind();
+		binding = null;
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.abstractlistfragment, menu);
 
-		if(recyclerView.isMultiColumnSupported()) {
+		if(binding.list.isMultiColumnSupported()) {
 			if (PreferenceManager
 					.getDefaultSharedPreferences(getActivity())
 					.getBoolean(Settings.KEY_PREF_SINGLE_COLUMN,
 								Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
-				recyclerView.setColumnCount(1);
+				binding.list.setColumnCount(1);
 				adapter.notifyDataSetChanged();
 
 				MenuItem item = menu.findItem(R.id.action_multi_single_columns);
@@ -131,21 +129,21 @@ public abstract class AbstractListFragment extends Fragment implements
 	private void toggleAmountOfColumns(MenuItem item) {
 		SharedPreferences.Editor editor = PreferenceManager
 				.getDefaultSharedPreferences(getActivity()).edit();
-		if (recyclerView.getColumnCount() == 1) {
+		if (binding.list.getColumnCount() == 1) {
 			editor.putBoolean(Settings.KEY_PREF_SINGLE_COLUMN, false);
 			item.setTitle(R.string.single_column);
-			recyclerView.setColumnCount(RecyclerViewEmptyViewSupport.AUTO_FIT);
+			binding.list.setColumnCount(RecyclerViewEmptyViewSupport.AUTO_FIT);
 		} else {
 			editor.putBoolean(Settings.KEY_PREF_SINGLE_COLUMN, true);
 			item.setTitle(R.string.multi_column);
-			recyclerView.setColumnCount(1);
+			binding.list.setColumnCount(1);
 		}
 		editor.apply();
 		adapter.notifyDataSetChanged(); //force gridView to redraw
 	}
 
 	public void hideRefreshAnimation() {
-		swipeRefreshLayout.setRefreshing(false);
+		binding.swipeRefreshLayout.setRefreshing(false);
 	}
 
 	public RecyclerView.Adapter getAdapter() {
@@ -157,6 +155,6 @@ public abstract class AbstractListFragment extends Fragment implements
 	 * @return
 	 */
 	public TextView getEmptyView() {
-		return emptyView;
+		return new TextView(this.getContext());
 	}
 }

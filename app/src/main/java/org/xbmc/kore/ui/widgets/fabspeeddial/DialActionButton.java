@@ -24,29 +24,28 @@ import android.content.res.TypedArray;
 import android.graphics.Interpolator;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import org.xbmc.kore.R;
-import org.xbmc.kore.utils.Utils;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatTextView;
 
-import butterknife.ButterKnife;
-import butterknife.BindView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.DialActionButtonBinding;
 
 public class DialActionButton extends LinearLayout {
-    @BindView(R.id.dial_label) AppCompatTextView label;
-    @BindView(R.id.dial_action_button) FloatingActionButton button;
 
     private View anchorView;
     private boolean isHiding;
     private TimeInterpolator showInterpolator;
     private TimeInterpolator hideInterpolator;
+
+    private DialActionButtonBinding binding;
 
     public DialActionButton(Context context) {
         this(context, null, 0);
@@ -86,10 +85,12 @@ public class DialActionButton extends LinearLayout {
         //Initialize animation
         long anim_duration = anchorView.animate().getDuration();
 
-        label.setAlpha(0f);
-        label.animate().setDuration(anim_duration);
-        label.setScaleX(0f);
-        label.setScaleY(0f);
+
+
+        binding.dialLabel.setAlpha(0f);
+        binding.dialLabel.animate().setDuration(anim_duration);
+        binding.dialLabel.setScaleX(0f);
+        binding.dialLabel.setScaleY(0f);
 
         animate().setDuration(anim_duration);
         animate().setListener(new Animator.AnimatorListener() {
@@ -127,12 +128,12 @@ public class DialActionButton extends LinearLayout {
             animate().translationY(0);
             animate().setInterpolator(showInterpolator);
 
-            label.animate().setInterpolator(showInterpolator);
-            label.setX(anchorView.getX());
-            label.animate().translationX(0);
-            label.animate().alpha(1f);
-            label.animate().scaleX(1f);
-            label.animate().scaleY(1f);
+            binding.dialLabel.animate().setInterpolator(showInterpolator);
+            binding.dialLabel.setX(anchorView.getX());
+            binding.dialLabel.animate().translationX(0);
+            binding.dialLabel.animate().alpha(1f);
+            binding.dialLabel.animate().scaleX(1f);
+            binding.dialLabel.animate().scaleY(1f);
         }
     }
 
@@ -147,31 +148,31 @@ public class DialActionButton extends LinearLayout {
             animate().setInterpolator(hideInterpolator);
             animate().translationY(anchorView.getY() - getY());
 
-            label.animate().setInterpolator(hideInterpolator);
-            label.animate().translationX(anchorView.getX() - label.getX());
-            label.animate().alpha(0f);
-            label.animate().scaleX(0f);
-            label.animate().scaleY(0f);
+            binding.dialLabel.animate().setInterpolator(hideInterpolator);
+            binding.dialLabel.animate().translationX(anchorView.getX() - binding.dialLabel.getX());
+            binding.dialLabel.animate().alpha(0f);
+            binding.dialLabel.animate().scaleX(0f);
+            binding.dialLabel.animate().scaleY(0f);
         }
     }
 
     public Drawable getDrawable() {
-        return button.getDrawable();
+        return binding.dialActionButton.getDrawable();
     }
 
     public AppCompatTextView getLabel() {
-        return label;
+        return binding.dialLabel;
     }
 
     public void setColorFilter(int color) {
-        button.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        label.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        binding.dialActionButton.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        binding.dialLabel.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
     private void initializeView(Context context, AttributeSet attrs, int defStyleAttr) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.dial_action_button, this);
-        ButterKnife.bind(view);
+
+        binding = DialActionButtonBinding.inflate(inflater, this);
 
         // Make sure shadow is not clipped
         setClipToPadding(false);
@@ -189,18 +190,18 @@ public class DialActionButton extends LinearLayout {
         String text = typedArray.getString(0);
 
         if (text != null) {
-            label.setText(text);
+            binding.dialLabel.setText(text);
         } else {
-            label.setVisibility(View.GONE);
+            binding.dialLabel.setVisibility(View.GONE);
         }
 
         TypedValue typedValue = new TypedValue();
         typedArray.getValue(1, typedValue);
-        button.setImageResource(typedValue.resourceId);
+        binding.dialActionButton.setImageResource(typedValue.resourceId);
 
         typedArray.recycle();
 
         ColorStateList colorStateList = AppCompatResources.getColorStateList(context, R.color.fabspeeddial);
-        button.setBackgroundTintList(colorStateList);
+        binding.dialActionButton.setBackgroundTintList(colorStateList);
     }
 }

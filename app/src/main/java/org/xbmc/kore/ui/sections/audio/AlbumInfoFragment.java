@@ -21,12 +21,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
@@ -73,6 +75,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
      * Loader callbacks
      */
     /** {@inheritDoc} */
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri;
@@ -90,7 +93,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             switch (cursorLoader.getId()) {
                 case LOADER_ALBUM:
@@ -126,7 +129,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
     }
 
@@ -141,45 +144,34 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     @Override
     protected RefreshItem createRefreshItem() {
         RefreshItem refreshItem = new RefreshItem(getActivity(), LibrarySyncService.SYNC_ALL_MUSIC);
-        refreshItem.setListener(new RefreshItem.RefreshItemListener() {
-            @Override
-            public void onSyncProcessEnded(MediaSyncEvent event) {
-                if (event.status == MediaSyncEvent.STATUS_SUCCESS)
-                    getLoaderManager().restartLoader(LOADER_ALBUM, null, AlbumInfoFragment.this);
-            }
+        refreshItem.setListener((MediaSyncEvent event) -> {
+
+            if (event.status == MediaSyncEvent.STATUS_SUCCESS)
+                getLoaderManager().restartLoader(LOADER_ALBUM, null, AlbumInfoFragment.this);
+
         });
         return refreshItem;
     }
 
     @Override
     protected boolean setupMediaActionBar() {
-        setOnDownloadListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UIUtils.downloadSongs(getActivity(), albumSongsListFragment.getSongInfoList(),
-                                      getHostInfo(), callbackHandler);
-            }
+        setOnDownloadListener((View view) -> {
+            UIUtils.downloadSongs(getActivity(), albumSongsListFragment.getSongInfoList(),
+                                  getHostInfo(), callbackHandler);
+
         });
 
-        setOnAddToPlaylistListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addToPlaylist();
-            }
-        });
+        setOnAddToPlaylistListener((View view) -> addToPlaylist());
 
         return true;
     }
 
     @Override
     protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlaylistType.Item item = new PlaylistType.Item();
-                item.albumid = getDataHolder().getId();
-                playItemOnKodi(item);
-            }
+        FAB.setOnFabClickListener((View v) -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.albumid = getDataHolder().getId();
+            playItemOnKodi(item);
         });
         return true;
     }

@@ -17,10 +17,11 @@ package org.xbmc.kore.ui.animators;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.utils.LogUtils;
 
@@ -65,12 +66,7 @@ public class ChangeImageFadeAnimation {
         fadeInAnimator.setDuration(500);
         animatedImage = fadeOutImage;
 
-        ValueAnimator.AnimatorUpdateListener updateListener = new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                animatedImage.setAlpha((int) animation.getAnimatedValue());
-            }
-        };
+        ValueAnimator.AnimatorUpdateListener updateListener = animation -> animatedImage.setAlpha((int) animation.getAnimatedValue());
         fadeInAnimator.addUpdateListener(updateListener);
         fadeOutAnimator.addUpdateListener(updateListener);
 

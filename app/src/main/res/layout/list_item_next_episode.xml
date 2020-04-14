@@ -15,14 +15,13 @@
    limitations under the License.
 -->
 
-<android.support.v7.widget.CardView
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     style="@style/Widget.CardView">
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -76,4 +75,4 @@
             android:layout_alignParentBottom="true"
             style="@style/TextAppearance.Medialist.OtherInfo"/>
     </RelativeLayout>
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

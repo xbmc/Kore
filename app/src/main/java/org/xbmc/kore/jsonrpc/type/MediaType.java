@@ -23,7 +23,6 @@ import org.xbmc.kore.utils.JsonUtils;
  */
 public class MediaType {
 
-
     /**
      * Media.Artwork
      */

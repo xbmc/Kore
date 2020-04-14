@@ -15,14 +15,11 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -31,6 +28,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
@@ -82,7 +83,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
         Uri uri = MediaContract.Artists.buildArtistsListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.ArtistsColumns.ARTIST + " LIKE ?";
@@ -94,7 +95,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             listenerActivity = (OnArtistSelectedListener) context;
@@ -151,8 +152,9 @@ public class ArtistListFragment extends AbstractCursorListFragment {
             artHeight = (int)(resources.getDimension(R.dimen.detail_poster_height_square));
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(fragment.getContext())
                     .inflate(R.layout.grid_item_artist, parent, false);
 
@@ -169,19 +171,16 @@ public class ArtistListFragment extends AbstractCursorListFragment {
 
                 final PopupMenu popupMenu = new PopupMenu(fragment.getContext(), v);
                 popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_play:
-                                MediaPlayerUtils.play(fragment, playListItem);
-                                return true;
-                            case R.id.action_queue:
-                                MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                                return true;
-                        }
-                        return false;
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.action_play:
+                            MediaPlayerUtils.play(fragment, playListItem);
+                            return true;
+                        case R.id.action_queue:
+                            MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                            return true;
                     }
+                    return false;
                 });
                 popupMenu.show();
             }

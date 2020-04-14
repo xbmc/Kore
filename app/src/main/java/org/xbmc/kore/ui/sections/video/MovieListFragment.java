@@ -24,7 +24,6 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +33,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -90,7 +92,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         Uri uri = MediaContract.Movies.buildMoviesListUri(hostInfo != null? hostInfo.getId() : -1);
 
         StringBuilder selection = new StringBuilder();
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection.append(MediaContract.MoviesColumns.TITLE + " LIKE ?");
@@ -134,7 +136,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnMovieSelectedListener) ctx;
@@ -151,7 +153,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         if (!isAdded()) {
             // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
             super.onCreateOptionsMenu(menu, inflater);
@@ -354,8 +356,9 @@ public class MovieListFragment extends AbstractCursorListFragment {
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(getContext())
                                             .inflate(R.layout.grid_item_movie, parent, false);
 

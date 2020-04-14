@@ -17,28 +17,29 @@
 package org.xbmc.kore.testhelpers.action;
 
 import android.graphics.Rect;
-import android.support.test.espresso.PerformException;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.espresso.util.HumanReadables;
-import android.support.v4.widget.NestedScrollView;
+import androidx.test.espresso.PerformException;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.core.widget.NestedScrollView;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.espresso.util.HumanReadables;
+
 import android.view.View;
 
 import org.hamcrest.Matcher;
 import org.xbmc.kore.utils.LogUtils;
 
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.anyOf;
 
 /**
- * Modified version of {@link android.support.test.espresso.action.ScrollToAction} to support
+ * Modified version of {@link androidx.test.espresso.action.ScrollToAction} to support
  * NestedScrollView.
- * TODO Check future versions of {@link android.support.test.espresso.action.ScrollToAction} to see if support for NestedScrollView has been added
+ * TODO Check future versions of {@link androidx.test.espresso.action.ScrollToAction} to see if support for NestedScrollView has been added
  */
 public class NestedScrollTo implements ViewAction {
     private final static String TAG = LogUtils.makeLogTag(NestedScrollTo.class);

@@ -17,7 +17,6 @@ package org.xbmc.kore.ui.sections.hosts;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -25,6 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 
@@ -37,8 +39,8 @@ public class AddHostFragmentWelcome extends Fragment {
      * Callback interface to communicate with the encolsing activity
      */
     public interface AddHostWelcomeListener {
-        public void onAddHostWelcomeNext();
-        public void onAddHostWelcomeCancel();
+        void onAddHostWelcomeNext();
+        void onAddHostWelcomeCancel();
     }
 
     private AddHostWelcomeListener listener;
@@ -54,33 +56,23 @@ public class AddHostFragmentWelcome extends Fragment {
         if (getView() == null)
             return;
 
-        TextView message = (TextView)getView().findViewById(R.id.add_host_message);
+        TextView message = getView().findViewById(R.id.add_host_message);
         message.setText(Html.fromHtml(getString(R.string.wizard_welcome_message)));
         message.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Next button
-        Button next = (Button)getView().findViewById(R.id.next);
+        Button next = getView().findViewById(R.id.next);
         next.setText(R.string.next);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddHostWelcomeNext();
-            }
-        });
+        next.setOnClickListener((View v) -> listener.onAddHostWelcomeNext());
 
         // Previous button
-        Button previous = (Button)getView().findViewById(R.id.previous);
+        Button previous = getView().findViewById(R.id.previous);
         previous.setText(android.R.string.cancel);
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddHostWelcomeCancel();
-            }
-        });
+        previous.setOnClickListener((View v) -> listener.onAddHostWelcomeCancel());
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             listener = (AddHostWelcomeListener) activity;
@@ -88,6 +80,5 @@ public class AddHostFragmentWelcome extends Fragment {
             throw new ClassCastException(activity.toString() + " must implement AddHostWelcomeListener interface.");
         }
     }
-
 
 }

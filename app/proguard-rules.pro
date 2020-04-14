@@ -31,9 +31,11 @@
 -dontwarn com.fasterxml.jackson.databind.**
 
 # EventBus
+-keepattributes *Annotation*
 -keepclassmembers class ** {
-    public void onEvent*(**);
+    @org.greenrobot.eventbus.Subscribe <methods>;
 }
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
 
 # SearchView
 -keep class android.support.v7.widget.SearchView { *; }

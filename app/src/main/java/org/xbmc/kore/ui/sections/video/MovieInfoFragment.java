@@ -21,14 +21,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -77,12 +79,9 @@ public class MovieInfoFragment extends AbstractInfoFragment
         RefreshItem refreshItem = new RefreshItem(getActivity(),
                                                   LibrarySyncService.SYNC_SINGLE_MOVIE);
         refreshItem.setSyncItem(LibrarySyncService.SYNC_MOVIEID, getDataHolder().getId());
-        refreshItem.setListener(new RefreshItem.RefreshItemListener() {
-            @Override
-            public void onSyncProcessEnded(MediaSyncEvent event) {
-                if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                    getLoaderManager().restartLoader(LOADER_MOVIE, null, MovieInfoFragment.this);
-                }
+        refreshItem.setListener(event -> {
+            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+                getLoaderManager().restartLoader(LOADER_MOVIE, null, MovieInfoFragment.this);
             }
         });
 
@@ -91,150 +90,120 @@ public class MovieInfoFragment extends AbstractInfoFragment
 
     @Override
     protected boolean setupMediaActionBar() {
-        setOnDownloadListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogInterface.OnClickListener noopClickListener =
-                        new DialogInterface.OnClickListener() {
+        setOnDownloadListener(view -> {
+            DialogInterface.OnClickListener noopClickListener =
+                    (dialog, which) -> { };
+
+            // Check if the directory exists and whether to overwrite it
+            File file = new File(movieDownloadInfo.getAbsoluteFilePath());
+            if (file.exists()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.download)
+                       .setMessage(R.string.download_file_exists)
+                       .setPositiveButton(R.string.overwrite,
+                               (dialog, which) -> FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                callbackHandler))
+                       .setNeutralButton(R.string.download_with_new_name,
+                               (dialog, which) -> FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                movieDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                callbackHandler))
+                       .setNegativeButton(android.R.string.cancel, noopClickListener)
+                       .show();
+            } else {
+                // Confirm that the user really wants to download the file
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.download)
+                       .setMessage(R.string.confirm_movie_download)
+                       .setPositiveButton(android.R.string.ok,
+                               (dialog, which) -> FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
+                                                                movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
+                                                                callbackHandler))
+                       .setNegativeButton(android.R.string.cancel, noopClickListener)
+                       .show();
+            }
+
+        });
+
+        setOnSeenListener(view -> {
+            // Set the playcount
+            int playcount = cursor.getInt(MovieDetailsQuery.PLAYCOUNT);
+            int newPlaycount = (playcount > 0) ? 0 : 1;
+
+            VideoLibrary.SetMovieDetails action =
+                    new VideoLibrary.SetMovieDetails(getDataHolder().getId(), newPlaycount, null);
+            action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (!isAdded()) return;
+                    // Force a refresh, but don't show a message
+                    getRefreshItem().startSync(true);
+                }
+
+                @Override
+                public void onError(int errorCode, String description) { }
+            }, callbackHandler);
+        });
+
+        setOnGoToImdbListener(view -> {
+            String imdbNumber = cursor.getString(MovieDetailsQuery.IMDBNUMBER);
+
+            if (imdbNumber != null) {
+                Utils.openImdbForMovie(getActivity(), imdbNumber);
+            }
+        });
+
+        setOnAddToPlaylistListener(view -> {
+            Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
+
+            getPlaylists.execute(getHostManager().getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
+                @Override
+                public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
+                    if (!isAdded()) return;
+                    // Ok, loop through the playlists, looking for the video one
+                    int videoPlaylistId = -1;
+                    for (PlaylistType.GetPlaylistsReturnType playlist : result) {
+                        if (playlist.type.equals(PlaylistType.GetPlaylistsReturnType.VIDEO)) {
+                            videoPlaylistId = playlist.playlistid;
+                            break;
+                        }
+                    }
+                    // If found, add to playlist
+                    if (videoPlaylistId != -1) {
+                        PlaylistType.Item item = new PlaylistType.Item();
+                        item.movieid = getDataHolder().getId();
+                        Playlist.Add action = new Playlist.Add(videoPlaylistId, item);
+                        action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) { }
-                        };
-
-                // Check if the directory exists and whether to overwrite it
-                File file = new File(movieDownloadInfo.getAbsoluteFilePath());
-                if (file.exists()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.download)
-                           .setMessage(R.string.download_file_exists)
-                           .setPositiveButton(R.string.overwrite,
-                                              new DialogInterface.OnClickListener() {
-                                                  @Override
-                                                  public void onClick(DialogInterface dialog, int which) {
-                                                      FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                                       movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                                                                       callbackHandler);
-                                                  }
-                                              })
-                           .setNeutralButton(R.string.download_with_new_name,
-                                             new DialogInterface.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(DialogInterface dialog, int which) {
-                                                     FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                                      movieDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                                      callbackHandler);
-                                                 }
-                                             })
-                           .setNegativeButton(android.R.string.cancel, noopClickListener)
-                           .show();
-                } else {
-                    // Confirm that the user really wants to download the file
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.download)
-                           .setMessage(R.string.confirm_movie_download)
-                           .setPositiveButton(android.R.string.ok,
-                                              new DialogInterface.OnClickListener() {
-                                                  @Override
-                                                  public void onClick(DialogInterface dialog, int which) {
-                                                      FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                                       movieDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                                                                       callbackHandler);
-                                                  }
-                                              })
-                           .setNegativeButton(android.R.string.cancel, noopClickListener)
-                           .show();
-                }
-
-            }
-        });
-
-        setOnSeenListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Set the playcount
-                int playcount = cursor.getInt(MovieDetailsQuery.PLAYCOUNT);
-                int newPlaycount = (playcount > 0) ? 0 : 1;
-
-                VideoLibrary.SetMovieDetails action =
-                        new VideoLibrary.SetMovieDetails(getDataHolder().getId(), newPlaycount, null);
-                action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        if (!isAdded()) return;
-                        // Force a refresh, but don't show a message
-                        getRefreshItem().startSync(true);
-                    }
-
-                    @Override
-                    public void onError(int errorCode, String description) { }
-                }, callbackHandler);
-            }
-        });
-
-        setOnGoToImdbListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String imdbNumber = cursor.getString(MovieDetailsQuery.IMDBNUMBER);
-
-                if (imdbNumber != null) {
-                    Utils.openImdbForMovie(getActivity(), imdbNumber);
-                }
-            }
-        });
-
-        setOnAddToPlaylistListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
-
-                getPlaylists.execute(getHostManager().getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
-                    @Override
-                    public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
-                        if (!isAdded()) return;
-                        // Ok, loop through the playlists, looking for the video one
-                        int videoPlaylistId = -1;
-                        for (PlaylistType.GetPlaylistsReturnType playlist : result) {
-                            if (playlist.type.equals(PlaylistType.GetPlaylistsReturnType.VIDEO)) {
-                                videoPlaylistId = playlist.playlistid;
-                                break;
+                            public void onSuccess(String result) {
+                                if (!isAdded()) return;
+                                // Got an error, show toast
+                                Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
+                                     .show();
                             }
-                        }
-                        // If found, add to playlist
-                        if (videoPlaylistId != -1) {
-                            PlaylistType.Item item = new PlaylistType.Item();
-                            item.movieid = getDataHolder().getId();
-                            Playlist.Add action = new Playlist.Add(videoPlaylistId, item);
-                            action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
-                                @Override
-                                public void onSuccess(String result) {
-                                    if (!isAdded()) return;
-                                    // Got an error, show toast
-                                    Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                         .show();
-                                }
 
-                                @Override
-                                public void onError(int errorCode, String description) {
-                                    if (!isAdded()) return;
-                                    // Got an error, show toast
-                                    Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                         .show();
-                                }
-                            }, callbackHandler);
-                        } else {
-                            Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                                 .show();
-                        }
-                    }
-
-                    @Override
-                    public void onError(int errorCode, String description) {
-                        if (!isAdded()) return;
-                        // Got an error, show toast
-                        Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
+                            @Override
+                            public void onError(int errorCode, String description) {
+                                if (!isAdded()) return;
+                                // Got an error, show toast
+                                Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
+                                     .show();
+                            }
+                        }, callbackHandler);
+                    } else {
+                        Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
                              .show();
                     }
-                }, callbackHandler);
-            }
+                }
+
+                @Override
+                public void onError(int errorCode, String description) {
+                    if (!isAdded()) return;
+                    // Got an error, show toast
+                    Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
+                         .show();
+                }
+            }, callbackHandler);
         });
 
         return true;
@@ -278,6 +247,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
      * Loader callbacks
      */
     /** {@inheritDoc} */
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri;
@@ -293,7 +263,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             switch (cursorLoader.getId()) {
                 case LOADER_MOVIE:
@@ -343,7 +313,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
     }
 

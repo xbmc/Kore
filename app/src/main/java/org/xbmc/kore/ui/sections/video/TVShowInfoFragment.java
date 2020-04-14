@@ -19,9 +19,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -52,14 +54,11 @@ public class TVShowInfoFragment extends AbstractInfoFragment
         RefreshItem refreshItem = new RefreshItem(getActivity(),
                                                   LibrarySyncService.SYNC_SINGLE_TVSHOW);
         refreshItem.setSyncItem(LibrarySyncService.SYNC_TVSHOWID, getDataHolder().getId());
-        refreshItem.setListener(new RefreshItem.RefreshItemListener() {
-            @Override
-            public void onSyncProcessEnded(MediaSyncEvent event) {
-                if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                    getLoaderManager().restartLoader(LOADER_TVSHOW, null,
-                                                     TVShowInfoFragment.this);
-                    refreshAdditionInfoFragment();
-                }
+        refreshItem.setListener(event -> {
+            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+                getLoaderManager().restartLoader(LOADER_TVSHOW, null,
+                                                 TVShowInfoFragment.this);
+                refreshAdditionInfoFragment();
             }
         });
 
@@ -96,6 +95,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
      * Loader callbacks
      */
     /** {@inheritDoc} */
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri = MediaContract.TVShows.buildTVShowUri(getHostInfo().getId(), getDataHolder().getId());
@@ -106,7 +106,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null) {
             switch (cursorLoader.getId()) {
                 case LOADER_TVSHOW:
@@ -146,7 +146,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
     }
 

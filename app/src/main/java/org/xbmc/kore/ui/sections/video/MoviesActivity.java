@@ -17,8 +17,10 @@ package org.xbmc.kore.ui.sections.video;
 
 import android.annotation.TargetApi;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.BaseMediaActivity;
@@ -58,7 +60,7 @@ public class MoviesActivity extends BaseMediaActivity
     }
 
     @Override
-    protected void onSaveInstanceState (Bundle outState) {
+    protected void onSaveInstanceState (@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(MOVIEID, selectedMovieId);
         outState.putString(MOVIETITLE, selectedMovieTitle);

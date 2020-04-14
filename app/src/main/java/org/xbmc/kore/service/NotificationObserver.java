@@ -28,11 +28,20 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+
+/*import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;*/
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
@@ -142,7 +151,7 @@ public class NotificationObserver
     }
 
     // Picasso target that will be used to load images
-    private static Target picassoTarget = null;
+    private static Target glideTarget = null;
 
     private Notification buildNothingPlayingNotification() {
         int smallIcon = R.drawable.ic_devices_white_24dp;
@@ -263,7 +272,7 @@ public class NotificationObserver
                 .addAction(rewindIcon, service.getString(R.string.rewind), rewindPendingIntent) // #0
                 .addAction(playPauseIcon, service.getString(R.string.play), playPausePendingIntent)  // #1
                 .addAction(ffIcon, service.getString(R.string.fast_forward), ffPendingIntent)     // #2
-                .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                               .setShowActionsInCompactView(0, 1, 2))
                 .setContentIntent(remoteStartPendingIntent)
                 .setContentTitle(title)
@@ -293,8 +302,78 @@ public class NotificationObserver
         final int posterHeight = isVideo?
                 resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height):
                 posterWidth;
-        if (picassoTarget == null ) {
-            picassoTarget = new Target() {
+       if (glideTarget == null ) {
+           glideTarget = new Target(){
+               @Override
+               public void onStart() {
+
+               }
+
+               @Override
+               public void onStop() {
+
+               }
+
+               @Override
+               public void onDestroy() {
+
+               }
+
+               @Override
+               public void onLoadStarted(@Nullable Drawable placeholder) {
+                   showNotification(Utils.drawableToBitmap(placeholder, posterWidth, posterHeight));
+               }
+
+               @Override
+               public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                   CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(service, title);
+                   showNotification(Utils.drawableToBitmap(avatarDrawable, posterWidth, posterHeight));
+               }
+
+               @Override
+               public void onResourceReady(@NonNull Object resource, @Nullable Transition transition) {
+                   if (resource instanceof Bitmap) {
+                       showNotification((Bitmap) resource);
+                   }
+               }
+
+               @Override
+               public void onLoadCleared(@Nullable Drawable placeholder) {
+
+               }
+
+               @Override
+               public void getSize(@NonNull SizeReadyCallback cb) {
+
+               }
+
+               @Override
+               public void removeCallback(@NonNull SizeReadyCallback cb) {
+
+               }
+
+               @Override
+               public void setRequest(@Nullable Request request) {
+
+               }
+
+               @Nullable
+               @Override
+               public Request getRequest() {
+                   return null;
+               }
+               private void showNotification(Bitmap bitmap) {
+                   builder.setLargeIcon(bitmap);
+                   NotificationManager notificationManager =
+                           (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
+                   if (notificationManager != null) {
+                       currentNotification = builder.build();
+                       notificationManager.notify(NOTIFICATION_ID, currentNotification);
+                   }
+                   glideTarget = null;
+               }
+           };
+            /*picassoTarget = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                     showNotification(bitmap);
@@ -319,14 +398,14 @@ public class NotificationObserver
                     }
                     picassoTarget = null;
                 }
-            };
+            };*/
 
             // Load the image
-            HostManager hostManager = HostManager.getInstance(service);
-            hostManager.getPicasso()
-                    .load(hostManager.getHostInfo().getImageUrl(poster))
-                    .resize(posterWidth, posterHeight)
-                    .into(picassoTarget);
+           HostManager hostManager = HostManager.getInstance(service);
+           Glide.with(hostManager.getContext())
+                   .load(hostManager.getHostInfo().getImageUrl(poster))
+                   .override(posterWidth, posterHeight)
+                   .into(glideTarget);
         }
     }
 

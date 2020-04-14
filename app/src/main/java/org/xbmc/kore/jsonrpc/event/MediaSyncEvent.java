@@ -20,7 +20,7 @@ import android.os.Bundle;
 import org.xbmc.kore.service.library.LibrarySyncService;
 
 /**
- * Event to post on {@link de.greenrobot.event.EventBus} that notifies of a sync
+ * Event to post on {@link org.greenrobot.eventbus.EventBus} that notifies of a sync
  */
 public class MediaSyncEvent {
     public static final int STATUS_FAIL = 0;

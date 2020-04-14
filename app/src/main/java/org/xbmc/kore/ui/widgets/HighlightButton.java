@@ -17,9 +17,10 @@ package org.xbmc.kore.ui.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
+
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.Utils;
@@ -85,14 +86,11 @@ public class HighlightButton extends AppCompatImageButton {
         if (Utils.isLollipopOrLater() || this.isInEditMode())
             return;
 
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (highlight) {
-                    setColorFilter(highlightColor);
-                } else {
-                    setColorFilter(defaultColor);
-                }
+        getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            if (highlight) {
+                setColorFilter(highlightColor);
+            } else {
+                setColorFilter(defaultColor);
             }
         });
     }

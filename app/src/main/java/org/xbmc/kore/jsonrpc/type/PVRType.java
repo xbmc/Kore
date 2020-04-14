@@ -71,7 +71,7 @@ public class PVRType {
         String THUMBNAIL = "thumbnail";
         String RATING = "rating";
         
-        public final static String[] allValues = new String[] {
+        String[] allValues = new String[] {
               TITLE, PLOT, PLOTOUTLINE, STARTTIME, ENDTIME, RUNTIME, PROGRESS, PROGRESSPERCENTAGE, GENRE,
               EPISODENAME, EPISODENUM, EPISODEPART, FIRSTAIRED, HASTIMER, ISACTIVE, PARENTALRATING,
               WASACTIVE, THUMBNAIL, RATING
@@ -176,7 +176,7 @@ public class PVRType {
         String BROADCASTNOW = "broadcastnow";
         String BROADCASTNEXT = "broadcastnext";
 
-        public final static String[] allValues = new String[] {
+        String[] allValues = new String[] {
               THUMBNAIL, CHANNELTYPE, HIDDEN, LOCKED, CHANNEL, LASTPLAYED, BROADCASTNOW, BROADCASTNEXT
         };
     }
@@ -245,7 +245,7 @@ public class PVRType {
         String FILE = "file";
         String DIRECTORY = "directory";
 
-        public final static String[] allValues = new String[] {
+        String[] allValues = new String[] {
                 TITLE, PLOT, PLOTOUTLINE, GENRE, PLAYCOUNT, RESUME, CHANNEL, STARTTIME, ENDTIME, RUNTIME,
                 LIFETIME, ICON, ART, STREAMURL, FILE, DIRECTORY
         };

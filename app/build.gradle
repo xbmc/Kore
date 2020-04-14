@@ -11,16 +11,18 @@ def getVersionName = { ->
 
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 'android-R'
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "org.xbmc.kore"
-        minSdkVersion 15
-        targetSdkVersion 28
+        minSdkVersion 16
+        targetSdkVersion 29
+        multiDexEnabled true
         versionCode 26
         versionName = getVersionName()
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         def supportedLocales = ["en", "ast", "ru", "it", "ca", "cs", "zh-CN", "ja", "pt", "pt-BR",
                                 "pl", "sl", "sk", "lt", "eu", "iw", "fr", "es", "hr", "hu", "nl",
@@ -34,7 +36,7 @@ android {
     signingConfigs {
         release {
             if (keystoreFile.exists()) {
-                def Properties keyProps = new Properties()
+                Properties keyProps = new Properties()
                 keyProps.load(new FileInputStream(keystoreFile))
 
                 storeFile file(keyProps["store"])
@@ -46,10 +48,22 @@ android {
     }
 
     testOptions {
-        execution 'ANDROID_TEST_ORCHESTRATOR'
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
         unitTests {
             includeAndroidResources = true
         }
+    }
+
+    /*
+     * This is just to enable Java 8 in the app
+     */
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
@@ -89,45 +103,58 @@ android {
     }
 }
 
-ext {
-    supportLibVersion = '28.0.0'
-}
-
 dependencies {
-    implementation "com.android.support:support-v4:${supportLibVersion}"
-    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
-    implementation "com.android.support:cardview-v7:${supportLibVersion}"
-    implementation "com.android.support:preference-v14:${supportLibVersion}"
-    implementation "com.android.support:support-v13:${supportLibVersion}"
-    implementation "com.android.support:design:${supportLibVersion}"
-    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
-    implementation "com.android.support.constraint:constraint-layout:1.1.3"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0-beta01'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation 'com.squareup.okhttp:okhttp:2.3.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'de.greenrobot:eventbus:2.4.0'
-    implementation 'org.jmdns:jmdns:3.5.1'
-    implementation 'at.blogc:expandabletextview:1.0.3'
-    implementation 'com.sothree.slidinguppanel:library:3.3.1'
-    implementation 'com.simplecityapps:recyclerview-fastscroll:1.0.20'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0.rc1'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.5.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.8.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    implementation 'org.greenrobot:eventbus:3.2.0'
+    implementation 'org.jmdns:jmdns:3.5.5'
+    implementation 'at.blogc:expandabletextview:1.0.5'
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.1'
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
-    androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
-    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
-    androidTestImplementation "com.android.support:support-v13:${supportLibVersion}"
-    androidTestImplementation 'junit:junit:4.12'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-beta01'
 
-    testImplementation 'org.robolectric:robolectric:4.3'
-    testImplementation "androidx.test:core:1.2.0"
-    testImplementation "androidx.test.ext:junit:1.1.1"
-    debugImplementation 'junit:junit:4.12'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-beta01'
+    implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
+
+    annotationProcessor 'androidx.annotation:annotation:1.1.0'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha05'
+    androidTestImplementation 'androidx.test:rules:1.3.0-alpha05'
+    androidTestUtil 'androidx.test:orchestrator:1.3.0-alpha05'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
+    androidTestImplementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    androidTestImplementation 'junit:junit:4.13'
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha05'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0-alpha05'
+    androidTestImplementation 'androidx.test:runner:1.3.0-alpha05'
+    androidTestImplementation 'androidx.test:rules:1.3.0-alpha05'
+
+    testImplementation 'org.robolectric:robolectric:4.3.1'
+    testImplementation 'androidx.test:core:1.3.0-alpha05'
+    testImplementation 'androidx.test.ext:junit:1.1.2-alpha05'
+    debugImplementation 'junit:junit:4.13'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 

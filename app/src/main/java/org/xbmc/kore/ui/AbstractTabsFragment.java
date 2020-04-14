@@ -17,29 +17,26 @@
 package org.xbmc.kore.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.FragmentDefaultViewPagerBinding;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 abstract public class AbstractTabsFragment extends AbstractFragment
         implements SharedElementTransition.SharedElement {
     private static final String TAG = LogUtils.makeLogTag(AbstractTabsFragment.class);
 
-    @BindView(R.id.pager) ViewPager viewPager;
-
-    private Unbinder unbinder;
+    private FragmentDefaultViewPagerBinding binding;
 
     /**
      * Use {@link #setDataHolder(AbstractInfoFragment.DataHolder)} to provide the required info
@@ -51,17 +48,16 @@ abstract public class AbstractTabsFragment extends AbstractFragment
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) {
             // We're not being shown or there's nothing to show
             return null;
         }
 
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_default_view_pager, container, false);
-        unbinder = ButterKnife.bind(this, root);
+        binding = FragmentDefaultViewPagerBinding.inflate(inflater, container, false);
 
-        viewPager.setAdapter(createTabsAdapter(getDataHolder()));
-        return root;
+        binding.pager.setAdapter(createTabsAdapter(getDataHolder()));
+        return binding.getRoot();
     }
 
     @Override
@@ -73,7 +69,7 @@ abstract public class AbstractTabsFragment extends AbstractFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
     @Override
@@ -87,17 +83,13 @@ abstract public class AbstractTabsFragment extends AbstractFragment
         //need to check which fragment is currently displayed
         View artView = view.findViewById(R.id.poster);
         View scrollView = view.findViewById(R.id.media_panel);
-        if (( artView != null ) &&
-            ( scrollView != null ) &&
-            UIUtils.isViewInBounds(scrollView, artView)) {
-            return true;
-        }
-
-        return false;
+        return (artView != null) &&
+                (scrollView != null) &&
+                UIUtils.isViewInBounds(scrollView, artView);
     }
 
     protected ViewPager getViewPager() {
-        return viewPager;
+        return binding.pager;
     }
 
     /**

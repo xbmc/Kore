@@ -17,10 +17,12 @@ package org.xbmc.kore.ui.sections.video;
 
 import android.annotation.TargetApi;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractFragment;
@@ -76,7 +78,7 @@ public class TVShowsActivity extends BaseMediaActivity
     }
 
     @Override
-    protected void onSaveInstanceState (Bundle outState) {
+    protected void onSaveInstanceState (@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(TVSHOWID, selectedTVShowId);
         outState.putString(TVSHOWTITLE, selectedTVShowTitle);

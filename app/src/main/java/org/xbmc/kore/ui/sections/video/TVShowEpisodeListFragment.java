@@ -25,8 +25,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
-import android.support.v4.content.CursorLoader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +34,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -95,7 +97,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     protected int getSyncItemID() { return tvshowId; };
 
     @TargetApi(16) @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         tvshowId = getArguments().getInt(TVSHOWID, -1);
         tvshowSeason = getArguments().getInt(TVSHOWSEASON, -1);
@@ -137,7 +139,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             listenerActivity = (OnEpisodeSelectedListener) context;
@@ -154,7 +156,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         if (!isAdded()) {
             // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
             super.onCreateOptionsMenu(menu, inflater);
@@ -242,8 +244,9 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
+        @NonNull
         @Override
-        public RecyclerViewCursorAdapter.CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerViewCursorAdapter.CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getActivity())
                                       .inflate(R.layout.list_item_episode, parent, false);
             return new ViewHolder(view, getActivity(), themeAccentColor,
@@ -324,32 +327,26 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         }
     }
 
-    private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            final ViewHolder viewHolder = (ViewHolder)v.getTag();
+    private View.OnClickListener contextlistItemMenuClickListener = v -> {
+        final ViewHolder viewHolder = (ViewHolder)v.getTag();
 
-            final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.episodeid = viewHolder.dataHolder.getId();
+        final PlaylistType.Item playListItem = new PlaylistType.Item();
+        playListItem.episodeid = viewHolder.dataHolder.getId();
 
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_play:
-                            MediaPlayerUtils.play(TVShowEpisodeListFragment.this, playListItem);
-                            return true;
-                        case R.id.action_queue:
-                            MediaPlayerUtils.queue(TVShowEpisodeListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
-                            return true;
-                    }
-                    return false;
-                }
-            });
-            popupMenu.show();
-        }
+        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_play:
+                    MediaPlayerUtils.play(TVShowEpisodeListFragment.this, playListItem);
+                    return true;
+                case R.id.action_queue:
+                    MediaPlayerUtils.queue(TVShowEpisodeListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
+                    return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     };
 
 }

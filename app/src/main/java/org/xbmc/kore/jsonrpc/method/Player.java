@@ -30,7 +30,7 @@ import org.xbmc.kore.utils.JsonUtils;
 import java.util.ArrayList;
 
 /**
- * All JSON RPC methods in Playyer.*
+ * All JSON RPC methods in Player.*
  */
 public class Player {
 
@@ -53,7 +53,7 @@ public class Player {
         @Override
         public ArrayList<GetActivePlayersReturnType> resultFromJson(ObjectNode jsonObject) throws ApiException {
             ArrayNode resultNode = (ArrayNode)jsonObject.get(RESULT_NODE);
-            ArrayList<GetActivePlayersReturnType> res = new ArrayList<GetActivePlayersReturnType>();
+            ArrayList<GetActivePlayersReturnType> res = new ArrayList<>();
             if (resultNode != null) {
                 for (JsonNode node : resultNode) {
                     res.add(new GetActivePlayersReturnType(node));

@@ -15,17 +15,17 @@
  */
 package org.xbmc.kore.utils;
 
-import android.text.TextUtils;
+/*import android.text.TextUtils;
 import android.util.Base64;
 
 import com.squareup.picasso.UrlConnectionDownloader;
 
-import java.net.HttpURLConnection;
+import java.net.HttpURLConnection;*/
 
 /**
  * Picasso Downloader that sets basic authentication in the headers
  */
-public class BasicAuthUrlConnectionDownloader extends UrlConnectionDownloader {
+/*public class BasicAuthUrlConnectionDownloader extends UrlConnectionDownloader {
 
     protected final String username;
     protected final String password;
@@ -54,4 +54,4 @@ public class BasicAuthUrlConnectionDownloader extends UrlConnectionDownloader {
         }
         return urlConnection;
     }
-}
+}*/

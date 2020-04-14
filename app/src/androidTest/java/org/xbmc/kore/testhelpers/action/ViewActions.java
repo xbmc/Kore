@@ -24,8 +24,8 @@ import android.support.test.espresso.action.MotionEvents;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.util.HumanReadables;
 import android.support.test.espresso.util.TreeIterables;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.core.view.PagerAdapter;
+import androidx.core.view.ViewPager;
 import android.view.View;
 import android.widget.SeekBar;
 

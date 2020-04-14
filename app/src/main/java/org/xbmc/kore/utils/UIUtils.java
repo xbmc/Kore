@@ -28,10 +28,11 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.TextViewCompat;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+//import androidx.core.widget.SwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.core.widget.TextViewCompat;
+import androidx.appcompat.app.AlertDialog;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -46,6 +47,8 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -150,17 +153,17 @@ public class UIUtils {
 //        }
 
         if ((imageWidth) > 0 && (imageHeight > 0)) {
-            hostManager.getPicasso()
-                       .load(hostManager.getHostInfo().getImageUrl(imageUrl))
-                       .resize(imageWidth, imageHeight)
-                       .centerCrop()
-                       .into(imageView);
+            Glide.with(hostManager.getContext())
+                    .load(hostManager.getHostInfo().getImageUrl(imageUrl))
+                    .override(imageWidth, imageHeight)
+                    .centerCrop()
+                    .into(imageView);
         } else {
-            hostManager.getPicasso()
-                       .load(hostManager.getHostInfo().getImageUrl(imageUrl))
-                       .fit()
-                       .centerCrop()
-                       .into(imageView);
+            Glide.with(hostManager.getContext())
+                    .load(hostManager.getHostInfo().getImageUrl(imageUrl))
+                    .fitCenter()
+                    .centerCrop()
+                    .into(imageView);
         }
     }
 
@@ -189,18 +192,17 @@ public class UIUtils {
         }
 
         if ((imageWidth) > 0 && (imageHeight > 0)) {
-            hostManager.getPicasso()
-                       .load(hostManager.getHostInfo().getImageUrl(imageUrl))
-                       .placeholder(avatarDrawable)
-                       .resize(imageWidth, imageHeight)
-                       .centerCrop()
-                       .into(imageView);
+            Glide.with(hostManager.getContext())
+                    .load(hostManager.getHostInfo().getImageUrl(imageUrl))
+                    .override(imageWidth, imageHeight)
+                    .centerCrop()
+                    .into(imageView);
         } else {
-            hostManager.getPicasso()
-                       .load(hostManager.getHostInfo().getImageUrl(imageUrl))
-                       .fit()
-                       .centerCrop()
-                       .into(imageView);
+            Glide.with(hostManager.getContext())
+                    .load(hostManager.getHostInfo().getImageUrl(imageUrl))
+                    .fitCenter()
+                    .centerCrop()
+                    .into(imageView);
         }
     }
 
@@ -271,12 +273,7 @@ public class UIUtils {
         WindowManager windowManager = (WindowManager)activity.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
 
-        View.OnClickListener castListClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.openImdbForPerson(activity, (String)v.getTag());
-            }
-        };
+        View.OnClickListener castListClickListener = v -> Utils.openImdbForPerson(activity, (String)v.getTag());
 
         castListView.removeAllViews();
         int numColumns = castListView.getColumnCount();
@@ -292,9 +289,9 @@ public class UIUtils {
             VideoType.Cast actor = castList.get(i);
 
             View castView = LayoutInflater.from(activity).inflate(R.layout.grid_item_cast, castListView, false);
-            ImageView castPicture = (ImageView) castView.findViewById(R.id.picture);
-            TextView castName = (TextView) castView.findViewById(R.id.name);
-            TextView castRole = (TextView) castView.findViewById(R.id.role);
+            ImageView castPicture = castView.findViewById(R.id.picture);
+            TextView castName = castView.findViewById(R.id.name);
+            TextView castRole = castView.findViewById(R.id.role);
 
             castView.getLayoutParams().width = imageWidth;
             castView.getLayoutParams().height = imageHeight;
@@ -307,18 +304,15 @@ public class UIUtils {
             if ((i == maxCastPictures - 1) && (castList.size() > i + 1)) {
                 View castNameGroup = castView.findViewById(R.id.cast_name_group);
                 View allCastGroup = castView.findViewById(R.id.all_cast_group);
-                TextView remainingCastCount = (TextView)castView.findViewById(R.id.remaining_cast_count);
+                TextView remainingCastCount = castView.findViewById(R.id.remaining_cast_count);
 
                 castNameGroup.setVisibility(View.GONE);
                 allCastGroup.setVisibility(View.VISIBLE);
                 remainingCastCount.setText(String.format(activity.getString(R.string.remaining_cast_count),
                                                          castList.size() - maxCastPictures + 1));
-                castView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        activity.startActivity(allCastActivityLaunchIntent);
-                        activity.overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
-                    }
+                castView.setOnClickListener(v -> {
+                    activity.startActivity(allCastActivityLaunchIntent);
+                    activity.overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
                 });
             } else {
                 castName.setText(actor.name);
@@ -342,13 +336,8 @@ public class UIUtils {
             return;
 
         // Send WoL magic packet on a new thread
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                NetUtils.sendWolMagicPacket(hostInfo.getMacAddress(),
-                                            hostInfo.getAddress(), hostInfo.getWolPort());
-            }
-        }).start();
+        new Thread(() -> NetUtils.sendWolMagicPacket(hostInfo.getMacAddress(),
+                                    hostInfo.getAddress(), hostInfo.getWolPort())).start();
         Toast.makeText(context, R.string.wol_sent, Toast.LENGTH_SHORT).show();
     }
 
@@ -400,7 +389,7 @@ public class UIUtils {
      * @return Android resource id of the theme
      */
     public static int getThemeResourceId(String prefThemeValue) {
-        switch (Integer.valueOf(prefThemeValue)) {
+        switch (Integer.parseInt(prefThemeValue)) {
             case 0:
                 return R.style.NightTheme;
             case 1:
@@ -484,12 +473,7 @@ public class UIUtils {
      * @param layout
      */
     public static void showRefreshAnimation(@NonNull final SwipeRefreshLayout layout) {
-        layout.post(new Runnable() {
-            @Override
-            public void run() {
-                layout.setRefreshing(true);
-            }
-        });
+        layout.post(() -> layout.setRefreshing(true));
     }
 
     /**
@@ -515,7 +499,7 @@ public class UIUtils {
                                      final HostInfo hostInfo,
                                      final Handler callbackHandler) {
         if (songInfoList == null || songInfoList.size() == 0) {
-            Toast.makeText(context, R.string.no_songs_to_download, Toast.LENGTH_LONG);
+            Toast.makeText(context, R.string.no_songs_to_download, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -534,28 +518,15 @@ public class UIUtils {
             builder.setTitle(R.string.download)
                    .setMessage(songInfoList.size() > 1 ? R.string.download_files_exists : R.string.download_file_exists)
                    .setPositiveButton(R.string.overwrite,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              FileDownloadHelper.downloadFiles(context, hostInfo,
-                                                                               songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
+                           (dialog, which) -> FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                            songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                                            callbackHandler))
                    .setNeutralButton(R.string.download_with_new_name,
-                                     new DialogInterface.OnClickListener() {
-                                         @Override
-                                         public void onClick(DialogInterface dialog, int which) {
-                                             FileDownloadHelper.downloadFiles(context, hostInfo,
-                                                                              songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                              callbackHandler);
-                                         }
-                                     })
+                           (dialog, which) -> FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                            songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                            callbackHandler))
                    .setNegativeButton(android.R.string.cancel,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) { }
-                                      })
+                           (dialog, which) -> { })
                    .show();
         } else {
             if ( songInfoList.size() > 12 ) { // No scientific reason this should be 12. I just happen to like 12.
@@ -564,18 +535,10 @@ public class UIUtils {
                 builder.setTitle(R.string.download)
                        .setMessage(String.format(message, songInfoList.size()))
                        .setPositiveButton(android.R.string.ok,
-                                          new DialogInterface.OnClickListener() {
-                                              @Override
-                                              public void onClick(DialogInterface dialog, int which) {
-                                                  FileDownloadHelper.downloadFiles(context, hostInfo,
-                                                                                   songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                                                                   callbackHandler);
-                                              }
-                                          })
-                       .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                           }
+                               (dialog, which) -> FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                                songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                                                callbackHandler))
+                       .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
                        })
                        .show();
             } else {
@@ -625,29 +588,23 @@ public class UIUtils {
      * @return Runnable
      */
     public static Runnable getMarqueeToggleableAction(final TextView textView) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                int lines = textView.getLineCount();
-                int maxLines = TextViewCompat.getMaxLines(textView);
-                if (lines > maxLines) {
-                    textView.setEllipsize(TextUtils.TruncateAt.END);
-                    textView.setClickable(true);
-                    textView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            v.setSelected(!v.isSelected());
-                            TextUtils.TruncateAt ellipsize;
-                            if (v.isSelected()) {
-                                ellipsize = TextUtils.TruncateAt.MARQUEE;
-                            } else {
-                                ellipsize = TextUtils.TruncateAt.END;
-                            }
-                            textView.setEllipsize(ellipsize);
-                            textView.setHorizontallyScrolling(v.isSelected());
-                        }
-                    });
-                }
+        return () -> {
+            int lines = textView.getLineCount();
+            int maxLines = TextViewCompat.getMaxLines(textView);
+            if (lines > maxLines) {
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setClickable(true);
+                textView.setOnClickListener(v -> {
+                    v.setSelected(!v.isSelected());
+                    TextUtils.TruncateAt ellipsize;
+                    if (v.isSelected()) {
+                        ellipsize = TextUtils.TruncateAt.MARQUEE;
+                    } else {
+                        ellipsize = TextUtils.TruncateAt.END;
+                    }
+                    textView.setEllipsize(ellipsize);
+                    textView.setHorizontallyScrolling(v.isSelected());
+                });
             }
         };
     }

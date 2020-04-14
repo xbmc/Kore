@@ -19,7 +19,6 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -27,16 +26,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.GridLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.FragmentNowPlayingBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -54,21 +51,13 @@ import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.generic.GenericSelectDialog;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
-import org.xbmc.kore.ui.widgets.HighlightButton;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
-import org.xbmc.kore.ui.widgets.RepeatModeButton;
-import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Now playing view
@@ -85,7 +74,7 @@ public class NowPlayingFragment extends Fragment
      * Interface for this fragment to communicate with the enclosing activity
      */
     public interface NowPlayingListener {
-        public void SwitchToRemotePanel();
+        void SwitchToRemotePanel();
     }
 
     /**
@@ -130,46 +119,12 @@ public class NowPlayingFragment extends Fragment
     private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
     private ApiCallback<Boolean> defaultBooleanActionCallback = ApiMethod.getDefaultActionCallback();
 
-    private Unbinder unbinder;
-
     private int pixelsToTransparent;
 
-    /**
-     * Injectable views
-     */
-    @BindView(R.id.play) ImageButton playButton;
-
-    @BindView(R.id.volume_mute) HighlightButton volumeMuteButton;
-    @BindView(R.id.shuffle) HighlightButton shuffleButton;
-    @BindView(R.id.repeat) RepeatModeButton repeatButton;
-    @BindView(R.id.overflow) ImageButton overflowButton;
-
-    @BindView(R.id.info_panel) RelativeLayout infoPanel;
-    @BindView(R.id.media_panel) ScrollView mediaPanel;
-
-    @BindView(R.id.info_title) TextView infoTitle;
-    @BindView(R.id.info_message) TextView infoMessage;
-
-    @BindView(R.id.art) ImageView mediaArt;
-    @BindView(R.id.poster) ImageView mediaPoster;
-
-    @BindView(R.id.media_title) TextView mediaTitle;
-    @BindView(R.id.media_undertitle) TextView mediaUndertitle;
-    @BindView(R.id.progress_info) MediaProgressIndicator mediaProgressIndicator;
-
-    @BindView(R.id.volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
-
-    @BindView(R.id.rating) TextView mediaRating;
-    @BindView(R.id.max_rating) TextView mediaMaxRating;
-    @BindView(R.id.year) TextView mediaYear;
-    @BindView(R.id.genres) TextView mediaGenreSeason;
-    @BindView(R.id.rating_votes) TextView mediaRatingVotes;
-
-    @BindView(R.id.media_description) TextView mediaDescription;
-    @BindView(R.id.cast_list) GridLayout videoCastList;
+    private FragmentNowPlayingBinding binding;
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         // Try to cast the enclosing activity to the listener interface
         try {
@@ -187,33 +142,33 @@ public class NowPlayingFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_now_playing, container, false);
-        unbinder = ButterKnife.bind(this, root);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentNowPlayingBinding.inflate(inflater, container, false);
 
-        volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
-            @Override
-            public void onVolumeChanged(int volume) {
-                new Application.SetVolume(volume)
-                        .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
-            }
-        });
+        binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
+                .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler));
 
-        mediaProgressIndicator.setOnProgressChangeListener(this);
+        binding.progressInfo.setOnProgressChangeListener(this);
 
-        volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
-            @Override
-            public void onVolumeChanged(int volume) {
-                new Application.SetVolume(volume).execute(hostManager.getConnection(),
-                                                          defaultIntActionCallback, callbackHandler);
-            }
-        });
+        binding.play.setOnClickListener(this::onPlayClicked);
+        binding.stop.setOnClickListener(this::onStopClicked);
+        binding.fastForward.setOnClickListener(this::onFastForwardClicked);
+        binding.rewind.setOnClickListener(this::onRewindClicked);
+        binding.previous.setOnClickListener(this::onPreviousClicked);
+        binding.next.setOnClickListener(this::onNextClicked);
+        binding.volumeMute.setOnClickListener(this::onVolumeMuteClicked);
+        binding.shuffle.setOnClickListener(this::onShuffleClicked);
+        binding.repeat.setOnClickListener(this::onRepeatClicked);
+        binding.overflow.setOnClickListener(this::onOverflowClicked);
+
+        binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume).execute(hostManager.getConnection(),
+                                                  defaultIntActionCallback, callbackHandler));
 
 //        // Pad main content view to overlap with bottom system bar
 //        UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
 //        mediaPanel.setClipToPadding(false);
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -226,7 +181,7 @@ public class NowPlayingFragment extends Fragment
          * @see {@link #onScrollChanged()}
          */
         pixelsToTransparent  = 4 * getActivity().getResources().getDimensionPixelSize(R.dimen.default_icon_size);
-        mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
+        binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
     }
 
     @Override
@@ -246,9 +201,9 @@ public class NowPlayingFragment extends Fragment
 
     @Override
     public void onDestroyView() {
-        mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(this);
+        binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(this);
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
     /**
@@ -263,7 +218,7 @@ public class NowPlayingFragment extends Fragment
         @Override
         public void onSuccess(Integer result) {
             if (!isAdded()) return;
-            UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, result == 1);
+            UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, result == 1);
         }
 
         @Override
@@ -272,58 +227,50 @@ public class NowPlayingFragment extends Fragment
 
     @Override
     public void onScrollChanged() {
-        float y = mediaPanel.getScrollY();
+        float y = binding.mediaPanel.getScrollY();
         float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
-        mediaArt.setAlpha(newAlpha);
+        binding.art.setAlpha(newAlpha);
     }
 
     /**
      * Callbacks for bottom button bar
      */
-    @OnClick(R.id.play)
     public void onPlayClicked(View v) {
         Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
     }
 
-    @OnClick(R.id.stop)
     public void onStopClicked(View v) {
         Player.Stop action = new Player.Stop(currentActivePlayerId);
         action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, false);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, false);
     }
 
-    @OnClick(R.id.fast_forward)
     public void onFastForwardClicked(View v) {
         Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.INCREMENT);
         action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
     }
 
-    @OnClick(R.id.rewind)
     public void onRewindClicked(View v) {
         Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.DECREMENT);
         action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
     }
 
-    @OnClick(R.id.previous)
     public void onPreviousClicked(View v) {
         Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
         action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
     }
 
-    @OnClick(R.id.next)
     public void onNextClicked(View v) {
         Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
         action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
     }
 
-    @OnClick(R.id.volume_mute)
     public void onVolumeMuteClicked(View v) {
         Application.SetMute action = new Application.SetMute();
         action.execute(hostManager.getConnection(), defaultBooleanActionCallback, callbackHandler);
     }
 
-    @OnClick(R.id.shuffle)
     public void onShuffleClicked(View v) {
         Player.SetShuffle action = new Player.SetShuffle(currentActivePlayerId);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
@@ -339,7 +286,6 @@ public class NowPlayingFragment extends Fragment
         }, callbackHandler);
     }
 
-    @OnClick(R.id.repeat)
     public void onRepeatClicked(View v) {
         Player.SetRepeat action = new Player.SetRepeat(currentActivePlayerId, PlayerType.Repeat.CYCLE);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
@@ -354,7 +300,6 @@ public class NowPlayingFragment extends Fragment
         }, callbackHandler);
     }
 
-    @OnClick(R.id.overflow)
     public void onOverflowClicked(View v) {
         PopupMenu popup = new PopupMenu(getActivity(), v);
         popup.inflate(R.menu.video_overflow);
@@ -549,10 +494,10 @@ public class NowPlayingFragment extends Fragment
     @Override
     public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
         if (notificationsData.property.shuffled != null)
-            shuffleButton.setHighlight(notificationsData.property.shuffled);
+            binding.shuffle.setHighlight(notificationsData.property.shuffled);
 
         if (notificationsData.property.repeatMode != null)
-            UIUtils.setRepeatButton(repeatButton, notificationsData.property.repeatMode);
+            UIUtils.setRepeatButton(binding.repeat, notificationsData.property.repeatMode);
     }
 
     /**
@@ -564,7 +509,7 @@ public class NowPlayingFragment extends Fragment
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
         currentActivePlayerId = getActivePlayerResult.playerid;
         // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed == 1);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, getPropertiesResult.speed == 1);
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
@@ -573,7 +518,7 @@ public class NowPlayingFragment extends Fragment
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
         currentActivePlayerId = getActivePlayerResult.playerid;
         // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), playButton, getPropertiesResult.speed == 1);
+        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, getPropertiesResult.speed == 1);
     }
 
     public void playerOnStop() {
@@ -581,8 +526,9 @@ public class NowPlayingFragment extends Fragment
 
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
-        infoTitle.setText(R.string.nothing_playing);
-        infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
+        // TODO ViewBinding infoTitle/infoMessage doesnt exist
+        //binding.infoTitle.setText(R.string.nothing_playing);
+        //binding.infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
     }
 
     public void playerOnConnectionError(int errorCode, String description) {
@@ -591,12 +537,15 @@ public class NowPlayingFragment extends Fragment
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
         if (hostInfo != null) {
-            infoTitle.setText(R.string.connecting);
+            // TODO ViewBinding infoTitle/infoMessage doesnt exist
+            //infoTitle.setText(R.string.connecting);
             // TODO: check error code
-            infoMessage.setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
+            // TODO ViewBinding infoTitle/infoMessage doesnt exist
+            //infoMessage.setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
         } else {
-            infoTitle.setText(R.string.no_xbmc_configured);
-            infoMessage.setText(null);
+            // TODO ViewBinding infoTitle/infoMessage doesnt exist
+            //infoTitle.setText(R.string.no_xbmc_configured);
+            //infoMessage.setText(null);
         }
     }
 
@@ -605,11 +554,14 @@ public class NowPlayingFragment extends Fragment
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
         if (hostInfo != null) {
-            infoTitle.setText(R.string.connecting);
+            // TODO ViewBinding infoTitle/infoMessage doesnt exist
+            //infoTitle.setText(R.string.connecting);
         } else {
-            infoTitle.setText(R.string.no_xbmc_configured);
+            // TODO ViewBinding infoTitle/infoMessage doesnt exist
+            //infoTitle.setText(R.string.no_xbmc_configured);
         }
-        infoMessage.setText(null);
+        // TODO ViewBinding infoTitle/infoMessage doesnt exist
+        //infoMessage.setText(null);
     }
 
     public void systemOnQuit() {
@@ -618,8 +570,8 @@ public class NowPlayingFragment extends Fragment
 
     @Override
     public void applicationOnVolumeChanged(int volume, boolean muted) {
-        volumeLevelIndicator.setVolume(muted, volume);
-        volumeMuteButton.setHighlight(muted);
+        binding.volumeLevelIndicator.setVolume(muted, volume);
+        binding.volumeMute.setHighlight(muted);
     }
 
     // Ignore this
@@ -751,53 +703,53 @@ public class NowPlayingFragment extends Fragment
                 break;
         }
 
-        mediaTitle.setText(UIUtils.applyMarkup(getContext(), title));
-        mediaTitle.post(UIUtils.getMarqueeToggleableAction(mediaTitle));
-        mediaUndertitle.setText(underTitle);
+        binding.mediaTitle.setText(UIUtils.applyMarkup(getContext(), title));
+        binding.mediaTitle.post(UIUtils.getMarqueeToggleableAction(binding.mediaTitle));
+        binding.mediaUndertitle.setText(underTitle);
 
-        mediaProgressIndicator.setOnProgressChangeListener(this);
-        mediaProgressIndicator.setMaxProgress(getPropertiesResult.totaltime.ToSeconds());
-        mediaProgressIndicator.setProgress(getPropertiesResult.time.ToSeconds());
+        binding.progressInfo.setOnProgressChangeListener(this);
+        binding.progressInfo.setMaxProgress(getPropertiesResult.totaltime.ToSeconds());
+        binding.progressInfo.setProgress(getPropertiesResult.time.ToSeconds());
 
         int speed = getPropertiesResult.speed;
         //TODO: check if following is still necessary for PVR playback
         if (getItemResult.type.equals(ListType.ItemsAll.TYPE_CHANNEL))
             speed = 1;
-        mediaProgressIndicator.setSpeed(speed);
+        binding.progressInfo.setSpeed(speed);
 
         if (!TextUtils.isEmpty(year) || !TextUtils.isEmpty(genreSeason)) {
-            mediaYear.setVisibility(View.VISIBLE);
-            mediaGenreSeason.setVisibility(View.VISIBLE);
-            mediaYear.setText(year);
-            mediaGenreSeason.setText(genreSeason);
+            binding.year.setVisibility(View.VISIBLE);
+            binding.genres.setVisibility(View.VISIBLE);
+            binding.year.setText(year);
+            binding.genres.setText(genreSeason);
         } else {
-            mediaYear.setVisibility(View.GONE);
-            mediaGenreSeason.setVisibility(View.GONE);
+            binding.year.setVisibility(View.GONE);
+            binding.genres.setVisibility(View.GONE);
         }
 
         // 0 rating will not be shown
         if (rating > 0) {
-            mediaRating.setVisibility(View.VISIBLE);
-            mediaMaxRating.setVisibility(View.VISIBLE);
-            mediaRatingVotes.setVisibility(View.VISIBLE);
-            mediaRating.setText(String.format("%01.01f", rating));
-            mediaMaxRating.setText(maxRating);
-            mediaRatingVotes.setText(votes);
+            binding.rating.setVisibility(View.VISIBLE);
+            binding.maxRating.setVisibility(View.VISIBLE);
+            binding.ratingVotes.setVisibility(View.VISIBLE);
+            binding.rating.setText(String.format("%01.01f", rating));
+            binding.maxRating.setText(maxRating);
+            binding.ratingVotes.setText(votes);
         } else {
-            mediaRating.setVisibility(View.GONE);
-            mediaMaxRating.setVisibility(View.GONE);
-            mediaRatingVotes.setVisibility(View.GONE);
+            binding.rating.setVisibility(View.GONE);
+            binding.maxRating.setVisibility(View.GONE);
+            binding.ratingVotes.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(descriptionPlot)) {
-            mediaDescription.setVisibility(View.VISIBLE);
-            mediaDescription.setText(UIUtils.applyMarkup(getContext(), descriptionPlot));
+            binding.mediaDescription.setVisibility(View.VISIBLE);
+            binding.mediaDescription.setText(UIUtils.applyMarkup(getContext(), descriptionPlot));
         } else {
-            mediaDescription.setVisibility(View.GONE);
+            binding.mediaDescription.setVisibility(View.GONE);
         }
 
-        UIUtils.setRepeatButton(repeatButton, getPropertiesResult.repeat);
-        shuffleButton.setHighlight(getPropertiesResult.shuffled);
+        UIUtils.setRepeatButton(binding.repeat, getPropertiesResult.repeat);
+        binding.shuffle.setHighlight(getPropertiesResult.shuffled);
 
         Resources resources = getActivity().getResources();
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -806,7 +758,7 @@ public class NowPlayingFragment extends Fragment
         int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height),
                 artWidth = displayMetrics.widthPixels;
         if (!TextUtils.isEmpty(art)) {
-            mediaPoster.setVisibility(View.VISIBLE);
+            binding.poster.setVisibility(View.VISIBLE);
             int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
             int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
 
@@ -814,35 +766,35 @@ public class NowPlayingFragment extends Fragment
             boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
                               (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE));
             if (!isVideo) {
-                ViewGroup.LayoutParams layoutParams = mediaPoster.getLayoutParams();
+                ViewGroup.LayoutParams layoutParams = binding.poster.getLayoutParams();
                 layoutParams.height = layoutParams.width;
-                mediaPoster.setLayoutParams(layoutParams);
+                binding.poster.setLayoutParams(layoutParams);
                 posterHeight = posterWidth;
             }
 
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                  poster, title,
-                                                 mediaPoster, posterWidth, posterHeight);
-            UIUtils.loadImageIntoImageview(hostManager, art, mediaArt, displayMetrics.widthPixels, artHeight);
+                                                 binding.poster, posterWidth, posterHeight);
+            UIUtils.loadImageIntoImageview(hostManager, art, binding.art, displayMetrics.widthPixels, artHeight);
 
             // Reset padding
             int paddingLeft = resources.getDimensionPixelOffset(R.dimen.poster_width_plus_padding),
-                    paddingRight = mediaTitle.getPaddingRight(),
-                    paddingTop = mediaTitle.getPaddingTop(),
-                    paddingBottom = mediaTitle.getPaddingBottom();
-            mediaTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-            mediaUndertitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+                    paddingRight = binding.mediaTitle.getPaddingRight(),
+                    paddingTop = binding.mediaTitle.getPaddingTop(),
+                    paddingBottom = binding.mediaTitle.getPaddingBottom();
+            binding.mediaTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            binding.mediaUndertitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         } else {
             // No fanart, just present the poster
-            mediaPoster.setVisibility(View.GONE);
-            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager, poster, title, mediaArt, artWidth, artHeight);
+            binding.poster.setVisibility(View.GONE);
+            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager, poster, title, binding.art, artWidth, artHeight);
             // Reset padding
-            int paddingLeft = mediaTitle.getPaddingRight(),
-                    paddingRight = mediaTitle.getPaddingRight(),
-                    paddingTop = mediaTitle.getPaddingTop(),
-                    paddingBottom = mediaTitle.getPaddingBottom();
-            mediaTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-            mediaUndertitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            int paddingLeft = binding.mediaTitle.getPaddingRight(),
+                    paddingRight = binding.mediaTitle.getPaddingRight(),
+                    paddingTop = binding.mediaTitle.getPaddingTop(),
+                    paddingBottom = binding.mediaTitle.getPaddingBottom();
+            binding.mediaTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            binding.mediaUndertitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         }
 
 //        UIUtils.loadImageIntoImageview(hostManager, poster, mediaPoster);
@@ -855,8 +807,8 @@ public class NowPlayingFragment extends Fragment
 //        if (getPropertiesResult.type.equals(PlayerType.PropertyValue.TYPE_VIDEO)) {
         if ((getPropertiesResult.audiostreams != null) &&
             (getPropertiesResult.audiostreams.size() > 0)) {
-            overflowButton.setVisibility(View.VISIBLE);
-            videoCastList.setVisibility(View.VISIBLE);
+            binding.overflow.setVisibility(View.VISIBLE);
+            binding.castList.setVisibility(View.VISIBLE);
 
             // Save subtitles and audiostreams list
             availableAudioStreams = getPropertiesResult.audiostreams;
@@ -865,12 +817,12 @@ public class NowPlayingFragment extends Fragment
             currentSubtitleIndex = getPropertiesResult.currentsubtitle.index;
 
             // Cast list
-            UIUtils.setupCastInfo(getActivity(), getItemResult.cast, videoCastList,
+            UIUtils.setupCastInfo(getActivity(), getItemResult.cast, binding.castList,
                                   AllCastActivity.buildLaunchIntent(getActivity(), title,
                                                                     (ArrayList<VideoType.Cast>)getItemResult.cast));
         } else {
-            overflowButton.setVisibility(View.GONE);
-            videoCastList.setVisibility(View.GONE);
+            binding.overflow.setVisibility(View.GONE);
+            binding.castList.setVisibility(View.GONE);
         }
     }
 
@@ -879,7 +831,7 @@ public class NowPlayingFragment extends Fragment
      */
     private void stopNowPlayingInfo() {
         // Just stop the seek bar handler callbacks
-        mediaProgressIndicator.setSpeed(0);
+        binding.progressInfo.setSpeed(0);
 
         availableSubtitles = null;
         availableAudioStreams = null;
@@ -894,14 +846,16 @@ public class NowPlayingFragment extends Fragment
     private void switchToPanel(int panelResId) {
         switch (panelResId) {
             case R.id.info_panel:
-                mediaPanel.setVisibility(View.GONE);
-                mediaArt.setVisibility(View.GONE);
-                infoPanel.setVisibility(View.VISIBLE);
+                binding.mediaPanel.setVisibility(View.GONE);
+                binding.art.setVisibility(View.GONE);
+                // TODO ViewBinding infoTitle/infoMessage doesnt exist
+                //binding.infoPanel.setVisibility(View.VISIBLE);
                 break;
             case R.id.media_panel:
-                infoPanel.setVisibility(View.GONE);
-                mediaPanel.setVisibility(View.VISIBLE);
-                mediaArt.setVisibility(View.VISIBLE);
+                // TODO ViewBinding infoTitle/infoMessage doesnt exist
+                //infoPanel.setVisibility(View.GONE);
+                binding.mediaPanel.setVisibility(View.VISIBLE);
+                binding.art.setVisibility(View.VISIBLE);
                 break;
         }
     }

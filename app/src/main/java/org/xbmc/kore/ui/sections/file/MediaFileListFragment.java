@@ -23,7 +23,6 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +31,9 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
@@ -90,7 +92,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(MEDIA_TYPE, mediaType);
         outState.putParcelable(SORT_METHOD, sortMethod);
@@ -106,12 +108,8 @@ public class MediaFileListFragment extends AbstractListFragment {
 
     @Override
     protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
-        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
+        return (View view, int position) ->
                 handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(position));
-            }
-        };
     }
 
     @Override
@@ -120,7 +118,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         Bundle args = getArguments();
         FileLocation rootPath = null;
@@ -137,12 +135,9 @@ public class MediaFileListFragment extends AbstractListFragment {
 
         hostManager = HostManager.getInstance(getActivity());
 
-        getEmptyView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!atRootDirectory())
-                    browseSources();
-            }
+        getEmptyView().setOnClickListener((View v) -> {
+            if (!atRootDirectory())
+                browseSources();
         });
 
         if (savedInstanceState != null) {
@@ -563,35 +558,32 @@ public class MediaFileListFragment extends AbstractListFragment {
                     if (!loc.isDirectory) {
                         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
                         popupMenu.getMenuInflater().inflate(R.menu.filelist_item, popupMenu.getMenu());
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
+                        popupMenu.setOnMenuItemClickListener(item -> {
 
-                                switch (item.getItemId()) {
-                                    case R.id.action_queue_item:
-                                        queueMediaFile(loc.file);
-                                        return true;
-                                    case R.id.action_play_item:
-                                        playMediaFile(loc.file);
-                                        return true;
-                                    case R.id.action_play_local_item:
-                                        playMediaFileLocally(loc.file);
-                                        return true;
-                                    case R.id.action_play_from_this_item:
-                                        mediaQueueFileLocation.clear();
-                                        FileLocation fl;
-                                        // start playing the selected one, then queue the rest
-                                        for (int i = position + 1; i < fileLocationItems.size(); i++) {
-                                            fl = fileLocationItems.get(i);
-                                            if (!fl.isDirectory) {
-                                                mediaQueueFileLocation.add(fl);
-                                            }
+                            switch (item.getItemId()) {
+                                case R.id.action_queue_item:
+                                    queueMediaFile(loc.file);
+                                    return true;
+                                case R.id.action_play_item:
+                                    playMediaFile(loc.file);
+                                    return true;
+                                case R.id.action_play_local_item:
+                                    playMediaFileLocally(loc.file);
+                                    return true;
+                                case R.id.action_play_from_this_item:
+                                    mediaQueueFileLocation.clear();
+                                    FileLocation fl;
+                                    // start playing the selected one, then queue the rest
+                                    for (int i = position + 1; i < fileLocationItems.size(); i++) {
+                                        fl = fileLocationItems.get(i);
+                                        if (!fl.isDirectory) {
+                                            mediaQueueFileLocation.add(fl);
                                         }
-                                        playMediaFile(loc.file);
-                                        return true;
-                                }
-                                return false;
+                                    }
+                                    playMediaFile(loc.file);
+                                    return true;
                             }
+                            return false;
                         });
                         popupMenu.show();
                     }
@@ -639,15 +631,16 @@ public class MediaFileListFragment extends AbstractListFragment {
             }
         }
 
+        @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(ctx)
                                       .inflate(resource, parent, false);
             return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight, itemMenuClickListener);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             FileLocation fileLocation = this.getItem(position);
             ((ViewHolder) holder).bindView(fileLocation, position);
         }

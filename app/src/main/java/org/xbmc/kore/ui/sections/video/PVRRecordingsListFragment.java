@@ -21,7 +21,9 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.SwipeRefreshLayout;
+
+import androidx.annotation.NonNull;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,15 +31,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.FragmentPvrListBinding;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.PVR;
@@ -52,10 +53,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * Fragment that presents the PVR recordings list
  */
@@ -65,9 +62,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
 
     private HostManager hostManager;
 
-    @BindView(R.id.list) GridView gridView;
-    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(android.R.id.empty) TextView emptyView;
+    private FragmentPvrListBinding binding;
 
     /**
      * Handler on which to post RPC callbacks
@@ -76,34 +71,27 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
 
     private RecordingsAdapter recordingsAdapter = null;
 
-    private Unbinder unbinder;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_pvr_list, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        unbinder = ButterKnife.bind(this, root);
+        binding = FragmentPvrListBinding.inflate(inflater, container, false);
 
         hostManager = HostManager.getInstance(getActivity());
 
-        swipeRefreshLayout.setOnRefreshListener(this);
+        binding.swipeRefreshLayout.setOnRefreshListener(this);
 
-        emptyView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
-        gridView.setEmptyView(emptyView);
+        // TODO: emptyView auf View Binding ändern
+        //emptyView.setOnClickListener(v -> onRefresh());
+        binding.list.setEmptyView(binding.list.getEmptyView());
 
         super.onCreateView(inflater, container, savedInstanceState);
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -117,12 +105,12 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         if (!isAdded()) {
             // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
             // copied from MovieListFragment#onCreateOptionsMenu
@@ -211,7 +199,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         if (hostManager.getHostInfo() != null) {
             browseRecordings();
         } else {
-            swipeRefreshLayout.setRefreshing(false);
+            binding.swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
                  .show();
         }
@@ -229,7 +217,8 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 LogUtils.LOGD(TAG, "Got recordings");
 
                 // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(getString(R.string.no_recordings_found_refresh));
+                // TODO: set emptyView to ViewBinding
+                //emptyView.setText(getString(R.string.no_recordings_found_refresh));
 
                 // As the JSON RPC API does not support sorting or filter parameters for PVR.GetRecordings
                 // we apply the sorting and filtering right here.
@@ -238,7 +227,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 sort(finalResult);
 
                 setupRecordingsGridview(finalResult);
-                swipeRefreshLayout.setRefreshing(false);
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
 
             private List<PVRType.DetailsRecording> filter(List<PVRType.DetailsRecording> itemList) {
@@ -313,26 +302,18 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                     case Settings.SORT_BY_DATE_ADDED:
                         // sort by recording start time descending (most current first)
                         // luckily the starttime is in sortable format yyyy-MM-dd hh:mm:ss
-                        comparator = new Comparator<PVRType.DetailsRecording>() {
-                            @Override
-                            public int compare(PVRType.DetailsRecording a, PVRType.DetailsRecording b) {
-                                return  b.starttime.compareTo(a.starttime);
-                            }
-                        };
+                        comparator = (a, b) -> b.starttime.compareTo(a.starttime);
                         Collections.sort(itemList, comparator);
                         break;
                     case Settings.SORT_BY_NAME:
                         // sort by recording title and start time
-                        comparator = new Comparator<PVRType.DetailsRecording>() {
-                            @Override
-                            public int compare(PVRType.DetailsRecording a, PVRType.DetailsRecording b) {
-                                int result = a.title.compareToIgnoreCase(b.title);
-                                if (0 == result) { // note the yoda condition ;)
-                                    // sort by starttime descending (most current first)
-                                    result = b.starttime.compareTo(a.starttime);
-                                }
-                                return result;
+                        comparator = (a, b) -> {
+                            int result = a.title.compareToIgnoreCase(b.title);
+                            if (0 == result) { // note the yoda condition ;)
+                                // sort by starttime descending (most current first)
+                                result = b.starttime.compareTo(a.starttime);
                             }
+                            return result;
                         };
                         Collections.sort(itemList, comparator);
                         break;
@@ -345,11 +326,12 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 LogUtils.LOGD(TAG, "Error getting recordings: " + description);
 
                 // To prevent the empty text from appearing on the first load, set it now
-                emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
+                // TODO: Set emptyView to ViewBinding
+                //emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
                 Toast.makeText(getActivity(),
                                String.format(getString(R.string.error_getting_pvr_info), description),
                                Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
         }, callbackHandler);
     }
@@ -363,38 +345,35 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         if (recordingsAdapter == null) {
             recordingsAdapter = new RecordingsAdapter(getActivity(), R.layout.grid_item_recording);
         }
-        gridView.setAdapter(recordingsAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the id from the tag
-                RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
+        binding.list.setAdapter(recordingsAdapter);
+        binding.list.setOnItemClickListener((parent, view, position, id) -> {
+            // Get the id from the tag
+            RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
 
-                // Start the recording
-                Toast.makeText(getActivity(),
-                               String.format(getString(R.string.starting_recording), tag.title),
-                               Toast.LENGTH_SHORT).show();
-                Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
-                action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        if (!isAdded()) return;
-                        LogUtils.LOGD(TAG, "Started recording");
-                    }
+            // Start the recording
+            Toast.makeText(getActivity(),
+                           String.format(getString(R.string.starting_recording), tag.title),
+                           Toast.LENGTH_SHORT).show();
+            Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
+            action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result1) {
+                    if (!isAdded()) return;
+                    LogUtils.LOGD(TAG, "Started recording");
+                }
 
-                    @Override
-                    public void onError(int errorCode, String description) {
-                        if (!isAdded()) return;
-                        LogUtils.LOGD(TAG, "Error starting recording: " + description);
+                @Override
+                public void onError(int errorCode, String description) {
+                    if (!isAdded()) return;
+                    LogUtils.LOGD(TAG, "Error starting recording: " + description);
 
-                        Toast.makeText(getActivity(),
-                                       String.format(getString(R.string.error_starting_recording), description),
-                                       Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),
+                                   String.format(getString(R.string.error_starting_recording), description),
+                                   Toast.LENGTH_SHORT).show();
 
-                    }
-                }, callbackHandler);
+                }
+            }, callbackHandler);
 
-            }
         });
 
         recordingsAdapter.clear();
@@ -419,18 +398,19 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         }
 
         /** {@inheritDoc} */
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity())
                                             .inflate(R.layout.grid_item_recording, parent, false);
 
                 // Setup View holder pattern
                 RecordingViewHolder viewHolder = new RecordingViewHolder();
-                viewHolder.titleView = (TextView)convertView.findViewById(R.id.title);
-                viewHolder.detailsView = (TextView)convertView.findViewById(R.id.details);
-                viewHolder.artView = (ImageView)convertView.findViewById(R.id.art);
-                viewHolder.durationView = (TextView)convertView.findViewById(R.id.duration);
+                viewHolder.titleView = convertView.findViewById(R.id.title);
+                viewHolder.detailsView = convertView.findViewById(R.id.details);
+                viewHolder.artView = convertView.findViewById(R.id.art);
+                viewHolder.durationView = convertView.findViewById(R.id.duration);
                 convertView.setTag(viewHolder);
             }
 

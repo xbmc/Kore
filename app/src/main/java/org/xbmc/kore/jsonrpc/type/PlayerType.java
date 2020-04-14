@@ -59,31 +59,31 @@ public class PlayerType {
      * Enums for Player.Property.Name
      */
     public interface PropertyName {
-        public final String TYPE = "type";
-        public final String PARTYMODE = "partymode";
-        public final String SPEED = "speed";
-        public final String TIME = "time";
-        public final String PERCENTAGE = "percentage";
-        public final String TOTALTIME = "totaltime";
-        public final String PLAYLISTID = "playlistid";
-        public final String POSITION = "position";
-        public final String REPEAT = "repeat";
-        public final String SHUFFLED = "shuffled";
-        public final String CANSEEK = "canseek";
-        public final String CANCHANGESPEED = "canchangespeed";
-        public final String CANMOVE = "canmove";
-        public final String CANZOOM = "canzoom";
-        public final String CANROTATE = "canrotate";
-        public final String CANSHUFFLE = "canshuffle";
-        public final String CANREPEAT = "canrepeat";
-        public final String CURRENTAUDIOSTREAM = "currentaudiostream";
-        public final String AUDIOSTREAMS = "audiostreams";
-        public final String SUBTITLEENABLED = "subtitleenabled";
-        public final String CURRENTSUBTITLE = "currentsubtitle";
-        public final String SUBTITLES = "subtitles";
-        public final String LIVE = "live";
+        String TYPE = "type";
+        String PARTYMODE = "partymode";
+        String SPEED = "speed";
+        String TIME = "time";
+        String PERCENTAGE = "percentage";
+        String TOTALTIME = "totaltime";
+        String PLAYLISTID = "playlistid";
+        String POSITION = "position";
+        String REPEAT = "repeat";
+        String SHUFFLED = "shuffled";
+        String CANSEEK = "canseek";
+        String CANCHANGESPEED = "canchangespeed";
+        String CANMOVE = "canmove";
+        String CANZOOM = "canzoom";
+        String CANROTATE = "canrotate";
+        String CANSHUFFLE = "canshuffle";
+        String CANREPEAT = "canrepeat";
+        String CURRENTAUDIOSTREAM = "currentaudiostream";
+        String AUDIOSTREAMS = "audiostreams";
+        String SUBTITLEENABLED = "subtitleenabled";
+        String CURRENTSUBTITLE = "currentsubtitle";
+        String SUBTITLES = "subtitles";
+        String LIVE = "live";
 
-        public final String[] allValues = new String[]{
+        String[] allValues = new String[]{
                 TYPE, PARTYMODE, SPEED, TIME, PERCENTAGE, TOTALTIME, PLAYLISTID, POSITION, REPEAT,
                 SHUFFLED, CANSEEK, CANCHANGESPEED, CANMOVE, CANZOOM, CANROTATE, CANSHUFFLE,
                 CANREPEAT, CURRENTAUDIOSTREAM, AUDIOSTREAMS, SUBTITLEENABLED, CURRENTSUBTITLE,
@@ -201,7 +201,7 @@ public class PlayerType {
 
         public static List<AudioStream> getListAudioStream(JsonNode node) {
             final ArrayNode arrayNode = (ArrayNode)node;
-            final List<AudioStream> result = new ArrayList<AudioStream>(node.size());
+            final List<AudioStream> result = new ArrayList<>(node.size());
 
             for (JsonNode audioStreamNode : arrayNode) {
                 result.add(new AudioStream(audioStreamNode));
@@ -250,7 +250,7 @@ public class PlayerType {
 
         public static List<Subtitle> getListSubtitle(JsonNode node) {
             final ArrayNode arrayNode = (ArrayNode)node;
-            final List<Subtitle> result = new ArrayList<Subtitle>(node.size());
+            final List<Subtitle> result = new ArrayList<>(node.size());
 
             for (JsonNode subtitleNode : arrayNode) {
                 result.add(new Subtitle(subtitleNode));
@@ -335,10 +335,10 @@ public class PlayerType {
      * Player.Repeat constants
      */
     public interface Repeat {
-        public final String OFF = "off";
-        public final String ONE = "one";
-        public final String ALL = "all";
+        String OFF = "off";
+        String ONE = "one";
+        String ALL = "all";
 
-        public final String CYCLE = "cycle";
+        String CYCLE = "cycle";
     }
 }

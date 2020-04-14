@@ -19,22 +19,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.ActivityAllCastBinding;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.BaseActivity;
@@ -44,9 +44,6 @@ import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
 
 /**
  * Activity that presents all cast of a movie or TV Show
@@ -65,8 +62,9 @@ public class AllCastActivity extends BaseActivity {
 
     NavigationDrawerFragment navigationDrawerFragment;
 
-    @BindView(R.id.cast_list) GridView castGridView;
-    @BindView(android.R.id.empty) TextView emptyView;
+    //@BindView(android.R.id.empty) TextView emptyView;*/
+
+    private ActivityAllCastBinding binding;
 
     /**
      * Returns an intent that can be used to start this activity, with all the correct parameters
@@ -86,13 +84,14 @@ public class AllCastActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_cast);
-        ButterKnife.bind(this);
+        binding = ActivityAllCastBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
 
         // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        navigationDrawerFragment.setUp(R.id.navigation_drawer, findViewById(R.id.drawer_layout));
 
         if (savedInstanceState == null) {
             movie_tvshow_title = getIntent().getStringExtra(EXTRA_TITLE);
@@ -105,23 +104,20 @@ public class AllCastActivity extends BaseActivity {
         //LogUtils.LOGD(TAG, "Showing cast for: " + movie_tvshow_title);
 
         // Configure the grid
-        castGridView.setEmptyView(emptyView);
-        castGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the name from the tag
-                Utils.openImdbForPerson(AllCastActivity.this, ((ViewHolder)view.getTag()).castName);
-            }
+        binding.castList.setEmptyView(binding.castList.getEmptyView());
+        binding.castList.setOnItemClickListener((parent, view, position, id) -> {
+            // Get the name from the tag
+            Utils.openImdbForPerson(AllCastActivity.this, ((ViewHolder)view.getTag()).castName);
         });
 
         CastArrayAdapter arrayAdapter = new CastArrayAdapter(this, castArrayList);
-        castGridView.setAdapter(arrayAdapter);
+        binding.castList.setAdapter(arrayAdapter);
 
         setupActionBar(movie_tvshow_title);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_TITLE, movie_tvshow_title);
         outState.putParcelableArrayList(EXTRA_CAST_LIST, castArrayList);
@@ -141,7 +137,7 @@ public class AllCastActivity extends BaseActivity {
     }
 
     private void setupActionBar(String title) {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
+        Toolbar toolbar = findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -163,8 +159,9 @@ public class AllCastActivity extends BaseActivity {
             this.hostManager = HostManager.getInstance(context);
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext())
                                             .inflate(R.layout.grid_item_cast, parent, false);
@@ -186,9 +183,9 @@ public class AllCastActivity extends BaseActivity {
 
                 // Setup View holder pattern
                 ViewHolder viewHolder = new ViewHolder();
-                viewHolder.roleView = (TextView) convertView.findViewById(R.id.role);
-                viewHolder.nameView = (TextView) convertView.findViewById(R.id.name);
-                viewHolder.pictureView = (ImageView) convertView.findViewById(R.id.picture);
+                viewHolder.roleView = convertView.findViewById(R.id.role);
+                viewHolder.nameView = convertView.findViewById(R.id.name);
+                viewHolder.pictureView = convertView.findViewById(R.id.picture);
 
                 convertView.setTag(viewHolder);
 

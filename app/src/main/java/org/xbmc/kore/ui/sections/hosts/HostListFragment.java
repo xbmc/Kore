@@ -21,10 +21,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +35,13 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.FragmentHostListBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -52,25 +54,18 @@ import org.xbmc.kore.utils.UIUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * Fragment to manage the list oof registered hosts.
  */
 public class HostListFragment extends Fragment {
     private static final String TAG = LogUtils.makeLogTag(HostListFragment.class);
 
-    private ArrayList<HostInfoRow> hostInfoRows = new ArrayList<HostInfoRow>();
+    private ArrayList<HostInfoRow> hostInfoRows = new ArrayList<>();
     private HostListAdapter adapter = null;
     private Context context;
-    private Unbinder unbinder;
     private Handler callbackHandler = new Handler();
 
-    @BindView(R.id.list) GridView hostGridView;
-    @BindView(R.id.action_add_host) Button addHostButton;
+    private FragmentHostListBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,8 +76,7 @@ public class HostListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = inflater.getContext();
 
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_host_list, container, false);
-        unbinder = ButterKnife.bind(this, root);
+        binding = FragmentHostListBinding.inflate(inflater, container, false);
 
         // Get the host list
         // TODO: This is being done synchronously !!!
@@ -98,19 +92,20 @@ public class HostListFragment extends Fragment {
         }
 
         // Setup the adapter
-        hostGridView.setEmptyView(root.findViewById(android.R.id.empty));
-        adapter = new HostListAdapter(context, R.layout.grid_item_host, hostInfoRows);
-        hostGridView.setAdapter(adapter);
-        hostGridView.setItemChecked(currentHostPosition, true);
-        hostGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long itemId) {
-                HostInfoRow clickedHostRow = hostInfoRows.get(position);
+        binding.list.setEmptyView(binding.list.getEmptyView());
 
-                // Set the clicked host active
-                hostManager.switchHost(clickedHostRow.hostInfo);
-                Intent intent = new Intent(context, RemoteActivity.class);
-                context.startActivity(intent);
+        binding.actionAddHost.setOnClickListener(this::onAddHostClicked);
+
+        adapter = new HostListAdapter(context, R.layout.grid_item_host, hostInfoRows);
+        binding.list.setAdapter(adapter);
+        binding.list.setItemChecked(currentHostPosition, true);
+        binding.list.setOnItemClickListener((parent, view, position, itemId) -> {
+            HostInfoRow clickedHostRow = hostInfoRows.get(position);
+
+            // Set the clicked host active
+            hostManager.switchHost(clickedHostRow.hostInfo);
+            Intent intent = new Intent(context, RemoteActivity.class);
+            context.startActivity(intent);
 
 
 //                switch (clickedHostRow.status) {
@@ -133,10 +128,9 @@ public class HostListFragment extends Fragment {
 //                        updateHostStatus(clickedHostRow);
 //                        break;
 //                }
-            }
         });
 
-        return root;
+        return binding.getRoot();
     }
 
 
@@ -164,7 +158,7 @@ public class HostListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
     /**
@@ -198,7 +192,7 @@ public class HostListFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.host_manager, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -216,7 +210,6 @@ public class HostListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.action_add_host)
     public void onAddHostClicked(View v) {
         startAddHostWizard();
     }
@@ -250,39 +243,33 @@ public class HostListFragment extends Fragment {
         }
     }
 
-    private View.OnClickListener hostlistItemMenuClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            final HostInfo hostInfo = (HostInfo)v.getTag();
+    private View.OnClickListener hostlistItemMenuClickListener = v -> {
+        final HostInfo hostInfo = (HostInfo)v.getTag();
 
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.hostlist_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_remove_host:
-                            DialogFragment confirmDelete = ConfirmDeleteDialogFragment
-                                    .getInstance(getDeleteDialogListener(hostInfo.getId()));
-                            confirmDelete.show(getFragmentManager(), "confirmdelete");
-                            return true;
-                        case R.id.action_edit_host:
-                            Intent launchIntent = new Intent(getActivity(), EditHostActivity.class)
-                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                                    .putExtra(HostFragmentManualConfiguration.HOST_ID, hostInfo.getId());
-                            startActivity(launchIntent);
-                            getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
-                            return true;
-                        case R.id.action_wake_up:
-                            // Send WoL magic packet on a new thread
-                            UIUtils.sendWolAsync(getActivity(), hostInfo);
-                            return true;
-                    }
-                    return false;
-                }
-            });
-            popupMenu.show();
-        }
+        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.hostlist_item, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_remove_host:
+                    DialogFragment confirmDelete = ConfirmDeleteDialogFragment
+                            .getInstance(getDeleteDialogListener(hostInfo.getId()));
+                    confirmDelete.show(getFragmentManager(), "confirmdelete");
+                    return true;
+                case R.id.action_edit_host:
+                    Intent launchIntent = new Intent(getActivity(), EditHostActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                            .putExtra(HostFragmentManualConfiguration.HOST_ID, hostInfo.getId());
+                    startActivity(launchIntent);
+                    getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+                    return true;
+                case R.id.action_wake_up:
+                    // Send WoL magic packet on a new thread
+                    UIUtils.sendWolAsync(getActivity(), hostInfo);
+                    return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     };
 
     /**
@@ -293,8 +280,9 @@ public class HostListFragment extends Fragment {
             super(context, resource, objects);
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity())
                         .inflate(R.layout.grid_item_host, parent, false);
@@ -329,7 +317,7 @@ public class HostListFragment extends Fragment {
 //            ((TextView)convertView.findViewById(R.id.status_text)).setText(statusText);
 
             // For the popupmenu
-            ImageView contextMenu = (ImageView)convertView.findViewById(R.id.list_context_menu);
+            ImageView contextMenu = convertView.findViewById(R.id.list_context_menu);
             contextMenu.setTag(item.hostInfo);
             contextMenu.setOnClickListener(hostlistItemMenuClickListener);
 
@@ -367,8 +355,8 @@ public class HostListFragment extends Fragment {
 
         /** Interface for communication with the enclosing fragment */
         public interface ConfirmDeleteDialogListener {
-            public void onDialogPositiveClick();
-            public void onDialogNegativeClick();
+            void onDialogPositiveClick();
+            void onDialogNegativeClick();
         }
 
         private ConfirmDeleteDialogListener mListener;
@@ -385,16 +373,8 @@ public class HostListFragment extends Fragment {
             return new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.delete_xbmc)
                     .setMessage(R.string.delete_xbmc_confirm)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            mListener.onDialogPositiveClick();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            mListener.onDialogNegativeClick();
-                        }
-                    })
+                    .setPositiveButton(android.R.string.ok, (dialog, id) -> mListener.onDialogPositiveClick())
+                    .setNegativeButton(android.R.string.cancel, (dialog, id) -> mListener.onDialogNegativeClick())
                     .create();
         }
     }

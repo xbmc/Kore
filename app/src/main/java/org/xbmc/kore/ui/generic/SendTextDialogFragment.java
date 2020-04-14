@@ -19,9 +19,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,6 +26,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 import org.xbmc.kore.R;
 
@@ -46,8 +47,8 @@ public class SendTextDialogFragment extends DialogFragment {
      * The calling activity must implement this interface
      */
     public interface SendTextDialogListener {
-        public void onSendTextFinished(String text, boolean done);
-        public void onSendTextCancel();
+        void onSendTextFinished(String text, boolean done);
+        void onSendTextCancel();
     }
 
     /**
@@ -81,7 +82,7 @@ public class SendTextDialogFragment extends DialogFragment {
      *        Context activity that implements listener interface
      */
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             mListener = (SendTextDialogListener)activity;
