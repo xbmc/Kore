@@ -22,7 +22,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v4.widget.DrawerLayout;
+import androidx.core.widget.DrawerLayout;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;

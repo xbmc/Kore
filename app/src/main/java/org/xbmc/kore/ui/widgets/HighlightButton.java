@@ -17,9 +17,10 @@ package org.xbmc.kore.ui.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
+
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.utils.Utils;

@@ -28,8 +28,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -263,7 +263,7 @@ public class NotificationObserver
                 .addAction(rewindIcon, service.getString(R.string.rewind), rewindPendingIntent) // #0
                 .addAction(playPauseIcon, service.getString(R.string.play), playPausePendingIntent)  // #1
                 .addAction(ffIcon, service.getString(R.string.fast_forward), ffPendingIntent)     // #2
-                .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                               .setShowActionsInCompactView(0, 1, 2))
                 .setContentIntent(remoteStartPendingIntent)
                 .setContentTitle(title)

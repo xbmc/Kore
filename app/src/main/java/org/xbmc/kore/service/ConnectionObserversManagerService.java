@@ -22,7 +22,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;

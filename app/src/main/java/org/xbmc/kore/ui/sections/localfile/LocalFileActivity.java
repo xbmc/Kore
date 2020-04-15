@@ -16,15 +16,11 @@
  */
 package org.xbmc.kore.ui.sections.localfile;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.ui.OnBackPressedListener;
-import org.xbmc.kore.ui.sections.file.FileListFragment;
 
 /**
  * Handles listing of files fragments

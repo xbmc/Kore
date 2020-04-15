@@ -21,12 +21,14 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.text.TextDirectionHeuristicsCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
+import androidx.viewpager.widget.ViewPager;
+
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -77,7 +79,6 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class RemoteActivity extends BaseActivity
         implements HostConnectionObserver.PlayerEventsObserver,

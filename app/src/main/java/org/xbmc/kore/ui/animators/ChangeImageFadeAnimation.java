@@ -17,12 +17,11 @@ package org.xbmc.kore.ui.animators;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 
-import org.xbmc.kore.utils.LogUtils;
+import androidx.annotation.NonNull;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ChangeImageFadeAnimation {
 

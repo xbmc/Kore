@@ -17,10 +17,11 @@ package org.xbmc.kore.ui.sections.video;
 
 import android.annotation.TargetApi;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.BaseMediaActivity;
