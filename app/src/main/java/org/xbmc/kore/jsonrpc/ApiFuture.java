@@ -1,6 +1,6 @@
 package org.xbmc.kore.jsonrpc;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;

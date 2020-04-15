@@ -25,8 +25,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
-import android.support.v4.content.CursorLoader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +34,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -94,7 +95,9 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     @Override
     protected int getSyncItemID() { return tvshowId; };
 
-    @TargetApi(16) @Nullable @Override
+    @TargetApi(16)
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         tvshowId = getArguments().getInt(TVSHOWID, -1);

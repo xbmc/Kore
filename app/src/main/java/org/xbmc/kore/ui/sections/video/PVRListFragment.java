@@ -16,7 +16,8 @@
 package org.xbmc.kore.ui.sections.video;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractTabsFragment;

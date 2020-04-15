@@ -17,11 +17,12 @@ package org.xbmc.kore.ui.sections.hosts;
 
 
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.BaseActivity;

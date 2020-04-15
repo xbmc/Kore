@@ -18,9 +18,10 @@ package org.xbmc.kore.ui.sections.hosts;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.ActionBar;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;

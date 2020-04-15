@@ -15,11 +15,11 @@
    limitations under the License.
 -->
 
-<android.support.v7.widget.CardView
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    style="@style/Widget.CardView">
+    style="@style/Widget.CardView"
     android:focusable="true"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground">
@@ -68,4 +68,4 @@
             android:layout_below="@id/season_progress_bar"
             style="@style/TextAppearance.Medialist.Details"/>
     </RelativeLayout>
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>
