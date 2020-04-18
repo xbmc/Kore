@@ -41,6 +41,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
+@Config(sdk = 28)
 public class ApplicationTest {
 
     private HostConnection hostConnection;
