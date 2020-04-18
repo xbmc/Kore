@@ -16,6 +16,7 @@
 
 package org.xbmc.kore.tests.jsonrpc.method;
 
+import android.os.Build;
 import android.os.Handler;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -41,6 +42,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
+@Config(sdk = 28)
 public class ApplicationTest {
 
     private HostConnection hostConnection;

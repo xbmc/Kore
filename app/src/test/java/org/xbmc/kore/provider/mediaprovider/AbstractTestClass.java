@@ -20,6 +20,7 @@ package org.xbmc.kore.provider.mediaprovider;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.pm.ProviderInfo;
+import android.os.Build;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -28,12 +29,14 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
+import org.robolectric.annotation.Config;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.testutils.Database;
 
 @RunWith(AndroidJUnit4.class)
 @Ignore
+@Config(sdk = 28)
 public class AbstractTestClass {
     protected static HostInfo hostInfo;
     private static ContentResolver contentResolver = ApplicationProvider.getApplicationContext().getContentResolver();
