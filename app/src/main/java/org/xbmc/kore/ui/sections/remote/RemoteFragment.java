@@ -630,6 +630,12 @@ public class RemoteFragment extends Fragment
     }
 
     @Override
+    public boolean selectButtonLongClicked() {
+        contextButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
+        return true;
+    }
+
+    @Override
     public void backButtonClicked() {
         backButtonAction.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
     }

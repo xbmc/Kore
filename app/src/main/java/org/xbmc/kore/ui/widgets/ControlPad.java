@@ -56,6 +56,7 @@ public class ControlPad extends SquareGridLayout
         void upButtonClicked();
         void downButtonClicked();
         void selectButtonClicked();
+        boolean selectButtonLongClicked();
         void backButtonClicked();
         void infoButtonClicked();
         boolean infoButtonLongClicked();
@@ -161,8 +162,17 @@ public class ControlPad extends SquareGridLayout
 
     @Override
     public boolean onLongClick(View v) {
-        if ((onPadButtonsListener != null) && (v.getId() == R.id.info)) {
-            return onPadButtonsListener.infoButtonLongClicked();
+        if (onPadButtonsListener == null) {
+            return false;
+        }
+
+        switch (v.getId()) {
+            case R.id.info:
+                return onPadButtonsListener.infoButtonLongClicked();
+            case R.id.select:
+                return onPadButtonsListener.selectButtonLongClicked();
+            default:
+                LogUtils.LOGD(TAG, "Unknown button " + v.getId() + " long clicked");
         }
 
         return false;
