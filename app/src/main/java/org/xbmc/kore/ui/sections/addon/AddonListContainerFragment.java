@@ -75,4 +75,9 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
 
         return tabsAdapter;
     }
+
+    @Override
+    protected boolean shouldRememberLastTab() {
+        return true;
+    }
 }
