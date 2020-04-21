@@ -68,4 +68,8 @@ public class PVRListFragment extends AbstractTabsFragment
         return false;
     }
 
+    @Override
+    protected boolean shouldRememberLastTab() {
+        return true;
+    }
 }

@@ -77,4 +77,9 @@ public class FileListFragment extends AbstractTabsFragment
         // Not handled, let the activity handle it
         return false;
     }
+
+    @Override
+    protected boolean shouldRememberLastTab() {
+        return true;
+    }
 }
