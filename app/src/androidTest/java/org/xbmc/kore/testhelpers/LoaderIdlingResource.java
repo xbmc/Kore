@@ -16,8 +16,8 @@
 
 package org.xbmc.kore.testhelpers;
 
-import android.support.test.espresso.IdlingResource;
-import androidx.core.app.LoaderManager;
+import androidx.loader.app.LoaderManager;
+import androidx.test.espresso.IdlingResource;
 
 public class LoaderIdlingResource implements IdlingResource {
 

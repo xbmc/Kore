@@ -38,8 +38,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.net.ServerSocketFactory;
 
-
-
 public class MockTcpServer {
     public static final String TAG = LogUtils.makeLogTag(MockTcpServer.class);
 

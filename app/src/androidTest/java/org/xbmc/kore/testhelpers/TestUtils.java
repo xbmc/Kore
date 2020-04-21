@@ -16,7 +16,6 @@
 
 package org.xbmc.kore.testhelpers;
 
-
 import org.xbmc.kore.testutils.tcpserver.handlers.InputHandler;
 
 import static junit.framework.Assert.assertTrue;

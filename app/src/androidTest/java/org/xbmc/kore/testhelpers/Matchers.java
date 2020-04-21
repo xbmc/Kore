@@ -17,14 +17,15 @@
 package org.xbmc.kore.testhelpers;
 
 import android.database.Cursor;
-import android.support.test.espresso.matcher.BoundedMatcher;
-import android.support.test.espresso.matcher.CursorMatchers;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.matcher.BoundedMatcher;
+import androidx.test.espresso.matcher.CursorMatchers;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;

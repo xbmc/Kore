@@ -16,7 +16,6 @@
 
 package org.xbmc.kore.provider.mediaprovider;
 
-
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.pm.ProviderInfo;
