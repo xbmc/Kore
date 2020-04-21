@@ -16,16 +16,16 @@
 
 package org.xbmc.kore.testhelpers.action;
 
+import androidx.test.espresso.PerformException;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.action.MotionEvents;
+import androidx.test.espresso.action.Press;
+import androidx.test.espresso.util.HumanReadables;
+import androidx.test.espresso.util.TreeIterables;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import android.support.test.espresso.PerformException;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.MotionEvents;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.util.HumanReadables;
-import android.support.test.espresso.util.TreeIterables;
-import androidx.core.view.PagerAdapter;
-import androidx.core.view.ViewPager;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -35,8 +35,8 @@ import org.hamcrest.TypeSafeMatcher;
 
 import java.util.concurrent.TimeoutException;
 
-import static android.support.test.espresso.action.ViewActions.actionWithAssertions;
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.action.ViewActions.actionWithAssertions;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 
 public final class ViewActions {
 

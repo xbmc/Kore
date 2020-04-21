@@ -15,15 +15,16 @@
  */
 package org.xbmc.kore.testhelpers.action;
 
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
 import android.view.View;
 
-import org.hamcrest.Matcher;
-import static org.hamcrest.Matchers.allOf;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
 
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import org.hamcrest.Matcher;
+
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static org.hamcrest.Matchers.allOf;
 
 public class ClearFocus implements ViewAction {
 
