@@ -21,9 +21,10 @@ import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.design.widget.TabLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+
+import com.google.android.material.tabs.TabLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;

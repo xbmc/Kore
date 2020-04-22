@@ -21,11 +21,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
-import android.support.test.rule.ActivityTestRule;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
+
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
+import androidx.test.rule.ActivityTestRule;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;

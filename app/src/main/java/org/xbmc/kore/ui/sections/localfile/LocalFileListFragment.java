@@ -18,7 +18,7 @@ package org.xbmc.kore.ui.sections.localfile;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.type.ListType;

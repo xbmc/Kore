@@ -4,7 +4,7 @@
        android:orientation="horizontal"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content">
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/dial_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         app:backgroundTint="@color/fabspeeddial_label"
         style="@style/TextAppearance.Label.FAB"
         android:elevation="4dp"/>
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/dial_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -36,7 +36,7 @@
 }
 
 # SearchView
--keep class android.support.v7.widget.SearchView { *; }
+-keep class androidx.appcompat.widget.SearchView { *; }
 
 #JmDNS
 -dontwarn org.slf4j.*

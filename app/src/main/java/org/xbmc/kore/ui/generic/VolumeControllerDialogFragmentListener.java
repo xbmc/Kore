@@ -5,13 +5,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatDialogFragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -190,7 +192,7 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
 
     public static boolean handleVolumeKeyEvent(Context context, KeyEvent event) {
         boolean shouldInterceptKey =
-                android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(context)
+                PreferenceManager.getDefaultSharedPreferences(context)
                         .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
                                 Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
 

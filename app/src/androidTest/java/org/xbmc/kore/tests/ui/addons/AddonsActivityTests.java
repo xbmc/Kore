@@ -17,10 +17,11 @@
 package org.xbmc.kore.tests.ui.addons;
 
 import android.content.Context;
-import android.support.test.espresso.Espresso;
-import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.test.espresso.Espresso;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,12 +32,12 @@ import org.xbmc.kore.testhelpers.action.ViewActions;
 import org.xbmc.kore.tests.ui.AbstractTestClass;
 import org.xbmc.kore.ui.sections.addon.AddonsActivity;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertFalse;
@@ -80,12 +81,7 @@ public class AddonsActivityTests extends AbstractTestClass<AddonsActivity> {
     @Before
     public void setUp() throws Throwable {
         super.setUp();
-        onView(isRoot()).perform(ViewActions.waitForView(R.id.list, new ViewActions.CheckStatus() {
-            @Override
-            public boolean check(View v) {
-                return v.isShown();
-            }
-        },10000));
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.list, v -> v.isShown(),10000));
     }
 
     /**

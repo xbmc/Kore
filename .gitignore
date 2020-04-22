@@ -13,7 +13,6 @@
 #/.idea/libraries
 
 # Local configuration file (sdk path, etc)
-gradle.properties
 local.properties
 app/keystore.properties
 

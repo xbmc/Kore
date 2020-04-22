@@ -17,7 +17,8 @@
 package org.xbmc.kore.tests.ui.remote.controlpad.eventserver;
 
 import android.content.Context;
-import android.support.test.rule.ActivityTestRule;
+
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -32,9 +33,9 @@ import org.xbmc.kore.tests.ui.AbstractTestClass;
 import org.xbmc.kore.testutils.eventserver.MockEventServer;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static junit.framework.Assert.assertTrue;
 
 public class KodiPreV17Tests extends AbstractTestClass<RemoteActivity> {

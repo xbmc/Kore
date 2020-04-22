@@ -16,15 +16,15 @@
 
 package org.xbmc.kore.tests.ui.music;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
-import android.support.test.rule.ActivityTestRule;
-import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.preference.PreferenceManager;
+import androidx.test.rule.ActivityTestRule;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -45,14 +45,14 @@ import org.xbmc.kore.ui.widgets.RepeatModeButton;
 
 import java.util.concurrent.TimeoutException;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
