@@ -32,6 +32,7 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.provider.MediaProvider;
+import org.xbmc.kore.ui.AbstractTabsFragment;
 import org.xbmc.kore.ui.sections.hosts.HostFragmentManualConfiguration;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -81,10 +82,10 @@ public class Utils {
     }
 
     public static void clearSharedPreferences(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.commit();
+        PreferenceManager.getDefaultSharedPreferences(context)
+                         .edit().clear().commit();
+        context.getSharedPreferences(AbstractTabsFragment.PREFERENCES_NAME, Context.MODE_PRIVATE)
+               .edit().clear().commit();
     }
 
     public static void setLearnedAboutDrawerPreference(Context context, boolean learned) {

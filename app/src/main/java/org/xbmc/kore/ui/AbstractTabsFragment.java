@@ -39,7 +39,7 @@ import butterknife.Unbinder;
 abstract public class AbstractTabsFragment extends AbstractFragment
         implements SharedElementTransition.SharedElement {
     private static final String TAG = LogUtils.makeLogTag(AbstractTabsFragment.class);
-    private static final String PREFERENCES_NAME = "AbstractTabsFragmentPreferences";
+    public static final String PREFERENCES_NAME = "AbstractTabsFragmentPreferences";
     private static final String PREFERENCE_PREFIX_LAST_TAB = "lastTab_";
 
     @BindView(R.id.pager) ViewPager viewPager;
