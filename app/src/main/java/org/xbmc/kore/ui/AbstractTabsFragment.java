@@ -16,6 +16,8 @@
 
 package org.xbmc.kore.ui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,8 +39,11 @@ import butterknife.Unbinder;
 abstract public class AbstractTabsFragment extends AbstractFragment
         implements SharedElementTransition.SharedElement {
     private static final String TAG = LogUtils.makeLogTag(AbstractTabsFragment.class);
+    public static final String PREFERENCES_NAME = "AbstractTabsFragmentPreferences";
+    private static final String PREFERENCE_PREFIX_LAST_TAB = "lastTab_";
 
     @BindView(R.id.pager) ViewPager viewPager;
+    private SharedPreferences preferences;
 
     private Unbinder unbinder;
 
@@ -58,11 +63,26 @@ abstract public class AbstractTabsFragment extends AbstractFragment
             return null;
         }
 
+        preferences = getContext().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_default_view_pager, container, false);
         unbinder = ButterKnife.bind(this, root);
 
         viewPager.setAdapter(createTabsAdapter(getDataHolder()));
+
+        if (shouldRememberLastTab()) {
+            viewPager.setCurrentItem(preferences.getInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), 0), false);
+        }
         return root;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (shouldRememberLastTab()) {
+            preferences.edit()
+                    .putInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), viewPager.getCurrentItem())
+                    .apply();
+        }
     }
 
     @Override
@@ -107,4 +127,10 @@ abstract public class AbstractTabsFragment extends AbstractFragment
      * @return
      */
     abstract protected TabsAdapter createTabsAdapter(AbstractInfoFragment.DataHolder dataHolder);
+
+    /**
+     * Specifies whether to store the last-used tab.
+     * @return <code>true</code> if the fragment should remember the last-used tab.
+     */
+    abstract protected boolean shouldRememberLastTab();
 }

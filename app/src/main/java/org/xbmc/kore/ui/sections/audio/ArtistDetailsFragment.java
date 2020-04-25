@@ -43,4 +43,10 @@ public class ArtistDetailsFragment extends AbstractTabsFragment {
                 .addTab(SongsListFragment.class, arguments,
                         R.string.songs, baseFragmentId + 2);
     }
+
+
+    @Override
+    protected boolean shouldRememberLastTab() {
+        return false;
+    }
 }

@@ -85,4 +85,9 @@ public class MusicListFragment extends AbstractTabsFragment {
                 .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 5);
         return tabsAdapter;
     }
+
+    @Override
+    protected boolean shouldRememberLastTab() {
+        return true;
+    }
 }

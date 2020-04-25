@@ -54,4 +54,9 @@ public class AddonDetailsFragment extends AbstractTabsFragment {
                 .addTab(MediaFileListFragment.class, contentArgs(args), R.string.addon_content, baseFragmentId++)
                 ;
     }
+
+    @Override
+    protected boolean shouldRememberLastTab() {
+        return false;
+    }
 }
