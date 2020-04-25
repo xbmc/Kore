@@ -82,7 +82,7 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bienvenue</string>
     <string name="wizard_welcome_message"><![CDATA[
-    Commençons par l\'ajout d\'un Centre Multimédia. Assurez-vous que votre Kodi/XBMC est en cours d\'exécution, correctement configuré et sur le même réseau que votre appareil.<br/><br/>
+    Commençons par l\'ajout d\'un Centre Multimédia. Assurez-vous que votre Kodi est en cours d\'exécution, correctement configuré et sur le même réseau que votre appareil.<br/><br/>
     Vous pouvez obtenir de l\'aide pour sa configuration <a href="http://syncedsynapse.com/kore/kore-faq/">ici</a>.<br/><br/>
     Lorsque vous êtes prêt appuyez sur <b><i>Suivant</i></b>.
     ]]></string>
@@ -127,10 +127,10 @@
     <string name="wizard_connecting_to_xbmc_title">Connexion sur %1$s en cours\u2026</string>
     <string name="wizard_connecting_to_xbmc_message">Patientez pendant que j\'essaie de me connecter à votre Centre Multimédia.</string>
 
-    <string name="wizard_empty_authentication">Kodi/XBMC requiert une authentification.\nIndiquez un nom d\'utilisateur et un mot de passe.</string>
+    <string name="wizard_empty_authentication">Kodi requiert une authentification.\nIndiquez un nom d\'utilisateur et un mot de passe.</string>
     <string name="wizard_incorrect_authentication">Mauvais nom d\'utilisateur et/ou mot de passe.\nVérifiez vos informations d\'identification.</string>
-    <string name="wizard_success_connecting">Connecté à Kodi/XBMC.</string>
-    <string name="wizard_error_connecting">Impossible de se connecter à Kodi/XBMC.\nVérifiez la configuration.</string>
+    <string name="wizard_success_connecting">Connecté à Kodi.</string>
+    <string name="wizard_error_connecting">Impossible de se connecter à Kodi.\nVérifiez la configuration.</string>
 
     <string name="wizard_done">Terminé !</string>
     <string name="wizard_done_message"><![CDATA[
@@ -216,7 +216,7 @@
     <string name="poster">Poster</string>
     <string name="thumbnail">Miniature</string>
 
-    <string name="error_getting_properties">Impossible d\'obtenir les propriétés de Kodi/XBMC.\nMessage d\'erreur\u00A0:
+    <string name="error_getting_properties">Impossible d\'obtenir les propriétés de Kodi.\nMessage d\'erreur\u00A0:
         %1$s.</string>
     <string name="error_executing_subtitles">Impossible d\'exécuter l\'extension des sous-titres.\nMessage d\'erreur\u00A0: %1$s.</string>
     <string name="error_getting_addon_info">Impossible d\'obtenir les informations de l\'extension.\nMessage d\'erreur\u00A0:
@@ -231,7 +231,7 @@
         %1$s.</string>
      <string name="error_get_active_player">Impossible de récupérer le lecteur actif.\nMessage d\'erreur\u00A0:
         %1$s.</string>
-    <string name="error_share_video">Impossible de partager la vidéo avec Kodi/XBMC.</string>
+    <string name="error_share_video">Impossible de partager la vidéo avec Kodi.</string>
     <string name="error_reading_local_storage">Impossible de lire le stockage local.
         Avez-vous autorisé Kore à accéder au stockage de fichiers ?</string>
     <string name="error_starting_http_server">Impossible de créer ou de démarrer le serveur HTTP.</string>
