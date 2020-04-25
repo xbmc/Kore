@@ -269,13 +269,8 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
                                                                               callbackHandler);
                                          }
                                      })
-                   .setNegativeButton(android.R.string.cancel,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              // Nothing to do
-                                          }
-                                      })
+
+                   .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                    .show();
         } else {
             FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),

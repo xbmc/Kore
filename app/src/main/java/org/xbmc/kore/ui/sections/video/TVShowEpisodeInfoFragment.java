@@ -244,12 +244,6 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     }
 
     private void downloadEpisode() {
-        DialogInterface.OnClickListener noopClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) { }
-                };
-
         // Check if the directory exists and whether to overwrite it
         File file = new File(fileDownloadHelper.getAbsoluteFilePath());
         if (file.exists()) {
@@ -274,7 +268,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                                                                               callbackHandler);
                                          }
                                      })
-                   .setNegativeButton(android.R.string.cancel, noopClickListener)
+                   .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                    .show();
         } else {
             // Confirm that the user really wants to download the file
@@ -290,7 +284,8 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                                                                                callbackHandler);
                                           }
                                       })
-                   .setNegativeButton(android.R.string.cancel, noopClickListener)
+                   .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
+                   .setOnCancelListener(dialog -> setDownloadButtonState(false))
                    .show();
         }
     }
