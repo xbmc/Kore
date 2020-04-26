@@ -391,26 +391,11 @@ public class RemoteActivity extends BaseActivity
         }
 
         if (videoUri == null) {
-            // Some apps hide the link in the clip, try to detect any link by casting the intent
-            // to string a looking with a regular expression:
-
-            Matcher matcher = Pattern.compile("https?://[^\\s]+").matcher(intent.toString());
-            String matchedString = null;
-            if (matcher.find()) {
-                matchedString = matcher.group(0);
-                if (matchedString.endsWith("}")) {
-                    matchedString = matchedString.substring(0, matchedString.length() - 1);
-                }
-                videoUri = Uri.parse(matchedString);
-            }
+            // Check if `intent` contains a URL or a link to a local file:
+            videoUri = getShareLocalUriOrHiddenUri(intent);
         }
 
-        String url;
-        if (videoUri == null) {
-            url = getShareLocalUri(intent);
-        } else {
-            url = toPluginUrl(videoUri);
-        }
+        String url = toPluginUrl(videoUri);
 
         if (url == null) {
             url = videoUri.toString();
@@ -458,12 +443,31 @@ public class RemoteActivity extends BaseActivity
         finish();
     }
 
-    private String getShareLocalUri(Intent intent) {
+    private Uri getUrlInsideIntent(Intent intent) {
+        // Some apps hide the link in the clip, try to detect any link by casting the intent
+        // to string a looking with a regular expression:
+
+        Matcher matcher = Pattern.compile("https?://[^\\s]+").matcher(intent.toString());
+        String matchedString = null;
+        if (matcher.find()) {
+            matchedString = matcher.group(0);
+            if (matchedString.endsWith("}")) {
+                matchedString = matchedString.substring(0, matchedString.length() - 1);
+            }
+            return Uri.parse(matchedString);
+        }
+        return null;
+    }
+
+    private Uri getShareLocalUriOrHiddenUri(Intent intent) {
         Uri contentUri = intent.getData();
 
         if (contentUri == null) {
             Bundle bundle = intent.getExtras();
             contentUri = (Uri) bundle.get(Intent.EXTRA_STREAM);
+        }
+        if (contentUri == null) {
+            return getUrlInsideIntent(intent);
         }
         if (contentUri == null) {
             return null;
@@ -481,7 +485,7 @@ public class RemoteActivity extends BaseActivity
         http_app.addUri(contentUri);
         String url = http_app.getLinkToFile();
 
-        return url;
+        return Uri.parse(url);
     }
 
     /**
