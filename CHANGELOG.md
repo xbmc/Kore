@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+Version 2.5.1
+-------------
+- Add support to sharing from Arte video (The European Culture Channel) to Kodi
+
 Version 2.5.0
 -------------
 - Include search option in PVR section

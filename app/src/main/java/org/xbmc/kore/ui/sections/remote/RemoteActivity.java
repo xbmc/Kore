@@ -64,6 +64,7 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
+import org.xbmc.kore.utils.PluginUrlUtils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -623,6 +624,8 @@ public class RemoteActivity extends BaseActivity
                 String gti = amazonMatcher.group(1);
                 return "plugin://plugin.video.amazon-test/?asin=" + gti + "&mode=PlayVideo&adult=0&name=&trailer=0&selbitrate=0";
             }
+        } else if (PluginUrlUtils.isHostArte(host)) {
+            return PluginUrlUtils.toPluginUrlArte(playuri);
         }
         return null;
     }
