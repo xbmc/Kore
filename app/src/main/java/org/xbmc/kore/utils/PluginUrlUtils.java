@@ -30,7 +30,7 @@ public class PluginUrlUtils {
     }
 
     public static String toPluginUrlArte(Uri playUri) {
-        Pattern pattern = Pattern.compile("/videos/(.*)/.*/");
+        Pattern pattern = Pattern.compile("^https://www.arte.tv/[a-z]{2}/videos/([0-9]{6}-[0-9]{3}-[A-Z])/.*$");
         Matcher matcher = pattern.matcher(playUri.toString());
         if (matcher.matches()) {
             String kind="SHOW";

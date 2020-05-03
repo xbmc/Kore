@@ -39,9 +39,9 @@ public class PluginUrlUtilsTest {
 	
     @Test
     public void toPluginUrlArte() throws Exception {
-        Uri playUri = Uri.parse("https://www.arte.tv/fr/videos/084692-000-A/mongolie-le-reve-d-une-jeune-nomade/");
-		String pluginUrl = PluginUrlUtils.toPluginUrlArte(playUri);
-        assertNotNull(pluginUrl);
-		assertEquals("plugin://plugin.video.arteplussept/play/SHOW/084692-000-A", pluginUrl);
+    Uri playUri = Uri.parse("https://www.arte.tv/fr/videos/084692-000-A/mongolie-le-reve-d-une-jeune-nomade/");
+	String pluginUrl = PluginUrlUtils.toPluginUrlArte(playUri);
+    assertNotNull(pluginUrl);
+	assertEquals("plugin://plugin.video.arteplussept/play/SHOW/084692-000-A", pluginUrl);
     }	
 }
