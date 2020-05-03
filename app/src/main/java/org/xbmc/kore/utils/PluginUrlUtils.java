@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 public class PluginUrlUtils {
 
     public static boolean isHostArte(String host) {
-        return host.endsWith("www.arte.tv");
+        return host.equals("www.arte.tv");
     }
 
     public static String toPluginUrlArte(Uri playUri) {

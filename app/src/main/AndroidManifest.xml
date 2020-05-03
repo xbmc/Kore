@@ -75,7 +75,7 @@
                 <data android:host="www.svtplay.se"/>
                 <data android:host="soundcloud.com"/>
                 <data android:host="m.soundcloud.com"/>
-				<data android:host="www.arte.tv"/>
+                <data android:host="www.arte.tv"/>
             </intent-filter>
 
             <meta-data android:name="android.service.chooser.chooser_target_service"
@@ -129,6 +129,7 @@
                 <data android:host="www.svtplay.se"/>
                 <data android:host="soundcloud.com"/>
                 <data android:host="m.soundcloud.com"/>
+                <data android:host="www.arte.tv"/>
             </intent-filter>
 
         </activity>
