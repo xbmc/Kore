@@ -594,8 +594,11 @@ public class HostConnectionObserver
                     return;
                 }
 
-                for (PlaylistEventsObserver observer : playlistEventsObservers) {
-                    observer.playlistsAvailable(result);
+                if (!(hostState.lastGetPlaylistResults != null &&
+                    hostState.lastGetPlaylistResults.equals(result))) {
+                    for (PlaylistEventsObserver observer : playlistEventsObservers) {
+                        observer.playlistsAvailable(result);
+                    }
                 }
 
                 // Handle cleared playlists

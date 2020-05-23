@@ -18,10 +18,13 @@ package org.xbmc.kore.jsonrpc.type;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import org.xbmc.kore.host.actions.GetPlaylist;
 import org.xbmc.kore.utils.JsonUtils;
 
 import java.util.List;
@@ -286,6 +289,12 @@ public class ListType {
             watchedepisodes = JsonUtils.intFromJsonNode(node, WATCHEDEPISODES, -1);
             writer = JsonUtils.stringListFromJsonNode(node, WRITER);
             year = JsonUtils.intFromJsonNode(node, YEAR, -1);
+        }
+
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            return obj instanceof ItemBase &&
+                   this.id == ((ItemBase) obj).id;
         }
     }
 

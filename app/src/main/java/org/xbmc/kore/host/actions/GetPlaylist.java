@@ -17,6 +17,8 @@
 package org.xbmc.kore.host.actions;
 
 
+import androidx.annotation.Nullable;
+
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Playlist;
@@ -171,6 +173,12 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
             this.id = playlistId;
             this.type = type;
             this.items = items;
+        }
+
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            return obj instanceof GetPlaylistResult &&
+                   this.items.equals(((GetPlaylistResult) obj).items);
         }
     }
 }
