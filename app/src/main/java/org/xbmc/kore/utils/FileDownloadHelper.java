@@ -107,7 +107,7 @@ public class FileDownloadHelper {
         }
 
         public String getMediaUrl(HostInfo hostInfo) {
-            String pathforUrl = fileName.replaceAll(" ", "%20").replaceAll("'","%27");
+            String pathforUrl = Uri.encode(fileName);
             String credentials = (hostInfo.getPassword() == null || hostInfo.getPassword().isEmpty()) ? "" :
                 String.format("%s:%s@", hostInfo.getUsername(), hostInfo.getPassword());
             String videoUrl = String.format("http://%s%s:%d/vfs/%s", credentials, hostInfo.getAddress(),
