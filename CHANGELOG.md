@@ -3,7 +3,12 @@ Changelog
 
 Version 2.5.1
 -------------
-- Add support to sharing from Arte video (The European Culture Channel) to Kodi
+- Add support for sharing from Arte video (The European Culture Channel) to Kodi
+- Add support for sharing from Amazon Prime Videos
+- Fix download of media files
+- Support local play of items in the "Files" section
+- Various improvments and bug fixes: Fix "Play from here" in the "Files" section, refresh of playlists in the remote, sharing local filenames with spaces in the name, support for self-signed certificates, remember last used tab, etc.
+
 
 Version 2.5.0
 -------------
