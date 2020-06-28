@@ -430,4 +430,9 @@
 
     <string name="disable_local_playback_support">השבתת תמיכה בנגינה מקומית</string>
     <string name="disable_local_playback_support_summary">השבתת תמיכה בנגינת מדיה באופן מקומי על ההתקן שמפעיל את Kore.</string>
+
+    <string name="wifi_network">רשת אלחוטית</string>
+    <string name="mobile_network">רשת סלולרית</string>
+    <string name="any_network">כל רשת</string>
+
 </resources>
