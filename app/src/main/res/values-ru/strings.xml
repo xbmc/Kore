@@ -212,9 +212,6 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s оценок</string>
-    <string name="max_rating">/%1$s</string>
-    <string name="max_rating_video">/10</string>
-    <string name="max_rating_music">/5</string>
 
     <string name="fanart">Фанарт</string>
     <string name="poster">Постер</string>

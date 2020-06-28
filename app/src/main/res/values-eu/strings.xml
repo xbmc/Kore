@@ -203,9 +203,6 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s boto</string>
-    <string name="max_rating">/%1$s</string>
-    <string name="max_rating_video">/10</string>
-    <string name="max_rating_music">/5</string>
 
     <string name="fanart">Zaleen irudiak</string>
     <string name="poster">Horma-irudia</string>

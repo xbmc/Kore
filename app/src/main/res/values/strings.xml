@@ -212,9 +212,8 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s votes</string>
-    <string name="max_rating">/%1$s</string>
-    <string name="max_rating_video">/10</string>
-    <string name="max_rating_music">/5</string>
+    <string name="max_rating" translatable="false">/%1$s</string>
+    <string name="max_rating_video" translatable="false">/10</string>
 
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
@@ -482,5 +481,6 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobile</string>
     <string name="any_network">Any</string>
+    <string name="max_rating_music" translatable="false">/5</string>
 
 </resources>

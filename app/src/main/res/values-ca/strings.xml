@@ -147,7 +147,6 @@
     <string name="season_number">Temporada  %1$02d</string>
     <string name="episode_number">%1$d</string>
     <string name="votes">%1$s vots</string>
-    <string name="max_rating">/%1$s</string>
     <string name="fanart">Caràtula</string>
     <string name="poster">Pòster</string>
     <string name="thumbnail">Miniatura</string>

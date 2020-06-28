@@ -149,8 +149,6 @@
     <string name="season_number">Sezona %1$02d</string>
     <string name="episode_number">%1$d</string>
     <string name="votes">%1$s glasov</string>
-    <string name="max_rating_video">/10</string>
-    <string name="max_rating_music">/5</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
     <string name="thumbnail">Thumbnail</string>
@@ -275,7 +273,6 @@
     <string name="weather">Vreme</string>
     <string name="system">Sistem</string>
     <string name="suspend">Prekini</string>
-    <string name="max_rating">/%1$s</string>
     <string name="no_favourites_found_refresh">Ni priljubljenih.\n\nPovlecite navzdol za osvežitev</string>
     <string name="minutes_abbrev2">%1$sm</string>
     <string name="confirm_songs_download">Ali ste prepričani, da želite prenesti %1$d pesmi?\nSkladbe bodo prenesene v ozadju, vendar lahko traja nekaj časa.</string>
