@@ -161,8 +161,6 @@
   <string name="season_number">Seizoen %1$02d</string>
   <string name="episode_number">%1$d</string>
   <string name="votes">%1$s stemmen</string>
-  <string name="max_rating_video">/10</string>
-  <string name="max_rating_music">/5</string>
   <string name="fanart">Fanart</string>
   <string name="poster">Poster</string>
   <string name="thumbnail">Miniatuur</string>
@@ -339,7 +337,6 @@
   <string name="error_share_video">Kon de video niet delen met Kodi/XBMC.</string>
   <string name="error_starting_channel">Er is een fout opgetreden tijdens het afspelen van een kanaal: %1$s</string>
   <string name="keep_remote_above_lockscreen">Tonen boven het vergrendelscherm</string>
-  <string name="max_rating">/%1$s</string>
   <string name="addon_pinned">Add-on vastgemaakt</string>
   <string name="addon_unpinned">Add-on losgemaakt</string>
   <string name="channel_switching">Overschakelen naar kanaal %1$s</string>

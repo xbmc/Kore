@@ -207,9 +207,6 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s 투표</string>
-    <string name="max_rating">/%1$s</string>
-    <string name="max_rating_video">/10</string>
-    <string name="max_rating_music">/5</string>
 
     <string name="fanart">팬아트</string>
     <string name="poster">포스터</string>

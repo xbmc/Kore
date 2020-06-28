@@ -20,8 +20,6 @@
     <string name="search_again">Keresés újra</string>
     <string name="next">Következő</string>
     <string name="loading">Betöltés...</string>
-    <string name="max_rating_music">/5</string>
-    <string name="max_rating_video">/10</string>
     <string name="minutes_abbrev">%1$s perc</string>
     <string name="movies">Filmek</string>
     <string name="left">Bal</string>
