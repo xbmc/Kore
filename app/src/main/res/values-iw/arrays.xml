@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Download connection types -->
-    <string-array name="entries_download_media_items">
-        <item>רשת אלחוטית</item>
-        <item>רשת סלולרית</item>
-        <item>כל רשת</item>
-    </string-array>
-</resources>

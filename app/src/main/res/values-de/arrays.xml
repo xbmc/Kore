@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Download connection types -->
-    <string-array name="entries_download_media_items">
-        <item>WLAN</item>
-        <item>Mobiles Internet</item>
-        <item>Beliebig</item>
-    </string-array>
-</resources>

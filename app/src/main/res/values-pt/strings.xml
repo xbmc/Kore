@@ -363,4 +363,8 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
   <!--<string name="error_during_purchased">Ocorreu um erro durante a compra.</string>-->
   <!--<string name="purchase_thanks">Obrigado pelo apoio!</string>-->
 
+  <string name="wifi_network">Wi-Fi</string>
+  <string name="mobile_network">Rede Móvel</string>
+  <string name="any_network">Todas</string>
+
 </resources>

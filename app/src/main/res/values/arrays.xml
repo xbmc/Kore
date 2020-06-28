@@ -95,9 +95,9 @@
 
     <!-- Download connection types -->
     <string-array name="entries_download_media_items">
-        <item>WiFi</item>
-        <item>Mobile</item>
-        <item>Any</item>
+        <item>@string/wifi_network</item>
+        <item>@string/mobile_network</item>
+        <item>@string/any_network</item>
     </string-array>
 
     <string-array name="entry_values_download_media_items">

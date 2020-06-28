@@ -478,4 +478,9 @@
     <string name="disable_local_playback_support">Disable local playback support</string>
     <string name="disable_local_playback_support_summary">Disables support for playing media locally on the device running Kore.</string>
     <string name="language">Language</string>
+
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="mobile_network">Mobile</string>
+    <string name="any_network">Any</string>
+
 </resources>

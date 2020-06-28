@@ -444,4 +444,8 @@
     <string name="disable_local_playback_support">Вимкнути підтримку локального відтворення</string>
     <string name="disable_local_playback_support_summary">Відключає відтворення мультимедіа на пристрої під час роботи Kore.</string>
     <string name="language">Мова</string>
+
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="mobile_network">Мобільна мережа</string>
+    <string name="any_network">Будь-яке</string>
 </resources>

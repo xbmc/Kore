@@ -437,4 +437,8 @@
     <string name="disable_local_playback_support_summary">Désactive la prise en charge de la lecture locale de média sur l\'appareil exécutant Kore</string>
     <string name="language">Langue</string>
 
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="mobile_network">Mobile</string>
+    <string name="any_network">Tous</string>
+
 </resources>

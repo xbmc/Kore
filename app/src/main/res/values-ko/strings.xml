@@ -445,4 +445,8 @@
     <string name="disable_local_playback_support">로컬 재생 사용 안 함</string>
     <string name="disable_local_playback_support_summary">Kore를 실행 중인 장치에 로컬 재생 지원을 사용하지 않습니다.</string>
     <string name="language">언어</string>
+
+    <string name="wifi_network">WiFi</string>
+    <string name="mobile_network">데이터</string>
+    <string name="any_network">모두</string>
 </resources>

@@ -318,4 +318,8 @@
     <string name="wizard_search_no_host_found"><![CDATA[     No s\'ha pogut trobar cap Centre Multimèdia en la xarxa local.<br/>Si us cal ajauda per configurar-ho, la trobareu <a href="http://syncedsynapse.com/kore/kore-faq/">aquí</a>.<br/><br/>     Premeu <i>Cerca</i> per tornar a cercar o <i>Següent</i> per configura-ho manualment.     ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[     Activeu la connexió a la xarxa abans de cerecar Centgres Multimèdia.<br/>     ]]></string>
     <string name="wizard_search_host_found"><![CDATA[     S\'han trobat aquets Centres Multimèdia en la xarxa.<br/><br/>Seleccioneu-ne un o premeu <i>Següent</i> per afegir-ne un manualment.     ]]></string>
+
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="mobile_network">Mòbil</string>
+    <string name="any_network">Qualsevol</string>
 </resources>
