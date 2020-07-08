@@ -565,6 +565,8 @@ public class RemoteActivity extends BaseActivity
                     return null;
                 }
 
+            } else if (word.startsWith("magnet:")) {
+                return Uri.parse(word);
             }
         }
         return null;
@@ -578,6 +580,14 @@ public class RemoteActivity extends BaseActivity
      */
     private String toPluginUrl(Uri playuri) {
         String host = playuri.getHost();
+        String path = playuri.getPath();
+        Boolean isMagnet = false;
+        if (playuri.toString().startsWith("magnet:")) {
+            host = "";   // If magnet link, host = null, to avoid errors we set an empty str
+            path = "";   // If magnet link, path = null, to avoid errors we set an empty str
+            isMagnet = true;
+        }
+        
         if (host.endsWith("youtube.com")) {
             String videoId = playuri.getQueryParameter("v");
             String playlistId = playuri.getQueryParameter("list");
@@ -624,6 +634,10 @@ public class RemoteActivity extends BaseActivity
                 String gti = amazonMatcher.group(1);
                 return "plugin://plugin.video.amazon-test/?asin=" + gti + "&mode=PlayVideo&adult=0&name=&trailer=0&selbitrate=0";
             }
+        }
+        else if (path.endsWith(".torrent") || isMagnet) {
+            return "plugin://plugin.video.elementum/play?uri="
+                    + URLEncoder.encode(playuri.toString());
         } else if (PluginUrlUtils.isHostArte(host)) {
             return PluginUrlUtils.toPluginUrlArte(playuri);
         }
