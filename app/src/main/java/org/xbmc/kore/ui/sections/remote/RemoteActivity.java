@@ -629,6 +629,10 @@ public class RemoteActivity extends BaseActivity
             if (twitchStreamMatcher.find()) {
                 return "plugin://plugin.video.twitch/?mode=play&channel_name=" + twitchStreamMatcher.group(1);
             }
+            Matcher twitchVodMatcher = Pattern.compile("twitch\\.tv/videos/(\\d+)$").matcher(playuri.toString());
+            if (twitchVodMatcher.find()) {
+                return "plugin://plugin.video.twitch/?mode=play&video_id=" + twitchVodMatcher.group(1);
+            }
         } else if (PluginUrlUtils.isHostArte(host)) {
             return PluginUrlUtils.toPluginUrlArte(playuri);
         }
