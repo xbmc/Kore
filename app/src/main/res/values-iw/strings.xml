@@ -16,7 +16,6 @@
 -->
 <resources>
 
-    <string name="app_name">Kore</string>
     <string name="settings">הגדרות</string>
     <string name="action_options">אפשרויות</string>
 
@@ -32,8 +31,11 @@
     <string name="tv_shows">סדרות</string>
     <string name="music">מוזיקה</string>
     <string name="pictures">תמונות</string>
+    <string name="dcim">DCIM</string>
+    <string name="external_storage">אחסון</string>
     <string name="addons">הרחבות</string>
     <string name="files">קבצים</string>
+    <string name="local_files">קבצים מקומיים</string>
     <string name="video">וידאו</string>
     <string name="videos">סרטונים</string>
     <string name="media">מדיה</string>
@@ -41,6 +43,7 @@
     <string name="script">סקריפט</string>
     <string name="unknown">לא ידוע</string>
     <string name="file_browser">סייר קבצים</string>
+    <string name="local_file_browser">סייר קבצים מקומיים</string>
     <string name="pvr">PVR</string>
     <string name="favourites">מועדפים</string>
     <string name="weather">מזג אוויר</string>
@@ -203,7 +206,6 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s קולות</string>
-
     <string name="fanart">פנארט</string>
     <string name="poster">כרזה</string>
     <string name="thumbnail">תמונה ממוזערת</string>
@@ -218,11 +220,16 @@
         %1$s.</string>
     <string name="error_play_media_file">לא ניתן לנגן קובצי מדיה.\\nהודעת השגיאה:
         %1$s.</string>
+    <string name="error_play_local_file">לא ניתן לנגן קובץ מדיה מקומי.\n
+    	הודעת שגיאה:
+        %1$s.</string>
     <string name="error_queue_media_file">לא ניתן להוסיף קובץ מדיה לתור.\\nהודעת השגיאה:
         %1$s.</string>
     <string name="error_get_active_player">לא ניתן לאתר את הנגן הפעיל.\\nהודעת השגיאה:
         %1$s.</string>
     <string name="error_share_video">לא ניתן לשתף וידאו אל Kodi/XBMC.</string>
+    <string name="error_reading_local_storage">לא ניתן לקרוא מהאחסון המקומי. הענקת ל־Kore הרשאות לגשת לאחסון הקבצים?</string>
+    <string name="error_starting_http_server">לא ניתן ליצור או להפעיל שרת HTTP.</string>
 
     <string name="directors">במאים:</string>
     <string name="studio">סטודיו:</string>
@@ -239,10 +246,10 @@
     <string name="clear_playlist">פינוי רשימת הנגינה</string>
     <string name="source_empty">מקור המדיה ריק</string>
 
+    <string name="swipe_down_to_refresh">יש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_movies_found_refresh">לא נמצאו סרטים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_tvshows_found_refresh">לא נמצאו סדרות\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_episodes_found">לא נמצאו פרקים</string>
-    <string name="swipe_down_to_refresh">יש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_artists_found_refresh">לא נמצאו אמנים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_albums_found_refresh">לא נמצאו אלבומים\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
     <string name="no_genres_found_refresh">לא נמצאו סגנונות\\n\\nיש למשוך כלפי מטה כדי לרענן</string>
@@ -271,6 +278,7 @@
 
     <string name="add_to_playlist">הוספה לרשימת נגינה</string>
     <string name="item_added_to_playlist">נוסף לרשימת הנגינה</string>
+    <string name="item_sent_to_kodi">נשלח ל־Kodi</string>
     <string name="no_suitable_playlist">לא נמצאה רשימת נגינה תואמת להוספת סוג המדיה.</string>
 
     <string name="imdb">IMDb</string>
@@ -328,17 +336,20 @@
     <string name="sort_by_length">לפי אורך</string>
     <string name="sort_by_date_added">לפי תאריך ההוספה</string>
     <string name="sort_by_last_played">לפי מועד הנגינה האחרון</string>
+    <string name="unsorted">בלתי ממוין</string>
     <string name="ignore_prefixes">התעלמות מקידומות</string>
     <string name="show_watched_status">הצגת מצב הצפייה</string>
     <string name="show_rating">הצגת דירוג</string>
 
     <!-- Preferences strings -->
     <string name="application">יישום</string>
-	
+
     <string name="theme">ערכת נושא</string>
     <string name="theme_night">לילה</string>
     <string name="theme_day">יום</string>
     <string name="theme_mist">ערפל</string>
+    <string name="theme_sunrise">זריחה</string>
+    <string name="theme_sunset">שקיעה</string>
 
     <string name="switch_to_remote">הצגה עם הפעלת המדיה</string>
     <string name="keep_remote_above_lockscreen">הצגה על גבי מסך הנעילה</string>
@@ -376,6 +387,7 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">לנגן ב־Kodi</string>
+    <string name="queue_on_kodi">תור ב־Kodi</string>
     <string name="pause_call_incoming_title">שיחה נכנסת</string>
     <string name="pause_call_incoming_message">נא להסתכל בטלפון, מנסים להתקשר אליך</string>
 
@@ -410,6 +422,7 @@
 
     <string name="read_phone_state_permission_denied">ההרשאה נדחתה. לא תהיה אפשרות להשהות את הנגינה במהלך שיחות.</string>
     <string name="write_storage_permission_denied">ההרשאה נדחתה. לא תהיה אפשרות להוריד קבצים.</string>
+    <string name="read_storage_permission_denied">ההרשאה נדחתה. לא תהיה לך אפשרות לקרוא קבצים.</string>
 
     <string name="no_songs_to_download">אין שירים להורדה</string>
     <string name="by_album">לפי אלבום</string>
@@ -427,9 +440,9 @@
 
     <string name="disable_local_playback_support">השבתת תמיכה בנגינה מקומית</string>
     <string name="disable_local_playback_support_summary">השבתת תמיכה בנגינת מדיה באופן מקומי על ההתקן שמפעיל את Kore.</string>
+    <string name="language">שפה</string>
 
     <string name="wifi_network">רשת אלחוטית</string>
     <string name="mobile_network">רשת סלולרית</string>
     <string name="any_network">כל רשת</string>
-
-</resources>
+    </resources>
