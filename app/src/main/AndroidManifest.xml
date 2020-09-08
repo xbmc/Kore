@@ -76,6 +76,8 @@
                 <data android:host="soundcloud.com"/>
                 <data android:host="m.soundcloud.com"/>
                 <data android:host="www.arte.tv"/>
+                <data android:host="twitch.tv"/>
+                <data android:host="m.twitch.tv"/>
             </intent-filter>
 
             <meta-data android:name="android.service.chooser.chooser_target_service"
@@ -130,6 +132,8 @@
                 <data android:host="soundcloud.com"/>
                 <data android:host="m.soundcloud.com"/>
                 <data android:host="www.arte.tv"/>
+                <data android:host="twitch.tv"/>
+                <data android:host="m.twitch.tv"/>
             </intent-filter>
 
         </activity>

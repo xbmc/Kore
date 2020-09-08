@@ -39,4 +39,17 @@ public class PluginUrlUtils {
         }
         return null;
     }
+
+    public static String toPluginUrlTwitch(Uri playUri) {
+        Matcher twitchStreamMatcher = Pattern.compile("twitch\\.tv/(\\w+)$").matcher(playUri.toString());
+        if (twitchStreamMatcher.find()) {
+            return "plugin://plugin.video.twitch/?mode=play&channel_name=" + twitchStreamMatcher.group(1);
+        }
+        Matcher twitchVodMatcher = Pattern.compile("twitch\\.tv/videos/(\\d+)$").matcher(playUri.toString());
+        if (twitchVodMatcher.find()) {
+            return "plugin://plugin.video.twitch/?mode=play&video_id=" + twitchVodMatcher.group(1);
+        }
+        return null;
+    }
+
 }

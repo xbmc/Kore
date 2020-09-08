@@ -624,6 +624,8 @@ public class RemoteActivity extends BaseActivity
                 String gti = amazonMatcher.group(1);
                 return "plugin://plugin.video.amazon-test/?asin=" + gti + "&mode=PlayVideo&adult=0&name=&trailer=0&selbitrate=0";
             }
+        } else if (host.endsWith("twitch.tv")) {
+            return PluginUrlUtils.toPluginUrlTwitch(playuri);
         } else if (PluginUrlUtils.isHostArte(host)) {
             return PluginUrlUtils.toPluginUrlArte(playuri);
         }
