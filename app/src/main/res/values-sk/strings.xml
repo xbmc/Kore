@@ -13,12 +13,9 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
-   Translated into Slovak language by Tibor Repček (tiborepcek@gmail.com)
 -->
 <resources>
 
-    <string name="app_name">Kore</string>
     <string name="settings">Nastavenia</string>
     <string name="action_options">Možnosti</string>
 
@@ -34,8 +31,11 @@
     <string name="tv_shows">TV šou</string>
     <string name="music">Hudba</string>
     <string name="pictures">Obrázky</string>
+    <string name="dcim">DCIM</string>
+    <string name="external_storage">Úložisko</string>
     <string name="addons">Rozšírenia</string>
     <string name="files">Súbory</string>
+    <string name="local_files">Lokálne súbory</string>
     <string name="video">Video</string>
     <string name="videos">Videá</string>
     <string name="media">Multimédiá</string>
@@ -43,6 +43,7 @@
     <string name="script">Skript</string>
     <string name="unknown">Neznáme</string>
     <string name="file_browser">Prehliadač súborov</string>
+    <string name="local_file_browser">Prehliadač lokálnych súborov</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Obľúbené</string>
     <string name="weather">Počasie</string>
@@ -205,7 +206,6 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">Hlasov: %1$s</string>
-
     <string name="fanart">Fanart</string>
     <string name="poster">Plagát</string>
     <string name="thumbnail">Miniatúra</string>
@@ -219,11 +219,16 @@
         %1$s.</string>
     <string name="error_play_media_file">Nepodarilo sa prehrať multimediálny súbor.\nChybové hlásenie:
         %1$s.</string>
+    <string name="error_play_local_file">Nepodarilo sa prehrať lokálny multimediálny súbor.\n
+    	Chybové hlásenie:
+        %1$s.</string>
     <string name="error_queue_media_file">Nepodarilo sa zaradiť súbor do fronty.\nChybové hlásenie:
         %1$s.</string>
     <string name="error_get_active_player">Nepodarilo sa aktivovať prehrávač.\nChybové hlásenie:
         %1$s.</string>
     <string name="error_share_video">Nepodarilo sa zdielať video do Kodi/XBMC.</string>
+    <string name="error_reading_local_storage">Nepodarilo sa načítať lokálne úložisko. Dali ste Kore oprávnenia na prístup k lokálnemu úložisku?</string>
+    <string name="error_starting_http_server">Nepodarilo sa vytvoriť alebo spustiť HTTP server.</string>
 
     <string name="directors">Réžia:</string>
     <string name="studio">Štúdio:</string>
@@ -240,10 +245,10 @@
     <string name="clear_playlist">Vyčistiť zoznam</string>
     <string name="source_empty">Zdroj médií je prázdny</string>
 
+    <string name="swipe_down_to_refresh">Obnovte potiahnutím dolu</string>
     <string name="no_movies_found_refresh">Žiadne filmy\n\nObnovte potiahnutím dolu</string>
     <string name="no_tvshows_found_refresh">Žiadne TV šou\n\nObnovte potiahnutím dolu</string>
     <string name="no_episodes_found">Žiadne epizódy</string>
-    <string name="swipe_down_to_refresh">Obnovte potiahnutím dolu</string>
     <string name="no_artists_found_refresh">Žiadni umelci\n\nObnovte potiahnutím dolu</string>
     <string name="no_albums_found_refresh">Žiadne albumy\n\nObnovte potiahnutím dolu</string>
     <string name="no_genres_found_refresh">Žiadne žánre\n\nObnovte potiahnutím dolu</string>
@@ -272,6 +277,7 @@
 
     <string name="add_to_playlist">Pridať do zoznamu</string>
     <string name="item_added_to_playlist">Pridané do zoznamu</string>
+    <string name="item_sent_to_kodi">Poslané do Kodi</string>
     <string name="no_suitable_playlist">Pre tento typ média nebol nájdený žiadny zoznam.</string>
 
     <string name="imdb">IMDb</string>
@@ -329,20 +335,21 @@
     <string name="sort_by_length">podľa dĺžky trvania</string>
     <string name="sort_by_date_added">podľa dátumu pridania</string>
     <string name="sort_by_last_played">podľa naposledy prehraté</string>
+    <string name="unsorted">Nepotriedené</string>
     <string name="ignore_prefixes">Ignorovať predpony</string>
     <string name="show_watched_status">Zobraziť stav videných</string>
     <string name="show_rating">Zobraziť hodnotenie</string>
 
     <!-- Preferences strings -->
     <string name="application">Aplikácia</string>
-	
+
     <string name="theme">Vzhľad</string>
     <string name="theme_night">Noc</string>
     <string name="theme_day">Deň</string>
     <string name="theme_mist">Hmla</string>
     <string name="theme_sunrise">Východ slnka</string>
     <string name="theme_sunset">Západ slnka</string>
-	
+
     <string name="switch_to_remote">Zobraziť pri spustení multimédia</string>
     <string name="keep_remote_above_lockscreen">Zobraziť na zamknutej obrazovke</string>
     <string name="pref_keep_screen_on">Nezamknúť obrazovku</string>
@@ -379,6 +386,7 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Prehrať v Kodi</string>
+    <string name="queue_on_kodi">Fronta na Kodi</string>
     <string name="pause_call_incoming_title">Prichádzajúci hovor</string>
     <string name="pause_call_incoming_message">Pozrite sa na váš telefón, niekto vám volá.</string>
 
@@ -413,6 +421,7 @@
 
     <string name="read_phone_state_permission_denied">Povolenie zamiestnuté. Nebude možné pozastaviť prehrávanie počas telefonického hovoru.</string>
     <string name="write_storage_permission_denied">Povolenie zamiestnuté. Nebude možné sťahovať súbory.</string>
+    <string name="read_storage_permission_denied">Povolenie zamietnuté. Nebude možné čítať súbory.</string>
 
     <string name="no_songs_to_download">Žiadne skladby na stiahnutie</string>
     <string name="by_album">Podľa albumu</string>
@@ -430,4 +439,9 @@
 
     <string name="disable_local_playback_support">Zakázať podporu lokálneho prehrávania</string>
     <string name="disable_local_playback_support_summary">Zakáže podporu prehrávania multimédií lokálne na zariadení s nainštalovaným diaľkovým ovládačom Kore.</string>
-</resources>
+    <string name="language">Jazyk</string>
+
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="mobile_network">Mobil</string>
+    <string name="any_network">Ľubovoľné</string>
+    </resources>
