@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <string name="app_name">Kore</string>
+    <string name="app_name" translatable="false">Kore</string>
     <string name="settings">Ezarpenak</string>
     <string name="action_options">Aukerak</string>
 
@@ -32,8 +32,11 @@
     <string name="tv_shows">TB saioak</string>
     <string name="music">Musika</string>
     <string name="pictures">Irudiak</string>
+    <string name="dcim">DCIM</string>
+    <string name="external_storage">Biltegia</string>
     <string name="addons">Gehigarriak</string>
     <string name="files">Fitxategiak</string>
+    <string name="local_files">Fitxategi lokalak</string>
     <string name="video">Bideoa</string>
     <string name="videos">Bideoak</string>
     <string name="media">Multimedia</string>
@@ -41,6 +44,7 @@
     <string name="script">Script-a</string>
     <string name="unknown">Ezezaguna</string>
     <string name="file_browser">Fitxategi arakatzailea</string>
+    <string name="local_file_browser">Fitxategi lokalen arakatzailea</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Gogokoak</string>
     <string name="weather">Eguraldia</string>
@@ -123,10 +127,13 @@
     <string name="wizard_connecting_to_xbmc_title">%1$s(e)ra konektatzen…</string>
     <string name="wizard_connecting_to_xbmc_message">Itxaron zure multimedia zentrora konektatzen saiatzen naizen bitartean…</string>
 
-    <string name="wizard_empty_authentication">Kodi/XBMCk autentifikazioa eskatzen du.\nZehaztu erabiltzaile-izena eta pasahitza.</string>
-    <string name="wizard_incorrect_authentication">Erabiltzaile-izen eta/edo pasahitz okerra.\nEgiaztatu itzazu.</string>
+    <string name="wizard_empty_authentication">Kodi/XBMCk autentifikazioa eskatzen du.\n
+    	Zehaztu erabiltzaile-izena eta pasahitza.</string>
+    <string name="wizard_incorrect_authentication">Erabiltzaile-izen eta/edo pasahitz okerra.\n
+    	Egiaztatu itzazu.</string>
     <string name="wizard_success_connecting">Kodi/XBMCra konektatuta.</string>
-    <string name="wizard_error_connecting">Ezin izan da Kodi/XBMCra konektatu.\nEgiaztatu konfigurazioa.</string>
+    <string name="wizard_error_connecting">Ezin izan da Kodi/XBMCra konektatu.\n
+    	Egiaztatu konfigurazioa.</string>
 
     <string name="wizard_done">Eginda!</string>
     <string name="wizard_done_message"><![CDATA[
@@ -203,25 +210,39 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s boto</string>
+    <string name="max_rating" translatable="false">/%1$s</string>
+    <string name="max_rating_video" translatable="false">/10</string>
 
     <string name="fanart">Zaleen irudiak</string>
     <string name="poster">Horma-irudia</string>
     <string name="thumbnail">Koadro-txikia</string>
 
-    <string name="error_getting_properties">Ezin izan dira Kodi/XBMC propietateak eskuratu.\nErrore-mezua:
+    <string name="error_getting_properties">Ezin izan dira Kodi/XBMC propietateak eskuratu.\n
+    	Errore-mezua:
         %1$s.</string>
-    <string name="error_executing_subtitles">Ezin izan da azpitituluen gehigarria exekutatu.\nErrore-mezua: %1$s.</string>
-    <string name="error_getting_addon_info">Ezin izan da gehigarriaren informazioa eskuratu.\nErrore-mezua:
+    <string name="error_executing_subtitles">Ezin izan da azpitituluen gehigarria exekutatu.\n
+    	Errore-mezua: %1$s.</string>
+    <string name="error_getting_addon_info">Ezin izan da gehigarriaren informazioa eskuratu.\n
+    	Errore-mezua:
         %1$s.</string>
-    <string name="error_getting_source_info">Ezin izan dira fitxategiak arakatu.\nErrore-mezua:
+    <string name="error_getting_source_info">Ezin izan dira fitxategiak arakatu.\n
+    	Errore-mezua:
         %1$s.</string>
-    <string name="error_play_media_file">Ezin izan da multimedia-fitxategia erreproduzitu.\nErrore-mezua:
+    <string name="error_play_media_file">Ezin izan da multimedia-fitxategia erreproduzitu.\n
+    	Errore-mezua:
         %1$s.</string>
-    <string name="error_queue_media_file">Ezin izan da multimedia-fitxategia ilaran gehitu.\nErrore-mezua:
+    <string name="error_play_local_file">Ezin izan da multimedia-fitxategi lokala erreproduzitu.\n
+    	Error message:
         %1$s.</string>
-    <string name="error_get_active_player">Ezin izan da erreproduzigailu aktiboa eskuratu.\nErrore-mezua:
+    <string name="error_queue_media_file">Ezin izan da multimedia-fitxategia ilaran gehitu.\n
+    	Errore-mezua:
+        %1$s.</string>
+    <string name="error_get_active_player">Ezin izan da erreproduzigailu aktiboa eskuratu.\n
+    	Errore-mezua:
         %1$s.</string>
     <string name="error_share_video">Ezin izan da bideoa Kodi/XBMCrekin partekatu.</string>
+    <string name="error_reading_local_storage">Ezin izan da biltegi lokala irakurri. Kore-ri biltegi lokalean sartzeko baimena eman diozu?</string>
+    <string name="error_starting_http_server">Ezin izan da HTTP zerbitzaria sortu edo abiarazi.</string>
 
     <string name="directors">Zuzendariak:</string>
     <string name="studio">Estudioa:</string>
@@ -238,20 +259,32 @@
     <string name="clear_playlist">Garbitu erreprodukzio-zerrenda</string>
     <string name="source_empty">Multimedia-iturburua hutsik</string>
 
-    <string name="no_movies_found_refresh">Ez da filmik aurkitu.\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_tvshows_found_refresh">Ez da TB saiorik aurkitu\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_episodes_found">Ez da atalik aurkitu</string>
     <string name="swipe_down_to_refresh">Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_artists_found_refresh">Ez da artistarik aurkitu\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_albums_found_refresh">Ez da albumik aurkitu\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_genres_found_refresh">Ez da generorik aurkitu\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_addons_found_refresh">Ez da gehigarririk aurkitu edo ez dago konektatuta\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_music_videos_found_refresh">Ez da bideorik aurkitu\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_channel_groups_found_refresh">Ez da kanal talderik aurkitu.\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_channels_found_refresh">Ez da kanalik aurkitu.\n\nSwipe down to refresh</string>
-    <string name="no_favourites_found_refresh">Ez da gogokorik aurkitu.\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_recordings_found_refresh">Ez da grabaziorik aurkitu.\n\nPasa hatza goitik behera freskatzeko</string>
-    <string name="no_broadcasts_found_refresh">Ez da transmisiorik aurkitu.\n\nPasa hatza goitik behera freskatzeko</string>
+    <string name="no_movies_found_refresh">Ez da filmik aurkitu.\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_tvshows_found_refresh">Ez da TB saiorik aurkitu\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_episodes_found">Ez da atalik aurkitu</string>
+    <string name="no_artists_found_refresh">Ez da artistarik aurkitu\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_albums_found_refresh">Ez da albumik aurkitu\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_genres_found_refresh">Ez da generorik aurkitu\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_addons_found_refresh">Ez da gehigarririk aurkitu edo ez dago konektatuta\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_music_videos_found_refresh">Ez da bideorik aurkitu\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_channel_groups_found_refresh">Ez da kanal talderik aurkitu.\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_channels_found_refresh">Ez da kanalik aurkitu.\n\n
+    	Swipe down to refresh</string>
+    <string name="no_favourites_found_refresh">Ez da gogokorik aurkitu.\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_recordings_found_refresh">Ez da grabaziorik aurkitu.\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_broadcasts_found_refresh">Ez da transmisiorik aurkitu.\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
     <string name="pull_to_refresh">Tira freskatzeko</string>
     <string name="no_cast_info">Ez dago transmisioaren informaziorik</string>
 
@@ -270,21 +303,30 @@
 
     <string name="add_to_playlist">Gehitu erreprodukzio-zerrendara</string>
     <string name="item_added_to_playlist">Erreprodukzio-zerrendara gehituta</string>
+    <string name="item_sent_to_kodi">Kodi-ra bidalia</string>
     <string name="no_suitable_playlist">Ez da erreprodukzio-zerrenda egokirik aurkitu multimedia mota gehitzeko.</string>
 
     <string name="imdb">IMDb</string>
     <string name="seen">Ikusia</string>
     <string name="download">Deskargatu</string>
 
-    <string name="confirm_movie_download">Ziur zaude film hau deskargatu nahi duzula?\nFilma atzeko planoan deskargatuko da, baina denbora beharko du amaitzeko.</string>
-    <string name="confirm_episode_download">Ziur zaude atal hau deskargatu nahi duzula?\nAtala atzeko planoan deskargatuko da, baina denbora beharko du amaitzeko.</string>
-    <string name="confirm_album_download">Ziur zaude album hau deskargatu nahi duzula?\nAlbuma atzeko planoan deskargatuko da, baina denbora beharko du amaitzeko.</string>
-    <string name="confirm_artist_download">Ziur zaude album guztiak deskargatu nahi dituzula?\nAlbumak atzeko planoan deskargatuko dira, baina denbora beharko du amaitzeko.</string>
-    <string name="confirm_songs_download">Ziur zaude %1$d kanta deskargatu nahi dituzula?\nKantak atzeko planoan deskargatuko dira, baina denbora beharko du amaitzeko.</string>
+    <string name="confirm_movie_download">Ziur zaude film hau deskargatu nahi duzula?\n
+    	Filma atzeko planoan deskargatuko da, baina denbora beharko du amaitzeko.</string>
+    <string name="confirm_episode_download">Ziur zaude atal hau deskargatu nahi duzula?\n
+    	Atala atzeko planoan deskargatuko da, baina denbora beharko du amaitzeko.</string>
+    <string name="confirm_album_download">Ziur zaude album hau deskargatu nahi duzula?\n
+    	Albuma atzeko planoan deskargatuko da, baina denbora beharko du amaitzeko.</string>
+    <string name="confirm_artist_download">Ziur zaude album guztiak deskargatu nahi dituzula?\n
+    	Albumak atzeko planoan deskargatuko dira, baina denbora beharko du amaitzeko.</string>
+    <string name="confirm_songs_download">Ziur zaude %1$d kanta deskargatu nahi dituzula?\n
+    	Kantak atzeko planoan deskargatuko dira, baina denbora beharko du amaitzeko.</string>
 
-    <string name="download_file_exists">Fitxategia dagoeneko existitzen da.\nGainidatzi nahi duzu edo beste izen batekin deskargatu?</string>
-    <string name="download_dir_exists">Deskargako direktorioa dagoeneko existitzen da.\nFitxategiren batek izen bera badu, gainidatzi nahi duzu ala beste izen batekin deskargatu?</string>
-    <string name="download_files_exists">Fitxategi bat edo gehiago dagoeneko existitzen d(ir)a.\nFitxategiren batek izen bera badu, gainidatzi nahi duzu ala beste izen batekin deskargatu?</string>
+    <string name="download_file_exists">Fitxategia dagoeneko existitzen da.\n
+    	Gainidatzi nahi duzu edo beste izen batekin deskargatu?</string>
+    <string name="download_dir_exists">Deskargako direktorioa dagoeneko existitzen da.\n
+    	Fitxategiren batek izen bera badu, gainidatzi nahi duzu ala beste izen batekin deskargatu?</string>
+    <string name="download_files_exists">Fitxategi bat edo gehiago dagoeneko existitzen d(ir)a.\n
+    	Fitxategiren batek izen bera badu, gainidatzi nahi duzu ala beste izen batekin deskargatu?</string>
     <string name="overwrite">Gainidatzi</string>
     <string name="download_with_new_name">Izen berria</string>
     <string name="download_file_description">Zure multimedia zentrotik deskargatua</string>
@@ -327,12 +369,14 @@
     <string name="sort_by_length">Luzeraren arabera</string>
     <string name="sort_by_date_added">Gehitutako dataren arabera</string>
     <string name="sort_by_last_played">Azken erreprodukzioaren arabera</string>
+    <string name="unsorted">Ordenatu gabe</string>
     <string name="ignore_prefixes">Ez ikusi egin aurrizkiei</string>
     <string name="show_watched_status">Erakutsi ikusitakoen egoera</string>
+    <string name="show_rating">Erakutsi puntuazioa</string>
 
     <!-- Preferences strings -->
     <string name="application">Aplikazioa</string>
-	
+
     <string name="theme">Gaia</string>
     <string name="theme_night">Gaua</string>
     <string name="theme_day">Eguna</string>
@@ -359,7 +403,6 @@
     <string name="about_desc"><![CDATA[
         \u00A9 2018 XBMC Foundation<br><br>
         Mesedez balora gaitzazu <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b>n<br><br>
-
         Laguntza behar baduzu, begiratu gure <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">foroa</a></b>
     ]]></string>
 
@@ -376,11 +419,13 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Erreproduzitu Kodi-n</string>
+    <string name="queue_on_kodi">Ilaratu Kodi-n</string>
     <string name="pause_call_incoming_title">Sarrerako deia</string>
     <string name="pause_call_incoming_message">Begiratu zure telefonoa, norbait deitzen ari zaizu</string>
 
     <string name="error_getting_pvr_info">Errore bat gertatu da pvr informazioa eskuratzean: %1$s</string>
-    <string name="might_not_have_pvr">Errore bat gertatu da kanalen informazioa eskuratzean, seguraski zure multimedia zentroak sintonizadorerik ez daukalako edo ez dagoelako konfiguratuta..\n\nHala bada eta sarrera hau alboko menutik kendu nahi baduzu, Ezarpenetan egin dezakezu.</string>
+    <string name="might_not_have_pvr">Errore bat gertatu da kanalen informazioa eskuratzean, seguraski zure multimedia zentroak sintonizadorerik ez daukalako edo ez dagoelako konfiguratuta..\n\n
+    	Hala bada eta sarrera hau alboko menutik kendu nahi baduzu, Ezarpenetan egin dezakezu.</string>
     <string name="error_starting_channel">Errore bat gertatu da kanalaren erreprodukzioa hastean: %1$s</string>
     <string name="error_favourites">Errore bat gertatu da gogokoak deskribapenarekin eskuratzean: %1$s</string>
     <string name="error_starting_recording">Errore bat gertatu da grabazioa hastean: %1$s</string>
@@ -410,6 +455,7 @@
 
     <string name="read_phone_state_permission_denied">Baimena ukatu da. Ezingo da erreproduzioa pausatu deietan.</string>
     <string name="write_storage_permission_denied">Baimena ukatu da. Ezingo dira fitxategiak deskargatu.</string>
+    <string name="read_storage_permission_denied">Baimena ukatu da. Ezingo dira fitxategiak irakurri.</string>
 
     <string name="no_songs_to_download">Ez dago deskargatzeko kantarik</string>
     <string name="by_album">Albumaren arabera</string>
@@ -418,7 +464,8 @@
     <string name="muted">mututa</string>
     <string name="no_item_available_to_play">Errorea: ez dago elementurik erabilgarri erreproduzitzeko.</string>
     <string name="Refreshing_not_implemented_for_this_item">Freskatzea inplementatu gabe dago elementu honentzat</string>
-    <string name="no_songs_found_refresh">Ez da kantarik aurkitu\\n\\nPasa hatza goitik behera freskatzeko</string>
+    <string name="no_songs_found_refresh">Ez da kantarik aurkitu\n\n
+    	Pasa hatza goitik behera freskatzeko</string>
     <string name="not_implemented">Inplementatu gabe</string>
     <string name="zeroprogress">0:00</string>
 
@@ -427,4 +474,10 @@
 
     <string name="disable_local_playback_support">Desgaitu erreprodukzio lokalaren sostengua</string>
     <string name="disable_local_playback_support_summary">Kore exekutatzen duen gailuan lokalki dituen media-fitxategiak erreproduzitzeko sostengua desgaitzen du.</string>
+    <string name="language">Hizkuntza</string>
+
+    <string name="wifi_network">Wi-Fia</string>
+    <string name="mobile_network">Gailu mugikorra</string>
+    <string name="any_network">Edozein</string>
+    <string name="max_rating_music" translatable="false">/5</string>
 </resources>
