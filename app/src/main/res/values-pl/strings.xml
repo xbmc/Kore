@@ -16,7 +16,6 @@
 -->
 <resources>
 
-    <string name="app_name">Kore</string>
     <string name="settings">Ustawienia</string>
     <string name="action_options">Opcje</string>
 
@@ -32,8 +31,11 @@
     <string name="tv_shows">Seriale</string>
     <string name="music">Muzyka</string>
     <string name="pictures">Zdjęcia</string>
+    <string name="dcim">DCIM</string>
+    <string name="external_storage">Magazyn</string>
     <string name="addons">Dodatki</string>
     <string name="files">Pliki</string>
+    <string name="local_files">Pliki lokalne</string>
     <string name="video">Film</string>
     <string name="videos">Filmy</string>
     <string name="media">Multimedia</string>
@@ -41,6 +43,7 @@
     <string name="script">Scenariusz</string>
     <string name="unknown">Nieznany</string>
     <string name="file_browser">Przeglądarka plików</string>
+    <string name="local_file_browser">Lokalna przeglądarka plików</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Ulubione</string>
     <string name="weather">Pogoda</string>
@@ -203,7 +206,6 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$sgłosów </string>
-
     <string name="fanart">Fanart</string>
     <string name="poster">Plakat</string>
     <string name="thumbnail">Miniaturka</string>
@@ -217,11 +219,16 @@
         %1$s.</string>
     <string name="error_play_media_file">Nie można odtworzyć pliku multimedialnego.\nKod błędu:
         %1$s.</string>
+    <string name="error_play_local_file">Nie można odtworzyć lokalnego pliku multimedialnego.\n
+    	Kod błędu:
+        %1$s.</string>
     <string name="error_queue_media_file">Nie można umieścić w kolejce pliku multimedialnego.\nKod błędu:
         %1$s.</string>
     <string name="error_get_active_player">Błąd podczas wybierania domyślnego odtwarzacza.\nKod błędu:
         %1$s.</string>
     <string name="error_share_video">Nie można udostępnić filmu do Kodi/XBMC.</string>
+    <string name="error_reading_local_storage">Nie można odczytać lokalnego magazynu. Czy zezwoliłeś Kore na dostęp do przechowywania plików?</string>
+    <string name="error_starting_http_server">Nie można utworzyć lub uruchomić serwera HTTP.</string>
 
     <string name="directors">Reżyserzy:</string>
     <string name="studio">Studio:</string>
@@ -238,10 +245,10 @@
     <string name="clear_playlist">Wyczyść listę</string>
     <string name="source_empty">Źródło jest puste</string>
 
+    <string name="swipe_down_to_refresh">Przesuń w dół, aby odświeżyć</string>
     <string name="no_movies_found_refresh">Brak filmów\n\nPrzesuń w dół, aby odświeżyć</string>
     <string name="no_tvshows_found_refresh">Brak seriali\n\nPrzesuń w dół, aby odświeżyć</string>
     <string name="no_episodes_found">Brak odcinków</string>
-    <string name="swipe_down_to_refresh">Przesuń w dół, aby odświeżyć</string>
     <string name="no_artists_found_refresh">Brak wykonawców\n\nPrzesuń w dół, aby odświeżyć</string>
     <string name="no_albums_found_refresh">Brak albumów\n\nPrzesuń w dół, aby odświeżyć</string>
     <string name="no_genres_found_refresh">Brak gatunków\n\nPrzesuń w dół, aby odświeżyć</string>
@@ -270,6 +277,7 @@
 
     <string name="add_to_playlist">Dodaj do listy</string>
     <string name="item_added_to_playlist">Dodano do listy</string>
+    <string name="item_sent_to_kodi">Wysłane do Kodi</string>
     <string name="no_suitable_playlist">Brak pasującej listy odtwarzania dla tego typu pliku.</string>
 
     <string name="imdb">IMDb</string>
@@ -327,17 +335,20 @@
     <string name="sort_by_length">Po długości</string>
     <string name="sort_by_date_added">Po dacie dodania</string>
     <string name="sort_by_last_played">Po ostatnio odtwarzanych</string>
+    <string name="unsorted">Nieposortowane</string>
     <string name="ignore_prefixes">Ignoruj prefiksy</string>
     <string name="show_watched_status">Pokaż status oglądania</string>
     <string name="show_rating">Pokaż ocenę</string>
 
     <!-- Preferences strings -->
     <string name="application">Aplikacja</string>
-	
+
     <string name="theme">Motyw</string>
     <string name="theme_night">Noc</string>
     <string name="theme_day">Dzień</string>
     <string name="theme_mist">Mgła</string>
+    <string name="theme_sunrise">Wschód słońca</string>
+    <string name="theme_sunset">Zachód słońca</string>
 
     <string name="switch_to_remote">Przełącz do zdalnego sterowania po uruchomieniu odtwarzania</string>
     <string name="keep_remote_above_lockscreen">Pilot nad blokadą ekranu</string>
@@ -375,6 +386,7 @@
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Odtwórz w Kodi</string>
+    <string name="queue_on_kodi">Kolejka na Kodi</string>
     <string name="pause_call_incoming_title">Połączenie przychodzące</string>
     <string name="pause_call_incoming_message">Sprawdź swój telefon, ktoś dzwoni do Ciebie</string>
 
@@ -409,6 +421,7 @@
 
     <string name="read_phone_state_permission_denied">Odmowa dostępu. Nie będzie można zatrzymać odtwarzania podczas rozmowy.</string>
     <string name="write_storage_permission_denied">Odmowa dostępu. Nie będzie można pobierać plików.</string>
+    <string name="read_storage_permission_denied">Odmowa dostępu. Nie będzie można odczytać plików.</string>
 
     <string name="no_songs_to_download">Brak utworów do pobrania</string>
     <string name="by_album">Według albumu</string>
@@ -426,8 +439,9 @@
 
     <string name="disable_local_playback_support">Wyłącz odtwarzanie na urządzeniu</string>
     <string name="disable_local_playback_support_summary">Wyłącza odtwarzanie multimediów na urządzeniu przy uruchomieniu Kore.</string>
+    <string name="language">Język</string>
 
     <string name="wifi_network">Wi-Fi</string>
-    <string name="mobile_network">Mobilne</string>
-    <string name="any_network">Wszystkie</string>
-</resources>
+    <string name="mobile_network">Mobilna</string>
+    <string name="any_network">Dowolna</string>
+    </resources>
