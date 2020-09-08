@@ -612,7 +612,7 @@ public class RemoteActivity extends BaseActivity
                     Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(playuri.toString());
             if (matcher.matches()) {
-                return "plugin://plugin.video.svtplay/?url=%2Fvideo%2F"
+                return "plugin://plugin.video.svtplay/?id=%2Fvideo%2F"
                         + URLEncoder.encode(matcher.group(1)) + "&mode=video";
             }
         } else if (host.endsWith("soundcloud.com")) {
