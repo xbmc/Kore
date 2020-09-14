@@ -94,6 +94,12 @@
             android:summary="@string/disable_local_playback_support_summary"
             android:defaultValue="false"/>
 
+        <SwitchPreferenceCompat
+            android:key="pref_direct_share"
+            android:title="@string/direct_share"
+            android:summary="@string/direct_share_summary"
+            android:defaultValue="false"/>
+
         <MultiSelectListPreference
             android:key="pref_nav_drawer_items"
             android:title="@string/nav_drawer_items"

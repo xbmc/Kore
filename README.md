@@ -16,7 +16,7 @@ Kore - Kodi/XBMC remote for Android
 
 GitHub repository for the [Kore][1] Android app.
 
-Kore is the official remote for [Kodi](http://kodi.tv/), and aims to be a simple and easy to use  remote.
+Kore is the official remote for [Kodi](http://kodi.tv/), and aims to be a simple and easy to use remote.
 
 
 Building

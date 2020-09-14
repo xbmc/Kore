@@ -476,6 +476,8 @@
 
     <string name="disable_local_playback_support">Disable local playback support</string>
     <string name="disable_local_playback_support_summary">Disables support for playing media locally on the device running Kore.</string>
+    <string name="direct_share">Direct share</string>
+    <string name="direct_share_summary">Add entries to share sheet to be able to share to any configured Kodi server</string>
     <string name="language">Language</string>
 
     <string name="wifi_network">Wi-Fi</string>

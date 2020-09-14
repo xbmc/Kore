@@ -180,6 +180,8 @@ public class Settings {
     public static final String KEY_PREF_DISABLE_LOCAL_PLAY = "pref_disable_local_play";
     public static final boolean DEFAULT_PREF_DISABLE_LOCAL_PLAY = false;
 
+    public static final String KEY_PREF_DIRECT_SHARE_ENABLED = "pref_direct_share";
+
     public static final String KEY_PREF_LANGUAGE = "pref_language";
     public static final String KEY_PREF_SELECTED_LANGUAGE = "pref_selected_language";
 
