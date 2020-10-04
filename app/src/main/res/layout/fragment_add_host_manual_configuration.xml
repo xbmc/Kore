@@ -198,6 +198,15 @@
                 android:inputType="text"
                 android:hint="@string/wizard_xbmc_mac_address"/>
 
+            <CheckBox
+                android:id="@+id/xbmc_direct_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/xbmc_mac_address"
+                android:layout_alignLeft="@id/xbmc_mac_address"
+                android:layout_alignStart="@id/xbmc_mac_address"
+                android:text="@string/wizard_xbmc_direct_share"/>
+
 
         </RelativeLayout>
     </ScrollView>

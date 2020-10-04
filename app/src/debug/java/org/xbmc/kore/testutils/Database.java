@@ -74,7 +74,7 @@ public class Database {
     public static HostInfo addHost(Context context, String hostname, int protocol, int httpPort,
                                    int tcpPort, boolean useEventServer, int kodiMajorVersion) {
         return HostManager.getInstance(context).addHost("TestHost", hostname, protocol, httpPort,
-                                                        tcpPort, null, null, "52:54:00:12:35:02", 9,
+                                                        tcpPort, null, null, "52:54:00:12:35:02", 9, true,
                                                         useEventServer, HostInfo.DEFAULT_EVENT_SERVER_PORT,
                                                         kodiMajorVersion,
                                                         HostInfo.DEFAULT_KODI_VERSION_MINOR,

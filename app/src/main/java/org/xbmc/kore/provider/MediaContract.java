@@ -69,6 +69,7 @@ public class MediaContract {
         String PASSWORD = "password";
         String MAC_ADDRESS = "mac_address";
         String WOL_PORT = "wol_port";
+        String DIRECT_SHARE = "direct_share";
         String USE_EVENT_SERVER = "use_event_server";
         String EVENT_SERVER_PORT = "event_server_port";
 
@@ -100,7 +101,7 @@ public class MediaContract {
 
         public final static String[] ALL_COLUMNS = {
                 _ID, UPDATED, NAME, ADDRESS, PROTOCOL, HTTP_PORT, TCP_PORT, USERNAME, PASSWORD,
-                MAC_ADDRESS, WOL_PORT, USE_EVENT_SERVER, EVENT_SERVER_PORT,
+                MAC_ADDRESS, WOL_PORT, DIRECT_SHARE, USE_EVENT_SERVER, EVENT_SERVER_PORT,
                 KODI_VERSION_MAJOR, KODI_VERSION_MINOR, KODI_VERSION_REVISION, KODI_VERSION_TAG,
                 IS_HTTPS
         };

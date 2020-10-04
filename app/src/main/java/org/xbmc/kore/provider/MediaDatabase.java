@@ -153,6 +153,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.HostsColumns.PASSWORD + " TEXT, " +
                    MediaContract.HostsColumns.MAC_ADDRESS + " TEXT, " +
                    MediaContract.HostsColumns.WOL_PORT + " INTEGER, " +
+                   MediaContract.HostsColumns.DIRECT_SHARE + " INTEGER, " +
                    MediaContract.HostsColumns.USE_EVENT_SERVER + " INTEGER, " +
                    MediaContract.HostsColumns.EVENT_SERVER_PORT + " INTEGER, " +
                    MediaContract.HostsColumns.KODI_VERSION_MAJOR + " INTEGER, " +

@@ -70,6 +70,7 @@ public class HostFragmentManualConfiguration extends Fragment {
             HOST_PASSWORD = PREFIX + ".host_password",
             HOST_MAC_ADDRESS = PREFIX + ".host_mac_address",
             HOST_WOL_PORT = PREFIX + ".host_wol_port",
+            HOST_DIRECT_SHARE = PREFIX + ".host_direct_share",
             HOST_PROTOCOL = PREFIX + ".host_protocol",
             HOST_USE_EVENT_SERVER = PREFIX + ".host_use_event_server",
             HOST_EVENT_SERVER_PORT = PREFIX + ".host_event_server_port";
@@ -96,6 +97,7 @@ public class HostFragmentManualConfiguration extends Fragment {
     @BindView(R.id.xbmc_password) EditText xbmcPasswordEditText;
     @BindView(R.id.xbmc_mac_address) EditText xbmcMacAddressEditText;
     @BindView(R.id.xbmc_wol_port) EditText xbmcWolPortEditText;
+    @BindView(R.id.xbmc_direct_share) CheckBox xbmcDirectShareCheckbox;
     @BindView(R.id.xbmc_use_tcp) CheckBox xbmcUseTcpCheckbox;
     @BindView(R.id.xbmc_use_event_server) CheckBox xbmcUseEventServerCheckbox;
     @BindView(R.id.xbmc_event_server_port) EditText xbmcEventServerPortEditText;
@@ -135,6 +137,7 @@ public class HostFragmentManualConfiguration extends Fragment {
         int hostProtocol = getArguments().getInt(HOST_PROTOCOL, HostConnection.PROTOCOL_TCP);
         String hostMacAddress = getArguments().getString(HOST_MAC_ADDRESS);
         int hostWolPort = getArguments().getInt(HOST_WOL_PORT, HostInfo.DEFAULT_WOL_PORT);
+        boolean directShare = getArguments().getBoolean(HOST_DIRECT_SHARE, true);
         boolean hostUseEventServer = getArguments().getBoolean(HOST_USE_EVENT_SERVER, true);
         int hostEventServerPort = getArguments().getInt(HOST_EVENT_SERVER_PORT, HostInfo.DEFAULT_EVENT_SERVER_PORT);
 
@@ -156,6 +159,8 @@ public class HostFragmentManualConfiguration extends Fragment {
                 xbmcMacAddressEditText.setText(hostMacAddress);
             if (hostWolPort != HostInfo.DEFAULT_WOL_PORT)
                 xbmcWolPortEditText.setText(String.valueOf(hostWolPort));
+
+            xbmcDirectShareCheckbox.setChecked(directShare);
 
             xbmcUseEventServerCheckbox.setChecked(hostUseEventServer);
             xbmcEventServerPortEditText.setEnabled(xbmcUseEventServerCheckbox.isChecked());
@@ -352,9 +357,11 @@ public class HostFragmentManualConfiguration extends Fragment {
         final HostInfo checkedHostInfo = new HostInfo(xbmcName, xbmcAddress, xbmcProtocol,
                                                       xbmcHttpPort, xbmcTcpPort,
                                                       xbmcUsername, xbmcPassword,
-                                                      xbmcUseEventServer, xbmcEventServerPort, isHttps);
+                                                      xbmcUseEventServer, xbmcEventServerPort, isHttps,
+                                true);
         checkedHostInfo.setMacAddress(macAddress);
         checkedHostInfo.setWolPort(xbmcWolPort);
+        checkedHostInfo.setShowAsDirectShareTarget(xbmcDirectShareCheckbox.isChecked());
 
         progressDialog.setTitle(String.format(getResources().getString(R.string.wizard_connecting_to_xbmc_title), xbmcName));
         progressDialog.setMessage(getResources().getString(R.string.wizard_connecting_to_xbmc_message));
