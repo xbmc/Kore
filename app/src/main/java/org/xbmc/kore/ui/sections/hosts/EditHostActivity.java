@@ -78,6 +78,8 @@ public class EditHostActivity extends BaseActivity implements
                                    selectedHostInfo.getMacAddress());
                     args.putInt(HostFragmentManualConfiguration.HOST_WOL_PORT,
                                 selectedHostInfo.getWolPort());
+                    args.putBoolean(HostFragmentManualConfiguration.HOST_DIRECT_SHARE,
+                                selectedHostInfo.getShowAsDirectShareTarget());
                     args.putBoolean(HostFragmentManualConfiguration.HOST_USE_EVENT_SERVER,
                                     selectedHostInfo.getUseEventServer());
                     args.putInt(HostFragmentManualConfiguration.HOST_EVENT_SERVER_PORT,

@@ -207,7 +207,7 @@ public class EventServerConnection {
                 final HostConnection auxHostConnection = new HostConnection(
                         new HostInfo(hostInfo.getName(), hostInfo.getAddress(),
                                      HostConnection.PROTOCOL_HTTP, hostInfo.getHttpPort(), hostInfo.getTcpPort(),
-                                     hostInfo.getUsername(), hostInfo.getPassword(), false, 0, hostInfo.isHttps));
+                                     hostInfo.getUsername(), hostInfo.getPassword(), false, 0, hostInfo.isHttps, hostInfo.getShowAsDirectShareTarget()));
                 final Application.GetProperties action = new Application.GetProperties(Application.GetProperties.MUTED);
                 final Packet mutePacket = new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_MUTE,
                                                            false, true, true, (short) 0, (byte) 0);

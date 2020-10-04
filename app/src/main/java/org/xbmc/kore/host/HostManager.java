@@ -150,7 +150,7 @@ public class HostManager {
 
                     hosts.add(new HostInfo(
                             id, name, address, protocol, httpPort, tcpPort,
-                            username, password, macAddress, wolPort, useEventServer, eventServerPort,
+                            username, password, macAddress, wolPort, true, useEventServer, eventServerPort,
                             kodiVersionMajor, kodiVersionMinor, kodiVersionRevision, kodiVersionTag,
                             updated, isHttps));
                 }
@@ -322,10 +322,10 @@ public class HostManager {
                        hostInfo.getHttpPort(), hostInfo.getTcpPort(),
                        hostInfo.getUsername(), hostInfo.getPassword(),
                        hostInfo.getMacAddress(), hostInfo.getWolPort(),
-                       hostInfo.getUseEventServer(), hostInfo.getEventServerPort(),
-                       hostInfo.getKodiVersionMajor(), hostInfo.getKodiVersionMinor(),
-                       hostInfo.getKodiVersionRevision(), hostInfo.getKodiVersionTag(),
-                       hostInfo.isHttps);
+                       hostInfo.getShowAsDirectShareTarget(), hostInfo.getUseEventServer(),
+                       hostInfo.getEventServerPort(), hostInfo.getKodiVersionMajor(),
+                       hostInfo.getKodiVersionMinor(), hostInfo.getKodiVersionRevision(),
+                       hostInfo.getKodiVersionTag(), hostInfo.isHttps);
     }
 
     /**
@@ -340,7 +340,7 @@ public class HostManager {
 	 * @return Newly created {@link org.xbmc.kore.host.HostInfo}
 	 */
 	public HostInfo addHost(String name, String address, int protocol, int httpPort, int tcpPort,
-						   String username, String password, String macAddress, int wolPort,
+						   String username, String password, String macAddress, int wolPort, boolean directShare,
                             boolean useEventServer, int eventServerPort,
                             int kodiVersionMajor, int kodiVersionMinor, String kodiVersionRevision, String kodiVersionTag,
                             boolean isHttps) {
@@ -355,6 +355,7 @@ public class HostManager {
 		values.put(MediaContract.HostsColumns.PASSWORD, password);
         values.put(MediaContract.HostsColumns.MAC_ADDRESS, macAddress);
         values.put(MediaContract.HostsColumns.WOL_PORT, wolPort);
+        values.put(MediaContract.HostsColumns.DIRECT_SHARE, directShare);
         values.put(MediaContract.HostsColumns.USE_EVENT_SERVER, useEventServer);
         values.put(MediaContract.HostsColumns.EVENT_SERVER_PORT, eventServerPort);
         values.put(MediaContract.HostsColumns.KODI_VERSION_MAJOR, kodiVersionMajor);
@@ -397,6 +398,7 @@ public class HostManager {
         values.put(MediaContract.HostsColumns.PASSWORD, newHostInfo.getPassword());
         values.put(MediaContract.HostsColumns.MAC_ADDRESS, newHostInfo.getMacAddress());
         values.put(MediaContract.HostsColumns.WOL_PORT, newHostInfo.getWolPort());
+        values.put(MediaContract.HostsColumns.DIRECT_SHARE, newHostInfo.getShowAsDirectShareTarget());
         values.put(MediaContract.HostsColumns.USE_EVENT_SERVER, newHostInfo.getUseEventServer());
         values.put(MediaContract.HostsColumns.EVENT_SERVER_PORT, newHostInfo.getEventServerPort());
         values.put(MediaContract.HostsColumns.KODI_VERSION_MAJOR, newHostInfo.getKodiVersionMajor());

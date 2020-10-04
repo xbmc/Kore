@@ -45,6 +45,9 @@ public class HostChooserTargetService extends ChooserTargetService {
         final ComponentName componentName = new ComponentName(getPackageName(), "org.xbmc.kore.ui.sections.remote.RemoteActivity");
 
         for (HostInfo host : hostManager.getHosts()) {
+            if (!host.getShowAsDirectShareTarget()) {
+                continue;
+            }
             Bundle intentExtras = new Bundle();
             intentExtras.putInt("hostId", host.getId());
             targets.add(new ChooserTarget(host.getName(), icon, score, componentName, intentExtras));

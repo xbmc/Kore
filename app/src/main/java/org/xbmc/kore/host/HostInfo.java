@@ -102,6 +102,11 @@ public class HostInfo {
     private int wolPort;
 
 	/**
+	 * Direct share target
+	 */
+	private boolean showAsDirectShareTarget;
+
+	/**
 	 * Prefered protocol to communicate with this host
 	 */
 	private int protocol;
@@ -135,7 +140,7 @@ public class HostInfo {
 	 * @param password Password for basic auth
 	 */
 	public HostInfo(int id, String name, String address, int protocol, int httpPort, int tcpPort,
-					String username, String password, String macAddress, int wolPort,
+					String username, String password, String macAddress, int wolPort, boolean showAsDirectShareTarget,
                     boolean useEventServer, int eventServerPort,
                     int kodiVersionMajor, int kodiVersionMinor, String kodiVersionRevision, String kodiVersionTag,
                     long updated, boolean isHttps) {
@@ -153,6 +158,7 @@ public class HostInfo {
 		this.password = password;
         this.macAddress = macAddress;
         this.wolPort = wolPort;
+        this.showAsDirectShareTarget = showAsDirectShareTarget;
 
         this.useEventServer = useEventServer;
 		this.eventServerPort = eventServerPort;
@@ -180,10 +186,11 @@ public class HostInfo {
 	 */
 	public HostInfo(String name, String address, int protocol, int httpPort,
                     int tcpPort, String username, String password,
-                    boolean useEventServer, int eventServerPort, boolean isHttps) {
+                    boolean useEventServer, int eventServerPort, boolean isHttps,
+					boolean showAsDirectShareTarget) {
         this(-1, name, address, protocol, httpPort, tcpPort, username,
-             password, null, DEFAULT_WOL_PORT, useEventServer, eventServerPort,
-             DEFAULT_KODI_VERSION_MAJOR, DEFAULT_KODI_VERSION_MINOR,
+             password, null, DEFAULT_WOL_PORT, showAsDirectShareTarget, useEventServer,
+			 eventServerPort, DEFAULT_KODI_VERSION_MAJOR, DEFAULT_KODI_VERSION_MINOR,
              DEFAULT_KODI_VERSION_REVISION, DEFAULT_KODI_VERSION_TAG,
              0, isHttps);
 	}
@@ -231,6 +238,14 @@ public class HostInfo {
     public void setWolPort(int wolPort) {
         this.wolPort = wolPort;
     }
+
+    public boolean getShowAsDirectShareTarget() {
+		return showAsDirectShareTarget;
+	}
+
+	public void setShowAsDirectShareTarget(boolean showAsDirectShareTarget) {
+		this.showAsDirectShareTarget = showAsDirectShareTarget;
+	}
 
     public int getProtocol() {
 		return protocol;
