@@ -63,7 +63,7 @@ public class ApplicationTest {
         HostInfo hostInfo = new HostInfo("TESTHOST", server.getHostName(), HostConnection.PROTOCOL_TCP,
                                          HostInfo.DEFAULT_HTTP_PORT, server.getPort(), null, null, true,
                                          HostInfo.DEFAULT_EVENT_SERVER_PORT,
-                                         false);
+                                         false, false);
 
         hostConnection = new HostConnection(hostInfo);
     }
