@@ -38,7 +38,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
             DB_VERSION_PRE_HOST_VERSION = 8,
             DB_VERSION_PRE_HOST_HTTPS = 9,
             DB_VERSION_PRE_LAST_PLAYED = 10,
-            DB_VERSION = 11;
+            DB_VERSION_PER_HOST_DIRECT_SHARE_TARGET = 11,
+            DB_VERSION = 12;
 
 	/**
 	 * Tables exposed
@@ -531,6 +532,11 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE " + Tables.TVSHOWS +
                            " ADD COLUMN " + MediaContract.TVShowsColumns.LASTPLAYED +
                            " TEXT;");
+            case DB_VERSION_PER_HOST_DIRECT_SHARE_TARGET:
+                // Add DIRECT_SHARE columns to HOSTS table
+                db.execSQL("ALTER TABLE " + Tables.HOSTS +
+                        " ADD COLUMN " + MediaContract.HostsColumns.DIRECT_SHARE +
+                        " INTEGER DEFAULT 1;");
         }
 	}
 
