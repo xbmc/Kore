@@ -139,6 +139,7 @@ public class HostManager {
                     String password = cursor.getString(idx++);
                     String macAddress = cursor.getString(idx++);
                     int wolPort = cursor.getInt(idx++);
+                    boolean directShare = (cursor.getInt(idx++) != 0);
                     boolean useEventServer = (cursor.getInt(idx++) != 0);
                     int eventServerPort = cursor.getInt(idx++);
 
@@ -150,7 +151,7 @@ public class HostManager {
 
                     hosts.add(new HostInfo(
                             id, name, address, protocol, httpPort, tcpPort,
-                            username, password, macAddress, wolPort, true, useEventServer, eventServerPort,
+                            username, password, macAddress, wolPort, directShare, useEventServer, eventServerPort,
                             kodiVersionMajor, kodiVersionMinor, kodiVersionRevision, kodiVersionTag,
                             updated, isHttps));
                 }
