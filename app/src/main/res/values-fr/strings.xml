@@ -117,6 +117,7 @@
     <string name="wizard_xbmc_use_tcp">Utiliser TCP</string>
     <string name="wizard_xbmc_event_server_port">Port ES (9777)</string>
     <string name="wizard_xbmc_use_event_server">Utiliser EventServer</string>
+    <string name="wizard_xbmc_direct_share">Afficher dans la feuille de partage</string>
 
     <string name="wizard_no_name_specified">Indiquez un nom pour ce Centre Multimédia, afin que vous puissiez l\'identifier plus tard.</string>
     <string name="wizard_no_address_specified">Indiquez l\'adresse de ce Centre Multimédia, afin que je puisse le localiser.</string>
