@@ -3,313 +3,400 @@
 <!--Translation made by Softastur-->
 
 <resources>
-  <string name="app_name">Kore</string>
-  <string name="settings">Axustes</string>
-  <string name="action_options">Opciones</string>
-  <string name="loading">Cargando...</string>
-  <!--Navigation drawer tips-->
-  <string name="navigation_drawer_open">Abrir caxón de navegación</string>
-  <string name="navigation_drawer_close">Zarrar caxón de navegación</string>
-  <string name="xbmc_media_center">Centru multimedia</string>
-  <string name="home">Aniciu</string>
-  <string name="movies">Películes</string>
-  <string name="tv_shows">Espeutáculos</string>
-  <string name="music">Música</string>
-  <string name="pictures">Semeyes</string>
-  <string name="addons">Estensiones</string>
-  <string name="files">Ficheros</string>
-  <string name="video">Videu</string>
-  <string name="file_browser">Restolador de ficheros</string>
-  <string name="pvr">PVR</string>
-  <string name="no_xbmc_configured">Nun se configuró centru multimedia dalu</string>
-  <string name="add_xbmc">Amiestu de centru multimedia</string>
-  <string name="xbmc_quit">Ta zarrándose\'l centru multimedia.</string>
-  <string name="wol_sent">Unvióse una llamada d\'esconsueñu al to preséu.</string>
-  <string name="power">Enerxía</string>
-  <string name="quit">Colar</string>
-  <string name="suspend">Suspender</string>
-  <string name="reboot">Reaniciar</string>
-  <string name="shutdown">Apagar</string>
-  <string name="send">Unviar</string>
-  <string name="send_text">Unviu de testu al centru multimedia</string>
-  <string name="text_to_send">Testu pa unviar</string>
-  <string name="finish_after_send">Unviar dempués de finar</string>
-  <string name="library_actions">Caltenimientu de biblioteques</string>
-  <string name="clean_video_library">Llimpiar videoteca</string>
-  <string name="clean_audio_library">Llimpiar fonoteca</string>
-  <string name="update_video_library">Anovar videoteca</string>
-  <string name="update_audio_library">Anovar fonoteca</string>
-  <string name="toggle_fullscreen">Alternar pantalla completa</string>
-  <string name="connected_to">Coneutáu a %1$s</string>
-  <string name="connecting">Coneutando...</string>
-  <string name="connecting_to">Coneutando a %1$s (%2$s)…</string>
-  <!--String used in add host wizard-->
-  <string name="wizard_welcome">Bienllegáu</string>
-  <string name="wizard_welcome_message"><![CDATA[
-Vamos entamar amestando un centru multimedia. Asegúrate que\'l to Kodi/XBMC ta executándose, configuráu afayadizamente y na mesma rede que\'l to preséu.<br/><br/>
-<a href=\"http://syncedsynapse.com/kore/kore-faq/">Equí</a> pues consiguir ayuda configurándolu.<br/><br/>
-Cuando teas preparáu primi <b><i>Siguiente</i></b>.
-]]></string>
-  <string name="wizard_search_message"><![CDATA[
-Guetando centros multimedia na to rede llocal…<br/>
-]]></string>
-  <string name="wizard_search_no_host_found"><![CDATA[
-Nun pudi alcontrar centru multimedia dalu na to rede.<br/>Si precises ayuda configurándolu, mira <a href=\"http://syncedsynapse.com/kore/kore-faq/">equí</a>.<br/><br/>
-Primi <i>Guetar</i> pa guetar de nueves o <i>Siguiente</i> pa la configuración manual.
-]]></string>
-  <string name="wizard_search_no_network_connection"><![CDATA[
-Habilita la conexón de rede enantes de guetar centros multimedia, por favor.<br/>
-]]></string>
-  <string name="wizard_search_host_found"><![CDATA[
-Alcontré estos centros multimedia na to rede.<br/><br/>Esbilla ún p\'amestalu o primi <i>Siguiente</i> p\'amestar a mano otru.
-]]></string>
-  <string name="no_network_connection">Ensin conexón de rede</string>
-  <string name="searching">Guetando...</string>
-  <string name="no_xbmc_found">Nun s\'alcontraron centros multimedia</string>
-  <string name="xbmc_found">Centros multimedia alcontraos</string>
-  <string name="wizard_manual_configuration">Configuración manual</string>
-  <string name="wizard_manual_configuration_message">Introduz la configuración del to centru multimedia:</string>
-  <string name="wizard_manual_configuration_message_advanced">Configuración avanzada (dexar balero p\'axustes por defeutu)</string>
-  <string name="wizard_xbmc_name">Nome del centru multimedia</string>
-  <string name="wizard_xbmc_ip">Direición</string>
-  <string name="wizard_xbmc_port">Puertu</string>
-  <string name="wizard_xbmc_username">Nome d\'usuariu</string>
-  <string name="wizard_xbmc_password">Contraseña</string>
-  <string name="wizard_xbmc_tcp_port">Puertu TCP (9090)</string>
-  <string name="wizard_xbmc_mac_address">Direición MAC</string>
-  <string name="wizard_xbmc_wol_port">Puertu WoL (9)</string>
-  <string name="wizard_xbmc_use_tcp">Usar TCP</string>
-  <string name="wizard_xbmc_event_server_port">Puertu ES (9777)</string>
-  <string name="wizard_xbmc_use_event_server">Usar EventServer</string>
-  <string name="wizard_no_name_specified">Especifíca un nome pa esti centru multimedia pa qu\'asina pueas identificalu más sero, por favor.</string>
-  <string name="wizard_no_address_specified">Especifica la direición d\'esti centru multimedia pa qu\'asina puea allugalu, por favor.</string>
-  <string name="wizard_invalid_http_port_specified">Especifica un puertu HTTP válidu pa esti centru multimedia, por favor.</string>
-  <string name="wizard_invalid_tcp_port_specified">Especifica un puertu TCP válidu pa esti centru multimedia, por favor.</string>
-  <string name="wizard_invalid_es_port_specified">Especifica un puertu d\'EventServer válidu pa esti centru multimedia, por favor.</string>
-  <string name="wizard_connecting_to_xbmc_title">Coneutando a %1$s…</string>
-  <string name="wizard_connecting_to_xbmc_message">Por favor, espera entrín tento de coneutame col to centru multimedia...</string>
-  <string name="wizard_empty_authentication">Kodi/XBMC rique l\'autenticación.\nEspecifica un nome d\'usuariu y contraseña, por favor.</string>
-  <string name="wizard_incorrect_authentication">Nome d\'usuariu y/o contraseña incorreutos.\nComprueba les tos credenciales, por favor.</string>
-  <string name="wizard_success_connecting">Coneutáu a Kodi/XBMC.</string>
-  <string name="wizard_error_connecting">Nun pudo coneutase con Kodi/XBMC.\nComprueba la configuración, por favor.</string>
-  <string name="wizard_done">¡Too fecho!</string>
-  <string name="wizard_done_message"><![CDATA[
-Configuróse\'l to centru multimedia.<br/>
-Agora pues usar el mandu pa controlalu. Ta sincronizándose la to biblioteca y debería tar disponible nun momentu.<br/><br/>
-Primi <b><i>Finar</i></b> p\'apenzar a usar el mandu.
-]]></string>
-  <string name="wizard_zeroconf_no_host_address">¡Nun pudo consiguise la direición d\'esti centru multimedia!</string>
-  <string name="wizard_zeroconf_cant_connect_no_host_address">Nun pue coneutase a esti centru multimedia porque nun foi posible descubrir la so direición.</string>
-  <string name="play">Reproducir</string>
-  <string name="pause">Posar</string>
-  <string name="stop">Parar</string>
-  <string name="fast_forward">Avance rápidu</string>
-  <string name="rewind">Rebobinar</string>
-  <string name="repeat">Repitir</string>
-  <string name="shuffle">Al debalu</string>
-  <string name="volume_up">Xubir volume</string>
-  <string name="volume_down">Baxar volume</string>
-  <string name="volume_mute">Silenciar</string>
-  <string name="subtitles">Sotítulos</string>
-  <string name="audiostreams">Fluxos d\'audiu</string>
-  <string name="no_audiostream">Nun hai fluxos d\'audiu disponibles</string>
-  <string name="download_subtitle">Baxar sotítulos</string>
-  <string name="none">Dengún</string>
-  <string name="audio_sync">Sincronizar audiu</string>
-  <string name="subtitle_sync">Sincronizar sotítulos</string>
-  <string name="left">Izquierda</string>
-  <string name="right">Drecha</string>
-  <string name="up">Arriba</string>
-  <string name="down">Abaxo</string>
-  <string name="select">Esbillar</string>
-  <string name="info">Información</string>
-  <string name="codec_info">Códec</string>
-  <string name="context">Contestu</string>
-  <string name="osd">Menú</string>
-  <string name="back">Atrás</string>
-  <string name="previous">Previo</string>
-  <string name="next">Siguiente</string>
-  <string name="finish">Finar</string>
-  <string name="test_connection">Probar</string>
-  <string name="search_again">Guetar de nueves</string>
-  <string name="remove">Desaniciar</string>
-  <string name="edit">Editar</string>
-  <string name="wake_up">Esconsoñar</string>
-  <string name="edit_xbmc">Editar centru multimedia</string>
-  <string name="delete_xbmc">Desanicar centru multimedia</string>
-  <string name="delete_xbmc_confirm">¿De xuru ques quies desaniciar esti centru multimedia?</string>
-  <string name="queue_file">Cola</string>
-  <string name="play_file">Reproducir</string>
-  <string name="play_from_here">Reproducir dende equí</string>
-  <string name="connecting_to_xbmc">Coneutar...</string>
-  <string name="unable_to_connect_to_xbmc">Nun pue coneutase col centru multimedia</string>
-  <string name="connected_to_xbmc">Coneutáu</string>
-  <string name="xbmc_available">Disponible</string>
-  <string name="xbmc_unavailable">Non disponible</string>
-  <string name="nothing_playing">Nun ta reproduciéndose nada</string>
-  <!--Main view tabs-->
-  <string name="now_playing">Reproduciendo agora</string>
-  <string name="remote">Mandu</string>
-  <string name="playlist">Llista de reproducción</string>
-  <string name="season_episode_abbrev">t%1$02de%2$02d</string>
-  <string name="season_episode">Temporada %1$02d | Episodiu %2$02d</string>
-  <string name="season_number">Temporada %1$02d</string>
-  <string name="episode_number">%1$d</string>
-  <string name="votes">%1$s votos</string>
-  <string name="fanart">Fanart</string>
-  <string name="poster">Cartelu</string>
-  <string name="thumbnail">Miniatura</string>
-  <string name="error_getting_properties">Nun pudieron consiguise les propiedaes de Kodi/XBMC.\nMensaxe de fallu:
-%1$s.</string>
-  <string name="error_executing_subtitles">Nun pudo executase la estensión de sotítulos.\nMensaxe de fallu: %1$s.</string>
-  <string name="error_getting_addon_info">Nun pudo consiguise la información de la estensión.\nMensaxe de fallu:
-%1$s.</string>
-  <string name="error_getting_source_info">Nun pudieron restolase los ficheros.\nMensaxe de fallu:
-%1$s.</string>
-  <string name="error_play_media_file">Nun pudo reproducise\'l ficheru de medios.\nMensaxe de fallu:
-%1$s.</string>
-  <string name="error_queue_media_file">Nun pudo ponese na cola\'l ficheru de medios\nMensaxe de fallu.
-%1$s.</string>
-  <string name="error_get_active_player">Nun pudo consiguise\'l reproductor activu.\nMensaxe de fallu:
-%1$s.</string>
-  <string name="error_share_video">Nun pudo compartise\'l videu en Kodi/XBMC.</string>
-  <string name="directors">Direutores:</string>
-  <string name="studio">Estudiu:</string>
-  <string name="cast">Repartu</string>
-  <string name="additional_cast">Repartu adicional</string>
-  <string name="cast_list_text">%1$s como %2$s</string>
-  <!--String to be used as the text on the cast grid view, when there is more actors than are shown-->
-  <string name="remaining_cast_count">%d más</string>
-  <string name="general_error_executing_action">Fallu executando la aición: %1$s</string>
-  <string name="error_getting_playlist">Fallu diendo en cata de la llista de reproducción</string>
-  <string name="error_message">Mensaxe de fallu: %1$s.</string>
-  <string name="playlist_empty">Llista de reproducción balera</string>
-  <string name="clear_playlist">Llimpiar llista de reproducción</string>
-  <string name="source_empty">Fonte de medios balera</string>
-  <string name="no_movies_found_refresh">Nun s\'alcontraron películes\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_tvshows_found_refresh">Nun s\'alcontraron espeutáculos\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_episodes_found">Nun s\'alcontraron episodios</string>
-  <string name="swipe_down_to_refresh">Esliza haza abaxo pa refrescar</string>
-  <string name="no_artists_found_refresh">Nun s\'alcontraron artistes\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_albums_found_refresh">Nun s\'alcontraron álbumes\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_genres_found_refresh">Nun s\'alcontraron xéneros\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_addons_found_refresh">Nun s\'alcontraron o nun tán coneutaes les estensiones\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_music_videos_found_refresh">Nun s\'alcontraron videos\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_channel_groups_found_refresh">Nun s\'alcontraron grupos de canales.\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_channels_found_refresh">Nun s\'alcontraron canales.\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_recordings_found_refresh">Nun s\'alcontraron grabaciones.\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="no_broadcasts_found_refresh">Nun s\'alcontraron tresmisiones.\n\nEsliza haza abaxo pa refrescar</string>
-  <string name="pull_to_refresh">Tira pa refrescar</string>
-  <string name="no_cast_info">Nun hai información de repartu p\'amosar</string>
-  <string name="minutes_abbrev">%1$s mins</string>
-  <string name="minutes_abbrev2">%1$sm</string>
-  <string name="sync_successful">Sincronización esitosa</string>
-  <string name="error_while_syncing">Asocedió un fallu entrín se sincronizaba: %1$s</string>
-  <string name="action_search">Guetar</string>
-  <string name="action_search_movies">Guetar películes</string>
-  <string name="action_search_tvshows">Guetar espeutáculos</string>
-  <string name="action_search_albums">Guetar álbumes</string>
-  <string name="action_search_artists">Guetar artistes</string>
-  <string name="action_search_genres">Guetar xéneros</string>
-  <string name="action_search_music_videos">Guetar videos</string>
-  <string name="add_to_playlist">Amestar a la llista de reproducción</string>
-  <string name="item_added_to_playlist">Amestóse a la llista de reproducción</string>
-  <string name="no_suitable_playlist">Nun s\'alcontró una llista de reproducción afayadiza p\'amestar la triba de medios.</string>
-  <string name="imdb">IMDb</string>
-  <string name="seen">Vistu</string>
-  <string name="download">Baxar</string>
-  <string name="confirm_movie_download">¿De xuru que quies baxar esta película?\nLa película baxaráse de fondu, pero pue entardar daqué en finar.</string>
-  <string name="confirm_episode_download">¿De xuru que quies baxar esti episodiu?\nL\'episodiu baxaráse de fondu, pero pue entardar daqué en finar.</string>
-  <string name="confirm_album_download">¿De xuru que quies baxar esti album?\nL\'album baxaráse de fondu, pero pue entardar daqué en finar.</string>
-  <string name="confirm_artist_download">¿De xuru que quies baxar tolos álbumes?\nLos álbumes baxaránse de fondu pero puen entardar daquén en finar.</string>
-  <string name="download_file_exists">Yá esiste\'l ficheru.\n¿Quies sobrescribilu o baxalu con un nome nuevu?</string>
-  <string name="download_dir_exists">Yá esiste\'l direutoriu de descarga.\nSi cualesquier ficheru tien el mesmu nome, ¿quies sobrescribilos o baxalos con un nome nuevu?</string>
-  <string name="overwrite">Sobrescribir</string>
-  <string name="download_with_new_name">Nome nuevu</string>
-  <string name="download_file_description">Baxóse del to centru multimedia</string>
-  <string name="num_episodes">%1$d episodios  |  %2$d ensin ver</string>
-  <string name="premiered">Estrenóse\'l: %1$s</string>
-  <string name="tvshow_overview">Argumentu</string>
-  <string name="tvshow_episodes">Episodios</string>
-  <string name="addon_content">Conteníu</string>
-  <string name="artists">Artistes</string>
-  <string name="albums">Álbumes</string>
-  <string name="genres">Xéneros</string>
-  <string name="music_videos">Videos</string>
-  <string name="no_files_to_download">Nun hai ficheros pa baxar.</string>
-  <string name="error_getting_file_information">Nun pudo consiguise la información del ficheru baxáu %1$s.</string>
-  <string name="author">Autor:</string>
-  <string name="version">Versión:</string>
-  <string name="enable_disable">Habilitar/Deshabilitar estensión</string>
-  <string name="addon_enabled">Estensión habilitada</string>
-  <string name="addon_disabled">Estensión deshabilitada</string>
-  <string name="pin_unpin">Des/Fixar estensión</string>
-  <string name="addon_pinned">Fixóse la estensión</string>
-  <string name="addon_unpinned">Desfixóse la estensión</string>
-  <!--Filters on list menus-->
-  <string name="hide_watched">Anubrir non vistos</string>
-  <string name="sort_order">Ordenar</string>
-  <string name="sort_by_name">Pel nome</string>
-  <string name="sort_by_year">Per añu</string>
-  <string name="sort_by_rating">Per valoración</string>
-  <string name="sort_by_length">Per llonxitú</string>
-  <string name="sort_by_date_added">Pela data d\'amestadura</string>
-  <string name="ignore_prefixes">Inorar prefixos</string>
-  <!--Preferences strings-->
-  <string name="theme">Tema</string>
-  <string name="theme_night">Nueche</string>
-  <string name="theme_day">Día</string>
-  <string name="theme_mist">Caín</string>
-  <string name="switch_to_remote">Camudar al mandu dempués del aniciu de medios</string>
-  <string name="keep_remote_above_lockscreen">Caltener el mandu enriba la pantalla de bloquéu</string>
-  <string name="show_notification">Amosar avisu entrín se reproduz</string>
-  <string name="pause_during_calls">Posar reproducción nes llamaes</string>
-  <string name="use_hardware_volume_keys">Usar les tecles de volume pa controlalu</string>
-  <string name="vibrate_on_remote">Vibrar nes pulsaciones del mandu</string>
-  <string name="nav_drawer_items">Atayos del menú llateral</string>
-  <string name="about">Tocante a</string>
-  <string name="about_desc"><![CDATA[
-\u00A9 2018 XBMC Foundation<br><br>
-Por favor, valóramos en <b><a href=\"market://details?id=org.xbmc.kore\">Google Play</a></b><br><br>
-
-Si precises ayuda, comprueba\'l nuesu <b><a href=\"http://forum.kodi.tv/forumdisplay.php?fid=129\">foru</a></b>
-]]></string>
-  <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
-  <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
-  <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
-  <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
-  <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
-  <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
-  <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
-  <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
-  <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
-  <!--<string name="purchase_thanks">Thanks for your support!</string>-->
-  <string name="play_on_kodi">Reproducir en Kodi</string>
-  <string name="pause_call_incoming_title">Llamada entrante</string>
-  <string name="pause_call_incoming_message">Comprueba\'l to teléfonu, daquién ta llamándote.</string>
-  <string name="error_getting_pvr_info">Asocedió un fallu entrín se consiguía la información de PVR: %1$s</string>
-  <string name="might_not_have_pvr">Asocedió un fallu entrín se consiguía la información de les canales, quiciabes porque\'l to centru multimedia nun tien un sintonizador o nun ta configuráu.\n\nSi ye\'l casu y prestaríate desaniciar esta entrada del menú llateral, pues facelo n\'Axustes</string>
-  <string name="error_starting_channel">Asocedió un fallu aniciando la reproducción de la canal: %1$s</string>
-  <string name="error_starting_recording">Asocedió un fallu aniciando una grabación: %1$s</string>
-  <string name="error_starting_to_record">Asocedió un fallu entrín se grababa: %1$s</string>
-  <string name="channel_switching">Camudando a la canal %1$s</string>
-  <string name="starting_recording">Aniciando grabación %1$s</string>
-  <string name="refresh">Refrescar</string>
-  <string name="tv">TV</string>
-  <string name="radio">Radio</string>
-  <string name="recordings">Grabaciones</string>
-  <string name="tv_channels">Canales de TV</string>
-  <string name="radio_channels">Canales de radio</string>
-  <string name="record">Grabar</string>
-  <string name="pvr_epg">Guía</string>
-  <string name="unable_to_move_item">Nun pue movese l\'elementu</string>
-  <string name="cannot_move_playing_item">Nun pue movese l\'elementu en reproducción/posa actual</string>
-  <string name="no_connection_type_selected">Nun s\'esbilló triba dala de conexón nos axustes</string>
-  <string name="single_column">Una columna</string>
-  <string name="multi_column">Multi-columna</string>
-  <string name="download_network_types_title">Tribes de rede de descarga</string>
-  <string name="download_network_types_summary">Tribes de rede permitíes pa descargues de medios</string>
-  <string name="songs">Canciones</string>
-  <string name="read_phone_state_permission_denied">Permisu ñegáu. Nun sedrás a posar la reproducción nes llamaes.</string>
-  <string name="write_storage_permission_denied">Permisu ñegáu. Nun sedrás a baxar ficheros.</string>
+    <string name="settings">Axustes</string>
+    <string name="action_options">Opciones</string>
+    <string name="loading">Cargando…</string>
+    <!-- Navigation drawer tips -->
+    <string name="navigation_drawer_open">Abrir el caxón de navegación</string>
+    <string name="navigation_drawer_close">Zarrar el caxón de navegación</string>
+    <string name="xbmc_media_center">Centru multimedia</string>
+    <string name="home">Aniciu</string>
+    <string name="movies">Filmes</string>
+    <string name="tv_shows">Programes de TV</string>
+    <string name="music">Música</string>
+    <string name="pictures">Semeyes</string>
+    <string name="dcim">DCIM</string>
+    <string name="external_storage">Almacenamientu</string>
+    <string name="addons">Complementos</string>
+    <string name="files">Ficheros</string>
+    <string name="local_files">Ficheros llocales</string>
+    <string name="video">Videu</string>
+    <string name="videos">Vídeos</string>
+    <string name="media">Multimedia</string>
+    <string name="window">Ventana</string>
+    <string name="script">Script</string>
+    <string name="unknown">Desconozse</string>
+    <string name="file_browser">Restolador de ficheros</string>
+    <string name="local_file_browser">Restolador de ficheros llocales</string>
+    <string name="pvr">PVR</string>
+    <string name="favourites">Favoritos</string>
+    <string name="weather">Clima</string>
+    <string name="system">Sistema</string>
+    <string name="no_xbmc_configured">Nun hai centros multimedia configuraos</string>
+    <string name="add_xbmc">Amiestu d\'un centru multimedia</string>
+    <string name="xbmc_quit">El centru multimedia va zarrase</string>
+    <string name="wol_sent">Unvióse una llamada d\'esconsueñu al centru multimedia.</string>
+    <string name="power">Enerxía</string>
+    <string name="quit">Colar</string>
+    <string name="suspend">Suspender</string>
+    <string name="reboot">Reaniciar</string>
+    <string name="shutdown">Apagar</string>
+    <string name="send">Unviar</string>
+    <string name="send_text">Unviar testu al centru multimedia</string>
+    <string name="text_to_send">Testu a unviar</string>
+    <string name="finish_after_send">Finar dempués d\'unviar</string>
+    <string name="library_actions">Caltenimientu de biblioteques</string>
+    <string name="clean_video_library">Llimpiar la videoteca</string>
+    <string name="clean_audio_library">Llimpiar la fonoteca</string>
+    <string name="update_video_library">Anovar la videoteca</string>
+    <string name="update_audio_library">Anovar la fonoteca</string>
+    <string name="toggle_fullscreen">Alternar la pantalla completa</string>
+    <string name="connected_to">Coneutéstite a %1$s</string>
+    <string name="connecting">Coneutando…</string>
+    <string name="connecting_to">Coneutando a %1$s (%2$s)…</string>
+    <!-- String used in add host wizard -->
+    <string name="wizard_welcome">Afáyate</string>
+    <string name="wizard_welcome_message"><![CDATA[Vamos comenzar per amestar un centru multimedia. Asegúrate de que Kodi ta n\'execución, configuráu afayadizamente y na mesma rede llocal qu\'esti preséu.<br/><br/>
+ <a href="http://syncedsynapse.com/kore/kore-faq/">Equí</a> pues consiguir ayuda tocante a la configuración.<br/><br/>
+Cuando puedas, primi <b>Siguiente</b>.
+    ]]></string>
+    <string name="wizard_search_message"><![CDATA[    	Buscando centros multimedia na rede llocal…<br/>
+    ]]></string>
+    <string name="wizard_search_no_host_found"><![CDATA[Nun pudi atopar nengún centru multimedia na rede llocal.<br/>
+Si precises ayuda cola configuración, mira <a href="http://syncedsynapse.com/kore/kore-faq/">equí</a>.<br/><br/>
+Primi <b>Buscar de nueves</b> o <b>Siguiente</b> pa una configuración manual.
+    ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[    	Habilita\'l Wi-Fi enantes de buscar centros multimedia.<br/>
+    ]]></string>
+    <string name="wizard_search_host_found"><![CDATA[    	Atopé estos centros multimedia na rede llocal.<br/><br/>
+    	Esbilla unu p\'amestalu o primi <b>Siguiente</b> pa facelo a mano.
+    ]]></string>
+    <string name="no_network_connection">Nun hai conexón a la rede</string>
+    <string name="searching">Buscando…</string>
+    <string name="no_xbmc_found">Nun s\'atopó nengún centru multimedia</string>
+    <string name="xbmc_found">Centros multimedia atopaos</string>
+    <string name="wizard_manual_configuration">Configuración manual</string>
+    <string name="wizard_manual_configuration_message">Introduz la configuración d\'un centru multimedia:</string>
+    <string name="wizard_manual_configuration_message_advanced">Configuración avanzada (dexar balero pa los valores predeterminaos)</string>
+    <string name="wizard_xbmc_name">Nome del centru multimedia</string>
+    <string name="wizard_xbmc_ip">Direición</string>
+    <string name="wizard_xbmc_port">Puertu</string>
+    <string name="wizard_xbmc_username">Nome d\'usuariu</string>
+    <string name="wizard_xbmc_password">Contraseña</string>
+    <string name="wizard_xbmc_tcp_port">Puertu TCP (9090)</string>
+    <string name="wizard_xbmc_mac_address">Direición MAC</string>
+    <string name="wizard_xbmc_wol_port">Puertu WoL (9)</string>
+    <string name="wizard_xbmc_use_tcp">Usar TCP</string>
+    <string name="wizard_xbmc_event_server_port">Puertu ES (9777)</string>
+    <string name="wizard_xbmc_use_event_server">Usar EventServer</string>
+    <string name="wizard_xbmc_direct_share">Amosar na tarxeta de compartición</string>
+    <string name="wizard_no_name_specified">Especifica un nome pa esti centru multimedia pa poder identificalu dempués.</string>
+    <string name="wizard_no_address_specified">Especifica la direición d\'esti centru multimedia pa que pueda llocalizalu.</string>
+    <string name="wizard_invalid_http_port_specified">Especifica un puertu HTTP válidu pa esti centru multimedia, por favor.</string>
+    <string name="wizard_invalid_tcp_port_specified">Especifica un puertu TCP válidu pa esti centru multimedia, por favor.</string>
+    <string name="wizard_invalid_es_port_specified">Especifica un puertu EventServer válidu pa esti centru multimedia, por favor.</string>
+    <string name="wizard_connecting_to_xbmc_title">Coneutando con %1$s…</string>
+    <string name="wizard_connecting_to_xbmc_message">Espera mentanto tento de coneutame al centru multimedia…</string>
+    <string name="wizard_empty_authentication">Kodi rique l\'autenticación.\n
+    	Especifica un nome d\'usuariu y una contraseña, por favor.</string>
+    <string name="wizard_incorrect_authentication">El nome d\'usuariu y/o contraseña son incorreutos.\n
+    	Comprueba la identificación, por favor.</string>
+    <string name="wizard_success_connecting">Coneutéstite a Kodi.</string>
+    <string name="wizard_error_connecting">Nun pudo coneutase a Kodi.\n
+    	Comprueba la configuración, por favor.</string>
+    <string name="wizard_done">¡Acabemos!</string>
+    <string name="wizard_done_message"><![CDATA[El centru multimedia ta configuráu.<br/>
+Agora pues usar el mandu pa controlalu. La biblioteca ta sincronizándose y debería tar disponible nun momentu.<br/><br/>
+Primi <b>Finar</b> pa comenzar a usar el mandu.
+    ]]></string>
+    <string name="wizard_zeroconf_no_host_address">¡Nun pudo consiguise la direición d\'esti centru multimedia!</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Nun puedo coneutame a esti centru multimedia porque nun fui a descubrir la so direición.</string>
+    <string name="play">Reproducir</string>
+    <string name="pause">Posar</string>
+    <string name="stop">Parar</string>
+    <string name="fast_forward">Avance rápidu</string>
+    <string name="rewind">Rebobinar</string>
+    <string name="repeat">Repitir</string>
+    <string name="shuffle">Al debalu</string>
+    <string name="volume_up">Xubir el volume</string>
+    <string name="volume_down">Baxar el volume</string>
+    <string name="volume_mute">Des/activar el soníu</string>
+    <string name="subtitles">Sotítulos</string>
+    <string name="audiostreams">Fluxos d\'audiu</string>
+    <string name="no_audiostream">Nun hai fluxos d\'audiu disponibles</string>
+    <string name="download_subtitle">Baxar los sotítulos</string>
+    <string name="none">Nada</string>
+    <string name="audio_sync">Sincronizar l\'audiu</string>
+    <string name="subtitle_sync">Sincronizar los sotítulos</string>
+    <string name="left">Esquierda</string>
+    <string name="right">Derecha</string>
+    <string name="up">Arriba</string>
+    <string name="down">Abaxo</string>
+    <string name="select">Esbillar</string>
+    <string name="info">Información</string>
+    <string name="codec_info">Códec</string>
+    <string name="context">Contestu</string>
+    <string name="osd">Menú</string>
+    <string name="back">Anterior</string>
+    <string name="previous">Atrás</string>
+    <string name="next">Siguiente</string>
+    <string name="finish">Finar</string>
+    <string name="test_connection">Probar</string>
+    <string name="search_again">Buscar de nueves</string>
+    <string name="remove">Desaniciar</string>
+    <string name="edit">Editar</string>
+    <string name="wake_up">Esconsoñar</string>
+    <string name="edit_xbmc">Edición d\'un centru multimedia</string>
+    <string name="delete_xbmc">Desaniciu d\'un centru multimedia</string>
+    <string name="delete_xbmc_confirm">¿De xuru que quies desaniciar esti centru multimedia?</string>
+    <string name="queue_file">Amestar a la cola</string>
+    <string name="play_file">Reproducir</string>
+    <string name="play_from_here">Reproducir dende equí</string>
+    <string name="connecting_to_xbmc">Coneutando…</string>
+    <string name="unable_to_connect_to_xbmc">Nun pue coneutase al centru multimedia</string>
+    <string name="connected_to_xbmc">Coneutóse</string>
+    <string name="xbmc_available">Disponible</string>
+    <string name="xbmc_unavailable">Non disponible</string>
+    <string name="nothing_playing">Nada en reproducción</string>
+    <!-- Main view tabs -->
+    <string name="now_playing">En reproducción</string>
+    <string name="remote">Mandu</string>
+    <string name="playlist">Llista de reproducción</string>
+    <string name="season_episode_abbrev">t%1$02de%2$02d</string>
+    <string name="season_episode">Temporada %1$02d | Episodiu %2$02d</string>
+    <string name="season_number">Temporada %1$02d</string>
+    <string name="episode_number">%1$d</string>
+    <string name="votes">%1$s votos</string>
+    <string name="fanart">Imaxe</string>
+    <string name="poster">Cartelu</string>
+    <string name="thumbnail">Miniatura</string>
+    <string name="error_getting_properties">Nun pudieron consiguise les propiedaes de Kodi.\n
+    	Mensaxe de fallu:
+        %1$s.</string>
+    <string name="error_executing_subtitles">Nun pudo executase\'l complementu de los sotítulos.\n
+    	Mensaxe de fallu: %1$s.</string>
+    <string name="error_getting_addon_info">Nun pudo consiguise la información de los complementos.\n
+    	Mensaxe de fallu:
+        %1$s.</string>
+    <string name="error_getting_source_info">Nun pudieron restolase los ficheros.\n
+    	Mensaxe de fallu:
+        %1$s.</string>
+    <string name="error_play_media_file">Nun pudo reproducise\'l ficheru multimedia.\n
+    	Mensaxe de fallu:
+        %1$s.</string>
+    <string name="error_play_local_file">Nun pudo reproducise\'l ficheru multimedia llocal.\n
+    	Mensaxe de fallu:
+        %1$s.</string>
+    <string name="error_queue_media_file">Nun pudo amestase\'l ficheru multimedia a la cola.\n
+    	Mensaxe de fallu:
+        %1$s.</string>
+    <string name="error_get_active_player">Nun pudo consiguise\'l reproductor activu.\n
+    	Mensaxe de fallu:
+        %1$s.</string>
+    <string name="error_share_video">Nun pudo compartise\'l videu con Kodi.</string>
+    <string name="error_reading_local_storage">Nun pudo lleese l\'almacenamientu llocal. ¿Tien permisu Kodi p\'acceder al almacenamientu de ficheros?</string>
+    <string name="error_starting_http_server">Nun pudo crease o aniciase\'l sirvidor HTTP.</string>
+    <string name="directors">Direutor(es):</string>
+    <string name="studio">Estudiu:</string>
+    <string name="cast">Repartu</string>
+    <string name="additional_cast">Repartu adicional</string>
+    <string name="cast_list_text">%1$s interpreta a %2$s</string>
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <string name="remaining_cast_count">%d más</string>
+    <string name="general_error_executing_action">Hebo un fallu al executar l\'aición: %1$s</string>
+    <string name="error_getting_playlist">Hebo un fallu al dir en cata de la llista de reproducción</string>
+    <string name="error_message">Mensaxe de fallu: %1$s</string>
+    <string name="playlist_empty">La llista ta balera</string>
+    <string name="clear_playlist">Llimpiar la llista de reproducción</string>
+    <string name="source_empty">L\'orixe multimedia ta baleru</string>
+    <string name="swipe_down_to_refresh">Esliza p\'abaxo pa refrescar</string>
+    <string name="no_movies_found_refresh">Nun s\'atoparon filmes\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_tvshows_found_refresh">Nun s\'atoparon programes de TV\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_episodes_found">Nun s\'atoparon episodios</string>
+    <string name="no_artists_found_refresh">Nun s\'atoparon artistes\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_albums_found_refresh">Nun s\'atoparon álbumes\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_genres_found_refresh">Nun s\'atoparon xéneros\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_addons_found_refresh">Nun s\'atoparon complementos o nun tán coneutaos\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_music_videos_found_refresh">Nun s\'atoparon vídeos\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_channel_groups_found_refresh">Nun s\'atoparon grupos de canales\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_channels_found_refresh">Nun s\'atoparon canales\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_favourites_found_refresh">Nun s\'atoparon favoritos\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_recordings_found_refresh">Nun s\'atoparon grabaciones\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="no_broadcasts_found_refresh">Nun s\'atoparon tresmisiones\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="pull_to_refresh">Esliza pa refrescar</string>
+    <string name="no_cast_info">Nun hai repartu p\'amosar</string>
+    <string name="minutes_abbrev">%1$s mins</string>
+    <string name="minutes_abbrev2">%1$sm</string>
+    <string name="sync_successful">La sincronización tuvo ésitu</string>
+    <string name="error_while_syncing">Asocedió un fallu mentanto se sincronizaba: %1$s</string>
+    <string name="action_search">Buscar</string>
+    <string name="action_search_movies">Buscar filmes</string>
+    <string name="action_search_tvshows">Buscar programes de TV</string>
+    <string name="action_search_albums">Buscar álbumes</string>
+    <string name="action_search_artists">Buscar artistes</string>
+    <string name="action_search_genres">Buscar xéneros</string>
+    <string name="action_search_music_videos">Buscar vídeos</string>
+    <string name="add_to_playlist">Amestar a una llista de reproducción</string>
+    <string name="item_added_to_playlist">Amestóse a una llista de reproducción</string>
+    <string name="item_sent_to_kodi">Unvióse a Kodi</string>
+    <string name="no_suitable_playlist">Nun s\'atopó nenguna llista de reproducción afayadiza p\'amestar el tipu de multimedia.</string>
+    <string name="imdb">IMDb</string>
+    <string name="seen">Vióse</string>
+    <string name="download">Baxar</string>
+    <string name="confirm_movie_download">¿De xuru que quies baxar esti filme?\n
+    	El filme va baxase en segundu planu mas pue tardar un ratu en finar.</string>
+    <string name="confirm_episode_download">¿De xuru que quies baxar esti episodiu?\n
+    	L\'episodiu va baxase en segundu planu mas pue tardar un ratu en finar.</string>
+    <string name="confirm_album_download">¿De xuru que quies baxar esti álbum?\n
+    	L\'álbum va baxase en segundu planu mas pue tardar un ratu en finar.</string>
+    <string name="confirm_artist_download">¿De xuru que quies baxar tolos álbumes?\n
+    	Los álbumes van baxase en segundu planu más puen tardar un ratu en finar.</string>
+    <string name="confirm_songs_download">¿De xuru que quies baxar %1$d canciones?\n
+    	Les canciones van baxase en segundu planu mas puen tardar un ratu en finar.</string>
+    <string name="download_file_exists">El ficheru yá esiste.\n
+    	¿Quies sobrescribilu o baxalu con un nome nuevu?</string>
+    <string name="download_dir_exists">El direutoriu de descarga yá esiste.\n
+    	Si hai ficheros col mesmu nome, ¿quies sobrescribilos o baxalos con un nome nuevu?</string>
+    <string name="download_files_exists">Yá esiste un ficheru o más.\n
+    	Si hai ficheros col mesmu nome, ¿quies sobrescribilos o baxalos con un nome nuevu?</string>
+    <string name="overwrite">Sobrescribir</string>
+    <string name="download_with_new_name">Nome nuevu</string>
+    <string name="download_file_description">Baxóse del centru multimedia</string>
+    <string name="num_episodes">%1$d episodios | %2$d ensin ver</string>
+    <string name="premiered">Data d\'estrena: %1$s</string>
+    <string name="tvshow_overview">Vista xeneral</string>
+    <string name="tvshow_episodes">Episodios</string>
+    <string name="tvshow_seasons">Temporaes</string>
+    <string name="tvshow_next_episode">Episodios siguientes</string>
+    <string name="addon_overview">Vista xeneral</string>
+    <string name="addon_content">Conteníu</string>
+    <string name="artists">Artistes</string>
+    <string name="albums">Álbumes</string>
+    <string name="genres">Xéneros</string>
+    <string name="music_videos">Vídeos</string>
+    <string name="no_files_to_download">Nun hai ficheros pa baxar.</string>
+    <string name="error_getting_file_information">Nun pudo consiguise la información pa baxar el ficheru %1$s.</string>
+    <string name="author">Autoría:</string>
+    <string name="version">Versión:</string>
+    <string name="enable_disable">Des/activar el complementu</string>
+    <string name="addon_enabled">Activóse\'l complementu</string>
+    <string name="addon_disabled">Desactivóse\'l complementu</string>
+    <string name="pin_unpin">Des/fixar el complementu</string>
+    <string name="addon_pinned">Fixóse\'l complementu</string>
+    <string name="addon_unpinned">Desfixóse\'l complementu</string>
+    <!-- Filters on list menus -->
+    <string name="hide_watched">Anubrir lo visto</string>
+    <string name="hide_disabled">Anubrir lo desactivao</string>
+    <string name="sort_order">Ordenar</string>
+    <string name="sort_by_name">Pol nome</string>
+    <string name="sort_by_year">Pol añu</string>
+    <string name="sort_by_rating">Pola valoración</string>
+    <string name="sort_by_length">Pola duración</string>
+    <string name="sort_by_date_added">Pola data d\'amiestu</string>
+    <string name="sort_by_last_played">Pola última reproducción</string>
+    <string name="unsorted">Ensin ordenar</string>
+    <string name="ignore_prefixes">Inorar los prefixos</string>
+    <string name="show_watched_status">Amosar l\'estáu de lo visto</string>
+    <string name="show_rating">Amosar la valoración</string>
+    <!-- Preferences strings -->
+    <string name="application">Aplicación</string>
+    <string name="theme">Estilu</string>
+    <string name="theme_night">Nueche</string>
+    <string name="theme_day">Día</string>
+    <string name="theme_mist">Nublina</string>
+    <string name="theme_sunrise">Alborecer</string>
+    <string name="theme_sunset">Atapecer</string>
+    <string name="switch_to_remote">Amosar al aniciar la reproducción</string>
+    <string name="keep_remote_above_lockscreen">Amosar na pantalla de bloquéu</string>
+    <string name="pref_keep_screen_on">Nun apagar la pantalla</string>
+    <string name="show_notification">Amosar un avisu mentanto se reproduz</string>
+    <string name="show_now_playing_panel">Amosar el panel «En reproducción» mentanto se reproduz</string>
+    <string name="show_now_playing_panel_summary">Amuesa un panel espandible no baxero de la pantalla al reproducir multimedia</string>
+    <string name="notification_seek_jump">Usar pasos al guetar</string>
+    <string name="notification_seek_jump_speed">Camuda la velocidá de reproducción al guetar dende l\'avisu</string>
+    <string name="notification_seek_jump_step">Usar saltos al guetar dende l\'avisu</string>
+    <string name="pause_during_calls">Posar la reproducción nes llamaes</string>
+    <string name="use_hardware_volume_keys">Usar los botones de volume del preséu</string>
+    <string name="vibrate_on_remote">Vibrar al tocar</string>
+    <string name="remote_bar_items">Atayos de la barra baxera</string>
+    <string name="nav_drawer_items">Atayos del menú llateral</string>
+    <string name="about">Tocante a</string>
+    <string name="about_desc"><![CDATA[        \u00A9 2018 XBMC Foundation<br><br>
+        Valóranos en <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
+        Si precises ayuda, mira\'l nuesu <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">foru</a>
+    ]]></string>
+    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
+    <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
+    <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
+    <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
+    <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
+    <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
+    <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
+    <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
+    <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
+    <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="play_on_kodi">Reproducir en Kodi</string>
+    <string name="queue_on_kodi">Amestar a la cola de Kodi</string>
+    <string name="pause_call_incoming_title">Llamada entrante</string>
+    <string name="pause_call_incoming_message">Mira\'l teléfonu, ta llamándote daquién</string>
+    <string name="error_getting_pvr_info">Asocedió un fallu al consiguir la información del PVR: %1$s</string>
+    <string name="might_not_have_pvr">Asocedió un fallu mentanto se consiguía la información de los canales, quiciabes ye porque\'l centru multimedia nun tien un sintonizador o nun ta configuráu.\n\n
+    	Si ye\'l casu y quies quitar esta entrada del menú llateral, pues facelo nos axustes de Kore.</string>
+    <string name="error_starting_channel">Asocedió un fallu al aniciar la repoducción de canales: %1$s</string>
+    <string name="error_favourites">Asocedió un fallu mentanto se consiguíen los favoritos cola descripción: %1$s</string>
+    <string name="error_starting_recording">Asocedió un fallu al aniciar la grabación: %1$s</string>
+    <string name="error_starting_to_record">Asocedió un fallu mentanto se grababa: %1$s</string>
+    <string name="channel_switching">Cambiando a la canal %1$s</string>
+    <string name="starting_recording">Aniciando la grabación de: %1$s</string>
+    <string name="refresh">Refrescar</string>
+    <string name="tv">TV</string>
+    <string name="radio">Radio</string>
+    <string name="recordings">Grabaciones</string>
+    <string name="tv_channels">Canales</string>
+    <string name="radio_channels">Cadenes</string>
+    <string name="record">Grabar</string>
+    <string name="pvr_epg">Programación</string>
+    <string name="unable_to_move_item">Nun pue movese l\'elementu</string>
+    <string name="unable_to_play_favourite_item">Nun pue reproducise l\'elementu favoritu porque nun se sofita\'l tipu</string>
+    <string name="cannot_move_playing_item">Nun pue movese l\'elementu en reproducción/posa</string>
+    <string name="no_connection_type_selected">Nun s\'esbilló\'l tipu de conexón nos axustes</string>
+    <string name="single_column">Una columna</string>
+    <string name="multi_column">Varies columnes</string>
+    <string name="download_network_types_title">Torgar les descargues de multimedia</string>
+    <string name="download_network_types_summary">Esbilla los tipos de redes pelos que se permiten les descargues multimedia</string>
+    <string name="songs">Canciones</string>
+    <string name="read_phone_state_permission_denied">Negóse\'l permisu. Nun va ser posible posar la reproducción nes llamaes.</string>
+    <string name="write_storage_permission_denied">Negóse\'l permisu. Nun va ser posible baxar ficheros.</string>
+    <string name="read_storage_permission_denied">Negóse\'l permisu. Nun va ser posible lleer ficheros.</string>
+    <string name="no_songs_to_download">Nun hai canciones pa baxar</string>
+    <string name="by_album">Pol álbum</string>
+    <string name="by_artist">Pol artista</string>
+    <string name="by_artist_and_year">Pol artista y l\'añu</string>
+    <string name="muted">en silenciu</string>
+    <string name="no_item_available_to_play">Fallu: nun hai nengún elementu disponible pa reproducir.</string>
+    <string name="Refreshing_not_implemented_for_this_item">El refrescu nun s\'implementó nesti elementu</string>
+    <string name="no_songs_found_refresh">Nun s\'atoparon grabaciones\n\n
+    	Esliza p\'abaxo pa refrescar</string>
+    <string name="not_implemented">Nun s\'implementó</string>
+    <string name="zeroprogress">0:00</string>
+    <string name="toggle_expand">Espander/Recoyer</string>
+    <string name="play_locally">Reproducir llocalmente</string>
+    <string name="disable_local_playback_support">Desactivar la reproducción llocal</string>
+    <string name="disable_local_playback_support_summary">Desactiva\'l sofitu pa reproducir multimedia nel preséu qu\'executa Kore.</string>
+    <string name="language">Llingua</string>
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="mobile_network">Móvil</string>
+    <string name="any_network">Cualesquiera</string>
 </resources>
