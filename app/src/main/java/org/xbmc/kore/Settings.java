@@ -166,6 +166,9 @@ public class Settings {
         return Settings.KEY_PREF_REMOTE_BAR_ITEMS + hostId;
     }
 
+    public static final String KEY_PREF_ALWAYS_SENDTOKODI_ADDON = "pref_always_sendtokodi_addon";
+    public static final boolean DEFAULT_PREF_ALWAYS_SENDTOKODI_ADDON = false;
+
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
     public static String getNavDrawerItemsPrefKey(int hostId) {
         return Settings.KEY_PREF_NAV_DRAWER_ITEMS + hostId;
