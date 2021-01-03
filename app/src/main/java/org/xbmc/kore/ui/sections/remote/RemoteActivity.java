@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -578,6 +579,8 @@ public class RemoteActivity extends BaseActivity
      */
     private String toPluginUrl(Uri playuri) {
         String host = playuri.getHost();
+        String extension = MimeTypeMap.getFileExtensionFromUrl(playuri.toString());
+        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         if (host.endsWith("youtube.com")) {
             String videoId = playuri.getQueryParameter("v");
             String playlistId = playuri.getQueryParameter("list");
@@ -628,8 +631,27 @@ public class RemoteActivity extends BaseActivity
             return PluginUrlUtils.toPluginUrlTwitch(playuri);
         } else if (PluginUrlUtils.isHostArte(host)) {
             return PluginUrlUtils.toPluginUrlArte(playuri);
+        } else if (!isMediaFile(mimeType)) {
+            // SendToKodi is a Kodi addon that is able to extract URLs from generic
+            // web URIs using the Python library "youtube-dl".
+            // Use it as a last resort, unless the URI extension is a known media file
+            // (in that case Kodi does not require an addon to play the link):
+            return "plugin://plugin.video.sendtokodi/?" + playuri.toString();
         }
         return null;
+    }
+
+    boolean isMediaFile(String mimeType) {
+        if (mimeType == null) {
+            return false;
+        } else if (mimeType.startsWith("audio")) {
+            return true;
+        } else if (mimeType.startsWith("image")) {
+            return true;
+        } else if (mimeType.startsWith("video")) {
+            return true;
+        }
+        return false;
     }
 
     // Default page change listener, that doesn't scroll images
