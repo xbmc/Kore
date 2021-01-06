@@ -116,6 +116,7 @@
     <string name="wizard_xbmc_use_tcp">שימוש ב־TCP</string>
     <string name="wizard_xbmc_event_server_port">כתובת ES‏ (9777)</string>
     <string name="wizard_xbmc_use_event_server">שימוש ב־EventServer</string>
+    <string name="wizard_xbmc_direct_share">הצגה בגיליון שיתוף</string>
 
     <string name="wizard_no_name_specified">נא לציין שם למרכז המדיה הזה, כדי להקל על איתורו בהמשך.</string>
     <string name="wizard_no_address_specified">נא לציין את כתובת מרכז המדיה כדי שניתן יהיה לאתר אותו.</string>
