@@ -16,7 +16,6 @@
 -->
 <resources>
 
-    <string name="app_name" translatable="false">Kore</string>
     <string name="settings">Ezarpenak</string>
     <string name="action_options">Aukerak</string>
 
@@ -117,6 +116,7 @@
     <string name="wizard_xbmc_use_tcp">Erabili TCP</string>
     <string name="wizard_xbmc_event_server_port">ES ataka (9777)</string>
     <string name="wizard_xbmc_use_event_server">Erabili EventServer</string>
+    <string name="wizard_xbmc_direct_share">Erakutsi orri partekatuan</string>
 
     <string name="wizard_no_name_specified">Zehaztu multimedia zentroaren izena, gero identifikatu ahal izan dezazun.</string>
     <string name="wizard_no_address_specified">Zehaztu multimedia zentroaren helbidea, aurkitzeko modua izan dezadan.</string>
@@ -210,9 +210,6 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s boto</string>
-    <string name="max_rating" translatable="false">/%1$s</string>
-    <string name="max_rating_video" translatable="false">/10</string>
-
     <string name="fanart">Zaleen irudiak</string>
     <string name="poster">Horma-irudia</string>
     <string name="thumbnail">Koadro-txikia</string>
@@ -479,5 +476,4 @@
     <string name="wifi_network">Wi-Fia</string>
     <string name="mobile_network">Gailu mugikorra</string>
     <string name="any_network">Edozein</string>
-    <string name="max_rating_music" translatable="false">/5</string>
-</resources>
+    </resources>
