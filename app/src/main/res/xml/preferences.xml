@@ -44,6 +44,12 @@
             android:entries="@array/entries_remote_bar_items"
             android:entryValues="@array/entry_values_remote_bar_items"
             android:defaultValue="@array/default_values_remote_bar_items"/>
+
+        <SwitchPreferenceCompat
+            android:key="pref_always_sendtokodi_addon"
+            android:title="@string/always_sendtokodi_addon"
+            android:defaultValue="false"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/application">

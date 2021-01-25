@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -578,58 +579,87 @@ public class RemoteActivity extends BaseActivity
      */
     private String toPluginUrl(Uri playuri) {
         String host = playuri.getHost();
-        if (host.endsWith("youtube.com")) {
-            String videoId = playuri.getQueryParameter("v");
-            String playlistId = playuri.getQueryParameter("list");
-            Uri.Builder pluginUri = new Uri.Builder()
-                    .scheme("plugin")
-                    .authority("plugin.video.youtube")
-                    .path("play/");
-            boolean valid = false;
-            if (videoId != null) {
-                valid = true;
-                pluginUri.appendQueryParameter("video_id", videoId);
+        String extension = MimeTypeMap.getFileExtensionFromUrl(playuri.toString());
+        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        boolean alwaysSendToKodi = android.preference.PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext())
+                .getBoolean(Settings.KEY_PREF_ALWAYS_SENDTOKODI_ADDON,
+                        Settings.DEFAULT_PREF_ALWAYS_SENDTOKODI_ADDON);
+        if (!alwaysSendToKodi) {
+            if (host.endsWith("youtube.com")) {
+                String videoId = playuri.getQueryParameter("v");
+                String playlistId = playuri.getQueryParameter("list");
+                Uri.Builder pluginUri = new Uri.Builder()
+                        .scheme("plugin")
+                        .authority("plugin.video.youtube")
+                        .path("play/");
+                boolean valid = false;
+                if (videoId != null) {
+                    valid = true;
+                    pluginUri.appendQueryParameter("video_id", videoId);
+                }
+                if (playlistId != null) {
+                    valid = true;
+                    pluginUri.appendQueryParameter("playlist_id", playlistId)
+                            .appendQueryParameter("order", "default");
+                }
+                if (valid) {
+                    return pluginUri.build().toString();
+                }
+            } else if (host.endsWith("youtu.be")) {
+                return "plugin://plugin.video.youtube/play/?video_id="
+                        + playuri.getLastPathSegment();
+            } else if (host.endsWith("vimeo.com")) {
+                String last = playuri.getLastPathSegment();
+                if (last.matches("\\d+")) {
+                    return "plugin://plugin.video.vimeo/play/?video_id=" + last;
+                }
+            } else if (host.endsWith("svtplay.se")) {
+                Pattern pattern = Pattern.compile(
+                        "^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+\\/.*)",
+                        Pattern.CASE_INSENSITIVE);
+                Matcher matcher = pattern.matcher(playuri.toString());
+                if (matcher.matches()) {
+                    return "plugin://plugin.video.svtplay/?id=%2Fvideo%2F"
+                            + URLEncoder.encode(matcher.group(1)) + "&mode=video";
+                }
+            } else if (host.endsWith("soundcloud.com")) {
+                return "plugin://plugin.audio.soundcloud/play/?url="
+                        + URLEncoder.encode(playuri.toString());
+            } else if (host.endsWith("twitch.tv")) {
+                return PluginUrlUtils.toPluginUrlTwitch(playuri);
+            } else if (PluginUrlUtils.isHostArte(host)) {
+                return PluginUrlUtils.toPluginUrlArte(playuri);
             }
-            if (playlistId != null) {
-                valid = true;
-                pluginUri.appendQueryParameter("playlist_id", playlistId)
-                        .appendQueryParameter("order", "default");
-            }
-            if (valid) {
-                return pluginUri.build().toString();
-            }
-        } else if (host.endsWith("youtu.be")) {
-            return "plugin://plugin.video.youtube/play/?video_id="
-                    + playuri.getLastPathSegment();
-        } else if (host.endsWith("vimeo.com")) {
-            String last = playuri.getLastPathSegment();
-            if (last.matches("\\d+")) {
-                return "plugin://plugin.video.vimeo/play/?video_id=" + last;
-            }
-        } else if (host.endsWith("svtplay.se")) {
-            Pattern pattern = Pattern.compile(
-                    "^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+\\/.*)",
-                    Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(playuri.toString());
-            if (matcher.matches()) {
-                return "plugin://plugin.video.svtplay/?id=%2Fvideo%2F"
-                        + URLEncoder.encode(matcher.group(1)) + "&mode=video";
-            }
-        } else if (host.endsWith("soundcloud.com")) {
-            return "plugin://plugin.audio.soundcloud/play/?url="
-                    + URLEncoder.encode(playuri.toString());
-        } else if (host.startsWith("app.primevideo.com")) {
+        }
+        if (host.startsWith("app.primevideo.com")) {
+            // Prime Video cannot be handled by SendToKodi as it requires authentication:
             Matcher amazonMatcher = Pattern.compile("gti=([^&]+)").matcher(playuri.toString());
             if (amazonMatcher.find()) {
                 String gti = amazonMatcher.group(1);
                 return "plugin://plugin.video.amazon-test/?asin=" + gti + "&mode=PlayVideo&adult=0&name=&trailer=0&selbitrate=0";
             }
-        } else if (host.endsWith("twitch.tv")) {
-            return PluginUrlUtils.toPluginUrlTwitch(playuri);
-        } else if (PluginUrlUtils.isHostArte(host)) {
-            return PluginUrlUtils.toPluginUrlArte(playuri);
+        } else if (!isMediaFile(mimeType)) {
+            // SendToKodi is a Kodi addon that is able to extract URLs from generic
+            // web URIs using the Python library "youtube-dl".
+            // Use it as a last resort, unless the URI extension is a known media file
+            // (in that case Kodi does not require an addon to play the link):
+            return "plugin://plugin.video.sendtokodi/?" + playuri.toString();
         }
         return null;
+    }
+
+    boolean isMediaFile(String mimeType) {
+        if (mimeType == null) {
+            return false;
+        } else if (mimeType.startsWith("audio")) {
+            return true;
+        } else if (mimeType.startsWith("image")) {
+            return true;
+        } else if (mimeType.startsWith("video")) {
+            return true;
+        }
+        return false;
     }
 
     // Default page change listener, that doesn't scroll images
