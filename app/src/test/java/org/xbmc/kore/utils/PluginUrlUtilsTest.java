@@ -31,17 +31,36 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 @Config(sdk = 28)
 public class PluginUrlUtilsTest {
-	
+
     @Test
     public void isHostArte() throws Exception {
         assertTrue(PluginUrlUtils.isHostArte("www.arte.tv"));
     }
-	
+
     @Test
     public void toPluginUrlArte() throws Exception {
-    Uri playUri = Uri.parse("https://www.arte.tv/fr/videos/084692-000-A/mongolie-le-reve-d-une-jeune-nomade/");
-	String pluginUrl = PluginUrlUtils.toPluginUrlArte(playUri);
-    assertNotNull(pluginUrl);
-	assertEquals("plugin://plugin.video.arteplussept/play/SHOW/084692-000-A", pluginUrl);
-    }	
+        Uri playUri = Uri.parse("https://www.arte.tv/fr/videos/084692-000-A/mongolie-le-reve-d-une-jeune-nomade/");
+        String pluginUrl = PluginUrlUtils.toPluginUrlArte(playUri);
+        assertNotNull(pluginUrl);
+        assertEquals("plugin://plugin.video.arteplussept/play/SHOW/084692-000-A", pluginUrl);
+    }
+
+    @Test
+    public void toPluginUrlVimeo() throws Exception {
+        Uri playUriDefault = Uri.parse("https://vimeo.com/12345");
+        String pluginUrlDefault = PluginUrlUtils.toPluginUrlVimeo(playUriDefault);
+        assertEquals("plugin://plugin.video.vimeo/play/?video_id=12345", pluginUrlDefault);
+
+        Uri playUriChannel = Uri.parse("https://vimeo.com/channels/staffpicks/654321");
+        String pluginUrlChannel = PluginUrlUtils.toPluginUrlVimeo(playUriChannel);
+        assertEquals("plugin://plugin.video.vimeo/play/?video_id=654321", pluginUrlChannel);
+
+        Uri playUriShowcase = Uri.parse("https://vimeo.com/showcase/123/video/1234567");
+        String pluginUrlShowcase = PluginUrlUtils.toPluginUrlVimeo(playUriShowcase);
+        assertEquals("plugin://plugin.video.vimeo/play/?video_id=1234567", pluginUrlShowcase);
+
+        Uri playUriUnlisted = Uri.parse("https://vimeo.com/1234/hash");
+        String pluginUrlUnlisted = PluginUrlUtils.toPluginUrlVimeo(playUriUnlisted);
+        assertEquals("plugin://plugin.video.vimeo/play/?video_id=1234:hash", pluginUrlUnlisted);
+    }
 }
