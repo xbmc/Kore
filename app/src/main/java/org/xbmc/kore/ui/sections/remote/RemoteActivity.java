@@ -610,10 +610,7 @@ public class RemoteActivity extends BaseActivity
                 return "plugin://plugin.video.youtube/play/?video_id="
                         + playuri.getLastPathSegment();
             } else if (host.endsWith("vimeo.com")) {
-                String last = playuri.getLastPathSegment();
-                if (last.matches("\\d+")) {
-                    return "plugin://plugin.video.vimeo/play/?video_id=" + last;
-                }
+                return PluginUrlUtils.toPluginUrlVimeo(playuri);
             } else if (host.endsWith("svtplay.se")) {
                 Pattern pattern = Pattern.compile(
                         "^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+\\/.*)",

@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
  * Misc util methods for use with plugin URL
  */
 public class PluginUrlUtils {
-
     public static boolean isHostArte(String host) {
         return host.equals("www.arte.tv");
     }
@@ -52,4 +51,27 @@ public class PluginUrlUtils {
         return null;
     }
 
+    public static String toPluginUrlVimeo(Uri playUri) {
+        String route = playUri.getPath();
+        String[] routePatterns = {
+            "^\\/(?<id>\\d+)$",
+            "^\\/(?<id>\\d+)\\/(?<hash>\\w+)$",
+            "\\/(?<id>\\d+)$",
+        };
+
+        for (String routePattern: routePatterns) {
+            Matcher routeMatcher = Pattern.compile(routePattern).matcher(route);
+
+            if (routeMatcher.find()) {
+                String videoId = routeMatcher.group(1);
+                if (routeMatcher.groupCount() == 2) {
+                    videoId = routeMatcher.group(1) + ":" + routeMatcher.group(2);
+                }
+
+                return "plugin://plugin.video.vimeo/play/?video_id=" + videoId;
+            }
+        }
+
+        return null;
+    }
 }
