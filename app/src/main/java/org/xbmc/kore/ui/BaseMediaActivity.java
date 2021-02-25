@@ -342,9 +342,8 @@ public abstract class BaseMediaActivity extends BaseActivity
     }
 
     @Override
-    public void onProgressChanged(int progress) {
-        PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
-        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
+    public void onProgressChanged(Double percentage) {
+        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, percentage);
         seekAction.execute(HostManager.getInstance(this).getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
             @Override
             public void onSuccess(PlayerType.SeekReturnType result) {

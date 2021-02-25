@@ -104,7 +104,43 @@ public abstract class ApiMethod<T> {
         return params;
     }
 
-    /**
+	/**
+	 * Returns the parameters node of the json request object for Kodi 19+
+	 * Creates one if necessary
+	 * @return Parameters node
+	 */
+	protected ArrayNode getParametersNodeNew() {
+		ArrayNode params;
+		if (jsonRequest.has(PARAMS_NODE)) {
+			params = (ArrayNode)jsonRequest.get(PARAMS_NODE);
+		} else {
+			params = objectMapper.createArrayNode();
+			jsonRequest.put(PARAMS_NODE, params);
+		}
+
+		return params;
+	}
+
+	/**
+	 * Adds a parameter to the request for Kodi 19+
+	 * @param value Value to add
+	 */
+	protected void addParameterToRequestNew(int value) {
+		getParametersNodeNew().add(value);
+	}
+
+	/**
+	 * Adds a parameter to the request for Kodi 19+
+	 * @param value Value to add
+	 */
+	protected void addParameterToRequestNew(String fieldName, Double value) {
+		ObjectNode paramObject = objectMapper.createObjectNode();
+		paramObject.put(fieldName, value);
+		getParametersNodeNew().add(paramObject);
+	}
+
+
+	/**
      * Adds a parameter to the request
      * @param parameter Parameter name
      * @param value Value to add

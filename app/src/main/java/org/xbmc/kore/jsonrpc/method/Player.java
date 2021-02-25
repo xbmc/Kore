@@ -247,15 +247,16 @@ public class Player {
         public static final String BACKWARD = "smallbackward";
         public static final String FORWARD = "smallforward";
 
+
         /**
-         * Seek through the playing item (by time)
+         * Seek through the playing item (by percentage)
          * @param playerId Player id for which to stop playback
-         * @param value Where to seek
+         * @param percentage Where to seek
          */
-        public Seek(int playerId, PlayerType.PositionTime value) {
+        public Seek(int playerId, Double percentage) {
             super();
-            addParameterToRequest("playerid", playerId);
-            addParameterToRequest("value", value);
+            addParameterToRequestNew(1);
+            addParameterToRequestNew("percentage", percentage);
         }
 
         /**

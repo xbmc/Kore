@@ -50,7 +50,7 @@ public class MediaProgressIndicator extends LinearLayout {
     private OnProgressChangeListener onProgressChangeListener;
 
     public interface OnProgressChangeListener {
-        void onProgressChanged(int progress);
+        void onProgressChanged(Double percentage);
     }
 
     public MediaProgressIndicator(Context context) {
@@ -92,9 +92,13 @@ public class MediaProgressIndicator extends LinearLayout {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (onProgressChangeListener != null)
-                    onProgressChangeListener.onProgressChanged(seekBar.getProgress());
-
+                if (onProgressChangeListener != null){
+                    int progress = seekBar.getProgress();
+                    int max = seekBar.getMax();
+                    float fPercentage = (((float)progress/(float)max) * 100);
+                    Double percentage = new Double(fPercentage);
+                    onProgressChangeListener.onProgressChanged(percentage);
+                }
                 if (speed > 0)
                     seekBar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
             }

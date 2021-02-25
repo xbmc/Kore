@@ -628,9 +628,8 @@ public class NowPlayingFragment extends Fragment
     public void observerOnStopObserving() {}
 
     @Override
-    public void onProgressChanged(int progress) {
-        PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
-        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
+    public void onProgressChanged(Double percentage) {
+        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, percentage);
         seekAction.execute(HostManager.getInstance(getContext()).getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
             @Override
             public void onSuccess(PlayerType.SeekReturnType result) {
