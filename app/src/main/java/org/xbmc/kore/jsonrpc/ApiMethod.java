@@ -122,20 +122,20 @@ public abstract class ApiMethod<T> {
 	}
 
 	/**
-	 * Adds a parameter to the request for Kodi 19+
+	 * Adds a parameter to the request for Kodi Matrix
 	 * @param value Value to add
 	 */
-	protected void addParameterToRequestNew(int value) {
+	protected void addParameterToRequestMatrix(int value) {
 		getParametersNodeNew().add(value);
 	}
 
 	/**
-	 * Adds a parameter to the request for Kodi 19+
+	 * Adds a parameter to the request for Kodi Matrix
 	 * @param value Value to add
 	 */
-	protected void addParameterToRequestNew(String fieldName, Double value) {
+	protected void addParameterToRequestMatrix(String parameter, Double value) {
 		ObjectNode paramObject = objectMapper.createObjectNode();
-		paramObject.put(fieldName, value);
+		paramObject.put(parameter, value);
 		getParametersNodeNew().add(paramObject);
 	}
 

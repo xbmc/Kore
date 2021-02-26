@@ -249,14 +249,14 @@ public class Player {
 
 
         /**
-         * Seek through the playing item (by percentage)
+         * Seek through the playing item (by percentage double)
          * @param playerId Player id for which to stop playback
          * @param percentage Where to seek
          */
         public Seek(int playerId, Double percentage) {
             super();
-            addParameterToRequestNew(1);
-            addParameterToRequestNew("percentage", percentage);
+            addParameterToRequestMatrix(playerId);
+            addParameterToRequestMatrix("percentage", percentage);
         }
 
         /**
