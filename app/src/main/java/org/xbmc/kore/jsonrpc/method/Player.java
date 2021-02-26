@@ -255,7 +255,10 @@ public class Player {
         public Seek(int playerId, PlayerType.PositionTime value) {
             super();
             addParameterToRequest("playerid", playerId);
-            addParameterToRequest("value", value);
+            ObjectNode valueObject = objectMapper.createObjectNode();
+            if (value != null)
+                valueObject.put("time", value.toJsonNode());
+            addParameterToRequest("value", valueObject);
         }
 
         /**
@@ -266,7 +269,9 @@ public class Player {
         public Seek(int playerId, int value) {
             super();
             addParameterToRequest("playerid", playerId);
-            addParameterToRequest("value", value);
+            ObjectNode valueObject = objectMapper.createObjectNode();
+            valueObject.put("percentage", value);
+            addParameterToRequest("value", valueObject);
         }
 
         /**
@@ -277,7 +282,9 @@ public class Player {
         public Seek(int playerId, String value) {
             super();
             addParameterToRequest("playerid", playerId);
-            addParameterToRequest("value", value);
+            ObjectNode valueObject = objectMapper.createObjectNode();
+            valueObject.put("step", value);
+            addParameterToRequest("value", valueObject);
         }
 
         @Override
