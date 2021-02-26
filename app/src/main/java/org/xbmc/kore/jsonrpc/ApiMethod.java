@@ -105,11 +105,11 @@ public abstract class ApiMethod<T> {
     }
 
 	/**
-	 * Returns the parameters node of the json request object for Kodi 19+
+	 * Returns the parameters node of the json request object for Kodi Matrix
 	 * Creates one if necessary
 	 * @return Parameters node
 	 */
-	protected ArrayNode getParametersNodeNew() {
+	protected ArrayNode getParametersNodeMatrix() {
 		ArrayNode params;
 		if (jsonRequest.has(PARAMS_NODE)) {
 			params = (ArrayNode)jsonRequest.get(PARAMS_NODE);
@@ -126,17 +126,18 @@ public abstract class ApiMethod<T> {
 	 * @param value Value to add
 	 */
 	protected void addParameterToRequestMatrix(int value) {
-		getParametersNodeNew().add(value);
+		getParametersNodeMatrix().add(value);
 	}
 
 	/**
 	 * Adds a parameter to the request for Kodi Matrix
+	 * @param parameter Parameter name
 	 * @param value Value to add
 	 */
 	protected void addParameterToRequestMatrix(String parameter, Double value) {
 		ObjectNode paramObject = objectMapper.createObjectNode();
 		paramObject.put(parameter, value);
-		getParametersNodeNew().add(paramObject);
+		getParametersNodeMatrix().add(paramObject);
 	}
 
 
