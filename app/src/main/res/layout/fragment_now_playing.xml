@@ -151,12 +151,61 @@
                     android:contentDescription="@string/next"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/seeking_control_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonbar_height"
+                android:layout_below="@id/media_control_bar"
+                android:orientation="horizontal"
+                style="@style/ButtonBar"
+                android:background="?attr/contentBackgroundColor">
+                <ImageButton
+                    android:id="@+id/back_30_seconds"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconBack30sec"
+                    android:contentDescription="@string/back_30_seconds"/>
+                <ImageButton
+                    android:id="@+id/back_10_seconds"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconBack10sec"
+                    android:contentDescription="@string/back_10_seconds"/>
+                <ImageButton
+                    android:id="@+id/go_to_position"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"
+                    style="@style/Widget.Button.Borderless"/>
+                <ImageButton
+                    android:id="@+id/forward_10_seconds"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconForward10sec"
+                    android:contentDescription="@string/forward_10_seconds"/>
+                <ImageButton
+                    android:id="@+id/forward_30_seconds"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/Widget.Button.Borderless"
+                    android:src="?attr/iconForward30sec"
+                    android:contentDescription="@string/forward_30_seconds"/>
+            </LinearLayout>
+
             <!-- Media actions buttons -->
             <LinearLayout
                 android:id="@+id/media_actions_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/buttonbar_height"
-                android:layout_below="@id/media_control_bar"
+                android:layout_below="@id/seeking_control_buttons"
                 android:orientation="horizontal"
                 style="@style/ButtonBar"
                 android:background="?attr/contentBackgroundColor">

@@ -89,6 +89,11 @@
     <attr name="iconSkipForward" format="reference" />
     <attr name="iconSkipBackward" format="reference" />
 
+    <attr name="iconBack30sec" format="reference" />
+    <attr name="iconBack10sec" format="reference" />
+    <attr name="iconForward10sec" format="reference" />
+    <attr name="iconForward30sec" format="reference" />
+
     <attr name="iconInfo" format="reference" />
     <attr name="iconBack" format="reference" />
     <attr name="iconMenu" format="reference" />

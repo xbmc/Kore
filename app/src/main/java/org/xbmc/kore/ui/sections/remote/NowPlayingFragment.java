@@ -318,6 +318,39 @@ public class NowPlayingFragment extends Fragment
         action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
     }
 
+    private void moveProgress(int deltaSeconds) {
+        int progress = mediaProgressIndicator.getProgress();
+        progress += deltaSeconds;
+        progress = Math.max(progress, 0);
+        progress = Math.min(progress, mediaProgressIndicator.getMaxProgress());
+        mediaProgressIndicator.setProgress(progress);
+        onProgressChanged(progress);
+    }
+
+    @OnClick(R.id.back_30_seconds)
+    public void backThirtySeconds(View v) {
+        moveProgress(-30);
+    }
+
+    @OnClick(R.id.back_10_seconds)
+    public void backTenSeconds(View v) {
+        moveProgress(-10);
+    }
+
+    @OnClick(R.id.go_to_position)
+    public void seekToPosition(View v) {
+    }
+
+    @OnClick(R.id.forward_10_seconds)
+    public void forwardTenSeconds(View v) {
+        moveProgress(10);
+    }
+
+    @OnClick(R.id.forward_30_seconds)
+    public void forwardThirtySeconds(View v) {
+        moveProgress(30);
+    }
+
     @OnClick(R.id.volume_mute)
     public void onVolumeMuteClicked(View v) {
         Application.SetMute action = new Application.SetMute();

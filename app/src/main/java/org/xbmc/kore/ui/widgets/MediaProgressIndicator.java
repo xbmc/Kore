@@ -168,6 +168,10 @@ public class MediaProgressIndicator extends LinearLayout {
         durationTextView.setText(UIUtils.formatTime(max));
     }
 
+    public int getMaxProgress() {
+        return maxProgress;
+    }
+
     /**
      * Sets the play speed for the progress indicator
      * @param speed set to 0 to stop updating the progress indicator.

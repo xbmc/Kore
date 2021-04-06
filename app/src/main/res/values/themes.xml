@@ -133,6 +133,11 @@
         <item name="iconSkipForward">@drawable/ic_skip_forward_white_24dp</item>
         <item name="iconSkipBackward">@drawable/ic_skip_backward_white_24dp</item>
 
+        <item name="iconBack10sec">@drawable/ic_back_10sec_24dp</item>
+        <item name="iconBack30sec">@drawable/ic_back_30sec_24dp</item>
+        <item name="iconForward10sec">@drawable/ic_forward_10sec_24dp</item>
+        <item name="iconForward30sec">@drawable/ic_forward_30sec_24dp</item>
+
         <item name="iconVolumeUp">@drawable/ic_volume_up_white_24dp</item>
         <item name="iconVolumeDown">@drawable/ic_volume_down_white_24dp</item>
         <item name="iconRepeat">@drawable/ic_repeat_white_24dp</item>
@@ -292,6 +297,11 @@
         <item name="iconPrevious">@drawable/ic_skip_previous_white_24dp</item>
         <item name="iconSkipForward">@drawable/ic_skip_forward_white_24dp</item>
         <item name="iconSkipBackward">@drawable/ic_skip_backward_white_24dp</item>
+
+        <item name="iconBack10sec">@drawable/ic_back_10sec_24dp</item>
+        <item name="iconBack30sec">@drawable/ic_back_30sec_24dp</item>
+        <item name="iconForward10sec">@drawable/ic_forward_10sec_24dp</item>
+        <item name="iconForward30sec">@drawable/ic_forward_30sec_24dp</item>
 
         <item name="iconVolumeUp">@drawable/ic_volume_up_white_24dp</item>
         <item name="iconVolumeDown">@drawable/ic_volume_down_white_24dp</item>

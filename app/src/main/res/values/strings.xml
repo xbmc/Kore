@@ -154,6 +154,11 @@
     <string name="fast_forward">Fast Forward</string>
     <string name="rewind">Rewind</string>
 
+    <string name="back_10_seconds">Back 10 seconds</string>
+    <string name="back_30_seconds">Back 30 seconds</string>
+    <string name="forward_10_seconds">Forward 10 seconds</string>
+    <string name="forward_30_seconds">Forward 30 seconds</string>
+
     <string name="repeat">Repeat</string>
     <string name="shuffle">Shuffle</string>
     <string name="volume_up">Volume up</string>
