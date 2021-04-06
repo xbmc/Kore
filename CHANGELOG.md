@@ -1,6 +1,13 @@
 Changelog
 ---------
 
+Version 2.5.2
+-------------
+- Add support for SendToKodi
+- Add support for sharing from Twitch
+- Allow to disable direct share on a per host basis
+- Bug fixes, specifically the error that prevented downloading files from Kodi
+
 Version 2.5.1
 -------------
 - Add support for sharing from Arte video (The European Culture Channel) to Kodi
