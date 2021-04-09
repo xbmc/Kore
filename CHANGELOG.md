@@ -1,12 +1,12 @@
 Changelog
 ---------
 
-Version 2.5.2
+Version 2.5.3
 -------------
 - Add support for SendToKodi
 - Add support for sharing from Twitch
 - Allow to disable direct share on a per host basis
-- Bug fixes, specifically the error that prevented downloading files from Kodi
+- Bug fixes, specifically issues with thumbnails on Kodi Matrix and errors that prevented downloading files from Kodi
 
 Version 2.5.1
 -------------
@@ -15,7 +15,6 @@ Version 2.5.1
 - Fix download of media files
 - Support local play of items in the "Files" section
 - Various improvments and bug fixes: Fix "Play from here" in the "Files" section, refresh of playlists in the remote, sharing local filenames with spaces in the name, support for self-signed certificates, remember last used tab, etc.
-
 
 Version 2.5.0
 -------------
