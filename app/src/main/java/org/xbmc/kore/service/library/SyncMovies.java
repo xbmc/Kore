@@ -85,26 +85,27 @@ public class SyncMovies extends SyncItem {
                      final HostConnection hostConnection,
                      final Handler callbackHandler,
                      final ContentResolver contentResolver) {
-        String properties[] = {
-                VideoType.FieldsMovie.TITLE, VideoType.FieldsMovie.GENRE,
-                VideoType.FieldsMovie.YEAR, VideoType.FieldsMovie.RATING,
-                VideoType.FieldsMovie.DIRECTOR, VideoType.FieldsMovie.TRAILER,
-                VideoType.FieldsMovie.TAGLINE, VideoType.FieldsMovie.PLOT,
-                // VideoType.FieldsMovie.PLOTOUTLINE, VideoType.FieldsMovie.ORIGINALTITLE,
-                // VideoType.FieldsMovie.LASTPLAYED,
-                VideoType.FieldsMovie.PLAYCOUNT, VideoType.FieldsMovie.DATEADDED,
-                VideoType.FieldsMovie.WRITER, VideoType.FieldsMovie.STUDIO,
-                VideoType.FieldsMovie.MPAA, VideoType.FieldsMovie.CAST,
-                VideoType.FieldsMovie.COUNTRY, VideoType.FieldsMovie.IMDBNUMBER,
-                VideoType.FieldsMovie.RUNTIME, VideoType.FieldsMovie.SET,
-                // VideoType.FieldsMovie.SHOWLINK,
-                VideoType.FieldsMovie.STREAMDETAILS, VideoType.FieldsMovie.TOP250,
-                VideoType.FieldsMovie.VOTES, VideoType.FieldsMovie.FANART,
-                VideoType.FieldsMovie.THUMBNAIL, VideoType.FieldsMovie.FILE,
-                // VideoType.FieldsMovie.SORTTITLE, VideoType.FieldsMovie.RESUME,
-                VideoType.FieldsMovie.SETID,
-                // VideoType.FieldsMovie.DATEADDED, VideoType.FieldsMovie.TAG,
-                // VideoType.FieldsMovie.ART
+        String[] properties = {
+            VideoType.FieldsMovie.TITLE, VideoType.FieldsMovie.GENRE,
+            VideoType.FieldsMovie.YEAR, VideoType.FieldsMovie.RATING,
+            VideoType.FieldsMovie.DIRECTOR, VideoType.FieldsMovie.TRAILER,
+            VideoType.FieldsMovie.TAGLINE, VideoType.FieldsMovie.PLOT,
+            // VideoType.FieldsMovie.PLOTOUTLINE, VideoType.FieldsMovie.ORIGINALTITLE,
+            // VideoType.FieldsMovie.LASTPLAYED,
+            VideoType.FieldsMovie.PLAYCOUNT, VideoType.FieldsMovie.DATEADDED,
+            VideoType.FieldsMovie.WRITER, VideoType.FieldsMovie.STUDIO,
+            VideoType.FieldsMovie.MPAA, VideoType.FieldsMovie.CAST,
+            VideoType.FieldsMovie.COUNTRY, VideoType.FieldsMovie.IMDBNUMBER,
+            VideoType.FieldsMovie.RUNTIME, VideoType.FieldsMovie.SET,
+            // VideoType.FieldsMovie.SHOWLINK,
+            VideoType.FieldsMovie.STREAMDETAILS, VideoType.FieldsMovie.TOP250,
+            VideoType.FieldsMovie.VOTES,
+            // VideoType.FieldsMovie.FANART, VideoType.FieldsMovie.THUMBNAIL,
+            VideoType.FieldsMovie.FILE,
+            // VideoType.FieldsMovie.SORTTITLE, VideoType.FieldsMovie.RESUME,
+            VideoType.FieldsMovie.SETID,
+            // VideoType.FieldsMovie.DATEADDED, VideoType.FieldsMovie.TAG,
+            VideoType.FieldsMovie.ART
         };
 
         if (movieId == -1) {
@@ -117,7 +118,7 @@ public class SyncMovies extends SyncItem {
                 @Override
                 public void onSuccess(VideoType.DetailsMovie result) {
                     deleteMovies(contentResolver, hostId, movieId);
-                    List<VideoType.DetailsMovie> movies = new ArrayList<VideoType.DetailsMovie>(1);
+                    List<VideoType.DetailsMovie> movies = new ArrayList<>(1);
                     movies.add(result);
                     insertMovies(orchestrator, contentResolver, movies);
                     orchestrator.syncItemFinished();
@@ -142,7 +143,7 @@ public class SyncMovies extends SyncItem {
                                final HostConnection hostConnection,
                                final Handler callbackHandler,
                                final ContentResolver contentResolver,
-                               final String properties[],
+                               final String[] properties,
                                final int startIdx) {
         // Call GetMovies with the current limits set
         ListType.Limits limits = new ListType.Limits(startIdx, startIdx + LIMIT_SYNC_MOVIES);
@@ -215,7 +216,7 @@ public class SyncMovies extends SyncItem {
     private void insertMovies(final SyncOrchestrator orchestrator,
                               final ContentResolver contentResolver,
                               final List<VideoType.DetailsMovie> movies) {
-        ContentValues movieValuesBatch[] = new ContentValues[movies.size()];
+        ContentValues[] movieValuesBatch = new ContentValues[movies.size()];
         int castCount = 0;
 
         // Iterate on each movie
@@ -228,7 +229,7 @@ public class SyncMovies extends SyncItem {
         // Insert the movies
         contentResolver.bulkInsert(MediaContract.Movies.CONTENT_URI, movieValuesBatch);
 
-        ContentValues movieCastValuesBatch[] = new ContentValues[castCount];
+        ContentValues[] movieCastValuesBatch = new ContentValues[castCount];
         int count = 0;
         // Iterate on each movie/cast
         for (VideoType.DetailsMovie movie : movies) {

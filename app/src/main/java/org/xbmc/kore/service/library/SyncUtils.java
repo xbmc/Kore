@@ -54,8 +54,8 @@ public class SyncUtils {
         ContentValues movieValues = new ContentValues();
         movieValues.put(MediaContract.MoviesColumns.HOST_ID, hostId);
         movieValues.put(MediaContract.MoviesColumns.MOVIEID, movie.movieid);
-        movieValues.put(MediaContract.MoviesColumns.FANART, movie.fanart);
-        movieValues.put(MediaContract.MoviesColumns.THUMBNAIL, movie.thumbnail);
+        movieValues.put(MediaContract.MoviesColumns.FANART, movie.art.fanart);
+        movieValues.put(MediaContract.MoviesColumns.POSTER, movie.art.poster);
         movieValues.put(MediaContract.MoviesColumns.PLAYCOUNT, movie.playcount);
         movieValues.put(MediaContract.MoviesColumns.DATEADDED, movie.dateadded);
         movieValues.put(MediaContract.MoviesColumns.LASTPLAYED, movie.lastplayed);
@@ -152,8 +152,8 @@ public class SyncUtils {
 
         tvshowValues.put(MediaContract.TVShowsColumns.HOST_ID, hostId);
         tvshowValues.put(MediaContract.TVShowsColumns.TVSHOWID, tvshow.tvshowid);
-        tvshowValues.put(MediaContract.TVShowsColumns.FANART, tvshow.fanart);
-        tvshowValues.put(MediaContract.TVShowsColumns.THUMBNAIL, tvshow.thumbnail);
+        tvshowValues.put(MediaContract.TVShowsColumns.FANART, tvshow.art.fanart);
+        tvshowValues.put(MediaContract.TVShowsColumns.POSTER, tvshow.art.poster);
         tvshowValues.put(MediaContract.TVShowsColumns.PLAYCOUNT, tvshow.playcount);
         tvshowValues.put(MediaContract.TVShowsColumns.TITLE, tvshow.title);
         tvshowValues.put(MediaContract.TVShowsColumns.DATEADDED, tvshow.dateadded);
@@ -188,8 +188,8 @@ public class SyncUtils {
         seasonValues.put(MediaContract.SeasonsColumns.TVSHOWID, season.tvshowid);
         seasonValues.put(MediaContract.SeasonsColumns.SEASON, season.season);
         seasonValues.put(MediaContract.SeasonsColumns.LABEL, season.label);
-        seasonValues.put(MediaContract.SeasonsColumns.FANART, season.fanart);
-        seasonValues.put(MediaContract.SeasonsColumns.THUMBNAIL, season.thumbnail);
+        seasonValues.put(MediaContract.SeasonsColumns.FANART, season.art.fanart);
+        seasonValues.put(MediaContract.SeasonsColumns.POSTER, season.art.poster);
         seasonValues.put(MediaContract.SeasonsColumns.EPISODE, season.episode);
         seasonValues.put(MediaContract.SeasonsColumns.SHOWTITLE, season.showtitle);
         seasonValues.put(MediaContract.SeasonsColumns.WATCHEDEPISODES, season.watchedepisodes);

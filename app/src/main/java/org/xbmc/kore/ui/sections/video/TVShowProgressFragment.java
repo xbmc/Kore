@@ -399,7 +399,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MediaContract.Seasons.SEASON,
-                MediaContract.Seasons.THUMBNAIL,
+                MediaContract.Seasons.POSTER,
                 MediaContract.Seasons.EPISODE,
                 MediaContract.Seasons.WATCHEDEPISODES
         };

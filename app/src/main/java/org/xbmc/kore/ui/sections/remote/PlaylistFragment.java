@@ -682,7 +682,7 @@ public class PlaylistFragment extends Fragment
                 case ListType.ItemsAll.TYPE_MOVIE:
                     title = TextUtils.isEmpty(item.title)? item.label : item.title;
                     details = item.tagline;
-                    artUrl = item.thumbnail;
+                    artUrl = item.art.poster;
                     duration = item.runtime;
                     break;
                 case ListType.ItemsAll.TYPE_EPISODE:

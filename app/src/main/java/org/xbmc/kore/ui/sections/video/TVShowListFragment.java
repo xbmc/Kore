@@ -272,7 +272,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 BaseColumns._ID,
                 MediaContract.TVShows.TVSHOWID,
                 MediaContract.TVShows.TITLE,
-                MediaContract.TVShows.THUMBNAIL,
+                MediaContract.TVShows.POSTER,
                 MediaContract.TVShows.FANART,
                 MediaContract.TVShows.PREMIERED,
                 MediaContract.TVShows.STUDIO,

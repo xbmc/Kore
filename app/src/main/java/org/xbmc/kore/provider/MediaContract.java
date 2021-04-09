@@ -116,7 +116,7 @@ public class MediaContract {
         String MOVIEID = "movieid";
 
         String FANART = "fanart";
-        String THUMBNAIL = "thumbnail";
+        String POSTER = "thumbnail";
         String PLAYCOUNT = "playcount";
         String TITLE = "title";
         String FILE = "file";
@@ -179,7 +179,7 @@ public class MediaContract {
         }
 
         public final static String[] ALL_COLUMNS = {
-                _ID, UPDATED, HOST_ID, MOVIEID, FANART, THUMBNAIL, PLAYCOUNT, TITLE, FILE, PLOT,
+                _ID, UPDATED, HOST_ID, MOVIEID, FANART, POSTER, PLAYCOUNT, TITLE, FILE, PLOT,
                 DIRECTOR, RUNTIME, AUDIO_CHANNELS, AUDIO_CODEC, AUDIO_LANGUAGE,
                 SUBTITLES_LANGUAGES, VIDEO_ASPECT, VIDEO_CODEC, VIDEO_HEIGHT, VIDEO_WIDTH,
                 COUNTRIES, GENRES, IMDBNUMBER, MPAA, RATING, SET, SETID, STUDIOS, TAGLINE,
@@ -227,7 +227,7 @@ public class MediaContract {
         String TVSHOWID = "tvshowid";
 
         String FANART = "fanart";
-        String THUMBNAIL = "thumbnail";
+        String POSTER = "thumbnail";
         String PLAYCOUNT = "playcount";
         String TITLE = "title";
         String DATEADDED = "dateadded";
@@ -274,7 +274,7 @@ public class MediaContract {
         }
 
         public final static String[] ALL_COLUMNS = {
-                _ID, UPDATED, HOST_ID, TVSHOWID, FANART, THUMBNAIL, PLAYCOUNT, TITLE, DATEADDED,
+                _ID, UPDATED, HOST_ID, TVSHOWID, FANART, POSTER, PLAYCOUNT, TITLE, DATEADDED,
                 FILE, PLOT, EPISODE, IMDBNUMBER, MPAA, PREMIERED, RATING, STUDIO,
                 WATCHEDEPISODES, GENRES
         };
@@ -322,7 +322,7 @@ public class MediaContract {
 
         String LABEL = "label";
         String FANART = "fanart";
-        String THUMBNAIL = "thumbnail";
+        String POSTER = "thumbnail";
         String EPISODE = "episode";
         String SHOWTITLE = "showtitle";
         String WATCHEDEPISODES = "watchedepisodes";
@@ -359,7 +359,7 @@ public class MediaContract {
         }
 
         public final static String[] ALL_COLUMNS = {
-                _ID, UPDATED, HOST_ID, TVSHOWID, SEASON, LABEL, FANART, THUMBNAIL, EPISODE,
+                _ID, UPDATED, HOST_ID, TVSHOWID, SEASON, LABEL, FANART, POSTER, EPISODE,
                 SHOWTITLE, WATCHEDEPISODES,
         };
     }

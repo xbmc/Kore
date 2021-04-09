@@ -663,8 +663,8 @@ public class NowPlayingFragment extends Fragment
 
                 title = getItemResult.title;
                 underTitle = getItemResult.tagline;
-                art = getItemResult.fanart;
-                poster = getItemResult.thumbnail;
+                art = getItemResult.art.fanart;
+                poster = getItemResult.art.poster;
 
                 genreSeason = Utils.listStringConcat(getItemResult.genre, ", ");
                 year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
