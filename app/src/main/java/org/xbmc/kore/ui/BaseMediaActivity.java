@@ -480,8 +480,8 @@ public abstract class BaseMediaActivity extends BaseActivity
             case ListType.ItemsAll.TYPE_MOVIE:
                 title = getItemResult.title;
                 details = getItemResult.tagline;
-                poster = TextUtils.isEmpty(getItemResult.thumbnail) ? getItemResult.fanart
-                                                                    : getItemResult.thumbnail;
+                poster = TextUtils.isEmpty(getItemResult.art.poster) ? getItemResult.art.fanart
+                                                                    : getItemResult.art.poster;
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
                 title = getItemResult.title;

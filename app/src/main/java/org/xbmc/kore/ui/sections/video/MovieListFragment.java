@@ -295,7 +295,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 BaseColumns._ID,
                 MediaContract.Movies.MOVIEID,
                 MediaContract.Movies.TITLE,
-                MediaContract.Movies.THUMBNAIL,
+                MediaContract.Movies.POSTER,
                 MediaContract.Movies.YEAR,
                 MediaContract.Movies.GENRES,
                 MediaContract.Movies.RUNTIME,

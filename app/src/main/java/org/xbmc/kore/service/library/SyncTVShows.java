@@ -91,7 +91,8 @@ public class SyncTVShows extends SyncItem {
             VideoType.FieldsTVShow.EPISODE, VideoType.FieldsTVShow.IMDBNUMBER,
             VideoType.FieldsTVShow.PREMIERED,
             //VideoType.FieldsTVShow.VOTES, VideoType.FieldsTVShow.LASTPLAYED,
-            VideoType.FieldsTVShow.FANART, VideoType.FieldsTVShow.THUMBNAIL,
+            VideoType.FieldsTVShow.ART,
+            //VideoType.FieldsTVShow.FANART, VideoType.FieldsTVShow.THUMBNAIL,
             VideoType.FieldsTVShow.FILE,
             //VideoType.FieldsTVShow.ORIGINALTITLE, VideoType.FieldsTVShow.SORTTITLE,
             // VideoType.FieldsTVShow.EPISODEGUIDE, VideoType.FieldsTVShow.SEASON,
@@ -209,7 +210,8 @@ public class SyncTVShows extends SyncItem {
             VideoType.FieldsSeason.SEASON, VideoType.FieldsSeason.SHOWTITLE,
             //VideoType.FieldsSeason.PLAYCOUNT,
             VideoType.FieldsSeason.EPISODE,
-            VideoType.FieldsSeason.FANART, VideoType.FieldsSeason.THUMBNAIL,
+            //VideoType.FieldsSeason.FANART, VideoType.FieldsSeason.THUMBNAIL,
+            VideoType.FieldsSeason.ART,
             VideoType.FieldsSeason.TVSHOWID, VideoType.FieldsSeason.WATCHEDEPISODES,
             //VideoType.FieldsSeason.ART
     };
@@ -278,6 +280,7 @@ public class SyncTVShows extends SyncItem {
             //VideoType.FieldsEpisode.CAST,
             VideoType.FieldsEpisode.STREAMDETAILS,
             //VideoType.FieldsEpisode.LASTPLAYED,
+            //VideoType.FieldsEpisode.ART,
             VideoType.FieldsEpisode.FANART,  VideoType.FieldsEpisode.THUMBNAIL,
             VideoType.FieldsEpisode.FILE,
             //VideoType.FieldsEpisode.RESUME,

@@ -185,7 +185,7 @@ public class NotificationObserver
             case ListType.ItemsAll.TYPE_MOVIE:
                 title = getItemResult.title;
                 underTitle = getItemResult.tagline;
-                poster = getItemResult.thumbnail;
+                poster = getItemResult.art.poster;
                 smallIcon = R.drawable.ic_movie_white_24dp;
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:

@@ -379,7 +379,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
                 BaseColumns._ID,
                 MediaContract.Movies.TITLE,
                 MediaContract.Movies.TAGLINE,
-                MediaContract.Movies.THUMBNAIL,
+                MediaContract.Movies.POSTER,
                 MediaContract.Movies.FANART,
                 MediaContract.Movies.YEAR,
                 MediaContract.Movies.GENRES,

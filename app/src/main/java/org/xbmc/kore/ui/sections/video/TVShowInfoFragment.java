@@ -179,7 +179,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MediaContract.TVShows.TITLE,
-                MediaContract.TVShows.THUMBNAIL,
+                MediaContract.TVShows.POSTER,
                 MediaContract.TVShows.FANART,
                 MediaContract.TVShows.PREMIERED,
                 MediaContract.TVShows.STUDIO,

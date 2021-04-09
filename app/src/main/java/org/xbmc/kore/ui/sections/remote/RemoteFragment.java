@@ -490,7 +490,7 @@ public class RemoteFragment extends Fragment
 
                 title = nowPlaying.title;
                 underTitle = nowPlaying.tagline;
-                thumbnailUrl = nowPlaying.thumbnail;
+                thumbnailUrl = nowPlaying.art.poster;
                 currentFastForwardIcon = fastForwardIcon;
                 currentRewindIcon = rewindIcon;
                 break;

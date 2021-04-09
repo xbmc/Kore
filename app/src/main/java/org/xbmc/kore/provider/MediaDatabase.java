@@ -171,7 +171,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.MoviesColumns.HOST_ID + " INTEGER NOT NULL " + References.HOST_ID + ", " +
                    MediaContract.MoviesColumns.MOVIEID + " INTEGER NOT NULL, " +
                    MediaContract.MoviesColumns.FANART + " TEXT, " +
-                   MediaContract.MoviesColumns.THUMBNAIL + " TEXT, " +
+                   MediaContract.MoviesColumns.POSTER + " TEXT, " +
                    MediaContract.MoviesColumns.PLAYCOUNT + " INTEGER, " +
                    MediaContract.MoviesColumns.TITLE + " TEXT, " +
                    MediaContract.MoviesColumns.FILE + " TEXT, " +
@@ -229,7 +229,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.TVShowsColumns.HOST_ID + " INTEGER NOT NULL " + References.HOST_ID + ", " +
                    MediaContract.TVShowsColumns.TVSHOWID + " INTEGER NOT NULL, " +
                    MediaContract.TVShowsColumns.FANART + " TEXT, " +
-                   MediaContract.TVShowsColumns.THUMBNAIL + " TEXT, " +
+                   MediaContract.TVShowsColumns.POSTER + " TEXT, " +
                    MediaContract.TVShowsColumns.PLAYCOUNT + " INTEGER, " +
                    MediaContract.TVShowsColumns.TITLE + " TEXT, " +
                    MediaContract.TVShowsColumns.DATEADDED + " TEXT, " +
@@ -276,7 +276,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.SeasonsColumns.SEASON + " INTEGER NOT NULL, " +
                    MediaContract.SeasonsColumns.LABEL + " TEXT, " +
                    MediaContract.SeasonsColumns.FANART + " TEXT, " +
-                   MediaContract.SeasonsColumns.THUMBNAIL + " TEXT, " +
+                   MediaContract.SeasonsColumns.POSTER + " TEXT, " +
                    MediaContract.SeasonsColumns.EPISODE + " INTEGER, " +
                    MediaContract.SeasonsColumns.SHOWTITLE + " TEXT, " +
                    MediaContract.SeasonsColumns.WATCHEDEPISODES + " INTEGER, " +
