@@ -67,8 +67,8 @@
     <string name="finish_after_send">Terminar después de enviar</string>
 
     <string name="library_actions">Mantenimiento de biblioteca</string>
-    <string name="clean_video_library">Borrar biblioteca de vídeos</string>
-    <string name="clean_audio_library">Borrar biblioteca de música</string>
+    <string name="clean_video_library">Limpiar biblioteca de vídeos</string>
+    <string name="clean_audio_library">Limpiar biblioteca de música</string>
     <string name="update_video_library">Actualizar biblioteca de vídeo</string>
     <string name="update_audio_library">Actualizar biblioteca de música</string>
 
