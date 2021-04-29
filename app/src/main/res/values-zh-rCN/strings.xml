@@ -16,7 +16,6 @@
 -->
 <resources>
 
-    <string name="app_name">快控</string>
     <string name="settings">设置</string>
     <string name="action_options">选项</string>
 
@@ -119,6 +118,7 @@
     <string name="wizard_xbmc_use_tcp">使用TCP</string>
     <string name="wizard_xbmc_event_server_port">ES端口 (9777)</string>
     <string name="wizard_xbmc_use_event_server">使用事件服务器</string>
+    <string name="wizard_xbmc_direct_share">在共享表中显示</string>
 
     <string name="wizard_no_name_specified">请指定此媒体中心的名称，以便识别。</string>
     <string name="wizard_no_address_specified">请指定此媒体中心的地址，以便找到它。</string>
@@ -209,7 +209,6 @@
     <string name="episode_number">%1$d</string>
 
     <string name="votes">%1$s 投票</string>
-
     <string name="fanart">同人画</string>
     <string name="poster">海报</string>
     <string name="thumbnail">缩略图</string>
@@ -219,7 +218,7 @@
     <string name="error_executing_subtitles">无法运行字幕插件。\n错误信息：%1$s。</string>
     <string name="error_getting_addon_info">无法获得插件信息。\n错误信息：
         %1$s。</string>
-   <string name="error_getting_source_info">无法浏览文件。\n错误信息：
+    <string name="error_getting_source_info">无法浏览文件。\n错误信息：
         %1$s。</string>
     <string name="error_play_media_file">无法播放媒体文件。\n错误信息：
         %1$s。</string>
@@ -227,7 +226,7 @@
         %1$s。</string>
     <string name="error_queue_media_file">无法将媒体文件加入队列。\n错误信息：
         %1$s。</string>
-     <string name="error_get_active_player">无法获得当前播放器。\n错误信息：
+    <string name="error_get_active_player">无法获得当前播放器。\n错误信息：
         %1$s。</string>
     <string name="error_share_video">无法分享视频到Kodi。</string>
     <string name="error_reading_local_storage">无法读取本地存储。是否给予了Kore本地存储访问权限？</string>
@@ -447,6 +446,4 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">移动数据网</string>
     <string name="any_network">任意</string>
-
-</resources>
-
+    </resources>
