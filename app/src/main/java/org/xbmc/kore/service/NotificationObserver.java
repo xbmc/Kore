@@ -27,14 +27,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.preference.PreferenceManager;
+import android.support.v4.media.session.MediaSessionCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
-
+import androidx.media.app.NotificationCompat.MediaStyle;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import org.xbmc.kore.R;
-import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.notification.Player;
@@ -43,6 +42,7 @@ import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.CharacterDrawable;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.RoundedTransformation;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
@@ -53,15 +53,19 @@ import org.xbmc.kore.utils.Utils;
  */
 public class NotificationObserver
         implements HostConnectionObserver.PlayerEventsObserver {
+
     public static final String TAG = LogUtils.makeLogTag(NotificationObserver.class);
 
     public static final int NOTIFICATION_ID = 1;
+
     private static final String NOTIFICATION_CHANNEL = "KORE";
 
     private PendingIntent remoteStartPendingIntent;
+
     private Service service;
 
     private Notification nothingPlayingNotification;
+
     private Notification currentNotification = null;
 
     public NotificationObserver(Service service) {
@@ -89,14 +93,14 @@ public class NotificationObserver
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
      */
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
-                             PlayerType.PropertyValue getPropertiesResult,
-                             ListType.ItemsAll getItemResult) {
+            PlayerType.PropertyValue getPropertiesResult,
+            ListType.ItemsAll getItemResult) {
         notifyPlaying(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
-                              PlayerType.PropertyValue getPropertiesResult,
-                              ListType.ItemsAll getItemResult) {
+            PlayerType.PropertyValue getPropertiesResult,
+            ListType.ItemsAll getItemResult) {
         notifyPlaying(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
@@ -117,7 +121,8 @@ public class NotificationObserver
     }
 
     // Ignore this
-    public void inputOnInputRequested(String title, String type, String value) { }
+    public void inputOnInputRequested(String title, String type, String value) {
+    }
 
     public void observerOnStopObserving() {
         // Called when the user changes host
@@ -137,8 +142,9 @@ public class NotificationObserver
 
         NotificationManager notificationManager =
                 (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null)
+        if (notificationManager != null) {
             notificationManager.createNotificationChannel(channel);
+        }
     }
 
     // Picasso target that will be used to load images
@@ -173,10 +179,10 @@ public class NotificationObserver
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void notifyPlaying(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
-                               PlayerType.PropertyValue getPropertiesResult,
-                               ListType.ItemsAll getItemResult) {
+            PlayerType.PropertyValue getPropertiesResult,
+            ListType.ItemsAll getItemResult) {
         final String title, underTitle, poster;
-        int smallIcon, playPauseIcon, rewindIcon, ffIcon;
+        int smallIcon, playPauseIcon, rewindIcon, ffIcon, jumpBackIcon, jumpForwardIcon;
 
         boolean isVideo = ((getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
                 (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE)));
@@ -191,7 +197,7 @@ public class NotificationObserver
             case ListType.ItemsAll.TYPE_EPISODE:
                 title = getItemResult.title;
                 String seasonEpisode = String.format(service.getString(R.string.season_episode_abbrev),
-                                                     getItemResult.season, getItemResult.episode);
+                        getItemResult.season, getItemResult.episode);
                 underTitle = String.format("%s | %s", getItemResult.showtitle, seasonEpisode);
                 poster = getItemResult.art.poster;
                 smallIcon = R.drawable.ic_tv_white_24dp;
@@ -224,50 +230,82 @@ public class NotificationObserver
 
         switch (getPropertiesResult.speed) {
             case 1:
-                playPauseIcon = R.drawable.ic_pause_white_24dp;
+                playPauseIcon = R.drawable.ic_pause_notification_white;
                 break;
             default:
-                playPauseIcon = R.drawable.ic_play_arrow_white_24dp;
+                playPauseIcon = R.drawable.ic_play_notification_white;
                 break;
         }
 
         // Create the actions, depending on the type of media and the user's preference
-        PendingIntent rewindPendingIntent, ffPendingIntent, playPausePendingIntent;
-        playPausePendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_PLAY_PAUSE);
-        boolean useSeekJump = PreferenceManager
-                .getDefaultSharedPreferences(this.service)
-                .getBoolean(Settings.KEY_PREF_NOTIFICATION_SEEK_JUMP, Settings.DEFAULT_PREF_NOTIFICATION_SEEK_JUMP);
+        PendingIntent rewindPendingIntent, ffPendingIntent, playPausePendingIntent, jumpBackPendingIntent,
+                jumpForwardPendingIntent;
+        playPausePendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid,
+                IntentActionsService.ACTION_PLAY_PAUSE);
         if (getItemResult.type.equals(ListType.ItemsAll.TYPE_SONG)) {
-            rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_PREVIOUS);
+            rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid,
+                    IntentActionsService.ACTION_PREVIOUS);
             rewindIcon = R.drawable.ic_skip_previous_white_24dp;
-            ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_NEXT);
+            ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid,
+                    IntentActionsService.ACTION_NEXT);
             ffIcon = R.drawable.ic_skip_next_white_24dp;
-        } else if (useSeekJump) {
-            rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_JUMP_BACKWARD);
-            rewindIcon = R.drawable.ic_skip_backward_white_24dp;
-            ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_JUMP_FORWARD);
-            ffIcon = R.drawable.ic_skip_forward_white_24dp;
         } else {
-            rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_REWIND);
+            rewindPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid,
+                    IntentActionsService.ACTION_REWIND);
             rewindIcon = R.drawable.ic_fast_rewind_white_24dp;
-            ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid, IntentActionsService.ACTION_FAST_FORWARD);
+            ffPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid,
+                    IntentActionsService.ACTION_FAST_FORWARD);
             ffIcon = R.drawable.ic_fast_forward_white_24dp;
         }
 
+        jumpBackPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid,
+                IntentActionsService.ACTION_JUMP_BACKWARD);
+        jumpBackIcon = R.drawable.ic_skip_backward_white_24dp;
+
+        jumpForwardPendingIntent = buildActionPendingIntent(getActivePlayerResult.playerid,
+                IntentActionsService.ACTION_JUMP_FORWARD);
+        jumpForwardIcon = R.drawable.ic_skip_forward_white_24dp;
+
         final NotificationCompat.Builder builder =
-            new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL);
+
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSmallIcon(smallIcon)
                 .setShowWhen(false)
                 .setOngoing(true)
-                .addAction(rewindIcon, service.getString(R.string.rewind), rewindPendingIntent) // #0
-                .addAction(playPauseIcon, service.getString(R.string.play), playPausePendingIntent)  // #1
-                .addAction(ffIcon, service.getString(R.string.fast_forward), ffPendingIntent)     // #2
-                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                              .setShowActionsInCompactView(0, 1, 2))
                 .setContentIntent(remoteStartPendingIntent)
                 .setContentTitle(title)
                 .setContentText(underTitle);
+
+        if (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE)
+                || getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)
+        ) {
+            builder.addAction(rewindIcon, service.getString(R.string.rewind), rewindPendingIntent) // #0
+                    .addAction(jumpBackIcon, service.getString(R.string.rewind), jumpBackPendingIntent) // #1
+                    .addAction(playPauseIcon, service.getString(R.string.play), playPausePendingIntent)  // #2
+                    .addAction(jumpForwardIcon, service.getString(R.string.fast_forward),
+                            jumpForwardPendingIntent) // #3
+                    .addAction(ffIcon, service.getString(R.string.fast_forward), ffPendingIntent)   // #4
+                    .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                            .setShowActionsInCompactView(1, 2, 3));
+        } else {
+            builder.addAction(rewindIcon, service.getString(R.string.rewind), rewindPendingIntent) // #0
+                    .addAction(playPauseIcon, service.getString(R.string.play), playPausePendingIntent)  // #1
+                    .addAction(ffIcon, service.getString(R.string.fast_forward), ffPendingIntent)  // #2
+                    .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                            .setShowActionsInCompactView(0, 1, 2));
+        }
+
+        // Creates Media Style with MediaSession Token required to display
+        // media controls below quick settings in Android 11 and above.
+        if (Build.VERSION.SDK_INT >= 21) {
+            final MediaSessionCompat mediaSession = new MediaSessionCompat(this.service,
+                    "MediaService");
+            final MediaStyle mediastyle = new androidx.media.app.NotificationCompat.MediaStyle()
+                    .setMediaSession(mediaSession.getSessionToken());
+            builder.setStyle(mediastyle
+                    .setShowActionsInCompactView(1, 2, 3));
+        }
 
         // This is a convoluted way of loading the image and showing the
         // notification, but it's what works with Picasso and is efficient.
@@ -279,7 +317,7 @@ public class NotificationObserver
         // notification imageview, which causes a lot of flickering
         //
         // 2. The target needs to be static, because Picasso only keeps a weak
-        // reference to it, so we need to keed a strong reference and reset it
+        // reference to it, so we need to keep a strong reference and reset it
         // to null when we're done. We also need to check if it is not null in
         // case a previous request hasn't finished yet.
         //
@@ -290,10 +328,10 @@ public class NotificationObserver
         // the remote, so that Picasso reuses it in the remote and here from the cache
         Resources resources = service.getResources();
         final int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
-        final int posterHeight = isVideo?
-                resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height):
+        final int posterHeight = isVideo ?
+                resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height) :
                 posterWidth;
-        if (picassoTarget == null ) {
+        if (picassoTarget == null) {
             picassoTarget = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -307,7 +345,8 @@ public class NotificationObserver
                 }
 
                 @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) { }
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                }
 
                 private void showNotification(Bitmap bitmap) {
                     builder.setLargeIcon(bitmap);
@@ -325,6 +364,7 @@ public class NotificationObserver
             HostManager hostManager = HostManager.getInstance(service);
             hostManager.getPicasso()
                     .load(hostManager.getHostInfo().getImageUrl(poster))
+                    .transform((new RoundedTransformation(40, 0)))
                     .resize(posterWidth, posterHeight)
                     .into(picassoTarget);
         }
@@ -349,7 +389,7 @@ public class NotificationObserver
 
     private void notifyNothingPlaying() {
         NotificationManager notificationManager =
-            (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
             notificationManager.notify(NOTIFICATION_ID, nothingPlayingNotification);
             currentNotification = nothingPlayingNotification;
