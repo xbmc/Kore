@@ -28,13 +28,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
@@ -45,6 +43,7 @@ import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
 import org.xbmc.kore.ui.AbstractSearchableFragment;
+import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -52,10 +51,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Fragment that presents the PVR recordings list
@@ -66,43 +61,63 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
 
     private HostManager hostManager;
 
-    @BindView(R.id.list) GridView gridView;
-    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(android.R.id.empty) TextView emptyView;
-
     /**
      * Handler on which to post RPC callbacks
      */
     private Handler callbackHandler = new Handler();
 
-    private RecordingsAdapter recordingsAdapter = null;
+    @Override
+    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // Get the id from the tag
+                RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
 
-    private Unbinder unbinder;
+                // Start the recording
+                Toast.makeText(getActivity(),
+                        String.format(getString(R.string.starting_recording), tag.title),
+                        Toast.LENGTH_SHORT).show();
+                Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
+                action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        if (!isAdded()) return;
+                        LogUtils.LOGD(TAG, "Started recording");
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String description) {
+                        if (!isAdded()) return;
+                        LogUtils.LOGD(TAG, "Error starting recording: " + description);
+
+                        Toast.makeText(getActivity(),
+                                String.format(getString(R.string.error_starting_recording), description),
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+                }, callbackHandler);
+
+            }
+        };
+    }
+
+    @Override
+    protected RecyclerView.Adapter createAdapter() {
+        return new RecordingsAdapter(getActivity());
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setSupportsSearch(true);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_pvr_list, container, false);
-
-        unbinder = ButterKnife.bind(this, root);
+        View root = super.onCreateView(inflater, container, savedInstanceState);
 
         hostManager = HostManager.getInstance(getActivity());
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        emptyView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
-        gridView.setEmptyView(emptyView);
-
-        super.onCreateView(inflater, container, savedInstanceState);
 
         return root;
     }
@@ -111,14 +126,12 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
-        setSupportsSearch(true);
         browseRecordings();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
 
@@ -212,7 +225,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         if (hostManager.getHostInfo() != null) {
             browseRecordings();
         } else {
-            swipeRefreshLayout.setRefreshing(false);
+            hideRefreshAnimation();
             Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
                  .show();
         }
@@ -230,6 +243,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 LogUtils.LOGD(TAG, "Got recordings");
 
                 // To prevent the empty text from appearing on the first load, set it now
+                TextView emptyView = getEmptyView();
                 emptyView.setText(getString(R.string.no_recordings_found_refresh));
 
                 // As the JSON RPC API does not support sorting or filter parameters for PVR.GetRecordings
@@ -239,7 +253,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 sort(finalResult);
 
                 setupRecordingsGridview(finalResult);
-                swipeRefreshLayout.setRefreshing(false);
+                hideRefreshAnimation();
             }
 
             private List<PVRType.DetailsRecording> filter(List<PVRType.DetailsRecording> itemList) {
@@ -346,11 +360,12 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 LogUtils.LOGD(TAG, "Error getting recordings: " + description);
 
                 // To prevent the empty text from appearing on the first load, set it now
+                TextView emptyView = getEmptyView();
                 emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
                 Toast.makeText(getActivity(),
                                String.format(getString(R.string.error_getting_pvr_info), description),
                                Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
+                hideRefreshAnimation();
             }
         }, callbackHandler);
     }
@@ -361,56 +376,21 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
      * @param result Recordings obtained
      */
     private void setupRecordingsGridview(List<PVRType.DetailsRecording> result) {
-        if (recordingsAdapter == null) {
-            recordingsAdapter = new RecordingsAdapter(getActivity(), R.layout.grid_item_recording);
-        }
-        gridView.setAdapter(recordingsAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the id from the tag
-                RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
-
-                // Start the recording
-                Toast.makeText(getActivity(),
-                               String.format(getString(R.string.starting_recording), tag.title),
-                               Toast.LENGTH_SHORT).show();
-                Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
-                action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        if (!isAdded()) return;
-                        LogUtils.LOGD(TAG, "Started recording");
-                    }
-
-                    @Override
-                    public void onError(int errorCode, String description) {
-                        if (!isAdded()) return;
-                        LogUtils.LOGD(TAG, "Error starting recording: " + description);
-
-                        Toast.makeText(getActivity(),
-                                       String.format(getString(R.string.error_starting_recording), description),
-                                       Toast.LENGTH_SHORT).show();
-
-                    }
-                }, callbackHandler);
-
-            }
-        });
-
-        recordingsAdapter.clear();
-        recordingsAdapter.addAll(result);
-        recordingsAdapter.notifyDataSetChanged();
+        RecordingsAdapter recordingsAdapter = (RecordingsAdapter) getAdapter();
+        recordingsAdapter.setItems(result);
     }
 
-    private class RecordingsAdapter extends ArrayAdapter<PVRType.DetailsRecording> {
+    private class RecordingsAdapter extends RecyclerView.Adapter {
         private HostManager hostManager;
         private int artWidth, artHeight;
+        private Context context;
+        private List<PVRType.DetailsRecording> items;
 
-        public RecordingsAdapter(Context context, int resource) {
-            super(context, resource);
+        public RecordingsAdapter(Context context) {
+            super();
 
             this.hostManager = HostManager.getInstance(context);
+            this.context = context;
 
             Resources resources = context.getResources();
             artWidth = (int)(resources.getDimension(R.dimen.channellist_art_width) /
@@ -419,55 +399,100 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
-        /** {@inheritDoc} */
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getActivity())
-                                            .inflate(R.layout.grid_item_recording, parent, false);
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            PVRType.DetailsRecording item = this.getItem(position);
+            ((RecordingViewHolder) holder).bindView(item, getContext(), hostManager, artWidth, artHeight);
+        }
 
-                // Setup View holder pattern
-                RecordingViewHolder viewHolder = new RecordingViewHolder();
-                viewHolder.titleView = (TextView)convertView.findViewById(R.id.title);
-                viewHolder.detailsView = (TextView)convertView.findViewById(R.id.details);
-                viewHolder.artView = (ImageView)convertView.findViewById(R.id.art);
-                viewHolder.durationView = (TextView)convertView.findViewById(R.id.duration);
-                convertView.setTag(viewHolder);
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = LayoutInflater
+                    .from(context)
+                    .inflate(R.layout.grid_item_recording, viewGroup, false);
+
+            return new RecordingViewHolder(view);
+        }
+
+        /**
+         * Manually set the items on the adapter
+         * Calls notifyDataSetChanged()
+         *
+         * @param details list of files/directories
+         */
+        public void setItems(List<PVRType.DetailsRecording> details) {
+            this.items = details;
+
+            notifyDataSetChanged();
+        }
+
+        public List<PVRType.DetailsRecording> getItemList() {
+            if (items == null)
+                return new ArrayList<>();
+            return new ArrayList<>(items);
+        }
+
+        public PVRType.DetailsRecording getItem(int position) {
+            if (items == null) {
+                return null;
+            } else {
+                return items.get(position);
             }
+        }
 
-            final RecordingViewHolder viewHolder = (RecordingViewHolder)convertView.getTag();
-            PVRType.DetailsRecording recordingDetails = this.getItem(position);
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
 
-            viewHolder.recordingId = recordingDetails.recordingid;
-            viewHolder.title = recordingDetails.title;
-
-            Context context = getContext();
-            viewHolder.titleView.setText(UIUtils.applyMarkup(context, recordingDetails.title));
-            viewHolder.detailsView.setText(UIUtils.applyMarkup(context, recordingDetails.channel));
-            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
-                                                 (recordingDetails.art != null) ?
-                                                         recordingDetails.art.poster : recordingDetails.icon,
-                                                 recordingDetails.channel,
-                                                 viewHolder.artView, artWidth, artHeight);
-            int runtime = recordingDetails.runtime / 60;
-            String duration =
-                    recordingDetails.starttime + " | " +
-                    context.getString(R.string.minutes_abbrev, String.valueOf(runtime));
-            viewHolder.durationView.setText(duration);
-
-            return convertView;
+        @Override
+        public int getItemCount() {
+            if (items == null) {
+                return 0;
+            } else {
+                return items.size();
+            }
         }
     }
 
     /**
      * View holder pattern
      */
-    private static class RecordingViewHolder {
+    private static class RecordingViewHolder extends RecyclerView.ViewHolder {
         ImageView artView;
         TextView titleView, detailsView, durationView;
 
         int recordingId;
         String title;
+
+        public RecordingViewHolder(View itemView) {
+            super(itemView);
+
+            titleView = (TextView) itemView.findViewById(R.id.title);
+            detailsView = (TextView) itemView.findViewById(R.id.details);
+            artView = (ImageView) itemView.findViewById(R.id.art);
+            durationView = (TextView) itemView.findViewById(R.id.duration);
+        }
+
+        public void bindView(PVRType.DetailsRecording recordingDetails, Context context, HostManager hostManager, int artWidth, int artHeight) {
+            recordingId = recordingDetails.recordingid;
+            title = recordingDetails.title;
+
+            titleView.setText(UIUtils.applyMarkup(context, recordingDetails.title));
+            detailsView.setText(UIUtils.applyMarkup(context, recordingDetails.channel));
+            UIUtils.loadImageWithCharacterAvatar(context, hostManager,
+                    (recordingDetails.art != null) ?
+                            recordingDetails.art.poster : recordingDetails.icon,
+                    recordingDetails.channel,
+                    artView, artWidth, artHeight);
+            int runtime = recordingDetails.runtime / 60;
+            String duration =
+                    recordingDetails.starttime + " | " +
+                            context.getString(R.string.minutes_abbrev, String.valueOf(runtime));
+            durationView.setText(duration);
+
+            itemView.setTag(this);
+        }
     }
 
 }
