@@ -13,19 +13,14 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
--->
-<resources>
-
+--><resources>
     <string name="app_name">Kore</string>
     <string name="settings">Налаштування</string>
     <string name="action_options">Опції</string>
-
     <string name="loading">Завантаження…</string>
-
     <!-- Navigation drawer tips -->
     <string name="navigation_drawer_open">Відкрити панель навігації</string>
     <string name="navigation_drawer_close">Закрити панель навігації</string>
-
     <string name="xbmc_media_center">Медіа Центр</string>
     <string name="home">Головний екран</string>
     <string name="movies">Фільми</string>
@@ -49,36 +44,28 @@
     <string name="favourites">Обране</string>
     <string name="weather">Погода</string>
     <string name="system">Система</string>
-
     <string name="no_xbmc_configured">Медіа центр не налаштовано</string>
     <string name="add_xbmc">Додати медіа центр</string>
-
     <string name="xbmc_quit">Медіа центр закривається.</string>
     <string name="wol_sent">Запит на пробудження відправлений вашому медіа центру.</string>
-
     <string name="power">Живлення</string>
     <string name="quit">Вийти</string>
     <string name="suspend">Призупинити</string>
     <string name="reboot">Перезавантажити</string>
     <string name="shutdown">Вимкнути</string>
-
     <string name="send">Надіслати</string>
     <string name="send_text">Надіслати текст медіа центру</string>
     <string name="text_to_send">Текст для надсилання</string>
     <string name="finish_after_send">Завершити після надсилання</string>
-
     <string name="library_actions">Обслуговування медіатеки</string>
     <string name="clean_video_library">Очистити бібліотеку відео</string>
     <string name="clean_audio_library">Очистити бібліотеку аудіо</string>
     <string name="update_video_library">Оновити бібліотеку відео</string>
     <string name="update_audio_library">Оновити бібліотеку аудіо</string>
-
     <string name="toggle_fullscreen">Увімкн/вимкн повний екран</string>
-
     <string name="connected_to">Під\'єднано до %1$s</string>
     <string name="connecting">З\'єднання…</string>
     <string name="connecting_to">З\'єднання з %1$s (%2$s)…</string>
-
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Вітаємо</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -96,9 +83,7 @@
     <string name="wizard_search_no_network_connection"><![CDATA[
     Будь ласка, увімкніть мережеве з\'єднання, перш ніж шукати медіа центри.<br/>
     ]]></string>
-    <string name="wizard_search_host_found"><![CDATA[
-    У вашій мережі знайдено медіа центри.<br/><br/>Оберіть один з них або натисніть <i>Далі</i> щоб додати ще один власноруч.
-    ]]></string>
+    <string name="wizard_search_host_found">У вашій мережі знайдено медіа центри.<br/><br/>Оберіть один з них або натисніть <b>Далі</b> щоб додати ще один власноруч.</string>
     <string name="no_network_connection">Немає з\'єднання з мережею</string>
     <string name="searching">Пошук…</string>
     <string name="no_xbmc_found">Медіа центри не знайдені</string>
@@ -117,37 +102,30 @@
     <string name="wizard_xbmc_use_tcp">Викор. TCP</string>
     <string name="wizard_xbmc_event_server_port">ES Порт (9777)</string>
     <string name="wizard_xbmc_use_event_server">Викор. EventServer</string>
-
     <string name="wizard_no_name_specified">Будь ласка, вкажіть назву медіа центру, щоб відрізняти його від інших.</string>
     <string name="wizard_no_address_specified">Будь ласка, вкажіть адресу цього медіа центру.</string>
     <string name="wizard_invalid_http_port_specified">Будь ласка, вкажіть правильний HTTP порт цього медіа центру.</string>
     <string name="wizard_invalid_tcp_port_specified">Будь ласка, вкажіть правильний TCP порт цього медіа центру.</string>
     <string name="wizard_invalid_es_port_specified">Будь ласка, вкажіть правильний EventServer порт цього медіа центру.</string>
-
     <string name="wizard_connecting_to_xbmc_title">З\'єднання з %1$s…</string>
     <string name="wizard_connecting_to_xbmc_message">Будь ласка, дочекайтеся перевірки з\'єднання з медіа центром…</string>
-
     <string name="wizard_empty_authentication">Kodi/XBMC потребує ім\'я користувача і пароль.\nБудь ласка, вкажіть їх.</string>
     <string name="wizard_incorrect_authentication">Невірні ім\'я користувача та/або пароль.\nБудь ласка, перевірте їх.</string>
     <string name="wizard_success_connecting">З\'єднано з Kodi/XBMC.</string>
     <string name="wizard_error_connecting">Не вдається з\'єднатись з Kodi/XBMC.\nБудь ласка, перевірте налаштування.</string>
-
     <string name="wizard_done">Все зроблено!</string>
     <string name="wizard_done_message"><![CDATA[
     Ваш медіа центр налаштовано.<br/>
     Тепер ви можете віддалено ним керувати. Ваша медіатека синхронізується, і незабаром буде доступна.<br/><br/>
     Натисніть <b><i>Закінчити</i></b> щоб почати управління вашим медіа центром.
     ]]></string>
-
     <string name="wizard_zeroconf_no_host_address">Не вдалося визначити адресу цього медіа центру</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Не вдалося з\'єднатися з медіа центром, тому що не вдалося визначити його адресу.</string>
-
     <string name="play">Відтворити</string>
     <string name="pause">Пауза</string>
     <string name="stop">Зупинити</string>
     <string name="fast_forward">Перемотати вперед</string>
     <string name="rewind">Перемотати назад</string>
-
     <string name="repeat">Повторювати</string>
     <string name="shuffle">Випадковий порядок</string>
     <string name="volume_up">Гучніше</string>
@@ -160,7 +138,6 @@
     <string name="none">Вимкнути</string>
     <string name="audio_sync">Синхронізувати аудіо</string>
     <string name="subtitle_sync">Синхронізувати субтитри</string>
-
     <string name="left">Вліво</string>
     <string name="right">Вправо</string>
     <string name="up">Вверх</string>
@@ -171,13 +148,11 @@
     <string name="context">Контекстне меню</string>
     <string name="osd">Меню</string>
     <string name="back">Назад</string>
-
     <string name="previous">Назад</string>
     <string name="next">Далі</string>
     <string name="finish">Закінчити</string>
     <string name="test_connection">Тест</string>
     <string name="search_again">Повторити пошук</string>
-
     <string name="remove">Видалити</string>
     <string name="edit">Редагувати</string>
     <string name="wake_up">Розбудити</string>
@@ -187,31 +162,24 @@
     <string name="queue_file">Додати до черги</string>
     <string name="play_file">Відтворити</string>
     <string name="play_from_here">Відтворити звідси</string>
-
     <string name="connecting_to_xbmc">З\'єднання…</string>
     <string name="unable_to_connect_to_xbmc">Неможливо з\'єднатися з медіа сервером</string>
     <string name="connected_to_xbmc">З\'єднано</string>
     <string name="xbmc_available">Доступний</string>
     <string name="xbmc_unavailable">Недоступний</string>
-
     <string name="nothing_playing">Нічого не відтворюється</string>
-
     <!-- Main view tabs -->
     <string name="now_playing">Зараз відтворюється</string>
     <string name="remote">Управління</string>
     <string name="playlist">Плейліст</string>
-
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Сезон %1$02d | Серія %2$02d</string>
     <string name="season_number">Сезон %1$02d</string>
     <string name="episode_number">%1$d</string>
-
     <string name="votes">%1$s голосів</string>
-
     <string name="fanart">Фанарт</string>
     <string name="poster">Постер</string>
     <string name="thumbnail">Ескіз</string>
-
     <string name="error_getting_properties">Не вдається отримати дані про Kodi/XBMC.\nПомилка:
         %1$s.</string>
     <string name="error_executing_subtitles">Не вдалося запустити надбудову для субтитрів.\nПомилка: %1$s.</string>
@@ -230,7 +198,6 @@
     <string name="error_reading_local_storage">Не вдалося прочитати локальний накопичувач.
 Ви надали Kore дозвіл на доступ до внутрішньої пам\'яті?</string>
     <string name="error_starting_http_server">Не вдається створити або запустити сервер HTTP.</string>
-
     <string name="directors">Режисери:</string>
     <string name="studio">Студія:</string>
     <string name="cast">У ролях</string>
@@ -238,14 +205,12 @@
     <string name="cast_list_text">%1$s як %2$s</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
     <string name="remaining_cast_count">%d ще</string>
-
     <string name="general_error_executing_action">Помилка виконання дії: %1$s</string>
     <string name="error_getting_playlist">Помилка отримання плейлісту</string>
     <string name="error_message">Помилка: %1$s</string>
     <string name="playlist_empty">Плейліст пустий</string>
     <string name="clear_playlist">Очистити плейліст</string>
     <string name="source_empty">Джерело медіа пусте</string>
-
     <string name="no_movies_found_refresh">Фільми не знайдено\n\nПроведіть пальцем вниз для оновлення</string>
     <string name="no_tvshows_found_refresh">Серіали не знайдено\n\nПроведіть пальцем вниз для оновлення</string>
     <string name="no_episodes_found">Серії не знайдено</string>
@@ -262,12 +227,10 @@
     <string name="no_broadcasts_found_refresh">Трансляції не знайдено\n\nПроведіть пальцем вниз для оновлення</string>
     <string name="pull_to_refresh">Потягніть для оновлення</string>
     <string name="no_cast_info">Немає інформації для відображення</string>
-
     <string name="minutes_abbrev">%1$s хв</string>
     <string name="minutes_abbrev2">%1$sm</string>
     <string name="sync_successful">Успішно синхронізовано</string>
     <string name="error_while_syncing">Сталася помилка під час синхронізації: %1$s</string>
-
     <string name="action_search">Пошук</string>
     <string name="action_search_movies">Пошук фільмів</string>
     <string name="action_search_tvshows">Пошук серіалів</string>
@@ -275,48 +238,38 @@
     <string name="action_search_artists">Пошук виконавців</string>
     <string name="action_search_genres">Пошук жанрів</string>
     <string name="action_search_music_videos">Пошук відео</string>
-
     <string name="add_to_playlist">Додати в плейліст</string>
     <string name="item_added_to_playlist">Додано до плейлісту</string>
     <string name="item_sent_to_kodi">Надіслано в Kodi</string>
     <string name="no_suitable_playlist">Не знайдено плейлісту, що підходить для цього типу медіа.</string>
-
     <string name="imdb">IMDb</string>
     <string name="seen">Переглянуто</string>
     <string name="download">Завантажити</string>
-
     <string name="confirm_movie_download">Ви впевнені що хочете завантажити цей фільм?\nФільм буде завантажено в фоні, але це може зайняти деякий час.</string>
     <string name="confirm_episode_download">Ви впевнені що хочете завантажити цю серію?\nСерію буде завантажено в фоні, але це може зайняти деякий час.</string>
     <string name="confirm_album_download">Ви впевнені що хочете завантажити цей альбом?\nАльбом буде завантажено в фоні, але це може зайняти деякий час.</string>
     <string name="confirm_artist_download">Ви впевнені що хочете завантажити всі альбоми?\nАльбоми буде завантажено в фоні, але це може зайняти деякий час.</string>
     <string name="confirm_songs_download">Ви впевнені що хочете завантажити %1$d треків?\nТреки буде завантажено в фоні, але це може зайняти деякий час.</string>
-
     <string name="download_file_exists">Файл вже існує.\nВи хочете перезаписати його чи завантажити з новою назвою?</string>
     <string name="download_dir_exists">Папка завантажень вже існує.\nЯкщо будь-які файли мають однакову назву, ви хочете перезаписати їх чи завантажити з новою назвою?</string>
     <string name="download_files_exists">Один або більше файлів вже існують.\nЯкщо будь-які файли мають однакову назву, ви хочете перезаписати їх чи завантажити з новою назвою?</string>
     <string name="overwrite">Перезаписати</string>
     <string name="download_with_new_name">Нова назва</string>
     <string name="download_file_description">Завантажено з вашого медіа центру</string>
-
     <string name="num_episodes">%1$d серій  |  %2$d не переглянуто</string>
     <string name="premiered">Прем\'єра: %1$s</string>
-
     <string name="tvshow_overview">Огляд</string>
     <string name="tvshow_episodes">Серії</string>
     <string name="tvshow_seasons">Сезони</string>
     <string name="tvshow_next_episode">Наступні серії</string>
-
     <string name="addon_overview">Огляд</string>
     <string name="addon_content">Вміст</string>
-
     <string name="artists">Виконавці</string>
     <string name="albums">Альбоми</string>
     <string name="genres">Жанри</string>
     <string name="music_videos">Відео</string>
-
     <string name="no_files_to_download">Немає файлів для завантаження</string>
     <string name="error_getting_file_information">Не вдалося отримати інформацію для завантаження файлу %1$s.</string>
-
     <string name="author">Автор:</string>
     <string name="version">Версія:</string>
     <string name="enable_disable">Увімкнути/Вимкнути надбудову</string>
@@ -325,7 +278,6 @@
     <string name="pin_unpin">Прикріпити/Відкріпити надбудову</string>
     <string name="addon_pinned">Надбудову закріплено</string>
     <string name="addon_unpinned">Надбудову відкріплено</string>
-
     <!-- Filters on list menus -->
     <string name="hide_watched">Приховати переглянуті</string>
     <string name="hide_disabled">Сховати відключене</string>
@@ -340,17 +292,14 @@
     <string name="ignore_prefixes">Ігнорувати префікси</string>
     <string name="show_watched_status">Показати стан перегляду</string>
     <string name="show_rating">Показати рейтинг</string>
-
     <!-- Preferences strings -->
     <string name="application">Застосунок</string>
-	
     <string name="theme">Тема</string>
     <string name="theme_night">Ніч</string>
     <string name="theme_day">День</string>
     <string name="theme_mist">Туман</string>
     <string name="theme_sunrise">Схід сонця</string>
     <string name="theme_sunset">Захід сонця</string>
-	
     <string name="switch_to_remote">Відображати при початку відтворення</string>
     <string name="keep_remote_above_lockscreen">Відображати на екрані блокування</string>
     <string name="pref_keep_screen_on">Залишати активним</string>
@@ -365,7 +314,6 @@
     <string name="vibrate_on_remote">Вібрувати при натисканні</string>
     <string name="remote_bar_items">Елементи нижньої панелі</string>
     <string name="nav_drawer_items">Елементи бокового меню</string>
-
     <string name="about">Про застосунок</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2019 XBMC Foundation<br><br>
@@ -373,24 +321,20 @@
 
         Якщо вам потрібна допомога, відвідайте <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">форум</a></b>
     ]]></string>
-
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
     <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
     <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
     <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
-
     <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
-
     <string name="play_on_kodi">Відтворити в Kodi</string>
     <string name="queue_on_kodi">До черги в Kodi</string>
     <string name="pause_call_incoming_title">Вхідний дзвінок</string>
     <string name="pause_call_incoming_message">Перевірте ваш телефон, хтось телефонує вам</string>
-
     <string name="error_getting_pvr_info">Сталась помилка під час отримання інформації про pvr: %1$s</string>
     <string name="might_not_have_pvr">Сталась помилка під час отримання інформації про канали, можливо, тому що ваш медіа центр не має тюнера або він не налаштований.\n\nЯкщо це так і ви бажаєте прибрати цей пункт з бокового меню, ви можете зробити це в Налаштуваннях.</string>
     <string name="error_starting_channel">Сталася помилка під час початку відтворення каналу: %1$s</string>
@@ -400,13 +344,11 @@
     <string name="channel_switching">Перейти до каналу %1$s</string>
     <string name="starting_recording">Почати запис %1$s</string>
     <string name="refresh">Оновити</string>
-
     <string name="tv">ТБ</string>
     <string name="radio">Радіо</string>
     <string name="recordings">Запис</string>
     <string name="tv_channels">Телеканали</string>
     <string name="radio_channels">Радіостанції</string>
-
     <string name="record">Запис</string>
     <string name="pvr_epg">Телепрограма</string>
     <string name="unable_to_move_item">Неможливо перемістити елемент</string>
@@ -415,15 +357,12 @@
     <string name="no_connection_type_selected">Не обрано тип з\'єднання в Налаштуваннях</string>
     <string name="single_column">Одна колонка</string>
     <string name="multi_column">Кілька колонок</string>
-
     <string name="download_network_types_title">Обмежити завантаження медіа</string>
     <string name="download_network_types_summary">Оберіть які типи мережі можна використовувати для завантаження.</string>
     <string name="songs">Треки</string>
-
     <string name="read_phone_state_permission_denied">Доступ заборонено. Неможливо зупиняти відтворення під час телефонних дзвінків.</string>
     <string name="write_storage_permission_denied">Доступ заборонено. Неможливо завантажувати файли.</string>
     <string name="read_storage_permission_denied">Доступ заборонено. Не вдається прочитати файли.</string>
-
     <string name="no_songs_to_download">Немає треків для завантаження</string>
     <string name="by_album">За альбомом</string>
     <string name="by_artist">За виконавцем</string>
@@ -434,14 +373,11 @@
     <string name="no_songs_found_refresh">Треків не знайдено\\n\\nПроведіть пальцем вниз для оновлення</string>
     <string name="not_implemented">Не реалізовано</string>
     <string name="zeroprogress">0:00</string>
-
     <string name="toggle_expand">Розгорнути/Згорнути</string>
     <string name="play_locally">Відтворити локально</string>
-
     <string name="disable_local_playback_support">Вимкнути підтримку локального відтворення</string>
     <string name="disable_local_playback_support_summary">Відключає відтворення мультимедіа на пристрої під час роботи Kore.</string>
     <string name="language">Мова</string>
-
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Мобільна мережа</string>
     <string name="any_network">Будь-яке</string>
