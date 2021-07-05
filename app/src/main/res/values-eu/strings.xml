@@ -393,6 +393,7 @@
     <string name="pause_during_calls">Pausatu telefono deietan</string>
     <string name="use_hardware_volume_keys">Erabili bolumen teklak bolumena kontrolatzeko</string>
     <string name="vibrate_on_remote">Bibratu ukitzean</string>
+    <string name="always_sendtokodi_addon">Beti lehenetsi SendToKodi gehigarria</string>
     <string name="remote_bar_items">Beheko barrako lasterbideak</string>
     <string name="nav_drawer_items">Alboko menuko lasterbideak</string>
 
