@@ -14,17 +14,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 --><resources>
-
     <string name="app_name">Kore</string>
     <string name="settings">Nastavení</string>
     <string name="action_options">Možnosti</string>
-
     <string name="loading">Načítá se…</string>
-
     <!-- Navigation drawer tips -->
     <string name="navigation_drawer_open">Otevřít navigační menu</string>
     <string name="navigation_drawer_close">Zavřít navigační menu</string>
-
     <string name="xbmc_media_center">Multimediální centrum</string>
     <string name="home">Domů</string>
     <string name="movies">Filmy</string>
@@ -36,44 +32,34 @@
     <string name="video">Video</string>
     <string name="videos">Videa</string>
     <string name="media">Media</string>
-    <string name="window">Window</string>
     <string name="script">Script</string>
-    <string name="unknown">Unknown</string>
     <string name="file_browser">Průzkumník souborů</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Oblíbené</string>
     <string name="weather">Počasí</string>
     <string name="system">Systém</string>
-
     <string name="no_xbmc_configured">Žádné multimediální centrum nenakonfigurováno</string>
     <string name="add_xbmc">Přidat multimediální centrum</string>
-
     <string name="xbmc_quit">Multimediální centrum se ukončuje.</string>
     <string name="wol_sent">Byl odeslán signál k probuzení multimediálního centra.</string>
-
     <string name="power">Napájení</string>
     <string name="quit">Ukončit</string>
     <string name="suspend">Hibernovat</string>
     <string name="reboot">Restartovat</string>
     <string name="shutdown">Vypnout</string>
-
     <string name="send">Odeslat</string>
     <string name="send_text">Odeslat text do multimediálního centra</string>
     <string name="text_to_send">Text k odeslání</string>
     <string name="finish_after_send">Ukončit po odeslání</string>
-
     <string name="library_actions">Správa knihovny</string>
     <string name="clean_video_library">Vyčistit knihovnu videa</string>
     <string name="clean_audio_library">Vyčistit knihovnu audia</string>
     <string name="update_video_library">Obnovit video knihovnu</string>
     <string name="update_audio_library">Obnovit audio knihovnu</string>
-
     <string name="toggle_fullscreen">Režim celé obrazovky</string>
-
     <string name="connected_to">Připojeno k %1$s</string>
     <string name="connecting">Připojuje se…</string>
     <string name="connecting_to">Připojuje se k %1$s (%2$s)…</string>
-
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Vítejte</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -111,38 +97,29 @@
     <string name="wizard_xbmc_wol_port">WoL port (9)</string>
     <string name="wizard_xbmc_use_tcp">Použít TCP</string>
     <string name="wizard_xbmc_event_server_port">ES port (9777)</string>
-    <string name="wizard_xbmc_use_event_server">Use EventServer</string>
-
     <string name="wizard_no_name_specified">Prosím pojmenujte toto multimediální centrum pro snadnou identifikaci v budoucnu.</string>
     <string name="wizard_no_address_specified">Prosím zadejte adresu multimediálního centra.</string>
     <string name="wizard_invalid_http_port_specified">Prosím zadejte platný HTTP port pro toto multimediální centrum.</string>
     <string name="wizard_invalid_tcp_port_specified">Prosím zadejte platný TCP port pro toto multimediální centrum.</string>
-    <string name="wizard_invalid_es_port_specified">Please specify a valid EventServer port for this media center.</string>
-
     <string name="wizard_connecting_to_xbmc_title">Připojuje se k %1$s…</string>
     <string name="wizard_connecting_to_xbmc_message">Prosím vyčkejte na připojení k vašemu multimediálnímu centru…</string>
-
     <string name="wizard_empty_authentication">Kodi/XBMC vyžaduje přihlášení.\nProsím zadejte uživatelské jméno a heslo.</string>
     <string name="wizard_incorrect_authentication">Neplatné uživatelské jméno nebo heslo.\nOvěřte údaje.</string>
     <string name="wizard_success_connecting">Připojeno ke Kodi/XBMC.</string>
     <string name="wizard_error_connecting">Nelze se připojit ke Kodi/XBMC.\nProsím ověřte konfiguraci.</string>
-
     <string name="wizard_done">Vše hotovo!</string>
     <string name="wizard_done_message"><![CDATA[
     Vaše multimediální centrum je nakonfigurováno.<br/>
     Nyní jej můžete ovládat. Vaše knihovna se synchronizuje a měla by být dostupná za pár okamžiků.<br/><br/>
     Stiskněte <b><i>Dokončit</i></b> a začněte používat toto dálkové ovládání.
     ]]></string>
-
     <string name="wizard_zeroconf_no_host_address">Nelze získat adresu tohoto multimediálního centra!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Nelze se připojit k tomuto multimediálnímu centru, protože nebylo možné zjistit jeho adresu.</string>
-
     <string name="play">Přehrát</string>
     <string name="pause">Pauza</string>
     <string name="stop">Stop</string>
     <string name="fast_forward">Přetočit vpřed</string>
     <string name="rewind">Přetočit vzad</string>
-
     <string name="repeat">Opakovat</string>
     <string name="shuffle">Náhodně</string>
     <string name="volume_up">Zesílit</string>
@@ -155,7 +132,6 @@
     <string name="none">Žádné</string>
     <string name="audio_sync">Synchronizace audia</string>
     <string name="subtitle_sync">Synchronizace titulků</string>
-
     <string name="left">Doleva</string>
     <string name="right">Doprava</string>
     <string name="up">Nahoru</string>
@@ -166,13 +142,11 @@
     <string name="context">Kontext</string>
     <string name="osd">Menu</string>
     <string name="back">Zpět</string>
-
     <string name="previous">Předchozí</string>
     <string name="next">Dále</string>
     <string name="finish">Dokončit</string>
     <string name="test_connection">Test</string>
     <string name="search_again">Hledat znovu</string>
-
     <string name="remove">Odebrat</string>
     <string name="edit">Upravit</string>
     <string name="wake_up">Probudit</string>
@@ -182,31 +156,24 @@
     <string name="queue_file">Fronta</string>
     <string name="play_file">Přehrát</string>
     <string name="play_from_here">Přehrát odtud</string>
-
     <string name="connecting_to_xbmc">Připojuje se…</string>
     <string name="unable_to_connect_to_xbmc">Připojení neúspěšné</string>
     <string name="connected_to_xbmc">Připojeno</string>
     <string name="xbmc_available">Dostupný</string>
     <string name="xbmc_unavailable">Nedostupný</string>
-
     <string name="nothing_playing">Nic se nepřehrává</string>
-
     <!-- Main view tabs -->
     <string name="now_playing">Nyní hraje</string>
     <string name="remote">Ovládání</string>
     <string name="playlist">Seznam</string>
-
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Série %1$02d | Epizoda %2$02d</string>
     <string name="season_number">Série %1$02d</string>
     <string name="episode_number">%1$d</string>
-
     <string name="votes">%1$s hlasů</string>
-
     <string name="fanart">Fanart</string>
     <string name="poster">Plakát</string>
     <string name="thumbnail">Miniatura</string>
-
     <string name="error_getting_properties">Nelze načíst nastavení Kodi/XBMC.\nChyba:
         %1$s.</string>
     <string name="error_executing_subtitles">Nelze spustit doplněk titulků.\nChyba: %1$s.</string>
@@ -221,7 +188,6 @@
     <string name="error_get_active_player">Nelze aktivovat přehrávač.\nChyba:
         %1$s.</string>
     <string name="error_share_video">Couldn\'t share video to Kodi/XBMC.</string>
-
     <string name="directors">Režie:</string>
     <string name="studio">Studio:</string>
     <string name="cast">Obsazení</string>
@@ -229,14 +195,12 @@
     <string name="cast_list_text">%1$s as %2$s</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
     <string name="remaining_cast_count">ještě %d</string>
-
     <string name="general_error_executing_action">Chyba provedení akce: %1$s</string>
     <string name="error_getting_playlist">Chyba načtení playlistu</string>
     <string name="error_message">Chyba: %1$s</string>
     <string name="playlist_empty">Seznam prázdný</string>
     <string name="clear_playlist">Vyčistit seznam</string>
     <string name="source_empty">Zdroj médií prázdný</string>
-
     <string name="no_movies_found_refresh">Žádné filmy nenalezeny\n\nObnovit tahem dolů</string>
     <string name="no_tvshows_found_refresh">Žádné seriály nenalezeny\n\nObnovit tahem dolů</string>
     <string name="no_episodes_found">Žádné epizody nenalezeny</string>
@@ -252,13 +216,10 @@
     <string name="no_recordings_found_refresh">No recordings found.\n\nSwipe down to refresh</string>
     <string name="no_broadcasts_found_refresh">No broadcasts found.\n\nSwipe down to refresh</string>
     <string name="pull_to_refresh">Obnovit tahem</string>
-    <string name="no_cast_info">No cast info to display</string>
-
     <string name="minutes_abbrev">%1$s min</string>
     <string name="minutes_abbrev2">%1$sm</string>
     <string name="sync_successful">Synchronizace úspěšná</string>
     <string name="error_while_syncing">Chyba synchronizace: %1$s</string>
-
     <string name="action_search">Hledat</string>
     <string name="action_search_movies">Hledat filmy</string>
     <string name="action_search_tvshows">Hledat seriály</string>
@@ -266,56 +227,42 @@
     <string name="action_search_artists">Hledat umělce</string>
     <string name="action_search_genres">Hledat žánry</string>
     <string name="action_search_music_videos">Hledat videa</string>
-
     <string name="add_to_playlist">Přidat do seznamu</string>
     <string name="item_added_to_playlist">Přidáno do seznamu</string>
     <string name="no_suitable_playlist">Pro tento typ médií nebyl nalezen žádný seznam.</string>
-
     <string name="imdb">IMDb</string>
     <string name="seen">Shlédnuto</string>
     <string name="download">Stáhnout</string>
-
     <string name="confirm_movie_download">Přejete si stáhnout tento film?\nFilm bude stahován na pozadí, chvíli to potrvá.</string>
     <string name="confirm_episode_download">Přejete si stáhnout tuto epizodu?\nEpizoda bude stahována na pozadí, chvíli to potrvá.</string>
     <string name="confirm_album_download">Přejete si stáhnout toto album?\nAlbum bude stahováno na pozadí, chvíli to potrvá.</string>
     <string name="confirm_artist_download">Přejete si stáhnout všechna alba?\nAlba budou stahována na pozadí, chvíli to potrvá.</string>
     <string name="confirm_songs_download">Přejete si stáhnout %1$d skladeb?\nSkladby se budou stahovat na pozadí, chvíli to potrvá.</string>
-
     <string name="download_file_exists">Soubor již existuje.\nPřejete si jej přepsat nebo stáhnout s jiným názvem?</string>
     <string name="download_dir_exists">Složka pro stažení již existuje.\nPřejete si případné soubory se stejným názvem přepsat nebo stáhnout pod jiným názvem?</string>
     <string name="download_files_exists">Jeden nebo více souborů již existuje.\nPřejete si případné soubory se stejným názvem přepsat nebo stáhnout pod jiným názvem?</string>
     <string name="overwrite">Přepsat</string>
     <string name="download_with_new_name">Nové jméno</string>
     <string name="download_file_description">Staženo z vašeho multimediálního centra</string>
-
     <string name="num_episodes">%1$d epizod  |  %2$d neshlédnuto</string>
     <string name="premiered">Premiéra: %1$s</string>
-
     <string name="tvshow_overview">Přehled</string>
     <string name="tvshow_episodes">Epizody</string>
     <string name="tvshow_seasons">Série</string>
     <string name="tvshow_next_episode">Další epizody</string>
-
     <string name="addon_overview">Přehled</string>
     <string name="addon_content">Obsah</string>
-
     <string name="artists">Umělci</string>
     <string name="albums">Alba</string>
     <string name="genres">Žánry</string>
     <string name="music_videos">Videa</string>
-
     <string name="no_files_to_download">Žádné soubory ke stažení.</string>
     <string name="error_getting_file_information">Nelze získat informace pro stažení souboru %1$s.</string>
-
     <string name="author">Autor:</string>
     <string name="version">Verze:</string>
     <string name="enable_disable">Povolit/Zakázat doplněk</string>
     <string name="addon_enabled">Doplněk povolen</string>
     <string name="addon_disabled">Doplněk zakázán</string>
-    <string name="pin_unpin">Pin/Unpin Addon</string>
-    <string name="addon_pinned">Addon pinned</string>
-    <string name="addon_unpinned">Addon unpinned</string>
-
     <!-- Filters on list menus -->
     <string name="hide_watched">Skrýt shlédnuté</string>
     <string name="hide_disabled">Skrýt zakázané</string>
@@ -325,34 +272,23 @@
     <string name="sort_by_rating">Podle hodnocení</string>
     <string name="sort_by_length">Podle délky</string>
     <string name="sort_by_date_added">Podle data přidání</string>
-    <string name="sort_by_last_played">By last played</string>
     <string name="ignore_prefixes">Ignorovat prefixy</string>
     <string name="show_watched_status">Zobrazit stav přehrání</string>
     <string name="show_rating">Zobrazit hodnocení</string>
-
     <!-- Preferences strings -->
     <string name="application">Aplikace</string>
-	
     <string name="theme">Motiv</string>
     <string name="theme_night">Noc</string>
     <string name="theme_day">Den</string>
     <string name="theme_mist">Mlha</string>
-
-    <string name="switch_to_remote">Show on media start</string>
-    <string name="keep_remote_above_lockscreen">Show over lockscreen</string>
     <string name="pref_keep_screen_on">Zůstat vzhůru</string>
     <string name="show_notification">Zobrazit oznámení během přehrávání</string>
     <string name="show_now_playing_panel">Zobrazit panel probíhajícího přehrávání během přehrávání</string>
     <string name="show_now_playing_panel_summary">Zobrazí přídavný panel na spodním okraji obrazovky během přehrávání médií</string>
-    <string name="notification_seek_jump">Use steps for seeking</string>
-    <string name="notification_seek_jump_speed">Change playback speed when seeking from notification</string>
-    <string name="notification_seek_jump_step">Use skip steps when seeking from notification</string>
     <string name="pause_during_calls">Pozastavit během telefonního hovoru</string>
     <string name="use_hardware_volume_keys">Použít tlačítka hlasitosti</string>
-    <string name="vibrate_on_remote">Vibrate on touch</string>
     <string name="remote_bar_items">Zástupci na spodní liště</string>
     <string name="nav_drawer_items">Zástupci v boční nabídce</string>
-
     <string name="about">O programu</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2018 XBMC Foundation<br><br>
@@ -360,69 +296,34 @@
 
         Pokud potřebujete pomoc, navštivte <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
     ]]></string>
-
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
     <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
     <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
     <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
-
     <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
-
     <string name="play_on_kodi">Přehrát v Kodi</string>
     <string name="pause_call_incoming_title">Příchozí hovor</string>
     <string name="pause_call_incoming_message">Zkontrolujte si telefon, někdo vám volá</string>
-
-    <string name="error_getting_pvr_info">An error occurred while getting pvr info: %1$s</string>
     <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\nIf that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
-    <string name="error_starting_channel">An error occurred starting channel playback: %1$s</string>
-    <string name="error_favourites">An error occurred while getting the favourites with description: %1$s</string>
-    <string name="error_starting_recording">An error occurred starting a recording: %1$s</string>
-    <string name="error_starting_to_record">An error occurred while recording: %1$s</string>
-    <string name="channel_switching">Switching to channel %1$s</string>
-    <string name="starting_recording">Starting recording %1$s</string>
     <string name="refresh">Obnovit</string>
-
     <string name="tv">TV</string>
     <string name="radio">Radio</string>
-    <string name="recordings">Recordings</string>
-    <string name="tv_channels">TV Channels</string>
-    <string name="radio_channels">Radio Channels</string>
-
-    <string name="record">Record</string>
-    <string name="pvr_epg">Guide</string>
-    <string name="unable_to_move_item">Unable to move item</string>
-    <string name="unable_to_play_favourite_item">Unable to play favourite item. Unsupported Type</string>
-    <string name="cannot_move_playing_item">Cannot move currently playing/paused item</string>
-    <string name="no_connection_type_selected">No connection type selected in settings</string>
     <string name="single_column">Jeden sloupec</string>
     <string name="multi_column">Více sloupců</string>
-
     <string name="download_network_types_title">Omezit stahování médií</string>
     <string name="download_network_types_summary">Zvolit typy sítí, přes které bude povoleno stahovat média</string>
     <string name="songs">Skladby</string>
-
-    <string name="read_phone_state_permission_denied">Permission denied. Won\'t be able to pause playback during calls.</string>
-    <string name="write_storage_permission_denied">Permission denied. Won\'t be able to download files.</string>
-
-    <string name="no_songs_to_download">No songs to download</string>
     <string name="by_album">Podle alba</string>
     <string name="by_artist">Podle umělce</string>
     <string name="by_artist_and_year">Podle umělce a roku</string>
-    <string name="muted">muted</string>
-    <string name="no_item_available_to_play">Error: no item available to play.</string>
-    <string name="Refreshing_not_implemented_for_this_item">Refreshing not implemented for this item</string>
     <string name="no_songs_found_refresh">Žádné skladby nenalezeny\n\nObnovit tahem dolů</string>
-    <string name="not_implemented">Not implemented</string>
     <string name="zeroprogress">0:00</string>
-
-    <string name="toggle_expand">Expand/Collapse</string>
     <string name="play_locally">Přehát místně</string>
-
     <string name="disable_local_playback_support">Zakázat podporu pro místní přehrávání</string>
     <string name="disable_local_playback_support_summary">Zakázat podporu pro přehrávání médií na zařízení, kde běží Kore.</string>
 </resources>

@@ -19,11 +19,11 @@
     <string name="addon_overview">Áttekintés</string>
     <string name="search_again">Keresés újra</string>
     <string name="next">Következő</string>
-    <string name="loading">Betöltés...</string>
+    <string name="loading">Betöltés…</string>
     <string name="minutes_abbrev">%1$s perc</string>
     <string name="movies">Filmek</string>
     <string name="left">Bal</string>
-    <string name="wizard_success_connecting">Kapcsolódva Kodihoz/XMBC-hez.</string>
+    <string name="wizard_success_connecting">Kapcsolódva Kodihoz.</string>
     <string name="wizard_welcome">Üdv</string>
     <string name="wizard_xbmc_ip">Cím</string>
     <string name="wizard_xbmc_mac_address">MAC-cím</string>
@@ -85,7 +85,7 @@
     <string name="select">Kiválasztás</string>
     <string name="seen">Láttad</string>
     <string name="season_number">%1$02d évad</string>
-    <string name="searching">Keresés...</string>
+    <string name="searching">Keresés…</string>
     <string name="wizard_welcome_message"><![CDATA[     Először is adj hozzá egy média központot. Fontos, hogy a Kodi/XBMC fusson, megfelelően legyen beállítva és az eszközöddel azonos hálózaton legyen.<br/><br/>     A beállításhoz segítséget találsz <a href="http://syncedsynapse.com/kore/kore-faq/">itt</a>.<br/><br/>     Ha készen állsz, nyomj a  <b><i>Következő</i></b>-re.     ]]></string>
     <string name="wizard_xbmc_event_server_port">ES port (9777)</string>
     <string name="wizard_search_message"><![CDATA[     Médiaközpontok keresése a helyi hálózaton…<br/>     ]]></string>
@@ -97,7 +97,7 @@
     <string name="wizard_manual_configuration_message_advanced">Haladó beállítások (hagyd üresen az alapértelmezetthez)</string>
     <string name="wizard_done_message"><![CDATA[     A médiaközpontod beállítva.<br/>     Most már használhatod az alkalmazást az irányításához. A könyvtárad szinkronizálódik, néhány pillanat múlva elérhető lesz.<br/><br/>     Nyomj a <b><i>Befejezés</i></b>-re a távirányító használatához.     ]]></string>
     <string name="wizard_connecting_to_xbmc_title">Kapcsolódás ehhez: %1$s…</string>
-    <string name="wizard_connecting_to_xbmc_message">Kérlek várj, amíg megpróbálok kapcsolódni a médiaközponthoz...</string>
+    <string name="wizard_connecting_to_xbmc_message">Kérlek várj, amíg megpróbálok kapcsolódni a médiaközponthoz…</string>
     <string name="addon_disabled">Kiegészítő kikapcsolva</string>
     <string name="addon_enabled">Kiegészítő bekapcsolva</string>
     <string name="addons">Kiegészítők</string>
@@ -118,9 +118,9 @@
     <string name="codec_info">Kodek</string>
     <string name="connected_to">Kapcsolódva: %1$s</string>
     <string name="connected_to_xbmc">Kapcsolódva</string>
-    <string name="connecting">Kapcsolódás...</string>
-    <string name="connecting_to_xbmc">Kapcsolódás...</string>
-    <string name="connecting_to">Kapcsolódás ehhez: %1$s (%2$s)...</string>
+    <string name="connecting">Kapcsolódás…</string>
+    <string name="connecting_to_xbmc">Kapcsolódás…</string>
+    <string name="connecting_to">Kapcsolódás ehhez: %1$s (%2$s)…</string>
     <string name="context">Kontextus</string>
     <string name="delete_xbmc">Médiaközpont törlése</string>
     <string name="delete_xbmc_confirm">Biztosan törölni akarod ezt a médiaközpontot?</string>
@@ -244,8 +244,8 @@
     <string name="wizard_invalid_tcp_port_specified">Kérlek adj meg egy érvényes TCP portot a médiaközponthoz.</string>
     <string name="wizard_invalid_http_port_specified">Kérlek adj meg egy érvényes HTTP portot a médiaközponthoz.</string>
     <string name="wizard_invalid_es_port_specified">Kérlek adj meg egy érvényes EventServer portot a médiaközponthoz.</string>
-    <string name="wizard_incorrect_authentication">Hibás felhasználói név és/vagy jelszó.\Ellenőrizd a hitelesítő adatokat.</string>
-    <string name="wizard_error_connecting">Nem tudok csatlakozni a Kodihoz/XBMC-hez.\Kérlek ellenőrizd a beállításokat.</string>
+    <string name="wizard_incorrect_authentication">Hibás felhasználói név és/vagy jelszó. Ellenőrizd a hitelesítő adatokat.</string>
+    <string name="wizard_error_connecting">Nem tudok csatlakozni a Kodihoz kérlek ellenőrizd a beállításokat.</string>
     <string name="wizard_empty_authentication">A Kodi/XBMC-hez hitelesítés szükséges.\nKérlek adj meg egy felhasználói nevet és jelszót.</string>
     <string name="no_xbmc_configured">Nincs médiaközpont beállítva</string>
     <string name="no_tvshows_found_refresh">Nem található TV-műsor\n\nHúzd le a frissítéshez</string>
@@ -266,4 +266,16 @@
     <string name="no_artists_found_refresh">Nem található előadó\n\nHúzd le a frissítéshez</string>
     <string name="no_albums_found_refresh">Nem található album\n\nHúzd le a frissítéshez</string>
     <string name="no_addons_found_refresh">Nem található kiegészítő vagy nincs kapcsolat\n\nHúzd le a frissítéshez</string>
+    <string name="system">Rendszer</string>
+    <string name="weather">Időjárás</string>
+    <string name="favourites">Kedvencek</string>
+    <string name="local_file_browser">Helyi fájl böngésző</string>
+    <string name="unknown">Ismeretlen</string>
+    <string name="script">Script</string>
+    <string name="window">Ablak</string>
+    <string name="media">Média</string>
+    <string name="videos">Videók</string>
+    <string name="local_files">Helyi fájlok</string>
+    <string name="external_storage">Tároló</string>
+    <string name="dcim">DCIM</string>
 </resources>
