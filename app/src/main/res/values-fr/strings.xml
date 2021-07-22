@@ -377,4 +377,5 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobile</string>
     <string name="any_network">Tous</string>
+    <string name="always_sendtokodi_addon">Toujours préférer l\'extension \\\"SendToKodi\\\"</string>
 </resources>
