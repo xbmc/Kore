@@ -318,6 +318,7 @@
     <string name="pause_during_calls">Mettre en pause lors des appels téléphoniques</string>
     <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
     <string name="vibrate_on_remote">Vibrer à l\'appui</string>
+    <string name="always_sendtokodi_addon">Toujours préférer l\'extension \"SendToKodi\"</string>
     <string name="remote_bar_items">Raccourcis de la barre inférieure</string>
     <string name="nav_drawer_items">Raccourcis du volet de navigation</string>
     <string name="about">À propos</string>
