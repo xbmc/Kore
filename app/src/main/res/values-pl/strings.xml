@@ -382,4 +382,5 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobilna</string>
     <string name="any_network">Dowolna</string>
+    <string name="always_sendtokodi_addon">Zawsze preferuj dodatek SendToKodi</string>
 </resources>
