@@ -247,7 +247,9 @@
     Потяните вниз, чтобы обновить</string>
     <string name="no_channels_found_refresh">Каналов нет\n\n
     Потяните вниз, чтобы обновить</string>
-    <string name="no_favourites_found_refresh">Избранных нет</string>
+    <string name="no_favourites_found_refresh">Избранных нет
+\n
+\n Проведите вниз для обновления</string>
     <string name="no_recordings_found_refresh">Записей нет\n\n
     Потяните вниз, чтобы обновить</string>
     <string name="no_broadcasts_found_refresh">Передач нет\n\n
@@ -371,8 +373,9 @@
     <string name="pause_call_incoming_title">Входящий звонок</string>
     <string name="pause_call_incoming_message">Проверьте ваш телефон, вам звонят</string>
     <string name="error_getting_pvr_info">При получения информации о записи произошла ошибка: %1$s</string>
-    <string name="might_not_have_pvr">Во время получения информации о каналах произошла ошибка. Возможно, у вашего медиацентра нет тюнера, или он не настроен.\n
-    Если это так, этот пункт можно убрать из бокового меню. Это можно сделать в настройках.</string>
+    <string name="might_not_have_pvr">Во время получения информации о каналах произошла ошибка. Возможно, у вашего медиацентра нет тюнера, или он не настроен.
+\n
+\n Если это так, этот пункт можно убрать из бокового меню. Это можно сделать в настройках.</string>
     <string name="error_starting_channel">При включении канала произошла ошибка: %1$s</string>
     <string name="error_favourites">При получении избранных произошла ошибка: %1$s</string>
     <string name="error_starting_recording">При начале записи произошла ошибка: %1$s</string>
