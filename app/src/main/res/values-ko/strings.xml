@@ -269,10 +269,10 @@
     <string name="error_getting_file_information">%1$s 파일을 내려받을 정보가 없습니다.</string>
     <string name="author">저자:</string>
     <string name="version">버전:</string>
-    <string name="enable_disable">애드온 사용/사용 안 함</string>
+    <string name="enable_disable">애드온 사용함/안 함</string>
     <string name="addon_enabled">애드온 사용함</string>
     <string name="addon_disabled">애드온 사용 안 함</string>
-    <string name="pin_unpin">애드온 고정/고정 안 함</string>
+    <string name="pin_unpin">애드온 고정함/안 함</string>
     <string name="addon_pinned">애드온 고정</string>
     <string name="addon_unpinned">애드온 고정 안 함</string>
     <!-- Filters on list menus -->

@@ -68,11 +68,7 @@
     <string name="connecting_to">З\'єднання з %1$s (%2$s)…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Вітаємо</string>
-    <string name="wizard_welcome_message"><![CDATA[
-Почніть з додавання медіа центру. Переконайтесь, що Kodi/XBMC працює, правильно налаштовано та в одній мережі з вашим пристроєм.<br/><br/>
- Докладніше про налаштування ви можете прочитати <a href="http://syncedsynapse.com/kore/kore-faq/">тут</a>.<br/><br/>
-Коли будете готові, натисніть <b><i>Далі</i></b>.
-]]></string>
+    <string name="wizard_welcome_message">Почніть з додавання медіа центру. Переконайтесь, що Kodi працює, правильно налаштовано та в одній мережі з вашим пристроєм.&lt;br/&gt;&lt;br/&gt; Докладніше про налаштування ви можете прочитати &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;тут&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Коли будете готові, натисніть &lt;b&gt;Далі&lt;/b&gt;.</string>
     <string name="wizard_search_message"><![CDATA[
     Пошук медіа центрів в локальній мережі…<br/>
     ]]></string>
