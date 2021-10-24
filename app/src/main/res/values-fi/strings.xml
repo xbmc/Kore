@@ -410,4 +410,5 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobiili</string>
     <string name="any_network">Mikä tahansa</string>
+    <string name="always_sendtokodi_addon">Käytä aina SendToKodi -lisäosaa</string>
 </resources>

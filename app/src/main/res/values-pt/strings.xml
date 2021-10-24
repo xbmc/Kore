@@ -13,18 +13,13 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
--->
-<resources>
-
+--><resources>
     <string name="settings">Opções</string>
     <string name="action_options">Opções</string>
-
-    <string name="loading">A carregar&#8230;</string>
-
+    <string name="loading">A carregar…</string>
     <!-- Navigation drawer tips -->
     <string name="navigation_drawer_open">Abrir painel de navegação</string>
     <string name="navigation_drawer_close">Fechar painel de navegação</string>
-
     <string name="xbmc_media_center">Centro Multimédia</string>
     <string name="home">Início</string>
     <string name="movies">Filmes</string>
@@ -48,36 +43,28 @@
     <string name="favourites">Favoritos</string>
     <string name="weather">Meteorologia</string>
     <string name="system">Sistema</string>
-
     <string name="no_xbmc_configured">Nenhum centro multimédia configurado</string>
     <string name="add_xbmc">Adicionar centro multimédia</string>
-
     <string name="xbmc_quit">Centro multimédia a encerrar.</string>
     <string name="wol_sent">Pedido enviado.</string>
-
     <string name="power">Energia</string>
     <string name="quit">Sair</string>
     <string name="suspend">Suspender</string>
     <string name="reboot">Reiniciar</string>
     <string name="shutdown">Desligar</string>
-
     <string name="send">Enviar</string>
     <string name="send_text">Enviar texto</string>
     <string name="text_to_send">Texto a enviar</string>
     <string name="finish_after_send">Terminar após envio</string>
-
     <string name="library_actions">Manutenção de biblioteca</string>
     <string name="clean_video_library">Limpar biblioteca de vídeo</string>
     <string name="clean_audio_library">Limpar biblioteca de música</string>
     <string name="update_video_library">Actualizar biblioteca de vídeo</string>
     <string name="update_audio_library">Actualizar biblioteca de música</string>
-
     <string name="toggle_fullscreen">Mudar modo de ecrã</string>
-
     <string name="connected_to">Conectado a %1$s</string>
-    <string name="connecting">A conectar&#8230;</string>
-    <string name="connecting_to">Conectando a %1$s (%2$s)&#8230;</string>
-
+    <string name="connecting">A conectar…</string>
+    <string name="connecting_to">Conectando a %1$s (%2$s)…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bem-vindo</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -88,10 +75,10 @@
     <string name="wizard_search_message"><![CDATA[Procurando centros multimédia na rede…<br/>]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[Não consegui encontrar nenhum centro multimédia na rede.<br/>Se necessitar de ajuda para as configurações, visite a <a href="http://syncedsynapse.com/kore/kore-faq/">FAQ</a><br/><br/>
 Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuração manual.]]></string>
-    <string name="wizard_search_no_network_connection"><![CDATA[Por favor active uma conexão de rede antes de procurar centros multimédia.]]></string>
-    <string name="wizard_search_host_found"><![CDATA[Encontrei os seguintes centros de multimédia na sua rede.<br/><br/>Seleccione um para adicionar ou pressione <i>Seguinte</i> para adicionar um novo manualmente.]]></string>
+    <string name="wizard_search_no_network_connection">Por favor ative uma conexão de rede antes de pesquisar por centros multimídia.<br/></string>
+    <string name="wizard_search_host_found">Encontrei estes centros multimédia na sua rede.<br/><br/> Seleccione um para adicionar ou pressione <b>Seguinte</b> para adicionar um novo manualmente.</string>
     <string name="no_network_connection">Nenhuma conexão de rede activa</string>
-    <string name="searching">A procurar&#8230;</string>
+    <string name="searching">A procurar…</string>
     <string name="no_xbmc_found">Nenhum centro multimédia encontrado</string>
     <string name="xbmc_found">Centro multimédia encontrado</string>
     <string name="wizard_manual_configuration">Configuração manual</string>
@@ -109,34 +96,26 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="wizard_xbmc_event_server_port">Porto ES (9777)</string>
     <string name="wizard_xbmc_use_event_server">Usar EventServer</string>
     <string name="wizard_xbmc_direct_share">Mostrar no écran de partilha</string>
-
     <string name="wizard_no_name_specified">Por favor indique um nome para este centro multimédia, para que o possa indentificar mais tarde.</string>
     <string name="wizard_no_address_specified">Por favor indique o endereço deste centro multimédia.</string>
     <string name="wizard_invalid_http_port_specified">Por favor indique um porto HTTP válido.</string>
     <string name="wizard_invalid_tcp_port_specified">Por favor indique um porto TCP válido.</string>
     <string name="wizard_invalid_es_port_specified">Por favor especifique um porto válido para o EventServer.</string>
-
-    <string name="wizard_connecting_to_xbmc_title">Conectando a %1$s&#8230;</string>
-    <string name="wizard_connecting_to_xbmc_message">Por favor espere enquanto testo a ligação ao seu centro multimédia&#8230;</string>
-
+    <string name="wizard_connecting_to_xbmc_title">Conectando a %1$s…</string>
+    <string name="wizard_connecting_to_xbmc_message">Por favor espere enquanto testo a ligação ao seu centro multimédia…</string>
     <string name="wizard_empty_authentication">O seu Kodi/XBMC requer autenticação. \nPor favor especifique um utilizador e palavra passe.</string>
     <string name="wizard_incorrect_authentication">Utilizador e/ou senha  errada. \nPor favor verifique as suas credenciais.</string>
     <string name="wizard_success_connecting">Ligado a Kodi/XBMC.</string>
     <string name="wizard_error_connecting">Não consegui conectar a Kodi/XBMC.\nPor favor verifique a configuração.</string>
-
     <string name="wizard_done">Pronto!</string>
-    <string name="wizard_done_message"><![CDATA[O centro multimédia está configurado.<br/>Pode usar o controlo remote para o contolar. A sua biblioteca está a ser sincronizada e deve estar disponível dentro de momentos.<br/><br/>
-Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
-
-    <string name="wizard_zeroconf_no_host_address">Não foi possível descobrir o endereço deste centro multimédia.</string>
+    <string name="wizard_done_message">O seu centro multimédia está configurado.<br/> Agora pode usar o controlo remoto para o controlar. A sua biblioteca está a ser sincronizada, e deverá estar disponível dentro de momentos.<br/><br/> Pressione <b>Concluir</b> para usar o controlo remoto.</string>
+    <string name="wizard_zeroconf_no_host_address">Não foi possível descobrir o endereço deste centro multimédia!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Não foi possível descobrir o endereço deste centro multimédia.</string>
-
     <string name="play">Reproduzir</string>
     <string name="pause">Pausa</string>
     <string name="stop">Parar</string>
     <string name="fast_forward">Avançar</string>
     <string name="rewind">Rebobinar</string>
-
     <string name="repeat">Repetir</string>
     <string name="shuffle">Aleatório</string>
     <string name="volume_up">Aumentar o volume</string>
@@ -149,7 +128,6 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
     <string name="none">Nenhum</string>
     <string name="audio_sync">Sincronizar audio</string>
     <string name="subtitle_sync">Sincronizar legendas</string>
-
     <string name="left">Esquerda</string>
     <string name="right">Direita</string>
     <string name="up">Para cima</string>
@@ -160,13 +138,11 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
     <string name="context">Contexto</string>
     <string name="osd">Menu</string>
     <string name="back">Voltar</string>
-
     <string name="previous">Anterior</string>
     <string name="next">Seguinte</string>
     <string name="finish">Concluir</string>
     <string name="test_connection">Testar</string>
     <string name="search_again">Pesquisar</string>
-
     <string name="remove">Eliminar</string>
     <string name="edit">Editar</string>
     <string name="wake_up">Acordar</string>
@@ -176,42 +152,37 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
     <string name="queue_file">Colocar na fila</string>
     <string name="play_file">Reproduzir</string>
     <string name="play_from_here">Reproduzir a partir daqui</string>
-
-    <string name="connecting_to_xbmc">A ligar&#8230;</string>
+    <string name="connecting_to_xbmc">A ligar…</string>
     <string name="unable_to_connect_to_xbmc">Não é possível conectar ao centro multimédia</string>
     <string name="connected_to_xbmc">Ligado</string>
     <string name="xbmc_available">Disponível</string>
     <string name="xbmc_unavailable">Não disponível</string>
-
     <string name="nothing_playing">Nada em reprodução</string>
-
     <!-- Main view tabs -->
     <string name="now_playing">Em reprodução</string>
     <string name="remote">Controlo remoto</string>
     <string name="playlist">Lista de reprodução</string>
-
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Temporada %1$02d | Episódio %2$02d</string>
     <string name="season_number">Temporada %1$02d</string>
     <string name="episode_number">%1$d</string>
-
     <string name="votes">%1$s votos</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Cartaz</string>
     <string name="thumbnail">Miniatura</string>
-
     <string name="error_getting_properties">Não foi possível obter as propriedades do Kodi/XBMC.\nMensagem de erro: %1$s.</string>
     <string name="error_executing_subtitles">Não foi possível executar a extensão de legendas.\nMensagem de erro: %1$s.</string>
     <string name="error_getting_addon_info">Não foi possível obter informação relativa à Extensão.\nMensagem de erro: %1$s.</string>
     <string name="error_getting_source_info">Não foi possível navegar no sistema de ficheiros.\n Mensagem:  %1$s.</string>
-    <string name="error_play_media_file">Não foi possível reproduzir o ficheiro.  Mensagem: %1$s.</string>
-    <string name="error_play_local_file">Não foi possível reproduzir o ficheiro local.  Mensagem: %1$s.</string>
+    <string name="error_play_media_file">Não foi possível reproduzir o ficheiro multimédia.
+\n Mensagem de erro: %1$s.</string>
+    <string name="error_play_local_file">Não foi possível reproduzir o ficheiro multimédia local.
+\n Mensagem de erro: %1$s.</string>
     <string name="error_queue_media_file">Não foi possível colocar o ficheiro na fila.\n Mensagem:  %1$s.</string>
     <string name="error_get_active_player">Não foi possível obter o que está a ser reproduzido.\n Mensagem:  %1$s.</string>
-    <string name="error_share_video">Não foi possível enviar o vídeo para o Kodi</string>
-    <string name="error_reading_local_storage">Não foi possível aceder ao armazenamento local. Por favor verifique as permissões de acesso a ficheiros.</string>
+    <string name="error_share_video">Não foi possível enviar o vídeo a Kodi.</string>
+    <string name="error_reading_local_storage">Não foi possível aceder ao armazenamento local. Deu permissão à Kore para aceder ao armazenamento de ficheiros\?</string>
     <string name="error_starting_http_server">Não foi possível criar ou inicializar o servidor de HTTP.</string>
-
     <string name="directors">Realizadores:</string>
     <string name="studio">Estúdio:</string>
     <string name="cast">Elenco</string>
@@ -219,14 +190,12 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
     <string name="cast_list_text">%1$s como %2$s</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
     <string name="remaining_cast_count">Mais %d</string>
-
     <string name="general_error_executing_action">Erro ao executar ação: %1$s</string>
     <string name="error_getting_playlist">Erro ao obter lista</string>
     <string name="error_message">Mensagem de erro: %1$s</string>
     <string name="playlist_empty">Lista de reprodução vazia</string>
     <string name="clear_playlist">Limpar lista de reprodução</string>
     <string name="source_empty">Fonte sem items</string>
-
     <string name="swipe_down_to_refresh">Puxe para actualizar</string>
     <string name="no_movies_found_refresh">Nenhum filme encontrado\n\nPuxe para baixo para actualizar</string>
     <string name="no_tvshows_found_refresh">Nenhum programa de TV encontrado\n\nPuxe para baixo para actualizar</string>
@@ -238,17 +207,17 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
     <string name="no_music_videos_found_refresh">Nenhum vídeo encontrado\n\nPuxe para baixo para actualizar</string>
     <string name="no_channel_groups_found_refresh">Nenhum grupo encontrado.\n\nPuxe para actualizar</string>
     <string name="no_channels_found_refresh">Nenhum canal encontrado.\n\nPuxe para actualizar</string>
-    <string name="no_favourites_found_refresh">Nenhum favorito encontrado. Puxe para actualizar</string>
+    <string name="no_favourites_found_refresh">Nenhum favorito encontrado
+\n
+\n Puxe para baixo para atualizar</string>
     <string name="no_recordings_found_refresh">Nenhuma gravação encontrada.\n\nPuxe para actualizar</string>
     <string name="no_broadcasts_found_refresh">Guia não disponível.\n\nPuxe para actualizar</string>
     <string name="pull_to_refresh">Puxe para atualizar</string>
     <string name="no_cast_info">Não existe informação sobre o elenco</string>
-
     <string name="minutes_abbrev">%1$s min</string>
     <string name="minutes_abbrev2">%1$sm</string>
     <string name="sync_successful">Sincronização bem-sucedida</string>
     <string name="error_while_syncing">Ocorreu um erro durante a sincronização: %1$s</string>
-
     <string name="action_search">Pesquisa</string>
     <string name="action_search_movies">Pesquisar filmes</string>
     <string name="action_search_tvshows">Pesquisar programas de TV</string>
@@ -256,48 +225,38 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
     <string name="action_search_artists">Pesquisar artistas</string>
     <string name="action_search_genres">Pesquisar géneros</string>
     <string name="action_search_music_videos">Pesquisar vídeos</string>
-
     <string name="add_to_playlist">Adicionar à lista de reprodução</string>
     <string name="item_added_to_playlist">Adicionado à lista de reprodução</string>
     <string name="item_sent_to_kodi">Enviado para o Kodi</string>
     <string name="no_suitable_playlist">Não foi encontrada nenhuma lista de reprodução válida para adicionar este tipo de mídia.</string>
-
     <string name="imdb">IMDb</string>
     <string name="seen">Visto</string>
     <string name="download">Transferir</string>
-
     <string name="confirm_movie_download">Tem a certeza que pretende transferir este filme?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
     <string name="confirm_episode_download">Tem a certeza que pretende transferir este episódio?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
     <string name="confirm_album_download">Tem a certeza que pretende transferir este álbum?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
     <string name="confirm_artist_download">Tem a certeza que pretende transferir todos os álbuns?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
     <string name="confirm_songs_download">Tem a certeza que pretende transferir %1$d músicas?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
-
     <string name="download_file_exists">Arquivo já existe. \nDeseja substituí-lo ou transferi-lo com um novo nome?</string>
     <string name="download_dir_exists">Diretório para transferência já existe. \nSe algum arquivo tiver o mesmo nome, pretende substituir ou transferir com um novo nome?</string>
     <string name="download_files_exists">Um ou mais dos ficheiros indicados já existem. \nSe algum dos ficheiros tiver o mesmo nome, pretende substituir ou transferir com um novo nome?</string>
     <string name="overwrite">Substituir</string>
     <string name="download_with_new_name">Novo nome</string>
     <string name="download_file_description">Transferido do seu centro multimédia</string>
-
     <string name="num_episodes">%1$d episódios |  %2$d não vistos</string>
     <string name="premiered">Estreia: %1$s</string>
-
     <string name="tvshow_overview">Visão geral</string>
     <string name="tvshow_episodes">Episódios</string>
     <string name="tvshow_seasons">Épocas</string>
     <string name="tvshow_next_episode">Próximos episódios</string>
-
     <string name="addon_overview">Geral</string>
     <string name="addon_content">Conteúdo</string>
-
     <string name="artists">Artistas</string>
     <string name="albums">Álbuns</string>
     <string name="genres">Géneros</string>
     <string name="music_videos">Vídeos</string>
-
     <string name="no_files_to_download">Não há arquivos para transferir.</string>
     <string name="error_getting_file_information">Não foi possível obter informações para transferir o arquivo %1$s.</string>
-
     <string name="author">Autor:</string>
     <string name="version">Versão:</string>
     <string name="enable_disable">Ativar/desativar Extensão</string>
@@ -306,7 +265,6 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
     <string name="pin_unpin">Afixar</string>
     <string name="addon_pinned">Extensão afixada na lista de extensões</string>
     <string name="addon_unpinned">Estensão desafixada da lista de extensões</string>
-
     <!-- Filters on list menus -->
     <string name="hide_watched">Ocultar visualizados</string>
     <string name="hide_disabled">Ocultar desactivados</string>
@@ -321,17 +279,14 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
     <string name="ignore_prefixes">Ignorar prefixos</string>
     <string name="show_watched_status">Assinalar visualizados</string>
     <string name="show_rating">Mostrar classificação</string>
-
     <!-- Preferences strings -->
     <string name="application">Aplicação</string>
-
     <string name="theme">Tema</string>
     <string name="theme_night">Noite</string>
     <string name="theme_day">Dia</string>
     <string name="theme_mist">Neblina</string>
     <string name="theme_sunrise">Madrugada</string>
     <string name="theme_sunset">Crepúsculo</string>
-
     <string name="switch_to_remote">Mostrar ao iniciar reprodução</string>
     <string name="keep_remote_above_lockscreen">Mostrar sobre o écran de bloqueio</string>
     <string name="pref_keep_screen_on">Manter écran ligado</string>
@@ -346,7 +301,6 @@ Pressione <b><i>Concluir</i></b> para usar o controlo remoto.]]></string>
     <string name="vibrate_on_remote">Vibrar ao pressionar botões</string>
     <string name="remote_bar_items">Atalhos da barra inferior</string>
     <string name="nav_drawer_items">Atalhos do menu lateral</string>
-
     <string name="about">Sobre</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2018 XBMC Foundation<br><br>
@@ -354,24 +308,20 @@ Por favor classifique-nos na <b><a href="market://details?id=org.xbmc.kore">Goog
 
 Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
 ]]></string>
-
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
     <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
     <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
     <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
-
     <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
-
     <string name="play_on_kodi">Reproduzir no Kodi</string>
     <string name="queue_on_kodi">Colocar na fila</string>
     <string name="pause_call_incoming_title">Chamada pendente</string>
     <string name="pause_call_incoming_message">Verifique o seu telefone, está uma chamada pendente</string>
-
     <string name="error_getting_pvr_info">Ocorreram erros ao obter informações do PVR: %1$s</string>
     <string name="might_not_have_pvr">Ocorreram erros ao obter a lista de canais, provavelmente porque o seu media centar não tem hardware de PVR ou não está configurado.\n\nSe for esse o caso e pretender remover esta entrada do menu lateral, pode fazê-lo nas configurações.</string>
     <string name="error_starting_channel">Ocorreram erros ao iniciar o canal: %1$s</string>
@@ -381,30 +331,25 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
     <string name="channel_switching">A mudar para o canal %1$s</string>
     <string name="starting_recording">A iniciar gravação %1$s</string>
     <string name="refresh">Actualizar</string>
-
     <string name="tv">TV</string>
     <string name="radio">Rádio</string>
     <string name="recordings">Gravações</string>
     <string name="tv_channels">Canais de TV</string>
     <string name="radio_channels">Canais de Rádio</string>
-
     <string name="record">Gravar</string>
     <string name="pvr_epg">Guia</string>
     <string name="unable_to_move_item">Não é possível mover o item</string>
-    <string name="unable_to_play_favourite_item">Não foi possível reproduzir o favorito. Tipo não suportado.</string>
+    <string name="unable_to_play_favourite_item">Não é possível reproduzir o favorito. Tipo não suportado</string>
     <string name="cannot_move_playing_item">Não é possível mover um item em reprodução ou pausa</string>
     <string name="no_connection_type_selected">Nenhum tipo de conexão seleccionado nas opções</string>
     <string name="single_column">Uma coluna</string>
     <string name="multi_column">Multi-coluna</string>
-
     <string name="download_network_types_title">Restringir transferências</string>
     <string name="download_network_types_summary">Indicar tipos de rede autorizados para efetuar transferências</string>
     <string name="songs">Músicas</string>
-
-    <string name="read_phone_state_permission_denied">Permissão negada. Não será possível parar a reprodução quando se receberem chamadas</string>
-    <string name="write_storage_permission_denied">Permissão negada. Não será possível transferir ficheiros</string>
+    <string name="read_phone_state_permission_denied">Permissão negada. Não será possível parar a reprodução durante as chamadas.</string>
+    <string name="write_storage_permission_denied">Permissão negada. Não será possível descarregar ficheiros.</string>
     <string name="read_storage_permission_denied">Permissão negada. Não será possível aceder a ficheiros locais.</string>
-
     <string name="no_songs_to_download">Nenhuma música para transferir</string>
     <string name="by_album">Por álbum</string>
     <string name="by_artist">Por artista</string>
@@ -412,18 +357,18 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
     <string name="muted">Silêncio</string>
     <string name="no_item_available_to_play">Nenhum item disponível para reprodução.</string>
     <string name="Refreshing_not_implemented_for_this_item">Refrescamento não implementado para este item</string>
-    <string name="no_songs_found_refresh">Nenhuma música encontrada. Puxe para actualizar</string>
+    <string name="no_songs_found_refresh">Nenhuma música encontrada
+\n
+\n Puxe para baixo para atualizar</string>
     <string name="not_implemented">Não implementado</string>
     <string name="zeroprogress">0:00</string>
-
     <string name="toggle_expand">Expandir/Colapsar</string>
     <string name="play_locally">Reproduzir localmente</string>
-
     <string name="disable_local_playback_support">Desativar reprodução local</string>
-    <string name="disable_local_playback_support_summary">Desativa a opção de reproduzir localmente neste aparelho</string>
+    <string name="disable_local_playback_support_summary">Desativa o suporte para reproduzir localmente os media no aparelho que executa Kore.</string>
     <string name="language">Idioma</string>
-
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Rede Móvel</string>
     <string name="any_network">Todas</string>
-    </resources>
+    <string name="always_sendtokodi_addon">Preferir sempre a extensão SendToKodi</string>
+</resources>
