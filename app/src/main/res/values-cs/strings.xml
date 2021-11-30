@@ -54,8 +54,8 @@
     <string name="library_actions">Správa knihovny</string>
     <string name="clean_video_library">Vyčistit knihovnu videa</string>
     <string name="clean_audio_library">Vyčistit knihovnu audia</string>
-    <string name="update_video_library">Obnovit video knihovnu</string>
-    <string name="update_audio_library">Obnovit audio knihovnu</string>
+    <string name="update_video_library">Aktualizovat video knihovnu</string>
+    <string name="update_audio_library">Aktualizovat audio knihovnu</string>
     <string name="toggle_fullscreen">Režim celé obrazovky</string>
     <string name="connected_to">Připojeno k %1$s</string>
     <string name="connecting">Připojuje se…</string>
@@ -77,9 +77,7 @@
     <string name="wizard_search_no_network_connection"><![CDATA[
     Povolte prosím síťové připojení předtím, než se začnou hledat multimediální centra.<br/>
     ]]></string>
-    <string name="wizard_search_host_found"><![CDATA[
-    Byla nalezena tato multimediální centra.<br/><br/>Vyberte jedno z nich nebo stiskněte <i>Dále</i> pro manuální přidání dalšího.
-    ]]></string>
+    <string name="wizard_search_host_found">Byla nalezena tato multimediální centra.<br/><br/>Vyberte jedno z nich nebo stiskněte <b>Dále</b> pro manuální přidání nového.</string>
     <string name="no_network_connection">Žádné připojení k síti</string>
     <string name="searching">Vyhledává se…</string>
     <string name="no_xbmc_found">Multimediální centrum nenalezeno</string>
@@ -312,7 +310,7 @@
     <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\nIf that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
     <string name="refresh">Obnovit</string>
     <string name="tv">TV</string>
-    <string name="radio">Radio</string>
+    <string name="radio">Rádio</string>
     <string name="single_column">Jeden sloupec</string>
     <string name="multi_column">Více sloupců</string>
     <string name="download_network_types_title">Omezit stahování médií</string>
@@ -326,4 +324,63 @@
     <string name="play_locally">Přehát místně</string>
     <string name="disable_local_playback_support">Zakázat podporu pro místní přehrávání</string>
     <string name="disable_local_playback_support_summary">Zakázat podporu pro přehrávání médií na zařízení, kde běží Kore.</string>
+    <string name="pvr_epg">Program</string>
+    <string name="record">Záznam</string>
+    <string name="radio_channels">Rozhlasové kanály</string>
+    <string name="tv_channels">Televizní kanály</string>
+    <string name="recordings">Nahrávky</string>
+    <string name="any_network">Jakékoli</string>
+    <string name="mobile_network">Mobilní</string>
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="language">Jazyk</string>
+    <string name="toggle_expand">Rozbalit/Zabalit</string>
+    <string name="not_implemented">Není implementováno</string>
+    <string name="Refreshing_not_implemented_for_this_item">Obnovení pro tuto položku není implementováno</string>
+    <string name="no_item_available_to_play">Chyba: žádné položky k přehrání.</string>
+    <string name="muted">ztlumeno</string>
+    <string name="no_songs_to_download">Žádné skladby ke stažení</string>
+    <string name="read_storage_permission_denied">Povolení zamítnuto. Nebude možné načítat soubory.</string>
+    <string name="write_storage_permission_denied">Povolení zamítnuto. Nebude možné stahovat soubory.</string>
+    <string name="read_phone_state_permission_denied">Povolení zamítnuto. Nebude možné pozastavit přehrávání během hovoru.</string>
+    <string name="no_connection_type_selected">V nastavení nebyl zvolen typ připojení</string>
+    <string name="cannot_move_playing_item">Nelze přesunout aktuálně přehrávanou/pozastavenou položku</string>
+    <string name="unable_to_play_favourite_item">Nepodařilo se přehrát oblíbenou položku. Nepodporovaný typ</string>
+    <string name="unable_to_move_item">Nepodařilo se přesunout položku</string>
+    <string name="starting_recording">Spouští se nahrávání %1$s</string>
+    <string name="channel_switching">Přepíná se na kanál %1$s</string>
+    <string name="error_starting_to_record">Při nahrávání došlo k chybě: %1$s</string>
+    <string name="error_starting_recording">Při spuštění nahrávaní došlo k chybě: %1$s</string>
+    <string name="error_favourites">Při získávání oblíbených s popisem došlo k chybě: %1$s</string>
+    <string name="error_starting_channel">Při přehrávaní kanálu došlo k chybě: %1$s</string>
+    <string name="error_getting_pvr_info">Při získávání pvr informací došlo k chybě: %1$s</string>
+    <string name="queue_on_kodi">Fronta na Kodi</string>
+    <string name="always_sendtokodi_addon">Vždy upřednostňovat doplněk SendToKodi</string>
+    <string name="vibrate_on_remote">Vibrovat při dotyku</string>
+    <string name="notification_seek_jump_step">Použít přeskakování kroků při hledání z upozornění</string>
+    <string name="notification_seek_jump_speed">Změnit rychlost přehrávání při hledání z upozornění</string>
+    <string name="notification_seek_jump">Použít krokování při hledání</string>
+    <string name="keep_remote_above_lockscreen">Zobrazit na zamykací obrazovce</string>
+    <string name="switch_to_remote">Zobrazit při spuštění multimédia</string>
+    <string name="theme_sunset">Západ slunce</string>
+    <string name="theme_sunrise">Východ slunce</string>
+    <string name="unsorted">Nesetříděné</string>
+    <string name="sort_by_last_played">Podle naposledy přehrávaných</string>
+    <string name="addon_unpinned">Doplněk odepnutý</string>
+    <string name="addon_pinned">Doplněk připnutý</string>
+    <string name="pin_unpin">Připnout/Odepnout doplněk</string>
+    <string name="item_sent_to_kodi">Odesláno do Kodi</string>
+    <string name="no_cast_info">Žádné informace o obsazení k zobrazení</string>
+    <string name="error_starting_http_server">Nelze vytvořit nebo spustit HTTP server.</string>
+    <string name="error_reading_local_storage">Nelze načíst místní úložiště. Dali jste Kore oprávnění k přístupu k úložišti souborů\?</string>
+    <string name="error_play_local_file">Nelze přehrát místní mediální soubor.
+\nChyba: %1$s.</string>
+    <string name="wizard_invalid_es_port_specified">Prosím, zadejte platný EventServer port tohoto multimediálního centra.</string>
+    <string name="wizard_xbmc_direct_share">Zobrazit v share sheetu</string>
+    <string name="wizard_xbmc_use_event_server">Použít EventServer</string>
+    <string name="local_file_browser">Prohlížeč místních souborů</string>
+    <string name="unknown">Neznámé</string>
+    <string name="window">Okno</string>
+    <string name="local_files">Místní soubory</string>
+    <string name="external_storage">Úložiště</string>
+    <string name="dcim">DCIM</string>
 </resources>
