@@ -58,9 +58,9 @@
     <string name="finish_after_send">Po odoslaní ukončiť</string>
     <string name="library_actions">Správa knižnice</string>
     <string name="clean_video_library">Zmazať knižnicu videí</string>
-    <string name="clean_audio_library">Zmazať knižnicu audia</string>
+    <string name="clean_audio_library">Vyčistiť audio knižnicu</string>
     <string name="update_video_library">Obnoviť knižnicu videí</string>
-    <string name="update_audio_library">Obnoviť knižnicu audia</string>
+    <string name="update_audio_library">Aktualizovať audio knižnicu</string>
     <string name="toggle_fullscreen">Režim celej obrazovky</string>
     <string name="connected_to">Pripojené k %1$s</string>
     <string name="connecting">Pripája sa…</string>
@@ -132,8 +132,8 @@
     <string name="volume_down">Tichšie</string>
     <string name="volume_mute">Stlmiť</string>
     <string name="subtitles">Titulky</string>
-    <string name="audiostreams">Zvukové stopy</string>
-    <string name="no_audiostream">Žiadne zvukové stopy</string>
+    <string name="audiostreams">Audiostreamy</string>
+    <string name="no_audiostream">Nie je dostupný žiadny audiostream</string>
     <string name="download_subtitle">Stiahnuť titulky</string>
     <string name="none">Žiadne</string>
     <string name="audio_sync">Synchronizovať audio</string>
@@ -371,7 +371,9 @@
     <string name="muted">stlmené</string>
     <string name="no_item_available_to_play">Chyba: žiadne položka na prehrávanie.</string>
     <string name="Refreshing_not_implemented_for_this_item">Obnovenie nie je funkčné pre túto položku</string>
-    <string name="no_songs_found_refresh">Žiadne skladby\\n\\nObnovte potiahnutím dolu</string>
+    <string name="no_songs_found_refresh">Nenašli sa žiadne skladby
+\n
+\n Obnovte potiahnutím nadol</string>
     <string name="not_implemented">Nie je funkčné</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Rozbaliť/Zbaliť</string>

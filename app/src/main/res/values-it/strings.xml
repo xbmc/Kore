@@ -261,4 +261,7 @@
     <!--<string name="error_during_purchased">Si è un errore durante l\'acquisto.</string>-->
     <!--<string name="purchase_thanks">Grazie per il tuo supporto!</string>-->
     <string name="play_on_kodi">Esegui su Kodi</string>
+    <string name="local_files">File locali</string>
+    <string name="external_storage">Archivio</string>
+    <string name="dcim">DCIM</string>
 </resources>
