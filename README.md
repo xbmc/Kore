@@ -1,8 +1,5 @@
-Travis CI status [![Build Status](https://travis-ci.org/xbmc/Kore.svg?branch=master)](https://travis-ci.org/xbmc/Kore/)
-
-Codacy analysis [![Codacy Badge](https://api.codacy.com/project/badge/grade/d7a03e5dff8840918b9d9ae069a7645e)](https://www.codacy.com/app/Kodi/Kore)
-
-Doxygen documentation [![Documentation](https://codedocs.xyz/xbmc/Kore.svg)](https://codedocs.xyz/xbmc/Kore/)
+[![Build App](https://github.com/xbmc/Kore/actions/workflows/build.yml/badge.svg)](https://github.com/xbmc/Kore/actions/workflows/build.yml)
+[![Translations](https://kodi.weblate.cloud/widgets/kodi-remotes/-/kore/svg-badge.svg)](https://kodi.weblate.cloud/engage/kodi-remotes/)
 
 <a href="https://play.google.com/store/apps/details?id=org.xbmc.kore" target="_blank">
   <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="80"/>
@@ -32,8 +29,7 @@ Kore is the official remote for [Kodi](http://kodi.tv/), and aims to be a simple
 2. To run the local tests see [README](https://github.com/xbmc/Kore/blob/master/app/src/test/README.md)
 3. To run the instrumented tests see [README](https://github.com/xbmc/Kore/blob/master/app/src/androidTest/README.md)
 
-We currently use [travis-ci](https://travis-ci.org/xbmc/Kore/) to automatically build
-and run the local tests for each pull request.
+We use [GitHub Actions](https://github.com/xbmc/Kore/actions) to automatically build and run the local tests for each pull request.
 
 ## Using Docker
 
@@ -68,7 +64,7 @@ If you want to run tests, execute `gradle testDebugUnitTest`.
 
 ## License
 
-    Copyright 2017 XBMC Foundation
+    Copyright 2022 XBMC Foundation
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
