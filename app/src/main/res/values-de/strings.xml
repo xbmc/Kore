@@ -170,7 +170,7 @@
     <string name="season_episode">Staffel %1$02d | Episode %2$02d</string>
     <string name="season_number">Staffel %1$02d</string>
     <string name="episode_number">%1$d</string>
-    <string name="votes">%1$s Stimmen</string>
+    <string name="votes">%1$s Bewertungen</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
     <string name="thumbnail">Thumbnail</string>

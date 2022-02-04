@@ -41,7 +41,7 @@
     <string name="local_file_browser">Explorador de archivos local</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Favoritos</string>
-    <string name="weather">Clima</string>
+    <string name="weather">Meteorología</string>
     <string name="system">Sistema</string>
     <string name="no_xbmc_configured">Ningún centro multimedia configurado</string>
     <string name="add_xbmc">Añadir centro multimedia</string>

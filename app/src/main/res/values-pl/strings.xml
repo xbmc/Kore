@@ -39,7 +39,7 @@
     <string name="unknown">Nieznany</string>
     <string name="file_browser">Przeglądarka plików</string>
     <string name="local_file_browser">Lokalna przeglądarka plików</string>
-    <string name="pvr">PVR</string>
+    <string name="pvr">Telewizja</string>
     <string name="favourites">Ulubione</string>
     <string name="weather">Pogoda</string>
     <string name="system">System</string>
@@ -334,7 +334,7 @@
     <string name="queue_on_kodi">Kolejka na Kodi</string>
     <string name="pause_call_incoming_title">Połączenie przychodzące</string>
     <string name="pause_call_incoming_message">Sprawdź swój telefon, ktoś dzwoni do Ciebie</string>
-    <string name="error_getting_pvr_info">Wystąpił błąd podczas pobierania informacji PVR: %1$s</string>
+    <string name="error_getting_pvr_info">Wystąpił błąd podczas pobierania informacji telewizji: %1$s</string>
     <string name="might_not_have_pvr">Wystąpił błąd podczas odczytywania listy kanałów, prawdopodobnie odtwarzacz nie posiada tunera lub jest nieskonfigurowany.\n\nGdybyś chciał usunąć ten wpis z bocznego menu, możesz zrobić to w Ustawieniach.</string>
     <string name="error_starting_channel">Błąd podczas przełączania kanału: %1$s</string>
     <string name="error_favourites">Wystąpił błąd podczas pobierania ulubionych z opisem: %1$s</string>
