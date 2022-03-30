@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+--><resources>
+    <string name="app_name" translatable="false">Kore</string>
+    <!-- Navigation drawer tips -->
+    <!-- String used in add host wizard -->
+    <!-- Main view tabs -->
+    <string name="max_rating" translatable="false">/%1$s</string>
+    <string name="max_rating_video" translatable="false">/10</string>
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <!-- Filters on list menus -->
+    <!-- Preferences strings -->
+    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
+    <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
+    <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
+    <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
+    <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
+    <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
+    <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
+    <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
+    <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
+    <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="max_rating_music" translatable="false">/5</string>
+    <string name="songs">Låtar</string>
+    <string name="record">Spela in</string>
+    <string name="recordings">Inspelningar</string>
+    <string name="radio">Radio</string>
+    <string name="genres">Genrer</string>
+    <string name="albums">Album</string>
+    <string name="artists">Artister</string>
+    <string name="action_search">Sök</string>
+    <string name="playlist">Spellista</string>
+    <string name="now_playing">Nu spelas</string>
+    <string name="play_file">Spela</string>
+    <string name="queue_file">Kölägg</string>
+    <string name="edit">Redigera</string>
+    <string name="subtitles">Undertexter</string>
+    <string name="play">Spela</string>
+    <string name="wizard_xbmc_password">Lösenord</string>
+    <string name="wizard_xbmc_username">Användarnamn</string>
+    <string name="reboot">Starta om</string>
+    <string name="suspend">Viloläge</string>
+    <string name="quit">Avsluta</string>
+    <string name="favourites">Favoriter</string>
+    <string name="unknown">Okänd</string>
+    <string name="video">Video</string>
+    <string name="files">Filer</string>
+    <string name="pictures">Bilder</string>
+    <string name="music">Musik</string>
+    <string name="tv_shows">TV-serier</string>
+    <string name="movies">Filmer</string>
+</resources>

@@ -179,7 +179,7 @@
     <string name="thumbnail">Miniatűr</string>
     <string name="votes">%1$s szavazat</string>
     <string name="pull_to_refresh">Húzd lefelé a frissítéshez</string>
-    <string name="pvr_epg">Guide</string>
+    <string name="pvr_epg">Műsorújság</string>
     <string name="queue_file">Sor</string>
     <string name="radio_channels">Rádió csatornák</string>
     <string name="read_phone_state_permission_denied">Hozzáférés megtagadva. Nem fogom tudni szüneteltetni a lejátszást hívás közben.</string>

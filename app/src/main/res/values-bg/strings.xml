@@ -316,4 +316,6 @@
     <string name="songs">Песни</string>
     <string name="read_phone_state_permission_denied">Достъпът е отказан. Няма да може да бъде активиран режима "На пауза" при повикване.</string>
     <string name="write_storage_permission_denied">Достъпът е отказан. Няма да може да бъдат сваляни файлове.</string>
+    <string name="favourites">Любими</string>
+    <string name="videos">Видео</string>
 </resources>

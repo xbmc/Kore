@@ -210,7 +210,9 @@
     <string name="no_movies_found_refresh">No se encontraron películas\n\nDesliza hacia abajo para actualizar</string>
     <string name="no_tvshows_found_refresh">No se encontraron series de TV\n\nDesliza hacia abajo para actualizar</string>
     <string name="no_episodes_found">No se encontraron episodios</string>
-    <string name="no_artists_found_refresh">No se encontraron artistas\n\nDesliza hacia abajo para actualizar</string>
+    <string name="no_artists_found_refresh">No se encontraron intérpretes
+\n
+\nDesliza hacia abajo para actualizar</string>
     <string name="no_albums_found_refresh">No se encontraron albums\n\nDesliza hacia abajo para actualizar</string>
     <string name="no_genres_found_refresh">No se encontraron géneros\n\nDesliza hacia abajo para actualizar</string>
     <string name="no_addons_found_refresh">No se encontraron complementos o no está conectado\n\nDesliza hacia abajo para actualizar</string>
@@ -235,7 +237,7 @@
     <string name="action_search_movies">Buscar películas</string>
     <string name="action_search_tvshows">Buscar series de TV</string>
     <string name="action_search_albums">Buscar albumes</string>
-    <string name="action_search_artists">Buscar artistas</string>
+    <string name="action_search_artists">Buscar intérpretes</string>
     <string name="action_search_genres">Buscar géneros</string>
     <string name="action_search_music_videos">Buscar videos</string>
     <string name="add_to_playlist">Añadir a la lista de reproducción</string>
@@ -267,7 +269,7 @@
     <string name="tvshow_next_episode">Siguientes episodios</string>
     <string name="addon_overview">Resumen</string>
     <string name="addon_content">Contenido</string>
-    <string name="artists">Artistas</string>
+    <string name="artists">Intérpretes</string>
     <string name="albums">Álbumes</string>
     <string name="genres">Géneros</string>
     <string name="music_videos">Vídeos</string>
@@ -364,8 +366,8 @@
     <string name="read_storage_permission_denied">Permiso denegado. No se podrán abrir archivos</string>
     <string name="no_songs_to_download">No hay canciones para descargar</string>
     <string name="by_album">Por álbum</string>
-    <string name="by_artist">Por artista</string>
-    <string name="by_artist_and_year">Por artista y año</string>
+    <string name="by_artist">Por intérprete</string>
+    <string name="by_artist_and_year">Por intérprete y año</string>
     <string name="muted">silenciado</string>
     <string name="no_item_available_to_play">Error: no hay elementos para reproducir</string>
     <string name="Refreshing_not_implemented_for_this_item">Actualización no implementada para este elemento</string>
