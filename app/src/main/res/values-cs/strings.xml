@@ -92,7 +92,7 @@
     <string name="wizard_xbmc_password">Heslo</string>
     <string name="wizard_xbmc_tcp_port">TCP port (9090)</string>
     <string name="wizard_xbmc_mac_address">MAC adresa</string>
-    <string name="wizard_xbmc_wol_port">WoL port (9)</string>
+    <string name="wizard_xbmc_wol_port">Port WOL (9)</string>
     <string name="wizard_xbmc_use_tcp">Použít TCP</string>
     <string name="wizard_xbmc_event_server_port">ES port (9777)</string>
     <string name="wizard_no_name_specified">Prosím pojmenujte toto multimediální centrum pro snadnou identifikaci v budoucnu.</string>
@@ -106,11 +106,7 @@
     <string name="wizard_success_connecting">Připojeno ke Kodi/XBMC.</string>
     <string name="wizard_error_connecting">Nelze se připojit ke Kodi/XBMC.\nProsím ověřte konfiguraci.</string>
     <string name="wizard_done">Vše hotovo!</string>
-    <string name="wizard_done_message"><![CDATA[
-    Vaše multimediální centrum je nakonfigurováno.<br/>
-    Nyní jej můžete ovládat. Vaše knihovna se synchronizuje a měla by být dostupná za pár okamžiků.<br/><br/>
-    Stiskněte <b><i>Dokončit</i></b> a začněte používat toto dálkové ovládání.
-    ]]></string>
+    <string name="wizard_done_message">Vaše multimediální centrum je nakonfigurováno.<br/> Nyní jej můžete vzdáleně ovládat. Vaše knihovna se synchronizuje a měla by být dostupná za pár okamžiků.<br/><br/> Stiskněte <b>Dokončit</b> a začněte používat toto dálkové ovládání.</string>
     <string name="wizard_zeroconf_no_host_address">Nelze získat adresu tohoto multimediálního centra!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Nelze se připojit k tomuto multimediálnímu centru, protože nebylo možné zjistit jeho adresu.</string>
     <string name="play">Přehrát</string>

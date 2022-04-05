@@ -81,7 +81,7 @@
     <string name="wizard_manual_configuration_message_advanced">Napredne postavke (ostavite prazno za zadane postavke)</string>
     <string name="wizard_xbmc_name">Naziv medijskog centra</string>
     <string name="wizard_xbmc_ip">Adresa</string>
-    <string name="wizard_xbmc_port">Port</string>
+    <string name="wizard_xbmc_port">Ulaz</string>
     <string name="wizard_xbmc_username">Korisničko ime</string>
     <string name="wizard_xbmc_password">Lozinka</string>
     <string name="wizard_xbmc_tcp_port">TCP port (9090)</string>
@@ -313,4 +313,17 @@
     <string name="download_network_types_title">Preuzmi vrste mreže</string>
     <string name="download_network_types_summary">Dozvoljene vrste mreže za preuzimanje medija</string>
     <string name="songs">Pjesme</string>
+    <string name="favourites">Omiljeno</string>
+    <string name="videos">Video</string>
+    <string name="language">Jezik</string>
+    <string name="theme_sunset">Zalazak sunca</string>
+    <string name="theme_sunrise">Izlazak sunca</string>
+    <string name="hide_disabled">Sakrij onemogućeno</string>
+    <string name="tvshow_seasons">Sezone</string>
+    <string name="system">Sustav</string>
+    <string name="weather">Vrijeme</string>
+    <string name="unknown">Nepoznato</string>
+    <string name="script">Skripta</string>
+    <string name="media">Mediji</string>
+    <string name="external_storage">Pohrana</string>
 </resources>

@@ -360,4 +360,5 @@
     <string name="any_network">Beliebig</string>
     <string name="error_reading_local_storage">Lokaler Speicher konnte nicht gelesen werden. Kore Berechtigung zum Zugriff auf den Dateispeicher geben\?</string>
     <string name="read_storage_permission_denied">Erlaubnis verweigert. Kann keine Dateien lesen.</string>
+    <string name="videos">Videos</string>
 </resources>

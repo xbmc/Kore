@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+--><resources>
+    <string name="app_name" translatable="false">Kore</string>
+    <!-- Navigation drawer tips -->
+    <!-- String used in add host wizard -->
+    <!-- Main view tabs -->
+    <string name="max_rating" translatable="false">/%1$s</string>
+    <string name="max_rating_video" translatable="false">/10</string>
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <!-- Filters on list menus -->
+    <!-- Preferences strings -->
+    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
+    <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
+    <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
+    <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
+    <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
+    <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
+    <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
+    <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
+    <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
+    <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="max_rating_music" translatable="false">/5</string>
+    <string name="thumbnail">Duimnaelskets</string>
+    <string name="poster">Plakkaat</string>
+    <string name="fanart">Ondersteunerkuns</string>
+    <string name="season_episode_abbrev">s%1$02de%2$02d</string>
+    <string name="playlist">Speellys</string>
+    <string name="now_playing">Speel nou</string>
+    <string name="xbmc_unavailable">Onbeskikbaar</string>
+    <string name="xbmc_available">Beskikbaar</string>
+    <string name="connected_to_xbmc">Gekonnekteer</string>
+    <string name="play_from_here">Speel van hier</string>
+    <string name="play_file">Speel</string>
+    <string name="edit">Redigeer</string>
+    <string name="remove">Verwyder</string>
+    <string name="finish">Klaar</string>
+    <string name="next">Volgende</string>
+    <string name="previous">Vorige</string>
+    <string name="back">Trug</string>
+    <string name="osd">Kieslys</string>
+    <string name="info">Inligting</string>
+    <string name="select">Kies</string>
+    <string name="none">Geen</string>
+    <string name="download_subtitle">Laai onderskrifte af</string>
+    <string name="subtitles">Onderskrifte</string>
+    <string name="shuffle">Skommel</string>
+    <string name="repeat">Herhaal</string>
+    <string name="rewind">Terugdraai</string>
+    <string name="fast_forward">Vinnig vorentoe</string>
+    <string name="stop">Stop</string>
+    <string name="pause">Pouseer</string>
+    <string name="play">Speel</string>
+    <string name="wizard_connecting_to_xbmc_title">Konnekteer aan %1$s…</string>
+    <string name="wizard_xbmc_mac_address">MAC adres</string>
+    <string name="wizard_xbmc_password">Wagwoord</string>
+    <string name="wizard_xbmc_username">Gebruikersnaam</string>
+    <string name="wizard_xbmc_port">Poort</string>
+    <string name="wizard_xbmc_ip">Adres</string>
+    <string name="searching">Soek…</string>
+    <string name="shutdown">Skakel af</string>
+    <string name="reboot">Reboot</string>
+    <string name="suspend">Suspendeer</string>
+    <string name="quit">Verlaat</string>
+    <string name="power">Krag</string>
+    <string name="system">Stelsel</string>
+    <string name="weather">Weer</string>
+    <string name="file_browser">Lêer blaaier</string>
+    <string name="unknown">Onbekend</string>
+    <string name="script">Skrip</string>
+    <string name="window">Gevenster</string>
+    <string name="media">Media</string>
+    <string name="video">Video</string>
+    <string name="files">Lêers</string>
+    <string name="addons">Byvoegsels</string>
+    <string name="external_storage">Berging</string>
+    <string name="home">Tuis</string>
+    <string name="action_options">Opsies</string>
+    <string name="settings">Verstellings</string>
+    <string name="radio">Radio</string>
+    <string name="music_videos">Videos</string>
+    <string name="favourites">Gunstelinge</string>
+    <string name="videos">Videos</string>
+    <string name="pictures">Prente</string>
+    <string name="music">Musiek</string>
+    <string name="tv_shows">TV vertonings</string>
+    <string name="movies">Flieks</string>
+</resources>

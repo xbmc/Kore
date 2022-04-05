@@ -264,4 +264,13 @@
     <string name="local_files">File locali</string>
     <string name="external_storage">Archivio</string>
     <string name="dcim">DCIM</string>
+    <string name="songs">Brani</string>
+    <string name="record">Registra</string>
+    <string name="recordings">Registrazioni</string>
+    <string name="radio">Radio</string>
+    <string name="play_file">Riproduci</string>
+    <string name="play">Riproduci</string>
+    <string name="favourites">Preferiti</string>
+    <string name="unknown">sconosciuto</string>
+    <string name="videos">Video</string>
 </resources>

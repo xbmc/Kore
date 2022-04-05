@@ -13,60 +13,47 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
--->
-<resources>
-
+--><resources>
     <string name="app_name">Kore</string>
     <string name="settings">Nustatymai</string>
     <string name="action_options">Parinktys</string>
-
     <string name="loading">Įkeliama…</string>
-
     <!-- Navigation drawer tips -->
-	<string name="navigation_drawer_open">Atidaryti navigacijos stalčių</string>
-	<string name="navigation_drawer_close">Uždaryti navigacijos stalčių</string>
-
-	<string name="xbmc_media_center">Media centras</string>
-	<string name="home">Pradžia</string>
-	<string name="movies">Filmai</string>
-	<string name="tv_shows">TV laidos</string>
-	<string name="music">Muzika</string>
-	<string name="pictures">Paveikslėliai</string>
+    <string name="navigation_drawer_open">Atidaryti navigacijos stalčių</string>
+    <string name="navigation_drawer_close">Uždaryti navigacijos stalčių</string>
+    <string name="xbmc_media_center">Media centras</string>
+    <string name="home">Pradžia</string>
+    <string name="movies">Filmai</string>
+    <string name="tv_shows">TV laidos</string>
+    <string name="music">Muzika</string>
+    <string name="pictures">Paveikslėliai</string>
     <string name="addons">Priedai</string>
     <string name="files">Failai</string>
     <string name="video">Vaizdo įrašai</string>
     <string name="file_browser">Failų naršyklė</string>
     <string name="pvr">PVR</string>
-
     <string name="no_xbmc_configured">Nėra sukonfigūruotų media centrų</string>
     <string name="add_xbmc">Pridėti media centrą</string>
-
     <string name="xbmc_quit">Media centras uždaromas.</string>
     <string name="wol_sent">Žadinimo užklausa nusiųsta į media centrą.</string>
-
     <string name="power">Maitinimas</string>
     <string name="quit">Išeiti</string>
     <string name="suspend">Pristabdyti</string>
     <string name="reboot">Paleisti iš naujo</string>
     <string name="shutdown">Išjungti</string>
-
     <string name="send">Siųsti</string>
     <string name="send_text">Siųsti tekstą į media centrą</string>
     <string name="text_to_send">Tekstas, kurį siųsti</string>
     <string name="finish_after_send">Užbaigti išsiuntus</string>
-
     <string name="library_actions">Bibliotekos priežiūra</string>
     <string name="clean_video_library">Išvalyti video biblioteką</string>
     <string name="clean_audio_library">Išvalyti audio biblioteką</string>
     <string name="update_video_library">Atnaujinti video biblioteką</string>
     <string name="update_audio_library">Atnaujinti audio biblioteką</string>
-
     <string name="toggle_fullscreen">Perjungti viso ekrano režimą</string>
-
     <string name="connected_to">Prisijungta prie %1$s</string>
     <string name="connecting">Prisijungiama…</string>
     <string name="connecting_to">Prisijungiama prie %1$s (%2$s)…</string>
-
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Sveiki</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -105,37 +92,30 @@
     <string name="wizard_xbmc_use_tcp">Naudoti TCP</string>
     <string name="wizard_xbmc_event_server_port">ES priev. (9777)</string>
     <string name="wizard_xbmc_use_event_server">Naudoti EventServer</string>
-
     <string name="wizard_no_name_specified">Nurodykite šio media centro vardą, kad vėliau galėtumėte jį identifikuoti.</string>
     <string name="wizard_no_address_specified">Nurodykite šio media centro adresą, kad būtų įmanoma jį aptikti.</string>
     <string name="wizard_invalid_http_port_specified">Nurodykite galiojantį šio media centro HTTP prievadą.</string>
     <string name="wizard_invalid_tcp_port_specified">Nurodykite galiojantį šio media centro TCP prievadą.</string>
     <string name="wizard_invalid_es_port_specified">Nurodykite galiojantį šio media centro EventServer prievadą.</string>
-
     <string name="wizard_connecting_to_xbmc_title">Prisijungiama prie %1$s…</string>
     <string name="wizard_connecting_to_xbmc_message">Prašome palaukti kol mėginama prisijungti prie jūsų media centro…</string>
-
     <string name="wizard_empty_authentication">Kodi/XBMC reikalauja autentifikacijos.\nNurodykite vartotojo vardą ir slaptažodį.</string>
     <string name="wizard_incorrect_authentication">Klaidingas vartotojo vardas ir/arba slaptažodis.\nPatikrinkite prisijungimo duomenis.</string>
     <string name="wizard_success_connecting">Prisijungta prie Kodi/XBMC.</string>
     <string name="wizard_error_connecting">Neįmanoma prisijungti prie Kodi/XBMC.\nPatikrinkite konfigūraciją.</string>
-
     <string name="wizard_done">Viskas atlikta!</string>
     <string name="wizard_done_message"><![CDATA[
     Jūsų media centras sukonfigūruotas.<br/>
     Dabar galite jį valdyti nuotoliniu būdu. Jūsų biblioteka sinchronizuojama ir turėtų būti prieinama po keletos akimirkų.<br/><br/>
     Paspauskite <b><i>Baigti</i></b> norėdami pradėti naudoti nuotolinį valdymą.
     ]]></string>
-
     <string name="wizard_zeroconf_no_host_address">Neįmanoma gauti šio media centro adreso!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Neįmanoma prisjungti prie šio media centro, nes nepavyko aptikti jo adreso.</string>
-
     <string name="play">Atkurti</string>
     <string name="pause">Pristabdyti</string>
     <string name="stop">Sustabdyti</string>
     <string name="fast_forward">Prasukti pirmyn</string>
     <string name="rewind">Atsukti atgal</string>
-
     <string name="repeat">Kartoti</string>
     <string name="shuffle">Maišyti</string>
     <string name="volume_up">Pagarsinti</string>
@@ -148,7 +128,6 @@
     <string name="none">Joks</string>
     <string name="audio_sync">Sinchronizuoti garsą</string>
     <string name="subtitle_sync">Sinchronizuoti subtitrus</string>
-
     <string name="left">Kairėn</string>
     <string name="right">Dešinėn</string>
     <string name="up">Aukštyn</string>
@@ -159,13 +138,11 @@
     <string name="context">Kontekstinis meniu</string>
     <string name="osd">Meniu</string>
     <string name="back">Atgal</string>
-
     <string name="previous">Ankstesnis</string>
     <string name="next">Toliau</string>
     <string name="finish">Baigti</string>
     <string name="test_connection">Išbandyti</string>
     <string name="search_again">Ieškoti dar kartą</string>
-
     <string name="remove">Pašalinti</string>
     <string name="edit">Redaguoti</string>
     <string name="wake_up">Pažadinti</string>
@@ -175,46 +152,38 @@
     <string name="queue_file">Eilė</string>
     <string name="play_file">Atkurti</string>
     <string name="play_from_here">Atkurti iš čia</string>
-
     <string name="connecting_to_xbmc">Prisijungiama…</string>
     <string name="unable_to_connect_to_xbmc">Neįmanoma prisijungti prie media centro</string>
     <string name="connected_to_xbmc">Prisijungta</string>
     <string name="xbmc_available">Prieinama</string>
     <string name="xbmc_unavailable">Neprieinama</string>
-
     <string name="nothing_playing">Nieko neatkuriama</string>
-
     <!-- Main view tabs -->
     <string name="now_playing">Atkuriama</string>
     <string name="remote">Pultas</string>
     <string name="playlist">Grojaraštis</string>
-
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Sezonas %1$02d | Epizodas %2$02d</string>
     <string name="season_number">Sezonas %1$02d</string>
     <string name="episode_number">%1$d</string>
-
     <string name="votes">Balsų: %1$s</string>
-
     <string name="fanart">Fanart</string>
     <string name="poster">Plakatas</string>
     <string name="thumbnail">Miniatiūra</string>
-
     <string name="error_getting_properties">Nepavyko gauti Kodi/XBMC savybių.\nKlaidos pranešimas:
         %1$s.</string>
     <string name="error_executing_subtitles">Nepavyko paleisti subtitrų priedo.\nKlaidos pranešimas: %1$s.</string>
     <string name="error_getting_addon_info">Nepavyko gauti priedo informacijos.\nKlaidos pranešimas:
         %1$s.</string>
-   <string name="error_getting_source_info">Nepavyko atidaryti failų naršyklės.\nKlaidos pranešimas:
+    <string name="error_getting_source_info">Nepavyko atidaryti failų naršyklės.\nKlaidos pranešimas:
         %1$s.</string>
     <string name="error_play_media_file">Nepavyko atkurti media failo.\nKlaidos pranešimas:
         %1$s.</string>
     <string name="error_queue_media_file">Nepavyko pridėti media failo į eilę.\nKlaidos pranešimas:
         %1$s.</string>
-     <string name="error_get_active_player">Nepavyko prieiti prie aktyvaus grotuvo.\nKlaidos pranešimas:
+    <string name="error_get_active_player">Nepavyko prieiti prie aktyvaus grotuvo.\nKlaidos pranešimas:
         %1$s.</string>
     <string name="error_share_video">Nepavyko pasidalinti vaizdo įrašu su Kodi/XBMC.</string>
-
     <string name="directors">Režisieriai:</string>
     <string name="studio">Studija:</string>
     <string name="cast">Aktoriai</string>
@@ -222,14 +191,12 @@
     <string name="cast_list_text">%1$s vaidina %2$s</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
     <string name="remaining_cast_count">Dar %d</string>
-
     <string name="general_error_executing_action">Klaida vykdant veiksmą: %1$s</string>
     <string name="error_getting_playlist">Klaida gaunant grojaraštį</string>
     <string name="error_message">Klaidos pranešimas: %1$s</string>
     <string name="playlist_empty">Grojaraštis tuščias</string>
     <string name="clear_playlist">Išvalyti grojaraštį</string>
     <string name="source_empty">Media šaltinis tuščias</string>
-
     <string name="no_movies_found_refresh">Filmų nerasta\n\nBraukite žemyn norėdami atnaujinti</string>
     <string name="no_tvshows_found_refresh">TV laidų nerasta\n\nBraukite žemyn norėdami atnaujinti</string>
     <string name="no_episodes_found">Epizodų nerasta</string>
@@ -245,12 +212,10 @@
     <string name="no_broadcasts_found_refresh">Transliacijų nerasta.\n\nBraukite žemyn norėdami atnaujinti</string>
     <string name="pull_to_refresh">Braukite norėdami atnaujinti</string>
     <string name="no_cast_info">Nėra aktorių informacijos</string>
-
     <string name="minutes_abbrev">%1$s min</string>
     <string name="minutes_abbrev2">%1$sm</string>
     <string name="sync_successful">Sinchronizacija sėkminga</string>
     <string name="error_while_syncing">Sinchronizuojant įvyko klaida: %1$s</string>
-
     <string name="action_search">Ieškoti</string>
     <string name="action_search_movies">Ieškoti filmų</string>
     <string name="action_search_tvshows">Ieškoti TV laidų</string>
@@ -258,47 +223,37 @@
     <string name="action_search_artists">Ieškoti atlikėjų</string>
     <string name="action_search_genres">Ieškoti žanrų</string>
     <string name="action_search_music_videos">Ieškoti vaizdo įrašų</string>
-
     <string name="add_to_playlist">Pridėti į grojaraštį</string>
     <string name="item_added_to_playlist">Pridėta į grojaraštį</string>
     <string name="no_suitable_playlist">Nerastas tinkamas grojaraštis šio media tipo pridėjimui.</string>
-
     <string name="imdb">IMDb</string>
     <string name="seen">Matytas</string>
     <string name="download">Atsisiųsti</string>
-
     <string name="confirm_movie_download">Ar tikrai norite atsisiųsti šį filmą?\nFilmas bus atsiųstas fone, tačiau tai gali užtrukti.</string>
     <string name="confirm_episode_download">Ar tikrai norite atsisiųsti šį epizodą?\nEpizodas bus atsiųstas fone, tačiau tai gali užtrukti.</string>
     <string name="confirm_album_download">Ar tikrai norite atsisiųsti šį albumą?\nAlbumas bus atsiųstas fone, tačiau tai gali užtrukti.</string>
     <string name="confirm_artist_download">Ar tikrai norite atsisiųsti visus albumus?\nAlbumai bus atsiųsti fone, tačiau tai gali užtrukti.</string>
     <string name="confirm_songs_download">Ar tikrai norite atsisiųsti %1$d dainų?\nDainos bus atsiųstos fone, Tačiau tai gali užtrukti.</string>
-
     <string name="download_file_exists">Failas jau egzistuoja.\nNorite jį perrašyti ar išsaugoti kitu vardu?</string>
     <string name="download_dir_exists">Atsiuntimo aplankas jau egzistuoja.\nJei kurių nors failų vardai sutaps, norite juos perrašyti ar išsaugoti kitais vardais?</string>
     <string name="download_files_exists">Vienas ar daugiau failų jau egzistuoja.\nJei kurie nors failai turi tą patį pavadinimą, norite juos perrašyti ir išsaugoti kitu pavadinimu?</string>
     <string name="overwrite">Perrašyti</string>
     <string name="download_with_new_name">Naujas vardas</string>
     <string name="download_file_description">Atsisiųsta iš jūsų media centro</string>
-
     <string name="num_episodes">Epizodų: %1$d | Neperžiūrėta: %2$d</string>
     <string name="premiered">Premjera: %1$s</string>
-
     <string name="tvshow_overview">Apžvalga</string>
     <string name="tvshow_episodes">Epizodai</string>
     <string name="tvshow_seasons">Sezonai</string>
     <string name="tvshow_next_episode">Kiti epizodai</string>
-
     <string name="addon_overview">Apžvalga</string>
     <string name="addon_content">Turinys</string>
-
     <string name="artists">Atlikėjai</string>
     <string name="albums">Albumai</string>
     <string name="genres">Žanrai</string>
     <string name="music_videos">Vaizdo įrašai</string>
-
     <string name="no_files_to_download">Nėra failų atsisiuntimui.</string>
     <string name="error_getting_file_information">Neįmanoma gauti informacijos failo %1$s atsiuntimui.</string>
-
     <string name="author">Autorius:</string>
     <string name="version">Versija:</string>
     <string name="enable_disable">Įjungti/išjungti priedą</string>
@@ -307,7 +262,6 @@
     <string name="pin_unpin">Prisegti/Atsegti priedą</string>
     <string name="addon_pinned">Priedas prisegtas</string>
     <string name="addon_unpinned">Priedas atsegtas</string>
-
     <!-- Filters on list menus -->
     <string name="hide_watched">Slėpti peržiūrėtus</string>
     <string name="sort_order">Rūšiuoti</string>
@@ -318,13 +272,11 @@
     <string name="sort_by_date_added">Pagal įdėjimo datą</string>
     <string name="sort_by_last_played">Pagal paskutinį atkūrimą</string>
     <string name="ignore_prefixes">Ignoruoti prefiksus</string>
-
     <!-- Preferences strings -->
     <string name="theme">Tema</string>
     <string name="theme_night">Naktis</string>
     <string name="theme_day">Diena</string>
     <string name="theme_mist">Rūkas</string>
-
     <string name="switch_to_remote">Atidaryti pultą paleidus media</string>
     <string name="keep_remote_above_lockscreen">Rodyti pultą užrakintame ekrane</string>
     <string name="pref_keep_screen_on">Laikyti ekraną įjungtą naudojant pultą</string>
@@ -333,7 +285,6 @@
     <string name="use_hardware_volume_keys">Valdyti garsumą garso mygtukais</string>
     <string name="vibrate_on_remote">Vibruoti paspaudus pulto mygtuką</string>
     <string name="nav_drawer_items">Šoninio meniu nuorodos</string>
-
     <string name="about">Apie</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2018 XBMC Foundation<br><br>
@@ -341,23 +292,19 @@
 
         Jei reikia pagalbos, apsilankykite <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forume</a></b>
     ]]></string>
-
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
     <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
     <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
     <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
-
     <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
-
     <string name="play_on_kodi">Atkurti Kodi</string>
     <string name="pause_call_incoming_title">Įeinantis skambutis</string>
     <string name="pause_call_incoming_message">Patikrinkite telefoną, kažkas jums skambina</string>
-
     <string name="error_getting_pvr_info">Gaunant PVR informaciją įvyko klaida: %1$s</string>
     <string name="might_not_have_pvr">Gaunant kanalo informaciją įvyko klaida, tikriausiai dėl to, kad media centras neturi imtuvo arba jis nesukonfigūruotas.\n\nJei taip yra, jūs tikriausiai norėsite pašalinti šį įrašą iš šoninio meniu - tai atlikti galite nustatymuose.</string>
     <string name="error_starting_channel">Pradedant kanalo atkūrimą įvyko klaida: %1$s</string>
@@ -366,13 +313,11 @@
     <string name="channel_switching">Perjungiama į kanalą %1$s</string>
     <string name="starting_recording">Pradedamas įrašymas %1$s</string>
     <string name="refresh">Atnaujinti</string>
-
     <string name="tv">Televizija</string>
     <string name="radio">Radijas</string>
     <string name="recordings">Įrašai</string>
     <string name="tv_channels">TV kanalai</string>
     <string name="radio_channels">Radijo kanalai</string>
-
     <string name="record">Įrašyti</string>
     <string name="pvr_epg">Gidas</string>
     <string name="unable_to_move_item">Neįmanoma perkelti elemento</string>
@@ -380,18 +325,16 @@
     <string name="no_connection_type_selected">Nepasrinktas prisijungimo tipas nustatymuose</string>
     <string name="single_column">Vienas stulpelis</string>
     <string name="multi_column">Keli stulpeliai</string>
-
     <string name="download_network_types_title">Tinklo tipai atsiuntimams</string>
     <string name="download_network_types_summary">Leidžiami tinklo tipai media atsiuntimams</string>
     <string name="songs">Dainos</string>
-
     <string name="read_phone_state_permission_denied">Leidimas nesuteiktas. Nebus įmanoma pristabdyti atkūrimo skambučių metu.</string>
     <string name="write_storage_permission_denied">Leidimas nesuteiktas. Nebus įmanoma atsisiųsti failų.</string>
-
     <string name="no_songs_to_download">Nėra dainų atsisiuntimui</string>
     <string name="by_album">Pagal albumą</string>
     <string name="by_artist">Pagal atlikėją</string>
     <string name="by_artist_and_year">Pagal atlikėją ir metus</string>
     <string name="muted">nutildyta</string>
-
+    <string name="favourites">Mėgstamiausi</string>
+    <string name="videos">Vaizdo įrašai</string>
 </resources>
