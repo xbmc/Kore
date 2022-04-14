@@ -62,4 +62,6 @@
     <string name="music">Müzik</string>
     <string name="tv_shows">Diziler</string>
     <string name="movies">Filmler</string>
+    <string name="music_videos">Videolar</string>
+    <string name="videos">Videolar</string>
 </resources>

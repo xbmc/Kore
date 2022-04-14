@@ -34,4 +34,12 @@
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
     <string name="max_rating_music" translatable="false">/5</string>
+    <string name="radio">Radio</string>
+    <string name="music_videos">Fideos</string>
+    <string name="favourites">Ffefrynnau</string>
+    <string name="videos">Fideos</string>
+    <string name="pictures">Lluniau</string>
+    <string name="music">Cerddoriaeth</string>
+    <string name="tv_shows">Rhaglenni teledu</string>
+    <string name="movies">Ffilmiau</string>
 </resources>

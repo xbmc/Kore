@@ -422,4 +422,5 @@
     <string name="mobile_network">Мобильная сеть</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="always_sendtokodi_addon">Всегда использовать дополнение SendToKodi</string>
+    <string name="wizard_xbmc_direct_share">Показать в общем листе</string>
 </resources>

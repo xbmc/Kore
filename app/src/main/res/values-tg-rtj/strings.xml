@@ -34,4 +34,12 @@
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
     <string name="max_rating_music" translatable="false">/5</string>
+    <string name="radio">Радио</string>
+    <string name="music_videos">Видеоҳо</string>
+    <string name="favourites">Баргузидаҳо</string>
+    <string name="videos">Видеоҳо</string>
+    <string name="pictures">Тасвирҳо</string>
+    <string name="music">Мусиқӣ</string>
+    <string name="tv_shows">Барномаҳои ТВ</string>
+    <string name="movies">Филмҳо</string>
 </resources>
