@@ -34,4 +34,12 @@
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
     <string name="max_rating_music" translatable="false">/5</string>
+    <string name="radio">วิทยุ</string>
+    <string name="music_videos">วิดีโอ</string>
+    <string name="favourites">ที่ชื่นชอบ</string>
+    <string name="videos">วิดีโอ</string>
+    <string name="pictures">รูปภาพ</string>
+    <string name="music">เพลง</string>
+    <string name="tv_shows">รายการทีวี</string>
+    <string name="movies">ภาพยนตร์</string>
 </resources>

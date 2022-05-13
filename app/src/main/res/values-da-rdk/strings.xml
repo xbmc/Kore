@@ -87,4 +87,7 @@
     <string name="suspend">Slumre</string>
     <string name="now_playing">Afspiller nu</string>
     <string name="text_to_send">Tekst der sendes</string>
+    <string name="genres">Genrer</string>
+    <string name="albums">Albummer</string>
+    <string name="artists">Kunstnere</string>
 </resources>
