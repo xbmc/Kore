@@ -361,4 +361,29 @@
     <string name="error_reading_local_storage">Lokaler Speicher konnte nicht gelesen werden. Kore Berechtigung zum Zugriff auf den Dateispeicher geben\?</string>
     <string name="read_storage_permission_denied">Erlaubnis verweigert. Kann keine Dateien lesen.</string>
     <string name="videos">Videos</string>
+    <string name="error_play_local_file">Lokale Mediendatei konnte nicht wiedergegeben werden.
+\nFehlermeldung: %1$s.</string>
+    <string name="wizard_xbmc_direct_share">Im Teilen-Menü anzeigen</string>
+    <string name="system">System</string>
+    <string name="local_file_browser">Browser für lokale Dateien</string>
+    <string name="script">Skript</string>
+    <string name="media">Medien</string>
+    <string name="local_files">Lokale Dateien</string>
+    <string name="external_storage">Speicherplatz</string>
+    <string name="show_now_playing_panel">„Aktuelle Wiedergabe“ anzeigen</string>
+    <string name="theme_sunset">Sonnenuntergang</string>
+    <string name="theme_sunrise">Sonnenaufgang</string>
+    <string name="show_rating">Bewertung anzeigen</string>
+    <string name="show_watched_status">Gesehen-Status anzeigen</string>
+    <string name="item_sent_to_kodi">An Kodi gesendet</string>
+    <string name="error_starting_http_server">HTTP Server konnte nicht angelegt oder gestartet werden.</string>
+    <string name="always_sendtokodi_addon">SendToKodi-Addon immer bevorzugen</string>
+    <string name="remote_bar_items">Verknüpfungen in der Fußleiste</string>
+    <string name="unable_to_play_favourite_item">Kann Favoritenelement nicht wiedergeben. Nicht unterstützter Typ</string>
+    <string name="queue_on_kodi">Zu Kodi-Warteschlange hinzufügen</string>
+    <string name="no_item_available_to_play">Fehler: Kein Element für Wiedergabe vorhanden.</string>
+    <string name="Refreshing_not_implemented_for_this_item">Aktualisieren für dieses Element nicht möglich</string>
+    <string name="zeroprogress">0:00</string>
+    <string name="dcim">DCIM</string>
+    <string name="language">Sprache</string>
 </resources>
