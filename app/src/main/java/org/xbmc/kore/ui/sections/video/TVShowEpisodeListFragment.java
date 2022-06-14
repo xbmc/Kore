@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.content.CursorLoader;
 
@@ -98,7 +99,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     @TargetApi(16)
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         tvshowId = getArguments().getInt(TVSHOWID, -1);
         tvshowSeason = getArguments().getInt(TVSHOWSEASON, -1);
@@ -157,7 +158,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         if (!isAdded()) {
             // HACK: Fix crash reported on Play Store. Why does this is necessary is beyond me
             super.onCreateOptionsMenu(menu, inflater);

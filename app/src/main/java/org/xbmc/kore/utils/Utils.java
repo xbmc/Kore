@@ -67,8 +67,8 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
     }
 
-    public static boolean isKitKatOrLater() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    public static boolean isMOrLater() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
     public static boolean isLollipopOrLater() {
@@ -79,15 +79,10 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
-    public static boolean isLollipopAndPreOreo() {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) &&
-               (Build.VERSION.SDK_INT < 27);
-    }
-
     /**
      * Concats a list of strings...
-     * @param list
-     * @param delimiter
+     * @param list List to contacenate
+     * @param delimiter delimiter
      * @return
      */
     public static String listStringConcat(List<String> list, String delimiter) {
@@ -104,8 +99,8 @@ public class Utils {
 
     /**
      * Concats a list of integers...
-     * @param list
-     * @param delimiter
+     * @param list List to contacenate
+     * @param delimiter delimiter
      * @return
      */
     public static String listIntegerConcat(List<Integer> list, String delimiter) {

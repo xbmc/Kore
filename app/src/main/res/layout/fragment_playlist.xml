@@ -20,7 +20,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/remote_info_panel"/>
+    <include
+        android:id="@+id/include_info_panel"
+        layout="@layout/remote_info_panel"/>
 
     <org.xbmc.kore.ui.widgets.PlaylistsBar
         android:id="@+id/playlists_bar"

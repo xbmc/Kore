@@ -27,18 +27,17 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.FragmentAddHostZeroconfBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.utils.LogUtils;
@@ -49,10 +48,6 @@ import java.net.InetAddress;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * Fragment that searchs foor XBMCs using Zeroconf
@@ -72,27 +67,17 @@ public class AddHostFragmentZeroconf extends Fragment {
      * Callback interface to communicate with the enclosing activity
      */
     public interface AddHostZeroconfListener {
-        public void onAddHostZeroconfNoHost();
-        public void onAddHostZeroconfFoundHost(HostInfo hostInfo);
+        void onAddHostZeroconfNoHost();
+        void onAddHostZeroconfFoundHost(HostInfo hostInfo);
     }
 
     private AddHostZeroconfListener listener;
-    private Unbinder unbinder;
-
-    @BindView(R.id.search_host_title) TextView titleTextView;
-    @BindView(R.id.search_host_message) TextView messageTextView;
-    @BindView(R.id.next) Button nextButton;
-    @BindView(R.id.previous) Button previousButton;
-
-    @BindView(R.id.progress_bar) ProgressBar progressBar;
-    @BindView(R.id.list) GridView hostListGridView;
+    private FragmentAddHostZeroconfBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_add_host_zeroconf, container, false);
-        unbinder = ButterKnife.bind(this, root);
-
-        return root;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentAddHostZeroconfBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -106,19 +91,19 @@ public class AddHostFragmentZeroconf extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             listener = (AddHostZeroconfListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement AddHostZeroconfListener interface.");
+            throw new ClassCastException(activity + " must implement AddHostZeroconfListener interface.");
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
     // Whether the user cancelled the search
@@ -137,72 +122,63 @@ public class AddHostFragmentZeroconf extends Fragment {
         LogUtils.LOGD(TAG, "Starting service discovery...");
         searchCancelled = false;
         final Handler handler = new Handler();
-        final Thread searchThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                WifiManager wifiManager = (WifiManager)getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        final Thread searchThread = new Thread(() -> {
+            WifiManager wifiManager = (WifiManager)requireActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-                WifiManager.MulticastLock multicastLock = null;
-                try {
-                    // Get wifi ip address
-                    int wifiIpAddress = wifiManager.getConnectionInfo().getIpAddress();
-                    InetAddress wifiInetAddress = NetUtils.intToInetAddress(wifiIpAddress);
+            WifiManager.MulticastLock multicastLock = null;
+            try {
+                // Get wifi ip address
+                int wifiIpAddress = wifiManager.getConnectionInfo().getIpAddress();
+                InetAddress wifiInetAddress = NetUtils.intToInetAddress(wifiIpAddress);
 
-                    // Acquire multicast lock
-                    multicastLock = wifiManager.createMulticastLock("kore2.multicastlock");
-                    multicastLock.setReferenceCounted(false);
-                    multicastLock.acquire();
+                // Acquire multicast lock
+                multicastLock = wifiManager.createMulticastLock("kore2.multicastlock");
+                multicastLock.setReferenceCounted(false);
+                multicastLock.acquire();
 
-                    JmDNS jmDns = (wifiInetAddress != null)?
-                                  JmDNS.create(wifiInetAddress) :
-                                  JmDNS.create();
+                JmDNS jmDns = (wifiInetAddress != null)?
+                              JmDNS.create(wifiInetAddress) :
+                              JmDNS.create();
 
-                    // Get the json rpc service list
-                    final ServiceInfo[] serviceInfos =
-                            jmDns.list(MDNS_XBMC_SERVICENAME, DISCOVERY_TIMEOUT);
+                // Get the json rpc service list
+                final ServiceInfo[] serviceInfos =
+                        jmDns.list(MDNS_XBMC_SERVICENAME, DISCOVERY_TIMEOUT);
 
-                    synchronized (lock) {
-                        // If the user didn't cancel the search, and we are sill in the activity
-                        if (!searchCancelled && isAdded()) {
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if ((serviceInfos == null) || (serviceInfos.length == 0)) {
-                                        noHostFound();
-                                    } else {
-                                        foundHosts(serviceInfos);
-                                    }
-                                }
-                            });
-                        }
+                synchronized (lock) {
+                    // If the user didn't cancel the search, and we are sill in the activity
+                    if (!searchCancelled && isAdded()) {
+                        handler.post(() -> {
+                            if ((serviceInfos == null) || (serviceInfos.length == 0)) {
+                                noHostFound();
+                            } else {
+                                foundHosts(serviceInfos);
+                            }
+                        });
                     }
-                } catch (IOException e) {
-                    LogUtils.LOGD(TAG, "Got an IO Exception", e);
-                } finally {
-                    if (multicastLock != null)
-                        multicastLock.release();
                 }
+            } catch (IOException e) {
+                LogUtils.LOGD(TAG, "Got an IO Exception", e);
+            } finally {
+                if (multicastLock != null)
+                    multicastLock.release();
             }
         });
 
-        titleTextView.setText(R.string.searching);
-        messageTextView.setText(Html.fromHtml(getString(R.string.wizard_search_message)));
-        messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.searchHostTitle.setText(R.string.searching);
+        binding.searchHostMessage.setText(Html.fromHtml(getString(R.string.wizard_search_message)));
+        binding.searchHostMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
-        progressBar.setVisibility(View.VISIBLE);
-        hostListGridView.setVisibility(View.GONE);
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.list.setVisibility(View.GONE);
 
         // Setup buttons
-        nextButton.setVisibility(View.INVISIBLE);
-        previousButton.setVisibility(View.VISIBLE);
-        previousButton.setText(android.R.string.cancel);
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                synchronized (lock) {
-                    searchCancelled = true;
-                    noHostFound();
-                }
+        binding.wizardButtonBar.next.setVisibility(View.INVISIBLE);
+        binding.wizardButtonBar.previous.setVisibility(View.VISIBLE);
+        binding.wizardButtonBar.previous.setText(android.R.string.cancel);
+        binding.wizardButtonBar.previous.setOnClickListener(v -> {
+            synchronized (lock) {
+                searchCancelled = true;
+                noHostFound();
             }
         });
 
@@ -215,30 +191,20 @@ public class AddHostFragmentZeroconf extends Fragment {
     public void noHostFound() {
         if (!isAdded()) return;
 
-        titleTextView.setText(R.string.no_xbmc_found);
-        messageTextView.setText(Html.fromHtml(getString(R.string.wizard_search_no_host_found)));
-        messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.searchHostTitle.setText(R.string.no_xbmc_found);
+        binding.searchHostMessage.setText(Html.fromHtml(getString(R.string.wizard_search_no_host_found)));
+        binding.searchHostMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
-        progressBar.setVisibility(View.GONE);
-        hostListGridView.setVisibility(View.GONE);
+        binding.progressBar.setVisibility(View.GONE);
+        binding.list.setVisibility(View.GONE);
 
-        nextButton.setVisibility(View.VISIBLE);
-        nextButton.setText(R.string.next);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddHostZeroconfNoHost();
-            }
-        });
+        binding.wizardButtonBar.next.setVisibility(View.VISIBLE);
+        binding.wizardButtonBar.next.setText(R.string.next);
+        binding.wizardButtonBar.next.setOnClickListener(v -> listener.onAddHostZeroconfNoHost());
 
-        previousButton.setVisibility(View.VISIBLE);
-        previousButton.setText(R.string.search_again);
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSearching();
-            }
-        });
+        binding.wizardButtonBar.previous.setVisibility(View.VISIBLE);
+        binding.wizardButtonBar.previous.setText(R.string.search_again);
+        binding.wizardButtonBar.previous.setOnClickListener(v -> startSearching());
     }
 
     /**
@@ -249,80 +215,62 @@ public class AddHostFragmentZeroconf extends Fragment {
         if (!isAdded()) return;
 
         LogUtils.LOGD(TAG, "Found hosts: " + serviceInfos.length);
-        titleTextView.setText(R.string.xbmc_found);
-        messageTextView.setText(Html.fromHtml(getString(R.string.wizard_search_host_found)));
-        messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.searchHostTitle.setText(R.string.xbmc_found);
+        binding.searchHostMessage.setText(Html.fromHtml(getString(R.string.wizard_search_host_found)));
+        binding.searchHostMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
-        nextButton.setVisibility(View.VISIBLE);
-        nextButton.setText(R.string.next);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddHostZeroconfNoHost();
-            }
-        });
+        binding.wizardButtonBar.next.setVisibility(View.VISIBLE);
+        binding.wizardButtonBar.next.setText(R.string.next);
+        binding.wizardButtonBar.next.setOnClickListener(v -> listener.onAddHostZeroconfNoHost());
 
-        previousButton.setVisibility(View.VISIBLE);
-        previousButton.setText(R.string.search_again);
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSearching();
-            }
-        });
+        binding.wizardButtonBar.previous.setVisibility(View.VISIBLE);
+        binding.wizardButtonBar.previous.setText(R.string.search_again);
+        binding.wizardButtonBar.previous.setOnClickListener(v -> startSearching());
 
-        progressBar.setVisibility(View.GONE);
-        hostListGridView.setVisibility(View.VISIBLE);
+        binding.progressBar.setVisibility(View.GONE);
+        binding.list.setVisibility(View.VISIBLE);
 
         HostListAdapter adapter = new HostListAdapter(getActivity(), R.layout.grid_item_host, serviceInfos);
-        hostListGridView.setAdapter(adapter);
-        hostListGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long itemId) {
-                ServiceInfo selectedServiceInfo = serviceInfos[position];
+        binding.list.setAdapter(adapter);
+        binding.list.setOnItemClickListener((parent, view, position, itemId) -> {
+            ServiceInfo selectedServiceInfo = serviceInfos[position];
 
-                String[] addresses = selectedServiceInfo.getHostAddresses();
-                if (addresses.length == 0) {
-                    // Couldn't get any address
-                    Toast.makeText(getActivity(), R.string.wizard_zeroconf_cant_connect_no_host_address, Toast.LENGTH_LONG)
-                            .show();
-                    return;
-                }
-                String hostName = selectedServiceInfo.getName();
-                String hostAddress = addresses[0];
-                int hostHttpPort = selectedServiceInfo.getPort();
-                HostInfo selectedHostInfo = new HostInfo(hostName, hostAddress, HostConnection.PROTOCOL_TCP,
-                        hostHttpPort, HostInfo.DEFAULT_TCP_PORT, null, null, true, HostInfo.DEFAULT_EVENT_SERVER_PORT, false, true);
-
-                listener.onAddHostZeroconfFoundHost(selectedHostInfo);
+            String[] addresses = selectedServiceInfo.getHostAddresses();
+            if (addresses.length == 0) {
+                // Couldn't get any address
+                Toast.makeText(getActivity(), R.string.wizard_zeroconf_cant_connect_no_host_address, Toast.LENGTH_LONG)
+                        .show();
+                return;
             }
+            String hostName = selectedServiceInfo.getName();
+            String hostAddress = addresses[0];
+            int hostHttpPort = selectedServiceInfo.getPort();
+            HostInfo selectedHostInfo = new HostInfo(hostName, hostAddress, HostConnection.PROTOCOL_TCP,
+                    hostHttpPort, HostInfo.DEFAULT_TCP_PORT, null, null, true, HostInfo.DEFAULT_EVENT_SERVER_PORT, false, true);
+
+            listener.onAddHostZeroconfFoundHost(selectedHostInfo);
         });
 
     }
 
     private void noNetworkConnection() {
-        titleTextView.setText(R.string.no_network_connection);
-        messageTextView.setText(Html.fromHtml(getString(R.string.wizard_search_no_network_connection)));
-        messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.searchHostTitle.setText(R.string.no_network_connection);
+        binding.searchHostMessage.setText(Html.fromHtml(getString(R.string.wizard_search_no_network_connection)));
+        binding.searchHostMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
-        progressBar.setVisibility(View.GONE);
-        hostListGridView.setVisibility(View.GONE);
+        binding.progressBar.setVisibility(View.GONE);
+        binding.list.setVisibility(View.GONE);
 
-        nextButton.setVisibility(View.GONE);
+        binding.wizardButtonBar.next.setVisibility(View.GONE);
 
-        previousButton.setVisibility(View.VISIBLE);
-        previousButton.setText(R.string.search_again);
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSearching();
-            }
-        });
+        binding.wizardButtonBar.previous.setVisibility(View.VISIBLE);
+        binding.wizardButtonBar.previous.setText(R.string.search_again);
+        binding.wizardButtonBar.previous.setOnClickListener(v -> startSearching());
     }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
@@ -355,7 +303,7 @@ public class AddHostFragmentZeroconf extends Fragment {
             ((TextView) convertView.findViewById(R.id.host_address)).setText(hostAddress);
 
             ImageView statusIndicator = (ImageView)convertView.findViewById(R.id.status_indicator);
-            int statusColor = getActivity().getResources().getColor(R.color.host_status_available);
+            int statusColor = requireActivity().getResources().getColor(R.color.host_status_available);
             statusIndicator.setColorFilter(statusColor);
 
             // Remove context menu

@@ -48,7 +48,7 @@
                 android:text="@string/wizard_manual_configuration_message"/>
 
             <EditText
-                android:id="@+id/xbmc_name"
+                android:id="@+id/kodi_name"
                 style="@style/TextAppearance.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,56 +61,56 @@
                 android:hint="@string/wizard_xbmc_name"/>
 
             <EditText
-                android:id="@+id/xbmc_http_port"
+                android:id="@+id/kodi_http_port"
                 style="@style/TextAppearance.EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/xbmc_name"
-                android:layout_alignRight="@id/xbmc_name"
-                android:layout_alignEnd="@id/xbmc_name"
+                android:layout_below="@+id/kodi_name"
+                android:layout_alignRight="@id/kodi_name"
+                android:layout_alignEnd="@id/kodi_name"
 
                 android:inputType="number"
                 android:ems="4"
                 android:hint="@string/wizard_xbmc_port"/>
 
             <EditText
-                android:id="@+id/xbmc_ip_address"
+                android:id="@+id/kodi_ip_address"
                 style="@style/TextAppearance.EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/xbmc_http_port"
-                android:layout_alignLeft="@id/xbmc_name"
-                android:layout_alignStart="@id/xbmc_name"
-                android:layout_toLeftOf="@id/xbmc_http_port"
-                android:layout_toStartOf="@id/xbmc_http_port"
+                android:layout_alignTop="@id/kodi_http_port"
+                android:layout_alignLeft="@id/kodi_name"
+                android:layout_alignStart="@id/kodi_name"
+                android:layout_toLeftOf="@id/kodi_http_port"
+                android:layout_toStartOf="@id/kodi_http_port"
 
                 android:inputType="textNoSuggestions"
                 android:hint="@string/wizard_xbmc_ip"/>
 
             <EditText
-                android:id="@+id/xbmc_username"
+                android:id="@+id/kodi_username"
                 style="@style/TextAppearance.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/xbmc_ip_address"
-                android:layout_alignLeft="@id/xbmc_name"
-                android:layout_alignStart="@id/xbmc_name"
-                android:layout_alignRight="@id/xbmc_name"
-                android:layout_alignEnd="@id/xbmc_name"
+                android:layout_below="@+id/kodi_ip_address"
+                android:layout_alignLeft="@id/kodi_name"
+                android:layout_alignStart="@id/kodi_name"
+                android:layout_alignRight="@id/kodi_name"
+                android:layout_alignEnd="@id/kodi_name"
 
                 android:inputType="textNoSuggestions"
                 android:hint="@string/wizard_xbmc_username"/>
 
             <EditText
-                android:id="@+id/xbmc_password"
+                android:id="@+id/kodi_password"
                 style="@style/TextAppearance.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/xbmc_username"
-                android:layout_alignLeft="@id/xbmc_name"
-                android:layout_alignStart="@id/xbmc_name"
-                android:layout_alignRight="@id/xbmc_name"
-                android:layout_alignEnd="@id/xbmc_name"
+                android:layout_below="@+id/kodi_username"
+                android:layout_alignLeft="@id/kodi_name"
+                android:layout_alignStart="@id/kodi_name"
+                android:layout_alignRight="@id/kodi_name"
+                android:layout_alignEnd="@id/kodi_name"
 
                 android:inputType="textPassword"
                 android:hint="@string/wizard_xbmc_password"/>
@@ -119,92 +119,92 @@
                 android:id="@android:id/text1"
                 style="@style/WizardMessage"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/xbmc_password"
+                android:layout_below="@+id/kodi_password"
                 android:layout_marginTop="16dp"
                 android:text="@string/wizard_manual_configuration_message_advanced"/>
 
             <EditText
-                android:id="@+id/xbmc_tcp_port"
+                android:id="@+id/kodi_tcp_port"
                 style="@style/TextAppearance.EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/text1"
                 android:layout_marginTop="8dp"
-                android:layout_alignRight="@id/xbmc_name"
-                android:layout_alignEnd="@id/xbmc_name"
+                android:layout_alignRight="@id/kodi_name"
+                android:layout_alignEnd="@id/kodi_name"
                 android:inputType="number"
                 android:ems="7"
                 android:hint="@string/wizard_xbmc_tcp_port"/>
 
             <CheckBox
-                android:id="@+id/xbmc_use_tcp"
+                android:id="@+id/kodi_use_tcp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/xbmc_tcp_port"
-                android:layout_alignLeft="@id/xbmc_name"
-                android:layout_alignStart="@id/xbmc_name"
-                android:layout_toLeftOf="@id/xbmc_tcp_port"
-                android:layout_toStartOf="@id/xbmc_tcp_port"
+                android:layout_alignTop="@+id/kodi_tcp_port"
+                android:layout_alignLeft="@id/kodi_name"
+                android:layout_alignStart="@id/kodi_name"
+                android:layout_toLeftOf="@id/kodi_tcp_port"
+                android:layout_toStartOf="@id/kodi_tcp_port"
                 android:text="@string/wizard_xbmc_use_tcp"/>
 
             <EditText
-                android:id="@+id/xbmc_event_server_port"
+                android:id="@+id/kodi_event_server_port"
                 style="@style/TextAppearance.EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/xbmc_tcp_port"
-                android:layout_alignLeft="@id/xbmc_tcp_port"
-                android:layout_alignStart="@id/xbmc_tcp_port"
-                android:layout_alignRight="@id/xbmc_tcp_port"
-                android:layout_alignEnd="@id/xbmc_tcp_port"
+                android:layout_below="@+id/kodi_tcp_port"
+                android:layout_alignLeft="@id/kodi_tcp_port"
+                android:layout_alignStart="@id/kodi_tcp_port"
+                android:layout_alignRight="@id/kodi_tcp_port"
+                android:layout_alignEnd="@id/kodi_tcp_port"
                 android:inputType="number"
                 android:ems="7"
                 android:hint="@string/wizard_xbmc_event_server_port"/>
 
             <CheckBox
-                android:id="@+id/xbmc_use_event_server"
+                android:id="@+id/kodi_use_event_server"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/xbmc_event_server_port"
-                android:layout_alignLeft="@id/xbmc_name"
-                android:layout_alignStart="@id/xbmc_name"
-                android:layout_toLeftOf="@id/xbmc_event_server_port"
-                android:layout_toStartOf="@id/xbmc_event_server_port"
+                android:layout_alignTop="@+id/kodi_event_server_port"
+                android:layout_alignLeft="@id/kodi_name"
+                android:layout_alignStart="@id/kodi_name"
+                android:layout_toLeftOf="@id/kodi_event_server_port"
+                android:layout_toStartOf="@id/kodi_event_server_port"
                 android:text="@string/wizard_xbmc_use_event_server"/>
 
             <EditText
-                android:id="@+id/xbmc_wol_port"
+                android:id="@+id/kodi_wol_port"
                 style="@style/TextAppearance.EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/xbmc_event_server_port"
-                android:layout_alignLeft="@id/xbmc_event_server_port"
-                android:layout_alignStart="@id/xbmc_event_server_port"
-                android:layout_alignRight="@id/xbmc_event_server_port"
-                android:layout_alignEnd="@id/xbmc_event_server_port"
+                android:layout_below="@+id/kodi_event_server_port"
+                android:layout_alignLeft="@id/kodi_event_server_port"
+                android:layout_alignStart="@id/kodi_event_server_port"
+                android:layout_alignRight="@id/kodi_event_server_port"
+                android:layout_alignEnd="@id/kodi_event_server_port"
                 android:inputType="number"
                 android:hint="@string/wizard_xbmc_wol_port"/>
 
             <EditText
-                android:id="@+id/xbmc_mac_address"
+                android:id="@+id/kodi_mac_address"
                 style="@style/TextAppearance.EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/xbmc_wol_port"
-                android:layout_alignLeft="@id/xbmc_name"
-                android:layout_alignStart="@id/xbmc_name"
-                android:layout_toLeftOf="@id/xbmc_wol_port"
-                android:layout_toStartOf="@id/xbmc_wol_port"
+                android:layout_alignTop="@+id/kodi_wol_port"
+                android:layout_alignLeft="@id/kodi_name"
+                android:layout_alignStart="@id/kodi_name"
+                android:layout_toLeftOf="@id/kodi_wol_port"
+                android:layout_toStartOf="@id/kodi_wol_port"
                 android:inputType="text"
                 android:hint="@string/wizard_xbmc_mac_address"/>
 
             <CheckBox
-                android:id="@+id/xbmc_direct_share"
+                android:id="@+id/kodi_direct_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/xbmc_mac_address"
-                android:layout_alignLeft="@id/xbmc_mac_address"
-                android:layout_alignStart="@id/xbmc_mac_address"
+                android:layout_below="@+id/kodi_mac_address"
+                android:layout_alignLeft="@id/kodi_mac_address"
+                android:layout_alignStart="@id/kodi_mac_address"
                 android:text="@string/wizard_xbmc_direct_share"/>
 
 
@@ -216,7 +216,7 @@
         style="@style/DefaultDividerH"/>
 
     <include layout="@layout/wizard_button_bar"
-             android:id="@+id/button_bar"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"/>
+        android:id="@+id/wizard_button_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

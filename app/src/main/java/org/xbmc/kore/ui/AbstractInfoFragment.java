@@ -16,6 +16,8 @@
 
 package org.xbmc.kore.ui;
 
+import static android.view.View.GONE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -28,15 +30,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -46,13 +39,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.FragmentInfoBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -70,13 +68,6 @@ import org.xbmc.kore.utils.Utils;
 
 import java.util.Locale;
 
-import at.blogc.android.views.ExpandableTextView;
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.Unbinder;
-
-import static android.view.View.GONE;
-
 abstract public class AbstractInfoFragment extends AbstractFragment
         implements SwipeRefreshLayout.OnRefreshListener,
                    SyncUtils.OnServiceListener,
@@ -85,30 +76,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
     private static final String BUNDLE_KEY_APIMETHOD_PENDING = "pending_apimethod";
 
-    // Detail views
-    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.media_panel) NestedScrollView panelScrollView;
-    @BindView(R.id.art) ImageView artImageView;
-    @BindView(R.id.poster) ImageView posterImageView;
-    @BindView(R.id.media_title) TextView titleTextView;
-    @BindView(R.id.media_undertitle) TextView underTitleTextView;
-    @BindView(R.id.rating_container) LinearLayout ratingContainer;
-    @BindView(R.id.rating) TextView ratingTextView;
-    @BindView(R.id.rating_votes) TextView ratingVotesTextView;
-    @BindView(R.id.max_rating) TextView maxRatingTextView;
-    @BindView(R.id.media_details_right) TextView detailsRightTextView;
-    @BindView(R.id.media_details) LinearLayout mediaDetailsContainer;
-    @BindView(R.id.media_action_download) ImageButton downloadButton;
-    @BindView(R.id.media_action_pin_unpin) ImageButton pinUnpinButton;
-    @BindView(R.id.media_action_add_to_playlist) ImageButton addToPlaylistButton;
-    @BindView(R.id.media_action_seen) ImageButton seenButton;
-    @BindView(R.id.media_action_go_to_imdb) ImageButton imdbButton;
-    @BindView(R.id.media_actions_bar) LinearLayout mediaActionsBar;
-    @BindView(R.id.media_description) ExpandableTextView descriptionExpandableTextView;
-    @BindView(R.id.media_description_container) LinearLayout descriptionContainer;
-    @BindView(R.id.show_all) ImageView expansionImage;
-    @BindView(R.id.fab) FABSpeedDial fabButton;
-    @BindView(R.id.exit_transition_view) View exitTransitionView;
+    private FragmentInfoBinding binding;
 
     private HostManager hostManager;
     private HostInfo hostInfo;
@@ -116,12 +84,11 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private RefreshItem refreshItem;
     private boolean expandDescription;
     private int methodId;
-    private Unbinder unbinder;
 
     /**
      * Handler on which to post RPC callbacks
      */
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     /**
      * Use {@link #setDataHolder(DataHolder)}
@@ -143,34 +110,32 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     @TargetApi(21)
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) {
             // We're not being shown or there's nothing to show
             return null;
         }
+        binding = FragmentInfoBinding.inflate(inflater, container, false);
 
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_info, container, false);
-        unbinder = ButterKnife.bind(this, root);
-
-        Resources resources = getActivity().getResources();
+        Resources resources = requireActivity().getResources();
 
         DataHolder dataHolder = getDataHolder();
 
         if(!dataHolder.getSquarePoster()) {
-            posterImageView.getLayoutParams().width =
+            binding.poster.getLayoutParams().width =
                     resources.getDimensionPixelSize(R.dimen.detail_poster_width_nonsquare);
-            posterImageView.getLayoutParams().height =
+            binding.poster.getLayoutParams().height =
                     resources.getDimensionPixelSize(R.dimen.detail_poster_height_nonsquare);
         }
 
         if(getRefreshItem() != null) {
-            swipeRefreshLayout.setOnRefreshListener(this);
+            binding.swipeRefreshLayout.setOnRefreshListener(this);
         } else {
-            swipeRefreshLayout.setEnabled(false);
+            binding.swipeRefreshLayout.setEnabled(false);
         }
 
         if(Utils.isLollipopOrLater()) {
-            posterImageView.setTransitionName(dataHolder.getPosterTransitionName());
+            binding.poster.setTransitionName(dataHolder.getPosterTransitionName());
         }
 
         if (savedInstanceState == null) {
@@ -187,15 +152,15 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         }
 
         if(setupMediaActionBar()) {
-            mediaActionsBar.setVisibility(View.VISIBLE);
+            binding.mediaActionsBar.setVisibility(View.VISIBLE);
         }
 
-        if(setupFAB(fabButton)) {
-            fabButton.setVisibility(View.VISIBLE);
+        if(setupFAB(binding.fab)) {
+            binding.fab.setVisibility(View.VISIBLE);
         }
 
         updateView(dataHolder);
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -206,14 +171,14 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         if (savedInstanceState != null) {
             int methodId = savedInstanceState.getInt(BUNDLE_KEY_APIMETHOD_PENDING);
 
-            fabButton.enableBusyAnimation(HostManager.getInstance(getContext()).getConnection()
+            binding.fab.enableBusyAnimation(HostManager.getInstance(getContext()).getConnection()
                        .updateClientCallback(methodId, createPlayItemOnKodiCallback(),
                                              callbackHandler));
         }
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.refresh_item, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -227,7 +192,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     @Override
     public void onResume() {
         // Force the exit view to invisible
-        exitTransitionView.setVisibility(View.INVISIBLE);
+        binding.exitTransitionView.setVisibility(View.INVISIBLE);
         if ( refreshItem != null ) {
             refreshItem.register();
         }
@@ -245,17 +210,17 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     @Override
     public void onStop() {
         super.onStop();
-        SyncUtils.disconnectFromLibrarySyncService(getActivity(), serviceConnection);
+        SyncUtils.disconnectFromLibrarySyncService(requireContext(), serviceConnection);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putInt(BUNDLE_KEY_APIMETHOD_PENDING, methodId);
@@ -270,7 +235,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         return super.onOptionsItemSelected(item);
     }
 
-    /**
+    /*
      * Swipe refresh layout callback
      */
     /** {@inheritDoc} */
@@ -279,11 +244,11 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         if (getRefreshItem() == null) {
             Toast.makeText(getActivity(), R.string.Refreshing_not_implemented_for_this_item,
                            Toast.LENGTH_SHORT).show();
-            swipeRefreshLayout.setRefreshing(false);
+            binding.swipeRefreshLayout.setRefreshing(false);
             return;
         }
 
-        refreshItem.setSwipeRefreshLayout(swipeRefreshLayout);
+        refreshItem.setSwipeRefreshLayout(binding.swipeRefreshLayout);
         refreshItem.startSync(false);
     }
 
@@ -300,17 +265,17 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
                 syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
             if (!silentRefresh)
-                UIUtils.showRefreshAnimation(swipeRefreshLayout);
-            refreshItem.setSwipeRefreshLayout(swipeRefreshLayout);
+                UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
+            refreshItem.setSwipeRefreshLayout(binding.swipeRefreshLayout);
             refreshItem.register();
         }
     }
 
     protected void setFabButtonState(boolean enable) {
         if(enable) {
-            fabButton.setVisibility(View.VISIBLE);
+            binding.fab.setVisibility(View.VISIBLE);
         } else {
-            fabButton.setVisibility(GONE);
+            binding.fab.setVisibility(GONE);
         }
     }
 
@@ -327,7 +292,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             return;
         }
 
-        fabButton.enableBusyAnimation(true);
+        binding.fab.enableBusyAnimation(true);
         Player.Open action = new Player.Open(item);
         methodId = action.getId();
         action.execute(HostManager.getInstance(getActivity()).getConnection(),
@@ -335,13 +300,13 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case Utils.PERMISSION_REQUEST_WRITE_STORAGE:
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.length > 0) &&
                     (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    downloadButton.performClick();
+                    binding.mediaActionDownload.performClick();
                 } else {
                     Toast.makeText(getActivity(), R.string.write_storage_permission_denied, Toast.LENGTH_SHORT)
                          .show();
@@ -353,7 +318,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     @Override
     @TargetApi(21)
     public boolean isSharedElementVisible() {
-        return UIUtils.isViewInBounds(panelScrollView, posterImageView);
+        return UIUtils.isViewInBounds(binding.mediaPanel, binding.poster);
     }
 
     protected void refreshAdditionInfoFragment() {
@@ -375,13 +340,13 @@ abstract public class AbstractInfoFragment extends AbstractFragment
      */
     @SuppressLint("StringFormatInvalid")
     protected void updateView(DataHolder dataHolder) {
-        titleTextView.setText(dataHolder.getTitle());
-        titleTextView.post(UIUtils.getMarqueeToggleableAction(titleTextView));
-        underTitleTextView.setText(dataHolder.getUnderTitle());
-        detailsRightTextView.setText(dataHolder.getDetails());
+        binding.mediaTitle.setText(dataHolder.getTitle());
+        binding.mediaTitle.post(UIUtils.getMarqueeToggleableAction(binding.mediaTitle));
+        binding.mediaUndertitle.setText(dataHolder.getUnderTitle());
+        binding.mediaDetailsRight.setText(dataHolder.getDetails());
 
         if (!TextUtils.isEmpty(dataHolder.getDescription())) {
-            Resources.Theme theme = getActivity().getTheme();
+            Resources.Theme theme = requireActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
                     R.attr.iconExpand,
                     R.attr.iconCollapse
@@ -391,28 +356,25 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             final int iconExpandResId =
                     styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_expand_more_white_24dp);
             styledAttributes.recycle();
-            descriptionContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    descriptionExpandableTextView.toggle();
-                    expansionImage.setImageResource(descriptionExpandableTextView.isExpanded() ? iconCollapseResId : iconExpandResId);
-                }
+            binding.mediaDescriptionContainer.setOnClickListener(v -> {
+                binding.mediaDescription.toggle();
+                binding.showAll.setImageResource(binding.mediaDescription.isExpanded() ? iconCollapseResId : iconExpandResId);
             });
-            descriptionExpandableTextView.setText(dataHolder.getDescription());
+            binding.mediaDescription.setText(dataHolder.getDescription());
             if (expandDescription) {
-                descriptionExpandableTextView.expand();
-                expansionImage.setImageResource(iconExpandResId);
+                binding.mediaDescription.expand();
+                binding.showAll.setImageResource(iconExpandResId);
             }
-            descriptionContainer.setVisibility(View.VISIBLE);
+            binding.mediaDescriptionContainer.setVisibility(View.VISIBLE);
         } else {
-            descriptionContainer.setVisibility(GONE);
+            binding.mediaDescriptionContainer.setVisibility(GONE);
         }
 
         // Images
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        Resources resources = getActivity().getResources();
+        Resources resources = requireActivity().getResources();
 
         if (dataHolder.getPosterUrl() != null) {
             int posterWidth;
@@ -427,12 +389,12 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                  dataHolder.getPosterUrl(), dataHolder.getTitle(),
-                                                 posterImageView, posterWidth, posterHeight);
+                                                 binding.poster, posterWidth, posterHeight);
         } else {
-            posterImageView.setVisibility(GONE);
-            int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.default_padding);
-            titleTextView.setPadding(padding, padding, 0, 0);
-            underTitleTextView.setPadding(padding, padding, 0, 0);
+            binding.poster.setVisibility(GONE);
+            int padding = requireContext().getResources().getDimensionPixelSize(R.dimen.default_padding);
+            binding.mediaTitle.setPadding(padding, padding, 0, 0);
+            binding.mediaUndertitle.setPadding(padding, padding, 0, 0);
         }
 
         int artHeight = resources.getDimensionPixelOffset(R.dimen.detail_art_height);
@@ -441,23 +403,23 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         UIUtils.loadImageIntoImageview(hostManager,
                                        TextUtils.isEmpty(dataHolder.getFanArtUrl()) ?
                                        dataHolder.getPosterUrl() : dataHolder.getFanArtUrl(),
-                                       artImageView, artWidth, artHeight);
+                                       binding.art, artWidth, artHeight);
 
         if (dataHolder.getRating() > 0) {
-            ratingTextView.setText(String.format(Locale.getDefault(), "%01.01f", dataHolder.getRating()));
+            binding.rating.setText(String.format(Locale.getDefault(), "%01.01f", dataHolder.getRating()));
             if (dataHolder.getMaxRating() > 0) {
-                maxRatingTextView.setText(String.format(getString(R.string.max_rating),
+                binding.maxRating.setText(String.format(getString(R.string.max_rating),
                                                         String.valueOf(dataHolder.getMaxRating())));
             }
             if (dataHolder.getVotes() > 0 ) {
-                ratingVotesTextView.setText(String.format(getString(R.string.votes),
+                binding.ratingVotes.setText(String.format(getString(R.string.votes),
                                                           String.valueOf(dataHolder.getVotes())));
             }
-            ratingContainer.setVisibility(View.VISIBLE);
+            binding.ratingContainer.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(dataHolder.getDetails())) {
-            mediaDetailsContainer.setVisibility(View.GONE);
+            binding.mediaDetails.setVisibility(View.GONE);
         } else {
-            mediaDetailsContainer.setVisibility(View.VISIBLE);
+            binding.mediaDetails.setVisibility(View.VISIBLE);
         }
     }
 
@@ -468,42 +430,39 @@ abstract public class AbstractInfoFragment extends AbstractFragment
      *                 when the user is asked for storage permissions
      */
     protected void setOnDownloadListener(final View.OnClickListener listener) {
-        downloadButton.setVisibility(View.VISIBLE);
-        downloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkStoragePermission()) {
-                    if (Settings.allowedDownloadNetworkTypes(getActivity()) != 0) {
-                        listener.onClick(view);
-                        UIUtils.highlightImageView(getActivity(), downloadButton, true);
-                    } else {
-                        Toast.makeText(getActivity(), R.string.no_connection_type_selected, Toast.LENGTH_SHORT).show();
-                    }
+        binding.mediaActionDownload.setVisibility(View.VISIBLE);
+        binding.mediaActionDownload.setOnClickListener(view -> {
+            if (checkStoragePermission()) {
+                if (Settings.allowedDownloadNetworkTypes(getActivity()) != 0) {
+                    listener.onClick(view);
+                    UIUtils.highlightImageView(getActivity(), binding.mediaActionDownload, true);
+                } else {
+                    Toast.makeText(getActivity(), R.string.no_connection_type_selected, Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
     protected void setOnAddToPlaylistListener(View.OnClickListener listener) {
-        addToPlaylistButton.setVisibility(View.VISIBLE);
-        addToPlaylistButton.setOnClickListener(listener);
+        binding.mediaActionAddToPlaylist.setVisibility(View.VISIBLE);
+        binding.mediaActionAddToPlaylist.setOnClickListener(listener);
     }
 
     protected void setOnGoToImdbListener(View.OnClickListener listener) {
-        imdbButton.setVisibility(View.VISIBLE);
-        imdbButton.setOnClickListener(listener);
+        binding.mediaActionGoToImdb.setVisibility(View.VISIBLE);
+        binding.mediaActionGoToImdb.setOnClickListener(listener);
     }
 
     /**
      * Use {@link #setSeenButtonState(boolean)} to set the state of the seen button
-     * @param listener
+     * @param listener Listener
      */
     protected void setOnSeenListener(final View.OnClickListener listener) {
-        setupToggleButton(seenButton, listener);
+        setupToggleButton(binding.mediaActionSeen, listener);
     }
 
     protected void setOnPinClickedListener(final View.OnClickListener listener) {
-        setupToggleButton(pinUnpinButton, listener);
+        setupToggleButton(binding.mediaActionPinUnpin, listener);
     }
 
     /**
@@ -511,7 +470,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
      * @param state true if item has been downloaded, false otherwise
      */
     protected void setDownloadButtonState(boolean state) {
-        UIUtils.highlightImageView(getActivity(), downloadButton, state);
+        UIUtils.highlightImageView(getActivity(), binding.mediaActionDownload, state);
     }
 
     /**
@@ -519,11 +478,11 @@ abstract public class AbstractInfoFragment extends AbstractFragment
      * @param state true if item has been watched/listened too, false otherwise
      */
     protected void setSeenButtonState(boolean state) {
-        setToggleButtonState(seenButton, state);
+        setToggleButtonState(binding.mediaActionSeen, state);
     }
 
     protected void setPinButtonState(boolean state) {
-        setToggleButtonState(pinUnpinButton, state);
+        setToggleButtonState(binding.mediaActionPinUnpin, state);
     }
 
     private void setToggleButtonState(ImageButton button, boolean state) {
@@ -534,20 +493,17 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private void setupToggleButton(final ImageButton button, final View.OnClickListener listener) {
         button.setVisibility(View.VISIBLE);
         button.setTag(false);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClick(view);
-                // Boldly invert the state. We depend on the observer to correct the state
-                // if Kodi or other service didn't honour our request
-                setToggleButtonState(button, ! (boolean) button.getTag());
-            }
+        button.setOnClickListener(view -> {
+            listener.onClick(view);
+            // Boldly invert the state. We depend on the observer to correct the state
+            // if Kodi or other service didn't honour our request
+            setToggleButtonState(button, ! (boolean) button.getTag());
         });
     }
 
     private boolean checkStoragePermission() {
         boolean hasStoragePermission =
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
         if (!hasStoragePermission) {
             requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -570,7 +526,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     }
 
     public FABSpeedDial getFabButton() {
-        return fabButton;
+        return binding.fab;
     }
 
     private ApiCallback<String> createPlayItemOnKodiCallback() {
@@ -578,7 +534,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             @Override
             public void onSuccess(String result) {
                 if (!isAdded()) return;
-                fabButton.enableBusyAnimation(false);
+                binding.fab.enableBusyAnimation(false);
 
                 // Check whether we should switch to the remote
                 boolean switchToRemote = PreferenceManager
@@ -586,16 +542,16 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                         .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
                                     Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
                 if (switchToRemote) {
-                    int cx = (fabButton.getLeft() + fabButton.getRight()) / 2;
-                    int cy = (fabButton.getTop() + fabButton.getBottom()) / 2;
-                    UIUtils.switchToRemoteWithAnimation(getActivity(), cx, cy, exitTransitionView);
+                    int cx = (binding.fab.getLeft() + binding.fab.getRight()) / 2;
+                    int cy = (binding.fab.getTop() + binding.fab.getBottom()) / 2;
+                    UIUtils.switchToRemoteWithAnimation(getActivity(), cx, cy, binding.exitTransitionView);
                 }
             }
 
             @Override
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
-                fabButton.enableBusyAnimation(false);
+                binding.fab.enableBusyAnimation(false);
 
                 // Got an error, show toast
                 Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
@@ -612,7 +568,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
      * <br/>
      * Note, that {@link AbstractAdditionalInfoFragment#refresh()} will be called for an
      * additional fragment, if available, automatically.
-     * @return
      */
     abstract protected RefreshItem createRefreshItem();
 

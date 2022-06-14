@@ -34,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.loader.content.CursorLoader;
 
@@ -96,7 +97,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.album_list, menu);
 
         MenuItem sortByAlbum = menu.findItem(R.id.action_sort_by_album),
@@ -218,7 +219,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
         if (args != null) {
             genreId = getArguments().getInt(BUNDLE_KEY_GENREID, -1);

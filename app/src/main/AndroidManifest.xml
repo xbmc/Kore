@@ -24,7 +24,8 @@
         <!-- Activities -->
         <activity
             android:name="org.xbmc.kore.ui.sections.remote.RemoteActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -84,7 +85,8 @@
                 android:value=".service.HostChooserTargetService" />
         </activity>
 
-        <activity android:name=".ui.sections.remote.QueueActivity">
+        <activity android:name=".ui.sections.remote.QueueActivity"
+            android:exported="true">
 
             <intent-filter android:label="@string/queue_on_kodi">
                 <action android:name="android.intent.action.SEND" />
@@ -165,7 +167,8 @@
         <service android:name="org.xbmc.kore.service.IntentActionsService"
             android:exported="false"/>
         <service android:name="org.xbmc.kore.service.HostChooserTargetService"
-            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
+            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.service.chooser.ChooserTargetService" />
             </intent-filter>

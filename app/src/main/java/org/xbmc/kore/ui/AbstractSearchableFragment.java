@@ -45,7 +45,7 @@ public abstract class AbstractSearchableFragment extends AbstractListFragment im
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.abstractcursorlistfragment, menu);
 
         if (supportsSearch) {

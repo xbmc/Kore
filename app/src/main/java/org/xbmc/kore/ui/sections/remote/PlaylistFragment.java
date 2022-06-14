@@ -26,18 +26,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.FragmentPlaylistBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostConnectionObserver.PlayerEventsObserver;
 import org.xbmc.kore.host.HostConnectionObserver.PlaylistEventsObserver;
@@ -63,10 +63,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * Playlist view
  */
@@ -87,21 +83,19 @@ public class PlaylistFragment extends Fragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     /**
      * Playlist adapter
      */
     private PlayListAdapter playListAdapter;
 
-    private Unbinder unbinder;
-
-    /**
+   /**
      * Last call results
      */
     private ListType.ItemsAll lastGetItemResult = null;
     private PlayerType.GetActivePlayersReturnType lastGetActivePlayerResult;
-    private HashMap<String, PlaylistHolder> playlists = new HashMap<>();
+    private final HashMap<String, PlaylistHolder> playlists = new HashMap<>();
 
     private enum PLAYER_STATE {
         CONNECTION_ERROR,
@@ -115,16 +109,7 @@ public class PlaylistFragment extends Fragment
 
     private boolean userSelectedTab;
 
-    /**
-     * Injectable views
-     */
-    @BindView(R.id.info_panel) RelativeLayout infoPanel;
-    @BindView(R.id.playlist) DynamicListView playlistListView;
-
-    @BindView(R.id.info_title) TextView infoTitle;
-    @BindView(R.id.info_message) TextView infoMessage;
-
-    @BindView(R.id.playlists_bar) PlaylistsBar playlistsBar;
+    private FragmentPlaylistBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -134,24 +119,21 @@ public class PlaylistFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_playlist, container, false);
-        unbinder = ButterKnife.bind(this, root);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentPlaylistBinding.inflate(inflater, container, false);
+        ViewGroup root = binding.getRoot();
 
         playListAdapter = new PlayListAdapter();
-        playlistListView.setAdapter(playListAdapter);
+        binding.playlist.setAdapter(playListAdapter);
 
         // When clicking on an item, play it
-        playlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int playlistId = playlists.get(playlistsBar.getSelectedPlaylistType()).getPlaylistId();
-                Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, playlistId, position);
-                action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-            }
+        binding.playlist.setOnItemClickListener((parent, view, position, id) -> {
+            int playlistId = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistId();
+            Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, playlistId, position);
+            action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
         });
 
-        playlistsBar.setOnPlaylistSelectedListener(new PlaylistsBar.OnPlaylistSelectedListener() {
+        binding.playlistsBar.setOnPlaylistSelectedListener(new PlaylistsBar.OnPlaylistSelectedListener() {
             @Override
             public void onPlaylistSelected(String playlistType) {
                 userSelectedTab = true; // do not switch to active playlist when user selected a tab
@@ -160,12 +142,12 @@ public class PlaylistFragment extends Fragment
 
             @Override
             public void onPlaylistDeselected(String playlistType) {
-                View v = playlistListView.getChildAt(0);
-                int top = (v == null) ? 0 : (v.getTop() - playlistListView.getPaddingTop());
+                View v = binding.playlist.getChildAt(0);
+                int top = (v == null) ? 0 : (v.getTop() - binding.playlist.getPaddingTop());
 
                 PlaylistHolder playlistHolder = playlists.get(playlistType);
                 if (playlistHolder != null)
-                    playlistHolder.setListViewPosition(playlistListView.getFirstVisiblePosition(), top);
+                    playlistHolder.setListViewPosition(binding.playlist.getFirstVisiblePosition(), top);
             }
         });
 
@@ -196,7 +178,7 @@ public class PlaylistFragment extends Fragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.playlist, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -204,14 +186,14 @@ public class PlaylistFragment extends Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_clear_playlist:
-                PlaylistHolder playlistHolder = playlists.get(playlistsBar.getSelectedPlaylistType());
+                PlaylistHolder playlistHolder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
                 int playlistId = playlistHolder.getPlaylistId();
                 playlistOnClear(playlistId);
                 Playlist.Clear action = new Playlist.Clear(playlistId);
@@ -255,7 +237,7 @@ public class PlaylistFragment extends Fragment
     /**
      * Default callback for methods that don't return anything
      */
-    private ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
+    private final ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
 
     @Override
     public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
@@ -276,10 +258,10 @@ public class PlaylistFragment extends Fragment
         lastGetActivePlayerResult = getActivePlayerResult;
 
         if (! userSelectedTab) {
-            playlistsBar.selectTab(getActivePlayerResult.type);
+            binding.playlistsBar.selectTab(getActivePlayerResult.type);
         }
 
-        playlistsBar.setIsPlaying(getActivePlayerResult.type, true);
+        binding.playlistsBar.setIsPlaying(getActivePlayerResult.type, true);
 
         displayPlaylist();
 
@@ -287,7 +269,7 @@ public class PlaylistFragment extends Fragment
         if (playlistHolder != null && isPlaying(playlistHolder.getPlaylistResult)) {
             highlightCurrentlyPlayingItem();
         } else {
-            playlistListView.clearChoices();
+            binding.playlist.clearChoices();
         }
     }
 
@@ -301,10 +283,10 @@ public class PlaylistFragment extends Fragment
         lastGetActivePlayerResult = getActivePlayerResult;
 
         if (! userSelectedTab) {
-            playlistsBar.selectTab(getActivePlayerResult.type);
+            binding.playlistsBar.selectTab(getActivePlayerResult.type);
         }
 
-        playlistsBar.setIsPlaying(getActivePlayerResult.type, false);
+        binding.playlistsBar.setIsPlaying(getActivePlayerResult.type, false);
     }
 
     @Override
@@ -312,11 +294,11 @@ public class PlaylistFragment extends Fragment
         playerState = PLAYER_STATE.STOPPED;
 
         if (lastGetActivePlayerResult != null)
-            playlistsBar.setIsPlaying(lastGetActivePlayerResult.type, false);
+            binding.playlistsBar.setIsPlaying(lastGetActivePlayerResult.type, false);
 
         displayPlaylist();
 
-        playlistListView.clearChoices();
+        binding.playlist.clearChoices();
     }
 
     @Override
@@ -327,12 +309,11 @@ public class PlaylistFragment extends Fragment
 
         switchToPanel(R.id.info_panel);
         if (hostInfo != null) {
-            infoTitle.setText(R.string.connecting);
-            // TODO: check error code
-            infoMessage.setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
+            binding.includeInfoPanel.infoTitle.setText(R.string.connecting);
+            binding.includeInfoPanel.infoMessage.setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
         } else {
-            infoTitle.setText(R.string.no_xbmc_configured);
-            infoMessage.setText(null);
+            binding.includeInfoPanel.infoTitle.setText(R.string.no_xbmc_configured);
+            binding.includeInfoPanel.infoMessage.setText(null);
         }
     }
 
@@ -344,11 +325,11 @@ public class PlaylistFragment extends Fragment
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
         if (hostInfo != null) {
-            infoTitle.setText(R.string.connecting);
+            binding.includeInfoPanel.infoTitle.setText(R.string.connecting);
         } else {
-            infoTitle.setText(R.string.no_xbmc_configured);
+            binding.includeInfoPanel.infoTitle.setText(R.string.no_xbmc_configured);
         }
-        infoMessage.setText(null);
+        binding.includeInfoPanel.infoMessage.setText(null);
     }
 
     @Override
@@ -369,8 +350,8 @@ public class PlaylistFragment extends Fragment
             String key = it.next();
             if (playlists.get(key).getPlaylistResult.id == playlistId) {
                 it.remove();
-                playlistsBar.setHasPlaylistAvailable(key, false);
-                playlistsBar.setIsPlaying(key, false);
+                binding.playlistsBar.setHasPlaylistAvailable(key, false);
+                binding.playlistsBar.setIsPlaying(key, false);
             }
         }
         displayPlaylist();
@@ -389,7 +370,7 @@ public class PlaylistFragment extends Fragment
         // We might want a separate var to check if something has already played and turn off automatic
         // playlist switching if playback stops
         if (playerState == PLAYER_STATE.STOPPED && lastGetActivePlayerResult == null && !userSelectedTab) { // do not automatically switch to first available playlist if user manually selected a playlist
-            playlistsBar.selectTab(playlists.get(0).type);
+            binding.playlistsBar.selectTab(playlists.get(0).type);
         }
         displayPlaylist();
     }
@@ -401,7 +382,7 @@ public class PlaylistFragment extends Fragment
 
     private void updatePlaylists(ArrayList<GetPlaylist.GetPlaylistResult> playlists) {
         for (GetPlaylist.GetPlaylistResult getPlaylistResult : playlists) {
-            playlistsBar.setHasPlaylistAvailable(getPlaylistResult.type, true);
+            binding.playlistsBar.setHasPlaylistAvailable(getPlaylistResult.type, true);
 
             PlaylistHolder playlistHolder = this.playlists.get(getPlaylistResult.type);
 
@@ -417,7 +398,7 @@ public class PlaylistFragment extends Fragment
     private void displayPlaylist() {
         switchToPanel(R.id.playlist);
 
-        PlaylistHolder playlistHolder = playlists.get(playlistsBar.getSelectedPlaylistType());
+        PlaylistHolder playlistHolder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
         if (playlistHolder == null) {
             displayEmptyPlaylistMessage();
             return;
@@ -432,17 +413,17 @@ public class PlaylistFragment extends Fragment
         // JSON RPC does not support picture items in Playlist.Item so we disable item movement
         // for the picture playlist
         if (getPlaylistResult.type.contentEquals(ListType.ItemBase.TYPE_PICTURE))
-            playlistListView.enableItemDragging(false);
+            binding.playlist.enableItemDragging(false);
         else
-            playlistListView.enableItemDragging(true);
+            binding.playlist.enableItemDragging(true);
 
         //If a user is dragging a list item we must not modify the adapter to prevent
         //the dragged item's adapter position from diverging from its listview position
-        if (!playlistListView.isItemBeingDragged()) {
+        if (!binding.playlist.isItemBeingDragged()) {
             playListAdapter.setPlaylistItems(getPlaylistResult.items);
         }
 
-        playlistListView.setSelectionFromTop(playlistHolder.index, playlistHolder.top);
+        binding.playlist.setSelectionFromTop(playlistHolder.index, playlistHolder.top);
     }
 
     private boolean isPlaying(GetPlaylist.GetPlaylistResult getPlaylistResult) {
@@ -451,20 +432,20 @@ public class PlaylistFragment extends Fragment
     }
 
     private void highlightCurrentlyPlayingItem() {
-        if (! playlistsBar.getSelectedPlaylistType().contentEquals(lastGetActivePlayerResult.type))
+        if (! binding.playlistsBar.getSelectedPlaylistType().contentEquals(lastGetActivePlayerResult.type))
             return;
 
-        List<ListType.ItemsAll> playlistItems = playlists.get(playlistsBar.getSelectedPlaylistType()).getPlaylistResult.items;
+        List<ListType.ItemsAll> playlistItems = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistResult.items;
         for (int i = 0; i < playlistItems.size(); i++) {
             if ((playlistItems.get(i).id == lastGetItemResult.id) &&
                 (playlistItems.get(i).type.equals(lastGetItemResult.type))) {
 
                 //When user is dragging an item it is very annoying when we change the list position
-                if (!playlistListView.isItemBeingDragged()) {
-                    playlistListView.setSelection(i);
+                if (!binding.playlist.isItemBeingDragged()) {
+                    binding.playlist.setSelection(i);
                 }
 
-                playlistListView.setItemChecked(i, true);
+                binding.playlist.setItemChecked(i, true);
             }
         }
     }
@@ -476,12 +457,12 @@ public class PlaylistFragment extends Fragment
     private void switchToPanel(int panelResId) {
         switch (panelResId) {
             case R.id.info_panel:
-                infoPanel.setVisibility(View.VISIBLE);
-                playlistListView.setVisibility(View.GONE);
+                binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
+                binding.playlist.setVisibility(View.GONE);
                 break;
             case R.id.playlist:
-                infoPanel.setVisibility(View.GONE);
-                playlistListView.setVisibility(View.VISIBLE);
+                binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
+                binding.playlist.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -492,8 +473,8 @@ public class PlaylistFragment extends Fragment
     private void displayEmptyPlaylistMessage() {
         HostInfo hostInfo = hostManager.getHostInfo();
         switchToPanel(R.id.info_panel);
-        infoTitle.setText(R.string.playlist_empty);
-        infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
+        binding.includeInfoPanel.infoTitle.setText(R.string.playlist_empty);
+        binding.includeInfoPanel.infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
     }
 
     /**
@@ -501,26 +482,23 @@ public class PlaylistFragment extends Fragment
      */
     private class PlayListAdapter extends BaseAdapter
             implements DynamicListView.DynamicListAdapter {
-        private View.OnClickListener playlistItemMenuClickListener = new View.OnClickListener() {
+        private final View.OnClickListener playlistItemMenuClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final int position = (Integer)v.getTag();
 
                 final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
                 popupMenu.getMenuInflater().inflate(R.menu.playlist_item, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_remove_playlist_item:
-                                // Remove this item from the playlist
-                                int playlistId = playlists.get(playlistsBar.getSelectedPlaylistType()).getPlaylistId();
-                                Playlist.Remove action = new Playlist.Remove(playlistId, position);
-                                action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-                                return true;
-                        }
-                        return false;
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.action_remove_playlist_item:
+                            // Remove this item from the playlist
+                            int playlistId = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistId();
+                            Playlist.Remove action = new Playlist.Remove(playlistId, position);
+                            action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                            return true;
                     }
+                    return false;
                 });
                 popupMenu.show();
             }
@@ -539,7 +517,7 @@ public class PlaylistFragment extends Fragment
             super();
             this.playlistItems = playlistItems;
 
-            Resources.Theme theme = getActivity().getTheme();
+            Resources.Theme theme = requireActivity().getTheme();
             TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
                     R.attr.appCardBackgroundColor,
                     R.attr.appSelectedCardBackgroundColor});
@@ -616,7 +594,7 @@ public class PlaylistFragment extends Fragment
                 return;
             }
 
-            final int playlistId = playlists.get(playlistsBar.getSelectedPlaylistType()).getPlaylistId();
+            final int playlistId = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistId();
             Playlist.Remove remove = new Playlist.Remove(playlistId, originalPosition);
             remove.execute(hostConnection, new ApiCallback<String>() {
                 @Override
@@ -724,7 +702,7 @@ public class PlaylistFragment extends Fragment
             viewHolder.duration.setText((duration > 0) ? UIUtils.formatTime(duration) : "");
             viewHolder.position = position;
 
-            int cardColor = (position == playlistListView.getCheckedItemPosition()) ?
+            int cardColor = (position == binding.playlist.getCheckedItemPosition()) ?
                             selectedCardBackgroundColor: cardBackgroundColor;
             viewHolder.card.setCardBackgroundColor(cardColor);
 

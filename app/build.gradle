@@ -9,15 +9,13 @@ def getVersionName = { ->
     return stdout.toString().trim()
 }
 
-
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "org.xbmc.kore"
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdkVersion 21
+        targetSdkVersion 32
         versionCode 29
         versionName = getVersionName()
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -34,7 +32,7 @@ android {
     signingConfigs {
         release {
             if (keystoreFile.exists()) {
-                def Properties keyProps = new Properties()
+                Properties keyProps = new Properties()
                 keyProps.load(new FileInputStream(keystoreFile))
 
                 storeFile file(keyProps["store"])
@@ -52,9 +50,6 @@ android {
         }
     }
 
-    /*
-     * This is just to enable Java 8 in the app
-     */
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -70,31 +65,21 @@ android {
         }
     }
 
-    lintOptions {
-        // Too much trouble keeping all translations in sync
-        disable 'MissingTranslation'
-
-        //The xml launcher icon introduced in API 26 causes lint to generate
-        //an error that the icon is not a PNG format
-        //This reduces the error to a warning
-//        warning 'IconLauncherFormat'
+    buildFeatures {
+        viewBinding true
     }
-
-//    allprojects {
-//        gradle.projectsEvaluated {
-//            tasks.withType(JavaCompile) {
-//                options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-//            }
-//        }
-//    }
 
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/NOTICE.txt']
+        }
     }
+
+    lint {
+        // Too much trouble keeping all translations in sync
+        disable 'MissingTranslation'
+    }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -108,39 +93,37 @@ ext {
 
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
-    implementation 'com.jakewharton:butterknife:10.2.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
     implementation 'com.squareup.okhttp:okhttp:2.3.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'de.greenrobot:eventbus:2.4.0'
-    implementation 'org.jmdns:jmdns:3.5.1'
-    implementation 'at.blogc:expandabletextview:1.0.3'
-    implementation 'com.sothree.slidinguppanel:library:3.3.1'
-    implementation 'com.simplecityapps:recyclerview-fastscroll:1.0.20'
+    implementation 'org.jmdns:jmdns:3.5.7'
+    implementation 'at.blogc:expandabletextview:1.0.5'
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.1'
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-    androidTestUtil 'androidx.test:orchestrator:1.1.1'
-    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    androidTestUtil 'androidx.test:orchestrator:1.4.1'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
     androidTestImplementation 'androidx.legacy:legacy-support-v13:1.0.0'
-    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation 'junit:junit:4.13.2'
 
-    testImplementation 'org.robolectric:robolectric:4.3'
-    testImplementation "androidx.test:core:1.2.0"
-    testImplementation "androidx.test.ext:junit:1.1.1"
-    debugImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:4.8.1'
+    testImplementation "androidx.test:core:1.4.0"
+    testImplementation "androidx.test.ext:junit:1.1.3"
+    debugImplementation 'junit:junit:4.13.2'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
@@ -167,3 +150,7 @@ tasks.whenTaskAdded { task ->
         task.dependsOn assembleDebug
     }
 }
+
+//tasks.withType(JavaCompile) {
+//    options.compilerArgs << '-Xlint:unchecked'
+//}

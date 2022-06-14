@@ -29,7 +29,7 @@ public class AboutDialogFragment
     @Override
     @SuppressWarnings("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Activity activity = getActivity();
+        Activity activity = requireActivity();
         View mainView = activity.getLayoutInflater().inflate(R.layout.fragment_about, null);
 
         String versionName;
@@ -38,10 +38,10 @@ public class AboutDialogFragment
         } catch (PackageManager.NameNotFoundException exc) {
             versionName = null;
         }
-        TextView version = (TextView) mainView.findViewById(R.id.app_version);
+        TextView version = mainView.findViewById(R.id.app_version);
         version.setText(versionName);
 
-        TextView about = (TextView)mainView.findViewById(R.id.about_desc);
+        TextView about = mainView.findViewById(R.id.about_desc);
         about.setText(Html.fromHtml(getString(R.string.about_desc)));
         about.setMovementMethod(LinkMovementMethod.getInstance());
 

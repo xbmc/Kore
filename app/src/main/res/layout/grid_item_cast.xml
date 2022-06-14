@@ -16,7 +16,8 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:layout_margin="@dimen/image_grid_margin">
@@ -27,7 +28,6 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:contentDescription="@string/poster"/>
         <!--android:src="?attr/iconPerson"/>-->
 
@@ -46,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:background="?attr/contentBackgroundColor">
@@ -81,7 +80,7 @@
             android:layout_centerVertical="true"
             android:src="?attr/iconOpenInNew"
             android:contentDescription="@string/poster"
-            android:tint="?attr/defaultButtonColorFilter"/>
+            app:tint="?attr/defaultButtonColorFilter" />
         <TextView
             android:id="@+id/remaining_cast_count"
             android:layout_width="match_parent"

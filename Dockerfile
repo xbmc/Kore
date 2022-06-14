@@ -4,14 +4,14 @@
 FROM ubuntu:20.04
 
 # Install Java
-ARG JDK_VERSION=8
+ARG JDK_VERSION=11
 RUN apt-get update && \
     apt-get install -y --no-install-recommends openjdk-${JDK_VERSION}-jdk && \
     apt-get install -y --no-install-recommends git wget unzip
 
 # Install Gradle
 # https://services.gradle.org/distributions/
-ARG GRADLE_VERSION=6.7
+ARG GRADLE_VERSION=7.3.3
 ARG GRADLE_DIST=bin
 RUN cd /opt && \
     wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-${GRADLE_DIST}.zip && \
@@ -21,7 +21,7 @@ RUN cd /opt && \
 
 # Install Android SDK and build-tools
 # https://developer.android.com/studio#command-tools
-ARG ANDROID_SDK_VERSION=6858069
+ARG ANDROID_SDK_VERSION=8512546
 ENV ANDROID_SDK_ROOT /opt/android/sdk
 RUN mkdir -p ${ANDROID_SDK_ROOT}/tools && \
     wget -q https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}_latest.zip && \
@@ -29,7 +29,7 @@ RUN mkdir -p ${ANDROID_SDK_ROOT}/tools && \
     rm /commandlinetools*linux*.zip
 
 # Install Android build-tools (should match version in ./app/build.gradle)
-ARG ANDROID_BUILD_TOOLS_VERSION=29.0.2
+ARG ANDROID_BUILD_TOOLS_VERSION=32.0.0
 RUN yes Y | /opt/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --install "build-tools;${ANDROID_BUILD_TOOLS_VERSION}"
 RUN yes Y | /opt/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses
 

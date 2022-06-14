@@ -25,14 +25,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.FragmentAddHostManualConfigurationBinding;
 import org.xbmc.kore.eventclient.EventServerConnection;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -46,10 +45,6 @@ import org.xbmc.kore.utils.NetUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * Fragment that presents the welcome message
@@ -80,54 +75,31 @@ public class HostFragmentManualConfiguration extends Fragment {
      * Callback interface to communicate with the encolsing activity
      */
     public interface HostManualConfigurationListener {
-        public void onHostManualConfigurationNext(HostInfo hostInfo);
-        public void onHostManualConfigurationCancel();
+        void onHostManualConfigurationNext(HostInfo hostInfo);
+        void onHostManualConfigurationCancel();
     }
 
     public static String CANCEL_BUTTON_LABEL_ARG = PREFIX + ".cancel_button_label";
     private HostManualConfigurationListener listener;
     private ProgressDialog progressDialog;
-    private Unbinder unbinder;
 
-    @BindView(R.id.xbmc_name) EditText xbmcNameEditText;
-    @BindView(R.id.xbmc_ip_address) EditText xbmcIpAddressEditText;
-    @BindView(R.id.xbmc_http_port) EditText xbmcHttpPortEditText;
-    @BindView(R.id.xbmc_tcp_port) EditText xbmcTcpPortEditText;
-    @BindView(R.id.xbmc_username) EditText xbmcUsernameEditText;
-    @BindView(R.id.xbmc_password) EditText xbmcPasswordEditText;
-    @BindView(R.id.xbmc_mac_address) EditText xbmcMacAddressEditText;
-    @BindView(R.id.xbmc_wol_port) EditText xbmcWolPortEditText;
-    @BindView(R.id.xbmc_direct_share) CheckBox xbmcDirectShareCheckbox;
-    @BindView(R.id.xbmc_use_tcp) CheckBox xbmcUseTcpCheckbox;
-    @BindView(R.id.xbmc_use_event_server) CheckBox xbmcUseEventServerCheckbox;
-    @BindView(R.id.xbmc_event_server_port) EditText xbmcEventServerPortEditText;
+    private FragmentAddHostManualConfigurationBinding binding;
 
     // Handler for callbacks
     final Handler handler = new Handler();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_add_host_manual_configuration, container, false);
-        unbinder = ButterKnife.bind(this, root);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentAddHostManualConfigurationBinding.inflate(inflater, container, false);
+       // By default, use TCP
+        binding.kodiUseTcp.setChecked(true);
+        binding.kodiUseTcp.setOnCheckedChangeListener((buttonView, isChecked) -> binding.kodiTcpPort.setEnabled(isChecked));
 
-        // By default, use TCP
-        xbmcUseTcpCheckbox.setChecked(true);
-        xbmcUseTcpCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                xbmcTcpPortEditText.setEnabled(isChecked);
-            }
-        });
-
-        xbmcUseEventServerCheckbox.setChecked(true);
-        xbmcUseEventServerCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                xbmcEventServerPortEditText.setEnabled(isChecked);
-            }
-        });
+        binding.kodiUseEventServer.setChecked(true);
+        binding.kodiUseEventServer.setOnCheckedChangeListener((buttonView, isChecked) -> binding.kodiEventServerPort.setEnabled(isChecked));
 
         // Check if we were given a host info
+        assert getArguments() != null;
         String hostName = getArguments().getString(HOST_NAME);
         String hostAddress = getArguments().getString(HOST_ADDRESS);
         int hostHttpPort = getArguments().getInt(HOST_HTTP_PORT, HostInfo.DEFAULT_HTTP_PORT);
@@ -142,33 +114,33 @@ public class HostFragmentManualConfiguration extends Fragment {
         int hostEventServerPort = getArguments().getInt(HOST_EVENT_SERVER_PORT, HostInfo.DEFAULT_EVENT_SERVER_PORT);
 
         if (hostAddress != null) {
-            xbmcNameEditText.setText(hostName);
-            xbmcIpAddressEditText.setText(hostAddress);
-            xbmcHttpPortEditText.setText(String.valueOf(hostHttpPort));
+            binding.kodiName.setText(hostName);
+            binding.kodiIpAddress.setText(hostAddress);
+            binding.kodiHttpPort.setText(String.valueOf(hostHttpPort));
             if (!TextUtils.isEmpty(hostUsername))
-                xbmcUsernameEditText.setText(hostUsername);
+                binding.kodiUsername.setText(hostUsername);
             if (!TextUtils.isEmpty(hostPassword))
-                xbmcPasswordEditText.setText(hostPassword);
+                binding.kodiPassword.setText(hostPassword);
 
-            xbmcUseTcpCheckbox.setChecked(!(hostProtocol == HostConnection.PROTOCOL_HTTP));
-            xbmcTcpPortEditText.setEnabled(xbmcUseTcpCheckbox.isChecked());
+            binding.kodiUseTcp.setChecked(!(hostProtocol == HostConnection.PROTOCOL_HTTP));
+            binding.kodiTcpPort.setEnabled(binding.kodiUseTcp.isChecked());
 
             if (hostTcpPort != HostInfo.DEFAULT_TCP_PORT)
-                xbmcTcpPortEditText.setText(String.valueOf(hostTcpPort));
+                binding.kodiTcpPort.setText(String.valueOf(hostTcpPort));
             if (!TextUtils.isEmpty(hostMacAddress))
-                xbmcMacAddressEditText.setText(hostMacAddress);
+                binding.kodiMacAddress.setText(hostMacAddress);
             if (hostWolPort != HostInfo.DEFAULT_WOL_PORT)
-                xbmcWolPortEditText.setText(String.valueOf(hostWolPort));
+                binding.kodiWolPort.setText(String.valueOf(hostWolPort));
 
-            xbmcDirectShareCheckbox.setChecked(directShare);
+            binding.kodiDirectShare.setChecked(directShare);
 
-            xbmcUseEventServerCheckbox.setChecked(hostUseEventServer);
-            xbmcEventServerPortEditText.setEnabled(xbmcUseEventServerCheckbox.isChecked());
+            binding.kodiUseEventServer.setChecked(hostUseEventServer);
+            binding.kodiEventServerPort.setEnabled(binding.kodiUseEventServer.isChecked());
             if (hostEventServerPort != HostInfo.DEFAULT_EVENT_SERVER_PORT)
-                xbmcEventServerPortEditText.setText(String.valueOf(hostEventServerPort));
+                binding.kodiEventServerPort.setText(String.valueOf(hostEventServerPort));
         }
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -184,49 +156,39 @@ public class HostFragmentManualConfiguration extends Fragment {
         next = (Button)getView().findViewById(R.id.next);
         next.setText(R.string.test_connection);
         next.setCompoundDrawables(null, null, null, null);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                testConnection();
-            }
-        });
+        next.setOnClickListener(v -> testConnection());
 
         // Previous button
         previous = (Button)getView().findViewById(R.id.previous);
 
-        if (getArguments().getString(CANCEL_BUTTON_LABEL_ARG, null) != null) {
+        if (getArguments() != null && getArguments().getString(CANCEL_BUTTON_LABEL_ARG, null) != null) {
             previous.setText(getArguments().getString(CANCEL_BUTTON_LABEL_ARG));
         } else {
             previous.setText(android.R.string.cancel);
         }
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onHostManualConfigurationCancel();
-            }
-        });
+        previous.setOnClickListener(v -> listener.onHostManualConfigurationCancel());
 
         // Check if the activity wants us to go straight to test
-        boolean goStraighToTest = getArguments().getBoolean(GO_STRAIGHT_TO_TEST, false);
+        boolean goStraighToTest = getArguments() != null && getArguments().getBoolean(GO_STRAIGHT_TO_TEST, false);
         if (goStraighToTest) {
             testConnection();
         }
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             listener = (HostManualConfigurationListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement AddHostManualConfigurationListener interface.");
+            throw new ClassCastException(activity + " must implement AddHostManualConfigurationListener interface.");
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
     private static boolean isValidPort(int port) {
@@ -240,10 +202,10 @@ public class HostFragmentManualConfiguration extends Fragment {
      * check availability. Finally adds the host and advances the wizard
      */
     private void testConnection() {
-        String xbmcName = xbmcNameEditText.getText().toString();
+        String xbmcName = binding.kodiName.getText().toString();
 
         boolean isHttps = false;
-        String xbmcAddress = xbmcIpAddressEditText.getText().toString();
+        String xbmcAddress = binding.kodiIpAddress.getText().toString();
         if (xbmcAddress.startsWith("https://")) {
             xbmcAddress = xbmcAddress.substring("https://".length());
             LogUtils.LOGD(TAG, "Stripped https:// on address to get: " + xbmcAddress);
@@ -261,18 +223,16 @@ public class HostFragmentManualConfiguration extends Fragment {
             xbmcAddress = xbmcAddress.substring(0, m.start(1) - 1);
             LogUtils.LOGD(TAG, "Stripped port on address to get: " + xbmcAddress);
             try {
-                implicitPort = Integer.valueOf(m.group(1));
+                if (m.group(1) != null) {
+                    implicitPort = Integer.parseInt(m.group(1));
+                }
             } catch (NumberFormatException e) {
-                LogUtils.LOGW(
-                    TAG,
-                    "Value matching port regex couldn't be parsed as integer: " + m.group(1)
-                );
-                implicitPort = -1;
+                LogUtils.LOGW(TAG, "Value matching port regex couldn't be parsed as integer: " + m.group(1));
             }
         }
 
         Integer explicitPort = null;
-        String aux = xbmcHttpPortEditText.getText().toString();
+        String aux = binding.kodiHttpPort.getText().toString();
         if (!TextUtils.isEmpty(aux)) {
             try {
                 explicitPort = Integer.valueOf(aux);
@@ -283,47 +243,47 @@ public class HostFragmentManualConfiguration extends Fragment {
 
         if (implicitPort != null) {
             if (!isValidPort(implicitPort)) {
-                Toast.makeText(getActivity(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT);
-                xbmcIpAddressEditText.requestFocus();
+                Toast.makeText(getActivity(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT).show();
+                binding.kodiHttpPort.requestFocus();
                 return;
             }
             xbmcHttpPort = implicitPort;
         } else if (explicitPort != null) {
             if (!isValidPort(explicitPort)) {
-                Toast.makeText(getActivity(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT);
-                xbmcHttpPortEditText.requestFocus();
+                Toast.makeText(getActivity(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT).show();
+                binding.kodiHttpPort.requestFocus();
                 return;
             }
             xbmcHttpPort = explicitPort;
         }
 
-        String xbmcUsername = xbmcUsernameEditText.getText().toString();
-        String xbmcPassword = xbmcPasswordEditText.getText().toString();
-        aux = xbmcTcpPortEditText.getText().toString();
+        String xbmcUsername = binding.kodiUsername.getText().toString();
+        String xbmcPassword = binding.kodiPassword.getText().toString();
+        aux = binding.kodiTcpPort.getText().toString();
         int xbmcTcpPort;
         try {
-            xbmcTcpPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_TCP_PORT : Integer.valueOf(aux);
+            xbmcTcpPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_TCP_PORT : Integer.parseInt(aux);
         } catch (NumberFormatException exc) {
             xbmcTcpPort = -1;
         }
 
-        int xbmcProtocol = xbmcUseTcpCheckbox.isChecked()? HostConnection.PROTOCOL_TCP : HostConnection.PROTOCOL_HTTP;
+        int xbmcProtocol = binding.kodiUseTcp.isChecked()? HostConnection.PROTOCOL_TCP : HostConnection.PROTOCOL_HTTP;
 
-        String macAddress = xbmcMacAddressEditText.getText().toString();
-        aux = xbmcWolPortEditText.getText().toString();
+        String macAddress = binding.kodiMacAddress.getText().toString();
+        aux = binding.kodiWolPort.getText().toString();
 
         int xbmcWolPort = HostInfo.DEFAULT_WOL_PORT;
         try {
-            xbmcWolPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_WOL_PORT : Integer.valueOf(aux);
+            xbmcWolPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_WOL_PORT : Integer.parseInt(aux);
         } catch (NumberFormatException exc) {
             // Ignoring this exception and keeping WoL port at the default value
         }
 
-        boolean xbmcUseEventServer = xbmcUseEventServerCheckbox.isChecked();
-        aux = xbmcEventServerPortEditText.getText().toString();
+        boolean xbmcUseEventServer = binding.kodiUseEventServer.isChecked();
+        aux = binding.kodiEventServerPort.getText().toString();
         int xbmcEventServerPort;
         try {
-            xbmcEventServerPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_EVENT_SERVER_PORT : Integer.valueOf(aux);
+            xbmcEventServerPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_EVENT_SERVER_PORT : Integer.parseInt(aux);
         } catch (NumberFormatException exc) {
             xbmcEventServerPort = -1;
         }
@@ -331,19 +291,19 @@ public class HostFragmentManualConfiguration extends Fragment {
         // Check Xbmc name and address
         if (TextUtils.isEmpty(xbmcName)) {
             Toast.makeText(getActivity(), R.string.wizard_no_name_specified, Toast.LENGTH_SHORT).show();
-            xbmcNameEditText.requestFocus();
+            binding.kodiName.requestFocus();
             return;
         } else if (TextUtils.isEmpty(xbmcAddress)) {
             Toast.makeText(getActivity(), R.string.wizard_no_address_specified, Toast.LENGTH_SHORT).show();
-            xbmcIpAddressEditText.requestFocus();
+            binding.kodiIpAddress.requestFocus();
             return;
         } else if (xbmcTcpPort <= 0) {
             Toast.makeText(getActivity(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
-            xbmcTcpPortEditText.requestFocus();
+            binding.kodiTcpPort.requestFocus();
             return;
         } else if (xbmcEventServerPort <= 0) {
             Toast.makeText(getActivity(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
-            xbmcEventServerPortEditText.requestFocus();
+            binding.kodiEventServerPort.requestFocus();
             return;
         }
 
@@ -361,18 +321,15 @@ public class HostFragmentManualConfiguration extends Fragment {
                                 true);
         checkedHostInfo.setMacAddress(macAddress);
         checkedHostInfo.setWolPort(xbmcWolPort);
-        checkedHostInfo.setShowAsDirectShareTarget(xbmcDirectShareCheckbox.isChecked());
+        checkedHostInfo.setShowAsDirectShareTarget(binding.kodiDirectShare.isChecked());
 
         progressDialog.setTitle(String.format(getResources().getString(R.string.wizard_connecting_to_xbmc_title), xbmcName));
         progressDialog.setMessage(getResources().getString(R.string.wizard_connecting_to_xbmc_message));
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
-        progressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                // Let's ping the host through HTTP
-                chainCallCheckHttpConnection(checkedHostInfo);
-            }
+        progressDialog.setOnShowListener(dialog -> {
+            // Let's ping the host through HTTP
+            chainCallCheckHttpConnection(checkedHostInfo);
         });
         progressDialog.show();
     }
@@ -434,18 +391,12 @@ public class HostFragmentManualConfiguration extends Fragment {
         if (hostInfo.getUseEventServer()) {
             EventServerConnection.testEventServerConnection(
                     hostInfo,
-                    new EventServerConnection.EventServerConnectionCallback() {
-                        @Override
-                        public void OnConnectResult(boolean success) {
-
-                            LogUtils.LOGD(TAG, "Check ES connection: " + success);
-                            if (success) {
-                                chainCallCheckKodiVersion(hostInfo);
-                            } else {
-                                hostInfo.setUseEventServer(false);
-                                chainCallCheckKodiVersion(hostInfo);
-                            }
+                    success -> {
+                        LogUtils.LOGD(TAG, "Check ES connection: " + success);
+                        if (!success) {
+                            hostInfo.setUseEventServer(false);
                         }
+                        chainCallCheckKodiVersion(hostInfo);
                     },
                     handler);
         } else {
@@ -488,21 +439,15 @@ public class HostFragmentManualConfiguration extends Fragment {
     private void hostConnectionChecked(final HostInfo hostInfo) {
         // Let's get the MAC Address, if we don't have one
         if (TextUtils.isEmpty(hostInfo.getMacAddress())) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    String localMacAddress = NetUtils.getMacAddress(hostInfo.getAddress());
-                    hostInfo.setMacAddress(localMacAddress);
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isAdded()) {
-                                progressDialog.dismiss();
-                                listener.onHostManualConfigurationNext(hostInfo);
-                            }
-                        }
-                    });
-                }
+            new Thread(() -> {
+                String localMacAddress = NetUtils.getMacAddress(hostInfo.getAddress());
+                hostInfo.setMacAddress(localMacAddress);
+                handler.post(() -> {
+                    if (isAdded()) {
+                        progressDialog.dismiss();
+                        listener.onHostManualConfigurationNext(hostInfo);
+                    }
+                });
             }).start();
         } else {
             // Mac address was supplied
@@ -525,8 +470,8 @@ public class HostFragmentManualConfiguration extends Fragment {
         LogUtils.LOGD(TAG, "An error occurred during connection testint. Message: " + description);
         switch (errorCode) {
             case ApiException.HTTP_RESPONSE_CODE_UNAUTHORIZED:
-                String username = xbmcUsernameEditText.getText().toString(),
-                        password = xbmcPasswordEditText.getText().toString();
+                String username = binding.kodiUsername.getText().toString(),
+                        password = binding.kodiPassword.getText().toString();
                 int messageResourceId;
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
                     messageResourceId = R.string.wizard_empty_authentication;
@@ -534,7 +479,7 @@ public class HostFragmentManualConfiguration extends Fragment {
                     messageResourceId = R.string.wizard_incorrect_authentication;
                 }
                 Toast.makeText(getActivity(), messageResourceId, Toast.LENGTH_SHORT).show();
-                xbmcUsernameEditText.requestFocus();
+                binding.kodiUsername.requestFocus();
                 break;
             default:
                 Toast.makeText(getActivity(),

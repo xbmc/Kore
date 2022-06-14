@@ -14,7 +14,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -85,9 +86,9 @@
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
-                android:tint="?attr/buttonColorOverPrimary"
                 android:src="?attr/iconPrevious"
-                android:contentDescription="@string/previous"/>
+                android:contentDescription="@string/previous"
+                app:tint="?attr/buttonColorOverPrimary" />
 
             <ImageButton
                 android:id="@+id/npp_play"
@@ -95,9 +96,9 @@
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
-                android:tint="?attr/buttonColorOverPrimary"
                 android:src="?attr/iconPlay"
-                android:contentDescription="@string/play"/>
+                android:contentDescription="@string/play"
+                app:tint="?attr/buttonColorOverPrimary" />
 
             <ImageButton
                 android:id="@+id/npp_next"
@@ -105,9 +106,9 @@
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.Button.Borderless"
-                android:tint="?attr/buttonColorOverPrimary"
                 android:src="?attr/iconNext"
-                android:contentDescription="@string/next"/>
+                android:contentDescription="@string/next"
+                app:tint="?attr/buttonColorOverPrimary" />
         </LinearLayout>
         <org.xbmc.kore.ui.widgets.MediaProgressIndicator
             android:id="@+id/npp_progress_indicator"
