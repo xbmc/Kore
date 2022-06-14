@@ -90,7 +90,7 @@ public class Database {
         ApiList<VideoType.DetailsMovie> movieList = getMovies.resultFromJson(result);
 
 
-        ContentValues movieValuesBatch[] = new ContentValues[movieList.items.size()];
+        ContentValues[] movieValuesBatch = new ContentValues[movieList.items.size()];
         int castCount = 0;
 
         // Iterate on each movie
@@ -102,7 +102,7 @@ public class Database {
 
         contentResolver.bulkInsert(MediaContract.Movies.CONTENT_URI, movieValuesBatch);
 
-        ContentValues movieCastValuesBatch[] = new ContentValues[castCount];
+        ContentValues[] movieCastValuesBatch = new ContentValues[castCount];
         int count = 0;
         // Iterate on each movie/cast
         for (VideoType.DetailsMovie movie : movieList.items) {
@@ -119,7 +119,7 @@ public class Database {
     private static void insertArtists(Context context, ContentResolver contentResolver, SyncMusic syncMusic, int hostId) throws ApiException, IOException {
         AudioLibrary.GetArtists getArtists = new AudioLibrary.GetArtists(false);
         String result = FileUtils.readFile(context, "AudioLibrary.GetArtists.json");
-        ArrayList<AudioType.DetailsArtist> artistList = (ArrayList) getArtists.resultFromJson(result).items;
+        ArrayList<AudioType.DetailsArtist> artistList = (ArrayList<AudioType.DetailsArtist>) getArtists.resultFromJson(result).items;
 
         syncMusic.insertArtists(hostId, artistList, contentResolver);
     }
@@ -127,7 +127,7 @@ public class Database {
     private static void insertGenres(Context context, ContentResolver contentResolver, SyncMusic syncMusic, int hostId) throws ApiException, IOException {
         AudioLibrary.GetGenres getGenres = new AudioLibrary.GetGenres();
         ArrayList<LibraryType.DetailsGenre> genreList =
-                (ArrayList) getGenres.resultFromJson(FileUtils.readFile(context,
+                (ArrayList<LibraryType.DetailsGenre>) getGenres.resultFromJson(FileUtils.readFile(context,
                                                                         "AudioLibrary.GetGenres.json"));
 
         syncMusic.insertGenresItems(hostId, genreList, contentResolver);
@@ -136,15 +136,15 @@ public class Database {
     private static void insertAlbums(Context context, ContentResolver contentResolver, SyncMusic syncMusic, int hostId) throws ApiException, IOException {
         AudioLibrary.GetAlbums getAlbums = new AudioLibrary.GetAlbums();
         String result = FileUtils.readFile(context, "AudioLibrary.GetAlbums.json");
-        ArrayList<AudioType.DetailsAlbum> albumList = (ArrayList) getAlbums.resultFromJson(result).items;
+        ArrayList<AudioType.DetailsAlbum> albumList = (ArrayList<AudioType.DetailsAlbum>) getAlbums.resultFromJson(result).items;
 
         syncMusic.insertAlbumsItems(hostId, albumList, contentResolver);
     }
 
     private static void insertSongs(Context context, ContentResolver contentResolver, SyncMusic syncMusic, int hostId) throws ApiException, IOException {
         AudioLibrary.GetSongs getSongs = new AudioLibrary.GetSongs();
-        ArrayList<AudioType.DetailsSong> songList = (ArrayList)
-                getSongs.resultFromJson(FileUtils.readFile(context, "AudioLibrary.GetSongs.json")).items;
+        ArrayList<AudioType.DetailsSong> songList =
+                (ArrayList<AudioType.DetailsSong>) getSongs.resultFromJson(FileUtils.readFile(context, "AudioLibrary.GetSongs.json")).items;
 
         syncMusic.insertSongsItems(hostId, songList, contentResolver);
     }
@@ -153,20 +153,20 @@ public class Database {
             throws ApiException, IOException {
         VideoLibrary.GetTVShows getTVShows = new VideoLibrary.GetTVShows();
         String result = FileUtils.readFile(context, "VideoLibrary.GetTVShows.json");
-        ArrayList<VideoType.DetailsTVShow> tvShowList = (ArrayList) getTVShows.resultFromJson(result).items;
+        ArrayList<VideoType.DetailsTVShow> tvShowList = (ArrayList<VideoType.DetailsTVShow>) getTVShows.resultFromJson(result).items;
 
         syncTVShows.insertTVShows(tvShowList, contentResolver);
 
         for ( VideoType.DetailsTVShow tvShow : tvShowList ) {
             VideoLibrary.GetSeasons getSeasons = new VideoLibrary.GetSeasons(tvShow.tvshowid);
             result = FileUtils.readFile(context, "VideoLibrary.GetSeasons.json");
-            ArrayList<VideoType.DetailsSeason> detailsSeasons = (ArrayList) getSeasons.resultFromJson(result);
+            ArrayList<VideoType.DetailsSeason> detailsSeasons = (ArrayList<VideoType.DetailsSeason>) getSeasons.resultFromJson(result);
             syncTVShows.insertSeason(tvShow.tvshowid, detailsSeasons, contentResolver);
         }
 
         VideoLibrary.GetEpisodes getEpisodes = new VideoLibrary.GetEpisodes(0);
         result = FileUtils.readFile(context, "VideoLibrary.GetEpisodes.json");
-        ArrayList<VideoType.DetailsEpisode> detailsEpisodes = (ArrayList) getEpisodes.resultFromJson(result);
+        ArrayList<VideoType.DetailsEpisode> detailsEpisodes = (ArrayList<VideoType.DetailsEpisode>) getEpisodes.resultFromJson(result);
         syncTVShows.insertEpisodes(detailsEpisodes, contentResolver);
     }
 
@@ -174,7 +174,7 @@ public class Database {
         throws ApiException, IOException {
         VideoLibrary.GetMusicVideos getMusicVideos = new VideoLibrary.GetMusicVideos();
         String result = FileUtils.readFile(context, "VideoLibrary.GetMusicVideos.json");
-        ArrayList<VideoType.DetailsMusicVideo> musicVideoList = (ArrayList) getMusicVideos.resultFromJson(result);
+        ArrayList<VideoType.DetailsMusicVideo> musicVideoList = (ArrayList<VideoType.DetailsMusicVideo>) getMusicVideos.resultFromJson(result);
 
         syncMusicVideos.insertMusicVideos(musicVideoList, contentResolver);
     }

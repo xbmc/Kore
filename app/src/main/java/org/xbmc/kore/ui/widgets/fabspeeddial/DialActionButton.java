@@ -36,12 +36,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
 
-import butterknife.ButterKnife;
-import butterknife.BindView;
-
 public class DialActionButton extends LinearLayout {
-    @BindView(R.id.dial_label) AppCompatTextView label;
-    @BindView(R.id.dial_action_button) FloatingActionButton button;
+    AppCompatTextView label;
+    FloatingActionButton button;
 
     private View anchorView;
     private boolean isHiding;
@@ -78,7 +75,7 @@ public class DialActionButton extends LinearLayout {
      * Use {@link #setShowInterpolator(TimeInterpolator)} and
      * {@link #setHideInterpolator(TimeInterpolator)} to set the appropriate interpolators
      * for this DialActionButton
-     * @param anchorView
+     * @param anchorView View to anchor
      */
     public void setAnchorView(View anchorView) {
         this.anchorView = anchorView;
@@ -171,7 +168,8 @@ public class DialActionButton extends LinearLayout {
     private void initializeView(Context context, AttributeSet attrs, int defStyleAttr) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.dial_action_button, this);
-        ButterKnife.bind(view);
+        label = view.findViewById(R.id.dial_label);
+        button = view.findViewById(R.id.dial_action_button);
 
         // Make sure shadow is not clipped
         setClipToPadding(false);

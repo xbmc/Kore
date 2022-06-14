@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.xbmc.kore.R;
@@ -128,7 +129,7 @@ public class AddonListFragment extends AbstractListFragment {
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.addon_list, menu);
 
         // Setup filters
@@ -172,7 +173,7 @@ public class AddonListFragment extends AbstractListFragment {
     private void callGetAddonsAndSetup() {
         final AddonsAdapter adapter = (AddonsAdapter) getAdapter();
 
-        UIUtils.showRefreshAnimation(swipeRefreshLayout);
+        UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
 
         // Get the addon list, this is done asyhnchronously
         String[] properties = new String[] {

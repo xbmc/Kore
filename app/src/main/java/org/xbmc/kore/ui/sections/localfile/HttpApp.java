@@ -40,7 +40,7 @@ public class HttpApp extends NanoHTTPD {
     private final int TOKEN_LENGTH = 12;
 
     private String generateToken() {
-        String token = "";
+        StringBuilder token = new StringBuilder();
 
         SecureRandom sr = new SecureRandom();
 
@@ -53,10 +53,10 @@ public class HttpApp extends NanoHTTPD {
             } else {
                 n += '0' - 26*2;
             }
-            token += Character.toString((char) n);
+            token.append((char) n);
         }
 
-        return token;
+        return token.toString();
     }
 
     private Context applicationContext;
@@ -177,7 +177,10 @@ public class HttpApp extends NanoHTTPD {
             try {
                 cursor = applicationContext.getContentResolver().query(contentUri, null, null, null, null);
                 if (cursor != null && cursor.moveToFirst()) {
-                    fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    // Unrolled to prevent error on lint
+                    int colIdx = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (colIdx >= 0)
+                        fileName = cursor.getString(colIdx);
                 }
             } finally {
                 cursor.close();

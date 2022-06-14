@@ -19,7 +19,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <include layout="@layout/remote_info_panel"/>
+    <include
+        android:id="@+id/include_info_panel"
+        layout="@layout/remote_info_panel"/>
 
     <ImageView
         android:id="@+id/art"

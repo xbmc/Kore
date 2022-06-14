@@ -511,16 +511,16 @@ public class MediaDatabase extends SQLiteOpenHelper {
             case DB_VERSION_PRE_HOST_VERSION:
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_MAJOR +
-                           " INTEGER DEFAULT " + String.valueOf(HostInfo.DEFAULT_KODI_VERSION_MAJOR) + ";");
+                           " INTEGER DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_MAJOR + ";");
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_MINOR +
-                           " INTEGER DEFAULT " + String.valueOf(HostInfo.DEFAULT_KODI_VERSION_MINOR) + ";");
+                           " INTEGER DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_MINOR + ";");
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_REVISION +
-                           " TEXT DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_REVISION + ";");
+                           " TEXT DEFAULT '" + HostInfo.DEFAULT_KODI_VERSION_REVISION + "';");
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.KODI_VERSION_TAG +
-                           " TEXT DEFAULT " + HostInfo.DEFAULT_KODI_VERSION_TAG + ";");
+                           " TEXT DEFAULT '" + HostInfo.DEFAULT_KODI_VERSION_TAG + "';");
             case DB_VERSION_PRE_HOST_HTTPS:
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                            " ADD COLUMN " + MediaContract.HostsColumns.IS_HTTPS +
@@ -545,7 +545,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
      *
      * TODO: Extract from host's advancedsettings.xml - sortTokens if available via JSONAPI
      */
-    private static String[] commonTokens = {"The", /* "An", "A" */};
+    private static final String[] commonTokens = {"The", /* "An", "A" */};
 
     /**
      * Given column create SQLite column expression to convert any sortTokens prefixes to suffixes
@@ -571,9 +571,9 @@ public class MediaDatabase extends SQLiteOpenHelper {
         // Create WHEN for each token, eg 'The Dog' would become 'Dog, The'
         for (String token: commonTokens) {
             order.append(
-                 " WHEN " + column + " LIKE '" + token + " %'" +
-                 " THEN SUBSTR(" + column + "," + String.valueOf(token.length() + 2) + ")" +
-                 " || ', " + token + "' "
+                    " WHEN " + column + " LIKE '" + token + " %'" +
+                    " THEN SUBSTR(" + column + "," + (token.length() + 2) + ")" +
+                    " || ', " + token + "' "
             );
         }
 

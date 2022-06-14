@@ -23,6 +23,7 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
@@ -86,7 +87,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	@TargetApi(16)
 	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View root = super.onCreateView(inflater, container, savedInstanceState);
 
 		bus = EventBus.getDefault();
@@ -128,11 +129,11 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	@Override
 	public void onStop() {
 		super.onStop();
-		SyncUtils.disconnectFromLibrarySyncService(getActivity(), serviceConnection);
+		SyncUtils.disconnectFromLibrarySyncService(requireContext(), serviceConnection);
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(@NonNull Bundle outState) {
 		if (!TextUtils.isEmpty(searchFilter)) {
 			savedSearchFilter = searchFilter;
 		}
@@ -142,12 +143,9 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	@Override
 	protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
-		return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-			@Override
-			public void onItemClick(View view, int position) {
-				saveSearchState();
-				onListItemClicked(view);
-			}
+		return (view, position) -> {
+			saveSearchState();
+			onListItemClicked(view);
 		};
 	}
 
@@ -157,7 +155,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.abstractcursorlistfragment, menu);
 
 		if (supportsSearch) {
@@ -212,7 +210,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	/**
 	 * Called each time a MediaSyncEvent is received.
-	 * @param event
+	 * @param event Media Sync Event
 	 */
 	protected void onSyncProcessEnded(MediaSyncEvent event) {
         boolean silentSync = false;
@@ -245,7 +243,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
             boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
                 syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
             if (!silentRefresh)
-                UIUtils.showRefreshAnimation(swipeRefreshLayout);
+                UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
         }
     }
 
@@ -263,7 +261,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	@Override
     public void onRefresh() {
-		UIUtils.showRefreshAnimation(swipeRefreshLayout);
+		UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
 		Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
         syncIntent.putExtra(getListSyncType(), true);
 
@@ -273,10 +271,10 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
             syncIntent.putExtra(syncID, itemId);
         }
 
-        getActivity().startService(syncIntent);
+        requireContext().startService(syncIntent);
     }
 
-    /**
+    /*
      * Search view callbacks
      */
 	/** {@inheritDoc} */
@@ -287,7 +285,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 			return true;
 		}
 
-		/**
+		/*
 		 * When this fragment is paused, onQueryTextChange is called with an empty string.
 		 * This causes problems restoring the list fragment when returning. On return the fragment
 		 * is recreated, which will cause the cursor adapter to be recreated. Although
@@ -312,10 +310,11 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		return true;
 	}
 
-	/**
+	/*
 	 * Loader callbacks
 	 */
 	/** {@inheritDoc} */
+	@NonNull
 	@Override
 	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 		loaderLoading = true;
@@ -324,18 +323,18 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	/** {@inheritDoc} */
 	@Override
-	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+	public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
 		((RecyclerViewCursorAdapter) getAdapter()).swapCursor(cursor);
 		if (TextUtils.isEmpty(searchFilter)) {
 			// To prevent the empty text from appearing on the first load, set it now
-			emptyView.setText(getString(R.string.swipe_down_to_refresh));
+			binding.includeEmptyView.empty.setText(getString(R.string.swipe_down_to_refresh));
 		}
 		loaderLoading = false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void onLoaderReset(Loader<Cursor> cursorLoader) {
+	public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
 		((RecyclerViewCursorAdapter) getAdapter()).swapCursor(null);
 	}
 
@@ -392,15 +391,12 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		//Handle clearing search query using the close button (X button).
 		View view = searchView.findViewById(R.id.search_close_btn);
 		if (view != null) {
-			view.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					EditText editText = (EditText) searchView.findViewById(R.id.search_src_text);
-					editText.setText("");
-					searchView.setQuery("", false);
-					searchFilter = savedSearchFilter = "";
-					restartLoader();
-				}
+			view.setOnClickListener(v -> {
+				EditText editText = searchView.findViewById(R.id.search_src_text);
+				editText.setText("");
+				searchView.setQuery("", false);
+				searchFilter = savedSearchFilter = "";
+				restartLoader();
 			});
 		}
 	}

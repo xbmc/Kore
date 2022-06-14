@@ -40,11 +40,7 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.ui.animators.ChangeImageFadeAnimation;
 import org.xbmc.kore.ui.animators.PulsateAnimation;
 
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.Unbinder;
-
-/**
+/*
  * The Floating Action Button Speed Dial uses a {@link FloatingActionButton} and can
  * optionally show a speed dial menu. To enable the speed dials add a listener
  * for the dials using {@link #setOnDialItemClickListener(DialListener)}.
@@ -66,9 +62,9 @@ import butterknife.Unbinder;
  * </p>
  */
 public class FABSpeedDial extends LinearLayout {
-    @BindView(R.id.fabspeeddial) FloatingActionButton FABMain;
-    @BindView(R.id.play_local) DialActionButton FABPlayLocal;
-    @BindView(R.id.play_remote) DialActionButton FABPlayRemote;
+    FloatingActionButton FABMain;
+    DialActionButton FABPlayLocal;
+    DialActionButton FABPlayRemote;
 
     private final String BUNDLE_KEY_EXPANDED = "expanded";
     private final String BUNDLE_KEY_PARENT = "parent";
@@ -82,10 +78,8 @@ public class FABSpeedDial extends LinearLayout {
     private Drawable iconFABDefault;
     private Drawable iconFABOpenClose;
 
-    private OvershootInterpolator showDialsInterpolator = new OvershootInterpolator();
-    private AccelerateInterpolator hideDialsInterpolator = new AccelerateInterpolator();
-
-    private Unbinder unbinder;
+    private final OvershootInterpolator showDialsInterpolator = new OvershootInterpolator();
+    private final AccelerateInterpolator hideDialsInterpolator = new AccelerateInterpolator();
 
     public interface DialListener {
         void onLocalPlayClicked();
@@ -117,7 +111,6 @@ public class FABSpeedDial extends LinearLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        unbinder.unbind();
 
         dialListener = null;
         fabListener = null;
@@ -143,7 +136,7 @@ public class FABSpeedDial extends LinearLayout {
      * <br/>
      * Note: adding a listener for the dials also enables the speed dials if
      * user didn't disable usage in settings
-     * @param dialListener
+     * @param dialListener Listener
      */
     public void setOnDialItemClickListener(DialListener dialListener) {
         this.dialListener = dialListener;
@@ -162,7 +155,7 @@ public class FABSpeedDial extends LinearLayout {
      * <br/>
      * Note: if the speed dials are enabled this won't be called
      * when the FAB button is pressed.
-     * @param fabListener
+     * @param fabListener Listener
      */
     public void setOnFabClickListener(OnClickListener fabListener) {
         this.fabListener = fabListener;
@@ -259,8 +252,9 @@ public class FABSpeedDial extends LinearLayout {
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.fab_speed_dial, this);
-
-        unbinder = ButterKnife.bind(view);
+        FABMain = view.findViewById(R.id.fabspeeddial);
+        FABPlayLocal = view.findViewById(R.id.play_local);
+        FABPlayRemote = view.findViewById(R.id.play_remote);
 
         // Makes sure shadow is not clipped
         setClipToPadding(false);
@@ -305,46 +299,37 @@ public class FABSpeedDial extends LinearLayout {
     }
 
     private void setupListeners() {
-        FABMain.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dialsEnabled) {
-                    showDials(!FABPlayLocal.isShown());
-                } else {
-                    if (fabListener != null) {
-                        fabListener.onClick(v);
-                    } else if (dialListener != null) {
-                        /**
-                         * We take remote play as default and we try to fallback if dev misconfigured
-                         * the FAB in {@link org.xbmc.kore.ui.AbstractInfoFragment#setupFAB(FABSpeedDial)}.
-                         * This is also needed to support disabling local playback through settings.
-                         */
-                        dialListener.onRemotePlayClicked();
-                    }
-                }
-            }
-        });
-
-        FABPlayLocal.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialSelected = FABPlayLocal;
-                if (dialListener != null) {
-                    dialListener.onLocalPlayClicked();
-                    showDials(false);
-                }
-            }
-        });
-
-
-        FABPlayRemote.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialSelected = FABPlayRemote;
-                if (dialListener != null) {
+        FABMain.setOnClickListener(v -> {
+            if (dialsEnabled) {
+                showDials(!FABPlayLocal.isShown());
+            } else {
+                if (fabListener != null) {
+                    fabListener.onClick(v);
+                } else if (dialListener != null) {
+                    /*
+                     * We take remote play as default and we try to fallback if dev misconfigured
+                     * the FAB in {@link org.xbmc.kore.ui.AbstractInfoFragment#setupFAB(FABSpeedDial)}.
+                     * This is also needed to support disabling local playback through settings.
+                     */
                     dialListener.onRemotePlayClicked();
-                    showDials(false);
                 }
+            }
+        });
+
+        FABPlayLocal.setOnClickListener(v -> {
+            dialSelected = FABPlayLocal;
+            if (dialListener != null) {
+                dialListener.onLocalPlayClicked();
+                showDials(false);
+            }
+        });
+
+
+        FABPlayRemote.setOnClickListener(v -> {
+            dialSelected = FABPlayRemote;
+            if (dialListener != null) {
+                dialListener.onRemotePlayClicked();
+                showDials(false);
             }
         });
     }

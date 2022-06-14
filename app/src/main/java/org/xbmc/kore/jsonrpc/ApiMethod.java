@@ -257,8 +257,6 @@ public abstract class ApiMethod<T> {
 	public T resultFromJson(String jsonResult) throws ApiException{
 		try {
 			return resultFromJson((ObjectNode)objectMapper.readTree(jsonResult));
-		} catch (JsonProcessingException e) {
-			throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
 		} catch (IOException e) {
 			throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
 		}

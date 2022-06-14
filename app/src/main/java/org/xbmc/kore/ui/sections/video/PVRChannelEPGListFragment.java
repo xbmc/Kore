@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -94,7 +95,7 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
 
         Bundle bundle = getArguments();
@@ -107,7 +108,7 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
 
         hostManager = HostManager.getInstance(getActivity());
 
-        swipeRefreshLayout.setOnRefreshListener(this);
+        binding.swipeRefreshLayout.setOnRefreshListener(this);
 
         TextView emptyView = getEmptyView();
         emptyView.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +140,7 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
         if (hostManager.getHostInfo() != null) {
             browseEPG();
         } else {
-            swipeRefreshLayout.setRefreshing(false);
+            binding.swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
                  .show();
         }

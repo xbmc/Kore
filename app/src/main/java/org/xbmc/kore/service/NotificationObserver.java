@@ -28,11 +28,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
@@ -58,8 +60,8 @@ public class NotificationObserver
     public static final int NOTIFICATION_ID = 1;
     private static final String NOTIFICATION_CHANNEL = "KORE";
 
-    private PendingIntent remoteStartPendingIntent;
-    private Service service;
+    private final PendingIntent remoteStartPendingIntent;
+    private final Service service;
 
     private Notification nothingPlayingNotification;
     private Notification currentNotification = null;
@@ -71,7 +73,8 @@ public class NotificationObserver
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this.service);
         stackBuilder.addParentStack(RemoteActivity.class);
         stackBuilder.addNextIntent(new Intent(this.service, RemoteActivity.class));
-        remoteStartPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        int flags = Utils.isMOrLater()? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT : PendingIntent.FLAG_UPDATE_CURRENT;
+        remoteStartPendingIntent = stackBuilder.getPendingIntent(0, flags);
 
         // Create the notification channel
         if (Utils.isOreoOrLater()) {
@@ -335,7 +338,8 @@ public class NotificationObserver
                 .setAction(action)
                 .putExtra(IntentActionsService.EXTRA_PLAYER_ID, playerId);
 
-        return PendingIntent.getService(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        int flags = Utils.isMOrLater()? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT : PendingIntent.FLAG_UPDATE_CURRENT;
+        return PendingIntent.getService(service, 0, intent, flags);
     }
 
     private void removeNotification() {

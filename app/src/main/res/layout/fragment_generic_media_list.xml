@@ -19,7 +19,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/empty_view"/>
+    <include
+        android:id="@+id/include_empty_view"
+        layout="@layout/empty_view"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -27,7 +27,9 @@
 
         <include layout="@layout/toolbar_default" />
 
-        <include layout="@layout/empty_view"/>
+        <include
+            android:id="@+id/include_empty_view"
+            layout="@layout/empty_view"/>
 
         <GridView
             android:id="@+id/cast_list"

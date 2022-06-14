@@ -18,23 +18,17 @@ package org.xbmc.kore.ui.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.VolumeLevelIndicatorBinding;
 import org.xbmc.kore.utils.LogUtils;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.Unbinder;
 
 public class VolumeLevelIndicator extends LinearLayout {
     public static final String TAG = LogUtils.makeLogTag(VolumeLevelIndicator.class);
 
-    @BindView(R.id.vli_seek_bar) SeekBar volumeSeekBar;
-    @BindView(R.id.vli_volume_text) TextView volumeTextView;
+    VolumeLevelIndicatorBinding binding;
 
     private OnVolumeChangeListener onVolumeChangeListener;
     private VolumeBarTouchTrackerListener volumeBarTouchTrackerListener;
@@ -68,18 +62,18 @@ public class VolumeLevelIndicator extends LinearLayout {
         super.onDetachedFromWindow();
         onVolumeChangeListener = null;
         volumeBarTouchTrackerListener = null;
+        binding = null;
     }
 
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.volume_level_indicator, this);
-        ButterKnife.bind(view);
+        binding = VolumeLevelIndicatorBinding.inflate(inflater, this);
 
-        volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.vliSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser)
-                    volumeTextView.setText(String.valueOf(progress));
+                    binding.vliVolumeText.setText(String.valueOf(progress));
             }
 
             @Override
@@ -112,16 +106,16 @@ public class VolumeLevelIndicator extends LinearLayout {
 
     /**
      * Sets UI volume state
-     * @param muted
-     * @param volume
+     * @param muted Mute
+     * @param volume Volume
      */
     public void setVolume(boolean muted, int volume) {
         if (muted) {
-            volumeTextView.setText(R.string.muted);
-            volumeSeekBar.setProgress(0);
+            binding.vliVolumeText.setText(R.string.muted);
+            binding.vliSeekBar.setProgress(0);
         } else {
-            volumeTextView.setText(String.valueOf(volume));
-            volumeSeekBar.setProgress(volume);
+            binding.vliVolumeText.setText(String.valueOf(volume));
+            binding.vliSeekBar.setProgress(volume);
         }
     }
 }

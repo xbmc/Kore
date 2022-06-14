@@ -42,8 +42,8 @@ public class OpenSharedUrl implements Callable<Boolean> {
     private final String url;
     private final String notificationTitle;
     private final String notificationText;
-    private boolean queue;
-    private int playlistType;
+    private final boolean queue;
+    private final int playlistType;
 
     /**
      * @param url The url to play

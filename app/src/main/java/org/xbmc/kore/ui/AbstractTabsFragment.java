@@ -23,18 +23,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.FragmentDefaultViewPagerBinding;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 abstract public class AbstractTabsFragment extends AbstractFragment
         implements SharedElementTransition.SharedElement {
@@ -42,10 +40,9 @@ abstract public class AbstractTabsFragment extends AbstractFragment
     public static final String PREFERENCES_NAME = "AbstractTabsFragmentPreferences";
     private static final String PREFERENCE_PREFIX_LAST_TAB = "lastTab_";
 
-    @BindView(R.id.pager) ViewPager viewPager;
-    private SharedPreferences preferences;
+    FragmentDefaultViewPagerBinding binding;
 
-    private Unbinder unbinder;
+    private SharedPreferences preferences;
 
     /**
      * Use {@link #setDataHolder(AbstractInfoFragment.DataHolder)} to provide the required info
@@ -55,24 +52,22 @@ abstract public class AbstractTabsFragment extends AbstractFragment
         super();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) {
             // We're not being shown or there's nothing to show
             return null;
         }
 
-        preferences = getContext().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_default_view_pager, container, false);
-        unbinder = ButterKnife.bind(this, root);
+        preferences = requireContext().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        binding = FragmentDefaultViewPagerBinding.inflate(inflater, container, false);
 
-        viewPager.setAdapter(createTabsAdapter(getDataHolder()));
+        binding.pager.setAdapter(createTabsAdapter(getDataHolder()));
 
         if (shouldRememberLastTab()) {
-            viewPager.setCurrentItem(preferences.getInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), 0), false);
+            binding.pager.setCurrentItem(preferences.getInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), 0), false);
         }
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -80,7 +75,7 @@ abstract public class AbstractTabsFragment extends AbstractFragment
         super.onStop();
         if (shouldRememberLastTab()) {
             preferences.edit()
-                    .putInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), viewPager.getCurrentItem())
+                    .putInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), binding.pager.getCurrentItem())
                     .apply();
         }
     }
@@ -94,7 +89,7 @@ abstract public class AbstractTabsFragment extends AbstractFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        binding = null;
     }
 
     @Override
@@ -108,23 +103,19 @@ abstract public class AbstractTabsFragment extends AbstractFragment
         //need to check which fragment is currently displayed
         View artView = view.findViewById(R.id.poster);
         View scrollView = view.findViewById(R.id.media_panel);
-        if (( artView != null ) &&
-            ( scrollView != null ) &&
-            UIUtils.isViewInBounds(scrollView, artView)) {
-            return true;
-        }
-
-        return false;
+        return (artView != null) &&
+               (scrollView != null) &&
+               UIUtils.isViewInBounds(scrollView, artView);
     }
 
     protected ViewPager getViewPager() {
-        return viewPager;
+        return binding.pager;
     }
 
     /**
      * Called to get the TabsAdapter that should be connected to the ViewPager
      * @param dataHolder the data passed to the *DetailsFragment
-     * @return
+     * @return Tabs Adapter
      */
     abstract protected TabsAdapter createTabsAdapter(AbstractInfoFragment.DataHolder dataHolder);
 

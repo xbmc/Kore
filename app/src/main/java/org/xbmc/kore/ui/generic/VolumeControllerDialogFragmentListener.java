@@ -2,7 +2,6 @@ package org.xbmc.kore.ui.generic;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -10,26 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
-import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.VolumeControllerDialogBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
-import org.xbmc.kore.ui.widgets.HighlightButton;
 import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
-
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.Unbinder;
 
 public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragment
         implements HostConnectionObserver.ApplicationEventsObserver,
@@ -38,36 +33,30 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     private static final String TAG = LogUtils.makeLogTag(VolumeControllerDialogFragmentListener.class);
     private static final int AUTO_DISMISS_DELAY = 2000;
 
-    @BindView(R.id.vcd_volume_mute) HighlightButton volumeMuteButton;
-    @BindView(R.id.vcd_volume_muted_indicator) HighlightButton volumeMutedIndicatorButton;
-    @BindView(R.id.vcd_volume_level_indicator) VolumeLevelIndicator volumeLevelIndicator;
+    VolumeControllerDialogBinding binding;
 
-    private Unbinder unbinder;
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
     private HostManager hostManager = null;
-    private ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
-    private View.OnClickListener onMuteToggleOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            cancelDismissDialog();
-            Application.SetMute action = new Application.SetMute();
-            action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
-                @Override
-                public void onSuccess(Boolean result) {
-                    //We depend on the listener to correct the mute button state
-                }
+    private final ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
+    private final View.OnClickListener onMuteToggleOnClickListener = v -> {
+        cancelDismissDialog();
+        Application.SetMute action = new Application.SetMute();
+        action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                //We depend on the listener to correct the mute button state
+            }
 
-                @Override
-                public void onError(int errorCode, String description) {
-                    LogUtils.LOGE(TAG,
-                            "Got an error calling Application.SetMute. Error code: " + errorCode +
-                                    ", description: " + description);
-                }
-            }, callbackHandler);
-        }
+            @Override
+            public void onError(int errorCode, String description) {
+                LogUtils.LOGE(TAG,
+                        "Got an error calling Application.SetMute. Error code: " + errorCode +
+                                ", description: " + description);
+            }
+        }, callbackHandler);
     };
     private long lastVolumeChangeInteractionEvent;
-    private Runnable dismissDialog = new Runnable() {
+    private final Runnable dismissDialog = new Runnable() {
         @Override
         public void run() {
             long timeSinceLastEvent = System.currentTimeMillis() - lastVolumeChangeInteractionEvent;
@@ -83,37 +72,30 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     @Override
     public void onResume() {
         super.onResume();
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(android.content.DialogInterface dialog, int keyCode,
-                    android.view.KeyEvent event) {
-                boolean handled = handleVolumeKeyEvent(getContext(), event);
-                if (handled) {
-                    delayedDismissDialog();
-                }
-                return handled;
+        requireDialog().setOnKeyListener((dialog, keyCode, event) -> {
+            boolean handled = handleVolumeKeyEvent(getContext(), event);
+            if (handled) {
+                delayedDismissDialog();
             }
+            return handled;
         });
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.volume_controller_dialog, container, false);
-        unbinder = ButterKnife.bind(this, rootView);
-
-        return rootView;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = VolumeControllerDialogBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public void show(FragmentManager manager, String tag) {
+    public void show(@NonNull FragmentManager manager, String tag) {
         super.show(manager, tag);
         delayedDismissDialog();
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         hostManager = HostManager.getInstance(getContext());
 
@@ -131,7 +113,7 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
         if (hostConnectionObserver != null) {
             hostConnectionObserver.unregisterApplicationObserver(this);
         }
-        unbinder.unbind();
+        binding = null;
     }
 
     private void registerObserver() {
@@ -145,29 +127,26 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     }
 
     private void setListeners() {
-        volumeMuteButton.setOnClickListener(onMuteToggleOnClickListener);
-        volumeMutedIndicatorButton.setOnClickListener(onMuteToggleOnClickListener);
+        binding.vcdVolumeMute.setOnClickListener(onMuteToggleOnClickListener);
+        binding.vcdVolumeMutedIndicator.setOnClickListener(onMuteToggleOnClickListener);
 
-        volumeLevelIndicator.setOnVolumeChangeListener(
-                new VolumeLevelIndicator.OnVolumeChangeListener() {
-                    @Override
-                    public void onVolumeChanged(int volume) {
-                        cancelDismissDialog();
-                        new Application.SetVolume(volume).execute(hostManager.getConnection(),
-                                defaultIntActionCallback, callbackHandler);
-                    }
+        binding.vcdVolumeLevelIndicator.setOnVolumeChangeListener(
+                volume -> {
+                    cancelDismissDialog();
+                    new Application.SetVolume(volume).execute(hostManager.getConnection(),
+                            defaultIntActionCallback, callbackHandler);
                 });
-        volumeLevelIndicator.setVolumeBarTouchTrackerListener(this);
+        binding.vcdVolumeLevelIndicator.setVolumeBarTouchTrackerListener(this);
     }
 
     @Override
     public void applicationOnVolumeChanged(int volume, boolean muted) {
-        volumeLevelIndicator.setVolume(muted, volume);
+        binding.vcdVolumeLevelIndicator.setVolume(muted, volume);
 
-        volumeMutedIndicatorButton.setVisibility(muted ? View.VISIBLE : View.GONE);
-        volumeMutedIndicatorButton.setHighlight(muted);
+        binding.vcdVolumeMutedIndicator.setVisibility(muted ? View.VISIBLE : View.GONE);
+        binding.vcdVolumeMutedIndicator.setHighlight(muted);
 
-        volumeMuteButton.setHighlight(muted);
+        binding.vcdVolumeMute.setHighlight(muted);
     }
 
     private void delayedDismissDialog() {

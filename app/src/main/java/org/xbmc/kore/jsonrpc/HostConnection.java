@@ -681,14 +681,11 @@ public class HostConnection {
 			}
 
 			return jsonResponse;
-		} catch (JsonProcessingException e) {
-			LogUtils.LOGW(TAG, "Got an exception while parsing JSON response.", e);
-			throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
 		} catch (IOException e) {
 			LogUtils.LOGW(TAG, "Got an exception while parsing JSON response.", e);
 			throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
 		}
-	}
+    }
 
 	/**
 	 * Sends the JSON RPC request through TCP

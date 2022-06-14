@@ -16,6 +16,7 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -27,16 +28,14 @@
         android:layout_marginLeft="@dimen/default_padding"
         android:layout_marginRight="@dimen/default_padding"
         android:layout_centerVertical="true"
-        android:tint="?attr/defaultButtonColorFilter"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/ic_launcher"
+        app:tint="?attr/defaultButtonColorFilter" />
 
     <TextView
         android:id="@+id/drawer_item_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/navigation_drawer_item_height"
-        android:layout_marginLeft="@dimen/default_padding"
         android:layout_marginStart="@dimen/default_padding"
-        android:layout_toRightOf="@+id/drawer_item_icon"
         android:layout_toEndOf="@+id/drawer_item_icon"
         android:gravity="center_vertical"
         android:textAppearance="@style/TextAppearance.NavDrawerItem"
