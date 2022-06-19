@@ -110,8 +110,8 @@ public class FileDownloadHelper {
             String pathforUrl = Uri.encode(fileName);
             String credentials = (hostInfo.getPassword() == null || hostInfo.getPassword().isEmpty()) ? "" :
                 String.format("%s:%s@", hostInfo.getUsername(), hostInfo.getPassword());
-            String videoUrl = String.format("http://%s%s:%d/vfs/%s", credentials, hostInfo.getAddress(),
-                    hostInfo.getHttpPort(), pathforUrl);
+            String videoUrl = String.format("%s://%s%s:%d/vfs/%s", hostInfo.isHttps? "https" : "http",
+                    credentials, hostInfo.getAddress(), hostInfo.getHttpPort(), pathforUrl);
             return videoUrl;
         }
     }
