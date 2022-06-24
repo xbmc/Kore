@@ -20,7 +20,6 @@ import static android.view.View.GONE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
@@ -107,7 +106,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         hostInfo = hostManager.getHostInfo();
     }
 
-    @TargetApi(21)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -316,7 +314,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     }
 
     @Override
-    @TargetApi(21)
     public boolean isSharedElementVisible() {
         return UIUtils.isViewInBounds(binding.mediaPanel, binding.poster);
     }
@@ -502,7 +499,10 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     }
 
     private boolean checkStoragePermission() {
+        // R or later (API Level 30+) doesn't need WRITE_EXTERNAL_STORAGE to write on the default external public dirs
+        // Up until Q (API Level 29), we opt out of scoped storage and explicitly ask for `permission.WRITE_EXTERNAL_STORAGE`
         boolean hasStoragePermission =
+                Utils.isROrLater() ||
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
         if (!hasStoragePermission) {

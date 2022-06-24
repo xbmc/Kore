@@ -79,6 +79,10 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
+    public static boolean isROrLater() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
+    }
+
     /**
      * Concats a list of strings...
      * @param list List to contacenate
