@@ -176,17 +176,14 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_hide_watched:
-                item.setChecked(!item.isChecked());
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                preferences.edit()
-                           .putBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, item.isChecked())
-                           .apply();
-                refreshList();
-                break;
-            default:
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_hide_watched) {
+            item.setChecked(!item.isChecked());
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            preferences.edit()
+                       .putBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, item.isChecked())
+                       .apply();
+            refreshList();
         }
 
         return super.onOptionsItemSelected(item);
@@ -341,13 +338,13 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_play:
-                            MediaPlayerUtils.play(TVShowEpisodeListFragment.this, playListItem);
-                            return true;
-                        case R.id.action_queue:
-                            MediaPlayerUtils.queue(TVShowEpisodeListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
-                            return true;
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.action_play) {
+                        MediaPlayerUtils.play(TVShowEpisodeListFragment.this, playListItem);
+                        return true;
+                    } else if (itemId == R.id.action_queue) {
+                        MediaPlayerUtils.queue(TVShowEpisodeListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
+                        return true;
                     }
                     return false;
                 }

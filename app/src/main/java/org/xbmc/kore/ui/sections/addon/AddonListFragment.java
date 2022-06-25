@@ -145,17 +145,14 @@ public class AddonListFragment extends AbstractListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        switch (item.getItemId()) {
-            case R.id.action_hide_disabled:
-                item.setChecked(!item.isChecked());
-                preferences.edit()
-                        .putBoolean(Settings.KEY_PREF_ADDONS_FILTER_HIDE_DISABLED, item.isChecked())
-                        .apply();
-                hideDisabledAddons = item.isChecked();
-                callGetAddonsAndSetup();
-                break;
-            default:
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_hide_disabled) {
+            item.setChecked(!item.isChecked());
+            preferences.edit()
+                       .putBoolean(Settings.KEY_PREF_ADDONS_FILTER_HIDE_DISABLED, item.isChecked())
+                       .apply();
+            hideDisabledAddons = item.isChecked();
+            callGetAddonsAndSetup();
         }
 
         return super.onOptionsItemSelected(item);

@@ -461,15 +461,12 @@ public class RemoteFragment extends Fragment
      * @param panelResId The panel to show
      */
     private void switchToPanel(int panelResId, boolean showRemote) {
-        switch (panelResId) {
-            case R.id.info_panel:
-                binding.mediaPanel.setVisibility(View.GONE);
-                binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
-                break;
-            case R.id.media_panel:
-                binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
-                binding.mediaPanel.setVisibility(View.VISIBLE);
-                break;
+        if (panelResId == R.id.info_panel) {
+            binding.mediaPanel.setVisibility(View.GONE);
+            binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
+        } else if (panelResId == R.id.media_panel) {
+            binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
+            binding.mediaPanel.setVisibility(View.VISIBLE);
         }
 
         if (showRemote) {

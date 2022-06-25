@@ -191,16 +191,13 @@ public class PlaylistFragment extends Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_clear_playlist:
-                PlaylistHolder playlistHolder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
-                int playlistId = playlistHolder.getPlaylistId();
-                playlistOnClear(playlistId);
-                Playlist.Clear action = new Playlist.Clear(playlistId);
-                action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-                break;
-            default:
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_clear_playlist) {
+            PlaylistHolder playlistHolder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
+            int playlistId = playlistHolder.getPlaylistId();
+            playlistOnClear(playlistId);
+            Playlist.Clear action = new Playlist.Clear(playlistId);
+            action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
         }
 
         return super.onOptionsItemSelected(item);
@@ -455,15 +452,12 @@ public class PlaylistFragment extends Fragment
      * @param panelResId The panel to show
      */
     private void switchToPanel(int panelResId) {
-        switch (panelResId) {
-            case R.id.info_panel:
-                binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
-                binding.playlist.setVisibility(View.GONE);
-                break;
-            case R.id.playlist:
-                binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
-                binding.playlist.setVisibility(View.VISIBLE);
-                break;
+        if (panelResId == R.id.info_panel) {
+            binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
+            binding.playlist.setVisibility(View.GONE);
+        } else if (panelResId == R.id.playlist) {
+            binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
+            binding.playlist.setVisibility(View.VISIBLE);
         }
     }
 
@@ -490,13 +484,13 @@ public class PlaylistFragment extends Fragment
                 final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
                 popupMenu.getMenuInflater().inflate(R.menu.playlist_item, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()) {
-                        case R.id.action_remove_playlist_item:
-                            // Remove this item from the playlist
-                            int playlistId = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistId();
-                            Playlist.Remove action = new Playlist.Remove(playlistId, position);
-                            action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-                            return true;
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.action_remove_playlist_item) {
+                        // Remove this item from the playlist
+                        int playlistId = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistId();
+                        Playlist.Remove action = new Playlist.Remove(playlistId, position);
+                        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                        return true;
                     }
                     return false;
                 });

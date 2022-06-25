@@ -112,37 +112,27 @@ public class ControlPad extends SquareGridLayout
     public void onClick(View v) {
         if (onPadButtonsListener == null)
             return;
-
-        switch (v.getId()) {
-            case R.id.select:
-                onPadButtonsListener.selectButtonClicked();
-                break;
-            case R.id.left:
-                onPadButtonsListener.leftButtonClicked();
-                break;
-            case R.id.right:
-                onPadButtonsListener.rightButtonClicked();
-                break;
-            case R.id.up:
-                onPadButtonsListener.upButtonClicked();
-                break;
-            case R.id.down:
-                onPadButtonsListener.downButtonClicked();
-                break;
-            case R.id.back:
-                onPadButtonsListener.backButtonClicked();
-                break;
-            case R.id.info:
-                onPadButtonsListener.infoButtonClicked();
-                break;
-            case R.id.context:
-                onPadButtonsListener.contextButtonClicked();
-                break;
-            case R.id.osd:
-                onPadButtonsListener.osdButtonClicked();
-                break;
-            default:
-                LogUtils.LOGD(TAG, "Unknown button "+v.getId()+" clicked");
+        int viewId = v.getId();
+        if (viewId == R.id.select) {
+            onPadButtonsListener.selectButtonClicked();
+        } else if (viewId == R.id.left) {
+            onPadButtonsListener.leftButtonClicked();
+        } else if (viewId == R.id.right) {
+            onPadButtonsListener.rightButtonClicked();
+        } else if (viewId == R.id.up) {
+            onPadButtonsListener.upButtonClicked();
+        } else if (viewId == R.id.down) {
+            onPadButtonsListener.downButtonClicked();
+        } else if (viewId == R.id.back) {
+            onPadButtonsListener.backButtonClicked();
+        } else if (viewId == R.id.info) {
+            onPadButtonsListener.infoButtonClicked();
+        } else if (viewId == R.id.context) {
+            onPadButtonsListener.contextButtonClicked();
+        } else if (viewId == R.id.osd) {
+            onPadButtonsListener.osdButtonClicked();
+        } else {
+            LogUtils.LOGD(TAG, "Unknown button " + viewId + " clicked");
         }
     }
 

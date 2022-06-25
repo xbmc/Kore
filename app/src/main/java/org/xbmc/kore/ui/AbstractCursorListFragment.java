@@ -167,10 +167,9 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-			case R.id.action_refresh:
-				onRefresh();
-				break;
+		int itemId = item.getItemId();
+		if (itemId == R.id.action_refresh) {
+			onRefresh();
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -226,9 +226,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                onRefresh();
+        if (item.getItemId() == R.id.action_refresh) {
+            onRefresh();
         }
         return super.onOptionsItemSelected(item);
     }

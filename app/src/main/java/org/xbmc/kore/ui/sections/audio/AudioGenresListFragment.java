@@ -208,13 +208,13 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_play:
-                            MediaPlayerUtils.play(AudioGenresListFragment.this, playListItem);
-                            return true;
-                        case R.id.action_queue:
-                            MediaPlayerUtils.queue(AudioGenresListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                            return true;
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.action_play) {
+                        MediaPlayerUtils.play(AudioGenresListFragment.this, playListItem);
+                        return true;
+                    } else if (itemId == R.id.action_queue) {
+                        MediaPlayerUtils.queue(AudioGenresListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                        return true;
                     }
                     return false;
                 }

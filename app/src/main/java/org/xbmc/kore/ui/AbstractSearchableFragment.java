@@ -162,10 +162,9 @@ public abstract class AbstractSearchableFragment extends AbstractListFragment im
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_refresh:
-                refreshList();
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_refresh) {
+            refreshList();
         }
         return super.onOptionsItemSelected(item);
     }

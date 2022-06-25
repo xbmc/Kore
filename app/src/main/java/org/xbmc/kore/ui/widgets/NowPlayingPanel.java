@@ -179,28 +179,21 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
             if (onPanelButtonsClickListener == null)
                 return;
 
-            switch (view.getId()) {
-                case R.id.npp_previous:
-                    onPanelButtonsClickListener.onPreviousClicked();
-                    break;
-                case R.id.npp_next:
-                    onPanelButtonsClickListener.onNextClicked();
-                    break;
-                case R.id.npp_play:
-                    onPanelButtonsClickListener.onPlayClicked();
-                    break;
-                case R.id.npp_volume_mute:
-                    onPanelButtonsClickListener.onVolumeMuteClicked();
-                    break;
-                case R.id.npp_repeat:
-                    onPanelButtonsClickListener.onRepeatClicked();
-                    break;
-                case R.id.npp_shuffle:
-                    onPanelButtonsClickListener.onShuffleClicked();
-                    break;
-                case R.id.npp_volume_muted_indicator:
-                    onPanelButtonsClickListener.onVolumeMutedIndicatorClicked();
-                    break;
+            int viewId = view.getId();
+            if (viewId == R.id.npp_previous) {
+                onPanelButtonsClickListener.onPreviousClicked();
+            } else if (viewId == R.id.npp_next) {
+                onPanelButtonsClickListener.onNextClicked();
+            } else if (viewId == R.id.npp_play) {
+                onPanelButtonsClickListener.onPlayClicked();
+            } else if (viewId == R.id.npp_volume_mute) {
+                onPanelButtonsClickListener.onVolumeMuteClicked();
+            } else if (viewId == R.id.npp_repeat) {
+                onPanelButtonsClickListener.onRepeatClicked();
+            } else if (viewId == R.id.npp_shuffle) {
+                onPanelButtonsClickListener.onShuffleClicked();
+            } else if (viewId == R.id.npp_volume_muted_indicator) {
+                onPanelButtonsClickListener.onVolumeMutedIndicatorClicked();
             }
         }
     };

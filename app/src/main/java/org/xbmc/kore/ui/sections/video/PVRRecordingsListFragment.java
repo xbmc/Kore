@@ -181,37 +181,31 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        switch (item.getItemId()) {
-            case R.id.action_hide_watched:
-                item.setChecked(!item.isChecked());
-                preferences.edit()
-                        .putBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, item.isChecked())
-                        .apply();
-                refreshList();
-                break;
-            case R.id.action_sort_by_name_and_date_added:
-                item.setChecked(true);
-                preferences.edit()
-                        .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.SORT_BY_NAME)
-                        .apply();
-                refreshList();
-                break;
-            case R.id.action_sort_by_date_added:
-                item.setChecked(true);
-                preferences.edit()
-                        .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
-                        .apply();
-                refreshList();
-                break;
-            case R.id.action_unsorted:
-                item.setChecked(true);
-                preferences.edit()
-                        .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.UNSORTED)
-                        .apply();
-                refreshList();
-                break;
-            default:
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_hide_watched) {
+            item.setChecked(!item.isChecked());
+            preferences.edit()
+                       .putBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, item.isChecked())
+                       .apply();
+            refreshList();
+        } else if (itemId == R.id.action_sort_by_name_and_date_added) {
+            item.setChecked(true);
+            preferences.edit()
+                       .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.SORT_BY_NAME)
+                       .apply();
+            refreshList();
+        } else if (itemId == R.id.action_sort_by_date_added) {
+            item.setChecked(true);
+            preferences.edit()
+                       .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
+                       .apply();
+            refreshList();
+        } else if (itemId == R.id.action_unsorted) {
+            item.setChecked(true);
+            preferences.edit()
+                       .putInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.UNSORTED)
+                       .apply();
+            refreshList();
         }
 
         return super.onOptionsItemSelected(item);
