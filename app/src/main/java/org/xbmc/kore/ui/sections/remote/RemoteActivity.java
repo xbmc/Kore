@@ -232,58 +232,56 @@ public class RemoteActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
-        switch (item.getItemId()) {
-            case R.id.action_wake_up:
-                UIUtils.sendWolAsync(this, hostManager.getHostInfo());
-                return true;
-            case R.id.action_quit:
-                Application.Quit actionQuit = new Application.Quit();
-                // Fire and forget
-                actionQuit.execute(hostManager.getConnection(), null, null);
-                return true;
-            case R.id.action_suspend:
-                System.Suspend actionSuspend = new System.Suspend();
-                // Fire and forget
-                actionSuspend.execute(hostManager.getConnection(), null, null);
-                return true;
-            case R.id.action_reboot:
-                System.Reboot actionReboot = new System.Reboot();
-                // Fire and forget
-                actionReboot.execute(hostManager.getConnection(), null, null);
-                return true;
-            case R.id.action_shutdown:
-                System.Shutdown actionShutdown = new System.Shutdown();
-                // Fire and forget
-                actionShutdown.execute(hostManager.getConnection(), null, null);
-                return true;
-            case R.id.send_text:
-                SendTextDialogFragment dialog =
-                        SendTextDialogFragment.newInstance(getString(R.string.send_text));
-                dialog.show(getSupportFragmentManager(), null);
-                return true;
-            case R.id.toggle_fullscreen:
-                GUI.SetFullscreen actionSetFullscreen = new GUI.SetFullscreen();
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_wake_up) {
+            UIUtils.sendWolAsync(this, hostManager.getHostInfo());
+            return true;
+        } else if (itemId == R.id.action_quit) {
+            Application.Quit actionQuit = new Application.Quit();
+            // Fire and forget
+            actionQuit.execute(hostManager.getConnection(), null, null);
+            return true;
+        } else if (itemId == R.id.action_suspend) {
+            System.Suspend actionSuspend = new System.Suspend();
+            // Fire and forget
+            actionSuspend.execute(hostManager.getConnection(), null, null);
+            return true;
+        } else if (itemId == R.id.action_reboot) {
+            System.Reboot actionReboot = new System.Reboot();
+            // Fire and forget
+            actionReboot.execute(hostManager.getConnection(), null, null);
+            return true;
+        } else if (itemId == R.id.action_shutdown) {
+            System.Shutdown actionShutdown = new System.Shutdown();
+            // Fire and forget
+            actionShutdown.execute(hostManager.getConnection(), null, null);
+            return true;
+        } else if (itemId == R.id.send_text) {
+            SendTextDialogFragment dialog =
+                    SendTextDialogFragment.newInstance(getString(R.string.send_text));
+            dialog.show(getSupportFragmentManager(), null);
+            return true;
+        } else if (itemId == R.id.toggle_fullscreen) {
+            GUI.SetFullscreen actionSetFullscreen = new GUI.SetFullscreen();
 //                Input.ExecuteAction actionSetFullscreen = new Input.ExecuteAction(Input.ExecuteAction.TOGGLEFULLSCREEN);
-                actionSetFullscreen.execute(hostManager.getConnection(), null, null);
-                return true;
-            case R.id.clean_video_library:
-                VideoLibrary.Clean actionCleanVideo = new VideoLibrary.Clean();
-                actionCleanVideo.execute(hostManager.getConnection(), null, null);
-                return true;
-            case R.id.clean_audio_library:
-                AudioLibrary.Clean actionCleanAudio = new AudioLibrary.Clean();
-                actionCleanAudio.execute(hostManager.getConnection(), null, null);
-                return true;
-            case R.id.update_video_library:
-                VideoLibrary.Scan actionScanVideo = new VideoLibrary.Scan();
-                actionScanVideo.execute(hostManager.getConnection(), null, null);
-                return true;
-            case R.id.update_audio_library:
-                AudioLibrary.Scan actionScanAudio = new AudioLibrary.Scan();
-                actionScanAudio.execute(hostManager.getConnection(), null, null);
-                return true;
-            default:
-                break;
+            actionSetFullscreen.execute(hostManager.getConnection(), null, null);
+            return true;
+        } else if (itemId == R.id.clean_video_library) {
+            VideoLibrary.Clean actionCleanVideo = new VideoLibrary.Clean();
+            actionCleanVideo.execute(hostManager.getConnection(), null, null);
+            return true;
+        } else if (itemId == R.id.clean_audio_library) {
+            AudioLibrary.Clean actionCleanAudio = new AudioLibrary.Clean();
+            actionCleanAudio.execute(hostManager.getConnection(), null, null);
+            return true;
+        } else if (itemId == R.id.update_video_library) {
+            VideoLibrary.Scan actionScanVideo = new VideoLibrary.Scan();
+            actionScanVideo.execute(hostManager.getConnection(), null, null);
+            return true;
+        } else if (itemId == R.id.update_audio_library) {
+            AudioLibrary.Scan actionScanAudio = new AudioLibrary.Scan();
+            actionScanAudio.execute(hostManager.getConnection(), null, null);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

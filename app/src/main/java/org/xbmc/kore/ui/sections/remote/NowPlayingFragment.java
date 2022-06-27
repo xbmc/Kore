@@ -340,53 +340,53 @@ public class NowPlayingFragment extends Fragment
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             int selectedItem = -1;
-            switch (item.getItemId()) {
-                case R.id.audiostreams:
-                    // Setup audiostream select dialog
-                    String[] audiostreams = new String[(availableAudioStreams != null) ?
-                                                       availableAudioStreams.size() + ADDED_AUDIO_OPTIONS : ADDED_AUDIO_OPTIONS];
+            int itemId = item.getItemId();
+            if (itemId == R.id.audiostreams) {
+                // Setup audiostream select dialog
+                String[] audiostreams = new String[(availableAudioStreams != null) ?
+                                                   availableAudioStreams.size() + ADDED_AUDIO_OPTIONS : ADDED_AUDIO_OPTIONS];
 
-                    audiostreams[0] = getString(R.string.audio_sync);
+                audiostreams[0] = getString(R.string.audio_sync);
 
-                    if (availableAudioStreams != null) {
-                        for (int i = 0; i < availableAudioStreams.size(); i++) {
-                            PlayerType.AudioStream current = availableAudioStreams.get(i);
-                            audiostreams[i + ADDED_AUDIO_OPTIONS] = TextUtils.isEmpty(current.language) ?
-                                                                    current.name : current.language + " | " + current.name;
-                            if (current.index == currentAudiostreamIndex) {
-                                selectedItem = i + ADDED_AUDIO_OPTIONS;
-                            }
-                        }
-
-                        GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
-                                                                                     SELECT_AUDIOSTREAM, getString(R.string.audiostreams), audiostreams, selectedItem);
-                        dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
-                    }
-                    return true;
-                case R.id.subtitles:
-                    // Setup subtitles select dialog
-                    String[] subtitles = new String[(availableSubtitles != null) ?
-                                                    availableSubtitles.size() + ADDED_SUBTITLE_OPTIONS : ADDED_SUBTITLE_OPTIONS];
-
-                    subtitles[0] = getString(R.string.download_subtitle);
-                    subtitles[1] = getString(R.string.subtitle_sync);
-                    subtitles[2] = getString(R.string.none);
-
-                    if (availableSubtitles != null) {
-                        for (int i = 0; i < availableSubtitles.size(); i++) {
-                            PlayerType.Subtitle current = availableSubtitles.get(i);
-                            subtitles[i + ADDED_SUBTITLE_OPTIONS] = TextUtils.isEmpty(current.language) ?
-                                                                    current.name : current.language + " | " + current.name;
-                            if (current.index == currentSubtitleIndex) {
-                                selectedItem = i + ADDED_SUBTITLE_OPTIONS;
-                            }
+                if (availableAudioStreams != null) {
+                    for (int i = 0; i < availableAudioStreams.size(); i++) {
+                        PlayerType.AudioStream current = availableAudioStreams.get(i);
+                        audiostreams[i + ADDED_AUDIO_OPTIONS] = TextUtils.isEmpty(current.language) ?
+                                                                current.name : current.language + " | " + current.name;
+                        if (current.index == currentAudiostreamIndex) {
+                            selectedItem = i + ADDED_AUDIO_OPTIONS;
                         }
                     }
 
                     GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
-                                                                                 SELECT_SUBTITLES, getString(R.string.subtitles), subtitles, selectedItem);
+                                                                                 SELECT_AUDIOSTREAM, getString(R.string.audiostreams), audiostreams, selectedItem);
                     dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
-                    return true;
+                }
+                return true;
+            } else if (itemId == R.id.subtitles) {
+                // Setup subtitles select dialog
+                String[] subtitles = new String[(availableSubtitles != null) ?
+                                                availableSubtitles.size() + ADDED_SUBTITLE_OPTIONS : ADDED_SUBTITLE_OPTIONS];
+
+                subtitles[0] = getString(R.string.download_subtitle);
+                subtitles[1] = getString(R.string.subtitle_sync);
+                subtitles[2] = getString(R.string.none);
+
+                if (availableSubtitles != null) {
+                    for (int i = 0; i < availableSubtitles.size(); i++) {
+                        PlayerType.Subtitle current = availableSubtitles.get(i);
+                        subtitles[i + ADDED_SUBTITLE_OPTIONS] = TextUtils.isEmpty(current.language) ?
+                                                                current.name : current.language + " | " + current.name;
+                        if (current.index == currentSubtitleIndex) {
+                            selectedItem = i + ADDED_SUBTITLE_OPTIONS;
+                        }
+                    }
+                }
+
+                GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
+                                                                             SELECT_SUBTITLES, getString(R.string.subtitles), subtitles, selectedItem);
+                dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
+                return true;
             }
             return false;
         }
@@ -857,17 +857,14 @@ public class NowPlayingFragment extends Fragment
      * @param panelResId The panel to show
      */
     private void switchToPanel(int panelResId) {
-        switch (panelResId) {
-            case R.id.info_panel:
-                binding.mediaPanel.setVisibility(View.GONE);
-                binding.art.setVisibility(View.GONE);
-                binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
-                break;
-            case R.id.media_panel:
-                binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
-                binding.mediaPanel.setVisibility(View.VISIBLE);
-                binding.art.setVisibility(View.VISIBLE);
-                break;
+        if (panelResId == R.id.info_panel) {
+            binding.mediaPanel.setVisibility(View.GONE);
+            binding.art.setVisibility(View.GONE);
+            binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
+        } else if (panelResId == R.id.media_panel) {
+            binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
+            binding.mediaPanel.setVisibility(View.VISIBLE);
+            binding.art.setVisibility(View.VISIBLE);
         }
     }
 

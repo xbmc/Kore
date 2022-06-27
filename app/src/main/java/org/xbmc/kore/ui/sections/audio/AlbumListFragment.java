@@ -129,37 +129,31 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        switch (item.getItemId()) {
-            case R.id.action_sort_by_album:
-                item.setChecked(!item.isChecked());
-                preferences.edit()
-                           .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ALBUM)
-                           .apply();
-                refreshList();
-                break;
-            case R.id.action_sort_by_artist:
-                item.setChecked(!item.isChecked());
-                preferences.edit()
-                           .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ARTIST)
-                           .apply();
-                refreshList();
-                break;
-            case R.id.action_sort_by_artist_year:
-                item.setChecked(!item.isChecked());
-                preferences.edit()
-                           .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ARTIST_YEAR)
-                           .apply();
-                refreshList();
-                break;
-            case R.id.action_sort_by_year:
-                item.setChecked(!item.isChecked());
-                preferences.edit()
-                        .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_YEAR)
-                        .apply();
-                refreshList();
-                break;
-            default:
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_sort_by_album) {
+            item.setChecked(!item.isChecked());
+            preferences.edit()
+                       .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ALBUM)
+                       .apply();
+            refreshList();
+        } else if (itemId == R.id.action_sort_by_artist) {
+            item.setChecked(!item.isChecked());
+            preferences.edit()
+                       .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ARTIST)
+                       .apply();
+            refreshList();
+        } else if (itemId == R.id.action_sort_by_artist_year) {
+            item.setChecked(!item.isChecked());
+            preferences.edit()
+                       .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_ARTIST_YEAR)
+                       .apply();
+            refreshList();
+        } else if (itemId == R.id.action_sort_by_year) {
+            item.setChecked(!item.isChecked());
+            preferences.edit()
+                       .putInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.SORT_BY_YEAR)
+                       .apply();
+            refreshList();
         }
 
         return super.onOptionsItemSelected(item);
@@ -319,13 +313,13 @@ public class AlbumListFragment extends AbstractCursorListFragment {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_play:
-                                MediaPlayerUtils.play(fragment, playListItem);
-                                return true;
-                            case R.id.action_queue:
-                                MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                                return true;
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_play) {
+                            MediaPlayerUtils.play(fragment, playListItem);
+                            return true;
+                        } else if (itemId == R.id.action_queue) {
+                            MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                            return true;
                         }
                         return false;
                     }

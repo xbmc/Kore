@@ -86,27 +86,24 @@ public class AddonsActivity extends BaseMediaActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_show_remote:
-                // Starts remote
-                Intent launchIntent = new Intent(this, RemoteActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(launchIntent);
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_show_remote) {
+            // Starts remote
+            Intent launchIntent = new Intent(this, RemoteActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(launchIntent);
+            return true;
+        } else if (itemId == android.R.id.home) {
+            // Only respond to this if we are showing the details in portrait mode,
+            // which can be checked by checking if selected movie != -1, in which case we
+            // should go back to the previous fragment, which is the list.
+            if (selectedAddonId != null) {
+                selectedAddonId = null;
+                selectedAddonTitle = null;
+                updateActionBar(getActionBarTitle(), false);
+                getSupportFragmentManager().popBackStack();
                 return true;
-            case android.R.id.home:
-                // Only respond to this if we are showing the details in portrait mode,
-                // which can be checked by checking if selected movie != -1, in which case we
-                // should go back to the previous fragment, which is the list.
-                if (selectedAddonId != null) {
-                    selectedAddonId = null;
-                    selectedAddonTitle = null;
-                    updateActionBar(getActionBarTitle(), false);
-                    getSupportFragmentManager().popBackStack();
-                    return true;
-                }
-                break;
-            default:
-                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);

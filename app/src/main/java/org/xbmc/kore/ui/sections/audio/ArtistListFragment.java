@@ -172,13 +172,13 @@ public class ArtistListFragment extends AbstractCursorListFragment {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_play:
-                                MediaPlayerUtils.play(fragment, playListItem);
-                                return true;
-                            case R.id.action_queue:
-                                MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                                return true;
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_play) {
+                            MediaPlayerUtils.play(fragment, playListItem);
+                            return true;
+                        } else if (itemId == R.id.action_queue) {
+                            MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                            return true;
                         }
                         return false;
                     }

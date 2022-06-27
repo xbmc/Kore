@@ -213,19 +213,19 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_play_song:
-                            playSong(songId);
-                            return true;
-                        case R.id.action_add_to_playlist:
-                            addToPlaylist(songId);
-                            return true;
-                        case R.id.download:
-                            ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
-                            songInfoList.add(songInfo);
-                            UIUtils.downloadSongs(getActivity(), songInfoList,
-                                                  HostManager.getInstance(getActivity()).getHostInfo(), callbackHandler);
-                            return true;
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.action_play_song) {
+                        playSong(songId);
+                        return true;
+                    } else if (itemId == R.id.action_add_to_playlist) {
+                        addToPlaylist(songId);
+                        return true;
+                    } else if (itemId == R.id.download) {
+                        ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
+                        songInfoList.add(songInfo);
+                        UIUtils.downloadSongs(getActivity(), songInfoList,
+                                              HostManager.getInstance(getActivity()).getHostInfo(), callbackHandler);
+                        return true;
                     }
                     return false;
                 }
@@ -396,20 +396,21 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_play_song:
-                        MediaPlayerUtils.play(AlbumSongsListFragment.this, playListItem);
-                        return true;
-                    case R.id.action_add_to_playlist:
-                        MediaPlayerUtils.queue(AlbumSongsListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                        return true;
-                    case R.id.download:
-                        ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
-                        songInfoList.add(viewHolder.songInfo);
-                        UIUtils.downloadSongs(getActivity(),
-                                              songInfoList,
-                                              HostManager.getInstance(getActivity()).getHostInfo(),
-                                              callbackHandler);
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_play_song) {
+                    MediaPlayerUtils.play(AlbumSongsListFragment.this, playListItem);
+                    return true;
+                } else if (itemId == R.id.action_add_to_playlist) {
+                    MediaPlayerUtils.queue(AlbumSongsListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                    return true;
+                } else if (itemId == R.id.download) {
+                    ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
+                    songInfoList.add(viewHolder.songInfo);
+                    UIUtils.downloadSongs(getActivity(),
+                                          songInfoList,
+                                          HostManager.getInstance(getActivity()).getHostInfo(),
+                                          callbackHandler);
+                    return true;
                 }
                 return false;
             }

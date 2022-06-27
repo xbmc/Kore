@@ -113,10 +113,9 @@ public abstract class AbstractListFragment extends Fragment implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-			case R.id.action_multi_single_columns:
-				toggleAmountOfColumns(item);
-				break;
+		int itemId = item.getItemId();
+		if (itemId == R.id.action_multi_single_columns) {
+			toggleAmountOfColumns(item);
 		}
 		return super.onOptionsItemSelected(item);
 	}

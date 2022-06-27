@@ -246,14 +246,12 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_show_remote:
-                Intent launchIntent = new Intent(this, RemoteActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(launchIntent);
-                return true;
-            default:
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_show_remote) {
+            Intent launchIntent = new Intent(this, RemoteActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(launchIntent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

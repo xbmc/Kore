@@ -348,13 +348,13 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_play:
-                            MediaPlayerUtils.play(TVShowProgressFragment.this, playListItem);
-                            return true;
-                        case R.id.action_queue:
-                            MediaPlayerUtils.queue(TVShowProgressFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
-                            return true;
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.action_play) {
+                        MediaPlayerUtils.play(TVShowProgressFragment.this, playListItem);
+                        return true;
+                    } else if (itemId == R.id.action_queue) {
+                        MediaPlayerUtils.queue(TVShowProgressFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
+                        return true;
                     }
                     return false;
                 }

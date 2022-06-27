@@ -172,12 +172,9 @@ public class HostListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_host:
-                startAddHostWizard();
-                break;
-            default:
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_add_host) {
+            startAddHostWizard();
         }
 
         return super.onOptionsItemSelected(item);
@@ -222,23 +219,23 @@ public class HostListFragment extends Fragment {
         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
         popupMenu.getMenuInflater().inflate(R.menu.hostlist_item, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.action_remove_host:
-                    DialogFragment confirmDelete = ConfirmDeleteDialogFragment
-                            .getInstance(getDeleteDialogListener(hostInfo.getId()));
-                    confirmDelete.show(getFragmentManager(), "confirmdelete");
-                    return true;
-                case R.id.action_edit_host:
-                    Intent launchIntent = new Intent(getActivity(), EditHostActivity.class)
-                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                            .putExtra(HostFragmentManualConfiguration.HOST_ID, hostInfo.getId());
-                    startActivity(launchIntent);
-                    requireActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
-                    return true;
-                case R.id.action_wake_up:
-                    // Send WoL magic packet on a new thread
-                    UIUtils.sendWolAsync(getActivity(), hostInfo);
-                    return true;
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_remove_host) {
+                DialogFragment confirmDelete = ConfirmDeleteDialogFragment
+                        .getInstance(getDeleteDialogListener(hostInfo.getId()));
+                confirmDelete.show(getFragmentManager(), "confirmdelete");
+                return true;
+            } else if (itemId == R.id.action_edit_host) {
+                Intent launchIntent = new Intent(getActivity(), EditHostActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        .putExtra(HostFragmentManualConfiguration.HOST_ID, hostInfo.getId());
+                startActivity(launchIntent);
+                requireActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+                return true;
+            } else if (itemId == R.id.action_wake_up) {
+                // Send WoL magic packet on a new thread
+                UIUtils.sendWolAsync(getActivity(), hostInfo);
+                return true;
             }
             return false;
         });

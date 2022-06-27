@@ -524,27 +524,26 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
                         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-
-                                switch (item.getItemId()) {
-                                    case R.id.action_queue_item:
-                                        queueMediaFile(loc);
-                                        return true;
-                                    case R.id.action_play_item:
-                                        playMediaFile(loc);
-                                        return true;
-                                    case R.id.action_play_from_this_item:
-                                        mediaQueueFileLocation.clear();
-                                        LocalFileLocation fl;
-                                        // start playing the selected one, then queue the rest
-                                        mediaQueueFileLocation.add(loc);
-                                        for (int i = position + 1; i < fileLocationItems.size(); i++) {
-                                            fl = fileLocationItems.get(i);
-                                            if (!fl.isDirectory) {
-                                                mediaQueueFileLocation.add(fl);
-                                            }
+                                int itemId = item.getItemId();
+                                if (itemId == R.id.action_queue_item) {
+                                    queueMediaFile(loc);
+                                    return true;
+                                } else if (itemId == R.id.action_play_item) {
+                                    playMediaFile(loc);
+                                    return true;
+                                } else if (itemId == R.id.action_play_from_this_item) {
+                                    mediaQueueFileLocation.clear();
+                                    LocalFileLocation fl;
+                                    // start playing the selected one, then queue the rest
+                                    mediaQueueFileLocation.add(loc);
+                                    for (int i = position + 1; i < fileLocationItems.size(); i++) {
+                                        fl = fileLocationItems.get(i);
+                                        if (!fl.isDirectory) {
+                                            mediaQueueFileLocation.add(fl);
                                         }
-                                        playMediaFile(loc);
-                                        return true;
+                                    }
+                                    playMediaFile(loc);
+                                    return true;
                                 }
                                 return false;
                             }

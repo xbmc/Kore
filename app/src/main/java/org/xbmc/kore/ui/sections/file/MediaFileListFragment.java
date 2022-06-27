@@ -568,29 +568,28 @@ public class MediaFileListFragment extends AbstractListFragment {
                         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-
-                                switch (item.getItemId()) {
-                                    case R.id.action_queue_item:
-                                        queueMediaFile(loc.file);
-                                        return true;
-                                    case R.id.action_play_item:
-                                        playMediaFile(loc.file);
-                                        return true;
-                                    case R.id.action_play_local_item:
-                                        playMediaFileLocally(loc.file);
-                                        return true;
-                                    case R.id.action_play_from_this_item:
-                                        mediaQueueFileLocation.clear();
-                                        FileLocation fl;
-                                        // start playing the selected one, then queue the rest
-                                        for (int i = position + 1; i < fileLocationItems.size(); i++) {
-                                            fl = fileLocationItems.get(i);
-                                            if (!fl.isDirectory) {
-                                                mediaQueueFileLocation.add(fl);
-                                            }
+                                int itemId = item.getItemId();
+                                if (itemId == R.id.action_queue_item) {
+                                    queueMediaFile(loc.file);
+                                    return true;
+                                } else if (itemId == R.id.action_play_item) {
+                                    playMediaFile(loc.file);
+                                    return true;
+                                } else if (itemId == R.id.action_play_local_item) {
+                                    playMediaFileLocally(loc.file);
+                                    return true;
+                                } else if (itemId == R.id.action_play_from_this_item) {
+                                    mediaQueueFileLocation.clear();
+                                    FileLocation fl;
+                                    // start playing the selected one, then queue the rest
+                                    for (int i = position + 1; i < fileLocationItems.size(); i++) {
+                                        fl = fileLocationItems.get(i);
+                                        if (!fl.isDirectory) {
+                                            mediaQueueFileLocation.add(fl);
                                         }
-                                        playMediaFile(loc.file);
-                                        return true;
+                                    }
+                                    playMediaFile(loc.file);
+                                    return true;
                                 }
                                 return false;
                             }

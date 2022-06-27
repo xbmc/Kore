@@ -506,31 +506,31 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_record_item:
-                                PVR.Record action = new PVR.Record(channelId);
-                                action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-                                    @Override
-                                    public void onSuccess(String result) {
-                                        if (!isAdded()) return;
-                                        LogUtils.LOGD(TAG, "Started recording");
-                                    }
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_record_item) {
+                            PVR.Record action = new PVR.Record(channelId);
+                            action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                                @Override
+                                public void onSuccess(String result) {
+                                    if (!isAdded()) return;
+                                    LogUtils.LOGD(TAG, "Started recording");
+                                }
 
-                                    @Override
-                                    public void onError(int errorCode, String description) {
-                                        if (!isAdded()) return;
-                                        LogUtils.LOGD(TAG, "Error starting to record: " + description);
+                                @Override
+                                public void onError(int errorCode, String description) {
+                                    if (!isAdded()) return;
+                                    LogUtils.LOGD(TAG, "Error starting to record: " + description);
 
-                                        Toast.makeText(getActivity(),
-                                                       String.format(getString(R.string.error_starting_to_record), description),
-                                                       Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(),
+                                                   String.format(getString(R.string.error_starting_to_record), description),
+                                                   Toast.LENGTH_SHORT).show();
 
-                                    }
-                                }, callbackHandler);
-                                return true;
-                            case R.id.action_epg_item:
-                                listenerActivity.onChannelGuideSelected(channelId, channelName, singleChannelGroup);
-                                return true;
+                                }
+                            }, callbackHandler);
+                            return true;
+                        } else if (itemId == R.id.action_epg_item) {
+                            listenerActivity.onChannelGuideSelected(channelId, channelName, singleChannelGroup);
+                            return true;
                         }
                         return false;
                     }
