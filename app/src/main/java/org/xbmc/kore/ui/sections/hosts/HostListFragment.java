@@ -33,6 +33,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -52,7 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fragment to manage the list oof registered hosts.
+ * Fragment to manage the list of registered hosts.
  */
 public class HostListFragment extends Fragment {
     private static final String TAG = LogUtils.makeLogTag(HostListFragment.class);
@@ -108,8 +109,8 @@ public class HostListFragment extends Fragment {
 
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
         setHasOptionsMenu(true);
     }
@@ -223,7 +224,7 @@ public class HostListFragment extends Fragment {
             if (itemId == R.id.action_remove_host) {
                 DialogFragment confirmDelete = ConfirmDeleteDialogFragment
                         .getInstance(getDeleteDialogListener(hostInfo.getId()));
-                confirmDelete.show(getFragmentManager(), "confirmdelete");
+                confirmDelete.show(getParentFragmentManager(), "confirmdelete");
                 return true;
             } else if (itemId == R.id.action_edit_host) {
                 Intent launchIntent = new Intent(getActivity(), EditHostActivity.class)

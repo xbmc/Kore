@@ -24,6 +24,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.ActivityHostManagerBinding;
+import org.xbmc.kore.databinding.ActivityHostWizardBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.ui.BaseActivity;
@@ -39,13 +41,14 @@ public class AddHostActivity extends BaseActivity
         HostFragmentManualConfiguration.HostManualConfigurationListener,
         AddHostFragmentFinish.AddHostFinishListener {
 
-    private Fragment previousFragment = null;
+    private ActivityHostWizardBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_host_wizard);
+        binding = ActivityHostWizardBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // Only load first fragment if we're starting the activity
         if (savedInstanceState == null) {
@@ -70,11 +73,10 @@ public class AddHostActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                finish();
-                return true;
+        // Respond to the action bar's Up/Home button
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

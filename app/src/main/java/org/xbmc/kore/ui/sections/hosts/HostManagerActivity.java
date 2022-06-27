@@ -17,8 +17,6 @@ package org.xbmc.kore.ui.sections.hosts;
 
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -36,45 +34,19 @@ import org.xbmc.kore.utils.LogUtils;
 public class HostManagerActivity extends BaseActivity {
     private static final String TAG = LogUtils.makeLogTag(HostManagerActivity.class);
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment navigationDrawerFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_manager);
 
         // Set up the drawer.
-        navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
+        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        if (navigationDrawerFragment != null)
+            navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
         // Action bar
         setupToolbar();
-
-//        // Setup system bars and content padding
-//        setupSystemBarsColors();
-//        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.drawer_layout), true, true, true);
-//        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.hosts_list), true, true, true);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (!navigationDrawerFragment.isDrawerOpen()) {
-//            getMenuInflater().inflate(R.menu.global, menu);
-//        }
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            default:
-//                break;
-//        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void setupToolbar() {

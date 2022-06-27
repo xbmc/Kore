@@ -15,19 +15,20 @@
  */
 package org.xbmc.kore.ui.sections.hosts;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.FragmentAddHostWelcomeBinding;
 
 /**
  * Fragment that presents the welcome message
@@ -38,55 +39,42 @@ public class AddHostFragmentWelcome extends Fragment {
      * Callback interface to communicate with the encolsing activity
      */
     public interface AddHostWelcomeListener {
-        public void onAddHostWelcomeNext();
-        public void onAddHostWelcomeCancel();
+        void onAddHostWelcomeNext();
+        void onAddHostWelcomeCancel();
     }
 
     private AddHostWelcomeListener listener;
+    private FragmentAddHostWelcomeBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_host_welcome, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentAddHostWelcomeBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getView() == null)
-            return;
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        TextView message = (TextView)getView().findViewById(R.id.add_host_message);
-        message.setText(Html.fromHtml(getString(R.string.wizard_welcome_message)));
-        message.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.addHostMessage.setText(Html.fromHtml(getString(R.string.wizard_welcome_message)));
+        binding.addHostMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Next button
-        Button next = (Button)getView().findViewById(R.id.next);
-        next.setText(R.string.next);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddHostWelcomeNext();
-            }
-        });
+        binding.includeWizardButtonBar.next.setText(R.string.next);
+        binding.includeWizardButtonBar.next.setOnClickListener(v -> listener.onAddHostWelcomeNext());
 
         // Previous button
-        Button previous = (Button)getView().findViewById(R.id.previous);
-        previous.setText(android.R.string.cancel);
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddHostWelcomeCancel();
-            }
-        });
+        binding.includeWizardButtonBar.previous.setText(android.R.string.cancel);
+        binding.includeWizardButtonBar.previous.setOnClickListener(v -> listener.onAddHostWelcomeCancel());
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            listener = (AddHostWelcomeListener) activity;
+            listener = (AddHostWelcomeListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement AddHostWelcomeListener interface.");
+            throw new ClassCastException(context + " must implement AddHostWelcomeListener interface.");
         }
     }
 

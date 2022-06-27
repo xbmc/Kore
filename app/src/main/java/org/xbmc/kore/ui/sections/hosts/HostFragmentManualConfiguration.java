@@ -15,19 +15,18 @@
  */
 package org.xbmc.kore.ui.sections.hosts;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
@@ -144,29 +143,22 @@ public class HostFragmentManualConfiguration extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getView() == null)
-            return;
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         progressDialog = new ProgressDialog(getActivity());
-        Button next, previous;
 
         // Next button
-        next = (Button)getView().findViewById(R.id.next);
-        next.setText(R.string.test_connection);
-        next.setCompoundDrawables(null, null, null, null);
-        next.setOnClickListener(v -> testConnection());
+        binding.includeWizardButtonBar.next.setText(R.string.test_connection);
+        binding.includeWizardButtonBar.next.setCompoundDrawables(null, null, null, null);
+        binding.includeWizardButtonBar.next.setOnClickListener(v -> testConnection());
 
         // Previous button
-        previous = (Button)getView().findViewById(R.id.previous);
-
         if (getArguments() != null && getArguments().getString(CANCEL_BUTTON_LABEL_ARG, null) != null) {
-            previous.setText(getArguments().getString(CANCEL_BUTTON_LABEL_ARG));
+            binding.includeWizardButtonBar.previous.setText(getArguments().getString(CANCEL_BUTTON_LABEL_ARG));
         } else {
-            previous.setText(android.R.string.cancel);
+            binding.includeWizardButtonBar.previous.setText(android.R.string.cancel);
         }
-        previous.setOnClickListener(v -> listener.onHostManualConfigurationCancel());
+        binding.includeWizardButtonBar.previous.setOnClickListener(v -> listener.onHostManualConfigurationCancel());
 
         // Check if the activity wants us to go straight to test
         boolean goStraighToTest = getArguments() != null && getArguments().getBoolean(GO_STRAIGHT_TO_TEST, false);
@@ -176,12 +168,12 @@ public class HostFragmentManualConfiguration extends Fragment {
     }
 
     @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            listener = (HostManualConfigurationListener) activity;
+            listener = (HostManualConfigurationListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity + " must implement AddHostManualConfigurationListener interface.");
+            throw new ClassCastException(context + " must implement AddHostManualConfigurationListener interface.");
         }
     }
 
@@ -217,22 +209,22 @@ public class HostFragmentManualConfiguration extends Fragment {
         int xbmcHttpPort = isHttps ? HostInfo.DEFAULT_HTTPS_PORT : HostInfo.DEFAULT_HTTP_PORT;
 
         Integer implicitPort = null;
+        String aux;
         Matcher m = Pattern.compile("^.*:(\\d{1,5})\\z").matcher(xbmcAddress);
         if (m.matches()) {
             // Minus one character for the colon
             xbmcAddress = xbmcAddress.substring(0, m.start(1) - 1);
             LogUtils.LOGD(TAG, "Stripped port on address to get: " + xbmcAddress);
             try {
-                if (m.group(1) != null) {
-                    implicitPort = Integer.parseInt(m.group(1));
-                }
+                aux = m.group(1);
+                implicitPort = (aux != null)? Integer.parseInt(aux) : null;
             } catch (NumberFormatException e) {
                 LogUtils.LOGW(TAG, "Value matching port regex couldn't be parsed as integer: " + m.group(1));
             }
         }
 
         Integer explicitPort = null;
-        String aux = binding.kodiHttpPort.getText().toString();
+        aux = binding.kodiHttpPort.getText().toString();
         if (!TextUtils.isEmpty(aux)) {
             try {
                 explicitPort = Integer.valueOf(aux);
