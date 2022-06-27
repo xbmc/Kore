@@ -94,10 +94,6 @@ public class EditHostActivity extends BaseActivity implements
                     .commit();
         }
         setupActionBar();
-
-//        // Setup system bars and content padding
-//        setupSystemBarsColors();
-//        UIUtils.setPaddingForSystemBars(this, findViewById(R.id.fragment_container), true, true, true);
     }
 
     @Override
@@ -107,11 +103,10 @@ public class EditHostActivity extends BaseActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                finish();
-                return true;
+        // Respond to the action bar's Up/Home button
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

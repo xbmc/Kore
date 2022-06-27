@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.hosts;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -34,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
@@ -81,22 +81,19 @@ public class AddHostFragmentZeroconf extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getView() == null)
-            return;
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // Launch discovery thread
         startSearching();
     }
 
     @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            listener = (AddHostZeroconfListener) activity;
+            listener = (AddHostZeroconfListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity + " must implement AddHostZeroconfListener interface.");
+            throw new ClassCastException(context + " must implement AddHostZeroconfListener interface.");
         }
     }
 
@@ -172,10 +169,10 @@ public class AddHostFragmentZeroconf extends Fragment {
         binding.list.setVisibility(View.GONE);
 
         // Setup buttons
-        binding.wizardButtonBar.next.setVisibility(View.INVISIBLE);
-        binding.wizardButtonBar.previous.setVisibility(View.VISIBLE);
-        binding.wizardButtonBar.previous.setText(android.R.string.cancel);
-        binding.wizardButtonBar.previous.setOnClickListener(v -> {
+        binding.includeWizardButtonBar.next.setVisibility(View.INVISIBLE);
+        binding.includeWizardButtonBar.previous.setVisibility(View.VISIBLE);
+        binding.includeWizardButtonBar.previous.setText(android.R.string.cancel);
+        binding.includeWizardButtonBar.previous.setOnClickListener(v -> {
             synchronized (lock) {
                 searchCancelled = true;
                 noHostFound();
@@ -198,13 +195,13 @@ public class AddHostFragmentZeroconf extends Fragment {
         binding.progressBar.setVisibility(View.GONE);
         binding.list.setVisibility(View.GONE);
 
-        binding.wizardButtonBar.next.setVisibility(View.VISIBLE);
-        binding.wizardButtonBar.next.setText(R.string.next);
-        binding.wizardButtonBar.next.setOnClickListener(v -> listener.onAddHostZeroconfNoHost());
+        binding.includeWizardButtonBar.next.setVisibility(View.VISIBLE);
+        binding.includeWizardButtonBar.next.setText(R.string.next);
+        binding.includeWizardButtonBar.next.setOnClickListener(v -> listener.onAddHostZeroconfNoHost());
 
-        binding.wizardButtonBar.previous.setVisibility(View.VISIBLE);
-        binding.wizardButtonBar.previous.setText(R.string.search_again);
-        binding.wizardButtonBar.previous.setOnClickListener(v -> startSearching());
+        binding.includeWizardButtonBar.previous.setVisibility(View.VISIBLE);
+        binding.includeWizardButtonBar.previous.setText(R.string.search_again);
+        binding.includeWizardButtonBar.previous.setOnClickListener(v -> startSearching());
     }
 
     /**
@@ -219,13 +216,13 @@ public class AddHostFragmentZeroconf extends Fragment {
         binding.searchHostMessage.setText(Html.fromHtml(getString(R.string.wizard_search_host_found)));
         binding.searchHostMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
-        binding.wizardButtonBar.next.setVisibility(View.VISIBLE);
-        binding.wizardButtonBar.next.setText(R.string.next);
-        binding.wizardButtonBar.next.setOnClickListener(v -> listener.onAddHostZeroconfNoHost());
+        binding.includeWizardButtonBar.next.setVisibility(View.VISIBLE);
+        binding.includeWizardButtonBar.next.setText(R.string.next);
+        binding.includeWizardButtonBar.next.setOnClickListener(v -> listener.onAddHostZeroconfNoHost());
 
-        binding.wizardButtonBar.previous.setVisibility(View.VISIBLE);
-        binding.wizardButtonBar.previous.setText(R.string.search_again);
-        binding.wizardButtonBar.previous.setOnClickListener(v -> startSearching());
+        binding.includeWizardButtonBar.previous.setVisibility(View.VISIBLE);
+        binding.includeWizardButtonBar.previous.setText(R.string.search_again);
+        binding.includeWizardButtonBar.previous.setOnClickListener(v -> startSearching());
 
         binding.progressBar.setVisibility(View.GONE);
         binding.list.setVisibility(View.VISIBLE);
@@ -261,11 +258,11 @@ public class AddHostFragmentZeroconf extends Fragment {
         binding.progressBar.setVisibility(View.GONE);
         binding.list.setVisibility(View.GONE);
 
-        binding.wizardButtonBar.next.setVisibility(View.GONE);
+        binding.includeWizardButtonBar.next.setVisibility(View.GONE);
 
-        binding.wizardButtonBar.previous.setVisibility(View.VISIBLE);
-        binding.wizardButtonBar.previous.setText(R.string.search_again);
-        binding.wizardButtonBar.previous.setOnClickListener(v -> startSearching());
+        binding.includeWizardButtonBar.previous.setVisibility(View.VISIBLE);
+        binding.includeWizardButtonBar.previous.setText(R.string.search_again);
+        binding.includeWizardButtonBar.previous.setOnClickListener(v -> startSearching());
     }
 
     private boolean isNetworkConnected() {

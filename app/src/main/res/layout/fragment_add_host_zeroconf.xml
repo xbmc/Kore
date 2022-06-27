@@ -70,7 +70,7 @@
     <View style="@style/DefaultDividerH"/>
 
     <include
-        android:id="@+id/wizard_button_bar"
+        android:id="@+id/include_wizard_button_bar"
         layout="@layout/wizard_button_bar"/>
 
 </LinearLayout>

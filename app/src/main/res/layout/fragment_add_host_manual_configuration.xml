@@ -66,7 +66,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_name"
-                android:layout_alignRight="@id/kodi_name"
                 android:layout_alignEnd="@id/kodi_name"
 
                 android:inputType="number"
@@ -79,9 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/kodi_http_port"
-                android:layout_alignLeft="@id/kodi_name"
                 android:layout_alignStart="@id/kodi_name"
-                android:layout_toLeftOf="@id/kodi_http_port"
                 android:layout_toStartOf="@id/kodi_http_port"
 
                 android:inputType="textNoSuggestions"
@@ -93,9 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_ip_address"
-                android:layout_alignLeft="@id/kodi_name"
                 android:layout_alignStart="@id/kodi_name"
-                android:layout_alignRight="@id/kodi_name"
                 android:layout_alignEnd="@id/kodi_name"
 
                 android:inputType="textNoSuggestions"
@@ -107,9 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_username"
-                android:layout_alignLeft="@id/kodi_name"
                 android:layout_alignStart="@id/kodi_name"
-                android:layout_alignRight="@id/kodi_name"
                 android:layout_alignEnd="@id/kodi_name"
 
                 android:inputType="textPassword"
@@ -130,7 +123,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/text1"
                 android:layout_marginTop="8dp"
-                android:layout_alignRight="@id/kodi_name"
                 android:layout_alignEnd="@id/kodi_name"
                 android:inputType="number"
                 android:ems="7"
@@ -141,9 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/kodi_tcp_port"
-                android:layout_alignLeft="@id/kodi_name"
                 android:layout_alignStart="@id/kodi_name"
-                android:layout_toLeftOf="@id/kodi_tcp_port"
                 android:layout_toStartOf="@id/kodi_tcp_port"
                 android:text="@string/wizard_xbmc_use_tcp"/>
 
@@ -153,9 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_tcp_port"
-                android:layout_alignLeft="@id/kodi_tcp_port"
                 android:layout_alignStart="@id/kodi_tcp_port"
-                android:layout_alignRight="@id/kodi_tcp_port"
                 android:layout_alignEnd="@id/kodi_tcp_port"
                 android:inputType="number"
                 android:ems="7"
@@ -166,9 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/kodi_event_server_port"
-                android:layout_alignLeft="@id/kodi_name"
                 android:layout_alignStart="@id/kodi_name"
-                android:layout_toLeftOf="@id/kodi_event_server_port"
                 android:layout_toStartOf="@id/kodi_event_server_port"
                 android:text="@string/wizard_xbmc_use_event_server"/>
 
@@ -178,9 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_event_server_port"
-                android:layout_alignLeft="@id/kodi_event_server_port"
                 android:layout_alignStart="@id/kodi_event_server_port"
-                android:layout_alignRight="@id/kodi_event_server_port"
                 android:layout_alignEnd="@id/kodi_event_server_port"
                 android:inputType="number"
                 android:hint="@string/wizard_xbmc_wol_port"/>
@@ -191,9 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/kodi_wol_port"
-                android:layout_alignLeft="@id/kodi_name"
                 android:layout_alignStart="@id/kodi_name"
-                android:layout_toLeftOf="@id/kodi_wol_port"
                 android:layout_toStartOf="@id/kodi_wol_port"
                 android:inputType="text"
                 android:hint="@string/wizard_xbmc_mac_address"/>
@@ -203,7 +185,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_mac_address"
-                android:layout_alignLeft="@id/kodi_mac_address"
                 android:layout_alignStart="@id/kodi_mac_address"
                 android:text="@string/wizard_xbmc_direct_share"/>
 
@@ -216,7 +197,7 @@
         style="@style/DefaultDividerH"/>
 
     <include layout="@layout/wizard_button_bar"
-        android:id="@+id/wizard_button_bar"
+        android:id="@+id/include_wizard_button_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

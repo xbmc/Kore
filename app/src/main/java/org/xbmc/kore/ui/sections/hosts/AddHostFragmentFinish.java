@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.hosts;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,15 +26,16 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.FragmentAddHostFinishBinding;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -55,40 +55,31 @@ public class AddHostFragmentFinish extends Fragment {
      * Callback interface to communicate with the encolsing activity
      */
     public interface AddHostFinishListener {
-        public void onAddHostFinish();
+        void onAddHostFinish();
     }
 
     private AddHostFinishListener listener;
+    private FragmentAddHostFinishBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_host_finish, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentAddHostFinishBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getView() == null)
-            return;
-
-        TextView message = (TextView)getView().findViewById(R.id.done_message);
-        message.setText(Html.fromHtml(getString(R.string.wizard_done_message)));
-        message.setMovementMethod(LinkMovementMethod.getInstance());
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.doneMessage.setText(Html.fromHtml(getString(R.string.wizard_done_message)));
+        binding.doneMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Finish button
-        Button next = (Button)getView().findViewById(R.id.next);
-        next.setText(R.string.finish);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddHostFinish();
-            }
-        });
+        binding.includeWizardButtonBar.next.setText(R.string.finish);
+        binding.includeWizardButtonBar.next.setOnClickListener(v -> listener.onAddHostFinish());
 
         // Previous button
-        Button previous = (Button)getView().findViewById(R.id.previous);
-        previous.setText(null);
-        previous.setEnabled(false);
+        binding.includeWizardButtonBar.previous.setText(null);
+        binding.includeWizardButtonBar.previous.setEnabled(false);
 
         // Check if PVR is enabled for the current host
         HostManager hostManager = HostManager.getInstance(getActivity());
@@ -102,7 +93,7 @@ public class AddHostFragmentFinish extends Fragment {
         syncIntent.putExtra(LibrarySyncService.SYNC_ALL_TVSHOWS, true);
         syncIntent.putExtra(LibrarySyncService.SYNC_ALL_MUSIC, true);
         syncIntent.putExtra(LibrarySyncService.SYNC_ALL_MUSIC_VIDEOS, true);
-        getActivity().startService(syncIntent);
+        requireActivity().startService(syncIntent);
 
 //        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 //        imm.hideSoftInputFromWindow(getActivity()
@@ -113,12 +104,12 @@ public class AddHostFragmentFinish extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            listener = (AddHostFinishListener) activity;
+            listener = (AddHostFinishListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement AddHostFinishListener interface.");
+            throw new ClassCastException(context + " must implement AddHostFinishListener interface.");
         }
     }
 

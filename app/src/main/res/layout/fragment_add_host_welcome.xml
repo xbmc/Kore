@@ -50,6 +50,8 @@
     <!--<View-->
         <!--style="@style/DefaultDividerH"/>-->
 
-    <include layout="@layout/wizard_button_bar"/>
+    <include
+        android:id="@+id/include_wizard_button_bar"
+        layout="@layout/wizard_button_bar"/>
 
 </LinearLayout>
