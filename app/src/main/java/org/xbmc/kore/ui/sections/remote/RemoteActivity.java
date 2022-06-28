@@ -21,14 +21,6 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.text.TextDirectionHeuristicsCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.preference.PreferenceManager;
-import androidx.viewpager.widget.ViewPager;
-
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -36,8 +28,14 @@ import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
-import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
+import androidx.viewpager.widget.ViewPager;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -61,19 +59,16 @@ import org.xbmc.kore.ui.generic.SendTextDialogFragment;
 import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.sections.localfile.HttpApp;
-import org.xbmc.kore.ui.views.CirclePageIndicator;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.PluginUrlUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
-import org.xbmc.kore.utils.PluginUrlUtils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -135,7 +130,8 @@ public class RemoteActivity extends BaseActivity
        // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        if (navigationDrawerFragment != null)
+            navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
         // Set up pager and fragments
         TabsAdapter tabsAdapter = new TabsAdapter(this, getSupportFragmentManager())
@@ -164,7 +160,7 @@ public class RemoteActivity extends BaseActivity
 //        UIUtils.setPaddingForSystemBars(this, viewPager, true, true, false);
 //        UIUtils.setPaddingForSystemBars(this, pageIndicator, true, true, false);
 
-        //noinspection unchecked
+        //noinspection unchecked, deprecation
         pendingShare = (Future<Boolean>) getLastCustomNonConfigurationInstance();
     }
 
@@ -391,6 +387,11 @@ public class RemoteActivity extends BaseActivity
             videoUri = getShareLocalUriOrHiddenUri(intent);
         }
 
+        if (videoUri == null) {
+            finish();
+            return;
+        }
+
         String url = toPluginUrl(videoUri);
 
         if (url == null) {
@@ -444,10 +445,10 @@ public class RemoteActivity extends BaseActivity
         // to string a looking with a regular expression:
 
         Matcher matcher = Pattern.compile("https?://[^\\s]+").matcher(intent.toString());
-        String matchedString = null;
+        String matchedString;
         if (matcher.find()) {
             matchedString = matcher.group(0);
-            if (matchedString.endsWith("}")) {
+            if (matchedString != null && matchedString.endsWith("}")) {
                 matchedString = matchedString.substring(0, matchedString.length() - 1);
             }
             return Uri.parse(matchedString);
@@ -465,11 +466,8 @@ public class RemoteActivity extends BaseActivity
         if (contentUri == null) {
             return getUrlInsideIntent(intent);
         }
-        if (contentUri == null) {
-            return null;
-        }
 
-        HttpApp http_app = null;
+        HttpApp http_app;
         try {
             http_app = HttpApp.getInstance(getApplicationContext(), 8080);
         } catch (IOException ioe) {
@@ -495,47 +493,37 @@ public class RemoteActivity extends BaseActivity
      * again when the activity is resumed and a {@link #pendingShare} exists.
      */
     private void awaitShare(final boolean queue) {
-        awaitingShare = getShareExecutor().submit(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                try {
-                    final boolean wasAlreadyPlaying = pendingShare.get();
-                    pendingShare = null;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (wasAlreadyPlaying) {
-                                String msg;
-                                if (queue) {
-                                    msg = getString(R.string.item_added_to_playlist);
-                                } else {
-                                    msg = getString(R.string.item_sent_to_kodi);
-                                }
-                                Toast.makeText(RemoteActivity.this,
-                                    msg,
-                                    Toast.LENGTH_SHORT)
-                                    .show();
-                            }
+        awaitingShare = getShareExecutor().submit(() -> {
+            try {
+                final boolean wasAlreadyPlaying = pendingShare.get();
+                pendingShare = null;
+                runOnUiThread(() -> {
+                    if (wasAlreadyPlaying) {
+                        String msg;
+                        if (queue) {
+                            msg = getString(R.string.item_added_to_playlist);
+                        } else {
+                            msg = getString(R.string.item_sent_to_kodi);
                         }
-                    });
-                } catch (InterruptedException ignored) {
-                } catch (ExecutionException ex) {
-                    pendingShare = null;
-                    final OpenSharedUrl.Error e = (OpenSharedUrl.Error) ex.getCause();
-                    LogUtils.LOGE(TAG, "Share failed", e);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(RemoteActivity.this,
-                                getString(e.stage, e.getMessage()),
-                                Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } finally {
-                    awaitingShare = null;
-                }
-                return null;
+                        Toast.makeText(RemoteActivity.this,
+                            msg,
+                            Toast.LENGTH_SHORT)
+                            .show();
+                    }
+                });
+            } catch (InterruptedException ignored) {
+            } catch (ExecutionException ex) {
+                pendingShare = null;
+                final OpenSharedUrl.Error e = (OpenSharedUrl.Error) ex.getCause();
+                LogUtils.LOGE(TAG, "Share failed", e);
+                if (e != null)
+                    runOnUiThread(() -> Toast.makeText(RemoteActivity.this,
+                                                       getString(e.stage, e.getMessage()), Toast.LENGTH_SHORT)
+                                             .show());
+            } finally {
+                awaitingShare = null;
             }
+            return null;
         });
     }
 
@@ -607,12 +595,12 @@ public class RemoteActivity extends BaseActivity
                 return PluginUrlUtils.toPluginUrlVimeo(playuri);
             } else if (host.endsWith("svtplay.se")) {
                 Pattern pattern = Pattern.compile(
-                        "^(?:https?:\\/\\/)?(?:www\\.)?svtplay\\.se\\/video\\/(\\d+\\/.*)",
+                        "^(?:https?://)?(?:www\\.)?svtplay\\.se/video/(\\d+/.*)",
                         Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(playuri.toString());
                 if (matcher.matches()) {
                     return "plugin://plugin.video.svtplay/?id=%2Fvideo%2F"
-                            + URLEncoder.encode(matcher.group(1)) + "&mode=video";
+                           + URLEncoder.encode(matcher.group(1)) + "&mode=video";
                 }
             } else if (host.endsWith("soundcloud.com")) {
                 return "plugin://plugin.audio.soundcloud/play/?url="
@@ -635,7 +623,7 @@ public class RemoteActivity extends BaseActivity
             // web URIs using the Python library "youtube-dl".
             // Use it as a last resort, unless the URI extension is a known media file
             // (in that case Kodi does not require an addon to play the link):
-            return "plugin://plugin.video.sendtokodi/?" + playuri.toString();
+            return "plugin://plugin.video.sendtokodi/?" + playuri;
         }
         return null;
     }
