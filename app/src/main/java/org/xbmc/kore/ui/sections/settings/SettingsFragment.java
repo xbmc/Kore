@@ -15,6 +15,9 @@
  */
 package org.xbmc.kore.ui.sections.settings;
 
+import static org.xbmc.kore.service.NotificationObserver.NOTIFICATION_ID;
+import static org.xbmc.kore.utils.Utils.getLocale;
+
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.NotificationManager;
@@ -24,16 +27,16 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.TwoStatePreference;
-
-import android.widget.Toast;
 
 import org.xbmc.kore.BuildConfig;
 import org.xbmc.kore.R;
@@ -47,11 +50,7 @@ import org.xbmc.kore.utils.Utils;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Locale;
-
-import static org.xbmc.kore.service.NotificationObserver.NOTIFICATION_ID;
-import static org.xbmc.kore.utils.Utils.getLocale;
 
 /**
  * Simple fragment to display preferences screen
@@ -62,6 +61,15 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private static final String TAG = LogUtils.makeLogTag(SettingsFragment.class);
 
     private int hostId;
+    private final ActivityResultLauncher<String> phonePermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (!isGranted) {
+                    Toast.makeText(requireContext(), R.string.read_phone_state_permission_denied, Toast.LENGTH_SHORT)
+                         .show();
+                    TwoStatePreference pauseCallPreference = (TwoStatePreference)findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
+                    pauseCallPreference.setChecked(false);
+                }
+            });
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -84,25 +92,23 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // Furthermore, only do this if nothing is saved yet on the shared preferences,
         // otherwise the defaults won't be applied
         if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getNavDrawerItemsPrefKey(hostId), null) != null) {
-            Class iterClass = sideMenuItems.getClass();
+            Class<? extends Preference> iterClass = sideMenuItems.getClass();
             try {
-                @SuppressWarnings("unchecked")
                 Method m = iterClass.getDeclaredMethod("onSetInitialValue", Object.class);
                 m.setAccessible(true);
                 m.invoke(sideMenuItems, (Object)null);
             } catch (Exception e) {
-                LogUtils.LOGD(TAG, "Error while setting default Nav Drawer shortcuts: " + e.toString());
+                LogUtils.LOGD(TAG, "Error while setting default Nav Drawer shortcuts: " + e);
             }
         }
         if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getRemoteBarItemsPrefKey(hostId), null) != null) {
-            Class iterClass = remoteBarItems.getClass();
+            Class<? extends Preference> iterClass = remoteBarItems.getClass();
             try {
-                @SuppressWarnings("unchecked")
                 Method m = iterClass.getDeclaredMethod("onSetInitialValue", Object.class);
                 m.setAccessible(true);
                 m.invoke(remoteBarItems, (Object)null);
             } catch (Exception e) {
-                LogUtils.LOGD(TAG, "Error while setting default bottom bar shortcuts: " + e.toString());
+                LogUtils.LOGD(TAG, "Error while setting default bottom bar shortcuts: " + e);
             }
         }
 
@@ -118,12 +124,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
         ListPreference languagePref = (ListPreference) findPreference(Settings.KEY_PREF_LANGUAGE);
         Locale currentLocale = getCurrentLocale();
         languagePref.setSummary(currentLocale.getDisplayLanguage(currentLocale));
-        languagePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                setupLanguagePreference((ListPreference) preference);
-                return true;
-            }
+        languagePref.setOnPreferenceClickListener(preference -> {
+            setupLanguagePreference((ListPreference) preference);
+            return true;
         });
     }
 
@@ -148,6 +151,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Update summaries
         setupPreferences();
+       Context ctx = requireContext();
 
         if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.getNavDrawerItemsPrefKey(hostId))
             || key.equals((Settings.getRemoteBarItemsPrefKey(hostId)))) {
@@ -155,9 +159,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
             UIUtils.playPauseIconsLoaded = false;
 
             // restart to apply new theme (actually build an entirely new task stack)
-            TaskStackBuilder.create(getActivity())
-                            .addNextIntent(new Intent(getActivity(), RemoteActivity.class))
-                            .addNextIntent(new Intent(getActivity(), SettingsActivity.class))
+            TaskStackBuilder.create(ctx)
+                            .addNextIntent(new Intent(ctx, RemoteActivity.class))
+                            .addNextIntent(new Intent(ctx, SettingsActivity.class))
                             .startActivities();
         }
 
@@ -165,9 +169,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         if (key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS) &&
             (sharedPreferences.getBoolean(Settings.KEY_PREF_PAUSE_DURING_CALLS, Settings.DEFAULT_PREF_PAUSE_DURING_CALLS))) {
             if (!hasPhonePermission()) {
-                requestPermissions(
-                        new String[] {Manifest.permission.READ_PHONE_STATE},
-                        Utils.PERMISSION_REQUEST_READ_PHONE_STATE);
+                phonePermissionLauncher.launch(Manifest.permission.READ_PHONE_STATE);
             }
         }
 
@@ -175,40 +177,23 @@ public class SettingsFragment extends PreferenceFragmentCompat
         if (key.equals(Settings.KEY_PREF_SHOW_NOTIFICATION) || key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS)) {
             LogUtils.LOGD(TAG, "Stoping connection observer service");
             Intent intent = new Intent(getActivity(), ConnectionObserversManagerService.class);
-            getActivity().stopService(intent);
+            ctx.stopService(intent);
             if (sharedPreferences.getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION, Settings.DEFAULT_PREF_SHOW_NOTIFICATION)) {
                 if (Utils.isOreoOrLater()) {
-                    getActivity().startForegroundService(intent);
+                    ctx.startForegroundService(intent);
                 } else {
-                    getActivity().startService(intent);
+                    ctx.startService(intent);
                 }
             } else {
                 NotificationManager notificationManager =
-                        (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                        (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(NOTIFICATION_ID);
             }
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case Utils.PERMISSION_REQUEST_READ_PHONE_STATE:
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.length == 0) ||
-                    (grantResults[0] != PackageManager.PERMISSION_GRANTED)) {
-                    Toast.makeText(getActivity(), R.string.read_phone_state_permission_denied, Toast.LENGTH_SHORT)
-                         .show();
-                    TwoStatePreference pauseCallPreference =
-                            (TwoStatePreference)findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
-                    pauseCallPreference.setChecked(false);
-                }
-                break;
-        }
-    }
-
     private boolean hasPhonePermission() {
-        return ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
@@ -218,23 +203,20 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // Theme preferences
         ListPreference themePref = (ListPreference)findPreference(Settings.KEY_PREF_THEME);
         themePref.setSummary(themePref.getEntry());
+        Context context = requireContext();
 
         // About preference
-        String nameAndVersion = getActivity().getString(R.string.app_name);
+        String nameAndVersion = context.getString(R.string.app_name);
         try {
-            nameAndVersion += " " +
-                              getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException exc) {
+            nameAndVersion += " " + context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
         Preference aboutPreference = findPreference(Settings.KEY_PREF_ABOUT);
         aboutPreference.setSummary(nameAndVersion);
-        aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                AboutDialogFragment aboutDialog = new AboutDialogFragment();
-                aboutDialog.show(getFragmentManager(), null);
-                return true;
-            }
+        aboutPreference.setOnPreferenceClickListener(preference -> {
+            AboutDialogFragment aboutDialog = new AboutDialogFragment();
+            aboutDialog.show(getParentFragmentManager(), null);
+            return true;
         });
     }
 
@@ -242,12 +224,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Locale[] locales = getLocales();
 
         final Locale currentLocale = getCurrentLocale();
-        Arrays.sort(locales, new Comparator<Locale>() {
-            @Override
-            public int compare(Locale o1, Locale o2) {
-                return o1.getDisplayName().compareToIgnoreCase(o2.getDisplayName());
-            }
-        });
+        Arrays.sort(locales, (o1, o2) -> o1.getDisplayName().compareToIgnoreCase(o2.getDisplayName()));
 
         String[] displayNames = new String[locales.length];
         String[] entryValues = new String[locales.length];
@@ -260,13 +237,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
         languagePref.setValue(getLanguageCountryCode(currentLocale));
         languagePref.setEntries(displayNames);
         languagePref.setEntryValues(entryValues);
-        languagePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                languagePref.setValue(o.toString());
-                updatePreferredLanguage(o.toString());
-                return true;
-            }
+        languagePref.setOnPreferenceChangeListener((preference, o) -> {
+            languagePref.setValue(o.toString());
+            updatePreferredLanguage(o.toString());
+            return true;
         });
     }
 
@@ -293,7 +267,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         getPreferenceManager().getSharedPreferences().edit().putString(Settings.KEY_PREF_SELECTED_LANGUAGE, localeName).apply();
 
         // Restart app to apply locale change
-        Intent i = getContext().getPackageManager().getLaunchIntentForPackage( getContext().getPackageName() );
+        Intent i = requireContext().getPackageManager().getLaunchIntentForPackage(requireContext().getPackageName() );
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
     }
