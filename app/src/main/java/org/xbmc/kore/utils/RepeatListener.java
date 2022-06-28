@@ -36,13 +36,13 @@ import android.widget.ImageButton;
 public class RepeatListener implements View.OnTouchListener {
     private static final String TAG = LogUtils.makeLogTag(RepeatListener.class);
 
-    private static Handler repeatHandler = new Handler();
+    private static final Handler repeatHandler = new Handler();
 
-    private int initialInterval;
+    private final int initialInterval;
     private final int repeatInterval;
     private final View.OnClickListener clickListener;
 
-    private Runnable handlerRunnable = new Runnable() {
+    private final Runnable handlerRunnable = new Runnable() {
         @Override
         public void run() {
             if (downView.isShown()) {
@@ -57,12 +57,12 @@ public class RepeatListener implements View.OnTouchListener {
     /**
      * Animations for down/up
      */
-    private Animation animDown;
-    private Animation animUp;
+    private final Animation animDown;
+    private final Animation animUp;
 
     private View downView;
 
-    private Context context;
+    private final Context context;
 
     /**
      * Constructor for a repeat listener
@@ -107,9 +107,9 @@ public class RepeatListener implements View.OnTouchListener {
      *
      * Note: For buttons, this event Handler returns false, so that the other event handlers
      * of buttons get called. For other views this event Handler consumes the event
-     * @param view
-     * @param motionEvent
-     * @return
+     * @param view View
+     * @param motionEvent Motion Event
+     * @return Wether the event was consumed
      */
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()) {

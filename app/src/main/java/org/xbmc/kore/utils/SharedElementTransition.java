@@ -16,15 +16,14 @@
 
 package org.xbmc.kore.utils;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import androidx.core.app.SharedElementCallback;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.View;
+
+import androidx.core.app.SharedElementCallback;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.xbmc.kore.R;
 
@@ -47,9 +46,7 @@ public class SharedElementTransition {
 
     /**
      * Sets up the transition for the exiting fragment
-     * @param fragment
      */
-    @TargetApi(21)
     public void setupExitTransition(Context context, Fragment fragment) {
         Transition fade = TransitionInflater
                 .from(context)
@@ -74,11 +71,10 @@ public class SharedElementTransition {
 
     /**
      * Sets up the transition for the entering fragment
-     * @param fragmentTransaction
+     * @param fragmentTransaction transaction
      * @param fragment entering fragment
      * @param sharedElement must have the transition name set
      */
-    @TargetApi(21)
     public void setupEnterTransition(Context context,
                                      FragmentTransaction fragmentTransaction,
                                      final Fragment fragment,

@@ -84,33 +84,16 @@ public class Utils {
     }
 
     /**
-     * Concats a list of strings...
-     * @param list List to contacenate
-     * @param delimiter delimiter
-     * @return
+     * Concats a list of strings
+     * @param list List to concatenate
+     * @param delimiter Delimiter
+     * @return Strings concatenated
      */
     public static String listStringConcat(List<String> list, String delimiter) {
         StringBuilder builder = new StringBuilder();
         boolean first = true;
         for (String item : list) {
             if (TextUtils.isEmpty(item)) continue;
-            if (!first) builder.append(delimiter);
-            builder.append(item);
-            first = false;
-        }
-        return builder.toString();
-    }
-
-    /**
-     * Concats a list of integers...
-     * @param list List to contacenate
-     * @param delimiter delimiter
-     * @return
-     */
-    public static String listIntegerConcat(List<Integer> list, String delimiter) {
-        StringBuilder builder = new StringBuilder();
-        boolean first = true;
-        for (Integer item : list) {
             if (!first) builder.append(delimiter);
             builder.append(item);
             first = false;
@@ -150,12 +133,12 @@ public class Utils {
 
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(String.format(IMDB_APP_PERSON_SEARCH_URI, name)));
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         // try launching IMDb app
         if (!Utils.tryStartActivity(context, intent)) {
             // on failure, try launching the web page
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_PERSON_SEARCH_URL, name)));
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
             context.startActivity(intent);
         }
     }
@@ -170,12 +153,12 @@ public class Utils {
 
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(String.format(IMDB_APP_MOVIE_URI, imdbNumber)));
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         // try launching IMDb app
         if (!Utils.tryStartActivity(context, intent)) {
             // on failure, try launching the web page
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_MOVIE_URL, imdbNumber)));
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
             context.startActivity(intent);
         }
     }

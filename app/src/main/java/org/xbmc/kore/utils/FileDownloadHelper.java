@@ -154,7 +154,7 @@ public class FileDownloadHelper {
         public String getDownloadFileName() {
             String ext = getFilenameExtension(fileName);
             return (ext != null) ?
-                   String.valueOf(track) + " - " + title + ext :
+                   track + " - " + title + ext :
                    null;
         }
 
@@ -219,18 +219,15 @@ public class FileDownloadHelper {
 
         public String getRelativeDirectoryPath() {
             if (season > 0) {
-                return (TextUtils.isEmpty(tvshowTitle)) ?
-                       NO_TVSHOW_TITLE_DIR : tvshowTitle + "/Season" + String.valueOf(season);
+                return (TextUtils.isEmpty(tvshowTitle)) ? NO_TVSHOW_TITLE_DIR : tvshowTitle + "/Season" + season;
             } else {
-                return (TextUtils.isEmpty(tvshowTitle)) ?
-                       NO_TVSHOW_TITLE_DIR : tvshowTitle;
+                return (TextUtils.isEmpty(tvshowTitle)) ? NO_TVSHOW_TITLE_DIR : tvshowTitle;
             }
         }
 
         public String getDownloadFileName() {
             String ext = getFilenameExtension(fileName);
-            return (ext != null) ?
-                   String.valueOf(episodeNumber) + " - " + title + ext : null;
+            return (ext != null) ? episodeNumber + " - " + title + ext : null;
         }
 
         public String getExternalPublicDirType() {

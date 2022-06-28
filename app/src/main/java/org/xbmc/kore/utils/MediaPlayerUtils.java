@@ -47,7 +47,7 @@ public class MediaPlayerUtils {
 
         final Handler callbackHandler = new Handler();
 
-        final Context context = fragment.getActivity();
+        final Context context = fragment.requireActivity();
 
         Player.Open action = new Player.Open(item);
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
@@ -89,7 +89,7 @@ public class MediaPlayerUtils {
 
         final Handler callbackHandler = new Handler();
 
-        final Context context = fragment.getActivity();
+        final Context context = fragment.requireActivity();
 
         final HostManager hostManager = HostManager.getInstance(fragment.getActivity());
 
