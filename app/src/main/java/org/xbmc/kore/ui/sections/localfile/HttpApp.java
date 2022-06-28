@@ -59,12 +59,12 @@ public class HttpApp extends NanoHTTPD {
         return token.toString();
     }
 
-    private Context applicationContext;
-    private LinkedList<LocalFileLocation> localFileLocationList = null;
-    private LinkedList<Uri> localUriList = null;
+    private final Context applicationContext;
+    private final LinkedList<LocalFileLocation> localFileLocationList;
+    private final LinkedList<Uri> localUriList;
     private int currentIndex;
     private boolean currentIsFile;
-    private String token;
+    private final String token;
 
     private final Response forbidden = newFixedLengthResponse(Response.Status.FORBIDDEN, "", "");
 
@@ -83,7 +83,7 @@ public class HttpApp extends NanoHTTPD {
             return forbidden;
         }
 
-        FileInputStream fis = null;
+        FileInputStream fis;
         String mimeType = null;
         try {
             if (params.containsKey("number")) {
@@ -129,7 +129,7 @@ public class HttpApp extends NanoHTTPD {
     }
 
     private String getIpAddress() throws UnknownHostException {
-        WifiManager wm = (WifiManager) applicationContext.getSystemService(WIFI_SERVICE);
+        WifiManager wm = (WifiManager) applicationContext.getApplicationContext().getSystemService(WIFI_SERVICE);
         byte[] byte_address = BigInteger.valueOf(wm.getConnectionInfo().getIpAddress()).toByteArray();
         // Reverse `byte_address`:
         for (int i = 0; i < byte_address.length/2; i++) {
@@ -141,8 +141,7 @@ public class HttpApp extends NanoHTTPD {
             byte_address[j] = temp;
         }
         InetAddress inet_address = InetAddress.getByAddress(byte_address);
-        String ip = inet_address.getHostAddress();
-        return ip;
+        return inet_address.getHostAddress();
     }
 
     public String getLinkToFile() {
@@ -158,7 +157,7 @@ public class HttpApp extends NanoHTTPD {
         } catch (IOException ioe) {
             LogUtils.LOGE(LogUtils.makeLogTag(HttpApp.class), ioe.getMessage());
         }
-        String path = null;
+        String path;
         if (currentIsFile) {
             String filename = localFileLocationList.get(currentIndex).fileName;
             path = Uri.encode(filename) + "?number=" + currentIndex;
@@ -183,7 +182,8 @@ public class HttpApp extends NanoHTTPD {
                         fileName = cursor.getString(colIdx);
                 }
             } finally {
-                cursor.close();
+                if (cursor != null)
+                    cursor.close();
             }
         }
 

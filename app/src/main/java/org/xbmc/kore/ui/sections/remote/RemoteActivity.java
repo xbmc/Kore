@@ -106,6 +106,7 @@ public class RemoteActivity extends BaseActivity
     private ActivityRemoteBinding binding;
 
     @Override
+    @SuppressWarnings({"unchecked", "deprecation"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -160,7 +161,6 @@ public class RemoteActivity extends BaseActivity
 //        UIUtils.setPaddingForSystemBars(this, viewPager, true, true, false);
 //        UIUtils.setPaddingForSystemBars(this, pageIndicator, true, true, false);
 
-        //noinspection unchecked, deprecation
         pendingShare = (Future<Boolean>) getLastCustomNonConfigurationInstance();
     }
 

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
   xmlns:android="http://schemas.android.com/apk/res/android"
-  package="org.xbmc.kore">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.xbmc.kore">
   
   <!-- For espresso testing purposes, this is removed in live builds, but not in dev builds -->
-  <uses-permission android:name="android.permission.SET_ANIMATION_SCALE" />
+  <uses-permission android:name="android.permission.SET_ANIMATION_SCALE"
+      tools:ignore="ProtectedPermissions" />
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

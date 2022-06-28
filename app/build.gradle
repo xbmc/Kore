@@ -80,6 +80,11 @@ android {
         disable 'MissingTranslation'
     }
 
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -151,6 +156,6 @@ tasks.whenTaskAdded { task ->
     }
 }
 
-//tasks.withType(JavaCompile) {
-//    options.compilerArgs << '-Xlint:unchecked'
-//}
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:unchecked' // << '-Xlint:deprecation'
+}

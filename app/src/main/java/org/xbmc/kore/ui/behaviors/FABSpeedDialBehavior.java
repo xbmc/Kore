@@ -24,7 +24,9 @@ import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class FABSpeedDialBehavior extends CoordinatorLayout.Behavior {
+import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
+
+public class FABSpeedDialBehavior extends CoordinatorLayout.Behavior<FABSpeedDial> {
 
     private boolean hide;
 
@@ -33,16 +35,15 @@ public class FABSpeedDialBehavior extends CoordinatorLayout.Behavior {
     }
 
     @Override
-    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull FABSpeedDial child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
         //Make sure we respond to vertical scroll events
         return axes == ViewCompat.SCROLL_AXIS_VERTICAL ||
-               super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target,
-                                         axes, type);
+               super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, axes, type);
     }
 
     @Override
-    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull final View child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
+    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull final FABSpeedDial child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
 
         if (dyConsumed > 0 && !hide) {
             hide = true;

@@ -29,13 +29,13 @@
 
         <include layout="@layout/toolbar_default" />
 
-        <fragment android:id="@+id/hosts_list"
+        <androidx.fragment.app.FragmentContainerView android:id="@+id/hosts_list"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:name="org.xbmc.kore.ui.sections.hosts.HostListFragment" />
     </LinearLayout>
 
-    <fragment android:id="@+id/navigation_drawer"
+    <androidx.fragment.app.FragmentContainerView android:id="@+id/navigation_drawer"
               android:layout_width="@dimen/navigation_drawer_width"
               android:layout_height="match_parent"
               android:layout_gravity="start"
