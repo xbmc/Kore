@@ -23,13 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
@@ -202,12 +197,6 @@ public class RemoteFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(false);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         hostConnectionObserver.registerPlayerObserver(this);
@@ -243,13 +232,10 @@ public class RemoteFragment extends Fragment
 
         return new EventServerConnection(
                 hostManager.getHostInfo(),
-                new EventServerConnection.EventServerConnectionCallback() {
-                    @Override
-                    public void OnConnectResult(boolean success) {
-                        if (!success) {
-                            LogUtils.LOGD(TAG, "Couldn't setup EventServer, disabling it");
-                            eventServerConnection = null;
-                        }
+                success -> {
+                    if (!success) {
+                        LogUtils.LOGD(TAG, "Couldn't setup EventServer, disabling it");
+                        eventServerConnection = null;
                     }
                 }, callbackHandler);
     }

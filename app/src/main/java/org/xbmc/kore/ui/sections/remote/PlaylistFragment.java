@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -128,9 +129,11 @@ public class PlaylistFragment extends Fragment
 
         // When clicking on an item, play it
         binding.playlist.setOnItemClickListener((parent, view, position, id) -> {
-            int playlistId = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistId();
-            Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, playlistId, position);
-            action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+            PlaylistHolder holder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
+            if (holder != null) {
+                Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, holder.getPlaylistId(), position);
+                action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+            }
         });
 
         binding.playlistsBar.setOnPlaylistSelectedListener(new PlaylistsBar.OnPlaylistSelectedListener() {
@@ -155,8 +158,8 @@ public class PlaylistFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // We have options
         setHasOptionsMenu(true);
     }
@@ -194,10 +197,11 @@ public class PlaylistFragment extends Fragment
         int itemId = item.getItemId();
         if (itemId == R.id.action_clear_playlist) {
             PlaylistHolder playlistHolder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
-            int playlistId = playlistHolder.getPlaylistId();
-            playlistOnClear(playlistId);
-            Playlist.Clear action = new Playlist.Clear(playlistId);
-            action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+            if (playlistHolder != null) {
+                playlistOnClear(playlistHolder.getPlaylistId());
+                Playlist.Clear action = new Playlist.Clear(playlistHolder.getPlaylistId());
+                action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -345,7 +349,8 @@ public class PlaylistFragment extends Fragment
         Iterator<String> it = playlists.keySet().iterator();
         while (it.hasNext()) {
             String key = it.next();
-            if (playlists.get(key).getPlaylistResult.id == playlistId) {
+            PlaylistHolder holder = playlists.get(key);
+            if (holder != null && holder.getPlaylistResult.id == playlistId) {
                 it.remove();
                 binding.playlistsBar.setHasPlaylistAvailable(key, false);
                 binding.playlistsBar.setIsPlaying(key, false);
@@ -429,10 +434,12 @@ public class PlaylistFragment extends Fragment
     }
 
     private void highlightCurrentlyPlayingItem() {
-        if (! binding.playlistsBar.getSelectedPlaylistType().contentEquals(lastGetActivePlayerResult.type))
+        PlaylistHolder holder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
+        if (!binding.playlistsBar.getSelectedPlaylistType().contentEquals(lastGetActivePlayerResult.type) ||
+            holder == null)
             return;
 
-        List<ListType.ItemsAll> playlistItems = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistResult.items;
+        List<ListType.ItemsAll> playlistItems = holder.getPlaylistResult.items;
         for (int i = 0; i < playlistItems.size(); i++) {
             if ((playlistItems.get(i).id == lastGetItemResult.id) &&
                 (playlistItems.get(i).type.equals(lastGetItemResult.type))) {
@@ -487,10 +494,13 @@ public class PlaylistFragment extends Fragment
                     int itemId = item.getItemId();
                     if (itemId == R.id.action_remove_playlist_item) {
                         // Remove this item from the playlist
-                        int playlistId = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistId();
-                        Playlist.Remove action = new Playlist.Remove(playlistId, position);
-                        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-                        return true;
+                        PlaylistHolder holder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
+                        if (holder != null) {
+                            int playlistId = holder.getPlaylistId();
+                            Playlist.Remove action = new Playlist.Remove(playlistId, position);
+                            action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
+                            return true;
+                        }
                     }
                     return false;
                 });
@@ -588,7 +598,9 @@ public class PlaylistFragment extends Fragment
                 return;
             }
 
-            final int playlistId = playlists.get(binding.playlistsBar.getSelectedPlaylistType()).getPlaylistId();
+            PlaylistHolder holder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
+            if (holder == null) return;
+            final int playlistId = holder.getPlaylistId();
             Playlist.Remove remove = new Playlist.Remove(playlistId, originalPosition);
             remove.execute(hostConnection, new ApiCallback<String>() {
                 @Override
@@ -646,6 +658,7 @@ public class PlaylistFragment extends Fragment
             }
 
             final ListType.ItemsAll item = this.getItem(position);
+            if (item == null) return null;
 
             // Differentiate between media
             String title, details, artUrl;

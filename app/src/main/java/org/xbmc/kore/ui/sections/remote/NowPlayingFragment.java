@@ -15,7 +15,8 @@
  */
 package org.xbmc.kore.ui.sections.remote;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,21 +27,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.GridLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentNowPlayingBinding;
-import org.xbmc.kore.databinding.FragmentPlaylistBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -58,10 +53,7 @@ import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.generic.GenericSelectDialog;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
-import org.xbmc.kore.ui.widgets.HighlightButton;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
-import org.xbmc.kore.ui.widgets.RepeatModeButton;
-import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -84,7 +76,7 @@ public class NowPlayingFragment extends Fragment
      * Interface for this fragment to communicate with the enclosing activity
      */
     public interface NowPlayingListener {
-        public void SwitchToRemotePanel();
+        void SwitchToRemotePanel();
     }
 
     /**
@@ -134,11 +126,11 @@ public class NowPlayingFragment extends Fragment
     private int pixelsToTransparent;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         // Try to cast the enclosing activity to the listener interface
         try {
-            nowPlayingListener = (NowPlayingListener)activity;
+            nowPlayingListener = (NowPlayingListener)context;
         } catch (ClassCastException e) {
             nowPlayingListener = null;
         }
@@ -156,23 +148,13 @@ public class NowPlayingFragment extends Fragment
         binding = FragmentNowPlayingBinding.inflate(inflater, container, false);
         ViewGroup root = binding.getRoot();
 
-        binding.volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
-            @Override
-            public void onVolumeChanged(int volume) {
-                new Application.SetVolume(volume)
-                        .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
-            }
-        });
+        binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
+                .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler));
 
         binding.progressInfo.setOnProgressChangeListener(this);
 
-        binding.volumeLevelIndicator.setOnVolumeChangeListener(new VolumeLevelIndicator.OnVolumeChangeListener() {
-            @Override
-            public void onVolumeChanged(int volume) {
-                new Application.SetVolume(volume).execute(hostManager.getConnection(),
-                                                          defaultIntActionCallback, callbackHandler);
-            }
-        });
+        binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
+                .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler));
 
         binding.play.setOnClickListener(this::onPlayClicked);
         binding.stop.setOnClickListener(this::onStopClicked);
@@ -185,16 +167,12 @@ public class NowPlayingFragment extends Fragment
         binding.repeat.setOnClickListener(this::onRepeatClicked);
         binding.overflow.setOnClickListener(this::onOverflowClicked);
 
-        // Pad main content view to overlap with bottom system bar
-        // UIUtils.setPaddingForSystemBars(getActivity(), mediaPanel, false, false, true);
-        // mediaPanel.setClipToPadding(false);
-
         return root;
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
 
         /* Setup dim the fanart when scroll changes
@@ -360,7 +338,7 @@ public class NowPlayingFragment extends Fragment
 
                     GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
                                                                                  SELECT_AUDIOSTREAM, getString(R.string.audiostreams), audiostreams, selectedItem);
-                    dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
+                    dialog.show(NowPlayingFragment.this.getParentFragmentManager(), null);
                 }
                 return true;
             } else if (itemId == R.id.subtitles) {
@@ -385,7 +363,7 @@ public class NowPlayingFragment extends Fragment
 
                 GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
                                                                              SELECT_SUBTITLES, getString(R.string.subtitles), subtitles, selectedItem);
-                dialog.show(NowPlayingFragment.this.getFragmentManager(), null);
+                dialog.show(NowPlayingFragment.this.getParentFragmentManager(), null);
                 return true;
             }
             return false;
@@ -614,6 +592,7 @@ public class NowPlayingFragment extends Fragment
      * Sets whats playing information
      * @param getItemResult Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
      */
+    @SuppressLint("DefaultLocale")
     private void setNowPlayingInfo(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                    PlayerType.PropertyValue getPropertiesResult,
                                    final ListType.ItemsAll getItemResult) {
