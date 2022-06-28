@@ -27,13 +27,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/now_playing_art_height"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:contentDescription="@string/thumbnail"
         app:layout_behavior="org.xbmc.kore.ui.behaviors.FadeOutOnVerticalScrollBehavior"
         android:scaleType="centerCrop"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -43,7 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:transitionGroup="true">
 
             <RelativeLayout
@@ -58,8 +55,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/media_title_margin_top"
                     style="@style/TextAppearance.Media.Title"
-                    android:paddingLeft="@dimen/poster_width_plus_padding"
-                    android:paddingRight="@dimen/default_padding"
                     android:paddingStart="@dimen/poster_width_plus_padding"
                     android:paddingEnd="@dimen/default_padding"
                     android:background="?attr/contentBackgroundColor"/>
@@ -68,8 +63,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextAppearance.Media.Subtitle"
-                    android:paddingLeft="@dimen/poster_width_plus_padding"
-                    android:paddingRight="@dimen/default_padding"
                     android:paddingStart="@dimen/poster_width_plus_padding"
                     android:paddingEnd="@dimen/default_padding"
                     android:layout_below="@id/media_title"
@@ -80,8 +73,6 @@
                     android:layout_width="@dimen/detail_poster_width_square"
                     android:layout_height="@dimen/detail_poster_height_square"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="@dimen/default_padding"
                     android:layout_marginStart="@dimen/default_padding"
                     android:layout_alignBottom="@id/media_undertitle"
                     android:contentDescription="@string/poster"
@@ -150,7 +141,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
                     android:paddingTop="@dimen/default_padding"
                     android:paddingBottom="@dimen/default_padding"
                     android:paddingLeft="@dimen/default_padding"
@@ -170,7 +160,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             style="@style/TextAppearance.Media.Rating"
-                            android:layout_marginRight="@dimen/small_padding"
                             android:layout_marginEnd="@dimen/small_padding"/>
 
                         <LinearLayout
@@ -225,7 +214,6 @@
                         android:layout_height="@dimen/small_icon_size"
                         android:layout_gravity="end"
                         android:layout_marginBottom="@dimen/small_padding"
-                        android:layout_marginRight="@dimen/small_padding"
                         android:layout_marginEnd="@dimen/small_padding"
                         style="@style/Widget.Button.Borderless"
                         android:src="?attr/iconExpand"

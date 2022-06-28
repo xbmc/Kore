@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.widgets.fabspeeddial;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -102,7 +101,6 @@ public class FABSpeedDial extends LinearLayout {
         initializeView(context);
     }
 
-    @TargetApi(21)
     public FABSpeedDial(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initializeView(context);
