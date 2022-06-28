@@ -19,8 +19,6 @@ package org.xbmc.kore.utils;
 import android.util.Log;
 
 import org.xbmc.kore.BuildConfig;
-import org.xbmc.kore.host.HostConnectionObserver;
-import org.xbmc.kore.jsonrpc.HostConnection;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,12 +45,12 @@ public class LogUtils {
     /**
      * Don't use this when obfuscating class names!
      */
+    @SuppressWarnings("rawtypes")
     public static String makeLogTag(Class cls) {
         return makeLogTag(cls.getSimpleName());
     }
 
     public static void LOGD(final String tag, String message) {
-        //noinspection PointlessBooleanExpression,ConstantConditions
         if ((BuildConfig.DEBUG && !doNotLogTags.contains(tag)) ||
                 Log.isLoggable(tag, Log.DEBUG)) {
             Log.d(tag, message);
@@ -61,7 +59,6 @@ public class LogUtils {
     }
 
     public static void LOGD(final String tag, String message, Throwable cause) {
-        //noinspection PointlessBooleanExpression,ConstantConditions
         if (BuildConfig.DEBUG || Log.isLoggable(tag, Log.DEBUG)) {
             Log.d(tag, message, cause);
         }
@@ -73,20 +70,18 @@ public class LogUtils {
                 if (i + 1024 < message.length())
                     LOGD(tag, message.substring(i, i + 1024));
                 else
-                    LOGD(tag, message.substring(i, message.length()));
+                    LOGD(tag, message.substring(i));
             }
         }
     }
 
     public static void LOGV(final String tag, String message) {
-        //noinspection PointlessBooleanExpression,ConstantConditions
         if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.VERBOSE)) {
             Log.v(tag, message);
         }
     }
 
     public static void LOGV(final String tag, String message, Throwable cause) {
-        //noinspection PointlessBooleanExpression,ConstantConditions
         if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.VERBOSE)) {
             Log.v(tag, message, cause);
         }

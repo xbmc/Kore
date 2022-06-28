@@ -16,10 +16,8 @@
 package org.xbmc.kore.utils;
 
 import android.animation.Animator;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -28,12 +26,6 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.widget.TextViewCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -48,6 +40,11 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.widget.TextViewCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -105,8 +102,8 @@ public class UIUtils {
 
     /**
      * Converts the time format from {@link #formatTime(int, int, int)} to seconds
-     * @param time
-     * @return
+     * @param time time, according to {@link #formatTime(int, int, int)}
+     * @return seconds representation
      */
     public static int timeToSeconds(String time) {
         String[] items = time.split(":");
@@ -273,12 +270,7 @@ public class UIUtils {
         WindowManager windowManager = (WindowManager)activity.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
 
-        View.OnClickListener castListClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.openImdbForPerson(activity, (String)v.getTag());
-            }
-        };
+        View.OnClickListener castListClickListener = v -> Utils.openImdbForPerson(activity, (String)v.getTag());
 
         castListView.removeAllViews();
         int numColumns = castListView.getColumnCount();
@@ -315,12 +307,9 @@ public class UIUtils {
                 allCastGroup.setVisibility(View.VISIBLE);
                 remainingCastCount.setText(String.format(activity.getString(R.string.remaining_cast_count),
                                                          castList.size() - maxCastPictures + 1));
-                castView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        activity.startActivity(allCastActivityLaunchIntent);
-                        activity.overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
-                    }
+                castView.setOnClickListener(v -> {
+                    activity.startActivity(allCastActivityLaunchIntent);
+                    activity.overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
                 });
             } else {
                 castName.setText(actor.name);
@@ -344,13 +333,8 @@ public class UIUtils {
             return;
 
         // Send WoL magic packet on a new thread
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                NetUtils.sendWolMagicPacket(hostInfo.getMacAddress(),
-                                            hostInfo.getAddress(), hostInfo.getWolPort());
-            }
-        }).start();
+        new Thread(() -> NetUtils.sendWolMagicPacket(hostInfo.getMacAddress(),
+                                             hostInfo.getAddress(), hostInfo.getWolPort())).start();
         Toast.makeText(context, R.string.wol_sent, Toast.LENGTH_SHORT).show();
     }
 
@@ -402,7 +386,7 @@ public class UIUtils {
      * @return Android resource id of the theme
      */
     public static int getThemeResourceId(String prefThemeValue) {
-        switch (Integer.valueOf(prefThemeValue)) {
+        switch (Integer.parseInt(prefThemeValue)) {
             case 0:
                 return R.style.NightTheme;
             case 1:
@@ -444,7 +428,6 @@ public class UIUtils {
      * @param exitTransitionView View to reveal. Should occupy the whole screen and
      *                           be invisible before calling this
      */
-    @TargetApi(21)
     public static void switchToRemoteWithAnimation(final Context context,
                                                    int centerX, int centerY,
                                                    final View exitTransitionView) {
@@ -483,15 +466,9 @@ public class UIUtils {
      * Use this to manually start the swiperefreshlayout refresh animation.
      * Fixes issue with refresh animation not showing when using appcompat library (from version 20?)
      * See https://code.google.com/p/android/issues/detail?id=77712
-     * @param layout
      */
     public static void showRefreshAnimation(@NonNull final SwipeRefreshLayout layout) {
-        layout.post(new Runnable() {
-            @Override
-            public void run() {
-                layout.setRefreshing(true);
-            }
-        });
+        layout.post(() -> layout.setRefreshing(true));
     }
 
     /**
@@ -517,7 +494,7 @@ public class UIUtils {
                                      final HostInfo hostInfo,
                                      final Handler callbackHandler) {
         if (songInfoList == null || songInfoList.size() == 0) {
-            Toast.makeText(context, R.string.no_songs_to_download, Toast.LENGTH_LONG);
+            Toast.makeText(context, R.string.no_songs_to_download, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -536,28 +513,15 @@ public class UIUtils {
             builder.setTitle(R.string.download)
                    .setMessage(songInfoList.size() > 1 ? R.string.download_files_exists : R.string.download_file_exists)
                    .setPositiveButton(R.string.overwrite,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              FileDownloadHelper.downloadFiles(context, hostInfo,
-                                                                               songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
+                                      (dialog, which) -> FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                                       songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                                                       callbackHandler))
                    .setNeutralButton(R.string.download_with_new_name,
-                                     new DialogInterface.OnClickListener() {
-                                         @Override
-                                         public void onClick(DialogInterface dialog, int which) {
-                                             FileDownloadHelper.downloadFiles(context, hostInfo,
-                                                                              songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                              callbackHandler);
-                                         }
-                                     })
+                                     (dialog, which) -> FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                                      songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                      callbackHandler))
                    .setNegativeButton(android.R.string.cancel,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) { }
-                                      })
+                                      (dialog, which) -> { })
                    .show();
         } else {
             if ( songInfoList.size() > 12 ) { // No scientific reason this should be 12. I just happen to like 12.
@@ -566,18 +530,10 @@ public class UIUtils {
                 builder.setTitle(R.string.download)
                        .setMessage(String.format(message, songInfoList.size()))
                        .setPositiveButton(android.R.string.ok,
-                                          new DialogInterface.OnClickListener() {
-                                              @Override
-                                              public void onClick(DialogInterface dialog, int which) {
-                                                  FileDownloadHelper.downloadFiles(context, hostInfo,
-                                                                                   songInfoList, FileDownloadHelper.OVERWRITE_FILES,
-                                                                                   callbackHandler);
-                                              }
-                                          })
-                       .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                           }
+                                          (dialog, which) -> FileDownloadHelper.downloadFiles(context, hostInfo,
+                                                                           songInfoList, FileDownloadHelper.OVERWRITE_FILES,
+                                                                           callbackHandler))
+                       .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
                        })
                        .show();
             } else {
@@ -590,8 +546,8 @@ public class UIUtils {
 
     /**
      * Highlights an image view
-     * @param context
-     * @param view
+     * @param context context
+     * @param view image view
      * @param highlight true if the image view should be highlighted, false otherwise
      */
     public static void highlightImageView(Context context, ImageView view, boolean highlight) {
@@ -627,29 +583,23 @@ public class UIUtils {
      * @return Runnable
      */
     public static Runnable getMarqueeToggleableAction(final TextView textView) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                int lines = textView.getLineCount();
-                int maxLines = TextViewCompat.getMaxLines(textView);
-                if (lines > maxLines) {
-                    textView.setEllipsize(TextUtils.TruncateAt.END);
-                    textView.setClickable(true);
-                    textView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            v.setSelected(!v.isSelected());
-                            TextUtils.TruncateAt ellipsize;
-                            if (v.isSelected()) {
-                                ellipsize = TextUtils.TruncateAt.MARQUEE;
-                            } else {
-                                ellipsize = TextUtils.TruncateAt.END;
-                            }
-                            textView.setEllipsize(ellipsize);
-                            textView.setHorizontallyScrolling(v.isSelected());
-                        }
-                    });
-                }
+        return () -> {
+            int lines = textView.getLineCount();
+            int maxLines = TextViewCompat.getMaxLines(textView);
+            if (lines > maxLines) {
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setClickable(true);
+                textView.setOnClickListener(v -> {
+                    v.setSelected(!v.isSelected());
+                    TextUtils.TruncateAt ellipsize;
+                    if (v.isSelected()) {
+                        ellipsize = TextUtils.TruncateAt.MARQUEE;
+                    } else {
+                        ellipsize = TextUtils.TruncateAt.END;
+                    }
+                    textView.setEllipsize(ellipsize);
+                    textView.setHorizontallyScrolling(v.isSelected());
+                });
             }
         };
     }
