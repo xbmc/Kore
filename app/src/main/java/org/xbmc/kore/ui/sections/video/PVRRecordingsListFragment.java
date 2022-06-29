@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -65,47 +66,44 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     @Override
     protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
-        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                // Get the id from the tag
-                RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
+        return (view, position) -> {
+            // Get the id from the tag
+            RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
 
-                // Start the recording
-                Toast.makeText(getActivity(),
-                        String.format(getString(R.string.starting_recording), tag.title),
-                        Toast.LENGTH_SHORT).show();
-                Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
-                action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        if (!isAdded()) return;
-                        LogUtils.LOGD(TAG, "Started recording");
-                    }
+            // Start the recording
+            Toast.makeText(requireContext(),
+                    String.format(getString(R.string.starting_recording), tag.title),
+                    Toast.LENGTH_SHORT).show();
+            Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
+            action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (!isAdded()) return;
+                    LogUtils.LOGD(TAG, "Started recording");
+                }
 
-                    @Override
-                    public void onError(int errorCode, String description) {
-                        if (!isAdded()) return;
-                        LogUtils.LOGD(TAG, "Error starting recording: " + description);
+                @Override
+                public void onError(int errorCode, String description) {
+                    if (!isAdded()) return;
+                    LogUtils.LOGD(TAG, "Error starting recording: " + description);
 
-                        Toast.makeText(getActivity(),
-                                String.format(getString(R.string.error_starting_recording), description),
-                                Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(),
+                            String.format(getString(R.string.error_starting_recording), description),
+                            Toast.LENGTH_SHORT).show();
 
-                    }
-                }, callbackHandler);
+                }
+            }, callbackHandler);
 
-            }
         };
     }
 
     @Override
-    protected RecyclerView.Adapter createAdapter() {
-        return new RecordingsAdapter(getActivity());
+    protected RecyclerView.Adapter<RecordingViewHolder> createAdapter() {
+        return new RecordingsAdapter(requireContext());
     }
 
     @Override
@@ -118,14 +116,14 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
 
-        hostManager = HostManager.getInstance(getActivity());
+        hostManager = HostManager.getInstance(requireContext());
 
         return root;
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         browseRecordings();
     }
@@ -153,7 +151,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 sortByDateAdded = menu.findItem(R.id.action_sort_by_date_added),
                 unsorted = menu.findItem(R.id.action_unsorted);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED));
 
         int sortOrder = preferences.getInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.DEFAULT_PREF_PVR_RECORDINGS_SORT_ORDER);
@@ -180,7 +178,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         int itemId = item.getItemId();
         if (itemId == R.id.action_hide_watched) {
             item.setChecked(!item.isChecked());
@@ -211,7 +209,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         return super.onOptionsItemSelected(item);
     }
 
-    /**
+    /*
      * Swipe refresh layout callback
      */
     /** {@inheritDoc} */
@@ -221,7 +219,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
             browseRecordings();
         } else {
             hideRefreshAnimation();
-            Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
                  .show();
         }
     }
@@ -252,7 +250,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
             }
 
             private List<PVRType.DetailsRecording> filter(List<PVRType.DetailsRecording> itemList) {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
                 boolean hideWatched = preferences.getBoolean(Settings.KEY_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_PVR_RECORDINGS_FILTER_HIDE_WATCHED);
 
                 String searchFilter = getSearchFilter();
@@ -306,15 +304,12 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
             }
 
             private boolean searchFilterWordMatches(String lcWord, PVRType.DetailsRecording item) {
-                if (item.title.toLowerCase().contains(lcWord)
-                        || item.channel.toLowerCase().contains(lcWord)) {
-                    return true;
-                }
-                return false;
+                return item.title.toLowerCase().contains(lcWord) ||
+                       item.channel.toLowerCase().contains(lcWord);
             }
 
             private void sort(List<PVRType.DetailsRecording> itemList) {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
                 int sortOrder = preferences.getInt(Settings.KEY_PREF_PVR_RECORDINGS_SORT_ORDER, Settings.DEFAULT_PREF_PVR_RECORDINGS_SORT_ORDER);
 
@@ -323,26 +318,18 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                     case Settings.SORT_BY_DATE_ADDED:
                         // sort by recording start time descending (most current first)
                         // luckily the starttime is in sortable format yyyy-MM-dd hh:mm:ss
-                        comparator = new Comparator<PVRType.DetailsRecording>() {
-                            @Override
-                            public int compare(PVRType.DetailsRecording a, PVRType.DetailsRecording b) {
-                                return  b.starttime.compareTo(a.starttime);
-                            }
-                        };
+                        comparator = (a, b) -> b.starttime.compareTo(a.starttime);
                         Collections.sort(itemList, comparator);
                         break;
                     case Settings.SORT_BY_NAME:
                         // sort by recording title and start time
-                        comparator = new Comparator<PVRType.DetailsRecording>() {
-                            @Override
-                            public int compare(PVRType.DetailsRecording a, PVRType.DetailsRecording b) {
-                                int result = a.title.compareToIgnoreCase(b.title);
-                                if (0 == result) { // note the yoda condition ;)
-                                    // sort by starttime descending (most current first)
-                                    result = b.starttime.compareTo(a.starttime);
-                                }
-                                return result;
+                        comparator = (a, b) -> {
+                            int result = a.title.compareToIgnoreCase(b.title);
+                            if (0 == result) { // note the yoda condition ;)
+                                // sort by starttime descending (most current first)
+                                result = b.starttime.compareTo(a.starttime);
                             }
+                            return result;
                         };
                         Collections.sort(itemList, comparator);
                         break;
@@ -357,7 +344,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 // To prevent the empty text from appearing on the first load, set it now
                 TextView emptyView = getEmptyView();
                 emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
-                Toast.makeText(getActivity(),
+                Toast.makeText(requireContext(),
                                String.format(getString(R.string.error_getting_pvr_info), description),
                                Toast.LENGTH_SHORT).show();
                 hideRefreshAnimation();
@@ -375,10 +362,10 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         recordingsAdapter.setItems(result);
     }
 
-    private class RecordingsAdapter extends RecyclerView.Adapter {
-        private HostManager hostManager;
-        private int artWidth, artHeight;
-        private Context context;
+    private class RecordingsAdapter extends RecyclerView.Adapter<RecordingViewHolder> {
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
+        private final Context context;
         private List<PVRType.DetailsRecording> items;
 
         public RecordingsAdapter(Context context) {
@@ -395,17 +382,17 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecordingViewHolder holder, int position) {
             PVRType.DetailsRecording item = this.getItem(position);
-            ((RecordingViewHolder) holder).bindView(item, getContext(), hostManager, artWidth, artHeight);
+            assert item != null;
+            holder.bindView(item, getContext(), hostManager, artWidth, artHeight);
         }
 
+        @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater
-                    .from(context)
-                    .inflate(R.layout.grid_item_recording, viewGroup, false);
-
+        public RecordingViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(context)
+                                      .inflate(R.layout.grid_item_recording, viewGroup, false);
             return new RecordingViewHolder(view);
         }
 
@@ -419,12 +406,6 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
             this.items = details;
 
             notifyDataSetChanged();
-        }
-
-        public List<PVRType.DetailsRecording> getItemList() {
-            if (items == null)
-                return new ArrayList<>();
-            return new ArrayList<>(items);
         }
 
         public PVRType.DetailsRecording getItem(int position) {
@@ -463,10 +444,10 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         public RecordingViewHolder(View itemView) {
             super(itemView);
 
-            titleView = (TextView) itemView.findViewById(R.id.title);
-            detailsView = (TextView) itemView.findViewById(R.id.details);
-            artView = (ImageView) itemView.findViewById(R.id.art);
-            durationView = (TextView) itemView.findViewById(R.id.duration);
+            titleView = itemView.findViewById(R.id.title);
+            detailsView = itemView.findViewById(R.id.details);
+            artView = itemView.findViewById(R.id.art);
+            durationView = itemView.findViewById(R.id.duration);
         }
 
         public void bindView(PVRType.DetailsRecording recordingDetails, Context context, HostManager hostManager, int artWidth, int artHeight) {

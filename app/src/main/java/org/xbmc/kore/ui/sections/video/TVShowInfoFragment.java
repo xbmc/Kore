@@ -19,7 +19,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -50,17 +53,13 @@ public class TVShowInfoFragment extends AbstractInfoFragment
 
     @Override
     protected RefreshItem createRefreshItem() {
-        RefreshItem refreshItem = new RefreshItem(getActivity(),
+        RefreshItem refreshItem = new RefreshItem(requireContext(),
                                                   LibrarySyncService.SYNC_SINGLE_TVSHOW);
         refreshItem.setSyncItem(LibrarySyncService.SYNC_TVSHOWID, getDataHolder().getId());
-        refreshItem.setListener(new RefreshItem.RefreshItemListener() {
-            @Override
-            public void onSyncProcessEnded(MediaSyncEvent event) {
-                if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                    getLoaderManager().restartLoader(LOADER_TVSHOW, null,
-                                                     TVShowInfoFragment.this);
-                    refreshAdditionInfoFragment();
-                }
+        refreshItem.setListener(event -> {
+            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+                LoaderManager.getInstance(this).restartLoader(LOADER_TVSHOW, null, TVShowInfoFragment.this);
+                refreshAdditionInfoFragment();
             }
         });
 
@@ -85,29 +84,27 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         hasIssuedOutdatedRefresh = false;
-
-        getLoaderManager().initLoader(LOADER_TVSHOW, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER_TVSHOW, null, this);
     }
 
-    /**
+    /*
      * Loader callbacks
      */
     /** {@inheritDoc} */
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri = MediaContract.TVShows.buildTVShowUri(getHostInfo().getId(), getDataHolder().getId());
-        return new CursorLoader(getActivity(), uri,
+        return new CursorLoader(requireContext(), uri,
                                 TVShowDetailsQuery.PROJECTION, null, null, null);
-
     }
 
     /** {@inheritDoc} */
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null) {
             switch (cursorLoader.getId()) {
                 case LOADER_TVSHOW:
@@ -147,7 +144,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
     }
 

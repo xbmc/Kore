@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.video;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -76,7 +75,6 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     /**
      * Create a new instance of this, initialized to show tvshowId
      */
-    @TargetApi(21)
     public static TVShowEpisodeListFragment newInstance(int tvshowId, int season) {
         TVShowEpisodeListFragment fragment = new TVShowEpisodeListFragment();
 
@@ -91,18 +89,18 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_SINGLE_TVSHOW; }
 
     @Override
-    protected String getSyncID() { return LibrarySyncService.SYNC_TVSHOWID; };
+    protected String getSyncID() { return LibrarySyncService.SYNC_TVSHOWID; }
 
     @Override
-    protected int getSyncItemID() { return tvshowId; };
+    protected int getSyncItemID() { return tvshowId; }
 
-    @TargetApi(16)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        tvshowId = getArguments().getInt(TVSHOWID, -1);
-        tvshowSeason = getArguments().getInt(TVSHOWSEASON, -1);
+        Bundle args = getArguments();
+        tvshowId = (args == null) ? -1 : args.getInt(TVSHOWID, -1);
+        tvshowSeason = (args == null) ? -1 : args.getInt(TVSHOWSEASON, -1);
         if ((tvshowId == -1) || (tvshowSeason == -1)) {
             // There's nothing to show
             return null;
@@ -120,33 +118,33 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
 
     @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
-        return new SeasonsEpisodesAdapter(getActivity());
+        return new SeasonsEpisodesAdapter(requireContext());
     }
 
     @Override
     protected CursorLoader createCursorLoader() {
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         Uri uri = MediaContract.Episodes.buildTVShowSeasonEpisodesListUri(hostInfo.getId(), tvshowId, tvshowSeason);
 
         // Filters
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         StringBuilder selection = new StringBuilder();
         if (preferences.getBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED)) {
             selection.append(MediaContract.EpisodesColumns.PLAYCOUNT)
                      .append("=0");
         }
 
-        return new CursorLoader(getActivity(), uri,
+        return new CursorLoader(requireContext(), uri,
                                 EpisodesListQuery.PROJECTION, selection.toString(), null, EpisodesListQuery.SORT);
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             listenerActivity = (OnEpisodeSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnEpisodeSelectedListener");
+            throw new ClassCastException(context + " must implement OnEpisodeSelectedListener");
         }
     }
 
@@ -167,7 +165,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         inflater.inflate(R.menu.tvshow_episode_list, menu);
 
         // Setup filters
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         menu.findItem(R.id.action_hide_watched)
             .setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED));
 
@@ -179,7 +177,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         int itemId = item.getItemId();
         if (itemId == R.id.action_hide_watched) {
             item.setChecked(!item.isChecked());
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
             preferences.edit()
                        .putBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, item.isChecked())
                        .apply();
@@ -219,10 +217,9 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
 
     private class SeasonsEpisodesAdapter extends RecyclerViewCursorAdapter {
 
-        private int themeAccentColor;
-        private HostManager hostManager;
-        private int artWidth;
-        private int artHeight;
+        private final int themeAccentColor;
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
 
         SeasonsEpisodesAdapter(Context context) {
             // Get the default accent color
@@ -243,11 +240,12 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
+        @NonNull
         @Override
-        public RecyclerViewCursorAdapter.CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getActivity())
+        public RecyclerViewCursorAdapter.CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(requireContext())
                                       .inflate(R.layout.list_item_episode, parent, false);
-            return new ViewHolder(view, getActivity(), themeAccentColor,
+            return new ViewHolder(view, requireContext(), themeAccentColor,
                                   contextlistItemMenuClickListener, hostManager,
                                   artWidth, artHeight);
         }
@@ -325,32 +323,26 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         }
     }
 
-    private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            final ViewHolder viewHolder = (ViewHolder)v.getTag();
+    private final View.OnClickListener contextlistItemMenuClickListener = v -> {
+        final ViewHolder viewHolder = (ViewHolder)v.getTag();
 
-            final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.episodeid = viewHolder.dataHolder.getId();
+        final PlaylistType.Item playListItem = new PlaylistType.Item();
+        playListItem.episodeid = viewHolder.dataHolder.getId();
 
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    int itemId = item.getItemId();
-                    if (itemId == R.id.action_play) {
-                        MediaPlayerUtils.play(TVShowEpisodeListFragment.this, playListItem);
-                        return true;
-                    } else if (itemId == R.id.action_queue) {
-                        MediaPlayerUtils.queue(TVShowEpisodeListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
-                        return true;
-                    }
-                    return false;
-                }
-            });
-            popupMenu.show();
-        }
+        final PopupMenu popupMenu = new PopupMenu(requireContext(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_play) {
+                MediaPlayerUtils.play(TVShowEpisodeListFragment.this, playListItem);
+                return true;
+            } else if (itemId == R.id.action_queue) {
+                MediaPlayerUtils.queue(TVShowEpisodeListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
+                return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     };
 
 }

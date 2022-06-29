@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.video;
 
-import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
@@ -29,7 +28,6 @@ import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Controls the presentation of TV Shows information (list, details)
@@ -64,7 +62,6 @@ public class TVShowsActivity extends BaseMediaActivity
         return new TVShowListFragment();
     }
 
-    @TargetApi(21)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
@@ -114,7 +111,6 @@ public class TVShowsActivity extends BaseMediaActivity
      * Switch fragment in portrait
      * @param vh view holder
      */
-    @TargetApi(21)
     public void onTVShowSelected(TVShowListFragment.ViewHolder vh) {
         selectedTVShowId = vh.dataHolder.getId();
         selectedTVShowTitle = vh.dataHolder.getTitle();
@@ -150,7 +146,6 @@ public class TVShowsActivity extends BaseMediaActivity
     /**
      * Callback from tvshow details when a episode is selected
      */
-    @TargetApi(21)
     public void onNextEpisodeSelected(int tvshowId,
                                       AbstractInfoFragment.DataHolder dh) {
         selectedEpisodeId = dh.getId();
@@ -166,7 +161,6 @@ public class TVShowsActivity extends BaseMediaActivity
     /**
      * Callback from tvshow episodes list when a episode is selected
      */
-    @TargetApi(21)
     public void onEpisodeSelected(int tvshowId,
                                   TVShowEpisodeListFragment.ViewHolder viewHolder) {
         selectedEpisodeId = viewHolder.dataHolder.getId();

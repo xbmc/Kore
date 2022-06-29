@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.video;
 
-import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -105,7 +104,6 @@ public class MoviesActivity extends BaseMediaActivity
      * Switch fragment in portrait
      * @param vh ViewHolder holding movie info of item clicked
      */
-    @TargetApi(21)
     public void onMovieSelected(MovieListFragment.ViewHolder vh) {
         selectedMovieTitle = vh.dataHolder.getTitle();
         selectedMovieId = vh.dataHolder.getId();

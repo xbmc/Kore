@@ -50,7 +50,6 @@ import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.ui.views.RatingBar;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -83,23 +82,23 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
     @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
-        return new MoviesAdapter(getActivity());
+        return new MoviesAdapter(requireContext());
     }
 
     @Override
     protected CursorLoader createCursorLoader() {
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         Uri uri = MediaContract.Movies.buildMoviesListUri(hostInfo != null? hostInfo.getId() : -1);
 
         StringBuilder selection = new StringBuilder();
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection.append(MediaContract.MoviesColumns.TITLE + " LIKE ?");
             selectionArgs = new String[] {"%" + searchFilter + "%"};
         }
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         if (preferences.getBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED)) {
             if (selection.length() != 0)
                 selection.append(" AND ");
@@ -131,17 +130,17 @@ public class MovieListFragment extends AbstractCursorListFragment {
             }
         }
 
-        return new CursorLoader(getActivity(), uri,
+        return new CursorLoader(requireContext(), uri,
                                 MovieListQuery.PROJECTION, selection.toString(), selectionArgs, sortOrderStr);
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnMovieSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(ctx.toString() + " must implement OnMovieSelectedListener");
+            throw new ClassCastException(ctx + " must implement OnMovieSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -174,7 +173,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 showWatchedStatusMenuItem = menu.findItem(R.id.action_show_watched_status),
                 showRatingMenuItem = menu.findItem(R.id.action_show_rating);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_MOVIES_FILTER_HIDE_WATCHED));
         showWatchedStatusMenuItem.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_SHOW_WATCHED_STATUS, Settings.DEFAULT_PREF_MOVIES_SHOW_WATCHED_STATUS));
         ignoreArticles.setChecked(preferences.getBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, Settings.DEFAULT_PREF_MOVIES_IGNORE_PREFIXES));
@@ -207,7 +206,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         int itemId = item.getItemId();
         if (itemId == R.id.action_hide_watched) {
             item.setChecked(!item.isChecked());
@@ -316,9 +315,9 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
     private class MoviesAdapter extends RecyclerViewCursorAdapter {
 
-        private HostManager hostManager;
-        private int artWidth, artHeight;
-        private int themeAccentColor, dimmedNeutralColor;
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
+        private final int themeAccentColor, dimmedNeutralColor;
 
         MoviesAdapter(Context context) {
             // Get the default accent color
@@ -344,8 +343,9 @@ public class MovieListFragment extends AbstractCursorListFragment {
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(getContext())
                                             .inflate(R.layout.grid_item_movie, parent, false);
 

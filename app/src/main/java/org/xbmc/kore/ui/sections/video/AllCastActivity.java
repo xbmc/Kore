@@ -87,9 +87,10 @@ public class AllCastActivity extends BaseActivity {
         setContentView(binding.getRoot());
 
         // Set up the drawer.
-        navigationDrawerFragment =
-                (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, findViewById(R.id.drawer_layout));
+        navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.navigation_drawer);
+        if (navigationDrawerFragment != null)
+            navigationDrawerFragment.setUp(R.id.navigation_drawer, findViewById(R.id.drawer_layout));
 
         if (savedInstanceState == null) {
             movie_tvshow_title = getIntent().getStringExtra(EXTRA_TITLE);

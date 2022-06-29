@@ -50,7 +50,6 @@ import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Fragment that presents the tv show list
@@ -80,16 +79,16 @@ public class TVShowListFragment extends AbstractCursorListFragment {
 
     @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
-        return new TVShowsAdapter(getActivity());
+        return new TVShowsAdapter(requireContext());
     }
 
     @Override
     protected CursorLoader createCursorLoader() {
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         Uri uri = MediaContract.TVShows.buildTVShowsListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         StringBuilder selection = new StringBuilder();
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection.append(MediaContract.TVShowsColumns.TITLE + " LIKE ?");
@@ -97,7 +96,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         }
 
         // Filters
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         if (preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOWS_FILTER_HIDE_WATCHED)) {
             if (selection.length() != 0)
                 selection.append(" AND ");
@@ -128,18 +127,18 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         }
 
 
-        return new CursorLoader(getActivity(), uri,
+        return new CursorLoader(requireContext(), uri,
                                 TVShowListQuery.PROJECTION, selection.toString(),
                                 selectionArgs, sortOrderStr);
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnTVShowSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(ctx.toString() + " must implement OnTVShowSelectedListener");
+            throw new ClassCastException(ctx + " must implement OnTVShowSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -170,7 +169,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 sortByLastPlayed = menu.findItem(R.id.action_sort_by_last_played),
                 showWatchedStatusMenuItem = menu.findItem(R.id.action_show_watched_status);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         hideWatched.setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_FILTER_HIDE_WATCHED, Settings.DEFAULT_PREF_TVSHOWS_FILTER_HIDE_WATCHED));
         showWatchedStatusMenuItem.setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_SHOW_WATCHED_STATUS, Settings.DEFAULT_PREF_TVSHOWS_SHOW_WATCHED_STATUS));
         ignoreArticles.setChecked(preferences.getBoolean(Settings.KEY_PREF_TVSHOWS_IGNORE_PREFIXES, Settings.DEFAULT_PREF_TVSHOWS_IGNORE_PREFIXES));
@@ -199,7 +198,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         int itemId = item.getItemId();
         if (itemId == R.id.action_hide_watched) {
             item.setChecked(!item.isChecked());
@@ -301,10 +300,9 @@ public class TVShowListFragment extends AbstractCursorListFragment {
 
     private class TVShowsAdapter extends RecyclerViewCursorAdapter {
 
-        private HostManager hostManager;
-        private int artWidth, artHeight;
-        private int themeAccentColor,
-                inProgressColor, finishedColor;
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
+        private final int themeAccentColor, inProgressColor, finishedColor;
 
         public TVShowsAdapter(Context context) {
             // Get the default accent color
@@ -332,18 +330,16 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(getContext())
                                             .inflate(R.layout.grid_item_tvshow, parent, false);
-
             // Setup View holder pattern
-            ViewHolder viewHolder = new ViewHolder(view, getContext(),
-                                                   themeAccentColor, inProgressColor, finishedColor,
-                                                   hostManager,
-                                                   artWidth, artHeight);
-
-            return viewHolder;
+            return new ViewHolder(view, requireContext(),
+                                  themeAccentColor, inProgressColor, finishedColor,
+                                  hostManager,
+                                  artWidth, artHeight);
         }
 
         protected int getSectionColumnIdx() {
