@@ -25,6 +25,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -60,38 +62,34 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     private AlbumSongsListFragment albumSongsListFragment;
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getLoaderManager().initLoader(LOADER_ALBUM, null, this);
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LoaderManager.getInstance(this).initLoader(LOADER_ALBUM, null, this);
         setHasOptionsMenu(false);
-
-
     }
 
-    /**
+    /*
      * Loader callbacks
      */
     /** {@inheritDoc} */
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri;
         int albumId = getDataHolder().getId();
-        int id = HostManager.getInstance(getActivity()).getHostInfo().getId();
+        int id = HostManager.getInstance(requireContext()).getHostInfo().getId();
         switch (i) {
             case LOADER_ALBUM:
-                uri = MediaContract.Albums.buildAlbumUri(id, albumId);
-                return new CursorLoader(getActivity(), uri,
-                                        AlbumDetailsQuery.PROJECTION, null, null, null);
             default:
-                return null;
+                uri = MediaContract.Albums.buildAlbumUri(id, albumId);
+                return new CursorLoader(requireContext(), uri,
+                                        AlbumDetailsQuery.PROJECTION, null, null, null);
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             switch (cursorLoader.getId()) {
                 case LOADER_ALBUM:
@@ -108,12 +106,11 @@ public class AlbumInfoFragment extends AbstractInfoFragment
 
                     int year = cursor.getInt(AlbumDetailsQuery.YEAR);
                     String genres = cursor.getString(AlbumDetailsQuery.GENRE);
-                    dataHolder.setDetails ( (year > 0) ?
-                                            (!TextUtils.isEmpty(genres) ?
-                                             genres + "  |  " + String.valueOf(year) :
-                                             String.valueOf(year)) :
-                                            genres
-                                          );
+                    dataHolder.setDetails((year > 0) ?
+                                          (!TextUtils.isEmpty(genres) ?
+                                           genres + "  |  " + year :
+                                           String.valueOf(year)) :
+                                          genres);
 
                     FileDownloadHelper.SongInfo songInfo = new FileDownloadHelper.SongInfo
                             (dataHolder.getUnderTitle(), dataHolder.getTitle(), 0, 0, null, null);
@@ -127,7 +124,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
     }
 
@@ -141,46 +138,30 @@ public class AlbumInfoFragment extends AbstractInfoFragment
 
     @Override
     protected RefreshItem createRefreshItem() {
-        RefreshItem refreshItem = new RefreshItem(getActivity(), LibrarySyncService.SYNC_ALL_MUSIC);
-        refreshItem.setListener(new RefreshItem.RefreshItemListener() {
-            @Override
-            public void onSyncProcessEnded(MediaSyncEvent event) {
-                if (event.status == MediaSyncEvent.STATUS_SUCCESS)
-                    getLoaderManager().restartLoader(LOADER_ALBUM, null, AlbumInfoFragment.this);
-            }
+        RefreshItem refreshItem = new RefreshItem(requireContext(), LibrarySyncService.SYNC_ALL_MUSIC);
+        refreshItem.setListener(event -> {
+            if (event.status == MediaSyncEvent.STATUS_SUCCESS)
+                LoaderManager.getInstance(this).restartLoader(LOADER_ALBUM, null, AlbumInfoFragment.this);
         });
         return refreshItem;
     }
 
     @Override
     protected boolean setupMediaActionBar() {
-        setOnDownloadListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UIUtils.downloadSongs(getActivity(), albumSongsListFragment.getSongInfoList(),
-                                      getHostInfo(), callbackHandler);
-            }
-        });
+        setOnDownloadListener(view -> UIUtils.downloadSongs(requireContext(), albumSongsListFragment.getSongInfoList(),
+                                                    getHostInfo(), callbackHandler));
 
-        setOnAddToPlaylistListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addToPlaylist();
-            }
-        });
+        setOnAddToPlaylistListener(view -> addToPlaylist());
 
         return true;
     }
 
     @Override
     protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlaylistType.Item item = new PlaylistType.Item();
-                item.albumid = getDataHolder().getId();
-                playItemOnKodi(item);
-            }
+        FAB.setOnFabClickListener(v -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.albumid = getDataHolder().getId();
+            playItemOnKodi(item);
         });
         return true;
     }
@@ -188,7 +169,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     private void addToPlaylist() {
         Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
 
-        getPlaylists.execute(HostManager.getInstance(getActivity()).getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
+        getPlaylists.execute(HostManager.getInstance(requireContext()).getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
             public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
                 if (!isAdded()) return;
@@ -205,7 +186,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
                     PlaylistType.Item item = new PlaylistType.Item();
                     item.albumid = getDataHolder().getId();
                     Playlist.Add action = new Playlist.Add(audioPlaylistId, item);
-                    action.execute(HostManager.getInstance(getActivity()).getConnection(), new ApiCallback<String>() {
+                    action.execute(HostManager.getInstance(requireContext()).getConnection(), new ApiCallback<String>() {
                         @Override
                         public void onSuccess(String result) {
                             if (!isAdded()) return;

@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +23,7 @@ import android.provider.BaseColumns;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.loader.app.LoaderManager;
@@ -58,10 +58,8 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
     // Loader IDs
     private static final int LOADER_MUSIC_VIDEO = 0;
 
-    //    /**
-//     * Handler on which to post RPC callbacks
-//     */
-    private Handler callbackHandler = new Handler();
+    // Handler on which to post RPC callbacks
+    private final Handler callbackHandler = new Handler();
 
     private Cursor cursor;
 
@@ -75,13 +73,9 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
     protected RefreshItem createRefreshItem() {
         RefreshItem refreshItem = new RefreshItem(getActivity(),
                                                   LibrarySyncService.SYNC_ALL_MUSIC_VIDEOS);
-        refreshItem.setListener(new RefreshItem.RefreshItemListener() {
-            @Override
-            public void onSyncProcessEnded(MediaSyncEvent event) {
-                if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                    getLoaderManager().restartLoader(LOADER_MUSIC_VIDEO, null,
-                                                     MusicVideoInfoFragment.this);
-                }
+        refreshItem.setListener(event -> {
+            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+                LoaderManager.getInstance(this).restartLoader(LOADER_MUSIC_VIDEO, null, MusicVideoInfoFragment.this);
             }
         });
 
@@ -90,65 +84,51 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
 
     @Override
     protected boolean setupMediaActionBar() {
-        setOnAddToPlaylistListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addToPlaylist(getDataHolder().getId());
-            }
-        });
+        setOnAddToPlaylistListener(view -> addToPlaylist(getDataHolder().getId()));
 
-        setOnDownloadListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                download();
-            }
-        });
+        setOnDownloadListener(view -> download());
 
         return true;
     }
 
     @Override
     protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlaylistType.Item item = new PlaylistType.Item();
-                item.musicvideoid = getDataHolder().getId();
-                playItemOnKodi(item);
-            }
+        FAB.setOnFabClickListener(v -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.musicvideoid = getDataHolder().getId();
+            playItemOnKodi(item);
         });
         return true;
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // Start the loaders
-        getLoaderManager().initLoader(LOADER_MUSIC_VIDEO, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER_MUSIC_VIDEO, null, this);
     }
 
-    /**
+    /*
      * Loader callbacks
      */
     /** {@inheritDoc} */
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri;
         switch (i) {
             case LOADER_MUSIC_VIDEO:
+            default:
                 uri = MediaContract.MusicVideos.buildMusicVideoUri(getHostInfo().getId(),
                                                                    getDataHolder().getId());
-                return new CursorLoader(getActivity(), uri,
+                return new CursorLoader(requireContext(), uri,
                                         MusicVideoDetailsQuery.PROJECTION, null, null, null);
-            default:
-                return null;
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             switch (cursorLoader.getId()) {
                 case LOADER_MUSIC_VIDEO:
@@ -162,8 +142,7 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
                     int runtime = cursor.getInt(MusicVideoDetailsQuery.RUNTIME);
                     int year = cursor.getInt(MusicVideoDetailsQuery.YEAR);
                     String details = runtime > 0 ?
-                                     UIUtils.formatTime(runtime) + " | " +
-                                     String.valueOf(year) :
+                                     UIUtils.formatTime(runtime) + " | " + year :
                                      String.valueOf(year);
                     dataHolder.setDetails(details + "\n" + cursor.getString(MusicVideoDetailsQuery.GENRES));
 
@@ -185,7 +164,7 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
     }
 
@@ -249,28 +228,19 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
         // Check if the directory exists and whether to overwrite it
         File file = new File(musicVideoDownloadInfo.getAbsoluteFilePath());
         if (file.exists()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle(R.string.download)
                    .setMessage(R.string.download_file_exists)
                    .setPositiveButton(R.string.overwrite,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
+                                      (dialog, which) ->
                                               FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                                                                                musicVideoDownloadInfo, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
+                                                                               callbackHandler))
                    .setNeutralButton(R.string.download_with_new_name,
-                                     new DialogInterface.OnClickListener() {
-                                         @Override
-                                         public void onClick(DialogInterface dialog, int which) {
+                                     (dialog, which) ->
                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
                                                                               musicVideoDownloadInfo, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                              callbackHandler);
-                                         }
-                                     })
-
+                                                                              callbackHandler))
                    .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                    .show();
         } else {
