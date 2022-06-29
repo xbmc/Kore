@@ -59,17 +59,17 @@ public class VideoType {
 
         public static List<Cast> castListFromJsonNode(JsonNode node, String key) {
             if ((node == null) || (!node.has(key))) {
-                return new ArrayList<Cast>(0);
+                return new ArrayList<>(0);
             }
 
             JsonNode castNode = node.get(key);
             if (!castNode.isArray()) {
                 LogUtils.LOGD(TAG, "Cast node isn't an array, it's a: " + castNode.getNodeType());
-                return new ArrayList<Cast>(0);
+                return new ArrayList<>(0);
             }
 
             ArrayNode arrayNode = (ArrayNode) castNode;
-            ArrayList<Cast> castList = new ArrayList<Cast>(arrayNode.size());
+            ArrayList<Cast> castList = new ArrayList<>(arrayNode.size());
             for (JsonNode innerNode : arrayNode) {
                 castList.add(new Cast(innerNode));
             }
@@ -173,7 +173,7 @@ public class VideoType {
         public final List<Video> video;
 
         public Streams(JsonNode node) {
-            audio = new ArrayList<Audio>();
+            audio = new ArrayList<>();
             if (node.has(AUDIO)) {
                 ArrayNode arrayNode = (ArrayNode)node.get(AUDIO);
                 for (JsonNode innerNode : arrayNode) {
@@ -181,7 +181,7 @@ public class VideoType {
                 }
             }
 
-            subtitle = new ArrayList<Subtitle>();
+            subtitle = new ArrayList<>();
             if (node.has(SUBTITLE)) {
                 ArrayNode arrayNode = (ArrayNode)node.get(SUBTITLE);
                 for (JsonNode innerNode : arrayNode) {
@@ -189,7 +189,7 @@ public class VideoType {
                 }
             }
 
-            video = new ArrayList<Video>();
+            video = new ArrayList<>();
             if (node.has(VIDEO)) {
                 ArrayNode arrayNode = (ArrayNode)node.get(VIDEO);
                 for (JsonNode innerNode : arrayNode) {
@@ -203,41 +203,41 @@ public class VideoType {
      * Enums for Video.Fields.Movie
      */
     public interface FieldsMovie {
-        public final String TITLE = "title";
-        public final String GENRE = "genre";
-        public final String YEAR = "year";
-        public final String RATING = "rating";
-        public final String DIRECTOR = "director";
-        public final String TRAILER = "trailer";
-        public final String TAGLINE = "tagline";
-        public final String PLOT = "plot";
-        public final String PLOTOUTLINE = "plotoutline";
-        public final String ORIGINALTITLE = "originaltitle";
-        public final String LASTPLAYED = "lastplayed";
-        public final String PLAYCOUNT = "playcount";
-        public final String WRITER = "writer";
-        public final String STUDIO = "studio";
-        public final String MPAA = "mpaa";
-        public final String CAST = "cast";
-        public final String COUNTRY = "country";
-        public final String IMDBNUMBER = "imdbnumber";
-        public final String RUNTIME = "runtime";
-        public final String SET = "set";
-        public final String SHOWLINK = "showlink";
-        public final String STREAMDETAILS = "streamdetails";
-        public final String TOP250 = "top250";
-        public final String VOTES = "votes";
-        public final String FANART = "fanart";
-        public final String THUMBNAIL = "thumbnail";
-        public final String FILE = "file";
-        public final String SORTTITLE = "sorttitle";
-        public final String RESUME = "resume";
-        public final String SETID = "setid";
-        public final String DATEADDED = "dateadded";
-        public final String TAG = "tag";
-        public final String ART = "art";
+        String TITLE = "title";
+        String GENRE = "genre";
+        String YEAR = "year";
+        String RATING = "rating";
+        String DIRECTOR = "director";
+        String TRAILER = "trailer";
+        String TAGLINE = "tagline";
+        String PLOT = "plot";
+        String PLOTOUTLINE = "plotoutline";
+        String ORIGINALTITLE = "originaltitle";
+        String LASTPLAYED = "lastplayed";
+        String PLAYCOUNT = "playcount";
+        String WRITER = "writer";
+        String STUDIO = "studio";
+        String MPAA = "mpaa";
+        String CAST = "cast";
+        String COUNTRY = "country";
+        String IMDBNUMBER = "imdbnumber";
+        String RUNTIME = "runtime";
+        String SET = "set";
+        String SHOWLINK = "showlink";
+        String STREAMDETAILS = "streamdetails";
+        String TOP250 = "top250";
+        String VOTES = "votes";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String FILE = "file";
+        String SORTTITLE = "sorttitle";
+        String RESUME = "resume";
+        String SETID = "setid";
+        String DATEADDED = "dateadded";
+        String TAG = "tag";
+        String ART = "art";
 
-        public final static String[] allValues = new String[]{
+        String[] allValues = new String[]{
                 TITLE, GENRE, YEAR, RATING, DIRECTOR, TRAILER, TAGLINE, PLOT, PLOTOUTLINE,
                 ORIGINALTITLE, LASTPLAYED, PLAYCOUNT, WRITER, STUDIO, MPAA, CAST, COUNTRY,
                 IMDBNUMBER, RUNTIME, SET, SHOWLINK, STREAMDETAILS, TOP250, VOTES, FANART,
@@ -406,33 +406,33 @@ public class VideoType {
      * Enums for Video.Fields.TVShow
      */
     public interface FieldsTVShow {
-        public final String TITLE = "title";
-        public final String GENRE = "genre";
-        public final String YEAR = "year";
-        public final String RATING = "rating";
-        public final String PLOT = "plot";
-        public final String STUDIO = "studio";
-        public final String MPAA = "mpaa";
-        public final String CAST = "cast";
-        public final String PLAYCOUNT = "playcount";
-        public final String EPISODE = "episode";
-        public final String IMDBNUMBER = "imdbnumber";
-        public final String PREMIERED = "premiered";
-        public final String VOTES = "votes";
-        public final String LASTPLAYED = "lastplayed";
-        public final String FANART = "fanart";
-        public final String THUMBNAIL = "thumbnail";
-        public final String FILE = "file";
-        public final String ORIGINALTITLE = "originaltitle";
-        public final String SORTTITLE = "sorttitle";
-        public final String EPISODEGUIDE = "episodeguide";
-        public final String SEASON = "season";
-        public final String WATCHEDEPISODES = "watchedepisodes";
-        public final String DATEADDED = "dateadded";
-        public final String TAG = "tag";
-        public final String ART = "art";
+        String TITLE = "title";
+        String GENRE = "genre";
+        String YEAR = "year";
+        String RATING = "rating";
+        String PLOT = "plot";
+        String STUDIO = "studio";
+        String MPAA = "mpaa";
+        String CAST = "cast";
+        String PLAYCOUNT = "playcount";
+        String EPISODE = "episode";
+        String IMDBNUMBER = "imdbnumber";
+        String PREMIERED = "premiered";
+        String VOTES = "votes";
+        String LASTPLAYED = "lastplayed";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String FILE = "file";
+        String ORIGINALTITLE = "originaltitle";
+        String SORTTITLE = "sorttitle";
+        String EPISODEGUIDE = "episodeguide";
+        String SEASON = "season";
+        String WATCHEDEPISODES = "watchedepisodes";
+        String DATEADDED = "dateadded";
+        String TAG = "tag";
+        String ART = "art";
 
-        public final static String[] allValues = new String[] {
+        String[] allValues = new String[] {
                 TITLE, GENRE, YEAR, RATING, PLOT, STUDIO, MPAA, CAST, PLAYCOUNT, EPISODE,
                 IMDBNUMBER, PREMIERED, VOTES, LASTPLAYED, FANART, THUMBNAIL, FILE, ORIGINALTITLE,
                 SORTTITLE, EPISODEGUIDE, SEASON, WATCHEDEPISODES, DATEADDED, TAG, ART
@@ -505,17 +505,17 @@ public class VideoType {
      * Enums for Video.Fields.Season
      */
     public interface FieldsSeason {
-        public final String SEASON = "season";
-        public final String SHOWTITLE = "showtitle";
-        public final String PLAYCOUNT = "playcount";
-        public final String EPISODE = "episode";
-        public final String FANART = "fanart";
-        public final String THUMBNAIL = "thumbnail";
-        public final String TVSHOWID = "tvshowid";
-        public final String WATCHEDEPISODES = "watchedepisodes";
-        public final String ART = "art";
+        String SEASON = "season";
+        String SHOWTITLE = "showtitle";
+        String PLAYCOUNT = "playcount";
+        String EPISODE = "episode";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String TVSHOWID = "tvshowid";
+        String WATCHEDEPISODES = "watchedepisodes";
+        String ART = "art";
 
-        public final static String[] allValues = new String[] {
+        String[] allValues = new String[] {
                 SEASON, SHOWTITLE, PLAYCOUNT, EPISODE, FANART, THUMBNAIL, TVSHOWID,
                 WATCHEDEPISODES, ART
         };
@@ -552,33 +552,33 @@ public class VideoType {
      * Enums for Video.Fields.Episoode
      */
     public interface FieldsEpisode {
-        public final String TITLE = "title";
-        public final String PLOT = "plot";
-        public final String VOTES = "votes";
-        public final String RATING = "rating";
-        public final String WRITER = "writer";
-        public final String FIRSTAIRED = "firstaired";
-        public final String PLAYCOUNT = "playcount";
-        public final String RUNTIME = "runtime";
-        public final String DIRECTOR = "director";
-        public final String PRODUCTIONCODE = "productioncode";
-        public final String SEASON = "season";
-        public final String EPISODE = "episode";
-        public final String ORIGINALTITLE = "originaltitle";
-        public final String SHOWTITLE = "showtitle";
-        public final String CAST = "cast";
-        public final String STREAMDETAILS = "streamdetails";
-        public final String LASTPLAYED = "lastplayed";
-        public final String FANART = "fanart";
-        public final String THUMBNAIL = "thumbnail";
-        public final String FILE = "file";
-        public final String RESUME = "resume";
-        public final String TVSHOWID = "tvshowid";
-        public final String DATEADDED = "dateadded";
-        public final String UNIQUEID = "uniqueid";
-        public final String ART = "art";
+        String TITLE = "title";
+        String PLOT = "plot";
+        String VOTES = "votes";
+        String RATING = "rating";
+        String WRITER = "writer";
+        String FIRSTAIRED = "firstaired";
+        String PLAYCOUNT = "playcount";
+        String RUNTIME = "runtime";
+        String DIRECTOR = "director";
+        String PRODUCTIONCODE = "productioncode";
+        String SEASON = "season";
+        String EPISODE = "episode";
+        String ORIGINALTITLE = "originaltitle";
+        String SHOWTITLE = "showtitle";
+        String CAST = "cast";
+        String STREAMDETAILS = "streamdetails";
+        String LASTPLAYED = "lastplayed";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String FILE = "file";
+        String RESUME = "resume";
+        String TVSHOWID = "tvshowid";
+        String DATEADDED = "dateadded";
+        String UNIQUEID = "uniqueid";
+        String ART = "art";
 
-        public final static String[] allValues = new String[] {
+        String[] allValues = new String[] {
                 TITLE, PLOT, VOTES, RATING, WRITER, FIRSTAIRED, PLAYCOUNT, RUNTIME, DIRECTOR,
                 PRODUCTIONCODE, SEASON, EPISODE, ORIGINALTITLE,  SHOWTITLE, CAST, STREAMDETAILS,
                 LASTPLAYED, FANART,  THUMBNAIL, FILE, RESUME, TVSHOWID, DATEADDED, UNIQUEID, ART
@@ -638,28 +638,28 @@ public class VideoType {
      * Enums for Video.Fields.MusicVideo
      */
     public interface FieldsMusicVideo {
-        public final String TITLE = "title";
-        public final String PLAYCOUNT = "playcount";
-        public final String RUNTIME = "runtime";
-        public final String DIRECTOR = "director";
-        public final String STUDIO = "studio";
-        public final String YEAR = "year";
-        public final String PLOT = "plot";
-        public final String ALBUM = "album";
-        public final String ARTIST = "artist";
-        public final String GENRE = "genre";
-        public final String TRACK = "track";
-        public final String STREAMDETAILS = "streamdetails";
-        public final String LASTPLAYED = "lastplayed";
-        public final String FANART = "fanart";
-        public final String THUMBNAIL = "thumbnail";
-        public final String FILE = "file";
-        public final String RESUME = "resume";
-        public final String DATEADDED = "dateadded";
-        public final String TAG = "tag";
-        public final String ART = "art";
+        String TITLE = "title";
+        String PLAYCOUNT = "playcount";
+        String RUNTIME = "runtime";
+        String DIRECTOR = "director";
+        String STUDIO = "studio";
+        String YEAR = "year";
+        String PLOT = "plot";
+        String ALBUM = "album";
+        String ARTIST = "artist";
+        String GENRE = "genre";
+        String TRACK = "track";
+        String STREAMDETAILS = "streamdetails";
+        String LASTPLAYED = "lastplayed";
+        String FANART = "fanart";
+        String THUMBNAIL = "thumbnail";
+        String FILE = "file";
+        String RESUME = "resume";
+        String DATEADDED = "dateadded";
+        String TAG = "tag";
+        String ART = "art";
 
-        public final static String[] allValues = new String[] {
+        String[] allValues = new String[] {
                 TITLE, PLAYCOUNT, RUNTIME, DIRECTOR, STUDIO, YEAR, PLOT, ALBUM, ARTIST, GENRE,
                 TRACK, STREAMDETAILS, LASTPLAYED, FANART, THUMBNAIL, FILE, RESUME, DATEADDED,
                 TAG, ART

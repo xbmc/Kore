@@ -16,8 +16,8 @@
 package org.xbmc.kore.eventclient;
 
 
-import android.annotation.SuppressLint;
-import android.os.*;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Process;
 
 import org.xbmc.kore.host.HostInfo;
@@ -27,7 +27,6 @@ import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.NetUtils;
-import org.xbmc.kore.utils.Utils;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -52,11 +51,11 @@ public class EventServerConnection {
     private InetAddress hostInetAddress = null;
 
     // Handler on which packets will be posted, to send them asynchronously
-    private Handler commHandler = null;
-    private HandlerThread handlerThread = null;
+    private final Handler commHandler;
+    private final HandlerThread handlerThread;
 
-    private PacketPING packetPING = new PacketPING();
-    private Runnable pingRunnable = new Runnable() {
+    private final PacketPING packetPING = new PacketPING();
+    private final Runnable pingRunnable = new Runnable() {
         @Override
         public void run() {
             LogUtils.LOGD(TAG, "Pinging EventServer");
@@ -98,28 +97,20 @@ public class EventServerConnection {
         commHandler = new Handler(handlerThread.getLooper());
 
         // Now, get the host InetAddress in the background
-        commHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    hostInetAddress = NetUtils.getInet4AddressByName(hostInfo.getAddress());
-                } catch (UnknownHostException exc) {
-                    LogUtils.LOGD(TAG, "Got an UnknownHostException, disabling EventServer");
-                    hostInetAddress = null;
-                }
-                // Call the callback on the caller's thread
-                callbackHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.OnConnectResult(hostInetAddress != null);
-                    }
-                });
-                if (hostInetAddress != null) {
-                    // Start pinging
-                    commHandler.postDelayed(pingRunnable, PING_INTERVAL);
-                } else {
-                    quitHandlerThread(handlerThread);
-                }
+        commHandler.post(() -> {
+            try {
+                hostInetAddress = NetUtils.getInet4AddressByName(hostInfo.getAddress());
+            } catch (UnknownHostException exc) {
+                LogUtils.LOGD(TAG, "Got an UnknownHostException, disabling EventServer");
+                hostInetAddress = null;
+            }
+            // Call the callback on the caller's thread
+            callbackHandler.post(() -> callback.OnConnectResult(hostInetAddress != null));
+            if (hostInetAddress != null) {
+                // Start pinging
+                commHandler.postDelayed(pingRunnable, PING_INTERVAL);
+            } else {
+                quitHandlerThread(handlerThread);
             }
         });
 
@@ -146,14 +137,11 @@ public class EventServerConnection {
 
         LogUtils.LOGD(TAG, "Sending Packet");
 
-        commHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    p.send(hostInetAddress, hostInfo.getEventServerPort());
-                } catch (IOException exc) {
-                    LogUtils.LOGD(TAG, "Got an IOException when sending a packet to Kodi's EventServer");
-                }
+        commHandler.post(() -> {
+            try {
+                p.send(hostInetAddress, hostInfo.getEventServerPort());
+            } catch (IOException exc) {
+                LogUtils.LOGD(TAG, "Got an IOException when sending a packet to Kodi's EventServer");
             }
         });
     }
@@ -173,100 +161,97 @@ public class EventServerConnection {
         // Get the HandlerThread's Looper and use it for our Handler
         final Handler auxHandler = new Handler(auxThread.getLooper());
 
-        auxHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                // Get the InetAddress
-                final InetAddress hostInetAddress;
-                try {
-                    hostInetAddress = NetUtils.getInet4AddressByName(hostInfo.getAddress());
-                } catch (UnknownHostException exc) {
-                    LogUtils.LOGD(TAG, "Couldn't get host InetAddress");
-                    reportTestResult(callerHandler, callerCallback, false);
-                    quitHandlerThread(auxThread);
-                    return;
-                }
+        auxHandler.post(() -> {
+            // Get the InetAddress
+            final InetAddress hostInetAddress;
+            try {
+                hostInetAddress = NetUtils.getInet4AddressByName(hostInfo.getAddress());
+            } catch (UnknownHostException exc) {
+                LogUtils.LOGD(TAG, "Couldn't get host InetAddress");
+                reportTestResult(callerHandler, callerCallback, false);
+                quitHandlerThread(auxThread);
+                return;
+            }
 
-                // Send a HELO packet
-                Packet p = new PacketHELO(DEVICE_NAME);
-                try {
-                    p.send(hostInetAddress, hostInfo.getEventServerPort());
-                } catch (IOException exc) {
-                    LogUtils.LOGD(TAG, "Couldn't send HELO packet to host");
-                    reportTestResult(callerHandler, callerCallback, false);
-                    quitHandlerThread(auxThread);
-                    return;
-                }
+            // Send a HELO packet
+            Packet p = new PacketHELO(DEVICE_NAME);
+            try {
+                p.send(hostInetAddress, hostInfo.getEventServerPort());
+            } catch (IOException exc) {
+                LogUtils.LOGD(TAG, "Couldn't send HELO packet to host");
+                reportTestResult(callerHandler, callerCallback, false);
+                quitHandlerThread(auxThread);
+                return;
+            }
 
-                // The previous checks don't really test the connection, as this is UDP. Apart from checking if
-                // any HostUnreachable ICMP message is returned (which may or may not happen), there's no direct way
-                // to check if the messages were delivered, so the solution is to force something to happen on
-                // Kodi and them read Kodi's state to check if it was applied.
-                // We are going to get the mute status of Kodi via jsonrpc, change it via EventServer and check if
-                // it was changed via jsonrpc, reverting it back afterwards
-                final HostConnection auxHostConnection = new HostConnection(
-                        new HostInfo(hostInfo.getName(), hostInfo.getAddress(),
-                                     HostConnection.PROTOCOL_HTTP, hostInfo.getHttpPort(), hostInfo.getTcpPort(),
-                                     hostInfo.getUsername(), hostInfo.getPassword(), false, 0, hostInfo.isHttps, hostInfo.getShowAsDirectShareTarget()));
-                final Application.GetProperties action = new Application.GetProperties(Application.GetProperties.MUTED);
-                final Packet mutePacket = new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_MUTE,
-                                                           false, true, true, (short) 0, (byte) 0);
+            // The previous checks don't really test the connection, as this is UDP. Apart from checking if
+            // any HostUnreachable ICMP message is returned (which may or may not happen), there's no direct way
+            // to check if the messages were delivered, so the solution is to force something to happen on
+            // Kodi and them read Kodi's state to check if it was applied.
+            // We are going to get the mute status of Kodi via jsonrpc, change it via EventServer and check if
+            // it was changed via jsonrpc, reverting it back afterwards
+            final HostConnection auxHostConnection = new HostConnection(
+                    new HostInfo(hostInfo.getName(), hostInfo.getAddress(),
+                                 HostConnection.PROTOCOL_HTTP, hostInfo.getHttpPort(), hostInfo.getTcpPort(),
+                                 hostInfo.getUsername(), hostInfo.getPassword(), false, 0, hostInfo.isHttps, hostInfo.getShowAsDirectShareTarget()));
+            final Application.GetProperties action = new Application.GetProperties(Application.GetProperties.MUTED);
+            final Packet mutePacket = new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_MUTE,
+                                                       false, true, true, (short) 0, (byte) 0);
 
-                // Get the initial mute status
-                action.execute(auxHostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
-                    @Override
-                    public void onSuccess(ApplicationType.PropertyValue result) {
-                        final boolean initialMuteStatus = result.muted;
-                        // Switch mute status
-                        try {
-                            mutePacket.send(hostInetAddress, hostInfo.getEventServerPort());
-                        } catch (IOException exc) {
-                            LogUtils.LOGD(TAG, "Couldn't send first MUTE packet to host");
-                            reportTestResult(callerHandler, callerCallback, false);
-                            quitHandlerThread(auxThread);
-                            return;
-                        }
-
-                        // Sleep a while to make sure the previous command was executed
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException exc) {
-                            // Ignore
-                        }
-
-                        // Now get the new status and compare
-                        action.execute(auxHostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
-                            @Override
-                            public void onSuccess(ApplicationType.PropertyValue result) {
-                                // Report result (mute status is different)
-                                reportTestResult(callerHandler, callerCallback, initialMuteStatus != result.muted);
-
-                                // Revert mute status
-                                try {
-                                    mutePacket.send(hostInetAddress, hostInfo.getEventServerPort());
-                                } catch (IOException exc) {
-                                    LogUtils.LOGD(TAG, "Couldn't revert MUTE status");
-                                }
-                                quitHandlerThread(auxThread);
-                            }
-
-                            @Override
-                            public void onError(int errorCode, String description) {
-                                LogUtils.LOGD(TAG, "Got an error on Application.GetProperties: " + description);
-                                reportTestResult(callerHandler, callerCallback, false);
-                                quitHandlerThread(auxThread);
-                            }
-                        }, auxHandler);
-                    }
-
-                    @Override
-                    public void onError(int errorCode, String description) {
-                        LogUtils.LOGD(TAG, "Got an error on Application.GetProperties: " + description);
+            // Get the initial mute status
+            action.execute(auxHostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
+                @Override
+                public void onSuccess(ApplicationType.PropertyValue result) {
+                    final boolean initialMuteStatus = result.muted;
+                    // Switch mute status
+                    try {
+                        mutePacket.send(hostInetAddress, hostInfo.getEventServerPort());
+                    } catch (IOException exc) {
+                        LogUtils.LOGD(TAG, "Couldn't send first MUTE packet to host");
                         reportTestResult(callerHandler, callerCallback, false);
                         quitHandlerThread(auxThread);
+                        return;
                     }
-                }, auxHandler);
-            }
+
+                    // Sleep a while to make sure the previous command was executed
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException exc) {
+                        // Ignore
+                    }
+
+                    // Now get the new status and compare
+                    action.execute(auxHostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
+                        @Override
+                        public void onSuccess(ApplicationType.PropertyValue result) {
+                            // Report result (mute status is different)
+                            reportTestResult(callerHandler, callerCallback, initialMuteStatus != result.muted);
+
+                            // Revert mute status
+                            try {
+                                mutePacket.send(hostInetAddress, hostInfo.getEventServerPort());
+                            } catch (IOException exc) {
+                                LogUtils.LOGD(TAG, "Couldn't revert MUTE status");
+                            }
+                            quitHandlerThread(auxThread);
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String description) {
+                            LogUtils.LOGD(TAG, "Got an error on Application.GetProperties: " + description);
+                            reportTestResult(callerHandler, callerCallback, false);
+                            quitHandlerThread(auxThread);
+                        }
+                    }, auxHandler);
+                }
+
+                @Override
+                public void onError(int errorCode, String description) {
+                    LogUtils.LOGD(TAG, "Got an error on Application.GetProperties: " + description);
+                    reportTestResult(callerHandler, callerCallback, false);
+                    quitHandlerThread(auxThread);
+                }
+            }, auxHandler);
         });
 
     }
@@ -274,12 +259,7 @@ public class EventServerConnection {
     private static void reportTestResult(final Handler callerHandler,
                                          final EventServerConnectionCallback callback,
                                          final boolean result) {
-        callerHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.OnConnectResult(result);
-            }
-        });
+        callerHandler.post(() -> callback.OnConnectResult(result));
     }
 
     private static void quitHandlerThread(HandlerThread handlerThread) {

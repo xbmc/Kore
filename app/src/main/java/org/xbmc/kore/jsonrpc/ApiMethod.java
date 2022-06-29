@@ -18,11 +18,11 @@ package org.xbmc.kore.jsonrpc;
 
 import android.os.Handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.xbmc.kore.jsonrpc.type.ApiParameter;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -98,7 +98,7 @@ public abstract class ApiMethod<T> {
             params = (ObjectNode)jsonRequest.get(PARAMS_NODE);
         } else {
             params = objectMapper.createObjectNode();
-            jsonRequest.put(PARAMS_NODE, params);
+            jsonRequest.set(PARAMS_NODE, params);
         }
 
         return params;
@@ -161,10 +161,10 @@ public abstract class ApiMethod<T> {
     protected void addParameterToRequest(String parameter, String[] values) {
         if (values != null) {
             final ArrayNode arrayNode = objectMapper.createArrayNode();
-            for (int i = 0; i < values.length; i++) {
-                arrayNode.add(values[i]);
-            }
-            getParametersNode().put(parameter, arrayNode);
+			for (String value : values) {
+				arrayNode.add(value);
+			}
+            getParametersNode().set(parameter, arrayNode);
         }
     }
 
@@ -175,7 +175,7 @@ public abstract class ApiMethod<T> {
      */
     protected void addParameterToRequest(String parameter, ApiParameter value) {
         if (value != null)
-            getParametersNode().put(parameter, value.toJsonNode());
+            getParametersNode().set(parameter, value.toJsonNode());
     }
 
     /**
@@ -185,7 +185,7 @@ public abstract class ApiMethod<T> {
      */
     protected void addParameterToRequest(String parameter, JsonNode value) {
         if (value != null)
-            getParametersNode().put(parameter, value);
+            getParametersNode().set(parameter, value);
     }
 
     /**

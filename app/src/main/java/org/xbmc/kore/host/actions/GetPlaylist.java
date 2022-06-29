@@ -62,7 +62,7 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
     static private HashMap<String, Integer> playlistsTypesAndIds;
     private String playlistType;
     private int playlistId = -1;
-    private HostConnection hostConnection;
+    private final HostConnection hostConnection;
 
     /**
      * Use this to get the first non-empty playlist
@@ -120,8 +120,10 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
 
     private GetPlaylistResult retrievePlaylistItemsForType(String type) throws InterruptedException,
                                                                      ExecutionException {
-        List<ListType.ItemsAll> playlistItems = retrievePlaylistItems(hostConnection, playlistsTypesAndIds.get(type));
-        return new GetPlaylistResult(playlistsTypesAndIds.get(type), type, playlistItems);
+        Integer id = playlistsTypesAndIds.get(type);
+        if (id == null) id = -1;
+        List<ListType.ItemsAll> playlistItems = retrievePlaylistItems(hostConnection, id);
+        return new GetPlaylistResult(id, type, playlistItems);
     }
 
     private ArrayList<GetPlaylistResult> retrieveNonEmptyPlaylists() throws InterruptedException,
@@ -129,10 +131,11 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
         ArrayList<GetPlaylistResult> playlists = new ArrayList<>();
 
         for (String type : playlistsTypesAndIds.keySet()) {
-            List<ListType.ItemsAll> playlistItems = retrievePlaylistItems(hostConnection,
-                                                                          playlistsTypesAndIds.get(type));
+            Integer id = playlistsTypesAndIds.get(type);
+            if (id == null) id = -1;
+            List<ListType.ItemsAll> playlistItems = retrievePlaylistItems(hostConnection, id);
             if (!playlistItems.isEmpty())
-                playlists.add(new GetPlaylistResult(playlistsTypesAndIds.get(type), type, playlistItems));
+                playlists.add(new GetPlaylistResult(id, type, playlistItems));
         }
         return playlists;
     }
@@ -158,7 +161,8 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
 
     private String getPlaylistType(int playlistId) {
         for (String key : playlistsTypesAndIds.keySet()) {
-            if (playlistsTypesAndIds.get(key) == playlistId)
+            Integer id = playlistsTypesAndIds.get(key);
+            if (id != null && id == playlistId)
                 return key;
         }
         return null;

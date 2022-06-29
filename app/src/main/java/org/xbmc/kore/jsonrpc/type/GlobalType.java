@@ -57,8 +57,8 @@ public class GlobalType {
      * Global.IncrementDecrement
      */
     public interface IncrementDecrement {
-        public final String INCREMENT = "increment";
-        public final String DECREMENT = "decrement";
+        String INCREMENT = "increment";
+        String DECREMENT = "decrement";
     }
 
 }

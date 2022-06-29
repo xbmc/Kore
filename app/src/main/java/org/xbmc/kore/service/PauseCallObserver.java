@@ -44,14 +44,14 @@ public class PauseCallObserver extends PhoneStateListener
     private boolean isPlaying = false;
     private boolean shouldResume = false;
 
-    private Context mContext;
-    private HostManager mHostManager;
+    private final Context context;
+    private final HostManager hostManager;
 
     public PauseCallObserver(Context context) {
-        this.mContext = context;
-        mHostManager = HostManager.getInstance(context);
+        this.context = context;
+        this.hostManager = HostManager.getInstance(context);
 
-        ((TelephonyManager)mContext
+        ((TelephonyManager) this.context
                 .getSystemService(Context.TELEPHONY_SERVICE))
                 .listen(this, PhoneStateListener.LISTEN_CALL_STATE);
     }
@@ -60,17 +60,17 @@ public class PauseCallObserver extends PhoneStateListener
     public void onCallStateChanged(int state, String incomingNumber) {
         if (state == TelephonyManager.CALL_STATE_OFFHOOK && isPlaying) {
             Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
-            action.execute(mHostManager.getConnection(), null, null);
+            action.execute(hostManager.getConnection(), null, null);
             shouldResume = true;
         } else if (state == TelephonyManager.CALL_STATE_IDLE && !isPlaying && shouldResume) {
             Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
-            action.execute(mHostManager.getConnection(), null, null);
+            action.execute(hostManager.getConnection(), null, null);
             shouldResume = false;
         } else if (state == TelephonyManager.CALL_STATE_RINGING) {
             Player.Notification action = new Player.Notification(
-                    mContext.getResources().getString(R.string.pause_call_incoming_title),
-                    mContext.getResources().getString(R.string.pause_call_incoming_message));
-            action.execute(mHostManager.getConnection(), null, null);
+                    context.getResources().getString(R.string.pause_call_incoming_title),
+                    context.getResources().getString(R.string.pause_call_incoming_message));
+            action.execute(hostManager.getConnection(), null, null);
         }
     }
 
@@ -99,7 +99,7 @@ public class PauseCallObserver extends PhoneStateListener
     }
 
     private void stopListener() {
-        ((TelephonyManager)mContext
+        ((TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE))
                 .listen(this, PhoneStateListener.LISTEN_NONE);
     }

@@ -26,22 +26,22 @@ public class AddonType {
      * Enums for Addon.Fields
      */
     public interface Fields {
-        public final String NAME = "name";
-        public final String VERSION = "version";
-        public final String SUMMARY = "summary";
-        public final String DESCRIPTION = "description";
-        public final String PATH = "path";
-        public final String AUTHOR = "author";
-        public final String THUMBNAIL = "thumbnail";
-        public final String DISCLAIMER = "disclaimer";
-        public final String FANART = "fanart";
-        public final String DEPENDENCIES = "dependencies";
-        public final String BROKEN = "broken";
-        public final String EXTRAINFO = "extrainfo";
-        public final String RATING = "rating";
-        public final String ENABLED = "enabled";
+        String NAME = "name";
+        String VERSION = "version";
+        String SUMMARY = "summary";
+        String DESCRIPTION = "description";
+        String PATH = "path";
+        String AUTHOR = "author";
+        String THUMBNAIL = "thumbnail";
+        String DISCLAIMER = "disclaimer";
+        String FANART = "fanart";
+        String DEPENDENCIES = "dependencies";
+        String BROKEN = "broken";
+        String EXTRAINFO = "extrainfo";
+        String RATING = "rating";
+        String ENABLED = "enabled";
 
-        public final static String[] allValues = new String[] {
+        String[] allValues = new String[] {
                 NAME, VERSION, SUMMARY, DESCRIPTION, PATH, AUTHOR, THUMBNAIL, DISCLAIMER,
                 FANART, DEPENDENCIES, BROKEN, EXTRAINFO, RATING, ENABLED
         };
@@ -51,29 +51,29 @@ public class AddonType {
      * Enums for Addon.Types
      */
     public interface Types {
-        public final String UNKNOWN = "unknown";
-        public final String XBMC_METADATA_SCRAPER_ALBUMS = "xbmc.metadata.scraper.albums";
-        public final String XBMC_METADATA_SCRAPER_ARTISTS = "xbmc.metadata.scraper.artists";
-        public final String XBMC_METADATA_SCRAPER_MOVIES = "xbmc.metadata.scraper.movies";
-        public final String XBMC_METADATA_SCRAPER_MUSICVIDEOS = "xbmc.metadata.scraper.musicvideos";
-        public final String XBMC_METADATA_SCRAPER_TVSHOWS = "xbmc.metadata.scraper.tvshows";
-        public final String XBMC_UI_SCREENSAVER = "xbmc.ui.screensaver";
-        public final String XBMC_PLAYER_MUSICVIZ = "xbmc.player.musicviz";
-        public final String XBMC_PYTHON_PLUGINSOURCE = "xbmc.python.pluginsource";
-        public final String XBMC_PYTHON_SCRIPT = "xbmc.python.script";
-        public final String XBMC_PYTHON_WEATHER = "xbmc.python.weather";
-        public final String XBMC_PYTHON_SUBTITLES = "xbmc.python.subtitles";
-        public final String XBMC_PYTHON_LYRICS = "xbmc.python.lyrics";
-        public final String XBMC_GUI_SKIN = "xbmc.gui.skin";
-        public final String XBMC_GUI_WEBINTERFACE = "xbmc.gui.webinterface";
-        public final String XBMC_PVRCLIENT = "xbmc.pvrclient";
-        public final String XBMC_ADDON_VIDEO = "xbmc.addon.video";
-        public final String XBMC_ADDON_AUDIO = "xbmc.addon.audio";
-        public final String XBMC_ADDON_IMAGE = "xbmc.addon.image";
-        public final String XBMC_ADDON_EXECUTABLE = "xbmc.addon.executable";
-        public final String XBMC_SERVICE = "xbmc.service";
+        String UNKNOWN = "unknown";
+        String XBMC_METADATA_SCRAPER_ALBUMS = "xbmc.metadata.scraper.albums";
+        String XBMC_METADATA_SCRAPER_ARTISTS = "xbmc.metadata.scraper.artists";
+        String XBMC_METADATA_SCRAPER_MOVIES = "xbmc.metadata.scraper.movies";
+        String XBMC_METADATA_SCRAPER_MUSICVIDEOS = "xbmc.metadata.scraper.musicvideos";
+        String XBMC_METADATA_SCRAPER_TVSHOWS = "xbmc.metadata.scraper.tvshows";
+        String XBMC_UI_SCREENSAVER = "xbmc.ui.screensaver";
+        String XBMC_PLAYER_MUSICVIZ = "xbmc.player.musicviz";
+        String XBMC_PYTHON_PLUGINSOURCE = "xbmc.python.pluginsource";
+        String XBMC_PYTHON_SCRIPT = "xbmc.python.script";
+        String XBMC_PYTHON_WEATHER = "xbmc.python.weather";
+        String XBMC_PYTHON_SUBTITLES = "xbmc.python.subtitles";
+        String XBMC_PYTHON_LYRICS = "xbmc.python.lyrics";
+        String XBMC_GUI_SKIN = "xbmc.gui.skin";
+        String XBMC_GUI_WEBINTERFACE = "xbmc.gui.webinterface";
+        String XBMC_PVRCLIENT = "xbmc.pvrclient";
+        String XBMC_ADDON_VIDEO = "xbmc.addon.video";
+        String XBMC_ADDON_AUDIO = "xbmc.addon.audio";
+        String XBMC_ADDON_IMAGE = "xbmc.addon.image";
+        String XBMC_ADDON_EXECUTABLE = "xbmc.addon.executable";
+        String XBMC_SERVICE = "xbmc.service";
 
-        public final static String[] allValues = new String[]{
+        String[] allValues = new String[]{
                 UNKNOWN, XBMC_METADATA_SCRAPER_ALBUMS, XBMC_METADATA_SCRAPER_ARTISTS,
                 XBMC_METADATA_SCRAPER_MOVIES, XBMC_METADATA_SCRAPER_MUSICVIDEOS,
                 XBMC_METADATA_SCRAPER_TVSHOWS, XBMC_UI_SCREENSAVER, XBMC_PLAYER_MUSICVIZ,

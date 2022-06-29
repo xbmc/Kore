@@ -33,7 +33,7 @@ import java.net.InetAddress;
  */
 public class EventClient
 {
-	private boolean hasIcon = false;
+	private final boolean hasIcon;
 	private String deviceName;
 	private PingThread oPingThread;
 	private byte iconType = Packet.ICON_PNG;
@@ -47,7 +47,7 @@ public class EventClient
 	 * @param hostPort Port of the Host running XBMC (default 9777)
 	 * @param deviceName Name of the Device
 	 * @param iconFile Path to the Iconfile (PNG, JPEG or GIF)
-	 * @throws IOException
+	 * @throws IOException Exception
 	 */
 	public EventClient(InetAddress hostAddress, int hostPort, String deviceName, String iconFile) throws IOException
 	{
@@ -79,7 +79,6 @@ public class EventClient
 	 * @param deviceName Name of the Device
 	 * @param iconType Type of the icon file (see Packet.ICON_PNG, Packet.ICON_JPEG or Packet.ICON_GIF)
 	 * @param iconData The icon itself as a Byte-Array 
-	 * @throws IOException
 	 */
 	public EventClient(InetAddress hostAddress, int hostPort, String deviceName, byte iconType, byte[] iconData) throws IOException
 	{
@@ -92,7 +91,6 @@ public class EventClient
 	 * @param hostAddress Address of the Host running XBMC
 	 * @param hostPort Port of the Host running XBMC (default 9777)
 	 * @param deviceName Name of the Device
-	 * @throws IOException
 	 */
 	public EventClient(InetAddress hostAddress, int hostPort, String deviceName) throws IOException
 	{
@@ -110,7 +108,6 @@ public class EventClient
 	 * @param deviceName Name of the Device
 	 * @param iconType Type of the icon file (see Packet.ICON_PNG, Packet.ICON_JPEG or Packet.ICON_GIF)
 	 * @param iconData The icon itself as a Byte-Array 
-	 * @throws IOException
 	 */
 	private void startClient(InetAddress hostAddress, int hostPort, String deviceName, byte iconType, byte[] iconData) throws IOException
 	{
@@ -138,7 +135,6 @@ public class EventClient
 	
 	/**
 	 * Stops the XBMC EventClient (especially the Ping-Thread)
-	 * @throws IOException
 	 */
 	public void stopClient() throws IOException
 	{
@@ -179,7 +175,7 @@ public class EventClient
      * time delays between queued presses. (default: 0)
 	 * @param amount unimplemented for now; in the future it will be used for
      * specifying magnitude of analog key press events
-	 * @param axis 
+	 * @param axis Axis
 	 */
 	public void sendButton(short code, boolean repeat, boolean down, boolean queue, short amount, byte axis) throws IOException
 	{
@@ -212,7 +208,7 @@ public class EventClient
      * time delays between queued presses. (default: 0)
 	 * @param amount unimplemented for now; in the future it will be used for
      * specifying magnitude of analog key press events
-	 * @param axis 
+	 * @param axis Axis
 	 */
 	public void sendButton(String map_name, String button_name, boolean repeat, boolean down, boolean queue, short amount, byte axis) throws IOException
 	{
@@ -233,7 +229,6 @@ public class EventClient
 	
 	/**
 	 * Sends a ping to the XBMC EventServer
-	 * @throws IOException
 	 */
 	public void ping() throws IOException
 	{
@@ -276,11 +271,11 @@ public class EventClient
 	 * @author Stefan Agner
 	 *
 	 */
-	class PingThread extends Thread
+	static class PingThread extends Thread
 	{
-		private InetAddress hostAddress;
-		private int hostPort;
-		private int sleepTime;
+		private final InetAddress hostAddress;
+		private final int hostPort;
+		private final int sleepTime;
 		private boolean giveup = false;
 		
 		public PingThread(InetAddress hostAddress, int hostPort, int sleepTime)
@@ -309,7 +304,7 @@ public class EventClient
 				
 				try {
 					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {
+				} catch (InterruptedException ignored) {
 				}
 			}
 		}

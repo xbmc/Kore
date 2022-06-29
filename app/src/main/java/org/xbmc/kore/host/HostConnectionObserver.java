@@ -160,22 +160,22 @@ public class HostConnectionObserver
     /**
      * The connection on which to listen
      */
-    private HostConnection connection;
+    private final HostConnection connection;
 
     /**
      * The list of observers
      */
-    private List<PlayerEventsObserver> playerEventsObservers = new ArrayList<>();
-    private List<ApplicationEventsObserver> applicationEventsObservers = new ArrayList<>();
-    private List<PlaylistEventsObserver> playlistEventsObservers = new ArrayList<>();
+    private final List<PlayerEventsObserver> playerEventsObservers = new ArrayList<>();
+    private final List<ApplicationEventsObserver> applicationEventsObservers = new ArrayList<>();
+    private final List<PlaylistEventsObserver> playlistEventsObservers = new ArrayList<>();
 
     // This controls the frequency with wich the playlist is checked.
     // It's checked everytime it reaches 0, being reset afterwards
     private int checkPlaylistFrequencyCounter = 0;
 
     // Associate the Handler with the UI thread
-    private Handler checkerHandler = new Handler(Looper.getMainLooper());
-    private Runnable httpCheckerRunnable = new Runnable() {
+    private final Handler checkerHandler = new Handler(Looper.getMainLooper());
+    private final Runnable httpCheckerRunnable = new Runnable() {
         @Override
         public void run() {
             final int HTTP_NOTIFICATION_CHECK_INTERVAL = 2000;
@@ -205,7 +205,7 @@ public class HostConnectionObserver
         }
     };
 
-    private Runnable tcpCheckerRunnable = new Runnable() {
+    private final Runnable tcpCheckerRunnable = new Runnable() {
         @Override
         public void run() {
             // If no one is listening to this, just exit
@@ -689,7 +689,7 @@ public class HostConnectionObserver
      * On success chains execution to chainCallGetItem
      */
     private void chainCallGetPlayerProperties(final PlayerType.GetActivePlayersReturnType getActivePlayersResult) {
-        String propertiesToGet[] = new String[] {
+        String[] propertiesToGet = new String[] {
                 // Check is something more is needed
                 PlayerType.PropertyName.SPEED,
                 PlayerType.PropertyName.PERCENTAGE,
@@ -906,12 +906,9 @@ public class HostConnectionObserver
             (getPropertiesResult.time.ToSeconds() == 0)) {
             LogUtils.LOGD(TAG, "Scheduling new call to check what's playing because time is 0.");
             final int RECHECK_INTERVAL = 3000;
-            checkerHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    forceReply = true;
-                    checkWhatsPlaying();
-                }
+            checkerHandler.postDelayed(() -> {
+                forceReply = true;
+                checkWhatsPlaying();
             }, RECHECK_INTERVAL);
         }
     }

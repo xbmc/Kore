@@ -106,7 +106,7 @@ public class SyncTVShows extends SyncItem {
                      final ContentResolver contentResolver) {
         if (tvshowId == -1) {
             syncAllTVShows(orchestrator, hostConnection, callbackHandler, contentResolver,
-                           0, new ArrayList<VideoType.DetailsTVShow>());
+                           0, new ArrayList<>());
         } else {
             VideoLibrary.GetTVShowDetails action =
                     new VideoLibrary.GetTVShowDetails(tvshowId, getTVShowsProperties);

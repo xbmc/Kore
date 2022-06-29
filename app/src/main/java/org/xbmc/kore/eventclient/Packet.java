@@ -75,12 +75,12 @@ import java.net.InetAddress;
  */
 public abstract class Packet {
 	
-	private byte[] sig;
+	private final byte[] sig;
 	private byte[] payload = new byte[0];
-	private byte minver;
-	private byte majver;
+	private final byte minver;
+	private final byte majver;
 	
-	private short packettype; 
+	private final short packettype;
 	
 	
 	private final static short MAX_PACKET_SIZE  = 1024;
@@ -104,7 +104,7 @@ public abstract class Packet {
 	public final static byte ICON_PNG  = 0x02;
 	public final static byte ICON_GIF  = 0x03;
 	
-	private static int uid = (int)(Math.random()*Integer.MAX_VALUE);
+	private static final int uid = (int)(Math.random() * Integer.MAX_VALUE);
 	
 	/**
 	 * This is an Abstract class and cannot be instanced. Please use one of the Packet implementation Classes
@@ -229,7 +229,7 @@ public abstract class Packet {
 		if(seq == maxseq)
 			actpayloadsize = (short)((payload.length - 1) % MAX_PAYLOAD_SIZE + 1);
 		else
-			actpayloadsize = (short)MAX_PAYLOAD_SIZE;
+			actpayloadsize = MAX_PAYLOAD_SIZE;
 
 		byte[] pack = new byte[HEADER_SIZE+actpayloadsize];
 		
@@ -243,7 +243,6 @@ public abstract class Packet {
 	 * Sends this packet to the EventServer
 	 * @param adr Address of the EventServer
 	 * @param port Port of the EventServer
-	 * @throws IOException
 	 */
 	public void send(InetAddress adr, int port) throws IOException
 	{
@@ -254,6 +253,7 @@ public abstract class Packet {
 		{
 			// Get Message and send them...
 			byte[] pack = getUDPMessage(seq);
+			if (pack == null) continue;
 			DatagramPacket p = new DatagramPacket(pack, pack.length);
 			p.setAddress(adr);
 			p.setPort(port);
@@ -263,10 +263,10 @@ public abstract class Packet {
 	
 	/**
 	 * Helper Method to convert an integer to a Byte array
-	 * @param value
+	 * @param value Value
 	 * @return Byte-Array
 	 */
-	private static final byte[] intToByteArray(int value) {
+	private static byte[] intToByteArray(int value) {
 	          return new byte[] {
 	                  (byte)(value >>> 24),
 	                  (byte)(value >>> 16),
@@ -276,14 +276,12 @@ public abstract class Packet {
 
 	/**
 	 * Helper Method to convert an short to a Byte array
-	 * @param value
+	 * @param value Value
 	 * @return Byte-Array
 	 */
-	private static final byte[] shortToByteArray(short value) {
+	private static byte[] shortToByteArray(short value) {
         return new byte[] {
                 (byte)(value >>> 8),
                 (byte)value};
 	}
-
-	
 }

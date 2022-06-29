@@ -63,7 +63,7 @@ public class Favourites {
             ArrayNode items = resultNode.has(LIST_NODE) && !resultNode.get(LIST_NODE).isNull() ?
                     (ArrayNode) resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ApiList<>(Collections.<FavouriteType.DetailsFavourite>emptyList(), limits);
+                return new ApiList<>(Collections.emptyList(), limits);
             }
             ArrayList<FavouriteType.DetailsFavourite> result = new ArrayList<>(items.size());
             for (JsonNode item : items) {
