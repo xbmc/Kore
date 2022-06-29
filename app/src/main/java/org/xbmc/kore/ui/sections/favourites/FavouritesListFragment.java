@@ -53,11 +53,11 @@ import java.util.List;
 public class FavouritesListFragment extends AbstractListFragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "FavouritesListFragment";
 
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getFavourites();
     }
 
@@ -74,38 +74,35 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
                 Toast.makeText(getActivity(), description, Toast.LENGTH_SHORT).show();
             }
         };
-        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
-                final HostManager hostManager = HostManager.getInstance(getActivity());
+        return (view, position) -> {
+            final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
+            final HostManager hostManager = HostManager.getInstance(requireContext());
 
-                final FavouriteType.DetailsFavourite detailsFavourite =
-                        favouritesAdapter.getItem(position);
-                if (detailsFavourite == null) {
-                    return;
-                }
-                if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.WINDOW)
-                        && !TextUtils.isEmpty(detailsFavourite.window)) {
-                    GUI.ActivateWindow activateWindow = new GUI.ActivateWindow(detailsFavourite.window,
-                            detailsFavourite.windowParameter);
-                    hostManager.getConnection().execute(activateWindow, genericApiCallback, callbackHandler);
-                } else if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.MEDIA)
-                        && !TextUtils.isEmpty(detailsFavourite.path)) {
-                    final PlaylistType.Item playlistItem = new PlaylistType.Item();
-                    playlistItem.file = detailsFavourite.path;
-                    MediaPlayerUtils.play(FavouritesListFragment.this, playlistItem);
-                } else {
-                    Toast.makeText(getActivity(), R.string.unable_to_play_favourite_item,
-                            Toast.LENGTH_SHORT).show();
-                }
+            final FavouriteType.DetailsFavourite detailsFavourite =
+                    favouritesAdapter.getItem(position);
+            if (detailsFavourite == null) {
+                return;
+            }
+            if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.WINDOW)
+                    && !TextUtils.isEmpty(detailsFavourite.window)) {
+                GUI.ActivateWindow activateWindow = new GUI.ActivateWindow(detailsFavourite.window,
+                        detailsFavourite.windowParameter);
+                hostManager.getConnection().execute(activateWindow, genericApiCallback, callbackHandler);
+            } else if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.MEDIA)
+                    && !TextUtils.isEmpty(detailsFavourite.path)) {
+                final PlaylistType.Item playlistItem = new PlaylistType.Item();
+                playlistItem.file = detailsFavourite.path;
+                MediaPlayerUtils.play(FavouritesListFragment.this, playlistItem);
+            } else {
+                Toast.makeText(getActivity(), R.string.unable_to_play_favourite_item,
+                        Toast.LENGTH_SHORT).show();
             }
         };
     }
 
     @Override
-    protected RecyclerView.Adapter createAdapter() {
-        return new FavouritesAdapter(getActivity(), HostManager.getInstance(getActivity()));
+    protected RecyclerView.Adapter<ViewHolder> createAdapter() {
+        return new FavouritesAdapter(requireContext(), HostManager.getInstance(requireContext()));
     }
 
     @Override
@@ -114,7 +111,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
     }
 
     private void getFavourites() {
-        final HostManager hostManager = HostManager.getInstance(getActivity());
+        final HostManager hostManager = HostManager.getInstance(requireContext());
         final Favourites.GetFavourites action = new Favourites.GetFavourites();
 
         hostManager.getConnection().execute(action, new ApiCallback<ApiList<FavouriteType.DetailsFavourite>>() {
@@ -142,12 +139,12 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
         }, callbackHandler);
     }
 
-    private static class FavouritesAdapter extends RecyclerView.Adapter {
+    private static class FavouritesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private final HostManager hostManager;
         private final int artWidth, artHeight;
-        private Context context;
-        private ArrayList<FavouriteType.DetailsFavourite> favouriteItems = new ArrayList<>();
+        private final Context context;
+        private final ArrayList<FavouriteType.DetailsFavourite> favouriteItems = new ArrayList<>();
 
         FavouritesAdapter(@NonNull Context context, HostManager hostManager) {
             this.context = context;
@@ -169,16 +166,17 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
             return favouriteItems.get(position);
         }
 
+        @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.grid_item_channel,
                                                                     parent, false);
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ViewHolder) holder).bindView(favouriteItems.get(position));
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.bindView(favouriteItems.get(position));
         }
 
         @Override
