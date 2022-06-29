@@ -15,8 +15,10 @@
  */
 package org.xbmc.kore.ui.sections.file;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.method.Files;
@@ -54,18 +56,19 @@ public class FileListFragment extends AbstractTabsFragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            FileActivity listenerActivity = (FileActivity) activity;
+            FileActivity listenerActivity = (FileActivity) context;
             listenerActivity.setBackPressedListener(this);
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " unable to register BackPressedListener");
+            throw new ClassCastException(context + " unable to register BackPressedListener");
         }
     }
 
     @Override
     public boolean onBackPressed() {
+        if (getViewPager().getAdapter() == null) return false;
         // Tell current fragment to move up one directory, if possible
         MediaFileListFragment curPage = (MediaFileListFragment)((TabsAdapter)getViewPager().getAdapter())
                 .getStoredFragment(getViewPager().getCurrentItem());
