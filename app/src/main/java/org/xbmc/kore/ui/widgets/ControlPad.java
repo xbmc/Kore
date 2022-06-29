@@ -153,18 +153,9 @@ public class ControlPad extends SquareGridLayout
                                                               getResources().getColor(R.color.dark_content_background_dim));
         styledAttributes.recycle();
 
-        // On ICS the remote background isn't shown as the tinting isn't supported
-        //int backgroundResourceId = R.drawable.remote_background_square_black_alpha;
         int backgroundResourceId = R.drawable.remote_background_square_black;
-        if (Utils.isLollipopOrLater()) {
-            setBackgroundTintList(ColorStateList.valueOf(remoteBackgroundColor));
-            setBackgroundResource(backgroundResourceId);
-        } else if (Utils.isJellybeanOrLater()) {
-            BitmapDrawable background = new BitmapDrawable(getResources(),
-                                                           BitmapFactory.decodeResource(getResources(), backgroundResourceId));
-            background.setColorFilter(new PorterDuffColorFilter(remoteBackgroundColor, PorterDuff.Mode.SRC_IN));
-            setBackground(background);
-        }
+        setBackgroundTintList(ColorStateList.valueOf(remoteBackgroundColor));
+        setBackgroundResource(backgroundResourceId);
     }
 
     private void setupListeners(Context context) {

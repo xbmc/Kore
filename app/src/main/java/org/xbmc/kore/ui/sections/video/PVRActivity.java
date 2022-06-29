@@ -165,19 +165,13 @@ public class PVRActivity extends BaseMediaActivity
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
-        if (Utils.isLollipopOrLater()) {
-            pvrEPGFragment.setEnterTransition(
-                    TransitionInflater.from(this)
-                                      .inflateTransition(R.transition.media_details));
-            pvrEPGFragment.setReturnTransition(null);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                                          R.anim.fragment_list_popenter, 0);
-        }
+        pvrEPGFragment.setEnterTransition(TransitionInflater.from(this)
+                                                            .inflateTransition(R.transition.media_details));
+        pvrEPGFragment.setReturnTransition(null);
 
         fragTrans.replace(R.id.fragment_container, pvrEPGFragment)
-                .addToBackStack(null)
-                .commit();
+                 .addToBackStack(null)
+                 .commit();
         updateActionBar(getActionBarTitle(), true);
     }
 

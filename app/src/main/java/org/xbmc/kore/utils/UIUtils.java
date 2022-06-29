@@ -432,34 +432,33 @@ public class UIUtils {
                                                    int centerX, int centerY,
                                                    final View exitTransitionView) {
         final Intent launchIntent = new Intent(context, RemoteActivity.class);
-        if (Utils.isLollipopOrLater()) {
-            // Show the animation
-            int endRadius = Math.max(exitTransitionView.getHeight(), exitTransitionView.getWidth());
-            Animator exitAnim = ViewAnimationUtils.createCircularReveal(exitTransitionView,
-                                                                        centerX, centerY, 0, endRadius);
 
-            exitAnim.setDuration(200);
-            exitAnim.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {}
+        // Show the animation
+        int endRadius = Math.max(exitTransitionView.getHeight(), exitTransitionView.getWidth());
+        Animator exitAnim = ViewAnimationUtils.createCircularReveal(exitTransitionView,
+                                                                    centerX, centerY, 0, endRadius);
+        exitAnim.setDuration(200);
+        exitAnim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    // Launch remote activity
-                    context.startActivity(launchIntent);
-                }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // Launch remote activity
+                context.startActivity(launchIntent);
+            }
 
-                @Override public void onAnimationCancel(Animator animation) {}
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
 
-                @Override
-                public void onAnimationRepeat(Animator animation) {}
-            });
-            exitTransitionView.setVisibility(View.VISIBLE);
-            exitAnim.start();
-        } else {
-            // No animation show, just launch the remote
-            context.startActivity(launchIntent);
-        }
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        exitTransitionView.setVisibility(View.VISIBLE);
+        exitAnim.start();
     }
 
     /**

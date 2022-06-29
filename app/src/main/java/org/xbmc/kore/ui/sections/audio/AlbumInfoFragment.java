@@ -56,7 +56,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
 
     private static final int LOADER_ALBUM = 0;
 
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
     private AlbumSongsListFragment albumSongsListFragment;
 
     @Override

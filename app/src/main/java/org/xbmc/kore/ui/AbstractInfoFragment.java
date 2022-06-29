@@ -143,9 +143,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             binding.swipeRefreshLayout.setEnabled(false);
         }
 
-        if(Utils.isLollipopOrLater()) {
-            binding.poster.setTransitionName(dataHolder.getPosterTransitionName());
-        }
+        binding.poster.setTransitionName(dataHolder.getPosterTransitionName());
 
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getChildFragmentManager();

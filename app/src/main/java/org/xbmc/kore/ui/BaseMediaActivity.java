@@ -101,9 +101,7 @@ public abstract class BaseMediaActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Request transitions on lollipop
-        if (Utils.isLollipopOrLater()) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        }
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
 
         binding = ActivityGenericMediaBinding.inflate(getLayoutInflater());
@@ -138,12 +136,9 @@ public abstract class BaseMediaActivity extends BaseActivity
         if (fragment == null) {
             fragment = createFragment();
 
-            if (Utils.isLollipopOrLater()) {
-                fragment.setExitTransition(null);
-                fragment.setReenterTransition(TransitionInflater
-                                                      .from(this)
-                                                      .inflateTransition(android.R.transition.fade));
-            }
+            fragment.setExitTransition(null);
+            fragment.setReenterTransition(TransitionInflater.from(this)
+                                                            .inflateTransition(android.R.transition.fade));
 
             getSupportFragmentManager()
                     .beginTransaction()
@@ -151,10 +146,7 @@ public abstract class BaseMediaActivity extends BaseActivity
                     .commit();
         }
 
-        if (Utils.isLollipopOrLater()) {
-            sharedElementTransition.setupExitTransition(this, fragment);
-        }
-
+        sharedElementTransition.setupExitTransition(this, fragment);
         hostManager = HostManager.getInstance(this);
     }
 
@@ -259,13 +251,8 @@ public abstract class BaseMediaActivity extends BaseActivity
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
-        if (Utils.isLollipopOrLater()) {
-            dataHolder.setPosterTransitionName(sharedImageView.getTransitionName());
-            sharedElementTransition.setupEnterTransition(this, fragTrans, fragment, sharedImageView);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0,
-                                          R.anim.fragment_list_popenter, 0);
-        }
+        dataHolder.setPosterTransitionName(sharedImageView.getTransitionName());
+        sharedElementTransition.setupEnterTransition(this, fragTrans, fragment, sharedImageView);
 
         fragTrans.replace(R.id.fragment_container, fragment, getActionBarTitle())
                  .addToBackStack(null)

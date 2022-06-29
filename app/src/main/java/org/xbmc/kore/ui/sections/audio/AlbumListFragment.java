@@ -52,7 +52,6 @@ import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Fragment that presents the albums list
@@ -61,7 +60,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(AlbumListFragment.class);
 
     public interface OnAlbumSelectedListener {
-        public void onAlbumSelected(ViewHolder viewHolder);
+        void onAlbumSelected(ViewHolder viewHolder);
     }
 
     public static final String BUNDLE_KEY_GENREID = "genreid",
@@ -78,7 +77,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
 
     /**
      * Use this to display all albums for a specific artist
-     * @param artistId
+     * @param artistId Id
      */
     public void setArtist(int artistId) {
         Bundle args = new Bundle();
@@ -175,7 +174,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     @Override
     protected CursorLoader createCursorLoader() {
         Uri uri;
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         int hostId = hostInfo != null ? hostInfo.getId() : -1;
 
         if (artistId != -1) {
@@ -187,7 +186,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         }
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.Albums.TITLE + " LIKE ?";
@@ -208,7 +207,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
             sortOrderStr = AlbumListQuery.SORT_BY_ALBUM;
         }
 
-        return new CursorLoader(getActivity(), uri,
+        return new CursorLoader(requireContext(), uri,
                                 AlbumListQuery.PROJECTION, selection, selectionArgs, sortOrderStr);
     }
 
@@ -224,12 +223,12 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnAlbumSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(ctx.toString() + " must implement OnAlbumSelectedListener");
+            throw new ClassCastException(ctx + " must implement OnAlbumSelectedListener");
         }
 
         setSupportsSearch(true);
@@ -275,24 +274,25 @@ public class AlbumListFragment extends AbstractCursorListFragment {
 
     private static class AlbumsAdapter extends RecyclerViewCursorAdapter {
 
-        private HostManager hostManager;
-        private int artWidth, artHeight;
-        private Fragment fragment;
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
+        private final Fragment fragment;
 
-        public AlbumsAdapter(Fragment fragment) {
-            this.hostManager = HostManager.getInstance(fragment.getContext());
+        public AlbumsAdapter(@NonNull Fragment fragment) {
+            this.hostManager = HostManager.getInstance(fragment.requireContext());
             this.fragment = fragment;
 
             // Get the art dimensions
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
-            Resources resources = fragment.getContext().getResources();
+            Resources resources = fragment.requireContext().getResources();
             artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
             artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(fragment.getContext())
                                       .inflate(R.layout.grid_item_album, parent, false);
 
@@ -300,7 +300,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
                                   albumlistItemMenuClickListener);
         }
 
-        private View.OnClickListener albumlistItemMenuClickListener = new View.OnClickListener() {
+        private final View.OnClickListener albumlistItemMenuClickListener = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 final ViewHolder viewHolder = (ViewHolder)v.getTag();
@@ -310,19 +310,16 @@ public class AlbumListFragment extends AbstractCursorListFragment {
 
                 final PopupMenu popupMenu = new PopupMenu(fragment.getContext(), v);
                 popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        int itemId = item.getItemId();
-                        if (itemId == R.id.action_play) {
-                            MediaPlayerUtils.play(fragment, playListItem);
-                            return true;
-                        } else if (itemId == R.id.action_queue) {
-                            MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                            return true;
-                        }
-                        return false;
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.action_play) {
+                        MediaPlayerUtils.play(fragment, playListItem);
+                        return true;
+                    } else if (itemId == R.id.action_queue) {
+                        MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                        return true;
                     }
+                    return false;
                 });
                 popupMenu.show();
             }
@@ -403,9 +400,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
                                                  dataHolder.getTitle(),
                                                  artView, artWidth, artHeight);
 
-            if (Utils.isLollipopOrLater()) {
-                artView.setTransitionName("al"+dataHolder.getId());
-            }
+            artView.setTransitionName("al"+dataHolder.getId());
         }
     }
 }

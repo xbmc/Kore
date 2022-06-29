@@ -30,16 +30,7 @@ public class CharacterDrawable extends ColorDrawable {
 //    private static final int STROKE_WIDTH = 10;
 //    private static final float SHADE_FACTOR = 0.9f;
 
-    private static final Typeface typeface;
-    static {
-        if (Utils.isJellybeanMR1OrLater()) {
-            typeface = Typeface.create("sans-serif-thin", Typeface.NORMAL);
-        } else if (Utils.isJellybeanOrLater()) {
-            typeface = Typeface.create("sans-serif-light", Typeface.NORMAL);
-        } else {
-            typeface = Typeface.create("sans-serif", Typeface.NORMAL);
-        }
-    }
+    private static final Typeface typeface = Typeface.create("sans-serif-thin", Typeface.NORMAL);
 
     public CharacterDrawable(char character, int color) {
         super(color);

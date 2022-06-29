@@ -316,10 +316,8 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 seasonProgressBar.setMax(numEpisodes);
                 seasonProgressBar.setProgress(watchedEpisodes);
 
-                if (Utils.isLollipopOrLater()) {
-                    int watchedColor = (numEpisodes - watchedEpisodes == 0) ? finishedColor : inProgressColor;
-                    seasonProgressBar.setProgressTintList(ColorStateList.valueOf(watchedColor));
-                }
+                int watchedColor = (numEpisodes - watchedEpisodes == 0) ? finishedColor : inProgressColor;
+                seasonProgressBar.setProgressTintList(ColorStateList.valueOf(watchedColor));
 
                 UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                      thumbnail,
@@ -337,30 +335,24 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
         }
     }
 
-    private View.OnClickListener contextlistItemMenuClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.episodeid = (int)v.getTag();
+    private final View.OnClickListener contextlistItemMenuClickListener = v -> {
+        final PlaylistType.Item playListItem = new PlaylistType.Item();
+        playListItem.episodeid = (int)v.getTag();
 
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    int itemId = item.getItemId();
-                    if (itemId == R.id.action_play) {
-                        MediaPlayerUtils.play(TVShowProgressFragment.this, playListItem);
-                        return true;
-                    } else if (itemId == R.id.action_queue) {
-                        MediaPlayerUtils.queue(TVShowProgressFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
-                        return true;
-                    }
-                    return false;
-                }
-            });
-            popupMenu.show();
-        }
+        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_play) {
+                MediaPlayerUtils.play(TVShowProgressFragment.this, playListItem);
+                return true;
+            } else if (itemId == R.id.action_queue) {
+                MediaPlayerUtils.queue(TVShowProgressFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.VIDEO);
+                return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     };
 
     /**

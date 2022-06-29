@@ -40,13 +40,11 @@ public class HighlightButton extends AppCompatImageButton {
     public HighlightButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         setStyle(context);
-        fixThemeColorForPreLollipop(context);
     }
 
     public HighlightButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setStyle(context);
-        fixThemeColorForPreLollipop(context);
     }
 
     public void setHighlight(boolean highlight) {
@@ -73,28 +71,5 @@ public class HighlightButton extends AppCompatImageButton {
                                                      context.getResources().getColor(R.color.white));
             styledAttributes.recycle();
         }
-    }
-
-    /**
-     * Hack!
-     * Tinting is not applied on pre-lollipop devices.
-     * As there is (AFAICT) no proper way to set this manually we simply
-     * apply the color filter each time the view has been laid out.
-     * @param context
-     */
-    private void fixThemeColorForPreLollipop(Context context) {
-        if (Utils.isLollipopOrLater() || this.isInEditMode())
-            return;
-
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (highlight) {
-                    setColorFilter(highlightColor);
-                } else {
-                    setColorFilter(defaultColor);
-                }
-            }
-        });
     }
 }

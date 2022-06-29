@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
@@ -40,7 +41,6 @@ import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Fragment that presents the artists list
@@ -49,7 +49,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(MusicVideoListFragment.class);
 
     public interface OnMusicVideoSelectedListener {
-        public void onMusicVideoSelected(ViewHolder vh);
+        void onMusicVideoSelected(ViewHolder vh);
     }
 
     // Activity listener
@@ -73,28 +73,28 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
 
     @Override
     protected CursorLoader createCursorLoader() {
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         Uri uri = MediaContract.MusicVideos.buildMusicVideosListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.MusicVideosColumns.TITLE + " LIKE ?";
             selectionArgs = new String[] {"%" + searchFilter + "%"};
         }
 
-        return new CursorLoader(getActivity(), uri,
+        return new CursorLoader(requireContext(), uri,
                 MusicVideosListQuery.PROJECTION, selection, selectionArgs, MusicVideosListQuery.SORT);
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnMusicVideoSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(ctx.toString() + " must implement OnMusicVideoSelectedListener");
+            throw new ClassCastException(ctx + " must implement OnMusicVideoSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -138,9 +138,9 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
 
     private static class MusicVideosAdapter extends RecyclerViewCursorAdapter {
 
-        private HostManager hostManager;
-        private int artWidth, artHeight;
-        private Context context;
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
+        private final Context context;
 
         public MusicVideosAdapter(Context context) {
             this.context = context;
@@ -153,8 +153,9 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
             artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
                                       .inflate(R.layout.grid_item_music_video, parent, false);
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);
@@ -213,9 +214,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
             UIUtils.loadImageWithCharacterAvatar(context, hostManager, posterUrl
                     , dataHolder.getTitle(), artView, artWidth, artHeight);
 
-            if(Utils.isLollipopOrLater()) {
-                artView.setTransitionName("a"+dataHolder.getId());
-            }
+            artView.setTransitionName("a"+dataHolder.getId());
         }
     }
 }

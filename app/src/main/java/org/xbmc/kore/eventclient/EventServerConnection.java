@@ -282,12 +282,7 @@ public class EventServerConnection {
         });
     }
 
-    @SuppressLint("NewApi")
     private static void quitHandlerThread(HandlerThread handlerThread) {
-        if (Utils.isJellybeanMR2OrLater()) {
-            handlerThread.quitSafely();
-        } else {
-            handlerThread.quit();
-        }
+        handlerThread.quitSafely();
     }
 }
