@@ -24,7 +24,7 @@ import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class FadeOutOnVerticalScrollBehavior extends CoordinatorLayout.Behavior {
+public class FadeOutOnVerticalScrollBehavior extends CoordinatorLayout.Behavior<View> {
 
     private int maxScroll = 0;
     private int currentScroll;
@@ -45,7 +45,9 @@ public class FadeOutOnVerticalScrollBehavior extends CoordinatorLayout.Behavior 
     }
 
     @Override
-    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
+    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
+
         currentScroll += dyConsumed;
         child.setAlpha((float) ((maxScroll - currentScroll) / (double) maxScroll));
     }
