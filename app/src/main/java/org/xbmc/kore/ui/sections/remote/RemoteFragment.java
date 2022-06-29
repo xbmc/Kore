@@ -129,7 +129,7 @@ public class RemoteFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hostManager = HostManager.getInstance(getActivity());
+        hostManager = HostManager.getInstance(requireContext());
         hostConnectionObserver = hostManager.getHostConnectionObserver();
         eventServerConnection = createEventServerConnection();
     }

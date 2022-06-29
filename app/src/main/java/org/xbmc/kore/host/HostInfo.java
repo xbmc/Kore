@@ -20,6 +20,7 @@ import org.xbmc.kore.utils.LogUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * XBMC Host information container.
@@ -355,7 +356,7 @@ public class HostInfo {
 
         try {
 //            return getHttpURL() + "/image/" + URLEncoder.encode(image, "UTF-8");
-            return auxImageHttpAddress + URLEncoder.encode(image, "UTF-8");
+            return auxImageHttpAddress + URLEncoder.encode(image, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
             // Ignore for now...
             return null;

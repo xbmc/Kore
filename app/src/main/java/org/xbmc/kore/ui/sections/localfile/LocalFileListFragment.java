@@ -15,9 +15,11 @@
  */
 package org.xbmc.kore.ui.sections.localfile;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import org.xbmc.kore.R;
@@ -64,11 +66,13 @@ public class LocalFileListFragment extends AbstractTabsFragment
                 .addTab(LocalMediaFileListFragment.class, directoryMoviesFileListArgs, R.string.movies, 3)
                 .addTab(LocalMediaFileListFragment.class, externalStorageFileListArgs, R.string.external_storage, 4);
         Environment.getRootDirectory();
-        File[] externalFilesDirs = ContextCompat.getExternalFilesDirs(getActivity(),null);
+        File[] externalFilesDirs = ContextCompat.getExternalFilesDirs(requireContext(),null);
         for (int i = 0; i < externalFilesDirs.length; i++) {
-            File file = externalFilesDirs[i].getParentFile().getParentFile().getParentFile().getParentFile();
-
-            if (file.getAbsolutePath().equals(externalStorage))
+            File parent = externalFilesDirs[i].getParentFile();
+            if (parent == null || parent.getParentFile() == null || parent.getParentFile().getParentFile() == null)
+                continue;
+            File file = parent.getParentFile().getParentFile().getParentFile();
+            if (file == null || file.getAbsolutePath().equals(externalStorage))
                 continue;
             Bundle bundle = new Bundle();
             bundle.putString(LocalMediaFileListFragment.ROOT_PATH_LOCATION, file.getAbsolutePath());
@@ -81,26 +85,27 @@ public class LocalFileListFragment extends AbstractTabsFragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            LocalFileActivity listenerActivity = (LocalFileActivity) activity;
+            LocalFileActivity listenerActivity = (LocalFileActivity) context;
             listenerActivity.setBackPressedListener(this);
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " unable to register BackPressedListener");
+            throw new ClassCastException(context + " unable to register BackPressedListener");
         }
     }
 
     @Override
     public boolean onBackPressed() {
         // Tell current fragment to move up one directory, if possible
-        LocalMediaFileListFragment curPage = (LocalMediaFileListFragment)((TabsAdapter)getViewPager().getAdapter())
-                .getStoredFragment(getViewPager().getCurrentItem());
-        if ((curPage != null) && !curPage.atRootDirectory()) {
-            curPage.onBackPressed();
-            return true;
+        TabsAdapter adapter = (TabsAdapter)getViewPager().getAdapter();
+        if (adapter != null) {
+            LocalMediaFileListFragment curPage = (LocalMediaFileListFragment)adapter.getStoredFragment(getViewPager().getCurrentItem());
+            if ((curPage != null) && !curPage.atRootDirectory()) {
+                curPage.onBackPressed();
+                return true;
+            }
         }
-
         // Not handled, let the activity handle it
         return false;
     }

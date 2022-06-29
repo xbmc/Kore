@@ -82,7 +82,7 @@ public class AddHostFragmentFinish extends Fragment {
         binding.includeWizardButtonBar.previous.setEnabled(false);
 
         // Check if PVR is enabled for the current host
-        HostManager hostManager = HostManager.getInstance(getActivity());
+        HostManager hostManager = HostManager.getInstance(requireContext());
         if (hostManager.getHostInfo() != null) {
             checkPVREnabledAndSetMenuItems(getActivity(), new Handler());
         }

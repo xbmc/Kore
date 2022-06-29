@@ -81,7 +81,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // the current host
         Preference sideMenuItems = findPreference(Settings.KEY_PREF_NAV_DRAWER_ITEMS);
         Preference remoteBarItems = findPreference(Settings.KEY_PREF_REMOTE_BAR_ITEMS);
-        hostId = HostManager.getInstance(getActivity()).getHostInfo().getId();
+        hostId = HostManager.getInstance(requireContext()).getHostInfo().getId();
         sideMenuItems.setKey(Settings.getNavDrawerItemsPrefKey(hostId));
         remoteBarItems.setKey(Settings.getRemoteBarItemsPrefKey(hostId));
 
