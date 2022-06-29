@@ -22,13 +22,13 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
@@ -50,7 +50,7 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(AudioGenresListFragment.class);
 
     public interface OnAudioGenreSelectedListener {
-        public void onAudioGenreSelected(int genreId, String genreTitle);
+        void onAudioGenreSelected(int genreId, String genreTitle);
     }
 
     // Activity listener
@@ -74,28 +74,28 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
 
     @Override
     protected CursorLoader createCursorLoader() {
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         Uri uri = MediaContract.AudioGenres.buildAudioGenresListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.AudioGenres.TITLE + " LIKE ?";
             selectionArgs = new String[] {"%" + searchFilter + "%"};
         }
 
-        return new CursorLoader(getActivity(), uri,
+        return new CursorLoader(requireContext(), uri,
                 AudioGenreListQuery.PROJECTION, selection, selectionArgs, AudioGenreListQuery.SORT);
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
         try {
             listenerActivity = (OnAudioGenreSelectedListener) ctx;
         } catch (ClassCastException e) {
-            throw new ClassCastException(ctx.toString() + " must implement OnAudioGenreSelectedListener");
+            throw new ClassCastException(ctx + " must implement OnAudioGenreSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -127,8 +127,8 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
 
     private class AudioGenresAdapter extends RecyclerViewCursorAdapter {
 
-        private HostManager hostManager;
-        private int artWidth, artHeight;
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
 
         public AudioGenresAdapter(Context context) {
             this.hostManager = HostManager.getInstance(context);
@@ -141,8 +141,9 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
                              UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext())
                                       .inflate(R.layout.grid_item_audio_genre, parent, false);
 
@@ -195,31 +196,25 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
         }
     }
 
-    private View.OnClickListener genrelistItemMenuClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            final ViewHolder viewHolder = (ViewHolder)v.getTag();
+    private final View.OnClickListener genrelistItemMenuClickListener = v -> {
+        final ViewHolder viewHolder = (ViewHolder)v.getTag();
 
-            final PlaylistType.Item playListItem = new PlaylistType.Item();
-            playListItem.genreid = viewHolder.genreId;
+        final PlaylistType.Item playListItem = new PlaylistType.Item();
+        playListItem.genreid = viewHolder.genreId;
 
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    int itemId = item.getItemId();
-                    if (itemId == R.id.action_play) {
-                        MediaPlayerUtils.play(AudioGenresListFragment.this, playListItem);
-                        return true;
-                    } else if (itemId == R.id.action_queue) {
-                        MediaPlayerUtils.queue(AudioGenresListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                        return true;
-                    }
-                    return false;
-                }
-            });
-            popupMenu.show();
-        }
+        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_play) {
+                MediaPlayerUtils.play(AudioGenresListFragment.this, playListItem);
+                return true;
+            } else if (itemId == R.id.action_queue) {
+                MediaPlayerUtils.queue(AudioGenresListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     };
 }

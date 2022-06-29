@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.provider.BaseColumns;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -56,7 +57,7 @@ public class ArtistInfoFragment extends AbstractInfoFragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     @Override
     protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {
@@ -66,46 +67,32 @@ public class ArtistInfoFragment extends AbstractInfoFragment
     @Override
     protected RefreshItem createRefreshItem() {
         RefreshItem refreshItem = new RefreshItem(getActivity(), LibrarySyncService.SYNC_ALL_MUSIC);
-        refreshItem.setListener(new RefreshItem.RefreshItemListener() {
-            @Override
-            public void onSyncProcessEnded(MediaSyncEvent event) {
-                if (event.status == MediaSyncEvent.STATUS_SUCCESS)
-                    getLoaderManager().restartLoader(LOADER_ARTIST, null, ArtistInfoFragment.this);
-            }
+        refreshItem.setListener(event -> {
+            if (event.status == MediaSyncEvent.STATUS_SUCCESS)
+                LoaderManager.getInstance(this).restartLoader(LOADER_ARTIST, null, ArtistInfoFragment.this);
         });
         return refreshItem;
     }
 
     @Override
     protected boolean setupMediaActionBar() {
-        setOnAddToPlaylistListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final PlaylistType.Item playListItem = new PlaylistType.Item();
-                playListItem.artistid = getDataHolder().getId();
-                MediaPlayerUtils.queue(ArtistInfoFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-            }
+        setOnAddToPlaylistListener(view -> {
+            final PlaylistType.Item playListItem = new PlaylistType.Item();
+            playListItem.artistid = getDataHolder().getId();
+            MediaPlayerUtils.queue(ArtistInfoFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
         });
 
-        setOnDownloadListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getLoaderManager().initLoader(LOADER_SONGS, null, ArtistInfoFragment.this);
-            }
-        });
+        setOnDownloadListener(view -> LoaderManager.getInstance(this).initLoader(LOADER_SONGS, null, ArtistInfoFragment.this));
 
         return true;
     }
 
     @Override
     protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlaylistType.Item item = new PlaylistType.Item();
-                item.artistid = getDataHolder().getId();
-                playItemOnKodi(item);
-            }
+        FAB.setOnFabClickListener(v -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.artistid = getDataHolder().getId();
+            playItemOnKodi(item);
         });
         return true;
     }
@@ -117,10 +104,9 @@ public class ArtistInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getLoaderManager().initLoader(LOADER_ARTIST, null, this);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LoaderManager.getInstance(this).initLoader(LOADER_ARTIST, null, this);
 
         setHasOptionsMenu(false);
     }
@@ -129,34 +115,34 @@ public class ArtistInfoFragment extends AbstractInfoFragment
     public void onPause() {
         //Make sure loader is not reloaded for albums and songs when we return
         //These loaders should only be activated by the user pressing the download button
-        getLoaderManager().destroyLoader(LOADER_SONGS);
+        LoaderManager.getInstance(this).destroyLoader(LOADER_SONGS);
         super.onPause();
     }
 
-    /**
+    /*
      * Loader callbacks
      */
     /** {@inheritDoc} */
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri;
         switch (i) {
             case LOADER_ARTIST:
                 uri = MediaContract.Artists.buildArtistUri(getHostInfo().getId(), getDataHolder().getId());
-                return new CursorLoader(getActivity(), uri,
+                return new CursorLoader(requireContext(), uri,
                                         DetailsQuery.PROJECTION, null, null, null);
             case LOADER_SONGS:
-                uri = MediaContract.Songs.buildArtistSongsListUri(getHostInfo().getId(), getDataHolder().getId());
-                return new CursorLoader(getActivity(), uri,
-                                        SongsListQuery.PROJECTION, null, null, SongsListQuery.SORT);
             default:
-                return null;
+                uri = MediaContract.Songs.buildArtistSongsListUri(getHostInfo().getId(), getDataHolder().getId());
+                return new CursorLoader(requireContext(), uri,
+                                        SongsListQuery.PROJECTION, null, null, SongsListQuery.SORT);
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             switch (cursorLoader.getId()) {
                 case LOADER_ARTIST:
@@ -189,10 +175,9 @@ public class ArtistInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
     }
-
 
     private FileDownloadHelper.SongInfo createSongInfo(Cursor cursor) {
         return new FileDownloadHelper.SongInfo(

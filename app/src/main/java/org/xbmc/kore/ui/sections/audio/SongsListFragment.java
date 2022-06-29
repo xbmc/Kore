@@ -22,13 +22,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
-import androidx.loader.content.CursorLoader;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +32,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.loader.content.CursorLoader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
@@ -72,11 +70,11 @@ public class SongsListFragment extends AbstractCursorListFragment {
     private static String albumTitle = "";
 
 
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     /**
      * Use this to display all songs for a specific artist
-     * @param artistId
+     * @param artistId Artist id
      */
     public void setArtist(int artistId) {
         Bundle args = new Bundle();
@@ -86,7 +84,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
 
     /**
      * Use this to display all songs for a specific album
-     * @param albumId
+     * @param albumId Album
      */
     public void setAlbum(int albumId, String albumTitle) {
         Bundle args = new Bundle();
@@ -101,32 +99,22 @@ public class SongsListFragment extends AbstractCursorListFragment {
     @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
         if (albumId != -1 ) {
-            return new AlbumSongsAdapter(getContext(), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showPopupMenu(v);
-                }
-            });
+            return new AlbumSongsAdapter(getContext(), this::showPopupMenu);
         } else {
-            return new SongsAdapter(getContext(), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showPopupMenu(v);
-                }
-            });
+            return new SongsAdapter(getContext(), this::showPopupMenu);
         }
     }
 
     @Override
     protected void onListItemClicked(View view) {
-        ImageView contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
+        ImageView contextMenu = view.findViewById(R.id.list_context_menu);
         showPopupMenu(contextMenu);
     }
 
     @Override
     protected CursorLoader createCursorLoader() {
         Uri uri;
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         int hostId = hostInfo != null ? hostInfo.getId() : -1;
 
         if (artistId != -1) { // get songs for artist
@@ -138,7 +126,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
         }
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaDatabase.Tables.SONGS + "." + MediaContract.Songs.TITLE + " LIKE ?";
@@ -146,16 +134,16 @@ public class SongsListFragment extends AbstractCursorListFragment {
         }
 
         if (albumId != -1) {
-            return new CursorLoader(getActivity(), uri,
+            return new CursorLoader(requireContext(), uri,
                                     AlbumSongsListQuery.PROJECTION, selection, selectionArgs, AlbumSongsListQuery.SORT);
         } else {
-            return new CursorLoader(getActivity(), uri,
+            return new CursorLoader(requireContext(), uri,
                                     SongsListQuery.PROJECTION, selection, selectionArgs, SongsListQuery.SORT);
         }
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         setSupportsSearch(true);
         super.onAttach(context);
     }
@@ -181,7 +169,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
 
         inflater.inflate(R.menu.media_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint(getString(R.string.action_search_albums));
         super.onCreateOptionsMenu(menu, inflater);
@@ -249,10 +237,10 @@ public class SongsListFragment extends AbstractCursorListFragment {
 
     private static class SongsAdapter extends RecyclerViewCursorAdapter {
 
-        private HostManager hostManager;
-        private int artWidth, artHeight;
-        private Context context;
-        private View.OnClickListener contextMenuClickListener;
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
+        private final Context context;
+        private final View.OnClickListener contextMenuClickListener;
 
         public SongsAdapter(Context context, View.OnClickListener contextMenuClickListener) {
             this.hostManager = HostManager.getInstance(context);
@@ -266,8 +254,9 @@ public class SongsListFragment extends AbstractCursorListFragment {
             artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
                                       .inflate(R.layout.grid_item_song, parent, false);
 
@@ -279,16 +268,17 @@ public class SongsListFragment extends AbstractCursorListFragment {
     }
 
     private static class AlbumSongsAdapter extends RecyclerViewCursorAdapter {
-        private Context context;
-        private View.OnClickListener contextMenuClickListener;
+        private final Context context;
+        private final View.OnClickListener contextMenuClickListener;
 
         public AlbumSongsAdapter(Context context, View.OnClickListener contextMenuClickListener) {
             this.context = context;
             this.contextMenuClickListener = contextMenuClickListener;
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
                                       .inflate(R.layout.list_item_song, parent, false);
 
@@ -381,11 +371,10 @@ public class SongsListFragment extends AbstractCursorListFragment {
             if ((elements == null) || (elements.length < 1)) {
                 return;
             }
-
             ArrayList<String> details = new ArrayList<>();
-            for (int i = 0; i < elements.length; i++) {
-                if (!TextUtils.isEmpty(elements[i]))
-                    details.add(elements[i]);
+            for (String element : elements) {
+                if (!TextUtils.isEmpty(element))
+                    details.add(element);
             }
 
             textView.setText(TextUtils.join(" | ", details.toArray()));
@@ -427,28 +416,25 @@ public class SongsListFragment extends AbstractCursorListFragment {
         final PlaylistType.Item playListItem = new PlaylistType.Item();
         playListItem.songid = viewHolder.songInfo.songId;
 
-        final PopupMenu popupMenu = new PopupMenu(getContext(), v);
+        final PopupMenu popupMenu = new PopupMenu(requireContext(), v);
         popupMenu.getMenuInflater().inflate(R.menu.song_item, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_play_song) {
-                    MediaPlayerUtils.play(SongsListFragment.this, playListItem);
-                    return true;
-                } else if (itemId == R.id.action_add_to_playlist) {
-                    MediaPlayerUtils.queue(SongsListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                    return true;
-                } else if (itemId == R.id.download) {
-                    ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
-                    songInfoList.add(viewHolder.songInfo);
-                    UIUtils.downloadSongs(getContext(),
-                                          songInfoList,
-                                          HostManager.getInstance(getContext()).getHostInfo(),
-                                          callbackHandler);
-                }
-                return false;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_play_song) {
+                MediaPlayerUtils.play(SongsListFragment.this, playListItem);
+                return true;
+            } else if (itemId == R.id.action_add_to_playlist) {
+                MediaPlayerUtils.queue(SongsListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                return true;
+            } else if (itemId == R.id.download) {
+                ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
+                songInfoList.add(viewHolder.songInfo);
+                UIUtils.downloadSongs(requireContext(),
+                                      songInfoList,
+                                      HostManager.getInstance(requireContext()).getHostInfo(),
+                                      callbackHandler);
             }
+            return false;
         });
         popupMenu.show();
     }

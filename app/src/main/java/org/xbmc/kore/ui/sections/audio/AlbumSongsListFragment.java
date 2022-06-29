@@ -15,6 +15,8 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,7 +25,6 @@ import android.os.Handler;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
@@ -33,6 +34,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -55,8 +57,6 @@ import org.xbmc.kore.utils.UIUtils;
 
 import java.util.ArrayList;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-
 /**
  * Fragment that presents the songs list
  */
@@ -72,13 +72,13 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
     private int albumId = -1;
     private String albumTitle = "";
 
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     private ArrayList<FileDownloadHelper.SongInfo> songInfoList;
 
     /**
      * Use this to display all songs for a specific album
-     * @param albumId
+     * @param albumId Album id
      */
     public void setAlbum(int albumId, String albumTitle) {
         Bundle args = new Bundle();
@@ -95,13 +95,13 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
             albumTitle = arguments.getString(BUNDLE_KEY_ALBUMTITLE, "");
         }
 
-        getLoaderManager().initLoader(LOADER, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER, null, this);
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LinearLayout linearLayout = new LinearLayout(getActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT);
@@ -109,20 +109,21 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
         return linearLayout;
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri uri;
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         int hostId = hostInfo != null ? hostInfo.getId() : -1;
 
         uri = MediaContract.Songs.buildAlbumSongsListUri(hostId, albumId);
 
-        return new CursorLoader(getActivity(), uri, AlbumSongsListQuery.PROJECTION, null,
+        return new CursorLoader(requireContext(), uri, AlbumSongsListQuery.PROJECTION, null,
                                 null, AlbumSongsListQuery.SORT);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if (! data.moveToFirst()) {
             Toast.makeText(getActivity(), R.string.no_songs_found_refresh,
                            Toast.LENGTH_SHORT).show();
@@ -132,13 +133,11 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
     }
 
     /**
      * Returns all songs displayed by this fragment
-     * @return
      */
     public ArrayList<FileDownloadHelper.SongInfo> getSongInfoList() {
         return songInfoList;
@@ -147,13 +146,14 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
     private void displaySongs(Cursor cursor) {
         songInfoList = new ArrayList<>(cursor.getCount());
         LinearLayout listView = (LinearLayout) getView();
+        if (listView == null) return;
         do {
             View songView = LayoutInflater.from(getActivity())
                                           .inflate(R.layout.list_item_song, listView, false);
-            TextView songTitle = (TextView)songView.findViewById(R.id.song_title);
-            TextView trackNumber = (TextView)songView.findViewById(R.id.track_number);
-            TextView details = (TextView)songView.findViewById(R.id.details);
-            ImageView contextMenu = (ImageView)songView.findViewById(R.id.list_context_menu);
+            TextView songTitle = songView.findViewById(R.id.song_title);
+            TextView trackNumber = songView.findViewById(R.id.track_number);
+            TextView details = songView.findViewById(R.id.details);
+            ImageView contextMenu = songView.findViewById(R.id.list_context_menu);
 
             String artist = cursor.getString(AlbumSongsListQuery.ARTIST);
 
@@ -168,7 +168,6 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
             songInfoList.add(songInfo);
 
             songTitle.setText(songInfo.title);
-
 
             trackNumber.setText(String.valueOf(songInfo.track));
 
@@ -185,59 +184,48 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
         } while (cursor.moveToNext());
     }
 
-    View.OnClickListener songClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            playSong(((FileDownloadHelper.SongInfo)v.getTag()).songId);
-        }
-    };
+    View.OnClickListener songClickListener = v -> playSong(((FileDownloadHelper.SongInfo)v.getTag()).songId);
 
-    private ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
+    private final ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
 
     private void playSong(int songId) {
         PlaylistType.Item item = new PlaylistType.Item();
         item.songid = songId;
         Player.Open action = new Player.Open(item);
-        action.execute(HostManager.getInstance(getActivity()).getConnection(),
+        action.execute(HostManager.getInstance(requireContext()).getConnection(),
                        defaultStringActionCallback, callbackHandler);
     }
 
-    private View.OnClickListener songItemMenuClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            final FileDownloadHelper.SongInfo songInfo = ((FileDownloadHelper.SongInfo)v.getTag());
-            final int songId = songInfo.songId;
+    private final View.OnClickListener songItemMenuClickListener = v -> {
+        final FileDownloadHelper.SongInfo songInfo = ((FileDownloadHelper.SongInfo)v.getTag());
+        final int songId = songInfo.songId;
 
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.song_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    int itemId = item.getItemId();
-                    if (itemId == R.id.action_play_song) {
-                        playSong(songId);
-                        return true;
-                    } else if (itemId == R.id.action_add_to_playlist) {
-                        addToPlaylist(songId);
-                        return true;
-                    } else if (itemId == R.id.download) {
-                        ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
-                        songInfoList.add(songInfo);
-                        UIUtils.downloadSongs(getActivity(), songInfoList,
-                                              HostManager.getInstance(getActivity()).getHostInfo(), callbackHandler);
-                        return true;
-                    }
-                    return false;
-                }
-            });
-            popupMenu.show();
-        }
+        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.song_item, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_play_song) {
+                playSong(songId);
+                return true;
+            } else if (itemId == R.id.action_add_to_playlist) {
+                addToPlaylist(songId);
+                return true;
+            } else if (itemId == R.id.download) {
+                ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
+                songInfoList.add(songInfo);
+                UIUtils.downloadSongs(getActivity(), songInfoList,
+                                      HostManager.getInstance(requireContext()).getHostInfo(), callbackHandler);
+                return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     };
 
     private void addToPlaylist(final int id) {
         Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
 
-        getPlaylists.execute(HostManager.getInstance(getActivity()).getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
+        getPlaylists.execute(HostManager.getInstance(requireContext()).getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
             public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
                 if (!isAdded()) return;
@@ -254,13 +242,13 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
                     PlaylistType.Item item = new PlaylistType.Item();
                     item.songid = id;
                     Playlist.Add action = new Playlist.Add(audioPlaylistId, item);
-                    action.execute(HostManager.getInstance(getActivity()).getConnection(),
+                    action.execute(HostManager.getInstance(requireContext()).getConnection(),
                                    new ApiCallback<String>() {
                                        @Override
                                        public void onSuccess(String result) {
                                            if (!isAdded()) return;
                                            // Got an error, show toast
-                                           Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
+                                           Toast.makeText(requireContext(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
                                                 .show();
                                        }
 
@@ -268,12 +256,12 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
                                        public void onError(int errorCode, String description) {
                                            if (!isAdded()) return;
                                            // Got an error, show toast
-                                           Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
+                                           Toast.makeText(requireContext(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
                                                 .show();
                                        }
                                    }, callbackHandler);
                 } else {
-                    Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
                          .show();
                 }
             }
@@ -282,7 +270,7 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 // Got an error, show toast
-                Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
                      .show();
             }
         }, callbackHandler);
@@ -290,7 +278,7 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
 
     @Override
     public void refresh() {
-        getLoaderManager().restartLoader(LOADER, null, this);
+        LoaderManager.getInstance(this).restartLoader(LOADER, null, this);
     }
 
     /**
@@ -332,10 +320,10 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
                                       .inflate(R.layout.list_item_song, viewGroup, false);
             // Setup View holder pattern
             ViewHolder viewHolder = new ViewHolder();
-            viewHolder.trackNumber = (TextView)view.findViewById(R.id.track_number);
-            viewHolder.title = (TextView)view.findViewById(R.id.song_title);
-            viewHolder.details = (TextView)view.findViewById(R.id.details);
-            viewHolder.contextMenu = (ImageView)view.findViewById(R.id.list_context_menu);
+            viewHolder.trackNumber = view.findViewById(R.id.track_number);
+            viewHolder.title = view.findViewById(R.id.song_title);
+            viewHolder.details = view.findViewById(R.id.details);
+            viewHolder.contextMenu = view.findViewById(R.id.list_context_menu);
             viewHolder.songInfo = new FileDownloadHelper.SongInfo();
 
             view.setTag(viewHolder);
@@ -365,12 +353,7 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
             vh.details.setText(detailsText);
 
             vh.contextMenu.setTag(vh);
-            vh.contextMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    showPopupMenu(v);
-                }
-            });
+            vh.contextMenu.setOnClickListener(AlbumSongsListFragment.this::showPopupMenu);
         }
     }
 
@@ -393,27 +376,24 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
 
         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
         popupMenu.getMenuInflater().inflate(R.menu.song_item, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_play_song) {
-                    MediaPlayerUtils.play(AlbumSongsListFragment.this, playListItem);
-                    return true;
-                } else if (itemId == R.id.action_add_to_playlist) {
-                    MediaPlayerUtils.queue(AlbumSongsListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                    return true;
-                } else if (itemId == R.id.download) {
-                    ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
-                    songInfoList.add(viewHolder.songInfo);
-                    UIUtils.downloadSongs(getActivity(),
-                                          songInfoList,
-                                          HostManager.getInstance(getActivity()).getHostInfo(),
-                                          callbackHandler);
-                    return true;
-                }
-                return false;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_play_song) {
+                MediaPlayerUtils.play(AlbumSongsListFragment.this, playListItem);
+                return true;
+            } else if (itemId == R.id.action_add_to_playlist) {
+                MediaPlayerUtils.queue(AlbumSongsListFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                return true;
+            } else if (itemId == R.id.download) {
+                ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
+                songInfoList.add(viewHolder.songInfo);
+                UIUtils.downloadSongs(getActivity(),
+                                      songInfoList,
+                                      HostManager.getInstance(requireContext()).getHostInfo(),
+                                      callbackHandler);
+                return true;
             }
+            return false;
         });
         popupMenu.show();
     }

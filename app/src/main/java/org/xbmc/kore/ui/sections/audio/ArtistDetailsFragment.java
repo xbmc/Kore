@@ -30,7 +30,7 @@ public class ArtistDetailsFragment extends AbstractTabsFragment {
     protected TabsAdapter createTabsAdapter(AbstractInfoFragment.DataHolder dataHolder) {
         Bundle arguments = dataHolder.getBundle();
         int itemId = dataHolder.getId();
-        long baseFragmentId = itemId * 10;
+        long baseFragmentId = itemId * 10L;
 
         arguments.putInt(AlbumListFragment.BUNDLE_KEY_ARTISTID, itemId);
         arguments.putInt(SongsListFragment.BUNDLE_KEY_ARTISTID, itemId);

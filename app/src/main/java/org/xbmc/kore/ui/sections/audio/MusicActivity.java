@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.audio;
 
-import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -76,7 +75,6 @@ public class MusicActivity extends BaseMediaActivity
         return new MusicListFragment();
     }
 
-    @TargetApi(21)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
@@ -132,13 +130,9 @@ public class MusicActivity extends BaseMediaActivity
                     respond = true;
                 }
                 if (respond) {
-                    if (selectedArtistId == -1 &&
-                        selectedGenreId == -1 &&
-                        selectedMusicVideoId == -1) {
-                        updateActionBar(getActionBarTitle(), false);
-                    } else {
-                        updateActionBar(getActionBarTitle(), true);
-                    }
+                    updateActionBar(getActionBarTitle(), selectedArtistId != -1 ||
+                                                         selectedGenreId != -1 ||
+                                                         selectedMusicVideoId != -1);
                     getSupportFragmentManager().popBackStack();
                     return true;
                 }
@@ -167,17 +161,12 @@ public class MusicActivity extends BaseMediaActivity
             selectedMusicVideoTitle = null;
         }
 
-        if (selectedArtistId == -1 &&
-            selectedGenreId == -1 &&
-            selectedMusicVideoId == -1) {
-            updateActionBar(getActionBarTitle(), false);
-        } else {
-            updateActionBar(getActionBarTitle(), true);
-        }
+        updateActionBar(getActionBarTitle(), selectedArtistId != -1 ||
+                                             selectedGenreId != -1 ||
+                                             selectedMusicVideoId != -1);
         super.onBackPressed();
     }
 
-    @TargetApi(21)
     public void onArtistSelected(ArtistListFragment.ViewHolder vh) {
         selectedArtistId = vh.dataHolder.getId();
         selectedArtistName = vh.dataHolder.getTitle();
@@ -192,7 +181,6 @@ public class MusicActivity extends BaseMediaActivity
         updateActionBar(selectedArtistName, true);
     }
 
-    @TargetApi(21)
     public void onAlbumSelected(AlbumListFragment.ViewHolder vh) {
         selectedAlbumId = vh.dataHolder.getId();
         selectedAlbumTitle = vh.dataHolder.getTitle();
@@ -225,7 +213,6 @@ public class MusicActivity extends BaseMediaActivity
         updateActionBar(selectedGenreTitle, true);
     }
 
-    @TargetApi(21)
     public void onMusicVideoSelected(MusicVideoListFragment.ViewHolder vh) {
         selectedMusicVideoId = vh.dataHolder.getId();
         selectedMusicVideoTitle = vh.dataHolder.getTitle();
