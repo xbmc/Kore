@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -30,6 +29,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -53,7 +53,6 @@ import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.ui.widgets.NowPlayingPanel;
-import org.xbmc.kore.ui.widgets.VolumeLevelIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
@@ -100,7 +99,6 @@ public abstract class BaseMediaActivity extends BaseActivity
     };
 
     @Override
-    @TargetApi(21)
     protected void onCreate(Bundle savedInstanceState) {
         // Request transitions on lollipop
         if (Utils.isLollipopOrLater()) {
@@ -114,7 +112,8 @@ public abstract class BaseMediaActivity extends BaseActivity
         // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, binding.drawerLayout);
+        if (navigationDrawerFragment != null)
+            navigationDrawerFragment.setUp(R.id.navigation_drawer, binding.drawerLayout);
 
         Toolbar toolbar = findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
@@ -160,7 +159,7 @@ public abstract class BaseMediaActivity extends BaseActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull  Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(NAVICON_ISARROW, drawerIndicatorIsArrow);
 
@@ -256,7 +255,6 @@ public abstract class BaseMediaActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @TargetApi(21)
     protected void showFragment(AbstractFragment fragment, ImageView sharedImageView, AbstractFragment.DataHolder dataHolder) {
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 

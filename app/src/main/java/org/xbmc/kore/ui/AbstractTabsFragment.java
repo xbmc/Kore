@@ -81,8 +81,8 @@ abstract public class AbstractTabsFragment extends AbstractFragment
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
     }
 

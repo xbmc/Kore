@@ -14,7 +14,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
@@ -86,7 +85,7 @@ public abstract class AbstractSearchableFragment extends AbstractListFragment im
         inflater.inflate(R.menu.media_search, menu);
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
         if (searchMenuItem != null) {
-            searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+            searchView = (SearchView) searchMenuItem.getActionView();
             searchView.setOnQueryTextListener(this);
             searchView.setQueryHint(getString(R.string.action_search));
             if (!TextUtils.isEmpty(savedSearchFilter)) {
@@ -96,7 +95,7 @@ public abstract class AbstractSearchableFragment extends AbstractListFragment im
                 searchView.clearFocus();
             }
 
-            MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+            searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                 @Override
                 public boolean onMenuItemActionExpand(MenuItem item) {
                     return true;
@@ -114,21 +113,18 @@ public abstract class AbstractSearchableFragment extends AbstractListFragment im
         //Handle clearing search query using the close button (X button).
         View view = searchView.findViewById(R.id.search_close_btn);
         if (view != null) {
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EditText editText = (EditText) searchView.findViewById(R.id.search_src_text);
-                    editText.setText("");
-                    searchView.setQuery("", false);
-                    searchFilter = savedSearchFilter = "";
-                    refreshList();
-                }
+            view.setOnClickListener(v -> {
+                EditText editText = (EditText) searchView.findViewById(R.id.search_src_text);
+                editText.setText("");
+                searchView.setQuery("", false);
+                searchFilter = savedSearchFilter = "";
+                refreshList();
             });
         }
     }
 
 
-    /**
+    /*
      * Search view callbacks
      */
     /** {@inheritDoc} */
@@ -139,7 +135,7 @@ public abstract class AbstractSearchableFragment extends AbstractListFragment im
             return true;
         }
 
-        /**
+        /*
          * When this fragment is paused, onQueryTextChange is called with an empty string.
          * This causes problems restoring the list fragment when returning.
          */
@@ -184,7 +180,7 @@ public abstract class AbstractSearchableFragment extends AbstractListFragment im
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         if (!TextUtils.isEmpty(searchFilter)) {
             savedSearchFilter = searchFilter;
         }
@@ -202,7 +198,6 @@ public abstract class AbstractSearchableFragment extends AbstractListFragment im
     }
 
     protected void onSyncProcessEnded(MediaSyncEvent event) {
-
     }
 
     /**

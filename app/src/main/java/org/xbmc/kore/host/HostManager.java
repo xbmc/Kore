@@ -24,6 +24,8 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 
+import androidx.annotation.NonNull;
+
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -93,7 +95,7 @@ public class HostManager {
 	 * @param context Android app context
 	 * @return HostManager singleton
 	 */
-	public static HostManager getInstance(Context context) {
+	public static HostManager getInstance(@NonNull Context context) {
 		if (instance == null) {
             synchronized (HostManager.class) {
                 if (instance == null) {
