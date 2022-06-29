@@ -22,13 +22,13 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.loader.content.CursorLoader;
 
@@ -45,7 +45,6 @@ import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Fragment that presents the artists list
@@ -54,7 +53,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(ArtistListFragment.class);
 
     public interface OnArtistSelectedListener {
-        public void onArtistSelected(ViewHolder tag);
+        void onArtistSelected(ViewHolder tag);
     }
 
     // Activity listener
@@ -78,28 +77,28 @@ public class ArtistListFragment extends AbstractCursorListFragment {
 
     @Override
     protected CursorLoader createCursorLoader() {
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         Uri uri = MediaContract.Artists.buildArtistsListUri(hostInfo != null ? hostInfo.getId() : -1);
 
         String selection = null;
-        String selectionArgs[] = null;
+        String[] selectionArgs = null;
         String searchFilter = getSearchFilter();
         if (!TextUtils.isEmpty(searchFilter)) {
             selection = MediaContract.ArtistsColumns.ARTIST + " LIKE ?";
             selectionArgs = new String[] {"%" + searchFilter + "%"};
         }
 
-        return new CursorLoader(getActivity(), uri,
+        return new CursorLoader(requireContext(), uri,
                 ArtistListQuery.PROJECTION, selection, selectionArgs, ArtistListQuery.SORT);
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             listenerActivity = (OnArtistSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnArtistSelectedListener");
+            throw new ClassCastException(context + " must implement OnArtistSelectedListener");
         }
         setSupportsSearch(true);
     }
@@ -137,29 +136,30 @@ public class ArtistListFragment extends AbstractCursorListFragment {
 
     private static class ArtistsAdapter extends RecyclerViewCursorAdapter {
 
-        private HostManager hostManager;
-        private int artWidth, artHeight;
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
         Fragment fragment;
 
         public ArtistsAdapter(Fragment fragment) {
             this.fragment = fragment;
-            this.hostManager = HostManager.getInstance(fragment.getContext());
+            this.hostManager = HostManager.getInstance(fragment.requireContext());
 
             // Get the art dimensions
-            Resources resources = fragment.getContext().getResources();
+            Resources resources = fragment.requireContext().getResources();
             artWidth = (int)(resources.getDimension(R.dimen.detail_poster_width_square));
             artHeight = (int)(resources.getDimension(R.dimen.detail_poster_height_square));
         }
 
+        @NonNull
         @Override
-        public CursorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(fragment.getContext())
                     .inflate(R.layout.grid_item_artist, parent, false);
 
             return new ViewHolder(view, fragment.getContext(), hostManager, artWidth, artHeight, artistlistItemMenuClickListener);
         }
 
-        private View.OnClickListener artistlistItemMenuClickListener = new View.OnClickListener() {
+        private final View.OnClickListener artistlistItemMenuClickListener = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 final ViewHolder viewHolder = (ViewHolder)v.getTag();
@@ -169,19 +169,16 @@ public class ArtistListFragment extends AbstractCursorListFragment {
 
                 final PopupMenu popupMenu = new PopupMenu(fragment.getContext(), v);
                 popupMenu.getMenuInflater().inflate(R.menu.musiclist_item, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        int itemId = item.getItemId();
-                        if (itemId == R.id.action_play) {
-                            MediaPlayerUtils.play(fragment, playListItem);
-                            return true;
-                        } else if (itemId == R.id.action_queue) {
-                            MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
-                            return true;
-                        }
-                        return false;
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.action_play) {
+                        MediaPlayerUtils.play(fragment, playListItem);
+                        return true;
+                    } else if (itemId == R.id.action_queue) {
+                        MediaPlayerUtils.queue(fragment, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
+                        return true;
                     }
+                    return false;
                 });
                 popupMenu.show();
             }
@@ -236,9 +233,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
                                                  dataHolder.getPosterUrl(), dataHolder.getTitle(),
                                                  artView, artWidth, artHeight);
 
-            if (Utils.isLollipopOrLater()) {
-                artView.setTransitionName("ar"+dataHolder.getId());
-            }
+            artView.setTransitionName("ar"+dataHolder.getId());
         }
     }
 }

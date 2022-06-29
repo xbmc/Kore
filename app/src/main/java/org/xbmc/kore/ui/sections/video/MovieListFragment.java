@@ -456,9 +456,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 checkmarkView.setVisibility(View.GONE);
             }
 
-            if (Utils.isLollipopOrLater()) {
-                artView.setTransitionName("a" + dataHolder.getId());
-            }
+            artView.setTransitionName("a" + dataHolder.getId());
         }
 
         private String getMetaInfo(Cursor cursor) {

@@ -161,15 +161,10 @@ public class LibrarySyncService extends Service {
         return serviceBinder;
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onDestroy() {
         LogUtils.LOGD(TAG, "Destroying the service.");
-        if (Utils.isJellybeanMR2OrLater()) {
-            handlerThread.quitSafely();
-        } else {
-            handlerThread.quit();
-        }
+        handlerThread.quitSafely();
     }
 
     public class LocalBinder extends Binder {

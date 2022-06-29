@@ -141,9 +141,7 @@ public class AddonsActivity extends BaseMediaActivity
             ;
         addonDetailsFragment.setDataHolder(vh.dataHolder);
         vh.dataHolder.setSquarePoster(true);
-        if(Utils.isLollipopOrLater()) {
-            vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
-        }
+        vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
         showFragment(addonDetailsFragment, vh.artView, vh.dataHolder);
 
         updateActionBar(getActionBarTitle(), true);

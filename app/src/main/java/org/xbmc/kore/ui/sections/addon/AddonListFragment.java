@@ -342,9 +342,7 @@ public class AddonListFragment extends AbstractListFragment {
                                                  addonDetails.thumbnail, dataHolder.getTitle(),
                                                  artView, artWidth, artHeight);
 
-            if(Utils.isLollipopOrLater()) {
-                artView.setTransitionName("a"+addonDetails.addonid);
-            }
+            artView.setTransitionName("a"+addonDetails.addonid);
         }
     }
 }

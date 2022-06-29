@@ -48,31 +48,8 @@ import java.util.Locale;
  * */
 public class Utils {
 
-    public static final int PERMISSION_REQUEST_WRITE_STORAGE = 0,
-            PERMISSION_REQUEST_READ_PHONE_STATE = 1,
-            PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 2;
-
-    /**
-     * Returns whether the SDK is the Jellybean release or later.
-     */
-    public static boolean isJellybeanOrLater() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
-    }
-
-    public static boolean isJellybeanMR1OrLater() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
-    }
-
-    public static boolean isJellybeanMR2OrLater() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
-    }
-
     public static boolean isMOrLater() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    }
-
-    public static boolean isLollipopOrLater() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
     public static boolean isOreoOrLater() {

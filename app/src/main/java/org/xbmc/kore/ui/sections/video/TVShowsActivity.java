@@ -177,19 +177,14 @@ public class TVShowsActivity extends BaseMediaActivity
         updateActionBar(selectedTVShowTitle, true);
     }
 
-    @TargetApi(21)
     private void startFragment(AbstractFragment fragment) {
         // Replace list fragment
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
-        if (Utils.isLollipopOrLater()) {
-            fragment.setEnterTransition(
-                    TransitionInflater.from(this).inflateTransition(R.transition.media_details));
-            fragment.setReturnTransition(null);
-        } else {
-            fragTrans.setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0);
-        }
+            fragment.setEnterTransition(TransitionInflater.from(this)
+                                                          .inflateTransition(R.transition.media_details));
+        fragment.setReturnTransition(null);
 
         fragTrans.replace(R.id.fragment_container, fragment)
                  .addToBackStack(null)

@@ -433,17 +433,12 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 watchedProgressView.setVisibility(View.VISIBLE);
                 watchedProgressView.setMax(numEpisodes);
                 watchedProgressView.setProgress(watchedEpisodes);
+                int watchedColor = (numEpisodes - watchedEpisodes == 0)? finishedColor : inProgressColor;
+                watchedProgressView.setProgressTintList(ColorStateList.valueOf(watchedColor));
             } else {
                 watchedProgressView.setVisibility(View.INVISIBLE);
             }
-
-            if (Utils.isLollipopOrLater()) {
-                if (showWatchedStatus) {
-                    int watchedColor = (numEpisodes - watchedEpisodes == 0)? finishedColor : inProgressColor;
-                    watchedProgressView.setProgressTintList(ColorStateList.valueOf(watchedColor));
-                }
-                artView.setTransitionName("a" + dataHolder.getId());
-            }
+            artView.setTransitionName("a" + dataHolder.getId());
         }
     }
 }
