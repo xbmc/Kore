@@ -147,7 +147,7 @@ public class SquareGridLayout extends ViewGroup {
                     setLayoutParams(pParams);
                 }
 
-                getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
     }

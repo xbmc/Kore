@@ -15,15 +15,11 @@
  */
 package org.xbmc.kore.ui.widgets;
 
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,7 +34,6 @@ import org.xbmc.kore.databinding.RemoteControlPadBinding;
 import org.xbmc.kore.ui.viewgroups.SquareGridLayout;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.RepeatListener;
-import org.xbmc.kore.utils.Utils;
 
 public class ControlPad extends SquareGridLayout
         implements View.OnClickListener, View.OnLongClickListener {
@@ -145,7 +140,6 @@ public class ControlPad extends SquareGridLayout
         return false;
     }
 
-    @TargetApi(21)
     private void setBackgroundImage() {
         Resources.Theme theme = getContext().getTheme();
         TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {R.attr.contentBackgroundColor});
@@ -158,6 +152,7 @@ public class ControlPad extends SquareGridLayout
         setBackgroundResource(backgroundResourceId);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setupListeners(Context context) {
         final Animation buttonInAnim = AnimationUtils.loadAnimation(context, R.anim.button_in);
         final Animation buttonOutAnim = AnimationUtils.loadAnimation(context, R.anim.button_out);
@@ -166,21 +161,18 @@ public class ControlPad extends SquareGridLayout
                                                            buttonRepeatInterval, this,
                                                            buttonInAnim, buttonOutAnim, getContext());
 
-        OnTouchListener feedbackTouchListener = new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        buttonInAnim.setFillAfter(true);
-                        v.startAnimation(buttonInAnim);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        v.startAnimation(buttonOutAnim);
-                        break;
-                }
-                return false;
+        OnTouchListener feedbackTouchListener = (v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    buttonInAnim.setFillAfter(true);
+                    v.startAnimation(buttonInAnim);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    v.startAnimation(buttonOutAnim);
+                    break;
             }
+            return false;
         };
 
         binding.left.setOnTouchListener(repeatListener);

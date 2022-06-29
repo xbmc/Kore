@@ -15,9 +15,8 @@
  */
 package org.xbmc.kore.ui.generic;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -47,8 +46,8 @@ public class SendTextDialogFragment extends DialogFragment {
      * The calling activity must implement this interface
      */
     public interface SendTextDialogListener {
-        public void onSendTextFinished(String text, boolean done);
-        public void onSendTextCancel();
+        void onSendTextFinished(String text, boolean done);
+        void onSendTextCancel();
     }
 
     /**
@@ -78,16 +77,15 @@ public class SendTextDialogFragment extends DialogFragment {
     /**
      * Override the attach to the activity to guarantee that the activity implements required interface
      *
-     * @param activity
-     *        Context activity that implements listener interface
+     * @param context Context activity that implements listener interface
      */
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            mListener = (SendTextDialogListener)activity;
+            mListener = (SendTextDialogListener)context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement SendTextDialogListener");
+            throw new ClassCastException(context + " must implement SendTextDialogListener");
         }
     }
 
@@ -102,39 +100,26 @@ public class SendTextDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
+        assert getArguments() != null;
         final String title = getArguments().getString(TITLE_KEY, getString(R.string.send_text));
-        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_send_text, null);
+        View dialogView = requireActivity().getLayoutInflater().inflate(R.layout.dialog_send_text, null);
 
-        textToSend = (EditText)dialogView.findViewById(R.id.text_to_send);
-        finishAfterSend = (CheckBox)dialogView.findViewById(R.id.send_text_done);
+        textToSend = dialogView.findViewById(R.id.text_to_send);
+        finishAfterSend = dialogView.findViewById(R.id.send_text_done);
 
         builder.setTitle(title)
                 .setView(dialogView)
-                .setPositiveButton(R.string.send, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        mListener.onSendTextFinished(
-                                textToSend.getText().toString(),
-                                finishAfterSend.isChecked());
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mListener.onSendTextCancel();
-                    }
-                });
+                .setPositiveButton(R.string.send, (dialog, which) -> mListener.onSendTextFinished(
+                        textToSend.getText().toString(),
+                        finishAfterSend.isChecked()))
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> mListener.onSendTextCancel());
 
         final Dialog dialog = builder.create();
-        textToSend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                }
+        textToSend.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             }
         });
         textToSend.requestFocus();

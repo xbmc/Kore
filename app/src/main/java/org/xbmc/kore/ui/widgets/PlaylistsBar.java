@@ -43,7 +43,7 @@ public class PlaylistsBar extends TabLayout {
 
     final Handler handler = new Handler();
 
-    private ArrayList<TabState> tabStates = new ArrayList<>();
+    private final ArrayList<TabState> tabStates = new ArrayList<>();
 
     public PlaylistsBar(Context context) {
         super(context);
@@ -67,9 +67,11 @@ public class PlaylistsBar extends TabLayout {
         setStyle(context);
 
         for(int i = 0; i < getTabCount(); i++) {
+            Tab tab = getTabAt(i);
+            if (tab == null) continue;
             TabState tabState = new TabState();
             tabState.position = i;
-            tabState.icon = getTabAt(i).getIcon().mutate();
+            tabState.icon = (tab.getIcon() != null) ? tab.getIcon().mutate() : null;
             tabState.setEnabled(false);
             tabStates.add(tabState);
         }
@@ -78,10 +80,10 @@ public class PlaylistsBar extends TabLayout {
     /**
      * Sets the tab for the given playlist type to selected state.
      * Note: this does not call the {@link OnPlaylistSelectedListener#onPlaylistSelected(String)}
-     * @param playlistType
      */
     public void selectTab(String playlistType) {
         Tab tab = getTabAt(getTabPositionForType(playlistType));
+        if (tab == null) return;
         tab.setTag(new Object()); // Make we do not trigger OnPlaylistSelectedListener
         tab.select();
     }
@@ -95,16 +97,13 @@ public class PlaylistsBar extends TabLayout {
     public void setIsPlaying(final String playlistType, final boolean isPlaying) {
         handler.removeCallbacks(runnable);
 
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                TabState tabStatePlaying = tabStates.get(getTabPositionForType(playlistType));
-                tabStatePlaying.setPlaying(isPlaying);
+        runnable = () -> {
+            TabState tabStatePlaying = tabStates.get(getTabPositionForType(playlistType));
+            tabStatePlaying.setPlaying(isPlaying);
 
-                for (TabState tabState : tabStates) {
-                    if (tabStatePlaying != tabState)
-                        tabState.setPlaying(false);
-                }
+            for (TabState tabState : tabStates) {
+                if (tabStatePlaying != tabState)
+                    tabState.setPlaying(false);
             }
         };
 

@@ -97,7 +97,7 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        hostManager = HostManager.getInstance(getContext());
+        hostManager = HostManager.getInstance(requireContext());
 
         setListeners();
 

@@ -286,9 +286,9 @@ public class UIUtils {
             VideoType.Cast actor = castList.get(i);
 
             View castView = LayoutInflater.from(activity).inflate(R.layout.grid_item_cast, castListView, false);
-            ImageView castPicture = (ImageView) castView.findViewById(R.id.picture);
-            TextView castName = (TextView) castView.findViewById(R.id.name);
-            TextView castRole = (TextView) castView.findViewById(R.id.role);
+            ImageView castPicture = castView.findViewById(R.id.picture);
+            TextView castName = castView.findViewById(R.id.name);
+            TextView castRole = castView.findViewById(R.id.role);
 
             castView.getLayoutParams().width = imageWidth;
             castView.getLayoutParams().height = imageHeight;
@@ -301,7 +301,7 @@ public class UIUtils {
             if ((i == maxCastPictures - 1) && (castList.size() > i + 1)) {
                 View castNameGroup = castView.findViewById(R.id.cast_name_group);
                 View allCastGroup = castView.findViewById(R.id.all_cast_group);
-                TextView remainingCastCount = (TextView)castView.findViewById(R.id.remaining_cast_count);
+                TextView remainingCastCount = castView.findViewById(R.id.remaining_cast_count);
 
                 castNameGroup.setVisibility(View.GONE);
                 allCastGroup.setVisibility(View.VISIBLE);

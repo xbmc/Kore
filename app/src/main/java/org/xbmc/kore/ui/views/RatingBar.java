@@ -42,7 +42,7 @@ public class RatingBar extends LinearLayoutCompat {
     private @DrawableRes int iconResourceId;
     private int iconCount;
     private double maxRating = 5;
-    private ArrayList<ClipDrawable> clipDrawables = new ArrayList<>(iconCount);
+    private final ArrayList<ClipDrawable> clipDrawables = new ArrayList<>(iconCount);
     private int backgroundColor;
     private int foregroundColor;
 

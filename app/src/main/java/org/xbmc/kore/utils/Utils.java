@@ -162,7 +162,7 @@ public class Utils {
     public static void addToPlaylist(final Fragment fragment, final int itemId, final String playlistId) {
         Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
 
-        final Context context = fragment.getContext();
+        final Context context = fragment.requireContext();
         final HostConnection hostConnection = HostManager.getInstance(context).getConnection();
         final Handler callbackHandler = new Handler();
 

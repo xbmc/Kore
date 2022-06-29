@@ -25,23 +25,23 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -123,8 +123,8 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
         setHasOptionsMenu(true);
     }
@@ -134,15 +134,12 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer,
                 container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DrawerItem item = (DrawerItem)parent.getItemAtPosition(position);
-                selectItem(item, position);
-            }
+        mDrawerListView.setOnItemClickListener((parent, view, position, id) -> {
+            DrawerItem item = (DrawerItem)parent.getItemAtPosition(position);
+            selectItem(item, position);
         });
 
-        Resources.Theme theme = getActivity().getTheme();
+        Resources.Theme theme = requireContext().getTheme();
         TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
                 R.attr.iconHosts,
                 R.attr.iconRemote,
@@ -157,12 +154,12 @@ public class NavigationDrawerFragment extends Fragment {
                 R.attr.iconFiles
         });
 
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         String hostName = (hostInfo != null) ? hostInfo.getName() : getString(R.string.xbmc_media_center);
         int hostId = (hostInfo != null) ? hostInfo.getId() : 0;
 
         Set<String> shownItems = PreferenceManager
-                .getDefaultSharedPreferences(getActivity())
+                .getDefaultSharedPreferences(requireContext())
                 .getStringSet(Settings.getNavDrawerItemsPrefKey(hostId),
                               new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.entry_values_nav_drawer_items))));
 
@@ -232,7 +229,7 @@ public class NavigationDrawerFragment extends Fragment {
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
-        mFragmentContainerView = getActivity().findViewById(fragmentId);
+        mFragmentContainerView = requireActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
         // set a custom shadow that overlays the main content when the drawer opens
@@ -252,36 +249,31 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Defer code dependent on restoration of previous instance state.
-        mDrawerLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerToggle.syncState();
-            }
-        });
+        mDrawerLayout.post(() -> mDrawerToggle.syncState());
 
         // Not using mDrawerToggle as the listener to not confuse the drawer icon.
         // The icon will be used exclusively for navigation, not for indicating whether the drawer layout is opened or closed.
         // Nevertheless, a listener needs to be set up to save the userLearnedDrawer preference.
-        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) { }
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) { }
 
             @Override
-            public void onDrawerOpened(View drawerView) {
+            public void onDrawerOpened(@NonNull View drawerView) {
                 if (!isAdded()) {
                     return;
                 }
                 saveUserLearnedDrawer();
-                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                requireActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 
             @Override
-            public void onDrawerClosed(View drawerView) {
+            public void onDrawerClosed(@NonNull View drawerView) {
                 if (!isAdded()) {
                     return;
                 }
                 saveUserLearnedDrawer();
-                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                requireActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 
             @Override
@@ -299,12 +291,9 @@ public class NavigationDrawerFragment extends Fragment {
                 end = 1.0f - start;
 
         ValueAnimator anim = ValueAnimator.ofFloat(start, end);
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float slideOffset = (Float) valueAnimator.getAnimatedValue();
-                mDrawerToggle.onDrawerSlide(mDrawerLayout, slideOffset);
-            }
+        anim.addUpdateListener(valueAnimator -> {
+            float slideOffset = (Float) valueAnimator.getAnimatedValue();
+            mDrawerToggle.onDrawerSlide(mDrawerLayout, slideOffset);
         });
         anim.setInterpolator(new DecelerateInterpolator());
         anim.setDuration(500);
@@ -334,12 +323,7 @@ public class NavigationDrawerFragment extends Fragment {
             sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
 
             // Sync the drawer toggle on the first run
-            mDrawerLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mDrawerToggle.syncState();
-                }
-            });
+            mDrawerLayout.post(() -> mDrawerToggle.syncState());
         }
     }
 
@@ -410,30 +394,27 @@ public class NavigationDrawerFragment extends Fragment {
         final Intent launchIntentFinal = new Intent(getActivity(),
                 activityItemIdMap.get(item.id))
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        mDrawerLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(launchIntentFinal);
-                getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
-            }
+        mDrawerLayout.postDelayed(() -> {
+            startActivity(launchIntentFinal);
+            requireActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
         }, CLOSE_DELAY);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 //		outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Forward the new configuration the drawer toggle component.
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
     }
@@ -477,7 +458,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     public static class DrawerItemAdapter extends ArrayAdapter<DrawerItem> {
 
-        private int selectedItemColor, hostItemColor;
+        private final int selectedItemColor, hostItemColor;
 
         public DrawerItemAdapter(Context context, int layoutId, DrawerItem[] objects) {
             super(context, layoutId, objects);
@@ -522,9 +503,9 @@ public class NavigationDrawerFragment extends Fragment {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                                 .inflate(R.layout.list_item_navigation_drawer, parent, false);
                     }
-                    icon = (ImageView)convertView.findViewById(R.id.drawer_item_icon);
+                    icon = convertView.findViewById(R.id.drawer_item_icon);
                     icon.setImageResource(item.iconResourceId);
-                    desc = (TextView)convertView.findViewById(R.id.drawer_item_title);
+                    desc = convertView.findViewById(R.id.drawer_item_title);
                     desc.setText(item.desc);
                     if (selectedItemId == item.id) {
                         icon.setColorFilter(selectedItemColor);
@@ -537,9 +518,9 @@ public class NavigationDrawerFragment extends Fragment {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                                 .inflate(R.layout.list_item_navigation_drawer_host, parent, false);
                     }
-                    icon = (ImageView)convertView.findViewById(R.id.drawer_item_icon);
+                    icon = convertView.findViewById(R.id.drawer_item_icon);
                     icon.setImageResource(item.iconResourceId);
-                    desc = (TextView)convertView.findViewById(R.id.drawer_item_title);
+                    desc = convertView.findViewById(R.id.drawer_item_title);
                     desc.setText(item.desc);
                     if (selectedItemId == item.id) {
                         icon.setColorFilter(selectedItemColor);
