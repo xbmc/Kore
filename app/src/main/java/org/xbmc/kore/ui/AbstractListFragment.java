@@ -16,7 +16,6 @@
 
 package org.xbmc.kore.ui;
 
-import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -43,12 +42,12 @@ import org.xbmc.kore.utils.LogUtils;
 public abstract class AbstractListFragment extends Fragment implements
 															SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
-	private RecyclerView.Adapter adapter;
+	private RecyclerView.Adapter<?> adapter;
 
 	protected FragmentGenericMediaListBinding binding;
 
 	abstract protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener();
-	abstract protected RecyclerViewEmptyViewSupport.Adapter createAdapter();
+	abstract protected RecyclerViewEmptyViewSupport.Adapter<?> createAdapter();
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +55,6 @@ public abstract class AbstractListFragment extends Fragment implements
 		adapter = createAdapter();
 	}
 
-	@TargetApi(16)
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = FragmentGenericMediaListBinding.inflate(inflater, container, false);
@@ -140,7 +138,7 @@ public abstract class AbstractListFragment extends Fragment implements
 		binding.swipeRefreshLayout.setRefreshing(false);
 	}
 
-	public RecyclerView.Adapter getAdapter() {
+	public RecyclerView.Adapter<?> getAdapter() {
 		return adapter;
 	}
 

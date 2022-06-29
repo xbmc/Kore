@@ -96,6 +96,7 @@ public class NetUtils {
             LogUtils.LOGD(TAG, "Couldn't check reachability of host: " + hostAddress, e);
             return null;
         }
+        if (ipHostAddress == null) return null;
 
         try {
             // Read the arp cache
@@ -132,7 +133,7 @@ public class NetUtils {
 
         // Get MAC adress bytes
         byte[] macAddressBytes = new byte[6];
-        String[] hex = macAddress.split("(\\:|\\-)");
+        String[] hex = macAddress.split("([:\\-])");
         if (hex.length != 6) {
             LogUtils.LOGD(TAG, "Send magic packet: got an invalid MAC address: " + macAddress);
             return false;
@@ -196,7 +197,7 @@ public class NetUtils {
 
     private static byte[] getMacBytes(String macStr) throws IllegalArgumentException {
         byte[] bytes = new byte[6];
-        String[] hex = macStr.split("(\\:|\\-)");
+        String[] hex = macStr.split("([:\\-])");
         if (hex.length != 6) {
             throw new IllegalArgumentException("Invalid MAC address.");
         }
@@ -216,8 +217,8 @@ public class NetUtils {
      * Lifted from com.squareup.picasso.Utils
      */
     private static final String APP_CACHE = "app-cache";
-    private static final int MIN_DISK_CACHE_SIZE = 5 * 1024 * 1024; // 5MB
-    private static final int MAX_DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB
+    private static final int MIN_DISK_CACHE_SIZE = 8 * 1024 * 1024; // 8 MB
+    private static final int MAX_DISK_CACHE_SIZE = 256 * 1024 * 1024; // 256 MB
 
     public static File createDefaultCacheDir(Context context) {
         File cache = new File(context.getApplicationContext().getCacheDir(), APP_CACHE);
@@ -233,7 +234,9 @@ public class NetUtils {
 
         try {
             StatFs statFs = new StatFs(dir.getAbsolutePath());
-            long available = ((long) statFs.getBlockCount()) * statFs.getBlockSize();
+            long blockCount = statFs.getBlockCountLong();
+            long blockSize = statFs.getBlockSizeLong();
+            long available = blockCount * blockSize;
             // Target 2% of the total space.
             size = available / 50;
         } catch (IllegalArgumentException ignored) {
@@ -242,5 +245,4 @@ public class NetUtils {
         // Bound inside min/max size for disk cache.
         return Math.max(Math.min(size, MAX_DISK_CACHE_SIZE), MIN_DISK_CACHE_SIZE);
     }
-
 }
