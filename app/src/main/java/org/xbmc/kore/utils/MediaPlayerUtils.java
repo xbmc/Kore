@@ -43,7 +43,7 @@ public class MediaPlayerUtils {
      * @param item PlaylistType.Item that needs to be played
      */
     public static void play(final Fragment fragment, final PlaylistType.Item item) {
-        HostManager hostManager = HostManager.getInstance(fragment.getActivity());
+        HostManager hostManager = HostManager.getInstance(fragment.requireContext());
 
         final Handler callbackHandler = new Handler();
 
@@ -91,7 +91,7 @@ public class MediaPlayerUtils {
 
         final Context context = fragment.requireActivity();
 
-        final HostManager hostManager = HostManager.getInstance(fragment.getActivity());
+        final HostManager hostManager = HostManager.getInstance(fragment.requireContext());
 
         getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override

@@ -43,19 +43,17 @@ public class RefreshItem {
 
     private RefreshItemListener listener;
 
-    private String syncType;
+    private final String syncType;
     private String syncID;
     private int itemId;
-    private Context context;
+    private final Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    private RefreshItem() {}
 
     /**
      * RefreshItem can be used to refresh the information for one or more items.
      * If you want to sync a single item you will need to use {@link #setSyncItem(String, int)}
      * to set the item that needs to be refreshed.
-     * @param context
+     * @param context Context
      * @param syncType {@link LibrarySyncService} SyncType
      */
     public RefreshItem(Context context, String syncType) {
@@ -85,7 +83,6 @@ public class RefreshItem {
 
     /**
      * Specifiy a listener if you want to be notified when the synchronization has finished.
-     * @param listener
      */
     public void setListener(RefreshItemListener listener) {
         this.listener = listener;
@@ -94,7 +91,6 @@ public class RefreshItem {
     /**
      * If you use a SwipeRefreshLayout you can let RefreshItem manage the refresh animation
      * by passing in the reference to SwipeRefreshLayout in your View
-     * @param swipeRefreshLayout
      */
     public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;

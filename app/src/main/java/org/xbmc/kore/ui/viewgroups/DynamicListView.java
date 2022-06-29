@@ -20,7 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -42,7 +42,7 @@ import android.widget.ListView;
 
 import org.xbmc.kore.utils.LogUtils;
 
-/**
+/*
  * The dynamic listview is an extension of listview that supports cell dragging
  * and swapping.
  *
@@ -114,14 +114,14 @@ public class DynamicListView extends ListView {
          * @param positionOne position of first item
          * @param positionTwo position of second item.
          */
-        public void onSwapItems(int positionOne, int positionTwo);
+        void onSwapItems(int positionOne, int positionTwo);
 
         /**
          * Called when the user releases the dragged item
          * @param originalPostion original position of the dragged item
          * @param finalPosition new position of the dragged item
          */
-        public void onSwapFinished(int originalPostion, int finalPosition);
+        void onSwapFinished(int originalPostion, int finalPosition);
     }
 
     public DynamicListView(Context context) {
@@ -175,7 +175,7 @@ public class DynamicListView extends ListView {
      * Listens for long clicks on any items in the listview. When a cell has
      * been selected, the hover cell is created and set up.
      */
-    private AdapterView.OnItemLongClickListener mOnItemLongClickListener =
+    private final AdapterView.OnItemLongClickListener mOnItemLongClickListener =
             new AdapterView.OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long id) {
                     if (!itemDraggingEnabled)
@@ -302,6 +302,7 @@ public class DynamicListView extends ListView {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent (MotionEvent event) {
 
@@ -471,12 +472,7 @@ public class DynamicListView extends ListView {
 
             ObjectAnimator hoverViewAnimator = ObjectAnimator.ofObject(mHoverCell, "bounds",
                                                                        sBoundEvaluator, mHoverCellCurrentBounds);
-            hoverViewAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    invalidate();
-                }
-            });
+            hoverViewAnimator.addUpdateListener(valueAnimator -> invalidate());
             hoverViewAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -521,8 +517,6 @@ public class DynamicListView extends ListView {
 
     /**
      * When swapping items the checked item positions in the list may need to be updated
-     * @param originalPosition
-     * @param newPosition
      */
     private void updateCheckedItemPositions(int originalPosition, int newPosition) {
         switch (getChoiceMode()) {
@@ -600,7 +594,7 @@ public class DynamicListView extends ListView {
      * scrolling takes place, the listview continuously checks if new cells became visible
      * and determines whether they are potential candidates for a cell onSwapItems.
      */
-    private AbsListView.OnScrollListener mScrollListener = new AbsListView.OnScrollListener () {
+    private final AbsListView.OnScrollListener mScrollListener = new AbsListView.OnScrollListener () {
 
         private int mPreviousFirstVisibleItem = -1;
         private int mPreviousVisibleItemCount = -1;

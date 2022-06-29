@@ -23,8 +23,8 @@ import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -48,7 +48,7 @@ public class CastFragment extends AbstractAdditionalInfoFragment implements Load
     private static final String BUNDLE_TITLE = "title";
     private static final String BUNDLE_LOADER_TYPE = "loadertype";
 
-    public static enum TYPE {
+    public enum TYPE {
         TVSHOW,
         MOVIE
     }
@@ -68,55 +68,61 @@ public class CastFragment extends AbstractAdditionalInfoFragment implements Load
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
-        getLoaderManager().initLoader(bundle.getInt(BUNDLE_LOADER_TYPE), null, this);
+        if (bundle != null && bundle.containsKey(BUNDLE_LOADER_TYPE))
+            LoaderManager.getInstance(this).initLoader(bundle.getInt(BUNDLE_LOADER_TYPE), null, this);
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        int hostId = HostManager.getInstance(getActivity()).getHostInfo().getId();
+        int hostId = HostManager.getInstance(requireContext()).getHostInfo().getId();
 
         Uri uri;
+        assert getArguments() != null;
         int itemId = getArguments().getInt(BUNDLE_ITEMID);
 
         if (id == TYPE.MOVIE.ordinal()) {
             uri = MediaContract.MovieCast.buildMovieCastListUri(hostId, itemId);
-            return new CursorLoader(getActivity(), uri,
+            return new CursorLoader(requireContext(), uri,
                                     MovieCastListQuery.PROJECTION, null, null, MovieCastListQuery.SORT);
         } else {
             uri = MediaContract.TVShowCast.buildTVShowCastListUri(hostId, itemId);
-            return new CursorLoader(getActivity(), uri,
+            return new CursorLoader(requireContext(), uri,
                                     TVShowCastListQuery.PROJECTION, null, null, TVShowCastListQuery.SORT);
         }
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (! cursor.moveToFirst()) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        if (!cursor.moveToFirst()) {
             return;
         }
 
         ArrayList<VideoType.Cast> castArrayList;
 
+        assert getArguments() != null;
         int id = getArguments().getInt(BUNDLE_LOADER_TYPE);
         if (id == TYPE.MOVIE.ordinal()) {
             castArrayList = createMovieCastList(cursor);
         } else {
             castArrayList = createTVShowCastList(cursor);
-
         }
 
+        View rootView = getView();
+        if (rootView == null || rootView.findViewById(R.id.cast_list) == null) return;
+
         UIUtils.setupCastInfo(getActivity(), castArrayList,
-                              (GridLayout) getView().findViewById(R.id.cast_list),
+                              getView().findViewById(R.id.cast_list),
                               AllCastActivity.buildLaunchIntent(getActivity(),
                                                                 getArguments().getString(BUNDLE_TITLE),
                                                                 castArrayList));
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 
@@ -146,8 +152,10 @@ public class CastFragment extends AbstractAdditionalInfoFragment implements Load
 
     @Override
     public void refresh() {
-        getLoaderManager().restartLoader(getArguments().getInt(BUNDLE_LOADER_TYPE),
-                                         null, this);
+        if (getArguments() == null) return;
+        LoaderManager.getInstance(this)
+                     .restartLoader(getArguments().getInt(BUNDLE_LOADER_TYPE),
+                                    null, this);
     }
 
     /**

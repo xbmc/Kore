@@ -15,9 +15,8 @@
  */
 package org.xbmc.kore.ui.generic;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -38,7 +37,7 @@ public class GenericSelectDialog
      * The calling activity must implement this interface
      */
     public interface GenericSelectDialogListener {
-        public void onDialogSelect(int token, int which);
+        void onDialogSelect(int token, int which);
     }
 
     private static final String TOKEN_KEY = "TOKEN",
@@ -101,12 +100,11 @@ public class GenericSelectDialog
      * Override the attach to the activity to guarantee that the activity implements
      * GenericSelectDialogListener interface.
      *
-     * @param activity Context activity that implements GenericSelectDialogListener
+     * @param context Context activity that implements GenericSelectDialogListener
      */
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
 //        // Try class cast
 //        try {
 //            mListener = (GenericSelectDialogListener)activity;
@@ -128,9 +126,10 @@ public class GenericSelectDialog
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
         Bundle args = getArguments();
+        assert args != null;
         final String title = args.getString(TITLE_KEY);
         final int token = args.getInt(TOKEN_KEY);
         final int selectedItem = args.getInt(SELECTED_ITEM_KEY);
@@ -139,14 +138,11 @@ public class GenericSelectDialog
         if (getArguments().containsKey(ARRAY_ID_KEY)) {
             final int arrayId = args.getInt(ARRAY_ID_KEY);
             builder.setSingleChoiceItems(arrayId, selectedItem,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (mListener != null)
-                                mListener.onDialogSelect(token, which);
-                            dialog.dismiss();
-                        }
-                    });
+                                         (dialog, which) -> {
+                                             if (mListener != null)
+                                                 mListener.onDialogSelect(token, which);
+                                             dialog.dismiss();
+                                         });
         } else {
             final CharSequence[] items = args.getCharSequenceArray(ARRAY_ITEMS);
 
@@ -161,13 +157,10 @@ public class GenericSelectDialog
 //                        }
 //                    });
 
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (mListener != null)
-                        mListener.onDialogSelect(token, which);
-                    dialog.dismiss();
-                }
+            builder.setItems(items, (dialog, which) -> {
+                if (mListener != null)
+                    mListener.onDialogSelect(token, which);
+                dialog.dismiss();
             });
 
         }

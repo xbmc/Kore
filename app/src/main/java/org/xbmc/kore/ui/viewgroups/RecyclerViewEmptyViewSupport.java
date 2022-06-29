@@ -113,12 +113,7 @@ public class RecyclerViewEmptyViewSupport extends FastScrollRecyclerView {
     @Override
     public void onViewAdded(final View child) {
         super.onViewAdded(child);
-        child.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.onItemClick(v, getChildAdapterPosition(child));
-            }
-        });
+        child.setOnClickListener(v -> onItemClickListener.onItemClick(v, getChildAdapterPosition(child)));
     }
 
     @Override
