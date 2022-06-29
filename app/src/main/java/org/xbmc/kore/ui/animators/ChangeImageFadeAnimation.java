@@ -33,7 +33,6 @@ public class ChangeImageFadeAnimation {
     private ValueAnimator fadeOutAnimator;
 
     private ChangeImageFadeAnimation() {
-
     }
 
     public ChangeImageFadeAnimation(@NonNull FloatingActionButton imageHolder,
@@ -64,12 +63,7 @@ public class ChangeImageFadeAnimation {
         fadeInAnimator.setDuration(500);
         animatedImage = fadeOutImage;
 
-        ValueAnimator.AnimatorUpdateListener updateListener = new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                animatedImage.setAlpha((int) animation.getAnimatedValue());
-            }
-        };
+        ValueAnimator.AnimatorUpdateListener updateListener = animation -> animatedImage.setAlpha((int) animation.getAnimatedValue());
         fadeInAnimator.addUpdateListener(updateListener);
         fadeOutAnimator.addUpdateListener(updateListener);
 

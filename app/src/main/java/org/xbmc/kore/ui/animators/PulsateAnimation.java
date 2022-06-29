@@ -31,7 +31,6 @@ public class PulsateAnimation {
     private int endColor;
 
     private PulsateAnimation() {
-
     }
 
     public PulsateAnimation(View v, int startColor, int endColor) {
@@ -92,12 +91,9 @@ public class PulsateAnimation {
         valueAnimator.setDuration(1000);
         valueAnimator.setIntValues(startColor, endColor);
         valueAnimator.setEvaluator(new ArgbEvaluator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                int color = (int) animator.getAnimatedValue();
-                view.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            }
+        valueAnimator.addUpdateListener(animator -> {
+            int color = (int) animator.getAnimatedValue();
+            view.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         });
         return valueAnimator;
     }
