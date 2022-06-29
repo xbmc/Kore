@@ -16,6 +16,10 @@
 package org.xbmc.kore.ui.sections.addon;
 
 import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractTabsFragment;
@@ -40,8 +44,8 @@ public class AddonDetailsFragment extends AbstractTabsFragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
     }
 
