@@ -15,16 +15,14 @@
  */
 package org.xbmc.kore.ui.sections.addon;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.core.text.TextDirectionHeuristicsCompat;
 import androidx.fragment.app.Fragment;
-
-import android.text.TextUtils;
-import android.view.MenuItem;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
@@ -32,11 +30,9 @@ import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;
+import org.xbmc.kore.ui.generic.SendTextDialogFragment;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.Utils;
-
-import org.xbmc.kore.ui.generic.SendTextDialogFragment;
 
 import java.util.concurrent.TimeUnit;
 
@@ -125,9 +121,7 @@ public class AddonsActivity extends BaseMediaActivity
     /**
      * Callback from list fragment when a addon is selected.
      * Switch fragment in portrait
-     * @param vh
      */
-    @TargetApi(21)
     public void onAddonSelected(AddonListFragment.ViewHolder vh) {
         Bundle bundle = vh.dataHolder.getBundle();
         selectedAddonId = bundle.getString(AddonInfoFragment.BUNDLE_KEY_ADDONID);
@@ -153,18 +147,15 @@ public class AddonsActivity extends BaseMediaActivity
                 SendTextDialogFragment.newInstance(title);
         dialog.show(getSupportFragmentManager(), null);
         dialogShown = true;
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    TimeUnit.MILLISECONDS.sleep(HostConnection.TCP_READ_TIMEOUT - 2000);
-                    if (dialogShown) {
-                        dialog.dismissAllowingStateLoss();
-                        sendTextInput(DUMMY_INPUT, true, true);
-                    }
-                } catch (InterruptedException e) {
-                    // ignore
+        Thread t = new Thread(() -> {
+            try {
+                TimeUnit.MILLISECONDS.sleep(HostConnection.TCP_READ_TIMEOUT - 2000);
+                if (dialogShown) {
+                    dialog.dismissAllowingStateLoss();
+                    sendTextInput(DUMMY_INPUT, true, true);
                 }
+            } catch (InterruptedException e) {
+                // ignore
             }
         });
         t.start();

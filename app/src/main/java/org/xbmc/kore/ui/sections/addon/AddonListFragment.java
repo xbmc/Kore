@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.addon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -33,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.xbmc.kore.R;
@@ -46,7 +46,6 @@ import org.xbmc.kore.ui.AbstractListFragment;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,31 +68,28 @@ public class AddonListFragment extends AbstractListFragment {
     /**
      * Handler on which to post RPC callbacks
      */
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     private static boolean hideDisabledAddons;
 
     @Override
     protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
-        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                // Get the movie id from the tag
-                ViewHolder tag = (ViewHolder) view.getTag();
-                // Notify the activity
-                listenerActivity.onAddonSelected(tag);
-            }
+        return (view, position) -> {
+            // Get the movie id from the tag
+            ViewHolder tag = (ViewHolder) view.getTag();
+            // Notify the activity
+            listenerActivity.onAddonSelected(tag);
         };
     }
 
     @Override
-    protected RecyclerView.Adapter createAdapter() {
+    protected RecyclerView.Adapter<ViewHolder> createAdapter() {
         return new AddonsAdapter(getActivity());
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
         if (getAdapter().getItemCount() == 0)
@@ -101,12 +97,12 @@ public class AddonListFragment extends AbstractListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            listenerActivity = (OnAddonSelectedListener) activity;
+            listenerActivity = (OnAddonSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnAddonSelectedListener");
+            throw new ClassCastException(context + " must implement OnAddonSelectedListener");
         }
     }
 
@@ -118,7 +114,7 @@ public class AddonListFragment extends AbstractListFragment {
 
     @Override
     public void onRefresh () {
-        if (HostManager.getInstance(getActivity()).getHostInfo() != null) {
+        if (HostManager.getInstance(requireContext()).getHostInfo() != null) {
             callGetAddonsAndSetup();
         } else {
             hideRefreshAnimation();
@@ -158,7 +154,7 @@ public class AddonListFragment extends AbstractListFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public class AddonNameComparator implements Comparator<AddonType.Details>
+    public static class AddonNameComparator implements Comparator<AddonType.Details>
     {
         public int compare(AddonType.Details left, AddonType.Details right) {
             return left.name.toLowerCase().compareTo(right.name.toLowerCase());
@@ -181,7 +177,7 @@ public class AddonListFragment extends AbstractListFragment {
                 AddonType.Fields.RATING, AddonType.Fields.ENABLED
         };
         Addons.GetAddons action = new Addons.GetAddons(properties);
-        action.execute(HostManager.getInstance(getActivity()).getConnection(),
+        action.execute(HostManager.getInstance(requireContext()).getConnection(),
             new ApiCallback<List<AddonType.Details>>() {
                 @Override
                 public void onSuccess(List<AddonType.Details> result) {
@@ -234,13 +230,13 @@ public class AddonListFragment extends AbstractListFragment {
                 addon.type.equals(AddonType.Types.XBMC_ADDON_IMAGE));
     }
 
-    private static class AddonsAdapter extends RecyclerView.Adapter {
+    private static class AddonsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-        private HostManager hostManager;
-        private int artWidth, artHeight;
-        private Context context;
+        private final HostManager hostManager;
+        private final int artWidth, artHeight;
+        private final Context context;
 
-        private ArrayList<AddonType.Details> items = new ArrayList<>();
+        private final ArrayList<AddonType.Details> items = new ArrayList<>();
 
         public AddonsAdapter(Context context) {
             this.context = context;
@@ -254,18 +250,19 @@ public class AddonListFragment extends AbstractListFragment {
             artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
-                                        .inflate(R.layout.grid_item_addon, parent, false);
+                                      .inflate(R.layout.grid_item_addon, parent, false);
 
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             AddonType.Details addonDetails = this.getItem(position);
-            ((ViewHolder) holder).onBind(addonDetails);
+            holder.onBind(addonDetails);
         }
 
         @Override
@@ -296,7 +293,7 @@ public class AddonListFragment extends AbstractListFragment {
         ImageView disabledView;
         private static String author;
         private static String version;
-        private HostManager hostManager;
+        private final HostManager hostManager;
         int artWidth;
         int artHeight;
         Context context;

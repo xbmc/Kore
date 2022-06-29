@@ -18,12 +18,15 @@ package org.xbmc.kore.ui.sections.addon;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.method.Files;
-import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.AbstractTabsFragment;
 import org.xbmc.kore.ui.sections.file.MediaFileListFragment;
@@ -37,8 +40,8 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
     private static final String TAG = LogUtils.makeLogTag(AddonListContainerFragment.class);
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
     }
 
@@ -54,15 +57,15 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
          * ActivityTestRule from the test support library. This means getHostInfo() will
          * return null as long as the database info has not been set.
          */
-        if (HostManager.getInstance(getContext()).getHostInfo() == null)
+        if (HostManager.getInstance(requireContext()).getHostInfo() == null)
             return null;
 
-        int hostId = HostManager.getInstance(getContext()).getHostInfo().getId();
+        int hostId = HostManager.getInstance(requireContext()).getHostInfo().getId();
 
         TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager());
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        Set<String> bookmarked = prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.<String>emptySet());
-        long baseFragmentId = 70 + bookmarked.size() * 100;
+        Set<String> bookmarked = prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.emptySet());
+        long baseFragmentId = 70 + bookmarked.size() * 100L;
         tabsAdapter.addTab(AddonListFragment.class, new Bundle(), R.string.addons, baseFragmentId);
         for (String path: bookmarked) {
             Bundle args = (Bundle) arguments.clone();

@@ -22,6 +22,9 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
@@ -50,7 +53,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     /**
      * Handler on which to post RPC callbacks
      */
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     private String addonId;
 
@@ -61,8 +64,8 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
     }
 
@@ -89,59 +92,53 @@ public class AddonInfoFragment extends AbstractInfoFragment {
 
     @Override
     protected boolean setupFAB(final FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FAB.enableBusyAnimation(true);
-                Addons.ExecuteAddon action = new Addons.ExecuteAddon(addonId);
-                action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        if (!isAdded()) return;
-                        FAB.enableBusyAnimation(false);
-                    }
+        FAB.setOnFabClickListener(v -> {
+            FAB.enableBusyAnimation(true);
+            Addons.ExecuteAddon action = new Addons.ExecuteAddon(addonId);
+            action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (!isAdded()) return;
+                    FAB.enableBusyAnimation(false);
+                }
 
-                    @Override
-                    public void onError(int errorCode, String description) {
-                        if (!isAdded()) return;
-                        FAB.enableBusyAnimation(false);
-                        // Got an error, show toast
-                        Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                             .show();
-                    }
-                }, callbackHandler);
-            }
+                @Override
+                public void onError(int errorCode, String description) {
+                    if (!isAdded()) return;
+                    FAB.enableBusyAnimation(false);
+                    // Got an error, show toast
+                    Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
+                         .show();
+                }
+            }, callbackHandler);
         });
         return true;
     }
 
     private void setupEnabledButton() {
-        setOnSeenListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Boolean isEnabled = (v.getTag() == null)? false : (Boolean)v.getTag();
+        setOnSeenListener(v -> {
+            final boolean isEnabled = v.getTag() != null && (Boolean) v.getTag();
 
-                Addons.SetAddonEnabled action = new Addons.SetAddonEnabled(addonId, !isEnabled);
-                action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        if (!isAdded()) return;
-                        int messageResId = (!isEnabled) ? R.string.addon_enabled : R.string.addon_disabled;
-                        Toast.makeText(getActivity(), messageResId, Toast.LENGTH_SHORT).show();
-                        setSeenButtonState(!isEnabled);
-                        setFabButtonState(!isEnabled);
-                    }
+            Addons.SetAddonEnabled action = new Addons.SetAddonEnabled(addonId, !isEnabled);
+            action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (!isAdded()) return;
+                    int messageResId = (!isEnabled) ? R.string.addon_enabled : R.string.addon_disabled;
+                    Toast.makeText(requireContext(), messageResId, Toast.LENGTH_SHORT).show();
+                    setSeenButtonState(!isEnabled);
+                    setFabButtonState(!isEnabled);
+                }
 
-                    @Override
-                    public void onError(int errorCode, String description) {
-                        if (!isAdded()) return;
-                        Toast.makeText(getActivity(),
-                                       String.format(getString(R.string.general_error_executing_action), description),
-                                       Toast.LENGTH_SHORT)
-                             .show();
-                    }
-                }, callbackHandler);
-            }
+                @Override
+                public void onError(int errorCode, String description) {
+                    if (!isAdded()) return;
+                    Toast.makeText(requireContext(),
+                                   String.format(getString(R.string.general_error_executing_action), description),
+                                   Toast.LENGTH_SHORT)
+                         .show();
+                }
+            }, callbackHandler);
         });
 
         // Get the addon details, this is done asyhnchronously
@@ -169,33 +166,30 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     private void setupPinButton() {
-        final int hostId = HostManager.getInstance(getContext()).getHostInfo().getId();
+        final int hostId = HostManager.getInstance(requireContext()).getHostInfo().getId();
 
-        setOnPinClickedListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final boolean isBookmarked = (view.getTag() == null) ? true : !(Boolean) view.getTag();
+        setOnPinClickedListener(view -> {
+            final boolean isBookmarked = view.getTag() == null || !(Boolean) view.getTag();
 
-                String name = getDataHolder().getTitle();
-                String path = addonId;
+            String name = getDataHolder().getTitle();
+            String path = addonId;
 
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-                Set<String> bookmarks = new HashSet<>(prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.<String>emptySet()));
-                if (isBookmarked)
-                    bookmarks.add(path);
-                else
-                    bookmarks.remove(path);
-                prefs.edit()
-                     .putStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), bookmarks)
-                     .putString(Settings.getNameBookmarkedAddonsPrefKey(hostId) + path, name)
-                     .apply();
-                Toast.makeText(getActivity(), isBookmarked ? R.string.addon_pinned : R.string.addon_unpinned, Toast.LENGTH_SHORT).show();
-                setPinButtonState(!isBookmarked);
-            }
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            Set<String> bookmarks = new HashSet<>(prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.emptySet()));
+            if (isBookmarked)
+                bookmarks.add(path);
+            else
+                bookmarks.remove(path);
+            prefs.edit()
+                 .putStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), bookmarks)
+                 .putString(Settings.getNameBookmarkedAddonsPrefKey(hostId) + path, name)
+                 .apply();
+            Toast.makeText(getActivity(), isBookmarked ? R.string.addon_pinned : R.string.addon_unpinned, Toast.LENGTH_SHORT).show();
+            setPinButtonState(!isBookmarked);
         });
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        Set<String> bookmarked = prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.<String>emptySet());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        Set<String> bookmarked = prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.emptySet());
         setPinButtonState(bookmarked.contains(addonId));
     }
 }
