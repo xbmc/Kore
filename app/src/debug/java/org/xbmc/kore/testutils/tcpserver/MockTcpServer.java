@@ -16,13 +16,14 @@
 
 package org.xbmc.kore.testutils.tcpserver;
 
-import com.squareup.okhttp.internal.Util;
+import androidx.annotation.NonNull;
+
+import okhttp3.internal.Util;
 
 import org.xbmc.kore.utils.LogUtils;
 
 import java.io.IOException;
 
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -41,7 +42,7 @@ import javax.net.ServerSocketFactory;
 public class MockTcpServer {
     public static final String TAG = LogUtils.makeLogTag(MockTcpServer.class);
 
-    private ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
+    private final ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
     private ServerSocket serverSocket;
     private boolean running;
     private ExecutorService executor;
@@ -49,7 +50,7 @@ public class MockTcpServer {
     private InetSocketAddress inetSocketAddress;
 
     private final Set<Socket> openClientSockets =
-            Collections.newSetFromMap(new ConcurrentHashMap<Socket, Boolean>());
+            Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     private final TcpServerConnectionHandler connectionHandler;
 
@@ -60,8 +61,6 @@ public class MockTcpServer {
     public interface TcpServerConnectionHandler {
         /**
          * Processes received input
-         * @param socket
-         * @return id of associated response if any, -1 if more input is needed.
          */
         void processInput(Socket socket);
 
@@ -79,7 +78,6 @@ public class MockTcpServer {
 
     /**
      * Starts the server on localhost on a random free port
-     * @throws IOException
      */
     public void start() throws IOException {
         start(new InetSocketAddress(InetAddress.getByName("localhost"), 0));
@@ -88,7 +86,6 @@ public class MockTcpServer {
     /**
      *
      * @param inetSocketAddress set portnumber to 0 to select a random free port
-     * @throws IOException
      */
     public void start(InetSocketAddress inetSocketAddress) throws IOException {
         if (running) throw new IllegalStateException("start() already called");
@@ -175,23 +172,19 @@ public class MockTcpServer {
     }
 
     private void serveConnection(final Socket socket) {
-        executor.execute(new Runnable() {
+        executor.execute(() -> {
+            try {
+                LogUtils.LOGD(TAG, "serveConnection: handling client " + socket.getInetAddress()
+                                   + ":" + socket.getLocalPort());
 
-            @Override
-            public void run() {
-                try {
-                    LogUtils.LOGD(TAG, "serveConnection: handling client " + socket.getInetAddress()
-                                       + ":" + socket.getLocalPort());
+                connectionHandler.processInput(socket);
+                socket.close();
 
-                    connectionHandler.processInput(socket);
-                    socket.close();
-
-                    synchronized (openClientSockets) {
-                        openClientSockets.remove(socket);
-                    }
-                } catch (IOException e) {
-                    LogUtils.LOGW(TAG, "processing input from " + socket.getInetAddress() + " failed: " + e);
+                synchronized (openClientSockets) {
+                    openClientSockets.remove(socket);
                 }
+            } catch (IOException e) {
+                LogUtils.LOGW(TAG, "processing input from " + socket.getInetAddress() + " failed: " + e);
             }
         });
 
@@ -223,6 +216,7 @@ public class MockTcpServer {
         });
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "MockTcpServer[" + port + "]";

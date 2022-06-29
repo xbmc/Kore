@@ -24,8 +24,9 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.picasso.OkHttpDownloader;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import org.xbmc.kore.Settings;
@@ -39,6 +40,7 @@ import org.xbmc.kore.utils.NetUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Manages XBMC Hosts
@@ -52,12 +54,12 @@ public class HostManager {
 	// Singleton instance
 	private static volatile HostManager instance = null;
 
-	private Context context;
+	private final Context context;
 
 	/**
 	 * Arraylist that will hold all the hosts in the database
 	 */
-	private ArrayList<HostInfo> hosts = new ArrayList<HostInfo>();
+	private ArrayList<HostInfo> hosts = new ArrayList<>();
 
 	/**
 	 * Current host
@@ -226,33 +228,17 @@ public class HostManager {
 //                        .indicatorsEnabled(BuildConfig.DEBUG)
 //                        .build();
 
-                // Http client should already handle authentication
-                OkHttpClient picassoClient = getConnection().getOkHttpClient().clone();
-
-//                OkHttpClient picassoClient = new OkHttpClient();
-//                // Set authentication on the client
-//                if (!TextUtils.isEmpty(currentHostInfo.getUsername())) {
-//                    picassoClient.interceptors().add(new Interceptor() {
-//                        @Override
-//                        public Response intercept(Chain chain) throws IOException {
-//
-//                            String creds = currentHostInfo.getUsername() + ":" + currentHostInfo.getPassword();
-//                            Request newRequest = chain.request().newBuilder()
-//                                    .addHeader("Authorization",
-//                                            "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP))
-//                                    .build();
-//                            return chain.proceed(newRequest);
-//                        }
-//                    });
-//                }
-
-                // Set cache
+                // Create the okHttpCliente, with default timeout, authentication and cache
                 File cacheDir = NetUtils.createDefaultCacheDir(context);
                 long cacheSize = NetUtils.calculateDiskCacheSize(cacheDir);
-                picassoClient.setCache(new com.squareup.okhttp.Cache(cacheDir,cacheSize));
+                OkHttpClient picassoClient = new OkHttpClient.Builder()
+                        .connectTimeout(getConnection().getConnectTimeout(), TimeUnit.MILLISECONDS)
+                        .authenticator(getConnection().getOkHttpAuthenticator())
+                        .cache(new Cache(cacheDir, cacheSize))
+                        .build();
 
                 currentPicasso = new Picasso.Builder(context)
-                        .downloader(new OkHttpDownloader(picassoClient))
+                        .downloader(new OkHttp3Downloader(picassoClient))
 //                        .indicatorsEnabled(BuildConfig.DEBUG)
                         .build();
             }
@@ -368,7 +354,7 @@ public class HostManager {
 
         Uri newUri = context.getContentResolver()
                             .insert(MediaContract.Hosts.CONTENT_URI, values);
-        long newId = Long.valueOf(MediaContract.Hosts.getHostId(newUri));
+        long newId = Long.parseLong(MediaContract.Hosts.getHostId(newUri));
 
 		// Refresh the list and return the created host
 		hosts = getHosts(true);
@@ -431,13 +417,8 @@ public class HostManager {
      */
 	public void deleteHost(final int hostId) {
         // Async call delete. The triggers to delete all host information can take some time
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                context.getContentResolver()
-                       .delete(MediaContract.Hosts.buildHostUri(hostId), null, null);
-            }
-        }).start();
+        new Thread(() -> context.getContentResolver()
+                        .delete(MediaContract.Hosts.buildHostUri(hostId), null, null)).start();
 
         // Refresh information
         int index = -1;

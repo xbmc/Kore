@@ -174,7 +174,6 @@ public class NotificationObserver
         return currentNotification;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void notifyPlaying(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                PlayerType.PropertyValue getPropertiesResult,
                                ListType.ItemsAll getItemResult) {
@@ -304,7 +303,7 @@ public class NotificationObserver
                 }
 
                 @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
                     CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(service, title);
                     showNotification(Utils.drawableToBitmap(avatarDrawable, posterWidth, posterHeight));
                 }

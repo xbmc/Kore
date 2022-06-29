@@ -107,8 +107,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
-    implementation 'com.squareup.okhttp:okhttp:2.3.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'de.greenrobot:eventbus:2.4.0'
     implementation 'org.jmdns:jmdns:3.5.7'
     implementation 'at.blogc:expandabletextview:1.0.5'
