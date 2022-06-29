@@ -19,6 +19,7 @@ import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
@@ -59,7 +60,7 @@ public class MoviesActivity extends BaseMediaActivity
     }
 
     @Override
-    protected void onSaveInstanceState (Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(MOVIEID, selectedMovieId);
         outState.putString(MOVIETITLE, selectedMovieTitle);

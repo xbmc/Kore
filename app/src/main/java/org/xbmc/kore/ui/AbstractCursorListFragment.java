@@ -16,22 +16,11 @@
 
 package org.xbmc.kore.ui;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,6 +30,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostInfo;
@@ -84,7 +81,6 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	abstract protected CursorLoader createCursorLoader();
 	abstract protected RecyclerViewCursorAdapter createCursorAdapter();
 
-	@TargetApi(16)
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,9 +97,9 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	}
 
 	@Override
-	public void onActivityCreated (Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		getLoaderManager().initLoader(LOADER, null, this);
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		LoaderManager.getInstance(this).initLoader(LOADER, null, this);
 	}
 
 	@Override
@@ -150,7 +146,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 	}
 
 	@Override
-	final protected RecyclerView.Adapter createAdapter() {
+	final protected RecyclerViewCursorAdapter createAdapter() {
 		return createCursorAdapter();
 	}
 
@@ -236,7 +232,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
     @Override
     public void onServiceConnected(LibrarySyncService librarySyncService) {
-        HostInfo hostInfo = HostManager.getInstance(getActivity()).getHostInfo();
+        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         SyncItem syncItem = SyncUtils.getCurrentSyncItem(librarySyncService, hostInfo, getListSyncType());
         if (syncItem != null) {
             boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
@@ -362,7 +358,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		inflater.inflate(R.menu.media_search, menu);
 		MenuItem searchMenuItem = menu.findItem(R.id.action_search);
 		if (searchMenuItem != null) {
-			searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+			searchView = (SearchView) searchMenuItem.getActionView();
 			searchView.setOnQueryTextListener(this);
 			searchView.setQueryHint(getString(R.string.action_search));
 			if (!TextUtils.isEmpty(savedSearchFilter)) {
@@ -372,7 +368,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 				searchView.clearFocus();
 			}
 
-			MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+			searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
 				@Override
 				public boolean onMenuItemActionExpand(MenuItem item) {
 					return true;
@@ -404,7 +400,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 		//When loader is restarted while current loader hasn't finished yet,
 		//it may result in none of the loaders finishing.
 		if(!loaderLoading) {
-			getLoaderManager().restartLoader(LOADER, null, this);
+			LoaderManager.getInstance(this).restartLoader(LOADER, null, this);
 		}
 	}
 }

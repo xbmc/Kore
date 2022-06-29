@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -83,7 +84,7 @@ public class PVRActivity extends BaseMediaActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(CHANNELID, selectedChannelId);
         outState.putString(CHANNELTITLE, selectedChannelTitle);

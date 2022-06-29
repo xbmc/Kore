@@ -66,8 +66,6 @@ public class AbstractFragment extends Fragment {
 
         private Bundle bundle;
 
-        private DataHolder() {}
-
         public DataHolder(Bundle bundle) {
             setBundle(bundle);
         }

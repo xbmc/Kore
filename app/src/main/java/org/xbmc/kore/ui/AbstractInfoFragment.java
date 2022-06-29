@@ -40,6 +40,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -82,12 +84,23 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private ServiceConnection serviceConnection;
     private RefreshItem refreshItem;
     private boolean expandDescription;
-    private int methodId;
+    private int methodId; // Last Kodi Open method id executed
 
     /**
      * Handler on which to post RPC callbacks
      */
     private final Handler callbackHandler = new Handler();
+
+    // Permission check callback
+    private final ActivityResultLauncher<String> downloadFilesPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    binding.mediaActionDownload.performClick();
+                } else {
+                    Toast.makeText(getActivity(), R.string.write_storage_permission_denied, Toast.LENGTH_SHORT)
+                         .show();
+                }
+            });
 
     /**
      * Use {@link #setDataHolder(DataHolder)}
@@ -97,12 +110,10 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         super();
     }
 
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hostManager = HostManager.getInstance(getActivity());
+        hostManager = HostManager.getInstance(requireContext());
         hostInfo = hostManager.getHostInfo();
     }
 
@@ -162,15 +173,15 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-        if (savedInstanceState != null) {
-            int methodId = savedInstanceState.getInt(BUNDLE_KEY_APIMETHOD_PENDING);
-
-            binding.fab.enableBusyAnimation(HostManager.getInstance(getContext()).getConnection()
-                       .updateClientCallback(methodId, createPlayItemOnKodiCallback(),
+        if ((savedInstanceState != null) &&
+            (savedInstanceState.containsKey(BUNDLE_KEY_APIMETHOD_PENDING))) {
+            binding.fab.enableBusyAnimation(HostManager.getInstance(requireContext()).getConnection()
+                       .updateClientCallback(savedInstanceState.getInt(BUNDLE_KEY_APIMETHOD_PENDING),
+                                             createPlayItemOnKodiCallback(),
                                              callbackHandler));
         }
     }
@@ -256,7 +267,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         }
 
         SyncItem syncItem = SyncUtils.getCurrentSyncItem(librarySyncService,
-            HostManager.getInstance(getActivity()).getHostInfo(),
+            HostManager.getInstance(requireContext()).getHostInfo(),
             refreshItem.getSyncType());
         if (syncItem != null) {
             boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
@@ -292,24 +303,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         binding.fab.enableBusyAnimation(true);
         Player.Open action = new Player.Open(item);
         methodId = action.getId();
-        action.execute(HostManager.getInstance(getActivity()).getConnection(),
+        action.execute(HostManager.getInstance(requireContext()).getConnection(),
                        createPlayItemOnKodiCallback(), callbackHandler);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case Utils.PERMISSION_REQUEST_WRITE_STORAGE:
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.length > 0) &&
-                    (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    binding.mediaActionDownload.performClick();
-                } else {
-                    Toast.makeText(getActivity(), R.string.write_storage_permission_denied, Toast.LENGTH_SHORT)
-                         .show();
-                }
-                break;
-        }
     }
 
     @Override
@@ -505,8 +500,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
         if (!hasStoragePermission) {
-            requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                               Utils.PERMISSION_REQUEST_WRITE_STORAGE);
+            downloadFilesPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             return false;
         }
 

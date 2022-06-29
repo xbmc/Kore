@@ -158,7 +158,7 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
     }
 
     @Override
-    public void onSaveInstanceState (Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
         outState.putBoolean(SINGLECHANNELGROUP, singleChannelGroup);
