@@ -17,7 +17,6 @@
  */
 
 package org.xbmc.kore.eventclient;
-import java.nio.charset.Charset;
 
 /**
  * XBMC Event Client Class

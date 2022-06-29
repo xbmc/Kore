@@ -49,7 +49,7 @@ public class PacketBUTTON extends Packet {
      * time delays between queued presses. (default: 0)
 	 * @param amount unimplemented for now; in the future it will be used for
      * specifying magnitude of analog key press events
-	 * @param axis 
+	 * @param axis Axis
 	 */
 	public PacketBUTTON(short code, boolean repeat, boolean down, boolean queue, short amount, byte axis)
 	{
@@ -85,7 +85,7 @@ public class PacketBUTTON extends Packet {
      * time delays between queued presses. (default: 0)
 	 * @param amount unimplemented for now; in the future it will be used for
      * specifying magnitude of analog key press events
-	 * @param axis 
+	 * @param axis Axis
 	 */
 	public PacketBUTTON(String map_name, String button_name, boolean repeat, boolean down, boolean queue, short amount, byte axis)
 	{
@@ -121,7 +121,7 @@ public class PacketBUTTON extends Packet {
      * time delays between queued presses. (default: 0)
 	 * @param amount unimplemented for now; in the future it will be used for
      * specifying magnitude of analog key press events
-	 * @param axis 
+	 * @param axis Axis
 	 * @param flags Packet specific flags
 	 */
 	private void appendPayload(short code, String map_name, String button_name, boolean repeat, boolean down, boolean queue, short amount, byte axis, short flags)

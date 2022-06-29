@@ -135,7 +135,7 @@ public class AudioLibrary {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                     (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ApiList<>(new ArrayList<AudioType.DetailsArtist>(0), limits);
+                return new ApiList<>(new ArrayList<>(0), limits);
             }
             ArrayList<AudioType.DetailsArtist> result = new ArrayList<>(items.size());
 
@@ -193,7 +193,7 @@ public class AudioLibrary {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ApiList<>(new ArrayList<AudioType.DetailsAlbum>(0), limits);
+                return new ApiList<>(new ArrayList<>(0), limits);
             }
             ArrayList<AudioType.DetailsAlbum> result = new ArrayList<>(items.size());
             for (JsonNode item : items) {
@@ -235,9 +235,9 @@ public class AudioLibrary {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<LibraryType.DetailsGenre>(0);
+                return new ArrayList<>(0);
             }
-            ArrayList<LibraryType.DetailsGenre> result = new ArrayList<LibraryType.DetailsGenre>(items.size());
+            ArrayList<LibraryType.DetailsGenre> result = new ArrayList<>(items.size());
             for (JsonNode item : items) {
                 result.add(new LibraryType.DetailsGenre(item));
             }
@@ -292,7 +292,7 @@ public class AudioLibrary {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ApiList<>(new ArrayList<AudioType.DetailsSong>(0), limits);
+                return new ApiList<>(new ArrayList<>(0), limits);
             }
             ArrayList<AudioType.DetailsSong> result = new ArrayList<>(items.size());
             for (JsonNode item : items) {

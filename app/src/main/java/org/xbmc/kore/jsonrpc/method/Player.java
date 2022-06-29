@@ -53,7 +53,7 @@ public class Player {
         @Override
         public ArrayList<GetActivePlayersReturnType> resultFromJson(ObjectNode jsonObject) throws ApiException {
             ArrayNode resultNode = (ArrayNode)jsonObject.get(RESULT_NODE);
-            ArrayList<GetActivePlayersReturnType> res = new ArrayList<GetActivePlayersReturnType>();
+            ArrayList<GetActivePlayersReturnType> res = new ArrayList<>();
             if (resultNode != null) {
                 for (JsonNode node : resultNode) {
                     res.add(new GetActivePlayersReturnType(node));
@@ -257,7 +257,7 @@ public class Player {
             addParameterToRequest("playerid", playerId);
             ObjectNode valueObject = objectMapper.createObjectNode();
             if (value != null)
-                valueObject.put("time", value.toJsonNode());
+                valueObject.set("time", value.toJsonNode());
             addParameterToRequest("value", valueObject);
         }
 

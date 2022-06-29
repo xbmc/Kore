@@ -79,7 +79,7 @@ public class ApiException extends Exception {
 
     public static int API_WAITING_ON_RESULT_INTERRUPTED = 104;
 
-    private int code;
+    private final int code;
 
 	/**
 	 * Constructor

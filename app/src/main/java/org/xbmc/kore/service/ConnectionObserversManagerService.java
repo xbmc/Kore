@@ -55,7 +55,7 @@ public class ConnectionObserversManagerService extends Service
     private NotificationObserver notificationObserver;
 
     private boolean somethingIsPlaying = false;
-    private Handler stopHandler = new Handler();
+    private final Handler stopHandler = new Handler();
 
     @Override
     public void onCreate() {
@@ -182,17 +182,14 @@ public class ConnectionObserversManagerService extends Service
         somethingIsPlaying = false;
 
         // Stop service if nothing starts in a couple of seconds
-        stopHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!somethingIsPlaying) {
-                    LogUtils.LOGD(TAG, "Stopping service");
-                    if (hostConnectionObserver != null) {
-                        hostConnectionObserver.unregisterPlayerObserver(ConnectionObserversManagerService.this);
-                    }
-                    stopForeground(true);
-                    stopSelf();
+        stopHandler.postDelayed(() -> {
+            if (!somethingIsPlaying) {
+                LogUtils.LOGD(TAG, "Stopping service");
+                if (hostConnectionObserver != null) {
+                    hostConnectionObserver.unregisterPlayerObserver(ConnectionObserversManagerService.this);
                 }
+                stopForeground(true);
+                stopSelf();
             }
         }, 5000);
     }

@@ -21,5 +21,5 @@ import com.fasterxml.jackson.databind.JsonNode;
  * Interface that should be implemented by all API types that can be parameters to methods
  */
 public interface ApiParameter {
-    public JsonNode toJsonNode();
+    JsonNode toJsonNode();
 }

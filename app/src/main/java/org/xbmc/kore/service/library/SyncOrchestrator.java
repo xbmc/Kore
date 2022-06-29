@@ -33,8 +33,8 @@ import de.greenrobot.event.EventBus;
 public class SyncOrchestrator {
     public static final String TAG = LogUtils.makeLogTag(SyncOrchestrator.class);
 
-    private ArrayDeque<SyncItem> syncItems;
-    private Service syncService;
+    private final ArrayDeque<SyncItem> syncItems;
+    private final Service syncService;
     private final int serviceStartId;
     private HostConnection hostConnection;
     private final HostInfo hostInfo;
@@ -64,7 +64,7 @@ public class SyncOrchestrator {
                             final Handler callbackHandler,
                             final ContentResolver contentResolver) {
         this.syncService = syncService;
-        this.syncItems = new ArrayDeque<SyncItem>();
+        this.syncItems = new ArrayDeque<>();
         this.serviceStartId = startId;
         this.hostInfo = hostInfo;
         this.callbackHandler = callbackHandler;

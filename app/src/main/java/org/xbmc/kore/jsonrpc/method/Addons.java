@@ -99,9 +99,9 @@ public class Addons {
             ArrayNode items = resultNode.has(LIST_NODE) ?
                               (ArrayNode)resultNode.get(LIST_NODE) : null;
             if (items == null) {
-                return new ArrayList<AddonType.Details>(0);
+                return new ArrayList<>(0);
             }
-            ArrayList<AddonType.Details> result = new ArrayList<AddonType.Details>(items.size());
+            ArrayList<AddonType.Details> result = new ArrayList<>(items.size());
 
             for (JsonNode item : items) {
                 result.add(new AddonType.Details(item));

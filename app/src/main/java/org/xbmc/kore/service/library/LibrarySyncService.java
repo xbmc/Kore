@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.service.library;
 
-import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -29,7 +28,6 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -95,12 +93,7 @@ public class LibrarySyncService extends Service {
 
         SyncOrchestrator syncOrchestrator = new SyncOrchestrator(this, startId, hostInfo,
                 callbackHandler, getContentResolver());
-        syncOrchestrator.setListener(new SyncOrchestrator.OnSyncListener() {
-            @Override
-            public void onSyncFinished(SyncOrchestrator syncOrchestrator) {
-                stopSelf(startId);
-            }
-        });
+        syncOrchestrator.setListener(syncOrchestrator1 -> stopSelf(startId));
 
         syncOrchestrators.add(syncOrchestrator);
 
@@ -179,11 +172,9 @@ public class LibrarySyncService extends Service {
      * @return currently syncing syncitems for given hostInfo
      */
     public ArrayList<SyncItem> getItemsSyncing(HostInfo hostInfo) {
-        ArrayList<SyncItem> syncItems = new ArrayList<>();
-        for( SyncOrchestrator orchestrator : syncOrchestrators) {
-            if( orchestrator.getHostInfo().getId() == hostInfo.getId() ) {
-                syncItems.addAll(orchestrator.getSyncItems());
-                return syncItems;
+        for(SyncOrchestrator orchestrator : syncOrchestrators) {
+            if(orchestrator.getHostInfo().getId() == hostInfo.getId() ) {
+                return new ArrayList<>(orchestrator.getSyncItems());
             }
         }
         return null;

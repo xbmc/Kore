@@ -98,7 +98,7 @@ public class Files {
             if (items == null) {
                 return new ArrayList<>(0);
             }
-            ArrayList<ItemType.Source> result = new ArrayList<ItemType.Source>(items.size());
+            ArrayList<ItemType.Source> result = new ArrayList<>(items.size());
 
             for (JsonNode item : items) {
                 result.add(new ItemType.Source(item));
