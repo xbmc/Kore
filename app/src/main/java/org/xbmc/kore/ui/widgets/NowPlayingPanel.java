@@ -151,6 +151,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
         binding.nppPrevious.setVisibility(visibility);
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     public void setSquarePoster(boolean square) {
         if (square) {
             ViewGroup.LayoutParams layoutParams = binding.nppPoster.getLayoutParams();

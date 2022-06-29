@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.video;
 
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +23,7 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.loader.app.LoaderManager;
@@ -62,7 +62,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     // Displayed episode
     private int tvshowId = -1;
@@ -77,16 +77,13 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
 
     @Override
     protected RefreshItem createRefreshItem() {
-        RefreshItem refreshItem = new RefreshItem(getActivity(),
+        RefreshItem refreshItem = new RefreshItem(requireContext(),
                                                   LibrarySyncService.SYNC_SINGLE_TVSHOW);
         refreshItem.setSyncItem(LibrarySyncService.SYNC_TVSHOWID, tvshowId);
-        refreshItem.setListener(new RefreshItem.RefreshItemListener() {
-            @Override
-            public void onSyncProcessEnded(MediaSyncEvent event) {
-                if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                    getLoaderManager().restartLoader(LOADER_EPISODE, null,
-                                                     TVShowEpisodeInfoFragment.this);
-                }
+        refreshItem.setListener(event -> {
+            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+                LoaderManager.getInstance(this).restartLoader(LOADER_EPISODE, null,
+                                                 TVShowEpisodeInfoFragment.this);
             }
         });
         return refreshItem;
@@ -94,41 +91,28 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
 
     @Override
     protected boolean setupMediaActionBar() {
-        setOnDownloadListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                downloadEpisode();
-            }
-        });
+        setOnDownloadListener(view -> downloadEpisode());
 
-        setOnAddToPlaylistListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.addToPlaylist(TVShowEpisodeInfoFragment.this, getDataHolder().getId(),
-                                    PlaylistType.GetPlaylistsReturnType.VIDEO);
-            }
-        });
+        setOnAddToPlaylistListener(view -> Utils.addToPlaylist(TVShowEpisodeInfoFragment.this, getDataHolder().getId(),
+                                                       PlaylistType.GetPlaylistsReturnType.VIDEO));
 
-        setOnSeenListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Integer playcount = cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT);
-                int newPlaycount = (playcount > 0) ? 0 : 1;
+        setOnSeenListener(view -> {
+            int playcount = cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT);
+            int newPlaycount = (playcount > 0) ? 0 : 1;
 
-                VideoLibrary.SetEpisodeDetails action =
-                        new VideoLibrary.SetEpisodeDetails(getDataHolder().getId(), newPlaycount, null);
-                action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        // Force a refresh, but don't show a message
-                        if (!isAdded()) return;
-                        getRefreshItem().startSync(true);
-                    }
+            VideoLibrary.SetEpisodeDetails action =
+                    new VideoLibrary.SetEpisodeDetails(getDataHolder().getId(), newPlaycount, null);
+            action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    // Force a refresh, but don't show a message
+                    if (!isAdded()) return;
+                    getRefreshItem().startSync(true);
+                }
 
-                    @Override
-                    public void onError(int errorCode, String description) { }
-                }, callbackHandler);
-            }
+                @Override
+                public void onError(int errorCode, String description) { }
+            }, callbackHandler);
         });
 
         return true;
@@ -155,37 +139,37 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.tvshowId = getArguments().getInt(BUNDLE_KEY_TVSHOWID, -1);
+        Bundle args = getArguments();
+        this.tvshowId = (args == null) ? -1 : args.getInt(BUNDLE_KEY_TVSHOWID, -1);
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getLoaderManager().initLoader(LOADER_EPISODE, null, this);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LoaderManager.getInstance(this).initLoader(LOADER_EPISODE, null, this);
     }
 
-    /**
+    /*
      * Loader callbacks
      */
     /** {@inheritDoc} */
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri;
         switch (i) {
             case LOADER_EPISODE:
+            default:
                 uri = MediaContract.Episodes.buildTVShowEpisodeUri(getHostInfo().getId(), tvshowId,
                                                                    getDataHolder().getId());
-                return new CursorLoader(getActivity(), uri,
+                return new CursorLoader(requireContext(), uri,
                                         EpisodeDetailsQuery.PROJECTION, null, null, null);
-            default:
-                return null;
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             switch (cursorLoader.getId()) {
                 case LOADER_EPISODE:
@@ -201,7 +185,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
 
                     String director = cursor.getString(EpisodeDetailsQuery.DIRECTOR);
                     if (!TextUtils.isEmpty(director)) {
-                        director = getActivity().getResources().getString(R.string.directors) + " " + director;
+                        director = requireContext().getResources().getString(R.string.directors) + " " + director;
                     }
                     int runtime = cursor.getInt(EpisodeDetailsQuery.RUNTIME) / 60;
                     String durationPremiered = runtime > 0 ?
@@ -240,7 +224,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
 
     /** {@inheritDoc} */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
     }
 
@@ -248,43 +232,28 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
         // Check if the directory exists and whether to overwrite it
         File file = new File(fileDownloadHelper.getAbsoluteFilePath());
         if (file.exists()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle(R.string.download)
                    .setMessage(R.string.download_file_exists)
                    .setPositiveButton(R.string.overwrite,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                               fileDownloadHelper, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
+                                      (dialog, which) -> FileDownloadHelper.downloadFiles(requireContext(), getHostInfo(),
+                                                                       fileDownloadHelper, FileDownloadHelper.OVERWRITE_FILES,
+                                                                       callbackHandler))
                    .setNeutralButton(R.string.download_with_new_name,
-                                     new DialogInterface.OnClickListener() {
-                                         @Override
-                                         public void onClick(DialogInterface dialog, int which) {
-                                             FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                              fileDownloadHelper, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
-                                                                              callbackHandler);
-                                         }
-                                     })
+                                     (dialog, which) -> FileDownloadHelper.downloadFiles(requireContext(), getHostInfo(),
+                                                                      fileDownloadHelper, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
+                                                                      callbackHandler))
                    .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                    .show();
         } else {
             // Confirm that the user really wants to download the file
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle(R.string.download)
                    .setMessage(R.string.confirm_episode_download)
                    .setPositiveButton(android.R.string.ok,
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              FileDownloadHelper.downloadFiles(getActivity(), getHostInfo(),
-                                                                               fileDownloadHelper, FileDownloadHelper.OVERWRITE_FILES,
-                                                                               callbackHandler);
-                                          }
-                                      })
+                                      (dialog, which) -> FileDownloadHelper.downloadFiles(requireContext(), getHostInfo(),
+                                                                       fileDownloadHelper, FileDownloadHelper.OVERWRITE_FILES,
+                                                                       callbackHandler))
                    .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                    .setOnCancelListener(dialog -> setDownloadButtonState(false))
                    .show();

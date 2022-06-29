@@ -16,7 +16,6 @@
 package org.xbmc.kore.ui.sections.video;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -28,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -59,7 +59,7 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler();
 
     private static final String BUNDLE_KEY_CHANNELID = "bundle_key_channelid";
 
@@ -77,16 +77,13 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
 
     @Override
     protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
-        return new RecyclerViewEmptyViewSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-            }
+        return (view, position) -> {
         };
     }
 
     @Override
-    protected RecyclerView.Adapter createAdapter() {
-        return new BoadcastsAdapter(getActivity());
+    protected RecyclerView.Adapter<BroadcastViewHolder> createAdapter() {
+        return new BoadcastsAdapter(requireContext());
     }
 
     @Override
@@ -99,31 +96,26 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
         View root = super.onCreateView(inflater, container, savedInstanceState);
 
         Bundle bundle = getArguments();
-        channelId = bundle.getInt(BUNDLE_KEY_CHANNELID, -1);
+        channelId = (bundle == null) ? -1 : bundle.getInt(BUNDLE_KEY_CHANNELID, -1);
 
         if (channelId == -1) {
             // There's nothing to show
             return null;
         }
 
-        hostManager = HostManager.getInstance(getActivity());
+        hostManager = HostManager.getInstance(requireContext());
 
         binding.swipeRefreshLayout.setOnRefreshListener(this);
 
         TextView emptyView = getEmptyView();
-        emptyView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
+        emptyView.setOnClickListener(v -> onRefresh());
 
         return root;
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         setSupportsSearch(true);
         browseEPG();
@@ -141,7 +133,7 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
             browseEPG();
         } else {
             binding.swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
                  .show();
         }
     }
@@ -177,7 +169,7 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
                 // To prevent the empty text from appearing on the first load, set it now
                 TextView emptyView = getEmptyView();
                 emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
-                Toast.makeText(getActivity(),
+                Toast.makeText(requireContext(),
                                String.format(getString(R.string.error_getting_pvr_info), description),
                                Toast.LENGTH_SHORT).show();
                 hideRefreshAnimation();
@@ -217,13 +209,8 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
     }
 
     public boolean searchFilterWordMatches(String lcWord, PVRType.DetailsBroadcast item) {
-        if (item.title.toLowerCase().contains(lcWord)) {
-            return true;
-        }
-        if (item.plot.toLowerCase().contains(lcWord)){
-            return true;
-        }
-        return false;
+        return item.title.toLowerCase().contains(lcWord) ||
+               item.plot.toLowerCase().contains(lcWord);
     }
 
     /**
@@ -236,10 +223,10 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
         boadcastsAdapter.setItems(result);
     }
 
-    private class BoadcastsAdapter extends RecyclerView.Adapter {
+    private class BoadcastsAdapter extends RecyclerView.Adapter<BroadcastViewHolder> {
 
         private List<EPGListRow>  items;
-        private Context context;
+        private final Context context;
 
         public BoadcastsAdapter(Context context) {
             super();
@@ -248,23 +235,24 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull BroadcastViewHolder holder, int position) {
             EPGListRow item = this.getItem(position);
-            ((PVRChannelEPGListFragment.BroadcastViewHolder) holder).bindView(item, getContext());
+            if (item != null)
+                holder.bindView(item, getContext());
         }
 
         /** {@inheritDoc} */
         @Override
         public int getItemViewType(int position) {
-            return this.getItem(position).rowType;
+            EPGListRow item = this.getItem(position);
+            return (item == null) ? -1 : item.rowType;
         }
 
         /** {@inheritDoc} */
+        @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int rowType) {
+        public BroadcastViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int rowType) {
             View view;
-            PVRChannelEPGListFragment.BroadcastViewHolder viewHolder;
-
             // For a broadcast
             if (rowType == EPGListRow.TYPE_BROADCAST) {
                 view = LayoutInflater
@@ -276,10 +264,7 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
                         .from(context)
                         .inflate(R.layout.list_item_day, viewGroup, false);
             }
-
-            viewHolder = new BroadcastViewHolder(view);
-
-            return viewHolder;
+            return new BroadcastViewHolder(view);
         }
 
         /**
@@ -292,12 +277,6 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
             this.items = EPGListRow.buildFromBroadcastList(details);
 
             notifyDataSetChanged();
-        }
-
-        public List<EPGListRow> getItemList() {
-            if (items == null)
-                return new ArrayList<>();
-            return new ArrayList<>(items);
         }
 
         public EPGListRow getItem(int position) {
@@ -337,11 +316,11 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
         public BroadcastViewHolder(View itemView) {
             super(itemView);
 
-            titleView = (TextView) itemView.findViewById(R.id.title);
-            detailsView = (TextView) itemView.findViewById(R.id.details);
-            startTimeView = (TextView) itemView.findViewById(R.id.start_time);
-            endTimeView = (TextView) itemView.findViewById(R.id.end_time);
-            dayView = (TextView) itemView.findViewById(R.id.day);
+            titleView = itemView.findViewById(R.id.title);
+            detailsView = itemView.findViewById(R.id.details);
+            startTimeView = itemView.findViewById(R.id.start_time);
+            endTimeView = itemView.findViewById(R.id.end_time);
+            dayView = itemView.findViewById(R.id.day);
         }
 
         public void bindView(EPGListRow epgListRow, Context context) {

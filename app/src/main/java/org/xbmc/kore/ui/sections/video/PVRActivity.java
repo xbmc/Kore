@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.ui.sections.video;
 
-import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
@@ -27,7 +26,6 @@ import androidx.fragment.app.FragmentTransaction;
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Controls the presentation of Live TV/Radio and recordings information (list, details)
@@ -154,7 +152,6 @@ public class PVRActivity extends BaseMediaActivity
      * @param channelId Channel selected
      * @param channelTitle Title
      */
-    @TargetApi(21)
     public void onChannelGuideSelected(int channelId, String channelTitle, boolean singleChannelGroup) {
         this.selectedChannelId = channelId;
         this.selectedChannelTitle = channelTitle;
