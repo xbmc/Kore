@@ -139,7 +139,7 @@ public class NowPlayingFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hostManager = HostManager.getInstance(getActivity());
+        hostManager = HostManager.getInstance(requireContext());
         hostConnectionObserver = hostManager.getHostConnectionObserver();
     }
 
@@ -573,7 +573,7 @@ public class NowPlayingFragment extends Fragment
     public void onProgressChanged(int progress) {
         PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
         Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
-        seekAction.execute(HostManager.getInstance(getContext()).getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
+        seekAction.execute(HostManager.getInstance(requireContext()).getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
             @Override
             public void onSuccess(PlayerType.SeekReturnType result) {
                 // Ignore
@@ -592,6 +592,7 @@ public class NowPlayingFragment extends Fragment
      * Sets whats playing information
      * @param getItemResult Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
      */
+    @SuppressWarnings("SuspiciousNameCombination")
     @SuppressLint("DefaultLocale")
     private void setNowPlayingInfo(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                    PlayerType.PropertyValue getPropertiesResult,

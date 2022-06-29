@@ -24,7 +24,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.databinding.ActivityHostManagerBinding;
 import org.xbmc.kore.databinding.ActivityHostWizardBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
@@ -82,7 +81,7 @@ public class AddHostActivity extends BaseActivity
     }
 
     private void setupActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
+        Toolbar toolbar = findViewById(R.id.default_toolbar);
         toolbar.setTitle(R.string.add_xbmc);
         setSupportActionBar(toolbar);
     }

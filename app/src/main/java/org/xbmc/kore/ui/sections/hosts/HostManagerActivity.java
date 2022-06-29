@@ -43,14 +43,14 @@ public class HostManagerActivity extends BaseActivity {
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         if (navigationDrawerFragment != null)
-            navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+            navigationDrawerFragment.setUp(R.id.navigation_drawer, findViewById(R.id.drawer_layout));
 
         // Action bar
         setupToolbar();
     }
 
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.default_toolbar);
+        Toolbar toolbar = findViewById(R.id.default_toolbar);
         toolbar.setTitle(R.string.xbmc_media_center);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

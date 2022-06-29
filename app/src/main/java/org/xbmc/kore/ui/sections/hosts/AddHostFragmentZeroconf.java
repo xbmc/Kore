@@ -299,12 +299,12 @@ public class AddHostFragmentZeroconf extends Fragment {
             }
             ((TextView) convertView.findViewById(R.id.host_address)).setText(hostAddress);
 
-            ImageView statusIndicator = (ImageView)convertView.findViewById(R.id.status_indicator);
+            ImageView statusIndicator = convertView.findViewById(R.id.status_indicator);
             int statusColor = requireActivity().getResources().getColor(R.color.host_status_available);
             statusIndicator.setColorFilter(statusColor);
 
             // Remove context menu
-            ImageView contextMenu = (ImageView)convertView.findViewById(R.id.list_context_menu);
+            ImageView contextMenu = convertView.findViewById(R.id.list_context_menu);
             contextMenu.setVisibility(View.GONE);
 
             return convertView;

@@ -175,7 +175,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
             sortMethod = args.getParcelable(SORT_METHOD);
         }
 
-        hostManager = HostManager.getInstance(getActivity());
+        hostManager = HostManager.getInstance(requireContext());
 
         getEmptyView().setOnClickListener(v -> {
             if (!atRootDirectory())
@@ -586,7 +586,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             LocalFileLocation fileLocation = this.getItem(position);
-            if (fileLocation != null) ((ViewHolder) holder).bindView(fileLocation, position);
+            if (fileLocation != null) holder.bindView(fileLocation, position);
         }
 
         @Override

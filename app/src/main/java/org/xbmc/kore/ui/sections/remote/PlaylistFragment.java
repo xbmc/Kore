@@ -115,7 +115,7 @@ public class PlaylistFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hostManager = HostManager.getInstance(getActivity());
+        hostManager = HostManager.getInstance(requireContext());
         hostConnectionObserver = hostManager.getHostConnectionObserver();
     }
 
@@ -636,6 +636,7 @@ public class PlaylistFragment extends Fragment
             }, callbackHandler);
         }
 
+        @SuppressWarnings("SuspiciousNameCombination")
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;

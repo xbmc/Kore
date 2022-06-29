@@ -33,7 +33,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.TextDirectionHeuristicsCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -66,9 +65,11 @@ import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -132,7 +133,7 @@ public class RemoteActivity extends BaseActivity
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         if (navigationDrawerFragment != null)
-            navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+            navigationDrawerFragment.setUp(R.id.navigation_drawer, findViewById(R.id.drawer_layout));
 
         // Set up pager and fragments
         TabsAdapter tabsAdapter = new TabsAdapter(this, getSupportFragmentManager())
@@ -594,17 +595,27 @@ public class RemoteActivity extends BaseActivity
             } else if (host.endsWith("vimeo.com")) {
                 return PluginUrlUtils.toPluginUrlVimeo(playuri);
             } else if (host.endsWith("svtplay.se")) {
-                Pattern pattern = Pattern.compile(
-                        "^(?:https?://)?(?:www\\.)?svtplay\\.se/video/(\\d+/.*)",
-                        Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(playuri.toString());
-                if (matcher.matches()) {
-                    return "plugin://plugin.video.svtplay/?id=%2Fvideo%2F"
-                           + URLEncoder.encode(matcher.group(1)) + "&mode=video";
+                try {
+                    Pattern pattern = Pattern.compile(
+                            "^(?:https?://)?(?:www\\.)?svtplay\\.se/video/(\\d+/.*)",
+                            Pattern.CASE_INSENSITIVE);
+                    Matcher matcher = pattern.matcher(playuri.toString());
+                    if (matcher.matches()) {
+                        return "plugin://plugin.video.svtplay/?id=%2Fvideo%2F"
+                               + URLEncoder.encode(matcher.group(1), StandardCharsets.UTF_8.name()) + "&mode=video";
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    LogUtils.LOGD(TAG, "Unsuported Encoding Exception: " + e);
+                    return null;
                 }
             } else if (host.endsWith("soundcloud.com")) {
-                return "plugin://plugin.audio.soundcloud/play/?url="
-                        + URLEncoder.encode(playuri.toString());
+                try {
+                    return "plugin://plugin.audio.soundcloud/play/?url="
+                           + URLEncoder.encode(playuri.toString(), StandardCharsets.UTF_8.name());
+                } catch (UnsupportedEncodingException e) {
+                    LogUtils.LOGD(TAG, "Unsuported Encoding Exception: " + e);
+                    return null;
+                }
             } else if (host.endsWith("twitch.tv")) {
                 return PluginUrlUtils.toPluginUrlTwitch(playuri);
             } else if (PluginUrlUtils.isHostArte(host)) {

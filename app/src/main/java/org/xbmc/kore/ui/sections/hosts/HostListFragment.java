@@ -300,7 +300,7 @@ public class HostListFragment extends Fragment {
         return new ConfirmDeleteDialogFragment.ConfirmDeleteDialogListener() {
             @Override
             public void onDialogPositiveClick() {
-                HostManager hostManager = HostManager.getInstance(getActivity());
+                HostManager hostManager = HostManager.getInstance(requireContext());
                 hostManager.deleteHost(hostId);
 
                 for (int i = 0; i < hostInfoRows.size(); i++) {

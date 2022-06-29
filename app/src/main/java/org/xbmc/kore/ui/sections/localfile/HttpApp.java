@@ -37,13 +37,12 @@ public class HttpApp extends NanoHTTPD {
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
     }
 
-    private final int TOKEN_LENGTH = 12;
-
     private String generateToken() {
         StringBuilder token = new StringBuilder();
 
         SecureRandom sr = new SecureRandom();
 
+        int TOKEN_LENGTH = 12;
         for (int i = 0; i < TOKEN_LENGTH; i++) {
             int n = sr.nextInt(26*2 + 10);
             if (n < 26) {
@@ -76,10 +75,10 @@ public class HttpApp extends NanoHTTPD {
             return forbidden;
         }
 
-        if (!params.containsKey("token")) {
-            return forbidden;
-        }
-        if (!params.get("token").get(0).equals(this.token)) {
+        List<String> lstToken = params.get("token");
+        if (lstToken == null ||
+            lstToken.get(0) == null ||
+            !lstToken.get(0).equals(this.token)) {
             return forbidden;
         }
 
@@ -145,7 +144,7 @@ public class HttpApp extends NanoHTTPD {
     }
 
     public String getLinkToFile() {
-        String ip = null;
+        String ip;
         try {
             ip = getIpAddress();
         } catch (UnknownHostException uhe) {
