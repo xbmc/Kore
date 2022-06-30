@@ -90,7 +90,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/small_padding"
-            android:layout_marginRight="@dimen/small_padding"
             android:layout_marginBottom="@dimen/small_padding"
             android:contentDescription="@string/seen"
             android:src="?attr/iconSeen"

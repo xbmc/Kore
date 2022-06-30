@@ -14,8 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-           xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<!-- Base Dark theme. -->
 	<style name="NightTheme" parent="Theme.AppCompat.NoActionBar">
@@ -23,7 +22,7 @@
 		<item name="android:colorBackground">@color/dark_background</item>
         <item name="android:windowBackground">@color/dark_background</item>
         <!--<item name="android:windowActionBarOverlay">true</item>-->
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/dark_background</item>
+        <item name="android:navigationBarColor" >@color/dark_background</item>
 
         <item name="preferenceTheme">@style/PrefTheme</item>
 
@@ -39,7 +38,7 @@
         <!--<item name="colorControlActivated">@color/color_accent</item>-->
 
         <item name="colorToolbar">?attr/colorPrimary</item>
-        <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryDark</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryDark</item>
 
         <item name="colorButtonNormal">?attr/colorPrimary</item>
 
@@ -170,7 +169,7 @@
 
         <item name="android:colorBackground">@color/light_background</item>
         <item name="android:windowBackground">@color/light_background</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/light_background</item>
+        <item name="android:navigationBarColor" >@color/light_background</item>
 
         <item name="preferenceTheme">@style/PrefTheme</item>
 
@@ -190,7 +189,7 @@
         <!--<item name="colorControlNormal">@color/white</item>-->
 
         <item name="colorToolbar">?attr/colorPrimary</item>
-        <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryDark</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryDark</item>
 
         <item name="appTextColorPrimary">@color/black_dim_87pct</item>
         <item name="appTextColorSecondary">@color/black_dim_54pct</item>
@@ -329,7 +328,7 @@
     <style name="MistTheme" parent="NightTheme">
         <item name="android:colorBackground">@color/mist_background</item>
         <item name="android:windowBackground">@color/mist_background</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/mist_background</item>
+        <item name="android:navigationBarColor" >@color/mist_background</item>
 
         <!--<item name="colorPrimary">@color/light_blue_700</item>-->
         <!--<item name="colorPrimaryDark">@color/light_blue_800</item>-->
@@ -356,7 +355,7 @@
     <style name="SunriseTheme" parent="DayTheme">
         <item name="android:colorBackground">@color/sunrise_background</item>
         <item name="android:windowBackground">@color/sunrise_background</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/sunrise_background</item>
+        <item name="android:navigationBarColor" >@color/sunrise_background</item>
 
         <item name="colorPrimary">@color/sunrise_primary</item>
         <item name="colorPrimaryDark">@color/sunrise_primary_dark</item>
@@ -380,7 +379,7 @@
     <style name="SunsetTheme" parent="NightTheme">
         <item name="android:colorBackground">@color/sunset_background</item>
         <item name="android:windowBackground">@color/sunset_background</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/sunset_background</item>
+        <item name="android:navigationBarColor" >@color/sunset_background</item>
 
         <item name="colorPrimary">@color/sunset_primary</item>
         <item name="colorPrimaryDark">@color/sunset_primary_dark</item>

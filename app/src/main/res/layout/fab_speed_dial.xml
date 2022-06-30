@@ -8,7 +8,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginEnd="@dimen/fab_mini_margin"
-        android:layout_marginRight="@dimen/fab_mini_margin"
         android:text="@string/play_locally"
         android:visibility="invisible"
         app:fabSize="mini"
@@ -20,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginEnd="@dimen/fab_mini_margin"
-        android:layout_marginRight="@dimen/fab_mini_margin"
         android:text="@string/play_on_kodi"
         android:visibility="invisible"
         app:fabSize="mini"
@@ -32,7 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginEnd="@dimen/fab_normal_margin"
-        android:layout_marginRight="@dimen/fab_normal_margin"
         app:fabSize="normal"
         app:useCompatPadding="true" />
 </merge>

@@ -30,7 +30,6 @@
             android:layout_width="@dimen/albumlist_art_width"
             android:layout_height="@dimen/albumlist_art_heigth"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:contentDescription="@string/poster"/>
 
         <ImageView
@@ -39,7 +38,6 @@
             android:layout_height="@dimen/default_icon_size"
             android:padding="@dimen/default_icon_padding"
             android:layout_alignTop="@id/art"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             style="@style/Widget.Button.Borderless"
             android:src="?attr/iconOverflow"
@@ -49,8 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_toLeftOf="@+id/list_context_menu"
-            android:layout_toRightOf="@id/art"
             android:layout_toStartOf="@+id/list_context_menu"
             android:layout_toEndOf="@id/art"
             android:layout_alignTop="@id/art">

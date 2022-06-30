@@ -155,7 +155,7 @@
 
     <style name="TextAppearance.Media.Remote.Title">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
+        <item name="android:fontFamily" >sans-serif-light</item>
         <item name="android:paddingTop">@dimen/default_padding</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:singleLine">true</item>
@@ -174,7 +174,7 @@
 
     <style name="TextAppearance.Media.Title">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
+        <item name="android:fontFamily" >sans-serif-light</item>
         <item name="android:paddingTop">@dimen/small_padding</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:maxLines">2</item>
