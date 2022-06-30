@@ -21,7 +21,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import androidx.core.content.ContextCompat;
 
 import org.xbmc.kore.Settings;

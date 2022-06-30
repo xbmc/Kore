@@ -17,7 +17,7 @@ package org.xbmc.kore.ui.sections.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;

@@ -18,7 +18,7 @@ package org.xbmc.kore.ui.sections.addon;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
@@ -174,7 +174,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
             String name = getDataHolder().getTitle();
             String path = addonId;
 
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
             Set<String> bookmarks = new HashSet<>(prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.emptySet()));
             if (isBookmarked)
                 bookmarks.add(path);

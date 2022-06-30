@@ -18,7 +18,7 @@ package org.xbmc.kore;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.text.format.DateUtils;
 
 import org.xbmc.kore.utils.LogUtils;

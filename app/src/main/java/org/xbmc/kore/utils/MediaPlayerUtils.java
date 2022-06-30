@@ -19,7 +19,7 @@ package org.xbmc.kore.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;

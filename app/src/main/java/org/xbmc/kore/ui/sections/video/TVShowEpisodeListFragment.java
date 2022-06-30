@@ -22,7 +22,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.Menu;

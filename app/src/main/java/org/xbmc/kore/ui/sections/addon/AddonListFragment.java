@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;

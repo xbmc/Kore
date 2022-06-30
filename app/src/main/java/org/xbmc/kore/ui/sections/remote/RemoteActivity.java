@@ -564,10 +564,9 @@ public class RemoteActivity extends BaseActivity
         String host = playuri.getHost();
         String extension = MimeTypeMap.getFileExtensionFromUrl(playuri.toString());
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        boolean alwaysSendToKodi = android.preference.PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext())
-                .getBoolean(Settings.KEY_PREF_ALWAYS_SENDTOKODI_ADDON,
-                        Settings.DEFAULT_PREF_ALWAYS_SENDTOKODI_ADDON);
+        boolean alwaysSendToKodi = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                                    .getBoolean(Settings.KEY_PREF_ALWAYS_SENDTOKODI_ADDON,
+                                                                Settings.DEFAULT_PREF_ALWAYS_SENDTOKODI_ADDON);
         if (!alwaysSendToKodi) {
             if (host.endsWith("youtube.com")) {
                 String videoId = playuri.getQueryParameter("v");

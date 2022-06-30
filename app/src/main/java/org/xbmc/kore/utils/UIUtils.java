@@ -25,7 +25,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;

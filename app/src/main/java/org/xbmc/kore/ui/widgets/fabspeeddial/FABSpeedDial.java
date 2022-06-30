@@ -20,7 +20,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;

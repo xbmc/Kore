@@ -30,6 +30,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -217,8 +218,8 @@ public class Utils {
     }
 
     public static void setPreferredLocale(Context context) {
-        String preferredLocale = android.preference.PreferenceManager.getDefaultSharedPreferences(context)
-                                                                     .getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
+        String preferredLocale = PreferenceManager.getDefaultSharedPreferences(context)
+                                                  .getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
         if (! preferredLocale.isEmpty()) {
             Utils.setLocale(context, preferredLocale);
         }
