@@ -30,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/navigation_drawer_item_hosts_height"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:src="@drawable/drawer_image"/>
 
@@ -49,9 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/navigation_drawer_item_height"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/default_padding"
             android:layout_marginStart="@dimen/default_padding"
-            android:layout_toRightOf="@+id/drawer_item_icon"
             android:layout_toEndOf="@+id/drawer_item_icon"
             android:gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.NavDrawerItem"

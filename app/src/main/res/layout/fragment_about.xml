@@ -11,9 +11,7 @@
         android:orientation="horizontal"
         android:paddingTop="@dimen/small_padding"
         android:paddingBottom="@dimen/small_padding"
-        android:paddingLeft="@dimen/small_padding"
         android:paddingStart="@dimen/small_padding"
-        android:paddingRight="0dp"
         android:paddingEnd="0dp">
 
         <ImageView
@@ -26,9 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingLeft="@dimen/default_padding"
             android:paddingStart="@dimen/default_padding"
-            android:paddingRight="@dimen/small_padding"
             android:paddingEnd="@dimen/small_padding"
             android:fontFamily="sans-serif"
             android:textSize="20sp"

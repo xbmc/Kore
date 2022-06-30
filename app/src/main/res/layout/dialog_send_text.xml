@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:imeOptions="actionSend"
-        android:hint="@string/text_to_send">
+        android:hint="@string/text_to_send"
+        android:autofillHints="">
         <!--<requestFocus/>-->
     </EditText>
 

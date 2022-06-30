@@ -33,7 +33,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_toRightOf="@id/vcd_volume_mute"
         android:layout_toEndOf="@id/vcd_volume_mute"
         android:orientation="vertical">
     </org.xbmc.kore.ui.widgets.VolumeLevelIndicator>

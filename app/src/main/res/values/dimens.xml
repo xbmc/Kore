@@ -37,7 +37,7 @@
 
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="default_card_elevation">2dp</dimen>
-    <dimen name="default_card_margin">2dp</dimen>
+    <dimen name="default_card_margin">8dp</dimen>
 
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_medium">14sp</dimen>
@@ -80,7 +80,7 @@
     <dimen name="default_grid_column_width">250dp</dimen>
     <!-- Smaller spacing because cardview compat adds padding -->
     <dimen name="default_grid_horizontal_spacing">4dp</dimen>
-    <dimen name="default_grid_vertical_spacing">0dp</dimen>
+    <dimen name="default_grid_vertical_spacing">4dp</dimen>
 
     <dimen name="playlist_art_width">56dp</dimen>
     <dimen name="playlist_art_heigth">78dp</dimen>

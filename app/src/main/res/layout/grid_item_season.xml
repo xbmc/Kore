@@ -34,14 +34,12 @@
             android:layout_width="@dimen/seasonlist_art_width"
             android:layout_height="@dimen/seasonlist_art_heigth"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:contentDescription="@string/poster"
             android:scaleType="centerCrop"/>
         <TextView
             android:id="@+id/season"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/art"
             android:layout_toEndOf="@id/art"
             style="@style/TextAppearance.Medialist.Title"
             android:paddingTop="@dimen/small_padding"/>
@@ -51,7 +49,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_alignLeft="@id/season"
             android:layout_alignStart="@id/season"
             android:layout_below="@id/season"
             android:layout_marginLeft="@dimen/default_padding"
@@ -63,7 +60,6 @@
             android:id="@+id/episodes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/season"
             android:layout_alignStart="@id/season"
             android:layout_below="@id/season_progress_bar"
             style="@style/TextAppearance.Medialist.Details"/>

@@ -30,7 +30,6 @@
             android:layout_width="@dimen/filelist_art_width"
             android:layout_height="@dimen/filelist_art_heigth"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:contentDescription="@string/poster"
             android:scaleType="centerCrop"/>
         <TextView
@@ -38,10 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             style="@style/TextAppearance.Medialist.OtherInfo"
-            android:paddingLeft="@dimen/small_padding"
             android:paddingStart="@dimen/small_padding"/>
         <ImageView
             android:id="@+id/list_context_menu"
@@ -49,7 +46,6 @@
             android:layout_height="@dimen/default_icon_size"
             android:padding="@dimen/default_icon_padding"
             android:layout_alignTop="@id/art"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             style="@style/Widget.Button.Borderless"
             android:src="?attr/iconOverflow"
@@ -59,28 +55,21 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/art"
             android:layout_toEndOf="@+id/art"
-            android:layout_toLeftOf="@id/list_context_menu"
             android:layout_toStartOf="@id/list_context_menu"
             android:layout_alignTop="@id/art"
             style="@style/TextAppearance.Medialist.Title"
-            android:paddingRight="@dimen/small_padding"
             android:paddingEnd="@dimen/small_padding"
-            android:ellipsize="middle"/>
+        android:ellipsize="middle"/>
         <TextView
             android:id="@+id/details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/title"
             android:layout_alignStart="@id/title"
             android:layout_below="@id/title"
-            android:layout_toRightOf="@id/art"
             android:layout_toEndOf="@id/art"
-            android:layout_toLeftOf="@id/size_duration"
             android:layout_toStartOf="@id/size_duration"
             style="@style/TextAppearance.Medialist.Details"
-            android:paddingRight="@dimen/small_padding"
             android:paddingEnd="@dimen/small_padding"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

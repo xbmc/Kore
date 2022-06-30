@@ -31,7 +31,6 @@
             android:layout_width="@dimen/episodelist_art_width"
             android:layout_height="@dimen/episodelist_art_heigth"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:contentDescription="@string/poster"
             android:scaleType="centerCrop"/>
 
@@ -40,10 +39,8 @@
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.Medialist.Title"
-            android:paddingRight="@dimen/small_padding"
             android:paddingEnd="@dimen/small_padding"
             android:layout_alignTop="@id/art"
-            android:layout_toRightOf="@id/art"
             android:layout_toEndOf="@id/art"/>
 
         <ImageView
@@ -51,7 +48,6 @@
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
             android:layout_below="@id/episode_number"
-            android:layout_alignLeft="@id/episode_number"
             android:layout_alignStart="@id/episode_number"
             android:padding="@dimen/default_icon_padding"
             style="@style/Widget.Button.Borderless"
@@ -63,7 +59,6 @@
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
             android:layout_alignTop="@id/art"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:padding="@dimen/default_icon_padding"
             style="@style/Widget.Button.Borderless"
@@ -75,8 +70,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/episode_number"
-            android:layout_toRightOf="@id/episode_number"
-            android:layout_toLeftOf="@id/list_context_menu"
             android:layout_toEndOf="@id/episode_number"
             android:layout_toStartOf="@id/list_context_menu"
             style="@style/TextAppearance.Medialist.Title"
@@ -88,11 +81,9 @@
             android:id="@+id/details"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/default_icon_size"
-            android:layout_alignLeft="@id/title"
             android:layout_alignStart="@id/title"
             android:layout_below="@id/title"
             style="@style/TextAppearance.Medialist.Details"
-            android:paddingLeft="@dimen/small_padding"
             android:paddingStart="@dimen/small_padding"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"

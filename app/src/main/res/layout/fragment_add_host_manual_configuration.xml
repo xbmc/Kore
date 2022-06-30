@@ -16,11 +16,13 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+    tools:ignore="Autofill" >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -94,7 +96,8 @@
                 android:layout_alignEnd="@id/kodi_name"
 
                 android:inputType="textNoSuggestions"
-                android:hint="@string/wizard_xbmc_username"/>
+                android:hint="@string/wizard_xbmc_username"
+                android:autofillHints="username" />
 
             <EditText
                 android:id="@+id/kodi_password"
@@ -106,7 +109,8 @@
                 android:layout_alignEnd="@id/kodi_name"
 
                 android:inputType="textPassword"
-                android:hint="@string/wizard_xbmc_password"/>
+                android:hint="@string/wizard_xbmc_password"
+                android:autofillHints="password" />
 
             <TextView
                 android:id="@android:id/text1"
