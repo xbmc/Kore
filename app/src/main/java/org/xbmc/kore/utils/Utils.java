@@ -48,6 +48,7 @@ import java.util.Locale;
  * Because every project needs one of these
  * */
 public class Utils {
+    private static final String TAG = LogUtils.makeLogTag(Utils.class);
 
     public static boolean isMOrLater() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
@@ -79,66 +80,36 @@ public class Utils {
         return builder.toString();
     }
 
-    /**
-     * Calls {@link Context#startActivity(Intent)} with the given <b>implicit</b> {@link Intent}
-     * after making sure there is an Activity to handle it.
-     * <br> <br> This may happen if e.g. the web browser has been disabled through restricted
-     * profiles.
-     *
-     * @return Whether there was an Activity to handle the given {@link Intent}.
-     */
-    public static boolean tryStartActivity(Context context, Intent intent) {
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(intent);
-            return true;
-        }
-        return false;
-    }
+    public static final String IMDB_PERSON_SEARCH_URL = "https://m.imdb.com/find?q=%s&s=nm";
 
-    public static final String IMDB_APP_PERSON_SEARCH_URI = "imdb:///find?q=%s&s=nm";
-    public static final String IMDB_PERSON_SEARCH_URL = "http://m.imdb.com/find?q=%s&s=nm";
-
-    public static final String IMDB_APP_MOVIE_URI = "imdb:///title/%s/";
-    public static final String IMDB_MOVIE_URL = "http://m.imdb.com/title/%s/";
+    public static final String IMDB_MOVIE_URL = "https://m.imdb.com/title/%s/";
 
     /**
-     * Open the IMDb app or web page for the given person name.
+     * Open the IMDb web page for the given person name.
      */
     public static void openImdbForPerson(Context context, String name) {
         if (context == null || TextUtils.isEmpty(name)) {
             return;
         }
 
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(String.format(IMDB_APP_PERSON_SEARCH_URI, name)));
+        // Open IMDB
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_PERSON_SEARCH_URL, name)));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        // try launching IMDb app
-        if (!Utils.tryStartActivity(context, intent)) {
-            // on failure, try launching the web page
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_PERSON_SEARCH_URL, name)));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-            context.startActivity(intent);
-        }
+        context.startActivity(intent);
     }
 
     /**
-     * Open the IMDb app or web page for the given person name.
+     * Open the IMDb web page for the given person name.
      */
     public static void openImdbForMovie(Context context, String imdbNumber) {
         if (context == null || TextUtils.isEmpty(imdbNumber)) {
             return;
         }
 
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(String.format(IMDB_APP_MOVIE_URI, imdbNumber)));
+        // Open IMDB
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_MOVIE_URL, imdbNumber)));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        // try launching IMDb app
-        if (!Utils.tryStartActivity(context, intent)) {
-            // on failure, try launching the web page
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_MOVIE_URL, imdbNumber)));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-            context.startActivity(intent);
-        }
+        context.startActivity(intent);
     }
 
 
