@@ -145,7 +145,7 @@ public class HostFragmentManualConfiguration extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new ProgressDialog(requireContext());
 
         // Next button
         binding.includeWizardButtonBar.next.setText(R.string.test_connection);
@@ -194,37 +194,36 @@ public class HostFragmentManualConfiguration extends Fragment {
      * check availability. Finally adds the host and advances the wizard
      */
     private void testConnection() {
-        String xbmcName = binding.kodiName.getText().toString();
+        String kodiName = binding.kodiName.getText().toString();
 
         boolean isHttps = false;
-        String xbmcAddress = binding.kodiIpAddress.getText().toString();
-        if (xbmcAddress.startsWith("https://")) {
-            xbmcAddress = xbmcAddress.substring("https://".length());
-            LogUtils.LOGD(TAG, "Stripped https:// on address to get: " + xbmcAddress);
+        String kodiAddress = binding.kodiIpAddress.getText().toString().trim();
+        if (kodiAddress.startsWith("https://")) {
+            kodiAddress = kodiAddress.substring("https://".length());
+            LogUtils.LOGD(TAG, "Stripped https:// on address to get: " + kodiAddress);
             isHttps = true;
-        } else if (xbmcAddress.startsWith("http://")) {
-            xbmcAddress = xbmcAddress.substring("http://".length());
-            LogUtils.LOGD(TAG, "Stripped http:// on address to get: " + xbmcAddress);
+        } else if (kodiAddress.startsWith("http://")) {
+            kodiAddress = kodiAddress.substring("http://".length());
+            LogUtils.LOGD(TAG, "Stripped http:// on address to get: " + kodiAddress);
         }
-        int xbmcHttpPort = isHttps ? HostInfo.DEFAULT_HTTPS_PORT : HostInfo.DEFAULT_HTTP_PORT;
+        int kodiHttpPort = isHttps ? HostInfo.DEFAULT_HTTPS_PORT : HostInfo.DEFAULT_HTTP_PORT;
 
         Integer implicitPort = null;
-        String aux;
-        Matcher m = Pattern.compile("^.*:(\\d{1,5})\\z").matcher(xbmcAddress);
+        Matcher m = Pattern.compile("^.*:(\\d{1,5})\\z").matcher(kodiAddress);
         if (m.matches()) {
             // Minus one character for the colon
-            xbmcAddress = xbmcAddress.substring(0, m.start(1) - 1);
-            LogUtils.LOGD(TAG, "Stripped port on address to get: " + xbmcAddress);
+            kodiAddress = kodiAddress.substring(0, m.start(1) - 1);
+            LogUtils.LOGD(TAG, "Stripped port on address to get: " + kodiAddress);
             try {
-                aux = m.group(1);
-                implicitPort = (aux != null)? Integer.parseInt(aux) : null;
+                implicitPort = Integer.parseInt(m.group(1));
             } catch (NumberFormatException e) {
                 LogUtils.LOGW(TAG, "Value matching port regex couldn't be parsed as integer: " + m.group(1));
+                implicitPort = -1;
             }
         }
 
         Integer explicitPort = null;
-        aux = binding.kodiHttpPort.getText().toString();
+        String aux = binding.kodiHttpPort.getText().toString();
         if (!TextUtils.isEmpty(aux)) {
             try {
                 explicitPort = Integer.valueOf(aux);
@@ -235,87 +234,87 @@ public class HostFragmentManualConfiguration extends Fragment {
 
         if (implicitPort != null) {
             if (!isValidPort(implicitPort)) {
-                Toast.makeText(getActivity(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT).show();
                 binding.kodiHttpPort.requestFocus();
                 return;
             }
-            xbmcHttpPort = implicitPort;
+            kodiHttpPort = implicitPort;
         } else if (explicitPort != null) {
             if (!isValidPort(explicitPort)) {
-                Toast.makeText(getActivity(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT).show();
                 binding.kodiHttpPort.requestFocus();
                 return;
             }
-            xbmcHttpPort = explicitPort;
+            kodiHttpPort = explicitPort;
         }
 
-        String xbmcUsername = binding.kodiUsername.getText().toString();
-        String xbmcPassword = binding.kodiPassword.getText().toString();
+        String kodiUsername = binding.kodiUsername.getText().toString();
+        String kodiPassword = binding.kodiPassword.getText().toString();
         aux = binding.kodiTcpPort.getText().toString();
-        int xbmcTcpPort;
+        int kodiTcpPort;
         try {
-            xbmcTcpPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_TCP_PORT : Integer.parseInt(aux);
+            kodiTcpPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_TCP_PORT : Integer.parseInt(aux);
         } catch (NumberFormatException exc) {
-            xbmcTcpPort = -1;
+            kodiTcpPort = -1;
         }
 
-        int xbmcProtocol = binding.kodiUseTcp.isChecked()? HostConnection.PROTOCOL_TCP : HostConnection.PROTOCOL_HTTP;
+        int kodiProtocol = binding.kodiUseTcp.isChecked()? HostConnection.PROTOCOL_TCP : HostConnection.PROTOCOL_HTTP;
 
         String macAddress = binding.kodiMacAddress.getText().toString();
         aux = binding.kodiWolPort.getText().toString();
 
-        int xbmcWolPort = HostInfo.DEFAULT_WOL_PORT;
+        int kodiWolPort = HostInfo.DEFAULT_WOL_PORT;
         try {
-            xbmcWolPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_WOL_PORT : Integer.parseInt(aux);
+            kodiWolPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_WOL_PORT : Integer.parseInt(aux);
         } catch (NumberFormatException exc) {
             // Ignoring this exception and keeping WoL port at the default value
         }
 
-        boolean xbmcUseEventServer = binding.kodiUseEventServer.isChecked();
+        boolean kodiUseEventServer = binding.kodiUseEventServer.isChecked();
         aux = binding.kodiEventServerPort.getText().toString();
-        int xbmcEventServerPort;
+        int kodiEventServerPort;
         try {
-            xbmcEventServerPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_EVENT_SERVER_PORT : Integer.parseInt(aux);
+            kodiEventServerPort = TextUtils.isEmpty(aux) ? HostInfo.DEFAULT_EVENT_SERVER_PORT : Integer.parseInt(aux);
         } catch (NumberFormatException exc) {
-            xbmcEventServerPort = -1;
+            kodiEventServerPort = -1;
         }
 
-        // Check Xbmc name and address
-        if (TextUtils.isEmpty(xbmcName)) {
-            Toast.makeText(getActivity(), R.string.wizard_no_name_specified, Toast.LENGTH_SHORT).show();
+        // Check Kodi name and address
+        if (TextUtils.isEmpty(kodiName)) {
+            Toast.makeText(requireContext(), R.string.wizard_no_name_specified, Toast.LENGTH_SHORT).show();
             binding.kodiName.requestFocus();
             return;
-        } else if (TextUtils.isEmpty(xbmcAddress)) {
-            Toast.makeText(getActivity(), R.string.wizard_no_address_specified, Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(kodiAddress)) {
+            Toast.makeText(requireContext(), R.string.wizard_no_address_specified, Toast.LENGTH_SHORT).show();
             binding.kodiIpAddress.requestFocus();
             return;
-        } else if (xbmcTcpPort <= 0) {
-            Toast.makeText(getActivity(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
+        } else if (kodiTcpPort <= 0) {
+            Toast.makeText(requireContext(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
             binding.kodiTcpPort.requestFocus();
             return;
-        } else if (xbmcEventServerPort <= 0) {
-            Toast.makeText(getActivity(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
+        } else if (kodiEventServerPort <= 0) {
+            Toast.makeText(requireContext(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
             binding.kodiEventServerPort.requestFocus();
             return;
         }
 
         // If username or password empty, set it to null
-        if (TextUtils.isEmpty(xbmcUsername))
-            xbmcUsername = null;
-        if (TextUtils.isEmpty(xbmcPassword))
-            xbmcPassword = null;
+        if (TextUtils.isEmpty(kodiUsername))
+            kodiUsername = null;
+        if (TextUtils.isEmpty(kodiPassword))
+            kodiPassword = null;
 
         // Ok, let's try to ping the host
-        final HostInfo checkedHostInfo = new HostInfo(xbmcName, xbmcAddress, xbmcProtocol,
-                                                      xbmcHttpPort, xbmcTcpPort,
-                                                      xbmcUsername, xbmcPassword,
-                                                      xbmcUseEventServer, xbmcEventServerPort, isHttps,
+        final HostInfo checkedHostInfo = new HostInfo(kodiName, kodiAddress, kodiProtocol,
+                                                      kodiHttpPort, kodiTcpPort,
+                                                      kodiUsername, kodiPassword,
+                                                      kodiUseEventServer, kodiEventServerPort, isHttps,
                                 true);
         checkedHostInfo.setMacAddress(macAddress);
-        checkedHostInfo.setWolPort(xbmcWolPort);
+        checkedHostInfo.setWolPort(kodiWolPort);
         checkedHostInfo.setShowAsDirectShareTarget(binding.kodiDirectShare.isChecked());
 
-        progressDialog.setTitle(String.format(getResources().getString(R.string.wizard_connecting_to_xbmc_title), xbmcName));
+        progressDialog.setTitle(String.format(getResources().getString(R.string.wizard_connecting_to_xbmc_title), kodiName));
         progressDialog.setMessage(getResources().getString(R.string.wizard_connecting_to_xbmc_message));
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
@@ -470,11 +469,11 @@ public class HostFragmentManualConfiguration extends Fragment {
                 } else {
                     messageResourceId = R.string.wizard_incorrect_authentication;
                 }
-                Toast.makeText(getActivity(), messageResourceId, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), messageResourceId, Toast.LENGTH_SHORT).show();
                 binding.kodiUsername.requestFocus();
                 break;
             default:
-                Toast.makeText(getActivity(),
+                Toast.makeText(requireContext(),
                         R.string.wizard_error_connecting,
                         Toast.LENGTH_SHORT).show();
                 break;
