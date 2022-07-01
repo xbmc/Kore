@@ -89,7 +89,7 @@ public class MediaPlayerUtils {
 
         final Handler callbackHandler = new Handler();
 
-        final Context context = fragment.requireActivity();
+        final Context context = fragment.requireContext();
 
         final HostManager hostManager = HostManager.getInstance(fragment.requireContext());
 
@@ -113,7 +113,7 @@ public class MediaPlayerUtils {
                         public void onSuccess(String result) {
                             if (!fragment.isAdded()) return;
                             Toast.makeText(context, R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
 
                         @Override
@@ -122,12 +122,12 @@ public class MediaPlayerUtils {
                             // Got an error, show toast
                             String errorMessage = context.getString(R.string.error_queue_media_file, description);
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
-                                    .show();
+                                 .show();
                         }
                     }, callbackHandler);
                 } else {
                     Toast.makeText(context, R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                            .show();
+                         .show();
                 }
             }
 
@@ -135,8 +135,9 @@ public class MediaPlayerUtils {
             public void onError(int errorCode, String description) {
                 if (!fragment.isAdded()) return;
                 // Got an error, show toast
-                Toast.makeText(context, R.string.error_getting_playlist, Toast.LENGTH_SHORT)
-                        .show();
+                String errorMessage = context.getString(R.string.error_queue_media_file, description);
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+                     .show();
             }
         }, callbackHandler);
     }

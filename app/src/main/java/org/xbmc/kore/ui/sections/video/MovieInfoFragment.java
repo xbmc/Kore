@@ -47,6 +47,7 @@ import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.io.File;
@@ -143,63 +144,15 @@ public class MovieInfoFragment extends AbstractInfoFragment
 
         setOnGoToImdbListener(view -> {
             String imdbNumber = cursor.getString(MovieDetailsQuery.IMDBNUMBER);
-
             if (imdbNumber != null) {
                 Utils.openImdbForMovie(requireContext(), imdbNumber);
             }
         });
 
         setOnAddToPlaylistListener(view -> {
-            Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
-
-            getPlaylists.execute(getHostManager().getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
-                @Override
-                public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
-                    if (!isAdded()) return;
-                    // Ok, loop through the playlists, looking for the video one
-                    int videoPlaylistId = -1;
-                    for (PlaylistType.GetPlaylistsReturnType playlist : result) {
-                        if (playlist.type.equals(PlaylistType.GetPlaylistsReturnType.VIDEO)) {
-                            videoPlaylistId = playlist.playlistid;
-                            break;
-                        }
-                    }
-                    // If found, add to playlist
-                    if (videoPlaylistId != -1) {
-                        PlaylistType.Item item = new PlaylistType.Item();
-                        item.movieid = getDataHolder().getId();
-                        Playlist.Add action = new Playlist.Add(videoPlaylistId, item);
-                        action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
-                            @Override
-                            public void onSuccess(String result) {
-                                if (!isAdded()) return;
-                                // Got an error, show toast
-                                Toast.makeText(requireContext(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                     .show();
-                            }
-
-                            @Override
-                            public void onError(int errorCode, String description) {
-                                if (!isAdded()) return;
-                                // Got an error, show toast
-                                Toast.makeText(requireContext(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                     .show();
-                            }
-                        }, callbackHandler);
-                    } else {
-                        Toast.makeText(requireContext(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                             .show();
-                    }
-                }
-
-                @Override
-                public void onError(int errorCode, String description) {
-                    if (!isAdded()) return;
-                    // Got an error, show toast
-                    Toast.makeText(requireContext(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                         .show();
-                }
-            }, callbackHandler);
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.movieid = getDataHolder().getId();
+            MediaPlayerUtils.queue(MovieInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
         });
 
         return true;

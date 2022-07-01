@@ -25,22 +25,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import android.text.TextUtils;
-import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
-import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.HostConnection;
-import org.xbmc.kore.jsonrpc.method.Playlist;
-import org.xbmc.kore.jsonrpc.type.PlaylistType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -129,63 +119,6 @@ public class Utils {
         drawable.draw(canvas);
 
         return bitmap;
-    }
-
-    public static void addToPlaylist(final Fragment fragment, final int itemId, final String playlistId) {
-        Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
-
-        final Context context = fragment.requireContext();
-        final HostConnection hostConnection = HostManager.getInstance(context).getConnection();
-        final Handler callbackHandler = new Handler();
-
-        getPlaylists.execute(hostConnection, new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
-            @Override
-            public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
-                if (!fragment.isAdded()) return;
-                // Ok, loop through the playlists, looking for the video one
-                int videoPlaylistId = -1;
-                for (PlaylistType.GetPlaylistsReturnType playlist : result) {
-                    if (playlist.type.equals(playlistId)) {
-                        videoPlaylistId = playlist.playlistid;
-                        break;
-                    }
-                }
-                // If found, add to playlist
-                if (videoPlaylistId != -1) {
-                    PlaylistType.Item item = new PlaylistType.Item();
-                    item.episodeid = itemId;
-                    Playlist.Add action = new Playlist.Add(videoPlaylistId, item);
-                    action.execute(hostConnection, new ApiCallback<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-                            if (!fragment.isAdded()) return;
-                            // Got an error, show toast
-                            Toast.makeText(context, R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                 .show();
-                        }
-
-                        @Override
-                        public void onError(int errorCode, String description) {
-                            if (!fragment.isAdded()) return;
-                            // Got an error, show toast
-                            Toast.makeText(context, R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                 .show();
-                        }
-                    }, callbackHandler);
-                } else {
-                    Toast.makeText(context, R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                         .show();
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!fragment.isAdded()) return;
-                // Got an error, show toast
-                Toast.makeText(context, R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
-            }
-        }, callbackHandler);
     }
 
     public static void setPreferredLocale(Context context) {
