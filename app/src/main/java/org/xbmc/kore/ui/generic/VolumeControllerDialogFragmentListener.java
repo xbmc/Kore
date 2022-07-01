@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,7 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
 
     VolumeControllerDialogBinding binding;
 
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
     private HostManager hostManager = null;
     private final ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
     private final View.OnClickListener onMuteToggleOnClickListener = v -> {

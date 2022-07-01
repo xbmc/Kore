@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -71,7 +72,7 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
     private int albumId = -1;
     private String albumTitle = "";
 
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     private ArrayList<FileDownloadHelper.SongInfo> songInfoList;
 

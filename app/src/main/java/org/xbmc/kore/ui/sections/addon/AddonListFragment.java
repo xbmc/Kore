@@ -21,6 +21,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.preference.PreferenceManager;
+
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,7 +70,7 @@ public class AddonListFragment extends AbstractListFragment {
     /**
      * Handler on which to post RPC callbacks
      */
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     private static boolean hideDisabledAddons;
 

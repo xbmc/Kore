@@ -19,6 +19,8 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.preference.PreferenceManager;
+
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +77,7 @@ public class RemoteFragment extends Fragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     /**
      * Default callback for methods that don't return anything

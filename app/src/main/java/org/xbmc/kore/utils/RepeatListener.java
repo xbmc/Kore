@@ -17,6 +17,7 @@ package org.xbmc.kore.utils;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
@@ -36,7 +37,7 @@ import android.widget.ImageButton;
 public class RepeatListener implements View.OnTouchListener {
     private static final String TAG = LogUtils.makeLogTag(RepeatListener.class);
 
-    private static final Handler repeatHandler = new Handler();
+    private static final Handler repeatHandler = new Handler(Looper.getMainLooper());
 
     private final int initialInterval;
     private final int repeatInterval;

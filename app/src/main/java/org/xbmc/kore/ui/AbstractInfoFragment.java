@@ -29,6 +29,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.preference.PreferenceManager;
+
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -89,7 +91,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     // Permission check callback
     private final ActivityResultLauncher<String> downloadFilesPermissionLauncher =
@@ -302,7 +304,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         Player.Open action = new Player.Open(item);
         methodId = action.getId();
         action.execute(HostManager.getInstance(requireContext()).getConnection(),
-                       createPlayItemOnKodiCallback(), callbackHandler);
+                       createPlayItemOnKodiCallback(),
+                       callbackHandler);
     }
 
     @Override

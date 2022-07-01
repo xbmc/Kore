@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.View;
@@ -59,7 +60,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
 
     private static final int LOADER_ALBUM = 0;
 
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
     private AlbumSongsListFragment albumSongsListFragment;
 
     @Override

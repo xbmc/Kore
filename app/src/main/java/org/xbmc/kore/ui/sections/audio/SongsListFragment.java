@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -70,7 +71,7 @@ public class SongsListFragment extends AbstractCursorListFragment {
     private static String albumTitle = "";
 
 
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     /**
      * Use this to display all songs for a specific artist

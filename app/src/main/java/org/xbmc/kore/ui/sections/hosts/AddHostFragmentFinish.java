@@ -21,6 +21,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.preference.PreferenceManager;
+
+import android.os.Looper;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -84,7 +86,7 @@ public class AddHostFragmentFinish extends Fragment {
         // Check if PVR is enabled for the current host
         HostManager hostManager = HostManager.getInstance(requireContext());
         if (hostManager.getHostInfo() != null) {
-            checkPVREnabledAndSetMenuItems(getActivity(), new Handler());
+            checkPVREnabledAndSetMenuItems(getActivity(), new Handler(Looper.getMainLooper()));
         }
 
         // Start the syncing process

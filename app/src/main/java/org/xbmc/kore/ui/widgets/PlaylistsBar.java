@@ -21,6 +21,7 @@ import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
@@ -41,7 +42,7 @@ public class PlaylistsBar extends TabLayout {
         void onPlaylistDeselected(String playlistType);
     }
 
-    final Handler handler = new Handler();
+    final Handler handler = new Handler(Looper.getMainLooper());
 
     private final ArrayList<TabState> tabStates = new ArrayList<>();
 

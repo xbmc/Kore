@@ -21,6 +21,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.preference.PreferenceManager;
+
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -66,7 +68,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
