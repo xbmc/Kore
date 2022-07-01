@@ -46,7 +46,6 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.method.Player;
-import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
@@ -208,7 +207,9 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
                 playSong(songId);
                 return true;
             } else if (itemId == R.id.action_add_to_playlist) {
-                addToPlaylist(songId);
+                PlaylistType.Item playlistItem = new PlaylistType.Item();
+                playlistItem.songid = songId;
+                MediaPlayerUtils.queue(AlbumSongsListFragment.this, playlistItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
                 return true;
             } else if (itemId == R.id.download) {
                 ArrayList<FileDownloadHelper.SongInfo> songInfoList = new ArrayList<>();
@@ -221,60 +222,6 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
         });
         popupMenu.show();
     };
-
-    private void addToPlaylist(final int id) {
-        Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
-
-        getPlaylists.execute(HostManager.getInstance(requireContext()).getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
-            @Override
-            public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
-                if (!isAdded()) return;
-                // Ok, loop through the playlists, looking for the audio one
-                int audioPlaylistId = -1;
-                for (PlaylistType.GetPlaylistsReturnType playlist : result) {
-                    if (playlist.type.equals(PlaylistType.GetPlaylistsReturnType.AUDIO)) {
-                        audioPlaylistId = playlist.playlistid;
-                        break;
-                    }
-                }
-                // If found, add to playlist
-                if (audioPlaylistId != -1) {
-                    PlaylistType.Item item = new PlaylistType.Item();
-                    item.songid = id;
-                    Playlist.Add action = new Playlist.Add(audioPlaylistId, item);
-                    action.execute(HostManager.getInstance(requireContext()).getConnection(),
-                                   new ApiCallback<String>() {
-                                       @Override
-                                       public void onSuccess(String result) {
-                                           if (!isAdded()) return;
-                                           // Got an error, show toast
-                                           Toast.makeText(requireContext(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                                .show();
-                                       }
-
-                                       @Override
-                                       public void onError(int errorCode, String description) {
-                                           if (!isAdded()) return;
-                                           // Got an error, show toast
-                                           Toast.makeText(requireContext(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                                .show();
-                                       }
-                                   }, callbackHandler);
-                } else {
-                    Toast.makeText(requireContext(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                         .show();
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                // Got an error, show toast
-                Toast.makeText(requireContext(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
-            }
-        }, callbackHandler);
-    }
 
     @Override
     public void refresh() {

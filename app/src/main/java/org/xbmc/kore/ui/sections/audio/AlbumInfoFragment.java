@@ -45,6 +45,7 @@ import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -148,10 +149,16 @@ public class AlbumInfoFragment extends AbstractInfoFragment
 
     @Override
     protected boolean setupMediaActionBar() {
-        setOnDownloadListener(view -> UIUtils.downloadSongs(requireContext(), albumSongsListFragment.getSongInfoList(),
-                                                    getHostInfo(), callbackHandler));
+        setOnDownloadListener(view -> UIUtils.downloadSongs(requireContext(),
+                                                            albumSongsListFragment.getSongInfoList(),
+                                                            getHostInfo(),
+                                                            callbackHandler));
 
-        setOnAddToPlaylistListener(view -> addToPlaylist());
+        setOnAddToPlaylistListener(view -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.albumid = getDataHolder().getId();
+            MediaPlayerUtils.queue(AlbumInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.AUDIO);
+        });
 
         return true;
     }
@@ -164,59 +171,6 @@ public class AlbumInfoFragment extends AbstractInfoFragment
             playItemOnKodi(item);
         });
         return true;
-    }
-
-    private void addToPlaylist() {
-        Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
-
-        getPlaylists.execute(HostManager.getInstance(requireContext()).getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
-            @Override
-            public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
-                if (!isAdded()) return;
-                // Ok, loop through the playlists, looking for the audio one
-                int audioPlaylistId = -1;
-                for (PlaylistType.GetPlaylistsReturnType playlist : result) {
-                    if (playlist.type.equals(PlaylistType.GetPlaylistsReturnType.AUDIO)) {
-                        audioPlaylistId = playlist.playlistid;
-                        break;
-                    }
-                }
-                // If found, add to playlist
-                if (audioPlaylistId != -1) {
-                    PlaylistType.Item item = new PlaylistType.Item();
-                    item.albumid = getDataHolder().getId();
-                    Playlist.Add action = new Playlist.Add(audioPlaylistId, item);
-                    action.execute(HostManager.getInstance(requireContext()).getConnection(), new ApiCallback<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-                            if (!isAdded()) return;
-                            // Got an error, show toast
-                            Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                 .show();
-                        }
-
-                        @Override
-                        public void onError(int errorCode, String description) {
-                            if (!isAdded()) return;
-                            // Got an error, show toast
-                            Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                 .show();
-                        }
-                    }, callbackHandler);
-                } else {
-                    Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                         .show();
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                // Got an error, show toast
-                Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
-            }
-        }, callbackHandler);
     }
 
     /**

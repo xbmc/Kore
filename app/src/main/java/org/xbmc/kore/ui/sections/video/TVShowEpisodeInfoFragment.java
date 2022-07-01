@@ -43,7 +43,7 @@ import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.Utils;
+import org.xbmc.kore.utils.MediaPlayerUtils;
 
 import java.io.File;
 
@@ -93,8 +93,11 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     protected boolean setupMediaActionBar() {
         setOnDownloadListener(view -> downloadEpisode());
 
-        setOnAddToPlaylistListener(view -> Utils.addToPlaylist(TVShowEpisodeInfoFragment.this, getDataHolder().getId(),
-                                                       PlaylistType.GetPlaylistsReturnType.VIDEO));
+        setOnAddToPlaylistListener(view -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.episodeid = getDataHolder().getId();
+            MediaPlayerUtils.queue(TVShowEpisodeInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
+        });
 
         setOnSeenListener(view -> {
             int playcount = cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT);

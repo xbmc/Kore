@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,9 +30,7 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
-import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.LibrarySyncService;
@@ -43,10 +40,10 @@ import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Presents music videos details
@@ -84,7 +81,11 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
 
     @Override
     protected boolean setupMediaActionBar() {
-        setOnAddToPlaylistListener(view -> addToPlaylist(getDataHolder().getId()));
+        setOnAddToPlaylistListener(view -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.musicvideoid = getDataHolder().getId();
+            MediaPlayerUtils.queue(MusicVideoInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
+        });
 
         setOnDownloadListener(view -> download());
 
@@ -166,59 +167,6 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
-    }
-
-    public void addToPlaylist(final int itemId) {
-        Playlist.GetPlaylists getPlaylists = new Playlist.GetPlaylists();
-
-        getPlaylists.execute(getHostManager().getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
-            @Override
-            public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
-                if (!isAdded()) return;
-                // Ok, loop through the playlists, looking for the video one
-                int videoPlaylistId = -1;
-                for (PlaylistType.GetPlaylistsReturnType playlist : result) {
-                    if (playlist.type.equals(PlaylistType.GetPlaylistsReturnType.VIDEO)) {
-                        videoPlaylistId = playlist.playlistid;
-                        break;
-                    }
-                }
-                // If found, add to playlist
-                if (videoPlaylistId != -1) {
-                    PlaylistType.Item item = new PlaylistType.Item();
-                    item.musicvideoid = itemId;
-                    Playlist.Add action = new Playlist.Add(videoPlaylistId, item);
-                    action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-                            if (!isAdded()) return;
-                            // Got an error, show toast
-                            Toast.makeText(getActivity(), R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                 .show();
-                        }
-
-                        @Override
-                        public void onError(int errorCode, String description) {
-                            if (!isAdded()) return;
-                            // Got an error, show toast
-                            Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                                 .show();
-                        }
-                    }, callbackHandler);
-                } else {
-                    Toast.makeText(getActivity(), R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                         .show();
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                // Got an error, show toast
-                Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
-            }
-        }, callbackHandler);
     }
 
     protected void download() {
