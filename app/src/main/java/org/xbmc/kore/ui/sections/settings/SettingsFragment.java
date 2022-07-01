@@ -67,7 +67,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                     Toast.makeText(requireContext(), R.string.read_phone_state_permission_denied, Toast.LENGTH_SHORT)
                          .show();
                     TwoStatePreference pauseCallPreference = (TwoStatePreference)findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
-                    pauseCallPreference.setChecked(false);
+                    if (pauseCallPreference != null) pauseCallPreference.setChecked(false);
                 }
             });
 
@@ -77,13 +77,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // Load the preferences from an XML resource
         setPreferencesFromResource(R.xml.preferences, null);
 
-        // Get the preference for side menu items and change its Id to include
-        // the current host
+        // Get the preference for side menu items and change its Id to include the current host
         Preference sideMenuItems = findPreference(Settings.KEY_PREF_NAV_DRAWER_ITEMS);
         Preference remoteBarItems = findPreference(Settings.KEY_PREF_REMOTE_BAR_ITEMS);
         hostId = HostManager.getInstance(requireContext()).getHostInfo().getId();
-        sideMenuItems.setKey(Settings.getNavDrawerItemsPrefKey(hostId));
-        remoteBarItems.setKey(Settings.getRemoteBarItemsPrefKey(hostId));
+        if (sideMenuItems != null) sideMenuItems.setKey(Settings.getNavDrawerItemsPrefKey(hostId));
+        if (remoteBarItems != null) remoteBarItems.setKey(Settings.getRemoteBarItemsPrefKey(hostId));
 
         // HACK: After changing the key dynamically like above, we need to force the preference
         // to read its value. This can be done by calling onSetInitialValue, which is protected,
@@ -91,7 +90,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // hack changes its access mode.
         // Furthermore, only do this if nothing is saved yet on the shared preferences,
         // otherwise the defaults won't be applied
-        if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getNavDrawerItemsPrefKey(hostId), null) != null) {
+        SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
+        if (sharedPreferences != null && sideMenuItems != null &&
+            sharedPreferences.getStringSet(Settings.getNavDrawerItemsPrefKey(hostId), null) != null) {
             Class<? extends Preference> iterClass = sideMenuItems.getClass();
             try {
                 Method m = iterClass.getDeclaredMethod("onSetInitialValue", Object.class);
@@ -101,7 +102,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 LogUtils.LOGD(TAG, "Error while setting default Nav Drawer shortcuts: " + e);
             }
         }
-        if (getPreferenceManager().getSharedPreferences().getStringSet(Settings.getRemoteBarItemsPrefKey(hostId), null) != null) {
+        if (sharedPreferences != null && remoteBarItems != null &&
+            sharedPreferences.getStringSet(Settings.getRemoteBarItemsPrefKey(hostId), null) != null) {
             Class<? extends Preference> iterClass = remoteBarItems.getClass();
             try {
                 Method m = iterClass.getDeclaredMethod("onSetInitialValue", Object.class);
@@ -116,34 +118,36 @@ public class SettingsFragment extends PreferenceFragmentCompat
         if (!hasPhonePermission()) {
             TwoStatePreference pauseCallPreference =
                     (TwoStatePreference)findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
-            pauseCallPreference.setChecked(false);
+            if (pauseCallPreference != null) pauseCallPreference.setChecked(false);
         }
 
         setupPreferences();
 
         ListPreference languagePref = (ListPreference) findPreference(Settings.KEY_PREF_LANGUAGE);
-        Locale currentLocale = getCurrentLocale();
-        languagePref.setSummary(currentLocale.getDisplayLanguage(currentLocale));
-        languagePref.setOnPreferenceClickListener(preference -> {
-            setupLanguagePreference((ListPreference) preference);
-            return true;
-        });
+        if (languagePref != null) {
+            Locale currentLocale = getCurrentLocale();
+            languagePref.setSummary(currentLocale.getDisplayLanguage(currentLocale));
+            languagePref.setOnPreferenceClickListener(preference -> {
+                setupLanguagePreference((ListPreference) preference);
+                return true;
+            });
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getPreferenceScreen()
-                .getSharedPreferences()
-                .registerOnSharedPreferenceChangeListener(this);
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        if (sharedPreferences != null)
+            sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getPreferenceScreen()
-                .getSharedPreferences()
-                .unregisterOnSharedPreferenceChangeListener(this);
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        if (sharedPreferences != null)
+            sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -151,7 +155,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Update summaries
         setupPreferences();
-       Context ctx = requireContext();
+        Context ctx = requireContext();
 
         if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.getNavDrawerItemsPrefKey(hostId))
             || key.equals((Settings.getRemoteBarItemsPrefKey(hostId)))) {
@@ -202,7 +206,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private void setupPreferences() {
         // Theme preferences
         ListPreference themePref = (ListPreference)findPreference(Settings.KEY_PREF_THEME);
-        themePref.setSummary(themePref.getEntry());
+        if (themePref != null) themePref.setSummary(themePref.getEntry());
         Context context = requireContext();
 
         // About preference
@@ -212,12 +216,14 @@ public class SettingsFragment extends PreferenceFragmentCompat
         } catch (PackageManager.NameNotFoundException ignored) {
         }
         Preference aboutPreference = findPreference(Settings.KEY_PREF_ABOUT);
-        aboutPreference.setSummary(nameAndVersion);
-        aboutPreference.setOnPreferenceClickListener(preference -> {
-            AboutDialogFragment aboutDialog = new AboutDialogFragment();
-            aboutDialog.show(getParentFragmentManager(), null);
-            return true;
-        });
+        if (aboutPreference != null) {
+            aboutPreference.setSummary(nameAndVersion);
+            aboutPreference.setOnPreferenceClickListener(preference -> {
+                AboutDialogFragment aboutDialog = new AboutDialogFragment();
+                aboutDialog.show(getParentFragmentManager(), null);
+                return true;
+            });
+        }
     }
 
     private void setupLanguagePreference(final ListPreference languagePref) {
@@ -264,7 +270,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     private void updatePreferredLanguage(String localeName) {
-        getPreferenceManager().getSharedPreferences().edit().putString(Settings.KEY_PREF_SELECTED_LANGUAGE, localeName).apply();
+        SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
+        if (sharedPreferences != null)
+            sharedPreferences.edit()
+                             .putString(Settings.KEY_PREF_SELECTED_LANGUAGE, localeName)
+                             .apply();
 
         // Restart app to apply locale change
         Intent i = requireContext().getPackageManager().getLaunchIntentForPackage(requireContext().getPackageName() );
@@ -273,15 +283,18 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     private Locale getCurrentLocale() {
-        String currentLocaleName = getPreferenceManager().getSharedPreferences().getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
+        Locale currentLocale = Utils.isNOrLater() ?
+                               getResources().getConfiguration().getLocales().get(0) :
+                               getResources().getConfiguration().locale;
 
-        Locale currentLocale;
-        if (currentLocaleName == null || currentLocaleName.isEmpty()) {
-            currentLocale = getResources().getConfiguration().locale;
-        } else {
-            currentLocale = getLocale(currentLocaleName);
+        SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
+        if (sharedPreferences != null) {
+            String currentLocaleName = sharedPreferences.getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
+
+            if (currentLocaleName != null && !currentLocaleName.isEmpty()) {
+                currentLocale = getLocale(currentLocaleName);
+            }
         }
-
         return currentLocale;
     }
 }

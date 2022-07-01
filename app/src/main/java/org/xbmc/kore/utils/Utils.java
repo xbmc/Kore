@@ -44,6 +44,10 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
+    public static boolean isNOrLater() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    }
+
     public static boolean isOreoOrLater() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
