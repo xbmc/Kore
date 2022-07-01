@@ -18,6 +18,7 @@ package org.xbmc.kore.ui.sections.video;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -59,7 +60,7 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     private static final String BUNDLE_KEY_CHANNELID = "bundle_key_channelid";
 

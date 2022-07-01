@@ -21,6 +21,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -118,7 +119,7 @@ public class AddHostFragmentZeroconf extends Fragment {
 
         LogUtils.LOGD(TAG, "Starting service discovery...");
         searchCancelled = false;
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(Looper.getMainLooper());
         final Thread searchThread = new Thread(() -> {
             WifiManager wifiManager = (WifiManager)requireActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 

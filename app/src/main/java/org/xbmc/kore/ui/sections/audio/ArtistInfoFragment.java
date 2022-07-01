@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.BaseColumns;
 import android.view.View;
 
@@ -57,7 +58,7 @@ public class ArtistInfoFragment extends AbstractInfoFragment
     /**
      * Handler on which to post RPC callbacks
      */
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {

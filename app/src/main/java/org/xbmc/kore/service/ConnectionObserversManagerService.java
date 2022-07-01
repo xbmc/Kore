@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+
 import androidx.preference.PreferenceManager;
 import androidx.core.content.ContextCompat;
 
@@ -55,7 +57,7 @@ public class ConnectionObserversManagerService extends Service
     private NotificationObserver notificationObserver;
 
     private boolean somethingIsPlaying = false;
-    private final Handler stopHandler = new Handler();
+    private final Handler stopHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onCreate() {

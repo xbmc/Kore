@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.BaseColumns;
 import android.view.View;
 
@@ -56,7 +57,7 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
     private static final int LOADER_MUSIC_VIDEO = 0;
 
     // Handler on which to post RPC callbacks
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     private Cursor cursor;
 

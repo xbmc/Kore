@@ -22,6 +22,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import androidx.preference.PreferenceManager;
+
+import android.os.Looper;
 import android.text.format.DateUtils;
 
 import androidx.annotation.NonNull;
@@ -498,7 +500,7 @@ public class HostManager {
                     // Couldn't get Kodi version... Ignore
                     LogUtils.LOGD(TAG, "Couldn't get Kodi version. Error: " + description);
                 }
-            }, new Handler());
+            }, new Handler(Looper.getMainLooper()));
         }
     }
 }

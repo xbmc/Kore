@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,7 +62,7 @@ public class HostListFragment extends Fragment {
     private final ArrayList<HostInfoRow> hostInfoRows = new ArrayList<>();
     private HostListAdapter adapter = null;
     private Context context;
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     private FragmentHostListBinding binding;
 

@@ -20,6 +20,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.preference.PreferenceManager;
+
+import android.os.Looper;
 import android.text.TextUtils;
 import android.transition.TransitionInflater;
 import android.view.KeyEvent;
@@ -88,7 +90,7 @@ public abstract class BaseMediaActivity extends BaseActivity
      * Default callback for methods that don't return anything
      */
     private final ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
     private final ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
 
     private final Runnable hidePanelRunnable = new Runnable() {
@@ -278,34 +280,28 @@ public abstract class BaseMediaActivity extends BaseActivity
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
         currentActivePlayerId = getActivePlayerResult.playerid;
-
         updateNowPlayingPanel(getPropertiesResult, getItemResult);
     }
 
     @Override
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult, PlayerType.PropertyValue getPropertiesResult, ListType.ItemsAll getItemResult) {
         currentActivePlayerId = getActivePlayerResult.playerid;
-
         updateNowPlayingPanel(getPropertiesResult, getItemResult);
     }
 
     @Override
     public void playerOnStop() {
         currentActivePlayerId = -1;
-        //We delay hiding the panel to prevent hiding the panel when playing
-        // the next item in a playlist
+        // Delay hiding the panel to prevent hiding it when playing the next item in a playlist
         callbackHandler.removeCallbacks(hidePanelRunnable);
         callbackHandler.postDelayed(hidePanelRunnable, 1000);
     }
 
     @Override
-    public void playerOnConnectionError(int errorCode, String description) {
-
-    }
+    public void playerOnConnectionError(int errorCode, String description) {}
 
     @Override
-    public void playerNoResultsYet() {
-    }
+    public void playerNoResultsYet() {}
 
     @Override
     public void observerOnStopObserving() {
@@ -318,24 +314,23 @@ public abstract class BaseMediaActivity extends BaseActivity
     }
 
     @Override
-    public void inputOnInputRequested(String title, String type, String value) {
-    }
+    public void inputOnInputRequested(String title, String type, String value) {}
 
     @Override
     public void onProgressChanged(int progress) {
         PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
         Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
-        seekAction.execute(HostManager.getInstance(this).getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
-            @Override
-            public void onSuccess(PlayerType.SeekReturnType result) {
-                // Ignore
-            }
+        seekAction.execute(hostManager.getConnection(),
+                           new ApiCallback<PlayerType.SeekReturnType>() {
+                               @Override
+                               public void onSuccess(PlayerType.SeekReturnType result) {/* Ignore*/}
 
-            @Override
-            public void onError(int errorCode, String description) {
-                LogUtils.LOGE(TAG, "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
-            }
-        }, new Handler());
+                               @Override
+                               public void onError(int errorCode, String description) {
+                                   LogUtils.LOGE(TAG, "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
+                               }
+                           },
+                           callbackHandler);
     }
 
     @Override
@@ -359,63 +354,73 @@ public abstract class BaseMediaActivity extends BaseActivity
     @Override
     public void onVolumeMuteClicked() {
         Application.SetMute action = new Application.SetMute();
-        action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
-            @Override
-            public void onSuccess(Boolean result) {
-                //We depend on the listener to correct the mute button state
-            }
+        action.execute(hostManager.getConnection(),
+                       new ApiCallback<Boolean>() {
+                           @Override
+                           public void onSuccess(Boolean result) {
+                               //We depend on the listener to correct the mute button state
+                           }
 
-            @Override
-            public void onError(int errorCode, String description) { }
-        }, new Handler());
+                           @Override
+                           public void onError(int errorCode, String description) { }
+                       },
+                       callbackHandler);
     }
 
     @Override
     public void onShuffleClicked() {
         Player.SetShuffle action = new Player.SetShuffle(currentActivePlayerId);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                //We depend on the listener to correct the mute button state
-            }
+        action.execute(hostManager.getConnection(),
+                       new ApiCallback<String>() {
+                           @Override
+                           public void onSuccess(String result) {
+                               //We depend on the listener to correct the mute button state
+                           }
 
-            @Override
-            public void onError(int errorCode, String description) { }
-        }, callbackHandler);
+                           @Override
+                           public void onError(int errorCode, String description) { }
+                       },
+                       callbackHandler);
     }
 
     @Override
     public void onRepeatClicked() {
         Player.SetRepeat action = new Player.SetRepeat(currentActivePlayerId, PlayerType.Repeat.CYCLE);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                //We depend on the listener to correct the mute button state
-            }
+        action.execute(hostManager.getConnection(),
+                       new ApiCallback<String>() {
+                           @Override
+                           public void onSuccess(String result) {
+                               //We depend on the listener to correct the mute button state
+                           }
 
-            @Override
-            public void onError(int errorCode, String description) { }
-        }, callbackHandler);
+                           @Override
+                           public void onError(int errorCode, String description) { }
+                       },
+                       callbackHandler);
     }
 
     @Override
     public void onVolumeMutedIndicatorClicked() {
         Application.SetMute action = new Application.SetMute();
-        action.execute(hostManager.getConnection(), new ApiCallback<Boolean>() {
-            @Override
-            public void onSuccess(Boolean result) {
-                //We depend on the listener to correct the mute button state
-            }
+        action.execute(hostManager.getConnection(),
+                       new ApiCallback<Boolean>() {
+                           @Override
+                           public void onSuccess(Boolean result) {
+                               //We depend on the listener to correct the mute button state
+                           }
 
-            @Override
-            public void onError(int errorCode, String description) { }
-        }, new Handler());
+                           @Override
+                           public void onError(int errorCode, String description) { }
+                       },
+                       callbackHandler);
     }
 
     private void setupNowPlayingPanel() {
-        binding.nowPlayingPanel.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
-                .execute(hostManager.getConnection(), defaultIntActionCallback, new Handler()));
-
+        binding.nowPlayingPanel.setOnVolumeChangeListener(volume -> {
+            new Application.SetVolume(volume).execute(hostManager.getConnection(),
+                                                      defaultIntActionCallback,
+                                                      callbackHandler);
+        });
         binding.nowPlayingPanel.setOnPanelButtonsClickListener(this);
         binding.nowPlayingPanel.setOnProgressChangeListener(this);
 

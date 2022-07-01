@@ -19,6 +19,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.preference.PreferenceManager;
+
+import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
@@ -53,7 +55,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     /**
      * Handler on which to post RPC callbacks
      */
-    private final Handler callbackHandler = new Handler();
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     private String addonId;
 
