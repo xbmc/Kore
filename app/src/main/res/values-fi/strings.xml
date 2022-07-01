@@ -61,7 +61,7 @@
     <string name="clean_audio_library">Siivoa äänikirjasto</string>
     <string name="update_video_library">Päivitä videokirjasto</string>
     <string name="update_audio_library">Päivitä äänikirjasto</string>
-    <string name="toggle_fullscreen">Kytke kokoruututila</string>
+    <string name="toggle_fullscreen">Kytke koko ruutu</string>
     <string name="connected_to">Yhdistetty mediakeskukseen %1$s</string>
     <string name="connecting">Yhdistetään…</string>
     <string name="connecting_to">Yhdistetään mediakeskukseen %1$s (%2$s)…</string>
@@ -207,9 +207,7 @@
     <string name="no_tvshows_found_refresh">Sarjoja ei löytynyt
 \n
 \n Päivitä vetämällä alas</string>
-    <string name="no_episodes_found">Jaksoja ei löytynyt
-\n
-\n Päivitä vetämällä alas</string>
+    <string name="no_episodes_found">Jaksoja ei löytynyt</string>
     <string name="no_artists_found_refresh">Esittäjiä ei löytynyt
 \n
 \n Päivitä vetämällä alas</string>
@@ -329,9 +327,9 @@
     <string name="show_notification">Näytä toiston aikana ilmoitus</string>
     <string name="show_now_playing_panel">Näytä toistetaan parhaillaan -paneeli toiston aikana</string>
     <string name="show_now_playing_panel_summary">Näyttää ruudun alalaidassa laajennettavan paneelin, kun mediaa toistetaan</string>
-    <string name="notification_seek_jump">Käytä askelhakua</string>
-    <string name="notification_seek_jump_speed">Muuta toistonopeutta käytettäessä askelhakua ilmoituksesta</string>
-    <string name="notification_seek_jump_step">Käytä aikahyppyjä käytettäessä askelhakua ilmoituksesta</string>
+    <string name="notification_seek_jump">Siirrä toistokohtaa pykälittäin</string>
+    <string name="notification_seek_jump_speed">Muuta toistonopeutta, kun toistokohtaa siirretään ilmoituksesta</string>
+    <string name="notification_seek_jump_step">Käytä siirtopykäliä, kun toistokohtaa siirretään ilmoituksesta</string>
     <string name="pause_during_calls">Tauota puhelun ajaksi</string>
     <string name="use_hardware_volume_keys">Käytä laitteen äänenvoimakkuuspainikkeita</string>
     <string name="vibrate_on_remote">Värise kosketettaessa</string>
