@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Fragment that presents the PVR recordings list
@@ -258,7 +259,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 String searchFilter = getSearchFilter();
                 boolean hasSearchFilter = !TextUtils.isEmpty(searchFilter);
                 // Split searchFilter to multiple lowercase words
-                String[] lcWords = hasSearchFilter ? searchFilter.toLowerCase().split(" ") : null;
+                String[] lcWords = hasSearchFilter ? searchFilter.toLowerCase(Locale.getDefault()).split(" ") : null;
 
                 if (!(hideWatched || hasSearchFilter)) {
                     return itemList;
@@ -306,8 +307,8 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
             }
 
             private boolean searchFilterWordMatches(String lcWord, PVRType.DetailsRecording item) {
-                return item.title.toLowerCase().contains(lcWord) ||
-                       item.channel.toLowerCase().contains(lcWord);
+                return item.title.toLowerCase(Locale.getDefault()).contains(lcWord) ||
+                       item.channel.toLowerCase(Locale.getDefault()).contains(lcWord);
             }
 
             private void sort(List<PVRType.DetailsRecording> itemList) {

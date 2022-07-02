@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
+import java.util.Locale;
+
 abstract public class RecyclerViewCursorAdapter
         extends RecyclerView.Adapter<RecyclerViewCursorAdapter.CursorViewHolder>
         implements FastScrollRecyclerView.SectionedAdapter {
@@ -83,14 +85,14 @@ abstract public class RecyclerViewCursorAdapter
         int sectionColumnIdx = getSectionColumnIdx();
         String sectionName = "";
         if (sectionType == SECTION_TYPE_YEAR_INTEGER) {
-            sectionName = String.format("%02d", cursor.getInt(sectionColumnIdx) % 100);
+            sectionName = String.format(Locale.getDefault(), "%02d", cursor.getInt(sectionColumnIdx) % 100);
         } else if (sectionType == SECTION_TYPE_DATE_STRING) {
             String dateStr = cursor.getString(sectionColumnIdx);
             if (dateStr.length() >= 4) {
                 sectionName = dateStr.substring(2, 4);
             }
         } else {
-            sectionName = cursor.getString(sectionColumnIdx).substring(0, 1).toUpperCase();
+            sectionName = cursor.getString(sectionColumnIdx).substring(0, 1).toUpperCase(Locale.getDefault());
         }
 
         return sectionName;

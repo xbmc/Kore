@@ -59,6 +59,7 @@ import org.xbmc.kore.ui.widgets.RepeatModeButton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,9 +95,9 @@ public class UIUtils {
      */
     public static String formatTime(int hours, int minutes, int seconds) {
         if (hours > 0) {
-            return String.format("%d:%02d:%02d", hours, minutes, seconds);
+            return String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, seconds);
         } else {
-            return String.format("%1d:%02d",minutes, seconds);
+            return String.format(Locale.getDefault(), "%1d:%02d",minutes, seconds);
         }
     }
 
@@ -124,11 +125,11 @@ public class UIUtils {
         if (bytes < 1024) {
             return bytes + "B";
         } else if (bytes < 1024 * 1024) {
-            return String.format("%.1f KB", bytes / 1024.0);
+            return String.format(Locale.getDefault(), "%.1f KB", bytes / 1024.0);
         } else if (bytes < 1024 * 1024 * 1024) {
-            return String.format("%.1f MB", bytes / (1024.0 * 1024.0));
+            return String.format(Locale.getDefault(), "%.1f MB", bytes / (1024.0 * 1024.0));
         } else {
-            return String.format("%.1f GB", bytes / (1024.0 * 1024.0 * 1024.0));
+            return String.format(Locale.getDefault(), "%.1f GB", bytes / (1024.0 * 1024.0 * 1024.0));
         }
     }
 
@@ -658,7 +659,7 @@ public class UIUtils {
             } else if (s.startsWith("[/UPPERCASE]")) {
                 if (upper.end()) {
                     String sub = sb.subSequence(upper.index, sb.length()).toString();
-                    sb.replace(upper.index, sb.length(), sub.toUpperCase());
+                    sb.replace(upper.index, sb.length(), sub.toUpperCase(Locale.getDefault()));
                 } else if (upper.imbalanced()) {
                     sb.append("[/UPPERCASE]");
                 }
@@ -697,7 +698,7 @@ public class UIUtils {
             } else if (s.startsWith("[/LOWERCASE]")) {
                 if (lower.end()) {
                     String sub = sb.subSequence(lower.index, sb.length()).toString();
-                    sb.replace(lower.index, sb.length(), sub.toLowerCase());
+                    sb.replace(lower.index, sb.length(), sub.toLowerCase(Locale.getDefault()));
                 } else if (lower.imbalanced()) {
                     sb.append("[/LOWERCASE]");
                 }
@@ -788,7 +789,7 @@ public class UIUtils {
 
     private static String toTitleCase(String text) {
         StringBuilder sb = new StringBuilder();
-        for (String word : text.toLowerCase().split("\\b")) {
+        for (String word : text.toLowerCase(Locale.getDefault()).split("\\b")) {
             if (word.isEmpty()) continue;
             sb.append(Character.toUpperCase(word.charAt(0)));
             sb.append(word, 1, word.length());

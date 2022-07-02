@@ -35,6 +35,7 @@ import org.xbmc.kore.jsonrpc.type.FilesType;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Various methods to help with file downloading
@@ -108,11 +109,13 @@ public class FileDownloadHelper {
 
         public String getMediaUrl(HostInfo hostInfo) {
             String pathforUrl = Uri.encode(fileName);
-            String credentials = (hostInfo.getPassword() == null || hostInfo.getPassword().isEmpty()) ? "" :
-                String.format("%s:%s@", hostInfo.getUsername(), hostInfo.getPassword());
-            String videoUrl = String.format("%s://%s%s:%d/vfs/%s", hostInfo.isHttps? "https" : "http",
-                    credentials, hostInfo.getAddress(), hostInfo.getHttpPort(), pathforUrl);
-            return videoUrl;
+            String credentials = (hostInfo.getPassword() == null || hostInfo.getPassword().isEmpty()) ?
+                                 "" :
+                                 String.format("%s:%s@", hostInfo.getUsername(), hostInfo.getPassword());
+            return String.format(Locale.US,
+                                 "%s://%s%s:%d/vfs/%s",
+                                 hostInfo.isHttps? "https" : "http",
+                                 credentials, hostInfo.getAddress(), hostInfo.getHttpPort(), pathforUrl);
         }
     }
 

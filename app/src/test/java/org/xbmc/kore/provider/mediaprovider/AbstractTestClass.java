@@ -16,6 +16,7 @@
 
 package org.xbmc.kore.provider.mediaprovider;
 
+import android.annotation.SuppressLint;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.pm.ProviderInfo;
@@ -33,6 +34,7 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.testutils.Database;
 
+@SuppressLint("IgnoreWithoutReason")
 @RunWith(AndroidJUnit4.class)
 @Ignore
 @Config(sdk = 28)

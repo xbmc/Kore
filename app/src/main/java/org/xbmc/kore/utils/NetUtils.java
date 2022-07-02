@@ -30,6 +30,7 @@ import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
+import java.util.Locale;
 
 /**
  * Various utilities related to networking
@@ -107,7 +108,7 @@ public class NetUtils {
                 if (arpLine.startsWith(ipHostAddress)) {
                     // Ok, this is the line, get the MAC Address
                     br.close();
-                    return arpLine.split("\\s+")[3].toUpperCase(); // 4th element
+                    return arpLine.split("\\s+")[3].toUpperCase(Locale.US); // 4th element
                 }
             }
             br.close();

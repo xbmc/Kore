@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Fragment that presents the Guide for a channel
@@ -187,7 +188,7 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
         }
 
         // Split searchFilter to multiple lowercase words
-        String[] lcWords = searchFilter.toLowerCase().split(" ");
+        String[] lcWords = searchFilter.toLowerCase(Locale.getDefault()).split(" ");
 
         List<PVRType.DetailsBroadcast> result = new ArrayList<>(itemList.size());
         for (PVRType.DetailsBroadcast item:itemList) {
@@ -210,8 +211,8 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
     }
 
     public boolean searchFilterWordMatches(String lcWord, PVRType.DetailsBroadcast item) {
-        return item.title.toLowerCase().contains(lcWord) ||
-               item.plot.toLowerCase().contains(lcWord);
+        return item.title.toLowerCase(Locale.getDefault()).contains(lcWord) ||
+               item.plot.toLowerCase(Locale.getDefault()).contains(lcWord);
     }
 
     /**
