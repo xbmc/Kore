@@ -65,7 +65,7 @@
 
         <item name="android:clipToPadding">false</item>
         <item name="android:paddingBottom">@dimen/default_padding</item>
-        <item name="android:paddingLeft">@dimen/default_card_margin</item>
+        <item name="android:paddingStart">@dimen/default_card_margin</item>
         <item name="android:columnWidth">@dimen/default_grid_column_width</item>
     </style>
 
@@ -73,7 +73,7 @@
         <item name="cardCornerRadius">@dimen/card_corner_radius</item>
         <item name="cardElevation">@dimen/default_card_elevation</item>
         <item name="cardBackgroundColor">?attr/appCardBackgroundColor</item>
-        <item name="android:layout_marginRight">@dimen/default_card_margin</item>
+        <item name="android:layout_marginEnd">@dimen/default_card_margin</item>
         <item name="android:layout_marginTop">@dimen/default_card_margin</item>
     </style>
     
@@ -100,8 +100,8 @@
         <item name="android:textColor">?attr/textColorOverPrimary</item>
         <item name="android:gravity">left|bottom</item>
         <item name="android:paddingBottom">@dimen/large_padding</item>
-        <item name="android:paddingLeft">@dimen/large_padding</item>
-        <item name="android:paddingRight">@dimen/large_padding</item>
+        <item name="android:paddingStart">@dimen/large_padding</item>
+        <item name="android:paddingEnd">@dimen/large_padding</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
     </style>
@@ -148,8 +148,8 @@
     </style>
 
     <style name="TextAppearance.Media.Remote">
-        <item name="android:paddingLeft">@dimen/default_padding</item>
-        <item name="android:paddingRight">@dimen/small_padding</item>
+        <item name="android:paddingStart">@dimen/default_padding</item>
+        <item name="android:paddingEnd">@dimen/small_padding</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -206,8 +206,8 @@
 
     <style name="TextAppearance.Media.Cast">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
-        <item name="android:paddingLeft">@dimen/small_padding</item>
-        <item name="android:paddingRight">@dimen/small_padding</item>
+        <item name="android:paddingStart">@dimen/small_padding</item>
+        <item name="android:paddingEnd">@dimen/small_padding</item>
         <item name="android:singleLine">true</item>
     </style>
 
@@ -223,14 +223,14 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
         <item name="android:textColor">?attr/appTextColorSecondary</item>
         <item name="android:singleLine">true</item>
-        <item name="android:paddingLeft">@dimen/small_padding</item>
-        <item name="android:paddingRight">@dimen/small_padding</item>
+        <item name="android:paddingStart">@dimen/small_padding</item>
+        <item name="android:paddingEnd">@dimen/small_padding</item>
         <item name="android:minEms">3</item>
     </style>
 
     <style name="TextAppearance.Playlist">
-        <item name="android:paddingLeft">@dimen/default_padding</item>
-        <item name="android:paddingRight">@dimen/default_padding</item>
+        <item name="android:paddingStart">@dimen/default_padding</item>
+        <item name="android:paddingEnd">@dimen/default_padding</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -249,8 +249,8 @@
     </style>
 
     <style name="TextAppearance.Medialist">
-        <item name="android:paddingLeft">@dimen/large_padding</item>
-        <item name="android:paddingRight">@dimen/default_padding</item>
+        <item name="android:paddingStart">@dimen/large_padding</item>
+        <item name="android:paddingEnd">@dimen/default_padding</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -278,8 +278,8 @@
 
     <style name="TextAppearance.HostName">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
-        <item name="android:paddingLeft">@dimen/default_padding</item>
-        <item name="android:paddingRight">@dimen/default_padding</item>
+        <item name="android:paddingStart">@dimen/default_padding</item>
+        <item name="android:paddingEnd">@dimen/default_padding</item>
         <item name="android:paddingTop">@dimen/small_padding</item>
         <item name="android:textColor">?attr/appTextColorPrimary</item>
         <item name="android:singleLine">true</item>
@@ -287,8 +287,8 @@
 
     <style name="TextAppearance.HostDetails">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-        <item name="android:paddingLeft">@dimen/default_padding</item>
-        <item name="android:paddingRight">@dimen/default_padding</item>
+        <item name="android:paddingStart">@dimen/default_padding</item>
+        <item name="android:paddingEnd">@dimen/default_padding</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:textColor">?attr/appTextColorSecondary</item>
         <item name="android:maxLines">2</item>
@@ -311,8 +311,8 @@
 
     <style name="TextAppearance.Info.Details">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
         <item name="android:paddingBottom">16dp</item>
         <!--<item name="android:maxLines">2</item>-->
         <item name="android:ellipsize">end</item>
@@ -374,7 +374,7 @@
 
     <style name="RatingBar">
         <item name="android:layout_marginBottom">@dimen/small_padding</item>
-        <item name="android:layout_marginRight">@dimen/small_padding</item>
+        <item name="android:layout_marginEnd">@dimen/small_padding</item>
     </style>
 </resources>
 

@@ -51,6 +51,7 @@ import org.xbmc.kore.utils.UIUtils;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Fragment that presents the movie list
@@ -255,7 +256,7 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
         }
 
         // Split searchFilter to multiple lowercase words
-        String[] lcWords = searchFilter.toLowerCase().split(" ");
+        String[] lcWords = searchFilter.toLowerCase(Locale.getDefault()).split(" ");
 
         List<PVRType.DetailsChannel> result = new ArrayList<>(itemList.size());
         for (PVRType.DetailsChannel item:itemList) {
@@ -278,8 +279,8 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
     }
 
     public boolean searchFilterWordMatches(String lcWord, PVRType.DetailsChannel item) {
-        return (item.label != null && item.label.toLowerCase().contains(lcWord)) ||
-               (item.broadcastnow != null && item.broadcastnow.title.toLowerCase().contains(lcWord));
+        return (item.label != null && item.label.toLowerCase(Locale.getDefault()).contains(lcWord)) ||
+               (item.broadcastnow != null && item.broadcastnow.title.toLowerCase(Locale.getDefault()).contains(lcWord));
     }
 
     @Override

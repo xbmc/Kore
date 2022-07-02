@@ -21,6 +21,7 @@ package org.xbmc.kore.eventclient;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Locale;
 
 /**
  * Event Client Class
@@ -53,11 +54,11 @@ public class EventClient
 	{
 		byte iconType = Packet.ICON_PNG;
 		// Assume png as icon type
-		if(iconFile.toLowerCase().endsWith(".jpeg"))
+		if(iconFile.toLowerCase(Locale.US).endsWith(".jpeg"))
 			iconType = Packet.ICON_JPEG;
-		if(iconFile.toLowerCase().endsWith(".jpg"))
+		if(iconFile.toLowerCase(Locale.US).endsWith(".jpg"))
 			iconType = Packet.ICON_JPEG;
-		if(iconFile.toLowerCase().endsWith(".gif"))
+		if(iconFile.toLowerCase(Locale.US).endsWith(".gif"))
 			iconType = Packet.ICON_GIF;
 
 		// Read the icon file to the byte array...

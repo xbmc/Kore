@@ -16,6 +16,7 @@
 
 package org.xbmc.kore.tests.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,6 +51,7 @@ import org.xbmc.kore.utils.LogUtils;
 
 import java.io.IOException;
 
+@SuppressLint("IgnoreWithoutReason")
 @RunWith(AndroidJUnit4.class)
 @Ignore
 abstract public class AbstractTestClass<T extends AppCompatActivity> {

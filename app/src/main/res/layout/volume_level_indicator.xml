@@ -6,7 +6,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top"
         style="@style/TextAppearance.Media.SmallDetails"
-        android:textSize="10sp"/>
+        android:textSize="11sp"/>
     <SeekBar
         android:id="@+id/vli_seek_bar"
         android:layout_width="match_parent"

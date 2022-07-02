@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Fragment that presents the movie list
@@ -159,7 +160,7 @@ public class AddonListFragment extends AbstractListFragment {
     public static class AddonNameComparator implements Comparator<AddonType.Details>
     {
         public int compare(AddonType.Details left, AddonType.Details right) {
-            return left.name.toLowerCase().compareTo(right.name.toLowerCase());
+            return left.name.toLowerCase(Locale.getDefault()).compareTo(right.name.toLowerCase(Locale.getDefault()));
         }
     }
     /**
