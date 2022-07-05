@@ -17,34 +17,41 @@ package org.xbmc.kore.host;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
-
 import android.os.Looper;
 import android.text.format.DateUtils;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.preference.PreferenceManager;
 
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.provider.MediaContract;
+import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.NetUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 
 /**
  * Manages XBMC Hosts
@@ -278,30 +285,39 @@ public class HostManager {
                     .edit()
                     .putInt(Settings.KEY_PREF_CURRENT_HOST_ID, currentHostInfo.getId())
                     .apply();
+
+            // Switched host, update dynamic shortcuts to only include the others
+            updateDynamicShortcuts();
         }
 	}
 
-//	/**
-//	 * Sets the current host.
-//	 * Throws {@link java.lang.IllegalArgumentException} if the host doesn't exist
-//	 * @param hostId Host id
-//	 */
-//	public void switchHost(int hostId) {
-//		ArrayList<HostInfo> hosts = getHosts();
-//		HostInfo newHostInfo = null;
-//
-//		for (HostInfo host : hosts) {
-//			if (host.getId() == hostId) {
-//				newHostInfo = host;
-//				break;
-//			}
-//		}
-//
-//		if (newHostInfo == null) {
-//			throw new IllegalArgumentException("Host doesn't exist!");
-//		}
-//		switchHost(newHostInfo);
-//	}
+    /**
+     * Add all kodi hosts, except the current one, to the dynamic shortcuts list
+     * The current one is always accessible via the default intent filters
+     */
+    private void updateDynamicShortcuts() {
+        ShortcutManagerCompat.removeAllDynamicShortcuts(context);
+
+        ArrayList<HostInfo> hosts = getHosts();
+		for (HostInfo host : hosts) {
+            if (host.getId() != currentHostInfo.getId() &&
+                host.getShowAsDirectShareTarget()) {
+                String id = Integer.toString(host.getId());
+                Intent defaultOpenIntent = new Intent(RemoteActivity.DEFAULT_OPEN_ACTION)
+                        .setClass(context, RemoteActivity.class)
+                        .addCategory(RemoteActivity.SHARE_TARGET_CATEGORY)
+                        .putExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID, id);
+                ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(context, id)
+                        .setShortLabel(host.getName())
+                        .setLongLabel(host.getName())
+                        .setIcon(IconCompat.createWithResource(context, R.mipmap.ic_launcher))
+                        .setCategories(Collections.singleton(RemoteActivity.SHARE_TARGET_CATEGORY))
+                        .setIntent(defaultOpenIntent)
+                        .build();
+                ShortcutManagerCompat.pushDynamicShortcut(context, shortcut);
+            }
+        }
+    }
 
     /**
      * Adds a new XBMC host to the database

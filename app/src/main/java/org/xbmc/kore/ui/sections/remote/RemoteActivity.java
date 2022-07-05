@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.text.TextDirectionHeuristicsCompat;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
@@ -83,6 +84,10 @@ public class RemoteActivity extends BaseActivity
         SendTextDialogFragment.SendTextDialogListener {
     private static final String TAG = LogUtils.makeLogTag(RemoteActivity.class);
 
+    // ACTION to be used with the shortcut API that directly opens the remote
+    public static final String DEFAULT_OPEN_ACTION = "org.xbmc.kore.OPEN_REMOTE_VIEW";
+    // CATEGORY for dynamic Share Targets
+    public static final String SHARE_TARGET_CATEGORY = "org.xbmc.kore.SHARE_TARGET";
 
     private static final int NOWPLAYING_FRAGMENT_ID = 1;
     private static final int REMOTE_FRAGMENT_ID = 2;
@@ -107,7 +112,6 @@ public class RemoteActivity extends BaseActivity
     private ActivityRemoteBinding binding;
 
     @Override
-    @SuppressWarnings({"unchecked", "deprecation"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -369,16 +373,30 @@ public class RemoteActivity extends BaseActivity
             return;
         }
 
+        // If a host was passed from the intent use it
+        String shortcutId = intent.getStringExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID);
+        if (shortcutId != null) {
+            int hostId = Integer.parseInt(shortcutId);
+            for (HostInfo host : hostManager.getHosts()) {
+                if (host.getId() == hostId) {
+                    LogUtils.LOGD(TAG, "Switching hosts");
+                    hostManager.switchHost(host);
+                    break;
+                }
+            }
+        }
+
         final String action = intent.getAction();
-        // Check action
-        if ((action == null) ||
-                !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_VIEW)))
+        final String intentType = intent.getType();
+        // Check action, if not Send or View, just return to show the UI
+        if ((action == null) || action.equals(DEFAULT_OPEN_ACTION) ||
+            !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_VIEW)))
             return;
 
         Uri videoUri;
-        if (action.equals(Intent.ACTION_SEND)) {
+        if (action.equals(Intent.ACTION_SEND) && intentType.equals("text/plain")) {
             // Get the URI, which is stored in Extras
-            videoUri = getYouTubeUri(intent.getStringExtra(Intent.EXTRA_TEXT));
+            videoUri = getPlainTextUri(intent.getStringExtra(Intent.EXTRA_TEXT));
         } else {
             videoUri = intent.getData();
         }
@@ -399,34 +417,19 @@ public class RemoteActivity extends BaseActivity
             url = videoUri.toString();
         }
 
-        // If a host was passed from the intent use it
-        int hostId = intent.getIntExtra("hostId", 0);
-        if (hostId > 0) {
-            HostManager hostManager = HostManager.getInstance(this);
-            for (HostInfo host : hostManager.getHosts()) {
-                if (host.getId() == hostId) {
-                    hostManager.switchHost(host);
-                    break;
-                }
-            }
-        }
-
         // Determine which playlist to use
-        String intentType = intent.getType();
         int playlistType;
         if (intentType == null) {
             playlistType = PlaylistType.VIDEO_PLAYLISTID;
+        } else if (intentType.matches("audio.*")) {
+            playlistType = PlaylistType.MUSIC_PLAYLISTID;
+        } else if (intentType.matches("video.*")) {
+            playlistType = PlaylistType.VIDEO_PLAYLISTID;
+        } else if (intentType.matches("image.*")) {
+            playlistType = PlaylistType.PICTURE_PLAYLISTID;
         } else {
-            if (intentType.matches("audio.*")) {
-                playlistType = PlaylistType.MUSIC_PLAYLISTID;
-            } else if (intentType.matches("video.*")) {
-                playlistType = PlaylistType.VIDEO_PLAYLISTID;
-            } else if (intentType.matches("image.*")) {
-                playlistType = PlaylistType.PICTURE_PLAYLISTID;
-            } else {
-                // Generic links? Default to video:
-                playlistType = PlaylistType.VIDEO_PLAYLISTID;
-            }
+            // Generic links? Default to video:
+            playlistType = PlaylistType.VIDEO_PLAYLISTID;
         }
 
         String title = getString(R.string.app_name);
@@ -435,10 +438,9 @@ public class RemoteActivity extends BaseActivity
                 new OpenSharedUrl(hostManager.getConnection(), url, title, text, queue, playlistType));
 
         awaitShare(queue);
-        intent.setAction(null);
 
-        // Don't display Kore after sharing content from another app:
-        finish();
+        // Don't display Kore after queueing from another app
+        if (queue) finish();
     }
 
     private Uri getUrlInsideIntent(Intent intent) {
@@ -473,8 +475,8 @@ public class RemoteActivity extends BaseActivity
             http_app = HttpApp.getInstance(getApplicationContext(), 8080);
         } catch (IOException ioe) {
             Toast.makeText(getApplicationContext(),
-                    getString(R.string.error_starting_http_server),
-                    Toast.LENGTH_LONG).show();
+                           getString(R.string.error_starting_http_server),
+                           Toast.LENGTH_LONG).show();
             return null;
         }
         http_app.addUri(contentUri);
@@ -529,14 +531,14 @@ public class RemoteActivity extends BaseActivity
     }
 
     /**
-     * Returns the YouTube Uri that the YouTube app passes in EXTRA_TEXT
+     * Returns the Uri that the some apps passes in EXTRA_TEXT
      * YouTube sends something like: [Video title]: [YouTube URL] so we need
      * to get the second part
      *
      * @param extraText EXTRA_TEXT passed in the intent
      * @return Uri present in extraText if present
      */
-    private Uri getYouTubeUri(String extraText) {
+    private Uri getPlainTextUri(String extraText) {
         if (extraText == null) return null;
 
         for (String word : extraText.split(" ")) {

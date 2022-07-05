@@ -28,12 +28,15 @@
         <activity
             android:name="org.xbmc.kore.ui.sections.remote.RemoteActivity"
             android:exported="true">
+
+            <!-- Main intent filter to open this activity from the launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
 
+            <!-- Send image/video/audio directly to Kodi -->
             <intent-filter android:label="@string/play_on_kodi">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -42,7 +45,7 @@
                 <data android:mimeType="audio/*" />
             </intent-filter>
             
-            <!-- Intent filter for HTTP(S) links with MIME type -->
+            <!-- Open URLs of image/video/audio -->
             <intent-filter android:label="@string/play_on_kodi">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -54,14 +57,17 @@
                 <data android:mimeType="application/vnd.apple.mpegurl" />
             </intent-filter>
 
-            <!-- Intent filter for sharing from youtube player -->
+            <!--
+            Open plain text URLs (eg, from youtube player, chrome when on a supported site, etc).
+            This is a very generic filter, but it's the only way to get sharing requests from the youtube app
+             -->
             <intent-filter android:label="@string/play_on_kodi">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain"/>
             </intent-filter>
 
-            <!-- Intent filter for sharing youtube URLs -->
+            <!-- Open supported URLs - youtube, vimeo, svtplay, etc. -->
             <intent-filter android:label="@string/play_on_kodi">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -83,13 +89,17 @@
                 <data android:host="m.twitch.tv"/>
             </intent-filter>
 
-            <meta-data android:name="android.service.chooser.chooser_target_service"
-                android:value=".service.HostChooserTargetService" />
+            <!-- To provide backwards compatibility with the old DirectShare API -->
+            <meta-data
+                android:name="android.service.chooser.chooser_target_service"
+                android:value="androidx.sharetarget.ChooserTargetServiceCompat" />
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <activity android:name=".ui.sections.remote.QueueActivity"
             android:exported="true">
-
+            <!-- See intent filters on Remote Activity, as these are similar -->
             <intent-filter android:label="@string/queue_on_kodi">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -98,14 +108,12 @@
                 <data android:mimeType="audio/*" />
             </intent-filter>
 
-            <!-- Intent filter for sharing from youtube player -->
             <intent-filter android:label="@string/queue_on_kodi">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain"/>
             </intent-filter>
             
-            <!-- Intent filter for HTTP(S) links with MIME type -->
             <intent-filter android:label="@string/queue_on_kodi">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -117,7 +125,6 @@
                 <data android:mimeType="application/vnd.apple.mpegurl" />
             </intent-filter>
 
-            <!-- Intent filter for sharing youtube URLs -->
             <intent-filter android:label="@string/queue_on_kodi">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -168,13 +175,6 @@
             android:exported="false"/>
         <service android:name="org.xbmc.kore.service.IntentActionsService"
             android:exported="false"/>
-        <service android:name="org.xbmc.kore.service.HostChooserTargetService"
-            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.service.chooser.ChooserTargetService" />
-            </intent-filter>
-        </service>
 
         <uses-library android:required="false" android:name="com.sec.android.app.multiwindow"/>
         <meta-data android:name="com.sec.android.support.multiwindow" android:value="true" />
