@@ -1,5 +1,6 @@
 package org.xbmc.kore.service;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -20,12 +22,15 @@ import android.view.KeyEvent;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
+import androidx.core.content.ContextCompat;
 import androidx.media.session.MediaButtonReceiver;
+import androidx.preference.PreferenceManager;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.HostConnection;
@@ -71,6 +76,8 @@ public class MediaSessionService extends Service
     private MediaSessionCompat mediaSession;
     private PlaybackStateCompat.Builder stateBuilder;
     private MediaMetadataCompat.Builder metadataBuilder;
+
+    private CallStateListener callStateListener = null;
 
     private final MediaSessionCompat.Callback mediaSessionController = new MediaSessionCompat.Callback() {
         @Override
@@ -202,6 +209,17 @@ public class MediaSessionService extends Service
             hostConnectionObserver.registerPlayerObserver(this);
         }
 
+
+        // Check whether we should react to phone state changes and wether we have permissions to do so
+        boolean shouldPause = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_PAUSE_DURING_CALLS, Settings.DEFAULT_PREF_PAUSE_DURING_CALLS);
+        boolean hasPhonePermission =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+        if (shouldPause && hasPhonePermission) {
+            callStateListener = new CallStateListener(this);
+            callStateListener.startListening();
+        }
         isRunning = true;
         // If we get killed after returning from here, restart
         return START_STICKY;
@@ -220,6 +238,9 @@ public class MediaSessionService extends Service
         mediaSession.release();
         if (hostConnectionObserver != null) {
             hostConnectionObserver.unregisterPlayerObserver(this);
+        }
+        if (callStateListener != null) {
+            callStateListener.stopListening();
         }
     }
 
@@ -249,6 +270,9 @@ public class MediaSessionService extends Service
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
         notifyPlaying(getActivePlayerResult, getPropertiesResult, getItemResult);
+        if (callStateListener != null) {
+            callStateListener.onPlay(getActivePlayerResult.playerid);
+        }
     }
 
     @Override
@@ -256,6 +280,9 @@ public class MediaSessionService extends Service
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
         notifyPlaying(getActivePlayerResult, getPropertiesResult, getItemResult);
+        if (callStateListener != null) {
+            callStateListener.onPause(getActivePlayerResult.playerid);
+        }
     }
 
     private final Handler stopHandler = new Handler(Looper.myLooper());

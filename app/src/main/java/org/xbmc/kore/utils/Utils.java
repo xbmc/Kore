@@ -48,12 +48,14 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 
-    public static boolean isOreoOrLater() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
-    }
+    public static boolean isOreoOrLater() { return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O; }
 
     public static boolean isROrLater() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
+    }
+
+    public static boolean isSOrLater() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }
 
     /**
