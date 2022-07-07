@@ -702,8 +702,8 @@ public class NowPlayingFragment extends Fragment
         binding.mediaUndertitle.setText(underTitle);
 
         binding.progressInfo.setOnProgressChangeListener(this);
-        binding.progressInfo.setMaxProgress(getPropertiesResult.totaltime.ToSeconds());
-        binding.progressInfo.setProgress(getPropertiesResult.time.ToSeconds());
+        binding.progressInfo.setMaxProgress(getPropertiesResult.totaltime.toSeconds());
+        binding.progressInfo.setProgress(getPropertiesResult.time.toSeconds());
 
         int speed = getPropertiesResult.speed;
         //TODO: check if following is still necessary for PVR playback

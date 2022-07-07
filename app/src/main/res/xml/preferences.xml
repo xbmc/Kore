@@ -70,23 +70,9 @@
             android:defaultValue="false"/>
 
         <SwitchPreferenceCompat
-            android:key="pref_show_notification"
-            android:title="@string/show_notification"
-            android:defaultValue="false"/>
-
-        <SwitchPreference
-            android:key="pref_notification_seek_jump"
-            android:dependency="pref_show_notification"
-            android:title="@string/notification_seek_jump"
-            android:summaryOff="@string/notification_seek_jump_speed"
-            android:summaryOn="@string/notification_seek_jump_step"
-            android:defaultValue="false"/>
-
-        <SwitchPreferenceCompat
             android:key="pref_pause_during_calls"
             android:title="@string/pause_during_calls"
-            android:defaultValue="false"
-            android:dependency="pref_show_notification"/>
+            android:defaultValue="false"/>
 
         <SwitchPreferenceCompat
             android:key="pref_show_nowplayingpanel"

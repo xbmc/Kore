@@ -903,7 +903,7 @@ public class HostConnectionObserver
         // to give Kodi some time to report the correct playing time
         if ((currentCallResult == PlayerEventsObserver.PLAYER_IS_PLAYING) &&
             (connection.getProtocol() == HostConnection.PROTOCOL_TCP) &&
-            (getPropertiesResult.time.ToSeconds() == 0)) {
+            (getPropertiesResult.time.toSeconds() == 0)) {
             LogUtils.LOGD(TAG, "Scheduling new call to check what's playing because time is 0.");
             final int RECHECK_INTERVAL = 3000;
             checkerHandler.postDelayed(() -> {

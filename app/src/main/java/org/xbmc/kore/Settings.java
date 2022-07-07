@@ -74,18 +74,10 @@ public class Settings {
     public static final String KEY_PREF_KEEP_SCREEN_ON = "pref_keep_screen_on";
     public static final boolean DEFAULT_KEY_PREF_KEEP_SCREEN_ON = false;
 
-    // Show notifications
-    public static final String KEY_PREF_SHOW_NOTIFICATION = "pref_show_notification";
-    public static final boolean DEFAULT_PREF_SHOW_NOTIFICATION = false;
-
     // Show now playing panel
     public static final String KEY_PREF_SHOW_NOW_PLAYING_PANEL = "pref_show_nowplayingpanel";
     public static final boolean DEFAULT_PREF_SHOW_NOW_PLAYING_PANEL = true;
 
-    // Seek mode
-    public static final String KEY_PREF_NOTIFICATION_SEEK_JUMP = "pref_notification_seek_jump";
-    public static final boolean DEFAULT_PREF_NOTIFICATION_SEEK_JUMP = false;
-    
     // Pause during calls
     public static final String KEY_PREF_PAUSE_DURING_CALLS = "pref_pause_during_calls";
     public static final boolean DEFAULT_PREF_PAUSE_DURING_CALLS = false;
