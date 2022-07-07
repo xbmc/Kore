@@ -341,7 +341,7 @@ public class PlayerHandler extends ConnectionHandler {
         if (mediaItem == null)
             return new Player.Seek(methodId, 0, 0, 0);
 
-        elapsedTime = new GlobalType.Time(jsonRequest.get("params").get("value")).ToSeconds();
+        elapsedTime = new GlobalType.Time(jsonRequest.get("params").get("value")).toSeconds();
         int playerId = getPlayerIdFromJsonRequest(jsonRequest);
 
         addNotification(new OnSeek(methodId, getMediaItemType(), playerId,

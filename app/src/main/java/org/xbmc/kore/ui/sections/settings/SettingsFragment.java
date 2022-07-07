@@ -15,12 +15,10 @@
  */
 package org.xbmc.kore.ui.sections.settings;
 
-import static org.xbmc.kore.service.NotificationObserver.NOTIFICATION_ID;
 import static org.xbmc.kore.utils.Utils.getLocale;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,7 +40,7 @@ import org.xbmc.kore.BuildConfig;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.service.ConnectionObserversManagerService;
+import org.xbmc.kore.service.MediaSessionService;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -177,21 +175,14 @@ public class SettingsFragment extends PreferenceFragmentCompat
             }
         }
 
-        // If one of the settings that use the observer service are modified, restart it
-        if (key.equals(Settings.KEY_PREF_SHOW_NOTIFICATION) || key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS)) {
-            LogUtils.LOGD(TAG, "Stoping connection observer service");
-            Intent intent = new Intent(getActivity(), ConnectionObserversManagerService.class);
+        // If one of the settings that use the media session service are modified, restart it
+        if (key.equals(Settings.KEY_PREF_PAUSE_DURING_CALLS)) {
+            Intent intent = new Intent(getActivity(), MediaSessionService.class);
             ctx.stopService(intent);
-            if (sharedPreferences.getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION, Settings.DEFAULT_PREF_SHOW_NOTIFICATION)) {
-                if (Utils.isOreoOrLater()) {
-                    ctx.startForegroundService(intent);
-                } else {
-                    ctx.startService(intent);
-                }
+            if (Utils.isOreoOrLater()) {
+                ctx.startForegroundService(intent);
             } else {
-                NotificationManager notificationManager =
-                        (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.cancel(NOTIFICATION_ID);
+                ctx.startService(intent);
             }
         }
     }

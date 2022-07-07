@@ -48,8 +48,16 @@ public class GlobalType {
          * Returns the seconds from midnight that this time object represents
          * @return Seconds from midnight
          */
-        public int ToSeconds() {
+        public int toSeconds() {
             return hours * 3600 + minutes * 60 + seconds;
+        }
+
+        /**
+         * Returns miliseconds from midnight that this time object represents
+         * @return Miliseconds from midnight
+         */
+        public long toMiliseconds() {
+            return toSeconds() * 1000L;
         }
     }
 

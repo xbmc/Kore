@@ -118,8 +118,8 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     }
 
     public void setMediaProgress(GlobalType.Time time, GlobalType.Time totalTime) {
-        binding.nppProgressIndicator.setMaxProgress(totalTime.ToSeconds());
-        binding.nppProgressIndicator.setProgress(time.ToSeconds());
+        binding.nppProgressIndicator.setMaxProgress(totalTime.toSeconds());
+        binding.nppProgressIndicator.setProgress(time.toSeconds());
     }
 
     /**

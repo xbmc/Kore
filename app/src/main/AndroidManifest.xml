@@ -171,10 +171,19 @@
         <!-- Services -->
         <service android:name=".service.library.LibrarySyncService"
             android:exported="false"/>
-        <service android:name="org.xbmc.kore.service.ConnectionObserversManagerService"
-            android:exported="false"/>
-        <service android:name="org.xbmc.kore.service.IntentActionsService"
-            android:exported="false"/>
+        <service android:name="org.xbmc.kore.service.MediaSessionService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="androidx.media.session.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
 
         <uses-library android:required="false" android:name="com.sec.android.app.multiwindow"/>
         <meta-data android:name="com.sec.android.support.multiwindow" android:value="true" />

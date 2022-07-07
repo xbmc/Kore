@@ -52,7 +52,7 @@ import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
-import org.xbmc.kore.service.ConnectionObserversManagerService;
+import org.xbmc.kore.service.MediaSessionService;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.SendTextDialogFragment;
@@ -725,7 +725,6 @@ public class RemoteActivity extends BaseActivity
 
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
@@ -736,20 +735,7 @@ public class RemoteActivity extends BaseActivity
         }
         lastImageUrl = imageUrl;
 
-        // Check whether we should show a notification
-        boolean showNotification = PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_SHOW_NOTIFICATION,
-                            Settings.DEFAULT_PREF_SHOW_NOTIFICATION);
-        if (showNotification) {
-            // Start service that manages connection observers
-            LogUtils.LOGD(TAG, "Starting observer service");
-            if (Utils.isOreoOrLater()) {
-                startForegroundService(new Intent(this, ConnectionObserversManagerService.class));
-            } else {
-                startService(new Intent(this, ConnectionObserversManagerService.class));
-            }
-        }
+        MediaSessionService.startIfNotRunning(this);
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,

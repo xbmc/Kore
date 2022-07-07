@@ -50,6 +50,7 @@ import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
+import org.xbmc.kore.service.MediaSessionService;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
@@ -281,6 +282,8 @@ public abstract class BaseMediaActivity extends BaseActivity
                              ListType.ItemsAll getItemResult) {
         currentActivePlayerId = getActivePlayerResult.playerid;
         updateNowPlayingPanel(getPropertiesResult, getItemResult);
+        // Start the MediaSession service
+        MediaSessionService.startIfNotRunning(this);
     }
 
     @Override
