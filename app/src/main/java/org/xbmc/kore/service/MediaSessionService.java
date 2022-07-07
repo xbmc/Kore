@@ -394,7 +394,12 @@ public class MediaSessionService extends Service
         metadataBuilder
                 .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, Integer.toString(getItemResult.id))
                 .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, title)
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
                 .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, underTitle)
+                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, getItemResult.description)
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getItemResult.displayartist)
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, getItemResult.album)
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST, getItemResult.displayartist)
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, getPropertiesResult.totaltime.toMiliseconds())
                 .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, poster);
 

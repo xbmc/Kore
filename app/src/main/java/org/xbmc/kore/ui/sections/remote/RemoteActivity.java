@@ -15,11 +15,9 @@
  */
 package org.xbmc.kore.ui.sections.remote;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -63,7 +61,6 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.PluginUrlUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

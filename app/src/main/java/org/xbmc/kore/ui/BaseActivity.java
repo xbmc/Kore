@@ -39,22 +39,4 @@ public abstract class BaseActivity extends AppCompatActivity {
         Utils.setPreferredLocale(this);
         super.onCreate(savedInstanceState);
     }
-
-    //    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.global, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_settings:
-//                return true;
-//            default:
-//                break;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }
