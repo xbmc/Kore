@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -41,6 +43,8 @@ import org.xbmc.kore.databinding.ActivityRemoteBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.host.actions.OpenSharedUrl;
+import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.method.GUI;
@@ -68,10 +72,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -101,10 +101,6 @@ public class RemoteActivity extends BaseActivity
     private HostConnectionObserver hostConnectionObserver;
 
     private NavigationDrawerFragment navigationDrawerFragment;
-
-    private Future<Boolean> pendingShare;
-
-    private Future<Void> awaitingShare;
 
     private ActivityRemoteBinding binding;
 
@@ -153,17 +149,6 @@ public class RemoteActivity extends BaseActivity
 
         // Periodic Check of Kodi version
         hostManager.checkAndUpdateKodiVersion();
-
-        // If we should start playing something
-
-//        // Setup system bars and content padding
-//        setupSystemBarsColors();
-//        // Set the padding of views.
-//        // Only set top and right, to allow bottom to overlap in each fragment
-//        UIUtils.setPaddingForSystemBars(this, viewPager, true, true, false);
-//        UIUtils.setPaddingForSystemBars(this, pageIndicator, true, true, false);
-
-        pendingShare = (Future<Boolean>) getLastCustomNonConfigurationInstance();
     }
 
     @Override
@@ -209,12 +194,6 @@ public class RemoteActivity extends BaseActivity
         super.onPause();
         if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver = null;
-        if (awaitingShare != null) awaitingShare.cancel(true);
-    }
-
-    @Override
-    public Object onRetainCustomNonConfigurationInstance() {
-        return pendingShare;
     }
 
     @Override
@@ -346,17 +325,6 @@ public class RemoteActivity extends BaseActivity
     }
 
     /**
-     * Provides the thread where the intent will be handled
-     */
-    private static ExecutorService SHARE_EXECUTOR = null;
-    private static ExecutorService getShareExecutor() {
-        if (SHARE_EXECUTOR == null) {
-            SHARE_EXECUTOR = Executors.newSingleThreadExecutor();
-        }
-        return SHARE_EXECUTOR;
-    }
-
-    /**
      * Handles the intent that started this activity, namely to start playing something on Kodi
      * @param intent Start intent for the activity
      */
@@ -365,11 +333,6 @@ public class RemoteActivity extends BaseActivity
     }
 
     protected void handleStartIntent(Intent intent, boolean queue) {
-        if (pendingShare != null) {
-            awaitShare(queue);
-            return;
-        }
-
         // If a host was passed from the intent use it
         String shortcutId = intent.getStringExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID);
         if (shortcutId != null) {
@@ -431,10 +394,23 @@ public class RemoteActivity extends BaseActivity
 
         String title = getString(R.string.app_name);
         String text = getString(R.string.item_added_to_playlist);
-        pendingShare = getShareExecutor().submit(
-                new OpenSharedUrl(hostManager.getConnection(), url, title, text, queue, playlistType));
+        new OpenSharedUrl(this, url, title, text, queue, playlistType)
+                .execute(hostManager.getConnection(),
+                         new ApiCallback<Boolean>() {
+                             @Override
+                             public void onSuccess(Boolean wasAlreadyPlaying) {
+                                 String msg = queue && wasAlreadyPlaying ? getString(R.string.item_added_to_playlist) : getString(R.string.item_sent_to_kodi);
+                                 Toast.makeText(RemoteActivity.this, msg, Toast.LENGTH_SHORT)
+                                      .show();
+                             }
 
-        awaitShare(queue);
+                             @Override
+                             public void onError(int errorCode, String description) {
+                                 LogUtils.LOGE(TAG, "Share failed: " + description);
+                                 Toast.makeText(RemoteActivity.this, description, Toast.LENGTH_SHORT)
+                                      .show();
+                             }
+                         }, new Handler(Looper.getMainLooper()));
 
         // Don't display Kore after queueing from another app
         if (queue) finish();
@@ -480,51 +456,6 @@ public class RemoteActivity extends BaseActivity
         String url = http_app.getLinkToFile();
 
         return Uri.parse(url);
-    }
-
-    /**
-     * Awaits the completion of the share request in the same background thread
-     * where the request is running.
-     * <p>
-     * This needs to run stuff in the UI thread so the activity reference is
-     * inevitable, but unlike the share request this doesn't need to outlive the
-     * activity. The resulting future __must__ be cancelled when the activity is
-     * paused (it will drop itself when cancelled or finished). This should be called
-     * again when the activity is resumed and a {@link #pendingShare} exists.
-     */
-    private void awaitShare(final boolean queue) {
-        awaitingShare = getShareExecutor().submit(() -> {
-            try {
-                final boolean wasAlreadyPlaying = pendingShare.get();
-                pendingShare = null;
-                runOnUiThread(() -> {
-                    if (wasAlreadyPlaying) {
-                        String msg;
-                        if (queue) {
-                            msg = getString(R.string.item_added_to_playlist);
-                        } else {
-                            msg = getString(R.string.item_sent_to_kodi);
-                        }
-                        Toast.makeText(RemoteActivity.this,
-                            msg,
-                            Toast.LENGTH_SHORT)
-                            .show();
-                    }
-                });
-            } catch (InterruptedException ignored) {
-            } catch (ExecutionException ex) {
-                pendingShare = null;
-                final OpenSharedUrl.Error e = (OpenSharedUrl.Error) ex.getCause();
-                LogUtils.LOGE(TAG, "Share failed", e);
-                if (e != null)
-                    runOnUiThread(() -> Toast.makeText(RemoteActivity.this,
-                                                       getString(e.stage, e.getMessage()), Toast.LENGTH_SHORT)
-                                             .show());
-            } finally {
-                awaitingShare = null;
-            }
-            return null;
-        });
     }
 
     /**
