@@ -43,13 +43,11 @@ import java.net.InetSocketAddress;
 import java.net.ProtocolException;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import okhttp3.Authenticator;
 import okhttp3.Credentials;
@@ -214,7 +212,7 @@ public class HostConnection {
         // Start with the default host protocol
         this.protocol = hostInfo.getProtocol();
         // Create a single threaded executor
-        this.executorService = Executors.newFixedThreadPool(5);
+        this.executorService = Executors.newCachedThreadPool();
         // Set timeout
         this.connectTimeout = connectTimeout;
     }
@@ -257,6 +255,12 @@ public class HostConnection {
     public int getConnectTimeout() {
         return connectTimeout;
     }
+
+    /**
+     * Returns the {@link ExecutorService} that is being used to send remote method calls
+     * @return The {@link ExecutorService} in use
+     */
+    public ExecutorService getExecutorService() { return executorService; }
 
     /**
      * Registers an observer for player notifications
@@ -379,7 +383,7 @@ public class HostConnection {
      * need to call several remote methods in sequence. This method allows for a sequential code pattern when
      * calling several remote methods, by calling {@link Future#get()} on each one and globally managing exceptions.
      * If the goal is simply to asynchronously execute a remote method the
-     * {@link HostConnection#execute(Callable, ApiCallback, Handler)} is preferrable, as it is slightly more efficient.
+     * {@link HostConnection#execute(ApiMethod, ApiCallback, Handler)} is preferrable, as it is slightly more efficient.
      *
      * @param method The remote method to invoke
      * @param <T> The type of the return value of the method
@@ -400,41 +404,6 @@ public class HostConnection {
             }
         }, null);
         return future;
-    }
-    
-    /**
-     * Executes the {@link Callable} and waits for it to finish on a background thread. The
-     * result is returned using the {@link ApiCallback} and handler
-     * @param callable executed using an {@link ExecutorService}
-     * @param apiCallback used to return the result of the callable
-     * @param handler used to execute the {@link ApiCallback} methods
-     * @param <T> The callable return type
-     */
-    public <T> void execute(final Callable<T> callable, final ApiCallback<T> apiCallback, final Handler handler) {
-        final Future<T> future = executorService.submit(callable);
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    T result = future.get(CALLABLE_TIMEOUT, TimeUnit.MILLISECONDS);
-                    handleSuccess(result);
-                } catch (ExecutionException e) {
-                    handleError(ApiException.API_ERROR, e.getMessage());
-                } catch (InterruptedException e) {
-                    handleError(ApiException.API_WAITING_ON_RESULT_INTERRUPTED, e.getMessage());
-                } catch (TimeoutException e) {
-                    handleError(ApiException.API_WAITING_ON_RESULT_TIMEDOUT, e.getMessage());
-                }
-            }
-
-            private void handleSuccess(final T result) {
-                handler.post(() -> apiCallback.onSuccess(result));
-            }
-
-            private void handleError(final int errorCode, final String message) {
-                handler.post(() -> apiCallback.onError(errorCode, message));
-            }
-        });
     }
 
     /**
