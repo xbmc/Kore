@@ -23,7 +23,6 @@ import android.os.Looper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +35,6 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
-import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
@@ -52,7 +50,6 @@ import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Presents movie details

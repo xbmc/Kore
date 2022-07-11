@@ -24,7 +24,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 import org.xbmc.kore.host.HostInfo;
@@ -138,7 +137,7 @@ public class ApplicationTest {
         org.xbmc.kore.jsonrpc.method.Application.SetMute mute =
                 new org.xbmc.kore.jsonrpc.method.Application.SetMute();
 
-        hostConnection.execute(mute, new ApiCallback<Boolean>() {
+        mute.execute(hostConnection, new ApiCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
             }
@@ -155,7 +154,7 @@ public class ApplicationTest {
         org.xbmc.kore.jsonrpc.method.Application.SetVolume setVolume =
                 new org.xbmc.kore.jsonrpc.method.Application.SetVolume(volume);
 
-        hostConnection.execute(setVolume, new ApiCallback<Integer>() {
+        setVolume.execute(hostConnection, new ApiCallback<Integer>() {
             @Override
             public void onSuccess(Integer result) {
             }

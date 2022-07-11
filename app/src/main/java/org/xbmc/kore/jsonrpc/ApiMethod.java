@@ -209,24 +209,9 @@ public abstract class ApiMethod<T> {
 	 */
 	public ObjectNode toJsonObject() { return jsonRequest; }
 
-//	/**
-//	 * Calls the method represented by this object on the server.
-//	 * This call is always asynchronous. The results will be posted, through the callback parameter,
-//	 * on the same thread that is calling this method.
-//	 * Note: The current thread must have a Looper prepared, otherwise this will fail because we
-//	 * try to get handler on the thread.
-//	 *
-//	 * @param hostConnection Host connection on which to call the method
-//	 * @param callback Callbacks to post the response to
-//	 */
-//	public void execute(HostConnection hostConnection, ApiCallback<T> callback) {
-//		execute(hostConnection, callback, new Handler(Looper.myLooper()));
-//	}
-
 	/**
-	 * Calls the method represented by this object on the server.
-	 * This call is always asynchronous. The results will be posted, through the callback parameter,
-	 * on the specified handler.
+	 * Calls the method represented by this object on the server asynchronously.
+	 * The results will be posted through the callback function on the specified handler.
 	 *
 	 * @param hostConnection Host connection on which to call the method
 	 * @param callback Callbacks to post the response to
