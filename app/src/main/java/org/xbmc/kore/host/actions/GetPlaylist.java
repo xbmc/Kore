@@ -19,8 +19,9 @@ package org.xbmc.kore.host.actions;
 
 import androidx.annotation.Nullable;
 
-import org.xbmc.kore.jsonrpc.ApiMethod;
+import org.xbmc.kore.host.HostCompositeAction;
 import org.xbmc.kore.host.HostConnection;
+import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
@@ -29,14 +30,12 @@ import org.xbmc.kore.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Retrieves the playlist items for the first non-empty playlist or null if no playlists are
- * available.
+ * Retrieves the playlist items for the first non-empty playlist or null if no playlists are available.
  */
-public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistResult>> {
+public class GetPlaylist extends HostCompositeAction<ArrayList<GetPlaylist.GetPlaylistResult>> {
     private static final String TAG = LogUtils.makeLogTag(GetPlaylist.class);
 
     private final static String[] propertiesToGet = new String[] {
@@ -62,39 +61,31 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
     static private HashMap<String, Integer> playlistsTypesAndIds;
     private String playlistType;
     private int playlistId = -1;
-    private final HostConnection hostConnection;
 
     /**
      * Use this to get the first non-empty playlist
-     * @param hostConnection {@link HostConnection} to use
      */
-    public GetPlaylist(HostConnection hostConnection) {
-        this.hostConnection = hostConnection;
-    }
+    public GetPlaylist() {}
 
     /**
      * Use this to get a playlist for a specific playlist type
-     * @param hostConnection {@link HostConnection} to use
      * @param playlistType should be one of the types from {@link org.xbmc.kore.jsonrpc.type.PlaylistType.GetPlaylistsReturnType}.
      *                     If null the first non-empty playlist is returned.
      */
-    public GetPlaylist(HostConnection hostConnection, String playlistType) {
-        this.hostConnection = hostConnection;
+    public GetPlaylist(String playlistType) {
         this.playlistType = playlistType;
     }
 
     /**
      * Use this to get a playlist for a specific playlist id
-     * @param hostConnection {@link HostConnection} to use
      * @param playlistId Kodi's playlist id
      */
-    public GetPlaylist(HostConnection hostConnection, int playlistId) {
-        this.hostConnection = hostConnection;
+    public GetPlaylist(int playlistId) {
         this.playlistId = playlistId;
     }
 
     @Override
-    public ArrayList<GetPlaylistResult> call() throws ExecutionException, InterruptedException {
+    public ArrayList<GetPlaylistResult> execInBackground() throws ExecutionException, InterruptedException {
         if (playlistsTypesAndIds == null)
             playlistsTypesAndIds = getPlaylists(hostConnection);
 
@@ -112,22 +103,22 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
             return retrieveNonEmptyPlaylists();
     }
 
-    private GetPlaylistResult retrievePlaylistItemsForId(int playlistId) throws InterruptedException,
-                                                                                ExecutionException {
+    private GetPlaylistResult retrievePlaylistItemsForId(int playlistId)
+            throws InterruptedException, ExecutionException {
         List<ListType.ItemsAll> playlistItems = retrievePlaylistItems(hostConnection, playlistId);
         return new GetPlaylistResult(playlistId, getPlaylistType(playlistId), playlistItems);
     }
 
-    private GetPlaylistResult retrievePlaylistItemsForType(String type) throws InterruptedException,
-                                                                     ExecutionException {
+    private GetPlaylistResult retrievePlaylistItemsForType(String type)
+            throws InterruptedException, ExecutionException {
         Integer id = playlistsTypesAndIds.get(type);
         if (id == null) id = -1;
         List<ListType.ItemsAll> playlistItems = retrievePlaylistItems(hostConnection, id);
         return new GetPlaylistResult(id, type, playlistItems);
     }
 
-    private ArrayList<GetPlaylistResult> retrieveNonEmptyPlaylists() throws InterruptedException,
-                                                                     ExecutionException {
+    private ArrayList<GetPlaylistResult> retrieveNonEmptyPlaylists()
+            throws InterruptedException, ExecutionException {
         ArrayList<GetPlaylistResult> playlists = new ArrayList<>();
 
         for (String type : playlistsTypesAndIds.keySet()) {
@@ -150,12 +141,9 @@ public class GetPlaylist implements Callable<ArrayList<GetPlaylist.GetPlaylistRe
         return playlistsHashMap;
     }
 
-    private List<ListType.ItemsAll> retrievePlaylistItems(HostConnection hostConnection,
-                                                                     int playlistId)
+    private List<ListType.ItemsAll> retrievePlaylistItems(HostConnection hostConnection, int playlistId)
             throws InterruptedException, ExecutionException {
-
-        ApiMethod<List<ListType.ItemsAll>> apiMethod = new Playlist.GetItems(playlistId,
-                                                                             propertiesToGet);
+        ApiMethod<List<ListType.ItemsAll>> apiMethod = new Playlist.GetItems(playlistId, propertiesToGet);
         return hostConnection.execute(apiMethod).get();
     }
 

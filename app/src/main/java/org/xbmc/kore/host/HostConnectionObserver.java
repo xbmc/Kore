@@ -581,7 +581,7 @@ public class HostConnectionObserver
 
         isCheckingPlaylist = true;
 
-        connection.execute(new GetPlaylist(connection), new ApiCallback<ArrayList<GetPlaylist.GetPlaylistResult>>() {
+        new GetPlaylist().execute(connection, new ApiCallback<ArrayList<GetPlaylist.GetPlaylistResult>>() {
             @Override
             public void onSuccess(ArrayList<GetPlaylist.GetPlaylistResult> result) {
                 LogUtils.LOGD(TAG, "Checked playlist, got results: " + result.size());

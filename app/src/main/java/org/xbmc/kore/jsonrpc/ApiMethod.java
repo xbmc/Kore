@@ -124,7 +124,6 @@ public abstract class ApiMethod<T> {
             getParametersNode().put(parameter, value);
     }
 
-
     /**
      * Adds a parameter to the request
      * @param parameter Parameter name

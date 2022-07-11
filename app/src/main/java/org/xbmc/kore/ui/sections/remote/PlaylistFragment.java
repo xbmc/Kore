@@ -214,7 +214,7 @@ public class PlaylistFragment extends Fragment
             return;
 
         refreshingPlaylist = true;
-        hostManager.getConnection().execute(getPlaylist,
+        getPlaylist.execute(hostManager.getConnection(),
                 new ApiCallback<ArrayList<GetPlaylist.GetPlaylistResult>>() {
                     @Override
                     public void onSuccess(ArrayList<GetPlaylist.GetPlaylistResult> result) {
@@ -244,7 +244,7 @@ public class PlaylistFragment extends Fragment
     @Override
     public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
         if (notificationsData.property.shuffled != null)
-            refreshPlaylist(new GetPlaylist(hostManager.getConnection(), lastGetActivePlayerResult.type));
+            refreshPlaylist(new GetPlaylist(lastGetActivePlayerResult.type));
     }
 
     /**
