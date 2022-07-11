@@ -15,6 +15,8 @@
  */
 package org.xbmc.kore.jsonrpc;
 
+import org.xbmc.kore.host.HostConnection;
+
 /**
  * Callback from a JSON RPC method execution.
  * When executing a method in JSON RPC, through

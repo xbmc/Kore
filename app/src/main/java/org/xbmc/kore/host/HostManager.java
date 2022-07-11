@@ -37,7 +37,6 @@ import com.squareup.picasso.Picasso;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.provider.MediaContract;

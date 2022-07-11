@@ -44,7 +44,7 @@ import org.xbmc.kore.databinding.FragmentHostListBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;

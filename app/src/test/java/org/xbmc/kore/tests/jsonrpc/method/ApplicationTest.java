@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.testutils.tcpserver.MockTcpServer;

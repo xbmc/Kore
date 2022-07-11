@@ -5,7 +5,7 @@ package org.xbmc.kore.ui.sections.remote;
  */
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlayerType;

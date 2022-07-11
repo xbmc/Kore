@@ -17,14 +17,14 @@ import java.util.concurrent.TimeoutException;
  *
  * @param <T> The type of the result returned by {@link ApiFuture#get()}
  */
-class ApiFuture<T> implements Future<T> {
+public class ApiFuture<T> implements Future<T> {
     private enum Status { WAITING, OK, ERROR, CANCELLED }
     private final Object lock = new Object();
     private Status status = Status.WAITING;
     private T ok;
     private Throwable error;
 
-    ApiFuture() {}
+    public ApiFuture() {}
 
     @Override
     public T get() throws InterruptedException, ExecutionException {

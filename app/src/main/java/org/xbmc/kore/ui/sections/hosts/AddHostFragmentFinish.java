@@ -40,7 +40,7 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.databinding.FragmentAddHostFinishBinding;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 

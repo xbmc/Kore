@@ -40,7 +40,7 @@ import androidx.fragment.app.Fragment;
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentAddHostZeroconfBinding;
 import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.NetUtils;
 

@@ -26,7 +26,7 @@ import android.os.Process;
 
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.util.ArrayList;

@@ -20,7 +20,7 @@ package org.xbmc.kore.host.actions;
 import androidx.annotation.Nullable;
 
 import org.xbmc.kore.jsonrpc.ApiMethod;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;

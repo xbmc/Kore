@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;

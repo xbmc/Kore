@@ -28,7 +28,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.notification.Application;
 import org.xbmc.kore.testutils.tcpserver.MockTcpServer;
 import org.xbmc.kore.testutils.tcpserver.handlers.ApplicationHandler;

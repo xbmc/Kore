@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.type.ApiParameter;
 import org.xbmc.kore.utils.LogUtils;
 
