@@ -21,7 +21,7 @@ import android.content.ContentResolver;
 import android.os.Handler;
 
 import org.xbmc.kore.host.HostInfo;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.utils.LogUtils;
 

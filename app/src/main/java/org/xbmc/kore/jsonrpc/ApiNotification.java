@@ -25,8 +25,8 @@ import org.xbmc.kore.jsonrpc.notification.Player;
  * Each specific notification should be a subclass of this.
  */
 public abstract class ApiNotification {
-    protected static final String METHOD_NODE = "method";
-    protected static final String PARAMS_NODE = "params";
+    public static final String METHOD_NODE = "method";
+    public static final String PARAMS_NODE = "params";
 
     public final String sender;
 

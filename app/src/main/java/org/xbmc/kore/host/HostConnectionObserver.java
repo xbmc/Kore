@@ -20,7 +20,6 @@ import android.os.Looper;
 
 import org.xbmc.kore.host.actions.GetPlaylist;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.notification.Application;

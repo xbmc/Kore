@@ -20,7 +20,7 @@ import android.content.ContentResolver;
 import android.os.Bundle;
 import android.os.Handler;
 
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 
 /**
  * Represent an item that can be synced

@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.host;
 
-import org.xbmc.kore.jsonrpc.HostConnection;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.io.UnsupportedEncodingException;

@@ -23,7 +23,7 @@ import android.os.Handler;
 
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiList;
-import org.xbmc.kore.jsonrpc.HostConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.type.AudioType;
 import org.xbmc.kore.jsonrpc.type.LibraryType;
