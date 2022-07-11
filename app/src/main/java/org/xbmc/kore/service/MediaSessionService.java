@@ -34,7 +34,7 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.HostConnection;
-import org.xbmc.kore.jsonrpc.notification.Player;
+import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
@@ -82,52 +82,43 @@ public class MediaSessionService extends Service
     private final MediaSessionCompat.Callback mediaSessionController = new MediaSessionCompat.Callback() {
         @Override
         public void onPlay() {
-            hostConnection.execute(new org.xbmc.kore.jsonrpc.method.Player.PlayPause(currentPlayerId), null, null);
+            new Player.PlayPause(currentPlayerId).execute(hostConnection, null, null);
         }
 
         @Override
         public void onPause() {
-            hostConnection.execute(new org.xbmc.kore.jsonrpc.method.Player.PlayPause(currentPlayerId), null, null);
+            new Player.PlayPause(currentPlayerId).execute(hostConnection, null, null);
         }
 
         @Override
         public void onSkipToNext() {
-            hostConnection.execute(
-                    new org.xbmc.kore.jsonrpc.method.Player.GoTo(currentPlayerId, org.xbmc.kore.jsonrpc.method.Player.GoTo.NEXT),
-                    null, null);
+            new Player.GoTo(currentPlayerId, Player.GoTo.NEXT).execute(hostConnection, null, null);
         }
 
         @Override
         public void onSkipToPrevious() {
-            hostConnection.execute(
-                    new org.xbmc.kore.jsonrpc.method.Player.GoTo(currentPlayerId, org.xbmc.kore.jsonrpc.method.Player.GoTo.PREVIOUS),
-                    null, null);
+            new Player.GoTo(currentPlayerId, Player.GoTo.PREVIOUS).execute(hostConnection, null, null);
         }
 
         @Override
         public void onFastForward() {
-            hostConnection.execute(
-                    new org.xbmc.kore.jsonrpc.method.Player.Seek(currentPlayerId, org.xbmc.kore.jsonrpc.method.Player.Seek.FORWARD),
-                    null, null);
+            new Player.Seek(currentPlayerId, Player.Seek.FORWARD).execute(hostConnection, null, null);
         }
 
         @Override
         public void onRewind() {
-            hostConnection.execute(
-                    new org.xbmc.kore.jsonrpc.method.Player.Seek(currentPlayerId, org.xbmc.kore.jsonrpc.method.Player.Seek.BACKWARD),
-                    null, null);
+            new Player.Seek(currentPlayerId, Player.Seek.BACKWARD).execute(hostConnection, null, null);
         }
 
         @Override
         public void onStop() {
-            hostConnection.execute(new org.xbmc.kore.jsonrpc.method.Player.Stop(currentPlayerId), null, null);
+            new Player.Stop(currentPlayerId).execute(hostConnection, null, null);
         }
 
         @Override
         public void onSeekTo(long pos) {
-            hostConnection.execute(
-                    new org.xbmc.kore.jsonrpc.method.Player.Seek(currentPlayerId, new PlayerType.PositionTime((int) (pos / 1000))),
-                    null, null);
+            new Player.Seek(currentPlayerId, new PlayerType.PositionTime((int) (pos / 1000)))
+                    .execute(hostConnection, null, null);
         }
     };
 
@@ -260,7 +251,7 @@ public class MediaSessionService extends Service
 
     /* Ignore this */
     @Override
-    public void playerOnPropertyChanged(Player.NotificationsData notificationsData) {}
+    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {}
 
     /**
      * HostConnectionObserver.PlayerEventsObserver interface callbacks

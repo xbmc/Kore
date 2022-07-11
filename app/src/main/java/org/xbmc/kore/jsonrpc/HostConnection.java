@@ -145,32 +145,27 @@ public class HostConnection {
     /**
      * The observers that will be notified of player notifications
      */
-    private final HashMap<PlayerNotificationsObserver, Handler> playerNotificationsObservers =
-            new HashMap<>();
+    private final HashMap<PlayerNotificationsObserver, Handler> playerNotificationsObservers = new HashMap<>();
 
     /**
      * The observers that will be notified of system notifications
      */
-    private final HashMap<SystemNotificationsObserver, Handler> systemNotificationsObservers =
-            new HashMap<>();
+    private final HashMap<SystemNotificationsObserver, Handler> systemNotificationsObservers = new HashMap<>();
 
     /**
      * The observers that will be notified of input notifications
      */
-    private final HashMap<InputNotificationsObserver, Handler> inputNotificationsObservers =
-            new HashMap<>();
+    private final HashMap<InputNotificationsObserver, Handler> inputNotificationsObservers = new HashMap<>();
 
     /**
      * The observers that will be notified of application notifications
      */
-    private final HashMap<ApplicationNotificationsObserver, Handler> applicationNotificationsObservers =
-            new HashMap<>();
+    private final HashMap<ApplicationNotificationsObserver, Handler> applicationNotificationsObservers = new HashMap<>();
 
     /**
      * The observers that will be notified of playlist notifications
      */
-    private final HashMap<PlaylistNotificationsObserver, Handler> playlistNotificationsObservers =
-            new HashMap<>();
+    private final HashMap<PlaylistNotificationsObserver, Handler> playlistNotificationsObservers = new HashMap<>();
 
     private final ExecutorService executorService;
 
@@ -263,8 +258,7 @@ public class HostConnection {
      * Registers an observer for player notifications
      * @param observer The {@link PlayerNotificationsObserver}
      */
-    public void registerPlayerNotificationsObserver(PlayerNotificationsObserver observer,
-                                                    Handler handler) {
+    public void registerPlayerNotificationsObserver(PlayerNotificationsObserver observer, Handler handler) {
         playerNotificationsObservers.put(observer, handler);
     }
 
@@ -280,8 +274,7 @@ public class HostConnection {
      * Registers an observer for system notifications
      * @param observer The {@link SystemNotificationsObserver}
      */
-    public void registerSystemNotificationsObserver(SystemNotificationsObserver observer,
-                                                    Handler handler) {
+    public void registerSystemNotificationsObserver(SystemNotificationsObserver observer, Handler handler) {
         systemNotificationsObservers.put(observer, handler);
     }
 
@@ -297,8 +290,7 @@ public class HostConnection {
      * Registers an observer for input notifications
      * @param observer The {@link InputNotificationsObserver}
      */
-    public void registerInputNotificationsObserver(InputNotificationsObserver observer,
-                                                   Handler handler) {
+    public void registerInputNotificationsObserver(InputNotificationsObserver observer, Handler handler) {
         inputNotificationsObservers.put(observer, handler);
     }
 
@@ -314,8 +306,7 @@ public class HostConnection {
      * Registers an observer for application notifications
      * @param observer The {@link InputNotificationsObserver}
      */
-    public void registerApplicationNotificationsObserver(ApplicationNotificationsObserver observer,
-                                                   Handler handler) {
+    public void registerApplicationNotificationsObserver(ApplicationNotificationsObserver observer, Handler handler) {
         applicationNotificationsObservers.put(observer, handler);
     }
 
@@ -331,8 +322,7 @@ public class HostConnection {
      * Registers an observer for playlist notifications
      * @param observer The {@link InputNotificationsObserver}
      */
-    public void registerPlaylistNotificationsObserver(PlaylistNotificationsObserver observer,
-                                                         Handler handler) {
+    public void registerPlaylistNotificationsObserver(PlaylistNotificationsObserver observer, Handler handler) {
         playlistNotificationsObservers.put(observer, handler);
     }
 
@@ -345,38 +335,31 @@ public class HostConnection {
     }
 
     /**
-	 * Calls the given method on the server
-	 * This call is always asynchronous. The results will be posted, through the
-	 * {@link ApiCallback callback} parameter, on the specified {@link android.os.Handler}.
-     * <BR/>
-     * If you need to update the callback and handler (e.g. due to a device configuration change)
-     * use {@link #updateClientCallback(int, ApiCallback, Handler)}
-     * @param method Method object that represents the methood too call
+	 * Calls the remote method on the Kodi host asynchronously, using a background thread
+	 * The result of the call will be posted in the {@link ApiCallback callback} parameter, on the specified
+     * {@link android.os.Handler}. If the results aren't needed, null can be passed for both parameters to ignore them
+     * If the connection is through TCP and there's a need to update the callback and handler (e.g. due to a device
+     * configuration change) use {@link #updateClientCallback(int, ApiCallback, Handler)}
+     *
+     * @param method Method object that represents the method call
 	 * @param callback {@link ApiCallback} to post the response to
-	 * @param handler {@link Handler} to invoke callbacks on. When null, the
-	 *                callbacks are invoked on the same thread as the request.
-	 *                You cannot do UI manipulation in the callbacks when this is null.
+	 * @param handler {@link Handler} to invoke callbacks on.
+     *                               Note that, if this is null, the callbacks are invoked on the same background
+     *                               thread as the request, which isn't appropriate for UI manipulations
 	 * @param <T> Method return type
 	 */
-	public <T> void execute(final ApiMethod<T> method, final ApiCallback<T> callback,
-							final Handler handler) {
-		LogUtils.LOGD(TAG, "Starting method execute. Method: " + method.getMethodName() +
-			" on host: " + hostInfo.getJsonRpcHttpEndpoint());
-
-        if (protocol == PROTOCOL_TCP) {
-            // Do not call this from the runnable below as it may cause a race condition
-            // with {@link #updateClientCallback(int, ApiCallback, Handler)}
-            //
-            // Save this method/callback for any later response
-            addClientCallback(method, callback, handler);
-        }
+	public <T> void execute(final ApiMethod<T> method, final ApiCallback<T> callback, final Handler handler) {
+//		LogUtils.LOGD(TAG, "Starting method execute. Method: " + method.getMethodName() + " on : " + hostInfo.getJsonRpcHttpEndpoint());
 
 		// Launch background thread
         Runnable command = () -> {
             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+
             if (protocol == PROTOCOL_HTTP) {
                 executeThroughOkHttp(method, callback, handler);
             } else {
+                // Save this method/callback for any later response
+                addClientCallback(method, callback, handler);
                 executeThroughTcp(method);
             }
         };
@@ -385,21 +368,14 @@ public class HostConnection {
 	}
 
     /**
-     * Executes the remote method in the background and returns a future that may be
-     * awaited on any thread.
-     * <p>
-     * Not a good idea to await on the UI thread although you can. The app will become
-     * unresponsive until the request is completed if you do. Android can't know that
-     * you're effectively doing a network request on the main thread so it won't stop you.
-     * <p>
-     * This is meant to be used in a background thread for doing requests that depend
-     * on the result of another. Nested callbacks make it hard to follow the logic,
-     * tend to make you repeat error handling at every level, and also slower because
-     * of constant switching between the worker and UI threads.
-     * <p>
-     * If you don't care about the result and just want to fire a request, you could
-     * call this but not call {@link Future#get()} on the result. It's safe to do
-     * in the UI thread but you wouldn't know if an error happened or not.
+     * Calls the remote method on the Kodi host asynchronously, using a background thread, and returns a future
+     * that can be awaited to transform the call into a synchronous one.
+     *
+     * Note that calls to the Kodi host are asynchronous by nature, which can lead to callback hell when there's a
+     * need to call several remote methods in sequence. This method allows for a sequential code pattern when
+     * calling several remote methods, by calling {@link Future#get()} on each one and globally managing exceptions.
+     * If the goal is simply to asynchronously execute a remote method the
+     * {@link HostConnection#execute(Callable, ApiCallback, Handler)} is preferrable, as it is slightly more efficient.
      *
      * @param method The remote method to invoke
      * @param <T> The type of the return value of the method
@@ -468,9 +444,7 @@ public class HostConnection {
      * @return true if the {@link ApiMethod} was still pending, false otherwise.
      */
     @SuppressWarnings("unchecked")
-    public <T> boolean updateClientCallback(final int methodId, final ApiCallback<T> callback,
-                                            final Handler handler) {
-
+    public <T> boolean updateClientCallback(final int methodId, final ApiCallback<T> callback, final Handler handler) {
         if (getProtocol() == PROTOCOL_HTTP)
             return false;
 
@@ -493,15 +467,12 @@ public class HostConnection {
      * @param handler Handler
      * @param <T> Method/Callback type
      */
-    private <T> void addClientCallback(final ApiMethod<T> method, final ApiCallback<T> callback,
-                                       final Handler handler) {
-
+    private <T> void addClientCallback(final ApiMethod<T> method, final ApiCallback<T> callback, final Handler handler) {
         if (getProtocol() == PROTOCOL_HTTP)
             return;
 
-        String methodId = String.valueOf(method.getId());
-
         synchronized (clientCallbacks) {
+            String methodId = String.valueOf(method.getId());
             if (clientCallbacks.containsKey(methodId)) {
                 if ((handler != null) && (callback != null)) {
                     handler.post(() -> callback.onError(ApiException.API_METHOD_WITH_SAME_ID_ALREADY_EXECUTING,
@@ -516,8 +487,7 @@ public class HostConnection {
     /**
      * Sends the JSON RPC request through HTTP (using OkHttp library)
      */
-    private <T> void executeThroughOkHttp(final ApiMethod<T> method, final ApiCallback<T> callback,
-                                          final Handler handler) {
+    private <T> void executeThroughOkHttp(final ApiMethod<T> method, final ApiCallback<T> callback, final Handler handler) {
         OkHttpClient client = getOkHttpClient();
         String jsonRequest = method.toJsonString();
         LogUtils.LOGD(TAG, "Sending request via HTTP: " + jsonRequest);

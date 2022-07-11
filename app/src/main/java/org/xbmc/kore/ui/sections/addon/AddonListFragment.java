@@ -181,7 +181,7 @@ public class AddonListFragment extends AbstractListFragment {
         };
         Addons.GetAddons action = new Addons.GetAddons(properties);
         action.execute(HostManager.getInstance(requireContext()).getConnection(),
-            new ApiCallback<List<AddonType.Details>>() {
+                       new ApiCallback<List<AddonType.Details>>() {
                 @Override
                 public void onSuccess(List<AddonType.Details> result) {
                     if (!isAdded()) return;
@@ -220,7 +220,7 @@ public class AddonListFragment extends AbstractListFragment {
                     hideRefreshAnimation();
                 }
             },
-            callbackHandler);
+                       callbackHandler);
     }
 
     private boolean isAddonSupported(AddonType.Details addon) {

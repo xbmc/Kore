@@ -84,19 +84,19 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
             if (detailsFavourite == null) {
                 return;
             }
-            if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.WINDOW)
-                    && !TextUtils.isEmpty(detailsFavourite.window)) {
-                GUI.ActivateWindow activateWindow = new GUI.ActivateWindow(detailsFavourite.window,
-                        detailsFavourite.windowParameter);
-                hostManager.getConnection().execute(activateWindow, genericApiCallback, callbackHandler);
-            } else if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.MEDIA)
-                    && !TextUtils.isEmpty(detailsFavourite.path)) {
+            if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.WINDOW) &&
+                !TextUtils.isEmpty(detailsFavourite.window)) {
+                GUI.ActivateWindow activateWindow =
+                        new GUI.ActivateWindow(detailsFavourite.window, detailsFavourite.windowParameter);
+                activateWindow.execute(hostManager.getConnection(), genericApiCallback, callbackHandler);
+            } else if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.MEDIA) &&
+                       !TextUtils.isEmpty(detailsFavourite.path)) {
                 final PlaylistType.Item playlistItem = new PlaylistType.Item();
                 playlistItem.file = detailsFavourite.path;
                 MediaPlayerUtils.play(FavouritesListFragment.this, playlistItem);
             } else {
-                Toast.makeText(getActivity(), R.string.unable_to_play_favourite_item,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.unable_to_play_favourite_item, Toast.LENGTH_SHORT)
+                     .show();
             }
         };
     }
@@ -115,7 +115,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
         final HostManager hostManager = HostManager.getInstance(requireContext());
         final Favourites.GetFavourites action = new Favourites.GetFavourites();
 
-        hostManager.getConnection().execute(action, new ApiCallback<ApiList<FavouriteType.DetailsFavourite>>() {
+        action.execute(hostManager.getConnection(), new ApiCallback<ApiList<FavouriteType.DetailsFavourite>>() {
             @Override
             public void onSuccess(ApiList<FavouriteType.DetailsFavourite> result) {
                 if (!isAdded()) return;

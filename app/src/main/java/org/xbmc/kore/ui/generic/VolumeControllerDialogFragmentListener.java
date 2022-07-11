@@ -135,7 +135,7 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
                 volume -> {
                     cancelDismissDialog();
                     new Application.SetVolume(volume).execute(hostManager.getConnection(),
-                            defaultIntActionCallback, callbackHandler);
+                                                              defaultIntActionCallback, callbackHandler);
                 });
         binding.vcdVolumeLevelIndicator.setVolumeBarTouchTrackerListener(this);
     }

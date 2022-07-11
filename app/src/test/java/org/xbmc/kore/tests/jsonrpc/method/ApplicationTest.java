@@ -16,7 +16,6 @@
 
 package org.xbmc.kore.tests.jsonrpc.method;
 
-import android.os.Build;
 import android.os.Handler;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -25,7 +24,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -80,7 +78,7 @@ public class ApplicationTest {
                 new org.xbmc.kore.jsonrpc.method.Application.GetProperties(org.xbmc.kore.jsonrpc.method.Application.GetProperties.MUTED);
         applicationHandler.setMuted(true, false);
 
-        hostConnection.execute(properties, new ApiCallback<ApplicationType.PropertyValue>() {
+        properties.execute(hostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
             @Override
             public void onSuccess(ApplicationType.PropertyValue result) {
                 assertNotNull(result);
@@ -117,7 +115,7 @@ public class ApplicationTest {
         org.xbmc.kore.jsonrpc.method.Application.SetVolume setVolume =
                 new org.xbmc.kore.jsonrpc.method.Application.SetVolume(GlobalType.IncrementDecrement.INCREMENT);
         applicationHandler.setVolume(77, false);
-        hostConnection.execute(setVolume, new ApiCallback<Integer>() {
+        setVolume.execute(hostConnection, new ApiCallback<Integer>() {
             @Override
             public void onSuccess(Integer result) {
                 assertNotNull(result);
@@ -141,7 +139,7 @@ public class ApplicationTest {
         org.xbmc.kore.jsonrpc.method.Application.SetVolume setVolume =
                 new org.xbmc.kore.jsonrpc.method.Application.SetVolume(GlobalType.IncrementDecrement.DECREMENT);
         applicationHandler.setVolume(77, false);
-        hostConnection.execute(setVolume, new ApiCallback<Integer>() {
+        setVolume.execute(hostConnection, new ApiCallback<Integer>() {
             @Override
             public void onSuccess(Integer result) {
                 assertNotNull(result);
@@ -164,7 +162,7 @@ public class ApplicationTest {
         org.xbmc.kore.jsonrpc.method.Application.SetVolume setVolume =
                 new org.xbmc.kore.jsonrpc.method.Application.SetVolume(83);
         applicationHandler.setVolume(77, false);
-        hostConnection.execute(setVolume, new ApiCallback<Integer>() {
+        setVolume.execute(hostConnection, new ApiCallback<Integer>() {
             @Override
             public void onSuccess(Integer result) {
                 assertNotNull(result);
@@ -190,7 +188,7 @@ public class ApplicationTest {
         org.xbmc.kore.jsonrpc.method.Application.SetMute mute =
                 new org.xbmc.kore.jsonrpc.method.Application.SetMute();
 
-        hostConnection.execute(mute, new ApiCallback<Boolean>() {
+        mute.execute(hostConnection, new ApiCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
                 assertTrue(result == expectedMuteState);
