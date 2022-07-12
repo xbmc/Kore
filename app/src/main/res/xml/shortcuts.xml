@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
-    <share-target android:targetClass="org.xbmc.kore.ui.sections.remote.RemoteActivity">
+    <share-target android:targetClass="org.xbmc.kore.ShareOpenActivity">
         <category android:name="org.xbmc.kore.SHARE_TARGET" />
         <data android:mimeType="text/plain" />
     </share-target>
