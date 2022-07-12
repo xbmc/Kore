@@ -36,6 +36,7 @@ import com.squareup.picasso.Picasso;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.ShareOpenActivity;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
@@ -302,15 +303,15 @@ public class HostManager {
             if (host.getId() != currentHostInfo.getId() &&
                 host.getShowAsDirectShareTarget()) {
                 String id = Integer.toString(host.getId());
-                Intent defaultOpenIntent = new Intent(RemoteActivity.DEFAULT_OPEN_ACTION)
-                        .setClass(context, RemoteActivity.class)
-                        .addCategory(RemoteActivity.SHARE_TARGET_CATEGORY)
+                Intent defaultOpenIntent = new Intent(ShareOpenActivity.DEFAULT_OPEN_ACTION)
+                        .setClass(context, ShareOpenActivity.class)
+                        .addCategory(ShareOpenActivity.SHARE_TARGET_CATEGORY)
                         .putExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID, id);
                 ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(context, id)
                         .setShortLabel(host.getName())
                         .setLongLabel(host.getName())
                         .setIcon(IconCompat.createWithResource(context, R.mipmap.ic_launcher))
-                        .setCategories(Collections.singleton(RemoteActivity.SHARE_TARGET_CATEGORY))
+                        .setCategories(Collections.singleton(ShareOpenActivity.SHARE_TARGET_CATEGORY))
                         .setIntent(defaultOpenIntent)
                         .build();
                 ShortcutManagerCompat.pushDynamicShortcut(context, shortcut);

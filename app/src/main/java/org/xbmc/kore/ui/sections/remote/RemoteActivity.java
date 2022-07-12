@@ -17,22 +17,17 @@ package org.xbmc.kore.ui.sections.remote;
 
 import android.content.Intent;
 import android.graphics.Point;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.text.TextDirectionHeuristicsCompat;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
@@ -41,10 +36,7 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.databinding.ActivityRemoteBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.host.actions.OpenSharedUrl;
-import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.AudioLibrary;
 import org.xbmc.kore.jsonrpc.method.GUI;
@@ -53,38 +45,21 @@ import org.xbmc.kore.jsonrpc.method.System;
 import org.xbmc.kore.jsonrpc.method.VideoLibrary;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
-import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.MediaSessionService;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.SendTextDialogFragment;
 import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
-import org.xbmc.kore.ui.sections.localfile.HttpApp;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.PluginUrlUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RemoteActivity extends BaseActivity
         implements HostConnectionObserver.PlayerEventsObserver,
         NowPlayingFragment.NowPlayingListener,
         SendTextDialogFragment.SendTextDialogListener {
     private static final String TAG = LogUtils.makeLogTag(RemoteActivity.class);
-
-    // ACTION to be used with the shortcut API that directly opens the remote
-    public static final String DEFAULT_OPEN_ACTION = "org.xbmc.kore.OPEN_REMOTE_VIEW";
-    // CATEGORY for dynamic Share Targets
-    public static final String SHARE_TARGET_CATEGORY = "org.xbmc.kore.SHARE_TARGET";
 
     private static final int NOWPLAYING_FRAGMENT_ID = 1;
     private static final int REMOTE_FRAGMENT_ID = 2;
@@ -154,7 +129,6 @@ public class RemoteActivity extends BaseActivity
     @Override
     public void onStart() {
         super.onStart();
-        handleStartIntent(getIntent());
     }
 
     @Override
@@ -324,262 +298,6 @@ public class RemoteActivity extends BaseActivity
         }
     }
 
-    /**
-     * Handles the intent that started this activity, namely to start playing something on Kodi
-     * @param intent Start intent for the activity
-     */
-    protected void handleStartIntent(Intent intent) {
-        handleStartIntent(intent, false);
-    }
-
-    protected void handleStartIntent(Intent intent, boolean queue) {
-        // If a host was passed from the intent use it
-        String shortcutId = intent.getStringExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID);
-        if (shortcutId != null) {
-            int hostId = Integer.parseInt(shortcutId);
-            for (HostInfo host : hostManager.getHosts()) {
-                if (host.getId() == hostId) {
-                    LogUtils.LOGD(TAG, "Switching hosts");
-                    hostManager.switchHost(host);
-                    break;
-                }
-            }
-        }
-
-        final String action = intent.getAction();
-        final String intentType = intent.getType();
-        // Check action, if not Send or View, just return to show the UI
-        if ((action == null) || action.equals(DEFAULT_OPEN_ACTION) ||
-            !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_VIEW)))
-            return;
-
-        Uri videoUri;
-        if (action.equals(Intent.ACTION_SEND) && intentType.equals("text/plain")) {
-            // Get the URI, which is stored in Extras
-            videoUri = getPlainTextUri(intent.getStringExtra(Intent.EXTRA_TEXT));
-        } else {
-            videoUri = intent.getData();
-        }
-
-        if (videoUri == null) {
-            // Check if `intent` contains a URL or a link to a local file:
-            videoUri = getShareLocalUriOrHiddenUri(intent);
-        }
-
-        if (videoUri == null) {
-            finish();
-            return;
-        }
-
-        String url = toPluginUrl(videoUri);
-
-        if (url == null) {
-            url = videoUri.toString();
-        }
-
-        // Determine which playlist to use
-        int playlistType;
-        if (intentType == null) {
-            playlistType = PlaylistType.VIDEO_PLAYLISTID;
-        } else if (intentType.matches("audio.*")) {
-            playlistType = PlaylistType.MUSIC_PLAYLISTID;
-        } else if (intentType.matches("video.*")) {
-            playlistType = PlaylistType.VIDEO_PLAYLISTID;
-        } else if (intentType.matches("image.*")) {
-            playlistType = PlaylistType.PICTURE_PLAYLISTID;
-        } else {
-            // Generic links? Default to video:
-            playlistType = PlaylistType.VIDEO_PLAYLISTID;
-        }
-
-        String title = getString(R.string.app_name);
-        String text = getString(R.string.item_added_to_playlist);
-        new OpenSharedUrl(this, url, title, text, queue, playlistType)
-                .execute(hostManager.getConnection(),
-                         new ApiCallback<Boolean>() {
-                             @Override
-                             public void onSuccess(Boolean wasAlreadyPlaying) {
-                                 String msg = queue && wasAlreadyPlaying ? getString(R.string.item_added_to_playlist) : getString(R.string.item_sent_to_kodi);
-                                 Toast.makeText(RemoteActivity.this, msg, Toast.LENGTH_SHORT)
-                                      .show();
-                             }
-
-                             @Override
-                             public void onError(int errorCode, String description) {
-                                 LogUtils.LOGE(TAG, "Share failed: " + description);
-                                 Toast.makeText(RemoteActivity.this, description, Toast.LENGTH_SHORT)
-                                      .show();
-                             }
-                         }, new Handler(Looper.getMainLooper()));
-
-        // Don't display Kore after queueing from another app
-        if (queue) finish();
-    }
-
-    private Uri getUrlInsideIntent(Intent intent) {
-        // Some apps hide the link in the clip, try to detect any link by casting the intent
-        // to string a looking with a regular expression:
-
-        Matcher matcher = Pattern.compile("https?://[^\\s]+").matcher(intent.toString());
-        String matchedString;
-        if (matcher.find()) {
-            matchedString = matcher.group(0);
-            if (matchedString != null && matchedString.endsWith("}")) {
-                matchedString = matchedString.substring(0, matchedString.length() - 1);
-            }
-            return Uri.parse(matchedString);
-        }
-        return null;
-    }
-
-    private Uri getShareLocalUriOrHiddenUri(Intent intent) {
-        Uri contentUri = intent.getData();
-
-        if (contentUri == null) {
-            Bundle bundle = intent.getExtras();
-            contentUri = (Uri) bundle.get(Intent.EXTRA_STREAM);
-        }
-        if (contentUri == null) {
-            return getUrlInsideIntent(intent);
-        }
-
-        HttpApp http_app;
-        try {
-            http_app = HttpApp.getInstance(getApplicationContext(), 8080);
-        } catch (IOException ioe) {
-            Toast.makeText(getApplicationContext(),
-                           getString(R.string.error_starting_http_server),
-                           Toast.LENGTH_LONG).show();
-            return null;
-        }
-        http_app.addUri(contentUri);
-        String url = http_app.getLinkToFile();
-
-        return Uri.parse(url);
-    }
-
-    /**
-     * Returns the Uri that the some apps passes in EXTRA_TEXT
-     * YouTube sends something like: [Video title]: [YouTube URL] so we need
-     * to get the second part
-     *
-     * @param extraText EXTRA_TEXT passed in the intent
-     * @return Uri present in extraText if present
-     */
-    private Uri getPlainTextUri(String extraText) {
-        if (extraText == null) return null;
-
-        for (String word : extraText.split(" ")) {
-            if (word.startsWith("http://") || word.startsWith("https://")) {
-                try {
-                    URL validUri = new URL(word);
-                    return Uri.parse(word);
-                } catch (MalformedURLException exc) {
-                    LogUtils.LOGD(TAG, "Got a malformed URL in an intent: " + word);
-                    return null;
-                }
-
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Converts a video url to a Kodi plugin URL.
-     *
-     * @param playuri some URL
-     * @return plugin URL
-     */
-    private String toPluginUrl(Uri playuri) {
-        String host = playuri.getHost();
-        String extension = MimeTypeMap.getFileExtensionFromUrl(playuri.toString());
-        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        boolean alwaysSendToKodi = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                                    .getBoolean(Settings.KEY_PREF_ALWAYS_SENDTOKODI_ADDON,
-                                                                Settings.DEFAULT_PREF_ALWAYS_SENDTOKODI_ADDON);
-        if (!alwaysSendToKodi) {
-            if (host.endsWith("youtube.com")) {
-                String videoId = playuri.getQueryParameter("v");
-                String playlistId = playuri.getQueryParameter("list");
-                Uri.Builder pluginUri = new Uri.Builder()
-                        .scheme("plugin")
-                        .authority("plugin.video.youtube")
-                        .path("play/");
-                boolean valid = false;
-                if (videoId != null) {
-                    valid = true;
-                    pluginUri.appendQueryParameter("video_id", videoId);
-                }
-                if (playlistId != null) {
-                    valid = true;
-                    pluginUri.appendQueryParameter("playlist_id", playlistId)
-                            .appendQueryParameter("order", "default");
-                }
-                if (valid) {
-                    return pluginUri.build().toString();
-                }
-            } else if (host.endsWith("youtu.be")) {
-                return "plugin://plugin.video.youtube/play/?video_id="
-                        + playuri.getLastPathSegment();
-            } else if (host.endsWith("vimeo.com")) {
-                return PluginUrlUtils.toPluginUrlVimeo(playuri);
-            } else if (host.endsWith("svtplay.se")) {
-                try {
-                    Pattern pattern = Pattern.compile(
-                            "^(?:https?://)?(?:www\\.)?svtplay\\.se/video/(\\d+/.*)",
-                            Pattern.CASE_INSENSITIVE);
-                    Matcher matcher = pattern.matcher(playuri.toString());
-                    if (matcher.matches()) {
-                        return "plugin://plugin.video.svtplay/?id=%2Fvideo%2F"
-                               + URLEncoder.encode(matcher.group(1), StandardCharsets.UTF_8.name()) + "&mode=video";
-                    }
-                } catch (UnsupportedEncodingException e) {
-                    LogUtils.LOGD(TAG, "Unsuported Encoding Exception: " + e);
-                    return null;
-                }
-            } else if (host.endsWith("soundcloud.com")) {
-                try {
-                    return "plugin://plugin.audio.soundcloud/play/?url="
-                           + URLEncoder.encode(playuri.toString(), StandardCharsets.UTF_8.name());
-                } catch (UnsupportedEncodingException e) {
-                    LogUtils.LOGD(TAG, "Unsuported Encoding Exception: " + e);
-                    return null;
-                }
-            } else if (host.endsWith("twitch.tv")) {
-                return PluginUrlUtils.toPluginUrlTwitch(playuri);
-            } else if (PluginUrlUtils.isHostArte(host)) {
-                return PluginUrlUtils.toPluginUrlArte(playuri);
-            }
-        }
-        if (host.startsWith("app.primevideo.com")) {
-            // Prime Video cannot be handled by SendToKodi as it requires authentication:
-            Matcher amazonMatcher = Pattern.compile("gti=([^&]+)").matcher(playuri.toString());
-            if (amazonMatcher.find()) {
-                String gti = amazonMatcher.group(1);
-                return "plugin://plugin.video.amazon-test/?asin=" + gti + "&mode=PlayVideo&adult=0&name=&trailer=0&selbitrate=0";
-            }
-        } else if (!isMediaFile(mimeType)) {
-            // SendToKodi is a Kodi addon that is able to extract URLs from generic
-            // web URIs using the Python library "youtube-dl".
-            // Use it as a last resort, unless the URI extension is a known media file
-            // (in that case Kodi does not require an addon to play the link):
-            return "plugin://plugin.video.sendtokodi/?" + playuri;
-        }
-        return null;
-    }
-
-    boolean isMediaFile(String mimeType) {
-        if (mimeType == null) {
-            return false;
-        } else if (mimeType.startsWith("audio")) {
-            return true;
-        } else if (mimeType.startsWith("image")) {
-            return true;
-        } else if (mimeType.startsWith("video")) {
-            return true;
-        }
-        return false;
-    }
 
     // Default page change listener, that doesn't scroll images
     ViewPager.OnPageChangeListener defaultOnPageChangeListener = new ViewPager.OnPageChangeListener() {
