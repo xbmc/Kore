@@ -371,7 +371,6 @@ public class HostManager {
         values.put(MediaContract.HostsColumns.KODI_VERSION_TAG, kodiVersionTag);
         values.put(MediaContract.HostsColumns.IS_HTTPS, isHttps);
 
-
         Uri newUri = context.getContentResolver()
                             .insert(MediaContract.Hosts.CONTENT_URI, values);
         long newId = Long.parseLong(MediaContract.Hosts.getHostId(newUri));
@@ -498,10 +497,14 @@ public class HostManager {
 
         if (currentHostInfo.getUpdated() + KODI_VERSION_CHECK_INTERVAL_MILLIS < java.lang.System.currentTimeMillis()) {
             LogUtils.LOGD(TAG, "Checking Kodi version...");
+            final int checkHostId = currentHostInfo.getId();
             final Application.GetProperties getProperties = new Application.GetProperties(Application.GetProperties.VERSION);
             getProperties.execute(getConnection(), new ApiCallback<ApplicationType.PropertyValue>() {
                 @Override
                 public void onSuccess(ApplicationType.PropertyValue result) {
+                    // Simple check to see if we didn't switched host in the meantime.
+                    // Given that this and all calls to switchHost are run on the UI thread, there's no need for more
+                    if (checkHostId != currentHostInfo.getId()) return;
                     LogUtils.LOGD(TAG, "Successfully checked Kodi version.");
                     currentHostInfo.setKodiVersionMajor(result.version.major);
                     currentHostInfo.setKodiVersionMinor(result.version.minor);
