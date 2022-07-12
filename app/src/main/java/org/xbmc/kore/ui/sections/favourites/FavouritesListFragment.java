@@ -122,7 +122,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
                 LogUtils.LOGD(TAG, "Got Favourites");
 
                 // To prevent the empty text from appearing on the first load, set it now
-                getEmptyView().setText(getString(R.string.no_channels_found_refresh));
+                getEmptyView().setText(getString(R.string.no_favourites_found_refresh));
                 ((FavouritesAdapter) getAdapter()).setFavouriteItems(result.items);
                 hideRefreshAnimation();
             }

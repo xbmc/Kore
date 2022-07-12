@@ -134,7 +134,7 @@ public class AddonListFragment extends AbstractListFragment {
         // Setup filters
         MenuItem hideDisabled = menu.findItem(R.id.action_hide_disabled);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         hideDisabledAddons = preferences.getBoolean(Settings.KEY_PREF_ADDONS_FILTER_HIDE_DISABLED, Settings.DEFAULT_PREF_ADDONS_FILTER_HIDE_DISABLED);
         hideDisabled.setChecked(hideDisabledAddons);
 
@@ -143,7 +143,7 @@ public class AddonListFragment extends AbstractListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         int itemId = item.getItemId();
         if (itemId == R.id.action_hide_disabled) {
             item.setChecked(!item.isChecked());
