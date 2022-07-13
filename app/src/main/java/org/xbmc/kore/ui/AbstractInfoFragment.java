@@ -532,7 +532,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
                 // Check whether we should switch to the remote
                 boolean switchToRemote = PreferenceManager
-                        .getDefaultSharedPreferences(getActivity())
+                        .getDefaultSharedPreferences(requireContext())
                         .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
                                     Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
                 if (switchToRemote) {

@@ -49,11 +49,28 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(MusicVideoListFragment.class);
 
     public interface OnMusicVideoSelectedListener {
-        void onMusicVideoSelected(ViewHolder vh);
+        void onMusicVideoSelected(AbstractInfoFragment.DataHolder dataHolder, ImageView sharedImageView);
     }
 
     // Activity listener
     private OnMusicVideoSelectedListener listenerActivity;
+
+    @Override
+    public void onAttach(@NonNull Context ctx) {
+        super.onAttach(ctx);
+        try {
+            listenerActivity = (OnMusicVideoSelectedListener) ctx;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(ctx + " must implement OnMusicVideoSelectedListener");
+        }
+        setSupportsSearch(true);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listenerActivity = null;
+    }
 
     @Override
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC_VIDEOS; }
@@ -63,7 +80,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
         // Get the movie id from the tag
         ViewHolder tag = (ViewHolder)view.getTag();
         // Notify the activity
-        listenerActivity.onMusicVideoSelected(tag);
+        listenerActivity.onMusicVideoSelected(tag.dataHolder, tag.artView);
     }
 
     @Override
@@ -86,23 +103,6 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
 
         return new CursorLoader(requireContext(), uri,
                 MusicVideosListQuery.PROJECTION, selection, selectionArgs, MusicVideosListQuery.SORT);
-    }
-
-    @Override
-    public void onAttach(@NonNull Context ctx) {
-        super.onAttach(ctx);
-        try {
-            listenerActivity = (OnMusicVideoSelectedListener) ctx;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(ctx + " must implement OnMusicVideoSelectedListener");
-        }
-        setSupportsSearch(true);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listenerActivity = null;
     }
 
     /**

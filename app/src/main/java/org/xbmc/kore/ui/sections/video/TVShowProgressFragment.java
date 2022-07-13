@@ -78,25 +78,6 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
         setArguments(bundle);
     }
 
-    @Override
-    public void refresh() {
-        LoaderManager lm = LoaderManager.getInstance(this);
-        lm.restartLoader(LOADER_NEXT_EPISODES, null, this);
-        lm.restartLoader(LOADER_SEASONS, null, this);
-        castFragment.refresh();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        try {
-            listenerActivity = (TVShowProgressActionListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context + " must implement TVShowProgressActionListener");
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,7 +96,6 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                          .beginTransaction()
                          .add(R.id.cast_fragment, castFragment)
                          .commit();
-
         return view;
     }
 
@@ -128,9 +108,27 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            listenerActivity = (TVShowProgressActionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context + " must implement TVShowProgressActionListener");
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         listenerActivity = null;
+    }
+
+    @Override
+    public void refresh() {
+        LoaderManager lm = LoaderManager.getInstance(this);
+        lm.restartLoader(LOADER_NEXT_EPISODES, null, this);
+        lm.restartLoader(LOADER_SEASONS, null, this);
+        castFragment.refresh();
     }
 
     @NonNull
@@ -170,9 +168,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
-    }
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) { }
 
     /**
      * Display next episode list

@@ -65,7 +65,7 @@ public class MediaPlayerUtils {
                     context.startActivity(launchIntent);
                 } else {
                     Toast.makeText(context, R.string.now_playing, Toast.LENGTH_SHORT)
-                            .show();
+                         .show();
                 }
             }
 
@@ -75,7 +75,7 @@ public class MediaPlayerUtils {
                 // Got an error, show toast
                 String errorMessage = context.getString(R.string.error_play_media_file, description);
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
-                        .show();
+                     .show();
             }
         }, callbackHandler);
     }

@@ -23,13 +23,12 @@
 
     <TextView
         android:id="@+id/track_number"
-        android:layout_width="48dp"
+        android:layout_width="@dimen/default_icon_size"
         android:layout_height="wrap_content"
         style="@style/TextAppearance.Medialist.Title"
-        android:gravity="end"
-        android:paddingTop="@dimen/small_padding"
-        android:paddingLeft="@dimen/small_padding"
-        android:paddingRight="@dimen/small_padding"/>
+        android:paddingStart="@dimen/small_padding"
+        android:paddingEnd="@dimen/small_padding"
+        android:paddingTop="@dimen/small_padding" />
     <ImageView
         android:id="@+id/list_context_menu"
         android:layout_width="@dimen/default_icon_size"
