@@ -945,23 +945,28 @@ public class HostConnection {
 	 * Cleans up used resources.
 	 * This method should always be called if the protocol used is TCP, so we can shutdown gracefully
 	 */
-    public synchronized void disconnect() {
+    public void disconnect() {
 		if (protocol == PROTOCOL_HTTP)
 			return;
 
-		try {
-			if (socket != null) {
-				// Remove pending calls
-                clientCallbacks.clear();
-				if (!socket.isClosed()) {
-					socket.close();
-				}
-			}
-		} catch (IOException e) {
-			LogUtils.LOGE(TAG, "Error while closing socket", e);
-		} finally {
-			socket = null;
-		}
+        Socket oldSocket = socket;
+        socket = null;
+        // Close socket asynchronously, in a synchronized block
+        executorService.execute(() -> {
+            synchronized (this) {
+                try {
+                    if (oldSocket != null) {
+                        // Remove pending calls
+                        clientCallbacks.clear();
+                        if (!oldSocket.isClosed()) {
+                            oldSocket.close();
+                        }
+                    }
+                } catch (IOException e) {
+                    LogUtils.LOGE(TAG, "Error while closing socket", e);
+                }
+            }
+        });
 	}
 
     private static void postOrRunNow(Handler handler, Runnable r) {
