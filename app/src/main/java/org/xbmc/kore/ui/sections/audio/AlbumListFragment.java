@@ -60,7 +60,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(AlbumListFragment.class);
 
     public interface OnAlbumSelectedListener {
-        void onAlbumSelected(ViewHolder viewHolder);
+        void onAlbumSelected(AbstractInfoFragment.DataHolder dataHolder, ImageView sharedImageView);
     }
 
     public static final String BUNDLE_KEY_GENREID = "genreid",
@@ -96,6 +96,35 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Bundle args = getArguments();
+        if (args != null) {
+            genreId = getArguments().getInt(BUNDLE_KEY_GENREID, -1);
+            artistId = getArguments().getInt(BUNDLE_KEY_ARTISTID, -1);
+        }
+
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context ctx) {
+        super.onAttach(ctx);
+        try {
+            listenerActivity = (OnAlbumSelectedListener) ctx;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(ctx + " must implement OnAlbumSelectedListener");
+        }
+
+        setSupportsSearch(true);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listenerActivity = null;
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.album_list, menu);
 
@@ -105,7 +134,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
                 sortByYear = menu.findItem(R.id.action_sort_by_year);
 
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
         int sortOrder = preferences.getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
         switch (sortOrder) {
@@ -127,7 +156,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         int itemId = item.getItemId();
         if (itemId == R.id.action_sort_by_album) {
             item.setChecked(!item.isChecked());
@@ -163,7 +192,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         // Get the movie id from the tag
         ViewHolder tag = (ViewHolder) view.getTag();
         // Notify the activity
-        listenerActivity.onAlbumSelected(tag);
+        listenerActivity.onAlbumSelected(tag.dataHolder, tag.artView);
     }
 
     @Override
@@ -193,7 +222,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
             selectionArgs = new String[] {"%" + searchFilter + "%"};
         }
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
         String sortOrderStr;
         int sortOrder = preferences.getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
@@ -209,35 +238,6 @@ public class AlbumListFragment extends AbstractCursorListFragment {
 
         return new CursorLoader(requireContext(), uri,
                                 AlbumListQuery.PROJECTION, selection, selectionArgs, sortOrderStr);
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Bundle args = getArguments();
-        if (args != null) {
-            genreId = getArguments().getInt(BUNDLE_KEY_GENREID, -1);
-            artistId = getArguments().getInt(BUNDLE_KEY_ARTISTID, -1);
-        }
-
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(@NonNull Context ctx) {
-        super.onAttach(ctx);
-        try {
-            listenerActivity = (OnAlbumSelectedListener) ctx;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(ctx + " must implement OnAlbumSelectedListener");
-        }
-
-        setSupportsSearch(true);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listenerActivity = null;
     }
 
     /**
@@ -273,7 +273,6 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     private static class AlbumsAdapter extends RecyclerViewCursorAdapter {
-
         private final HostManager hostManager;
         private final int artWidth, artHeight;
         private final Fragment fragment;
@@ -326,7 +325,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         };
 
         protected int getSectionColumnIdx() {
-            int sortOrder = PreferenceManager.getDefaultSharedPreferences(fragment.getContext())
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(fragment.requireContext())
                     .getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
             if (sortOrder == Settings.SORT_BY_YEAR) {
                 return AlbumListQuery.YEAR;
@@ -336,7 +335,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         }
 
         protected int getSectionType() {
-            int sortOrder = PreferenceManager.getDefaultSharedPreferences(fragment.getContext())
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(fragment.requireContext())
                     .getInt(Settings.KEY_PREF_ALBUMS_SORT_ORDER, Settings.DEFAULT_PREF_ALBUMS_SORT_ORDER);
             if (sortOrder == Settings.SORT_BY_YEAR) {
                 return RecyclerViewCursorAdapter.SECTION_TYPE_YEAR_INTEGER;
@@ -378,6 +377,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
             contextMenu.setTag(this);
             contextMenu.setOnClickListener(contextMenuClickListener);
         }
+
         @Override
         public void bindView(Cursor cursor) {
             dataHolder.setId(cursor.getInt(AlbumListQuery.ALBUMID));

@@ -30,12 +30,10 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
-import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.provider.MediaProvider;
-import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
@@ -47,32 +45,52 @@ import org.xbmc.kore.utils.UIUtils;
 
 import java.util.ArrayList;
 
+/**
+ * Shows artists details and its albums
+ */
 public class ArtistInfoFragment extends AbstractInfoFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(ArtistInfoFragment.class);
 
     // Loader IDs
-    private static final int LOADER_ARTIST = 0,
-            LOADER_SONGS = 1;
+    private static final int LOADER_ARTIST = 0, LOADER_SONGS = 1;
 
-    /**
-     * Handler on which to post RPC callbacks
-     */
+    // Handler on which to post RPC callbacks
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LoaderManager.getInstance(this).initLoader(LOADER_ARTIST, null, this);
+        setHasOptionsMenu(false);
+    }
+
+    @Override
+    public void onPause() {
+        // Make sure the songs loader is not reloaded when resumed,
+        // as it should only be activated when pressing the download button
+        LoaderManager.getInstance(this).destroyLoader(LOADER_SONGS);
+        super.onPause();
+    }
+
+    @Override
     protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {
-        return null;
+        DataHolder dataHolder = getDataHolder();
+        ArtistAlbumsListFragment fragment = new ArtistAlbumsListFragment();
+        fragment.setAlbum(dataHolder.getId(), dataHolder.getTitle());
+        return fragment;
     }
 
     @Override
     protected RefreshItem createRefreshItem() {
-        RefreshItem refreshItem = new RefreshItem(getActivity(), LibrarySyncService.SYNC_ALL_MUSIC);
-        refreshItem.setListener(event -> {
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS)
-                LoaderManager.getInstance(this).restartLoader(LOADER_ARTIST, null, ArtistInfoFragment.this);
-        });
-        return refreshItem;
+        // Don't start refresh on details screen
+        return null;
+//        RefreshItem refreshItem = new RefreshItem(requireContext(), LibrarySyncService.SYNC_ALL_MUSIC);
+//        refreshItem.setListener(event -> {
+//            if (event.status == MediaSyncEvent.STATUS_SUCCESS)
+//                LoaderManager.getInstance(this).restartLoader(LOADER_ARTIST, null, ArtistInfoFragment.this);
+//        });
+//        return refreshItem;
     }
 
     @Override
@@ -82,7 +100,6 @@ public class ArtistInfoFragment extends AbstractInfoFragment
             playListItem.artistid = getDataHolder().getId();
             MediaPlayerUtils.queue(ArtistInfoFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
         });
-
         setOnDownloadListener(view -> LoaderManager.getInstance(this).initLoader(LOADER_SONGS, null, ArtistInfoFragment.this));
 
         return true;
@@ -96,28 +113,6 @@ public class ArtistInfoFragment extends AbstractInfoFragment
             playItemOnKodi(item);
         });
         return true;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setExpandDescription(true);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        LoaderManager.getInstance(this).initLoader(LOADER_ARTIST, null, this);
-
-        setHasOptionsMenu(false);
-    }
-
-    @Override
-    public void onPause() {
-        //Make sure loader is not reloaded for albums and songs when we return
-        //These loaders should only be activated by the user pressing the download button
-        LoaderManager.getInstance(this).destroyLoader(LOADER_SONGS);
-        super.onPause();
     }
 
     /*

@@ -24,7 +24,6 @@ import android.os.Looper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,14 +31,9 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
-import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
-import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
@@ -48,8 +42,6 @@ import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
-
-import java.util.ArrayList;
 
 /**
  * Presents album details
@@ -68,6 +60,52 @@ public class AlbumInfoFragment extends AbstractInfoFragment
         super.onViewCreated(view, savedInstanceState);
         LoaderManager.getInstance(this).initLoader(LOADER_ALBUM, null, this);
         setHasOptionsMenu(false);
+    }
+
+    @Override
+    protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {
+        DataHolder dataHolder = getDataHolder();
+        albumSongsListFragment = new AlbumSongsListFragment();
+        albumSongsListFragment.setAlbum(dataHolder.getId(), dataHolder.getTitle());
+        return albumSongsListFragment;
+    }
+
+    @Override
+    protected RefreshItem createRefreshItem() {
+        // Don't start refresh on details screen
+        return null;
+//        RefreshItem refreshItem = new RefreshItem(requireContext(), LibrarySyncService.SYNC_ALL_MUSIC);
+//        refreshItem.setListener(event -> {
+//            if (event.status == MediaSyncEvent.STATUS_SUCCESS)
+//                LoaderManager.getInstance(this).restartLoader(LOADER_ALBUM, null, AlbumInfoFragment.this);
+//        });
+//        return refreshItem;
+    }
+
+    @Override
+    protected boolean setupMediaActionBar() {
+        setOnDownloadListener(view -> UIUtils.downloadSongs(requireContext(),
+                                                            albumSongsListFragment.getSongInfoList(),
+                                                            getHostInfo(),
+                                                            callbackHandler));
+
+        setOnAddToPlaylistListener(view -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.albumid = getDataHolder().getId();
+            MediaPlayerUtils.queue(AlbumInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.AUDIO);
+        });
+
+        return true;
+    }
+
+    @Override
+    protected boolean setupFAB(FABSpeedDial FAB) {
+        FAB.setOnFabClickListener(v -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.albumid = getDataHolder().getId();
+            playItemOnKodi(item);
+        });
+        return true;
     }
 
     /*
@@ -128,50 +166,6 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> cursorLoader) {
         // Release loader's data
-    }
-
-    @Override
-    protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {
-        DataHolder dataHolder = getDataHolder();
-        albumSongsListFragment = new AlbumSongsListFragment();
-        albumSongsListFragment.setAlbum(dataHolder.getId(), dataHolder.getTitle());
-        return albumSongsListFragment;
-    }
-
-    @Override
-    protected RefreshItem createRefreshItem() {
-        RefreshItem refreshItem = new RefreshItem(requireContext(), LibrarySyncService.SYNC_ALL_MUSIC);
-        refreshItem.setListener(event -> {
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS)
-                LoaderManager.getInstance(this).restartLoader(LOADER_ALBUM, null, AlbumInfoFragment.this);
-        });
-        return refreshItem;
-    }
-
-    @Override
-    protected boolean setupMediaActionBar() {
-        setOnDownloadListener(view -> UIUtils.downloadSongs(requireContext(),
-                                                            albumSongsListFragment.getSongInfoList(),
-                                                            getHostInfo(),
-                                                            callbackHandler));
-
-        setOnAddToPlaylistListener(view -> {
-            PlaylistType.Item item = new PlaylistType.Item();
-            item.albumid = getDataHolder().getId();
-            MediaPlayerUtils.queue(AlbumInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.AUDIO);
-        });
-
-        return true;
-    }
-
-    @Override
-    protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(v -> {
-            PlaylistType.Item item = new PlaylistType.Item();
-            item.albumid = getDataHolder().getId();
-            playItemOnKodi(item);
-        });
-        return true;
     }
 
     /**

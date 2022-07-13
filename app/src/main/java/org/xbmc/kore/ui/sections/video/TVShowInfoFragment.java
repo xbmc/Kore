@@ -52,9 +52,15 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     private static boolean hasIssuedOutdatedRefresh = false;
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        hasIssuedOutdatedRefresh = false;
+        LoaderManager.getInstance(this).initLoader(LOADER_TVSHOW, null, this);
+    }
+
+    @Override
     protected RefreshItem createRefreshItem() {
-        RefreshItem refreshItem = new RefreshItem(requireContext(),
-                                                  LibrarySyncService.SYNC_SINGLE_TVSHOW);
+        RefreshItem refreshItem = new RefreshItem(requireContext(), LibrarySyncService.SYNC_SINGLE_TVSHOW);
         refreshItem.setSyncItem(LibrarySyncService.SYNC_TVSHOWID, getDataHolder().getId());
         refreshItem.setListener(event -> {
             if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
@@ -81,13 +87,6 @@ public class TVShowInfoFragment extends AbstractInfoFragment
         TVShowProgressFragment tvShowProgressFragment = new TVShowProgressFragment();
         tvShowProgressFragment.setArgs(getDataHolder().getId(), getDataHolder().getTitle());
         return tvShowProgressFragment;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        hasIssuedOutdatedRefresh = false;
-        LoaderManager.getInstance(this).initLoader(LOADER_TVSHOW, null, this);
     }
 
     /*
