@@ -87,70 +87,21 @@
                 android:background="?attr/contentBackgroundColor"/>
 
             <!-- Media control buttons -->
-            <LinearLayout
-                android:id="@+id/media_control_bar"
+            <org.xbmc.kore.ui.widgets.MediaPlaybackBar
+                android:id="@+id/media_playback_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/buttonbar_height"
                 android:layout_below="@id/progress_info"
                 android:orientation="horizontal"
                 style="@style/ButtonBar"
-                android:background="?attr/contentBackgroundColor">
-                <ImageButton
-                    android:id="@+id/previous"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconPrevious"
-                    android:contentDescription="@string/previous"/>
-                <ImageButton
-                    android:id="@+id/rewind"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconRewind"
-                    android:contentDescription="@string/rewind"/>
-                <ImageButton
-                    android:id="@+id/play"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconPlay"
-                    android:contentDescription="@string/play"/>
-                <ImageButton
-                    android:id="@+id/stop"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconStop"
-                    android:contentDescription="@string/stop"/>
-                <ImageButton
-                    android:id="@+id/fast_forward"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconFastForward"
-                    android:contentDescription="@string/fast_forward"/>
-                <ImageButton
-                    android:id="@+id/next"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconNext"
-                    android:contentDescription="@string/next"/>
-            </LinearLayout>
+                android:background="?attr/contentBackgroundColor" />
 
             <!-- Media actions buttons -->
             <LinearLayout
                 android:id="@+id/media_actions_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/buttonbar_height"
-                android:layout_below="@id/media_control_bar"
+                android:layout_below="@id/media_playback_bar"
                 android:orientation="horizontal"
                 style="@style/ButtonBar"
                 android:background="?attr/contentBackgroundColor">

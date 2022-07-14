@@ -19,8 +19,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
-
 import android.os.Looper;
 import android.text.TextUtils;
 import android.transition.TransitionInflater;
@@ -36,6 +34,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -54,7 +53,6 @@ import org.xbmc.kore.service.MediaSessionService;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
-import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.ui.widgets.NowPlayingPanel;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
@@ -407,8 +405,6 @@ public abstract class BaseMediaActivity extends BaseActivity
                                                       callbackHandler);
         });
         binding.nowPlayingPanel.setOnPanelButtonsClickListener(this);
-        binding.nowPlayingPanel.setOnProgressChangeListener(MediaProgressIndicator.ProgressChangeListener.buildDefault(this, callbackHandler));
-
         hostConnectionObserver = hostManager.getHostConnectionObserver();
         if (hostConnectionObserver == null)
             return;
