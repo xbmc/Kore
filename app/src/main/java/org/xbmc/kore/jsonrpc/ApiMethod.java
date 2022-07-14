@@ -220,7 +220,7 @@ public abstract class ApiMethod<T> {
 	public void execute(HostConnection hostConnection, ApiCallback<T> callback, Handler handler) {
         if (hostConnection != null) {
             hostConnection.execute(this, callback, handler);
-        } else {
+        } else if (callback != null) {
             callback.onError(ApiException.API_NO_CONNECTION, "No connection specified.");
         }
 	}

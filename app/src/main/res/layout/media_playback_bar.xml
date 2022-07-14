@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2022 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageButton
+        android:id="@+id/previous"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        style="@style/Widget.Button.Borderless"
+        android:src="?attr/iconPrevious"
+        android:contentDescription="@string/previous"/>
+    <ImageButton
+        android:id="@+id/rewind"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        style="@style/Widget.Button.Borderless"
+        android:src="?attr/iconRewind"
+        android:contentDescription="@string/rewind"/>
+    <ImageButton
+        android:id="@+id/play"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        style="@style/Widget.Button.Borderless"
+        android:src="?attr/iconPlay"
+        android:contentDescription="@string/play"/>
+    <ImageButton
+        android:id="@+id/stop"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        style="@style/Widget.Button.Borderless"
+        android:src="?attr/iconStop"
+        android:contentDescription="@string/stop"/>
+    <ImageButton
+        android:id="@+id/fast_forward"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        style="@style/Widget.Button.Borderless"
+        android:src="?attr/iconFastForward"
+        android:contentDescription="@string/fast_forward"/>
+    <ImageButton
+        android:id="@+id/next"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        style="@style/Widget.Button.Borderless"
+        android:src="?attr/iconNext"
+        android:contentDescription="@string/next"/>
+</merge>

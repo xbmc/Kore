@@ -37,24 +37,22 @@ import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentNowPlayingBinding;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Addons;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.jsonrpc.method.Player;
-import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.generic.GenericSelectDialog;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
-import org.xbmc.kore.ui.widgets.MediaProgressIndicator;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -151,17 +149,12 @@ public class NowPlayingFragment extends Fragment
         binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
                 .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler));
 
-        binding.progressInfo.setOnProgressChangeListener(MediaProgressIndicator.ProgressChangeListener.buildDefault(requireContext(), callbackHandler));
+        binding.progressInfo.setDefaultOnProgressChangeListener(requireContext());
+        binding.mediaPlaybackBar.setDefaultOnClickListener(requireContext());
 
         binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
                 .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler));
 
-        binding.play.setOnClickListener(this::onPlayClicked);
-        binding.stop.setOnClickListener(this::onStopClicked);
-        binding.fastForward.setOnClickListener(this::onFastForwardClicked);
-        binding.rewind.setOnClickListener(this::onRewindClicked);
-        binding.previous.setOnClickListener(this::onPreviousClicked);
-        binding.next.setOnClickListener(this::onNextClicked);
         binding.volumeMute.setOnClickListener(this::onVolumeMuteClicked);
         binding.shuffle.setOnClickListener(this::onShuffleClicked);
         binding.repeat.setOnClickListener(this::onRepeatClicked);
@@ -210,59 +203,11 @@ public class NowPlayingFragment extends Fragment
      */
     private final ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
 
-    /**
-     * Callback for methods that change the play speed
-     */
-    private final ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
-        @Override
-        public void onSuccess(Integer result) {
-            if (!isAdded()) return;
-            UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, result == 1);
-        }
-
-        @Override
-        public void onError(int errorCode, String description) { }
-    };
-
     @Override
     public void onScrollChanged() {
         float y = binding.mediaPanel.getScrollY();
         float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
         binding.art.setAlpha(newAlpha);
-    }
-
-    /**
-     * Callbacks for bottom button bar
-     */
-    public void onPlayClicked(View v) {
-        Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
-        action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
-    }
-
-   public void onStopClicked(View v) {
-        Player.Stop action = new Player.Stop(currentActivePlayerId);
-        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, false);
-    }
-
-    public void onFastForwardClicked(View v) {
-        Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.INCREMENT);
-        action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
-    }
-
-    public void onRewindClicked(View v) {
-        Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.DECREMENT);
-        action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
-    }
-
-    public void onPreviousClicked(View v) {
-        Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
-        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-    }
-
-   public void onNextClicked(View v) {
-        Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
-        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
     }
 
     public void onVolumeMuteClicked(View v) {
@@ -504,19 +449,15 @@ public class NowPlayingFragment extends Fragment
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
         currentActivePlayerId = getActivePlayerResult.playerid;
-        // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, getPropertiesResult.speed == 1);
+        setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
-        setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
         currentActivePlayerId = getActivePlayerResult.playerid;
-        // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, getPropertiesResult.speed == 1);
+        setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void playerOnStop() {
@@ -681,15 +622,13 @@ public class NowPlayingFragment extends Fragment
         binding.mediaTitle.post(UIUtils.getMarqueeToggleableAction(binding.mediaTitle));
         binding.mediaUndertitle.setText(underTitle);
 
-        binding.progressInfo.setActivePlayerId(getActivePlayerResult.playerid);
-        binding.progressInfo.setMaxProgress(getPropertiesResult.totaltime.toSeconds());
-        binding.progressInfo.setProgress(getPropertiesResult.time.toSeconds());
-
-        int speed = getPropertiesResult.speed;
-        //TODO: check if following is still necessary for PVR playback
-        if (getItemResult.type.equals(ListType.ItemsAll.TYPE_CHANNEL))
-            speed = 1;
-        binding.progressInfo.setSpeed(speed);
+        // Check if this is still necessary for PVR playback
+        int speed = getItemResult.type.equals(ListType.ItemsAll.TYPE_CHANNEL)? 1 : getPropertiesResult.speed;
+        binding.progressInfo.setPlaybackState(getActivePlayerResult.playerid,
+                                              speed,
+                                              getPropertiesResult.time.toSeconds(),
+                                              getPropertiesResult.totaltime.toSeconds());
+        binding.mediaPlaybackBar.setPlaybackState(getActivePlayerResult.playerid, speed);
 
         if (!TextUtils.isEmpty(year) || !TextUtils.isEmpty(genreSeason)) {
             binding.year.setVisibility(View.VISIBLE);
@@ -805,7 +744,7 @@ public class NowPlayingFragment extends Fragment
      */
     private void stopNowPlayingInfo() {
         // Just stop the seek bar handler callbacks
-        binding.progressInfo.setSpeed(0);
+        binding.progressInfo.stopUpdating();
 
         availableSubtitles = null;
         availableAudioStreams = null;

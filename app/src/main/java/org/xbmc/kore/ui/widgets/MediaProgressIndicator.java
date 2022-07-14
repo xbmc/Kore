@@ -18,7 +18,6 @@ package org.xbmc.kore.ui.widgets;
 
 
 import android.content.Context;
-import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -27,8 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import org.xbmc.kore.databinding.MediaProgressIndicatorBinding;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.utils.LogUtils;
@@ -44,46 +43,12 @@ public class MediaProgressIndicator extends LinearLayout {
     private int progress;
     private static final int SEEK_BAR_UPDATE_INTERVAL = 1000; // ms
     private int progressIncrement;
+    private int activePlayerId;
 
-    private ProgressChangeListener progressChangeListener;
+    private OnProgressChangeListener onProgressChangeListener;
 
-    public abstract static class ProgressChangeListener {
-        final Context context;
-        int activePlayerId;
-        final Handler callbackHandler;
-
-        public ProgressChangeListener(Context context, Handler callbackHandler) {
-            this.context = context;
-            activePlayerId = -1;
-            this.callbackHandler = callbackHandler;
-        }
-
-        public void setActivePlayerId(int activePlayerId) {
-            this.activePlayerId = activePlayerId;
-        }
-
-        public abstract void onProgressChanged(int progress);
-
-        public static ProgressChangeListener buildDefault(Context context, Handler callbackHandler) {
-            return new ProgressChangeListener(context, callbackHandler) {
-                @Override
-                public void onProgressChanged(int progress) {
-                    PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
-                    Player.Seek seekAction = new Player.Seek(activePlayerId, positionTime);
-                    seekAction.execute(HostManager.getInstance(context).getConnection(),
-                                       new ApiCallback<PlayerType.SeekReturnType>() {
-                                           @Override
-                                           public void onSuccess(PlayerType.SeekReturnType result) {/* Ignored */ }
-
-                                           @Override
-                                           public void onError(int errorCode, String description) {
-                                               LogUtils.LOGD(TAG, "Error calling Player.Seek: " + description);
-                                           }
-                                       },
-                                       callbackHandler);
-                }
-            };
-        }
+    interface OnProgressChangeListener {
+        void onProgressChanged(int progress);
     }
 
     public MediaProgressIndicator(Context context) {
@@ -110,7 +75,6 @@ public class MediaProgressIndicator extends LinearLayout {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     MediaProgressIndicator.this.progress = progress;
-
                     binding.mpiProgress.setText(UIUtils.formatTime(MediaProgressIndicator.this.progress));
                 }
             }
@@ -123,8 +87,8 @@ public class MediaProgressIndicator extends LinearLayout {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (progressChangeListener != null)
-                    progressChangeListener.onProgressChanged(seekBar.getProgress());
+                if (onProgressChangeListener != null)
+                    onProgressChangeListener.onProgressChanged(seekBar.getProgress());
 
                 if (speed > 0)
                     seekBar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
@@ -137,7 +101,7 @@ public class MediaProgressIndicator extends LinearLayout {
         super.onDetachedFromWindow();
 
         binding.mpiSeekBar.removeCallbacks(seekBarUpdater);
-        progressChangeListener = null;
+        onProgressChangeListener = null;
         binding = null;
     }
 
@@ -177,49 +141,67 @@ public class MediaProgressIndicator extends LinearLayout {
         }
     };
 
-    public void setOnProgressChangeListener(ProgressChangeListener progressChangeListener) {
-        this.progressChangeListener = progressChangeListener;
+    public void setOnProgressChangeListener(OnProgressChangeListener onProgressChangeListener) {
+        this.onProgressChangeListener = onProgressChangeListener;
     }
 
-    public void setProgress(int progress) {
+    public void setDefaultOnProgressChangeListener(Context context) {
+        final HostConnection connection = HostManager.getInstance(context).getConnection();
+        onProgressChangeListener = progress -> {
+            Player.Seek seekAction = new Player.Seek(activePlayerId, new PlayerType.PositionTime(progress));
+            seekAction.execute(connection, null, null);
+        };
+    }
+
+    /**
+     * Set the current playback state, adjusting the UI and the internal state
+     * Call this whenever the playback state changes
+     *
+     * @param activePlayerId Active player id
+     * @param speed          Current speed. Set to 0 to stop updating the progress indicator
+     * @param progress       Current progress
+     * @param maxProgress    Max progress
+     */
+    public void setPlaybackState(int activePlayerId, int speed, int progress, int maxProgress) {
+        this.activePlayerId = activePlayerId;
+        setProgress(progress);
+        setMaxProgress(maxProgress);
+        setSpeed(speed);
+    }
+
+    private void setProgress(int progress) {
         this.progress = progress;
         binding.mpiSeekBar.setProgress(progress);
         binding.mpiProgress.setText(UIUtils.formatTime(progress));
     }
 
-    public void setActivePlayerId(int activePlayerId) {
-        this.progressChangeListener.setActivePlayerId(activePlayerId);
+    private void setMaxProgress(int maxProgress) {
+        this.maxProgress = maxProgress;
+        binding.mpiSeekBar.setMax(maxProgress);
+        binding.mpiDuration.setText(UIUtils.formatTime(maxProgress));
     }
 
-    public int getProgress() {
-        return progress;
-    }
-
-    public void setMaxProgress(int max) {
-        maxProgress = max;
-        binding.mpiSeekBar.setMax(max);
-        binding.mpiDuration.setText(UIUtils.formatTime(max));
-    }
-
-    /**
-     * Sets the play speed for the progress indicator
-     * @param speed set to 0 to stop updating the progress indicator.
-     */
-    public void setSpeed(int speed) {
-        if( speed == this.speed )
-            return;
+    private void setSpeed(int speed) {
+        if (speed == this.speed) return;
 
         this.speed = speed;
-        this.progressIncrement = speed * (SEEK_BAR_UPDATE_INTERVAL/1000);
+        this.progressIncrement = speed * (SEEK_BAR_UPDATE_INTERVAL / 1000);
 
         binding.mpiSeekBar.removeCallbacks(seekBarUpdater);
         if (speed > 0)
             binding.mpiSeekBar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
     }
 
+    public void stopUpdating() {
+        binding.mpiSeekBar.removeCallbacks(seekBarUpdater);
+    }
+
+    /**
+     * To prevent some flickering on the progress bar, save the current progress and max progress
+     * The other attributes aren't needed, as they should be updated by a subsequent call to setPlaybackState
+     */
     private static class SavedState extends BaseSavedState {
-        int progress;
-        int maxProgress;
+        int progress, maxProgress;
 
         SavedState(Parcelable superState) {
             super(superState);

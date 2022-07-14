@@ -66,6 +66,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
 
         setDragView(binding.nppCollapsedView);
         setupButtonClickListeners();
+        binding.nppProgressIndicator.setDefaultOnProgressChangeListener(context);
     }
 
     @Override
@@ -82,10 +83,6 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
 
     public void setOnVolumeChangeListener(VolumeLevelIndicator.OnVolumeChangeListener listener) {
         binding.nppVolumeLevelIndicator.setOnVolumeChangeListener(listener);
-    }
-
-    public void setOnProgressChangeListener(MediaProgressIndicator.ProgressChangeListener listener) {
-        binding.nppProgressIndicator.setOnProgressChangeListener(listener);
     }
 
     public void setVolume(int volume, boolean muted) {
@@ -117,10 +114,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
      * @param totalTime Total playback time
      */
     public void setPlaybackState(int activePlayerId, int speed, GlobalType.Time time, GlobalType.Time totalTime) {
-        binding.nppProgressIndicator.setActivePlayerId(activePlayerId);
-        binding.nppProgressIndicator.setMaxProgress(totalTime.toSeconds());
-        binding.nppProgressIndicator.setProgress(time.toSeconds());
-        binding.nppProgressIndicator.setSpeed(speed);
+        binding.nppProgressIndicator.setPlaybackState(activePlayerId, speed, time.toSeconds(), totalTime.toSeconds());
         UIUtils.setPlayPauseButtonIcon(getContext(), binding.nppPlay, speed == 1);
     }
 
