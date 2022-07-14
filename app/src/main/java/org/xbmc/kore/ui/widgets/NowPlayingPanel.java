@@ -84,7 +84,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
         binding.nppVolumeLevelIndicator.setOnVolumeChangeListener(listener);
     }
 
-    public void setOnProgressChangeListener(MediaProgressIndicator.OnProgressChangeListener listener) {
+    public void setOnProgressChangeListener(MediaProgressIndicator.ProgressChangeListener listener) {
         binding.nppProgressIndicator.setOnProgressChangeListener(listener);
     }
 
@@ -110,28 +110,18 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     }
 
     /**
-     * Sets the state of the play button
-     * @param play true if playing, false if paused
+     * Sets the playback state of the panel
+     * @param activePlayerId Current player id
+     * @param speed Playback speed
+     * @param time Playback time
+     * @param totalTime Total playback time
      */
-    public void setPlayButton(boolean play) {
-        UIUtils.setPlayPauseButtonIcon(getContext(), binding.nppPlay, play);
-    }
-
-    public void setMediaProgress(GlobalType.Time time, GlobalType.Time totalTime) {
+    public void setPlaybackState(int activePlayerId, int speed, GlobalType.Time time, GlobalType.Time totalTime) {
+        binding.nppProgressIndicator.setActivePlayerId(activePlayerId);
         binding.nppProgressIndicator.setMaxProgress(totalTime.toSeconds());
         binding.nppProgressIndicator.setProgress(time.toSeconds());
-    }
-
-    /**
-     * Returns the progression indicator used for media progression
-     * @return Media progress indicator
-     */
-    public MediaProgressIndicator getMediaProgress() {
-        return binding.nppProgressIndicator;
-    }
-
-    public void setSpeed(int speed) {
         binding.nppProgressIndicator.setSpeed(speed);
+        UIUtils.setPlayPauseButtonIcon(getContext(), binding.nppPlay, speed == 1);
     }
 
     public CharSequence getTitle() {

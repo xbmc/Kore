@@ -64,8 +64,7 @@ import org.xbmc.kore.utils.Utils;
 public abstract class BaseMediaActivity extends BaseActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
                    HostConnectionObserver.PlayerEventsObserver,
-                   NowPlayingPanel.OnPanelButtonsClickListener,
-                   MediaProgressIndicator.OnProgressChangeListener {
+                   NowPlayingPanel.OnPanelButtonsClickListener {
     private static final String TAG = LogUtils.makeLogTag(BaseMediaActivity.class);
 
     private static final String NAVICON_ISARROW = "navstate";
@@ -281,7 +280,7 @@ public abstract class BaseMediaActivity extends BaseActivity
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
         currentActivePlayerId = getActivePlayerResult.playerid;
-        updateNowPlayingPanel(getPropertiesResult, getItemResult);
+        updateNowPlayingPanel(getActivePlayerResult, getPropertiesResult, getItemResult);
         // Start the MediaSession service
         MediaSessionService.startIfNotRunning(this);
     }
@@ -289,7 +288,7 @@ public abstract class BaseMediaActivity extends BaseActivity
     @Override
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult, PlayerType.PropertyValue getPropertiesResult, ListType.ItemsAll getItemResult) {
         currentActivePlayerId = getActivePlayerResult.playerid;
-        updateNowPlayingPanel(getPropertiesResult, getItemResult);
+        updateNowPlayingPanel(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     @Override
@@ -318,23 +317,6 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void inputOnInputRequested(String title, String type, String value) {}
-
-    @Override
-    public void onProgressChanged(int progress) {
-        PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
-        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
-        seekAction.execute(hostManager.getConnection(),
-                           new ApiCallback<PlayerType.SeekReturnType>() {
-                               @Override
-                               public void onSuccess(PlayerType.SeekReturnType result) {/* Ignore*/}
-
-                               @Override
-                               public void onError(int errorCode, String description) {
-                                   LogUtils.LOGE(TAG, "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
-                               }
-                           },
-                           callbackHandler);
-    }
 
     @Override
     public void onPlayClicked() {
@@ -425,7 +407,7 @@ public abstract class BaseMediaActivity extends BaseActivity
                                                       callbackHandler);
         });
         binding.nowPlayingPanel.setOnPanelButtonsClickListener(this);
-        binding.nowPlayingPanel.setOnProgressChangeListener(this);
+        binding.nowPlayingPanel.setOnProgressChangeListener(MediaProgressIndicator.ProgressChangeListener.buildDefault(this, callbackHandler));
 
         hostConnectionObserver = hostManager.getHostConnectionObserver();
         if (hostConnectionObserver == null)
@@ -437,7 +419,8 @@ public abstract class BaseMediaActivity extends BaseActivity
         hostConnectionObserver.refreshWhatsPlaying();
     }
 
-    private void updateNowPlayingPanel(PlayerType.PropertyValue getPropertiesResult,
+    private void updateNowPlayingPanel(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+                                       PlayerType.PropertyValue getPropertiesResult,
                                        ListType.ItemsAll getItemResult) {
         String title;
         String poster;
@@ -445,19 +428,16 @@ public abstract class BaseMediaActivity extends BaseActivity
 
         callbackHandler.removeCallbacks(hidePanelRunnable);
 
-        // Only set state to collapsed if panel is currently hidden. This prevents collapsing
-        // the panel when the user expanded the panel and started playing the item from a paused
-        // state
+        // Only set state to collapsed if panel is currently hidden. This prevents collapsing the panel when the user
+        // expanded the panel and started playing the item from a paused state
         if (binding.nowPlayingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
             binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         }
 
-        binding.nowPlayingPanel.setMediaProgress(getPropertiesResult.time, getPropertiesResult.totaltime);
-
-        binding.nowPlayingPanel.setPlayButton(getPropertiesResult.speed > 0);
+        binding.nowPlayingPanel.setPlaybackState(getActivePlayerResult.playerid, getPropertiesResult.speed,
+                                                 getPropertiesResult.time, getPropertiesResult.totaltime);
         binding.nowPlayingPanel.setShuffled(getPropertiesResult.shuffled);
         binding.nowPlayingPanel.setRepeatMode(getPropertiesResult.repeat);
-        binding.nowPlayingPanel.setSpeed(getPropertiesResult.speed);
 
         switch (getItemResult.type) {
             case ListType.ItemsAll.TYPE_MOVIE:
