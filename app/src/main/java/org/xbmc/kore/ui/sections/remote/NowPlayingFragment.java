@@ -69,7 +69,6 @@ public class NowPlayingFragment extends Fragment
         implements HostConnectionObserver.PlayerEventsObserver,
                    HostConnectionObserver.ApplicationEventsObserver,
                    GenericSelectDialog.GenericSelectDialogListener,
-                   MediaProgressIndicator.OnProgressChangeListener,
                    ViewTreeObserver.OnScrollChangedListener {
     private static final String TAG = LogUtils.makeLogTag(NowPlayingFragment.class);
 
@@ -152,7 +151,7 @@ public class NowPlayingFragment extends Fragment
         binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
                 .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler));
 
-        binding.progressInfo.setOnProgressChangeListener(this);
+        binding.progressInfo.setOnProgressChangeListener(MediaProgressIndicator.ProgressChangeListener.buildDefault(requireContext(), callbackHandler));
 
         binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
                 .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler));
@@ -570,25 +569,6 @@ public class NowPlayingFragment extends Fragment
     public void inputOnInputRequested(String title, String type, String value) {}
     public void observerOnStopObserving() {}
 
-    @Override
-    public void onProgressChanged(int progress) {
-        PlayerType.PositionTime positionTime = new PlayerType.PositionTime(progress);
-        Player.Seek seekAction = new Player.Seek(currentActivePlayerId, positionTime);
-        seekAction.execute(HostManager.getInstance(requireContext()).getConnection(), new ApiCallback<PlayerType.SeekReturnType>() {
-            @Override
-            public void onSuccess(PlayerType.SeekReturnType result) {
-                // Ignore
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                LogUtils.LOGD("MediaSeekBar", "Got an error calling Player.Seek. Error code: " + errorCode + ", description: " + description);
-            }
-        }, callbackHandler);
-
-
-    }
-
     /**
      * Sets whats playing information
      * @param getItemResult Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
@@ -701,7 +681,7 @@ public class NowPlayingFragment extends Fragment
         binding.mediaTitle.post(UIUtils.getMarqueeToggleableAction(binding.mediaTitle));
         binding.mediaUndertitle.setText(underTitle);
 
-        binding.progressInfo.setOnProgressChangeListener(this);
+        binding.progressInfo.setActivePlayerId(getActivePlayerResult.playerid);
         binding.progressInfo.setMaxProgress(getPropertiesResult.totaltime.toSeconds());
         binding.progressInfo.setProgress(getPropertiesResult.time.toSeconds());
 
