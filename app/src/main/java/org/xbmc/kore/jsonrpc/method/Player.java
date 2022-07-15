@@ -451,6 +451,42 @@ public class Player {
     }
 
     /**
+     * Set/Unset Party Mode on the player
+     */
+    public static final class SetPartymode extends ApiMethod<String> {
+        public final static String METHOD_NAME = "Player.SetPartymode";
+
+        /**
+         * Set/Unset Party Mode on the player
+         * @param playerId Player id for which to shuffle
+         * @param partymode True/false
+         */
+        public SetPartymode(int playerId, boolean partymode) {
+            super();
+            addParameterToRequest("playerid", playerId);
+            addParameterToRequest("partymode", partymode);
+        }
+
+        /**
+         * Set/Unset Party Mode on the player
+         * @param playerId Player id for which to shuffle
+         */
+        public SetPartymode(int playerId) {
+            super();
+            addParameterToRequest("playerid", playerId);
+            addParameterToRequest("partymode", "toggle");
+        }
+
+        @Override
+        public String getMethodName() { return METHOD_NAME; }
+
+        @Override
+        public String resultFromJson(ObjectNode jsonObject) throws ApiException {
+            return jsonObject.get(RESULT_NODE).textValue();
+        }
+    }
+
+    /**
      * Start playback of either the playlist with the given ID, a slideshow with the pictures
      * from the given directory or a single file or an item from the database.
      */

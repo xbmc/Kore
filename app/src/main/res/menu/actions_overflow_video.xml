@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/audiostreams"
-          android:title="@string/audiostreams"/>
-    <item android:id="@+id/subtitles"
-          android:title="@string/subtitles" />
+    <item android:id="@+id/repeat"
+        android:title="@string/repeat" />
+    <item android:id="@+id/shuffle"
+        android:title="@string/shuffle"/>
 </menu>

@@ -19,17 +19,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,28 +32,18 @@ import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentNowPlayingBinding;
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.ApiMethod;
-import org.xbmc.kore.jsonrpc.method.Addons;
-import org.xbmc.kore.jsonrpc.method.Application;
-import org.xbmc.kore.jsonrpc.method.GUI;
-import org.xbmc.kore.jsonrpc.method.Input;
-import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
-import org.xbmc.kore.ui.generic.GenericSelectDialog;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Now playing view
@@ -66,7 +51,6 @@ import java.util.List;
 public class NowPlayingFragment extends Fragment
         implements HostConnectionObserver.PlayerEventsObserver,
                    HostConnectionObserver.ApplicationEventsObserver,
-                   GenericSelectDialog.GenericSelectDialogListener,
                    ViewTreeObserver.OnScrollChangedListener {
     private static final String TAG = LogUtils.makeLogTag(NowPlayingFragment.class);
 
@@ -76,12 +60,6 @@ public class NowPlayingFragment extends Fragment
     public interface NowPlayingListener {
         void SwitchToRemotePanel();
     }
-
-    /**
-     * Constants for the general select dialog
-     */
-    private final static int SELECT_AUDIOSTREAM = 0;
-    private final static int SELECT_SUBTITLES = 1;
 
     /**
      * Host manager from which to get info about the current XBMC
@@ -97,27 +75,6 @@ public class NowPlayingFragment extends Fragment
      * Listener for events on this fragment
      */
     private NowPlayingListener nowPlayingListener;
-
-    /**
-     * Handler on which to post RPC callbacks
-     */
-    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
-
-    /**
-     * The current active player id
-     */
-    private int currentActivePlayerId = -1;
-
-    /**
-     * List of available subtitles and audiostremas
-     */
-    private List<PlayerType.Subtitle> availableSubtitles;
-    private List<PlayerType.AudioStream> availableAudioStreams;
-    private int currentSubtitleIndex = -1;
-    private int currentAudiostreamIndex = -1;
-
-    private final ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
-    private final ApiCallback<Boolean> defaultBooleanActionCallback = ApiMethod.getDefaultActionCallback();
 
     private FragmentNowPlayingBinding binding;
 
@@ -146,20 +103,10 @@ public class NowPlayingFragment extends Fragment
         binding = FragmentNowPlayingBinding.inflate(inflater, container, false);
         ViewGroup root = binding.getRoot();
 
-        binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
-                .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler));
-
         binding.progressInfo.setDefaultOnProgressChangeListener(requireContext());
         binding.mediaPlaybackBar.setDefaultOnClickListener(requireContext());
 
-        binding.volumeLevelIndicator.setOnVolumeChangeListener(volume -> new Application.SetVolume(volume)
-                .execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler));
-
-        binding.volumeMute.setOnClickListener(this::onVolumeMuteClicked);
-        binding.shuffle.setOnClickListener(this::onShuffleClicked);
-        binding.repeat.setOnClickListener(this::onRepeatClicked);
-        binding.overflow.setOnClickListener(this::onOverflowClicked);
-
+        binding.mediaActionsBar.setDefaultOnClickListener(requireContext(), this);
         return root;
     }
 
@@ -198,11 +145,6 @@ public class NowPlayingFragment extends Fragment
         binding = null;
     }
 
-    /**
-     * Default callback for methods that don't return anything
-     */
-    private final ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
-
     @Override
     public void onScrollChanged() {
         float y = binding.mediaPanel.getScrollY();
@@ -210,237 +152,11 @@ public class NowPlayingFragment extends Fragment
         binding.art.setAlpha(newAlpha);
     }
 
-    public void onVolumeMuteClicked(View v) {
-        Application.SetMute action = new Application.SetMute();
-        action.execute(hostManager.getConnection(), defaultBooleanActionCallback, callbackHandler);
-    }
-
-    public void onShuffleClicked(View v) {
-        Player.SetShuffle action = new Player.SetShuffle(currentActivePlayerId);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                if (!isAdded()) return;
-                // Force a refresh
-                hostConnectionObserver.refreshWhatsPlaying();
-            }
-
-            @Override
-            public void onError(int errorCode, String description) { }
-        }, callbackHandler);
-    }
-
-    public void onRepeatClicked(View v) {
-        Player.SetRepeat action = new Player.SetRepeat(currentActivePlayerId, PlayerType.Repeat.CYCLE);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                if (!isAdded()) return;
-                hostConnectionObserver.refreshWhatsPlaying();
-            }
-
-            @Override
-            public void onError(int errorCode, String description) { }
-        }, callbackHandler);
-    }
-
-    public void onOverflowClicked(View v) {
-        PopupMenu popup = new PopupMenu(getActivity(), v);
-        popup.inflate(R.menu.video_overflow);
-        popup.setOnMenuItemClickListener(overflowMenuClickListener);
-        popup.show();
-    }
-
-    // Number of explicitly added options for audio and subtitles (to subtract from the
-    // number of audiostreams and subtitles returned by Kodi)
-    static final int ADDED_AUDIO_OPTIONS = 1;
-    static final int ADDED_SUBTITLE_OPTIONS = 3;
-
-    /**
-     * Overflow menu
-     */
-    private final PopupMenu.OnMenuItemClickListener overflowMenuClickListener = new PopupMenu.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            int selectedItem = -1;
-            int itemId = item.getItemId();
-            if (itemId == R.id.audiostreams) {
-                // Setup audiostream select dialog
-                String[] audiostreams = new String[(availableAudioStreams != null) ?
-                                                   availableAudioStreams.size() + ADDED_AUDIO_OPTIONS : ADDED_AUDIO_OPTIONS];
-
-                audiostreams[0] = getString(R.string.audio_sync);
-
-                if (availableAudioStreams != null) {
-                    for (int i = 0; i < availableAudioStreams.size(); i++) {
-                        PlayerType.AudioStream current = availableAudioStreams.get(i);
-                        audiostreams[i + ADDED_AUDIO_OPTIONS] = TextUtils.isEmpty(current.language) ?
-                                                                current.name : current.language + " | " + current.name;
-                        if (current.index == currentAudiostreamIndex) {
-                            selectedItem = i + ADDED_AUDIO_OPTIONS;
-                        }
-                    }
-
-                    GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
-                                                                                 SELECT_AUDIOSTREAM, getString(R.string.audiostreams), audiostreams, selectedItem);
-                    dialog.show(NowPlayingFragment.this.getParentFragmentManager(), null);
-                }
-                return true;
-            } else if (itemId == R.id.subtitles) {
-                // Setup subtitles select dialog
-                String[] subtitles = new String[(availableSubtitles != null) ?
-                                                availableSubtitles.size() + ADDED_SUBTITLE_OPTIONS : ADDED_SUBTITLE_OPTIONS];
-
-                subtitles[0] = getString(R.string.download_subtitle);
-                subtitles[1] = getString(R.string.subtitle_sync);
-                subtitles[2] = getString(R.string.none);
-
-                if (availableSubtitles != null) {
-                    for (int i = 0; i < availableSubtitles.size(); i++) {
-                        PlayerType.Subtitle current = availableSubtitles.get(i);
-                        subtitles[i + ADDED_SUBTITLE_OPTIONS] = TextUtils.isEmpty(current.language) ?
-                                                                current.name : current.language + " | " + current.name;
-                        if (current.index == currentSubtitleIndex) {
-                            selectedItem = i + ADDED_SUBTITLE_OPTIONS;
-                        }
-                    }
-                }
-
-                GenericSelectDialog dialog = GenericSelectDialog.newInstance(NowPlayingFragment.this,
-                                                                             SELECT_SUBTITLES, getString(R.string.subtitles), subtitles, selectedItem);
-                dialog.show(NowPlayingFragment.this.getParentFragmentManager(), null);
-                return true;
-            }
-            return false;
-        }
-    };
-
-    /**
-     * Generic dialog select listener
-     * @param token Dialog option selected
-     * @param which Which option was selected
-     */
-    public void onDialogSelect(int token, int which) {
-        switch (token) {
-            case SELECT_AUDIOSTREAM:
-                // 0 is to sync audio, other is for a specific audiostream
-                switch (which) {
-                    case 0:
-                        Input.ExecuteAction syncAudioAction = new Input.ExecuteAction(Input.ExecuteAction.AUDIODELAY);
-                        syncAudioAction.execute(hostManager.getConnection(), new ApiCallback<String>() {
-                            @Override
-                            public void onSuccess(String result) {
-                                if (!isAdded()) return;
-                                // Notify enclosing activity to switch panels
-                                nowPlayingListener.SwitchToRemotePanel();
-                            }
-
-                            @Override
-                            public void onError(int errorCode, String description) { }
-                        }, callbackHandler);
-                        break;
-                    default:
-                        Player.SetAudioStream setAudioStream = new Player.SetAudioStream(currentActivePlayerId, which - ADDED_AUDIO_OPTIONS);
-                        setAudioStream.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-                        break;
-                }
-                break;
-            case SELECT_SUBTITLES:
-                Player.SetSubtitle setSubtitle;
-                // 0 is to download subtitles, 1 is for sync, 2 is for none, other is for a specific subtitle index
-                switch (which) {
-                    case 0:
-                        // Download subtitles. First check host version to see which method to call
-                        HostInfo hostInfo = hostManager.getHostInfo();
-                        if (hostInfo.isGothamOrLater()) {
-                            showDownloadSubtitlesPostGotham();
-                        } else {
-                            showDownloadSubtitlesPreGotham();
-                        }
-                        break;
-                    case 1:
-                        Input.ExecuteAction syncSubtitleAction = new Input.ExecuteAction(Input.ExecuteAction.SUBTITLEDELAY);
-                        syncSubtitleAction.execute(hostManager.getConnection(), new ApiCallback<String>() {
-                            @Override
-                            public void onSuccess(String result) {
-                                if (!isAdded()) return;
-                                // Notify enclosing activity to switch panels
-                                nowPlayingListener.SwitchToRemotePanel();
-                            }
-
-                            @Override
-                            public void onError(int errorCode, String description) { }
-                        }, callbackHandler);
-                        break;
-                    case 2:
-                        setSubtitle = new Player.SetSubtitle(currentActivePlayerId, Player.SetSubtitle.OFF, true);
-                        setSubtitle.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-                        break;
-                    default:
-                        setSubtitle = new Player.SetSubtitle(currentActivePlayerId, which - ADDED_SUBTITLE_OPTIONS, true);
-                        setSubtitle.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-                        break;
-                }
-                break;
-        }
-    }
-
-    private void showDownloadSubtitlesPreGotham() {
-        // Pre-Gotham
-        Addons.ExecuteAddon action = new Addons.ExecuteAddon(Addons.ExecuteAddon.ADDON_SUBTITLES);
-        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                if (!isAdded()) return;
-                // Notify enclosing activity to switch panels
-                nowPlayingListener.SwitchToRemotePanel();
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                Toast.makeText(getActivity(),
-                               String.format(getString(R.string.error_executing_subtitles), description),
-                               Toast.LENGTH_SHORT).show();
-            }
-        }, callbackHandler);
-    }
-
-    private void showDownloadSubtitlesPostGotham() {
-        // Post-Gotham - HACK, HACK
-        // Apparently Gui.ActivateWindow with subtitlesearch blocks the TCP listener thread on XBMC
-        // While the subtitles windows is showing, i get no response to any call. See:
-        // http://forum.xbmc.org/showthread.php?tid=198156
-        // Forcing this call through HTTP works, as it doesn't block the TCP listener thread on XBMC
-        HostInfo currentHostInfo = hostManager.getHostInfo();
-        HostConnection httpHostConnection = new HostConnection(currentHostInfo);
-        httpHostConnection.setProtocol(HostConnection.PROTOCOL_HTTP);
-
-        GUI.ActivateWindow action = new GUI.ActivateWindow(GUI.ActivateWindow.SUBTITLESEARCH);
-
-        LogUtils.LOGD(TAG, "Activating subtitles window.");
-        action.execute(httpHostConnection, new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                LogUtils.LOGD(TAG, "Sucessfully activated subtitles window.");
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                LogUtils.LOGD(TAG, "Got an error activating subtitles window. Error: " + description);
-            }
-        }, callbackHandler);
-        // Notify enclosing activity to switch panels
-        nowPlayingListener.SwitchToRemotePanel();
-    }
-
     @Override
     public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
-        if (notificationsData.property.shuffled != null)
-            binding.shuffle.setHighlight(notificationsData.property.shuffled);
-
-        if (notificationsData.property.repeatMode != null)
-            UIUtils.setRepeatButton(binding.repeat, notificationsData.property.repeatMode);
+        binding.mediaActionsBar.setRepeatShuffleState(notificationsData.property.repeatMode,
+                                                      notificationsData.property.shuffled,
+                                                      notificationsData.property.partymode);
     }
 
     /**
@@ -449,14 +165,12 @@ public class NowPlayingFragment extends Fragment
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        currentActivePlayerId = getActivePlayerResult.playerid;
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
-        currentActivePlayerId = getActivePlayerResult.playerid;
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
@@ -502,8 +216,7 @@ public class NowPlayingFragment extends Fragment
 
     @Override
     public void applicationOnVolumeChanged(int volume, boolean muted) {
-        binding.volumeLevelIndicator.setVolume(muted, volume);
-        binding.volumeMute.setHighlight(muted);
+        binding.mediaActionsBar.setVolumeState(volume, muted);
     }
 
     // Ignore this
@@ -629,6 +342,8 @@ public class NowPlayingFragment extends Fragment
                                               getPropertiesResult.time.toSeconds(),
                                               getPropertiesResult.totaltime.toSeconds());
         binding.mediaPlaybackBar.setPlaybackState(getActivePlayerResult.playerid, speed);
+        binding.mediaActionsBar.setPlaybackState(getActivePlayerResult,
+                                                 getPropertiesResult);
 
         if (!TextUtils.isEmpty(year) || !TextUtils.isEmpty(genreSeason)) {
             binding.year.setVisibility(View.VISIBLE);
@@ -660,9 +375,6 @@ public class NowPlayingFragment extends Fragment
         } else {
             binding.mediaDescription.setVisibility(View.GONE);
         }
-
-        UIUtils.setRepeatButton(binding.repeat, getPropertiesResult.repeat);
-        binding.shuffle.setHighlight(getPropertiesResult.shuffled);
 
         Resources resources = requireActivity().getResources();
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -710,31 +422,14 @@ public class NowPlayingFragment extends Fragment
             binding.mediaUndertitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         }
 
-//        UIUtils.loadImageIntoImageview(hostManager, poster, mediaPoster);
-//        UIUtils.loadImageIntoImageview(hostManager, art, mediaArt);
-
-        // Continue for videos
 //        if (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE) ||
 //            getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) {
-        // TODO: change this check to the commeted out one when jsonrpc returns the correct type
-//        if (getPropertiesResult.type.equals(PlayerType.PropertyValue.TYPE_VIDEO)) {
-        if ((getPropertiesResult.audiostreams != null) &&
-            (getPropertiesResult.audiostreams.size() > 0)) {
-            binding.overflow.setVisibility(View.VISIBLE);
+        if (getPropertiesResult.type.equals(PlayerType.PropertyValue.TYPE_VIDEO)) {
             binding.castList.setVisibility(View.VISIBLE);
-
-            // Save subtitles and audiostreams list
-            availableAudioStreams = getPropertiesResult.audiostreams;
-            availableSubtitles = getPropertiesResult.subtitles;
-            currentAudiostreamIndex = getPropertiesResult.currentaudiostream.index;
-            currentSubtitleIndex = getPropertiesResult.currentsubtitle.index;
-
-            // Cast list
             UIUtils.setupCastInfo(getActivity(), getItemResult.cast, binding.castList,
                                   AllCastActivity.buildLaunchIntent(getActivity(), title,
                                                                     (ArrayList<VideoType.Cast>)getItemResult.cast));
         } else {
-            binding.overflow.setVisibility(View.GONE);
             binding.castList.setVisibility(View.GONE);
         }
     }
@@ -745,11 +440,6 @@ public class NowPlayingFragment extends Fragment
     private void stopNowPlayingInfo() {
         // Just stop the seek bar handler callbacks
         binding.progressInfo.stopUpdating();
-
-        availableSubtitles = null;
-        availableAudioStreams = null;
-        currentSubtitleIndex = -1;
-        currentAudiostreamIndex = -1;
     }
 
     /**

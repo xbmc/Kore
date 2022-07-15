@@ -258,13 +258,13 @@ public class Player {
 
         public final Boolean shuffled;
         public final String repeatMode;
+        public final Boolean partymode;
 
         public NotificationsProperty(JsonNode node) {
-            JsonNode shuffledNode = node.get("shuffled");
-            if (shuffledNode != null)
-                shuffled = shuffledNode.asBoolean();
-            else
-                shuffled = null;
+            JsonNode propertyNode = node.get("shuffled");
+            shuffled = (propertyNode == null) ? null : propertyNode.asBoolean();
+            propertyNode = node.get("partymode");
+            partymode = (propertyNode == null) ? null : propertyNode.asBoolean();
 
             repeatMode = JsonUtils.stringFromJsonNode(node, "repeat");
         }

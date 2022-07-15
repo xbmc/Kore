@@ -11,7 +11,6 @@ import org.xbmc.kore.databinding.MediaPlaybackBarBinding;
 import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.utils.LogUtils;
@@ -74,6 +73,7 @@ public class MediaPlaybackBar extends LinearLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         binding = null;
+        onClickListener = null;
     }
 
     public void setOnClickListener(OnClickListener listener) {
@@ -86,7 +86,6 @@ public class MediaPlaybackBar extends LinearLayout {
      */
     public void setDefaultOnClickListener(Context context) {
         final HostConnection connection = HostManager.getInstance(context).getConnection();
-        final ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
         final Handler callbackHandler = new Handler(Looper.getMainLooper());
         final ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
             @Override
@@ -108,7 +107,7 @@ public class MediaPlaybackBar extends LinearLayout {
             @Override
             public void onStopClicked() {
                 Player.Stop action = new Player.Stop(activePlayerId);
-                action.execute(connection, defaultStringActionCallback, callbackHandler);
+                action.execute(connection, null, null);
                 UIUtils.setPlayPauseButtonIcon(context, binding.play, false);
             }
 
@@ -127,13 +126,13 @@ public class MediaPlaybackBar extends LinearLayout {
             @Override
             public void onPreviousClicked() {
                 Player.GoTo action = new Player.GoTo(activePlayerId, Player.GoTo.PREVIOUS);
-                action.execute(connection, defaultStringActionCallback, callbackHandler);
+                action.execute(connection, null, null);
             }
 
             @Override
             public void onNextClicked() {
                 Player.GoTo action = new Player.GoTo(activePlayerId, Player.GoTo.NEXT);
-                action.execute(connection, defaultStringActionCallback, callbackHandler);
+                action.execute(connection, null, null);
             }
         };
     }
