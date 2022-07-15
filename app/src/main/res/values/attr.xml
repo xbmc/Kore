@@ -108,6 +108,8 @@
     <attr name="iconVolumeMute" format="reference" />
 
     <attr name="iconSubtitles" format="reference" />
+    <attr name="iconAudiostreams" format="reference" />
+    <attr name="iconCelebration" format="reference" />
 
     <attr name="iconOverflow" format="reference" />
 

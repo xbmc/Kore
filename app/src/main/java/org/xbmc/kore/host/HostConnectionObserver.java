@@ -702,6 +702,8 @@ public class HostConnectionObserver
                 PlayerType.PropertyName.AUDIOSTREAMS,
                 PlayerType.PropertyName.SUBTITLES,
                 PlayerType.PropertyName.PLAYLISTID,
+                PlayerType.PropertyName.SUBTITLEENABLED,
+                PlayerType.PropertyName.PARTYMODE,
                 };
 
         Player.GetProperties getProperties = new Player.GetProperties(getActivePlayersResult.playerid, propertiesToGet);

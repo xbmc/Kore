@@ -166,6 +166,7 @@
     <string name="none">None</string>
     <string name="audio_sync">Sync audio</string>
     <string name="subtitle_sync">Sync subtitles</string>
+    <string name="party_mode">Party mode</string>
 
     <string name="left">Left</string>
     <string name="right">Right</string>

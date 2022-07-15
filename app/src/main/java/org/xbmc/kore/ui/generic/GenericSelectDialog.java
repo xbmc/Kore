@@ -145,18 +145,13 @@ public class GenericSelectDialog
                                          });
         } else {
             final CharSequence[] items = args.getCharSequenceArray(ARRAY_ITEMS);
-
-            // TODO: This should be a singleChoiceItems, but how do we include actions in it?
+             // This should be a singleChoiceItems, but that's not appropriate to include actions in it
 //            builder.setSingleChoiceItems(items, selectedItem,
-//                    new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            if (mListener != null)
-//                                mListener.onDialogSelect(token, which);
-//                            dialog.dismiss();
-//                        }
-//                    });
-
+//                                         (dialog, which) -> {
+//                                             if (mListener != null)
+//                                                 mListener.onDialogSelect(token, which);
+//                                             dialog.dismiss();
+//                                         });
             builder.setItems(items, (dialog, which) -> {
                 if (mListener != null)
                     mListener.onDialogSelect(token, which);

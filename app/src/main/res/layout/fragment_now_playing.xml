@@ -86,7 +86,7 @@
                 android:orientation="horizontal"
                 android:background="?attr/contentBackgroundColor"/>
 
-            <!-- Media control buttons -->
+            <!-- Media playback control buttons -->
             <org.xbmc.kore.ui.widgets.MediaPlaybackBar
                 android:id="@+id/media_playback_bar"
                 android:layout_width="match_parent"
@@ -96,57 +96,15 @@
                 style="@style/ButtonBar"
                 android:background="?attr/contentBackgroundColor" />
 
-            <!-- Media actions buttons -->
-            <LinearLayout
+            <!-- Media action buttons -->
+            <org.xbmc.kore.ui.widgets.MediaActionsBar
                 android:id="@+id/media_actions_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/buttonbar_height"
                 android:layout_below="@id/media_playback_bar"
                 android:orientation="horizontal"
                 style="@style/ButtonBar"
-                android:background="?attr/contentBackgroundColor">
-
-                <org.xbmc.kore.ui.widgets.HighlightButton
-                    android:id="@+id/volume_mute"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconVolumeMute"
-                    android:contentDescription="@string/volume_mute"/>
-
-                <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
-                    android:id="@+id/volume_level_indicator"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:orientation="vertical" />
-
-                <org.xbmc.kore.ui.widgets.RepeatModeButton
-                    android:id="@+id/repeat"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconRepeat"
-                    android:contentDescription="@string/repeat"/>
-                <org.xbmc.kore.ui.widgets.HighlightButton
-                    android:id="@+id/shuffle"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconShuffle"
-                    android:contentDescription="@string/shuffle"/>
-                <ImageButton
-                    android:id="@+id/overflow"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconOverflow"
-                    android:contentDescription="@string/subtitles"/>
-            </LinearLayout>
+                android:background="?attr/contentBackgroundColor" />
 
             <RelativeLayout
                 android:id="@+id/media_details"

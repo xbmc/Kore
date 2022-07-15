@@ -139,7 +139,9 @@
         <item name="iconShuffle">@drawable/ic_shuffle_white_24dp</item>
         <item name="iconVolumeMute">@drawable/ic_volume_off_white_24dp</item>
 
-        <item name="iconSubtitles">@drawable/ic_closed_caption_white_24dp</item>
+        <item name="iconSubtitles">@drawable/ic_subtitles_white_24dp</item>
+        <item name="iconAudiostreams">@drawable/ic_spatial_audio_off_white_24dp</item>
+        <item name="iconCelebration">@drawable/ic_celebration_white_24dp</item>
 
         <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
 
@@ -299,7 +301,9 @@
         <item name="iconShuffle">@drawable/ic_shuffle_white_24dp</item>
         <item name="iconVolumeMute">@drawable/ic_volume_off_white_24dp</item>
 
-        <item name="iconSubtitles">@drawable/ic_closed_caption_white_24dp</item>
+        <item name="iconSubtitles">@drawable/ic_subtitles_white_24dp</item>
+        <item name="iconAudiostreams">@drawable/ic_spatial_audio_off_white_24dp</item>
+        <item name="iconCelebration">@drawable/ic_celebration_white_24dp</item>
 
         <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
 
