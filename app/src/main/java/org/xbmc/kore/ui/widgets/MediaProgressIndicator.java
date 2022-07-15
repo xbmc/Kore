@@ -130,7 +130,7 @@ public class MediaProgressIndicator extends LinearLayout {
                 return;
 
             if ((maxProgress == 0) || (progress >= maxProgress)) {
-                binding.mpiSeekBar.removeCallbacks(this);
+                setSpeed(0);
                 return;
             }
 
@@ -193,7 +193,7 @@ public class MediaProgressIndicator extends LinearLayout {
     }
 
     public void stopUpdating() {
-        binding.mpiSeekBar.removeCallbacks(seekBarUpdater);
+        setSpeed(0);
     }
 
     /**
