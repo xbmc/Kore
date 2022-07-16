@@ -33,6 +33,14 @@ import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
+/**
+ * This presents a seekbar with the playback progress, allowing for touch and dragging it and sending a seeking
+ * action to Kodi. Include this in a layout and, during playback keep this view manually updated by calling
+ * {@link MediaProgressIndicator#setPlaybackState(int, int, int, int)} and {@link MediaProgressIndicator#stopUpdating()}
+ * This view could be auto-suficient by subscribing to {@link org.xbmc.kore.host.HostConnectionObserver} and keeping
+ * itself updated when the state changes, but given that clients of this view are most likely already subscribers of
+ * that, this prevents the proliferation of observers
+ */
 public class MediaProgressIndicator extends LinearLayout {
     private static final String TAG = LogUtils.makeLogTag(MediaProgressIndicator.class);
 
@@ -44,12 +52,6 @@ public class MediaProgressIndicator extends LinearLayout {
     private static final int SEEK_BAR_UPDATE_INTERVAL = 1000; // ms
     private int progressIncrement;
     private int activePlayerId;
-
-    private OnProgressChangeListener onProgressChangeListener;
-
-    interface OnProgressChangeListener {
-        void onProgressChanged(int progress);
-    }
 
     public MediaProgressIndicator(Context context) {
         super(context);
@@ -70,12 +72,13 @@ public class MediaProgressIndicator extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         binding = MediaProgressIndicatorBinding.inflate(inflater, this);
 
+        final HostConnection connection = HostManager.getInstance(context).getConnection();
         binding.mpiSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int newProgress, boolean fromUser) {
                 if (fromUser) {
-                    MediaProgressIndicator.this.progress = progress;
-                    binding.mpiProgress.setText(UIUtils.formatTime(MediaProgressIndicator.this.progress));
+                    progress = newProgress;
+                    binding.mpiProgress.setText(UIUtils.formatTime(progress));
                 }
             }
 
@@ -87,9 +90,9 @@ public class MediaProgressIndicator extends LinearLayout {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (onProgressChangeListener != null)
-                    onProgressChangeListener.onProgressChanged(seekBar.getProgress());
-
+                progress = seekBar.getProgress();
+                new Player.Seek(activePlayerId, new PlayerType.PositionTime(progress))
+                        .execute(connection, null, null);
                 if (speed > 0)
                     seekBar.postDelayed(seekBarUpdater, SEEK_BAR_UPDATE_INTERVAL);
             }
@@ -99,9 +102,7 @@ public class MediaProgressIndicator extends LinearLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
         binding.mpiSeekBar.removeCallbacks(seekBarUpdater);
-        onProgressChangeListener = null;
         binding = null;
     }
 
@@ -140,18 +141,6 @@ public class MediaProgressIndicator extends LinearLayout {
             binding.mpiSeekBar.postDelayed(this, SEEK_BAR_UPDATE_INTERVAL);
         }
     };
-
-    public void setOnProgressChangeListener(OnProgressChangeListener onProgressChangeListener) {
-        this.onProgressChangeListener = onProgressChangeListener;
-    }
-
-    public void setDefaultOnProgressChangeListener(Context context) {
-        final HostConnection connection = HostManager.getInstance(context).getConnection();
-        onProgressChangeListener = progress -> {
-            Player.Seek seekAction = new Player.Seek(activePlayerId, new PlayerType.PositionTime(progress));
-            seekAction.execute(connection, null, null);
-        };
-    }
 
     /**
      * Set the current playback state, adjusting the UI and the internal state

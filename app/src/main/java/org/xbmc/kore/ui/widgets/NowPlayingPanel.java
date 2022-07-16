@@ -70,25 +70,10 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
         setDragView(binding.collapsedView);
 
         final HostConnection connection = HostManager.getInstance(context).getConnection();
-        final Handler callbackHandler = new Handler(Looper.getMainLooper());
-        final ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
-            @Override
-            public void onSuccess(Integer result) {
-                UIUtils.setPlayPauseButtonIcon(context, binding.play, result == 1);
-            }
-
-            @Override
-            public void onError(int errorCode, String description) { }
-        };
-
         binding.play.setOnClickListener(v -> new Player.PlayPause(activePlayerId)
-                .execute(connection, defaultPlaySpeedChangedCallback, callbackHandler));
+                .execute(connection, null, null));
         binding.volumeMutedIndicator.setOnClickListener(v -> new Application.SetMute()
                 .execute(connection, null, null));
-
-        binding.progressInfo.setDefaultOnProgressChangeListener(context);
-        binding.progressInfo.setDefaultOnProgressChangeListener(context);
-        binding.mediaPlaybackBar.setDefaultOnClickListener(context);
     }
 
     /**
@@ -98,7 +83,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
      * @param fragmentManager FragmentManager needed to show a Dialog
      */
     public void completeSetup(final Context context, final FragmentManager fragmentManager) {
-        binding.mediaActionsBar.setDefaultOnClickListener(context, fragmentManager);
+        binding.mediaActionsBar.completeSetup(context, fragmentManager);
     }
 
     @Override

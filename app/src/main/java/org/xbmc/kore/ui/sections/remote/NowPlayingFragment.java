@@ -101,9 +101,7 @@ public class NowPlayingFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentNowPlayingBinding.inflate(inflater, container, false);
-        binding.progressInfo.setDefaultOnProgressChangeListener(requireContext());
-        binding.mediaPlaybackBar.setDefaultOnClickListener(requireContext());
-        binding.mediaActionsBar.setDefaultOnClickListener(requireContext(), this.getParentFragmentManager());
+        binding.mediaActionsBar.completeSetup(requireContext(), this.getParentFragmentManager());
         return binding.getRoot();
     }
 
