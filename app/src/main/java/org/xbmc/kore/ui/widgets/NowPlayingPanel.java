@@ -18,32 +18,36 @@ package org.xbmc.kore.ui.widgets;
 
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.NowPlayingPanelBinding;
-import org.xbmc.kore.jsonrpc.type.GlobalType;
+import org.xbmc.kore.host.HostConnection;
+import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.method.Application;
+import org.xbmc.kore.jsonrpc.method.Player;
+import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.utils.UIUtils;
 
+/**
+ * Shows a pannel of what's playing, which can be dragged up by the user to show actions on the content
+ * This panel needs to be setup by calling {@link NowPlayingPanel#completeSetup(Context, FragmentManager)}
+ * by the enclosing Activity/Fragment, and needs to be kept updated by calling the various Set* functions when
+ * playback state changes.
+ */
 public class NowPlayingPanel extends SlidingUpPanelLayout {
 
-    public interface OnPanelButtonsClickListener {
-        void onPlayClicked();
-        void onPreviousClicked();
-        void onNextClicked();
-        void onVolumeMuteClicked();
-        void onShuffleClicked();
-        void onRepeatClicked();
-        void onVolumeMutedIndicatorClicked();
-    }
-
-    private OnPanelButtonsClickListener onPanelButtonsClickListener;
+    int activePlayerId = -1;
     NowPlayingPanelBinding binding;
 
     public NowPlayingPanel(Context context) {
@@ -63,123 +67,99 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         binding = NowPlayingPanelBinding.inflate(inflater, this);
+        setDragView(binding.collapsedView);
 
-        setDragView(binding.nppCollapsedView);
-        setupButtonClickListeners();
-        binding.nppProgressIndicator.setDefaultOnProgressChangeListener(context);
+        final HostConnection connection = HostManager.getInstance(context).getConnection();
+        final Handler callbackHandler = new Handler(Looper.getMainLooper());
+        final ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer result) {
+                UIUtils.setPlayPauseButtonIcon(context, binding.play, result == 1);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) { }
+        };
+
+        binding.play.setOnClickListener(v -> new Player.PlayPause(activePlayerId)
+                .execute(connection, defaultPlaySpeedChangedCallback, callbackHandler));
+        binding.volumeMutedIndicator.setOnClickListener(v -> new Application.SetMute()
+                .execute(connection, null, null));
+
+        binding.progressInfo.setDefaultOnProgressChangeListener(context);
+        binding.progressInfo.setDefaultOnProgressChangeListener(context);
+        binding.mediaPlaybackBar.setDefaultOnClickListener(context);
+    }
+
+    /**
+     * This completes the panel's setup, needed to be called separately to provide a FragmentManager, used to
+     * show a Dialog box in {@link MediaActionsBar}
+     * @param context Context
+     * @param fragmentManager FragmentManager needed to show a Dialog
+     */
+    public void completeSetup(final Context context, final FragmentManager fragmentManager) {
+        binding.mediaActionsBar.setDefaultOnClickListener(context, fragmentManager);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
-        onPanelButtonsClickListener = null;
         binding = null;
-    }
-
-    public void setOnPanelButtonsClickListener(OnPanelButtonsClickListener listener) {
-        onPanelButtonsClickListener = listener;
-    }
-
-    public void setOnVolumeChangeListener(VolumeLevelIndicator.OnVolumeChangeListener listener) {
-        binding.nppVolumeLevelIndicator.setOnVolumeChangeListener(listener);
-    }
-
-    public void setVolume(int volume, boolean muted) {
-        binding.nppVolumeLevelIndicator.setVolume(muted, volume);
-
-        if (muted) {
-            binding.nppVolumeMutedIndicator.setVisibility(View.VISIBLE);
-        } else {
-            binding.nppVolumeMutedIndicator.setVisibility(View.GONE);
-        }
-
-        binding.nppVolumeMutedIndicator.setHighlight(muted);
-        binding.nppVolumeMute.setHighlight(muted);
-    }
-
-    public void setRepeatMode(String repeatMode) {
-        UIUtils.setRepeatButton(binding.nppRepeat, repeatMode);
-    }
-
-    public void setShuffled(boolean shuffled) {
-        binding.nppShuffle.setHighlight(shuffled);
     }
 
     /**
      * Sets the playback state of the panel
-     * @param activePlayerId Current player id
-     * @param speed Playback speed
-     * @param time Playback time
-     * @param totalTime Total playback time
      */
-    public void setPlaybackState(int activePlayerId, int speed, GlobalType.Time time, GlobalType.Time totalTime) {
-        binding.nppProgressIndicator.setPlaybackState(activePlayerId, speed, time.toSeconds(), totalTime.toSeconds());
-        UIUtils.setPlayPauseButtonIcon(getContext(), binding.nppPlay, speed == 1);
+    public void setPlaybackState(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+                                 PlayerType.PropertyValue getPropertiesResult) {
+        activePlayerId = getActivePlayerResult.playerid;
+        binding.progressInfo.setPlaybackState(getActivePlayerResult.playerid,
+                                              getPropertiesResult.speed,
+                                              getPropertiesResult.time.toSeconds(),
+                                              getPropertiesResult.totaltime.toSeconds());
+        binding.mediaPlaybackBar.setPlaybackState(getActivePlayerResult.playerid, getPropertiesResult.speed);
+        binding.mediaActionsBar.setPlaybackState(getActivePlayerResult,
+                                                 getPropertiesResult);
+        UIUtils.setPlayPauseButtonIcon(getContext(), binding.play, getPropertiesResult.speed == 1);
+    }
+
+    public void setVolumeState(int volume, boolean muted) {
+        binding.mediaActionsBar.setVolumeState(volume, muted);
+
+        if (muted) {
+            binding.volumeMutedIndicator.setVisibility(View.VISIBLE);
+        } else {
+            binding.volumeMutedIndicator.setVisibility(View.GONE);
+        }
+        binding.volumeMutedIndicator.setHighlight(muted);
+    }
+
+    public void setRepeatShuffleState(String repeatMode, Boolean shuffled, Boolean partymode) {
+        binding.mediaActionsBar.setRepeatShuffleState(repeatMode, shuffled, partymode);
     }
 
     public CharSequence getTitle() {
-        return binding.nppTitle.getText();
+        return binding.title.getText();
     }
 
     public void setTitle(String title) {
-        binding.nppTitle.setText(UIUtils.applyMarkup(getContext(), title));
+        binding.title.setText(UIUtils.applyMarkup(getContext(), title));
     }
 
     public void setDetails(String details) {
-        binding.nppDetails.setText(details);
-    }
-
-    public void setNextPrevVisibility(int visibility) {
-        binding.nppNext.setVisibility(visibility);
-        binding.nppPrevious.setVisibility(visibility);
+        binding.details.setText(details);
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
     public void setSquarePoster(boolean square) {
         if (square) {
-            ViewGroup.LayoutParams layoutParams = binding.nppPoster.getLayoutParams();
+            ViewGroup.LayoutParams layoutParams = binding.poster.getLayoutParams();
             layoutParams.width = layoutParams.height;
-            binding.nppPoster.setLayoutParams(layoutParams);
+            binding.poster.setLayoutParams(layoutParams);
         }
     }
 
     public ImageView getPoster() {
-        return binding.nppPoster;
+        return binding.poster;
     }
-
-    private void setupButtonClickListeners() {
-        binding.nppPlay.setOnClickListener(handleButtonClickListener);
-        binding.nppPrevious.setOnClickListener(handleButtonClickListener);
-        binding.nppNext.setOnClickListener(handleButtonClickListener);
-        binding.nppVolumeMute.setOnClickListener(handleButtonClickListener);
-        binding.nppShuffle.setOnClickListener(handleButtonClickListener);
-        binding.nppRepeat.setOnClickListener(handleButtonClickListener);
-        binding.nppVolumeMutedIndicator.setOnClickListener(handleButtonClickListener);
-    }
-
-    private final OnClickListener handleButtonClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (onPanelButtonsClickListener == null)
-                return;
-
-            int viewId = view.getId();
-            if (viewId == R.id.npp_previous) {
-                onPanelButtonsClickListener.onPreviousClicked();
-            } else if (viewId == R.id.npp_next) {
-                onPanelButtonsClickListener.onNextClicked();
-            } else if (viewId == R.id.npp_play) {
-                onPanelButtonsClickListener.onPlayClicked();
-            } else if (viewId == R.id.npp_volume_mute) {
-                onPanelButtonsClickListener.onVolumeMuteClicked();
-            } else if (viewId == R.id.npp_repeat) {
-                onPanelButtonsClickListener.onRepeatClicked();
-            } else if (viewId == R.id.npp_shuffle) {
-                onPanelButtonsClickListener.onShuffleClicked();
-            } else if (viewId == R.id.npp_volume_muted_indicator) {
-                onPanelButtonsClickListener.onVolumeMutedIndicatorClicked();
-            }
-        }
-    };
 }

@@ -25,7 +25,6 @@ import android.transition.TransitionInflater;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
@@ -43,17 +42,12 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.databinding.ActivityGenericMediaBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.ApiMethod;
-import org.xbmc.kore.jsonrpc.method.Application;
-import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.service.MediaSessionService;
 import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
-import org.xbmc.kore.ui.widgets.NowPlayingPanel;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
@@ -61,8 +55,7 @@ import org.xbmc.kore.utils.Utils;
 
 public abstract class BaseMediaActivity extends BaseActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
-                   HostConnectionObserver.PlayerEventsObserver,
-                   NowPlayingPanel.OnPanelButtonsClickListener {
+                   HostConnectionObserver.PlayerEventsObserver {
     private static final String TAG = LogUtils.makeLogTag(BaseMediaActivity.class);
 
     private static final String NAVICON_ISARROW = "navstate";
@@ -74,7 +67,6 @@ public abstract class BaseMediaActivity extends BaseActivity
     private final SharedElementTransition sharedElementTransition = new SharedElementTransition();
 
     private boolean drawerIndicatorIsArrow;
-    private int currentActivePlayerId = -1;
 
     private HostManager hostManager;
     private HostConnectionObserver hostConnectionObserver;
@@ -84,12 +76,7 @@ public abstract class BaseMediaActivity extends BaseActivity
     protected abstract String getActionBarTitle();
     protected abstract Fragment createFragment();
 
-    /**
-     * Default callback for methods that don't return anything
-     */
-    private final ApiCallback<String> defaultStringActionCallback = ApiMethod.getDefaultActionCallback();
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
-    private final ApiCallback<Integer> defaultIntActionCallback = ApiMethod.getDefaultActionCallback();
 
     private final Runnable hidePanelRunnable = new Runnable() {
         @Override
@@ -148,6 +135,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
         sharedElementTransition.setupExitTransition(this, fragment);
         hostManager = HostManager.getInstance(this);
+        hostConnectionObserver = hostManager.getHostConnectionObserver();
     }
 
     @Override
@@ -171,11 +159,13 @@ public abstract class BaseMediaActivity extends BaseActivity
                                                .getBoolean(Settings.KEY_PREF_SHOW_NOW_PLAYING_PANEL,
                                                            Settings.DEFAULT_PREF_SHOW_NOW_PLAYING_PANEL);
 
-        if(showNowPlayingPanel) {
-            setupNowPlayingPanel();
+        if (showNowPlayingPanel) {
+            hostConnectionObserver.registerApplicationObserver(this);
+            hostConnectionObserver.registerPlayerObserver(this);
+            hostConnectionObserver.refreshWhatsPlaying();
+            binding.nowPlayingPanel.completeSetup(this, this.getSupportFragmentManager());
         } else {
-            //Hide it in case we were displaying the panel and user disabled showing
-            //the panel in Settings
+            //Hide it in case we were displaying the panel and user disabled showing the panel in Settings
             binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
 
@@ -184,15 +174,10 @@ public abstract class BaseMediaActivity extends BaseActivity
     @Override
     public void onPause() {
         super.onPause();
-        if(!showNowPlayingPanel)
-            return;
-
-        hostConnectionObserver = hostManager.getHostConnectionObserver();
-        if (hostConnectionObserver == null)
-            return;
-
-        hostConnectionObserver.unregisterApplicationObserver(this);
-        hostConnectionObserver.unregisterPlayerObserver(this);
+        if (showNowPlayingPanel) {
+            hostConnectionObserver.unregisterApplicationObserver(this);
+            hostConnectionObserver.unregisterPlayerObserver(this);
+        }
     }
 
     /**
@@ -261,23 +246,20 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void applicationOnVolumeChanged(int volume, boolean muted) {
-        binding.nowPlayingPanel.setVolume(volume, muted);
+        binding.nowPlayingPanel.setVolumeState(volume, muted);
     }
 
     @Override
     public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
-        if (notificationsData.property.shuffled != null)
-            binding.nowPlayingPanel.setShuffled(notificationsData.property.shuffled);
-
-        if (notificationsData.property.repeatMode != null )
-            binding.nowPlayingPanel.setRepeatMode(notificationsData.property.repeatMode);
+        binding.nowPlayingPanel.setRepeatShuffleState(notificationsData.property.repeatMode,
+                                                      notificationsData.property.shuffled,
+                                                      notificationsData.property.partymode);
     }
 
     @Override
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        currentActivePlayerId = getActivePlayerResult.playerid;
         updateNowPlayingPanel(getActivePlayerResult, getPropertiesResult, getItemResult);
         // Start the MediaSession service
         MediaSessionService.startIfNotRunning(this);
@@ -285,13 +267,11 @@ public abstract class BaseMediaActivity extends BaseActivity
 
     @Override
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult, PlayerType.PropertyValue getPropertiesResult, ListType.ItemsAll getItemResult) {
-        currentActivePlayerId = getActivePlayerResult.playerid;
         updateNowPlayingPanel(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     @Override
     public void playerOnStop() {
-        currentActivePlayerId = -1;
         // Delay hiding the panel to prevent hiding it when playing the next item in a playlist
         callbackHandler.removeCallbacks(hidePanelRunnable);
         callbackHandler.postDelayed(hidePanelRunnable, 1000);
@@ -316,105 +296,6 @@ public abstract class BaseMediaActivity extends BaseActivity
     @Override
     public void inputOnInputRequested(String title, String type, String value) {}
 
-    @Override
-    public void onPlayClicked() {
-        Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
-        action.execute(hostManager.getConnection(), defaultIntActionCallback, callbackHandler);
-    }
-
-    @Override
-    public void onPreviousClicked() {
-        Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
-        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-    }
-
-    @Override
-    public void onNextClicked() {
-        Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
-        action.execute(hostManager.getConnection(), defaultStringActionCallback, callbackHandler);
-    }
-
-    @Override
-    public void onVolumeMuteClicked() {
-        Application.SetMute action = new Application.SetMute();
-        action.execute(hostManager.getConnection(),
-                       new ApiCallback<Boolean>() {
-                           @Override
-                           public void onSuccess(Boolean result) {
-                               //We depend on the listener to correct the mute button state
-                           }
-
-                           @Override
-                           public void onError(int errorCode, String description) { }
-                       },
-                       callbackHandler);
-    }
-
-    @Override
-    public void onShuffleClicked() {
-        Player.SetShuffle action = new Player.SetShuffle(currentActivePlayerId);
-        action.execute(hostManager.getConnection(),
-                       new ApiCallback<String>() {
-                           @Override
-                           public void onSuccess(String result) {
-                               //We depend on the listener to correct the mute button state
-                           }
-
-                           @Override
-                           public void onError(int errorCode, String description) { }
-                       },
-                       callbackHandler);
-    }
-
-    @Override
-    public void onRepeatClicked() {
-        Player.SetRepeat action = new Player.SetRepeat(currentActivePlayerId, PlayerType.Repeat.CYCLE);
-        action.execute(hostManager.getConnection(),
-                       new ApiCallback<String>() {
-                           @Override
-                           public void onSuccess(String result) {
-                               //We depend on the listener to correct the mute button state
-                           }
-
-                           @Override
-                           public void onError(int errorCode, String description) { }
-                       },
-                       callbackHandler);
-    }
-
-    @Override
-    public void onVolumeMutedIndicatorClicked() {
-        Application.SetMute action = new Application.SetMute();
-        action.execute(hostManager.getConnection(),
-                       new ApiCallback<Boolean>() {
-                           @Override
-                           public void onSuccess(Boolean result) {
-                               //We depend on the listener to correct the mute button state
-                           }
-
-                           @Override
-                           public void onError(int errorCode, String description) { }
-                       },
-                       callbackHandler);
-    }
-
-    private void setupNowPlayingPanel() {
-        binding.nowPlayingPanel.setOnVolumeChangeListener(volume -> {
-            new Application.SetVolume(volume).execute(hostManager.getConnection(),
-                                                      defaultIntActionCallback,
-                                                      callbackHandler);
-        });
-        binding.nowPlayingPanel.setOnPanelButtonsClickListener(this);
-        hostConnectionObserver = hostManager.getHostConnectionObserver();
-        if (hostConnectionObserver == null)
-            return;
-
-        hostConnectionObserver.registerApplicationObserver(this);
-        hostConnectionObserver.registerPlayerObserver(this);
-
-        hostConnectionObserver.refreshWhatsPlaying();
-    }
-
     private void updateNowPlayingPanel(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                        PlayerType.PropertyValue getPropertiesResult,
                                        ListType.ItemsAll getItemResult) {
@@ -430,10 +311,7 @@ public abstract class BaseMediaActivity extends BaseActivity
             binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         }
 
-        binding.nowPlayingPanel.setPlaybackState(getActivePlayerResult.playerid, getPropertiesResult.speed,
-                                                 getPropertiesResult.time, getPropertiesResult.totaltime);
-        binding.nowPlayingPanel.setShuffled(getPropertiesResult.shuffled);
-        binding.nowPlayingPanel.setRepeatMode(getPropertiesResult.repeat);
+        binding.nowPlayingPanel.setPlaybackState(getActivePlayerResult, getPropertiesResult);
 
         switch (getItemResult.type) {
             case ListType.ItemsAll.TYPE_MOVIE:
@@ -482,13 +360,6 @@ public abstract class BaseMediaActivity extends BaseActivity
 
         if (details != null) {
             binding.nowPlayingPanel.setDetails(details);
-        }
-
-        if ((getItemResult.type.contentEquals(ListType.ItemsAll.TYPE_MUSIC_VIDEO)) ||
-            (getItemResult.type.contentEquals(ListType.ItemsAll.TYPE_SONG))) {
-            binding.nowPlayingPanel.setNextPrevVisibility(View.VISIBLE);
-        } else {
-            binding.nowPlayingPanel.setNextPrevVisibility(View.GONE);
         }
 
         Resources resources = getResources();

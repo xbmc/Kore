@@ -20,8 +20,7 @@ import org.xbmc.kore.utils.UIUtils;
  * This presents a row of buttons that allow for media control
  * The buttons are (in order) previous, rewind, play/pause, forward, next
  * This can be included in a layout, and on the corresponding activity/fragment call
- * {@link MediaPlaybackBar#setOnClickListener(OnClickListener)} to set a specific {@link OnClickListener} for the
- * buttons, or call {@link MediaPlaybackBar#setDefaultOnClickListener(Context)} to set a default click
+ * {@link MediaPlaybackBar#setDefaultOnClickListener(Context)} to set a default click
  * listener that just sends each command to the Kodi host without further processing.
  * During playback, call {@link MediaPlaybackBar#setPlaybackState(int, int)} to keep this view updated
  */

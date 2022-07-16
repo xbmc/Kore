@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.MediaActionsBarBinding;
@@ -37,7 +37,7 @@ import java.util.List;
  * mute, sound level control, repeat, shuffle, audiostreams and subtitles
  * This can be included in a layout, and on the corresponding activity/fragment call
  * {@link MediaActionsBar#setOnClickListener(OnClickListener)} to set a specific {@link OnClickListener} for the
- * buttons, or call {@link MediaActionsBar#setDefaultOnClickListener(Context, Fragment)} to set a default click
+ * buttons, or call {@link MediaActionsBar#setDefaultOnClickListener(Context, FragmentManager)} to set a default click
  * listener that just sends each command to the Kodi host without further processing. Note that the default action
  * for the "audiostream" and "subtitles" is to show a UI Dialog with the available audiostreams or subtitles, so
  * this class needs a reference to the calling Fragment to show that Dialog. It also needs to be kept updated
@@ -148,9 +148,9 @@ public class MediaActionsBar extends LinearLayout {
      * for the audiostreams/subtitles options, shows the user a Dialog with the available audiostreams/subtitles,
      * and reacts according to its selection
      * @param context Context
-     * @param enclosingFragment Enclosing fragment needed to show a Dialog
+     * @param fragmentManager FragmentManager needed to show a Dialog
      */
-    public void setDefaultOnClickListener(final Context context, final Fragment enclosingFragment) {
+    public void setDefaultOnClickListener(final Context context, final FragmentManager fragmentManager) {
         final HostConnectionObserver hostConnectionObserver = HostManager.getInstance(context).getHostConnectionObserver();
         final Handler callbackHandler = new Handler(Looper.getMainLooper());
         // Callback that forces a refresh of what's playing
@@ -306,7 +306,7 @@ public class MediaActionsBar extends LinearLayout {
                                                 SELECT_AUDIOSTREAM,
                                                 getResources().getString(R.string.audiostreams),
                                                 audiostreams, -1)
-                                   .show(enclosingFragment.getChildFragmentManager(), null);
+                                   .show(fragmentManager, null);
             }
 
             @Override
@@ -330,7 +330,7 @@ public class MediaActionsBar extends LinearLayout {
                                                 SELECT_SUBTITLES,
                                                 getResources().getString(R.string.subtitles),
                                                 subtitles, -1)
-                                   .show(enclosingFragment.getParentFragmentManager(), null);
+                                   .show(fragmentManager, null);
             }
         };
     }

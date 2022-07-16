@@ -27,13 +27,13 @@
                   android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/npp_collapsed_view"
+            android:id="@+id/collapsed_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="?attr/colorPrimary">
 
-            <ImageView android:id="@+id/npp_poster"
+            <ImageView android:id="@+id/poster"
                        android:layout_width="@dimen/now_playing_panel_art_width"
                        android:layout_height="@dimen/now_playing_panel_height"
                        android:layout_weight="0"
@@ -47,7 +47,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1">
                 <TextView
-                    android:id="@+id/npp_title"
+                    android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/small_padding"
@@ -59,7 +59,7 @@
                     android:gravity="center_vertical"/>
 
                 <TextView
-                    android:id="@+id/npp_details"
+                    android:id="@+id/details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/small_padding"
@@ -71,7 +71,7 @@
                     android:gravity="center_vertical"/>
             </LinearLayout>
             <org.xbmc.kore.ui.widgets.HighlightButton
-                android:id="@+id/npp_volume_muted_indicator"
+                android:id="@+id/volume_muted_indicator"
                 android:layout_width="@dimen/default_icon_size"
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
@@ -81,17 +81,7 @@
                 android:visibility="gone"/>
 
             <ImageButton
-                android:id="@+id/npp_previous"
-                android:layout_width="@dimen/default_icon_size"
-                android:layout_height="@dimen/default_icon_size"
-                android:layout_gravity="center_vertical"
-                style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconPrevious"
-                android:contentDescription="@string/previous"
-                app:tint="?attr/buttonColorOverPrimary" />
-
-            <ImageButton
-                android:id="@+id/npp_play"
+                android:id="@+id/play"
                 android:layout_width="@dimen/default_icon_size"
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
@@ -99,19 +89,11 @@
                 android:src="?attr/iconPlay"
                 android:contentDescription="@string/play"
                 app:tint="?attr/buttonColorOverPrimary" />
-
-            <ImageButton
-                android:id="@+id/npp_next"
-                android:layout_width="@dimen/default_icon_size"
-                android:layout_height="@dimen/default_icon_size"
-                android:layout_gravity="center_vertical"
-                style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconNext"
-                android:contentDescription="@string/next"
-                app:tint="?attr/buttonColorOverPrimary" />
         </LinearLayout>
+
+        <!-- Progress bar -->
         <org.xbmc.kore.ui.widgets.MediaProgressIndicator
-            android:id="@+id/npp_progress_indicator"
+            android:id="@+id/progress_info"
             android:layout_width="match_parent"
             android:layout_height="@dimen/buttonbar_height"
             android:paddingRight="@dimen/small_padding"
@@ -119,45 +101,23 @@
             android:orientation="horizontal"
             android:background="?attr/contentBackgroundColor"
             style="@style/TextAppearance.Media.Progress"/>
-        <LinearLayout
+
+        <!-- Media playback control buttons -->
+        <org.xbmc.kore.ui.widgets.MediaPlaybackBar
+            android:id="@+id/media_playback_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/buttonbar_height"
             android:orientation="horizontal"
             style="@style/ButtonBar"
-            android:background="?attr/contentBackgroundColor">
+            android:background="?attr/contentBackgroundColor" />
 
-            <org.xbmc.kore.ui.widgets.HighlightButton
-                android:id="@+id/npp_volume_mute"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconVolumeMute"
-                android:contentDescription="@string/volume_mute"/>
-            <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
-                android:id="@+id/npp_volume_level_indicator"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical">
-            </org.xbmc.kore.ui.widgets.VolumeLevelIndicator>
-
-            <org.xbmc.kore.ui.widgets.RepeatModeButton
-                android:id="@+id/npp_repeat"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconRepeat"
-                android:contentDescription="@string/repeat"/>
-            <org.xbmc.kore.ui.widgets.HighlightButton
-                android:id="@+id/npp_shuffle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/Widget.Button.Borderless"
-                android:src="?attr/iconShuffle"
-                android:contentDescription="@string/shuffle"/>
-        </LinearLayout>
+        <!-- Media action buttons -->
+        <org.xbmc.kore.ui.widgets.MediaActionsBar
+            android:id="@+id/media_actions_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/buttonbar_height"
+            android:orientation="horizontal"
+            style="@style/ButtonBar"
+            android:background="?attr/contentBackgroundColor" />
     </LinearLayout>
 </merge>
