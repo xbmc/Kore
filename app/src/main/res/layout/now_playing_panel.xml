@@ -108,8 +108,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/buttonbar_height"
             android:orientation="horizontal"
+            android:background="?attr/contentBackgroundColor"
             style="@style/ButtonBar"
-            android:background="?attr/contentBackgroundColor" />
+            app:view_mode="full" />
 
         <!-- Media action buttons -->
         <org.xbmc.kore.ui.widgets.MediaActionsBar

@@ -336,7 +336,7 @@ public class NowPlayingFragment extends Fragment
                                               speed,
                                               getPropertiesResult.time.toSeconds(),
                                               getPropertiesResult.totaltime.toSeconds());
-        binding.mediaPlaybackBar.setPlaybackState(getActivePlayerResult.playerid, speed);
+        binding.mediaPlaybackBar.setPlaybackState(getActivePlayerResult, speed);
         binding.mediaActionsBar.setPlaybackState(getActivePlayerResult,
                                                  getPropertiesResult);
 

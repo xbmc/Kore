@@ -149,5 +149,13 @@
 
     <attr name="dimmedNeutralColor" format="reference|color" />
 
+    <declare-styleable name="MediaPlaybackBar">
+        <attr name="view_mode" format="enum">
+            <enum name="full" value="0" />
+            <enum name="no_stop_button" value="1" />
+            <enum name="single_movement_buttons" value="2" />
+        </attr>
+    </declare-styleable>
+
 </resources>
 
