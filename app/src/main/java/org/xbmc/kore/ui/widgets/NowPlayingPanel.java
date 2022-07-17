@@ -18,8 +18,6 @@ package org.xbmc.kore.ui.widgets;
 
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +31,6 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import org.xbmc.kore.databinding.NowPlayingPanelBinding;
 import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
@@ -102,7 +99,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
                                               getPropertiesResult.speed,
                                               getPropertiesResult.time.toSeconds(),
                                               getPropertiesResult.totaltime.toSeconds());
-        binding.mediaPlaybackBar.setPlaybackState(getActivePlayerResult.playerid, getPropertiesResult.speed);
+        binding.mediaPlaybackBar.setPlaybackState(getActivePlayerResult, getPropertiesResult.speed);
         binding.mediaActionsBar.setPlaybackState(getActivePlayerResult,
                                                  getPropertiesResult);
         UIUtils.setPlayPauseButtonIcon(getContext(), binding.play, getPropertiesResult.speed == 1);

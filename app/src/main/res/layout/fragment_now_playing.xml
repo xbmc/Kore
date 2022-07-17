@@ -16,8 +16,9 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include
         android:id="@+id/include_info_panel"
@@ -93,8 +94,9 @@
                 android:layout_height="@dimen/buttonbar_height"
                 android:layout_below="@id/progress_info"
                 android:orientation="horizontal"
+                android:background="?attr/contentBackgroundColor"
                 style="@style/ButtonBar"
-                android:background="?attr/contentBackgroundColor" />
+                app:view_mode="full" />
 
             <!-- Media action buttons -->
             <org.xbmc.kore.ui.widgets.MediaActionsBar
