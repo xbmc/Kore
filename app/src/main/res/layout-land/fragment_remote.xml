@@ -22,7 +22,7 @@
 
     <!-- Right button bar -->
     <LinearLayout
-        android:id="@+id/button_bar"
+        android:id="@+id/sections_button_bar"
         android:layout_width="@dimen/buttonbar_height"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -132,7 +132,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toStartOf="@+id/button_bar">
+        android:layout_toStartOf="@+id/sections_button_bar">
 
         <include
             android:id="@+id/include_info_panel"
@@ -170,49 +170,43 @@
                 android:layout_alignStart="@id/title"
                 style="@style/TextAppearance.Media.Remote.Details"
                 android:background="?attr/contentBackgroundColor"/>
-            <LinearLayout
-                android:id="@+id/media_button_bar"
+
+            <!-- Media playback control buttons -->
+            <org.xbmc.kore.ui.widgets.MediaPlaybackBar
+                android:id="@+id/media_playback_bar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/default_icon_size"
+                android:layout_height="@dimen/buttonbar_height"
                 android:layout_below="@id/details"
                 android:layout_alignStart="@id/details"
                 android:layout_alignBottom="@+id/art"
                 android:orientation="horizontal"
                 style="@style/ButtonBar"
-                android:background="?attr/contentBackgroundColor">
-                <ImageButton
-                    android:id="@+id/rewind"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconRewind"
-                    android:contentDescription="@string/rewind"/>
-                <ImageButton
-                    android:id="@+id/play"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconPlay"
-                    android:contentDescription="@string/play"/>
-                <ImageButton
-                    android:id="@+id/stop"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconStop"
-                    android:contentDescription="@string/stop"/>
-                <ImageButton
-                    android:id="@+id/fast_forward"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/Widget.Button.Borderless"
-                    android:src="?attr/iconFastForward"
-                    android:contentDescription="@string/fast_forward"/>
-            </LinearLayout>
+                android:background="?attr/contentBackgroundColor" />
+
+            <!-- Progress bar -->
+            <org.xbmc.kore.ui.widgets.MediaProgressIndicator
+                android:id="@+id/progress_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/art"
+                android:layout_alignStart="@id/art"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingRight="@dimen/small_padding"
+                android:paddingLeft="@dimen/small_padding"
+                android:orientation="horizontal"
+                android:background="?attr/contentBackgroundColor"/>
+
+            <!-- Media action buttons -->
+            <org.xbmc.kore.ui.widgets.MediaActionsBar
+                android:id="@+id/media_actions_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonbar_height"
+                android:layout_below="@id/progress_info"
+                android:layout_alignStart="@id/art"
+                android:orientation="horizontal"
+                style="@style/ButtonBar"
+                android:background="?attr/contentBackgroundColor" />
+
         </RelativeLayout>
 
         <org.xbmc.kore.ui.widgets.ControlPad

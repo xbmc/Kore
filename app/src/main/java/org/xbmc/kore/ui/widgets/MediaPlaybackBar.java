@@ -33,6 +33,7 @@ public class MediaPlaybackBar extends LinearLayout {
             VIEW_MODE_NO_STOP_BUTTON = 1,
             VIEW_MODE_SINGLE_MOVEMENT_BUTTONS = 2;
 
+    HostConnection connection;
     MediaPlaybackBarBinding binding;
     int activePlayerId = -1;
     String activePlayerType = PlayerType.GetActivePlayersReturnType.VIDEO;
@@ -48,8 +49,6 @@ public class MediaPlaybackBar extends LinearLayout {
 
     public MediaPlaybackBar(Context context, AttributeSet attributeSet, int defStyle) {
         super(context, attributeSet, defStyle);
-        initializeView(context);
-
         if (isInEditMode()) return;
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.MediaPlaybackBar, 0, 0);
@@ -58,6 +57,7 @@ public class MediaPlaybackBar extends LinearLayout {
         } finally {
             a.recycle();
         }
+        initializeView(context);
         updateViewMode();
     }
 
@@ -65,7 +65,7 @@ public class MediaPlaybackBar extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         binding = MediaPlaybackBarBinding.inflate(inflater, this);
 
-        final HostConnection connection = HostManager.getInstance(context).getConnection();
+        connection = HostManager.getInstance(context).getConnection();
         binding.play.setOnClickListener(v -> {
             new Player.PlayPause(activePlayerId)
                     .execute(connection, null, null);

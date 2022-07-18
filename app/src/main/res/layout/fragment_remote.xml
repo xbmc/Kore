@@ -24,7 +24,7 @@
     <FrameLayout
         android:id="@+id/top_panel"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/remote_top_panel_height"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true">
 
         <include
@@ -47,53 +47,6 @@
                 android:contentDescription="@string/poster"
                 android:scaleType="centerCrop"/>
 
-            <LinearLayout
-                android:id="@+id/media_button_bar"
-                style="@style/ButtonBar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/default_icon_size"
-                android:layout_alignBottom="@id/art"
-                android:layout_toEndOf="@id/art"
-                android:background="?attr/contentBackgroundColor"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/rewind"
-                    style="@style/Widget.Button.Borderless"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/rewind"
-                    android:src="?attr/iconRewind"/>
-
-                <ImageButton
-                    android:id="@+id/play"
-                    style="@style/Widget.Button.Borderless"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/play"
-                    android:src="?attr/iconPlay"/>
-
-                <ImageButton
-                    android:id="@+id/stop"
-                    style="@style/Widget.Button.Borderless"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/stop"
-                    android:src="?attr/iconStop"/>
-
-                <ImageButton
-                    android:id="@+id/fast_forward"
-                    style="@style/Widget.Button.Borderless"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/fast_forward"
-                    android:src="?attr/iconFastForward"/>
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.Media.Remote.Title"
@@ -108,16 +61,52 @@
                 style="@style/TextAppearance.Media.Remote.Details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/media_button_bar"
                 android:layout_below="@id/title"
                 android:layout_toEndOf="@id/art"
+                android:layout_above="@id/media_playback_bar"
                 android:background="?attr/contentBackgroundColor"/>
+
+            <!-- Media playback control buttons -->
+            <org.xbmc.kore.ui.widgets.MediaPlaybackBar
+                android:id="@+id/media_playback_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonbar_height"
+                android:layout_alignBottom="@id/art"
+                android:layout_toEndOf="@id/art"
+                android:orientation="horizontal"
+                style="@style/ButtonBar"
+                android:background="?attr/contentBackgroundColor"
+                app:view_mode="single_movement_buttons" />
+
+            <!-- Progress bar -->
+            <org.xbmc.kore.ui.widgets.MediaProgressIndicator
+                android:id="@+id/progress_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/art"
+                android:layout_alignStart="@id/art"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingRight="@dimen/small_padding"
+                android:paddingLeft="@dimen/small_padding"
+                android:orientation="horizontal"
+                android:background="?attr/contentBackgroundColor"/>
+
+            <!-- Media action buttons -->
+            <org.xbmc.kore.ui.widgets.MediaActionsBar
+                android:id="@+id/media_actions_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonbar_height"
+                android:layout_below="@id/progress_info"
+                android:layout_alignStart="@id/art"
+                android:orientation="horizontal"
+                style="@style/ButtonBar"
+                android:background="?attr/contentBackgroundColor" />
         </RelativeLayout>
     </FrameLayout>
 
     <!-- Bottom button bar -->
     <LinearLayout
-        android:id="@+id/button_bar"
+        android:id="@+id/sections_button_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/buttonbar_height"
         android:layout_alignParentBottom="true"
@@ -226,8 +215,9 @@
 
     <FrameLayout
         style="@style/ControlPad.FrameLayout"
-        android:layout_above="@id/button_bar"
+        android:layout_above="@id/sections_button_bar"
         android:layout_below="@id/top_panel"
+        android:layout_marginTop="@dimen/default_padding"
         android:layout_marginBottom="@dimen/default_padding">
         <org.xbmc.kore.ui.widgets.ControlPad
             android:id="@+id/remote"
