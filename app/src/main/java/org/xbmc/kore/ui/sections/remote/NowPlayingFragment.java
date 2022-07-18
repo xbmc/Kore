@@ -35,6 +35,7 @@ import org.xbmc.kore.databinding.FragmentNowPlayingBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
+import org.xbmc.kore.jsonrpc.notification.Player;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
@@ -50,7 +51,6 @@ import java.util.ArrayList;
  */
 public class NowPlayingFragment extends Fragment
         implements HostConnectionObserver.PlayerEventsObserver,
-                   HostConnectionObserver.ApplicationEventsObserver,
                    ViewTreeObserver.OnScrollChangedListener {
     private static final String TAG = LogUtils.makeLogTag(NowPlayingFragment.class);
 
@@ -101,7 +101,6 @@ public class NowPlayingFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentNowPlayingBinding.inflate(inflater, container, false);
-        binding.mediaActionsBar.completeSetup(requireContext(), this.getParentFragmentManager());
         return binding.getRoot();
     }
 
@@ -122,7 +121,6 @@ public class NowPlayingFragment extends Fragment
     public void onResume() {
         super.onResume();
         hostConnectionObserver.registerPlayerObserver(this);
-        hostConnectionObserver.registerApplicationObserver(this);
     }
 
     @Override
@@ -130,7 +128,6 @@ public class NowPlayingFragment extends Fragment
         super.onPause();
         stopNowPlayingInfo();
         hostConnectionObserver.unregisterPlayerObserver(this);
-        hostConnectionObserver.unregisterApplicationObserver(this);
     }
 
     @Override
@@ -148,10 +145,7 @@ public class NowPlayingFragment extends Fragment
     }
 
     @Override
-    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
-        binding.mediaActionsBar.setRepeatShuffleState(notificationsData.property.repeatMode,
-                                                      notificationsData.property.shuffled,
-                                                      notificationsData.property.partymode);
+    public void playerOnPropertyChanged(Player.NotificationsData notificationsData) {
     }
 
     /**
@@ -170,19 +164,17 @@ public class NowPlayingFragment extends Fragment
     }
 
     public void playerOnStop() {
-        HostInfo hostInfo = hostManager.getHostInfo();
-
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
+        HostInfo hostInfo = hostManager.getHostInfo();
         binding.includeInfoPanel.infoTitle.setText(R.string.nothing_playing);
         binding.includeInfoPanel.infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
     }
 
     public void playerOnConnectionError(int errorCode, String description) {
-        HostInfo hostInfo = hostManager.getHostInfo();
-
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
+        HostInfo hostInfo = hostManager.getHostInfo();
         if (hostInfo != null) {
             binding.includeInfoPanel.infoTitle.setText(R.string.connecting);
             // TODO: check error code
@@ -207,11 +199,6 @@ public class NowPlayingFragment extends Fragment
 
     public void systemOnQuit() {
         playerNoResultsYet();
-    }
-
-    @Override
-    public void applicationOnVolumeChanged(int volume, boolean muted) {
-        binding.mediaActionsBar.setVolumeState(volume, muted);
     }
 
     // Ignore this
@@ -337,8 +324,6 @@ public class NowPlayingFragment extends Fragment
                                               getPropertiesResult.time.toSeconds(),
                                               getPropertiesResult.totaltime.toSeconds());
         binding.mediaPlaybackBar.setPlaybackState(getActivePlayerResult, speed);
-        binding.mediaActionsBar.setPlaybackState(getActivePlayerResult,
-                                                 getPropertiesResult);
 
         if (!TextUtils.isEmpty(year) || !TextUtils.isEmpty(genreSeason)) {
             binding.year.setVisibility(View.VISIBLE);

@@ -15,11 +15,10 @@
  */
 package org.xbmc.kore.ui.sections.remote;
 
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
-
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +27,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -43,8 +43,6 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
 import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.method.Input;
-import org.xbmc.kore.jsonrpc.method.Player;
-import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.widgets.ControlPad;
@@ -61,6 +59,7 @@ import java.util.Set;
  */
 public class RemoteFragment extends Fragment
         implements HostConnectionObserver.PlayerEventsObserver,
+                   HostConnectionObserver.ApplicationEventsObserver,
                    ControlPad.OnPadButtonsListener {
     private static final String TAG = LogUtils.makeLogTag(RemoteFragment.class);
 
@@ -83,16 +82,6 @@ public class RemoteFragment extends Fragment
      * Default callback for methods that don't return anything
      */
     private final ApiCallback<String> defaultActionCallback = ApiMethod.getDefaultActionCallback();
-
-    /**
-     * The current active player id
-     */
-    private int currentActivePlayerId = -1;
-
-    /**
-     * The current item type
-     */
-    private String currentNowPlayingItemType = null;
 
     private final Packet leftButtonPacket =
             new PacketBUTTON(ButtonCodes.MAP_REMOTE, ButtonCodes.REMOTE_LEFT, false, true,
@@ -142,6 +131,7 @@ public class RemoteFragment extends Fragment
         ViewGroup root = binding.getRoot();
 
         binding.remote.setOnPadButtonsListener(this);
+        binding.mediaActionsBar.completeSetup(requireContext(), this.getParentFragmentManager());
 
         HostInfo hostInfo = hostManager.getHostInfo();
 
@@ -160,7 +150,7 @@ public class RemoteFragment extends Fragment
         // Set up window activation buttons
         // Keep the order coherent between the default values array, the buttons and actions array
         Set<String> shownItems = PreferenceManager
-                .getDefaultSharedPreferences(getActivity())
+                .getDefaultSharedPreferences(requireContext())
                 .getStringSet(Settings.getRemoteBarItemsPrefKey(hostInfo.getId()),
                         new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.default_values_remote_bar_items))));
         ImageButton[] buttons = {
@@ -190,10 +180,6 @@ public class RemoteFragment extends Fragment
 
         binding.title.setClickable(true);
         binding.title.setOnClickListener(v -> v.setSelected(!v.isSelected()));
-        binding.fastForward.setOnClickListener(this::onFastForwardClicked);
-        binding.rewind.setOnClickListener(this::onRewindClicked);
-        binding.play.setOnClickListener(this::onPlayClicked);
-        binding.stop.setOnClickListener(this::onStopClicked);
 
         return root;
     }
@@ -202,6 +188,7 @@ public class RemoteFragment extends Fragment
     public void onResume() {
         super.onResume();
         hostConnectionObserver.registerPlayerObserver(this);
+        hostConnectionObserver.registerApplicationObserver(this);
         if (eventServerConnection == null)
             eventServerConnection = createEventServerConnection();
     }
@@ -210,6 +197,7 @@ public class RemoteFragment extends Fragment
     public void onPause() {
         super.onPause();
         hostConnectionObserver.unregisterPlayerObserver(this);
+        hostConnectionObserver.unregisterApplicationObserver(this);
         if (eventServerConnection != null) {
             eventServerConnection.quit();
             eventServerConnection = null;
@@ -242,56 +230,11 @@ public class RemoteFragment extends Fragment
                 }, callbackHandler);
     }
 
-    /**
-     * Calllbacks for media control buttons
-     */
-    public void onFastForwardClicked(View v) {
-        if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
-            Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.NEXT);
-            action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-        } else {
-            Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.INCREMENT);
-            action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
-        }
-    }
-
-    public void onRewindClicked(View v) {
-        if (ListType.ItemsAll.TYPE_SONG.equals(currentNowPlayingItemType)) {
-            Player.GoTo action = new Player.GoTo(currentActivePlayerId, Player.GoTo.PREVIOUS);
-            action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-        } else {
-            Player.SetSpeed action = new Player.SetSpeed(currentActivePlayerId, GlobalType.IncrementDecrement.DECREMENT);
-            action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
-        }
-    }
-
-    public void onPlayClicked(View v) {
-        Player.PlayPause action = new Player.PlayPause(currentActivePlayerId);
-        action.execute(hostManager.getConnection(), defaultPlaySpeedChangedCallback, callbackHandler);
-    }
-
-    public void onStopClicked(View v) {
-        Player.Stop action = new Player.Stop(currentActivePlayerId);
-        action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler);
-    }
-
-    /**
-     * Callback for methods that change the play speed
-     */
-    private final ApiCallback<Integer> defaultPlaySpeedChangedCallback = new ApiCallback<Integer>() {
-        @Override
-        public void onSuccess(Integer result) {
-            if (!isAdded()) return;
-            UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, result == 1);
-        }
-
-        @Override
-        public void onError(int errorCode, String description) { }
-    };
-
     @Override
     public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
-
+        binding.mediaActionsBar.setRepeatShuffleState(notificationsData.property.repeatMode,
+                                                      notificationsData.property.shuffled,
+                                                      notificationsData.property.partymode);
     }
 
     /**
@@ -300,35 +243,27 @@ public class RemoteFragment extends Fragment
     public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        setNowPlayingInfo(getItemResult, getPropertiesResult);
-        currentActivePlayerId = getActivePlayerResult.playerid;
-        currentNowPlayingItemType = getItemResult.type;
-        // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, getPropertiesResult.speed == 1);
+        setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
-        setNowPlayingInfo(getItemResult, getPropertiesResult);
-        currentActivePlayerId = getActivePlayerResult.playerid;
-        currentNowPlayingItemType = getItemResult.type;
-        // Switch icon
-        UIUtils.setPlayPauseButtonIcon(getActivity(), binding.play, getPropertiesResult.speed == 1);
+        setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void playerOnStop() {
+        stopNowPlayingInfo();
+        switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
-
-        switchToPanel(R.id.info_panel, true);
         binding.includeInfoPanel.infoTitle.setText(R.string.nothing_playing);
         binding.includeInfoPanel.infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
     }
 
     public void playerOnConnectionError(int errorCode, String description) {
+        stopNowPlayingInfo();
+        switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
-
-        switchToPanel(R.id.info_panel, true);
         if (hostInfo != null) {
             binding.includeInfoPanel.infoTitle.setText(R.string.connecting);
             // TODO: check error code
@@ -341,7 +276,7 @@ public class RemoteFragment extends Fragment
 
     public void playerNoResultsYet() {
         // Initialize info panel
-        switchToPanel(R.id.info_panel, true);
+        switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
         if (hostInfo != null) {
             binding.includeInfoPanel.infoTitle.setText(R.string.connecting);
@@ -355,114 +290,115 @@ public class RemoteFragment extends Fragment
         playerNoResultsYet();
     }
 
+    @Override
+    public void applicationOnVolumeChanged(int volume, boolean muted) {
+        binding.mediaActionsBar.setVolumeState(volume, muted);
+    }
+
+
     // Ignore this
     public void inputOnInputRequested(String title, String type, String value) {}
     public void observerOnStopObserving() {}
 
     /**
      * Sets whats playing information
-     * @param nowPlaying Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
+     * @param getItemResult Return from method {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
      */
-    private void setNowPlayingInfo(ListType.ItemsAll nowPlaying,
-                                   PlayerType.PropertyValue properties) {
+    private void setNowPlayingInfo(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+                                   PlayerType.PropertyValue getPropertiesResult,
+                                   ListType.ItemsAll getItemResult) {
         String title, underTitle, thumbnailUrl;
-        int currentRewindIcon, currentFastForwardIcon;
 
-        switch (nowPlaying.type) {
+        switch (getItemResult.type) {
             case ListType.ItemsAll.TYPE_MOVIE:
-                switchToPanel(R.id.media_panel, true);
+                switchToPanel(R.id.media_panel);
 
-                title = nowPlaying.title;
-                underTitle = nowPlaying.tagline;
-                thumbnailUrl = nowPlaying.art.poster;
-                currentFastForwardIcon = fastForwardIcon;
-                currentRewindIcon = rewindIcon;
+                title = getItemResult.title;
+                underTitle = getItemResult.tagline;
+                thumbnailUrl = getItemResult.art.poster;
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
-                switchToPanel(R.id.media_panel, true);
+                switchToPanel(R.id.media_panel);
 
-                title = nowPlaying.title;
-                String season = String.format(getString(R.string.season_episode_abbrev), nowPlaying.season, nowPlaying.episode);
-                underTitle = String.format("%s | %s", nowPlaying.showtitle, season);
-                thumbnailUrl = nowPlaying.art.poster;
-                currentFastForwardIcon = fastForwardIcon;
-                currentRewindIcon = rewindIcon;
+                title = getItemResult.title;
+                String season = String.format(getString(R.string.season_episode_abbrev), getItemResult.season, getItemResult.episode);
+                underTitle = String.format("%s | %s", getItemResult.showtitle, season);
+                thumbnailUrl = getItemResult.art.poster;
                 break;
             case ListType.ItemsAll.TYPE_SONG:
-                switchToPanel(R.id.media_panel, true);
+                switchToPanel(R.id.media_panel);
 
-                title = nowPlaying.title;
-                underTitle = nowPlaying.displayartist + " | " + nowPlaying.album;
-                thumbnailUrl = nowPlaying.thumbnail;
-                currentFastForwardIcon = skipNextIcon;
-                currentRewindIcon = skipPreviousIcon;
+                title = getItemResult.title;
+                underTitle = getItemResult.displayartist + " | " + getItemResult.album;
+                thumbnailUrl = getItemResult.thumbnail;
                 break;
             case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
-                switchToPanel(R.id.media_panel, true);
+                switchToPanel(R.id.media_panel);
 
-                title = nowPlaying.title;
-                underTitle = Utils.listStringConcat(nowPlaying.artist, ", ") + " | " + nowPlaying.album;
-                thumbnailUrl = nowPlaying.thumbnail;
-                currentFastForwardIcon = fastForwardIcon;
-                currentRewindIcon = rewindIcon;
+                title = getItemResult.title;
+                underTitle = Utils.listStringConcat(getItemResult.artist, ", ") + " | " + getItemResult.album;
+                thumbnailUrl = getItemResult.thumbnail;
                 break;
             case ListType.ItemsAll.TYPE_CHANNEL:
-                switchToPanel(R.id.media_panel, true);
+                switchToPanel(R.id.media_panel);
 
-                title = nowPlaying.label;
-                underTitle = nowPlaying.title;
-                thumbnailUrl = nowPlaying.thumbnail;
-                currentFastForwardIcon = fastForwardIcon;
-                currentRewindIcon = rewindIcon;
+                title = getItemResult.label;
+                underTitle = getItemResult.title;
+                thumbnailUrl = getItemResult.thumbnail;
                 break;
             default:
-                switchToPanel(R.id.media_panel, true);
-                title = nowPlaying.label;
+                switchToPanel(R.id.media_panel);
+                title = getItemResult.label;
                 underTitle = "";
-                thumbnailUrl = nowPlaying.thumbnail;
-                currentFastForwardIcon = fastForwardIcon;
-                currentRewindIcon = rewindIcon;
+                thumbnailUrl = getItemResult.thumbnail;
                 break;
         }
 
         binding.title.setText(UIUtils.applyMarkup(getContext(), title));
         binding.details.setText(underTitle);
 
-        binding.fastForward.setImageResource(currentFastForwardIcon);
-        binding.rewind.setImageResource(currentRewindIcon);
-//        // If not video, change aspect ration of poster to a square
-//        boolean isVideo = (nowPlaying.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
-//                (nowPlaying.type.equals(ListType.ItemsAll.TYPE_EPISODE));
-//        if (!isVideo) {
-//            ViewGroup.LayoutParams layoutParams = thumbnail.getLayoutParams();
-//            layoutParams.width = layoutParams.height;
-//            thumbnail.setLayoutParams(layoutParams);
-//        }
+        // Check if this is still necessary for PVR playback
+        int speed = getItemResult.type.equals(ListType.ItemsAll.TYPE_CHANNEL)? 1 : getPropertiesResult.speed;
+        binding.progressInfo.setPlaybackState(getActivePlayerResult.playerid,
+                                              speed,
+                                              getPropertiesResult.time.toSeconds(),
+                                              getPropertiesResult.totaltime.toSeconds());
+        binding.mediaPlaybackBar.setPlaybackState(getActivePlayerResult, speed);
+        binding.mediaActionsBar.setPlaybackState(getActivePlayerResult,
+                                                 getPropertiesResult);
 
         UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                 thumbnailUrl, title,
                 binding.art, binding.art.getWidth(), binding.art.getHeight());
+
+        // For some smaller screens their height isn't enough to display all controls. Hide the superfluous
+        // bottom button bar during playback if that's the case
+        Configuration config = getResources().getConfiguration();
+        int vis = (config.orientation == Configuration.ORIENTATION_PORTRAIT && config.screenHeightDp <= 600) ?
+                  View.GONE : View.VISIBLE;
+        binding.sectionsButtonBar.setVisibility(vis);
+    }
+
+    /**
+     * Cleans up anything left when stop playing
+     */
+    private void stopNowPlayingInfo() {
+        // Just stop the seek bar handler callbacks
+        binding.progressInfo.stopUpdating();
+        binding.sectionsButtonBar.setVisibility(View.VISIBLE);
     }
 
     /**
      * Switches the info panel shown (they are exclusive)
      * @param panelResId The panel to show
      */
-    private void switchToPanel(int panelResId, boolean showRemote) {
+    private void switchToPanel(int panelResId) {
         if (panelResId == R.id.info_panel) {
             binding.mediaPanel.setVisibility(View.GONE);
             binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
         } else if (panelResId == R.id.media_panel) {
             binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
             binding.mediaPanel.setVisibility(View.VISIBLE);
-        }
-
-        if (showRemote) {
-            binding.remote.setVisibility(View.VISIBLE);
-            binding.buttonBar.setVisibility(View.VISIBLE);
-        } else {
-            binding.remote.setVisibility(View.GONE);
-            binding.buttonBar.setVisibility(View.GONE);
         }
     }
 

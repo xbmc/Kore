@@ -98,21 +98,11 @@
                 style="@style/ButtonBar"
                 app:view_mode="full" />
 
-            <!-- Media action buttons -->
-            <org.xbmc.kore.ui.widgets.MediaActionsBar
-                android:id="@+id/media_actions_bar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/buttonbar_height"
-                android:layout_below="@id/media_playback_bar"
-                android:orientation="horizontal"
-                style="@style/ButtonBar"
-                android:background="?attr/contentBackgroundColor" />
-
             <RelativeLayout
                 android:id="@+id/media_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/media_actions_bar"
+                android:layout_below="@id/media_playback_bar"
                 android:paddingTop="@dimen/default_padding"
                 android:paddingBottom="@dimen/default_padding"
                 android:paddingLeft="@dimen/default_padding"

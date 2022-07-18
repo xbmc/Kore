@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="remote_icon_size">84dp</dimen>
-    <dimen name="remote_size">252dp</dimen>
+    <dimen name="remote_size">264dp</dimen>
 </resources>

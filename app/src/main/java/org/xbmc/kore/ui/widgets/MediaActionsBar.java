@@ -35,13 +35,14 @@ import java.util.List;
 /**
  * This presents a row of buttons that allow for media actions, namely:
  * mute, sound level control, repeat, shuffle, audiostreams and subtitles
- * This can be included in a layout, and on the corresponding activity/fragment call
- * {@link MediaActionsBar#setOnClickListener(OnClickListener)} to set a specific {@link OnClickListener} for the
- * buttons, or call {@link MediaActionsBar#setDefaultOnClickListener(Context, FragmentManager)} to set a default click
- * listener that just sends each command to the Kodi host without further processing. Note that the default action
- * for the "audiostream" and "subtitles" is to show a UI Dialog with the available audiostreams or subtitles, so
- * this class needs a reference to the calling Fragment to show that Dialog. It also needs to be kept updated
- * during playback, by calling {@link MediaActionsBar#setPlaybackState(PlayerType.GetActivePlayersReturnType, PlayerType.PropertyValue)}
+ * Include this in a layout and the buttons work as expected, sending each command to Kodi without further processing.
+ * Note that the action for the "audiostream" and "subtitles" is to show a UI Dialog with the available audiostreams
+ * or subtitles, so this class needs a reference to the calling Fragment to show that Dialog, which should be provided
+ * by calling {@link MediaActionsBar#completeSetup} in the Fragment/Activity onCreateView.
+ * During playback this view needs to be manually updated, by calling {@link MediaActionsBar#setPlaybackState}
+ * when the playback state changes on Kodi. This view could be auto-suficient by subscribing to
+ * {@link org.xbmc.kore.host.HostConnectionObserver} and keeping itself updated when the state changes, but given
+ * that clients of this view are most likely already subscribers of that, this prevents the proliferation of observers
  */
 public class MediaActionsBar extends LinearLayout {
     private static final String TAG = LogUtils.makeLogTag(MediaActionsBar.class);
@@ -295,9 +296,7 @@ public class MediaActionsBar extends LinearLayout {
 
         updateMutableButtons();
 
-        if (activePlayerType.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
-            binding.subtitles.setHighlight(getPropertiesResult.subtitleenabled);
-        } else {
+        if (!activePlayerType.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
             setRepeatShuffleState(getPropertiesResult.repeat, getPropertiesResult.shuffled, getPropertiesResult.partymode);
         }
     }
