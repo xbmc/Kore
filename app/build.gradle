@@ -20,9 +20,10 @@ android {
         versionName = getVersionName()
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
-        def supportedLocales = ["en", "ast", "ru", "it", "ca", "cs", "zh-CN", "ja", "pt", "pt-BR",
-                                "pl", "sl", "sk", "lt", "eu", "iw", "fr", "es", "hr", "hu", "nl",
-                                "bg", "de", "ko", "uk"]
+        def supportedLocales = ["en",
+                "af-za", "ast", "be-by", "bg", "ca", "cs", "da-dk", "de",
+                "es", "es-MX", "eu", "fi", "fr", "hr", "hu", "it", "iw", "ja",
+                "ko", "lt", "nl", "pl", "pt", "pt-BR", "ru", "sk", "sl", "zh-CN"]
         buildConfigField "String[]", "SUPPORTED_LOCALES", "new String[]{\""+
                 supportedLocales.join("\",\"")+"\"}"
     }

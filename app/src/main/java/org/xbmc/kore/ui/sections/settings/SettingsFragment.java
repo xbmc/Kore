@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -218,20 +219,21 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     private void setupLanguagePreference(final ListPreference languagePref) {
-        Locale[] locales = getLocales();
+        Locale[] locales = getSupportedLocales();
+        Arrays.sort(locales, (o1, o2) -> o1.getLanguage().compareToIgnoreCase(o2.getLanguage()));
 
-        final Locale currentLocale = getCurrentLocale();
-        Arrays.sort(locales, (o1, o2) -> o1.getDisplayName().compareToIgnoreCase(o2.getDisplayName()));
+        final Locale deviceLocale = getSystemLocale();
 
-        String[] displayNames = new String[locales.length];
-        String[] entryValues = new String[locales.length];
+        String[] displayNames = new String[locales.length + 1];
+        String[] entryValues = new String[locales.length + 1];
+        displayNames[0] = deviceLocale.getDisplayName(deviceLocale);
+        entryValues[0] = getLanguageCountryCode(deviceLocale);
         for(int index = 0; index < locales.length; index++) {
             Locale locale = locales[index];
-            displayNames[index] = locale.getDisplayName(locale);
-            entryValues[index] = getLanguageCountryCode(locale);
+            displayNames[index + 1] = locale.getDisplayName(locale);
+            entryValues[index + 1] = getLanguageCountryCode(locale);
         }
 
-        languagePref.setValue(getLanguageCountryCode(currentLocale));
         languagePref.setEntries(displayNames);
         languagePref.setEntryValues(entryValues);
         languagePref.setOnPreferenceChangeListener((preference, o) -> {
@@ -250,9 +252,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     /**
-     * Converts the locale names into a list of Locale objects
+     * Gets all the supported {@link Locale} from the build configuration (defined in build.gradle)
      */
-    private Locale[] getLocales() {
+    private Locale[] getSupportedLocales() {
         Locale[] locales = new Locale[BuildConfig.SUPPORTED_LOCALES.length];
         for (int index = 0; index < BuildConfig.SUPPORTED_LOCALES.length; index++) {
             locales[index] = getLocale(BuildConfig.SUPPORTED_LOCALES[index]);
@@ -273,19 +275,14 @@ public class SettingsFragment extends PreferenceFragmentCompat
         startActivity(i);
     }
 
-    private Locale getCurrentLocale() {
-        Locale currentLocale = Utils.isNOrLater() ?
-                               getResources().getConfiguration().getLocales().get(0) :
-                               getResources().getConfiguration().locale;
-
-        SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
-        if (sharedPreferences != null) {
-            String currentLocaleName = sharedPreferences.getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
-
-            if (currentLocaleName != null && !currentLocaleName.isEmpty()) {
-                currentLocale = getLocale(currentLocaleName);
-            }
-        }
-        return currentLocale;
+    private Locale getSystemLocale() {
+        return Utils.isNOrLater() ?
+               Resources.getSystem().getConfiguration().getLocales().get(0) :
+               Resources.getSystem().getConfiguration().locale;
     }
-}
+
+    private Locale getCurrentLocale() {
+        return Utils.isNOrLater() ?
+               getResources().getConfiguration().getLocales().get(0) :
+               getResources().getConfiguration().locale;
+    }}
