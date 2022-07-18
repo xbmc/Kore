@@ -377,6 +377,7 @@ public class RemoteFragment extends Fragment
         int vis = (config.orientation == Configuration.ORIENTATION_PORTRAIT && config.screenHeightDp <= 600) ?
                   View.GONE : View.VISIBLE;
         binding.sectionsButtonBar.setVisibility(vis);
+        //LogUtils.LOGD(TAG, "Screen DP. Width: " + config.screenWidthDp + ", Height: " + config.screenHeightDp);
     }
 
     /**
