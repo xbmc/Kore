@@ -44,13 +44,13 @@ public class CallStateListener {
 
     public void startListening() {
         if (!Utils.isSOrLater()) {
-            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
             phoneStateListener = new PhoneStateListener() {
                 @Override
                 public void onCallStateChanged(int state, String incomingNumber) {
                     handleCallStateChanged(state);
                 }
             };
+            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         } else {
             telephonyCallback = new MyTelephonyCallback() {
                 @Override
