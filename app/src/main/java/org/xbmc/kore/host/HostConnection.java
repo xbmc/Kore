@@ -64,6 +64,8 @@ import okhttp3.ResponseBody;
 public class HostConnection {
 	public static final String TAG = LogUtils.makeLogTag(HostConnection.class);
 
+    protected static final boolean LOG_REQUESTS = false;
+
 	/**
 	 * Communicate via TCP
 	 */
@@ -463,7 +465,8 @@ public class HostConnection {
     private <T> void executeThroughOkHttp(final ApiMethod<T> method, final ApiCallback<T> callback, final Handler handler) {
         OkHttpClient client = getOkHttpClient();
         String jsonRequest = method.toJsonString();
-        LogUtils.LOGD(TAG, "Sending request via HTTP: " + jsonRequest);
+
+        if (LOG_REQUESTS) LogUtils.LOGD(TAG, "HTTP request: " + jsonRequest);
 
         try {
             Request request = new Request.Builder()
@@ -552,7 +555,6 @@ public class HostConnection {
      */
     private String handleOkHttpResponse(Response response) throws ApiException {
         try {
-//			LogUtils.LOGD(TAG, "Reading HTTP response.");
             int responseCode = response.code();
 
             switch (responseCode) {
@@ -562,7 +564,7 @@ public class HostConnection {
                         // All ok, read response
                         String res = body.string();
                         body.close();
-                        LogUtils.LOGD(TAG, "OkHTTP response: " + res);
+                        if (LOG_REQUESTS) LogUtils.LOGD(TAG, "HTTP response: " + res);
                         return res;
                     } else {
                         LogUtils.LOGD(TAG, "OkHTTP response body is null: " + response);
@@ -672,12 +674,12 @@ public class HostConnection {
 	 */
 	private void sendTcpRequest(Socket socket, String request) throws ApiException {
 		try {
-			LogUtils.LOGD(TAG, "Sending request via TCP: " + request);
+			if (LOG_REQUESTS) LogUtils.LOGD(TAG, "TCP request: " + request);
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			writer.write(request);
 			writer.flush();
 		} catch (Exception e) {
-			LogUtils.LOGW(TAG, "Failed to send TCP request.", e);
+			LogUtils.LOGW(TAG, "Failed to send TCP request: " + request, e);
             disconnect();
 			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
 		}
@@ -695,7 +697,7 @@ public class HostConnection {
                 JsonParser jsonParser = objectMapper.getFactory().createParser(socket.getInputStream());
                 ObjectNode jsonResponse;
                 while ((jsonResponse = objectMapper.readTree(jsonParser)) != null) {
-                    LogUtils.LOGD(TAG, "Read from socket: " + jsonResponse);
+                    if (LOG_REQUESTS) LogUtils.LOGD(TAG, "TCP response: " + jsonResponse);
 //                        LogUtils.LOGD_FULL(TAG, "Read from socket: " + jsonResponse.toString());
                     handleTcpResponse(jsonResponse);
                 }
