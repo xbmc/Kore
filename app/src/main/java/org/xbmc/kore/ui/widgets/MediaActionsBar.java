@@ -296,7 +296,9 @@ public class MediaActionsBar extends LinearLayout {
 
         updateMutableButtons();
 
-        if (!activePlayerType.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
+        if (activePlayerType.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
+            binding.subtitles.setHighlight(getPropertiesResult.subtitleenabled);
+        } else {
             setRepeatShuffleState(getPropertiesResult.repeat, getPropertiesResult.shuffled, getPropertiesResult.partymode);
         }
     }
