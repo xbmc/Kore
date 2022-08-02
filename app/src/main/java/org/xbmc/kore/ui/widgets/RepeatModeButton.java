@@ -17,7 +17,6 @@ package org.xbmc.kore.ui.widgets;
 
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import org.xbmc.kore.R;
@@ -30,7 +29,6 @@ public class RepeatModeButton extends HighlightButton {
     }
 
     private MODE mode;
-    private static TypedArray styledAttributes;
 
     public RepeatModeButton(Context context) {
         super(context);
@@ -52,15 +50,15 @@ public class RepeatModeButton extends HighlightButton {
 
         switch (mode) {
             case OFF:
-                setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
+                setImageResource(R.drawable.ic_repeat_white_24dp);
                 setHighlight(false);
                 break;
             case ONE:
-                setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_repeat_one_white_24dp));
+                setImageResource(R.drawable.ic_repeat_one_white_24dp);
                 setHighlight(true);
                 break;
             case ALL:
-                setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
+                setImageResource(R.drawable.ic_repeat_white_24dp);
                 setHighlight(true);
                 break;
         }
@@ -71,9 +69,5 @@ public class RepeatModeButton extends HighlightButton {
     }
 
     private void setStyle(Context context) {
-        styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{
-                R.attr.colorAccent,
-                R.attr.iconRepeat,
-                R.attr.iconRepeatOne});
     }
 }

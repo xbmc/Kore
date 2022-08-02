@@ -59,15 +59,13 @@ public class HighlightButton extends AppCompatImageButton {
     }
 
     private void setStyle(Context context) {
-        if (!this.isInEditMode()) {
-            TypedArray styledAttributes = context.getTheme()
-                                                 .obtainStyledAttributes(new int[]{R.attr.colorAccent,
-                                                                                   R.attr.defaultButtonColorFilter});
-            highlightColor = styledAttributes.getColor(styledAttributes.getIndex(0),
-                                                       context.getResources().getColor(R.color.default_accent));
-            defaultColor = styledAttributes.getColor(styledAttributes.getIndex(1),
-                                                     context.getResources().getColor(R.color.white));
-            styledAttributes.recycle();
-        }
+        TypedArray styledAttributes = context.getTheme()
+                                             .obtainStyledAttributes(new int[]{R.attr.colorAccent,
+                                                                               R.attr.defaultButtonColorFilter});
+        highlightColor = styledAttributes.getColor(styledAttributes.getIndex(0),
+                                                   context.getResources().getColor(R.color.default_accent));
+        defaultColor = styledAttributes.getColor(styledAttributes.getIndex(1),
+                                                 context.getResources().getColor(R.color.white));
+        styledAttributes.recycle();
     }
 }
