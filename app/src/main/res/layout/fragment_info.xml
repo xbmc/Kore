@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    Copyright 2015 Synced Synapse. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,8 +18,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipChildren="false">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/art"
@@ -28,8 +26,8 @@
         android:layout_height="@dimen/now_playing_art_height"
         android:layout_alignParentStart="true"
         android:contentDescription="@string/thumbnail"
-        app:layout_behavior="org.xbmc.kore.ui.behaviors.FadeOutOnVerticalScrollBehavior"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        app:layout_behavior="org.xbmc.kore.ui.behaviors.FadeOutOnVerticalScrollBehavior" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
@@ -43,198 +41,205 @@
             android:layout_alignParentStart="true"
             android:transitionGroup="true">
 
-            <RelativeLayout
-                android:id="@+id/media_panel_group"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/remote_content_hmargin"
-                android:layout_marginRight="@dimen/remote_content_hmargin">
-                <TextView
-                    android:id="@+id/media_title"
+                android:layout_marginRight="@dimen/remote_content_hmargin"
+                android:clipChildren="false"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/media_panel_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/media_title_margin_top"
-                    style="@style/TextAppearance.Media.Title"
-                    android:paddingStart="@dimen/poster_width_plus_padding"
-                    android:paddingEnd="@dimen/default_padding"
-                    android:background="?attr/contentBackgroundColor"/>
-                <TextView
-                    android:id="@+id/media_undertitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/TextAppearance.Media.Subtitle"
-                    android:paddingStart="@dimen/poster_width_plus_padding"
-                    android:paddingEnd="@dimen/default_padding"
-                    android:layout_below="@id/media_title"
-                    android:background="?attr/contentBackgroundColor"/>
-
-                <ImageView
-                    android:id="@+id/poster"
-                    android:layout_width="@dimen/detail_poster_width_square"
-                    android:layout_height="@dimen/detail_poster_height_square"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="@dimen/default_padding"
-                    android:layout_alignBottom="@id/media_undertitle"
-                    android:contentDescription="@string/poster"
-                    android:scaleType="centerCrop"/>
-
-                <!-- Media actions buttons -->
-                <LinearLayout
-                    android:id="@+id/media_actions_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/buttonbar_height"
-                    android:layout_below="@id/media_undertitle"
-                    android:paddingLeft="@dimen/default_padding"
-                    android:paddingRight="@dimen/default_padding"
-                    android:orientation="horizontal"
-                    style="@style/ButtonBar"
                     android:background="?attr/contentBackgroundColor"
-                    android:visibility="gone">
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"/>
-                    <ImageButton
-                        android:id="@+id/media_action_pin_unpin"
-                        android:visibility="gone"
-                        android:layout_width="@dimen/buttonbar_button_width"
-                        android:layout_height="match_parent"
-                        style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconBookmark"
-                        android:contentDescription="@string/enable_disable"/>
-                    <ImageButton
-                        android:id="@+id/media_action_add_to_playlist"
-                        android:layout_width="@dimen/buttonbar_button_width"
-                        android:layout_height="match_parent"
-                        style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconAddToQueue"
-                        android:contentDescription="@string/add_to_playlist"
-                        android:visibility="gone"/>
-                    <ImageButton
-                        android:id="@+id/media_action_download"
-                        android:layout_width="@dimen/buttonbar_button_width"
-                        android:layout_height="match_parent"
-                        style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconDownload"
-                        android:contentDescription="@string/download"
-                        android:visibility="gone"/>
-                    <ImageButton
-                        android:id="@+id/media_action_go_to_imdb"
-                        android:layout_width="@dimen/buttonbar_button_width"
-                        android:layout_height="match_parent"
-                        style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconInfoWWW"
-                        android:contentDescription="@string/imdb"
-                        android:visibility="gone"/>
-                    <ImageButton
-                        android:id="@+id/media_action_seen"
-                        android:layout_width="@dimen/buttonbar_button_width"
-                        android:layout_height="match_parent"
-                        style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconSeen"
-                        android:contentDescription="@string/seen"
-                        android:visibility="gone"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/media_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:paddingTop="@dimen/default_padding"
-                    android:paddingBottom="@dimen/default_padding"
-                    android:paddingLeft="@dimen/default_padding"
-                    android:paddingRight="@dimen/default_padding"
-                    android:layout_below="@id/media_actions_bar"
-                    android:background="?attr/contentBackgroundColor">
-
-                    <LinearLayout
-                        android:id="@+id/rating_container"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:layout_gravity="start">
-                        <TextView
-                            android:id="@+id/rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            style="@style/TextAppearance.Media.Rating"
-                            android:layout_marginEnd="@dimen/small_padding"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:id="@+id/rating_votes"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/TextAppearance.Media.SmallDetails"/>
-
-                            <TextView
-                                android:id="@+id/max_rating"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/TextAppearance.Media.SmallDetails"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                    android:elevation="2dp">
 
                     <TextView
-                        android:id="@+id/media_details_right"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:layout_gravity="end"
-                        android:gravity="end"
-                        style="@style/TextAppearance.Media.SmallDetails"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/media_description_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/media_details"
-                    android:orientation="vertical"
-                    android:background="?attr/contentBackgroundColor">
-                    <at.blogc.android.views.ExpandableTextView
-                        android:id="@+id/media_description"
+                        android:id="@+id/media_title"
+                        style="@style/TextAppearance.Media.Title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/TextAppearance.Media.Info"
+                        android:paddingStart="@dimen/poster_width_plus_padding"
+                        android:paddingEnd="@dimen/default_padding" />
+
+                    <TextView
+                        android:id="@+id/media_undertitle"
+                        style="@style/TextAppearance.Media.Subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/media_title"
+                        android:paddingStart="@dimen/poster_width_plus_padding"
+                        android:paddingEnd="@dimen/default_padding" />
+
+                    <ImageView
+                        android:id="@+id/poster"
+                        android:layout_width="@dimen/detail_poster_width_square"
+                        android:layout_height="@dimen/detail_poster_height_square"
+                        android:layout_alignBottom="@id/media_undertitle"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="@dimen/default_padding"
+                        android:contentDescription="@string/poster"
+                        android:scaleType="centerCrop" />
+
+                    <!-- Media actions buttons -->
+                    <LinearLayout
+                        android:id="@+id/media_actions_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/buttonbar_height"
+                        android:layout_below="@id/media_undertitle"
+                        android:orientation="horizontal"
                         android:paddingLeft="@dimen/default_padding"
                         android:paddingRight="@dimen/default_padding"
-                        android:paddingBottom="0dp"
-                        android:maxLines="@integer/description_max_lines"
-                        android:ellipsize="end"
-                        app:animation_duration="@integer/expandable_textview_animation_duration"/>
-                    <ImageView
-                        android:id="@+id/show_all"
-                        android:layout_width="@dimen/small_icon_size"
-                        android:layout_height="@dimen/small_icon_size"
-                        android:layout_gravity="end"
-                        android:layout_marginBottom="@dimen/small_padding"
-                        android:layout_marginEnd="@dimen/small_padding"
-                        style="@style/Widget.Button.Borderless"
-                        android:src="?attr/iconExpand"
-                        android:contentDescription="@string/toggle_expand"/>
-                </LinearLayout>
+                        android:visibility="gone">
 
-                <View
-                    android:id="@+id/separator"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/media_description_container"
-                    style="@style/DefaultDividerH"/>
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+
+                        <ImageButton
+                            android:id="@+id/media_action_pin_unpin"
+                            style="@style/Widget.Button.Borderless"
+                            android:layout_width="@dimen/buttonbar_button_width"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/enable_disable"
+                            android:src="?attr/iconBookmark"
+                            android:visibility="gone" />
+
+                        <ImageButton
+                            android:id="@+id/media_action_add_to_playlist"
+                            style="@style/Widget.Button.Borderless"
+                            android:layout_width="@dimen/buttonbar_button_width"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/add_to_playlist"
+                            android:src="?attr/iconAddToQueue"
+                            android:visibility="gone" />
+
+                        <ImageButton
+                            android:id="@+id/media_action_download"
+                            style="@style/Widget.Button.Borderless"
+                            android:layout_width="@dimen/buttonbar_button_width"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/download"
+                            android:src="?attr/iconDownload"
+                            android:visibility="gone" />
+
+                        <ImageButton
+                            android:id="@+id/media_action_go_to_imdb"
+                            style="@style/Widget.Button.Borderless"
+                            android:layout_width="@dimen/buttonbar_button_width"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/imdb"
+                            android:src="?attr/iconInfoWWW"
+                            android:visibility="gone" />
+
+                        <ImageButton
+                            android:id="@+id/media_action_seen"
+                            style="@style/Widget.Button.Borderless"
+                            android:layout_width="@dimen/buttonbar_button_width"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/seen"
+                            android:src="?attr/iconSeen"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/media_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/media_actions_bar"
+                        android:layout_alignParentStart="true"
+                        android:paddingLeft="@dimen/default_padding"
+                        android:paddingTop="@dimen/default_padding"
+                        android:paddingRight="@dimen/default_padding"
+                        android:paddingBottom="@dimen/default_padding">
+
+                        <LinearLayout
+                            android:id="@+id/rating_container"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="3">
+
+                            <TextView
+                                android:id="@+id/rating"
+                                style="@style/TextAppearance.Media.Rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginEnd="@dimen/small_padding" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/rating_votes"
+                                    style="@style/TextAppearance.Media.SmallDetails"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <TextView
+                                    android:id="@+id/max_rating"
+                                    style="@style/TextAppearance.Media.SmallDetails"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/media_details_right"
+                            style="@style/TextAppearance.Media.SmallDetails"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_weight="5"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/media_description_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/media_details"
+                        android:orientation="vertical">
+
+                        <at.blogc.android.views.ExpandableTextView
+                            android:id="@+id/media_description"
+                            style="@style/TextAppearance.Media.Info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="@integer/description_max_lines"
+                            android:paddingLeft="@dimen/default_padding"
+                            android:paddingRight="@dimen/default_padding"
+                            android:paddingBottom="0dp"
+                            app:animation_duration="@integer/expandable_textview_animation_duration" />
+
+                        <ImageView
+                            android:id="@+id/show_all"
+                            style="@style/Widget.Button.Borderless"
+                            android:layout_width="@dimen/small_icon_size"
+                            android:layout_height="@dimen/small_icon_size"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="@dimen/small_padding"
+                            android:layout_marginBottom="@dimen/small_padding"
+                            android:contentDescription="@string/toggle_expand"
+                            android:src="?attr/iconExpand" />
+                    </LinearLayout>
+                </RelativeLayout>
 
                 <FrameLayout
                     android:id="@+id/media_additional_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/separator"
-                    android:layout_marginTop="@dimen/default_padding"/>
+                    android:layout_marginTop="@dimen/default_padding" />
 
-            </RelativeLayout>
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -242,12 +247,12 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
         app:layout_anchor="@id/media_panel"
         app:layout_anchorGravity="bottom|end|right"
         app:layout_behavior="org.xbmc.kore.ui.behaviors.FABSpeedDialBehavior"
-        app:layout_scrollFlags="scroll|enterAlways"
-        android:orientation="vertical"
-        android:visibility="gone"/>
+        app:layout_scrollFlags="scroll|enterAlways" />
 
     <!-- View that will be shown with the circularReveal when user presses the FAB -->
     <View
@@ -255,5 +260,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/fabColorNormal"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
