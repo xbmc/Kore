@@ -310,7 +310,7 @@ public class UIUtils {
                                                          castList.size() - maxCastPictures + 1));
                 castView.setOnClickListener(v -> {
                     activity.startActivity(allCastActivityLaunchIntent);
-                    activity.overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+                    activity.overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 });
             } else {
                 castName.setText(actor.name);

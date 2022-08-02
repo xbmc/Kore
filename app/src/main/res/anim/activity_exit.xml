@@ -14,17 +14,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<set xmlns:android="http://schemas.android.com/apk/res/android"
-     android:duration="@integer/fragment_animation_duration">
 
-<alpha
-        android:fromAlpha="0.0"
-        android:toAlpha="1.0"
-        android:interpolator="@android:anim/decelerate_interpolator"/>
+<set xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <translate
-        android:fromYDelta="15%"
-        android:toYDelta="0%"
-        android:interpolator="@android:anim/decelerate_interpolator"/>
+    <alpha
+        android:duration="@integer/activity_animation_duration"
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0"
+        android:interpolator="@anim/fast_accelerate_interpolator"/>
 
 </set>

@@ -227,6 +227,7 @@ public abstract class BaseMediaActivity extends BaseActivity
             Intent launchIntent = new Intent(this, RemoteActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(launchIntent);
+            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
             return true;
         }
         return super.onOptionsItemSelected(item);

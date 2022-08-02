@@ -21,22 +21,6 @@
         android:duration="@integer/activity_animation_duration"
         android:fromAlpha="0.0"
         android:toAlpha="1.0"
-        android:interpolator="@android:anim/decelerate_interpolator"/>
-
-    <translate
-        android:duration="@integer/activity_animation_duration"
-        android:fromYDelta="15%"
-        android:toYDelta="0%"
-        android:interpolator="@android:anim/decelerate_interpolator"/>
-
-    <!--<scale-->
-        <!--android:duration="@integer/activity_animation_duration"-->
-        <!--android:fromXScale="0.8"-->
-        <!--android:fromYScale="0.8"-->
-        <!--android:interpolator="@android:anim/decelerate_interpolator"-->
-        <!--android:pivotX="50%"-->
-        <!--android:pivotY="50%"-->
-        <!--android:toXScale="1.0"-->
-        <!--android:toYScale="1.0" />-->
+        android:interpolator="@anim/fast_decelerate_interpolator"/>
 
 </set>
