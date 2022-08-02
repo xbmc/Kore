@@ -396,7 +396,7 @@ public class NavigationDrawerFragment extends Fragment {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mDrawerLayout.postDelayed(() -> {
             startActivity(launchIntentFinal);
-            requireActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+            requireActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
         }, CLOSE_DELAY);
     }
 

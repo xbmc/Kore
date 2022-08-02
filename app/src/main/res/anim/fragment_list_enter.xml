@@ -14,19 +14,17 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<resources>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+     android:duration="@integer/fragment_animation_duration">
 
-	<integer name="activity_animation_duration">300</integer>
-    <integer name="fragment_animation_duration">300</integer>
-    <integer name="button_touch_animation_duration_half">25</integer>
-    <integer name="button_touch_animation_duration">50</integer>
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:interpolator="@anim/fast_decelerate_interpolator"/>
 
-    <integer name="cast_grid_view_columns">3</integer>
-    <integer name="cast_grid_view_rows">3</integer>
-    <integer name="description_max_lines">3</integer>
+    <translate
+        android:fromYDelta="15%"
+        android:toYDelta="0%"
+        android:interpolator="@anim/fast_decelerate_interpolator"/>
 
-    <integer name="seasons_grid_view_columns">1</integer>
-
-    <integer name="fab_animation_start_delay">100</integer>
-    <integer name="expandable_textview_animation_duration">200</integer>
-</resources>
+</set>

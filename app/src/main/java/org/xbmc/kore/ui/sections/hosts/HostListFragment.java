@@ -193,7 +193,7 @@ public class HostListFragment extends Fragment {
         Intent launchIntent = new Intent(getActivity(), AddHostActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(launchIntent);
-		requireActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+		requireActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
     }
 
     /**
@@ -232,7 +232,7 @@ public class HostListFragment extends Fragment {
                         .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                         .putExtra(HostFragmentManualConfiguration.HOST_ID, hostInfo.getId());
                 startActivity(launchIntent);
-                requireActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+                requireActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 return true;
             } else if (itemId == R.id.action_wake_up) {
                 // Send WoL magic packet on a new thread

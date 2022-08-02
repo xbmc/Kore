@@ -18,8 +18,8 @@
      android:duration="@integer/fragment_animation_duration">
 
     <alpha
-        android:fromAlpha="0.0"
-        android:toAlpha="1.0"
-        android:interpolator="@android:anim/decelerate_interpolator"/>
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0"
+        android:interpolator="@anim/fast_accelerate_interpolator"/>
 
 </set>
