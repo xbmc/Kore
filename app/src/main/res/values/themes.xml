@@ -26,7 +26,7 @@
 
         <item name="preferenceTheme">@style/PrefTheme</item>
 
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="drawerArrowStyle">@style/Widget.Kore.DrawerArrowToggle</item>
 
         <!-- Set AppCompat’s color theming attrs -->
         <item name="colorPrimary">@color/estuary_blue</item>
@@ -175,7 +175,7 @@
 
         <item name="preferenceTheme">@style/PrefTheme</item>
 
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="drawerArrowStyle">@style/Widget.Kore.DrawerArrowToggle</item>
 
         <!-- Set AppCompat’s color theming attrs -->
         <item name="colorPrimary">@color/day_primary</item>

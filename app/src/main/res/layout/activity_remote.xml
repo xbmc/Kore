@@ -49,11 +49,11 @@
 
             <org.xbmc.kore.ui.views.CirclePageIndicator
                 android:id="@+id/pager_indicator"
-                style="@style/ViewPagerIndicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_padding"
-                android:layout_marginBottom="2dp"/>
+                android:layout_marginBottom="2dp"
+                style="@style/Widget.Kore.PagerIndicator"/>
         </FrameLayout>
     </LinearLayout>
 

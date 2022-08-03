@@ -34,7 +34,7 @@
         app:tabTextColor="@color/white_dim_50pct"
         app:tabSelectedTextColor="@color/white"
         app:tabBackground="?attr/contentBackgroundColor"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:tint="?attr/defaultButtonColorFilter"
         android:elevation="2dp"/>
 

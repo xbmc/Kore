@@ -31,17 +31,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            style="@style/WizardTitle"
+            style="@style/Widget.Kore.TextView.WizardTitle"
             android:gravity="center"
             android:text="@string/no_xbmc_configured" />
-        <View
-            style="@style/DefaultDividerH"/>
+
+        <View style="@style/Widget.Kore.Divider.Horizontal"/>
 
         <Button
             android:id="@+id/action_add_host"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:text="@string/add_xbmc"/>
     </LinearLayout>
 
@@ -49,14 +49,7 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/small_padding"
-        android:paddingRight="@dimen/small_padding"
-        android:paddingTop="@dimen/small_padding"
-        android:paddingBottom="@dimen/default_padding"
-        android:clipToPadding="false"
-        android:listSelector="?attr/selectableItemBackground"
-        android:drawSelectorOnTop="true"
         android:choiceMode="singleChoice"
-        style="@style/Widget.GridView"/>
+        style="@style/Widget.Kore.Grid.Host"/>
 
 </FrameLayout>

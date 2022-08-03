@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconPrevious"
         android:contentDescription="@string/previous"/>
     <ImageButton
@@ -28,7 +28,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconRewind"
         android:contentDescription="@string/rewind"/>
     <ImageButton
@@ -36,7 +36,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconPlay"
         android:contentDescription="@string/play"/>
     <ImageButton
@@ -44,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconStop"
         android:contentDescription="@string/stop"/>
     <ImageButton
@@ -52,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconFastForward"
         android:contentDescription="@string/fast_forward"/>
     <ImageButton
@@ -60,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconNext"
         android:contentDescription="@string/next"/>
 </merge>

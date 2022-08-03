@@ -59,7 +59,7 @@
 
                     <TextView
                         android:id="@+id/media_title"
-                        style="@style/TextAppearance.Media.Title"
+                        style="@style/Widget.Kore.TextView.MediaTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/poster_width_plus_padding"
@@ -67,7 +67,7 @@
 
                     <TextView
                         android:id="@+id/media_undertitle"
-                        style="@style/TextAppearance.Media.Subtitle"
+                        style="@style/Widget.Kore.TextView.MediaDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/media_title"
@@ -102,7 +102,7 @@
 
                         <ImageButton
                             android:id="@+id/media_action_pin_unpin"
-                            style="@style/Widget.Button.Borderless"
+                            style="@style/Widget.Kore.Button.Borderless"
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/enable_disable"
@@ -111,7 +111,7 @@
 
                         <ImageButton
                             android:id="@+id/media_action_add_to_playlist"
-                            style="@style/Widget.Button.Borderless"
+                            style="@style/Widget.Kore.Button.Borderless"
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/add_to_playlist"
@@ -120,7 +120,7 @@
 
                         <ImageButton
                             android:id="@+id/media_action_download"
-                            style="@style/Widget.Button.Borderless"
+                            style="@style/Widget.Kore.Button.Borderless"
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/download"
@@ -129,7 +129,7 @@
 
                         <ImageButton
                             android:id="@+id/media_action_go_to_imdb"
-                            style="@style/Widget.Button.Borderless"
+                            style="@style/Widget.Kore.Button.Borderless"
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/imdb"
@@ -138,7 +138,7 @@
 
                         <ImageButton
                             android:id="@+id/media_action_seen"
-                            style="@style/Widget.Button.Borderless"
+                            style="@style/Widget.Kore.Button.Borderless"
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/seen"
@@ -166,7 +166,7 @@
 
                             <TextView
                                 android:id="@+id/rating"
-                                style="@style/TextAppearance.Media.Rating"
+                                style="@style/Widget.Kore.TextView.MediaRating"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
@@ -179,13 +179,13 @@
 
                                 <TextView
                                     android:id="@+id/rating_votes"
-                                    style="@style/TextAppearance.Media.SmallDetails"
+                                    style="@style/Widget.Kore.TextView.MediaSmallDetails"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/max_rating"
-                                    style="@style/TextAppearance.Media.SmallDetails"
+                                    style="@style/Widget.Kore.TextView.MediaSmallDetails"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
@@ -193,7 +193,7 @@
 
                         <TextView
                             android:id="@+id/media_details_right"
-                            style="@style/TextAppearance.Media.SmallDetails"
+                            style="@style/Widget.Kore.TextView.MediaSmallDetails"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -210,7 +210,7 @@
 
                         <at.blogc.android.views.ExpandableTextView
                             android:id="@+id/media_description"
-                            style="@style/TextAppearance.Media.Info"
+                            style="@style/Widget.Kore.TextView.MediaInfo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
@@ -222,7 +222,7 @@
 
                         <ImageView
                             android:id="@+id/show_all"
-                            style="@style/Widget.Button.Borderless"
+                            style="@style/Widget.Kore.Button.Borderless"
                             android:layout_width="@dimen/small_icon_size"
                             android:layout_height="@dimen/small_icon_size"
                             android:layout_gravity="end"

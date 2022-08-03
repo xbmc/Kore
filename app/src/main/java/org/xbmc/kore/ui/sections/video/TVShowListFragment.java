@@ -314,8 +314,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             });
 
             themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.default_accent));
-            inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(1), getResources().getColor(R.color.orange_500));
-            finishedColor = styledAttributes.getColor(styledAttributes.getIndex(2), getResources().getColor(R.color.light_green_600));
+            inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(1), getResources().getColor(R.color.coral));
+            finishedColor = styledAttributes.getColor(styledAttributes.getIndex(2), getResources().getColor(R.color.darkseagreen));
             styledAttributes.recycle();
 
             this.hostManager = HostManager.getInstance(context);

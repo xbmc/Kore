@@ -28,7 +28,7 @@
         android:layout_alignParentStart="true"
         android:minWidth="@dimen/epg_time_width"
         android:gravity="end"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textAppearance="@style/TextAppearance.Kore.Title.Small"
         android:textColor="?attr/appTextColorPrimary"/>
 
     <TextView
@@ -39,7 +39,7 @@
         android:gravity="end"
         android:layout_below="@id/start_time"
         android:layout_alignEnd="@id/start_time"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textAppearance="@style/TextAppearance.Kore.Body"
         android:textColor="?attr/appTextColorSecondary"/>
 
     <TextView
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/start_time"
         android:layout_alignTop="@id/start_time"
-        style="@style/TextAppearance.Medialist.Title"
+        style="@style/Widget.Kore.TextView.MediaList.Title"
         android:paddingTop="0dp"/>
     <TextView
         android:id="@+id/details"
@@ -57,5 +57,5 @@
         android:layout_alignStart="@id/title"
         android:layout_below="@id/title"
         android:layout_toEndOf="@id/end_time"
-        style="@style/TextAppearance.Medialist.Details"/>
+        style="@style/Widget.Kore.TextView.MediaList.Details"/>
 </RelativeLayout>

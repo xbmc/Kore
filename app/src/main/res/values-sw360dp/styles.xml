@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ControlPad.FrameLayout">
-        <item name="android:layout_width">@dimen/remote_size</item>
-        <item name="android:layout_height">@dimen/remote_size</item>
-        <item name="android:layout_marginBottom">@dimen/default_padding</item>
-    </style>
-    
-    <style name="ControlPad">
+    <style name="Widget.Kore.ControlPad" parent="Widget.Kore">
         <item name="android:layout_width">@dimen/remote_size</item>
         <item name="android:layout_height">@dimen/remote_size</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_gravity">bottom|center_horizontal</item>
+    </style>
+
+    <style name="Widget.Kore.ControlPad.FrameLayout" parent="Widget.Kore.ControlPad">
+        <item name="android:layout_width">@dimen/remote_size</item>
+        <item name="android:layout_height">@dimen/remote_size</item>
+        <item name="android:layout_marginBottom">@dimen/default_padding</item>
     </style>
 </resources>

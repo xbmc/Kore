@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconVolumeMute"
         android:contentDescription="@string/volume_mute"/>
 
@@ -36,7 +36,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconRepeat"
         android:contentDescription="@string/repeat"/>
     <org.xbmc.kore.ui.widgets.HighlightButton
@@ -44,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconShuffle"
         android:contentDescription="@string/shuffle"/>
 
@@ -53,7 +53,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconAudiostreams"
         android:contentDescription="@string/audiostreams"/>
 
@@ -62,7 +62,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconSubtitles"
         android:contentDescription="@string/subtitles"/>
 
@@ -71,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconCelebration"
         android:contentDescription="@string/party_mode"/>
 
@@ -80,7 +80,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconOverflow"
         android:contentDescription="@string/subtitles"/>
 </merge>

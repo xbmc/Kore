@@ -21,7 +21,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.CardView"
+    style="@style/Widget.Kore.CardView"
     tools:layout_width="match_parent"
     tools:layout_height="100dp">
 
@@ -42,7 +42,7 @@
 
         <TextView
             android:id="@+id/title"
-            style="@style/TextAppearance.Medialist.Title"
+            style="@style/Widget.Kore.TextView.MediaList.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
 
         <TextView
             android:id="@+id/details"
-            style="@style/TextAppearance.Medialist.Details"
+            style="@style/Widget.Kore.TextView.MediaList.Details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +64,7 @@
 
         <TextView
             android:id="@+id/meta_info"
-            style="@style/TextAppearance.Medialist.OtherInfo"
+            style="@style/Widget.Kore.TextView.MediaList.Info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -73,9 +73,10 @@
 
         <org.xbmc.kore.ui.views.RatingBar
             android:id="@+id/rating_bar"
-            style="@style/RatingBar"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/small_padding"
             app:backgroundColor="?attr/ratingBarStarBackgroundColor"
             app:foregroundColor="?attr/ratingBarStarForegroundColor"
             app:icon="?attr/iconRating"
@@ -86,7 +87,7 @@
 
         <ImageView
             android:id="@+id/checkmark"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/small_padding"

@@ -55,7 +55,7 @@
 
                 <TextView
                     android:id="@+id/media_title"
-                    style="@style/TextAppearance.Media.Title"
+                    style="@style/Widget.Kore.TextView.MediaTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/poster_width_plus_padding"
@@ -63,7 +63,7 @@
 
                 <TextView
                     android:id="@+id/media_undertitle"
-                    style="@style/TextAppearance.Media.Subtitle"
+                    style="@style/Widget.Kore.TextView.MediaDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/media_title"
@@ -112,7 +112,7 @@
 
                     <TextView
                         android:id="@+id/year"
-                        style="@style/TextAppearance.Media.SmallDetails"
+                        style="@style/Widget.Kore.TextView.MediaSmallDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -120,7 +120,7 @@
 
                     <TextView
                         android:id="@+id/genres"
-                        style="@style/TextAppearance.Media.SmallDetails"
+                        style="@style/Widget.Kore.TextView.MediaSmallDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/year"
@@ -128,7 +128,7 @@
 
                     <TextView
                         android:id="@+id/rating"
-                        style="@style/TextAppearance.Media.Rating"
+                        style="@style/Widget.Kore.TextView.MediaRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/genres"
@@ -137,7 +137,7 @@
 
                     <TextView
                         android:id="@+id/rating_votes"
-                        style="@style/TextAppearance.Media.SmallDetails"
+                        style="@style/Widget.Kore.TextView.MediaSmallDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/year"
@@ -147,7 +147,7 @@
 
                     <TextView
                         android:id="@+id/max_rating"
-                        style="@style/TextAppearance.Media.SmallDetails"
+                        style="@style/Widget.Kore.TextView.MediaSmallDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/genres"
@@ -159,7 +159,7 @@
 
                 <TextView
                     android:id="@+id/media_description"
-                    style="@style/TextAppearance.Media.Info"
+                    style="@style/Widget.Kore.TextView.MediaInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/media_details"

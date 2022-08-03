@@ -37,20 +37,19 @@
                 android:id="@android:id/title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/wizard_title"
-                style="@style/WizardTitle"
+                style="@style/Widget.Kore.TextView.WizardTitle"
                 android:text="@string/wizard_done" />
 
             <TextView
                 android:id="@+id/done_message"
-                style="@style/WizardMessage"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_below="@android:id/title"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@android:id/title"
+                style="@style/Widget.Kore.TextView.WizardMessage"/>
     </RelativeLayout>
     </ScrollView>
 
-    <View
-        style="@style/DefaultDividerH"/>
+    <View style="@style/Widget.Kore.Divider.Horizontal"/>
 
     <include
         android:id="@+id/include_wizard_button_bar"

@@ -39,7 +39,7 @@
         android:layout_marginStart="@dimen/default_padding"
         android:layout_toEndOf="@+id/drawer_item_icon"
         android:gravity="center_vertical"
-        android:textAppearance="@style/TextAppearance.NavDrawerItem"
+        android:textAppearance="@style/TextAppearance.Kore.NavDrawerItem"
         tools:text="@string/app_name" />
 
 </RelativeLayout>

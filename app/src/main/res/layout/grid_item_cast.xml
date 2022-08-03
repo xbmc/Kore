@@ -54,13 +54,13 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.Media.Cast"/>
+            style="@style/Widget.Kore.TextView.MediaCast"/>
 
         <TextView
             android:id="@+id/role"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.Media.Cast"
+            style="@style/Widget.Kore.TextView.MediaCast"
             android:textColor="?attr/appTextColorSecondary"/>
 
     </LinearLayout>
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@android:id/icon"
             android:gravity="center_horizontal"
-            style="@style/TextAppearance.Media.Info"/>
+            style="@style/Widget.Kore.TextView.MediaInfo"/>
     </RelativeLayout>
 
 
