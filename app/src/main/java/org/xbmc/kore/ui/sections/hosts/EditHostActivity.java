@@ -115,9 +115,7 @@ public class EditHostActivity extends BaseActivity implements
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.edit_xbmc);
-            TypedArray styledAttrs = getTheme().obtainStyledAttributes(new int[] {R.attr.iconHosts});
-            actionBar.setIcon(styledAttrs.getResourceId(styledAttrs.getIndex(0), R.drawable.ic_devices_white_24dp));
-            styledAttrs.recycle();
+            actionBar.setIcon(R.drawable.ic_devices_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }

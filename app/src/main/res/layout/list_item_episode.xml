@@ -52,7 +52,7 @@
             android:layout_alignStart="@id/episode_number"
             android:padding="@dimen/default_icon_padding"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconSeen"
+            android:src="@drawable/ic_done_white_24dp"
             android:contentDescription="@string/seen"/>
 
         <ImageView

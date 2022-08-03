@@ -21,7 +21,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="?attr/iconVolumeMute"
+        android:src="@drawable/ic_volume_off_white_24dp"
         android:contentDescription="@string/volume_mute"/>
 
     <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
@@ -37,7 +37,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="?attr/iconRepeat"
+        android:src="@drawable/ic_repeat_white_24dp"
         android:contentDescription="@string/repeat"/>
     <org.xbmc.kore.ui.widgets.HighlightButton
         android:id="@+id/shuffle"
@@ -45,7 +45,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="?attr/iconShuffle"
+        android:src="@drawable/ic_shuffle_white_24dp"
         android:contentDescription="@string/shuffle"/>
 
     <ImageButton
@@ -54,7 +54,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="?attr/iconAudiostreams"
+        android:src="@drawable/ic_spatial_audio_off_white_24dp"
         android:contentDescription="@string/audiostreams"/>
 
     <org.xbmc.kore.ui.widgets.HighlightButton
@@ -63,7 +63,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="?attr/iconSubtitles"
+        android:src="@drawable/ic_subtitles_white_24dp"
         android:contentDescription="@string/subtitles"/>
 
     <org.xbmc.kore.ui.widgets.HighlightButton
@@ -72,7 +72,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="?attr/iconCelebration"
+        android:src="@drawable/ic_celebration_white_24dp"
         android:contentDescription="@string/party_mode"/>
 
     <ImageButton
@@ -81,6 +81,6 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="?attr/iconOverflow"
+        android:src="@drawable/ic_more_vert_white_24dp"
         android:contentDescription="@string/subtitles"/>
 </merge>

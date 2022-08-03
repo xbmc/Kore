@@ -19,7 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_search"
           android:title="@string/action_search"
-          android:icon="?attr/iconSearch"
+          android:icon="@drawable/ic_search_white_24dp"
           android:queryHint="@string/action_search"
           app:showAsAction="ifRoom|collapseActionView"
           app:actionViewClass="androidx.appcompat.widget.SearchView"/>

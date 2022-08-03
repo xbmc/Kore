@@ -270,12 +270,8 @@ public class FABSpeedDial extends LinearLayout {
     }
 
     private void setupFABIcon(Context context) {
-        TypedValue tv = new TypedValue();
-
-        context.getTheme().resolveAttribute(R.attr.iconFABDialsOpenClose, tv, false);
-        iconFABOpenClose = AppCompatResources.getDrawable(context, tv.data);
-        context.getTheme().resolveAttribute(R.attr.iconFABDefault, tv, false);
-        iconFABDefault = AppCompatResources.getDrawable(context, tv.data);
+        iconFABOpenClose = AppCompatResources.getDrawable(context, R.drawable.ic_plus_white_24dp);
+        iconFABDefault = AppCompatResources.getDrawable(context, R.drawable.ic_play_arrow_white_24dp);
 
         FABMain.setImageDrawable(dialsEnabled ? iconFABOpenClose : iconFABDefault);
 

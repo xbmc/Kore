@@ -158,9 +158,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         if (key.equals(Settings.KEY_PREF_THEME) || key.equals(Settings.getNavDrawerItemsPrefKey(hostId))
             || key.equals((Settings.getRemoteBarItemsPrefKey(hostId)))) {
-            // Explicitly clear cache of resource ids that is maintained in the activity
-            UIUtils.playPauseIconsLoaded = false;
-
             // restart to apply new theme (actually build an entirely new task stack)
             TaskStackBuilder.create(ctx)
                             .addNextIntent(new Intent(ctx, RemoteActivity.class))

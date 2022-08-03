@@ -79,7 +79,7 @@
             android:layout_marginEnd="@dimen/small_padding"
             app:backgroundColor="?attr/ratingBarStarBackgroundColor"
             app:foregroundColor="?attr/ratingBarStarForegroundColor"
-            app:icon="?attr/iconRating"
+            app:icon="@drawable/ic_star_white_24dp"
             app:layout_constraintBottom_toBottomOf="@id/meta_info"
             app:layout_constraintEnd_toStartOf="@id/checkmark"
             app:layout_constraintRight_toLeftOf="@id/checkmark"
@@ -93,7 +93,7 @@
             android:layout_marginEnd="@dimen/small_padding"
             android:layout_marginBottom="@dimen/small_padding"
             android:contentDescription="@string/seen"
-            android:src="?attr/iconSeen"
+            android:src="@drawable/ic_done_white_24dp"
             app:layout_constraintBottom_toBottomOf="@id/meta_info"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

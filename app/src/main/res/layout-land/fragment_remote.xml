@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconHome"
+            android:src="@drawable/ic_home_white_24dp"
             android:contentDescription="@string/home"/>
         <ImageButton
             android:id="@+id/movies"
@@ -42,7 +42,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconMovies"
+            android:src="@drawable/ic_movie_white_24dp"
             android:contentDescription="@string/movies"/>
         <ImageButton
             android:id="@+id/tv_shows"
@@ -50,7 +50,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconTvShows"
+            android:src="@drawable/ic_tv_white_24dp"
             android:contentDescription="@string/tv_shows"/>
         <ImageButton
             android:id="@+id/music"
@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconMusic"
+            android:src="@drawable/ic_headset_white_24dp"
             android:contentDescription="@string/music"/>
         <ImageButton
             android:id="@+id/pvr"
@@ -66,7 +66,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconPVR"
+            android:src="@drawable/ic_dvr_white_24dp"
             android:contentDescription="@string/pvr"/>
         <ImageButton
             android:id="@+id/pictures"
@@ -74,7 +74,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconPicture"
+            android:src="@drawable/ic_image_white_24dp"
             android:contentDescription="@string/pictures"/>
         <ImageButton
             android:id="@+id/videos"
@@ -82,7 +82,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconVideo"
+            android:src="@drawable/ic_video_white_24dp"
             android:contentDescription="@string/videos"/>
         <!-- <ImageButton
             android:id="@+id/favourites"
@@ -90,7 +90,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconFavourites"
+            android:src="@drawable/ic_star_white_24dp"
             android:contentDescription="@string/favourites"/> -->
         <ImageButton
             android:id="@+id/addons"
@@ -98,7 +98,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconAddons"
+            android:src="@drawable/ic_extension_white_24dp"
             android:contentDescription="@string/addons"/>
         <ImageButton
             android:id="@+id/weather"
@@ -106,7 +106,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconWeather"
+            android:src="@drawable/ic_sunny_white_24dp"
             android:contentDescription="@string/weather"/>
         <ImageButton
             android:id="@+id/system"
@@ -114,7 +114,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconSettings"
+            android:src="@drawable/ic_settings_white_24dp"
             android:contentDescription="@string/system"/>
     </LinearLayout>
 

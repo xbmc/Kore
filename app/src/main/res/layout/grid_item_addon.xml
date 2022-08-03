@@ -58,7 +58,7 @@
                 android:layout_alignParentEnd="true"
                 style="@style/Widget.Kore.Button.Borderless"
                 android:padding="@dimen/default_icon_padding"
-                android:src="?attr/iconDisabled"
+                android:src="@drawable/ic_cancel_white_24dp"
                 android:contentDescription="@string/addon_disabled"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

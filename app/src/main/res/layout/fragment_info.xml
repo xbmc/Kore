@@ -106,7 +106,7 @@
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/enable_disable"
-                            android:src="?attr/iconBookmark"
+                            android:src="@drawable/ic_bookmark_24dp"
                             android:visibility="gone" />
 
                         <ImageButton
@@ -115,7 +115,7 @@
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/add_to_playlist"
-                            android:src="?attr/iconAddToQueue"
+                            android:src="@drawable/ic_queue_white_24dp"
                             android:visibility="gone" />
 
                         <ImageButton
@@ -124,7 +124,7 @@
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/download"
-                            android:src="?attr/iconDownload"
+                            android:src="@drawable/ic_get_app_white_24dp"
                             android:visibility="gone" />
 
                         <ImageButton
@@ -133,7 +133,7 @@
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/imdb"
-                            android:src="?attr/iconInfoWWW"
+                            android:src="@drawable/ic_open_in_new_white_24dp"
                             android:visibility="gone" />
 
                         <ImageButton
@@ -142,7 +142,7 @@
                             android:layout_width="@dimen/buttonbar_button_width"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/seen"
-                            android:src="?attr/iconSeen"
+                            android:src="@drawable/ic_done_white_24dp"
                             android:visibility="gone" />
                     </LinearLayout>
 
@@ -229,7 +229,7 @@
                             android:layout_marginEnd="@dimen/small_padding"
                             android:layout_marginBottom="@dimen/small_padding"
                             android:contentDescription="@string/toggle_expand"
-                            android:src="?attr/iconExpand" />
+                            android:src="@drawable/ic_expand_more_white_24dp" />
                     </LinearLayout>
                 </RelativeLayout>
 

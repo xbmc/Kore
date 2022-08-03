@@ -56,84 +56,8 @@
     <attr name="ratingBarStarForegroundColor" format="reference|color"/>
 
     <!-- Icons -->
-    <attr name="iconHosts" format="reference" />
-    <attr name="iconRemote" format="reference" />
-    <attr name="iconRemoteToolbar" format="reference" />
-    <attr name="iconMovies" format="reference" />
-    <attr name="iconTvShows" format="reference" />
-    <attr name="iconRemoteDevice" format="reference" />
-    <attr name="iconMusic" format="reference" />
-    <attr name="iconPicture" format="reference" />
-    <attr name="iconHome" format="reference" />
-    <attr name="iconAddons" format="reference" />
-    <attr name="iconFiles" format="reference" />
-    <attr name="iconVideo" format="reference" />
-    <attr name="iconPVR" format="reference" />
-    <attr name="iconFavourites" format="reference" />
-    <attr name="iconWeather" format="reference" />
-    <attr name="iconSystem" format="reference" />
-
-    <attr name="iconNew" format="reference" />
-    <attr name="iconOnOff" format="reference" />
-    <attr name="iconKeyboard" format="reference" />
-
-    <attr name="iconSettings" format="reference" />
-
-    <attr name="iconPlay" format="reference" />
-    <attr name="iconPause" format="reference" />
-    <attr name="iconStop" format="reference" />
-    <attr name="iconFastForward" format="reference" />
-    <attr name="iconRewind" format="reference" />
-    <attr name="iconNext" format="reference" />
-    <attr name="iconPrevious" format="reference" />
-    <attr name="iconSkipForward" format="reference" />
-    <attr name="iconSkipBackward" format="reference" />
-
-    <attr name="iconInfo" format="reference" />
-    <attr name="iconBack" format="reference" />
-    <attr name="iconMenu" format="reference" />
-    <attr name="iconContext" format="reference" />
-
-    <attr name="iconLeft" format="reference" />
-    <attr name="iconRight" format="reference" />
-    <attr name="iconUp" format="reference" />
-    <attr name="iconDown" format="reference" />
-    <attr name="iconSelect" format="reference" />
-
-    <attr name="iconVolumeUp" format="reference" />
-    <attr name="iconVolumeDown" format="reference" />
-    <attr name="iconRepeat" format="reference" />
-    <attr name="iconRepeatOne" format="reference" />
-    <attr name="iconShuffle" format="reference" />
-    <attr name="iconVolumeMute" format="reference" />
-
-    <attr name="iconSubtitles" format="reference" />
-    <attr name="iconAudiostreams" format="reference" />
-    <attr name="iconCelebration" format="reference" />
-
     <attr name="iconOverflow" format="reference" />
 
-    <attr name="iconAddToQueue" format="reference" />
-    <attr name="iconInfoWWW" format="reference" />
-    <attr name="iconSeen" format="reference" />
-    <attr name="iconDisabled" format="reference" />
-    <attr name="iconRating" format="reference" />
-
-    <attr name="iconCollapse" format="reference" />
-    <attr name="iconExpand" format="reference" />
-
-    <attr name="iconSearch" format="reference" />
-
-    <attr name="iconDownload" format="reference" />
-
-    <attr name="iconChevronLeft" format="reference" />
-    <attr name="iconChevronRight" format="reference" />
-
-    <attr name="iconOpenInNew" format="reference" />
-    <attr name="iconBookmark" format="reference" />
-
-    <attr name="iconFABDialsOpenClose" format="reference" />
-    <attr name="iconFABDefault" format="reference" />
     <attr name="iconFABDial" format="integer"/>
 
     <declare-styleable name="SquareGridLayout">

@@ -118,7 +118,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
     }
 
@@ -139,21 +139,6 @@ public class NavigationDrawerFragment extends Fragment {
             selectItem(item, position);
         });
 
-        Resources.Theme theme = requireContext().getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
-                R.attr.iconHosts,
-                R.attr.iconRemote,
-                R.attr.iconMovies,
-                R.attr.iconTvShows,
-                R.attr.iconMusic,
-                R.attr.iconPVR,
-                R.attr.iconFiles,
-                R.attr.iconAddons,
-                R.attr.iconSettings,
-                R.attr.iconFavourites,
-                R.attr.iconFiles
-        });
-
         HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         String hostName = (hostInfo != null) ? hostInfo.getName() : getString(R.string.xbmc_media_center);
         int hostId = (hostInfo != null) ? hostInfo.getId() : 0;
@@ -164,50 +149,37 @@ public class NavigationDrawerFragment extends Fragment {
                               new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.entry_values_nav_drawer_items))));
 
         ArrayList<DrawerItem> items = new ArrayList<>(15);
-        items.add(new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName,
-                                 styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_HOSTS), 0)));
+        items.add(new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName, R.drawable.ic_devices_white_24dp));
         items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_REMOTE,
-                                 getString(R.string.remote),
-                                 styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_REMOTE), 0)));
+                                 getString(R.string.remote), R.drawable.ic_games_white_24dp));
         if (shownItems.contains(String.valueOf(ACTIVITY_MOVIES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MOVIES,
-                                     getString(R.string.movies),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_MOVIES), 0)));
+                                     getString(R.string.movies), R.drawable.ic_movie_white_24dp));
         if (shownItems.contains(String.valueOf(ACTIVITY_TVSHOWS)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_TVSHOWS,
-                                     getString(R.string.tv_shows),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_TVSHOWS), 0)));
+                                     getString(R.string.tv_shows), R.drawable.ic_tv_white_24dp));
         if (shownItems.contains(String.valueOf(ACTIVITY_MUSIC)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MUSIC,
-                                     getString(R.string.music),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_MUSIC), 0)));
+                                     getString(R.string.music), R.drawable.ic_headset_white_24dp));
         if (shownItems.contains(String.valueOf(ACTIVITY_PVR)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_PVR,
-                                     getString(R.string.pvr),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_PVR), 0)));
+                                     getString(R.string.pvr), R.drawable.ic_dvr_white_24dp));
         if (shownItems.contains(String.valueOf(ACTIVITY_FAVOURITES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FAVOURITES,
-                    getString(R.string.favourites),
-                    styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_FAVOURITES), 0)));
+                    getString(R.string.favourites), R.drawable.ic_star_white_24dp));
         if (shownItems.contains(String.valueOf(ACTIVITY_FILES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,
-                    getString(R.string.files),
-                    styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_FILES), 0)));
+                    getString(R.string.files), R.drawable.ic_folder_white_24dp));
         if (shownItems.contains(String.valueOf(ACTIVITY_LOCAL_FILES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_LOCAL_FILES,
-                    getString(R.string.local_files),
-                    styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_LOCAL_FILES), 0)));
+                    getString(R.string.local_files), R.drawable.ic_folder_white_24dp));
 
         if (shownItems.contains(String.valueOf(ACTIVITY_ADDONS)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_ADDONS,
-                                     getString(R.string.addons),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_ADDONS), 0)));
+                                     getString(R.string.addons), R.drawable.ic_extension_white_24dp));
         items.add(new DrawerItem()); // Divider
         items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_SETTINGS,
-                                 getString(R.string.settings),
-                                 styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_SETTINGS), 0)));
-
-        styledAttributes.recycle();
+                                 getString(R.string.settings), R.drawable.ic_settings_white_24dp));
         mDrawerListView.setAdapter(new DrawerItemAdapter(
                 getActivity(),
                 R.layout.list_item_navigation_drawer,
@@ -319,7 +291,7 @@ public class NavigationDrawerFragment extends Fragment {
     private void saveUserLearnedDrawer() {
         if (!mUserLearnedDrawer) {
             mUserLearnedDrawer = true;
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
             sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
 
             // Sync the drawer toggle on the first run
