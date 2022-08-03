@@ -49,5 +49,5 @@
         android:paddingLeft="@dimen/large_padding"
         android:paddingRight="@dimen/large_padding"
         android:text="@string/next"
-        android:drawableEnd="?attr/iconChevronRight"/>
+        android:drawableEnd="@drawable/ic_chevron_right_white_24dp"/>
 </LinearLayout>

@@ -20,63 +20,63 @@
         android:id="@+id/context"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconContext"
+        android:src="@drawable/remote_context_white"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/codec_info"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/up"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconUp"
+        android:src="@drawable/remote_up_white"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/up"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconInfo"
+        android:src="@drawable/remote_info_white"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/info"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/left"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconLeft"
+        android:src="@drawable/remote_left_white"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/left"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/select"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconSelect"
+        android:src="@drawable/remote_select_white"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/select"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/right"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconRight"
+        android:src="@drawable/remote_right_white"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/right"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/back"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconBack"
+        android:src="@drawable/remote_back_white"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/back"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/down"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconDown"
+        android:src="@drawable/remote_down_white"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/down"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/osd"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="?attr/iconMenu"
+        android:src="@drawable/remote_menu_white"
         app:tint="?attr/remoteButtonColorFilter"
         android:contentDescription="@string/osd"/>
 </merge>

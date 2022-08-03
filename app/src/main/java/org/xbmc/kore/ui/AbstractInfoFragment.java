@@ -338,16 +338,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         binding.mediaDetailsRight.setText(dataHolder.getDetails());
 
         if (!TextUtils.isEmpty(dataHolder.getDescription())) {
-            Resources.Theme theme = requireActivity().getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
-                    R.attr.iconExpand,
-                    R.attr.iconCollapse
-            });
-            final int iconCollapseResId =
-                    styledAttributes.getResourceId(styledAttributes.getIndex(0), R.drawable.ic_expand_less_white_24dp);
-            final int iconExpandResId =
-                    styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_expand_more_white_24dp);
-            styledAttributes.recycle();
+            final int iconCollapseResId = R.drawable.ic_expand_more_white_24dp;
+            final int iconExpandResId = R.drawable.ic_expand_less_white_24dp;
             binding.mediaDescriptionContainer.setOnClickListener(v -> {
                 binding.mediaDescription.toggle();
                 binding.showAll.setImageResource(binding.mediaDescription.isExpanded() ? iconCollapseResId : iconExpandResId);

@@ -18,7 +18,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_show_remote"
           android:title="@string/remote"
-          android:icon="?attr/iconRemoteToolbar"
+          android:icon="@drawable/ic_games_white_24dp"
           android:orderInCategory="1"
           app:showAsAction="always" />
 </menu>

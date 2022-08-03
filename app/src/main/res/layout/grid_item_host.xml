@@ -32,7 +32,7 @@
             android:layout_height="@dimen/default_icon_size"
             android:padding="@dimen/default_icon_padding"
             android:layout_alignParentStart="true"
-            android:src="?attr/iconHosts"/>
+            android:src="@drawable/ic_devices_white_24dp"/>
 
         <ImageView
             android:id="@+id/list_context_menu"

@@ -76,7 +76,7 @@
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.Kore.Button.Borderless"
-                android:src="?attr/iconVolumeMute"
+                android:src="@drawable/ic_volume_off_white_24dp"
                 android:contentDescription="@string/volume_mute"
                 android:visibility="gone"/>
 
@@ -86,7 +86,7 @@
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.Kore.Button.Borderless"
-                android:src="?attr/iconPlay"
+                android:src="@drawable/ic_play_arrow_white_24dp"
                 android:contentDescription="@string/play"
                 app:tint="?attr/buttonColorOverPrimary" />
         </LinearLayout>
