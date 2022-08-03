@@ -19,7 +19,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.CardView">
+    style="@style/Widget.Kore.CardView">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,14 +39,14 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/art"
             android:layout_alignTop="@id/art"
-            style="@style/TextAppearance.Medialist.Title"/>
+            style="@style/Widget.Kore.TextView.MediaList.Title"/>
         <TextView
             android:id="@+id/details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/title"
             android:layout_below="@id/title"
-            style="@style/TextAppearance.Medialist.Details"/>
+            style="@style/Widget.Kore.TextView.MediaList.Details"/>
         <TextView
             android:id="@+id/duration"
             android:layout_width="wrap_content"
@@ -54,6 +54,6 @@
             android:layout_alignStart="@id/title"
             android:layout_below="@id/details"
             android:layout_alignParentBottom="true"
-            style="@style/TextAppearance.Medialist.OtherInfo"/>
+            style="@style/Widget.Kore.TextView.MediaList.Info"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -278,8 +278,8 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                     R.attr.colorFinished
             });
 
-            int inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.orange_500));
-            int finishedColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.green_400));
+            int inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.coral));
+            int finishedColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.darkseagreen));
             styledAttributes.recycle();
 
             seasonsList.removeAllViews();

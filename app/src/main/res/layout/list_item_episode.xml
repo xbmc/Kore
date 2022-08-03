@@ -19,7 +19,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    style="@style/Widget.CardView">
+    style="@style/Widget.Kore.CardView">
 
     <RelativeLayout
         android:id="@+id/container"
@@ -38,7 +38,7 @@
             android:id="@+id/episode_number"
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.Medialist.Title"
+            style="@style/Widget.Kore.TextView.MediaList.Title"
             android:paddingStart="@dimen/default_padding"
             android:paddingEnd="@dimen/small_padding"
             android:layout_alignTop="@id/art"
@@ -51,7 +51,7 @@
             android:layout_below="@id/episode_number"
             android:layout_alignStart="@id/episode_number"
             android:padding="@dimen/default_icon_padding"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconSeen"
             android:contentDescription="@string/seen"/>
 
@@ -62,7 +62,7 @@
             android:layout_alignTop="@id/art"
             android:layout_alignParentEnd="true"
             android:padding="@dimen/default_icon_padding"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconOverflow"
             android:contentDescription="@string/action_options"/>
 
@@ -73,7 +73,7 @@
             android:layout_alignTop="@id/episode_number"
             android:layout_toEndOf="@id/episode_number"
             android:layout_toStartOf="@id/list_context_menu"
-            style="@style/TextAppearance.Medialist.Title"
+            style="@style/Widget.Kore.TextView.MediaList.Title"
             android:paddingTop="@dimen/small_padding"
             android:paddingStart="@dimen/small_padding"
             android:paddingEnd="@dimen/small_padding"/>
@@ -84,7 +84,7 @@
             android:layout_height="@dimen/default_icon_size"
             android:layout_alignStart="@id/title"
             android:layout_below="@id/title"
-            style="@style/TextAppearance.Medialist.Details"
+            style="@style/Widget.Kore.TextView.MediaList.Details"
             android:paddingStart="@dimen/small_padding"
             android:paddingEnd="@dimen/small_padding"
             android:paddingTop="0dp"

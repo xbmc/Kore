@@ -27,7 +27,7 @@
         android:id="@+id/next_episode_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.Media.Title"
+        style="@style/Widget.Kore.TextView.MediaTitle"
         android:paddingLeft="@dimen/default_padding"
         android:paddingRight="@dimen/default_padding"
         android:text="@string/tvshow_next_episode"/>
@@ -44,7 +44,7 @@
         android:id="@+id/seasons_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.Media.Title"
+        style="@style/Widget.Kore.TextView.MediaTitle"
         android:paddingLeft="@dimen/default_padding"
         android:paddingRight="@dimen/default_padding"
         android:paddingTop="@dimen/default_padding"

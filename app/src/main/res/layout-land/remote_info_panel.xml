@@ -14,7 +14,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/info_panel"
     android:layout_width="0dp"
@@ -23,22 +24,18 @@
     android:paddingTop="@dimen/remote_page_indicator_height"
     android:layout_marginLeft="@dimen/remote_content_hmargin"
     android:layout_marginRight="@dimen/remote_content_hmargin"
-    tools:ignore="InconsistentLayout"
     tools:visibility="gone">
-    <!--android:background="?attr/cardBackground">-->
 
     <TextView
         android:id="@+id/info_title"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        style="@style/TextAppearance.Info.Title"
-        tools:ignore="InconsistentLayout"/>
+        style="@style/Widget.Kore.TextView.InfoTitle"/>
 
     <TextView
         android:id="@+id/info_message"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        style="@style/TextAppearance.Info.Details"
         android:layout_below="@id/info_title"
-        tools:ignore="InconsistentLayout"/>
+        style="@style/Widget.Kore.TextView.InfoDetails"/>
 </RelativeLayout>

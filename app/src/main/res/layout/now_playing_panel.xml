@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/small_padding"
                     android:paddingRight="@dimen/small_padding"
-                    android:textAppearance="@style/TextAppearance.Notification.Title"
+                    android:textAppearance="@style/TextAppearance.Kore.NowPlaying.Title"
                     android:singleLine="true"
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/small_padding"
                     android:paddingRight="@dimen/small_padding"
-                    android:textAppearance="@style/TextAppearance.Notification.Details"
+                    android:textAppearance="@style/TextAppearance.Kore.NowPlaying.Details"
                     android:singleLine="true"
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
@@ -75,7 +75,7 @@
                 android:layout_width="@dimen/default_icon_size"
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
-                style="@style/Widget.Button.Borderless"
+                style="@style/Widget.Kore.Button.Borderless"
                 android:src="?attr/iconVolumeMute"
                 android:contentDescription="@string/volume_mute"
                 android:visibility="gone"/>
@@ -85,7 +85,7 @@
                 android:layout_width="@dimen/default_icon_size"
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_gravity="center_vertical"
-                style="@style/Widget.Button.Borderless"
+                style="@style/Widget.Kore.Button.Borderless"
                 android:src="?attr/iconPlay"
                 android:contentDescription="@string/play"
                 app:tint="?attr/buttonColorOverPrimary" />
@@ -100,7 +100,7 @@
             android:paddingLeft="@dimen/small_padding"
             android:orientation="horizontal"
             android:background="?attr/contentBackgroundColor"
-            style="@style/TextAppearance.Media.Progress"/>
+            style="@style/Widget.Kore.TextView.MediaProgress"/>
 
         <!-- Media playback control buttons -->
         <org.xbmc.kore.ui.widgets.MediaPlaybackBar
@@ -109,7 +109,6 @@
             android:layout_height="@dimen/buttonbar_height"
             android:orientation="horizontal"
             android:background="?attr/contentBackgroundColor"
-            style="@style/ButtonBar"
             app:view_mode="full" />
 
         <!-- Media action buttons -->
@@ -118,7 +117,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/buttonbar_height"
             android:orientation="horizontal"
-            style="@style/ButtonBar"
             android:background="?attr/contentBackgroundColor" />
     </LinearLayout>
 </merge>

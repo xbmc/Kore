@@ -19,7 +19,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.CardView">
+    style="@style/Widget.Kore.CardView">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/art"
                 android:layout_alignTop="@id/art"
-                style="@style/TextAppearance.Medialist.Title"/>
+                style="@style/Widget.Kore.TextView.MediaList.Title"/>
 
             <TextView
                 android:id="@+id/details"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@id/title"
                 android:layout_below="@id/title"
-                style="@style/TextAppearance.Medialist.Details"
+                style="@style/Widget.Kore.TextView.MediaList.Details"
                 android:paddingBottom="0dp"/>
 
             <ImageView
@@ -56,7 +56,7 @@
                 android:layout_height="@dimen/default_icon_size"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                style="@style/Widget.Button.Borderless"
+                style="@style/Widget.Kore.Button.Borderless"
                 android:padding="@dimen/default_icon_padding"
                 android:src="?attr/iconDisabled"
                 android:contentDescription="@string/addon_disabled"/>

@@ -671,7 +671,7 @@ public class UIUtils {
                 i += 3;
             } else if (s.startsWith("[/B]")) {
                 if (bold.end()) {
-                    sb.setSpan(new TextAppearanceSpan(context, R.style.TextAppearance_Bold),
+                    sb.setSpan(new TextAppearanceSpan(context, R.style.TextAppearanceSpanBold),
                             bold.index, sb.length(), 0);
                 } else if (bold.imbalanced()) {
                     sb.append("[/B]");
@@ -684,7 +684,7 @@ public class UIUtils {
                 i += 3;
             } else if (s.startsWith("[/I]")) {
                 if (italic.end()) {
-                    sb.setSpan(new TextAppearanceSpan(context, R.style.TextAppearance_Italic),
+                    sb.setSpan(new TextAppearanceSpan(context, R.style.TextAppearanceSpanItalic),
                             italic.index, sb.length(), 0);
                 } else if (italic.imbalanced()) {
                     sb.append("[/I]");

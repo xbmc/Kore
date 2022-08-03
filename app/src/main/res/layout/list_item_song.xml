@@ -25,7 +25,7 @@
         android:id="@+id/track_number"
         android:layout_width="@dimen/default_icon_size"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.Medialist.Title"
+        style="@style/Widget.Kore.TextView.MediaList.Title"
         android:paddingStart="@dimen/small_padding"
         android:paddingEnd="@dimen/small_padding"
         android:paddingTop="@dimen/small_padding" />
@@ -36,7 +36,7 @@
         android:padding="@dimen/default_icon_padding"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:src="?attr/iconOverflow"
         android:contentDescription="@string/action_options"/>
 
@@ -44,7 +44,7 @@
         android:id="@+id/song_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.Medialist.Title"
+        style="@style/Widget.Kore.TextView.MediaList.Title"
         android:layout_toEndOf="@id/track_number"
         android:layout_toStartOf="@id/list_context_menu"
         android:layout_alignBottom="@id/track_number"/>
@@ -54,6 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/song_title"
         android:layout_below="@id/song_title"
-        style="@style/TextAppearance.Medialist.Details"
+        style="@style/Widget.Kore.TextView.MediaList.Details"
         android:paddingBottom="@dimen/small_padding"/>
 </RelativeLayout>

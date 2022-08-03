@@ -11,7 +11,7 @@
 
     <org.xbmc.kore.ui.widgets.HighlightButton
         android:id="@+id/vcd_volume_mute"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:layout_width="@dimen/default_icon_size"
         android:layout_height="@dimen/default_icon_size"
         android:contentDescription="@string/volume_mute"
@@ -20,7 +20,7 @@
 
     <org.xbmc.kore.ui.widgets.HighlightButton
         android:id="@+id/vcd_volume_muted_indicator"
-        style="@style/Widget.Button.Borderless"
+        style="@style/Widget.Kore.Button.Borderless"
         android:layout_width="@dimen/default_icon_size"
         android:layout_height="@dimen/default_icon_size"
         android:contentDescription="@string/volume_mute"

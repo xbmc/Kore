@@ -19,7 +19,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.CardView">
+    style="@style/Widget.Kore.CardView">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,13 +42,13 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.Medialist.Title"
+                style="@style/Widget.Kore.TextView.MediaList.Title"
                 android:paddingTop="0dp"/>
             <TextView
                 android:id="@+id/genres"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.Medialist.Details"
+                style="@style/Widget.Kore.TextView.MediaList.Details"
                 android:paddingBottom="0dp"/>
 
         </LinearLayout>
@@ -58,7 +58,7 @@
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
             android:padding="@dimen/default_icon_padding"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconOverflow"
             android:contentDescription="@string/action_options"/>
     </LinearLayout>

@@ -19,7 +19,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    style="@style/Widget.CardView"
+    style="@style/Widget.Kore.CardView"
     android:focusable="true"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground">
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/art"
-            style="@style/TextAppearance.Medialist.Title"
+            style="@style/Widget.Kore.TextView.MediaList.Title"
             android:paddingTop="@dimen/small_padding"/>
 
         <ProgressBar
@@ -62,6 +62,6 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/season"
             android:layout_below="@id/season_progress_bar"
-            style="@style/TextAppearance.Medialist.Details"/>
+            style="@style/Widget.Kore.TextView.MediaList.Details"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

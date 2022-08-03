@@ -27,106 +27,95 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:orientation="vertical"
-        style="@style/ButtonBar.Bottom">
+        android:background="?attr/contentBackgroundColor" >
         <ImageButton
             android:id="@+id/home"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconHome"
-            android:contentDescription="@string/home"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/home"/>
         <ImageButton
             android:id="@+id/movies"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconMovies"
-            android:contentDescription="@string/movies"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/movies"/>
         <ImageButton
             android:id="@+id/tv_shows"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconTvShows"
-            android:contentDescription="@string/tv_shows"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/tv_shows"/>
         <ImageButton
             android:id="@+id/music"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconMusic"
-            android:contentDescription="@string/music"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/music"/>
         <ImageButton
             android:id="@+id/pvr"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconPVR"
-            android:contentDescription="@string/pvr"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/pvr"/>
         <ImageButton
             android:id="@+id/pictures"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconPicture"
-            android:contentDescription="@string/pictures"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/pictures"/>
         <ImageButton
             android:id="@+id/videos"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconVideo"
-            android:contentDescription="@string/videos"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/videos"/>
         <!-- <ImageButton
             android:id="@+id/favourites"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconFavourites"
-            android:tint="?attr/defaultButtonColorFilter"
             android:contentDescription="@string/favourites"/> -->
         <ImageButton
             android:id="@+id/addons"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconAddons"
-            android:contentDescription="@string/addons"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/addons"/>
         <ImageButton
             android:id="@+id/weather"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconWeather"
-            android:contentDescription="@string/weather"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/weather"/>
         <ImageButton
             android:id="@+id/system"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
+            style="@style/Widget.Kore.Button.Borderless"
             android:src="?attr/iconSettings"
-            android:contentDescription="@string/system"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:contentDescription="@string/system"/>
     </LinearLayout>
 
     <LinearLayout
@@ -160,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/art"
                 android:layout_alignParentEnd="true"
-                style="@style/TextAppearance.Media.Remote.Title"
+                style="@style/Widget.Kore.TextView.MediaTitle.Remote"
                 android:background="?attr/contentBackgroundColor"/>
             <TextView
                 android:id="@+id/details"
@@ -168,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
                 android:layout_alignStart="@id/title"
-                style="@style/TextAppearance.Media.Remote.Details"
+                style="@style/Widget.Kore.TextView.MediaDetails.Remote"
                 android:background="?attr/contentBackgroundColor"/>
 
             <!-- Media playback control buttons -->
@@ -180,7 +169,6 @@
                 android:layout_alignStart="@id/details"
                 android:layout_alignBottom="@+id/art"
                 android:orientation="horizontal"
-                style="@style/ButtonBar"
                 android:background="?attr/contentBackgroundColor" />
 
             <!-- Progress bar -->
@@ -204,14 +192,13 @@
                 android:layout_below="@id/progress_info"
                 android:layout_alignStart="@id/art"
                 android:orientation="horizontal"
-                style="@style/ButtonBar"
                 android:background="?attr/contentBackgroundColor" />
 
         </RelativeLayout>
 
         <org.xbmc.kore.ui.widgets.ControlPad
             android:id="@+id/remote"
-            style="@style/ControlPad"
+            style="@style/Widget.Kore.ControlPad"
             app:columnCount="3"/>
 
     </LinearLayout>

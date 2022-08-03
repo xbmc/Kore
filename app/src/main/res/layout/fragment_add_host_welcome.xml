@@ -35,15 +35,15 @@
                 android:id="@android:id/title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/wizard_title"
-                style="@style/WizardTitle"
+                style="@style/Widget.Kore.TextView.WizardTitle"
                 android:text="@string/add_xbmc" />
 
             <TextView
                 android:id="@+id/add_host_message"
-                style="@style/WizardMessage"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_below="@android:id/title"/>
+                android:layout_below="@android:id/title"
+                style="@style/Widget.Kore.TextView.WizardMessage"/>
         </RelativeLayout>
     </ScrollView>
 

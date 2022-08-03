@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:textAppearance="@style/TextAppearance.List.Day"
+        android:textAppearance="@style/Widget.Kore.TextView.Day"
         android:paddingTop="@dimen/small_padding"
         android:paddingBottom="@dimen/tiny_padding"
         android:paddingLeft="@dimen/small_padding"

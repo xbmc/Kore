@@ -15,14 +15,15 @@
    limitations under the License.
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:paddingTop="@dimen/small_padding"
-             android:paddingBottom="@dimen/small_padding">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/small_padding"
+    android:paddingBottom="@dimen/small_padding">
 
     <View
         android:id="@+id/separator"
-        style="@style/DefaultDividerH"/>
+        style="@style/Widget.Kore.Divider.Horizontal"/>
 
 </FrameLayout>
