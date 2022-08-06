@@ -180,10 +180,12 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     private void displayNextEpisodeList(Cursor cursor) {
         TextView nextEpisodeTitle = requireActivity().findViewById(R.id.next_episode_title);
         GridLayout nextEpisodeList = requireActivity().findViewById(R.id.next_episode_list);
+        View nextEpisodeDivider = requireActivity().findViewById(R.id.next_episode_divider);
 
         if (cursor.moveToFirst()) {
             nextEpisodeTitle.setVisibility(View.VISIBLE);
             nextEpisodeList.setVisibility(View.VISIBLE);
+            nextEpisodeDivider.setVisibility(View.VISIBLE);
 
             HostManager hostManager = HostManager.getInstance(requireContext());
 
@@ -214,16 +216,18 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 String thumbnail = cursor.getString(NextEpisodesListQuery.THUMBNAIL);
 
                 View episodeView = LayoutInflater.from(requireContext())
-                                                 .inflate(R.layout.list_item_next_episode, nextEpisodeList, false);
+                                                 .inflate(R.layout.grid_item_tvshow_episode, nextEpisodeList, false);
 
                 ImageView artView = episodeView.findViewById(R.id.art);
                 TextView titleView = episodeView.findViewById(R.id.title);
                 TextView detailsView = episodeView.findViewById(R.id.details);
                 TextView durationView = episodeView.findViewById(R.id.duration);
+                ImageView watchedCheckView = episodeView.findViewById(R.id.watched_check);
 
                 titleView.setText(title);
                 detailsView.setText(seasonEpisode);
                 durationView.setText(duration);
+                watchedCheckView.setVisibility(View.GONE);
 
                 UIUtils.loadImageWithCharacterAvatar(requireContext(), hostManager,
                                                      thumbnail, title,
@@ -246,6 +250,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             // No episodes, hide views
             nextEpisodeTitle.setVisibility(View.GONE);
             nextEpisodeList.setVisibility(View.GONE);
+            nextEpisodeDivider.setVisibility(View.GONE);
         }
     }
 
@@ -257,10 +262,12 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     private void displaySeasonList(Cursor cursor) {
         TextView seasonsListTitle = requireActivity().findViewById(R.id.seasons_title);
         GridLayout seasonsList = requireActivity().findViewById(R.id.seasons_list);
+        View seasonsDivider = requireActivity().findViewById(R.id.seasons_divider);
 
         if (cursor.moveToFirst()) {
             seasonsListTitle.setVisibility(View.VISIBLE);
             seasonsList.setVisibility(View.VISIBLE);
+            seasonsDivider.setVisibility(View.VISIBLE);
 
             HostManager hostManager = HostManager.getInstance(requireContext());
 
@@ -284,7 +291,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 int numEpisodes = cursor.getInt(SeasonsListQuery.EPISODE);
                 int watchedEpisodes = cursor.getInt(SeasonsListQuery.WATCHEDEPISODES);
 
-                View seasonView = LayoutInflater.from(requireContext()).inflate(R.layout.grid_item_season, seasonsList, false);
+                View seasonView = LayoutInflater.from(requireContext()).inflate(R.layout.grid_item_tvshow_season, seasonsList, false);
 
                 ImageView seasonPictureView = seasonView.findViewById(R.id.art);
                 TextView seasonNumberView = seasonView.findViewById(R.id.season);
@@ -313,6 +320,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             // No seasons, hide views
             seasonsListTitle.setVisibility(View.GONE);
             seasonsList.setVisibility(View.GONE);
+            seasonsDivider.setVisibility(View.GONE);
         }
     }
 

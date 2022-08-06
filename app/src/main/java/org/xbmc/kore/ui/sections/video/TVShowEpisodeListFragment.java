@@ -239,7 +239,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         @Override
         public RecyclerViewCursorAdapter.CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(requireContext())
-                                      .inflate(R.layout.list_item_episode, parent, false);
+                                      .inflate(R.layout.grid_item_tvshow_episode, parent, false);
             return new ViewHolder(view, requireContext(), statusWatchedColor,
                                   contextlistItemMenuClickListener, hostManager,
                                   artWidth, artHeight);
@@ -254,9 +254,9 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
         TextView titleView;
         TextView detailsView;
-        TextView episodenumberView;
+        TextView durationView;
         ImageView contextMenuView;
-        ImageView checkmarkView;
+        ImageView watchedCheckView;
         ImageView artView;
         HostManager hostManager;
         int artWidth;
@@ -278,9 +278,9 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
             this.artHeight = artHeight;
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
-            episodenumberView = itemView.findViewById(R.id.episode_number);
+            durationView = itemView.findViewById(R.id.duration);
             contextMenuView = itemView.findViewById(R.id.list_context_menu);
-            checkmarkView = itemView.findViewById(R.id.checkmark);
+            watchedCheckView = itemView.findViewById(R.id.watched_check);
             artView = itemView.findViewById(R.id.art);
             contextMenuView.setOnClickListener(contextlistItemMenuClickListener);
         }
@@ -291,22 +291,24 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
             dataHolder.setId(cursor.getInt(EpisodesListQuery.EPISODEID));
             dataHolder.setTitle(cursor.getString(EpisodesListQuery.TITLE));
 
-            episodenumberView.setText(
-                    String.format(context.getString(R.string.episode_number),
-                                  cursor.getInt(EpisodesListQuery.EPISODE)));
+            String title = cursor.getString(EpisodesListQuery.TITLE);
+            String seasonEpisode = String.format(context.getString(R.string.episode_number),
+                                                 cursor.getInt(EpisodesListQuery.EPISODE));
             int runtime = cursor.getInt(EpisodesListQuery.RUNTIME) / 60;
             String duration = runtime > 0 ?
                               String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
                               "  |  " + cursor.getString(EpisodesListQuery.FIRSTAIRED) :
                               cursor.getString(EpisodesListQuery.FIRSTAIRED);
-            titleView.setText(cursor.getString(EpisodesListQuery.TITLE));
-            detailsView.setText(duration);
+
+            titleView.setText(title);
+            detailsView.setText(seasonEpisode);
+            durationView.setText(duration);
 
             if (cursor.getInt(EpisodesListQuery.PLAYCOUNT) > 0) {
-                checkmarkView.setVisibility(View.VISIBLE);
-                checkmarkView.setColorFilter(statusWatchedColor);
+                watchedCheckView.setVisibility(View.VISIBLE);
+                watchedCheckView.setColorFilter(statusWatchedColor);
             } else {
-                checkmarkView.setVisibility(View.INVISIBLE);
+                watchedCheckView.setVisibility(View.INVISIBLE);
             }
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
