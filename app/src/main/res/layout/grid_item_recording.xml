@@ -15,45 +15,41 @@
    limitations under the License.
 -->
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.Kore.CardView">
+    style="@style/Widget.Kore.ListItem">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/art"
+        android:layout_width="@dimen/recordinglist_art_width"
+        android:layout_height="@dimen/recordinglist_art_heigth"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/poster"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/Widget.Kore.TextView.MediaList.Title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/art"
+        android:layout_toEndOf="@id/art" />
 
-        <ImageView
-            android:id="@+id/art"
-            android:layout_width="@dimen/recordinglist_art_width"
-            android:layout_height="@dimen/recordinglist_art_heigth"
-            android:layout_alignParentStart="true"
-            android:contentDescription="@string/poster"
-            android:scaleType="centerCrop"/>
+    <TextView
+        android:id="@+id/details"
+        style="@style/Widget.Kore.TextView.MediaList.Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_alignStart="@id/title" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/art"
-            android:layout_alignTop="@id/art"
-            style="@style/Widget.Kore.TextView.MediaList.Title"/>
-        <TextView
-            android:id="@+id/details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/title"
-            android:layout_below="@id/title"
-            style="@style/Widget.Kore.TextView.MediaList.Details"/>
-        <TextView
-            android:id="@+id/duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/title"
-            android:layout_below="@id/details"
-            android:layout_alignParentBottom="true"
-            style="@style/Widget.Kore.TextView.MediaList.Info"/>
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/duration"
+        style="@style/Widget.Kore.TextView.MediaList.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/details"
+        android:layout_alignStart="@id/title"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

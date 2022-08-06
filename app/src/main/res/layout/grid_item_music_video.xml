@@ -15,45 +15,41 @@
    limitations under the License.
 -->
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.Kore.CardView">
+    style="@style/Widget.Kore.ListItem"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/art"
+        android:layout_width="@dimen/musicvideolist_art_width"
+        android:layout_height="@dimen/musicvideolist_art_heigth"
+        android:contentDescription="@string/poster"
+        android:scaleType="centerCrop" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/art"
-            android:layout_width="@dimen/musicvideolist_art_width"
-            android:layout_height="@dimen/musicvideolist_art_heigth"
-            android:contentDescription="@string/poster"
-            android:scaleType="centerCrop"/>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/title"
+            style="@style/Widget.Kore.TextView.MediaList.Title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Kore.TextView.MediaList.Title"/>
-            <TextView
-                android:id="@+id/details"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                style="@style/Widget.Kore.TextView.MediaList.Details"/>
+        <TextView
+            android:id="@+id/details"
+            style="@style/Widget.Kore.TextView.MediaList.Details"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Kore.TextView.MediaList.Info"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/duration"
+            style="@style/Widget.Kore.TextView.MediaList.Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</LinearLayout>

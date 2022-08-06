@@ -41,10 +41,10 @@ import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentHostListBinding;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
@@ -94,7 +94,8 @@ public class HostListFragment extends Fragment {
         binding.list.setEmptyView(binding.empty);
         adapter = new HostListAdapter(context, R.layout.grid_item_host, hostInfoRows);
         binding.list.setAdapter(adapter);
-        binding.list.setItemChecked(currentHostPosition, true);
+//        binding.list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+//        binding.list.setItemChecked(currentHostPosition, true);
         binding.list.setOnItemClickListener((parent, view, position, itemId) -> {
             HostInfoRow clickedHostRow = hostInfoRows.get(position);
 

@@ -15,51 +15,48 @@
    limitations under the License.
 -->
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.Kore.CardView">
+    style="@style/Widget.Kore.ListItem"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/art"
+        android:layout_width="@dimen/artistlist_art_width"
+        android:layout_height="@dimen/artistlist_art_heigth"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/poster" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/art"
-            android:layout_width="@dimen/artistlist_art_width"
-            android:layout_height="@dimen/artistlist_art_heigth"
-            android:contentDescription="@string/poster"/>
+        <TextView
+            android:id="@+id/name"
+            style="@style/Widget.Kore.TextView.MediaList.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="0dp" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical">
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Kore.TextView.MediaList.Title"
-                android:paddingTop="0dp"/>
-            <TextView
-                android:id="@+id/genres"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Kore.TextView.MediaList.Details"
-                android:paddingBottom="0dp"/>
+        <TextView
+            android:id="@+id/genres"
+            style="@style/Widget.Kore.TextView.MediaList.Details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp" />
 
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/list_context_menu"
-            android:layout_width="@dimen/default_icon_size"
-            android:layout_height="@dimen/default_icon_size"
-            android:padding="@dimen/default_icon_padding"
-            style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconOverflow"
-            android:contentDescription="@string/action_options"/>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/list_context_menu"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:layout_width="@dimen/default_icon_size"
+        android:layout_height="@dimen/default_icon_size"
+        android:contentDescription="@string/action_options"
+        android:padding="@dimen/default_icon_padding"
+        android:src="?attr/iconOverflow" />
+</LinearLayout>
