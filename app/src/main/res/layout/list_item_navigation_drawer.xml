@@ -29,7 +29,7 @@
         android:layout_marginRight="@dimen/default_padding"
         android:layout_centerVertical="true"
         android:src="@mipmap/ic_launcher"
-        app:tint="?attr/defaultButtonColorFilter"
+        app:tint="?attr/colorOnSurfaceVariant"
         tools:ignore="ContentDescription" />
 
     <TextView

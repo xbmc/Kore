@@ -15,39 +15,33 @@
    limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/wizard_button_bar"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="?attr/buttonBarBackgroundColor">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/wizard_button_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/large_padding"
+    android:paddingEnd="@dimen/large_padding"
+    android:paddingTop="@dimen/default_padding"
+    android:paddingBottom="@dimen/default_padding"
+    android:background="?attr/colorSurface"
+    >
 
     <Button
         android:id="@+id/previous"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Widget.Kore.Button.Borderless"
-        android:gravity="start|center_vertical"
-        android:paddingLeft="@dimen/large_padding"
-        android:paddingRight="@dimen/large_padding"
-        android:text="@string/previous"/>
-    <!--android:drawableLeft="?attr/iconChevronLeft"-->
-
-    <!--<View-->
-        <!--style="@style/DefaultDividerV"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginBottom="8dp"/>-->
+        android:layout_alignParentStart="true"
+        android:text="@string/previous"
+        style="@style/Widget.Material3.Button.TonalButton"/>
 
     <Button
         android:id="@+id/next"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Widget.Kore.Button.Borderless"
-        android:gravity="end|center_vertical"
-        android:paddingLeft="@dimen/large_padding"
-        android:paddingRight="@dimen/large_padding"
+        android:layout_alignParentEnd="true"
         android:text="@string/next"
-        android:drawableEnd="@drawable/ic_chevron_right_white_24dp"/>
-</LinearLayout>
+        app:icon="@drawable/ic_chevron_right_white_24dp"
+        style="@style/Widget.Material3.Button.Icon"/>
+</RelativeLayout>

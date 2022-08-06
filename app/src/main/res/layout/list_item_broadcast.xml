@@ -28,8 +28,7 @@
         android:layout_alignParentStart="true"
         android:minWidth="@dimen/epg_time_width"
         android:gravity="end"
-        android:textAppearance="@style/TextAppearance.Kore.Title.Small"
-        android:textColor="?attr/appTextColorPrimary"/>
+        android:textAppearance="@style/TextAppearance.Kore.Title.Small"/>
 
     <TextView
         android:id="@+id/end_time"
@@ -39,8 +38,7 @@
         android:gravity="end"
         android:layout_below="@id/start_time"
         android:layout_alignEnd="@id/start_time"
-        android:textAppearance="@style/TextAppearance.Kore.Body"
-        android:textColor="?attr/appTextColorSecondary"/>
+        android:textAppearance="@style/TextAppearance.Kore.Body"/>
 
     <TextView
         android:id="@+id/title"

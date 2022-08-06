@@ -17,6 +17,71 @@
 <resources>
     <color name="ic_launcher_background">#0BB1E6</color>
 
+    <!--
+    Colors for Material 3 themes, generated on https://m3.material.io/theme-builder#/custom with seed #0f85a5
+    Where appropriate colors where tweaked, changing their tone, using the tonal palletes provided by them theme builder
+    -->
+    <color name="seed">#0f85a5</color>
+    <color name="theme_kore_light_primary">#006781</color>
+    <color name="theme_kore_light_onPrimary">#FFFFFF</color>
+    <color name="theme_kore_light_primaryContainer">#B9EAFF</color>
+    <color name="theme_kore_light_onPrimaryContainer">#001F29</color>
+    <color name="theme_kore_light_secondary">#4C626B</color>
+    <color name="theme_kore_light_onSecondary">#FFFFFF</color>
+    <color name="theme_kore_light_secondaryContainer">#CFE6F1</color>
+    <color name="theme_kore_light_onSecondaryContainer">#071E26</color>
+    <color name="theme_kore_light_tertiary">#5B5B7E</color>
+    <color name="theme_kore_light_onTertiary">#FFFFFF</color>
+    <color name="theme_kore_light_tertiaryContainer">#E1DFFF</color>
+    <color name="theme_kore_light_onTertiaryContainer">#181837</color>
+    <color name="theme_kore_light_error">#BA1A1A</color>
+    <color name="theme_kore_light_errorContainer">#FFDAD6</color>
+    <color name="theme_kore_light_onError">#FFFFFF</color>
+    <color name="theme_kore_light_onErrorContainer">#410002</color>
+    <color name="theme_kore_light_background">#FBFCFE</color>
+    <color name="theme_kore_light_onBackground">#191C1D</color>
+    <color name="theme_kore_light_surface">#FBFCFE</color>
+    <color name="theme_kore_light_onSurface">#191C1D</color>
+    <color name="theme_kore_light_surfaceVariant">#DCE4E8</color>
+    <color name="theme_kore_light_onSurfaceVariant">#40484C</color>
+    <color name="theme_kore_light_outline">#70787C</color>
+    <color name="theme_kore_light_inverseOnSurface">#EFF1F2</color>
+    <color name="theme_kore_light_inverseSurface">#2E3132</color>
+    <color name="theme_kore_light_inversePrimary">#5FD4FD</color>
+    <color name="theme_kore_light_shadow">#000000</color>
+    <color name="theme_kore_light_surfaceTint">#006781</color>
+    <color name="theme_kore_light_surfaceTintColor">#006781</color>
+    <color name="theme_kore_dark_primary">#5FD4FD</color>
+    <color name="theme_kore_dark_onPrimary">#003544</color>
+    <color name="theme_kore_dark_primaryContainer">#004D62</color>
+    <color name="theme_kore_dark_onPrimaryContainer">#B9EAFF</color>
+    <color name="theme_kore_dark_secondary">#B3CAD5</color>
+    <color name="theme_kore_dark_onSecondary">#1E333C</color>
+    <color name="theme_kore_dark_secondaryContainer">#354A53</color>
+    <color name="theme_kore_dark_onSecondaryContainer">#CFE6F1</color>
+    <color name="theme_kore_dark_tertiary">#C4C3EB</color>
+    <color name="theme_kore_dark_onTertiary">#2D2D4D</color>
+    <color name="theme_kore_dark_tertiaryContainer">#434465</color>
+    <color name="theme_kore_dark_onTertiaryContainer">#E1DFFF</color>
+    <color name="theme_kore_dark_error">#FFB4AB</color>
+    <color name="theme_kore_dark_errorContainer">#93000A</color>
+    <color name="theme_kore_dark_onError">#690005</color>
+    <color name="theme_kore_dark_onErrorContainer">#FFDAD6</color>
+    <color name="theme_kore_dark_background">#191C1D</color>
+    <color name="theme_kore_dark_onBackground">#E1E3E4</color>
+    <color name="theme_kore_dark_surface">#191C1D</color>
+    <color name="theme_kore_dark_onSurface">#E1E3E4</color>
+    <color name="theme_kore_dark_surfaceVariant">#40484C</color>
+    <color name="theme_kore_dark_onSurfaceVariant">#C0C8CC</color>
+    <color name="theme_kore_dark_outline">#8A9296</color>
+    <color name="theme_kore_dark_inverseOnSurface">#191C1D</color>
+    <color name="theme_kore_dark_inverseSurface">#E1E3E4</color>
+    <color name="theme_kore_dark_inversePrimary">#006781</color>
+    <color name="theme_kore_dark_shadow">#000000</color>
+    <color name="theme_kore_dark_surfaceTint">#5FD4FD</color>
+    <color name="theme_kore_dark_surfaceTintColor">#5FD4FD</color>
+
+    
     <!-- Night Theme colors -->
     <color name="dark_background">#ff1b1b1b</color>
     <color name="dark_content_background">#ff333333</color>
@@ -52,8 +117,6 @@
     <color name="day_primary">#9A1C28</color>
     <color name="day_primary_darker">#76040F</color>
     <color name="day_primary_dark">#4D0007</color>
-    <!--<color name="day_primary">#b13956</color>-->
-    <!--<color name="day_primary_dark">#873349</color>-->
 
     <!-- Mist Theme colors -->
     <color name="mist_background">#ff192227</color>
@@ -81,10 +144,6 @@
 
     <color name="sunrise_primary">#FF813A</color>
     <color name="sunrise_primary_dark">#ED5B09</color>
-    <!--<color name="sunrise_primary">#0085a0</color>-->
-    <!--<color name="sunrise_primary_dark">#005871</color>-->
-
-    <!--<color name="sunrise_accent_light">#e95379</color>-->
     <color name="sunrise_accent_light">#44BA99</color>
     <color name="sunrise_accent">#26A783</color>
     <color name="sunrise_accent_dark">#069C72</color>
@@ -94,22 +153,13 @@
     <color name="sunset_content_background">#ff262C33</color>
     <color name="sunset_content_background_dim">#b4262C33</color>
     <color name="sunset_selected_content_background">#ff303740</color>
-    <!--<color name="sunset_background">#ff1c1e26</color>-->
-    <!--<color name="sunset_content_background">#ff232530</color>-->
-    <!--<color name="sunset_content_background_dim">#b4232530</color>-->
-    <!--<color name="sunset_selected_content_background">#ff2E303E</color>-->
 
     <color name="sunset_primary">#995AC7</color>
     <color name="sunset_primary_dark">#7E3AAF</color>
-    <!--<color name="sunset_primary">#9f68bf</color>-->
-    <!--<color name="sunset_primary_dark">#6f3b8e</color>-->
 
     <color name="sunset_accent_light">#B3CB65</color>
     <color name="sunset_accent">#89A236</color>
     <color name="sunset_accent_dark">#627A14</color>
-    <!--<color name="sunset_accent_light">#ffffc5b3</color>-->
-    <!--<color name="sunset_accent">#ffF09483</color>-->
-    <!--<color name="sunset_accent_dark">#ffbb6556</color>-->
 
     <!-- General colors -->
     <color name="white">@android:color/white</color>
@@ -121,168 +171,11 @@
     <color name="black_dim_54pct">#8a000000</color>
     <color name="black_dim_26pct">#43000000</color>
 
-    <color name="dark_separator">#ff505050</color>
-    <color name="light_separator">#ffafafaf</color>
-
-    <color name="dark_fastscroll_handle">#ff505050</color>
-    <color name="light_fastscroll_handle">#ff606060</color>
-
     <color name="dark_in_progress">#51cc93</color>
     <color name="light_in_progress">#51cc93</color>
-    <!--<color name="dark_in_progress">@color/default_accent_light</color>-->
-    <!--<color name="light_in_progress">@color/day_accent_light</color>-->
 
     <color name="host_status_connecting">#ffff8800</color>
     <color name="host_status_available">#ff669900</color>
     <color name="host_status_unavailable">#ffcc0000</color>
-
-    <!-- CSS colors -->
-    <color name="aliceblue">#f0f8ff</color>
-    <color name="antiquewhite">#faebd7</color>
-    <color name="aqua">#00ffff</color>
-    <color name="aquamarine">#7fffd4</color>
-    <color name="azure">#f0ffff</color>
-    <color name="beige">#f5f5dc</color>
-    <color name="bisque">#ffe4c4</color>
-    <color name="black">#000000</color>
-    <color name="blanchedalmond">#ffebcd</color>
-    <color name="blue">#0000ff</color>
-    <color name="blueviolet">#8a2be2</color>
-    <color name="brown">#a52a2a</color>
-    <color name="burlywood">#deb887</color>
-    <color name="cadetblue">#5f9ea0</color>
-    <color name="chartreuse">#7fff00</color>
-    <color name="chocolate">#d2691e</color>
-    <color name="coral">#ff7f50</color>
-    <color name="cornflowerblue">#6495ed</color>
-    <color name="cornsilk">#fff8dc</color>
-    <color name="crimson">#dc143c</color>
-    <color name="cyan">#00ffff</color>
-    <color name="darkblue">#00008b</color>
-    <color name="darkcyan">#008b8b</color>
-    <color name="darkgoldenrod">#b8860b</color>
-    <color name="darkgray">#a9a9a9</color>
-    <color name="darkgreen">#006400</color>
-    <color name="darkgrey">#a9a9a9</color>
-    <color name="darkkhaki">#bdb76b</color>
-    <color name="darkmagenta">#8b008b</color>
-    <color name="darkolivegreen">#556b2f</color>
-    <color name="darkorange">#ff8c00</color>
-    <color name="darkorchid">#9932cc</color>
-    <color name="darkred">#8b0000</color>
-    <color name="darksalmon">#e9967a</color>
-    <color name="darkseagreen">#8fbc8f</color>
-    <color name="darkslateblue">#483d8b</color>
-    <color name="darkslategray">#2f4f4f</color>
-    <color name="darkslategrey">#2f4f4f</color>
-    <color name="darkturquoise">#00ced1</color>
-    <color name="darkviolet">#9400d3</color>
-    <color name="deeppink">#ff1493</color>
-    <color name="deepskyblue">#00bfff</color>
-    <color name="dimgray">#696969</color>
-    <color name="dimgrey">#696969</color>
-    <color name="dodgerblue">#1e90ff</color>
-    <color name="firebrick">#b22222</color>
-    <color name="floralwhite">#fffaf0</color>
-    <color name="forestgreen">#228b22</color>
-    <color name="fuchsia">#ff00ff</color>
-    <color name="gainsboro">#dcdcdc</color>
-    <color name="ghostwhite">#f8f8ff</color>
-    <color name="gold">#ffd700</color>
-    <color name="goldenrod">#daa520</color>
-    <color name="gray">#808080</color>
-    <color name="green">#008000</color>
-    <color name="greenyellow">#adff2f</color>
-    <color name="grey">#808080</color>
-    <color name="honeydew">#f0fff0</color>
-    <color name="hotpink">#ff69b4</color>
-    <color name="indianred">#cd5c5c</color>
-    <color name="indigo">#4b0082</color>
-    <color name="ivory">#fffff0</color>
-    <color name="khaki">#f0e68c</color>
-    <color name="lavender">#e6e6fa</color>
-    <color name="lavenderblush">#fff0f5</color>
-    <color name="lawngreen">#7cfc00</color>
-    <color name="lemonchiffon">#fffacd</color>
-    <color name="lightblue">#add8e6</color>
-    <color name="lightcoral">#f08080</color>
-    <color name="lightcyan">#e0ffff</color>
-    <color name="lightgoldenrodyellow">#fafad2</color>
-    <color name="lightgray">#d3d3d3</color>
-    <color name="lightgreen">#90ee90</color>
-    <color name="lightgrey">#d3d3d3</color>
-    <color name="lightpink">#ffb6c1</color>
-    <color name="lightsalmon">#ffa07a</color>
-    <color name="lightseagreen">#20b2aa</color>
-    <color name="lightskyblue">#87cefa</color>
-    <color name="lightslategray">#778899</color>
-    <color name="lightslategrey">#778899</color>
-    <color name="lightsteelblue">#b0c4de</color>
-    <color name="lightyellow">#ffffe0</color>
-    <color name="lime">#00ff00</color>
-    <color name="limegreen">#32cd32</color>
-    <color name="linen">#faf0e6</color>
-    <color name="magenta">#ff00ff</color>
-    <color name="maroon">#800000</color>
-    <color name="mediumaquamarine">#66cdaa</color>
-    <color name="mediumblue">#0000cd</color>
-    <color name="mediumorchid">#ba55d3</color>
-    <color name="mediumpurple">#9370db</color>
-    <color name="mediumseagreen">#3cb371</color>
-    <color name="mediumslateblue">#7b68ee</color>
-    <color name="mediumspringgreen">#00fa9a</color>
-    <color name="mediumturquoise">#48d1cc</color>
-    <color name="mediumvioletred">#c71585</color>
-    <color name="midnightblue">#191970</color>
-    <color name="mintcream">#f5fffa</color>
-    <color name="mistyrose">#ffe4e1</color>
-    <color name="moccasin">#ffe4b5</color>
-    <color name="navajowhite">#ffdead</color>
-    <color name="navy">#000080</color>
-    <color name="oldlace">#fdf5e6</color>
-    <color name="olive">#808000</color>
-    <color name="olivedrab">#6b8e23</color>
-    <color name="orange">#ffa500</color>
-    <color name="orangered">#ff4500</color>
-    <color name="orchid">#da70d6</color>
-    <color name="palegoldenrod">#eee8aa</color>
-    <color name="palegreen">#98fb98</color>
-    <color name="paleturquoise">#afeeee</color>
-    <color name="palevioletred">#db7093</color>
-    <color name="papayawhip">#ffefd5</color>
-    <color name="peachpuff">#ffdab9</color>
-    <color name="peru">#cd853f</color>
-    <color name="pink">#ffc0cb</color>
-    <color name="plum">#dda0dd</color>
-    <color name="powderblue">#b0e0e6</color>
-    <color name="purple">#800080</color>
-    <color name="red">#ff0000</color>
-    <color name="rosybrown">#bc8f8f</color>
-    <color name="royalblue">#4169e1</color>
-    <color name="saddlebrown">#8b4513</color>
-    <color name="salmon">#fa8072</color>
-    <color name="sandybrown">#f4a460</color>
-    <color name="seagreen">#2e8b57</color>
-    <color name="seashell">#fff5ee</color>
-    <color name="sienna">#a0522d</color>
-    <color name="silver">#c0c0c0</color>
-    <color name="skyblue">#87ceeb</color>
-    <color name="slateblue">#6a5acd</color>
-    <color name="slategray">#708090</color>
-    <color name="slategrey">#708090</color>
-    <color name="snow">#fffafa</color>
-    <color name="springgreen">#00ff7f</color>
-    <color name="steelblue">#4682b4</color>
-    <color name="tan">#d2b48c</color>
-    <color name="teal">#008080</color>
-    <color name="thistle">#d8bfd8</color>
-    <color name="tomato">#ff6347</color>
-    <color name="turquoise">#40e0d0</color>
-    <color name="violet">#ee82ee</color>
-    <color name="wheat">#f5deb3</color>
-    <!-- Already defined in section "General colors" : <color name="white">#ffffff</color>-->
-    <color name="whitesmoke">#f5f5f5</color>
-    <color name="yellow">#ffff00</color>
-    <color name="yellowgreen">#9acd32</color>
 
 </resources>

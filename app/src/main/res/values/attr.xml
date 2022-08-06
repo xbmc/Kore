@@ -15,21 +15,6 @@
    limitations under the License.
 -->
 <resources>
-    <attr name="appTextColorPrimary" format="reference|color" />
-    <attr name="appTextColorSecondary" format="reference|color" />
-
-    <attr name="textColorOverPrimary" format="reference|color" />
-    <attr name="buttonColorOverPrimary" format="reference|color" />
-
-    <attr name="colorAccentLight" format="reference|color" />
-
-    <attr name="contentBackgroundColor" format="reference|color" />
-    <attr name="appCardBackgroundColor" format="reference|color" />
-    <attr name="appSelectedCardBackgroundColor" format="reference|color" />
-    <attr name="buttonBarBackgroundColor" format="reference|color" />
-
-    <attr name="colorToolbar" format="reference|color" />
-
     <attr name="fabColorNormal" format="reference|color" />
     <attr name="fabColorFocused" format="reference|color" />
     <attr name="fabColorPressed" format="reference|color" />
@@ -37,29 +22,19 @@
     <attr name="fabLabelColorNormal" format="reference|color" />
     <attr name="fabLabelColorFocused" format="reference|color" />
     <attr name="fabLabelColorPressed" format="reference|color" />
-
     <attr name="fabLabelTextColor" format="reference|color" />
+
+    <attr name="iconFABDial" format="integer"/>
 
     <attr name="colorInProgress" format="reference|color" />
     <attr name="colorFinished" format="reference|color" />
-
-    <attr name="separatorColor" format="reference|color" />
-    <attr name="fastscrollHandleColor" format="reference|color" />
-
-    <attr name="drawerBackgroundColor" format="reference|color" />
-
-    <attr name="remoteButtonColorFilter" format="reference|color" />
-    <attr name="defaultButtonColorFilter" format="reference|color" />
-    <!--<attr name="remoteBackgroundColorFilter" format="reference|color" />-->
-
-    <attr name="ratingBarStarBackgroundColor" format="reference|color"/>
-    <attr name="ratingBarStarForegroundColor" format="reference|color"/>
+    <attr name="colorWizardTitleText" format="reference|color" />
+    <attr name="colorWizardTitleBackground" format="reference|color" />
 
     <!-- Icons -->
     <attr name="iconOverflow" format="reference" />
 
-    <attr name="iconFABDial" format="integer"/>
-
+    <!-- Stylables -->
     <declare-styleable name="SquareGridLayout">
         <attr name="columnCount" format="integer"/>
     </declare-styleable>
@@ -70,8 +45,6 @@
         <attr name="iconCount" format="integer"/>
         <attr name="icon" format="reference"/>
     </declare-styleable>
-
-    <attr name="dimmedNeutralColor" format="reference|color" />
 
     <declare-styleable name="MediaPlaybackBar">
         <attr name="view_mode" format="enum">

@@ -17,16 +17,19 @@ package org.xbmc.kore.ui.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 
+import com.google.android.material.color.MaterialColors;
+
 import org.xbmc.kore.R;
 
 public class HighlightButton extends AppCompatImageButton {
+    public static int DEFAULT_HIGHLIGHT_COLOR = R.attr.colorTertiary;
 
     private int highlightColor;
-    private int defaultColor;
 
     private boolean highlight;
 
@@ -49,7 +52,7 @@ public class HighlightButton extends AppCompatImageButton {
         if (highlight) {
             setColorFilter(highlightColor);
         } else {
-            setColorFilter(defaultColor);
+            clearColorFilter();
         }
         this.highlight = highlight;
     }
@@ -59,13 +62,6 @@ public class HighlightButton extends AppCompatImageButton {
     }
 
     private void setStyle(Context context) {
-        TypedArray styledAttributes = context.getTheme()
-                                             .obtainStyledAttributes(new int[]{R.attr.colorAccent,
-                                                                               R.attr.defaultButtonColorFilter});
-        highlightColor = styledAttributes.getColor(styledAttributes.getIndex(0),
-                                                   context.getResources().getColor(R.color.default_accent));
-        defaultColor = styledAttributes.getColor(styledAttributes.getIndex(1),
-                                                 context.getResources().getColor(R.color.white));
-        styledAttributes.recycle();
+        highlightColor = MaterialColors.getColor(context, DEFAULT_HIGHLIGHT_COLOR, Color.WHITE);
     }
 }

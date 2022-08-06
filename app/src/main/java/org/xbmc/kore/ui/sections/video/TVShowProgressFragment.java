@@ -19,8 +19,8 @@ package org.xbmc.kore.ui.sections.video;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -38,6 +38,8 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
@@ -192,9 +194,9 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
             // Get the art dimensions
             Resources resources = requireContext().getResources();
-            int artWidth = (int)(resources.getDimension(R.dimen.detail_poster_width_square) /
+            int artWidth = (int)(resources.getDimension(R.dimen.info_poster_width_square) /
                                  UIUtils.IMAGE_RESIZE_FACTOR);
-            int artHeight = (int)(resources.getDimension(R.dimen.detail_poster_height_square) /
+            int artHeight = (int)(resources.getDimension(R.dimen.info_poster_height_square) /
                                   UIUtils.IMAGE_RESIZE_FACTOR);
 
             nextEpisodeList.removeAllViews();
@@ -272,15 +274,8 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                                   UIUtils.IMAGE_RESIZE_FACTOR);
 
             // Get theme colors
-            Resources.Theme theme = requireContext().getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.colorInProgress,
-                    R.attr.colorFinished
-            });
-
-            int inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.coral));
-            int finishedColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.darkseagreen));
-            styledAttributes.recycle();
+            int inProgressColor = MaterialColors.getColor(requireContext(), R.attr.colorInProgress, Color.GREEN);
+            int finishedColor = MaterialColors.getColor(requireContext(), R.attr.colorFinished, Color.WHITE);
 
             seasonsList.removeAllViews();
             do {

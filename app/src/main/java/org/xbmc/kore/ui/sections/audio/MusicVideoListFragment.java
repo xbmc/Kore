@@ -149,8 +149,8 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
 
             // Get the art dimensions
             Resources resources = context.getResources();
-            artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
-            artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
+            artHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
+            artWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_height_square);
         }
 
         @NonNull

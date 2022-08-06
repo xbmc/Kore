@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Widget.Kore.ControlPad" parent="Widget.Kore">
-        <item name="android:layout_width">@dimen/remote_size</item>
-        <item name="android:layout_height">@dimen/remote_size</item>
-        <item name="android:layout_gravity">center</item>
-    </style>
-</resources>

@@ -2,12 +2,10 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/contentBackgroundColor"
-    android:minWidth="200dp"
-    tools:background="@color/dark_content_background_dim">
+    android:background="?attr/colorSurface"
+    android:minWidth="200dp">
 
     <org.xbmc.kore.ui.widgets.HighlightButton
         android:id="@+id/vcd_volume_mute"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Kore.LightBase" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Set status bar color only on v23, given that light style was only available from then on -->
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+</resources>

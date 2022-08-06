@@ -146,8 +146,8 @@ public class ArtistListFragment extends AbstractCursorListFragment {
 
             // Get the art dimensions
             Resources resources = fragment.requireContext().getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.detail_poster_width_square));
-            artHeight = (int)(resources.getDimension(R.dimen.detail_poster_height_square));
+            artWidth = (int)(resources.getDimension(R.dimen.info_poster_width_square));
+            artHeight = (int)(resources.getDimension(R.dimen.info_poster_height_square));
         }
 
         @NonNull

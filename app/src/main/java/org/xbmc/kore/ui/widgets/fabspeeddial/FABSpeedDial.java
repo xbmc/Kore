@@ -20,9 +20,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -31,6 +29,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -277,7 +276,7 @@ public class FABSpeedDial extends LinearLayout {
 
         ColorStateList colorStateList = AppCompatResources.getColorStateList(context, R.color.fabspeeddial);
         int fabColorNormal = colorStateList.getColorForState(new int[] {android.R.attr.state_enabled},
-                                                             R.attr.colorPrimaryDark);
+                                                             R.attr.colorPrimaryContainer);
         int fabColorPressed = colorStateList.getColorForState(new int[] {android.R.attr.state_pressed},
                                                               R.attr.colorPrimary);
 

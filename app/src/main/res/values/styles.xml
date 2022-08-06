@@ -19,22 +19,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Text Appearance styles only -->
-    <style name="TextAppearance.Kore.NavDrawerItem" parent="TextAppearance.AppCompat.Body1" />
+    <style name="TextAppearance.Kore.NavDrawerItem" parent="TextAppearance.Material3.LabelLarge" />
 
-    <style name="TextAppearance.Kore.Title" parent="TextAppearance.AppCompat.Title" />
+    <style name="TextAppearance.Kore.Title" parent="TextAppearance.Material3.TitleLarge" />
 
-    <style name="TextAppearance.Kore.Title.Small" parent="TextAppearance.AppCompat.Subhead" />
+    <style name="TextAppearance.Kore.Title.Small" parent="TextAppearance.Material3.TitleMedium" />
 
-    <style name="TextAppearance.Kore.Body" parent="TextAppearance.AppCompat.Body1" />
+    <style name="TextAppearance.Kore.Body" parent="TextAppearance.Material3.BodyMedium" />
 
-    <style name="TextAppearance.Kore.NowPlaying.Title" parent="@style/TextAppearance.AppCompat.Title">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-    </style>
+    <style name="TextAppearance.Kore.NowPlaying.Title" parent="@style/TextAppearance.Material3.TitleMedium" />
 
-    <style name="TextAppearance.Kore.NowPlaying.Details" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:textColor">@color/white_dim_70pct</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
+    <style name="TextAppearance.Kore.NowPlaying.Details" parent="@style/TextAppearance.Material3.BodyMedium" />
+
+    <style name="TextAppearance.Kore.TabLayout" parent="TextAppearance.Material3.LabelLarge">
+        <!--        <item name="android:textSize">16sp</item>-->
     </style>
 
     <!-- For use in TextAppearanceSpan in code -->
@@ -48,10 +46,15 @@
     <!-- Widget styles -->
     <style name="Widget.Kore" parent="android:Widget"/>
 
+    <!--
+    Inheriting from Material3.Button makes buttons that are used on CardView lists highjack the onClick event, so they
+    can't be used selected (see Host lists for instance). Furthermore they throws a lot of warning in LogCat regarding:
+    ResourcesCompat: Failed to inflate ColorStateList, leaving it to the framework
+    -->
+<!--    <style name="Widget.Kore.Button.Borderless" parent="Widget.Material3.Button.TextButton">-->
     <style name="Widget.Kore.Button.Borderless" parent="Widget.Kore">
-        <item name="android:background">?android:attr/selectableItemBackground</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:tint">?attr/defaultButtonColorFilter</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:tint">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="Widget.Kore.Grid" parent="Widget.Kore">
@@ -64,19 +67,19 @@
     </style>
 
     <style name="Widget.Kore.Grid.Host" parent="Widget.Kore.Grid">
-        <item name="android:horizontalSpacing">@dimen/default_grid_horizontal_spacing</item>
-        <item name="android:verticalSpacing">@dimen/default_grid_vertical_spacing</item>
         <item name="android:fastScrollEnabled">true</item>
-        <item name="android:padding">@dimen/small_padding</item>
+
+        <item name="android:paddingBottom">@dimen/default_padding</item>
+        <item name="android:paddingStart">@dimen/default_card_margin</item>
     </style>
 
     <style name="Widget.Kore.Grid.Media" parent="Widget.Kore.Grid">
-        <item name="fastScrollPopupBgColor">?attr/colorPrimary</item>
-        <item name="fastScrollPopupTextColor">?attr/textColorOverPrimary</item>
+        <item name="fastScrollPopupBgColor">?attr/colorSecondary</item>
+        <item name="fastScrollPopupTextColor">?attr/colorOnSecondary</item>
         <item name="fastScrollPopupTextSize">@dimen/fastscroll_text_size</item>
         <item name="fastScrollPopupBackgroundSize">@dimen/fastscroll_popup_size</item>
-        <item name="fastScrollThumbColor">?attr/colorPrimary</item>
-        <item name="fastScrollThumbInactiveColor">?attr/fastscrollHandleColor</item>
+        <item name="fastScrollThumbColor">?attr/colorSecondary</item>
+        <item name="fastScrollThumbInactiveColor">?attr/colorSecondaryContainer</item>
         <item name="fastScrollPopupPosition">adjacent</item>
 
         <item name="android:paddingBottom">@dimen/default_padding</item>
@@ -85,8 +88,8 @@
 
     <style name="Widget.Kore.CardView">
         <item name="cardCornerRadius">@dimen/card_corner_radius</item>
-        <item name="cardElevation">@dimen/default_card_elevation</item>
-        <item name="cardBackgroundColor">?attr/appCardBackgroundColor</item>
+        <item name="cardElevation">@dimen/kore_elevation_level3</item>
+        <item name="cardBackgroundColor">?attr/colorSurfaceVariant</item>
         <item name="android:layout_marginEnd">@dimen/default_card_margin</item>
         <item name="android:layout_marginTop">@dimen/default_card_margin</item>
     </style>
@@ -94,35 +97,44 @@
     <style name="Widget.Kore.Divider.Horizontal" parent="Widget.Kore">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">?attr/separatorColor</item>
+        <item name="android:background">?attr/colorOnSurface</item>
     </style>
 
     <style name="Widget.Kore.PagerIndicator">
-        <item name="fillColor">?attr/appTextColorPrimary</item>
-        <item name="strokeColor">?attr/appTextColorSecondary</item>
-        <item name="pageColor">?attr/appTextColorSecondary</item>
+        <item name="fillColor">?attr/colorPrimary</item>
+        <item name="strokeColor">?attr/colorPrimary</item>
+        <item name="pageColor">?attr/colorSecondary</item>
         <item name="strokeWidth">0dp</item>
         <item name="radius">3dp</item>
         <item name="centered">true</item>
         <item name="circleGapWidth">6dp</item>
     </style>
 
-    <style name="Widget.Kore.DrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="spinBars">true</item>
-        <item name="color">@android:color/white</item>
+    <style name="Widget.Kore.InfoPanel" parent="Widget.Kore">
+<!--        <item name="android:background">?attr/colorSurfaceVariant</item>-->
+        <item name="android:background">@drawable/panel_background</item>
+        <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>
+        <item name="android:elevation">@dimen/kore_elevation_level1</item>
     </style>
 
-    <!-- These styles specify the dimensions of the control pad. Ideally styles shouldn't contain layout_ attributes,
-    but instead of having to specify the whole layout for different screen dimensions it's easier to do it here -->
+    <style name="Widget.Kore.RatingBar" parent="Widget.Kore">
+        <item name="backgroundColor">?attr/colorSurfaceVariant</item>
+        <item name="foregroundColor">?attr/colorOnSurfaceVariant</item>
+        <item name="icon">@drawable/ic_star_white_24dp</item>
+    </style>
+
     <style name="Widget.Kore.ControlPad" parent="Widget.Kore">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="columnCount">3</item>
+        <item name="android:background">@drawable/remote_background_square_black</item>
+        <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>
+        <!-- Elevation doesn't take into account the outline of the png.
+        Needed to implement a custom OutlineProvider for it to work -->
+<!--        <item name="android:elevation">@dimen/kore_elevation_level1</item>-->
+<!--        <item name="android:outlineProvider">background</item>-->
     </style>
 
-    <style name="Widget.Kore.ControlPad.FrameLayout" parent="Widget.Kore.ControlPad">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+    <style name="Widget.Kore.ControlPad.Button" parent="Widget.Kore">
+        <item name="tint">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <!-- TextView widget styles, including more attributes than simply textAppearance -->
@@ -132,26 +144,26 @@
     </style>
 
     <style name="Widget.Kore.TextView.WizardTitle" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
-        <item name="android:textColor">?attr/textColorOverPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.HeadlineMedium</item>
+        <item name="android:textColor">?attr/colorWizardTitleText</item>
         <item name="android:gravity">start|bottom</item>
         <item name="android:padding">@dimen/large_padding</item>
         <item name="android:maxLines">2</item>
     </style>
 
     <style name="Widget.Kore.TextView.WizardMessage" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
         <item name="android:padding">@dimen/large_padding</item>
     </style>
 
     <style name="Widget.Kore.TextView.Edit" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
         <item name="android:singleLine">true</item>
     </style>
 
     <style name="Widget.Kore.TextView.MediaTitle" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
-        <item name="android:fontFamily" >sans-serif-light</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:paddingTop">@dimen/small_padding</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:maxLines">2</item>
@@ -171,8 +183,8 @@
     </style>
 
     <style name="Widget.Kore.TextView.MediaDetails" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:paddingTop">@dimen/small_padding</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:maxLines">2</item>
@@ -184,39 +196,40 @@
     </style>
 
     <style name="Widget.Kore.TextView.MediaSmallDetails" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
-        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="Widget.Kore.TextView.MediaRating" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
-        <item name="android:textColor">?attr/appTextColorPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.HeadlineSmall</item>
         <item name="android:gravity">center</item>
         <item name="android:singleLine">true</item>
     </style>
 
     <style name="Widget.Kore.TextView.MediaCast" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.LabelMedium</item>
         <item name="android:paddingStart">@dimen/small_padding</item>
         <item name="android:paddingEnd">@dimen/small_padding</item>
         <item name="android:singleLine">true</item>
     </style>
 
     <style name="Widget.Kore.TextView.MediaInfo" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-        <item name="android:lineSpacingMultiplier">1.2</item>
-        <item name="android:textColor">?attr/appTextColorPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
         <item name="android:paddingTop">@dimen/default_padding</item>
         <item name="android:paddingBottom">@dimen/default_padding</item>
     </style>
 
-    <style name="Widget.Kore.TextView.MediaProgress" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-        <item name="android:textColor">?attr/appTextColorSecondary</item>
+    <style name="Widget.Kore.SeekBar" parent="Widget.Kore">
+        <item name="android:progressTint">?attr/colorSecondary</item>
+        <item name="android:thumbTint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="Widget.Kore.TextView.SeekBar" parent="Widget.Kore.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.Material3.LabelLarge</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:singleLine">true</item>
-        <item name="android:paddingStart">@dimen/small_padding</item>
-        <item name="android:paddingEnd">@dimen/small_padding</item>
-        <item name="android:minEms">3</item>
+        <item name="android:minEms">2</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="Widget.Kore.TextView.MediaList" parent="Widget.Kore.TextView">
@@ -226,30 +239,30 @@
     </style>
 
     <style name="Widget.Kore.TextView.MediaList.Title" parent="Widget.Kore.TextView.MediaList">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingTop">@dimen/small_padding</item>
         <item name="android:ellipsize">end</item>
     </style>
 
     <style name="Widget.Kore.TextView.MediaList.Details" parent="Widget.Kore.TextView.MediaList">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:maxLines">2</item>
         <!--<item name="android:paddingBottom">4dp</item>-->
     </style>
 
     <style name="Widget.Kore.TextView.MediaList.Info" parent="Widget.Kore.TextView.MediaList">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
         <!--<item name="android:textSize">@dimen/text_size_small</item>-->
-        <item name="android:textColor">?attr/appTextColorSecondary</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
     </style>
 
     <style name="Widget.Kore.TextView.InfoTitle">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
-        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.HeadlineMedium</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
         <item name="android:singleLine">true</item>
         <item name="android:padding">@dimen/default_padding</item>
         <item name="android:maxLines">1</item>
@@ -258,20 +271,21 @@
     </style>
 
     <style name="Widget.Kore.TextView.InfoDetails">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
         <item name="android:padding">@dimen/default_padding</item>
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
         <!--<item name="android:maxLines">2</item>-->
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
     </style>
 
     <style name="Widget.Kore.TextView.Day" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
         <item name="android:textSize">@dimen/text_size_xlarge</item>
     </style>
 
-    <style name="Widget.Kore.TextView.FAB">
+    <style name="Widget.Kore.TextView.FABDialActionButton">
         <item name="android:background">@drawable/rounded_corners_shape</item>
         <item name="android:colorBackground">@drawable/rounded_corners_shape</item>
         <item name="android:textColor">?attr/fabLabelTextColor</item>

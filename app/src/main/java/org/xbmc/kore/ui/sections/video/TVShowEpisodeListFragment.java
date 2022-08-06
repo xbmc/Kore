@@ -18,11 +18,10 @@ package org.xbmc.kore.ui.sections.video;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +36,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.content.CursorLoader;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -217,19 +219,12 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
 
     private class SeasonsEpisodesAdapter extends RecyclerViewCursorAdapter {
 
-        private final int themeAccentColor;
+        private final int statusWatchedColor;
         private final HostManager hostManager;
         private final int artWidth, artHeight;
 
         SeasonsEpisodesAdapter(Context context) {
-            // Get the default accent color
-            Resources.Theme theme = context.getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.colorAccent
-            });
-            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.default_accent));
-            styledAttributes.recycle();
-
+            statusWatchedColor = MaterialColors.getColor(context, R.attr.colorFinished, Color.WHITE);
             hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
@@ -245,7 +240,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         public RecyclerViewCursorAdapter.CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(requireContext())
                                       .inflate(R.layout.list_item_episode, parent, false);
-            return new ViewHolder(view, requireContext(), themeAccentColor,
+            return new ViewHolder(view, requireContext(), statusWatchedColor,
                                   contextlistItemMenuClickListener, hostManager,
                                   artWidth, artHeight);
         }
@@ -267,17 +262,17 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         int artWidth;
         int artHeight;
         Context context;
-        int themeAccentColor;
+        int statusWatchedColor;
 
         AbstractFragment.DataHolder dataHolder = new AbstractFragment.DataHolder(0);
 
-        ViewHolder(View itemView, Context context, int themeAccentColor,
+        ViewHolder(View itemView, Context context, int statusWatchedColor,
                    View.OnClickListener contextlistItemMenuClickListener,
                    HostManager hostManager,
                    int artWidth, int artHeight) {
             super(itemView);
             this.context = context;
-            this.themeAccentColor = themeAccentColor;
+            this.statusWatchedColor = statusWatchedColor;
             this.hostManager = hostManager;
             this.artWidth = artWidth;
             this.artHeight = artHeight;
@@ -309,7 +304,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
 
             if (cursor.getInt(EpisodesListQuery.PLAYCOUNT) > 0) {
                 checkmarkView.setVisibility(View.VISIBLE);
-                checkmarkView.setColorFilter(themeAccentColor);
+                checkmarkView.setColorFilter(statusWatchedColor);
             } else {
                 checkmarkView.setVisibility(View.INVISIBLE);
             }

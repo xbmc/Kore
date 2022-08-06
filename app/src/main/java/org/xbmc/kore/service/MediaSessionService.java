@@ -467,8 +467,8 @@ public class MediaSessionService extends Service
         // 4. We specifically resize the image to the same dimensions used in the remote, so that Picasso reuses it in
         // the remote and here from the cache
         Resources resources = this.getResources();
-        final int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
-        final int posterHeight = Utils.isROrLater() || isSong ? posterWidth : resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
+        final int posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width);
+        final int posterHeight = Utils.isROrLater() || isSong ? posterWidth : resources.getDimensionPixelOffset(R.dimen.info_poster_height);
         if (picassoTarget == null ) {
             picassoTarget = new Target() {
                 @Override

@@ -17,19 +17,19 @@
 <resources>
     <dimen name="wizard_title">216dp</dimen>
 
-    <dimen name="remote_icon_size">126dp</dimen>
-    <dimen name="remote_size">378dp</dimen>
+    <dimen name="control_pad_icon_size">126dp</dimen>
+    <dimen name="control_pad_size">378dp</dimen>
+    <dimen name="remote_margin_bottom">16dp</dimen>
 
     <dimen name="remote_poster_width">96dp</dimen>
     <dimen name="remote_poster_height">162dp</dimen>
 
-    <dimen name="now_playing_poster_width">140dp</dimen>
-    <dimen name="now_playing_poster_height">200dp</dimen>
-    <dimen name="now_playing_poster_margin_top">140dp</dimen>
-    <dimen name="now_playing_art_height">324dp</dimen>
+    <dimen name="info_poster_width">140dp</dimen>
+    <dimen name="info_poster_height">200dp</dimen>
+    <dimen name="info_art_height">324dp</dimen>
 
-    <dimen name="media_title_margin_top">324dp</dimen>
-    <dimen name="poster_width_plus_padding">180dp</dimen>
+    <dimen name="info_title_margin_top">324dp</dimen>
+    <dimen name="info_poster_width_plus_padding">180dp</dimen>
 
     <dimen name="default_grid_column_width">250dp</dimen>
 

@@ -21,9 +21,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.Kore.CardView"
-    tools:layout_width="match_parent"
-    tools:layout_height="100dp">
+    style="@style/Widget.Kore.CardView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayout"
@@ -77,13 +75,11 @@
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/small_padding"
             android:layout_marginEnd="@dimen/small_padding"
-            app:backgroundColor="?attr/ratingBarStarBackgroundColor"
-            app:foregroundColor="?attr/ratingBarStarForegroundColor"
-            app:icon="@drawable/ic_star_white_24dp"
             app:layout_constraintBottom_toBottomOf="@id/meta_info"
             app:layout_constraintEnd_toStartOf="@id/checkmark"
             app:layout_constraintRight_toLeftOf="@id/checkmark"
-            app:layout_constraintTop_toTopOf="@id/meta_info" />
+            app:layout_constraintTop_toTopOf="@id/meta_info"
+            style="@style/Widget.Kore.RatingBar"/>
 
         <ImageView
             android:id="@+id/checkmark"

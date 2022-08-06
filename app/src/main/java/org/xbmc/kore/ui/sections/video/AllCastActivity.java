@@ -55,6 +55,7 @@ public class AllCastActivity extends BaseActivity {
     // Extras to be passed to this activity: title and the cast list
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String EXTRA_CAST_LIST = "EXTRA_CAST_LIST";
+    public static final float CAST_NAME_ALPHA = 0.9f;
 
     // Passed arguments
     private String movie_tvshow_title;
@@ -176,7 +177,6 @@ public class AllCastActivity extends BaseActivity {
 
                     artWidth = (displayMetrics.widthPixels - (2 + numColumns - 1) * imageMarginPx) / numColumns;
                     artHeight = (int) (artWidth * 1.5);
-                    LogUtils.LOGD(TAG, "width: " + artWidth);
                 }
 
                 // Setup View holder pattern
@@ -184,6 +184,7 @@ public class AllCastActivity extends BaseActivity {
                 viewHolder.roleView = convertView.findViewById(R.id.role);
                 viewHolder.nameView = convertView.findViewById(R.id.name);
                 viewHolder.pictureView = convertView.findViewById(R.id.picture);
+                viewHolder.castNameGroupView = convertView.findViewById(R.id.cast_name_group);
 
                 convertView.setTag(viewHolder);
 
@@ -199,6 +200,7 @@ public class AllCastActivity extends BaseActivity {
             UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
                                                  cast.thumbnail, cast.name,
                                                  viewHolder.pictureView, artWidth, artHeight);
+            viewHolder.castNameGroupView.setAlpha(CAST_NAME_ALPHA);
             viewHolder.castName = cast.name;
 
             return convertView;
@@ -213,6 +215,7 @@ public class AllCastActivity extends BaseActivity {
         TextView roleView;
         TextView nameView;
         ImageView pictureView;
+        View castNameGroupView;
 
         String castName;
     }

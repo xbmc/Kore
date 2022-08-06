@@ -15,13 +15,14 @@
    limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
     tools:ignore="Autofill" >
 
     <ScrollView
@@ -197,12 +198,8 @@
         </RelativeLayout>
     </ScrollView>
 
-    <View
-        android:id="@+id/separator"
-        style="@style/Widget.Kore.Divider.Horizontal"/>
-
-    <include layout="@layout/wizard_button_bar"
+    <include
         android:id="@+id/include_wizard_button_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        layout="@layout/wizard_button_bar"/>
+
 </LinearLayout>

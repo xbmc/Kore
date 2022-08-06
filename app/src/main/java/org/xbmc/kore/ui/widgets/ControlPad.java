@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,6 +30,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import androidx.annotation.Nullable;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.RemoteControlPadBinding;
@@ -91,8 +95,6 @@ public class ControlPad extends SquareGridLayout
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         binding = RemoteControlPadBinding.inflate(inflater, this);
-
-        setBackgroundImage();
         setupListeners(context);
     }
 
@@ -138,18 +140,6 @@ public class ControlPad extends SquareGridLayout
         }
 
         return false;
-    }
-
-    private void setBackgroundImage() {
-        Resources.Theme theme = getContext().getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {R.attr.contentBackgroundColor});
-        int remoteBackgroundColor = styledAttributes.getColor(styledAttributes.getIndex(0),
-                                                              getResources().getColor(R.color.dark_content_background_dim));
-        styledAttributes.recycle();
-
-        int backgroundResourceId = R.drawable.remote_background_square_black;
-        setBackgroundTintList(ColorStateList.valueOf(remoteBackgroundColor));
-        setBackgroundResource(backgroundResourceId);
     }
 
     @SuppressLint("ClickableViewAccessibility")

@@ -20,5 +20,6 @@
         android:title="@string/add_xbmc"
         android:icon="@drawable/ic_add_box_white_24dp"
         android:orderInCategory="1"
+        app:iconTint="?attr/colorOnSurfaceVariant"
         app:showAsAction="always" />
 </menu>

@@ -5,12 +5,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top"
-        style="@style/Widget.Kore.TextView.MediaSmallDetails"
-        android:textSize="11sp"/>
+        style="@style/Widget.Kore.TextView.SeekBar"
+        android:textSize="@dimen/text_size_small"/>
     <SeekBar
         android:id="@+id/vli_seek_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.Kore.Button.Borderless"
+        style="@style/Widget.Kore.SeekBar"
         android:layout_gravity="bottom"/>
 </merge>
