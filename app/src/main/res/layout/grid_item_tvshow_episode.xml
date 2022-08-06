@@ -29,33 +29,49 @@
         android:contentDescription="@string/poster"
         android:scaleType="centerCrop" />
 
-    <ImageView
-        android:id="@+id/list_context_menu"
-        style="@style/Widget.Kore.Button.Borderless"
-        android:layout_width="@dimen/default_icon_size"
-        android:layout_height="@dimen/default_icon_size"
-        android:layout_alignTop="@id/art"
+    <LinearLayout
+        android:id="@+id/action_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:contentDescription="@string/action_options"
-        android:padding="@dimen/default_icon_padding"
-        android:src="?attr/iconOverflow" />
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/list_context_menu"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:contentDescription="@string/action_options"
+            android:padding="@dimen/default_icon_padding"
+            android:src="?attr/iconOverflow" />
+
+        <ImageView
+            android:id="@+id/watched_check"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:background="@null"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/small_icon_size"
+            android:contentDescription="@string/seen"
+            android:src="@drawable/ic_done_white_24dp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/title"
         style="@style/Widget.Kore.TextView.MediaList.Title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/art"
-        android:layout_toStartOf="@id/list_context_menu"
+        android:layout_toStartOf="@id/action_buttons"
         android:layout_toEndOf="@id/art" />
 
     <TextView
         android:id="@+id/details"
         style="@style/Widget.Kore.TextView.MediaList.Details"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
-        android:layout_alignStart="@id/title" />
+        android:layout_alignStart="@id/title"
+        android:layout_alignEnd="@id/title"/>
 
     <TextView
         android:id="@+id/duration"
@@ -64,5 +80,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/details"
         android:layout_alignStart="@id/title"
+        android:layout_alignEnd="@id/title"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

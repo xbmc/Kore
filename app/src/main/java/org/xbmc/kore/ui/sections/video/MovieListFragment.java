@@ -395,7 +395,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
             metaInfoView = itemView.findViewById(R.id.meta_info);
-            checkmarkView = itemView.findViewById(R.id.checkmark);
+            checkmarkView = itemView.findViewById(R.id.watched_check);
             artView = itemView.findViewById(R.id.art);
             ratingBar = itemView.findViewById(R.id.rating_bar);
         }

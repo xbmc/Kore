@@ -71,12 +71,12 @@
         android:layout_marginEnd="@dimen/small_padding"
         android:layout_marginBottom="@dimen/small_padding"
         app:layout_constraintBottom_toBottomOf="@id/meta_info"
-        app:layout_constraintEnd_toStartOf="@id/checkmark"
-        app:layout_constraintRight_toLeftOf="@id/checkmark"
+        app:layout_constraintEnd_toStartOf="@id/watched_check"
+        app:layout_constraintRight_toLeftOf="@id/watched_check"
         app:layout_constraintTop_toTopOf="@id/meta_info" />
 
     <ImageView
-        android:id="@+id/checkmark"
+        android:id="@+id/watched_check"
         style="@style/Widget.Kore.Button.Borderless"
         android:background="@null"
         android:layout_width="wrap_content"
