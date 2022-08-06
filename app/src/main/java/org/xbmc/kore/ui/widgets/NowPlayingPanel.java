@@ -65,7 +65,7 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         binding = NowPlayingPanelBinding.inflate(inflater, this);
         setDragView(binding.collapsedView);
-
+        UIUtils.tintElevatedView(binding.panelContainer);
         final HostConnection connection = HostManager.getInstance(context).getConnection();
         binding.play.setOnClickListener(v -> new Player.PlayPause(activePlayerId)
                 .execute(connection, null, null));

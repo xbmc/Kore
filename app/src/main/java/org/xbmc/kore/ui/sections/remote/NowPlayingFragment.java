@@ -360,12 +360,12 @@ public class NowPlayingFragment extends Fragment
         DisplayMetrics displayMetrics = new DisplayMetrics();
         requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height),
+        int artHeight = resources.getDimensionPixelOffset(R.dimen.info_art_height),
                 artWidth = displayMetrics.widthPixels;
         if (!TextUtils.isEmpty(art)) {
             binding.poster.setVisibility(View.VISIBLE);
-            int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
-            int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
+            int posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width);
+            int posterHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height);
 
             // If not video, change aspect ration of poster to a square
             boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
@@ -383,7 +383,7 @@ public class NowPlayingFragment extends Fragment
             UIUtils.loadImageIntoImageview(hostManager, art, binding.art, displayMetrics.widthPixels, artHeight);
 
             // Reset padding
-            int paddingLeft = resources.getDimensionPixelOffset(R.dimen.poster_width_plus_padding),
+            int paddingLeft = resources.getDimensionPixelOffset(R.dimen.info_poster_width_plus_padding),
                     paddingRight = binding.mediaTitle.getPaddingRight(),
                     paddingTop = binding.mediaTitle.getPaddingTop(),
                     paddingBottom = binding.mediaTitle.getPaddingBottom();

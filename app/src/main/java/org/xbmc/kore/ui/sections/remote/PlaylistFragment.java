@@ -38,6 +38,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.color.MaterialColors;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentPlaylistBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
@@ -522,16 +524,8 @@ public class PlaylistFragment extends Fragment
             super();
             this.playlistItems = playlistItems;
 
-            Resources.Theme theme = requireActivity().getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.appCardBackgroundColor,
-                    R.attr.appSelectedCardBackgroundColor});
-            Resources resources = getResources();
-            cardBackgroundColor =
-                    styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.dark_content_background));
-            selectedCardBackgroundColor =
-                    styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.dark_selected_content_background));
-            styledAttributes.recycle();
+            cardBackgroundColor = MaterialColors.getColor(requireContext(), R.attr.colorSurfaceVariant, null);
+            selectedCardBackgroundColor = MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, null);
         }
 
         public PlayListAdapter() {

@@ -154,8 +154,8 @@ public class ArtistAlbumsListFragment extends AbstractAdditionalInfoFragment
                 listenerActivity.onAlbumSelected((DataHolder) v.getTag(), v.findViewById(R.id.art));
 
         Resources resources = requireContext().getResources();
-        int artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
-        int artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
+        int artWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
+        int artHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height_square);
 
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         albumsList.removeAllViews();

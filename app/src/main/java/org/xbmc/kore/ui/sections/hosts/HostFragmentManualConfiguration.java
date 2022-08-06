@@ -150,7 +150,6 @@ public class HostFragmentManualConfiguration extends Fragment {
 
         // Next button
         binding.includeWizardButtonBar.next.setText(R.string.test_connection);
-        binding.includeWizardButtonBar.next.setCompoundDrawables(null, null, null, null);
         binding.includeWizardButtonBar.next.setOnClickListener(v -> testConnection());
 
         // Previous button

@@ -26,7 +26,7 @@
     <ImageView
         android:id="@+id/art"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/now_playing_art_height"
+        android:layout_height="@dimen/info_art_height"
         android:layout_alignParentStart="true"
         android:contentDescription="@string/thumbnail"
         android:scaleType="centerCrop" />
@@ -41,24 +41,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/remote_content_hmargin"
-            android:layout_marginRight="@dimen/remote_content_hmargin"
             android:orientation="vertical"
             android:clipChildren="false">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/media_title_margin_top"
-                android:background="?attr/contentBackgroundColor"
-                android:elevation="2dp">
+                android:layout_marginTop="@dimen/info_title_margin_top"
+                android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+                android:layout_marginRight="@dimen/info_panel_horiz_margin"
+                style="@style/Widget.Kore.InfoPanel">
 
                 <TextView
                     android:id="@+id/media_title"
                     style="@style/Widget.Kore.TextView.MediaTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/poster_width_plus_padding"
+                    android:paddingStart="@dimen/info_poster_width_plus_padding"
                     android:paddingEnd="@dimen/default_padding" />
 
                 <TextView
@@ -67,13 +66,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/media_title"
-                    android:paddingStart="@dimen/poster_width_plus_padding"
+                    android:paddingStart="@dimen/info_poster_width_plus_padding"
                     android:paddingEnd="@dimen/default_padding" />
 
                 <ImageView
                     android:id="@+id/poster"
-                    android:layout_width="@dimen/now_playing_poster_width"
-                    android:layout_height="@dimen/now_playing_poster_height"
+                    android:layout_width="@dimen/info_poster_width"
+                    android:layout_height="@dimen/info_poster_height"
                     android:layout_alignBottom="@id/media_undertitle"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="@dimen/default_padding"
@@ -172,6 +171,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+                android:layout_marginRight="@dimen/info_panel_horiz_margin"
                 android:columnCount="@integer/cast_grid_view_columns"
                 android:orientation="horizontal" />
 

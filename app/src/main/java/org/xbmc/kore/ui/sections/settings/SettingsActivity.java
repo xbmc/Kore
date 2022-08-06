@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
@@ -34,17 +35,11 @@ import org.xbmc.kore.utils.Utils;
 /**
  * Presents the Preferences fragment
  */
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
     private static final String TAG = LogUtils.makeLogTag(SettingsActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        setTheme(UIUtils.getThemeResourceId(
-                prefs.getString(Settings.KEY_PREF_THEME,
-                        Settings.DEFAULT_PREF_THEME)));
-        Utils.setPreferredLocale(this);
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);

@@ -15,10 +15,6 @@
    limitations under the License.
 -->
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-
     <dimen name="image_grid_margin">4dp</dimen>
 
     <dimen name="wizard_title">144dp</dimen>
@@ -36,7 +32,6 @@
     <dimen name="medium_icon_size">32dp</dimen>
 
     <dimen name="card_corner_radius">4dp</dimen>
-    <dimen name="default_card_elevation">2dp</dimen>
     <dimen name="default_card_margin">8dp</dimen>
 
     <dimen name="text_size_small">12sp</dimen>
@@ -48,16 +43,12 @@
     <dimen name="fastscroll_popup_size">80dp</dimen>
     <dimen name="fastscroll_text_size">36sp</dimen>
 
-    <dimen name="default_list_item_height">56dp</dimen>
+    <dimen name="control_pad_icon_size">67dp</dimen>
+    <dimen name="control_pad_size">202dp</dimen>
 
-    <dimen name="tab_strip_height">48dp</dimen>
-    <dimen name="view_pager_indicator_height">12dp</dimen>
-
-    <dimen name="remote_icon_size">67dp</dimen>
-    <dimen name="remote_size">202dp</dimen>
-
-    <dimen name="remote_page_indicator_height">24dp</dimen>
-    <dimen name="remote_content_hmargin">8dp</dimen>
+    <dimen name="remote_viewpager_height">24dp</dimen>
+    <dimen name="info_panel_horiz_margin">8dp</dimen>
+    <dimen name="remote_margin_bottom">4dp</dimen>
 
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
@@ -67,20 +58,20 @@
 
     <dimen name="remote_poster_width">98dp</dimen>
     <dimen name="remote_poster_height">140dp</dimen>
-    <dimen name="remote_top_panel_height">164dp</dimen>
 
-    <dimen name="now_playing_poster_width">112dp</dimen>
-    <dimen name="now_playing_poster_height">160dp</dimen>
-    <dimen name="now_playing_poster_margin_top">112dp</dimen>
-    <dimen name="now_playing_art_height">216dp</dimen>
+    <dimen name="info_poster_width">112dp</dimen>
+    <dimen name="info_poster_height">160dp</dimen>
+    <dimen name="info_poster_width_square">112dp</dimen>
+    <dimen name="info_poster_height_square">112dp</dimen>
 
-    <dimen name="media_title_margin_top">216dp</dimen>
-    <dimen name="poster_width_plus_padding">144dp</dimen>
+    <dimen name="info_art_height">216dp</dimen>
+    <dimen name="info_title_margin_top">216dp</dimen>
+    <dimen name="info_poster_width_plus_padding">144dp</dimen>
+
 
     <dimen name="default_grid_column_width">250dp</dimen>
     <!-- Smaller spacing because cardview compat adds padding -->
-    <dimen name="default_grid_horizontal_spacing">4dp</dimen>
-    <dimen name="default_grid_vertical_spacing">4dp</dimen>
+    <dimen name="playlist_grid_vertical_spacing">4dp</dimen>
 
     <dimen name="playlist_art_width">56dp</dimen>
     <dimen name="playlist_art_heigth">78dp</dimen>
@@ -102,14 +93,6 @@
 
     <dimen name="albumlist_art_width">74dp</dimen>
     <dimen name="albumlist_art_heigth">74dp</dimen>
-
-    <dimen name="detail_art_height">216dp</dimen>
-
-    <dimen name="detail_poster_width_square">112dp</dimen>
-    <dimen name="detail_poster_height_square">112dp</dimen>
-
-    <dimen name="detail_poster_width_nonsquare">112dp</dimen>
-    <dimen name="detail_poster_height_nonsquare">160dp</dimen>
 
     <dimen name="audiogenrelist_art_width">74dp</dimen>
     <dimen name="audiogenrelist_art_heigth">74dp</dimen>
@@ -134,20 +117,19 @@
 
     <dimen name="epg_time_width">56dp</dimen>
 
-    <!-- Notification -->
-    <dimen name="notification_height">64dp</dimen>
-    <dimen name="notification_expanded_height">128dp</dimen>
-    <dimen name="notification_art_default_height">64dp</dimen>
-    <dimen name="notification_art_default_width">64dp</dimen>
-    <dimen name="notification_expanded_art_default_height">128dp</dimen>
-    <dimen name="notification_expanded_art_default_width">128dp</dimen>
-    <dimen name="notification_expanded_art_slim_width">88dp</dimen>
-
-
     <dimen name="now_playing_panel_height">64dp</dimen>
-    <dimen name="now_playing_panel_art_width">48dp</dimen>
+    <dimen name="now_playing_panel_shadow">2dp</dimen>
+    <dimen name="now_playing_panel_art_heigth">62dp</dimen>
+    <dimen name="now_playing_panel_art_width">52dp</dimen>
 
     <dimen name="fab_normal_margin">8dp</dimen>
     <dimen name="fab_mini_margin">16dp</dimen>
 
+    <!-- Elevation for views, copied from Material 3 -->
+    <dimen name="kore_elevation_level0">0dp</dimen>
+    <dimen name="kore_elevation_level1">1dp</dimen>
+    <dimen name="kore_elevation_level2">3dp</dimen>
+    <dimen name="kore_elevation_level3">6dp</dimen>
+    <dimen name="kore_elevation_level4">8dp</dimen>
+    <dimen name="kore_elevation_level5">12dp</dimen>
 </resources>

@@ -41,5 +41,5 @@
         android:layout_marginBottom="@dimen/tiny_padding"
         android:layout_marginLeft="@dimen/small_padding"
         android:layout_marginRight="@dimen/small_padding"
-        android:background="?attr/colorAccent"/>
+        android:background="?attr/colorPrimary"/>
 </RelativeLayout>

@@ -17,17 +17,19 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/navigation_drawer_item_hosts_height"
-    android:background="?attr/colorPrimaryDark">
+    android:background="?attr/colorSecondaryContainer">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/navigation_drawer_item_hosts_height"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/drawer_image"/>
+        android:src="@drawable/drawer_image"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/drawer_item_icon"
@@ -37,7 +39,9 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/default_padding"
         android:layout_marginRight="@dimen/default_padding"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        tools:ignore="ContentDescription"
+        app:tint="?attr/colorOnSecondaryContainer" />
 
     <TextView
         android:id="@+id/drawer_item_title"
@@ -48,5 +52,6 @@
         android:layout_toEndOf="@+id/drawer_item_icon"
         android:gravity="center_vertical"
         android:textAppearance="@style/TextAppearance.Kore.NavDrawerItem"
+        android:textColor="?attr/colorOnSecondaryContainer"
         tools:text="@string/app_name" />
 </RelativeLayout>

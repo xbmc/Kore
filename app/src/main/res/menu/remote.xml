@@ -14,12 +14,15 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_on_off"
+    <item
+        android:id="@+id/action_on_off"
         android:title="@string/power"
         android:icon="@drawable/ic_settings_power_white_24dp"
         android:orderInCategory="1"
+        app:iconTint="?attr/colorOnSurfaceVariant"
         app:showAsAction="ifRoom">
         <menu>
             <item android:id="@+id/action_wake_up"
@@ -36,8 +39,10 @@
     </item>
     <item android:id="@+id/send_text"
         android:title="@string/send_text"
+        android:icon="@drawable/ic_keyboard_white_24dp"
         android:orderInCategory="2"
-        app:showAsAction="never"/>
+        app:iconTint="?attr/colorOnSurfaceVariant"
+        app:showAsAction="ifRoom"/>
     <item android:title="@string/library_actions"
         android:orderInCategory="3"
         app:showAsAction="never">

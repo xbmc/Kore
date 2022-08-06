@@ -134,9 +134,9 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
         if(!dataHolder.getSquarePoster()) {
             binding.poster.getLayoutParams().width =
-                    resources.getDimensionPixelSize(R.dimen.detail_poster_width_nonsquare);
+                    resources.getDimensionPixelSize(R.dimen.info_poster_width);
             binding.poster.getLayoutParams().height =
-                    resources.getDimensionPixelSize(R.dimen.detail_poster_height_nonsquare);
+                    resources.getDimensionPixelSize(R.dimen.info_poster_height);
         }
 
         if(getRefreshItem() != null) {
@@ -364,11 +364,11 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             int posterWidth;
             int posterHeight;
             if (dataHolder.getSquarePoster()) {
-                posterWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
-                posterHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
+                posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
+                posterHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height_square);
             } else {
-                posterWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_nonsquare);
-                posterHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_nonsquare);
+                posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width);
+                posterHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height);
             }
 
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
@@ -381,7 +381,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             binding.mediaUndertitle.setPadding(padding, padding, 0, 0);
         }
 
-        int artHeight = resources.getDimensionPixelOffset(R.dimen.detail_art_height);
+        int artHeight = resources.getDimensionPixelOffset(R.dimen.info_art_height);
         int artWidth = displayMetrics.widthPixels;
 
         UIUtils.loadImageIntoImageview(hostManager,

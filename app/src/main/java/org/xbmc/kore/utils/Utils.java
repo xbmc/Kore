@@ -50,6 +50,8 @@ public class Utils {
 
     public static boolean isOreoOrLater() { return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O; }
 
+    public static boolean isOreoMR1OrLater() { return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1; }
+
     public static boolean isROrLater() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
     }

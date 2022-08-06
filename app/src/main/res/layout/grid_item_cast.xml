@@ -15,12 +15,14 @@
    limitations under the License.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:layout_margin="@dimen/image_grid_margin">
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:layout_margin="@dimen/image_grid_margin">
+
     <ImageView
         android:id="@+id/picture"
         android:layout_width="match_parent"
@@ -29,13 +31,6 @@
         android:adjustViewBounds="true"
         android:layout_alignParentStart="true"
         android:contentDescription="@string/poster"/>
-        <!--android:src="?attr/iconPerson"/>-->
-
-    <!--&lt;!&ndash; Shade to make text easier to read &ndash;&gt;-->
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:src="?attr/imageViewShade"/>-->
 
     <!--
     Somehow i can't make the TextViews work correctly, one below the other when this RelativeLayout is inside a
@@ -48,7 +43,7 @@
         android:orientation="vertical"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:background="?attr/contentBackgroundColor">
+        android:background="?attr/colorSurface">
 
         <TextView
             android:id="@+id/name"
@@ -61,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.Kore.TextView.MediaCast"
-            android:textColor="?attr/appTextColorSecondary"/>
+            android:textColor="?attr/colorOnSurface"/>
 
     </LinearLayout>
 
@@ -70,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="?attr/contentBackgroundColor"
+        android:background="?attr/colorSurface"
         android:visibility="gone">
 
         <ImageView
@@ -80,7 +75,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_open_in_new_white_24dp"
             android:contentDescription="@string/poster"
-            app:tint="?attr/defaultButtonColorFilter" />
+            app:tint="?attr/colorOnSurface" />
         <TextView
             android:id="@+id/remaining_cast_count"
             android:layout_width="match_parent"

@@ -16,7 +16,6 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -27,7 +26,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:orientation="vertical"
-        android:background="?attr/contentBackgroundColor" >
+        android:background="?attr/colorSurface" >
         <ImageButton
             android:id="@+id/home"
             android:layout_height="0dp"
@@ -121,7 +120,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toStartOf="@+id/sections_button_bar">
+        android:layout_toStartOf="@+id/sections_button_bar"
+        android:orientation="horizontal">
 
         <include
             android:id="@+id/include_info_panel"
@@ -133,7 +133,8 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/remote_content_hmargin">
+            android:layout_marginStart="@dimen/info_panel_horiz_margin"
+            style="@style/Widget.Kore.InfoPanel">
 
             <ImageView
                 android:id="@+id/art"
@@ -149,16 +150,15 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/art"
                 android:layout_alignParentEnd="true"
-                style="@style/Widget.Kore.TextView.MediaTitle.Remote"
-                android:background="?attr/contentBackgroundColor"/>
+                style="@style/Widget.Kore.TextView.MediaTitle.Remote"/>
+
             <TextView
                 android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
                 android:layout_alignStart="@id/title"
-                style="@style/Widget.Kore.TextView.MediaDetails.Remote"
-                android:background="?attr/contentBackgroundColor"/>
+                style="@style/Widget.Kore.TextView.MediaDetails.Remote"/>
 
             <!-- Media playback control buttons -->
             <org.xbmc.kore.ui.widgets.MediaPlaybackBar
@@ -168,8 +168,7 @@
                 android:layout_below="@id/details"
                 android:layout_alignStart="@id/details"
                 android:layout_alignBottom="@+id/art"
-                android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor" />
+                android:orientation="horizontal" />
 
             <!-- Progress bar -->
             <org.xbmc.kore.ui.widgets.MediaProgressIndicator
@@ -181,8 +180,7 @@
                 android:paddingTop="@dimen/default_padding"
                 android:paddingRight="@dimen/small_padding"
                 android:paddingLeft="@dimen/small_padding"
-                android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor"/>
+                android:orientation="horizontal" />
 
             <!-- Media action buttons -->
             <org.xbmc.kore.ui.widgets.MediaActionsBar
@@ -191,15 +189,16 @@
                 android:layout_height="@dimen/buttonbar_height"
                 android:layout_below="@id/progress_info"
                 android:layout_alignStart="@id/art"
-                android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor" />
+                android:orientation="horizontal" />
 
         </RelativeLayout>
 
         <org.xbmc.kore.ui.widgets.ControlPad
             android:id="@+id/remote"
-            style="@style/Widget.Kore.ControlPad"
-            app:columnCount="3"/>
+            android:layout_width="@dimen/control_pad_size"
+            android:layout_height="@dimen/control_pad_size"
+            android:layout_gravity="center"
+            style="@style/Widget.Kore.ControlPad" />
 
     </LinearLayout>
 </RelativeLayout>

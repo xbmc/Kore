@@ -18,11 +18,9 @@ package org.xbmc.kore.ui.sections.video;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.PorterDuff;
+import android.graphics.Color;
 import android.net.Uri;
-import androidx.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -36,6 +34,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.loader.content.CursorLoader;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -317,19 +318,11 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
         private final HostManager hostManager;
         private final int artWidth, artHeight;
-        private final int themeAccentColor, dimmedNeutralColor;
+        private final int statusWatchedColor, statusUnwatchedColor;
 
         MoviesAdapter(Context context) {
-            // Get the default accent color
-            Resources.Theme theme = context.getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                R.attr.colorAccent, R.attr.dimmedNeutralColor
-
-            });
-
-            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.default_accent));
-            dimmedNeutralColor = styledAttributes.getColor(styledAttributes.getIndex(1), getResources().getColor(R.color.white_dim_26pct));
-            styledAttributes.recycle();
+            statusWatchedColor = MaterialColors.getColor(context, R.attr.colorFinished, Color.WHITE);
+            statusUnwatchedColor = MaterialColors.getColor(context, R.attr.colorOnSurface, Color.WHITE);
 
             this.hostManager = HostManager.getInstance(context);
 
@@ -337,10 +330,8 @@ public class MovieListFragment extends AbstractCursorListFragment {
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.now_playing_poster_width) /
-                             UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.now_playing_poster_height) /
-                              UIUtils.IMAGE_RESIZE_FACTOR);
+            artWidth = (int)(resources.getDimension(R.dimen.info_poster_width) / UIUtils.IMAGE_RESIZE_FACTOR);
+            artHeight = (int)(resources.getDimension(R.dimen.info_poster_height) / UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
         @NonNull
@@ -349,7 +340,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
             final View view = LayoutInflater.from(getContext())
                                             .inflate(R.layout.grid_item_movie, parent, false);
 
-            return new ViewHolder(view, getContext(), themeAccentColor, dimmedNeutralColor, hostManager, artWidth, artHeight);
+            return new ViewHolder(view, getContext(), statusWatchedColor, statusUnwatchedColor, hostManager, artWidth, artHeight);
         }
 
         protected int getSectionColumnIdx() {
@@ -387,17 +378,17 @@ public class MovieListFragment extends AbstractCursorListFragment {
         int artWidth;
         int artHeight;
         Context context;
-        int themeAccentColor, dimmedNeutralColor;
+        int statusWatchedColor, statusUnwatchedColor;
 
         AbstractFragment.DataHolder dataHolder = new AbstractFragment.DataHolder(0);
 
-        ViewHolder(View itemView, Context context, int themeAccentColor, int dimmedNeutralColor,
+        ViewHolder(View itemView, Context context, int statusWatchedColor, int statusUnwatchedColor,
                    HostManager hostManager,
                    int artWidth, int artHeight) {
             super(itemView);
             this.context = context;
-            this.themeAccentColor = themeAccentColor;
-            this.dimmedNeutralColor = dimmedNeutralColor;
+            this.statusWatchedColor = statusWatchedColor;
+            this.statusUnwatchedColor = statusUnwatchedColor;
             this.hostManager = hostManager;
             this.artWidth = artWidth;
             this.artHeight = artHeight;
@@ -447,9 +438,10 @@ public class MovieListFragment extends AbstractCursorListFragment {
             if (showWatchedStatus) {
                 checkmarkView.setVisibility(View.VISIBLE);
                 if (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0) {
-                    checkmarkView.setColorFilter(themeAccentColor);
+                    checkmarkView.setColorFilter(statusWatchedColor);
                 } else {
-                    checkmarkView.setColorFilter(dimmedNeutralColor, PorterDuff.Mode.SRC_IN);
+                    checkmarkView.clearColorFilter();
+//                    checkmarkView.setColorFilter(statusUnwatchedColor, PorterDuff.Mode.SRC_IN);
                 }
             }
             else {

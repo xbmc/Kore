@@ -72,6 +72,8 @@ public class MediaProgressIndicator extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         binding = MediaProgressIndicatorBinding.inflate(inflater, this);
 
+        if (this.isInEditMode()) return;
+
         final HostConnection connection = HostManager.getInstance(context).getConnection();
         binding.mpiSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

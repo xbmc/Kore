@@ -29,14 +29,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/buttonbar_height"
         android:layout_alignParentBottom="true"
+        android:background="?attr/colorSurface"
         app:tabMode="fixed"
         app:tabGravity="fill"
-        app:tabTextColor="@color/white_dim_50pct"
-        app:tabSelectedTextColor="@color/white"
-        app:tabBackground="?attr/contentBackgroundColor"
-        style="@style/Widget.Kore.Button.Borderless"
-        android:tint="?attr/defaultButtonColorFilter"
-        android:elevation="2dp"/>
+        app:tabIndicatorFullWidth="true"
+        android:elevation="@dimen/kore_elevation_level2"/>
 
     <!-- Playlist -->
     <org.xbmc.kore.ui.viewgroups.DynamicListView
@@ -47,13 +44,13 @@
         android:layout_above="@id/playlists_bar"
         android:paddingLeft="@dimen/small_padding"
         android:paddingRight="@dimen/small_padding"
-        android:paddingTop="@dimen/remote_page_indicator_height"
+        android:paddingTop="@dimen/remote_viewpager_height"
         android:clipToPadding="false"
         android:choiceMode="singleChoice"
         android:listSelector="?attr/selectableItemBackground"
         android:drawSelectorOnTop="true"
         android:fastScrollEnabled="true"
         android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/default_grid_vertical_spacing"/>
+        android:dividerHeight="@dimen/playlist_grid_vertical_spacing"/>
 
 </RelativeLayout>

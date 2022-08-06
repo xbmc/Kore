@@ -21,10 +21,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -42,6 +40,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -430,20 +431,15 @@ public class NavigationDrawerFragment extends Fragment {
 
     public static class DrawerItemAdapter extends ArrayAdapter<DrawerItem> {
 
-        private final int selectedItemColor, hostItemColor;
+        private final int itemBackgroundColor, itemColor, hostBackgroundColor, hostColor;
 
         public DrawerItemAdapter(Context context, int layoutId, DrawerItem[] objects) {
             super(context, layoutId, objects);
-            TypedArray styledAttributes = context
-                    .getTheme()
-                    .obtainStyledAttributes(new int[] {
-                            R.attr.colorAccent,
-                            R.attr.textColorOverPrimary
-                    });
-            Resources resources = context.getResources();
-            selectedItemColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.default_accent));
-            hostItemColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.white));
-            styledAttributes.recycle();
+
+            itemBackgroundColor = MaterialColors.getColor(context, R.attr.colorSecondaryContainer, null);
+            itemColor = MaterialColors.getColor(context, R.attr.colorOnSecondaryContainer, null);
+            hostBackgroundColor = MaterialColors.getColor(context, R.attr.colorPrimaryContainer, null);
+            hostColor = MaterialColors.getColor(context, R.attr.colorOnPrimaryContainer, null);
         }
 
         @Override
@@ -480,8 +476,9 @@ public class NavigationDrawerFragment extends Fragment {
                     desc = convertView.findViewById(R.id.drawer_item_title);
                     desc.setText(item.desc);
                     if (selectedItemId == item.id) {
-                        icon.setColorFilter(selectedItemColor);
-                        desc.setTextColor(selectedItemColor);
+                        convertView.setBackgroundColor(itemBackgroundColor);
+                        icon.setColorFilter(itemColor);
+                        desc.setTextColor(itemColor);
                     }
                     break;
                 case DrawerItem.TYPE_HOST:
@@ -495,11 +492,9 @@ public class NavigationDrawerFragment extends Fragment {
                     desc = convertView.findViewById(R.id.drawer_item_title);
                     desc.setText(item.desc);
                     if (selectedItemId == item.id) {
-                        icon.setColorFilter(selectedItemColor);
-                        desc.setTextColor(selectedItemColor);
-                    } else {
-                        icon.setColorFilter(hostItemColor);
-                        desc.setTextColor(hostItemColor);
+                        convertView.setBackgroundColor(hostBackgroundColor);
+                        icon.setColorFilter(hostColor);
+                        desc.setTextColor(hostColor);
                     }
                     break;
             }

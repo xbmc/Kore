@@ -251,8 +251,8 @@ public class SongsListFragment extends AbstractCursorListFragment {
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
-            artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
+            artWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
+            artHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height_square);
         }
 
         @NonNull

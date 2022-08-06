@@ -16,185 +16,121 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<!-- Base Dark theme. -->
-	<style name="NightTheme" parent="Theme.AppCompat.NoActionBar">
-
-		<item name="android:colorBackground">@color/dark_background</item>
-        <item name="android:windowBackground">@color/dark_background</item>
-        <!--<item name="android:windowActionBarOverlay">true</item>-->
-        <item name="android:navigationBarColor" >@color/dark_background</item>
-
-        <item name="preferenceTheme">@style/PrefTheme</item>
-
-        <item name="drawerArrowStyle">@style/Widget.Kore.DrawerArrowToggle</item>
-
-        <!-- Set AppCompat’s color theming attrs -->
-        <item name="colorPrimary">@color/estuary_blue</item>
-        <item name="colorPrimaryDark">@color/estuary_blue_dark</item>
-
-        <item name="colorAccent">@color/default_accent</item>
-        <item name="colorAccentLight">@color/default_accent_light</item>
-        <!--<item name="colorControlHighlight">@color/color_accent</item>-->
-        <!--<item name="colorControlActivated">@color/color_accent</item>-->
-
-        <item name="colorToolbar">?attr/colorPrimary</item>
-        <item name="android:statusBarColor" >?attr/colorPrimaryDark</item>
-
-        <item name="colorButtonNormal">?attr/colorPrimary</item>
-
-        <item name="appTextColorPrimary">@color/white</item>
-        <item name="appTextColorSecondary">@color/white_dim_70pct</item>
-
-        <item name="textColorOverPrimary">@color/white</item>
-        <item name="buttonColorOverPrimary">@color/white</item>
-
-        <item name="fabColorNormal">?attr/colorPrimary</item>
-        <item name="fabColorPressed">?attr/colorPrimaryDark</item>
-        <item name="fabColorFocused">?attr/colorPrimary</item>
-
-        <item name="fabLabelColorNormal">?attr/colorPrimary</item>
-        <item name="fabLabelColorPressed">?attr/colorPrimaryDark</item>
-        <item name="fabLabelColorFocused">?attr/colorPrimary</item>
-
-        <item name="fabLabelTextColor">@color/white</item>
-
-        <item name="colorInProgress">@color/default_accent</item>
-        <item name="colorFinished">@color/default_accent_darker</item>
-
-        <!-- Toolbar bar -->
-        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
-
-        <item name="contentBackgroundColor">@color/dark_content_background_dim</item>
-        <item name="appCardBackgroundColor">@color/dark_content_background</item>
-        <item name="appSelectedCardBackgroundColor">@color/dark_selected_content_background</item>
-        <!--<item name="myCardBackgroundDrawable">@drawable/card_background_dark</item>-->
-        <item name="buttonBarBackgroundColor">@color/dark_content_background_dim</item>
-
-        <!-- Color for the Navigation Drawer -->
-		<item name="drawerBackgroundColor">@color/dark_background</item>
-
-        <item name="separatorColor">@color/dark_separator</item>
-        <item name="fastscrollHandleColor">@color/dark_fastscroll_handle</item>
-
-        <item name="remoteButtonColorFilter">@color/white</item>
-        <item name="defaultButtonColorFilter">@color/white</item>
-        <!--<item name="remoteBackgroundColorFilter">@color/dark_content_background</item>-->
-
-        <item name="ratingBarStarBackgroundColor">@color/white_dim_26pct</item>
-        <item name="ratingBarStarForegroundColor">?attr/colorAccent</item>
-
-        <item name="dimmedNeutralColor">@color/white_dim_26pct</item>
+    <style name="Theme.Kore.Dark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
 
         <!-- Icons -->
         <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
-    </style>
 
-    <!-- Base Light theme. -->
-    <style name="DayTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Colors -->
+        <item name="colorPrimary">@color/theme_kore_dark_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_dark_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_dark_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_dark_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_dark_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_dark_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_dark_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_dark_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_dark_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_dark_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_dark_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_dark_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_dark_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_dark_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_dark_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_dark_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_dark_background</item>
+        <item name="colorOnBackground">@color/theme_kore_dark_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_dark_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_dark_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_dark_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_dark_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_dark_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_dark_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_dark_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_dark_inversePrimary</item>
 
-        <item name="android:colorBackground">@color/light_background</item>
-        <item name="android:windowBackground">@color/light_background</item>
-        <item name="android:navigationBarColor" >@color/light_background</item>
-
-        <item name="preferenceTheme">@style/PrefTheme</item>
-
-        <item name="drawerArrowStyle">@style/Widget.Kore.DrawerArrowToggle</item>
-
-        <!-- Set AppCompat’s color theming attrs -->
-        <item name="colorPrimary">@color/day_primary</item>
-        <item name="colorPrimaryDark">@color/day_primary_dark</item>
-
-        <item name="colorAccent">@color/day_accent</item>
-        <item name="colorAccentLight">@color/day_accent_light</item>
-         <!--<item name="colorControlHighlight">@color/color_accent</item>-->
-        <!--<item name="colorControlActivated">@color/color_accent</item>-->
-
-        <!-- CAREFUL with this. This is so that the drawer toggle arrow
-        is set to white but can have unintended consequences. Watch it -->
-        <!--<item name="colorControlNormal">@color/white</item>-->
-
-        <item name="colorToolbar">?attr/colorPrimary</item>
-        <item name="android:statusBarColor" >?attr/colorPrimaryDark</item>
-
-        <item name="appTextColorPrimary">@color/black_dim_87pct</item>
-        <item name="appTextColorSecondary">@color/black_dim_54pct</item>
-
-        <item name="textColorOverPrimary">@color/white</item>
-        <item name="buttonColorOverPrimary">@color/white</item>
+        <item name="colorInProgress">?attr/colorTertiary</item>
+        <item name="colorFinished">?attr/colorSecondary</item>
+        <item name="colorWizardTitleText">?attr/colorOnSurface</item>
+        <item name="colorWizardTitleBackground">?attr/colorPrimaryContainer</item>
 
         <item name="fabColorNormal">?attr/colorPrimary</item>
-        <item name="fabColorPressed">?attr/colorPrimaryDark</item>
+        <item name="fabColorPressed">?attr/colorPrimaryContainer</item>
         <item name="fabColorFocused">?attr/colorPrimary</item>
-
         <item name="fabLabelColorNormal">?attr/colorPrimary</item>
-        <item name="fabLabelColorPressed">?attr/colorPrimaryDark</item>
+        <item name="fabLabelColorPressed">?attr/colorPrimaryContainer</item>
         <item name="fabLabelColorFocused">?attr/colorPrimary</item>
+        <item name="fabLabelTextColor">@color/white</item>
+    </style>
 
+    <!-- Base Light theme, allowing for customization based on the Android version -->
+    <style name="Theme.Kore.LightBase" parent="Theme.Material3.Light.NoActionBar" />
+
+    <style name="Theme.Kore.Light" parent="Theme.Kore.LightBase">
+
+        <!-- Icons -->
+        <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
+
+        <!-- Colors -->
+        <item name="colorPrimary">@color/theme_kore_light_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_light_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_light_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_light_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_light_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_light_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_light_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_light_background</item>
+        <item name="colorOnBackground">@color/theme_kore_light_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_light_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_light_inversePrimary</item>
+
+        <item name="colorInProgress">?attr/colorTertiary</item>
+        <item name="colorFinished">?attr/colorSecondary</item>
+        <item name="colorWizardTitleText">?attr/colorOnSecondary</item>
+        <item name="colorWizardTitleBackground">?attr/colorSecondary</item>
+
+        <item name="fabColorNormal">?attr/colorPrimary</item>
+        <item name="fabColorPressed">?attr/colorPrimaryContainer</item>
+        <item name="fabColorFocused">?attr/colorPrimary</item>
+        <item name="fabLabelColorNormal">?attr/colorPrimary</item>
+        <item name="fabLabelColorPressed">?attr/colorPrimaryContainer</item>
+        <item name="fabLabelColorFocused">?attr/colorPrimary</item>
         <item name="fabLabelTextColor">@color/white</item>
 
-        <item name="colorInProgress">@color/day_accent</item>
-        <item name="colorFinished">@color/day_accent_dark</item>
-
-        <!-- Toolbar bar -->
-        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-
-        <item name="contentBackgroundColor">@color/light_content_background_dim</item>
-        <item name="appCardBackgroundColor">@color/light_content_background</item>
-        <item name="appSelectedCardBackgroundColor">@color/light_selected_content_background</item>
-        <!--<item name="myCardBackgroundDrawable">@drawable/card_background_light</item>-->
-        <item name="buttonBarBackgroundColor">@color/light_content_background_dim</item>
-
-        <!-- Color for the Navigation Drawer -->
-        <item name="drawerBackgroundColor">@color/light_content_background</item>
-
-        <item name="separatorColor">@color/light_separator</item>
-        <item name="fastscrollHandleColor">@color/light_fastscroll_handle</item>
-
-        <item name="remoteButtonColorFilter">@color/black_dim_54pct</item>
-        <item name="defaultButtonColorFilter">@color/black_dim_54pct</item>
-        <!--<item name="remoteBackgroundColorFilter">@color/light_content_background</item>-->
-
-        <!-- Rating bar -->
-        <item name="ratingBarStarBackgroundColor">@color/black_dim_26pct</item>
-        <item name="ratingBarStarForegroundColor">?attr/colorAccent</item>
-
-        <item name="dimmedNeutralColor">@color/black_dim_26pct</item>
-
-        <!-- Icons, same for all themes, will be colored dynamically -->
-        <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
     </style>
 
     <!-- Blue Grey theme. -->
-    <style name="MistTheme" parent="NightTheme">
+    <style name="Theme.Kore.Mist" parent="Theme.Kore.Dark">
         <item name="android:colorBackground">@color/mist_background</item>
         <item name="android:windowBackground">@color/mist_background</item>
         <item name="android:navigationBarColor" >@color/mist_background</item>
 
-        <!--<item name="colorPrimary">@color/light_blue_700</item>-->
-        <!--<item name="colorPrimaryDark">@color/light_blue_800</item>-->
         <item name="colorPrimary">@color/mist_primary</item>
         <item name="colorPrimaryDark">@color/mist_primary_dark</item>
 
-        <item name="colorAccent">@color/mist_accent</item>
-        <item name="colorAccentLight">@color/mist_accent_light</item>
-
-        <item name="contentBackgroundColor">@color/mist_content_background_dim</item>
-        <item name="appCardBackgroundColor">@color/mist_content_background</item>
-        <item name="appSelectedCardBackgroundColor">@color/mist_selected_content_background</item>
-        <item name="buttonBarBackgroundColor">@color/mist_content_background_dim</item>
-
-        <item name="drawerBackgroundColor">@color/mist_background</item>
-
         <item name="colorInProgress">@color/mist_accent</item>
         <item name="colorFinished">@color/mist_accent_darker</item>
-        <!--<item name="remoteBackgroundColorFilter">@color/blue_grey_content_background</item>-->
-        <!--<item name="separatorColor">@color/dark_separator</item>-->
     </style>
 
     <!-- Sunrise theme. -->
-    <style name="SunriseTheme" parent="DayTheme">
+    <style name="Theme.Kore.Sunrise" parent="Theme.Kore.Light">
         <item name="android:colorBackground">@color/sunrise_background</item>
         <item name="android:windowBackground">@color/sunrise_background</item>
         <item name="android:navigationBarColor" >@color/sunrise_background</item>
@@ -202,23 +138,12 @@
         <item name="colorPrimary">@color/sunrise_primary</item>
         <item name="colorPrimaryDark">@color/sunrise_primary_dark</item>
 
-        <item name="colorAccent">@color/sunrise_accent</item>
-        <item name="colorAccentLight">@color/sunrise_accent_light</item>
-
-        <item name="contentBackgroundColor">@color/sunrise_content_background_dim</item>
-        <item name="appCardBackgroundColor">@color/sunrise_content_background</item>
-        <item name="buttonBarBackgroundColor">@color/sunrise_content_background_dim</item>
-        <item name="appSelectedCardBackgroundColor">@color/sunrise_selected_content_background</item>
-
-        <item name="drawerBackgroundColor">@color/sunrise_background</item>
-
         <item name="colorInProgress">@color/sunrise_accent_dark</item>
         <item name="colorFinished">@color/sunrise_accent_light</item>
-        <!--<item name="separatorColor">@color/dark_separator</item>-->
     </style>
 
     <!-- Sunset theme. -->
-    <style name="SunsetTheme" parent="NightTheme">
+    <style name="Theme.Kore.Sunset" parent="Theme.Kore.Dark">
         <item name="android:colorBackground">@color/sunset_background</item>
         <item name="android:windowBackground">@color/sunset_background</item>
         <item name="android:navigationBarColor" >@color/sunset_background</item>
@@ -226,24 +151,8 @@
         <item name="colorPrimary">@color/sunset_primary</item>
         <item name="colorPrimaryDark">@color/sunset_primary_dark</item>
 
-        <item name="colorAccentLight">@color/sunset_accent_light</item>
-        <item name="colorAccent">@color/sunset_accent</item>
-
-        <item name="contentBackgroundColor">@color/sunset_content_background_dim</item>
-        <item name="appCardBackgroundColor">@color/sunset_content_background</item>
-        <item name="buttonBarBackgroundColor">@color/sunset_content_background_dim</item>
-        <item name="appSelectedCardBackgroundColor">@color/sunset_selected_content_background</item>
-
-        <item name="drawerBackgroundColor">@color/sunset_background</item>
-
         <item name="colorInProgress">@color/sunset_accent_light</item>
         <item name="colorFinished">@color/sunset_accent_dark</item>
-        <!--<item name="separatorColor">@color/dark_separator</item>-->
-    </style>
-
-    <style name="PrefTheme" parent="PreferenceThemeOverlay.v14.Material">
-        <item name="android:listPreferredItemPaddingLeft">@dimen/activity_horizontal_margin</item>
-        <item name="android:listPreferredItemPaddingRight">@dimen/activity_horizontal_margin</item>
     </style>
 
 </resources>

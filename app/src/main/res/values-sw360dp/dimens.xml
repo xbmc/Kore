@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="remote_icon_size">76dp</dimen>
-    <dimen name="remote_size">216dp</dimen>
+    <dimen name="control_pad_icon_size">76dp</dimen>
+    <dimen name="control_pad_size">216dp</dimen>
+    <dimen name="remote_margin_bottom">16dp</dimen>
 </resources>

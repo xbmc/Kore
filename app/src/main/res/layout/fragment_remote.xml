@@ -17,9 +17,9 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/top_panel"
@@ -35,9 +35,11 @@
             android:id="@+id/media_panel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/remote_content_hmargin"
-            android:layout_marginRight="@dimen/remote_content_hmargin"
-            android:paddingTop="@dimen/remote_page_indicator_height">
+            android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+            android:layout_marginRight="@dimen/info_panel_horiz_margin"
+            android:layout_marginBottom="@dimen/remote_margin_bottom"
+            android:layout_marginTop="@dimen/remote_viewpager_height"
+            style="@style/Widget.Kore.InfoPanel">
 
             <ImageView
                 android:id="@+id/art"
@@ -53,8 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/art"
-                android:layout_toEndOf="@id/art"
-                android:background="?attr/contentBackgroundColor"/>
+                android:layout_toEndOf="@id/art"/>
 
             <TextView
                 android:id="@+id/details"
@@ -63,8 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
                 android:layout_toEndOf="@id/art"
-                android:layout_above="@id/media_playback_bar"
-                android:background="?attr/contentBackgroundColor"/>
+                android:layout_above="@id/media_playback_bar"/>
 
             <!-- Media playback control buttons -->
             <org.xbmc.kore.ui.widgets.MediaPlaybackBar
@@ -74,7 +74,6 @@
                 android:layout_alignBottom="@id/art"
                 android:layout_toEndOf="@id/art"
                 android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor"
                 app:view_mode="single_movement_buttons" />
 
             <!-- Progress bar -->
@@ -87,8 +86,7 @@
                 android:paddingTop="@dimen/default_padding"
                 android:paddingRight="@dimen/small_padding"
                 android:paddingLeft="@dimen/small_padding"
-                android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor"/>
+                android:orientation="horizontal" />
 
             <!-- Media action buttons -->
             <org.xbmc.kore.ui.widgets.MediaActionsBar
@@ -97,8 +95,7 @@
                 android:layout_height="@dimen/buttonbar_height"
                 android:layout_below="@id/progress_info"
                 android:layout_alignStart="@id/art"
-                android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor" />
+                android:orientation="horizontal" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -109,7 +106,8 @@
         android:layout_height="@dimen/buttonbar_height"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:background="?attr/contentBackgroundColor" >
+        android:background="?attr/colorSurface"
+        android:elevation="@dimen/kore_elevation_level2">
         <ImageButton
             android:id="@+id/home"
             android:layout_width="0dp"
@@ -200,15 +198,12 @@
             android:contentDescription="@string/system"/>
     </LinearLayout>
 
-    <FrameLayout
-        style="@style/Widget.Kore.ControlPad.FrameLayout"
+    <org.xbmc.kore.ui.widgets.ControlPad
+        android:id="@+id/remote"
+        android:layout_width="@dimen/control_pad_size"
+        android:layout_height="@dimen/control_pad_size"
+        android:layout_marginBottom="@dimen/remote_margin_bottom"
         android:layout_above="@id/sections_button_bar"
-        android:layout_below="@id/top_panel"
-        android:layout_marginTop="@dimen/default_padding"
-        android:layout_marginBottom="@dimen/default_padding">
-        <org.xbmc.kore.ui.widgets.ControlPad
-            android:id="@+id/remote"
-            style="@style/Widget.Kore.ControlPad"
-            app:columnCount="3"/>
-    </FrameLayout>
+        android:layout_centerHorizontal="true"
+        style="@style/Widget.Kore.ControlPad" />
 </RelativeLayout>

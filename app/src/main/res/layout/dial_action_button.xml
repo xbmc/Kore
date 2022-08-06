@@ -11,8 +11,8 @@
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/default_padding"
         app:backgroundTint="@color/fabspeeddial_label"
-        style="@style/Widget.Kore.TextView.FAB"
-        android:elevation="4dp"/>
+        style="@style/Widget.Kore.TextView.FABDialActionButton"
+        android:elevation="@dimen/kore_elevation_level3"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/dial_action_button"
         android:layout_width="wrap_content"

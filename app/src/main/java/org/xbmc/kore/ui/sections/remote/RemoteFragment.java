@@ -161,7 +161,7 @@ public class RemoteFragment extends Fragment
                 buttons[i].setOnClickListener(v -> action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler));
             }
         }
-
+        UIUtils.tintElevatedView(binding.sectionsButtonBar);
         binding.title.setClickable(true);
         binding.title.setOnClickListener(v -> v.setSelected(!v.isSelected()));
 

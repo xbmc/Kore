@@ -17,6 +17,7 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -35,13 +36,13 @@
             android:gravity="center"
             android:text="@string/no_xbmc_configured" />
 
-        <View style="@style/Widget.Kore.Divider.Horizontal"/>
-
         <Button
             android:id="@+id/action_add_host"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_gravity="center_horizontal"
+            app:icon="@drawable/ic_add_box_white_24dp"
+            style="@style/Widget.Material3.Button.Icon"
             android:text="@string/add_xbmc"/>
     </LinearLayout>
 

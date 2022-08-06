@@ -19,10 +19,13 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Vibrator;
 import androidx.preference.PreferenceManager;
@@ -46,14 +49,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.TextViewCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.elevation.SurfaceColors;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.databinding.GridItemCastBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.ui.sections.video.AllCastActivity;
+import org.xbmc.kore.ui.widgets.HighlightButton;
 import org.xbmc.kore.ui.widgets.RepeatModeButton;
 
 import java.io.File;
@@ -69,6 +78,7 @@ import java.util.regex.Pattern;
 public class UIUtils {
 
     public static final float IMAGE_RESIZE_FACTOR = 1.0f;
+    public static final int DEFAULT_SURFACE_ALFA = 0xff;
 
     public static final int initialButtonRepeatInterval = 400; // ms
     public static final int buttonRepeatInterval = 80; // ms
@@ -255,9 +265,6 @@ public class UIUtils {
                                      final Intent allCastActivityLaunchIntent) {
         HostManager hostManager = HostManager.getInstance(activity);
         Resources resources = activity.getResources();
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager)activity.getSystemService(Context.WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
 
         View.OnClickListener castListClickListener = v -> Utils.openImdbForPerson(activity, (String)v.getTag());
 
@@ -266,18 +273,19 @@ public class UIUtils {
         int numRows = resources.getInteger(R.integer.cast_grid_view_rows);
         int maxCastPictures = numColumns * numRows;
 
-        int layoutMarginPx = 2 * resources.getDimensionPixelSize(R.dimen.remote_content_hmargin);
-        int imageMarginPx = 2 * resources.getDimensionPixelSize(R.dimen.image_grid_margin);
-        int imageWidth = (displayMetrics.widthPixels - layoutMarginPx - numColumns * imageMarginPx) / numColumns;
-        int imageHeight = (int)(imageWidth * 1.5);
+        int parentWidth = castListView.getMeasuredWidth();
+        if (parentWidth <= 0) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            ((WindowManager)activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
+            parentWidth = displayMetrics.widthPixels - 2 * resources.getDimensionPixelSize(R.dimen.info_panel_horiz_margin);
+        }
+        int imageWidth = parentWidth / numColumns - 2 * resources.getDimensionPixelSize(R.dimen.image_grid_margin);        int imageHeight = (int)(imageWidth * 1.5);
 
         for (int i = 0; i < Math.min(castList.size(), maxCastPictures); i++) {
             VideoType.Cast actor = castList.get(i);
 
-            View castView = LayoutInflater.from(activity).inflate(R.layout.grid_item_cast, castListView, false);
-            ImageView castPicture = castView.findViewById(R.id.picture);
-            TextView castName = castView.findViewById(R.id.name);
-            TextView castRole = castView.findViewById(R.id.role);
+            GridItemCastBinding binding = GridItemCastBinding.inflate(LayoutInflater.from(activity), castListView, false);
+            View castView = binding.getRoot();
 
             castView.getLayoutParams().width = imageWidth;
             castView.getLayoutParams().height = imageHeight;
@@ -285,24 +293,22 @@ public class UIUtils {
 
             UIUtils.loadImageWithCharacterAvatar(activity, hostManager,
                                                  actor.thumbnail, actor.name,
-                                                 castPicture, imageWidth, imageHeight);
+                                                 binding.picture, imageWidth, imageHeight);
 
             if ((i == maxCastPictures - 1) && (castList.size() > i + 1)) {
-                View castNameGroup = castView.findViewById(R.id.cast_name_group);
-                View allCastGroup = castView.findViewById(R.id.all_cast_group);
-                TextView remainingCastCount = castView.findViewById(R.id.remaining_cast_count);
+                binding.castNameGroup.setVisibility(View.GONE);
+                binding.allCastGroup.setVisibility(View.VISIBLE);
+                binding.allCastGroup.setAlpha(0.8f * AllCastActivity.CAST_NAME_ALPHA);
+                binding.remainingCastCount.setText(String.format(activity.getString(R.string.remaining_cast_count), castList.size() - maxCastPictures + 1));
 
-                castNameGroup.setVisibility(View.GONE);
-                allCastGroup.setVisibility(View.VISIBLE);
-                remainingCastCount.setText(String.format(activity.getString(R.string.remaining_cast_count),
-                                                         castList.size() - maxCastPictures + 1));
                 castView.setOnClickListener(v -> {
                     activity.startActivity(allCastActivityLaunchIntent);
                     activity.overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 });
             } else {
-                castName.setText(actor.name);
-                castRole.setText(actor.role);
+                binding.castNameGroup.setAlpha(AllCastActivity.CAST_NAME_ALPHA);
+                binding.name.setText(actor.name);
+                binding.role.setText(actor.role);
                 castView.setOnClickListener(castListClickListener);
             }
 
@@ -327,47 +333,54 @@ public class UIUtils {
         Toast.makeText(context, R.string.wol_sent, Toast.LENGTH_SHORT).show();
     }
 
-//    /**
-//     * Sets the default {@link android.support.v4.widget.SwipeRefreshLayout} color scheme
-//     * @param swipeRefreshLayout layout
-//     */
-//    public static void setSwipeRefreshLayoutColorScheme(SwipeRefreshLayout swipeRefreshLayout) {
-//        Resources.Theme theme = swipeRefreshLayout.getContext().getTheme();
-//        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-//                R.attr.refreshColor1,
-//                R.attr.refreshColor2,
-//                R.attr.refreshColor3,
-//                R.attr.refreshColor4,
-//        });
-//
-//        swipeRefreshLayout.setColorScheme(styledAttributes.getResourceId(0, android.R.color.holo_blue_dark),
-//                styledAttributes.getResourceId(1, android.R.color.holo_purple),
-//                styledAttributes.getResourceId(2, android.R.color.holo_red_dark),
-//                styledAttributes.getResourceId(3, android.R.color.holo_green_dark));
-//        styledAttributes.recycle();
-//    }
+    /**
+     * Tints the system status and navigation bars with an appropriate Surface color for Material 3 theming
+     * @param activity Activity
+     */
+    public static void tintSystemBars(Activity activity) {
+        int color = SurfaceColors.SURFACE_2.getColor(activity);
+        if (Utils.isMOrLater())
+            activity.getWindow().setStatusBarColor(color);
+        if (Utils.isOreoMR1OrLater())
+            activity.getWindow().setNavigationBarColor(color);
+    }
 
-//    /**
-//     * Sets a views padding top/bottom to account for the system bars
-//     * (Top status and action bar, bottom nav bar, right nav bar if in ladscape mode)
-//     *
-//     * @param context Context
-//     * @param view View to pad
-//     * @param padTop Whether to set views paddingTop
-//     * @param padRight Whether to set views paddingRight (for nav bar in landscape mode)
-//     * @param padBottom Whether to set views paddingBottom
-//     */
-//    public static void setPaddingForSystemBars(Activity context, View view,
-//                                               boolean padTop, boolean padRight, boolean padBottom) {
-//        //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
-//        SystemBarTintManager tintManager = new SystemBarTintManager(context);
-//        SystemBarTintManager.SystemBarConfig config = tintManager.getConfig();
-//
-//        view.setPadding(view.getPaddingLeft(),
-//                padTop ? config.getPixelInsetTop(true) : view.getPaddingTop(),
-//                padRight? config.getPixelInsetRight() : view.getPaddingRight(),
-//                padBottom ? config.getPixelInsetBottom() : view.getPaddingBottom());
-//    }
+    public static void tintElevatedView(View v) {
+        v.setBackgroundTintList(ColorStateList.valueOf(SurfaceColors.getColorForElevation(v.getContext(), v.getElevation())));
+    }
+
+    /**
+     * Returns the view color with the alpha component changed.
+     * @param v Ciew
+     * @return Translucid view color
+     */
+    public static int getTranslucidViewColor(View v) {
+        return changeColorAlpha(getViewBackgroundColor(v), UIUtils.DEFAULT_SURFACE_ALFA);
+    }
+
+    /**
+     * Returns the view background color, if the background is a color, Transparent otherwise
+     * @param v View
+     * @return View background color, if available, else Transparent
+     */
+    public static int getViewBackgroundColor(View v) {
+        Drawable background = v.getBackground();
+        if (background instanceof ColorDrawable) {
+            return ((ColorDrawable) background).getColor();
+        }
+        return Color.TRANSPARENT;
+    }
+
+    /**
+     * Changes the alpha component of a color
+     * @param color Color to change
+     * @param alpha New alpha to set
+     * @return color with new alpha
+     */
+    public static int changeColorAlpha(int color, int alpha)
+    {
+        return (alpha << 24) | (color & 0x00ffffff);
+    }
 
     /**
      * Returns a theme resource Id given the value stored in Shared Preferences
@@ -377,17 +390,17 @@ public class UIUtils {
     public static int getThemeResourceId(String prefThemeValue) {
         switch (Integer.parseInt(prefThemeValue)) {
             case 0:
-                return R.style.NightTheme;
+                return R.style.Theme_Kore_Dark;
             case 1:
-                return R.style.DayTheme;
+                return R.style.Theme_Kore_Light;
             case 2:
-                return R.style.MistTheme;
+                return R.style.Theme_Kore_Mist;
             case 3:
-                return R.style.SunriseTheme;
+                return R.style.Theme_Kore_Sunrise;
             case 4:
-                return R.style.SunsetTheme;
+                return R.style.Theme_Kore_Sunset;
             default:
-                return R.style.NightTheme;
+                return R.style.Theme_Kore_Dark;
         }
     }
 
@@ -540,13 +553,8 @@ public class UIUtils {
      */
     public static void highlightImageView(Context context, ImageView view, boolean highlight) {
         if (highlight) {
-            Resources.Theme theme = context.getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
-                    R.attr.colorAccent});
-            view.setColorFilter(
-                    styledAttributes.getColor(styledAttributes.getIndex(0),
-                                              context.getResources().getColor(R.color.default_accent)));
-            styledAttributes.recycle();
+            int highlightColor = MaterialColors.getColor(context, HighlightButton.DEFAULT_HIGHLIGHT_COLOR, Color.WHITE);
+            view.setColorFilter(highlightColor);
         } else {
             view.clearColorFilter();
         }
