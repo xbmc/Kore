@@ -103,8 +103,8 @@
     <dimen name="addonlist_art_width">74dp</dimen>
     <dimen name="addonlist_art_heigth">74dp</dimen>
 
-    <dimen name="filelist_art_width">52dp</dimen>
-    <dimen name="filelist_art_heigth">76dp</dimen>
+    <dimen name="filelist_art_width">74dp</dimen>
+    <dimen name="filelist_art_heigth">74dp</dimen>
 
     <dimen name="picturelist_art_width">126dp</dimen>
     <dimen name="picturelist_art_heigth">76dp</dimen>

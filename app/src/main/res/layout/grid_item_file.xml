@@ -15,64 +15,61 @@
    limitations under the License.
 -->
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.Kore.CardView">
+    style="@style/Widget.Kore.ListItem">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/art"
+        android:layout_width="@dimen/filelist_art_width"
+        android:layout_height="@dimen/filelist_art_heigth"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/poster"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/size_duration"
+        style="@style/Widget.Kore.TextView.MediaList.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:paddingStart="@dimen/small_padding"
+        android:paddingEnd="@dimen/default_padding" />
+
+    <ImageView
+        android:id="@+id/list_context_menu"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:layout_width="@dimen/default_icon_size"
+        android:layout_height="@dimen/default_icon_size"
+        android:layout_alignTop="@id/art"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/action_options"
+        android:padding="@dimen/default_icon_padding"
+        android:src="?attr/iconOverflow" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/Widget.Kore.TextView.MediaList.Title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/art"
+        android:layout_toStartOf="@id/list_context_menu"
+        android:layout_toEndOf="@+id/art"
+        android:ellipsize="middle"
+        android:paddingStart="@dimen/default_padding"
+        android:paddingEnd="@dimen/small_padding" />
 
-        <ImageView
-            android:id="@+id/art"
-            android:layout_width="@dimen/filelist_art_width"
-            android:layout_height="@dimen/filelist_art_heigth"
-            android:layout_alignParentStart="true"
-            android:contentDescription="@string/poster"
-            android:scaleType="centerCrop"/>
-        <TextView
-            android:id="@+id/size_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            style="@style/Widget.Kore.TextView.MediaList.Info"
-            android:paddingStart="@dimen/small_padding"
-            android:paddingEnd="@dimen/default_padding"/>
-        <ImageView
-            android:id="@+id/list_context_menu"
-            android:layout_width="@dimen/default_icon_size"
-            android:layout_height="@dimen/default_icon_size"
-            android:padding="@dimen/default_icon_padding"
-            android:layout_alignTop="@id/art"
-            android:layout_alignParentEnd="true"
-            style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconOverflow"
-            android:contentDescription="@string/action_options"/>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/art"
-            android:layout_toStartOf="@id/list_context_menu"
-            android:layout_alignTop="@id/art"
-            style="@style/Widget.Kore.TextView.MediaList.Title"
-            android:paddingStart="@dimen/default_padding"
-            android:paddingEnd="@dimen/small_padding"
-        android:ellipsize="middle"/>
-        <TextView
-            android:id="@+id/details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/title"
-            android:layout_below="@id/title"
-            android:layout_toEndOf="@id/art"
-            android:layout_toStartOf="@id/size_duration"
-            style="@style/Widget.Kore.TextView.MediaList.Details"
-            android:paddingStart="@dimen/default_padding"
-            android:paddingEnd="@dimen/small_padding"/>
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/details"
+        style="@style/Widget.Kore.TextView.MediaList.Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_alignStart="@id/title"
+        android:layout_toStartOf="@id/size_duration"
+        android:layout_toEndOf="@id/art"
+        android:paddingStart="@dimen/default_padding"
+        android:paddingEnd="@dimen/small_padding" />
+</RelativeLayout>

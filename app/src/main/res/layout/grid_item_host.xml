@@ -15,54 +15,51 @@
    limitations under the License.
 -->
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.Kore.CardView">
+    style="@style/Widget.Kore.ListItem"
+    android:padding="@dimen/large_padding">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/status_indicator"
+        android:layout_width="@dimen/default_icon_size"
+        android:layout_height="@dimen/default_icon_size"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/default_icon_padding"
+        android:src="@drawable/ic_devices_white_24dp"
+        android:contentDescription="@string/app_name" />
+
+    <ImageView
+        android:id="@+id/list_context_menu"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:layout_width="@dimen/default_icon_size"
+        android:layout_height="@dimen/default_icon_size"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/action_options"
+        android:padding="@dimen/default_icon_padding"
+        android:src="?attr/iconOverflow" />
+
+    <TextView
+        android:id="@+id/host_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@id/list_context_menu"
+        android:layout_toEndOf="@id/status_indicator"
+        android:layout_alignWithParentIfMissing="true"
+        style="@style/Widget.Kore.TextView.MediaList.Title"/>
+
+    <TextView
+        android:id="@+id/host_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/default_padding">
+        android:layout_below="@+id/host_name"
+        android:layout_alignStart="@+id/host_name"
+        android:layout_alignEnd="@+id/host_name"
+        style="@style/Widget.Kore.TextView.MediaList.Details"
+        android:paddingBottom="@dimen/tiny_padding"/>
 
-        <ImageView
-            android:id="@+id/status_indicator"
-            android:layout_width="@dimen/default_icon_size"
-            android:layout_height="@dimen/default_icon_size"
-            android:padding="@dimen/default_icon_padding"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_devices_white_24dp"/>
-
-        <ImageView
-            android:id="@+id/list_context_menu"
-            android:layout_width="@dimen/default_icon_size"
-            android:layout_height="@dimen/default_icon_size"
-            android:padding="@dimen/default_icon_padding"
-            android:layout_alignTop="@id/status_indicator"
-            android:layout_alignParentEnd="true"
-            style="@style/Widget.Kore.Button.Borderless"
-            android:src="?attr/iconOverflow"
-            android:contentDescription="@string/action_options"/>
-
-        <TextView
-            android:id="@+id/host_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/status_indicator"
-            android:layout_toStartOf="@id/list_context_menu"
-            android:layout_alignTop="@id/status_indicator"
-            android:layout_alignWithParentIfMissing="true"
-            style="@style/Widget.Kore.TextView.MediaList.Title"/>
-
-        <TextView
-            android:id="@+id/host_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/host_name"
-            android:layout_alignStart="@+id/host_name"
-            android:layout_alignEnd="@+id/host_name"
-            style="@style/Widget.Kore.TextView.MediaList.Details"/>
-
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+</RelativeLayout>

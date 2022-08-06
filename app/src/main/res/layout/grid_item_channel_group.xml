@@ -15,22 +15,17 @@
    limitations under the License.
 -->
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.Kore.CardView">
+    style="@style/Widget.Kore.ListItem"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/title"
+        style="@style/Widget.Kore.TextView.MediaList.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Kore.TextView.MediaList.Title"
-            android:padding="@dimen/default_padding"/>
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+        android:padding="@dimen/default_padding" />
+</LinearLayout>

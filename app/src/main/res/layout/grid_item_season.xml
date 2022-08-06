@@ -15,53 +15,46 @@
    limitations under the License.
 -->
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Widget.Kore.CardView"
-    android:focusable="true"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    style="@style/Widget.Kore.ListItem">
 
-    <RelativeLayout
-        android:id="@+id/container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/art"
+        android:layout_width="@dimen/seasonlist_art_width"
+        android:layout_height="@dimen/seasonlist_art_heigth"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/poster"
+        android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/art"
-            android:layout_width="@dimen/seasonlist_art_width"
-            android:layout_height="@dimen/seasonlist_art_heigth"
-            android:layout_alignParentStart="true"
-            android:contentDescription="@string/poster"
-            android:scaleType="centerCrop"/>
-        <TextView
-            android:id="@+id/season"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/art"
-            style="@style/Widget.Kore.TextView.MediaList.Title"
-            android:paddingTop="@dimen/small_padding"/>
+    <TextView
+        android:id="@+id/season"
+        style="@style/Widget.Kore.TextView.MediaList.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/art"
+        android:paddingTop="@dimen/small_padding" />
 
-        <ProgressBar
-            android:id="@+id/season_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_alignStart="@id/season"
-            android:layout_below="@id/season"
-            android:layout_marginLeft="@dimen/default_padding"
-            android:layout_marginStart="@dimen/default_padding"
-            android:layout_marginRight="@dimen/default_padding"
-            android:layout_marginEnd="@dimen/default_padding"
-            android:layout_marginTop="@dimen/default_padding"/>
-        <TextView
-            android:id="@+id/episodes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/season"
-            android:layout_below="@id/season_progress_bar"
-            style="@style/Widget.Kore.TextView.MediaList.Details"/>
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+    <ProgressBar
+        android:id="@+id/season_progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/season"
+        android:layout_alignStart="@id/season"
+        android:layout_marginStart="@dimen/default_padding"
+        android:layout_marginLeft="@dimen/default_padding"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginEnd="@dimen/default_padding"
+        android:layout_marginRight="@dimen/default_padding" />
+
+    <TextView
+        android:id="@+id/episodes"
+        style="@style/Widget.Kore.TextView.MediaList.Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/season_progress_bar"
+        android:layout_alignStart="@id/season" />
+</RelativeLayout>

@@ -40,10 +40,11 @@
             sothree:umanoInitialState="hidden"/>
     </LinearLayout>
 
-    <androidx.fragment.app.FragmentContainerView android:id="@+id/navigation_drawer"
-              android:layout_width="@dimen/navigation_drawer_width"
-              android:layout_height="match_parent"
-              android:layout_gravity="start"
-              android:name="org.xbmc.kore.ui.generic.NavigationDrawerFragment"/>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/navigation_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:name="org.xbmc.kore.ui.generic.NavigationDrawerFragment"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
