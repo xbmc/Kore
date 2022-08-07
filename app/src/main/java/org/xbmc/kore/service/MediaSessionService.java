@@ -40,6 +40,7 @@ import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.CharacterDrawable;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.RemoteVolumeProviderCompat;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
@@ -76,6 +77,8 @@ public class MediaSessionService extends Service
     private MediaSessionCompat mediaSession;
     private PlaybackStateCompat.Builder stateBuilder;
     private MediaMetadataCompat.Builder metadataBuilder;
+
+    private RemoteVolumeProviderCompat remoteVolumePC;
 
     private CallStateListener callStateListener = null;
 
@@ -128,6 +131,7 @@ public class MediaSessionService extends Service
         // connection observer can be shared with the app, and notify it on the UI thread
         notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
         hostConnection = HostManager.getInstance(this).getConnection();
+        remoteVolumePC = new RemoteVolumeProviderCompat(hostConnection);
 
         // Create the intent to start the remote when the user taps the notification
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -163,6 +167,7 @@ public class MediaSessionService extends Service
                             PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
                             PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS);
         mediaSession.setPlaybackState(stateBuilder.build());
+        mediaSession.setPlaybackToRemote(remoteVolumePC);
         metadataBuilder = new MediaMetadataCompat.Builder();
     }
 
@@ -198,6 +203,7 @@ public class MediaSessionService extends Service
             if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
             hostConnectionObserver = connectionObserver;
             hostConnectionObserver.registerPlayerObserver(this);
+            hostConnectionObserver.registerApplicationObserver(remoteVolumePC);
         }
 
 
