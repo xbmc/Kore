@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,7 +135,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
     @Override
     protected MediaPictureListAdapter createAdapter() {
-        return new MediaPictureListAdapter(requireContext(), R.layout.grid_item_picture);
+        return new MediaPictureListAdapter(requireContext(), R.layout.item_file);
     }
 
     @Override
@@ -505,7 +506,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
                     final LocalFileLocation loc = fileLocationItems.get(position);
                     if (!loc.isDirectory) {
                         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-                        popupMenu.getMenuInflater().inflate(R.menu.filelist_item, popupMenu.getMenu());
+                        popupMenu.getMenuInflater().inflate(R.menu.local_file_list_item, popupMenu.getMenu());
                         popupMenu.setOnMenuItemClickListener(item -> {
                             int itemId = item.getItemId();
                             if (itemId == R.id.action_queue_item) {
@@ -544,11 +545,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
             // Get the art dimensions
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.picturelist_art_width) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.picturelist_art_heigth) /
-                    UIUtils.IMAGE_RESIZE_FACTOR);
-
+            artWidth = (int)(resources.getDimension(R.dimen.filelist_art_width) / UIUtils.IMAGE_RESIZE_FACTOR);
+            artHeight = (int)(resources.getDimension(R.dimen.filelist_art_heigth) / UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
         /**
@@ -630,14 +628,14 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
             title = itemView.findViewById(R.id.title);
             details = itemView.findViewById(R.id.details);
             contextMenu = itemView.findViewById(R.id.list_context_menu);
-            sizeDuration = itemView.findViewById(R.id.size_duration);
+            sizeDuration = itemView.findViewById(R.id.other_info);
             contextMenu.setOnClickListener(itemMenuClickListener);
         }
 
         public void bindView(LocalFileLocation fileLocation, int position) {
             title.setText(fileLocation.fileName);
-            details.setText(fileLocation.details);
-            sizeDuration.setText(fileLocation.sizeDuration);
+            setViewText(details, fileLocation.details);
+            setViewText(sizeDuration, fileLocation.sizeDuration);
 
             CharacterDrawable avatarDrawable = UIUtils.getCharacterAvatar(context, fileLocation.fileName);
             File file_path = new File(fileLocation.fullPath);
@@ -656,6 +654,12 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
                 contextMenu.setVisibility(View.VISIBLE);
                 contextMenu.setTag(position);
             }
+        }
+
+        private void setViewText(TextView v, String text) {
+            v.setVisibility(TextUtils.isEmpty(text) ? View.GONE : View.VISIBLE);
+            if (v.getVisibility() == View.VISIBLE)
+                v.setText(UIUtils.applyMarkup(context, text));
         }
     }
 
