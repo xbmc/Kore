@@ -14,6 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
@@ -23,8 +24,8 @@
 
     <ImageView
         android:id="@+id/art"
-        android:layout_width="@dimen/artistlist_art_width"
-        android:layout_height="@dimen/artistlist_art_heigth"
+        android:layout_width="@dimen/filelist_art_width"
+        android:layout_height="@dimen/filelist_art_heigth"
         android:contentDescription="@string/poster"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -37,10 +38,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/details"
         app:layout_constraintEnd_toStartOf="@id/list_context_menu"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/art"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        android:ellipsize="middle" />
 
     <TextView
         android:id="@+id/details"
@@ -49,7 +50,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/other_info"
         app:layout_constraintEnd_toStartOf="@id/list_context_menu"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/title"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
@@ -60,7 +60,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/list_context_menu"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/title"
         app:layout_constraintTop_toBottomOf="@+id/details" />
 
