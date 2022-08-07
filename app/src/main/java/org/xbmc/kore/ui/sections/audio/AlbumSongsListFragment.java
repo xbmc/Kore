@@ -149,8 +149,8 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
         if (listView == null) return;
         do {
             View songView = LayoutInflater.from(getActivity())
-                                          .inflate(R.layout.list_item_song, listView, false);
-            TextView songTitle = songView.findViewById(R.id.song_title);
+                                          .inflate(R.layout.item_music_song, listView, false);
+            TextView songTitle = songView.findViewById(R.id.title);
             TextView trackNumber = songView.findViewById(R.id.track_number);
             TextView details = songView.findViewById(R.id.details);
             ImageView contextMenu = songView.findViewById(R.id.list_context_menu);
@@ -265,11 +265,11 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
             View view = LayoutInflater.from(context)
-                                      .inflate(R.layout.list_item_song, viewGroup, false);
+                                      .inflate(R.layout.item_music_song, viewGroup, false);
             // Setup View holder pattern
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.trackNumber = view.findViewById(R.id.track_number);
-            viewHolder.title = view.findViewById(R.id.song_title);
+            viewHolder.title = view.findViewById(R.id.title);
             viewHolder.details = view.findViewById(R.id.details);
             viewHolder.contextMenu = view.findViewById(R.id.list_context_menu);
             viewHolder.songInfo = new FileDownloadHelper.SongInfo();

@@ -81,7 +81,7 @@
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:paddingTop">@dimen/small_padding</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
-        <item name="android:paddingStart">@dimen/default_icon_padding</item>
+        <item name="android:paddingStart">@dimen/small_padding</item>
         <item name="android:paddingEnd">@dimen/small_padding</item>
     </style>
 

@@ -293,7 +293,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
         @Override
         public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(fragment.getContext())
-                                      .inflate(R.layout.grid_item_album, parent, false);
+                                      .inflate(R.layout.item_music_generic, parent, false);
 
             return new ViewHolder(view, fragment.getContext(), hostManager, artWidth, artHeight,
                                   albumlistItemMenuClickListener);
@@ -368,8 +368,8 @@ public class AlbumListFragment extends AbstractCursorListFragment {
             this.artWidth = artWidth;
             this.artHeight = artHeight;
             titleView = itemView.findViewById(R.id.title);
-            artistView = itemView.findViewById(R.id.name);
-            genresView = itemView.findViewById(R.id.genres);
+            artistView = itemView.findViewById(R.id.details);
+            genresView = itemView.findViewById(R.id.other_info);
             artView = itemView.findViewById(R.id.art);
 
             // For the popupmenu

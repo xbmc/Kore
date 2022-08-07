@@ -35,7 +35,6 @@
         android:id="@+id/albums_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="@integer/seasons_grid_view_columns"
-        android:orientation="horizontal"
-        android:useDefaultMargins="true"/>
+        android:columnCount="@integer/info_grid_view_columns"
+        android:orientation="horizontal"/>
 </LinearLayout>

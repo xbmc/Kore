@@ -145,7 +145,7 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
         @Override
         public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext())
-                                      .inflate(R.layout.grid_item_audio_genre, parent, false);
+                                      .inflate(R.layout.item_music_generic, parent, false);
 
             return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight, genrelistItemMenuClickListener);
         }
@@ -158,6 +158,8 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
      */
     private static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
         TextView titleView;
+        TextView detailsView;
+        TextView otherInfoView;
         ImageView artView;
         HostManager hostManager;
         int artWidth;
@@ -174,6 +176,8 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
             this.artWidth = artWidth;
             this.artHeight = artHeight;
             titleView = itemView.findViewById(R.id.title);
+            detailsView = itemView.findViewById(R.id.details);
+            otherInfoView = itemView.findViewById(R.id.other_info);
             artView = itemView.findViewById(R.id.art);
 
             ImageView contextMenu = itemView.findViewById(R.id.list_context_menu);
@@ -187,7 +191,8 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
             genreTitle = cursor.getString(AudioGenreListQuery.TITLE);
 
             titleView.setText(genreTitle);
-
+            detailsView.setVisibility(View.GONE);
+            otherInfoView.setVisibility(View.GONE);
             String thumbnail = cursor.getString(AudioGenreListQuery.THUMBNAIL);
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  thumbnail, genreTitle, artView, artWidth, artHeight);
