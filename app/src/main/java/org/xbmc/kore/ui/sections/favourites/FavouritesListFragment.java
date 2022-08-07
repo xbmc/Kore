@@ -170,7 +170,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(R.layout.grid_item_channel,
+            View view = LayoutInflater.from(context).inflate(R.layout.item_file,
                                                                     parent, false);
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);
         }
@@ -188,8 +188,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView artView;
-        final TextView titleView;
-        final TextView detailView;
+        final TextView titleView, detailsView;
         HostManager hostManager;
         int artWidth;
         int artHeight;
@@ -203,8 +202,10 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
             this.artHeight = artHeight;
             artView = itemView.findViewById(R.id.art);
             titleView = itemView.findViewById(R.id.title);
-            detailView = itemView.findViewById(R.id.details);
+            detailsView = itemView.findViewById(R.id.details);
 
+            View otherInfoView = itemView.findViewById(R.id.other_info);
+            otherInfoView.setVisibility(View.GONE);
             View contextMenu = itemView.findViewById(R.id.list_context_menu);
             contextMenu.setVisibility(View.GONE);
         }
@@ -226,7 +227,7 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
                 default:
                     typeRes = R.string.unknown;
             }
-            detailView.setText(typeRes);
+            detailsView.setText(typeRes);
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  favouriteDetail.thumbnail, favouriteDetail.title,
