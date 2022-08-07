@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,7 +114,7 @@ public class MediaFileListFragment extends AbstractListFragment {
 
     @Override
     protected RecyclerView.Adapter<ViewHolder> createAdapter() {
-        return new MediaFileListAdapter(requireContext(), R.layout.grid_item_file);
+        return new MediaFileListAdapter(requireContext(), R.layout.item_file);
     }
 
     @Override
@@ -687,14 +688,14 @@ public class MediaFileListFragment extends AbstractListFragment {
             title = itemView.findViewById(R.id.title);
             details = itemView.findViewById(R.id.details);
             contextMenu = itemView.findViewById(R.id.list_context_menu);
-            sizeDuration = itemView.findViewById(R.id.size_duration);
+            sizeDuration = itemView.findViewById(R.id.other_info);
             contextMenu.setOnClickListener(itemMenuClickListener);
         }
 
         public void bindView(FileLocation fileLocation, int position) {
             title.setText(UIUtils.applyMarkup(context, fileLocation.title));
-            details.setText(UIUtils.applyMarkup(context, fileLocation.details));
-            sizeDuration.setText(fileLocation.sizeDuration);
+            setViewText(details, fileLocation.details);
+            setViewText(sizeDuration, fileLocation.sizeDuration);
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  fileLocation.artUrl, fileLocation.title,
@@ -707,6 +708,11 @@ public class MediaFileListFragment extends AbstractListFragment {
                 contextMenu.setTag(position);
 
             }
+        }
+        private void setViewText(TextView v, String text) {
+            v.setVisibility(TextUtils.isEmpty(text) ? View.GONE : View.VISIBLE);
+            if (v.getVisibility() == View.VISIBLE)
+                v.setText(UIUtils.applyMarkup(context, text));
         }
     }
 
@@ -744,63 +750,49 @@ public class MediaFileListFragment extends AbstractListFragment {
         }
 
         public static FileLocation newInstanceFromItemFile(Context context, ListType.ItemFile itemFile) {
-            String title, details, sizeDuration, artUrl;
+            String DELIMITER = "  |  ";
+            String title, details;
+            int duration;
 
             switch (itemFile.type) {
                 case ListType.ItemBase.TYPE_MOVIE:
                     title = itemFile.title;
                     details = itemFile.tagline;
-                    sizeDuration = (itemFile.size > 0) && (itemFile.runtime > 0) ?
-                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
-                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
-                                   (itemFile.runtime > 0)? UIUtils.formatTime(itemFile.runtime) : null;
-                    artUrl = itemFile.thumbnail;
+                    duration = itemFile.runtime;
                     break;
                 case ListType.ItemBase.TYPE_EPISODE:
                     title = itemFile.title;
                     details = String.format(context.getString(R.string.season_episode), itemFile.season, itemFile.episode);
-                    sizeDuration = (itemFile.size > 0) && (itemFile.runtime > 0) ?
-                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
-                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
-                                   (itemFile.runtime > 0)? UIUtils.formatTime(itemFile.runtime) : null;
-                    artUrl = itemFile.thumbnail;
+                    duration = itemFile.runtime;
                     break;
                 case ListType.ItemBase.TYPE_MUSIC_VIDEO:
                     title = itemFile.title;
-                    details = Utils.listStringConcat(itemFile.artist, ", ") + " | " + itemFile.album;
-                    sizeDuration = (itemFile.size > 0) && (itemFile.runtime > 0) ?
-                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.runtime) :
-                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
-                                   (itemFile.runtime > 0)? UIUtils.formatTime(itemFile.runtime) : null;
-                    artUrl = itemFile.thumbnail;
+                    details = Utils.listStringConcat(itemFile.artist, ", ") + DELIMITER + itemFile.album;
+                    duration = itemFile.runtime;
                     break;
                 case ListType.ItemBase.TYPE_ALBUM:
-                    title = itemFile.displayartist + " | " + itemFile.album;
+                    title = itemFile.displayartist + DELIMITER + itemFile.album;
                     details = getFilenameFromPath(itemFile.file);
-                    artUrl = itemFile.thumbnail;
-                    sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
-                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
-                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
-                                   (itemFile.duration > 0)? UIUtils.formatTime(itemFile.duration) : null;
+                    duration = itemFile.duration;
                     break;
                 case ListType.ItemBase.TYPE_SONG:
                     title = itemFile.label;
                     details = getFilenameFromPath(itemFile.file);
-                    artUrl = itemFile.thumbnail;
-                    sizeDuration = (itemFile.size > 0) && (itemFile.duration > 0) ?
-                                   UIUtils.formatFileSize(itemFile.size) + " | " + UIUtils.formatTime(itemFile.duration) :
-                                   (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
-                                   (itemFile.duration > 0)? UIUtils.formatTime(itemFile.duration) : null;
+                    duration = itemFile.duration;
                     break;
                 case ListType.ItemBase.TYPE_PICTURE:
                 default:
                     title = itemFile.label;
                     details = null;
-                    artUrl = itemFile.thumbnail;
-                    sizeDuration = UIUtils.formatFileSize(itemFile.size);
+                    duration = 0;
                     break;
             }
 
+            String artUrl = itemFile.thumbnail;
+            String sizeDuration = (itemFile.size > 0) && (duration > 0) ?
+                                  UIUtils.formatTime(duration) + DELIMITER + UIUtils.formatFileSize(itemFile.size) :
+                                  (itemFile.size > 0) ? UIUtils.formatFileSize(itemFile.size) :
+                                  (duration > 0)? UIUtils.formatTime(duration) : null;
             return new FileLocation(title, itemFile.file,
                                     itemFile.filetype.equalsIgnoreCase(ListType.ItemFile.FILETYPE_DIRECTORY),
                                     details, sizeDuration, artUrl);
