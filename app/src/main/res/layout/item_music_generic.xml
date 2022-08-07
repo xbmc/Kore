@@ -28,7 +28,8 @@
         android:layout_height="@dimen/artistlist_art_heigth"
         android:contentDescription="@string/poster"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/title"

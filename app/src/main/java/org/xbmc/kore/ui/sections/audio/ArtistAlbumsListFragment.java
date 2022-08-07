@@ -34,7 +34,7 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.databinding.GridItemAlbumBinding;
+import org.xbmc.kore.databinding.ItemMusicGenericBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
@@ -170,10 +170,10 @@ public class ArtistAlbumsListFragment extends AbstractAdditionalInfoFragment
             dataHolder.setDescription(desc);
             dataHolder.setPosterUrl(cursor.getString(AlbumListFragment.AlbumListQuery.THUMBNAIL));
 
-            GridItemAlbumBinding binding = GridItemAlbumBinding.inflate(inflater, albumsList, false);
+            ItemMusicGenericBinding binding = ItemMusicGenericBinding.inflate(inflater, albumsList, false);
             binding.title.setText(dataHolder.getTitle());
-            binding.name.setText(dataHolder.getUnderTitle());
-            binding.genres.setText(dataHolder.getDescription());
+            binding.details.setText(dataHolder.getUnderTitle());
+            binding.otherInfo.setText(dataHolder.getDescription());
             UIUtils.loadImageWithCharacterAvatar(requireContext(), hostManager,
                                                  dataHolder.getPosterUrl(),
                                                  dataHolder.getTitle(),

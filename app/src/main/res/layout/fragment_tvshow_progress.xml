@@ -20,7 +20,7 @@
     android:id="@+id/media_panel_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/default_padding"
+    android:layout_marginBottom="@dimen/default_padding"
     android:orientation="vertical">
 
     <TextView
@@ -28,47 +28,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.Kore.TextView.MediaTitle"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding"
+        android:layout_marginStart="@dimen/default_padding"
+        android:layout_marginEnd="@dimen/default_padding"
         android:text="@string/tvshow_next_episode"/>
 
     <GridLayout
         android:id="@+id/next_episode_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="@integer/seasons_grid_view_columns"
-        android:orientation="horizontal"
-        android:useDefaultMargins="true"/>
+        android:columnCount="@integer/info_grid_view_columns"
+        android:orientation="horizontal"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/next_episode_divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small_padding"
-        app:dividerInsetStart="@dimen/default_padding"
-        app:dividerInsetEnd="@dimen/default_padding"/>
+        app:dividerInsetStart="12dp"
+        app:dividerInsetEnd="12dp"/>
 
     <TextView
         android:id="@+id/seasons_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.Kore.TextView.MediaTitle"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding"
-        android:paddingTop="@dimen/default_padding"
+        android:layout_marginStart="@dimen/default_padding"
+        android:layout_marginEnd="@dimen/default_padding"
         android:text="@string/tvshow_seasons"/>
 
-    <!--
-    TODO: Review the column count.
-    Currently set to 1 in all cases as any other value isn't working
-     -->
     <GridLayout
         android:id="@+id/seasons_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="@integer/seasons_grid_view_columns"
-        android:orientation="horizontal"
-        android:useDefaultMargins="true"/>
+        android:columnCount="@integer/info_grid_view_columns"
+        android:orientation="horizontal"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/seasons_divider"

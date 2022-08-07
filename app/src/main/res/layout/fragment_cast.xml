@@ -25,9 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.Kore.TextView.MediaTitle"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding"
-        android:paddingTop="@dimen/default_padding"
+        android:layout_marginStart="@dimen/default_padding"
+        android:layout_marginEnd="@dimen/default_padding"
         android:text="@string/cast"/>
 
     <GridLayout

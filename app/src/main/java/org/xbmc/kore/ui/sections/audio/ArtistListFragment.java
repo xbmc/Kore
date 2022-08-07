@@ -154,7 +154,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
         @Override
         public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(fragment.getContext())
-                    .inflate(R.layout.item_music, parent, false);
+                    .inflate(R.layout.item_music_generic, parent, false);
 
             return new ViewHolder(view, fragment.getContext(), hostManager, artWidth, artHeight, artistlistItemMenuClickListener);
         }
