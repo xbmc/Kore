@@ -14,54 +14,57 @@
    limitations under the License.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    style="@style/Widget.Kore.ListItem"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/Widget.Kore.ListItem">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/art"
         android:layout_width="@dimen/tvshowlist_art_width"
         android:layout_height="@dimen/tvshowlist_art_heigth"
-        android:layout_alignParentStart="true"
         android:contentDescription="@string/poster"
-        android:scaleType="centerCrop" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title"
         style="@style/Widget.Kore.TextView.MediaList.Title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/art"
-        android:layout_toEndOf="@id/art" />
+        android:layout_marginTop="@dimen/small_padding"
+        app:layout_constraintStart_toEndOf="@id/art"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/tv_shows_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_alignStart="@id/title"
         android:layout_marginTop="@dimen/small_padding"
-        android:paddingStart="@dimen/large_padding"
-        android:paddingLeft="@dimen/large_padding"
-        android:paddingEnd="@dimen/large_padding"
-        android:paddingRight="@dimen/large_padding" />
+        android:layout_marginStart="@dimen/default_padding"
+        android:layout_marginEnd="@dimen/default_padding"
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/details"
         style="@style/Widget.Kore.TextView.MediaList.Details"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_shows_progress_bar"
-        android:layout_alignStart="@id/title" />
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/tv_shows_progress_bar" />
 
     <TextView
-        android:id="@+id/premiered"
+        android:id="@+id/other_info"
         style="@style/Widget.Kore.TextView.MediaList.Info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/details"
-        android:layout_alignStart="@id/title"
-        android:layout_alignParentBottom="true" />
-</RelativeLayout>
+        android:layout_marginBottom="@dimen/small_padding"
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

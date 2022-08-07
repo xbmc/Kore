@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +41,7 @@ import androidx.loader.content.Loader;
 import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.ItemTvshowBinding;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
@@ -216,7 +216,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 String thumbnail = cursor.getString(NextEpisodesListQuery.THUMBNAIL);
 
                 View episodeView = LayoutInflater.from(requireContext())
-                                                 .inflate(R.layout.grid_item_tvshow_episode, nextEpisodeList, false);
+                                                 .inflate(R.layout.item_tvshow_episode, nextEpisodeList, false);
 
                 ImageView artView = episodeView.findViewById(R.id.art);
                 TextView titleView = episodeView.findViewById(R.id.title);
@@ -291,27 +291,24 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 int numEpisodes = cursor.getInt(SeasonsListQuery.EPISODE);
                 int watchedEpisodes = cursor.getInt(SeasonsListQuery.WATCHEDEPISODES);
 
-                View seasonView = LayoutInflater.from(requireContext()).inflate(R.layout.grid_item_tvshow_season, seasonsList, false);
+                ItemTvshowBinding binding = ItemTvshowBinding.inflate(LayoutInflater.from(requireContext()),
+                                                                      seasonsList, false);
 
-                ImageView seasonPictureView = seasonView.findViewById(R.id.art);
-                TextView seasonNumberView = seasonView.findViewById(R.id.season);
-                TextView seasonEpisodesView = seasonView.findViewById(R.id.episodes);
-                ProgressBar seasonProgressBar = seasonView.findViewById(R.id.season_progress_bar);
-
-                seasonNumberView.setText(String.format(requireContext().getString(R.string.season_number), seasonNumber));
-                seasonEpisodesView.setText(String.format(requireContext().getString(R.string.num_episodes),
-                                                         numEpisodes, numEpisodes - watchedEpisodes));
-                seasonProgressBar.setMax(numEpisodes);
-                seasonProgressBar.setProgress(watchedEpisodes);
-
+                binding.title.setText(String.format(requireContext().getString(R.string.season_number), seasonNumber));
+                binding.details.setText(String.format(requireContext().getString(R.string.num_episodes),
+                                                      numEpisodes, numEpisodes - watchedEpisodes));
+                binding.tvShowsProgressBar.setMax(numEpisodes);
+                binding.tvShowsProgressBar.setProgress(watchedEpisodes);
                 int watchedColor = (numEpisodes - watchedEpisodes == 0) ? finishedColor : inProgressColor;
-                seasonProgressBar.setProgressTintList(ColorStateList.valueOf(watchedColor));
+                binding.tvShowsProgressBar.setProgressTintList(ColorStateList.valueOf(watchedColor));
+                binding.otherInfo.setVisibility(View.GONE);
 
                 UIUtils.loadImageWithCharacterAvatar(requireContext(), hostManager,
                                                      thumbnail,
                                                      String.valueOf(seasonNumber),
-                                                     seasonPictureView, artWidth, artHeight);
+                                                     binding.art, artWidth, artHeight);
 
+                View seasonView = binding.getRoot();
                 seasonView.setTag(seasonNumber);
                 seasonView.setOnClickListener(seasonListClickListener);
                 seasonsList.addView(seasonView);

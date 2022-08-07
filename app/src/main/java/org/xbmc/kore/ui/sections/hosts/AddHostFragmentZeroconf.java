@@ -228,7 +228,7 @@ public class AddHostFragmentZeroconf extends Fragment {
         binding.progressBar.setVisibility(View.GONE);
         binding.list.setVisibility(View.VISIBLE);
 
-        HostListAdapter adapter = new HostListAdapter(getActivity(), R.layout.grid_item_host, serviceInfos);
+        HostListAdapter adapter = new HostListAdapter(getActivity(), R.layout.item_host, serviceInfos);
         binding.list.setAdapter(adapter);
         binding.list.setOnItemClickListener((parent, view, position, itemId) -> {
             ServiceInfo selectedServiceInfo = serviceInfos[position];
@@ -286,7 +286,7 @@ public class AddHostFragmentZeroconf extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity())
-                                            .inflate(R.layout.grid_item_host, parent, false);
+                                            .inflate(R.layout.item_host, parent, false);
             }
 
             final ServiceInfo item = this.getItem(position);

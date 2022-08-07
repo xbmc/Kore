@@ -18,17 +18,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
+    style="@style/Widget.Kore.ListItem"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/Widget.Kore.ListItem">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/art"
         android:layout_width="@dimen/movielist_art_width"
         android:layout_height="@dimen/movielist_art_heigth"
         android:contentDescription="@string/poster"
-        android:scaleType="centerCrop"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,20 +35,19 @@
         style="@style/Widget.Kore.TextView.MediaList.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/art"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/small_padding"
+        app:layout_constraintBottom_toTopOf="@id/details"
+        app:layout_constraintEnd_toStartOf="@id/watched_check"
         app:layout_constraintStart_toEndOf="@id/art"
-        app:layout_constraintTop_toTopOf="@id/art" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/details"
         style="@style/Widget.Kore.TextView.MediaList.Details"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tiny_padding"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/title"
-        app:layout_constraintRight_toRightOf="@id/title"
         app:layout_constraintStart_toStartOf="@id/title"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -59,33 +56,30 @@
         style="@style/Widget.Kore.TextView.MediaList.Info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/small_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rating_bar"
-        app:layout_constraintStart_toStartOf="@id/title" />
+        app:layout_constraintStart_toStartOf="@id/details"/>
 
     <org.xbmc.kore.ui.views.RatingBar
         android:id="@+id/rating_bar"
         style="@style/Widget.Kore.RatingBar"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/small_padding"
-        android:layout_marginBottom="@dimen/small_padding"
         app:layout_constraintBottom_toBottomOf="@id/meta_info"
-        app:layout_constraintEnd_toStartOf="@id/watched_check"
-        app:layout_constraintRight_toLeftOf="@id/watched_check"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/meta_info" />
 
     <ImageView
         android:id="@+id/watched_check"
         style="@style/Widget.Kore.Button.Borderless"
-        android:background="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/small_padding"
-        android:layout_marginBottom="@dimen/small_padding"
+        android:background="@null"
         android:contentDescription="@string/seen"
         android:src="@drawable/ic_done_white_24dp"
-        app:layout_constraintBottom_toBottomOf="@id/meta_info"
+        app:layout_constraintBottom_toBottomOf="@id/title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/title"
+        app:layout_constraintTop_toTopOf="@id/title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

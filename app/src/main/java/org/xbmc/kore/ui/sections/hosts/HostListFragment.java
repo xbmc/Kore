@@ -92,7 +92,7 @@ public class HostListFragment extends Fragment {
 
         // Setup the adapter
         binding.list.setEmptyView(binding.empty);
-        adapter = new HostListAdapter(context, R.layout.grid_item_host, hostInfoRows);
+        adapter = new HostListAdapter(context, R.layout.item_host, hostInfoRows);
         binding.list.setAdapter(adapter);
 //        binding.list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 //        binding.list.setItemChecked(currentHostPosition, true);
@@ -257,7 +257,7 @@ public class HostListFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity())
-                        .inflate(R.layout.grid_item_host, parent, false);
+                        .inflate(R.layout.item_host, parent, false);
             }
 
             final HostInfoRow item = this.getItem(position);

@@ -338,7 +338,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         @Override
         public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(getContext())
-                                            .inflate(R.layout.grid_item_movie, parent, false);
+                                            .inflate(R.layout.item_movie, parent, false);
 
             return new ViewHolder(view, getContext(), statusWatchedColor, statusUnwatchedColor, hostManager, artWidth, artHeight);
         }
