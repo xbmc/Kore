@@ -257,7 +257,7 @@ public class AddonListFragment extends AbstractListFragment {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
-                                      .inflate(R.layout.grid_item_addon, parent, false);
+                                      .inflate(R.layout.item_addon, parent, false);
 
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);
         }
