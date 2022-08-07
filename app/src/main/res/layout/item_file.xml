@@ -40,8 +40,7 @@
         app:layout_constraintEnd_toStartOf="@id/list_context_menu"
         app:layout_constraintStart_toEndOf="@id/art"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:ellipsize="middle" />
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/details"

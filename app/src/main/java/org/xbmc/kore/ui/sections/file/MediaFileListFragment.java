@@ -694,6 +694,10 @@ public class MediaFileListFragment extends AbstractListFragment {
 
         public void bindView(FileLocation fileLocation, int position) {
             title.setText(UIUtils.applyMarkup(context, fileLocation.title));
+            if (TextUtils.isEmpty(fileLocation.details) && TextUtils.isEmpty(fileLocation.sizeDuration)) {
+                title.setSingleLine(false);
+                title.setMaxLines(3);
+            }
             setViewText(details, fileLocation.details);
             setViewText(sizeDuration, fileLocation.sizeDuration);
 
