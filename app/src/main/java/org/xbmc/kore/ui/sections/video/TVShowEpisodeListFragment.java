@@ -239,7 +239,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         @Override
         public RecyclerViewCursorAdapter.CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(requireContext())
-                                      .inflate(R.layout.grid_item_tvshow_episode, parent, false);
+                                      .inflate(R.layout.item_tvshow_episode, parent, false);
             return new ViewHolder(view, requireContext(), statusWatchedColor,
                                   contextlistItemMenuClickListener, hostManager,
                                   artWidth, artHeight);

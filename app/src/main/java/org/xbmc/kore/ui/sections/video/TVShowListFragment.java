@@ -325,7 +325,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         @Override
         public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(getContext())
-                                            .inflate(R.layout.grid_item_tvshow, parent, false);
+                                            .inflate(R.layout.item_tvshow, parent, false);
             // Setup View holder pattern
             return new ViewHolder(view, requireContext(),
                                   inProgressColor, finishedColor,
@@ -384,7 +384,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             this.finishedColor = finishedColor;
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
-            premieredView = itemView.findViewById(R.id.premiered);
+            premieredView = itemView.findViewById(R.id.other_info);
             artView = itemView.findViewById(R.id.art);
             watchedProgressView = itemView.findViewById(R.id.tv_shows_progress_bar);
         }
