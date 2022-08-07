@@ -560,7 +560,7 @@ public class MediaFileListFragment extends AbstractListFragment {
                     final FileLocation loc = fileLocationItems.get(position);
                     if (!loc.isDirectory) {
                         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-                        popupMenu.getMenuInflater().inflate(R.menu.filelist_item, popupMenu.getMenu());
+                        popupMenu.getMenuInflater().inflate(R.menu.file_list_item, popupMenu.getMenu());
                         popupMenu.setOnMenuItemClickListener(item -> {
                             int itemId = item.getItemId();
                             if (itemId == R.id.action_queue_item) {
@@ -709,6 +709,7 @@ public class MediaFileListFragment extends AbstractListFragment {
 
             }
         }
+
         private void setViewText(TextView v, String text) {
             v.setVisibility(TextUtils.isEmpty(text) ? View.GONE : View.VISIBLE);
             if (v.getVisibility() == View.VISIBLE)
