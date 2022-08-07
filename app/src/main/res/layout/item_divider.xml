@@ -14,16 +14,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.divider.MaterialDivider xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/small_padding"
-    android:paddingBottom="@dimen/small_padding">
-
-    <View
-        android:id="@+id/separator"
-        style="@style/Widget.Kore.Divider.Horizontal"/>
-
-</FrameLayout>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:dividerInsetStart="0dp"
+    app:dividerInsetEnd="0dp" />

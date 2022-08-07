@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -151,6 +150,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         ArrayList<DrawerItem> items = new ArrayList<>(15);
         items.add(new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName, R.drawable.ic_devices_white_24dp));
+        items.add(new DrawerItem()); // Divider
         items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_REMOTE,
                                  getString(R.string.remote), R.drawable.ic_games_white_24dp));
         if (shownItems.contains(String.valueOf(ACTIVITY_MOVIES)))
@@ -183,7 +183,7 @@ public class NavigationDrawerFragment extends Fragment {
                                  getString(R.string.settings), R.drawable.ic_settings_white_24dp));
         mDrawerListView.setAdapter(new DrawerItemAdapter(
                 getActivity(),
-                R.layout.list_item_navigation_drawer,
+                R.layout.item_navigation_drawer,
                 items.toArray(new DrawerItem[items.size()])));
 
         return mDrawerListView;
@@ -462,14 +462,14 @@ public class NavigationDrawerFragment extends Fragment {
                     if (convertView == null) {
                         convertView = ((LayoutInflater)getContext()
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                                .inflate(R.layout.list_item_navigation_drawer_divider, parent, false);
+                                .inflate(R.layout.item_divider, parent, false);
                     }
                     break;
                 case DrawerItem.TYPE_NORMAL_ITEM:
                     if (convertView == null) {
                         convertView = ((LayoutInflater)getContext()
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                                .inflate(R.layout.list_item_navigation_drawer, parent, false);
+                                .inflate(R.layout.item_navigation_drawer, parent, false);
                     }
                     icon = convertView.findViewById(R.id.drawer_item_icon);
                     icon.setImageResource(item.iconResourceId);
@@ -485,7 +485,7 @@ public class NavigationDrawerFragment extends Fragment {
                     if (convertView == null) {
                         convertView = ((LayoutInflater)getContext()
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                                .inflate(R.layout.list_item_navigation_drawer_host, parent, false);
+                                .inflate(R.layout.item_navigation_drawer_host, parent, false);
                     }
                     icon = convertView.findViewById(R.id.drawer_item_icon);
                     icon.setImageResource(item.iconResourceId);
