@@ -395,7 +395,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         @Override
         public RecordingViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             View view = LayoutInflater.from(context)
-                                      .inflate(R.layout.grid_item_recording, viewGroup, false);
+                                      .inflate(R.layout.item_pvr_recording, viewGroup, false);
             return new RecordingViewHolder(view);
         }
 
