@@ -38,6 +38,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -54,7 +55,7 @@ import com.google.android.material.elevation.SurfaceColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.databinding.GridItemCastBinding;
+import org.xbmc.kore.databinding.ItemCastBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
@@ -78,7 +79,7 @@ import java.util.regex.Pattern;
 public class UIUtils {
 
     public static final float IMAGE_RESIZE_FACTOR = 1.0f;
-    public static final int DEFAULT_SURFACE_ALFA = 0xff;
+    public static final float DEFAULT_SURFACE_ALFA = 1.0f;
 
     public static final int initialButtonRepeatInterval = 400; // ms
     public static final int buttonRepeatInterval = 80; // ms
@@ -273,32 +274,36 @@ public class UIUtils {
         int numRows = resources.getInteger(R.integer.cast_grid_view_rows);
         int maxCastPictures = numColumns * numRows;
 
-        int parentWidth = castListView.getMeasuredWidth();
-        if (parentWidth <= 0) {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((WindowManager)activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
-            parentWidth = displayMetrics.widthPixels - 2 * resources.getDimensionPixelSize(R.dimen.info_panel_horiz_margin);
-        }
-        int imageWidth = parentWidth / numColumns - 2 * resources.getDimensionPixelSize(R.dimen.image_grid_margin);        int imageHeight = (int)(imageWidth * 1.5);
+        // Calculate image size. Note: we're assuming that the Grid fills the entire screen, otherwise this won't work
+        // Furthermore, we need to make sure that the image size is less than the one available on the grid, including
+        // any margins that are set, so we scale the size by a factor. This is fixed when placed on the View
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((WindowManager)activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
+        int imageWidth = (int)(displayMetrics.widthPixels / numColumns * 0.8);
+        int imageHeight = (int)(imageWidth * 1.5);
 
+        int backgroundInfoColor = -1;
         for (int i = 0; i < Math.min(castList.size(), maxCastPictures); i++) {
             VideoType.Cast actor = castList.get(i);
 
-            GridItemCastBinding binding = GridItemCastBinding.inflate(LayoutInflater.from(activity), castListView, false);
+            ItemCastBinding binding = ItemCastBinding.inflate(LayoutInflater.from(activity), castListView, false);
             View castView = binding.getRoot();
 
             castView.getLayoutParams().width = imageWidth;
             castView.getLayoutParams().height = imageHeight;
             castView.setTag(actor.name);
 
-            UIUtils.loadImageWithCharacterAvatar(activity, hostManager,
-                                                 actor.thumbnail, actor.name,
-                                                 binding.picture, imageWidth, imageHeight);
+            loadImageWithCharacterAvatar(activity, hostManager,
+                                         actor.thumbnail, actor.name,
+                                         binding.picture, imageWidth, imageHeight);
+            if (backgroundInfoColor == -1)
+                backgroundInfoColor = getTranslucidViewColor(binding.name, AllCastActivity.CAST_NAME_ALPHA);
 
             if ((i == maxCastPictures - 1) && (castList.size() > i + 1)) {
-                binding.castNameGroup.setVisibility(View.GONE);
-                binding.allCastGroup.setVisibility(View.VISIBLE);
-                binding.allCastGroup.setAlpha(0.8f * AllCastActivity.CAST_NAME_ALPHA);
+                binding.name.setVisibility(View.GONE);
+                binding.role.setVisibility(View.GONE);
+                binding.remainingCastCount.setVisibility(View.VISIBLE);
+                binding.remainingCastCount.setBackgroundColor(changeColorAlpha(backgroundInfoColor, 0.8f * AllCastActivity.CAST_NAME_ALPHA));
                 binding.remainingCastCount.setText(String.format(activity.getString(R.string.remaining_cast_count), castList.size() - maxCastPictures + 1));
 
                 castView.setOnClickListener(v -> {
@@ -306,7 +311,8 @@ public class UIUtils {
                     activity.overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 });
             } else {
-                binding.castNameGroup.setAlpha(AllCastActivity.CAST_NAME_ALPHA);
+                binding.name.setBackgroundColor(backgroundInfoColor);
+                binding.role.setBackgroundColor(backgroundInfoColor);
                 binding.name.setText(actor.name);
                 binding.role.setText(actor.role);
                 castView.setOnClickListener(castListClickListener);
@@ -354,8 +360,8 @@ public class UIUtils {
      * @param v Ciew
      * @return Translucid view color
      */
-    public static int getTranslucidViewColor(View v) {
-        return changeColorAlpha(getViewBackgroundColor(v), UIUtils.DEFAULT_SURFACE_ALFA);
+    public static int getTranslucidViewColor(View v, float alpha) {
+        return changeColorAlpha(getViewBackgroundColor(v), (int)(alpha * 0xFF));
     }
 
     /**
@@ -369,6 +375,17 @@ public class UIUtils {
             return ((ColorDrawable) background).getColor();
         }
         return Color.TRANSPARENT;
+    }
+
+    /**
+     * Changes the alpha component of a color
+     * @param color Color to change
+     * @param alpha New alpha to set
+     * @return color with new alpha
+     */
+    public static int changeColorAlpha(int color, float alpha)
+    {
+        return changeColorAlpha(color, (int)(alpha * 0xff));
     }
 
     /**

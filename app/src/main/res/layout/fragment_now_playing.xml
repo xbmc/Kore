@@ -42,14 +42,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:clipChildren="false">
+            android:clipChildren="false"
+            android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+            android:layout_marginRight="@dimen/info_panel_horiz_margin">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/info_title_margin_top"
-                android:layout_marginLeft="@dimen/info_panel_horiz_margin"
-                android:layout_marginRight="@dimen/info_panel_horiz_margin"
                 style="@style/Widget.Kore.InfoPanel">
 
                 <TextView
@@ -169,11 +169,10 @@
             <GridLayout
                 android:id="@+id/cast_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_padding"
-                android:layout_marginLeft="@dimen/info_panel_horiz_margin"
-                android:layout_marginRight="@dimen/info_panel_horiz_margin"
                 android:columnCount="@integer/cast_grid_view_columns"
+                android:useDefaultMargins="true"
                 android:orientation="horizontal" />
 
         </LinearLayout>

@@ -35,16 +35,11 @@
             android:id="@+id/cast_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/small_padding"
+            android:layout_margin="@dimen/small_padding"
             android:stretchMode="columnWidth"
             android:numColumns="@integer/cast_grid_view_columns"
             android:horizontalSpacing="@dimen/small_padding"
-            android:verticalSpacing="@dimen/small_padding"
-            android:fastScrollEnabled="false"
-            android:choiceMode="none"
-            android:listSelector="?attr/selectableItemBackground"
-            android:drawSelectorOnTop="true"
-            />
+            android:verticalSpacing="@dimen/small_padding" />
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView android:id="@+id/navigation_drawer"
