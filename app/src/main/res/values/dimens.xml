@@ -69,12 +69,11 @@
     <dimen name="info_poster_width_plus_padding">144dp</dimen>
 
 
-    <dimen name="default_grid_column_width">250dp</dimen>
-    <!-- Smaller spacing because cardview compat adds padding -->
-    <dimen name="playlist_grid_vertical_spacing">4dp</dimen>
+    <dimen name="default_grid_column_width">300dp</dimen>
+    <dimen name="playlist_grid_vertical_spacing">8dp</dimen>
 
-    <dimen name="playlist_art_width">56dp</dimen>
-    <dimen name="playlist_art_heigth">78dp</dimen>
+    <dimen name="playlist_art_width">74dp</dimen>
+    <dimen name="playlist_art_heigth">74dp</dimen>
 
     <dimen name="movielist_art_width">72dp</dimen>
     <dimen name="movielist_art_heigth">104dp</dimen>

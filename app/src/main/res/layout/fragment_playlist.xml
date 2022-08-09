@@ -47,10 +47,9 @@
         android:paddingTop="@dimen/remote_viewpager_height"
         android:clipToPadding="false"
         android:choiceMode="singleChoice"
-        android:listSelector="?attr/selectableItemBackground"
-        android:drawSelectorOnTop="true"
         android:fastScrollEnabled="true"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/playlist_grid_vertical_spacing"/>
+        android:divider="@null"
+        app:hoverLineTickness="2dp"
+        app:hoverLineColor="?attr/colorPrimary"/>
 
 </RelativeLayout>

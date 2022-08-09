@@ -57,6 +57,12 @@
         </attr>
     </declare-styleable>
 
+    <!-- Dynamic List View -->
+    <declare-styleable name="DynamicListView">
+        <attr name="hoverLineTickness" format="reference|dimension"/>
+        <attr name="hoverLineColor" format="reference|color"/>
+    </declare-styleable>
+
     <!-- Circle Page Indicator Widget -->
     <declare-styleable name="ViewPagerIndicator">
         <!-- Style of the circle indicator. -->

@@ -22,6 +22,7 @@ import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -40,6 +41,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import org.xbmc.kore.R;
 import org.xbmc.kore.utils.LogUtils;
 
 /*
@@ -107,6 +109,9 @@ public class DynamicListView extends ListView {
     private boolean itemBeingDragged;
     private boolean itemDraggingEnabled;
 
+    private int hoverLineTickness;
+    private int hoverLineColor;
+
     public interface DynamicListAdapter extends ListAdapter {
 
         /**
@@ -126,24 +131,35 @@ public class DynamicListView extends ListView {
 
     public DynamicListView(Context context) {
         super(context);
-        init(context);
+        init(context, null);
     }
 
     public DynamicListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
+        init(context, attrs);
     }
 
     public DynamicListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init(context, attrs);
     }
 
-    public void init(Context context) {
+    public void init(Context context, AttributeSet attrs) {
         setOnItemLongClickListener(mOnItemLongClickListener);
         setOnScrollListener(mScrollListener);
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / metrics.density);
+
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.DynamicListView, 0, 0);
+        hoverLineTickness = a.getDimensionPixelSize(R.styleable.DynamicListView_hoverLineTickness, LINE_THICKNESS);
+        hoverLineColor = a.getColor(R.styleable.DynamicListView_hoverLineColor, Color.BLACK);
+        a.recycle();
+    }
+
+    // Expose this as it can be useful
+    @Override
+    public int computeVerticalScrollOffset() {
+        return super.computeVerticalScrollOffset();
     }
 
     @Override
@@ -234,8 +250,8 @@ public class DynamicListView extends ListView {
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(LINE_THICKNESS);
-        paint.setColor(Color.BLACK);
+        paint.setStrokeWidth(hoverLineTickness);
+        paint.setColor(hoverLineColor);
 
         can.drawBitmap(bitmap, 0, 0, null);
         can.drawRect(rect, paint);

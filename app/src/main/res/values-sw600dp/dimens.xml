@@ -33,8 +33,8 @@
 
     <dimen name="default_grid_column_width">250dp</dimen>
 
-    <dimen name="playlist_art_width">68dp</dimen>
-    <dimen name="playlist_art_heigth">86dp</dimen>
+    <dimen name="playlist_art_width">88dp</dimen>
+    <dimen name="playlist_art_heigth">88dp</dimen>
 
     <dimen name="movielist_art_width">86dp</dimen>
     <dimen name="movielist_art_heigth">124dp</dimen>
