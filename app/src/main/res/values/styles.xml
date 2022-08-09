@@ -97,7 +97,7 @@
 
     <style name="Widget.Kore.InfoPanel" parent="Widget.Kore">
 <!--        <item name="android:background">?attr/colorSurfaceVariant</item>-->
-        <item name="android:background">@drawable/panel_background</item>
+        <item name="android:background">@drawable/background_panel</item>
         <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>
         <item name="android:elevation">@dimen/kore_elevation_level1</item>
     </style>

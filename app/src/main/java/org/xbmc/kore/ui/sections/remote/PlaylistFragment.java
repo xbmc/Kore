@@ -15,6 +15,8 @@
  */
 package org.xbmc.kore.ui.sections.remote;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -258,7 +260,7 @@ public class PlaylistFragment extends Fragment
         lastGetItemResult = getItemResult;
         lastGetActivePlayerResult = getActivePlayerResult;
 
-        if (! userSelectedTab) {
+        if (!userSelectedTab) {
             binding.playlistsBar.selectTab(getActivePlayerResult.type);
         }
 
@@ -283,7 +285,7 @@ public class PlaylistFragment extends Fragment
         lastGetItemResult = getItemResult;
         lastGetActivePlayerResult = getActivePlayerResult;
 
-        if (! userSelectedTab) {
+        if (!userSelectedTab) {
             binding.playlistsBar.selectTab(getActivePlayerResult.type);
         }
 
@@ -512,17 +514,20 @@ public class PlaylistFragment extends Fragment
          * The playlist items
          */
         List<ListType.ItemsAll> playlistItems;
-        int artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
-        int artHeight = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
-
-        int rowColor, selectedRowColor;
+        int artWidth, artHeight;
+        int selectedRowColor;
+        ColorStateList selectedRowColorStateList;
+        Drawable backgroundDrawable;
 
         public PlayListAdapter(List<ListType.ItemsAll> playlistItems) {
             super();
             this.playlistItems = playlistItems;
 
-            rowColor = MaterialColors.getColor(requireContext(), R.attr.colorSurfaceVariant, null);
             selectedRowColor = MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, null);
+            selectedRowColorStateList = ColorStateList.valueOf(selectedRowColor);
+            backgroundDrawable = getResources().getDrawable(R.drawable.background_card, null);
+            artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
+            artHeight = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
         }
 
         public PlayListAdapter() {
@@ -582,7 +587,8 @@ public class PlaylistFragment extends Fragment
         public void onSwapFinished(final int originalPosition, final int finalPosition) {
             final HostConnection hostConnection = hostManager.getConnection();
 
-            if (playlistItems.get(finalPosition).id == lastGetItemResult.id) {
+            if (lastGetItemResult != null &&
+                playlistItems.get(finalPosition).id == lastGetItemResult.id) {
                 Toast.makeText(getActivity(), R.string.cannot_move_playing_item, Toast.LENGTH_SHORT)
                      .show();
                 rollbackSwappedItems(originalPosition, finalPosition);
@@ -628,14 +634,13 @@ public class PlaylistFragment extends Fragment
             }, callbackHandler);
         }
 
-        @SuppressWarnings("SuspiciousNameCombination")
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity())
-                                            .inflate(R.layout.grid_item_playlist, parent, false);
+                                            .inflate(R.layout.item_playlist, parent, false);
                 // ViewHolder pattern
                 viewHolder = new ViewHolder();
                 viewHolder.art = convertView.findViewById(R.id.art);
@@ -702,18 +707,13 @@ public class PlaylistFragment extends Fragment
             viewHolder.duration.setText((duration > 0) ? UIUtils.formatTime(duration) : "");
             viewHolder.position = position;
 
-            viewHolder.container.setBackgroundColor(
-                    (position == binding.playlist.getCheckedItemPosition()) ? selectedRowColor : rowColor);
-
-            // If not video, change aspect ration of poster to a square
-            boolean isVideo = (item.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
-                              (item.type.equals(ListType.ItemsAll.TYPE_EPISODE));
-            if (!isVideo) {
-                ViewGroup.LayoutParams layoutParams = viewHolder.art.getLayoutParams();
-                layoutParams.width = layoutParams.height;
-                viewHolder.art.setLayoutParams(layoutParams);
-                artWidth = artHeight;
+            if (position == binding.playlist.getCheckedItemPosition()) {
+                viewHolder.container.setBackground(backgroundDrawable);
+                viewHolder.container.setBackgroundTintList(selectedRowColorStateList);
+            } else {
+                viewHolder.container.setBackground(null);
             }
+
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                  artUrl, title,
                                                  viewHolder.art, artWidth, artHeight);
