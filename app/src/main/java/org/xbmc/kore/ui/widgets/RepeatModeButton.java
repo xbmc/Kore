@@ -20,6 +20,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.jsonrpc.type.PlayerType;
 
 public class RepeatModeButton extends HighlightButton {
     public enum MODE {
@@ -43,6 +44,16 @@ public class RepeatModeButton extends HighlightButton {
     public RepeatModeButton(Context context, AttributeSet attributeSet, int defStyle) {
         super(context, attributeSet, defStyle);
         setStyle(context);
+    }
+
+    public void setMode(String mode) {
+        if (mode.equals(PlayerType.Repeat.OFF)) {
+            setMode(RepeatModeButton.MODE.OFF);
+        } else if (mode.equals(PlayerType.Repeat.ONE)) {
+            setMode(RepeatModeButton.MODE.ONE);
+        } else {
+            setMode(RepeatModeButton.MODE.ALL);
+        }
     }
 
     public void setMode(MODE mode) {

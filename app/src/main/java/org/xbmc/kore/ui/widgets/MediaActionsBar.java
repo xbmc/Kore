@@ -317,7 +317,7 @@ public class MediaActionsBar extends LinearLayout {
     public void setRepeatShuffleState(String repeatMode, Boolean shuffled, Boolean partymode) {
         if (activePlayerType.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) return;
 
-        if (repeatMode != null) UIUtils.setRepeatButton(binding.repeat, repeatMode);
+        if (repeatMode != null) binding.repeat.setMode(repeatMode);
         if (shuffled != null) binding.shuffle.setHighlight(shuffled);
         if (partymode != null) binding.partyMode.setHighlight(partymode);
     }
