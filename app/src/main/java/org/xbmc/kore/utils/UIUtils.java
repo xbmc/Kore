@@ -59,12 +59,10 @@ import org.xbmc.kore.databinding.ItemCastBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
-import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
 import org.xbmc.kore.ui.widgets.HighlightButton;
-import org.xbmc.kore.ui.widgets.RepeatModeButton;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -81,7 +79,6 @@ public class UIUtils {
     public static final float IMAGE_RESIZE_FACTOR = 1.0f;
     public static final float DEFAULT_SURFACE_ALFA = 1.0f;
 
-    public static final int initialButtonRepeatInterval = 400; // ms
     public static final int buttonRepeatInterval = 80; // ms
     public static final int buttonVibrationDuration = 50; //ms
 
@@ -574,16 +571,6 @@ public class UIUtils {
             view.setColorFilter(highlightColor);
         } else {
             view.clearColorFilter();
-        }
-    }
-
-    public static void setRepeatButton(RepeatModeButton button, String repeatType) {
-        if (repeatType.equals(PlayerType.Repeat.OFF)) {
-            button.setMode(RepeatModeButton.MODE.OFF);
-        } else if (repeatType.equals(PlayerType.Repeat.ONE)) {
-            button.setMode(RepeatModeButton.MODE.ONE);
-        } else {
-            button.setMode(RepeatModeButton.MODE.ALL);
         }
     }
 
