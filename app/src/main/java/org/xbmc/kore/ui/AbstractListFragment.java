@@ -35,7 +35,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.databinding.FragmentGenericMediaListBinding;
+import org.xbmc.kore.databinding.FragmentMediaListBinding;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -44,7 +44,7 @@ public abstract class AbstractListFragment extends Fragment implements
     private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
 	private RecyclerView.Adapter<?> adapter;
 
-	protected FragmentGenericMediaListBinding binding;
+	protected FragmentMediaListBinding binding;
 
 	abstract protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener();
 	abstract protected RecyclerViewEmptyViewSupport.Adapter<?> createAdapter();
@@ -57,7 +57,7 @@ public abstract class AbstractListFragment extends Fragment implements
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		binding = FragmentGenericMediaListBinding.inflate(inflater, container, false);
+		binding = FragmentMediaListBinding.inflate(inflater, container, false);
 
 		binding.swipeRefreshLayout.setOnRefreshListener(this);
 

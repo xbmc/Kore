@@ -35,7 +35,7 @@ public class FadeOutOnVerticalScrollBehavior extends CoordinatorLayout.Behavior<
 
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
-        if ( axes == ViewCompat.SCROLL_AXIS_VERTICAL ) {
+        if (axes == ViewCompat.SCROLL_AXIS_VERTICAL) {
             if (maxScroll == 0)
                 maxScroll = child.getHeight();
 

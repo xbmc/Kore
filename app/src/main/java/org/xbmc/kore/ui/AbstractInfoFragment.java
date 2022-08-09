@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +38,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -53,7 +53,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
-import org.xbmc.kore.databinding.FragmentInfoBinding;
+import org.xbmc.kore.databinding.FragmentMediaInfoBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -74,12 +74,13 @@ import java.util.Locale;
 abstract public class AbstractInfoFragment extends AbstractFragment
         implements SwipeRefreshLayout.OnRefreshListener,
                    SyncUtils.OnServiceListener,
-                   SharedElementTransition.SharedElement {
+                   SharedElementTransition.SharedElement,
+                   ViewTreeObserver.OnScrollChangedListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractInfoFragment.class);
 
     private static final String BUNDLE_KEY_APIMETHOD_PENDING = "pending_apimethod";
 
-    private FragmentInfoBinding binding;
+    private FragmentMediaInfoBinding binding;
 
     private HostManager hostManager;
     private HostInfo hostInfo;
@@ -87,6 +88,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private RefreshItem refreshItem;
     private boolean expandDescription;
     private int methodId; // Last Kodi Open method id executed
+    private int pixelsToTransparent;
 
     /**
      * Handler on which to post RPC callbacks
@@ -126,7 +128,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             // We're not being shown or there's nothing to show
             return null;
         }
-        binding = FragmentInfoBinding.inflate(inflater, container, false);
+        binding = FragmentMediaInfoBinding.inflate(inflater, container, false);
 
         Resources resources = requireActivity().getResources();
 
@@ -184,6 +186,10 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                                              createPlayItemOnKodiCallback(),
                                              callbackHandler));
         }
+
+        /* Setup dim the fanart when scroll changes */
+        pixelsToTransparent  = requireActivity().getResources().getDimensionPixelSize(R.dimen.info_art_height);
+        binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
     }
 
     @Override
@@ -224,6 +230,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
     @Override
     public void onDestroyView() {
+        binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(this);
         super.onDestroyView();
         binding = null;
     }
@@ -241,6 +248,14 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             onRefresh();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onScrollChanged() {
+        if (binding == null) return;
+        float y = binding.mediaPanel.getScrollY();
+        float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
+        binding.art.setAlpha(newAlpha);
     }
 
     /*
