@@ -109,11 +109,8 @@ public class NowPlayingFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
 
-        /* Setup dim the fanart when scroll changes
-         * Full dim on 4 * iconSize dp
-         * @see {@link #onScrollChanged()}
-         */
-        pixelsToTransparent  = 4 * requireActivity().getResources().getDimensionPixelSize(R.dimen.default_icon_size);
+        /* Setup dim the fanart when scroll changes */
+        pixelsToTransparent  = requireActivity().getResources().getDimensionPixelSize(R.dimen.info_art_height);
         binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
     }
 
