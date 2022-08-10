@@ -285,12 +285,5 @@
         <item name="android:textSize">@dimen/text_size_xlarge</item>
     </style>
 
-    <style name="Widget.Kore.TextView.FABDialActionButton">
-        <item name="android:background">@drawable/rounded_corners_shape</item>
-        <item name="android:colorBackground">@drawable/rounded_corners_shape</item>
-        <item name="android:textColor">?attr/fabLabelTextColor</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
 </resources>
 

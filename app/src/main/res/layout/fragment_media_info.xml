@@ -192,17 +192,6 @@
                             android:visibility="gone" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/info_action_imdb"
-                            style="@style/Widget.Kore.Button.InfoAction"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:contentDescription="@string/imdb"
-                            android:text="@string/imdb"
-                            app:icon="@drawable/ic_open_in_new_white_24dp"
-                            android:visibility="gone" />
-
-                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/info_action_download"
                             style="@style/Widget.Kore.Button.InfoAction"
                             android:layout_width="0dp"
@@ -214,6 +203,18 @@
                             android:visibility="gone" />
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/info_action_play_local"
+                            style="@style/Widget.Kore.Button.InfoAction"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/play_locally"
+                            android:text="@string/play_locally"
+                            android:visibility="gone"
+                            android:checkable="false"
+                            app:icon="@drawable/ic_devices_white_24dp" />
+
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/info_action_queue"
                             style="@style/Widget.Kore.Button.InfoAction"
                             android:layout_width="0dp"
@@ -221,8 +222,8 @@
                             android:layout_weight="1"
                             android:contentDescription="@string/queue_action"
                             android:text="@string/queue_action"
-                            app:icon="@drawable/ic_queue_white_24dp"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            app:icon="@drawable/ic_queue_white_24dp" />
 
                     </LinearLayout>
 
@@ -277,22 +278,26 @@
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial
-        android:id="@+id/fab"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginEnd="@dimen/fab_normal_margin"
         android:visibility="gone"
+        android:contentDescription="@string/play"
+        app:fabSize="normal"
+        app:useCompatPadding="true"
         app:layout_anchor="@id/media_panel"
-        app:layout_anchorGravity="bottom|end|right"
-        app:layout_behavior="org.xbmc.kore.ui.behaviors.FABSpeedDialBehavior"
-        app:layout_scrollFlags="scroll|enterAlways" />
+        app:layout_anchorGravity="bottom|end"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:layout_behavior="org.xbmc.kore.ui.behaviors.HideOnVerticalScrollBehavior"
+        app:srcCompat="@drawable/ic_play_arrow_white_24dp"/>
 
     <!-- View that will be shown with the circularReveal when user presses the FAB -->
     <View
         android:id="@+id/exit_transition_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/fabColorNormal"
+        android:background="?attr/colorPrimaryContainer"
         android:visibility="invisible" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

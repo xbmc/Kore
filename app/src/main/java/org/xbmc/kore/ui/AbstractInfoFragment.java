@@ -17,6 +17,7 @@
 package org.xbmc.kore.ui;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -33,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
@@ -48,6 +50,7 @@ import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -61,7 +64,7 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
+import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
@@ -76,8 +79,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                    ViewTreeObserver.OnScrollChangedListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractInfoFragment.class);
 
-    private static final String BUNDLE_KEY_APIMETHOD_PENDING = "pending_apimethod";
-
     private FragmentMediaInfoBinding binding;
 
     private HostManager hostManager;
@@ -85,7 +86,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private ServiceConnection serviceConnection;
     private RefreshItem refreshItem;
     private boolean expandDescription;
-    private int methodId; // Last Kodi Open method id executed
     private int pixelsToTransparent;
 
     protected String[] seenButtonLabels;
@@ -171,9 +171,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         boolean hasButtons = setupInfoActionsBar();
         binding.infoActionsBar.setVisibility(hasButtons ? View.VISIBLE : View.GONE);
 
-        if(setupFAB(binding.fab)) {
-            binding.fab.setVisibility(View.VISIBLE);
-        }
+        boolean hasFAB = setupFAB(binding.fabPlay);
+        binding.fabPlay.setVisibility(hasFAB? View.VISIBLE : View.GONE);
 
         updateView(dataHolder);
         return binding.getRoot();
@@ -183,15 +182,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-
-        if ((savedInstanceState != null) &&
-            (savedInstanceState.containsKey(BUNDLE_KEY_APIMETHOD_PENDING))) {
-            binding.fab.enableBusyAnimation(HostManager.getInstance(requireContext()).getConnection()
-                       .updateClientCallback(savedInstanceState.getInt(BUNDLE_KEY_APIMETHOD_PENDING),
-                                             createPlayItemOnKodiCallback(),
-                                             callbackHandler));
-        }
-
         /* Setup dim the fanart when scroll changes */
         pixelsToTransparent  = requireActivity().getResources().getDimensionPixelSize(R.dimen.info_art_height);
         binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
@@ -213,7 +203,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     public void onResume() {
         // Force the exit view to invisible
         binding.exitTransitionView.setVisibility(View.INVISIBLE);
-        if ( refreshItem != null ) {
+        if (refreshItem != null) {
             refreshItem.register();
         }
         super.onResume();
@@ -221,7 +211,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
     @Override
     public void onPause() {
-        if ( refreshItem != null ) {
+        if (refreshItem != null) {
             refreshItem.unregister();
         }
         super.onPause();
@@ -243,8 +233,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putInt(BUNDLE_KEY_APIMETHOD_PENDING, methodId);
+//        outState.putInt(BUNDLE_KEY_APIMETHOD_PENDING, methodId);
     }
 
     @Override
@@ -299,12 +288,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         }
     }
 
-    protected void setFabButtonState(boolean enable) {
-        if(enable) {
-            binding.fab.setVisibility(View.VISIBLE);
-        } else {
-            binding.fab.setVisibility(View.GONE);
-        }
+    protected void setFabState(boolean enabled) {
+        binding.fabPlay.setEnabled(enabled);
     }
 
     protected void playItemLocally(String url, String type) {
@@ -320,17 +305,65 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             return;
         }
 
-        binding.fab.enableBusyAnimation(true);
-        Player.Open action = new Player.Open(item);
-        methodId = action.getId();
-        action.execute(HostManager.getInstance(requireContext()).getConnection(),
-                       createPlayItemOnKodiCallback(),
-                       callbackHandler);
+        new Player.Open(item).execute(
+                HostManager.getInstance(requireContext()).getConnection(),
+                new ApiCallback<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        if (!isAdded()) return;
+                        animateSwitchToRemote();
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String description) {
+                        if (!isAdded()) return;
+                        // Got an error, show toast
+                        Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
+                             .show();
+                    }
+                },
+                callbackHandler);
     }
 
     @Override
     public boolean isSharedElementVisible() {
         return UIUtils.isViewInBounds(binding.mediaPanel, binding.poster);
+    }
+
+    /**
+     * Check wether the remote should be shown and animate the switch to it
+     */
+    protected void animateSwitchToRemote() {
+        boolean switchToRemote = PreferenceManager
+                .getDefaultSharedPreferences(requireContext())
+                .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
+                            Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
+        if (switchToRemote) {
+            int cx = (binding.fabPlay.getLeft() + binding.fabPlay.getRight()) / 2;
+            int cy = (binding.fabPlay.getTop() + binding.fabPlay.getBottom()) / 2;
+            final Intent launchIntent = new Intent(requireContext(), RemoteActivity.class);
+
+            // Show the animation
+            int endRadius = Math.max(binding.exitTransitionView.getHeight(), binding.exitTransitionView.getWidth());
+            Animator exitAnim = ViewAnimationUtils.createCircularReveal(binding.exitTransitionView,
+                                                                        cx, cy, 0, endRadius);
+            exitAnim.setDuration(200);
+            exitAnim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {}
+
+                @Override
+                public void onAnimationEnd(Animator animation) { requireContext().startActivity(launchIntent );}
+
+                @Override
+                public void onAnimationCancel(Animator animation) {}
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {}
+            });
+            binding.exitTransitionView.setVisibility(View.VISIBLE);
+            exitAnim.start();
+        }
     }
 
     protected void refreshAdditionInfoFragment() {
@@ -472,21 +505,21 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     }
 
     /**
+     * Listener to set in the Play Locally button. Setting this will add the button to the UI
+     * @param listener Click listener to call
+     */
+    protected void setOnPlayLocalClickListener(View.OnClickListener listener) {
+        binding.infoActionPlayLocal.setVisibility(View.VISIBLE);
+        binding.infoActionPlayLocal.setOnClickListener(listener);
+    }
+
+    /**
      * Listener to set in the Queue button. Setting this will add the button to the UI
      * @param listener Click listener to call
      */
     protected void setOnQueueClickListener(View.OnClickListener listener) {
         binding.infoActionQueue.setVisibility(View.VISIBLE);
         binding.infoActionQueue.setOnClickListener(listener);
-    }
-
-    /**
-     * Listener to set in the IMDb button. Setting this will add the button to the UI
-     * @param listener Click listener to call
-     */
-    protected void setOnImdbClickListener(View.OnClickListener listener) {
-        binding.infoActionImdb.setVisibility(View.VISIBLE);
-        binding.infoActionImdb.setOnClickListener(listener);
     }
 
     /**
@@ -588,41 +621,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         this.expandDescription = expandDescription;
     }
 
-    public FABSpeedDial getFabButton() {
-        return binding.fab;
-    }
-
-    private ApiCallback<String> createPlayItemOnKodiCallback() {
-        return new ApiCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                if (!isAdded()) return;
-                binding.fab.enableBusyAnimation(false);
-
-                // Check whether we should switch to the remote
-                boolean switchToRemote = PreferenceManager
-                        .getDefaultSharedPreferences(requireContext())
-                        .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
-                                    Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
-                if (switchToRemote) {
-                    int cx = (binding.fab.getLeft() + binding.fab.getRight()) / 2;
-                    int cy = (binding.fab.getTop() + binding.fab.getBottom()) / 2;
-                    UIUtils.switchToRemoteWithAnimation(getActivity(), cx, cy, binding.exitTransitionView);
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                binding.fab.enableBusyAnimation(false);
-
-                // Got an error, show toast
-                Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                     .show();
-            }
-        };
-    }
-
     abstract protected AbstractAdditionalInfoFragment getAdditionalInfoFragment();
 
     /**
@@ -639,7 +637,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
      * you can use {@link #setOnQueueClickListener(View.OnClickListener)},
      * {@link #setOnWatchedClickListener(View.OnClickListener)},
      * {@link #setOnDownloadClickListener(View.OnClickListener)},
-     * {@link #setOnImdbClickListener(View.OnClickListener)},
      * {@link #setOnEnableClickListener(View.OnClickListener)},
      * and {@link #setOnPinClickedListener(View.OnClickListener)} to enable
      * one or more actions.
@@ -651,5 +648,5 @@ abstract public class AbstractInfoFragment extends AbstractFragment
      * Called when the fab button is available
      * @return true to enable the Floating Action Button, false otherwise
      */
-    abstract protected boolean setupFAB(FABSpeedDial FAB);
+    abstract protected boolean setupFAB(FloatingActionButton fab);
 }

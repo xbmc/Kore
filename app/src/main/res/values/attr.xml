@@ -15,17 +15,6 @@
    limitations under the License.
 -->
 <resources>
-    <attr name="fabColorNormal" format="reference|color" />
-    <attr name="fabColorFocused" format="reference|color" />
-    <attr name="fabColorPressed" format="reference|color" />
-
-    <attr name="fabLabelColorNormal" format="reference|color" />
-    <attr name="fabLabelColorFocused" format="reference|color" />
-    <attr name="fabLabelColorPressed" format="reference|color" />
-    <attr name="fabLabelTextColor" format="reference|color" />
-
-    <attr name="iconFABDial" format="integer"/>
-
     <!-- Custom color resources -->
     <attr name="colorInProgress" format="reference|color" />
     <attr name="colorFinished" format="reference|color" />

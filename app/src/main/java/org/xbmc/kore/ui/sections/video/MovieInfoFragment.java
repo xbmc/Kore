@@ -31,6 +31,8 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -43,7 +45,6 @@ import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.CastFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -141,36 +142,22 @@ public class MovieInfoFragment extends AbstractInfoFragment
             }, callbackHandler);
         });
 
-        setOnImdbClickListener(view -> {
-            String imdbNumber = cursor.getString(MovieDetailsQuery.IMDBNUMBER);
-            if (imdbNumber != null) {
-                Utils.openImdbForMovie(requireContext(), imdbNumber);
-            }
-        });
-
         setOnQueueClickListener(view -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.movieid = getDataHolder().getId();
             MediaPlayerUtils.queue(MovieInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
         });
 
+        setOnPlayLocalClickListener(v -> playItemLocally(movieDownloadInfo.getMediaUrl(getHostInfo()), "video/*"));
         return true;
     }
 
     @Override
-    protected boolean setupFAB(final FABSpeedDial FAB) {
-        FAB.setOnDialItemClickListener(new FABSpeedDial.DialListener() {
-            @Override
-            public void onLocalPlayClicked() {
-                playItemLocally(movieDownloadInfo.getMediaUrl(getHostInfo()), "video/*");
-            }
-
-            @Override
-            public void onRemotePlayClicked() {
-                PlaylistType.Item item = new PlaylistType.Item();
-                item.movieid = getDataHolder().getId();
-                playItemOnKodi(item);
-            }
+    protected boolean setupFAB(FloatingActionButton fab) {
+        fab.setOnClickListener(v -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.movieid = getDataHolder().getId();
+            playItemOnKodi(item);
         });
         return true;
     }
@@ -221,6 +208,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     dataHolder.setRating(cursor.getDouble(MovieDetailsQuery.RATING));
                     dataHolder.setMaxRating(10);
                     dataHolder.setVotes(cursor.getInt(MovieDetailsQuery.VOTES));
+                    dataHolder.setImdbNumber(cursor.getString(MovieDetailsQuery.IMDBNUMBER));
 
                     String director = cursor.getString(MovieDetailsQuery.DIRECTOR);
                     if (!TextUtils.isEmpty(director)) {
@@ -252,8 +240,6 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     break;
             }
         }
-
-        getFabButton().enableLocalPlay(movieDownloadInfo != null);
     }
 
     /** {@inheritDoc} */

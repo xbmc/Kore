@@ -18,14 +18,15 @@ package org.xbmc.kore.ui.sections.addon;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
-
 import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -36,7 +37,6 @@ import org.xbmc.kore.jsonrpc.type.AddonType;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.LogUtils;
 
 import java.util.Collections;
@@ -93,21 +93,18 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     @Override
-    protected boolean setupFAB(final FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(v -> {
-            FAB.enableBusyAnimation(true);
+    protected boolean setupFAB(FloatingActionButton fab) {
+        fab.setOnClickListener(v -> {
             Addons.ExecuteAddon action = new Addons.ExecuteAddon(addonId);
             action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    if (!isAdded()) return;
-                    FAB.enableBusyAnimation(false);
+                    animateSwitchToRemote();
                 }
 
                 @Override
                 public void onError(int errorCode, String description) {
                     if (!isAdded()) return;
-                    FAB.enableBusyAnimation(false);
                     // Got an error, show toast
                     Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
                          .show();
@@ -129,7 +126,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
                     int messageResId = (!isEnabled) ? R.string.addon_enabled : R.string.addon_disabled;
                     Toast.makeText(requireContext(), messageResId, Toast.LENGTH_SHORT).show();
                     setEnableButtonState(!isEnabled);
-                    setFabButtonState(!isEnabled);
+                    setFabState(!isEnabled);
                 }
 
                 @Override
@@ -154,7 +151,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
             public void onSuccess(AddonType.Details result) {
                 if (!isAdded()) return;
                 setEnableButtonState(result.enabled);
-                setFabButtonState(result.enabled);
+                setFabState(result.enabled);
             }
 
             @Override

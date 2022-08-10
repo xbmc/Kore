@@ -31,13 +31,14 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -99,8 +100,8 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(v -> {
+    protected boolean setupFAB(FloatingActionButton fab) {
+        fab.setOnClickListener(v -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.albumid = getDataHolder().getId();
             playItemOnKodi(item);
