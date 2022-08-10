@@ -116,7 +116,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
 
                     dataHolder.setPosterUrl(cursor.getString(TVShowDetailsQuery.THUMBNAIL));
                     dataHolder.setRating(cursor.getDouble(TVShowDetailsQuery.RATING));
-                    dataHolder.setMaxRating(10);
+                    dataHolder.setVotes(cursor.getString(TVShowDetailsQuery.VOTES));
                     dataHolder.setImdbNumber(cursor.getString(TVShowDetailsQuery.IMDBNUMBER));
 
                     String premiered = cursor.getString(TVShowDetailsQuery.PREMIERED);
@@ -189,6 +189,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
                 MediaContract.TVShows.IMDBNUMBER,
                 MediaContract.TVShows.GENRES,
                 MediaContract.SyncColumns.UPDATED,
+                MediaContract.TVShows.VOTES,
                 };
 
         int ID = 0;
@@ -205,5 +206,6 @@ public class TVShowInfoFragment extends AbstractInfoFragment
         int IMDBNUMBER = 11;
         int GENRES = 12;
         int UPDATED = 13;
+        int VOTES = 14;
     }
 }

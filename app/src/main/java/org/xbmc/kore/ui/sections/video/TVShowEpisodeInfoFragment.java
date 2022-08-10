@@ -179,9 +179,8 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                     DataHolder dataHolder = getDataHolder();
 
                     dataHolder.setFanArtUrl(cursor.getString(EpisodeDetailsQuery.THUMBNAIL));
-
                     dataHolder.setRating(cursor.getDouble(EpisodeDetailsQuery.RATING));
-                    dataHolder.setMaxRating(10);
+                    dataHolder.setVotes(cursor.getString(EpisodeDetailsQuery.VOTES));
 
                     String director = cursor.getString(EpisodeDetailsQuery.DIRECTOR);
                     if (!TextUtils.isEmpty(director)) {
@@ -283,6 +282,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                 MediaContract.Episodes.DIRECTOR,
                 MediaContract.Episodes.WRITER,
                 MediaContract.Episodes.FILE,
+                MediaContract.Episodes.VOTES,
                 };
 
         int ID = 0;
@@ -300,5 +300,6 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
         int DIRECTOR = 12;
         int WRITER = 13;
         int FILE = 14;
+        int VOTES = 15;
     }
 }

@@ -170,6 +170,7 @@ public class SyncUtils {
         tvshowValues.put(MediaContract.TVShowsColumns.WATCHEDEPISODES, tvshow.watchedepisodes);
         tvshowValues.put(MediaContract.TVShowsColumns.GENRES,
                 Utils.listStringConcat(tvshow.genre, LIST_DELIMITER));
+        tvshowValues.put(MediaContract.TVShowsColumns.VOTES, tvshow.votes);
 
         return tvshowValues;
     }
@@ -223,6 +224,7 @@ public class SyncUtils {
         episodeValues.put(MediaContract.EpisodesColumns.RATING, episode.rating);
         episodeValues.put(MediaContract.EpisodesColumns.SHOWTITLE, episode.showtitle);
         episodeValues.put(MediaContract.EpisodesColumns.WRITER, Utils.listStringConcat(episode.writer, LIST_DELIMITER));
+        episodeValues.put(MediaContract.EpisodesColumns.VOTES, episode.votes);
 
         if (episode.streamdetails.audio.size() > 0) {
             // Get the stream with the most channels and concat all the languages
