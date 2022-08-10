@@ -44,7 +44,6 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.service.MediaSessionService;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.lang.reflect.Method;
@@ -65,7 +64,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 if (!isGranted) {
                     Toast.makeText(requireContext(), R.string.read_phone_state_permission_denied, Toast.LENGTH_SHORT)
                          .show();
-                    TwoStatePreference pauseCallPreference = (TwoStatePreference)findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
+                    TwoStatePreference pauseCallPreference = findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
                     if (pauseCallPreference != null) pauseCallPreference.setChecked(false);
                 }
             });
@@ -116,13 +115,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
         // Check permission for phone state and set preference accordingly
         if (!hasPhonePermission()) {
             TwoStatePreference pauseCallPreference =
-                    (TwoStatePreference)findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
+                    findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
             if (pauseCallPreference != null) pauseCallPreference.setChecked(false);
         }
 
         setupPreferences();
 
-        ListPreference languagePref = (ListPreference) findPreference(Settings.KEY_PREF_LANGUAGE);
+        ListPreference languagePref = findPreference(Settings.KEY_PREF_LANGUAGE);
         if (languagePref != null) {
             Locale currentLocale = getCurrentLocale();
             languagePref.setSummary(currentLocale.getDisplayLanguage(currentLocale));
@@ -194,7 +193,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
      */
     private void setupPreferences() {
         // Theme preferences
-        ListPreference themePref = (ListPreference)findPreference(Settings.KEY_PREF_THEME);
+        ListPreference themePref = findPreference(Settings.KEY_PREF_THEME);
         if (themePref != null) themePref.setSummary(themePref.getEntry());
         Context context = requireContext();
 

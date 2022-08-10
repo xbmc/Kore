@@ -400,15 +400,12 @@
     <string name="keep_remote_above_lockscreen">Show over lockscreen</string>
     <string name="pref_keep_screen_on">Stay awake</string>
     <string name="show_notification">Show notification while playing</string>
-    <string name="show_now_playing_panel">Show now playing panel while playing</string>
-    <string name="show_now_playing_panel_summary">Displays an expandable panel at the bottom of the screen when media is playing</string>
-    <string name="notification_seek_jump">Use steps for seeking</string>
-    <string name="notification_seek_jump_speed">Change playback speed when seeking from notification</string>
-    <string name="notification_seek_jump_step">Use skip steps when seeking from notification</string>
+    <string name="show_now_playing_panel">Show now playing panel</string>
+    <string name="show_now_playing_panel_summary">Display a panel at the bottom of the screen when media is playing</string>
     <string name="pause_during_calls">Pause during phone call</string>
     <string name="use_hardware_volume_keys">Use device volume keys</string>
     <string name="vibrate_on_remote">Vibrate on touch</string>
-    <string name="always_sendtokodi_addon">Always prefer SendToKodi addon</string>
+    <string name="always_sendtokodi_addon">Prefer SendToKodi addon</string>
     <string name="remote_bar_items">Bottom bar shortcuts</string>
     <string name="nav_drawer_items">Side menu shortcuts</string>
 
@@ -418,18 +415,6 @@
         Please rate us on <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
         If you need help, check our <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a><
     ]]></string>
-
-    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
-    <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
-    <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
-    <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
-    <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
-    <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
-
-    <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
-    <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
-    <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
-    <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Play on Kodi</string>
     <string name="queue_on_kodi">Queue on Kodi</string>
@@ -485,8 +470,6 @@
     <string name="toggle_expand">Expand/Collapse</string>
     <string name="play_locally">Local Play</string>
 
-    <string name="disable_local_playback_support">Disable local playback support</string>
-    <string name="disable_local_playback_support_summary">Disables support for playing media locally on the device running Kore.</string>
     <string name="language">Language</string>
 
     <string name="wifi_network">Wi-Fi</string>
