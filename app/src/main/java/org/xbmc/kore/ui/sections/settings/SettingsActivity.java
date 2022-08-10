@@ -15,22 +15,16 @@
  */
 package org.xbmc.kore.ui.sections.settings;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.Settings;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.UIUtils;
-import org.xbmc.kore.utils.Utils;
 
 /**
  * Presents the Preferences fragment
