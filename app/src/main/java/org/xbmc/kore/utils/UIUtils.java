@@ -434,49 +434,6 @@ public class UIUtils {
     }
 
     /**
-     * Launches the remote activity, performing a circular reveal animation if
-     * Lollipop or later
-     *
-     * @param context Context
-     * @param centerX Center X of the animation
-     * @param centerY Center Y of the animation
-     * @param exitTransitionView View to reveal. Should occupy the whole screen and
-     *                           be invisible before calling this
-     */
-    public static void switchToRemoteWithAnimation(final Context context,
-                                                   int centerX, int centerY,
-                                                   final View exitTransitionView) {
-        final Intent launchIntent = new Intent(context, RemoteActivity.class);
-
-        // Show the animation
-        int endRadius = Math.max(exitTransitionView.getHeight(), exitTransitionView.getWidth());
-        Animator exitAnim = ViewAnimationUtils.createCircularReveal(exitTransitionView,
-                                                                    centerX, centerY, 0, endRadius);
-        exitAnim.setDuration(200);
-        exitAnim.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                // Launch remote activity
-                context.startActivity(launchIntent);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
-        exitTransitionView.setVisibility(View.VISIBLE);
-        exitAnim.start();
-    }
-
-    /**
      * Use this to manually start the swiperefreshlayout refresh animation.
      * Fixes issue with refresh animation not showing when using appcompat library (from version 20?)
      * See https://code.google.com/p/android/issues/detail?id=77712

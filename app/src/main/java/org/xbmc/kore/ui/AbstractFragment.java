@@ -63,6 +63,7 @@ public class AbstractFragment extends Fragment {
         static final String BUNDLE_KEY_RATING = "rating";
         static final String BUNDLE_KEY_MAXRATING = "maxrating";
         static final String BUNDLE_KEY_VOTES = "votes";
+        static final String BUNDLE_KEY_IMDB_NUMBER = "imdbnumber";
 
         private Bundle bundle;
 
@@ -123,6 +124,10 @@ public class AbstractFragment extends Fragment {
             bundle.putString(BUNDLE_KEY_FANARTURL, fanArtUrl);
         }
 
+        public void setImdbNumber(String imdbNumebr) {
+            bundle.putString(BUNDLE_KEY_IMDB_NUMBER, imdbNumebr);
+        }
+
         public void setId(int id) {
             bundle.putInt(BUNDLE_KEY_ID, id);
         }
@@ -169,6 +174,10 @@ public class AbstractFragment extends Fragment {
 
         public String getFanArtUrl() {
             return bundle.getString(BUNDLE_KEY_FANARTURL);
+        }
+
+        public String getImdbNumber() {
+            return bundle.getString(BUNDLE_KEY_IMDB_NUMBER);
         }
 
         public int getId() {

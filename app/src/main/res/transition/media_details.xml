@@ -25,14 +25,14 @@
     <slide android:slideEdge="bottom">
         <targets>
             <target android:excludeId="@id/art"/>
-            <target android:excludeId="@id/fab"/>
+            <target android:excludeId="@id/fab_play"/>
             <target android:excludeId="@id/pager"/>
         </targets>
     </slide>
 
     <slide android:slideEdge="bottom" android:startDelay="@integer/fab_animation_start_delay">
         <targets>
-            <target android:targetId="@id/fab"/>
+            <target android:targetId="@id/fab_play"/>
         </targets>
     </slide>
 </transitionSet>

@@ -55,14 +55,6 @@
         <item name="colorFinished">?attr/colorSecondary</item>
         <item name="colorWizardTitleText">?attr/colorOnSurface</item>
         <item name="colorWizardTitleBackground">?attr/colorPrimaryContainer</item>
-
-        <item name="fabColorNormal">?attr/colorPrimary</item>
-        <item name="fabColorPressed">?attr/colorPrimaryContainer</item>
-        <item name="fabColorFocused">?attr/colorPrimary</item>
-        <item name="fabLabelColorNormal">?attr/colorPrimary</item>
-        <item name="fabLabelColorPressed">?attr/colorPrimaryContainer</item>
-        <item name="fabLabelColorFocused">?attr/colorPrimary</item>
-        <item name="fabLabelTextColor">@color/white</item>
     </style>
 
     <!-- Base Light theme, allowing for customization based on the Android version -->
@@ -105,15 +97,6 @@
         <item name="colorFinished">?attr/colorSecondary</item>
         <item name="colorWizardTitleText">?attr/colorOnSecondary</item>
         <item name="colorWizardTitleBackground">?attr/colorSecondary</item>
-
-        <item name="fabColorNormal">?attr/colorPrimary</item>
-        <item name="fabColorPressed">?attr/colorPrimaryContainer</item>
-        <item name="fabColorFocused">?attr/colorPrimary</item>
-        <item name="fabLabelColorNormal">?attr/colorPrimary</item>
-        <item name="fabLabelColorPressed">?attr/colorPrimaryContainer</item>
-        <item name="fabLabelColorFocused">?attr/colorPrimary</item>
-        <item name="fabLabelTextColor">@color/white</item>
-
     </style>
 
     <!-- Blue Grey theme. -->

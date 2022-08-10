@@ -31,6 +31,8 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
@@ -41,7 +43,6 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -120,23 +121,17 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
             }, callbackHandler);
         });
 
+        setOnPlayLocalClickListener(v -> playItemLocally(fileDownloadHelper.getMediaUrl(getHostInfo()), "video/*"));
+
         return true;
     }
 
     @Override
-    protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnDialItemClickListener(new FABSpeedDial.DialListener() {
-            @Override
-            public void onLocalPlayClicked() {
-                playItemLocally(fileDownloadHelper.getMediaUrl(getHostInfo()), "video/*");
-            }
-
-            @Override
-            public void onRemotePlayClicked() {
-                PlaylistType.Item item = new PlaylistType.Item();
-                item.episodeid = getDataHolder().getId();
-                playItemOnKodi(item);
-            }
+    protected boolean setupFAB(FloatingActionButton fab) {
+        fab.setOnClickListener(v -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.episodeid = getDataHolder().getId();
+            playItemOnKodi(item);
         });
         return true;
     }
@@ -223,8 +218,6 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                     break;
             }
         }
-
-        getFabButton().enableLocalPlay(fileDownloadHelper != null);
     }
 
     /** {@inheritDoc} */
