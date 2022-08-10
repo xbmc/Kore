@@ -57,6 +57,18 @@
         <item name="android:tint">?attr/colorOnSurfaceVariant</item>
     </style>
 
+    <style name="Widget.Kore.Button.InfoAction" parent="@style/Widget.Material3.Button.TextButton.Icon">
+        <item name="android:checkable">true</item>
+        <item name="backgroundTint">@color/info_action_button_background_selector</item>
+        <item name="iconGravity">textTop</item>
+        <item name="iconSize">@dimen/small_icon_size</item>
+        <item name="iconPadding">@dimen/default_icon_padding</item>
+        <item name="iconTint">@color/info_action_button_foreground_selector</item>
+        <item name="android:textColor">@color/info_action_button_foreground_selector</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">marquee</item>
+    </style>
+
     <style name="Widget.Kore.Grid" parent="Widget.Kore">
         <item name="android:columnWidth">@dimen/default_grid_column_width</item>
         <item name="android:numColumns">auto_fit</item>
@@ -120,6 +132,12 @@
 
     <style name="Widget.Kore.ControlPad.Button" parent="Widget.Kore">
         <item name="tint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="Widget.Kore.Divider.InfoSections" parent="Widget.Kore">
+<!--        <item name="dividerColor">?attr/colorOnSurfaceVariant</item>-->
+        <item name="dividerInsetEnd">@dimen/default_padding</item>
+        <item name="dividerInsetStart">@dimen/default_padding</item>
     </style>
 
     <!-- TextView widget styles, including more attributes than simply textAppearance -->

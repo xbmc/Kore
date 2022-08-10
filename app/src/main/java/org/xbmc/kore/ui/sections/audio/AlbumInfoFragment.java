@@ -83,13 +83,13 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnDownloadListener(view -> UIUtils.downloadSongs(requireContext(),
-                                                            albumSongsListFragment.getSongInfoList(),
-                                                            getHostInfo(),
-                                                            callbackHandler));
+    protected boolean setupInfoActionsBar() {
+        setOnDownloadClickListener(view -> UIUtils.downloadSongs(requireContext(),
+                                                                 albumSongsListFragment.getSongInfoList(),
+                                                                 getHostInfo(),
+                                                                 callbackHandler));
 
-        setOnAddToPlaylistListener(view -> {
+        setOnQueueClickListener(view -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.albumid = getDataHolder().getId();
             MediaPlayerUtils.queue(AlbumInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.AUDIO);

@@ -73,7 +73,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
+    protected boolean setupInfoActionsBar() {
         return false;
     }
 
@@ -85,7 +85,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     @Override
     protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {
         TVShowProgressFragment tvShowProgressFragment = new TVShowProgressFragment();
-        tvShowProgressFragment.setArgs(getDataHolder().getId(), getDataHolder().getTitle());
+        tvShowProgressFragment.setArgs(getDataHolder().getId(), getDataHolder().getTitle(), getDataHolder().getPosterUrl());
         return tvShowProgressFragment;
     }
 

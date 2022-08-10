@@ -87,8 +87,8 @@ public class MovieInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnDownloadListener(view -> {
+    protected boolean setupInfoActionsBar() {
+        setOnDownloadClickListener(view -> {
             // Check if the directory exists and whether to overwrite it
             File file = new File(movieDownloadInfo.getAbsoluteFilePath());
             if (file.exists()) {
@@ -120,7 +120,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
             }
         });
 
-        setOnSeenListener(view -> {
+        setOnWatchedClickListener(view -> {
             // Set the playcount
             int playcount = cursor.getInt(MovieDetailsQuery.PLAYCOUNT);
             int newPlaycount = (playcount > 0) ? 0 : 1;
@@ -133,6 +133,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     if (!isAdded()) return;
                     // Force a refresh, but don't show a message
                     getRefreshItem().startSync(true);
+                    setWatchedButtonState(newPlaycount > 0);
                 }
 
                 @Override
@@ -140,14 +141,14 @@ public class MovieInfoFragment extends AbstractInfoFragment
             }, callbackHandler);
         });
 
-        setOnGoToImdbListener(view -> {
+        setOnImdbClickListener(view -> {
             String imdbNumber = cursor.getString(MovieDetailsQuery.IMDBNUMBER);
             if (imdbNumber != null) {
                 Utils.openImdbForMovie(requireContext(), imdbNumber);
             }
         });
 
-        setOnAddToPlaylistListener(view -> {
+        setOnQueueClickListener(view -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.movieid = getDataHolder().getId();
             MediaPlayerUtils.queue(MovieInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
@@ -245,7 +246,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     movieDownloadInfo = new FileDownloadHelper.MovieInfo(
                             dataHolder.getTitle(), cursor.getString(MovieDetailsQuery.FILE));
                     setDownloadButtonState(movieDownloadInfo.downloadDirectoryExists());
-                    setSeenButtonState(cursor.getInt(MovieDetailsQuery.PLAYCOUNT) > 0);
+                    setWatchedButtonState(cursor.getInt(MovieDetailsQuery.PLAYCOUNT) > 0);
                     updateView(dataHolder);
                     checkOutdatedMovieDetails(cursor);
                     break;

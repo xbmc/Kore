@@ -91,16 +91,16 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnDownloadListener(view -> downloadEpisode());
+    protected boolean setupInfoActionsBar() {
+        setOnDownloadClickListener(view -> downloadEpisode());
 
-        setOnAddToPlaylistListener(view -> {
+        setOnQueueClickListener(view -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.episodeid = getDataHolder().getId();
             MediaPlayerUtils.queue(TVShowEpisodeInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
         });
 
-        setOnSeenListener(view -> {
+        setOnWatchedClickListener(view -> {
             int playcount = cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT);
             int newPlaycount = (playcount > 0) ? 0 : 1;
 
@@ -112,6 +112,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                     // Force a refresh, but don't show a message
                     if (!isAdded()) return;
                     getRefreshItem().startSync(true);
+                    setWatchedButtonState(newPlaycount > 0);
                 }
 
                 @Override
@@ -182,7 +183,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
 
                     DataHolder dataHolder = getDataHolder();
 
-                    dataHolder.setPosterUrl(cursor.getString(EpisodeDetailsQuery.THUMBNAIL));
+                    dataHolder.setFanArtUrl(cursor.getString(EpisodeDetailsQuery.THUMBNAIL));
 
                     dataHolder.setRating(cursor.getDouble(EpisodeDetailsQuery.RATING));
                     dataHolder.setMaxRating(10);
@@ -211,7 +212,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
 
                     setDownloadButtonState(fileDownloadHelper.downloadFileExists());
 
-                    setSeenButtonState(cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT) > 0);
+                    setWatchedButtonState(cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT) > 0);
 
                     getDataHolder().setTitle(cursor.getString(EpisodeDetailsQuery.TITLE));
                     getDataHolder().setUndertitle(cursor.getString(EpisodeDetailsQuery.SHOWTITLE));

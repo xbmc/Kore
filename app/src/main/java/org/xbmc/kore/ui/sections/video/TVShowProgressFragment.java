@@ -57,26 +57,29 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
     public static final String BUNDLE_ITEM_ID = "itemid";
     public static final String BUNDLE_TITLE = "title";
+    public static final String BUNDLE_POSTER_URL = "poster_url";
 
     private static final int NEXT_EPISODES_COUNT = 2;
     private int itemId = -1;
+    private String showTitle, showPosterUrl;
     private CastFragment castFragment;
 
     public static final int LOADER_NEXT_EPISODES = 1,
             LOADER_SEASONS = 2;
 
     public interface TVShowProgressActionListener {
-        void onSeasonSelected(int tvshowId, int season);
+        void onSeasonSelected(int tvshowId, int season, String seasonPoster);
         void onNextEpisodeSelected(int tvshowId, AbstractInfoFragment.DataHolder dataHolder);
     }
 
     // Activity listener
     private TVShowProgressActionListener listenerActivity;
 
-    public void setArgs(int itemId, String showTitle) {
+    public void setArgs(int itemId, String showTitle, String showPosterUrl) {
         Bundle bundle = new Bundle();
         bundle.putInt(BUNDLE_ITEM_ID, itemId);
         bundle.putString(BUNDLE_TITLE, showTitle);
+        bundle.putString(BUNDLE_POSTER_URL, showPosterUrl);
         setArguments(bundle);
     }
 
@@ -88,12 +91,13 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             throw new IllegalStateException("Use setArgs to set required item id");
         }
         this.itemId = arguments.getInt(BUNDLE_ITEM_ID);
-        String title = arguments.getString(BUNDLE_TITLE);
+        this.showTitle = arguments.getString(BUNDLE_TITLE);
+        this.showPosterUrl = arguments.getString(BUNDLE_POSTER_URL);
 
         View view = inflater.inflate(R.layout.fragment_tvshow_progress, container, false);
 
         castFragment = new CastFragment();
-        castFragment.setArgs(this.itemId, title, CastFragment.TYPE.TVSHOW);
+        castFragment.setArgs(this.itemId, this.showTitle, CastFragment.TYPE.TVSHOW);
         requireActivity().getSupportFragmentManager()
                          .beginTransaction()
                          .add(R.id.cast_fragment, castFragment)
@@ -236,6 +240,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 AbstractInfoFragment.DataHolder vh = new AbstractInfoFragment.DataHolder(episodeId);
                 vh.setTitle(title);
                 vh.setUndertitle(seasonEpisode);
+                vh.setPosterUrl(this.showPosterUrl);
                 episodeView.setTag(vh);
                 episodeView.setOnClickListener(episodeClickListener);
 
@@ -270,8 +275,6 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             seasonsDivider.setVisibility(View.VISIBLE);
 
             HostManager hostManager = HostManager.getInstance(requireContext());
-
-            View.OnClickListener seasonListClickListener = v -> listenerActivity.onSeasonSelected(itemId, (int)v.getTag());
 
             // Get the art dimensions
             Resources resources = requireContext().getResources();
@@ -310,7 +313,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
                 View seasonView = binding.getRoot();
                 seasonView.setTag(seasonNumber);
-                seasonView.setOnClickListener(seasonListClickListener);
+                seasonView.setOnClickListener(v -> listenerActivity.onSeasonSelected(itemId, seasonNumber, thumbnail));
                 seasonsList.addView(seasonView);
             } while (cursor.moveToNext());
         } else {

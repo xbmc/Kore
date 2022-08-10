@@ -28,7 +28,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Vibrator;
-import androidx.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -38,7 +37,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -48,6 +46,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.TextViewCompat;
+import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.color.MaterialColors;
@@ -556,21 +555,6 @@ public class UIUtils {
                                                  songInfoList, FileDownloadHelper.DOWNLOAD_WITH_NEW_NAME,
                                                  callbackHandler);
             }
-        }
-    }
-
-    /**
-     * Highlights an image view
-     * @param context context
-     * @param view image view
-     * @param highlight true if the image view should be highlighted, false otherwise
-     */
-    public static void highlightImageView(Context context, ImageView view, boolean highlight) {
-        if (highlight) {
-            int highlightColor = MaterialColors.getColor(context, HighlightButton.DEFAULT_HIGHLIGHT_COLOR, Color.WHITE);
-            view.setColorFilter(highlightColor);
-        } else {
-            view.clearColorFilter();
         }
     }
 

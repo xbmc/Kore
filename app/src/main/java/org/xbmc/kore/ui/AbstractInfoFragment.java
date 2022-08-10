@@ -16,8 +16,6 @@
 
 package org.xbmc.kore.ui;
 
-import static android.view.View.GONE;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,8 +25,6 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
-
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -39,7 +35,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -49,7 +44,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.button.MaterialButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -90,6 +88,10 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private int methodId; // Last Kodi Open method id executed
     private int pixelsToTransparent;
 
+    protected String[] seenButtonLabels;
+    protected String[] pinButtonLabels;
+    protected String[] enableButtonLabels;
+
     /**
      * Handler on which to post RPC callbacks
      */
@@ -99,7 +101,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private final ActivityResultLauncher<String> downloadFilesPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    binding.mediaActionDownload.performClick();
+                    binding.infoActionDownload.performClick();
                 } else {
                     Toast.makeText(getActivity(), R.string.write_storage_permission_denied, Toast.LENGTH_SHORT)
                          .show();
@@ -162,9 +164,12 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             }
         }
 
-        if(setupMediaActionBar()) {
-            binding.mediaActionsBar.setVisibility(View.VISIBLE);
-        }
+        seenButtonLabels = new String[] { getString(R.string.unwatched_status), getString(R.string.watched_status) };
+        pinButtonLabels = new String[] { getString(R.string.unpinned_status), getString(R.string.pinned_status) };
+        enableButtonLabels = new String[] { getString(R.string.disabled_status), getString(R.string.enabled_status) };
+
+        boolean hasButtons = setupInfoActionsBar();
+        binding.infoActionsBar.setVisibility(hasButtons ? View.VISIBLE : View.GONE);
 
         if(setupFAB(binding.fab)) {
             binding.fab.setVisibility(View.VISIBLE);
@@ -298,7 +303,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         if(enable) {
             binding.fab.setVisibility(View.VISIBLE);
         } else {
-            binding.fab.setVisibility(GONE);
+            binding.fab.setVisibility(View.GONE);
         }
     }
 
@@ -350,24 +355,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         binding.mediaTitle.setText(dataHolder.getTitle());
         binding.mediaTitle.post(UIUtils.getMarqueeToggleableAction(binding.mediaTitle));
         binding.mediaUndertitle.setText(dataHolder.getUnderTitle());
-        binding.mediaDetailsRight.setText(dataHolder.getDetails());
-
-        if (!TextUtils.isEmpty(dataHolder.getDescription())) {
-            final int iconCollapseResId = R.drawable.ic_expand_more_white_24dp;
-            final int iconExpandResId = R.drawable.ic_expand_less_white_24dp;
-            binding.mediaDescriptionContainer.setOnClickListener(v -> {
-                binding.mediaDescription.toggle();
-                binding.showAll.setImageResource(binding.mediaDescription.isExpanded() ? iconCollapseResId : iconExpandResId);
-            });
-            binding.mediaDescription.setText(dataHolder.getDescription());
-            if (expandDescription) {
-                binding.mediaDescription.expand();
-                binding.showAll.setImageResource(iconExpandResId);
-            }
-            binding.mediaDescriptionContainer.setVisibility(View.VISIBLE);
-        } else {
-            binding.mediaDescriptionContainer.setVisibility(GONE);
-        }
 
         // Images
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -376,6 +363,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         Resources resources = requireActivity().getResources();
 
         if (dataHolder.getPosterUrl() != null) {
+            binding.poster.setVisibility(View.VISIBLE);
             int posterWidth;
             int posterHeight;
             if (dataHolder.getSquarePoster()) {
@@ -390,7 +378,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                                                  dataHolder.getPosterUrl(), dataHolder.getTitle(),
                                                  binding.poster, posterWidth, posterHeight);
         } else {
-            binding.poster.setVisibility(GONE);
+            binding.poster.setVisibility(View.GONE);
             int padding = requireContext().getResources().getDimensionPixelSize(R.dimen.default_padding);
             binding.mediaTitle.setPadding(padding, padding, 0, 0);
             binding.mediaUndertitle.setPadding(padding, padding, 0, 0);
@@ -404,7 +392,32 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                                        dataHolder.getPosterUrl() : dataHolder.getFanArtUrl(),
                                        binding.art, artWidth, artHeight);
 
+        int sectionVisibility;
+        // Description
+        if (!TextUtils.isEmpty(dataHolder.getDescription())) {
+            sectionVisibility = View.VISIBLE;
+
+            final int iconCollapseResId = R.drawable.ic_expand_more_white_24dp;
+            final int iconExpandResId = R.drawable.ic_expand_less_white_24dp;
+            binding.mediaDescription.setOnClickListener(v -> {
+                binding.mediaDescription.toggle();
+                binding.showAll.setImageResource(binding.mediaDescription.isExpanded() ? iconCollapseResId : iconExpandResId);
+            });
+            binding.mediaDescription.setText(dataHolder.getDescription());
+            if (expandDescription) {
+                binding.mediaDescription.expand();
+                binding.showAll.setImageResource(iconExpandResId);
+            }
+        } else {
+            sectionVisibility = View.GONE;
+        }
+        binding.mediaDescription.setVisibility(sectionVisibility);
+        binding.showAll.setVisibility(sectionVisibility);
+
+        // Rating and details
         if (dataHolder.getRating() > 0) {
+            sectionVisibility = View.VISIBLE;
+
             binding.rating.setText(String.format(Locale.getDefault(), "%01.01f", dataHolder.getRating()));
             if (dataHolder.getMaxRating() > 0) {
                 binding.maxRating.setText(String.format(getString(R.string.max_rating),
@@ -414,27 +427,43 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                 binding.ratingVotes.setText(String.format(getString(R.string.votes),
                                                           String.valueOf(dataHolder.getVotes())));
             }
-            binding.ratingContainer.setVisibility(View.VISIBLE);
-        } else if (TextUtils.isEmpty(dataHolder.getDetails())) {
-            binding.mediaDetails.setVisibility(View.GONE);
         } else {
-            binding.mediaDetails.setVisibility(View.VISIBLE);
+            sectionVisibility = View.GONE;
+        }
+        binding.rating.setVisibility(sectionVisibility);
+        binding.maxRating.setVisibility(sectionVisibility);
+        binding.ratingVotes.setVisibility(sectionVisibility);
+
+        if (!TextUtils.isEmpty(dataHolder.getDetails())) {
+            sectionVisibility = View.VISIBLE;
+            binding.mediaDetailsRight.setText(dataHolder.getDetails());
+        } else {
+            sectionVisibility = View.GONE;
+        }
+        binding.mediaDetailsRight.setVisibility(sectionVisibility);
+
+        // Dividers
+        if (binding.infoActionsBar.getVisibility() == View.VISIBLE) {
+            binding.divider1.setVisibility(binding.rating.getVisibility());
+            binding.divider2.setVisibility(binding.mediaDescription.getVisibility());
+        } else {
+            binding.divider1.setVisibility(View.GONE);
+            binding.divider2.setVisibility(View.GONE);
         }
     }
 
     /**
-     * Setting a listener for downloads will add the download button to the UI
-     * @param listener to be called when user clicks the download button. Note that the View passed
-     *                 into onClick from {@link android.view.View.OnClickListener} will be null
-     *                 when the user is asked for storage permissions
+     * Listener to set in the Download button. Setting this will add the button to the UI
+     * @param listener Click listener to be called when user clicks the download button.
+     * Use {@link #setDownloadButtonState(boolean)} to set the state of the button
      */
-    protected void setOnDownloadListener(final View.OnClickListener listener) {
-        binding.mediaActionDownload.setVisibility(View.VISIBLE);
-        binding.mediaActionDownload.setOnClickListener(view -> {
+    protected void setOnDownloadClickListener(final View.OnClickListener listener) {
+        binding.infoActionDownload.setVisibility(View.VISIBLE);
+        binding.infoActionDownload.setOnClickListener(view -> {
             if (checkStoragePermission()) {
                 if (Settings.allowedDownloadNetworkTypes(getActivity()) != 0) {
                     listener.onClick(view);
-                    UIUtils.highlightImageView(getActivity(), binding.mediaActionDownload, true);
+                    setToggleButtonState(binding.infoActionDownload, true);
                 } else {
                     Toast.makeText(getActivity(), R.string.no_connection_type_selected, Toast.LENGTH_SHORT).show();
                 }
@@ -442,62 +471,95 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         });
     }
 
-    protected void setOnAddToPlaylistListener(View.OnClickListener listener) {
-        binding.mediaActionAddToPlaylist.setVisibility(View.VISIBLE);
-        binding.mediaActionAddToPlaylist.setOnClickListener(listener);
-    }
-
-    protected void setOnGoToImdbListener(View.OnClickListener listener) {
-        binding.mediaActionGoToImdb.setVisibility(View.VISIBLE);
-        binding.mediaActionGoToImdb.setOnClickListener(listener);
-    }
-
     /**
-     * Use {@link #setSeenButtonState(boolean)} to set the state of the seen button
-     * @param listener Listener
+     * Listener to set in the Queue button. Setting this will add the button to the UI
+     * @param listener Click listener to call
      */
-    protected void setOnSeenListener(final View.OnClickListener listener) {
-        setupToggleButton(binding.mediaActionSeen, listener);
-    }
-
-    protected void setOnPinClickedListener(final View.OnClickListener listener) {
-        setupToggleButton(binding.mediaActionPinUnpin, listener);
+    protected void setOnQueueClickListener(View.OnClickListener listener) {
+        binding.infoActionQueue.setVisibility(View.VISIBLE);
+        binding.infoActionQueue.setOnClickListener(listener);
     }
 
     /**
-     * Uses colors to show to the user the item has been downloaded
+     * Listener to set in the IMDb button. Setting this will add the button to the UI
+     * @param listener Click listener to call
+     */
+    protected void setOnImdbClickListener(View.OnClickListener listener) {
+        binding.infoActionImdb.setVisibility(View.VISIBLE);
+        binding.infoActionImdb.setOnClickListener(listener);
+    }
+
+    /**
+     * Listener to set in the Watched button. Setting this will add the button to the UI
+     * Use {@link #setWatchedButtonState(boolean)} to set the state of the button
+     * @param listener Click listener to call
+     */
+    protected void setOnWatchedClickListener(final View.OnClickListener listener) {
+        setupToggleButton(binding.infoActionWatched, listener);
+    }
+
+    /**
+     * Listener to set in the Pin button. Setting this will add the button to the UI
+     * Use {@link #setPinButtonState(boolean)} to set the state of the button
+     * @param listener Click listener to call
+     */
+    protected void setOnPinClickedListener(final View.OnClickListener listener) {
+        setupToggleButton(binding.infoActionPin, listener);
+    }
+
+    /**
+     * Listener to set in the Enable button. Setting this will add the button to the UI
+     * Use {@link #setEnableButtonState(boolean)} to set the state of the button
+     * @param listener Click listener to call
+     */
+    protected void setOnEnableClickListener(final View.OnClickListener listener) {
+        setupToggleButton(binding.infoActionEnable, listener);
+    }
+
+    private void setupToggleButton(final MaterialButton button, final View.OnClickListener listener) {
+        button.setVisibility(View.VISIBLE);
+        button.setTag(false);
+        button.setOnClickListener(listener);
+    }
+
+    /**
+     * Set the state of the Download button
      * @param state true if item has been downloaded, false otherwise
      */
     protected void setDownloadButtonState(boolean state) {
-        UIUtils.highlightImageView(getActivity(), binding.mediaActionDownload, state);
+        setToggleButtonState(binding.infoActionDownload, state);
     }
 
     /**
-     * Uses colors to show the seen state to the user
+     * Set the state of the Watched button
      * @param state true if item has been watched/listened too, false otherwise
      */
-    protected void setSeenButtonState(boolean state) {
-        setToggleButtonState(binding.mediaActionSeen, state);
+    protected void setWatchedButtonState(boolean state) {
+        binding.infoActionWatched.setText(seenButtonLabels[state ? 1 : 0]);
+        setToggleButtonState(binding.infoActionWatched, state);
     }
 
+    /**
+     * Set the state of the Pin button
+     * @param state true if item has been pinned, false otherwise
+     */
     protected void setPinButtonState(boolean state) {
-        setToggleButtonState(binding.mediaActionPinUnpin, state);
+        binding.infoActionPin.setText(pinButtonLabels[state ? 1 : 0]);
+        setToggleButtonState(binding.infoActionPin, state);
     }
 
-    private void setToggleButtonState(ImageButton button, boolean state) {
-        UIUtils.highlightImageView(getActivity(), button, state);
+    /**
+     * Set the state of the Enable button
+     * @param state true if item has been enabled, false otherwise
+     */
+    protected void setEnableButtonState(boolean state) {
+        binding.infoActionEnable.setText(enableButtonLabels[state ? 1 : 0]);
+        setToggleButtonState(binding.infoActionEnable, state);
+    }
+
+    private void setToggleButtonState(MaterialButton button, boolean state) {
+        button.setChecked(state);
         button.setTag(state);
-    }
-
-    private void setupToggleButton(final ImageButton button, final View.OnClickListener listener) {
-        button.setVisibility(View.VISIBLE);
-        button.setTag(false);
-        button.setOnClickListener(view -> {
-            listener.onClick(view);
-            // Boldly invert the state. We depend on the observer to correct the state
-            // if Kodi or other service didn't honour our request
-            setToggleButtonState(button, ! (boolean) button.getTag());
-        });
     }
 
     private boolean checkStoragePermission() {
@@ -574,15 +636,16 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
     /**
      * Called when the media action bar actions are available and
-     * you can use {@link #setOnAddToPlaylistListener(View.OnClickListener)},
-     * {@link #setOnSeenListener(View.OnClickListener)},
-     * {@link #setOnDownloadListener(View.OnClickListener)},
-     * {@link #setOnGoToImdbListener(View.OnClickListener)},
+     * you can use {@link #setOnQueueClickListener(View.OnClickListener)},
+     * {@link #setOnWatchedClickListener(View.OnClickListener)},
+     * {@link #setOnDownloadClickListener(View.OnClickListener)},
+     * {@link #setOnImdbClickListener(View.OnClickListener)},
+     * {@link #setOnEnableClickListener(View.OnClickListener)},
      * and {@link #setOnPinClickedListener(View.OnClickListener)} to enable
      * one or more actions.
      * @return true if media action bar should be visible, false otherwise
      */
-    abstract protected boolean setupMediaActionBar();
+    abstract protected boolean setupInfoActionsBar();
 
     /**
      * Called when the fab button is available
