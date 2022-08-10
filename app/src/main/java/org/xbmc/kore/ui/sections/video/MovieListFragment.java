@@ -408,7 +408,6 @@ public class MovieListFragment extends AbstractCursorListFragment {
             dataHolder.setUndertitle(cursor.getString(MovieListQuery.TAGLINE));
 
             dataHolder.setRating(cursor.getDouble(MovieListQuery.RATING));
-            dataHolder.setMaxRating(10);
 
             titleView.setText(dataHolder.getTitle());
 
@@ -422,7 +421,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
             dataHolder.setDetails(metaInfo + "\n" + details);
 
             if (showRating && dataHolder.getRating() > 0) {
-                ratingBar.setMaxRating(dataHolder.getMaxRating());
+                ratingBar.setMaxRating(10);
                 ratingBar.setRating(dataHolder.getRating());
                 ratingBar.setVisibility(View.VISIBLE);
             } else {

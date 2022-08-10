@@ -452,19 +452,13 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             sectionVisibility = View.VISIBLE;
 
             binding.rating.setText(String.format(Locale.getDefault(), "%01.01f", dataHolder.getRating()));
-            if (dataHolder.getMaxRating() > 0) {
-                binding.maxRating.setText(String.format(getString(R.string.max_rating),
-                                                        String.valueOf(dataHolder.getMaxRating())));
-            }
-            if (dataHolder.getVotes() > 0 ) {
-                binding.ratingVotes.setText(String.format(getString(R.string.votes),
-                                                          String.valueOf(dataHolder.getVotes())));
+            if (dataHolder.getVotes() != null) {
+                binding.ratingVotes.setText(String.format(getString(R.string.votes), dataHolder.getVotes()));
             }
         } else {
             sectionVisibility = View.GONE;
         }
         binding.rating.setVisibility(sectionVisibility);
-        binding.maxRating.setVisibility(sectionVisibility);
         binding.ratingVotes.setVisibility(sectionVisibility);
 
         if (!TextUtils.isEmpty(dataHolder.getDetails())) {

@@ -104,17 +104,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/small_padding"
                         android:paddingTop="@dimen/default_padding"
-                        app:layout_constraintTop_toTopOf="@id/rating"
-                        app:layout_constraintStart_toEndOf="@id/rating"/>
-
-                    <TextView
-                        android:id="@+id/max_rating"
-                        style="@style/Widget.Kore.TextView.MediaSmallDetails"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/default_padding"
-                        app:layout_constraintTop_toBottomOf="@id/rating_votes"
-                        app:layout_constraintStart_toStartOf="@id/rating_votes"/>
+                        app:layout_constraintStart_toEndOf="@id/rating"
+                        app:layout_constraintBaseline_toBaselineOf="@id/rating"/>
 
                     <TextView
                         android:id="@+id/media_details_right"
@@ -134,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="rating,max_rating,media_details_right" />
+                        app:constraint_referenced_ids="rating,media_details_right" />
 
                     <com.google.android.material.divider.MaterialDivider
                         android:id="@+id/divider_1"

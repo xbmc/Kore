@@ -90,7 +90,8 @@ public class SyncTVShows extends SyncItem {
             VideoType.FieldsTVShow.CAST, VideoType.FieldsTVShow.PLAYCOUNT,
             VideoType.FieldsTVShow.EPISODE, VideoType.FieldsTVShow.IMDBNUMBER,
             VideoType.FieldsTVShow.PREMIERED,
-            //VideoType.FieldsTVShow.VOTES, VideoType.FieldsTVShow.LASTPLAYED,
+            VideoType.FieldsTVShow.VOTES,
+            //VideoType.FieldsTVShow.LASTPLAYED,
             VideoType.FieldsTVShow.ART,
             //VideoType.FieldsTVShow.FANART, VideoType.FieldsTVShow.THUMBNAIL,
             VideoType.FieldsTVShow.FILE,
@@ -267,7 +268,7 @@ public class SyncTVShows extends SyncItem {
 
     private final static String[] getEpisodesProperties = {
             VideoType.FieldsEpisode.TITLE, VideoType.FieldsEpisode.PLOT,
-            //VideoType.FieldsEpisode.VOTES,
+            VideoType.FieldsEpisode.VOTES,
             VideoType.FieldsEpisode.RATING,
             VideoType.FieldsEpisode.WRITER, VideoType.FieldsEpisode.FIRSTAIRED,
             VideoType.FieldsEpisode.PLAYCOUNT, VideoType.FieldsEpisode.RUNTIME,

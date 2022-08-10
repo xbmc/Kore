@@ -242,6 +242,7 @@ public class MediaContract {
         String STUDIO = "studio";
         String WATCHEDEPISODES = "watchedepisodes";
         String GENRES = "genres";
+        String VOTES = "votes";
     }
 
     public static class TVShows implements BaseColumns, SyncColumns, TVShowsColumns {
@@ -276,7 +277,7 @@ public class MediaContract {
         public final static String[] ALL_COLUMNS = {
                 _ID, UPDATED, HOST_ID, TVSHOWID, FANART, POSTER, PLAYCOUNT, TITLE, DATEADDED,
                 FILE, PLOT, EPISODE, IMDBNUMBER, MPAA, PREMIERED, RATING, STUDIO,
-                WATCHEDEPISODES, GENRES
+                WATCHEDEPISODES, GENRES, VOTES
         };
     }
 
@@ -397,6 +398,8 @@ public class MediaContract {
         String VIDEO_CODEC = "video_codec";
         String VIDEO_HEIGHT = "video_height";
         String VIDEO_WIDTH = "video_width";
+
+        String VOTES = "votes";
     }
 
     public static class Episodes implements BaseColumns, SyncColumns, EpisodesColumns {
@@ -465,6 +468,7 @@ public class MediaContract {
                 PLAYCOUNT, TITLE, DATEADDED, FILE, PLOT, DIRECTOR, RUNTIME, FIRSTAIRED, RATING,
                 SHOWTITLE, WRITER, AUDIO_CHANNELS, AUDIO_CODEC, AUDIO_LANGUAGE,
                 SUBTITLES_LANGUAGES, VIDEO_ASPECT, VIDEO_CODEC, VIDEO_HEIGHT, VIDEO_WIDTH,
+                VOTES,
         };
     }
 

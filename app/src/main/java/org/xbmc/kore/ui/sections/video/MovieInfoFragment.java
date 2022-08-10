@@ -206,8 +206,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     dataHolder.setFanArtUrl(cursor.getString(MovieDetailsQuery.FANART));
                     dataHolder.setPosterUrl(cursor.getString(MovieDetailsQuery.THUMBNAIL));
                     dataHolder.setRating(cursor.getDouble(MovieDetailsQuery.RATING));
-                    dataHolder.setMaxRating(10);
-                    dataHolder.setVotes(cursor.getInt(MovieDetailsQuery.VOTES));
+                    dataHolder.setVotes(cursor.getString(MovieDetailsQuery.VOTES));
                     dataHolder.setImdbNumber(cursor.getString(MovieDetailsQuery.IMDBNUMBER));
 
                     String director = cursor.getString(MovieDetailsQuery.DIRECTOR);

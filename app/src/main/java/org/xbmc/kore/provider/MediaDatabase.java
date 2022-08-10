@@ -31,7 +31,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
 	private static final String TAG = LogUtils.makeLogTag(MediaDatabase.class);
 
 	private static final String DB_NAME = "xbmc.sqlite";
-    private static final int DB_VERSION_PRE_EVENT_SERVER = 4,
+    private static final int
+            DB_VERSION_PRE_EVENT_SERVER = 4,
             DB_VERSION_PRE_SONG_ARTISTS = 5,
             DB_VERSION_PRE_SONG_DISPLAY_ARTIST = 6,
             DB_VERSION_PRE_SONG_DISC = 7,
@@ -39,7 +40,8 @@ public class MediaDatabase extends SQLiteOpenHelper {
             DB_VERSION_PRE_HOST_HTTPS = 9,
             DB_VERSION_PRE_LAST_PLAYED = 10,
             DB_VERSION_PER_HOST_DIRECT_SHARE_TARGET = 11,
-            DB_VERSION = 12;
+            DB_VERSION_PRE_VOTES_ON_TV_SHOW = 12,
+            DB_VERSION = 13;
 
 	/**
 	 * Tables exposed
@@ -244,6 +246,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.TVShowsColumns.STUDIO + " TEXT, " +
                    MediaContract.TVShowsColumns.WATCHEDEPISODES + " INTEGER, " +
                    MediaContract.MoviesColumns.GENRES + " TEXT, " +
+                   MediaContract.TVShowsColumns.VOTES + " TEXT, " +
                    "UNIQUE (" +
                    MediaContract.TVShowsColumns.HOST_ID + ", " +
                    MediaContract.TVShowsColumns.TVSHOWID +
@@ -307,6 +310,7 @@ public class MediaDatabase extends SQLiteOpenHelper {
                    MediaContract.EpisodesColumns.RUNTIME + " INTEGER, " +
                    MediaContract.EpisodesColumns.FIRSTAIRED + " TEXT, " +
                    MediaContract.EpisodesColumns.RATING + " REAL, " +
+                   MediaContract.EpisodesColumns.VOTES + " TEXT, " +
                    MediaContract.EpisodesColumns.SHOWTITLE + " TEXT, " +
                    MediaContract.EpisodesColumns.WRITER + " TEXT, " +
                    MediaContract.EpisodesColumns.AUDIO_CHANNELS + " INTEGER, " +
@@ -537,6 +541,13 @@ public class MediaDatabase extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE " + Tables.HOSTS +
                         " ADD COLUMN " + MediaContract.HostsColumns.DIRECT_SHARE +
                         " INTEGER DEFAULT 1;");
+            case DB_VERSION_PRE_VOTES_ON_TV_SHOW:
+                db.execSQL("ALTER TABLE " + Tables.TVSHOWS +
+                           " ADD COLUMN " + MediaContract.TVShowsColumns.VOTES +
+                           " TEXT;");
+                db.execSQL("ALTER TABLE " + Tables.EPISODES +
+                           " ADD COLUMN " + MediaContract.EpisodesColumns.VOTES +
+                           " TEXT;");
         }
 	}
 
