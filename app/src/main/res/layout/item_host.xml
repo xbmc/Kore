@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/Widget.Kore.ListItem"
-    android:padding="@dimen/large_padding">
+    android:padding="@dimen/default_padding">
 
     <ImageView
         android:id="@+id/status_indicator"

@@ -81,14 +81,14 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnAddToPlaylistListener(view -> {
+    protected boolean setupInfoActionsBar() {
+        setOnQueueClickListener(view -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.musicvideoid = getDataHolder().getId();
             MediaPlayerUtils.queue(MusicVideoInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
         });
 
-        setOnDownloadListener(view -> download());
+        setOnDownloadClickListener(view -> download());
 
         return true;
     }

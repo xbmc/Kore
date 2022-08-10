@@ -14,8 +14,7 @@
    limitations under the License.
 -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
@@ -47,197 +46,231 @@
                 android:clipChildren="false"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/media_panel_group"
+                    style="@style/Widget.Kore.InfoPanel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/info_title_margin_top"
                     android:layout_marginLeft="@dimen/info_panel_horiz_margin"
-                    android:layout_marginRight="@dimen/info_panel_horiz_margin"
-                    style="@style/Widget.Kore.InfoPanel">
+                    android:layout_marginTop="@dimen/info_title_margin_top"
+                    android:layout_marginRight="@dimen/info_panel_horiz_margin">
 
                     <TextView
                         android:id="@+id/media_title"
                         style="@style/Widget.Kore.TextView.MediaTitle"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/info_poster_width_plus_padding"
-                        android:paddingEnd="@dimen/default_padding" />
+                        android:layout_marginStart="@dimen/info_poster_width_plus_padding"
+                        android:layout_marginEnd="@dimen/default_padding"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/media_undertitle"
                         style="@style/Widget.Kore.TextView.MediaDetails"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/media_title"
-                        android:paddingStart="@dimen/info_poster_width_plus_padding"
-                        android:paddingEnd="@dimen/default_padding" />
+                        app:layout_constraintEnd_toEndOf="@id/media_title"
+                        app:layout_constraintStart_toStartOf="@id/media_title"
+                        app:layout_constraintTop_toBottomOf="@id/media_title" />
 
                     <ImageView
                         android:id="@+id/poster"
                         android:layout_width="@dimen/info_poster_width_square"
                         android:layout_height="@dimen/info_poster_height_square"
-                        android:layout_alignBottom="@id/media_undertitle"
-                        android:layout_alignParentStart="true"
                         android:layout_marginStart="@dimen/default_padding"
                         android:contentDescription="@string/poster"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="@id/media_undertitle"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-                    <!-- Media actions buttons -->
-                    <LinearLayout
-                        android:id="@+id/media_actions_bar"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/buttonbar_height"
-                        android:layout_below="@id/media_undertitle"
-                        android:orientation="horizontal"
-                        android:paddingLeft="@dimen/default_padding"
-                        android:paddingRight="@dimen/default_padding"
-                        android:visibility="gone">
-
-                        <Space
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <ImageButton
-                            android:id="@+id/media_action_pin_unpin"
-                            style="@style/Widget.Kore.Button.Borderless"
-                            android:layout_width="@dimen/buttonbar_button_width"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/enable_disable"
-                            android:src="@drawable/ic_bookmark_24dp"
-                            android:visibility="gone" />
-
-                        <ImageButton
-                            android:id="@+id/media_action_add_to_playlist"
-                            style="@style/Widget.Kore.Button.Borderless"
-                            android:layout_width="@dimen/buttonbar_button_width"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/add_to_playlist"
-                            android:src="@drawable/ic_queue_white_24dp"
-                            android:visibility="gone" />
-
-                        <ImageButton
-                            android:id="@+id/media_action_download"
-                            style="@style/Widget.Kore.Button.Borderless"
-                            android:layout_width="@dimen/buttonbar_button_width"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/download"
-                            android:src="@drawable/ic_get_app_white_24dp"
-                            android:visibility="gone" />
-
-                        <ImageButton
-                            android:id="@+id/media_action_go_to_imdb"
-                            style="@style/Widget.Kore.Button.Borderless"
-                            android:layout_width="@dimen/buttonbar_button_width"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/imdb"
-                            android:src="@drawable/ic_open_in_new_white_24dp"
-                            android:visibility="gone" />
-
-                        <ImageButton
-                            android:id="@+id/media_action_seen"
-                            style="@style/Widget.Kore.Button.Borderless"
-                            android:layout_width="@dimen/buttonbar_button_width"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/seen"
-                            android:src="@drawable/ic_done_white_24dp"
-                            android:visibility="gone" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/media_details"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/rating"
+                        style="@style/Widget.Kore.TextView.MediaRating"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/media_actions_bar"
-                        android:layout_alignParentStart="true"
-                        android:paddingLeft="@dimen/default_padding"
+                        android:layout_marginStart="@dimen/default_padding"
                         android:paddingTop="@dimen/default_padding"
-                        android:paddingRight="@dimen/default_padding"
-                        android:paddingBottom="@dimen/default_padding">
+                        android:paddingBottom="@dimen/default_padding"
+                        app:layout_constraintTop_toBottomOf="@id/poster"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:gravity="top"/>
 
-                        <LinearLayout
-                            android:id="@+id/rating_container"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_weight="3">
-
-                            <TextView
-                                android:id="@+id/rating"
-                                style="@style/Widget.Kore.TextView.MediaRating"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginEnd="@dimen/small_padding" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/rating_votes"
-                                    style="@style/Widget.Kore.TextView.MediaSmallDetails"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
-
-                                <TextView
-                                    android:id="@+id/max_rating"
-                                    style="@style/Widget.Kore.TextView.MediaSmallDetails"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/media_details_right"
-                            style="@style/Widget.Kore.TextView.MediaSmallDetails"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_weight="5"
-                            android:gravity="end" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/media_description_container"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/rating_votes"
+                        style="@style/Widget.Kore.TextView.MediaSmallDetails"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/media_details"
-                        android:orientation="vertical">
+                        android:layout_marginStart="@dimen/small_padding"
+                        android:paddingTop="@dimen/default_padding"
+                        app:layout_constraintTop_toTopOf="@id/rating"
+                        app:layout_constraintStart_toEndOf="@id/rating"/>
 
-                        <at.blogc.android.views.ExpandableTextView
-                            android:id="@+id/media_description"
-                            style="@style/Widget.Kore.TextView.MediaInfo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:maxLines="@integer/description_max_lines"
-                            android:paddingLeft="@dimen/default_padding"
-                            android:paddingRight="@dimen/default_padding"
-                            android:paddingBottom="0dp"
-                            app:animation_duration="@integer/expandable_textview_animation_duration" />
+                    <TextView
+                        android:id="@+id/max_rating"
+                        style="@style/Widget.Kore.TextView.MediaSmallDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/default_padding"
+                        app:layout_constraintTop_toBottomOf="@id/rating_votes"
+                        app:layout_constraintStart_toStartOf="@id/rating_votes"/>
 
-                        <ImageView
-                            android:id="@+id/show_all"
-                            style="@style/Widget.Kore.Button.Borderless"
-                            android:layout_width="@dimen/small_icon_size"
-                            android:layout_height="@dimen/small_icon_size"
-                            android:layout_gravity="end"
-                            android:layout_marginEnd="@dimen/small_padding"
-                            android:layout_marginBottom="@dimen/small_padding"
-                            android:contentDescription="@string/toggle_expand"
-                            android:src="@drawable/ic_expand_more_white_24dp" />
+                    <TextView
+                        android:id="@+id/media_details_right"
+                        style="@style/Widget.Kore.TextView.MediaSmallDetails"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/default_padding"
+                        android:paddingTop="@dimen/default_padding"
+                        android:paddingBottom="@dimen/default_padding"
+                        app:layout_constraintTop_toTopOf="@id/rating"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/rating_votes"
+                        android:gravity="end" />
+
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/barrier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="bottom"
+                        app:constraint_referenced_ids="rating,max_rating,media_details_right" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/divider_1"
+                        style="@style/Widget.Kore.Divider.InfoSections"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/tiny_padding"
+                        android:layout_marginBottom="@dimen/tiny_padding"
+                        app:layout_constraintTop_toBottomOf="@id/barrier"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <!-- Media info actions buttons -->
+                    <LinearLayout
+                        android:id="@+id/info_actions_bar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_1">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/info_action_pin"
+                            style="@style/Widget.Kore.Button.InfoAction"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/pinned_status"
+                            android:text="@string/pinned_status"
+                            app:icon="@drawable/ic_bookmark_24dp"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/info_action_enable"
+                            style="@style/Widget.Kore.Button.InfoAction"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/enabled_status"
+                            android:text="@string/enabled_status"
+                            app:icon="@drawable/ic_done_white_24dp"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/info_action_watched"
+                            style="@style/Widget.Kore.Button.InfoAction"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/watched_status"
+                            android:text="@string/watched_status"
+                            app:icon="@drawable/ic_done_white_24dp"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/info_action_imdb"
+                            style="@style/Widget.Kore.Button.InfoAction"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/imdb"
+                            android:text="@string/imdb"
+                            app:icon="@drawable/ic_open_in_new_white_24dp"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/info_action_download"
+                            style="@style/Widget.Kore.Button.InfoAction"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/download_action"
+                            android:text="@string/download_action"
+                            app:icon="@drawable/ic_get_app_white_24dp"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/info_action_queue"
+                            style="@style/Widget.Kore.Button.InfoAction"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/queue_action"
+                            android:text="@string/queue_action"
+                            app:icon="@drawable/ic_queue_white_24dp"
+                            android:visibility="gone" />
+
                     </LinearLayout>
-                </RelativeLayout>
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/divider_2"
+                        style="@style/Widget.Kore.Divider.InfoSections"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/tiny_padding"
+                        android:layout_marginBottom="@dimen/tiny_padding"
+                        app:layout_constraintTop_toBottomOf="@id/info_actions_bar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <at.blogc.android.views.ExpandableTextView
+                        android:id="@+id/media_description"
+                        style="@style/Widget.Kore.TextView.MediaInfo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_2"
+                        android:ellipsize="end"
+                        android:maxLines="@integer/description_max_lines"
+                        android:paddingLeft="@dimen/default_padding"
+                        android:paddingRight="@dimen/default_padding"
+                        android:paddingBottom="@dimen/default_padding"
+                        app:animation_duration="@integer/expandable_textview_animation_duration" />
+
+                    <ImageView
+                        android:id="@+id/show_all"
+                        style="@style/Widget.Kore.Button.Borderless"
+                        android:layout_width="@dimen/small_icon_size"
+                        android:layout_height="@dimen/small_icon_size"
+                        android:layout_marginEnd="@dimen/small_padding"
+                        android:layout_marginBottom="@dimen/small_padding"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:contentDescription="@string/toggle_expand"
+                        android:src="@drawable/ic_expand_more_white_24dp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <FrameLayout
                     android:id="@+id/media_additional_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_padding"
                     android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+                    android:layout_marginTop="@dimen/default_padding"
                     android:layout_marginRight="@dimen/info_panel_horiz_margin" />
 
             </LinearLayout>

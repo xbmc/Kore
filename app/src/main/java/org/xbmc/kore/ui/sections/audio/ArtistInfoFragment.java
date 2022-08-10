@@ -94,13 +94,13 @@ public class ArtistInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnAddToPlaylistListener(view -> {
+    protected boolean setupInfoActionsBar() {
+        setOnQueueClickListener(view -> {
             final PlaylistType.Item playListItem = new PlaylistType.Item();
             playListItem.artistid = getDataHolder().getId();
             MediaPlayerUtils.queue(ArtistInfoFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
         });
-        setOnDownloadListener(view -> LoaderManager.getInstance(this).initLoader(LOADER_SONGS, null, ArtistInfoFragment.this));
+        setOnDownloadClickListener(view -> LoaderManager.getInstance(this).initLoader(LOADER_SONGS, null, ArtistInfoFragment.this));
 
         return true;
     }

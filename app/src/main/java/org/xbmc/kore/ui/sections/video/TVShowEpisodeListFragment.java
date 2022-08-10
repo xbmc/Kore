@@ -61,15 +61,17 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowEpisodeListFragment.class);
 
     public interface OnEpisodeSelectedListener {
-        void onEpisodeSelected(int tvshowId, ViewHolder dataHolder);
+        void onEpisodeSelected(int tvshowId, ViewHolder viewHolder);
     }
 
     public static final String TVSHOWID = "tvshow_id";
     public static final String TVSHOWSEASON = "season";
+    public static final String TVSHOWSEASONPOSTERURL = "season_poster_url";
 
     // Displayed show id
     private int tvshowId = -1;
     private int tvshowSeason = -1;
+    private String tvshowSeasonPosterUrl;
 
     // Activity listener
     private OnEpisodeSelectedListener listenerActivity;
@@ -77,12 +79,13 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     /**
      * Create a new instance of this, initialized to show tvshowId
      */
-    public static TVShowEpisodeListFragment newInstance(int tvshowId, int season) {
+    public static TVShowEpisodeListFragment newInstance(int tvshowId, int season, String seasonPosterUrl) {
         TVShowEpisodeListFragment fragment = new TVShowEpisodeListFragment();
 
         Bundle args = new Bundle();
         args.putInt(TVSHOWID, tvshowId);
         args.putInt(TVSHOWSEASON, season);
+        args.putString(TVSHOWSEASONPOSTERURL, seasonPosterUrl);
         fragment.setArguments(args);
         return fragment;
     }
@@ -103,6 +106,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         Bundle args = getArguments();
         tvshowId = (args == null) ? -1 : args.getInt(TVSHOWID, -1);
         tvshowSeason = (args == null) ? -1 : args.getInt(TVSHOWSEASON, -1);
+        tvshowSeasonPosterUrl = (args == null) ? null : args.getString(TVSHOWSEASONPOSTERURL, null);
         if ((tvshowId == -1) || (tvshowSeason == -1)) {
             // There's nothing to show
             return null;
@@ -242,7 +246,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
                                       .inflate(R.layout.item_tvshow_episode, parent, false);
             return new ViewHolder(view, requireContext(), statusWatchedColor,
                                   contextlistItemMenuClickListener, hostManager,
-                                  artWidth, artHeight);
+                                  artWidth, artHeight, tvshowSeasonPosterUrl);
         }
 
         protected int getSectionColumnIdx() { return EpisodesListQuery.TITLE; }
@@ -263,19 +267,21 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         int artHeight;
         Context context;
         int statusWatchedColor;
+        String tvshowSeasonPosterUrl;
 
         AbstractFragment.DataHolder dataHolder = new AbstractFragment.DataHolder(0);
 
         ViewHolder(View itemView, Context context, int statusWatchedColor,
                    View.OnClickListener contextlistItemMenuClickListener,
                    HostManager hostManager,
-                   int artWidth, int artHeight) {
+                   int artWidth, int artHeight, String tvshowSeasonPosterUrl) {
             super(itemView);
             this.context = context;
             this.statusWatchedColor = statusWatchedColor;
             this.hostManager = hostManager;
             this.artWidth = artWidth;
             this.artHeight = artHeight;
+            this.tvshowSeasonPosterUrl = tvshowSeasonPosterUrl;
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
             durationView = itemView.findViewById(R.id.duration);
@@ -290,6 +296,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
             // Save the episode id
             dataHolder.setId(cursor.getInt(EpisodesListQuery.EPISODEID));
             dataHolder.setTitle(cursor.getString(EpisodesListQuery.TITLE));
+            dataHolder.setPosterUrl(tvshowSeasonPosterUrl);
 
             String title = cursor.getString(EpisodesListQuery.TITLE);
             String seasonEpisode = String.format(context.getString(R.string.episode_number),

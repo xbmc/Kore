@@ -344,7 +344,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         }
 
         protected int getSectionColumnIdx() {
-            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(requireContext())
                     .getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
             if (sortOrder == Settings.SORT_BY_YEAR) {
                 return MovieListQuery.YEAR;
@@ -354,7 +354,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         }
 
         protected int getSectionType() {
-            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(requireContext())
                     .getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
             if (sortOrder == Settings.SORT_BY_YEAR) {
                 return RecyclerViewCursorAdapter.SECTION_TYPE_YEAR_INTEGER;
@@ -435,16 +435,12 @@ public class MovieListFragment extends AbstractCursorListFragment {
                                                  dataHolder.getTitle(),
                                                  artView, artWidth, artHeight);
 
-            if (showWatchedStatus) {
+            if (showWatchedStatus && (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0)) {
                 checkmarkView.setVisibility(View.VISIBLE);
-                if (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0) {
-                    checkmarkView.setColorFilter(statusWatchedColor);
-                } else {
-                    checkmarkView.clearColorFilter();
-//                    checkmarkView.setColorFilter(statusUnwatchedColor, PorterDuff.Mode.SRC_IN);
-                }
+                checkmarkView.setColorFilter(statusWatchedColor);
             }
             else {
+                checkmarkView.clearColorFilter();
                 checkmarkView.setVisibility(View.GONE);
             }
 

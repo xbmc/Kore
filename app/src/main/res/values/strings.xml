@@ -309,10 +309,19 @@
     <string name="item_added_to_playlist">Added to playlist</string>
     <string name="item_sent_to_kodi">Sent to Kodi</string>
     <string name="no_suitable_playlist">No suitable playlist found to add media type.</string>
-
-    <string name="imdb">IMDb</string>
     <string name="seen">Seen</string>
     <string name="download">Download</string>
+
+    <!-- Buttons on Info fragment -->
+    <string name="imdb" translatable="false">IMDb</string>
+    <string name="download_action">Download</string>
+    <string name="watched_status">Seen</string>
+    <string name="unwatched_status">Unseen</string>
+    <string name="pinned_status">Pinned</string>
+    <string name="unpinned_status">Unpinned</string>
+    <string name="enabled_status">Enabled</string>
+    <string name="disabled_status">Disabled</string>
+    <string name="queue_action">Queue</string>
 
     <string name="confirm_movie_download">Are you sure you want to download this movie?\n
     	The movie will be downloaded in the background, but it can take a while to finish.</string>
@@ -359,7 +368,6 @@
     <string name="enable_disable">Enable/Disable Addon</string>
     <string name="addon_enabled">Addon enabled</string>
     <string name="addon_disabled">Addon disabled</string>
-    <string name="pin_unpin">Pin/Unpin Addon</string>
     <string name="addon_pinned">Addon pinned</string>
     <string name="addon_unpinned">Addon unpinned</string>
 

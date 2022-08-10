@@ -82,7 +82,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
+    protected boolean setupInfoActionsBar() {
         boolean browsable = getDataHolder().getBundle().getBoolean(BUNDLE_KEY_BROWSABLE, true);
         if (browsable) {
             setupPinButton();
@@ -118,7 +118,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     private void setupEnabledButton() {
-        setOnSeenListener(v -> {
+        setOnEnableClickListener(v -> {
             final boolean isEnabled = v.getTag() != null && (Boolean) v.getTag();
 
             Addons.SetAddonEnabled action = new Addons.SetAddonEnabled(addonId, !isEnabled);
@@ -128,7 +128,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
                     if (!isAdded()) return;
                     int messageResId = (!isEnabled) ? R.string.addon_enabled : R.string.addon_disabled;
                     Toast.makeText(requireContext(), messageResId, Toast.LENGTH_SHORT).show();
-                    setSeenButtonState(!isEnabled);
+                    setEnableButtonState(!isEnabled);
                     setFabButtonState(!isEnabled);
                 }
 
@@ -153,7 +153,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
             @Override
             public void onSuccess(AddonType.Details result) {
                 if (!isAdded()) return;
-                setSeenButtonState(result.enabled);
+                setEnableButtonState(result.enabled);
                 setFabButtonState(result.enabled);
             }
 
@@ -171,14 +171,13 @@ public class AddonInfoFragment extends AbstractInfoFragment {
         final int hostId = HostManager.getInstance(requireContext()).getHostInfo().getId();
 
         setOnPinClickedListener(view -> {
-            final boolean isBookmarked = view.getTag() == null || !(Boolean) view.getTag();
-
+            final boolean isBookmarked = view.getTag() != null && (Boolean) view.getTag();
             String name = getDataHolder().getTitle();
             String path = addonId;
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
             Set<String> bookmarks = new HashSet<>(prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.emptySet()));
-            if (isBookmarked)
+            if (!isBookmarked)
                 bookmarks.add(path);
             else
                 bookmarks.remove(path);
@@ -186,7 +185,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
                  .putStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), bookmarks)
                  .putString(Settings.getNameBookmarkedAddonsPrefKey(hostId) + path, name)
                  .apply();
-            Toast.makeText(getActivity(), isBookmarked ? R.string.addon_pinned : R.string.addon_unpinned, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), !isBookmarked ? R.string.addon_pinned : R.string.addon_unpinned, Toast.LENGTH_SHORT).show();
             setPinButtonState(!isBookmarked);
         });
 

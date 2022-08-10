@@ -60,6 +60,7 @@
         android:layout_height="@dimen/default_icon_size"
         android:contentDescription="@string/addon_disabled"
         android:padding="@dimen/default_icon_padding"
+        android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
