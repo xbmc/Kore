@@ -540,7 +540,8 @@ public class MediaFileListFragment extends AbstractListFragment {
 
     @Override
     public void onRefresh() {
-
+        // Not supported for now
+        binding.swipeRefreshLayout.setRefreshing(false);
     }
 
     private class MediaFileListAdapter extends RecyclerView.Adapter<ViewHolder> {
