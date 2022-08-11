@@ -14,8 +14,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.xbmc.kore.R;
 
@@ -45,7 +46,7 @@ public class AboutDialogFragment
         about.setText(Html.fromHtml(getString(R.string.about_desc)));
         about.setMovementMethod(LinkMovementMethod.getInstance());
 
-        return new AlertDialog.Builder(activity)
+        return new MaterialAlertDialogBuilder(activity)
                 .setView(mainView)
                 .setPositiveButton(android.R.string.ok, null)
                 .create();

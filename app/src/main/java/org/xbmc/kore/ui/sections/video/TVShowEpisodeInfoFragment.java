@@ -26,11 +26,11 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
@@ -229,7 +229,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
         // Check if the directory exists and whether to overwrite it
         File file = new File(fileDownloadHelper.getAbsoluteFilePath());
         if (file.exists()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
             builder.setTitle(R.string.download)
                    .setMessage(R.string.download_file_exists)
                    .setPositiveButton(R.string.overwrite,
@@ -244,7 +244,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                    .show();
         } else {
             // Confirm that the user really wants to download the file
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
             builder.setTitle(R.string.download)
                    .setMessage(R.string.confirm_episode_download)
                    .setPositiveButton(android.R.string.ok,

@@ -15,7 +15,6 @@
  */
 package org.xbmc.kore.utils;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +35,6 @@ import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -44,12 +42,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.TextViewCompat;
 import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.elevation.SurfaceColors;
 
 import org.xbmc.kore.R;
@@ -59,9 +56,7 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.jsonrpc.type.VideoType;
-import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.ui.sections.video.AllCastActivity;
-import org.xbmc.kore.ui.widgets.HighlightButton;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -76,7 +71,6 @@ import java.util.regex.Pattern;
 public class UIUtils {
 
     public static final float IMAGE_RESIZE_FACTOR = 1.0f;
-    public static final float DEFAULT_SURFACE_ALFA = 1.0f;
 
     public static final int buttonRepeatInterval = 80; // ms
     public static final int buttonVibrationDuration = 50; //ms
@@ -480,7 +474,7 @@ public class UIUtils {
         }
 
         if (someFilesExist) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
             builder.setTitle(R.string.download)
                    .setMessage(songInfoList.size() > 1 ? R.string.download_files_exists : R.string.download_file_exists)
                    .setPositiveButton(R.string.overwrite,
@@ -495,9 +489,9 @@ public class UIUtils {
                                       (dialog, which) -> { })
                    .show();
         } else {
-            if ( songInfoList.size() > 12 ) { // No scientific reason this should be 12. I just happen to like 12.
+            if (songInfoList.size() > 12) { // No scientific reason this should be 12. I just happen to like 12.
                 String message = context.getResources().getString(R.string.confirm_songs_download);
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
                 builder.setTitle(R.string.download)
                        .setMessage(String.format(message, songInfoList.size()))
                        .setPositiveButton(android.R.string.ok,

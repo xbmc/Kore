@@ -35,9 +35,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentHostListBinding;
@@ -342,7 +343,7 @@ public class HostListFragment extends Fragment {
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return new AlertDialog.Builder(requireActivity())
+            return new MaterialAlertDialogBuilder(requireActivity())
                     .setTitle(R.string.delete_xbmc)
                     .setMessage(R.string.delete_xbmc_confirm)
                     .setPositiveButton(android.R.string.ok, (dialog, id) -> mListener.onDialogPositiveClick())

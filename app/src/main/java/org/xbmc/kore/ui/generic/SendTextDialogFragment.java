@@ -27,8 +27,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.xbmc.kore.R;
 
@@ -100,7 +101,7 @@ public class SendTextDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
 
         assert getArguments() != null;
         final String title = getArguments().getString(TITLE_KEY, getString(R.string.send_text));
