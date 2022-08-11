@@ -41,9 +41,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Files;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
@@ -60,9 +60,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * Presents a list of files of different types (Video/Music)
@@ -75,10 +73,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     public static final String PATH_CONTENTS = "pathContents";
     public static final String ROOT_PATH_CONTENTS = "rootPathContents";
     public static final String ROOT_VISITED = "rootVisited";
-    public static final String ROOT_PATH = "rootPath";
     public static final String ROOT_PATH_LOCATION = "rootPath";
-    public static final String DELAY_LOAD = "delayLoad";
-    private static final String ADDON_SOURCE = "addons:";
 
     private String rootPathLocation = null;
 
@@ -94,10 +89,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     ListType.Sort sortMethod = null;
     String parentDirectory = null;
     boolean browseRootAlready = false;
-    LocalFileLocation loadOnVisible = null;
 
     ArrayList<LocalFileLocation> rootFileLocation = new ArrayList<>();
-    Queue<LocalFileLocation> mediaQueueFileLocation = new LinkedList<>();
 
     // Permission check callback
     private final ActivityResultLauncher<String> filesPermissionLauncher =
@@ -140,7 +133,12 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
     @Override
     public void onRefresh() {
-        browseDirectory(currentDirectory);
+        if (currentDirectory == null) {
+            browseSources();
+        } else {
+            browseDirectory(currentDirectory);
+        }
+        binding.swipeRefreshLayout.setRefreshing(false);
     }
 
     private void checkReadStoragePermission() {
@@ -156,7 +154,6 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         Bundle args = getArguments();
-        LocalFileLocation rootPath = null;
 
         checkReadStoragePermission();
 
@@ -171,7 +168,6 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         }
 
         if (args != null) {
-            rootPath = args.getParcelable(ROOT_PATH);
             this.rootPathLocation = args.getString(ROOT_PATH_LOCATION);
             mediaType = args.getString(MEDIA_TYPE, Files.Media.FILES);
             sortMethod = args.getParcelable(SORT_METHOD);
@@ -192,45 +188,22 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
             rootFileLocation = savedInstanceState.getParcelableArrayList(ROOT_PATH_CONTENTS);
             browseRootAlready = savedInstanceState.getBoolean(ROOT_VISITED);
             ((MediaPictureListAdapter) getAdapter()).setFilelistItems(list);
-        }
-        else if (rootPath != null) {
-            loadOnVisible = rootPath;
-            // setUserVisibleHint may have already fired
-            setUserVisibleHint(getUserVisibleHint() || !args.getBoolean(DELAY_LOAD, false));
-        }
-        else {
+        } else {
             browseSources();
         }
         return root;
     }
 
-    @Override
-    public void setUserVisibleHint (boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && loadOnVisible != null) {
-            LocalFileLocation rootPath = loadOnVisible;
-            loadOnVisible = null;
-            browseRootAlready = true;
-            browseDirectory(rootPath);
-        }
-    }
-
     void handleFileSelect(LocalFileLocation f) {
         // if selection is a directory, browse the the level below
         if (f.isDirectory) {
-            // a directory - store the path of this directory so that we can reverse travel if
-            // we want to
-            if (f.isRootDir()) {
-                if (browseRootAlready)
-                    browseDirectory(f);
-                else {
-                    browseSources();
-                }
+            if (f.isRootDir() && !browseRootAlready) {
+                browseSources();
             } else {
                 browseDirectory(f);
             }
         } else {
-            playMediaFile(f);
+            playMediaFile(f, null);
         }
     }
 
@@ -349,7 +322,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
      * Starts playing the given media file
      * @param localFileLocation LocalFileLocation to start playing
      */
-    private void playMediaFile(final LocalFileLocation localFileLocation) {
+    private void playMediaFile(final LocalFileLocation localFileLocation, ArrayList<LocalFileLocation> queuedFiles) {
         http_app.addLocalFilePath(localFileLocation);
         String url = http_app.getLinkToFile();
 
@@ -359,8 +332,10 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                while (!mediaQueueFileLocation.isEmpty()) {
-                    queueMediaFile(mediaQueueFileLocation.poll());
+                if (queuedFiles == null) return;
+                // Queue the rest
+                for (LocalFileLocation fl : queuedFiles) {
+                    queueMediaFile(fl);
                 }
             }
 
@@ -513,20 +488,17 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
                                 queueMediaFile(loc);
                                 return true;
                             } else if (itemId == R.id.action_play_item) {
-                                playMediaFile(loc);
+                                playMediaFile(loc, null);
                                 return true;
                             } else if (itemId == R.id.action_play_from_this_item) {
-                                mediaQueueFileLocation.clear();
+                                ArrayList<LocalFileLocation> queuedFiles = new ArrayList<>(fileLocationItems.size());
                                 LocalFileLocation fl;
-                                // start playing the selected one, then queue the rest
-                                mediaQueueFileLocation.add(loc);
                                 for (int i = position + 1; i < fileLocationItems.size(); i++) {
                                     fl = fileLocationItems.get(i);
-                                    if (!fl.isDirectory) {
-                                        mediaQueueFileLocation.add(fl);
-                                    }
+                                    if (!fl.isDirectory) queuedFiles.add(fl);
                                 }
-                                playMediaFile(loc);
+                                // start playing the selected one, then queue the rest
+                                playMediaFile(loc, queuedFiles);
                                 return true;
                             }
                             return false;
