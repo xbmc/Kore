@@ -380,7 +380,7 @@
     <string name="not_implemented">Nun s\'implementó</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Espander/Recoyer</string>
-    <string name="play_locally">Reproducir llocalmente</string>
+    <string name="stream_action">Reproducir llocalmente</string>
     <string name="disable_local_playback_support">Desactivar la reproducción llocal</string>
     <string name="disable_local_playback_support_summary">Desactiva\'l sofitu pa reproducir multimedia nel preséu qu\'executa Kore.</string>
     <string name="language">Llingua</string>

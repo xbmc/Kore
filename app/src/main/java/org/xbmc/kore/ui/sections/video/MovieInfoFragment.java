@@ -48,7 +48,6 @@ import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
-import org.xbmc.kore.utils.Utils;
 
 import java.io.File;
 
@@ -148,7 +147,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
             MediaPlayerUtils.queue(MovieInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
         });
 
-        setOnPlayLocalClickListener(v -> playItemLocally(movieDownloadInfo.getMediaUrl(getHostInfo()), "video/*"));
+        setOnStreamClickListener(v -> streamItemFromKodi(movieDownloadInfo.getMediaUrl(getHostInfo()), "video/*"));
         return true;
     }
 

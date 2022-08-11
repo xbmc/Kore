@@ -368,7 +368,7 @@
     <string name="not_implemented">Не реалізовано</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Розгорнути/Згорнути</string>
-    <string name="play_locally">Відтворити локально</string>
+    <string name="stream_action">Відтворити локально</string>
     <string name="disable_local_playback_support">Вимкнути підтримку локального відтворення</string>
     <string name="disable_local_playback_support_summary">Відключає відтворення мультимедіа на пристрої під час роботи Kore.</string>
     <string name="language">Мова</string>
