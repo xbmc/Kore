@@ -428,15 +428,6 @@ public class UIUtils {
     }
 
     /**
-     * Use this to manually start the swiperefreshlayout refresh animation.
-     * Fixes issue with refresh animation not showing when using appcompat library (from version 20?)
-     * See https://code.google.com/p/android/issues/detail?id=77712
-     */
-    public static void showRefreshAnimation(@NonNull final SwipeRefreshLayout layout) {
-        layout.post(() -> layout.setRefreshing(true));
-    }
-
-    /**
      * Returns true if {@param view} is visible within {@param container}'s bounds.
      */
     public static boolean isViewInBounds(@NonNull View container, @NonNull View view) {

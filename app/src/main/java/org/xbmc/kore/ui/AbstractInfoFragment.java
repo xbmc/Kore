@@ -282,7 +282,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
                 syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
             if (!silentRefresh)
-                UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
+                binding.swipeRefreshLayout.setRefreshing(true);
             refreshItem.setSwipeRefreshLayout(binding.swipeRefreshLayout);
             refreshItem.register();
         }

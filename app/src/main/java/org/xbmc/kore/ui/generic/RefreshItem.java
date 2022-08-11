@@ -105,7 +105,7 @@ public class RefreshItem {
             register();
 
             if ((swipeRefreshLayout != null) && (!silentRefresh)) {
-                UIUtils.showRefreshAnimation(swipeRefreshLayout);
+                swipeRefreshLayout.setRefreshing(true);
             }
             // Start the syncing process
             Intent syncIntent = new Intent(context, LibrarySyncService.class);
