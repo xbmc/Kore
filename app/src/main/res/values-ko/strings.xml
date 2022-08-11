@@ -370,7 +370,7 @@
     <string name="not_implemented">사용할 수 없음</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">펼치기/접기</string>
-    <string name="play_locally">로컬 재생</string>
+    <string name="stream_action">로컬 재생</string>
     <string name="disable_local_playback_support">로컬 재생 사용 안 함</string>
     <string name="disable_local_playback_support_summary">Kore를 실행 중인 장치에 로컬 재생 지원을 사용하지 않습니다.</string>
     <string name="language">언어</string>

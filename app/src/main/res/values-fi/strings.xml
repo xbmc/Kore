@@ -394,7 +394,7 @@
     <string name="not_implemented">Ei toteutettu</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Laajenna/supista</string>
-    <string name="play_locally">Toista paikallisesti</string>
+    <string name="stream_action">Toista paikallisesti</string>
     <string name="disable_local_playback_support">Älä tue paikallista toistoa</string>
     <string name="disable_local_playback_support_summary">Poistaa paikallisten toistomahdollisuuden käytöstä laitteessa, jossa Korea käytetään.</string>
     <string name="language">Kieli</string>

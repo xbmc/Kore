@@ -370,7 +370,7 @@
     <string name="not_implemented">Non installé</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Ouvrir/Fermer</string>
-    <string name="play_locally">Lecture locale</string>
+    <string name="stream_action">Lecture locale</string>
     <string name="disable_local_playback_support">Support de la lecture locale</string>
     <string name="disable_local_playback_support_summary">Désactive la prise en charge de la lecture locale de média sur l\'appareil exécutant Kore.</string>
     <string name="language">Langue</string>

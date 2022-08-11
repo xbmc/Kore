@@ -282,7 +282,7 @@
     <string name="disable_local_playback_support_summary">Адключае лакальнае прайграванне медыяфайлаў на прыладзе з запушчанай праграмай Kore.</string>
     <string name="language">Мова</string>
     <string name="disable_local_playback_support">Адключыць лакальнае прайграванне</string>
-    <string name="play_locally">Прайграць лакальна</string>
+    <string name="stream_action">Прайграць лакальна</string>
     <string name="toggle_expand">Разгарнуць/згарнуць</string>
     <string name="zeroprogress">0:00</string>
     <string name="not_implemented">Не рэалізавана</string>

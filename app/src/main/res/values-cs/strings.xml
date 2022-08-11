@@ -317,7 +317,7 @@
     <string name="by_artist_and_year">Podle umělce a roku</string>
     <string name="no_songs_found_refresh">Žádné skladby nenalezeny\n\nObnovit tahem dolů</string>
     <string name="zeroprogress">0:00</string>
-    <string name="play_locally">Přehát místně</string>
+    <string name="stream_action">Přehát místně</string>
     <string name="disable_local_playback_support">Zakázat podporu pro místní přehrávání</string>
     <string name="disable_local_playback_support_summary">Zakázat podporu pro přehrávání médií na zařízení, kde běží Kore.</string>
     <string name="pvr_epg">Program</string>

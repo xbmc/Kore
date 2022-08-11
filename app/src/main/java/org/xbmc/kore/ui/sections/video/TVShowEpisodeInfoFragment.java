@@ -121,7 +121,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
             }, callbackHandler);
         });
 
-        setOnPlayLocalClickListener(v -> playItemLocally(fileDownloadHelper.getMediaUrl(getHostInfo()), "video/*"));
+        setOnStreamClickListener(v -> streamItemFromKodi(fileDownloadHelper.getMediaUrl(getHostInfo()), "video/*"));
 
         return true;
     }

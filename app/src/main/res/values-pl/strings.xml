@@ -375,7 +375,7 @@
     <string name="not_implemented">Nie zaimplementowano</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Rozwiń/Zwiń</string>
-    <string name="play_locally">Odtwarzaj lokalnie</string>
+    <string name="stream_action">Odtwarzaj lokalnie</string>
     <string name="disable_local_playback_support">Wyłącz odtwarzanie na urządzeniu</string>
     <string name="disable_local_playback_support_summary">Wyłącza odtwarzanie multimediów na urządzeniu przy uruchomieniu Kore.</string>
     <string name="language">Język</string>

@@ -314,15 +314,17 @@
 
     <!-- Buttons on Info fragment -->
     <string name="imdb" translatable="false">IMDb</string>
-    <string name="download_action">Download</string>
     <string name="watched_status">Seen</string>
     <string name="unwatched_status">Unseen</string>
     <string name="pinned_status">Pinned</string>
     <string name="unpinned_status">Unpinned</string>
     <string name="enabled_status">Enabled</string>
     <string name="disabled_status">Disabled</string>
+    <string name="download_action">Download</string>
     <string name="queue_action">Queue</string>
+    <string name="stream_action">Stream</string>
 
+    <!-- Download dialog messages -->
     <string name="confirm_movie_download">Are you sure you want to download this movie?\n
     	The movie will be downloaded in the background, but it can take a while to finish.</string>
     <string name="confirm_episode_download">Are you sure you want to download this episode?\n
@@ -468,7 +470,6 @@
     <string name="zeroprogress">0:00</string>
 
     <string name="toggle_expand">Expand/Collapse</string>
-    <string name="play_locally">Local Play</string>
 
     <string name="language">Language</string>
 

@@ -404,7 +404,7 @@
     <string name="not_implemented">Не реализовано</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Развернуть/свернуть</string>
-    <string name="play_locally">Воспроизвести локально</string>
+    <string name="stream_action">Воспроизвести локально</string>
     <string name="disable_local_playback_support">Отключить локальное воспроизведение</string>
     <string name="disable_local_playback_support_summary">Отключает локальное воспроизведения медиаданных на устройстве с работающим Kore.</string>
     <string name="language">Язык</string>

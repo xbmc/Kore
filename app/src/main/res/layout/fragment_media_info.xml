@@ -194,16 +194,16 @@
                             android:visibility="gone" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/info_action_play_local"
+                            android:id="@+id/info_action_stream"
                             style="@style/Widget.Kore.Button.InfoAction"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:contentDescription="@string/play_locally"
-                            android:text="@string/play_locally"
+                            android:contentDescription="@string/stream_action"
+                            android:text="@string/stream_action"
                             android:visibility="gone"
                             android:checkable="false"
-                            app:icon="@drawable/ic_devices_white_24dp" />
+                            app:icon="@drawable/ic_round_cast_connected_24" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/info_action_queue"

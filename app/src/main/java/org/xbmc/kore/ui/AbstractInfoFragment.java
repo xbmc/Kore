@@ -292,7 +292,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         binding.fabPlay.setEnabled(enabled);
     }
 
-    protected void playItemLocally(String url, String type) {
+    protected void streamItemFromKodi(String url, String type) {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.setDataAndType(uri, type);
@@ -499,12 +499,12 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     }
 
     /**
-     * Listener to set in the Play Locally button. Setting this will add the button to the UI
+     * Listener to set in the Stream button. Setting this will add the button to the UI
      * @param listener Click listener to call
      */
-    protected void setOnPlayLocalClickListener(View.OnClickListener listener) {
-        binding.infoActionPlayLocal.setVisibility(View.VISIBLE);
-        binding.infoActionPlayLocal.setOnClickListener(listener);
+    protected void setOnStreamClickListener(View.OnClickListener listener) {
+        binding.infoActionStream.setVisibility(View.VISIBLE);
+        binding.infoActionStream.setOnClickListener(listener);
     }
 
     /**

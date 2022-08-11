@@ -252,7 +252,7 @@
     <string name="vibrate_on_remote">Vibriranje ob dotiku</string>
     <string name="nav_drawer_items">Bližnjice  stranskega menija</string>
     <string name="about">O</string>
-    <string name="play_locally">Predvajaj lokalno</string>
+    <string name="stream_action">Predvajaj lokalno</string>
     <string name="toggle_expand">Razširi / Skrij</string>
     <string name="zeroprogress">0:00</string>
     <string name="not_implemented">Ni implementirano</string>

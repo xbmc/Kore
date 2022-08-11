@@ -349,7 +349,7 @@
 \n Llisqueu avall per actualitzar</string>
     <string name="not_implemented">No implementat</string>
     <string name="toggle_expand">Desplega/Plega</string>
-    <string name="play_locally">Reprodueix localment</string>
+    <string name="stream_action">Reprodueix localment</string>
     <string name="disable_local_playback_support">Desactiva la reproducció local</string>
     <string name="disable_local_playback_support_summary">Desactiva la compatibilitat per reproduir contingut multimèdia localment al dispositiu que executa Kore.</string>
     <string name="notification_seek_jump_step">Utilitza salts mentre es cerqui una notificació</string>
