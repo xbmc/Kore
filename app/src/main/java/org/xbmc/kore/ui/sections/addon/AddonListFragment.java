@@ -169,7 +169,7 @@ public class AddonListFragment extends AbstractListFragment {
     private void callGetAddonsAndSetup() {
         final AddonsAdapter adapter = (AddonsAdapter) getAdapter();
 
-        UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
+        binding.swipeRefreshLayout.setRefreshing(true);
 
         // Get the addon list, this is done asyhnchronously
         String[] properties = new String[] {
