@@ -25,6 +25,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.text.Spannable;
@@ -35,6 +36,7 @@ import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -44,7 +46,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.widget.TextViewCompat;
 import androidx.preference.PreferenceManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.elevation.SurfaceColors;
@@ -269,31 +270,28 @@ public class UIUtils {
         // any margins that are set, so we scale the size by a factor. This is fixed when placed on the View
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((WindowManager)activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
-        int imageWidth = (int)(displayMetrics.widthPixels / numColumns * 0.8);
-        int imageHeight = (int)(imageWidth * 1.5);
+        int imageMarginPx = resources.getDimensionPixelSize(R.dimen.small_padding);
+        int imageWidth = (displayMetrics.widthPixels - (2 + numColumns - 1) * imageMarginPx) / numColumns;
+        int imageHeight = (int)(imageWidth * AllCastActivity.ART_HEIGHT_RATIO);
 
-        int backgroundInfoColor = -1;
         for (int i = 0; i < Math.min(castList.size(), maxCastPictures); i++) {
             VideoType.Cast actor = castList.get(i);
 
             ItemCastBinding binding = ItemCastBinding.inflate(LayoutInflater.from(activity), castListView, false);
             View castView = binding.getRoot();
 
-            castView.getLayoutParams().width = imageWidth;
-            castView.getLayoutParams().height = imageHeight;
+            castView.getLayoutParams().width = (int)(imageWidth * 0.9f);
+            castView.getLayoutParams().height = (int)(imageHeight * 0.9f);
             castView.setTag(actor.name);
 
             loadImageWithCharacterAvatar(activity, hostManager,
                                          actor.thumbnail, actor.name,
                                          binding.picture, imageWidth, imageHeight);
-            if (backgroundInfoColor == -1)
-                backgroundInfoColor = getTranslucidViewColor(binding.name, AllCastActivity.CAST_NAME_ALPHA);
 
             if ((i == maxCastPictures - 1) && (castList.size() > i + 1)) {
                 binding.name.setVisibility(View.GONE);
                 binding.role.setVisibility(View.GONE);
                 binding.remainingCastCount.setVisibility(View.VISIBLE);
-                binding.remainingCastCount.setBackgroundColor(changeColorAlpha(backgroundInfoColor, 0.8f * AllCastActivity.CAST_NAME_ALPHA));
                 binding.remainingCastCount.setText(String.format(activity.getString(R.string.remaining_cast_count), castList.size() - maxCastPictures + 1));
 
                 castView.setOnClickListener(v -> {
@@ -301,8 +299,6 @@ public class UIUtils {
                     activity.overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 });
             } else {
-                binding.name.setBackgroundColor(backgroundInfoColor);
-                binding.role.setBackgroundColor(backgroundInfoColor);
                 binding.name.setText(actor.name);
                 binding.role.setText(actor.role);
                 castView.setOnClickListener(castListClickListener);
@@ -713,7 +709,12 @@ public class UIUtils {
         }
     }
 
-    private static String toTitleCase(String text) {
+    /**
+     * Converts the given string to Title Case
+     * @param text String to convert
+     * @return String in Title Case
+     */
+    public static String toTitleCase(String text) {
         StringBuilder sb = new StringBuilder();
         for (String word : text.toLowerCase(Locale.getDefault()).split("\\b")) {
             if (word.isEmpty()) continue;
@@ -721,5 +722,47 @@ public class UIUtils {
             sb.append(word, 1, word.length());
         }
         return sb.toString();
+    }
+
+    /**
+     * Creates a ViewTreeObserver that fades the imageview and rounds the corners of the layout
+     * @param context Context
+     * @param scrollView Scrollview to get the scroll from
+     * @param artView ImageView to fade
+     * @param infoPanelView Panel to round corners
+     * @return ViewTreeObserver.OnScrollChangedListener
+     */
+    public static ViewTreeObserver.OnScrollChangedListener createInfoPanelScrollChangedListener(
+            Context context,
+            View scrollView,
+            ImageView artView,
+            View infoPanelView) {
+        float pixelsToFade  = 0.7f * context.getResources().getDimension(R.dimen.info_art_height);
+        float finalCornerRadius = context.getResources().getDimension(R.dimen.corner_radius_image_poster);
+
+        return new ViewTreeObserver.OnScrollChangedListener() {
+            private float lastAppliedAlpha = -1, lastAppliedRadius = -1;
+
+            @Override
+            public void onScrollChanged() {
+                if (scrollView == null) return;
+                float scrollY = scrollView.getScrollY();
+
+                float newAlpha = 1 - (scrollY / pixelsToFade);
+                if (lastAppliedAlpha != 0) {
+                    lastAppliedAlpha = newAlpha;
+                    artView.setAlpha(Utils.clamp(newAlpha, 0, 1));
+                    artView.setTranslationY(-0.5f * scrollY);
+                }
+
+                float newRadius = Utils.clamp(0.5f * scrollY, 0, finalCornerRadius);
+                if (lastAppliedRadius <= finalCornerRadius) {
+                    lastAppliedRadius = newRadius;
+                    GradientDrawable panelBackground = (GradientDrawable) infoPanelView.getBackground();
+                    panelBackground.setCornerRadii(new float[]{newRadius, newRadius, newRadius, newRadius,
+                                                               finalCornerRadius, finalCornerRadius, finalCornerRadius, finalCornerRadius});
+                }
+            }
+        };
     }
 }

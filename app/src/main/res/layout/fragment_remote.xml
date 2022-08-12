@@ -39,23 +39,24 @@
             android:layout_marginRight="@dimen/info_panel_horiz_margin"
             android:layout_marginBottom="@dimen/remote_margin_bottom"
             android:layout_marginTop="@dimen/remote_viewpager_height"
-            style="@style/Widget.Kore.InfoPanel">
+            style="@style/Widget.Kore.InfoPanel.Remote">
 
-            <ImageView
-                android:id="@+id/art"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/poster"
                 android:layout_width="@dimen/remote_poster_width"
                 android:layout_height="@dimen/remote_poster_height"
                 android:layout_alignParentStart="true"
                 android:contentDescription="@string/poster"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.PosterRemote" />
 
             <TextView
                 android:id="@+id/title"
                 style="@style/Widget.Kore.TextView.MediaTitle.Remote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/art"
-                android:layout_toEndOf="@id/art"/>
+                android:layout_alignTop="@id/poster"
+                android:layout_toEndOf="@id/poster"/>
 
             <TextView
                 android:id="@+id/details"
@@ -63,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
-                android:layout_toEndOf="@id/art"
+                android:layout_toEndOf="@id/poster"
                 android:layout_above="@id/media_playback_bar"/>
 
             <!-- Media playback control buttons -->
@@ -71,8 +72,8 @@
                 android:id="@+id/media_playback_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/buttonbar_height"
-                android:layout_alignBottom="@id/art"
-                android:layout_toEndOf="@id/art"
+                android:layout_alignBottom="@id/poster"
+                android:layout_toEndOf="@id/poster"
                 android:orientation="horizontal"
                 app:view_mode="single_movement_buttons" />
 
@@ -81,8 +82,8 @@
                 android:id="@+id/progress_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/art"
-                android:layout_alignStart="@id/art"
+                android:layout_below="@id/poster"
+                android:layout_alignStart="@id/poster"
                 android:paddingTop="@dimen/default_padding"
                 android:paddingRight="@dimen/small_padding"
                 android:paddingLeft="@dimen/small_padding"
@@ -94,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/buttonbar_height"
                 android:layout_below="@id/progress_info"
-                android:layout_alignStart="@id/art"
+                android:layout_alignStart="@id/poster"
                 android:orientation="horizontal" />
         </RelativeLayout>
     </FrameLayout>

@@ -75,8 +75,7 @@ import java.util.Locale;
 abstract public class AbstractInfoFragment extends AbstractFragment
         implements SwipeRefreshLayout.OnRefreshListener,
                    SyncUtils.OnServiceListener,
-                   SharedElementTransition.SharedElement,
-                   ViewTreeObserver.OnScrollChangedListener {
+                   SharedElementTransition.SharedElement {
     private static final String TAG = LogUtils.makeLogTag(AbstractInfoFragment.class);
 
     private FragmentMediaInfoBinding binding;
@@ -86,7 +85,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     private ServiceConnection serviceConnection;
     private RefreshItem refreshItem;
     private boolean expandDescription;
-    private int pixelsToTransparent;
+    private ViewTreeObserver.OnScrollChangedListener onScrollChangedListener;
 
     protected String[] seenButtonLabels;
     protected String[] pinButtonLabels;
@@ -183,8 +182,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         /* Setup dim the fanart when scroll changes */
-        pixelsToTransparent  = requireActivity().getResources().getDimensionPixelSize(R.dimen.info_art_height);
-        binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
+        onScrollChangedListener = UIUtils.createInfoPanelScrollChangedListener(requireContext(), binding.mediaPanel, binding.art, binding.mediaPanelGroup);
+        binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
     }
 
     @Override
@@ -225,7 +224,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
     @Override
     public void onDestroyView() {
-        binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(this);
+        binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(onScrollChangedListener);
         super.onDestroyView();
         binding = null;
     }
@@ -242,14 +241,6 @@ abstract public class AbstractInfoFragment extends AbstractFragment
             onRefresh();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onScrollChanged() {
-        if (binding == null) return;
-        float y = binding.mediaPanel.getScrollY();
-        float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
-        binding.art.setAlpha(newAlpha);
     }
 
     /*
@@ -418,7 +409,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         }
 
         int artHeight = resources.getDimensionPixelOffset(R.dimen.info_art_height);
-        int artWidth = displayMetrics.widthPixels;
+        int artWidth = binding.art.getWidth(); // displayMetrics.widthPixels;
 
         UIUtils.loadImageIntoImageview(hostManager,
                                        TextUtils.isEmpty(dataHolder.getFanArtUrl()) ?

@@ -55,7 +55,7 @@ public class AllCastActivity extends BaseActivity {
     // Extras to be passed to this activity: title and the cast list
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String EXTRA_CAST_LIST = "EXTRA_CAST_LIST";
-    public static final float CAST_NAME_ALPHA = 0.8f;
+    public static final float ART_HEIGHT_RATIO = 1.6f;
 
     // Passed arguments
     private String movie_tvshow_title;
@@ -152,8 +152,7 @@ public class AllCastActivity extends BaseActivity {
 
     public static class CastArrayAdapter extends ArrayAdapter<VideoType.Cast> {
         private final HostManager hostManager;
-        private int artWidth = -1, artHeight = -1,
-                backgroundInfoColor = -1;
+        private int artWidth = -1, artHeight = -1;
 
         public CastArrayAdapter(Context context, ArrayList<VideoType.Cast> castArrayList) {
             super(context, 0, castArrayList);
@@ -177,7 +176,7 @@ public class AllCastActivity extends BaseActivity {
                     int numColumns = resources.getInteger(R.integer.cast_grid_view_columns);
 
                     artWidth = (displayMetrics.widthPixels - (2 + numColumns - 1) * imageMarginPx) / numColumns;
-                    artHeight = (int) (artWidth * 1.5);
+                    artHeight = (int) (artWidth * ART_HEIGHT_RATIO);
                 }
 
                 // Setup View holder pattern
@@ -185,9 +184,6 @@ public class AllCastActivity extends BaseActivity {
                 viewHolder.roleView = convertView.findViewById(R.id.role);
                 viewHolder.nameView = convertView.findViewById(R.id.name);
                 viewHolder.pictureView = convertView.findViewById(R.id.picture);
-
-                if (backgroundInfoColor == -1)
-                    backgroundInfoColor = UIUtils.getTranslucidViewColor(viewHolder.nameView, AllCastActivity.CAST_NAME_ALPHA);
 
                 convertView.setTag(viewHolder);
 
@@ -203,8 +199,6 @@ public class AllCastActivity extends BaseActivity {
             UIUtils.loadImageWithCharacterAvatar(getContext(), hostManager,
                                                  cast.thumbnail, cast.name,
                                                  viewHolder.pictureView, artWidth, artHeight);
-            viewHolder.roleView.setBackgroundColor(backgroundInfoColor);
-            viewHolder.nameView.setBackgroundColor(backgroundInfoColor);
             viewHolder.castName = cast.name;
 
             return convertView;

@@ -31,8 +31,8 @@
     <dimen name="medium_icon_size">32dp</dimen>
     <dimen name="large_icon_size">64dp</dimen>
 
-    <dimen name="card_corner_radius">4dp</dimen>
-    <dimen name="default_card_margin">8dp</dimen>
+    <dimen name="corner_radius_image_list">8dp</dimen>
+    <dimen name="corner_radius_image_poster">12dp</dimen>
 
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_medium">14sp</dimen>

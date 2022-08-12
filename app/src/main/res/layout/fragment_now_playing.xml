@@ -29,7 +29,8 @@
         android:layout_height="@dimen/info_art_height"
         android:layout_alignParentStart="true"
         android:contentDescription="@string/thumbnail"
-        android:scaleType="centerCrop" />
+        android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+        android:layout_marginRight="@dimen/info_panel_horiz_margin"/>
 
     <ScrollView
         android:id="@+id/media_panel"
@@ -47,6 +48,7 @@
             android:layout_marginRight="@dimen/info_panel_horiz_margin">
 
             <RelativeLayout
+                android:id="@+id/media_panel_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/info_title_margin_top"
@@ -69,7 +71,7 @@
                     android:paddingStart="@dimen/info_poster_width_plus_padding"
                     android:paddingEnd="@dimen/default_padding" />
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/poster"
                     android:layout_width="@dimen/info_poster_width"
                     android:layout_height="@dimen/info_poster_height"
@@ -77,7 +79,9 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="@dimen/default_padding"
                     android:contentDescription="@string/poster"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.Poster"
+                    android:elevation="@dimen/kore_elevation_level2"/>
 
                 <!-- Progress bar -->
                 <org.xbmc.kore.ui.widgets.MediaProgressIndicator

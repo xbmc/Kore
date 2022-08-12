@@ -351,9 +351,11 @@ public class RemoteFragment extends Fragment
         binding.mediaActionsBar.setPlaybackState(getActivePlayerResult,
                                                  getPropertiesResult);
 
-        UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                thumbnailUrl, title,
-                binding.art, binding.art.getWidth(), binding.art.getHeight());
+        if (binding.poster != null) {
+            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                                                 thumbnailUrl, title,
+                                                 binding.poster, binding.poster.getWidth(), binding.poster.getHeight());
+        }
 
         // For some smaller screens their height isn't enough to display all controls. Hide the superfluous
         // bottom button bar during playback if that's the case

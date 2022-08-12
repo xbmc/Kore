@@ -50,8 +50,7 @@ import java.util.ArrayList;
  * Now playing view
  */
 public class NowPlayingFragment extends Fragment
-        implements HostConnectionObserver.PlayerEventsObserver,
-                   ViewTreeObserver.OnScrollChangedListener {
+        implements HostConnectionObserver.PlayerEventsObserver {
     private static final String TAG = LogUtils.makeLogTag(NowPlayingFragment.class);
 
     /**
@@ -75,6 +74,8 @@ public class NowPlayingFragment extends Fragment
      * Listener for events on this fragment
      */
     private NowPlayingListener nowPlayingListener;
+
+    private ViewTreeObserver.OnScrollChangedListener onScrollChangedListener;
 
     private FragmentNowPlayingBinding binding;
 
@@ -110,8 +111,8 @@ public class NowPlayingFragment extends Fragment
         setHasOptionsMenu(false);
 
         /* Setup dim the fanart when scroll changes */
-        pixelsToTransparent  = requireActivity().getResources().getDimensionPixelSize(R.dimen.info_art_height);
-        binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
+        onScrollChangedListener = UIUtils.createInfoPanelScrollChangedListener(requireContext(), binding.mediaPanel, binding.art, binding.mediaPanelGroup);
+        binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
     }
 
     @Override
@@ -129,16 +130,9 @@ public class NowPlayingFragment extends Fragment
 
     @Override
     public void onDestroyView() {
-        binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(this);
+        binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(onScrollChangedListener);
         super.onDestroyView();
         binding = null;
-    }
-
-    @Override
-    public void onScrollChanged() {
-        float y = binding.mediaPanel.getScrollY();
-        float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
-        binding.art.setAlpha(newAlpha);
     }
 
     @Override
@@ -358,7 +352,7 @@ public class NowPlayingFragment extends Fragment
         requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         int artHeight = resources.getDimensionPixelOffset(R.dimen.info_art_height),
-                artWidth = displayMetrics.widthPixels;
+                artWidth = binding.art.getWidth(); // displayMetrics.widthPixels;
         if (!TextUtils.isEmpty(art)) {
             binding.poster.setVisibility(View.VISIBLE);
             int posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width);
@@ -377,7 +371,7 @@ public class NowPlayingFragment extends Fragment
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                  poster, title,
                                                  binding.poster, posterWidth, posterHeight);
-            UIUtils.loadImageIntoImageview(hostManager, art, binding.art, displayMetrics.widthPixels, artHeight);
+            UIUtils.loadImageIntoImageview(hostManager, art, binding.art, artWidth, artHeight);
 
             // Reset padding
             int paddingLeft = resources.getDimensionPixelOffset(R.dimen.info_poster_width_plus_padding),

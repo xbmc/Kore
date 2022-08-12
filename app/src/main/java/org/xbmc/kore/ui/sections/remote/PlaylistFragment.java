@@ -525,7 +525,7 @@ public class PlaylistFragment extends Fragment
 
             selectedRowColor = MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, null);
             selectedRowColorStateList = ColorStateList.valueOf(selectedRowColor);
-            backgroundDrawable = getResources().getDrawable(R.drawable.background_card, null);
+            backgroundDrawable = getResources().getDrawable(R.drawable.background_playlist, null);
             artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
             artHeight = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
         }

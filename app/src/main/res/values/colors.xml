@@ -17,6 +17,9 @@
 <resources>
     <color name="ic_launcher_background">#0BB1E6</color>
 
+    <color name="background_drawable_color">#ffffffff</color>
+    <color name="background_drawable_color_alpha">#bfffffff</color>
+
     <!--
     Colors for Material 3 themes, generated on https://m3.material.io/theme-builder#/custom with seed #0f85a5
     Where appropriate colors where tweaked, changing their tone, using the tonal palletes provided by them theme builder
