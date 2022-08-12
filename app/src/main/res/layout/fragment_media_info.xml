@@ -97,8 +97,7 @@
                         android:paddingTop="@dimen/default_padding"
                         android:paddingBottom="@dimen/default_padding"
                         app:layout_constraintTop_toBottomOf="@id/poster"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:gravity="top"/>
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                     <TextView
                         android:id="@+id/rating_votes"
@@ -120,8 +119,7 @@
                         android:paddingBottom="@dimen/default_padding"
                         app:layout_constraintTop_toTopOf="@id/rating"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/rating_votes"
-                        android:gravity="end" />
+                        app:layout_constraintStart_toEndOf="@id/rating_votes" />
 
                     <androidx.constraintlayout.widget.Barrier
                         android:id="@+id/barrier"

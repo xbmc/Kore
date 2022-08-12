@@ -205,8 +205,7 @@ public class NowPlayingFragment extends Fragment
     private void setNowPlayingInfo(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                    PlayerType.PropertyValue getPropertiesResult,
                                    final ListType.ItemsAll getItemResult) {
-        final String title, underTitle, art, poster, genreSeason, year,
-                descriptionPlot, votes, maxRating;
+        final String title, underTitle, art, poster, genreSeason, year, descriptionPlot, votes;
         double rating;
 
         switch (getItemResult.type) {
@@ -222,7 +221,6 @@ public class NowPlayingFragment extends Fragment
                 year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
                 descriptionPlot = getItemResult.plot;
                 rating = getItemResult.rating;
-                maxRating = getString(R.string.max_rating_video);
                 votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
@@ -237,7 +235,6 @@ public class NowPlayingFragment extends Fragment
                 year = getItemResult.premiered;
                 descriptionPlot = getItemResult.plot;
                 rating = getItemResult.rating;
-                maxRating = getString(R.string.max_rating_video);
                 votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
                 break;
             case ListType.ItemsAll.TYPE_SONG:
@@ -252,7 +249,6 @@ public class NowPlayingFragment extends Fragment
                 year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
                 descriptionPlot = getItemResult.description;
                 rating = getItemResult.rating;
-                maxRating = getString(R.string.max_rating_music);
                 votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
                 break;
             case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
@@ -268,7 +264,6 @@ public class NowPlayingFragment extends Fragment
                 year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
                 descriptionPlot = getItemResult.plot;
                 rating = 0;
-                maxRating = null;
                 votes = null;
                 break;
             case ListType.ItemsAll.TYPE_CHANNEL:
@@ -283,7 +278,6 @@ public class NowPlayingFragment extends Fragment
                 year = getItemResult.premiered;
                 descriptionPlot = getItemResult.plot;
                 rating = getItemResult.rating;
-                maxRating = null;
                 votes = null;
                 break;
             default:
@@ -299,7 +293,6 @@ public class NowPlayingFragment extends Fragment
                 year = getItemResult.premiered;
                 descriptionPlot = removeYouTubeMarkup(getItemResult.plot);
                 rating = 0;
-                maxRating = null;
                 votes = null;
                 break;
         }
@@ -329,14 +322,11 @@ public class NowPlayingFragment extends Fragment
         // 0 rating will not be shown
         if (rating > 0) {
             binding.rating.setVisibility(View.VISIBLE);
-            binding.maxRating.setVisibility(View.VISIBLE);
             binding.ratingVotes.setVisibility(View.VISIBLE);
             binding.rating.setText(String.format("%01.01f", rating));
-            binding.maxRating.setText(maxRating);
             binding.ratingVotes.setText(votes);
         } else {
             binding.rating.setVisibility(View.GONE);
-            binding.maxRating.setVisibility(View.GONE);
             binding.ratingVotes.setVisibility(View.GONE);
         }
 

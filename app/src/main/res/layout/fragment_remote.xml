@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    Copyright 2015 Synced Synapse. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,196 +14,200 @@
    limitations under the License.
 -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/top_panel"
+    <include
+        android:id="@+id/include_info_panel"
+        layout="@layout/remote_info_panel" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/media_panel"
+        style="@style/Widget.Kore.InfoPanel.Remote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+        android:layout_marginTop="@dimen/remote_viewpager_height"
+        android:layout_marginRight="@dimen/info_panel_horiz_margin"
+        android:layout_marginBottom="@dimen/remote_margin_bottom">
 
-        <include
-            android:id="@+id/include_info_panel"
-            layout="@layout/remote_info_panel"/>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/poster"
+            android:layout_width="@dimen/remote_poster_width"
+            android:layout_height="@dimen/remote_poster_height"
+            android:contentDescription="@string/poster"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.PosterRemote" />
 
-        <RelativeLayout
-            android:id="@+id/media_panel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/info_panel_horiz_margin"
-            android:layout_marginRight="@dimen/info_panel_horiz_margin"
-            android:layout_marginBottom="@dimen/remote_margin_bottom"
-            android:layout_marginTop="@dimen/remote_viewpager_height"
-            style="@style/Widget.Kore.InfoPanel.Remote">
+        <TextView
+            android:id="@+id/title"
+            style="@style/Widget.Kore.TextView.MediaTitle.Remote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/poster"/>
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/poster"
-                android:layout_width="@dimen/remote_poster_width"
-                android:layout_height="@dimen/remote_poster_height"
-                android:layout_alignParentStart="true"
-                android:contentDescription="@string/poster"
-                android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.PosterRemote" />
+        <TextView
+            android:id="@+id/details"
+            style="@style/Widget.Kore.TextView.MediaDetails.Remote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintBottom_toTopOf="@id/media_playback_bar"
+            app:layout_constraintStart_toEndOf="@id/poster"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <TextView
-                android:id="@+id/title"
-                style="@style/Widget.Kore.TextView.MediaTitle.Remote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/poster"
-                android:layout_toEndOf="@id/poster"/>
+        <!-- Media playback control buttons -->
+        <org.xbmc.kore.ui.widgets.MediaPlaybackBar
+            android:id="@+id/media_playback_bar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttonbar_height"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@id/poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/poster"
+            app:view_mode="single_movement_buttons" />
 
-            <TextView
-                android:id="@+id/details"
-                style="@style/Widget.Kore.TextView.MediaDetails.Remote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/title"
-                android:layout_toEndOf="@id/poster"
-                android:layout_above="@id/media_playback_bar"/>
+        <!-- Progress bar -->
+        <org.xbmc.kore.ui.widgets.MediaProgressIndicator
+            android:id="@+id/progress_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingRight="@dimen/small_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/poster" />
 
-            <!-- Media playback control buttons -->
-            <org.xbmc.kore.ui.widgets.MediaPlaybackBar
-                android:id="@+id/media_playback_bar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/buttonbar_height"
-                android:layout_alignBottom="@id/poster"
-                android:layout_toEndOf="@id/poster"
-                android:orientation="horizontal"
-                app:view_mode="single_movement_buttons" />
-
-            <!-- Progress bar -->
-            <org.xbmc.kore.ui.widgets.MediaProgressIndicator
-                android:id="@+id/progress_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/poster"
-                android:layout_alignStart="@id/poster"
-                android:paddingTop="@dimen/default_padding"
-                android:paddingRight="@dimen/small_padding"
-                android:paddingLeft="@dimen/small_padding"
-                android:orientation="horizontal" />
-
-            <!-- Media action buttons -->
-            <org.xbmc.kore.ui.widgets.MediaActionsBar
-                android:id="@+id/media_actions_bar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/buttonbar_height"
-                android:layout_below="@id/progress_info"
-                android:layout_alignStart="@id/poster"
-                android:orientation="horizontal" />
-        </RelativeLayout>
-    </FrameLayout>
+        <!-- Media action buttons -->
+        <org.xbmc.kore.ui.widgets.MediaActionsBar
+            android:id="@+id/media_actions_bar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttonbar_height"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_info" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Bottom button bar -->
     <LinearLayout
         android:id="@+id/sections_button_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/buttonbar_height"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:background="?attr/colorSurface"
-        android:elevation="@dimen/kore_elevation_level2">
+        android:elevation="@dimen/kore_elevation_level2"
+        android:orientation="horizontal">
+
         <ImageButton
             android:id="@+id/home"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_home_white_24dp"
-            android:contentDescription="@string/home"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/home"
+            android:src="@drawable/ic_home_white_24dp" />
+
         <ImageButton
             android:id="@+id/movies"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_movie_white_24dp"
-            android:contentDescription="@string/movies"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/movies"
+            android:src="@drawable/ic_movie_white_24dp" />
+
         <ImageButton
             android:id="@+id/tv_shows"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_tv_white_24dp"
-            android:contentDescription="@string/tv_shows"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/tv_shows"
+            android:src="@drawable/ic_tv_white_24dp" />
+
         <ImageButton
             android:id="@+id/music"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_headset_white_24dp"
-            android:contentDescription="@string/music"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/music"
+            android:src="@drawable/ic_headset_white_24dp" />
+
         <ImageButton
             android:id="@+id/pvr"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_dvr_white_24dp"
-            android:contentDescription="@string/pvr"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/pvr"
+            android:src="@drawable/ic_dvr_white_24dp" />
+
         <ImageButton
             android:id="@+id/pictures"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_image_white_24dp"
-            android:contentDescription="@string/pictures"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/pictures"
+            android:src="@drawable/ic_image_white_24dp" />
+
         <ImageButton
             android:id="@+id/videos"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_video_white_24dp"
-            android:contentDescription="@string/videos"/>
-        <!-- <ImageButton
-            android:id="@+id/favourites"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_star_white_24dp"
-            android:contentDescription="@string/favourites"/> -->
+            android:layout_weight="1"
+            android:contentDescription="@string/videos"
+            android:src="@drawable/ic_video_white_24dp" />
+
         <ImageButton
             android:id="@+id/addons"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_extension_white_24dp"
-            android:contentDescription="@string/addons"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/addons"
+            android:src="@drawable/ic_extension_white_24dp" />
+
         <ImageButton
             android:id="@+id/weather"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_sunny_white_24dp"
-            android:contentDescription="@string/weather"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/weather"
+            android:src="@drawable/ic_sunny_white_24dp" />
+
         <ImageButton
             android:id="@+id/system"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             style="@style/Widget.Kore.Button.Borderless"
-            android:src="@drawable/ic_settings_white_24dp"
-            android:contentDescription="@string/system"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/system"
+            android:src="@drawable/ic_settings_white_24dp" />
     </LinearLayout>
 
     <org.xbmc.kore.ui.widgets.ControlPad
         android:id="@+id/remote"
+        style="@style/Widget.Kore.ControlPad"
         android:layout_width="@dimen/control_pad_size"
         android:layout_height="@dimen/control_pad_size"
-        android:layout_marginBottom="@dimen/remote_margin_bottom"
-        android:layout_above="@id/sections_button_bar"
-        android:layout_centerHorizontal="true"
-        style="@style/Widget.Kore.ControlPad" />
-</RelativeLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/sections_button_bar"
+        android:layout_marginBottom="@dimen/remote_margin_bottom" />
+</androidx.constraintlayout.widget.ConstraintLayout>
