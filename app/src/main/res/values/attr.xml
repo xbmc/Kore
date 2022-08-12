@@ -21,6 +21,10 @@
     <attr name="colorWizardTitleText" format="reference|color" />
     <attr name="colorWizardTitleBackground" format="reference|color" />
 
+    <attr name="kodiStatusConnecting" format="reference|color" />
+    <attr name="kodiStatusConnected" format="reference|color" />
+    <attr name="kodiStatusUnavailable" format="reference|color" />
+
     <!-- Icons -->
     <attr name="iconOverflow" format="reference" />
 

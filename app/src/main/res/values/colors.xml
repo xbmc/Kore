@@ -100,7 +100,7 @@
     <color name="estuary_blue_lighter">#499FB8</color>
     <color name="estuary_blue_light">#278BA8</color>
     <color name="estuary_blue">#0f85a5</color>
-    <color name="estuary_blue_dark">#04617B</color>
+        <color name="estuary_blue_dark">#04617B</color>
     <color name="estuary_blue_darker">#024C61</color>
 
     <!-- Day Theme colors -->
@@ -173,12 +173,5 @@
     <color name="black_dim_87pct">#de000000</color>
     <color name="black_dim_54pct">#8a000000</color>
     <color name="black_dim_26pct">#43000000</color>
-
-    <color name="dark_in_progress">#51cc93</color>
-    <color name="light_in_progress">#51cc93</color>
-
-    <color name="host_status_connecting">#ffff8800</color>
-    <color name="host_status_available">#ff669900</color>
-    <color name="host_status_unavailable">#ffcc0000</color>
 
 </resources>
