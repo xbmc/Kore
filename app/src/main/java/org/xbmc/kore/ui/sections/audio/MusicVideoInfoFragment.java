@@ -60,7 +60,7 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
     // Handler on which to post RPC callbacks
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
-    private Cursor cursor;
+    private String musicVideoFile;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,8 +135,8 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
         if (cursor != null && cursor.getCount() > 0) {
             switch (cursorLoader.getId()) {
                 case LOADER_MUSIC_VIDEO:
-                    this.cursor = cursor;
                     cursor.moveToFirst();
+                    musicVideoFile = cursor.getString(MusicVideoDetailsQuery.FILE);
                     DataHolder dataHolder = getDataHolder();
 
                     dataHolder.setFanArtUrl(cursor.getString(MusicVideoDetailsQuery.FANART));
@@ -173,7 +173,7 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
 
     protected void download() {
         final FileDownloadHelper.MusicVideoInfo musicVideoDownloadInfo = new FileDownloadHelper.MusicVideoInfo(
-                getDataHolder().getTitle(), cursor.getString(MusicVideoDetailsQuery.FILE));
+                getDataHolder().getTitle(), musicVideoFile);
 
         // Check if the directory exists and whether to overwrite it
         File file = new File(musicVideoDownloadInfo.getAbsoluteFilePath());

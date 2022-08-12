@@ -69,7 +69,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     // Displayed episode
     private int tvshowId = -1;
 
-    private Cursor cursor;
+    private int episodePlaycount = 0;
 
     FileDownloadHelper.TVShowInfo fileDownloadHelper;
 
@@ -102,8 +102,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
         });
 
         setOnWatchedClickListener(view -> {
-            int playcount = cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT);
-            int newPlaycount = (playcount > 0) ? 0 : 1;
+            int newPlaycount = (episodePlaycount > 0) ? 0 : 1;
 
             VideoLibrary.SetEpisodeDetails action =
                     new VideoLibrary.SetEpisodeDetails(getDataHolder().getId(), newPlaycount, null);
@@ -113,6 +112,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                     // Force a refresh, but don't show a message
                     if (!isAdded()) return;
                     getRefreshItem().startSync(true);
+                    episodePlaycount = newPlaycount;
                     setWatchedButtonState(newPlaycount > 0);
                 }
 
@@ -174,7 +174,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
             switch (cursorLoader.getId()) {
                 case LOADER_EPISODE:
                     cursor.moveToFirst();
-                    this.cursor = cursor;
+                    episodePlaycount = cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT);
 
                     DataHolder dataHolder = getDataHolder();
 

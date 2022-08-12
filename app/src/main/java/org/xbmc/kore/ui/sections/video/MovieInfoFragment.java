@@ -69,7 +69,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
     // Controls whether a automatic sync refresh has been issued for this show
     private static boolean hasIssuedOutdatedRefresh = false;
 
-    private Cursor cursor;
+    private int moviePlaycount = 0;
     private FileDownloadHelper.MovieInfo movieDownloadInfo;
 
     @Override
@@ -119,11 +119,9 @@ public class MovieInfoFragment extends AbstractInfoFragment
                        .show();
             }
         });
-
         setOnWatchedClickListener(view -> {
             // Set the playcount
-            int playcount = cursor.getInt(MovieDetailsQuery.PLAYCOUNT);
-            int newPlaycount = (playcount > 0) ? 0 : 1;
+            int newPlaycount = (moviePlaycount > 0) ? 0 : 1;
 
             VideoLibrary.SetMovieDetails action =
                     new VideoLibrary.SetMovieDetails(getDataHolder().getId(), newPlaycount, null);
@@ -133,11 +131,14 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     if (!isAdded()) return;
                     // Force a refresh, but don't show a message
                     getRefreshItem().startSync(true);
+                    moviePlaycount = newPlaycount;
                     setWatchedButtonState(newPlaycount > 0);
                 }
 
                 @Override
-                public void onError(int errorCode, String description) { }
+                public void onError(int errorCode, String description) {
+                    LogUtils.LOGD(TAG, "Error while setting watched state: " + description);
+                }
             }, callbackHandler);
         });
 
@@ -199,7 +200,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
             switch (cursorLoader.getId()) {
                 case LOADER_MOVIE:
                     cursor.moveToFirst();
-                    this.cursor = cursor;
+                    moviePlaycount = cursor.getInt(MovieDetailsQuery.PLAYCOUNT);
 
                     DataHolder dataHolder = getDataHolder();
                     dataHolder.setFanArtUrl(cursor.getString(MovieDetailsQuery.FANART));
