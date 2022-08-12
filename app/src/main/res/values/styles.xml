@@ -108,10 +108,19 @@
     </style>
 
     <style name="Widget.Kore.InfoPanel" parent="Widget.Kore">
-<!--        <item name="android:background">?attr/colorSurfaceVariant</item>-->
-        <item name="android:background">@drawable/background_panel</item>
+        <item name="android:background">@drawable/background_round_bottom</item>
         <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>
         <item name="android:elevation">@dimen/kore_elevation_level1</item>
+    </style>
+
+    <style name="Widget.Kore.InfoPanel.Remote" parent="Widget.Kore.InfoPanel">
+        <item name="android:background">@drawable/background_round</item>
+    </style>
+
+    <style name="Widget.Kore.InfoPanel.NowPlaying" parent="Widget.Kore">
+        <item name="android:background">?attr/colorSurface</item>
+<!--        <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>-->
+        <item name="android:elevation">@dimen/kore_elevation_level2</item>
     </style>
 
     <style name="Widget.Kore.RatingBar" parent="Widget.Kore">
@@ -138,6 +147,32 @@
 <!--        <item name="dividerColor">?attr/colorOnSurfaceVariant</item>-->
         <item name="dividerInsetEnd">@dimen/default_padding</item>
         <item name="dividerInsetStart">@dimen/default_padding</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Kore.Image" parent="">
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Kore.Image.List" parent="ShapeAppearanceOverlay.Kore.Image">
+        <item name="cornerSize">@dimen/corner_radius_image_list</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Kore.Image.Poster" parent="ShapeAppearanceOverlay.Kore.Image">
+        <item name="cornerSize">@dimen/corner_radius_image_poster</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Kore.Image.PosterRemote" parent="ShapeAppearanceOverlay.Kore.Image">
+        <item name="cornerSizeTopLeft">@dimen/corner_radius_image_poster</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">@dimen/corner_radius_image_poster</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Kore.Image.NowPlayingArt" parent="ShapeAppearanceOverlay.Kore.Image">
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">@dimen/corner_radius_image_poster</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
     <!-- TextView widget styles, including more attributes than simply textAppearance -->
@@ -210,7 +245,10 @@
     </style>
 
     <style name="Widget.Kore.TextView.MediaCast" parent="Widget.Kore.TextView">
+        <item name="android:background">@drawable/background_square_alpha</item>
+        <item name="android:backgroundTint">?attr/colorSurface</item>
         <item name="android:textAppearance">@style/TextAppearance.Material3.LabelMedium</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:paddingStart">@dimen/small_padding</item>
         <item name="android:paddingEnd">@dimen/small_padding</item>
         <item name="android:singleLine">true</item>

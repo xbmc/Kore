@@ -110,6 +110,16 @@ public class Utils {
         context.startActivity(intent);
     }
 
+    /**
+     * Restrict a value to a range
+     * @param value Value
+     * @param min Range minimum
+     * @param max Range maximum
+     * @return Value if between [min, max], min or max
+     */
+    public static float clamp(float value, float min, float max) {
+        return Math.min(max, Math.max(min, value));
+    }
 
     /**
      * Converts a drawable to a bitmap

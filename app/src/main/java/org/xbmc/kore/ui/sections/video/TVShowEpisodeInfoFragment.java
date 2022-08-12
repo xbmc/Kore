@@ -195,7 +195,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                                                   cursor.getInt(EpisodeDetailsQuery.SEASON),
                                                   cursor.getInt(EpisodeDetailsQuery.EPISODE));
 
-                    dataHolder.setDetails(durationPremiered + "\n" + season + "\n" + director);
+                    dataHolder.setDetails(season + "\n" + durationPremiered + "\n" + director);
 
                     fileDownloadHelper = new FileDownloadHelper.TVShowInfo(
                             cursor.getString(EpisodeDetailsQuery.SHOWTITLE),
