@@ -386,7 +386,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
 
         Resources resources = requireActivity().getResources();
 
-        if (dataHolder.getPosterUrl() != null) {
+        if (!TextUtils.isEmpty(dataHolder.getPosterUrl())) {
             binding.poster.setVisibility(View.VISIBLE);
             int posterWidth;
             int posterHeight;
@@ -415,6 +415,13 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                                        TextUtils.isEmpty(dataHolder.getFanArtUrl()) ?
                                        dataHolder.getPosterUrl() : dataHolder.getFanArtUrl(),
                                        binding.art, artWidth, artHeight);
+
+        if (!TextUtils.isEmpty(dataHolder.getImdbNumber())) {
+            binding.imdbLink.setVisibility(View.VISIBLE);
+            binding.poster.setOnClickListener(v -> {
+                Utils.openImdbForMovie(requireContext(), dataHolder.getImdbNumber());
+            });
+        }
 
         int sectionVisibility;
         // Description
