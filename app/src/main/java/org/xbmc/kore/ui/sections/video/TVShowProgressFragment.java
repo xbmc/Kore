@@ -284,8 +284,10 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                                   UIUtils.IMAGE_RESIZE_FACTOR);
 
             // Get theme colors
-            int inProgressColor = MaterialColors.getColor(requireContext(), R.attr.colorInProgress, Color.GREEN);
-            int finishedColor = MaterialColors.getColor(requireContext(), R.attr.colorFinished, Color.WHITE);
+            ColorStateList inProgressColor = ColorStateList.valueOf(
+                    MaterialColors.getColor(requireContext(), R.attr.colorInProgress, Color.GREEN));
+            ColorStateList finishedColor = ColorStateList.valueOf(
+                    MaterialColors.getColor(requireContext(), R.attr.colorFinished, Color.WHITE));
 
             seasonsList.removeAllViews();
             do {
@@ -302,8 +304,8 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                                                       numEpisodes, numEpisodes - watchedEpisodes));
                 binding.tvShowsProgressBar.setMax(numEpisodes);
                 binding.tvShowsProgressBar.setProgress(watchedEpisodes);
-                int watchedColor = (numEpisodes - watchedEpisodes == 0) ? finishedColor : inProgressColor;
-                binding.tvShowsProgressBar.setProgressTintList(ColorStateList.valueOf(watchedColor));
+                ColorStateList watchedColor = (numEpisodes - watchedEpisodes == 0) ? finishedColor : inProgressColor;
+                binding.tvShowsProgressBar.setProgressTintList(watchedColor);
                 binding.otherInfo.setVisibility(View.GONE);
 
                 UIUtils.loadImageWithCharacterAvatar(requireContext(), hostManager,
