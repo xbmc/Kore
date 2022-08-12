@@ -37,6 +37,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.color.MaterialColors;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentAddHostZeroconfBinding;
 import org.xbmc.kore.host.HostInfo;
@@ -278,8 +280,11 @@ public class AddHostFragmentZeroconf extends Fragment {
      * Adapter used to show the hosts in the {@link GridView}
      */
     private class HostListAdapter extends ArrayAdapter<ServiceInfo> {
+        private final int kodiStatusConnectedColor;
+
         public HostListAdapter(Context context, int resource, ServiceInfo[] objects) {
             super(context, resource, objects);
+            kodiStatusConnectedColor = MaterialColors.getColor(requireContext(), R.attr.kodiStatusConnected, null);
         }
 
         @Override
@@ -301,8 +306,7 @@ public class AddHostFragmentZeroconf extends Fragment {
             ((TextView) convertView.findViewById(R.id.host_address)).setText(hostAddress);
 
             ImageView statusIndicator = convertView.findViewById(R.id.status_indicator);
-            int statusColor = requireActivity().getResources().getColor(R.color.host_status_available);
-            statusIndicator.setColorFilter(statusColor);
+            statusIndicator.setColorFilter(kodiStatusConnectedColor);
 
             // Remove context menu
             ImageView contextMenu = convertView.findViewById(R.id.list_context_menu);
