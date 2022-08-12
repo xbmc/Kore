@@ -383,4 +383,5 @@
     <string name="mobile_network">Mobilna</string>
     <string name="any_network">Dowolna</string>
     <string name="always_sendtokodi_addon">Zawsze preferuj dodatek SendToKodi</string>
+    <string name="party_mode">Tryb imprezy</string>
 </resources>

@@ -90,4 +90,8 @@
     <string name="genres">Genrer</string>
     <string name="albums">Albummer</string>
     <string name="artists">Kunstnere</string>
+    <string name="songs">Sange</string>
+    <string name="playlist">Playliste</string>
+    <string name="play_file">Afspil</string>
+    <string name="play">Afspil</string>
 </resources>
