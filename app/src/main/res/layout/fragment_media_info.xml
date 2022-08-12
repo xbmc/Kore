@@ -119,7 +119,8 @@
                         android:paddingBottom="@dimen/default_padding"
                         app:layout_constraintTop_toTopOf="@id/rating"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/rating_votes" />
+                        app:layout_constraintStart_toEndOf="@id/rating_votes"
+                        android:gravity="end"/>
 
                     <androidx.constraintlayout.widget.Barrier
                         android:id="@+id/barrier"

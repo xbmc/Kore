@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:contentDescription="@string/seen"
+        android:contentDescription="@string/watched_status"
         android:src="@drawable/ic_done_white_24dp"
         app:layout_constraintBottom_toBottomOf="@id/title"
         app:layout_constraintEnd_toEndOf="parent"

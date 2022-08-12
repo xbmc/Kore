@@ -309,13 +309,12 @@
     <string name="item_added_to_playlist">Added to playlist</string>
     <string name="item_sent_to_kodi">Sent to Kodi</string>
     <string name="no_suitable_playlist">No suitable playlist found to add media type.</string>
-    <string name="seen">Seen</string>
     <string name="download">Download</string>
 
     <!-- Buttons on Info fragment -->
     <string name="imdb" translatable="false">IMDb</string>
-    <string name="watched_status">Seen</string>
-    <string name="unwatched_status">Unseen</string>
+    <string name="watched_status">Watched</string>
+    <string name="unwatched_status">Unwatched</string>
     <string name="pinned_status">Pinned</string>
     <string name="unpinned_status">Unpinned</string>
     <string name="enabled_status">Enabled</string>
