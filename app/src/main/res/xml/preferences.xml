@@ -58,7 +58,7 @@
             android:title="@string/theme"
             android:entries="@array/themes_array"
             android:entryValues="@array/themes_values_array"
-            android:defaultValue="0"/>
+            android:defaultValue="9"/>
 
         <ListPreference
             android:key="pref_language"

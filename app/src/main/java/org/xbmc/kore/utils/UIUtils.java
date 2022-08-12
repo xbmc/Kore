@@ -402,8 +402,9 @@ public class UIUtils {
                 return R.style.Theme_Kore_Sunrise;
             case 4:
                 return R.style.Theme_Kore_Sunset;
+            case 9:
             default:
-                return R.style.Theme_Kore_Dark;
+                return R.style.Theme_Kore_SystemDefault;
         }
     }
 
