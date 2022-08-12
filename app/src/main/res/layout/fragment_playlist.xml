@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    Copyright 2015 Synced Synapse. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,41 +14,42 @@
    limitations under the License.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/include_info_panel"
-        layout="@layout/remote_info_panel"/>
+        layout="@layout/remote_info_panel" />
 
     <org.xbmc.kore.ui.widgets.PlaylistsBar
         android:id="@+id/playlists_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/buttonbar_height"
-        android:layout_alignParentBottom="true"
         android:background="?attr/colorSurface"
-        app:tabMode="fixed"
+        android:elevation="@dimen/kore_elevation_level2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:tabGravity="fill"
         app:tabIndicatorFullWidth="true"
-        android:elevation="@dimen/kore_elevation_level2"/>
+        app:tabMode="fixed" />
 
     <!-- Playlist -->
     <org.xbmc.kore.ui.viewgroups.DynamicListView
         android:id="@+id/playlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_above="@id/playlists_bar"
-        android:paddingLeft="@dimen/small_padding"
-        android:paddingRight="@dimen/small_padding"
-        android:paddingTop="@dimen/remote_viewpager_height"
-        android:clipToPadding="false"
         android:choiceMode="singleChoice"
-        android:fastScrollEnabled="true"
+        android:clipToPadding="false"
         android:divider="@null"
+        android:fastScrollEnabled="true"
+        android:paddingLeft="@dimen/small_padding"
+        android:paddingTop="@dimen/remote_viewpager_height"
+        android:paddingRight="@dimen/small_padding"
+        app:hoverLineColor="?attr/colorPrimary"
         app:hoverLineTickness="2dp"
-        app:hoverLineColor="?attr/colorPrimary"/>
+        app:layout_constraintBottom_toTopOf="@id/playlists_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

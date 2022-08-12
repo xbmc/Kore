@@ -213,9 +213,9 @@
     </style>
 
     <style name="Widget.Kore.TextView.MediaTitle.Remote" parent="Widget.Kore.TextView.MediaTitle">
-        <item name="android:paddingStart">@dimen/default_padding</item>
+        <item name="android:paddingStart">@dimen/small_padding</item>
         <item name="android:paddingEnd">@dimen/small_padding</item>
-        <item name="android:paddingTop">@dimen/default_padding</item>
+        <item name="android:paddingTop">@dimen/small_padding</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:singleLine">true</item>
     </style>
@@ -229,8 +229,9 @@
     </style>
 
     <style name="Widget.Kore.TextView.MediaDetails.Remote" parent="Widget.Kore.TextView.MediaDetails">
-        <item name="android:paddingStart">@dimen/default_padding</item>
+        <item name="android:paddingStart">@dimen/small_padding</item>
         <item name="android:paddingEnd">@dimen/small_padding</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <style name="Widget.Kore.TextView.MediaSmallDetails" parent="Widget.Kore.TextView">
