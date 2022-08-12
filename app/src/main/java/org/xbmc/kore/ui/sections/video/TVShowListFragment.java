@@ -364,7 +364,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         ImageView artView;
         ProgressBar watchedProgressView;
         Context context;
-        int inProgressColor, finishedColor;
+        ColorStateList inProgressColor, finishedColor;
         HostManager hostManager;
         int artWidth;
         int artHeight;
@@ -380,8 +380,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             this.context = context;
             this.artHeight = artHeight;
             this.artWidth = artWidth;
-            this.inProgressColor = inProgressColor;
-            this.finishedColor = finishedColor;
+            this.inProgressColor = ColorStateList.valueOf(inProgressColor);
+            this.finishedColor = ColorStateList.valueOf(finishedColor);
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
             premieredView = itemView.findViewById(R.id.other_info);
@@ -419,8 +419,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 watchedProgressView.setVisibility(View.VISIBLE);
                 watchedProgressView.setMax(numEpisodes);
                 watchedProgressView.setProgress(watchedEpisodes);
-                int watchedColor = (numEpisodes - watchedEpisodes == 0)? finishedColor : inProgressColor;
-                watchedProgressView.setProgressTintList(ColorStateList.valueOf(watchedColor));
+                ColorStateList watchedColor = (numEpisodes - watchedEpisodes == 0)? finishedColor : inProgressColor;
+                watchedProgressView.setProgressTintList(watchedColor);
             } else {
                 watchedProgressView.setVisibility(View.INVISIBLE);
             }
