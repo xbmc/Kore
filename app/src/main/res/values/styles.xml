@@ -65,7 +65,7 @@
         <item name="iconPadding">@dimen/default_icon_padding</item>
         <item name="iconTint">@color/info_action_button_foreground_selector</item>
         <item name="android:textColor">@color/info_action_button_foreground_selector</item>
-        <item name="android:maxLines">2</item>
+        <item name="android:maxLines">1</item>
         <item name="android:ellipsize">marquee</item>
     </style>
 
