@@ -16,6 +16,8 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <style name="Theme.Kore.SystemDefault" parent="Theme.Kore.Light"/>
+
     <style name="Theme.Kore.Dark" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
