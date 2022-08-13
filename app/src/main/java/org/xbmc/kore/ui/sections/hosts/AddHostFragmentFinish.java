@@ -80,8 +80,7 @@ public class AddHostFragmentFinish extends Fragment {
         binding.includeWizardButtonBar.next.setOnClickListener(v -> listener.onAddHostFinish());
 
         // Previous button
-        binding.includeWizardButtonBar.previous.setText(null);
-        binding.includeWizardButtonBar.previous.setEnabled(false);
+        binding.includeWizardButtonBar.previous.setVisibility(View.INVISIBLE);
 
         // Check if PVR is enabled for the current host
         HostManager hostManager = HostManager.getInstance(requireContext());

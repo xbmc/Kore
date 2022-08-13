@@ -24,9 +24,7 @@
     android:paddingStart="@dimen/default_padding"
     android:paddingEnd="@dimen/default_padding"
     android:paddingTop="@dimen/default_padding"
-    android:paddingBottom="@dimen/default_padding"
-    android:background="?attr/colorSurface"
-    >
+    android:paddingBottom="@dimen/default_padding">
 
     <Button
         android:id="@+id/previous"
