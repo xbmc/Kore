@@ -15,27 +15,33 @@
    limitations under the License.
 -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/default_padding"
-    android:paddingRight="@dimen/default_padding">
+    android:paddingTop="@dimen/large_padding"
+    android:paddingBottom="@dimen/small_padding"
+    android:paddingStart="@dimen/large_padding"
+    android:paddingEnd="@dimen/large_padding">
 
-    <EditText
-        android:id="@+id/text_to_send"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:imeOptions="actionSend"
         android:hint="@string/text_to_send"
-        android:autofillHints="">
-        <!--<requestFocus/>-->
-    </EditText>
+        app:endIconMode="clear_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_to_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSend"
+            android:autofillHints=""/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
-        android:id="@+id/send_text_done"
+        android:id="@+id/finish_after_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/finish_after_send"
