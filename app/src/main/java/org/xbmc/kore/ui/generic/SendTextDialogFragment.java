@@ -32,6 +32,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.DialogSendTextBinding;
 
 /**
  * Dialog that allows the user to send text
@@ -51,15 +52,10 @@ public class SendTextDialogFragment extends DialogFragment {
         void onSendTextCancel();
     }
 
-    /**
-     * UI views
-     */
-    private EditText textToSend;
-    private CheckBox finishAfterSend;
+    private DialogSendTextBinding binding;
 
     /**
      * Create a new instance of the dialog, providing arguments.
-
      * @param title
      *        Title of the dialog
      * @return
@@ -105,26 +101,25 @@ public class SendTextDialogFragment extends DialogFragment {
 
         assert getArguments() != null;
         final String title = getArguments().getString(TITLE_KEY, getString(R.string.send_text));
-        View dialogView = requireActivity().getLayoutInflater().inflate(R.layout.dialog_send_text, null);
-
-        textToSend = dialogView.findViewById(R.id.text_to_send);
-        finishAfterSend = dialogView.findViewById(R.id.send_text_done);
+        binding = DialogSendTextBinding.inflate(requireActivity().getLayoutInflater(), null, false);
 
         builder.setTitle(title)
-                .setView(dialogView)
-                .setPositiveButton(R.string.send, (dialog, which) -> mListener.onSendTextFinished(
-                        textToSend.getText().toString(),
-                        finishAfterSend.isChecked()))
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> mListener.onSendTextCancel());
+               .setView(binding.getRoot())
+               .setPositiveButton(R.string.send, (dialog, which) -> {
+                   if (binding.textToSend.getText() != null)
+                       mListener.onSendTextFinished(binding.textToSend.getText().toString(),
+                                                    binding.finishAfterSend.isChecked());
+               })
+               .setNegativeButton(android.R.string.cancel, (dialog, which) -> mListener.onSendTextCancel());
 
         final Dialog dialog = builder.create();
-        textToSend.setOnFocusChangeListener((v, hasFocus) -> {
+        binding.textToSend.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             }
         });
-        textToSend.requestFocus();
-        textToSend.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        binding.textToSend.requestFocus();
+        binding.textToSend.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND ) {
@@ -139,10 +134,9 @@ public class SendTextDialogFragment extends DialogFragment {
             }
 
             private void onSendTextFinished() {
-                mListener.onSendTextFinished(
-                        textToSend.getText().toString(),
-                        finishAfterSend.isChecked());
-            }
+                if (binding.textToSend.getText() != null)
+                    mListener.onSendTextFinished(binding.textToSend.getText().toString(),
+                                                 binding.finishAfterSend.isChecked());}
         });
         return dialog;
     }
