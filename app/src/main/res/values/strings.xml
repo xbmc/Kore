@@ -391,10 +391,10 @@
     <string name="application">Application</string>
 
     <string name="theme">Theme</string>
-    <string name="theme_system_default">System Default</string>
+    <string name="theme_default_dynamic">Day/Night Dynamic</string>
     <string name="theme_night">Night</string>
     <string name="theme_day">Day</string>
-    <string name="theme_mist">Mist</string>
+    <string name="theme_sun_dynamic">Sunrise/Sunset Dynamic</string>
     <string name="theme_sunrise">Sunrise</string>
     <string name="theme_sunset">Sunset</string>
 

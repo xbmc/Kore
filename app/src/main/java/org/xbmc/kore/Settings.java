@@ -60,7 +60,7 @@ public class Settings {
 
     // Theme
     public static final String KEY_PREF_THEME = "pref_theme";
-    public static final String DEFAULT_PREF_THEME = "9";
+    public static final String DEFAULT_PREF_THEME = "0";
 
     // Switch to remote
     public static final String KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = "pref_switch_to_remote_after_media_start";

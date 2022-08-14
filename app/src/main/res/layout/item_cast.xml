@@ -60,13 +60,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_round_alpha"
-        android:backgroundTint="?attr/colorSurface"
+        android:backgroundTint="?attr/colorSurfaceVariant"
         android:textStyle="bold"
-        android:textColor="?attr/colorOnSurface"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:gravity="center"
         android:visibility="gone"
         android:paddingTop="48dp"
         app:drawableTopCompat="@drawable/ic_open_in_new_white_24dp"
-        app:drawableTint="?attr/colorOnSurface" />
+        app:drawableTint="?attr/colorOnSurfaceVariant" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

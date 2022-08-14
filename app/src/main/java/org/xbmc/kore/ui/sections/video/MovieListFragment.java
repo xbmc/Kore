@@ -318,12 +318,8 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
         private final HostManager hostManager;
         private final int artWidth, artHeight;
-        private final int statusWatchedColor, statusUnwatchedColor;
 
         MoviesAdapter(Context context) {
-            statusWatchedColor = MaterialColors.getColor(context, R.attr.colorFinished, Color.WHITE);
-            statusUnwatchedColor = MaterialColors.getColor(context, R.attr.colorOnSurface, Color.WHITE);
-
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
@@ -340,7 +336,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
             final View view = LayoutInflater.from(getContext())
                                             .inflate(R.layout.item_movie, parent, false);
 
-            return new ViewHolder(view, getContext(), statusWatchedColor, statusUnwatchedColor, hostManager, artWidth, artHeight);
+            return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight);
         }
 
         protected int getSectionColumnIdx() {
@@ -378,17 +374,12 @@ public class MovieListFragment extends AbstractCursorListFragment {
         int artWidth;
         int artHeight;
         Context context;
-        int statusWatchedColor, statusUnwatchedColor;
 
         AbstractFragment.DataHolder dataHolder = new AbstractFragment.DataHolder(0);
 
-        ViewHolder(View itemView, Context context, int statusWatchedColor, int statusUnwatchedColor,
-                   HostManager hostManager,
-                   int artWidth, int artHeight) {
+        ViewHolder(View itemView, Context context, HostManager hostManager, int artWidth, int artHeight) {
             super(itemView);
             this.context = context;
-            this.statusWatchedColor = statusWatchedColor;
-            this.statusUnwatchedColor = statusUnwatchedColor;
             this.hostManager = hostManager;
             this.artWidth = artWidth;
             this.artHeight = artHeight;
@@ -436,7 +427,6 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
             if (showWatchedStatus && (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0)) {
                 checkmarkView.setVisibility(View.VISIBLE);
-                checkmarkView.setColorFilter(statusWatchedColor);
             }
             else {
                 checkmarkView.clearColorFilter();

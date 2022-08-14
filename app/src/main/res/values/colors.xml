@@ -21,10 +21,10 @@
     <color name="background_drawable_color_alpha">#bfffffff</color>
 
     <!--
-    Colors for Material 3 themes, generated on https://m3.material.io/theme-builder#/custom with seed #0f85a5
+    Default color theme, generated on https://m3.material.io/theme-builder#/custom with seed #0f85a5
     Where appropriate colors where tweaked, changing their tone, using the tonal palletes provided by them theme builder
     -->
-    <color name="seed">#0f85a5</color>
+    <color name="theme_kore_seed">#0f85a5</color>
     <color name="theme_kore_light_primary">#006781</color>
     <color name="theme_kore_light_onPrimary">#FFFFFF</color>
     <color name="theme_kore_light_primaryContainer">#B9EAFF</color>
@@ -84,7 +84,127 @@
     <color name="theme_kore_dark_surfaceTint">#5FD4FD</color>
     <color name="theme_kore_dark_surfaceTintColor">#5FD4FD</color>
 
-    
+    <!-- Tonal variations on palette generated with seed #0f85a5 -->
+    <!-- Primary -->
+    <color name="theme_kore_blue_primaryTone95">#def4ff</color>
+    <color name="theme_kore_blue_primaryTone80">#5fd4fd</color>
+    <color name="theme_kore_blue_primaryTone70">#3bb8e0</color>
+    <color name="theme_kore_blue_primaryTone60">#009dc3</color>
+    <color name="theme_kore_blue_primaryTone50">#0081a1</color>
+    <color name="theme_kore_blue_primaryTone40">#006781</color>
+    <color name="theme_kore_blue_primaryTone35">#005a71</color>
+    <color name="theme_kore_blue_primaryTone30">#004d62</color>
+
+    <!-- Secondary -->
+    <color name="theme_kore_blue_secondaryTone95">#def4ff</color>
+    <color name="theme_kore_blue_secondaryTone70">#98afb9</color>
+    <color name="theme_kore_blue_secondaryTone60">#7e949e</color>
+    <color name="theme_kore_blue_secondaryTone50">#657a84</color>
+    <color name="theme_kore_blue_secondaryTone40">#4c626b</color>
+
+    <!-- Tertiary -->
+    <color name="theme_kore_blue_tertiaryTone95">#f2efff</color>
+    <color name="theme_kore_blue_tertiaryTone90">#e1dfff</color>
+    <color name="theme_kore_blue_tertiaryTone70">#a8a8ce</color>
+    <color name="theme_kore_blue_tertiaryTone60">#8e8db2</color>
+    <color name="theme_kore_blue_tertiaryTone50">#747498</color>
+    <color name="theme_kore_blue_tertiaryTone40">#5b5b7e</color>
+
+    <!-- Neutral -->
+    <color name="theme_kore_blue_neutralTone98">#f8f9fb</color>
+    <color name="theme_kore_blue_neutralTone95">#eff1f2</color>
+    <color name="theme_kore_blue_neutralTone90">#e1e3e4</color>
+    <color name="theme_kore_blue_neutralTone80">#c5c7c8</color>
+    <color name="theme_kore_blue_neutralTone70">#a9abad</color>
+    <color name="theme_kore_blue_neutralTone60">#8f9193</color>
+    <color name="theme_kore_blue_neutralTone50">#757779</color>
+    <color name="theme_kore_blue_neutralTone40">#5c5f60</color>
+    <color name="theme_kore_blue_neutralTone30">#444749</color>
+    <color name="theme_kore_blue_neutralTone25">#393c3d</color>
+    <color name="theme_kore_blue_neutralTone20">#2e3132</color>
+
+    <!-- Neutral Variant -->
+    <color name="theme_kore_blue_neutralVariantTone98">#f8f9fb</color>
+    <color name="theme_kore_blue_neutralVariantTone95">#eaf2f7</color>
+    <color name="theme_kore_blue_neutralVariantTone90">#dce4e8</color>
+    <color name="theme_kore_blue_neutralVariantTone80">#c0c8cc</color>
+    <color name="theme_kore_blue_neutralVariantTone70">#a4acb1</color>
+    <color name="theme_kore_blue_neutralVariantTone60">#8a9296</color>
+    <color name="theme_kore_blue_neutralVariantTone50">#70787c</color>
+    <color name="theme_kore_blue_neutralVariantTone40">#576064</color>
+    <color name="theme_kore_blue_neutralVariantTone35">#4c5458</color>
+    <color name="theme_kore_blue_neutralVariantTone25">#353d40</color>
+    <color name="theme_kore_blue_neutralVariantTone20">#2a3235</color>
+
+
+    <!--
+    Sunrise/Sunset color theme, generated on https://m3.material.io/theme-builder#/custom with seed #53736A
+    -->
+    <color name="theme_kore_sun_light_primary">#006B5A</color>
+    <color name="theme_kore_sun_light_onPrimary">#FFFFFF</color>
+    <color name="theme_kore_sun_light_primaryContainer">#5adbbf</color>
+    <color name="theme_kore_sun_light_onPrimaryContainer">#00201A</color>
+    <color name="theme_kore_sun_light_secondary">#4B635C</color>
+    <color name="theme_kore_sun_light_onSecondary">#FFFFFF</color>
+    <color name="theme_kore_sun_light_secondaryContainer">#CDE8DF</color>
+    <color name="theme_kore_sun_light_onSecondaryContainer">#06201A</color>
+    <color name="theme_kore_sun_light_tertiary">#426278</color>
+    <color name="theme_kore_sun_light_onTertiary">#FFFFFF</color>
+    <color name="theme_kore_sun_light_tertiaryContainer">#C7E7FF</color>
+    <color name="theme_kore_sun_light_onTertiaryContainer">#001E2E</color>
+    <color name="theme_kore_sun_light_error">#BA1A1A</color>
+    <color name="theme_kore_sun_light_errorContainer">#FFDAD6</color>
+    <color name="theme_kore_sun_light_onError">#FFFFFF</color>
+    <color name="theme_kore_sun_light_onErrorContainer">#410002</color>
+    <color name="theme_kore_sun_light_background">#FAFDFA</color>
+    <color name="theme_kore_sun_light_onBackground">#191C1B</color>
+    <color name="theme_kore_sun_light_surface">#FAFDFA</color>
+    <color name="theme_kore_sun_light_onSurface">#191C1B</color>
+    <color name="theme_kore_sun_light_surfaceVariant">#DBE5E0</color>
+    <color name="theme_kore_sun_light_onSurfaceVariant">#3F4946</color>
+    <color name="theme_kore_sun_light_outline">#6F7975</color>
+    <color name="theme_kore_sun_light_inverseOnSurface">#EFF1EF</color>
+    <color name="theme_kore_sun_light_inverseSurface">#2E3130</color>
+    <color name="theme_kore_sun_light_inversePrimary">#5ADBBF</color>
+    <color name="theme_kore_sun_light_shadow">#000000</color>
+    <color name="theme_kore_sun_light_surfaceTint">#006B5A</color>
+    <color name="theme_kore_sun_light_surfaceTintColor">#006B5A</color>
+    <color name="theme_kore_sun_dark_primary">#37BFA4</color>
+    <color name="theme_kore_sun_dark_onPrimary">#00382E</color>
+    <color name="theme_kore_sun_dark_primaryContainer">#005143</color>
+    <color name="theme_kore_sun_dark_onPrimaryContainer">#7AF8DB</color>
+    <color name="theme_kore_sun_dark_secondary">#B1CCC3</color>
+    <color name="theme_kore_sun_dark_onSecondary">#1D352F</color>
+    <color name="theme_kore_sun_dark_secondaryContainer">#334B45</color>
+    <color name="theme_kore_sun_dark_onSecondaryContainer">#CDE8DF</color>
+    <color name="theme_kore_sun_dark_tertiary">#AACBE4</color>
+    <color name="theme_kore_sun_dark_onTertiary">#103447</color>
+    <color name="theme_kore_sun_dark_tertiaryContainer">#2A4A5F</color>
+    <color name="theme_kore_sun_dark_onTertiaryContainer">#C7E7FF</color>
+    <color name="theme_kore_sun_dark_error">#FFB4AB</color>
+    <color name="theme_kore_sun_dark_errorContainer">#93000A</color>
+    <color name="theme_kore_sun_dark_onError">#690005</color>
+    <color name="theme_kore_sun_dark_onErrorContainer">#FFDAD6</color>
+    <color name="theme_kore_sun_dark_background">#191C1B</color>
+    <color name="theme_kore_sun_dark_onBackground">#E1E3E0</color>
+    <color name="theme_kore_sun_dark_surface">#191C1B</color>
+    <color name="theme_kore_sun_dark_onSurface">#E1E3E0</color>
+    <color name="theme_kore_sun_dark_surfaceVariant">#3F4946</color>
+    <color name="theme_kore_sun_dark_onSurfaceVariant">#BFC9C4</color>
+    <color name="theme_kore_sun_dark_outline">#89938F</color>
+    <color name="theme_kore_sun_dark_inverseOnSurface">#191C1B</color>
+    <color name="theme_kore_sun_dark_inverseSurface">#E1E3E0</color>
+    <color name="theme_kore_sun_dark_inversePrimary">#006B5A</color>
+    <color name="theme_kore_sun_dark_shadow">#000000</color>
+    <color name="theme_kore_sun_dark_surfaceTint">#5ADBBF</color>
+    <color name="theme_kore_sun_dark_surfaceTintColor">#5ADBBF</color>
+
+
+    <!-- Other colors, not used -->
+    <color name="kore_blue_dark_background">#363640</color>
+    <color name="kore_blue_dark_surface">#363640</color>
+    <color name="kore_blue_dark_surface_variant">#3D3D4D</color>
+
     <!-- Night Theme colors -->
     <color name="dark_background">#ff1b1b1b</color>
     <color name="dark_content_background">#ff333333</color>

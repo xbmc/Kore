@@ -24,8 +24,7 @@
         android:id="@+id/sections_button_bar"
         android:layout_width="@dimen/buttonbar_height"
         android:layout_height="match_parent"
-        android:background="?attr/colorSurface"
-        android:elevation="@dimen/kore_elevation_level2"
+        style="@style/Widget.Kore.BottomPanel"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent">
 

@@ -82,5 +82,6 @@
         app:layout_constraintBottom_toBottomOf="@id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/title"
-        app:layout_constraintTop_toTopOf="@id/title" />
+        app:layout_constraintTop_toTopOf="@id/title"
+        app:tint="?attr/colorFinished" />
 </androidx.constraintlayout.widget.ConstraintLayout>

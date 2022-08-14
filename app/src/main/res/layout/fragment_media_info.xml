@@ -294,6 +294,7 @@
         android:contentDescription="@string/play"
         app:fabSize="normal"
         app:useCompatPadding="true"
+        style="?attr/floatingActionButtonPrimaryStyle"
         app:layout_anchor="@id/media_panel"
         app:layout_anchorGravity="bottom|end"
         app:layout_scrollFlags="scroll|enterAlways"
