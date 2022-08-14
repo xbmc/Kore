@@ -238,7 +238,7 @@ public class UIUtils {
      * @param play true if playing, false if paused
      */
     public static void setPlayPauseButtonIcon(Context context, ImageView view, boolean play) {
-        view.setImageResource(play ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp );
+        view.setImageResource(play ? R.drawable.ic_round_pause_24 : R.drawable.ic_round_play_arrow_24 );
     }
 
     /**

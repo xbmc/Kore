@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            app:icon="@drawable/ic_add_box_white_24dp"
+            app:icon="@drawable/ic_round_add_circle_outline_24"
             style="@style/Widget.Material3.Button.Icon"
             android:text="@string/add_xbmc"/>
     </LinearLayout>

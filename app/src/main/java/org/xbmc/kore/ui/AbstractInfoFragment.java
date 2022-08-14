@@ -428,8 +428,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         if (!TextUtils.isEmpty(dataHolder.getDescription())) {
             sectionVisibility = View.VISIBLE;
 
-            final int iconCollapseResId = R.drawable.ic_expand_more_white_24dp;
-            final int iconExpandResId = R.drawable.ic_expand_less_white_24dp;
+            final int iconCollapseResId = R.drawable.ic_round_expand_more_24;
+            final int iconExpandResId = R.drawable.ic_round_expand_less_24;
             binding.mediaDescription.setOnClickListener(v -> {
                 binding.mediaDescription.toggle();
                 binding.showAll.setImageResource(binding.mediaDescription.isExpanded() ? iconCollapseResId : iconExpandResId);

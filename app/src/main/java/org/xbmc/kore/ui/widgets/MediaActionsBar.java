@@ -318,7 +318,10 @@ public class MediaActionsBar extends LinearLayout {
         if (activePlayerType.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) return;
 
         if (repeatMode != null) binding.repeat.setMode(repeatMode);
-        if (shuffled != null) binding.shuffle.setHighlight(shuffled);
+        if (shuffled != null) {
+            binding.shuffle.setHighlight(shuffled);
+            binding.shuffle.setImageResource(shuffled ? R.drawable.ic_round_shuffle_on_24 : R.drawable.ic_round_shuffle_24);
+        }
         if (partymode != null) binding.partyMode.setHighlight(partymode);
     }
 }

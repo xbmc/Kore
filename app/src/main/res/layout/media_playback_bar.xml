@@ -21,7 +21,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="@drawable/ic_skip_previous_white_24dp"
+        android:src="@drawable/ic_round_skip_previous_24"
         android:contentDescription="@string/previous"/>
     <ImageButton
         android:id="@+id/rewind"
@@ -29,7 +29,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="@drawable/ic_fast_rewind_white_24dp"
+        android:src="@drawable/ic_round_fast_rewind_24"
         android:contentDescription="@string/rewind"/>
     <ImageButton
         android:id="@+id/play"
@@ -37,7 +37,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="@drawable/ic_play_arrow_white_24dp"
+        android:src="@drawable/ic_round_play_arrow_24"
         android:contentDescription="@string/play"/>
     <ImageButton
         android:id="@+id/stop"
@@ -45,7 +45,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="@drawable/ic_stop_white_24dp"
+        android:src="@drawable/ic_round_stop_24"
         android:contentDescription="@string/stop"/>
     <ImageButton
         android:id="@+id/fast_forward"
@@ -53,7 +53,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="@drawable/ic_fast_forward_white_24dp"
+        android:src="@drawable/ic_round_fast_forward_24"
         android:contentDescription="@string/fast_forward"/>
     <ImageButton
         android:id="@+id/next"
@@ -61,6 +61,6 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         style="@style/Widget.Kore.Button.Borderless"
-        android:src="@drawable/ic_skip_next_white_24dp"
+        android:src="@drawable/ic_round_skip_next_24"
         android:contentDescription="@string/next"/>
 </merge>

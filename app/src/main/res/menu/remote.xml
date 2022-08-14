@@ -20,7 +20,7 @@
     <item
         android:id="@+id/action_on_off"
         android:title="@string/power"
-        android:icon="@drawable/ic_settings_power_white_24dp"
+        android:icon="@drawable/ic_round_power_settings_new_24"
         android:orderInCategory="1"
         app:iconTint="?attr/colorOnSurfaceVariant"
         app:showAsAction="ifRoom">
@@ -39,7 +39,7 @@
     </item>
     <item android:id="@+id/send_text"
         android:title="@string/send_text"
-        android:icon="@drawable/ic_keyboard_white_24dp"
+        android:icon="@drawable/ic_outline_keyboard_24"
         android:orderInCategory="2"
         app:iconTint="?attr/colorOnSurfaceVariant"
         app:showAsAction="ifRoom"/>

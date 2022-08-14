@@ -116,7 +116,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/home"
-            android:src="@drawable/ic_home_white_24dp" />
+            android:src="@drawable/ic_round_dashboard_24" />
 
         <ImageButton
             android:id="@+id/movies"
@@ -125,7 +125,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/movies"
-            android:src="@drawable/ic_movie_white_24dp" />
+            android:src="@drawable/ic_round_movie_24" />
 
         <ImageButton
             android:id="@+id/tv_shows"
@@ -134,7 +134,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/tv_shows"
-            android:src="@drawable/ic_tv_white_24dp" />
+            android:src="@drawable/ic_round_tv_24" />
 
         <ImageButton
             android:id="@+id/music"
@@ -143,7 +143,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/music"
-            android:src="@drawable/ic_headset_white_24dp" />
+            android:src="@drawable/ic_round_headphones_24" />
 
         <ImageButton
             android:id="@+id/pvr"
@@ -152,7 +152,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/pvr"
-            android:src="@drawable/ic_dvr_white_24dp" />
+            android:src="@drawable/ic_round_dvr_24" />
 
         <ImageButton
             android:id="@+id/pictures"
@@ -161,7 +161,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/pictures"
-            android:src="@drawable/ic_image_white_24dp" />
+            android:src="@drawable/ic_round_image_24" />
 
         <ImageButton
             android:id="@+id/videos"
@@ -170,7 +170,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/videos"
-            android:src="@drawable/ic_video_white_24dp" />
+            android:src="@drawable/ic_round_local_movies_24" />
 
         <ImageButton
             android:id="@+id/addons"
@@ -179,7 +179,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/addons"
-            android:src="@drawable/ic_extension_white_24dp" />
+            android:src="@drawable/ic_round_extension_24" />
 
         <ImageButton
             android:id="@+id/weather"
@@ -188,7 +188,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/weather"
-            android:src="@drawable/ic_sunny_white_24dp" />
+            android:src="@drawable/ic_round_wb_sunny_24" />
 
         <ImageButton
             android:id="@+id/system"
@@ -197,7 +197,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/system"
-            android:src="@drawable/ic_settings_white_24dp" />
+            android:src="@drawable/ic_round_settings_24" />
     </LinearLayout>
 
     <org.xbmc.kore.ui.widgets.ControlPad

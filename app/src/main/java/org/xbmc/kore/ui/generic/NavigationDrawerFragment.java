@@ -149,38 +149,38 @@ public class NavigationDrawerFragment extends Fragment {
                               new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.entry_values_nav_drawer_items))));
 
         ArrayList<DrawerItem> items = new ArrayList<>(15);
-        items.add(new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName, R.drawable.ic_devices_white_24dp));
+        items.add(new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName, R.drawable.ic_round_devices_24));
         items.add(new DrawerItem()); // Divider
         items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_REMOTE,
-                                 getString(R.string.remote), R.drawable.ic_games_white_24dp));
+                                 getString(R.string.remote), R.drawable.ic_round_gamepad_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_MOVIES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MOVIES,
-                                     getString(R.string.movies), R.drawable.ic_movie_white_24dp));
+                                     getString(R.string.movies), R.drawable.ic_round_movie_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_TVSHOWS)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_TVSHOWS,
-                                     getString(R.string.tv_shows), R.drawable.ic_tv_white_24dp));
+                                     getString(R.string.tv_shows), R.drawable.ic_round_tv_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_MUSIC)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MUSIC,
-                                     getString(R.string.music), R.drawable.ic_headset_white_24dp));
+                                     getString(R.string.music), R.drawable.ic_round_headphones_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_PVR)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_PVR,
-                                     getString(R.string.pvr), R.drawable.ic_dvr_white_24dp));
+                                     getString(R.string.pvr), R.drawable.ic_round_dvr_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_FAVOURITES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FAVOURITES,
-                    getString(R.string.favourites), R.drawable.ic_star_white_24dp));
+                    getString(R.string.favourites), R.drawable.ic_round_star_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_FILES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,
-                    getString(R.string.files), R.drawable.ic_folder_white_24dp));
+                    getString(R.string.files), R.drawable.ic_round_folder_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_LOCAL_FILES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_LOCAL_FILES,
-                    getString(R.string.local_files), R.drawable.ic_folder_white_24dp));
+                    getString(R.string.local_files), R.drawable.ic_round_snippet_folder_24));
 
         if (shownItems.contains(String.valueOf(ACTIVITY_ADDONS)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_ADDONS,
-                                     getString(R.string.addons), R.drawable.ic_extension_white_24dp));
+                                     getString(R.string.addons), R.drawable.ic_round_extension_24));
         items.add(new DrawerItem()); // Divider
         items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_SETTINGS,
-                                 getString(R.string.settings), R.drawable.ic_settings_white_24dp));
+                                 getString(R.string.settings), R.drawable.ic_round_settings_24));
         mDrawerListView.setAdapter(new DrawerItemAdapter(
                 getActivity(),
                 R.layout.item_navigation_drawer,

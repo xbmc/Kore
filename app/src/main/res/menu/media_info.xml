@@ -19,7 +19,7 @@
     <item
         android:id="@+id/action_show_remote"
         android:title="@string/remote"
-        android:icon="@drawable/ic_games_white_24dp"
+        android:icon="@drawable/ic_round_gamepad_24"
         android:orderInCategory="1"
         app:iconTint="?attr/colorOnSurfaceVariant"
         app:showAsAction="always" />

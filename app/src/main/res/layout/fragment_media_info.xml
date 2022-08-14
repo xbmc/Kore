@@ -98,7 +98,7 @@
                         app:layout_constraintEnd_toEndOf="@id/poster"
                         app:layout_constraintBottom_toBottomOf="@id/poster"
                         android:contentDescription="@string/imdb"
-                        android:src="@drawable/ic_open_in_new_white_24dp"
+                        android:src="@drawable/ic_round_open_in_new_24"
                         android:elevation="@dimen/kore_elevation_level2"
                         android:visibility="invisible"/>
 
@@ -173,7 +173,7 @@
                             android:layout_weight="1"
                             android:contentDescription="@string/pinned_status"
                             android:text="@string/pinned_status"
-                            app:icon="@drawable/ic_bookmark_24dp"
+                            app:icon="@drawable/ic_round_bookmark_24"
                             android:visibility="gone" />
 
                         <com.google.android.material.button.MaterialButton
@@ -184,7 +184,7 @@
                             android:layout_weight="1"
                             android:contentDescription="@string/enabled_status"
                             android:text="@string/enabled_status"
-                            app:icon="@drawable/ic_done_white_24dp"
+                            app:icon="@drawable/ic_round_check_box_24"
                             android:visibility="gone" />
 
                         <com.google.android.material.button.MaterialButton
@@ -195,7 +195,7 @@
                             android:layout_weight="1"
                             android:contentDescription="@string/watched_status"
                             android:text="@string/watched_status"
-                            app:icon="@drawable/ic_done_white_24dp"
+                            app:icon="@drawable/ic_round_check_box_24"
                             android:visibility="gone" />
 
                         <com.google.android.material.button.MaterialButton
@@ -206,7 +206,7 @@
                             android:layout_weight="1"
                             android:contentDescription="@string/download_action"
                             android:text="@string/download_action"
-                            app:icon="@drawable/ic_get_app_white_24dp"
+                            app:icon="@drawable/ic_round_download_24"
                             android:visibility="gone" />
 
                         <com.google.android.material.button.MaterialButton
@@ -230,7 +230,7 @@
                             android:contentDescription="@string/queue_action"
                             android:text="@string/queue_action"
                             android:visibility="gone"
-                            app:icon="@drawable/ic_queue_white_24dp" />
+                            app:icon="@drawable/ic_round_queue_24" />
 
                     </LinearLayout>
 
@@ -270,7 +270,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:contentDescription="@string/toggle_expand"
-                        android:src="@drawable/ic_expand_more_white_24dp" />
+                        android:src="@drawable/ic_round_expand_more_24" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <FrameLayout
@@ -299,7 +299,7 @@
         app:layout_anchorGravity="bottom|end"
         app:layout_scrollFlags="scroll|enterAlways"
         app:layout_behavior="org.xbmc.kore.ui.behaviors.HideOnVerticalScrollBehavior"
-        app:srcCompat="@drawable/ic_play_arrow_white_24dp"/>
+        app:srcCompat="@drawable/ic_round_play_arrow_24"/>
 
     <!-- View that will be shown with the circularReveal when user presses the FAB -->
     <View
