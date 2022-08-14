@@ -296,7 +296,6 @@ public class UIUtils {
 
                 castView.setOnClickListener(v -> {
                     activity.startActivity(allCastActivityLaunchIntent);
-                    activity.overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 });
             } else {
                 binding.name.setText(actor.name);

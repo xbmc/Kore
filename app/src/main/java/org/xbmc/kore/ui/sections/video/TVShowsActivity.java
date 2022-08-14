@@ -135,7 +135,7 @@ public class TVShowsActivity extends BaseMediaActivity
                 TVShowEpisodeListFragment.newInstance(selectedTVShowId, seasonId, seasonPoster);
         getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_list_enter, R.anim.fragment_list_exit, R.anim.activity_enter, R.anim.activity_exit)
+                .setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0)
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();

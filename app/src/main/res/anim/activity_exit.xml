@@ -15,10 +15,10 @@
    limitations under the License.
 -->
 
-<set xmlns:android="http://schemas.android.com/apk/res/android" >
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="150">
 
     <alpha
-        android:duration="@integer/activity_animation_duration"
         android:fromAlpha="1.0"
         android:toAlpha="0.0"
         android:interpolator="@anim/fast_accelerate_interpolator"/>
