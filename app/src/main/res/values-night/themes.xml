@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Kore.SystemDefault" parent="Theme.Kore.Dark"/>
+    <style name="Theme.Kore.Default.Dynamic" parent="Theme.Kore.Default.Dark"/>
+    <style name="Theme.Kore.Sun.Dynamic" parent="Theme.Kore.Sun.Dark"/>
 </resources>

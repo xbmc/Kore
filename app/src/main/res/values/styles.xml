@@ -46,6 +46,17 @@
     <!-- Widget styles -->
     <style name="Widget.Kore" parent="android:Widget"/>
 
+    <!-- Toolbar -->
+    <style name="Widget.Kore.Toolbar" parent="Widget.Material3.Toolbar.Surface">
+        <item name="android:elevation">@dimen/kore_elevation_level2</item>
+        <item name="android:background">?attr/colorSurface</item>
+    </style>
+
+    <style name="Widget.Kore.DrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">?attr/colorOnSurfaceVariant</item>
+    </style>
+
     <!--
     Inheriting from Material3.Button makes buttons that are used on CardView lists highjack the onClick event, so they
     can't be used selected (see Host lists for instance). Furthermore they throws a lot of warning in LogCat regarding:
@@ -80,12 +91,12 @@
     </style>
 
     <style name="Widget.Kore.Grid.Media" parent="Widget.Kore.Grid">
-        <item name="fastScrollPopupBgColor">?attr/colorSecondary</item>
-        <item name="fastScrollPopupTextColor">?attr/colorOnSecondary</item>
+        <item name="fastScrollPopupBgColor">?attr/colorOnSurfaceVariant</item>
+        <item name="fastScrollPopupTextColor">?attr/colorSurfaceVariant</item>
         <item name="fastScrollPopupTextSize">@dimen/fastscroll_text_size</item>
         <item name="fastScrollPopupBackgroundSize">@dimen/fastscroll_popup_size</item>
-        <item name="fastScrollThumbColor">?attr/colorSecondary</item>
-        <item name="fastScrollThumbInactiveColor">?attr/colorSecondaryContainer</item>
+        <item name="fastScrollThumbColor">?attr/colorOnSurfaceVariant</item>
+        <item name="fastScrollThumbInactiveColor">?attr/colorSurfaceVariant</item>
         <item name="fastScrollPopupPosition">adjacent</item>
     </style>
 
@@ -100,7 +111,7 @@
     <style name="Widget.Kore.PagerIndicator">
         <item name="fillColor">?attr/colorPrimary</item>
         <item name="strokeColor">?attr/colorPrimary</item>
-        <item name="pageColor">?attr/colorSecondary</item>
+        <item name="pageColor">?attr/colorSurfaceVariant</item>
         <item name="strokeWidth">0dp</item>
         <item name="radius">3dp</item>
         <item name="centered">true</item>
@@ -108,19 +119,19 @@
     </style>
 
     <style name="Widget.Kore.InfoPanel" parent="Widget.Kore">
-        <item name="android:background">@drawable/background_round_bottom</item>
+        <item name="android:background">@drawable/background_round_bottom_alpha</item>
         <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>
         <item name="android:elevation">@dimen/kore_elevation_level1</item>
     </style>
 
     <style name="Widget.Kore.InfoPanel.Remote" parent="Widget.Kore.InfoPanel">
-        <item name="android:background">@drawable/background_round</item>
+        <item name="android:background">@drawable/background_round_alpha</item>
     </style>
 
-    <style name="Widget.Kore.InfoPanel.NowPlaying" parent="Widget.Kore">
+    <style name="Widget.Kore.BottomPanel" parent="Widget.Kore">
         <item name="android:background">?attr/colorSurface</item>
 <!--        <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>-->
-        <item name="android:elevation">@dimen/kore_elevation_level2</item>
+        <item name="android:elevation">@dimen/kore_elevation_level1</item>
     </style>
 
     <style name="Widget.Kore.RatingBar" parent="Widget.Kore">
@@ -247,7 +258,7 @@
 
     <style name="Widget.Kore.TextView.MediaCast" parent="Widget.Kore.TextView">
         <item name="android:background">@drawable/background_square_alpha</item>
-        <item name="android:backgroundTint">?attr/colorSurface</item>
+        <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>
         <item name="android:textAppearance">@style/TextAppearance.Material3.LabelMedium</item>
         <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:paddingStart">@dimen/small_padding</item>
@@ -262,7 +273,7 @@
     </style>
 
     <style name="Widget.Kore.SeekBar" parent="Widget.Kore">
-        <item name="android:progressTint">?attr/colorSecondary</item>
+        <item name="android:progressTint">?attr/colorOnSurfaceVariant</item>
         <item name="android:thumbTint">?attr/colorOnSurfaceVariant</item>
     </style>
 

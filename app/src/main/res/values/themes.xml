@@ -16,17 +16,18 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Kore.SystemDefault" parent="Theme.Kore.Light"/>
+    <style name="Theme.Kore.Default.Dynamic" parent="Theme.Kore.Default.Light"/>
 
-    <style name="Theme.Kore.Dark" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+    <style name="Theme.Kore.Default.Dark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
 
         <!-- Icons -->
         <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
+        <item name="drawerArrowStyle">@style/Widget.Kore.DrawerArrowToggle</item>
 
-        <!-- Colors -->
-        <item name="colorPrimary">@color/theme_kore_dark_primary</item>
+        <!-- Generated Theme Colors -->
+<!--        <item name="colorPrimary">@color/theme_kore_dark_primary</item>-->
         <item name="colorOnPrimary">@color/theme_kore_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/theme_kore_dark_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/theme_kore_dark_onPrimaryContainer</item>
@@ -34,7 +35,7 @@
         <item name="colorOnSecondary">@color/theme_kore_dark_onSecondary</item>
         <item name="colorSecondaryContainer">@color/theme_kore_dark_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/theme_kore_dark_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/theme_kore_dark_tertiary</item>
+<!--        <item name="colorTertiary">@color/theme_kore_dark_tertiary</item>-->
         <item name="colorOnTertiary">@color/theme_kore_dark_onTertiary</item>
         <item name="colorTertiaryContainer">@color/theme_kore_dark_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/theme_kore_dark_onTertiaryContainer</item>
@@ -44,19 +45,27 @@
         <item name="colorOnErrorContainer">@color/theme_kore_dark_onErrorContainer</item>
         <item name="android:colorBackground">@color/theme_kore_dark_background</item>
         <item name="colorOnBackground">@color/theme_kore_dark_onBackground</item>
-        <item name="colorSurface">@color/theme_kore_dark_surface</item>
+<!--        <item name="colorSurface">@color/theme_kore_dark_surface</item>-->
         <item name="colorOnSurface">@color/theme_kore_dark_onSurface</item>
-        <item name="colorSurfaceVariant">@color/theme_kore_dark_surfaceVariant</item>
-        <item name="colorOnSurfaceVariant">@color/theme_kore_dark_onSurfaceVariant</item>
+<!--        <item name="colorSurfaceVariant">@color/theme_kore_dark_surfaceVariant</item>-->
+<!--        <item name="colorOnSurfaceVariant">@color/theme_kore_dark_onSurfaceVariant</item>-->
         <item name="colorOutline">@color/theme_kore_dark_outline</item>
         <item name="colorOnSurfaceInverse">@color/theme_kore_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/theme_kore_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/theme_kore_dark_inversePrimary</item>
 
+        <!-- Customized Colors -->
+        <item name="colorPrimary">@color/theme_kore_blue_primaryTone70</item>
+        <item name="colorTertiary">@color/theme_kore_blue_tertiaryTone70</item>
+<!--        <item name="android:colorBackground">@color/theme_kore_blue_neutralTone20</item>-->
+        <item name="colorSurface">@color/theme_kore_blue_neutralTone20</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_blue_neutralVariantTone25</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_blue_neutralVariantTone90</item>
+
         <item name="colorInProgress">?attr/colorTertiary</item>
         <item name="colorFinished">?attr/colorSecondary</item>
-        <item name="colorWizardTitleText">?attr/colorOnSurface</item>
-        <item name="colorWizardTitleBackground">?attr/colorPrimaryContainer</item>
+        <item name="colorWizardTitleText">?attr/colorSecondary</item>
+        <item name="colorWizardTitleBackground">?attr/colorOnSecondary</item>
 
         <item name="kodiStatusConnected">?attr/colorPrimary</item>
         <item name="kodiStatusConnecting">?attr/colorTertiary</item>
@@ -64,14 +73,15 @@
     </style>
 
     <!-- Base Light theme, allowing for customization based on the Android version -->
-    <style name="Theme.Kore.LightBase" parent="Theme.Material3.Light.NoActionBar" />
+    <style name="Theme.Kore.Default.LightBase" parent="Theme.Material3.Light.NoActionBar" />
 
-    <style name="Theme.Kore.Light" parent="Theme.Kore.LightBase">
+    <style name="Theme.Kore.Default.Light" parent="Theme.Kore.Default.LightBase">
 
         <!-- Icons -->
         <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
+        <item name="drawerArrowStyle">@style/Widget.Kore.DrawerArrowToggle</item>
 
-        <!-- Colors -->
+        <!-- Generated Theme Colors -->
         <item name="colorPrimary">@color/theme_kore_light_primary</item>
         <item name="colorOnPrimary">@color/theme_kore_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/theme_kore_light_primaryContainer</item>
@@ -99,6 +109,12 @@
         <item name="colorSurfaceInverse">@color/theme_kore_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/theme_kore_light_inversePrimary</item>
 
+        <!-- Customized Colors -->
+<!--        <item name="android:colorBackground">@color/theme_kore_blue_neutralTone98</item>-->
+<!--        <item name="colorSurface">@color/theme_kore_blue_neutralTone95</item>-->
+<!--        <item name="colorSurfaceVariant">@color/theme_kore_blue_neutralVariantTone80</item>-->
+<!--        <item name="colorOnSurfaceVariant">@color/theme_kore_blue_neutralVariantTone25</item>-->
+
         <item name="colorInProgress">?attr/colorTertiary</item>
         <item name="colorFinished">?attr/colorSecondary</item>
         <item name="colorWizardTitleText">?attr/colorOnSecondary</item>
@@ -109,43 +125,66 @@
         <item name="kodiStatusUnavailable">?attr/colorError</item>
     </style>
 
-    <!-- Blue Grey theme. -->
-    <style name="Theme.Kore.Mist" parent="Theme.Kore.Dark">
-        <item name="android:colorBackground">@color/mist_background</item>
-        <item name="android:windowBackground">@color/mist_background</item>
-        <item name="android:navigationBarColor" >@color/mist_background</item>
-
-        <item name="colorPrimary">@color/mist_primary</item>
-        <item name="colorPrimaryDark">@color/mist_primary_dark</item>
-
-        <item name="colorInProgress">@color/mist_accent</item>
-        <item name="colorFinished">@color/mist_accent_darker</item>
-    </style>
+    <style name="Theme.Kore.Sun.Dynamic" parent="Theme.Kore.Sun.Light"/>
 
     <!-- Sunrise theme. -->
-    <style name="Theme.Kore.Sunrise" parent="Theme.Kore.Light">
-        <item name="android:colorBackground">@color/sunrise_background</item>
-        <item name="android:windowBackground">@color/sunrise_background</item>
-        <item name="android:navigationBarColor" >@color/sunrise_background</item>
-
-        <item name="colorPrimary">@color/sunrise_primary</item>
-        <item name="colorPrimaryDark">@color/sunrise_primary_dark</item>
-
-        <item name="colorInProgress">@color/sunrise_accent_dark</item>
-        <item name="colorFinished">@color/sunrise_accent_light</item>
+    <style name="Theme.Kore.Sun.Light" parent="Theme.Kore.Default.Light">
+        <item name="colorPrimary">@color/theme_kore_sun_light_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_sun_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_sun_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_sun_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_sun_light_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_sun_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_sun_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_sun_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_sun_light_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_sun_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_sun_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_sun_light_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_sun_light_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_sun_light_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_sun_light_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_sun_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_sun_light_background</item>
+        <item name="colorOnBackground">@color/theme_kore_sun_light_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_sun_light_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_sun_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_sun_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_sun_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_sun_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_sun_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_sun_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_sun_light_inversePrimary</item>
     </style>
 
     <!-- Sunset theme. -->
-    <style name="Theme.Kore.Sunset" parent="Theme.Kore.Dark">
-        <item name="android:colorBackground">@color/sunset_background</item>
-        <item name="android:windowBackground">@color/sunset_background</item>
-        <item name="android:navigationBarColor" >@color/sunset_background</item>
-
-        <item name="colorPrimary">@color/sunset_primary</item>
-        <item name="colorPrimaryDark">@color/sunset_primary_dark</item>
-
-        <item name="colorInProgress">@color/sunset_accent_light</item>
-        <item name="colorFinished">@color/sunset_accent_dark</item>
+    <style name="Theme.Kore.Sun.Dark" parent="Theme.Kore.Default.Dark">
+        <item name="colorPrimary">@color/theme_kore_sun_dark_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_sun_dark_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_sun_dark_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_sun_dark_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_sun_dark_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_sun_dark_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_sun_dark_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_sun_dark_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_sun_dark_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_sun_dark_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_sun_dark_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_sun_dark_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_sun_dark_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_sun_dark_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_sun_dark_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_sun_dark_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_sun_dark_background</item>
+        <item name="colorOnBackground">@color/theme_kore_sun_dark_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_sun_dark_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_sun_dark_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_sun_dark_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_sun_dark_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_sun_dark_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_sun_dark_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_sun_dark_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_sun_dark_inversePrimary</item>
     </style>
 
 </resources>

@@ -333,6 +333,7 @@ public class UIUtils {
         int color = SurfaceColors.SURFACE_2.getColor(activity);
         if (Utils.isMOrLater())
             activity.getWindow().setStatusBarColor(color);
+        color = SurfaceColors.SURFACE_1.getColor(activity);
         if (Utils.isOreoMR1OrLater())
             activity.getWindow().setNavigationBarColor(color);
     }
@@ -392,19 +393,19 @@ public class UIUtils {
      */
     public static int getThemeResourceId(String prefThemeValue) {
         switch (Integer.parseInt(prefThemeValue)) {
-            case 0:
-                return R.style.Theme_Kore_Dark;
             case 1:
-                return R.style.Theme_Kore_Light;
+                return R.style.Theme_Kore_Default_Light;
             case 2:
-                return R.style.Theme_Kore_Mist;
+                return R.style.Theme_Kore_Default_Dark;
             case 3:
-                return R.style.Theme_Kore_Sunrise;
+                return R.style.Theme_Kore_Sun_Dynamic;
             case 4:
-                return R.style.Theme_Kore_Sunset;
-            case 9:
+                return R.style.Theme_Kore_Sun_Light;
+            case 5:
+                return R.style.Theme_Kore_Sun_Dark;
+            case 0:
             default:
-                return R.style.Theme_Kore_SystemDefault;
+                return R.style.Theme_Kore_Default_Dynamic;
         }
     }
 

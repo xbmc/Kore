@@ -105,10 +105,9 @@
         android:id="@+id/sections_button_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/buttonbar_height"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="?attr/colorSurface"
-        android:elevation="@dimen/kore_elevation_level2"
-        android:orientation="horizontal">
+        style="@style/Widget.Kore.BottomPanel"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
             android:id="@+id/home"

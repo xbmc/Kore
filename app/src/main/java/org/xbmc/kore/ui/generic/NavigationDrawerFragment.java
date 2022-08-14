@@ -436,8 +436,8 @@ public class NavigationDrawerFragment extends Fragment {
         public DrawerItemAdapter(Context context, int layoutId, DrawerItem[] objects) {
             super(context, layoutId, objects);
 
-            itemBackgroundColor = MaterialColors.getColor(context, R.attr.colorSecondaryContainer, null);
-            itemColor = MaterialColors.getColor(context, R.attr.colorOnSecondaryContainer, null);
+            itemBackgroundColor = MaterialColors.getColor(context, R.attr.colorPrimaryContainer, null);
+            itemColor = MaterialColors.getColor(context, R.attr.colorOnPrimaryContainer, null);
             hostBackgroundColor = MaterialColors.getColor(context, R.attr.colorPrimaryContainer, null);
             hostColor = MaterialColors.getColor(context, R.attr.colorOnPrimaryContainer, null);
         }
