@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.transition.MaterialFadeThrough;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;
@@ -206,7 +208,7 @@ public class MusicActivity extends BaseMediaActivity
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_list_enter, R.anim.fragment_list_exit, R.anim.activity_enter, R.anim.activity_exit)
+                .setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0)
                 .replace(R.id.fragment_container, albumListFragment)
                 .addToBackStack(null)
                 .commit();

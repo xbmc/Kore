@@ -15,8 +15,6 @@
    limitations under the License.
 -->
 <resources>
-
-	<integer name="activity_animation_duration">200</integer>
     <integer name="fragment_animation_duration">200</integer>
     <integer name="button_touch_animation_duration_half">25</integer>
     <integer name="button_touch_animation_duration">50</integer>

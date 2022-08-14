@@ -22,9 +22,4 @@
         android:toAlpha="1.0"
         android:interpolator="@anim/fast_decelerate_interpolator"/>
 
-    <translate
-        android:fromYDelta="15%"
-        android:toYDelta="0%"
-        android:interpolator="@anim/fast_decelerate_interpolator"/>
-
 </set>
