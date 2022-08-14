@@ -397,4 +397,5 @@
     <string name="mobile_network">移动数据网</string>
     <string name="any_network">任意</string>
     <string name="always_sendtokodi_addon">总是首选 SendToKodi 插件</string>
+    <string name="party_mode">舞会模式</string>
 </resources>

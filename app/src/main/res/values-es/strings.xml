@@ -384,4 +384,5 @@
     <string name="mobile_network">Datos móviles</string>
     <string name="any_network">Cualquiera</string>
     <string name="always_sendtokodi_addon">Preferir siempre addon SendToKodi</string>
+    <string name="party_mode">Modo fiesta</string>
 </resources>

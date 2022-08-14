@@ -379,4 +379,5 @@
     <string name="any_network">모두</string>
     <string name="always_sendtokodi_addon">항상 SendToKodi 애드온 선호</string>
     <string name="wizard_xbmc_direct_share">공유 시트에 표시</string>
+    <string name="party_mode">파티 모드</string>
 </resources>

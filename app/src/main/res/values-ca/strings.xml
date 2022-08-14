@@ -387,4 +387,5 @@
     <string name="local_files">Fitxers locals</string>
     <string name="external_storage">Emmagatzematge</string>
     <string name="dcim">Càmera (DCIM)</string>
+    <string name="party_mode">Mode festa</string>
 </resources>
