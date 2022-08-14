@@ -13,7 +13,7 @@
         android:layout_width="@dimen/default_icon_size"
         android:layout_height="@dimen/default_icon_size"
         android:contentDescription="@string/volume_mute"
-        android:src="@drawable/ic_volume_off_white_24dp"/>
+        android:src="@drawable/ic_round_volume_off_24"/>
 
     <org.xbmc.kore.ui.widgets.HighlightButton
         android:id="@+id/vcd_volume_muted_indicator"
@@ -21,7 +21,7 @@
         android:layout_width="@dimen/default_icon_size"
         android:layout_height="@dimen/default_icon_size"
         android:contentDescription="@string/volume_mute"
-        android:src="@drawable/ic_volume_off_white_24dp"
+        android:src="@drawable/ic_round_volume_off_24"
         android:visibility="gone"/>
 
     <org.xbmc.kore.ui.widgets.VolumeLevelIndicator

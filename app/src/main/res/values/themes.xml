@@ -23,7 +23,7 @@
         <item name="android:navigationBarColor">?attr/colorSurface</item>
 
         <!-- Icons -->
-        <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
+        <item name="iconOverflow">@drawable/ic_round_more_vert_24</item>
         <item name="drawerArrowStyle">@style/Widget.Kore.DrawerArrowToggle</item>
 
         <!-- Generated Theme Colors -->
@@ -78,7 +78,7 @@
     <style name="Theme.Kore.Default.Light" parent="Theme.Kore.Default.LightBase">
 
         <!-- Icons -->
-        <item name="iconOverflow">@drawable/ic_more_vert_white_24dp</item>
+        <item name="iconOverflow">@drawable/ic_round_more_vert_24</item>
         <item name="drawerArrowStyle">@style/Widget.Kore.DrawerArrowToggle</item>
 
         <!-- Generated Theme Colors -->

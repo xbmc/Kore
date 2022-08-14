@@ -74,7 +74,7 @@ public class RatingBar extends LinearLayoutCompat {
             foregroundColor = a.getColor(R.styleable.RatingBar_foregroundColor,
                                          MaterialColors.getColor(context, R.attr.colorOnSurfaceVariant, null));
             iconCount = a.getInteger(R.styleable.RatingBar_iconCount, 5);
-            iconResourceId = a.getResourceId(R.styleable.RatingBar_icon, R.drawable.ic_star_white_24dp);
+            iconResourceId = a.getResourceId(R.styleable.RatingBar_icon, R.drawable.ic_round_star_rate_24);
         } finally {
             a.recycle();
         }

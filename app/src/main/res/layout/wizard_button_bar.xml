@@ -40,6 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:text="@string/next"
-        app:icon="@drawable/ic_chevron_right_white_24dp"
+        app:icon="@drawable/ic_round_navigate_next_24"
         style="@style/Widget.Material3.Button.Icon"/>
 </RelativeLayout>

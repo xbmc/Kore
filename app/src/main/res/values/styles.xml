@@ -137,7 +137,7 @@
     <style name="Widget.Kore.RatingBar" parent="Widget.Kore">
         <item name="backgroundColor">?attr/colorSurfaceVariant</item>
         <item name="foregroundColor">?attr/colorOnSurfaceVariant</item>
-        <item name="icon">@drawable/ic_star_white_24dp</item>
+        <item name="icon">@drawable/ic_round_star_rate_24</item>
     </style>
 
     <style name="Widget.Kore.ControlPad" parent="Widget.Kore">

@@ -61,15 +61,15 @@ public class RepeatModeButton extends HighlightButton {
 
         switch (mode) {
             case OFF:
-                setImageResource(R.drawable.ic_repeat_white_24dp);
+                setImageResource(R.drawable.ic_round_repeat_24);
                 setHighlight(false);
                 break;
             case ONE:
-                setImageResource(R.drawable.ic_repeat_one_white_24dp);
+                setImageResource(R.drawable.ic_round_repeat_one_on_24);
                 setHighlight(true);
                 break;
             case ALL:
-                setImageResource(R.drawable.ic_repeat_white_24dp);
+                setImageResource(R.drawable.ic_round_repeat_on_24);
                 setHighlight(true);
                 break;
         }

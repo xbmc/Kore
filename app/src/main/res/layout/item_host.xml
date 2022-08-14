@@ -28,7 +28,7 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:padding="@dimen/default_icon_padding"
-        android:src="@drawable/ic_devices_white_24dp"
+        android:src="@drawable/ic_round_devices_24"
         android:contentDescription="@string/app_name" />
 
     <ImageView

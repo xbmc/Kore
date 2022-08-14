@@ -79,7 +79,7 @@
         android:layout_height="@dimen/small_icon_size"
         android:background="@null"
         android:contentDescription="@string/watched_status"
-        android:src="@drawable/ic_done_white_24dp"
+        android:src="@drawable/ic_round_check_24"
         app:layout_constraintBottom_toTopOf="@+id/list_context_menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

@@ -65,5 +65,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_cancel_white_24dp" />
+        android:src="@drawable/ic_round_disabled_visible_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>
