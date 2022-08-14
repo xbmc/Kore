@@ -27,9 +27,9 @@
         android:id="@+id/panel_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/now_playing_panel_shadow"
         android:orientation="vertical"
-        style="@style/Widget.Kore.BottomPanel" >
+        style="@style/Widget.Kore.BottomPanel"
+        android:background="@drawable/background_round_top">
 
         <LinearLayout
             android:id="@+id/collapsed_view"
@@ -40,8 +40,8 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/poster"
                 android:layout_width="@dimen/now_playing_panel_art_width"
-                android:layout_height="@dimen/now_playing_panel_height"
-                android:scaleType="centerInside"
+                android:layout_height="@dimen/now_playing_panel_art_heigth"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/poster"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.NowPlayingArt"/>
 

@@ -34,8 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom"
-            sothree:umanoPanelHeight="@dimen/now_playing_panel_height"
-            sothree:umanoShadowHeight="@dimen/now_playing_panel_shadow"
+            sothree:umanoShadowHeight="0dp"
             sothree:umanoFadeColor="@android:color/transparent"
             sothree:umanoInitialState="hidden"/>
     </LinearLayout>

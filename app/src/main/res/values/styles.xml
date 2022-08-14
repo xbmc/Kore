@@ -180,7 +180,7 @@
     </style>
 
     <style name="ShapeAppearanceOverlay.Kore.Image.NowPlayingArt" parent="ShapeAppearanceOverlay.Kore.Image">
-        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopLeft">@dimen/corner_radius_image_poster</item>
         <item name="cornerSizeTopRight">0dp</item>
         <item name="cornerSizeBottomRight">@dimen/corner_radius_image_poster</item>
         <item name="cornerSizeBottomLeft">0dp</item>
