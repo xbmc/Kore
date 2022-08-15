@@ -149,12 +149,15 @@ public class ArtistInfoFragment extends AbstractInfoFragment
                             cursor.getString(DetailsQuery.ARTIST),null, -1, -1, null, null);
                     setDownloadButtonState(songInfo.downloadDirectoryExists());
 
+                    String artist = cursor.getString(DetailsQuery.ARTIST);
+
                     DataHolder dataHolder = getDataHolder();
-                    dataHolder.setTitle(cursor.getString(DetailsQuery.ARTIST));
+                    dataHolder.setTitle(artist);
                     dataHolder.setUndertitle(cursor.getString(DetailsQuery.GENRE));
                     dataHolder.setDescription(cursor.getString(DetailsQuery.DESCRIPTION));
                     dataHolder.setPosterUrl(cursor.getString(DetailsQuery.THUMBNAIL));
                     dataHolder.setFanArtUrl(cursor.getString(DetailsQuery.FANART));
+                    dataHolder.setSearchTerms(artist);
                     updateView(dataHolder);
                     break;
                 case LOADER_SONGS:

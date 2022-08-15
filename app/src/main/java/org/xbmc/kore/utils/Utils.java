@@ -78,34 +78,16 @@ public class Utils {
         return builder.toString();
     }
 
-    public static final String IMDB_PERSON_SEARCH_URL = "https://m.imdb.com/find?q=%s&s=nm";
-
-    public static final String IMDB_MOVIE_URL = "https://m.imdb.com/title/%s/";
-
     /**
-     * Open the IMDb web page for the given person name.
+     * Launches a Google Search for the specified terms
+     * @param context Context
+     * @param searchTerms Search terms
      */
-    public static void openImdbForPerson(Context context, String name) {
-        if (context == null || TextUtils.isEmpty(name)) {
-            return;
-        }
+    public static void launchWebSearchForTerms(Context context, String searchTerms) {
+        if (context == null || TextUtils.isEmpty(searchTerms)) return;
 
-        // Open IMDB
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_PERSON_SEARCH_URL, name)));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        context.startActivity(intent);
-    }
-
-    /**
-     * Open the IMDb web page for the given person name.
-     */
-    public static void openImdbForMovie(Context context, String imdbNumber) {
-        if (context == null || TextUtils.isEmpty(imdbNumber)) {
-            return;
-        }
-
-        // Open IMDB
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_MOVIE_URL, imdbNumber)));
+        String searchUrl = String.format("https://www.google.com/search?q=%s", searchTerms);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(searchUrl));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         context.startActivity(intent);
     }

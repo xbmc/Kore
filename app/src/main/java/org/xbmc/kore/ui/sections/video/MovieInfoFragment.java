@@ -207,7 +207,6 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     dataHolder.setPosterUrl(cursor.getString(MovieDetailsQuery.THUMBNAIL));
                     dataHolder.setRating(cursor.getDouble(MovieDetailsQuery.RATING));
                     dataHolder.setVotes(cursor.getString(MovieDetailsQuery.VOTES));
-                    dataHolder.setImdbNumber(cursor.getString(MovieDetailsQuery.IMDBNUMBER));
 
                     String director = cursor.getString(MovieDetailsQuery.DIRECTOR);
                     if (!TextUtils.isEmpty(director)) {
@@ -230,6 +229,9 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     dataHolder.setTitle(cursor.getString(MovieDetailsQuery.TITLE));
                     dataHolder.setUndertitle(cursor.getString(MovieDetailsQuery.TAGLINE));
                     dataHolder.setDescription(cursor.getString(MovieDetailsQuery.PLOT));
+
+                    dataHolder.setSearchTerms(dataHolder.getTitle() + " movie");
+
                     movieDownloadInfo = new FileDownloadHelper.MovieInfo(
                             dataHolder.getTitle(), cursor.getString(MovieDetailsQuery.FILE));
                     setDownloadButtonState(movieDownloadInfo.downloadDirectoryExists());

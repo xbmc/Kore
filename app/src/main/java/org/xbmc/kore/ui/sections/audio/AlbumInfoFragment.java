@@ -136,14 +136,18 @@ public class AlbumInfoFragment extends AbstractInfoFragment
                 case LOADER_ALBUM:
                     cursor.moveToFirst();
 
+                    String artist = cursor.getString(AlbumDetailsQuery.DISPLAYARTIST),
+                            albumTitle = cursor.getString(AlbumDetailsQuery.TITLE);
+
                     DataHolder dataHolder = getDataHolder();
 
                     dataHolder.setRating(cursor.getDouble(AlbumDetailsQuery.RATING));
-                    dataHolder.setTitle(cursor.getString(AlbumDetailsQuery.TITLE));
-                    dataHolder.setUndertitle(cursor.getString(AlbumDetailsQuery.DISPLAYARTIST));
+                    dataHolder.setTitle(albumTitle);
+                    dataHolder.setUndertitle(artist);
                     dataHolder.setDescription(cursor.getString(AlbumDetailsQuery.DESCRIPTION));
                     dataHolder.setFanArtUrl(cursor.getString(AlbumInfoFragment.AlbumDetailsQuery.FANART));
                     dataHolder.setPosterUrl(cursor.getString(AlbumInfoFragment.AlbumDetailsQuery.THUMBNAIL));
+                    dataHolder.setSearchTerms(artist + " " + albumTitle);
 
                     int year = cursor.getInt(AlbumDetailsQuery.YEAR);
                     String genres = cursor.getString(AlbumDetailsQuery.GENRE);
