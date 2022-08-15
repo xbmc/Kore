@@ -39,9 +39,10 @@ import org.xbmc.kore.databinding.FragmentMediaListBinding;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 
-public abstract class AbstractListFragment extends Fragment implements
-															SwipeRefreshLayout.OnRefreshListener {
-    private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
+public abstract class AbstractListFragment
+		extends Fragment
+		implements SwipeRefreshLayout.OnRefreshListener {
+	private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
 	private RecyclerView.Adapter<?> adapter;
 
 	protected FragmentMediaListBinding binding;

@@ -19,8 +19,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 
-public abstract class AbstractSearchableFragment extends AbstractListFragment implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
-
+public abstract class AbstractSearchableFragment
+        extends AbstractListFragment
+        implements SearchView.OnQueryTextListener {
     private String searchFilter = null;
     private String savedSearchFilter;
     private boolean supportsSearch;
