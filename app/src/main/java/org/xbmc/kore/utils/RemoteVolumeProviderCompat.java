@@ -7,9 +7,7 @@ import androidx.media.VolumeProviderCompat;
 
 import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostConnectionObserver;
-import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Application;
-import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.GlobalType;
 import org.xbmc.kore.service.MediaSessionService;
 
@@ -27,24 +25,6 @@ public class RemoteVolumeProviderCompat extends VolumeProviderCompat implements 
     public RemoteVolumeProviderCompat(HostConnection hostConnection) {
         super(VolumeProviderCompat.VOLUME_CONTROL_ABSOLUTE, KODI_MAX_VOLUME, 0);
         this.hostConnection = hostConnection;
-        synchronizeCurrentVolume();
-    }
-
-    /**
-     * Refreshes the volume level of the Compat based on the volume currently set on the Kodi device.
-     */
-    private void synchronizeCurrentVolume() {
-        new Application.GetProperties(Application.GetProperties.VOLUME).execute(hostConnection, new ApiCallback<ApplicationType.PropertyValue>() {
-            @Override
-            public void onSuccess(ApplicationType.PropertyValue result) {
-                setCurrentVolume(result.volume);
-            }
-
-            @Override
-            public void onError(int errorCode, String description) {
-                LogUtils.LOGE(TAG, "Got an error on Application.GetProperties: " + description);
-            }
-        }, callbackHandler);
     }
 
     /**
