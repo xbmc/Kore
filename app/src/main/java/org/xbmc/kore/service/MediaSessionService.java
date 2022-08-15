@@ -441,11 +441,11 @@ public class MediaSessionService extends Service
                 .setContentIntent(remoteStartPendingIntent)
                 .setContentTitle(title)
                 .setContentText(underTitle)
-                .addAction(R.drawable.ic_round_skip_previous_24, this.getString(R.string.rewind), skippreviousPI)
+                .addAction(R.drawable.ic_round_skip_previous_24, this.getString(R.string.previous), skippreviousPI)
                 .addAction(R.drawable.ic_round_fast_rewind_24, this.getString(R.string.rewind), rewindPI)
                 .addAction(playPauseIcon, this.getString(R.string.play), playPausePI)
                 .addAction(R.drawable.ic_round_fast_forward_24, this.getString(R.string.fast_forward), fastforwardPI)
-                .addAction(R.drawable.ic_round_skip_next_24, this.getString(R.string.fast_forward), skipnextPI)
+                .addAction(R.drawable.ic_round_skip_next_24, this.getString(R.string.next), skipnextPI)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                                   .setMediaSession(mediaSession.getSessionToken())
                                   .setShowActionsInCompactView(actionsInCompactView));

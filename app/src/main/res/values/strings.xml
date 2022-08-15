@@ -214,36 +214,19 @@
     <string name="episode_number">Episode %1$d</string>
 
     <string name="votes">%1$s votes</string>
-    <string name="max_rating" translatable="false">/%1$s</string>
-    <string name="max_rating_video" translatable="false">/10</string>
 
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
     <string name="thumbnail">Thumbnail</string>
 
-    <string name="error_getting_properties">Couldn\'t get Kodi properties.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\n
-    	Error message: %1$s.</string>
-    <string name="error_getting_addon_info">Couldn\'t get Addon information.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_getting_source_info">Couldn\'t browse files.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_play_media_file">Couldn\'t play media file.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_play_local_file">Couldn\'t play local media file.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_queue_media_file">Couldn\'t queue media file.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_get_active_player">Couldn\'t get active player.\n
-    	Error message:
-        %1$s.</string>
+    <string name="error_getting_properties">Couldn\'t get Kodi properties.\nError message:%1$s.</string>
+    <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\nError message: %1$s.</string>
+    <string name="error_getting_addon_info">Couldn\'t get Addon information.\nError message:%1$s.</string>
+    <string name="error_getting_source_info">Couldn\'t browse files.\nError message:%1$s.</string>
+    <string name="error_play_media_file">Couldn\'t play media file.\nError message:%1$s.</string>
+    <string name="error_play_local_file">Couldn\'t play local media file.\nError message:%1$s.</string>
+    <string name="error_queue_media_file">Couldn\'t queue media file.\nError message:%1$s.</string>
+    <string name="error_get_active_player">Couldn\'t get active player.\nError message:%1$s.</string>
     <string name="error_share_video">Couldn\'t share video to Kodi.</string>
     <string name="error_reading_local_storage">Couldn\'t read the local storage. Did you give Kore permission to access file storage?</string>
     <string name="error_starting_http_server">Couldn\'t create or start HTTP server.</string>
@@ -258,37 +241,25 @@
 
     <string name="general_error_executing_action">Error executing action: %1$s</string>
     <string name="error_getting_playlist">Error fetching playlist</string>
-    <string name="error_message">Error message: %1$s</string>
     <string name="playlist_empty">Playlist empty</string>
     <string name="clear_playlist">Clear playlist</string>
     <string name="source_empty">Media source empty</string>
 
     <string name="swipe_down_to_refresh">Swipe down to refresh</string>
-    <string name="no_movies_found_refresh">No movies found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_tvshows_found_refresh">No TV Shows found\n\n
-    	Swipe down to refresh</string>
+    <string name="no_movies_found_refresh">No movies found\n\nSwipe down to refresh</string>
+    <string name="no_tvshows_found_refresh">No TV Shows found\n\nSwipe down to refresh</string>
     <string name="no_episodes_found">No episodes found</string>
-    <string name="no_artists_found_refresh">No artists found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_albums_found_refresh">No albums found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_genres_found_refresh">No genres found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_addons_found_refresh">No addons found or not connected\n\n
-    	Swipe down to refresh</string>
-    <string name="no_music_videos_found_refresh">No videos found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_channel_groups_found_refresh">No channel groups found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_channels_found_refresh">No channels found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_favourites_found_refresh">No favourites found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_recordings_found_refresh">No recordings found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_broadcasts_found_refresh">No broadcasts found\n\n
-    	Swipe down to refresh</string>
+    <string name="no_artists_found_refresh">No artists found\n\nSwipe down to refresh</string>
+    <string name="no_albums_found_refresh">No albums found\n\nSwipe down to refresh</string>
+    <string name="no_genres_found_refresh">No genres found\n\nSwipe down to refresh</string>
+    <string name="no_songs_found_refresh">No songs found\n\nSwipe down to refresh</string>
+    <string name="no_addons_found_refresh">No addons found or not connected\n\nSwipe down to refresh</string>
+    <string name="no_music_videos_found_refresh">No videos found\n\nSwipe down to refresh</string>
+    <string name="no_channel_groups_found_refresh">No channel groups found\n\nSwipe down to refresh</string>
+    <string name="no_channels_found_refresh">No channels found\n\nSwipe down to refresh</string>
+    <string name="no_favourites_found_refresh">No favourites found\n\nSwipe down to refresh</string>
+    <string name="no_recordings_found_refresh">No recordings found\n\nSwipe down to refresh</string>
+    <string name="no_broadcasts_found_refresh">No broadcasts found\n\nSwipe down to refresh</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_cast_info">No cast info to display</string>
 
@@ -410,6 +381,8 @@
     <string name="always_sendtokodi_addon">Prefer SendToKodi addon</string>
     <string name="remote_bar_items">Bottom bar shortcuts</string>
     <string name="nav_drawer_items">Side menu shortcuts</string>
+    <string name="download_network_types_title">Restrict media downloads</string>
+    <string name="download_network_types_summary">Select network types over which media downloads are allowed</string>
 
     <string name="about">About</string>
     <string name="about_desc"><![CDATA[
@@ -449,8 +422,6 @@
     <string name="single_column">Single column</string>
     <string name="multi_column">Multi-column</string>
 
-    <string name="download_network_types_title">Restrict media downloads</string>
-    <string name="download_network_types_summary">Select network types over which media downloads are allowed</string>
     <string name="songs">Songs</string>
 
     <string name="read_phone_state_permission_denied">Permission denied. Won\'t be able to pause playback during calls.</string>
@@ -464,9 +435,6 @@
     <string name="muted">muted</string>
     <string name="no_item_available_to_play">Error: no item available to play.</string>
     <string name="Refreshing_not_implemented_for_this_item">Refreshing not implemented for this item</string>
-    <string name="no_songs_found_refresh">No songs found\n\n
-    	Swipe down to refresh</string>
-    <string name="not_implemented">Not implemented</string>
     <string name="zeroprogress">0:00</string>
 
     <string name="toggle_expand">Expand/Collapse</string>
@@ -476,6 +444,19 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobile</string>
     <string name="any_network">Any</string>
-    <string name="max_rating_music" translatable="false">/5</string>
+
+    <string name="error_message">Not used, to be removed</string>
+    <string name="not_implemented">Not used, to be removed</string>
+    <string name="max_rating" translatable="false">Not used, to be removed</string>
+    <string name="max_rating_music" translatable="false">Not used, to be removed</string>
+    <string name="max_rating_video" translatable="false">Not used, to be removed</string>
+    <string name="seen">Not used, to be removed</string>
+    <string name="pin_unpin">Not used, to be removed</string>
+    <string name="theme_mist">Not used, to be removed</string>
+    <string name="notification_seek_jump">Not used, to be removed</string>
+    <string name="notification_seek_jump_speed">Not used, to be removed</string>
+    <string name="notification_seek_jump_step">Not used, to be removed</string>
+    <string name="disable_local_playback_support">Not used, to be removed</string>
+    <string name="disable_local_playback_support_summary">Not used, to be removed</string>
 
 </resources>
