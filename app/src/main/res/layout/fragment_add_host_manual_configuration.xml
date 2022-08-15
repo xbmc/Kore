@@ -15,13 +15,14 @@
    limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
     tools:ignore="Autofill" >
 
     <ScrollView
@@ -38,20 +39,20 @@
                 android:id="@android:id/title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/wizard_title"
-                style="@style/WizardTitle"
+                style="@style/Widget.Kore.TextView.WizardTitle"
                 android:text="@string/wizard_manual_configuration" />
 
             <TextView
                 android:id="@android:id/message"
-                style="@style/WizardMessage"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/title"
-
+                style="@style/Widget.Kore.TextView.WizardMessage"
                 android:text="@string/wizard_manual_configuration_message"/>
 
             <EditText
                 android:id="@+id/kodi_name"
-                style="@style/TextAppearance.EditText"
+                style="@style/Widget.Kore.TextView.Edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/message"
@@ -64,7 +65,7 @@
 
             <EditText
                 android:id="@+id/kodi_http_port"
-                style="@style/TextAppearance.EditText"
+                style="@style/Widget.Kore.TextView.Edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_name"
@@ -76,7 +77,7 @@
 
             <EditText
                 android:id="@+id/kodi_ip_address"
-                style="@style/TextAppearance.EditText"
+                style="@style/Widget.Kore.TextView.Edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/kodi_http_port"
@@ -88,7 +89,7 @@
 
             <EditText
                 android:id="@+id/kodi_username"
-                style="@style/TextAppearance.EditText"
+                style="@style/Widget.Kore.TextView.Edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_ip_address"
@@ -101,7 +102,7 @@
 
             <EditText
                 android:id="@+id/kodi_password"
-                style="@style/TextAppearance.EditText"
+                style="@style/Widget.Kore.TextView.Edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_username"
@@ -114,15 +115,16 @@
 
             <TextView
                 android:id="@android:id/text1"
-                style="@style/WizardMessage"
                 android:layout_height="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_below="@+id/kodi_password"
                 android:layout_marginTop="16dp"
+                style="@style/Widget.Kore.TextView.WizardMessage"
                 android:text="@string/wizard_manual_configuration_message_advanced"/>
 
             <EditText
                 android:id="@+id/kodi_tcp_port"
-                style="@style/TextAppearance.EditText"
+                style="@style/Widget.Kore.TextView.Edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/text1"
@@ -143,7 +145,7 @@
 
             <EditText
                 android:id="@+id/kodi_event_server_port"
-                style="@style/TextAppearance.EditText"
+                style="@style/Widget.Kore.TextView.Edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_tcp_port"
@@ -164,7 +166,7 @@
 
             <EditText
                 android:id="@+id/kodi_wol_port"
-                style="@style/TextAppearance.EditText"
+                style="@style/Widget.Kore.TextView.Edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kodi_event_server_port"
@@ -175,7 +177,7 @@
 
             <EditText
                 android:id="@+id/kodi_mac_address"
-                style="@style/TextAppearance.EditText"
+                style="@style/Widget.Kore.TextView.Edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/kodi_wol_port"
@@ -196,12 +198,8 @@
         </RelativeLayout>
     </ScrollView>
 
-    <View
-        android:id="@+id/separator"
-        style="@style/DefaultDividerH"/>
-
-    <include layout="@layout/wizard_button_bar"
+    <include
         android:id="@+id/include_wizard_button_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        layout="@layout/wizard_button_bar"/>
+
 </LinearLayout>

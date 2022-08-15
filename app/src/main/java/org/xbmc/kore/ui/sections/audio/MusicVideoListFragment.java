@@ -149,15 +149,15 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
 
             // Get the art dimensions
             Resources resources = context.getResources();
-            artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
-            artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
+            artHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
+            artWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_height_square);
         }
 
         @NonNull
         @Override
         public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
-                                      .inflate(R.layout.grid_item_music_video, parent, false);
+                                      .inflate(R.layout.item_music_generic, parent, false);
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);
         }
         protected int getSectionColumnIdx() { return MusicVideosListQuery.TITLE; }
@@ -170,7 +170,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
         TextView titleView;
         TextView artistAlbumView;
         TextView durationGenresView;
-        ImageView artView;
+        ImageView artView, contextMenu;
         HostManager hostManager;
         int artWidth;
         int artHeight;
@@ -186,8 +186,9 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
             this.artHeight = artHeight;
             titleView = itemView.findViewById(R.id.title);
             artistAlbumView = itemView.findViewById(R.id.details);
-            durationGenresView = itemView.findViewById(R.id.duration);
+            durationGenresView = itemView.findViewById(R.id.other_info);
             artView = itemView.findViewById(R.id.art);
+            contextMenu = itemView.findViewById(R.id.list_context_menu);
         }
         @Override
         public void bindView(Cursor cursor) {
@@ -213,7 +214,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
             dataHolder.setPosterUrl(posterUrl);
             UIUtils.loadImageWithCharacterAvatar(context, hostManager, posterUrl
                     , dataHolder.getTitle(), artView, artWidth, artHeight);
-
+            contextMenu.setVisibility(View.GONE);
             artView.setTransitionName("a"+dataHolder.getId());
         }
     }

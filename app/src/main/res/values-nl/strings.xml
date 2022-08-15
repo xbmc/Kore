@@ -201,7 +201,6 @@
     <string name="remaining_cast_count">%d meer</string>
     <string name="general_error_executing_action">Fout bij het uitvoeren van actie: %1$s</string>
     <string name="error_getting_playlist">Fout bij ophalen van afspeellijst</string>
-    <string name="error_message">Foutmelding: %1$s</string>
     <string name="playlist_empty">Afspeellijst leeg</string>
     <string name="clear_playlist">Afspeellijst leegmaken</string>
     <string name="source_empty">Mediabron is leeg</string>
@@ -237,7 +236,6 @@
     <string name="item_sent_to_kodi">Naar Kodi verstuurd</string>
     <string name="no_suitable_playlist">Geen geschikte afspeellijst gevonden voor mediatype.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Gezien</string>
     <string name="download">Downloaden</string>
     <string name="confirm_movie_download">Weet je zeker dat je deze film wilt downloaden?\nDe film wordt op de achtergrond gedownload maar dit kan enige tijd duren.</string>
     <string name="confirm_episode_download">Weet je zeker dat je deze aflevering wilt downloaden?\nDe aflevering wordt op de achtergrond gedownload maar dit kan enige tijd duren.</string>
@@ -267,7 +265,6 @@
     <string name="enable_disable">Add-on in-/uitschakelen</string>
     <string name="addon_enabled">Add-on ingeschakeld</string>
     <string name="addon_disabled">Add-on uitgeschakeld</string>
-    <string name="pin_unpin">Add-on vast-/losmaken</string>
     <string name="addon_pinned">Add-on vastgemaakt</string>
     <string name="addon_unpinned">Add-on losgemaakt</string>
     <!-- Filters on list menus -->
@@ -289,7 +286,6 @@
     <string name="theme">Thema</string>
     <string name="theme_night">Nacht</string>
     <string name="theme_day">Dag</string>
-    <string name="theme_mist">Mist</string>
     <string name="theme_sunrise">Zonsopgang</string>
     <string name="theme_sunset">Zonsondergang</string>
     <string name="switch_to_remote">Tonen bij starten van media</string>
@@ -298,9 +294,6 @@
     <string name="show_notification">Afspeelmelding tonen tijdens afspelen</string>
     <string name="show_now_playing_panel">Afspeelbalk tonen tijdens afspelen</string>
     <string name="show_now_playing_panel_summary">Toont een uitvouwbare balk onderaan het scherm wanneer media wordt afgespeeld</string>
-    <string name="notification_seek_jump">Vooruit- en terugspoelen in grote stappen</string>
-    <string name="notification_seek_jump_speed">De weergavesnelheid wijzigen met de afspeelmelding</string>
-    <string name="notification_seek_jump_step">In grote stappen vooruit of terug springen met de afspeelmelding</string>
     <string name="pause_during_calls">Pauzeren tijdens oproep</string>
     <string name="use_hardware_volume_keys">Fysieke volumeknoppen gebruiken</string>
     <string name="vibrate_on_remote">Trillen bij aanraken</string>
@@ -363,12 +356,9 @@
     <string name="no_item_available_to_play">Foutmelding: niets om af te spelen.</string>
     <string name="Refreshing_not_implemented_for_this_item">Vernieuwen is net gïmplementeerd voor dit item</string>
     <string name="no_songs_found_refresh">Geen nummers gevonden\n\nVeeg omlaag om te vernieuwen</string>
-    <string name="not_implemented">Niet geïmplementeerd</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Uit-/Samenvouwen</string>
-    <string name="play_locally">Lokaal afspelen</string>
-    <string name="disable_local_playback_support">Schakel lokaal afspelen uit</string>
-    <string name="disable_local_playback_support_summary">Schakelt de ondersteuning om media lokaal af te spelen uit</string>
+    <string name="stream_action">Lokaal afspelen</string>
     <string name="language">Taal</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobiel</string>

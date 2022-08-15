@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import com.google.android.material.color.MaterialColors;
+
 public class RatingBar extends LinearLayoutCompat {
 
     private @DrawableRes int iconResourceId;
@@ -64,16 +66,15 @@ public class RatingBar extends LinearLayoutCompat {
     }
 
     private void initializeView(Context context, AttributeSet attrs, int defStyle) {
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.RatingBar,
-                0, 0);
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.RatingBar, 0, 0);
 
         try {
-            backgroundColor = a.getColor(R.styleable.RatingBar_backgroundColor, 0x43000000);
-            foregroundColor = a.getColor(R.styleable.RatingBar_foregroundColor, 0xffffffff);
+            backgroundColor = a.getColor(R.styleable.RatingBar_backgroundColor,
+                                         MaterialColors.getColor(context, R.attr.colorSurfaceVariant, null));
+            foregroundColor = a.getColor(R.styleable.RatingBar_foregroundColor,
+                                         MaterialColors.getColor(context, R.attr.colorOnSurfaceVariant, null));
             iconCount = a.getInteger(R.styleable.RatingBar_iconCount, 5);
-            iconResourceId = a.getResourceId(R.styleable.RatingBar_icon, -1);
+            iconResourceId = a.getResourceId(R.styleable.RatingBar_icon, R.drawable.ic_round_star_rate_24);
         } finally {
             a.recycle();
         }

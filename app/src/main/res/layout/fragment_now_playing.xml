@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    Copyright 2015 Synced Synapse. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,173 +14,179 @@
    limitations under the License.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/include_info_panel"
-        layout="@layout/remote_info_panel"/>
+        layout="@layout/remote_info_panel" />
 
     <ImageView
         android:id="@+id/art"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/now_playing_art_height"
-        android:layout_alignParentStart="true"
+        android:layout_height="@dimen/info_art_height"
+        android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+        android:layout_marginRight="@dimen/info_panel_horiz_margin"
         android:contentDescription="@string/thumbnail"
-        android:scaleType="centerCrop"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/media_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Media playing information -->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/remote_content_hmargin"
-            android:layout_marginRight="@dimen/remote_content_hmargin"
-            android:paddingBottom="@dimen/default_padding">
+            android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+            android:layout_marginRight="@dimen/info_panel_horiz_margin"
+            android:clipChildren="false"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/media_title"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/media_panel_group"
+                style="@style/Widget.Kore.InfoPanel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/media_title_margin_top"
-                style="@style/TextAppearance.Media.Title"
-                android:paddingStart="@dimen/poster_width_plus_padding"
-                android:paddingEnd="@dimen/default_padding"
-                android:background="?attr/contentBackgroundColor"/>
-            <TextView
-                android:id="@+id/media_undertitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.Media.Subtitle"
-                android:paddingStart="@dimen/poster_width_plus_padding"
-                android:paddingEnd="@dimen/default_padding"
-                android:layout_below="@id/media_title"
-                android:background="?attr/contentBackgroundColor"/>
+                android:layout_marginTop="@dimen/info_title_margin_top">
 
-            <ImageView
-                android:id="@+id/poster"
-                android:layout_width="@dimen/now_playing_poster_width"
-                android:layout_height="@dimen/now_playing_poster_height"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="@dimen/default_padding"
-                android:layout_alignBottom="@id/media_undertitle"
-                android:contentDescription="@string/poster"
-                android:scaleType="centerCrop"/>
-
-            <!-- Progress bar -->
-            <org.xbmc.kore.ui.widgets.MediaProgressIndicator
-                android:id="@+id/progress_info"
-                android:layout_below="@id/media_undertitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/default_padding"
-                android:paddingRight="@dimen/small_padding"
-                android:paddingLeft="@dimen/small_padding"
-                android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor"/>
-
-            <!-- Media playback control buttons -->
-            <org.xbmc.kore.ui.widgets.MediaPlaybackBar
-                android:id="@+id/media_playback_bar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/buttonbar_height"
-                android:layout_below="@id/progress_info"
-                android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor"
-                style="@style/ButtonBar"
-                app:view_mode="full" />
-
-            <RelativeLayout
-                android:id="@+id/media_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/media_playback_bar"
-                android:paddingTop="@dimen/default_padding"
-                android:paddingBottom="@dimen/default_padding"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:background="?attr/contentBackgroundColor">
                 <TextView
-                    android:id="@+id/year"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/media_title"
+                    style="@style/Widget.Kore.TextView.MediaTitle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    style="@style/TextAppearance.Media.SmallDetails"/>
+                    android:paddingStart="@dimen/info_poster_width_plus_padding"
+                    android:paddingEnd="@dimen/default_padding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
                 <TextView
-                    android:id="@+id/genres"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/media_undertitle"
+                    style="@style/Widget.Kore.TextView.MediaDetails"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/year"
-                    android:layout_alignEnd="@id/year"
-                    style="@style/TextAppearance.Media.SmallDetails"/>
+                    android:paddingStart="@dimen/info_poster_width_plus_padding"
+                    android:paddingEnd="@dimen/default_padding"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/media_title" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/poster"
+                    android:layout_width="@dimen/info_poster_width"
+                    android:layout_height="@dimen/info_poster_height"
+                    android:layout_marginStart="@dimen/default_padding"
+                    android:contentDescription="@string/poster"
+                    android:elevation="@dimen/kore_elevation_level2"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@id/media_undertitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.Poster" />
+
+                <!-- Progress bar -->
+                <org.xbmc.kore.ui.widgets.MediaProgressIndicator
+                    android:id="@+id/progress_info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/small_padding"
+                    android:paddingTop="@dimen/small_padding"
+                    android:paddingBottom="@dimen/small_padding"
+                    android:paddingRight="@dimen/small_padding"
+                    app:layout_constraintTop_toBottomOf="@id/media_undertitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Media playback control buttons -->
+                <org.xbmc.kore.ui.widgets.MediaPlaybackBar
+                    android:id="@+id/media_playback_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/buttonbar_height"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/progress_info"
+                    app:view_mode="full" />
 
                 <TextView
                     android:id="@+id/rating"
+                    style="@style/Widget.Kore.TextView.MediaRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/genres"
-                    android:layout_alignParentStart="true"
-                    style="@style/TextAppearance.Media.Rating"
-                    android:layout_marginEnd="@dimen/small_padding"/>
+                    android:layout_marginStart="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    android:paddingBottom="@dimen/default_padding"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/media_playback_bar"/>
 
                 <TextView
                     android:id="@+id/rating_votes"
+                    style="@style/Widget.Kore.TextView.MediaSmallDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/year"
-                    android:layout_alignBottom="@id/year"
-                    android:layout_toEndOf="@id/rating"
-                    android:layout_toStartOf="@id/year"
-                    style="@style/TextAppearance.Media.SmallDetails"/>
+                    android:layout_marginStart="@dimen/small_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    app:layout_constraintBaseline_toBaselineOf="@id/rating"
+                    app:layout_constraintStart_toEndOf="@id/rating"/>
 
                 <TextView
-                    android:id="@+id/max_rating"
+                    android:id="@+id/year"
+                    style="@style/Widget.Kore.TextView.MediaSmallDetails"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/rating_votes"
+                    app:layout_constraintTop_toTopOf="@id/rating"
+                    android:gravity="end"/>
+
+                <TextView
+                    android:id="@+id/genres"
+                    style="@style/Widget.Kore.TextView.MediaSmallDetails"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/default_padding"
+                    android:paddingBottom="@dimen/default_padding"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/rating_votes"
+                    app:layout_constraintTop_toBottomOf="@id/year"
+                    android:gravity="end"/>
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/genres"
-                    android:layout_alignBottom="@id/genres"
-                    android:layout_toEndOf="@id/rating"
-                    android:layout_toStartOf="@id/genres"
-                    style="@style/TextAppearance.Media.SmallDetails"
-                    android:text="@string/max_rating_video"/>
-            </RelativeLayout>
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="rating,genres" />
 
-            <TextView
-                android:id="@+id/media_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/media_details"
-                style="@style/TextAppearance.Media.Info"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:background="?attr/contentBackgroundColor"/>
-
-            <View
-                android:id="@+id/separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/media_description"
-                style="@style/DefaultDividerH"/>
+                <TextView
+                    android:id="@+id/media_description"
+                    style="@style/Widget.Kore.TextView.MediaInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/barrier"
+                    android:paddingLeft="@dimen/default_padding"
+                    android:paddingRight="@dimen/default_padding" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <GridLayout
                 android:id="@+id/cast_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/separator"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_padding"
                 android:columnCount="@integer/cast_grid_view_columns"
-                android:orientation="horizontal"/>
-        </RelativeLayout>
+                android:orientation="horizontal"
+                android:useDefaultMargins="true" />
+
+        </LinearLayout>
     </ScrollView>
 
     <!--<include layout="@layout/bottom_media_bar"/>-->
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

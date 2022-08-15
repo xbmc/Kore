@@ -30,6 +30,8 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
@@ -37,7 +39,6 @@ import org.xbmc.kore.provider.MediaProvider;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -94,20 +95,20 @@ public class ArtistInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnAddToPlaylistListener(view -> {
+    protected boolean setupInfoActionsBar() {
+        setOnQueueClickListener(view -> {
             final PlaylistType.Item playListItem = new PlaylistType.Item();
             playListItem.artistid = getDataHolder().getId();
             MediaPlayerUtils.queue(ArtistInfoFragment.this, playListItem, PlaylistType.GetPlaylistsReturnType.AUDIO);
         });
-        setOnDownloadListener(view -> LoaderManager.getInstance(this).initLoader(LOADER_SONGS, null, ArtistInfoFragment.this));
+        setOnDownloadClickListener(view -> LoaderManager.getInstance(this).initLoader(LOADER_SONGS, null, ArtistInfoFragment.this));
 
         return true;
     }
 
     @Override
-    protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(v -> {
+    protected boolean setupFAB(FloatingActionButton fab) {
+        fab.setOnClickListener(v -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.artistid = getDataHolder().getId();
             playItemOnKodi(item);
@@ -148,12 +149,15 @@ public class ArtistInfoFragment extends AbstractInfoFragment
                             cursor.getString(DetailsQuery.ARTIST),null, -1, -1, null, null);
                     setDownloadButtonState(songInfo.downloadDirectoryExists());
 
+                    String artist = cursor.getString(DetailsQuery.ARTIST);
+
                     DataHolder dataHolder = getDataHolder();
-                    dataHolder.setTitle(cursor.getString(DetailsQuery.ARTIST));
+                    dataHolder.setTitle(artist);
                     dataHolder.setUndertitle(cursor.getString(DetailsQuery.GENRE));
                     dataHolder.setDescription(cursor.getString(DetailsQuery.DESCRIPTION));
                     dataHolder.setPosterUrl(cursor.getString(DetailsQuery.THUMBNAIL));
                     dataHolder.setFanArtUrl(cursor.getString(DetailsQuery.FANART));
+                    dataHolder.setSearchTerms(artist);
                     updateView(dataHolder);
                     break;
                 case LOADER_SONGS:

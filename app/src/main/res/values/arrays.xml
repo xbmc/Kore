@@ -27,9 +27,10 @@
 
     <!-- Themes in preferences-->
     <string-array name="themes_array">
-        <item>@string/theme_night</item>
+        <item>@string/theme_default_dynamic</item>
         <item>@string/theme_day</item>
-        <item>@string/theme_mist</item>
+        <item>@string/theme_night</item>
+        <item>@string/theme_sun_dynamic</item>
         <item>@string/theme_sunrise</item>
         <item>@string/theme_sunset</item>
     </string-array>
@@ -39,6 +40,7 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
     </string-array>
 
     <!-- Remote Bar items -->

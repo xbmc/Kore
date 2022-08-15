@@ -68,7 +68,7 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Tervetuloa</string>
     <string name="wizard_welcome_message">Aloitetaan lisäämällä mediakeskus. Varmista, että Kodi on käynnissä, määritetty käyttövalmiiksi ja on samassa lähiverkossa tämän laitteen kanssa.&lt;br/&gt;&lt;br/&gt;Määritysohjeita saat &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;täältä&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Kun olet valmis, paina &lt;b&gt;Seuraava&lt;/b&gt;.</string>
-    <string name="wizard_search_message">Etsitään mediakeskuksia lähiverkostaverkosta…<br/></string>
+    <string name="wizard_search_message">Etsitään mediakeskuksia lähiverkosta…<br/></string>
     <string name="wizard_search_no_host_found">Lähiverkosta ei löytynyt mediakeskuksia.<br/> Määritysohjeita löydät <a href="http://syncedsynapse.com/kore/kore-faq/">täältä</a>.<br/><br/>Paina <b>Etsi uudelleen</b> tai määritä mediakeskus manuaalisesti painamalla <b>Seuraava</b>.</string>
     <string name="wizard_search_no_network_connection">Ota verkkoyhteys käyttöön ennen mediakeskuksien etsintää.<br/></string>
     <string name="wizard_search_host_found">Lähiverkosta löytyi seuraavat mediakeskukset.<br/><br/>Valitse yksi lisättävä tai lisää muu mediakeskus manuaalisesti painamalla <b>Seuraava</b>.</string>
@@ -116,8 +116,8 @@
     <string name="rewind">Taaksepäin</string>
     <string name="repeat">Jatkuva toisto</string>
     <string name="shuffle">Sekoitus</string>
-    <string name="volume_up">Suurenna äänenvoimakkuutta</string>
-    <string name="volume_down">Pienennä äänenvoimakkuutta</string>
+    <string name="volume_up">Korota äänenvoimakkuutta</string>
+    <string name="volume_down">Alenna äänenvoimakkuutta</string>
     <string name="volume_mute">Mykistä</string>
     <string name="subtitles">Tekstitykset</string>
     <string name="audiostreams">Äänitraidat</string>
@@ -196,7 +196,6 @@
     <string name="remaining_cast_count">%d lisää</string>
     <string name="general_error_executing_action">Virhe suoritettaessa toimintoa: %1$s</string>
     <string name="error_getting_playlist">Virhe noudettaessa toistolistaa</string>
-    <string name="error_message">Virheilmoitus: %1$s</string>
     <string name="playlist_empty">Toistolista on tyhjä</string>
     <string name="clear_playlist">Tyhjennä toistolista</string>
     <string name="source_empty">Medialähde on tyhjä</string>
@@ -256,7 +255,6 @@
     <string name="item_sent_to_kodi">Välitettiin Kodiin</string>
     <string name="no_suitable_playlist">Mediatyypille sopivaa toistolistaa ei löytynyt.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Katsottu</string>
     <string name="download">Lataa</string>
     <string name="confirm_movie_download">Haluatko varmasti ladata elokuvan\?
 \n Lataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
@@ -293,10 +291,9 @@
     <string name="error_getting_file_information">Tiedoston %1$s lataukseen tarvittavia tietoja ei saatu.</string>
     <string name="author">Kehittäjä:</string>
     <string name="version">Versio:</string>
-    <string name="enable_disable">Ota lisäosa käyttöön tai poista käytöstä</string>
+    <string name="enable_disable">Ota lisäosa käyttöön tai poista se käytöstä</string>
     <string name="addon_enabled">Lisäosa otettiin käyttöön</string>
-    <string name="addon_disabled">Lisäosa poistettiin käytöstä</string>
-    <string name="pin_unpin">Kiinnitä lisäosa tai poista kiinnitys</string>
+    <string name="addon_disabled">Lisäosa ei ole käytössä</string>
     <string name="addon_pinned">Lisäosa kiinnitettiin</string>
     <string name="addon_unpinned">Lisäosan kiinnitys poistettiin</string>
     <!-- Filters on list menus -->
@@ -318,18 +315,14 @@
     <string name="theme">Teema</string>
     <string name="theme_night">Yö</string>
     <string name="theme_day">Päivä</string>
-    <string name="theme_mist">Sumu</string>
     <string name="theme_sunrise">Auringonnousu</string>
     <string name="theme_sunset">Auringonlasku</string>
     <string name="switch_to_remote">Näytä käynnistettäessä toisto Koresta</string>
     <string name="keep_remote_above_lockscreen">Näytä lukitusnäytössä</string>
     <string name="pref_keep_screen_on">Pysy hereillä</string>
     <string name="show_notification">Näytä toiston aikana ilmoitus</string>
-    <string name="show_now_playing_panel">Näytä toistetaan parhaillaan -paneeli toiston aikana</string>
+    <string name="show_now_playing_panel">Näytä \"Toistetaan parhaillaan\" -paneeli toiston aikana</string>
     <string name="show_now_playing_panel_summary">Näyttää ruudun alalaidassa laajennettavan paneelin, kun mediaa toistetaan</string>
-    <string name="notification_seek_jump">Siirrä toistokohtaa pykälittäin</string>
-    <string name="notification_seek_jump_speed">Muuta toistonopeutta, kun toistokohtaa siirretään ilmoituksesta</string>
-    <string name="notification_seek_jump_step">Käytä siirtopykäliä, kun toistokohtaa siirretään ilmoituksesta</string>
     <string name="pause_during_calls">Tauota puhelun ajaksi</string>
     <string name="use_hardware_volume_keys">Käytä laitteen äänenvoimakkuuspainikkeita</string>
     <string name="vibrate_on_remote">Värise kosketettaessa</string>
@@ -391,15 +384,13 @@
     <string name="no_songs_found_refresh">Kappaleita ei löytynyt
 \n
 \n Päivitä vetämällä alas</string>
-    <string name="not_implemented">Ei toteutettu</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Laajenna/supista</string>
-    <string name="play_locally">Toista paikallisesti</string>
-    <string name="disable_local_playback_support">Älä tue paikallista toistoa</string>
-    <string name="disable_local_playback_support_summary">Poistaa paikallisten toistomahdollisuuden käytöstä laitteessa, jossa Korea käytetään.</string>
+    <string name="stream_action">Toista paikallisesti</string>
     <string name="language">Kieli</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Matkapuhelin</string>
     <string name="any_network">Mikä tahansa</string>
     <string name="always_sendtokodi_addon">Käytä ensisijaisesti SendToKodi-lisäosaa</string>
+    <string name="party_mode">Jukeboksi</string>
 </resources>

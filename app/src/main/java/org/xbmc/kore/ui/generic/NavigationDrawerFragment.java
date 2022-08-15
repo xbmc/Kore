@@ -21,10 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -42,6 +39,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -118,7 +118,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
     }
 
@@ -139,21 +139,6 @@ public class NavigationDrawerFragment extends Fragment {
             selectItem(item, position);
         });
 
-        Resources.Theme theme = requireContext().getTheme();
-        TypedArray styledAttributes = theme.obtainStyledAttributes(new int[]{
-                R.attr.iconHosts,
-                R.attr.iconRemote,
-                R.attr.iconMovies,
-                R.attr.iconTvShows,
-                R.attr.iconMusic,
-                R.attr.iconPVR,
-                R.attr.iconFiles,
-                R.attr.iconAddons,
-                R.attr.iconSettings,
-                R.attr.iconFavourites,
-                R.attr.iconFiles
-        });
-
         HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
         String hostName = (hostInfo != null) ? hostInfo.getName() : getString(R.string.xbmc_media_center);
         int hostId = (hostInfo != null) ? hostInfo.getId() : 0;
@@ -164,53 +149,41 @@ public class NavigationDrawerFragment extends Fragment {
                               new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.entry_values_nav_drawer_items))));
 
         ArrayList<DrawerItem> items = new ArrayList<>(15);
-        items.add(new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName,
-                                 styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_HOSTS), 0)));
+        items.add(new DrawerItem(DrawerItem.TYPE_HOST, ACTIVITY_HOSTS, hostName, R.drawable.ic_round_devices_24));
+        items.add(new DrawerItem()); // Divider
         items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_REMOTE,
-                                 getString(R.string.remote),
-                                 styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_REMOTE), 0)));
+                                 getString(R.string.remote), R.drawable.ic_round_gamepad_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_MOVIES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MOVIES,
-                                     getString(R.string.movies),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_MOVIES), 0)));
+                                     getString(R.string.movies), R.drawable.ic_round_movie_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_TVSHOWS)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_TVSHOWS,
-                                     getString(R.string.tv_shows),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_TVSHOWS), 0)));
+                                     getString(R.string.tv_shows), R.drawable.ic_round_tv_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_MUSIC)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_MUSIC,
-                                     getString(R.string.music),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_MUSIC), 0)));
+                                     getString(R.string.music), R.drawable.ic_round_headphones_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_PVR)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_PVR,
-                                     getString(R.string.pvr),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_PVR), 0)));
+                                     getString(R.string.pvr), R.drawable.ic_round_dvr_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_FAVOURITES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FAVOURITES,
-                    getString(R.string.favourites),
-                    styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_FAVOURITES), 0)));
+                    getString(R.string.favourites), R.drawable.ic_round_star_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_FILES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_FILES,
-                    getString(R.string.files),
-                    styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_FILES), 0)));
+                    getString(R.string.files), R.drawable.ic_round_folder_24));
         if (shownItems.contains(String.valueOf(ACTIVITY_LOCAL_FILES)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_LOCAL_FILES,
-                    getString(R.string.local_files),
-                    styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_LOCAL_FILES), 0)));
+                    getString(R.string.local_files), R.drawable.ic_round_snippet_folder_24));
 
         if (shownItems.contains(String.valueOf(ACTIVITY_ADDONS)))
             items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_ADDONS,
-                                     getString(R.string.addons),
-                                     styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_ADDONS), 0)));
+                                     getString(R.string.addons), R.drawable.ic_round_extension_24));
         items.add(new DrawerItem()); // Divider
         items.add(new DrawerItem(DrawerItem.TYPE_NORMAL_ITEM, ACTIVITY_SETTINGS,
-                                 getString(R.string.settings),
-                                 styledAttributes.getResourceId(styledAttributes.getIndex(ACTIVITY_SETTINGS), 0)));
-
-        styledAttributes.recycle();
+                                 getString(R.string.settings), R.drawable.ic_round_settings_24));
         mDrawerListView.setAdapter(new DrawerItemAdapter(
                 getActivity(),
-                R.layout.list_item_navigation_drawer,
+                R.layout.item_navigation_drawer,
                 items.toArray(new DrawerItem[items.size()])));
 
         return mDrawerListView;
@@ -319,7 +292,7 @@ public class NavigationDrawerFragment extends Fragment {
     private void saveUserLearnedDrawer() {
         if (!mUserLearnedDrawer) {
             mUserLearnedDrawer = true;
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
             sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
 
             // Sync the drawer toggle on the first run
@@ -396,7 +369,7 @@ public class NavigationDrawerFragment extends Fragment {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mDrawerLayout.postDelayed(() -> {
             startActivity(launchIntentFinal);
-            requireActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+            requireActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
         }, CLOSE_DELAY);
     }
 
@@ -458,20 +431,15 @@ public class NavigationDrawerFragment extends Fragment {
 
     public static class DrawerItemAdapter extends ArrayAdapter<DrawerItem> {
 
-        private final int selectedItemColor, hostItemColor;
+        private final int itemBackgroundColor, itemColor, hostBackgroundColor, hostColor;
 
         public DrawerItemAdapter(Context context, int layoutId, DrawerItem[] objects) {
             super(context, layoutId, objects);
-            TypedArray styledAttributes = context
-                    .getTheme()
-                    .obtainStyledAttributes(new int[] {
-                            R.attr.colorAccent,
-                            R.attr.textColorOverPrimary
-                    });
-            Resources resources = context.getResources();
-            selectedItemColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.default_accent));
-            hostItemColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.white));
-            styledAttributes.recycle();
+
+            itemBackgroundColor = MaterialColors.getColor(context, R.attr.colorPrimaryContainer, null);
+            itemColor = MaterialColors.getColor(context, R.attr.colorOnPrimaryContainer, null);
+            hostBackgroundColor = MaterialColors.getColor(context, R.attr.colorPrimaryContainer, null);
+            hostColor = MaterialColors.getColor(context, R.attr.colorOnPrimaryContainer, null);
         }
 
         @Override
@@ -494,40 +462,39 @@ public class NavigationDrawerFragment extends Fragment {
                     if (convertView == null) {
                         convertView = ((LayoutInflater)getContext()
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                                .inflate(R.layout.list_item_navigation_drawer_divider, parent, false);
+                                .inflate(R.layout.item_divider, parent, false);
                     }
                     break;
                 case DrawerItem.TYPE_NORMAL_ITEM:
                     if (convertView == null) {
                         convertView = ((LayoutInflater)getContext()
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                                .inflate(R.layout.list_item_navigation_drawer, parent, false);
+                                .inflate(R.layout.item_navigation_drawer, parent, false);
                     }
                     icon = convertView.findViewById(R.id.drawer_item_icon);
                     icon.setImageResource(item.iconResourceId);
                     desc = convertView.findViewById(R.id.drawer_item_title);
                     desc.setText(item.desc);
                     if (selectedItemId == item.id) {
-                        icon.setColorFilter(selectedItemColor);
-                        desc.setTextColor(selectedItemColor);
+                        convertView.setBackgroundColor(itemBackgroundColor);
+                        icon.setColorFilter(itemColor);
+                        desc.setTextColor(itemColor);
                     }
                     break;
                 case DrawerItem.TYPE_HOST:
                     if (convertView == null) {
                         convertView = ((LayoutInflater)getContext()
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                                .inflate(R.layout.list_item_navigation_drawer_host, parent, false);
+                                .inflate(R.layout.item_navigation_drawer_host, parent, false);
                     }
                     icon = convertView.findViewById(R.id.drawer_item_icon);
                     icon.setImageResource(item.iconResourceId);
                     desc = convertView.findViewById(R.id.drawer_item_title);
                     desc.setText(item.desc);
                     if (selectedItemId == item.id) {
-                        icon.setColorFilter(selectedItemColor);
-                        desc.setTextColor(selectedItemColor);
-                    } else {
-                        icon.setColorFilter(hostItemColor);
-                        desc.setTextColor(hostItemColor);
+                        convertView.setBackgroundColor(hostBackgroundColor);
+                        icon.setColorFilter(hostColor);
+                        desc.setTextColor(hostColor);
                     }
                     break;
             }

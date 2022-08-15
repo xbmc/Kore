@@ -16,7 +16,6 @@
 package org.xbmc.kore.ui.sections.hosts;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -115,9 +114,7 @@ public class EditHostActivity extends BaseActivity implements
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.edit_xbmc);
-            TypedArray styledAttrs = getTheme().obtainStyledAttributes(new int[] {R.attr.iconHosts});
-            actionBar.setIcon(styledAttrs.getResourceId(styledAttrs.getIndex(0), R.drawable.ic_devices_white_24dp));
-            styledAttrs.recycle();
+            actionBar.setIcon(R.drawable.ic_round_devices_24);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }

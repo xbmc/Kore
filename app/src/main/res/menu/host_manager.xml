@@ -18,7 +18,8 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_add_host"
         android:title="@string/add_xbmc"
-        android:icon="?attr/iconNew"
+        android:icon="@drawable/ic_round_add_circle_outline_24"
         android:orderInCategory="1"
+        app:iconTint="?attr/colorOnSurfaceVariant"
         app:showAsAction="always" />
 </menu>

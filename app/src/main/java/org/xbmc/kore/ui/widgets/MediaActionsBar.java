@@ -296,7 +296,9 @@ public class MediaActionsBar extends LinearLayout {
 
         updateMutableButtons();
 
-        if (!activePlayerType.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
+        if (activePlayerType.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
+            binding.subtitles.setHighlight(getPropertiesResult.subtitleenabled);
+        } else {
             setRepeatShuffleState(getPropertiesResult.repeat, getPropertiesResult.shuffled, getPropertiesResult.partymode);
         }
     }
@@ -315,8 +317,11 @@ public class MediaActionsBar extends LinearLayout {
     public void setRepeatShuffleState(String repeatMode, Boolean shuffled, Boolean partymode) {
         if (activePlayerType.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) return;
 
-        if (repeatMode != null) UIUtils.setRepeatButton(binding.repeat, repeatMode);
-        if (shuffled != null) binding.shuffle.setHighlight(shuffled);
+        if (repeatMode != null) binding.repeat.setMode(repeatMode);
+        if (shuffled != null) {
+            binding.shuffle.setHighlight(shuffled);
+            binding.shuffle.setImageResource(shuffled ? R.drawable.ic_round_shuffle_on_24 : R.drawable.ic_round_shuffle_24);
+        }
         if (partymode != null) binding.partyMode.setHighlight(partymode);
     }
 }

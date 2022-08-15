@@ -24,16 +24,17 @@
         android:id="@+id/casts_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.Media.Title"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding"
-        android:paddingTop="@dimen/default_padding"
+        style="@style/Widget.Kore.TextView.MediaTitle"
+        android:layout_marginStart="@dimen/default_padding"
+        android:layout_marginEnd="@dimen/default_padding"
         android:text="@string/cast"/>
 
     <GridLayout
         android:id="@+id/cast_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:useDefaultMargins="true"
         android:columnCount="@integer/cast_grid_view_columns">
     </GridLayout>
 </LinearLayout>

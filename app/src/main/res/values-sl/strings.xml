@@ -168,7 +168,6 @@
     <string name="remaining_cast_count">%d drugih</string>
     <string name="general_error_executing_action">Napaka pri izvajanju dejanja: %1$s</string>
     <string name="error_getting_playlist">Napaka pri pridobivanju seznama predvajanja</string>
-    <string name="error_message">Sporočilo o napaki: %1$s</string>
     <string name="playlist_empty">Seznam predvajanja je prazen</string>
     <string name="clear_playlist">Sprazni seznam predvajanja</string>
     <string name="source_empty">Vir medija prazen</string>
@@ -201,7 +200,6 @@
     <string name="item_added_to_playlist">Dodano na seznam predvajanja</string>
     <string name="no_suitable_playlist">Ni bilo mogoče najti primernega seznama predvajanja za izbrano vrsto medija.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Videno</string>
     <string name="download">Prenos</string>
     <string name="confirm_movie_download">Ali ste prepričani, da želite prenesti izbrani film?\nFilm se bo prenesen v ozadju, to lahko traja nekaj časa.</string>
     <string name="confirm_episode_download">Ali ste prepričani, da želite prenesti izbrani epizodo?\nEpizoda se bo prenesla v ozadju, to lahko traja nekaj časa.</string>
@@ -229,7 +227,6 @@
     <string name="enable_disable">Omogoči/onemogoči razširitev</string>
     <string name="addon_enabled">Razširitev omogočena</string>
     <string name="addon_disabled">Razširitev onemogočena</string>
-    <string name="pin_unpin">Pripni/odpni razširitev</string>
     <string name="addon_pinned">Razširitev pripeta</string>
     <string name="addon_unpinned">Razširitev odpeta</string>
     <string name="hide_watched">Skrij ogledano</string>
@@ -243,7 +240,6 @@
     <string name="theme">Tema</string>
     <string name="theme_night">Noč</string>
     <string name="theme_day">Dan</string>
-    <string name="theme_mist">Megla</string>
     <string name="switch_to_remote">Prikaži ob pričetku medija</string>
     <string name="keep_remote_above_lockscreen">Pokaži nad zaklenjenim zaslonom</string>
     <string name="show_notification">Med predvajanjem prikaži obvestilo</string>
@@ -252,10 +248,9 @@
     <string name="vibrate_on_remote">Vibriranje ob dotiku</string>
     <string name="nav_drawer_items">Bližnjice  stranskega menija</string>
     <string name="about">O</string>
-    <string name="play_locally">Predvajaj lokalno</string>
+    <string name="stream_action">Predvajaj lokalno</string>
     <string name="toggle_expand">Razširi / Skrij</string>
     <string name="zeroprogress">0:00</string>
-    <string name="not_implemented">Ni implementirano</string>
     <string name="no_songs_found_refresh">Ni najdenih skladb\n\nPovlecite navzdol za osvežitev</string>
     <string name="Refreshing_not_implemented_for_this_item">Osveževanje ni implementirano za ta element</string>
     <string name="no_item_available_to_play">Napaka: noben element ni na voljo za predvajanje.</string>
@@ -291,9 +286,6 @@
     <string name="sort_by_last_played">Nazadnje predvajano</string>
     <string name="pref_keep_screen_on">Ostani buden</string>
     <string name="show_now_playing_panel">Med predvajanjem, pokaži panel trenutnega predvajanja</string>
-    <string name="notification_seek_jump">Uporabi korakte za premikanje</string>
-    <string name="notification_seek_jump_speed">Spremeni hitros predvajanja med premikanjem iz obvestila</string>
-    <string name="notification_seek_jump_step">Uporabi preskokne korake pri premikanju iz obvestila</string>
     <string name="remote_bar_items">Bližnjice spodnje v spodnji vrstici</string>
     <string name="pause_call_incoming_message">Preverite telefon, nekdo vas kliče</string>
     <string name="error_getting_pvr_info">Prišlo je do napake pri pridobivanju pvr informacij: %1$s</string>
@@ -316,8 +308,6 @@
     <string name="unable_to_play_favourite_item">Priljubljenega elementa ni bilo mogoče predvajati. Nepodprta vrsta</string>
     <string name="cannot_move_playing_item">Predmeta, ki se trenutno predvaja ali je zaustavljen, ni mogoče premakniti</string>
     <string name="no_connection_type_selected">V nastavitvah ni izbrana nobena vrsta povezave</string>
-    <string name="disable_local_playback_support">Onemogoči podporo lokalnemu predvajanju</string>
-    <string name="disable_local_playback_support_summary">Onemogoča podporo za lokalno predvajanje medijev na napravi, na kateri je nameščen Kore.</string>
     <string name="download_files_exists">Ena ali več datotek že obstaja.\nČe imajo  datoteke isto ime, jih želite prepisati ali prenesti z novim imenom?</string>
     <string name="show_now_playing_panel_summary">Med predvajanjem prikaži razširljivo ploščo na dnu zaslona</string>
     <string name="show_watched_status">Prikaži status gledanja</string>

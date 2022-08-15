@@ -50,6 +50,8 @@ public class Utils {
 
     public static boolean isOreoOrLater() { return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O; }
 
+    public static boolean isOreoMR1OrLater() { return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1; }
+
     public static boolean isROrLater() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
     }
@@ -76,38 +78,30 @@ public class Utils {
         return builder.toString();
     }
 
-    public static final String IMDB_PERSON_SEARCH_URL = "https://m.imdb.com/find?q=%s&s=nm";
-
-    public static final String IMDB_MOVIE_URL = "https://m.imdb.com/title/%s/";
-
     /**
-     * Open the IMDb web page for the given person name.
+     * Launches a Google Search for the specified terms
+     * @param context Context
+     * @param searchTerms Search terms
      */
-    public static void openImdbForPerson(Context context, String name) {
-        if (context == null || TextUtils.isEmpty(name)) {
-            return;
-        }
+    public static void launchWebSearchForTerms(Context context, String searchTerms) {
+        if (context == null || TextUtils.isEmpty(searchTerms)) return;
 
-        // Open IMDB
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_PERSON_SEARCH_URL, name)));
+        String searchUrl = String.format("https://www.google.com/search?q=%s", searchTerms);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(searchUrl));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         context.startActivity(intent);
     }
 
     /**
-     * Open the IMDb web page for the given person name.
+     * Restrict a value to a range
+     * @param value Value
+     * @param min Range minimum
+     * @param max Range maximum
+     * @return Value if between [min, max], min or max
      */
-    public static void openImdbForMovie(Context context, String imdbNumber) {
-        if (context == null || TextUtils.isEmpty(imdbNumber)) {
-            return;
-        }
-
-        // Open IMDB
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(IMDB_MOVIE_URL, imdbNumber)));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        context.startActivity(intent);
+    public static float clamp(float value, float min, float max) {
+        return Math.min(max, Math.max(min, value));
     }
-
 
     /**
      * Converts a drawable to a bitmap

@@ -426,11 +426,11 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
 
             if (i == 0) {
                 View view = LayoutInflater.from(context)
-                        .inflate(R.layout.grid_item_channel_group, viewGroup, false);
+                        .inflate(R.layout.item_pvr_channel_group, viewGroup, false);
                 viewHolder = new PVRChannelsListFragment.ChannelGroupViewHolder(view);
             } else {
                 View view = LayoutInflater.from(context)
-                        .inflate(R.layout.grid_item_channel, viewGroup, false);
+                        .inflate(R.layout.item_pvr_channel, viewGroup, false);
                 viewHolder = new PVRChannelsListFragment.ChannelViewHolder(view);
             }
 

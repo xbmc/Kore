@@ -19,17 +19,18 @@
         android:id="@+id/mpi_progress"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/zeroprogress"/>
+        android:text="@string/zeroprogress"
+        style="@style/Widget.Kore.TextView.SeekBar"/>
     <SeekBar
         android:id="@+id/mpi_seek_bar"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:layout_margin="4dp"/>
+        android:layout_margin="4dp"
+        style="@style/Widget.Kore.SeekBar" />
     <TextView
         android:id="@+id/mpi_duration"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"/>
+        style="@style/Widget.Kore.TextView.SeekBar"/>
 </merge>

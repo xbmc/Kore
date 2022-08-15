@@ -15,8 +15,8 @@
  */
 package org.xbmc.kore.ui.sections.remote;
 
-import android.content.res.Resources;
-import android.content.res.TypedArray;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -35,11 +35,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentPlaylistBinding;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostConnectionObserver.PlayerEventsObserver;
 import org.xbmc.kore.host.HostConnectionObserver.PlaylistEventsObserver;
@@ -48,7 +50,6 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.host.actions.GetPlaylist;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiMethod;
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.ListType;
@@ -259,7 +260,7 @@ public class PlaylistFragment extends Fragment
         lastGetItemResult = getItemResult;
         lastGetActivePlayerResult = getActivePlayerResult;
 
-        if (! userSelectedTab) {
+        if (!userSelectedTab) {
             binding.playlistsBar.selectTab(getActivePlayerResult.type);
         }
 
@@ -284,7 +285,7 @@ public class PlaylistFragment extends Fragment
         lastGetItemResult = getItemResult;
         lastGetActivePlayerResult = getActivePlayerResult;
 
-        if (! userSelectedTab) {
+        if (!userSelectedTab) {
             binding.playlistsBar.selectTab(getActivePlayerResult.type);
         }
 
@@ -513,25 +514,20 @@ public class PlaylistFragment extends Fragment
          * The playlist items
          */
         List<ListType.ItemsAll> playlistItems;
-        int artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
-        int artHeight = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
-
-        int cardBackgroundColor, selectedCardBackgroundColor;
+        int artWidth, artHeight;
+        int selectedRowColor;
+        ColorStateList selectedRowColorStateList;
+        Drawable backgroundDrawable;
 
         public PlayListAdapter(List<ListType.ItemsAll> playlistItems) {
             super();
             this.playlistItems = playlistItems;
 
-            Resources.Theme theme = requireActivity().getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.appCardBackgroundColor,
-                    R.attr.appSelectedCardBackgroundColor});
-            Resources resources = getResources();
-            cardBackgroundColor =
-                    styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.dark_content_background));
-            selectedCardBackgroundColor =
-                    styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.dark_selected_content_background));
-            styledAttributes.recycle();
+            selectedRowColor = MaterialColors.getColor(requireContext(), R.attr.colorSurfaceVariant, null);
+            selectedRowColorStateList = ColorStateList.valueOf(selectedRowColor);
+            backgroundDrawable = getResources().getDrawable(R.drawable.background_playlist, null);
+            artWidth = getResources().getDimensionPixelSize(R.dimen.playlist_art_width);
+            artHeight = getResources().getDimensionPixelSize(R.dimen.playlist_art_heigth);
         }
 
         public PlayListAdapter() {
@@ -591,7 +587,8 @@ public class PlaylistFragment extends Fragment
         public void onSwapFinished(final int originalPosition, final int finalPosition) {
             final HostConnection hostConnection = hostManager.getConnection();
 
-            if (playlistItems.get(finalPosition).id == lastGetItemResult.id) {
+            if (lastGetItemResult != null &&
+                playlistItems.get(finalPosition).id == lastGetItemResult.id) {
                 Toast.makeText(getActivity(), R.string.cannot_move_playing_item, Toast.LENGTH_SHORT)
                      .show();
                 rollbackSwappedItems(originalPosition, finalPosition);
@@ -637,14 +634,13 @@ public class PlaylistFragment extends Fragment
             }, callbackHandler);
         }
 
-        @SuppressWarnings("SuspiciousNameCombination")
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity())
-                                            .inflate(R.layout.grid_item_playlist, parent, false);
+                                            .inflate(R.layout.item_playlist, parent, false);
                 // ViewHolder pattern
                 viewHolder = new ViewHolder();
                 viewHolder.art = convertView.findViewById(R.id.art);
@@ -652,7 +648,7 @@ public class PlaylistFragment extends Fragment
                 viewHolder.details = convertView.findViewById(R.id.details);
                 viewHolder.contextMenu = convertView.findViewById(R.id.list_context_menu);
                 viewHolder.duration = convertView.findViewById(R.id.duration);
-                viewHolder.card = convertView.findViewById(R.id.card);
+                viewHolder.container = convertView.findViewById(R.id.container);
 
                 convertView.setTag(viewHolder);
             } else {
@@ -711,19 +707,13 @@ public class PlaylistFragment extends Fragment
             viewHolder.duration.setText((duration > 0) ? UIUtils.formatTime(duration) : "");
             viewHolder.position = position;
 
-            int cardColor = (position == binding.playlist.getCheckedItemPosition()) ?
-                            selectedCardBackgroundColor: cardBackgroundColor;
-            viewHolder.card.setCardBackgroundColor(cardColor);
-
-            // If not video, change aspect ration of poster to a square
-            boolean isVideo = (item.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
-                              (item.type.equals(ListType.ItemsAll.TYPE_EPISODE));
-            if (!isVideo) {
-                ViewGroup.LayoutParams layoutParams = viewHolder.art.getLayoutParams();
-                layoutParams.width = layoutParams.height;
-                viewHolder.art.setLayoutParams(layoutParams);
-                artWidth = artHeight;
+            if (position == binding.playlist.getCheckedItemPosition()) {
+                viewHolder.container.setBackground(backgroundDrawable);
+                viewHolder.container.setBackgroundTintList(selectedRowColorStateList);
+            } else {
+                viewHolder.container.setBackground(null);
             }
+
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                  artUrl, title,
                                                  viewHolder.art, artWidth, artHeight);
@@ -782,7 +772,7 @@ public class PlaylistFragment extends Fragment
             TextView details;
             ImageView contextMenu;
             TextView duration;
-            CardView card;
+            View container;
             int position;
         }
     }

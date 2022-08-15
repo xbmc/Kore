@@ -16,7 +16,6 @@
 package org.xbmc.kore.ui.sections.remote;
 
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -112,9 +111,6 @@ public class RemoteFragment extends Fragment
     // EventServer connection
     private EventServerConnection eventServerConnection = null;
 
-    // Icons for fastForward/Rewind or skipPrevious/skipNext
-    int fastForwardIcon, rewindIcon, skipPreviousIcon, skipNextIcon;
-
     private FragmentRemoteBinding binding;
 
     @Override
@@ -134,18 +130,6 @@ public class RemoteFragment extends Fragment
         binding.mediaActionsBar.completeSetup(requireContext(), this.getParentFragmentManager());
 
         HostInfo hostInfo = hostManager.getHostInfo();
-
-        TypedArray styledAttributes = requireActivity().getTheme().obtainStyledAttributes(new int[] {
-                R.attr.iconFastForward,
-                R.attr.iconRewind,
-                R.attr.iconNext,
-                R.attr.iconPrevious
-        });
-        fastForwardIcon = styledAttributes.getResourceId(styledAttributes.getIndex(0), R.drawable.ic_fast_forward_white_24dp);
-        rewindIcon = styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_fast_rewind_white_24dp);
-        skipNextIcon = styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_skip_next_white_24dp);
-        skipPreviousIcon = styledAttributes.getResourceId(styledAttributes.getIndex(3), R.drawable.ic_skip_previous_white_24dp);
-        styledAttributes.recycle();
 
         // Set up window activation buttons
         // Keep the order coherent between the default values array, the buttons and actions array
@@ -177,7 +161,7 @@ public class RemoteFragment extends Fragment
                 buttons[i].setOnClickListener(v -> action.execute(hostManager.getConnection(), defaultActionCallback, callbackHandler));
             }
         }
-
+        UIUtils.tintElevatedView(binding.sectionsButtonBar);
         binding.title.setClickable(true);
         binding.title.setOnClickListener(v -> v.setSelected(!v.isSelected()));
 
@@ -367,9 +351,11 @@ public class RemoteFragment extends Fragment
         binding.mediaActionsBar.setPlaybackState(getActivePlayerResult,
                                                  getPropertiesResult);
 
-        UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                thumbnailUrl, title,
-                binding.art, binding.art.getWidth(), binding.art.getHeight());
+        if (binding.poster != null) {
+            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                                                 thumbnailUrl, title,
+                                                 binding.poster, binding.poster.getWidth(), binding.poster.getHeight());
+        }
 
         // For some smaller screens their height isn't enough to display all controls. Hide the superfluous
         // bottom button bar during playback if that's the case

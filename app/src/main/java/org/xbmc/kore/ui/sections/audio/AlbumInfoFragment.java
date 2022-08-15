@@ -31,13 +31,14 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -83,13 +84,13 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnDownloadListener(view -> UIUtils.downloadSongs(requireContext(),
-                                                            albumSongsListFragment.getSongInfoList(),
-                                                            getHostInfo(),
-                                                            callbackHandler));
+    protected boolean setupInfoActionsBar() {
+        setOnDownloadClickListener(view -> UIUtils.downloadSongs(requireContext(),
+                                                                 albumSongsListFragment.getSongInfoList(),
+                                                                 getHostInfo(),
+                                                                 callbackHandler));
 
-        setOnAddToPlaylistListener(view -> {
+        setOnQueueClickListener(view -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.albumid = getDataHolder().getId();
             MediaPlayerUtils.queue(AlbumInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.AUDIO);
@@ -99,8 +100,8 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(v -> {
+    protected boolean setupFAB(FloatingActionButton fab) {
+        fab.setOnClickListener(v -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.albumid = getDataHolder().getId();
             playItemOnKodi(item);
@@ -135,14 +136,18 @@ public class AlbumInfoFragment extends AbstractInfoFragment
                 case LOADER_ALBUM:
                     cursor.moveToFirst();
 
+                    String artist = cursor.getString(AlbumDetailsQuery.DISPLAYARTIST),
+                            albumTitle = cursor.getString(AlbumDetailsQuery.TITLE);
+
                     DataHolder dataHolder = getDataHolder();
 
                     dataHolder.setRating(cursor.getDouble(AlbumDetailsQuery.RATING));
-                    dataHolder.setTitle(cursor.getString(AlbumDetailsQuery.TITLE));
-                    dataHolder.setUndertitle(cursor.getString(AlbumDetailsQuery.DISPLAYARTIST));
+                    dataHolder.setTitle(albumTitle);
+                    dataHolder.setUndertitle(artist);
                     dataHolder.setDescription(cursor.getString(AlbumDetailsQuery.DESCRIPTION));
                     dataHolder.setFanArtUrl(cursor.getString(AlbumInfoFragment.AlbumDetailsQuery.FANART));
                     dataHolder.setPosterUrl(cursor.getString(AlbumInfoFragment.AlbumDetailsQuery.THUMBNAIL));
+                    dataHolder.setSearchTerms(artist + " " + albumTitle);
 
                     int year = cursor.getInt(AlbumDetailsQuery.YEAR);
                     String genres = cursor.getString(AlbumDetailsQuery.GENRE);

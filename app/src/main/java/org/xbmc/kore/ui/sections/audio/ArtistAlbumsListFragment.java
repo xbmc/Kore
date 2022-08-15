@@ -34,7 +34,8 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.databinding.GridItemAlbumBinding;
+import org.xbmc.kore.databinding.FragmentArtistAlbumsBinding;
+import org.xbmc.kore.databinding.ItemMusicGenericBinding;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
@@ -61,6 +62,8 @@ public class ArtistAlbumsListFragment extends AbstractAdditionalInfoFragment
     // Activity listener
     private AlbumListFragment.OnAlbumSelectedListener listenerActivity;
 
+    private FragmentArtistAlbumsBinding binding;
+
     /**
      * Use this to display all albums for a specific artist
      * @param artistId Artist id
@@ -85,13 +88,20 @@ public class ArtistAlbumsListFragment extends AbstractAdditionalInfoFragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_artist_albums, container, false);
+        binding = FragmentArtistAlbumsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LoaderManager.getInstance(this).initLoader(LOADER, null, this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override
@@ -126,68 +136,59 @@ public class ArtistAlbumsListFragment extends AbstractAdditionalInfoFragment
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if (!data.moveToFirst()) return;
-        displayAlbums(data);
-    }
+        // Just a safeguard
+        if (binding == null) return;
 
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) { }
-
-    /**
-     * Displays this artists albums
-     * @param cursor Cursor with albums
-     */
-    private void displayAlbums(Cursor cursor) {
-        TextView albumsListTitle = requireActivity().findViewById(R.id.albums_title);
-        GridLayout albumsList = requireActivity().findViewById(R.id.albums_list);
-
-        if (!cursor.moveToFirst()) { // No albums, hide views
-            albumsListTitle.setVisibility(View.GONE);
-            albumsList.setVisibility(View.GONE);
+        if (!data.moveToFirst()) { // No albums, hide views
+            binding.albumsTitle.setVisibility(View.GONE);
+            binding.albumsList.setVisibility(View.GONE);
             return;
         }
-        albumsListTitle.setVisibility(View.VISIBLE);
-        albumsList.setVisibility(View.VISIBLE);
+        binding.albumsTitle.setVisibility(View.VISIBLE);
+        binding.albumsList.setVisibility(View.VISIBLE);
 
         HostManager hostManager = HostManager.getInstance(requireContext());
         View.OnClickListener albumListClickListener = v ->
                 listenerActivity.onAlbumSelected((DataHolder) v.getTag(), v.findViewById(R.id.art));
 
         Resources resources = requireContext().getResources();
-        int artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
-        int artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
+        int artWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
+        int artHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height_square);
 
         LayoutInflater inflater = LayoutInflater.from(requireContext());
-        albumsList.removeAllViews();
+        binding.albumsList.removeAllViews();
         do {
             DataHolder dataHolder = new DataHolder(0);
-            dataHolder.setId(cursor.getInt(AlbumListFragment.AlbumListQuery.ALBUMID));
-            dataHolder.setTitle(cursor.getString(AlbumListFragment.AlbumListQuery.TITLE));
-            dataHolder.setUndertitle(cursor.getString(AlbumListFragment.AlbumListQuery.DISPLAYARTIST));
-            int year = cursor.getInt(AlbumListFragment.AlbumListQuery.YEAR);
-            String genres = cursor.getString(AlbumListFragment.AlbumListQuery.GENRE);
+            dataHolder.setId(data.getInt(AlbumListFragment.AlbumListQuery.ALBUMID));
+            dataHolder.setTitle(data.getString(AlbumListFragment.AlbumListQuery.TITLE));
+            dataHolder.setUndertitle(data.getString(AlbumListFragment.AlbumListQuery.DISPLAYARTIST));
+            int year = data.getInt(AlbumListFragment.AlbumListQuery.YEAR);
+            String genres = data.getString(AlbumListFragment.AlbumListQuery.GENRE);
             String desc = (genres != null) ? ((year > 0) ? genres + "  |  " + year : genres) : String.valueOf(year);
             dataHolder.setDescription(desc);
-            dataHolder.setPosterUrl(cursor.getString(AlbumListFragment.AlbumListQuery.THUMBNAIL));
+            dataHolder.setPosterUrl(data.getString(AlbumListFragment.AlbumListQuery.THUMBNAIL));
 
-            GridItemAlbumBinding binding = GridItemAlbumBinding.inflate(inflater, albumsList, false);
-            binding.title.setText(dataHolder.getTitle());
-            binding.name.setText(dataHolder.getUnderTitle());
-            binding.genres.setText(dataHolder.getDescription());
+            ItemMusicGenericBinding itemBinding = ItemMusicGenericBinding.inflate(inflater, binding.albumsList, false);
+            itemBinding.title.setText(dataHolder.getTitle());
+            itemBinding.details.setText(dataHolder.getUnderTitle());
+            itemBinding.otherInfo.setText(dataHolder.getDescription());
             UIUtils.loadImageWithCharacterAvatar(requireContext(), hostManager,
                                                  dataHolder.getPosterUrl(),
                                                  dataHolder.getTitle(),
-                                                 binding.art, artWidth, artHeight);
-            binding.art.setTransitionName("al"+dataHolder.getId());
-            binding.listContextMenu.setTag(dataHolder);
-            binding.listContextMenu.setOnClickListener(albumContextMenuClickListener);
+                                                 itemBinding.art, artWidth, artHeight);
+            itemBinding.art.setTransitionName("al"+dataHolder.getId());
+            itemBinding.listContextMenu.setTag(dataHolder);
+            itemBinding.listContextMenu.setOnClickListener(albumContextMenuClickListener);
 
-            View albumView = binding.getRoot();
+            View albumView = itemBinding.getRoot();
             albumView.setTag(dataHolder);
             albumView.setOnClickListener(albumListClickListener);
-            albumsList.addView(albumView);
-        } while (cursor.moveToNext());
+            binding.albumsList.addView(albumView);
+        } while (data.moveToNext());
     }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) { }
 
     private final View.OnClickListener albumContextMenuClickListener = v -> {
         final DataHolder dataHolder = (DataHolder) v.getTag();

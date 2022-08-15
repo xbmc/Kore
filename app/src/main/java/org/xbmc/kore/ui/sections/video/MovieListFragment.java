@@ -18,11 +18,9 @@ package org.xbmc.kore.ui.sections.video;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.PorterDuff;
+import android.graphics.Color;
 import android.net.Uri;
-import androidx.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -36,6 +34,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.loader.content.CursorLoader;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -317,43 +318,29 @@ public class MovieListFragment extends AbstractCursorListFragment {
 
         private final HostManager hostManager;
         private final int artWidth, artHeight;
-        private final int themeAccentColor, dimmedNeutralColor;
 
         MoviesAdapter(Context context) {
-            // Get the default accent color
-            Resources.Theme theme = context.getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                R.attr.colorAccent, R.attr.dimmedNeutralColor
-
-            });
-
-            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.default_accent));
-            dimmedNeutralColor = styledAttributes.getColor(styledAttributes.getIndex(1), getResources().getColor(R.color.white_dim_26pct));
-            styledAttributes.recycle();
-
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.now_playing_poster_width) /
-                             UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.now_playing_poster_height) /
-                              UIUtils.IMAGE_RESIZE_FACTOR);
+            artWidth = (int)(resources.getDimension(R.dimen.info_poster_width) / UIUtils.IMAGE_RESIZE_FACTOR);
+            artHeight = (int)(resources.getDimension(R.dimen.info_poster_height) / UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
         @NonNull
         @Override
         public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(getContext())
-                                            .inflate(R.layout.grid_item_movie, parent, false);
+                                            .inflate(R.layout.item_movie, parent, false);
 
-            return new ViewHolder(view, getContext(), themeAccentColor, dimmedNeutralColor, hostManager, artWidth, artHeight);
+            return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight);
         }
 
         protected int getSectionColumnIdx() {
-            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(requireContext())
                     .getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
             if (sortOrder == Settings.SORT_BY_YEAR) {
                 return MovieListQuery.YEAR;
@@ -363,7 +350,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
         }
 
         protected int getSectionType() {
-            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(requireContext())
                     .getInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.DEFAULT_PREF_MOVIES_SORT_ORDER);
             if (sortOrder == Settings.SORT_BY_YEAR) {
                 return RecyclerViewCursorAdapter.SECTION_TYPE_YEAR_INTEGER;
@@ -387,24 +374,19 @@ public class MovieListFragment extends AbstractCursorListFragment {
         int artWidth;
         int artHeight;
         Context context;
-        int themeAccentColor, dimmedNeutralColor;
 
         AbstractFragment.DataHolder dataHolder = new AbstractFragment.DataHolder(0);
 
-        ViewHolder(View itemView, Context context, int themeAccentColor, int dimmedNeutralColor,
-                   HostManager hostManager,
-                   int artWidth, int artHeight) {
+        ViewHolder(View itemView, Context context, HostManager hostManager, int artWidth, int artHeight) {
             super(itemView);
             this.context = context;
-            this.themeAccentColor = themeAccentColor;
-            this.dimmedNeutralColor = dimmedNeutralColor;
             this.hostManager = hostManager;
             this.artWidth = artWidth;
             this.artHeight = artHeight;
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
             metaInfoView = itemView.findViewById(R.id.meta_info);
-            checkmarkView = itemView.findViewById(R.id.checkmark);
+            checkmarkView = itemView.findViewById(R.id.watched_check);
             artView = itemView.findViewById(R.id.art);
             ratingBar = itemView.findViewById(R.id.rating_bar);
         }
@@ -417,7 +399,6 @@ public class MovieListFragment extends AbstractCursorListFragment {
             dataHolder.setUndertitle(cursor.getString(MovieListQuery.TAGLINE));
 
             dataHolder.setRating(cursor.getDouble(MovieListQuery.RATING));
-            dataHolder.setMaxRating(10);
 
             titleView.setText(dataHolder.getTitle());
 
@@ -431,7 +412,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
             dataHolder.setDetails(metaInfo + "\n" + details);
 
             if (showRating && dataHolder.getRating() > 0) {
-                ratingBar.setMaxRating(dataHolder.getMaxRating());
+                ratingBar.setMaxRating(10);
                 ratingBar.setRating(dataHolder.getRating());
                 ratingBar.setVisibility(View.VISIBLE);
             } else {
@@ -444,15 +425,11 @@ public class MovieListFragment extends AbstractCursorListFragment {
                                                  dataHolder.getTitle(),
                                                  artView, artWidth, artHeight);
 
-            if (showWatchedStatus) {
+            if (showWatchedStatus && (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0)) {
                 checkmarkView.setVisibility(View.VISIBLE);
-                if (cursor.getInt(MovieListQuery.PLAYCOUNT) > 0) {
-                    checkmarkView.setColorFilter(themeAccentColor);
-                } else {
-                    checkmarkView.setColorFilter(dimmedNeutralColor, PorterDuff.Mode.SRC_IN);
-                }
             }
             else {
+                checkmarkView.clearColorFilter();
                 checkmarkView.setVisibility(View.GONE);
             }
 

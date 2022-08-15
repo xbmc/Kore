@@ -259,12 +259,12 @@ public class PVRChannelEPGListFragment extends AbstractSearchableFragment
             if (rowType == EPGListRow.TYPE_BROADCAST) {
                 view = LayoutInflater
                         .from(context)
-                        .inflate(R.layout.list_item_broadcast, viewGroup, false);
+                        .inflate(R.layout.item_pvr_broadcast, viewGroup, false);
             } else {
                 // For a day
                 view = LayoutInflater
                         .from(context)
-                        .inflate(R.layout.list_item_day, viewGroup, false);
+                        .inflate(R.layout.item_pvr_day, viewGroup, false);
             }
             return new BroadcastViewHolder(view);
         }

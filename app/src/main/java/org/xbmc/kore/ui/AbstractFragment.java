@@ -61,8 +61,8 @@ public class AbstractFragment extends Fragment {
         static final String BUNDLE_KEY_FANARTURL = "fanart";
         static final String BUNDLE_KEY_SQUAREPOSTER = "squareposter";
         static final String BUNDLE_KEY_RATING = "rating";
-        static final String BUNDLE_KEY_MAXRATING = "maxrating";
         static final String BUNDLE_KEY_VOTES = "votes";
+        static final String BUNDLE_KEY_SEARCH_TERMS = "searchterms";
 
         private Bundle bundle;
 
@@ -91,12 +91,8 @@ public class AbstractFragment extends Fragment {
             bundle.putDouble(BUNDLE_KEY_RATING, rating);
         }
 
-        public void setMaxRating(int maxRating) {
-            bundle.putInt(BUNDLE_KEY_MAXRATING, maxRating);
-        }
-
-        public void setVotes(int votes) {
-            bundle.putInt(BUNDLE_KEY_VOTES, votes);
+        public void setVotes(String votes) {
+            bundle.putString(BUNDLE_KEY_VOTES, votes);
         }
 
         public void setPosterUrl(String posterUrl) {
@@ -123,6 +119,10 @@ public class AbstractFragment extends Fragment {
             bundle.putString(BUNDLE_KEY_FANARTURL, fanArtUrl);
         }
 
+        public void setSearchTerms(String searchTerms) {
+            bundle.putString(BUNDLE_KEY_SEARCH_TERMS, searchTerms);
+        }
+
         public void setId(int id) {
             bundle.putInt(BUNDLE_KEY_ID, id);
         }
@@ -139,12 +139,8 @@ public class AbstractFragment extends Fragment {
             return bundle.getDouble(BUNDLE_KEY_RATING);
         }
 
-        public int getMaxRating() {
-            return bundle.getInt(BUNDLE_KEY_MAXRATING);
-        }
-
-        public int getVotes() {
-            return bundle.getInt(BUNDLE_KEY_VOTES);
+        public String getVotes() {
+            return bundle.getString(BUNDLE_KEY_VOTES);
         }
 
         public String getPosterUrl() {
@@ -169,6 +165,10 @@ public class AbstractFragment extends Fragment {
 
         public String getFanArtUrl() {
             return bundle.getString(BUNDLE_KEY_FANARTURL);
+        }
+
+        public String getSearchTerms() {
+            return bundle.getString(BUNDLE_KEY_SEARCH_TERMS);
         }
 
         public int getId() {

@@ -15,10 +15,11 @@
    limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -31,43 +32,34 @@
             android:id="@+id/search_host_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/wizard_title"
-            style="@style/WizardTitle"
+            style="@style/Widget.Kore.TextView.WizardTitle"
             android:text="@string/searching"/>
 
         <TextView
             android:id="@+id/search_host_message"
-            style="@style/WizardMessage"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_below="@id/search_host_title"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_host_title"
+            style="@style/Widget.Kore.TextView.WizardMessage"/>
 
         <GridView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/search_host_message"
-            android:paddingLeft="@dimen/small_padding"
-            android:paddingRight="@dimen/small_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingBottom="@dimen/default_padding"
-            android:clipToPadding="false"
-            android:choiceMode="none"
-            android:listSelector="?attr/selectableItemBackground"
-            android:drawSelectorOnTop="true"
-            style="@style/Widget.GridView"/>
+            style="@style/Widget.Kore.Grid.Host"/>
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_centerHorizontal="true"
+            style="@style/Widget.Material3.CircularProgressIndicator.Medium"
             android:indeterminate="true"
             android:layout_below="@id/search_host_message">
         </ProgressBar>
 
     </RelativeLayout>
-
-    <View style="@style/DefaultDividerH"/>
 
     <include
         android:id="@+id/include_wizard_button_bar"

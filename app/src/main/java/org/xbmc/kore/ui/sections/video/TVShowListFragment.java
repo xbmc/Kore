@@ -19,10 +19,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
-import androidx.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -37,6 +36,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.loader.content.CursorLoader;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -302,31 +304,20 @@ public class TVShowListFragment extends AbstractCursorListFragment {
 
         private final HostManager hostManager;
         private final int artWidth, artHeight;
-        private final int themeAccentColor, inProgressColor, finishedColor;
+        private final int inProgressColor, finishedColor;
 
         public TVShowsAdapter(Context context) {
-            // Get the default accent color
-            Resources.Theme theme = context.getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.colorAccent,
-                    R.attr.colorInProgress,
-                    R.attr.colorFinished
-            });
-
-            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.default_accent));
-            inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(1), getResources().getColor(R.color.orange_500));
-            finishedColor = styledAttributes.getColor(styledAttributes.getIndex(2), getResources().getColor(R.color.light_green_600));
-            styledAttributes.recycle();
-
+            inProgressColor = MaterialColors.getColor(context, R.attr.colorInProgress, Color.WHITE);
+            finishedColor = MaterialColors.getColor(context, R.attr.colorFinished, Color.WHITE);
             this.hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.now_playing_poster_width) /
+            artWidth = (int)(resources.getDimension(R.dimen.info_poster_width) /
                              UIUtils.IMAGE_RESIZE_FACTOR);
-            artHeight = (int)(resources.getDimension(R.dimen.now_playing_poster_height) /
+            artHeight = (int)(resources.getDimension(R.dimen.info_poster_height) /
                               UIUtils.IMAGE_RESIZE_FACTOR);
         }
 
@@ -334,10 +325,10 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         @Override
         public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(getContext())
-                                            .inflate(R.layout.grid_item_tvshow, parent, false);
+                                            .inflate(R.layout.item_tvshow, parent, false);
             // Setup View holder pattern
             return new ViewHolder(view, requireContext(),
-                                  themeAccentColor, inProgressColor, finishedColor,
+                                  inProgressColor, finishedColor,
                                   hostManager,
                                   artWidth, artHeight);
         }
@@ -373,7 +364,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         ImageView artView;
         ProgressBar watchedProgressView;
         Context context;
-        int themeAccentColor, inProgressColor, finishedColor;
+        ColorStateList inProgressColor, finishedColor;
         HostManager hostManager;
         int artWidth;
         int artHeight;
@@ -381,7 +372,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(0);
 
         ViewHolder(View itemView, Context context,
-                   int themeAccentColor, int inProgressColor, int finishedColor,
+                   int inProgressColor, int finishedColor,
                    HostManager hostManager,
                    int artWidth, int artHeight) {
             super(itemView);
@@ -389,12 +380,11 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             this.context = context;
             this.artHeight = artHeight;
             this.artWidth = artWidth;
-            this.themeAccentColor = themeAccentColor;
-            this.inProgressColor = inProgressColor;
-            this.finishedColor = finishedColor;
+            this.inProgressColor = ColorStateList.valueOf(inProgressColor);
+            this.finishedColor = ColorStateList.valueOf(finishedColor);
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
-            premieredView = itemView.findViewById(R.id.premiered);
+            premieredView = itemView.findViewById(R.id.other_info);
             artView = itemView.findViewById(R.id.art);
             watchedProgressView = itemView.findViewById(R.id.tv_shows_progress_bar);
         }
@@ -429,8 +419,8 @@ public class TVShowListFragment extends AbstractCursorListFragment {
                 watchedProgressView.setVisibility(View.VISIBLE);
                 watchedProgressView.setMax(numEpisodes);
                 watchedProgressView.setProgress(watchedEpisodes);
-                int watchedColor = (numEpisodes - watchedEpisodes == 0)? finishedColor : inProgressColor;
-                watchedProgressView.setProgressTintList(ColorStateList.valueOf(watchedColor));
+                ColorStateList watchedColor = (numEpisodes - watchedEpisodes == 0)? finishedColor : inProgressColor;
+                watchedProgressView.setProgressTintList(watchedColor);
             } else {
                 watchedProgressView.setVisibility(View.INVISIBLE);
             }

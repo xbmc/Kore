@@ -4,15 +4,15 @@
             android:id="@+id/pb_tabitem_videos"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:icon="?attr/iconMovies"/>
+            android:icon="@drawable/ic_round_movie_24"/>
         <com.google.android.material.tabs.TabItem
             android:id="@+id/pb_tabitem_audio"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:icon="?attr/iconMusic"/>
+            android:icon="@drawable/ic_round_headphones_24"/>
         <com.google.android.material.tabs.TabItem
             android:id="@+id/pb_tabitem_pictures"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:icon="?attr/iconPicture"/>
+            android:icon="@drawable/ic_round_image_24"/>
 </merge>

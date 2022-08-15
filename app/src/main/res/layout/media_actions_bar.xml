@@ -20,8 +20,8 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
-        android:src="?attr/iconVolumeMute"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:src="@drawable/ic_round_volume_off_24"
         android:contentDescription="@string/volume_mute"/>
 
     <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
@@ -36,16 +36,16 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
-        android:src="?attr/iconRepeat"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:src="@drawable/ic_round_repeat_24"
         android:contentDescription="@string/repeat"/>
     <org.xbmc.kore.ui.widgets.HighlightButton
         android:id="@+id/shuffle"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
-        android:src="?attr/iconShuffle"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:src="@drawable/ic_round_shuffle_24"
         android:contentDescription="@string/shuffle"/>
 
     <ImageButton
@@ -53,8 +53,8 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
-        android:src="?attr/iconAudiostreams"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:src="@drawable/ic_round_spatial_audio_off_24"
         android:contentDescription="@string/audiostreams"/>
 
     <org.xbmc.kore.ui.widgets.HighlightButton
@@ -62,8 +62,8 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
-        android:src="?attr/iconSubtitles"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:src="@drawable/ic_round_subtitles_24"
         android:contentDescription="@string/subtitles"/>
 
     <org.xbmc.kore.ui.widgets.HighlightButton
@@ -71,8 +71,8 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
-        android:src="?attr/iconCelebration"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:src="@drawable/ic_round_celebration_24"
         android:contentDescription="@string/party_mode"/>
 
     <ImageButton
@@ -80,7 +80,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        style="@style/Widget.Button.Borderless"
-        android:src="?attr/iconOverflow"
+        style="@style/Widget.Kore.Button.Borderless"
+        android:src="@drawable/ic_round_more_vert_24"
         android:contentDescription="@string/subtitles"/>
 </merge>

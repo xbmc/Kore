@@ -207,7 +207,6 @@
     <string name="remaining_cast_count">עוד %d</string>
     <string name="general_error_executing_action">הפעולה נכשלה: %1$s</string>
     <string name="error_getting_playlist">הורדת רשימת הנגינה נכשלה</string>
-    <string name="error_message">הודעת שגיאה: %1$s </string>
     <string name="playlist_empty">רשימת הנגינה ריקה</string>
     <string name="clear_playlist">פינוי רשימת הנגינה</string>
     <string name="source_empty">מקור המדיה ריק</string>
@@ -265,7 +264,6 @@
     <string name="item_sent_to_kodi">נשלח ל־Kodi</string>
     <string name="no_suitable_playlist">לא נמצאה רשימת נגינה תואמת להוספת סוג המדיה.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">כבר ראיתי</string>
     <string name="download">הורדה</string>
     <string name="confirm_movie_download">להוריד את הסרט הזה\?
 \nהסרט יתקבל ברקע, יתכן שיחלוף זמן עד לסיום ההורדה.</string>
@@ -305,7 +303,6 @@
     <string name="enable_disable">הפעלה/נטרול של הרחבה</string>
     <string name="addon_enabled">ההרחבה הופעלה</string>
     <string name="addon_disabled">ההרחבה נוטרלה</string>
-    <string name="pin_unpin">נעיצה/שחרור של הרחבה</string>
     <string name="addon_pinned">ההרחבה ננעצה</string>
     <string name="addon_unpinned">ההרחבה שוחררה</string>
     <!-- Filters on list menus -->
@@ -327,7 +324,6 @@
     <string name="theme">ערכת נושא</string>
     <string name="theme_night">לילה</string>
     <string name="theme_day">יום</string>
-    <string name="theme_mist">ערפל</string>
     <string name="theme_sunrise">זריחה</string>
     <string name="theme_sunset">שקיעה</string>
     <string name="switch_to_remote">הצגה עם הפעלת המדיה</string>
@@ -336,9 +332,6 @@
     <string name="show_notification">הצגת התרעות בזמן הנגינה</string>
     <string name="show_now_playing_panel">הצגת הלוח למה שמתנגן כעת בזמן הנגינה</string>
     <string name="show_now_playing_panel_summary">הצגת לוח מתרחב בתחתית המסך בזמן נגינת מדיה</string>
-    <string name="notification_seek_jump">שימוש בצעדים בעת איתור</string>
-    <string name="notification_seek_jump_speed">שינוי מהירות הנגינה בעת איתור דרך ההתרעות</string>
-    <string name="notification_seek_jump_step">שימוש בצעדי דילוג בעת איתור מההתרעות</string>
     <string name="pause_during_calls">להשהות במהלך שיחת טלפון</string>
     <string name="use_hardware_volume_keys">שימוש בלחצני עצמת השמע של ההתקן</string>
     <string name="vibrate_on_remote">רטט בעת מגע</string>
@@ -405,12 +398,9 @@
     <string name="no_songs_found_refresh">לא נמצאו שירים
 \n
 \n יש למשוך כלפי מטה כדי לרענן</string>
-    <string name="not_implemented">לא הוטמע</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">הרחבה/צמצום</string>
-    <string name="play_locally">נגינה מקומית</string>
-    <string name="disable_local_playback_support">השבתת תמיכה בנגינה מקומית</string>
-    <string name="disable_local_playback_support_summary">השבתת תמיכה בנגינת מדיה באופן מקומי על ההתקן שמפעיל את Kore.</string>
+    <string name="stream_action">נגינה מקומית</string>
     <string name="language">שפה</string>
     <string name="wifi_network">רשת אלחוטית</string>
     <string name="mobile_network">רשת סלולרית</string>

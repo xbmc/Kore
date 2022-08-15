@@ -30,10 +30,11 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="scrollable"
-            app:tabTextColor="@color/white_dim_50pct"
-            app:tabSelectedTextColor="@color/white"
-            android:background="?attr/colorPrimary"/>
+            app:tabMode="auto"
+            app:tabIndicatorFullWidth="true"
+            android:background="?attr/colorSurface"
+            android:elevation="@dimen/kore_elevation_level2"
+            app:tabTextAppearance="@style/TextAppearance.Kore.TabLayout" />
 
     </androidx.viewpager.widget.ViewPager>
 

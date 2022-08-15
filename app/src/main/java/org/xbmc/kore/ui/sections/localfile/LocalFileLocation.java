@@ -19,6 +19,7 @@ package org.xbmc.kore.ui.sections.localfile;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
@@ -93,11 +94,14 @@ public class LocalFileLocation implements Parcelable {
     };
 
     private String getFileMimeType(final String filename) {
-        String extension = MimeTypeMap.getFileExtensionFromUrl(filename);
-        if (extension == null) {
-            return null;
+        if (!TextUtils.isEmpty(filename)) {
+            int dotPos = filename.lastIndexOf('.');
+            if (dotPos >= 0) {
+                String extension = filename.substring(dotPos + 1);
+                return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+            }
         }
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        return "";
     }
 
     public String getMimeType() {
@@ -106,8 +110,9 @@ public class LocalFileLocation implements Parcelable {
 
     public int getPlaylistTypeId() {
         String mimeType = getMimeType();
-
-        if (mimeType.matches("video.*")) {
+        if (TextUtils.isEmpty(mimeType)) {
+            return -1;
+        } else if (mimeType.matches("video.*")) {
             return PlaylistType.VIDEO_PLAYLISTID;
         } else if (mimeType.matches("audio.*")) {
             return PlaylistType.MUSIC_PLAYLISTID;

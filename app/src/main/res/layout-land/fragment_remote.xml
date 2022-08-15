@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    Copyright 2015 Synced Synapse. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,7 @@
    limitations under the License.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -25,151 +24,148 @@
         android:id="@+id/sections_button_bar"
         android:layout_width="@dimen/buttonbar_height"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
+        style="@style/Widget.Kore.BottomPanel"
         android:orientation="vertical"
-        style="@style/ButtonBar.Bottom">
+        app:layout_constraintEnd_toEndOf="parent">
+
         <ImageButton
             android:id="@+id/home"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconHome"
             android:contentDescription="@string/home"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:src="@drawable/ic_round_dashboard_24" />
+
         <ImageButton
             android:id="@+id/movies"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconMovies"
             android:contentDescription="@string/movies"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:src="@drawable/ic_round_movie_24" />
+
         <ImageButton
             android:id="@+id/tv_shows"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconTvShows"
             android:contentDescription="@string/tv_shows"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:src="@drawable/ic_round_tv_24" />
+
         <ImageButton
             android:id="@+id/music"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconMusic"
             android:contentDescription="@string/music"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:src="@drawable/ic_round_headphones_24" />
+
         <ImageButton
             android:id="@+id/pvr"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconPVR"
             android:contentDescription="@string/pvr"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:src="@drawable/ic_round_dvr_24" />
+
         <ImageButton
             android:id="@+id/pictures"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconPicture"
             android:contentDescription="@string/pictures"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:src="@drawable/ic_round_image_24" />
+
         <ImageButton
             android:id="@+id/videos"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconVideo"
             android:contentDescription="@string/videos"
-            app:tint="?attr/defaultButtonColorFilter" />
-        <!-- <ImageButton
-            android:id="@+id/favourites"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconFavourites"
-            android:tint="?attr/defaultButtonColorFilter"
-            android:contentDescription="@string/favourites"/> -->
+            android:src="@drawable/ic_round_local_movies_24" />
+
         <ImageButton
             android:id="@+id/addons"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconAddons"
             android:contentDescription="@string/addons"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:src="@drawable/ic_round_extension_24" />
+
         <ImageButton
             android:id="@+id/weather"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconWeather"
             android:contentDescription="@string/weather"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:src="@drawable/ic_round_wb_sunny_24" />
+
         <ImageButton
             android:id="@+id/system"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            style="@style/Widget.Button.Borderless"
-            android:src="?attr/iconSettings"
             android:contentDescription="@string/system"
-            app:tint="?attr/defaultButtonColorFilter" />
+            android:src="@drawable/ic_round_settings_24" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_toStartOf="@+id/sections_button_bar">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/sections_button_bar"
+        app:layout_constraintStart_toStartOf="parent">
 
         <include
             android:id="@+id/include_info_panel"
-            layout="@layout/remote_info_panel"/>
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            layout="@layout/remote_info_panel" />
 
         <RelativeLayout
             android:id="@+id/media_panel"
+            style="@style/Widget.Kore.InfoPanel.Remote"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/remote_content_hmargin">
+            android:layout_marginStart="@dimen/info_panel_horiz_margin">
 
-            <ImageView
-                android:id="@+id/art"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/poster"
                 android:layout_width="@dimen/remote_poster_width"
                 android:layout_height="@dimen/remote_poster_height"
                 android:layout_alignParentStart="true"
+                android:contentDescription="@string/poster"
                 android:scaleType="centerCrop"
-                android:contentDescription="@string/poster"/>
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.PosterRemote" />
 
             <TextView
                 android:id="@+id/title"
+                style="@style/Widget.Kore.TextView.MediaTitle.Remote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/art"
                 android:layout_alignParentEnd="true"
-                style="@style/TextAppearance.Media.Remote.Title"
-                android:background="?attr/contentBackgroundColor"/>
+                android:layout_toEndOf="@id/poster" />
+
             <TextView
                 android:id="@+id/details"
+                style="@style/Widget.Kore.TextView.MediaDetails.Remote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
-                android:layout_alignStart="@id/title"
-                style="@style/TextAppearance.Media.Remote.Details"
-                android:background="?attr/contentBackgroundColor"/>
+                android:layout_alignStart="@id/title" />
 
             <!-- Media playback control buttons -->
             <org.xbmc.kore.ui.widgets.MediaPlaybackBar
@@ -178,23 +174,20 @@
                 android:layout_height="@dimen/buttonbar_height"
                 android:layout_below="@id/details"
                 android:layout_alignStart="@id/details"
-                android:layout_alignBottom="@+id/art"
-                android:orientation="horizontal"
-                style="@style/ButtonBar"
-                android:background="?attr/contentBackgroundColor" />
+                android:layout_alignBottom="@+id/poster"
+                android:orientation="horizontal" />
 
             <!-- Progress bar -->
             <org.xbmc.kore.ui.widgets.MediaProgressIndicator
                 android:id="@+id/progress_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/art"
-                android:layout_alignStart="@id/art"
-                android:paddingTop="@dimen/default_padding"
-                android:paddingRight="@dimen/small_padding"
-                android:paddingLeft="@dimen/small_padding"
+                android:layout_below="@id/poster"
+                android:layout_alignStart="@id/poster"
                 android:orientation="horizontal"
-                android:background="?attr/contentBackgroundColor"/>
+                android:paddingLeft="@dimen/small_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingRight="@dimen/small_padding" />
 
             <!-- Media action buttons -->
             <org.xbmc.kore.ui.widgets.MediaActionsBar
@@ -202,17 +195,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/buttonbar_height"
                 android:layout_below="@id/progress_info"
-                android:layout_alignStart="@id/art"
-                android:orientation="horizontal"
-                style="@style/ButtonBar"
-                android:background="?attr/contentBackgroundColor" />
+                android:layout_alignStart="@id/poster"
+                android:orientation="horizontal" />
 
         </RelativeLayout>
 
         <org.xbmc.kore.ui.widgets.ControlPad
             android:id="@+id/remote"
-            style="@style/ControlPad"
-            app:columnCount="3"/>
+            style="@style/Widget.Kore.ControlPad"
+            android:layout_width="@dimen/control_pad_size"
+            android:layout_height="@dimen/control_pad_size"
+            android:layout_gravity="center" />
 
     </LinearLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,8 +50,7 @@ import java.util.ArrayList;
  * Now playing view
  */
 public class NowPlayingFragment extends Fragment
-        implements HostConnectionObserver.PlayerEventsObserver,
-                   ViewTreeObserver.OnScrollChangedListener {
+        implements HostConnectionObserver.PlayerEventsObserver {
     private static final String TAG = LogUtils.makeLogTag(NowPlayingFragment.class);
 
     /**
@@ -75,6 +74,8 @@ public class NowPlayingFragment extends Fragment
      * Listener for events on this fragment
      */
     private NowPlayingListener nowPlayingListener;
+
+    private ViewTreeObserver.OnScrollChangedListener onScrollChangedListener;
 
     private FragmentNowPlayingBinding binding;
 
@@ -109,12 +110,9 @@ public class NowPlayingFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
 
-        /* Setup dim the fanart when scroll changes
-         * Full dim on 4 * iconSize dp
-         * @see {@link #onScrollChanged()}
-         */
-        pixelsToTransparent  = 4 * requireActivity().getResources().getDimensionPixelSize(R.dimen.default_icon_size);
-        binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(this);
+        /* Setup dim the fanart when scroll changes */
+        onScrollChangedListener = UIUtils.createInfoPanelScrollChangedListener(requireContext(), binding.mediaPanel, binding.art, binding.mediaPanelGroup);
+        binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
     }
 
     @Override
@@ -132,16 +130,9 @@ public class NowPlayingFragment extends Fragment
 
     @Override
     public void onDestroyView() {
-        binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(this);
+        binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(onScrollChangedListener);
         super.onDestroyView();
         binding = null;
-    }
-
-    @Override
-    public void onScrollChanged() {
-        float y = binding.mediaPanel.getScrollY();
-        float newAlpha = Math.min(1, Math.max(0, 1 - (y / pixelsToTransparent)));
-        binding.art.setAlpha(newAlpha);
     }
 
     @Override
@@ -214,8 +205,7 @@ public class NowPlayingFragment extends Fragment
     private void setNowPlayingInfo(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                    PlayerType.PropertyValue getPropertiesResult,
                                    final ListType.ItemsAll getItemResult) {
-        final String title, underTitle, art, poster, genreSeason, year,
-                descriptionPlot, votes, maxRating;
+        final String title, underTitle, art, poster, genreSeason, year, descriptionPlot, votes;
         double rating;
 
         switch (getItemResult.type) {
@@ -231,7 +221,6 @@ public class NowPlayingFragment extends Fragment
                 year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
                 descriptionPlot = getItemResult.plot;
                 rating = getItemResult.rating;
-                maxRating = getString(R.string.max_rating_video);
                 votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
@@ -246,7 +235,6 @@ public class NowPlayingFragment extends Fragment
                 year = getItemResult.premiered;
                 descriptionPlot = getItemResult.plot;
                 rating = getItemResult.rating;
-                maxRating = getString(R.string.max_rating_video);
                 votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
                 break;
             case ListType.ItemsAll.TYPE_SONG:
@@ -261,7 +249,6 @@ public class NowPlayingFragment extends Fragment
                 year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
                 descriptionPlot = getItemResult.description;
                 rating = getItemResult.rating;
-                maxRating = getString(R.string.max_rating_music);
                 votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
                 break;
             case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
@@ -277,7 +264,6 @@ public class NowPlayingFragment extends Fragment
                 year = (getItemResult.year > 0)? String.format("%d", getItemResult.year) : null;
                 descriptionPlot = getItemResult.plot;
                 rating = 0;
-                maxRating = null;
                 votes = null;
                 break;
             case ListType.ItemsAll.TYPE_CHANNEL:
@@ -292,7 +278,6 @@ public class NowPlayingFragment extends Fragment
                 year = getItemResult.premiered;
                 descriptionPlot = getItemResult.plot;
                 rating = getItemResult.rating;
-                maxRating = null;
                 votes = null;
                 break;
             default:
@@ -308,7 +293,6 @@ public class NowPlayingFragment extends Fragment
                 year = getItemResult.premiered;
                 descriptionPlot = removeYouTubeMarkup(getItemResult.plot);
                 rating = 0;
-                maxRating = null;
                 votes = null;
                 break;
         }
@@ -338,14 +322,11 @@ public class NowPlayingFragment extends Fragment
         // 0 rating will not be shown
         if (rating > 0) {
             binding.rating.setVisibility(View.VISIBLE);
-            binding.maxRating.setVisibility(View.VISIBLE);
             binding.ratingVotes.setVisibility(View.VISIBLE);
             binding.rating.setText(String.format("%01.01f", rating));
-            binding.maxRating.setText(maxRating);
             binding.ratingVotes.setText(votes);
         } else {
             binding.rating.setVisibility(View.GONE);
-            binding.maxRating.setVisibility(View.GONE);
             binding.ratingVotes.setVisibility(View.GONE);
         }
 
@@ -360,12 +341,12 @@ public class NowPlayingFragment extends Fragment
         DisplayMetrics displayMetrics = new DisplayMetrics();
         requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        int artHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_art_height),
-                artWidth = displayMetrics.widthPixels;
+        int artHeight = resources.getDimensionPixelOffset(R.dimen.info_art_height),
+                artWidth = binding.art.getWidth(); // displayMetrics.widthPixels;
         if (!TextUtils.isEmpty(art)) {
             binding.poster.setVisibility(View.VISIBLE);
-            int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
-            int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
+            int posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width);
+            int posterHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height);
 
             // If not video, change aspect ration of poster to a square
             boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
@@ -380,10 +361,10 @@ public class NowPlayingFragment extends Fragment
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
                                                  poster, title,
                                                  binding.poster, posterWidth, posterHeight);
-            UIUtils.loadImageIntoImageview(hostManager, art, binding.art, displayMetrics.widthPixels, artHeight);
+            UIUtils.loadImageIntoImageview(hostManager, art, binding.art, artWidth, artHeight);
 
             // Reset padding
-            int paddingLeft = resources.getDimensionPixelOffset(R.dimen.poster_width_plus_padding),
+            int paddingLeft = resources.getDimensionPixelOffset(R.dimen.info_poster_width_plus_padding),
                     paddingRight = binding.mediaTitle.getPaddingRight(),
                     paddingTop = binding.mediaTitle.getPaddingTop(),
                     paddingBottom = binding.mediaTitle.getPaddingBottom();

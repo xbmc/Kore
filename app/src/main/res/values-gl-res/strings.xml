@@ -18,8 +18,6 @@
     <!-- Navigation drawer tips -->
     <!-- String used in add host wizard -->
     <!-- Main view tabs -->
-    <string name="max_rating" translatable="false">/%1$s</string>
-    <string name="max_rating_video" translatable="false">/10</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
     <!-- Filters on list menus -->
     <!-- Preferences strings -->
@@ -33,7 +31,6 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
-    <string name="max_rating_music" translatable="false">/5</string>
     <string name="radio">Radio</string>
     <string name="music_videos">Vídeos</string>
     <string name="favourites">Favoritos</string>

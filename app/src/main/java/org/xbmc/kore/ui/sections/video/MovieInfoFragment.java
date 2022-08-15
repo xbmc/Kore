@@ -26,10 +26,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -43,11 +45,9 @@ import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.CastFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
-import org.xbmc.kore.utils.Utils;
 
 import java.io.File;
 
@@ -69,7 +69,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
     // Controls whether a automatic sync refresh has been issued for this show
     private static boolean hasIssuedOutdatedRefresh = false;
 
-    private Cursor cursor;
+    private int moviePlaycount = 0;
     private FileDownloadHelper.MovieInfo movieDownloadInfo;
 
     @Override
@@ -87,12 +87,12 @@ public class MovieInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnDownloadListener(view -> {
+    protected boolean setupInfoActionsBar() {
+        setOnDownloadClickListener(view -> {
             // Check if the directory exists and whether to overwrite it
             File file = new File(movieDownloadInfo.getAbsoluteFilePath());
             if (file.exists()) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
                 builder.setTitle(R.string.download)
                        .setMessage(R.string.download_file_exists)
                        .setPositiveButton(R.string.overwrite,
@@ -107,7 +107,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
                        .show();
             } else {
                 // Confirm that the user really wants to download the file
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
                 builder.setTitle(R.string.download)
                        .setMessage(R.string.confirm_movie_download)
                        .setPositiveButton(android.R.string.ok,
@@ -119,11 +119,9 @@ public class MovieInfoFragment extends AbstractInfoFragment
                        .show();
             }
         });
-
-        setOnSeenListener(view -> {
+        setOnWatchedClickListener(view -> {
             // Set the playcount
-            int playcount = cursor.getInt(MovieDetailsQuery.PLAYCOUNT);
-            int newPlaycount = (playcount > 0) ? 0 : 1;
+            int newPlaycount = (moviePlaycount > 0) ? 0 : 1;
 
             VideoLibrary.SetMovieDetails action =
                     new VideoLibrary.SetMovieDetails(getDataHolder().getId(), newPlaycount, null);
@@ -133,43 +131,33 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     if (!isAdded()) return;
                     // Force a refresh, but don't show a message
                     getRefreshItem().startSync(true);
+                    moviePlaycount = newPlaycount;
+                    setWatchedButtonState(newPlaycount > 0);
                 }
 
                 @Override
-                public void onError(int errorCode, String description) { }
+                public void onError(int errorCode, String description) {
+                    LogUtils.LOGD(TAG, "Error while setting watched state: " + description);
+                }
             }, callbackHandler);
         });
 
-        setOnGoToImdbListener(view -> {
-            String imdbNumber = cursor.getString(MovieDetailsQuery.IMDBNUMBER);
-            if (imdbNumber != null) {
-                Utils.openImdbForMovie(requireContext(), imdbNumber);
-            }
-        });
-
-        setOnAddToPlaylistListener(view -> {
+        setOnQueueClickListener(view -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.movieid = getDataHolder().getId();
             MediaPlayerUtils.queue(MovieInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
         });
 
+        setOnStreamClickListener(v -> streamItemFromKodi(movieDownloadInfo.getMediaUrl(getHostInfo()), "video/*"));
         return true;
     }
 
     @Override
-    protected boolean setupFAB(final FABSpeedDial FAB) {
-        FAB.setOnDialItemClickListener(new FABSpeedDial.DialListener() {
-            @Override
-            public void onLocalPlayClicked() {
-                playItemLocally(movieDownloadInfo.getMediaUrl(getHostInfo()), "video/*");
-            }
-
-            @Override
-            public void onRemotePlayClicked() {
-                PlaylistType.Item item = new PlaylistType.Item();
-                item.movieid = getDataHolder().getId();
-                playItemOnKodi(item);
-            }
+    protected boolean setupFAB(FloatingActionButton fab) {
+        fab.setOnClickListener(v -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.movieid = getDataHolder().getId();
+            playItemOnKodi(item);
         });
         return true;
     }
@@ -212,14 +200,13 @@ public class MovieInfoFragment extends AbstractInfoFragment
             switch (cursorLoader.getId()) {
                 case LOADER_MOVIE:
                     cursor.moveToFirst();
-                    this.cursor = cursor;
+                    moviePlaycount = cursor.getInt(MovieDetailsQuery.PLAYCOUNT);
 
                     DataHolder dataHolder = getDataHolder();
                     dataHolder.setFanArtUrl(cursor.getString(MovieDetailsQuery.FANART));
                     dataHolder.setPosterUrl(cursor.getString(MovieDetailsQuery.THUMBNAIL));
                     dataHolder.setRating(cursor.getDouble(MovieDetailsQuery.RATING));
-                    dataHolder.setMaxRating(10);
-                    dataHolder.setVotes(cursor.getInt(MovieDetailsQuery.VOTES));
+                    dataHolder.setVotes(cursor.getString(MovieDetailsQuery.VOTES));
 
                     String director = cursor.getString(MovieDetailsQuery.DIRECTOR);
                     if (!TextUtils.isEmpty(director)) {
@@ -242,17 +229,18 @@ public class MovieInfoFragment extends AbstractInfoFragment
                     dataHolder.setTitle(cursor.getString(MovieDetailsQuery.TITLE));
                     dataHolder.setUndertitle(cursor.getString(MovieDetailsQuery.TAGLINE));
                     dataHolder.setDescription(cursor.getString(MovieDetailsQuery.PLOT));
+
+                    dataHolder.setSearchTerms(dataHolder.getTitle() + " movie");
+
                     movieDownloadInfo = new FileDownloadHelper.MovieInfo(
                             dataHolder.getTitle(), cursor.getString(MovieDetailsQuery.FILE));
                     setDownloadButtonState(movieDownloadInfo.downloadDirectoryExists());
-                    setSeenButtonState(cursor.getInt(MovieDetailsQuery.PLAYCOUNT) > 0);
+                    setWatchedButtonState(cursor.getInt(MovieDetailsQuery.PLAYCOUNT) > 0);
                     updateView(dataHolder);
                     checkOutdatedMovieDetails(cursor);
                     break;
             }
         }
-
-        getFabButton().enableLocalPlay(movieDownloadInfo != null);
     }
 
     /** {@inheritDoc} */

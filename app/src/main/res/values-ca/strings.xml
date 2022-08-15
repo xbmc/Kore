@@ -36,9 +36,9 @@
     <string name="finish_after_send">Acaba després d\'enviar</string>
     <string name="library_actions">Manteniment de la mediateca</string>
     <string name="clean_video_library">Esborra videoteca</string>
-    <string name="clean_audio_library">Esborra fonoteca</string>
+    <string name="clean_audio_library">Esborra la biblioteca d\'àudio</string>
     <string name="update_video_library">Actualitza videoteca</string>
-    <string name="update_audio_library">Actualitza fonoteca</string>
+    <string name="update_audio_library">Actualitza la biblioteca d\'àudio</string>
     <string name="toggle_fullscreen">A tota pantalla</string>
     <string name="connected_to">Connectat amb %1$s</string>
     <string name="connecting">Connectant…</string>
@@ -175,7 +175,6 @@
     <string name="remaining_cast_count">%d més</string>
     <string name="general_error_executing_action">S\'ha produït un error en executar l\'acció: %1$s</string>
     <string name="error_getting_playlist">S\'ha produït un error en obtenir la llista de reproducció</string>
-    <string name="error_message">Missatge d\'error: %1$s</string>
     <string name="playlist_empty">Llista buida</string>
     <string name="clear_playlist">Esborra llista</string>
     <string name="source_empty">Dispositiu font buit</string>
@@ -231,7 +230,6 @@
     <string name="add_to_playlist">Afegeix a la llista</string>
     <string name="item_added_to_playlist">Afegit a la llista</string>
     <string name="no_suitable_playlist">No s\'ha trobat cap llista adequada per afegir tipus de fitxer.</string>
-    <string name="seen">Vist</string>
     <string name="download">Descarrega</string>
     <string name="confirm_movie_download">Voleu descarregar aquesta pel·lícula\?
 \n Es farà en segon pla i pot trigar una bona estona.</string>
@@ -271,7 +269,6 @@
     <string name="enable_disable">Activa/Desactiva complement</string>
     <string name="addon_enabled">Complement actiu</string>
     <string name="addon_disabled">Complement desactivat</string>
-    <string name="pin_unpin">Fixa/Allibera complement</string>
     <string name="addon_pinned">Complement fixat</string>
     <string name="addon_unpinned">Complement alliberat</string>
     <string name="hide_watched">Oculta visionats</string>
@@ -289,7 +286,6 @@
     <string name="theme">Tema</string>
     <string name="theme_night">Nit</string>
     <string name="theme_day">Dia</string>
-    <string name="theme_mist">Boira</string>
     <string name="switch_to_remote">Mostra al iniciar el dispositiu</string>
     <string name="keep_remote_above_lockscreen">Mostra sobre la pantalla de bloqueig</string>
     <string name="pref_keep_screen_on">Estigues pendent</string>
@@ -313,7 +309,7 @@
     <string name="might_not_have_pvr">S\'ha produït un error mentre s\'obtenia informació dels canals, probablement el Centre Multimèdia no tingui un sintonitzador configurat.
 \n
 \n Si és aquest cas, haurieu d\'eliminar aquesta entrada del menú lateral, podeu fer-ho des de la Configuració.</string>
-    <string name="error_starting_channel">S\'ha produït un error en reproduir el canal: %1$s</string>
+    <string name="error_starting_channel">S\'ha produït un error al iniciar la reproducció del canal: %1$s</string>
     <string name="error_starting_recording">S\'ha produït un error en enregistrar: %1$s</string>
     <string name="error_starting_to_record">S\'ha produït un error en reproduir el canal: %1$s</string>
     <string name="channel_switching">Canviant al canal %1$s</string>
@@ -336,8 +332,6 @@
     <string name="read_phone_state_permission_denied">Permís denegat. No podreu aturar les reproduccions mentre truqueu.</string>
     <string name="write_storage_permission_denied">Permís denegat. No podreu descarregar fitxers.</string>
     <string name="show_now_playing_panel_summary">Mostra un panell ampliable a la part inferior de la pantalla quan s\'està reproduint</string>
-    <string name="notification_seek_jump">Utilitza salts per cercar</string>
-    <string name="notification_seek_jump_speed">Canvia la velocitat de reproducció quan es cerqui una notificació</string>
     <string name="error_favourites">S\'ha produït un error mentre s\'obtenia els preferits amb descripció: %1$s</string>
     <string name="no_songs_to_download">Cap cançó per descarregar</string>
     <string name="by_album">Per àlbum</string>
@@ -347,12 +341,8 @@
     <string name="no_songs_found_refresh">No s\'ha trobat cap cançó
 \n
 \n Llisqueu avall per actualitzar</string>
-    <string name="not_implemented">No implementat</string>
     <string name="toggle_expand">Desplega/Plega</string>
-    <string name="play_locally">Reprodueix localment</string>
-    <string name="disable_local_playback_support">Desactiva la reproducció local</string>
-    <string name="disable_local_playback_support_summary">Desactiva la compatibilitat per reproduir contingut multimèdia localment al dispositiu que executa Kore.</string>
-    <string name="notification_seek_jump_step">Utilitza salts mentre es cerqui una notificació</string>
+    <string name="stream_action">Reprodueix localment</string>
     <string name="remote_bar_items">Barra inferior de dreceres</string>
     <string name="unable_to_play_favourite_item">Impossible reproduir elements preferits. Tipus incompatible</string>
     <string name="no_item_available_to_play">Error: cap element disponible per reproduir.</string>
@@ -387,4 +377,5 @@
     <string name="local_files">Fitxers locals</string>
     <string name="external_storage">Emmagatzematge</string>
     <string name="dcim">Càmera (DCIM)</string>
+    <string name="party_mode">Mode festa</string>
 </resources>

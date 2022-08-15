@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.transition.MaterialFadeThrough;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;

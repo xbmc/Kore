@@ -364,7 +364,7 @@ public abstract class BaseMediaActivity extends BaseActivity
 
         Resources resources = getResources();
         int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_panel_art_width);
-        int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_panel_height);
+        int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_panel_art_heigth);
 
         // If not video, change aspect ration of poster to a square
         boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||

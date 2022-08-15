@@ -18,11 +18,10 @@ package org.xbmc.kore.ui.sections.video;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +36,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.content.CursorLoader;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -59,15 +61,17 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowEpisodeListFragment.class);
 
     public interface OnEpisodeSelectedListener {
-        void onEpisodeSelected(int tvshowId, ViewHolder dataHolder);
+        void onEpisodeSelected(int tvshowId, ViewHolder viewHolder);
     }
 
     public static final String TVSHOWID = "tvshow_id";
     public static final String TVSHOWSEASON = "season";
+    public static final String TVSHOWSEASONPOSTERURL = "season_poster_url";
 
     // Displayed show id
     private int tvshowId = -1;
     private int tvshowSeason = -1;
+    private String tvshowSeasonPosterUrl;
 
     // Activity listener
     private OnEpisodeSelectedListener listenerActivity;
@@ -75,12 +79,13 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     /**
      * Create a new instance of this, initialized to show tvshowId
      */
-    public static TVShowEpisodeListFragment newInstance(int tvshowId, int season) {
+    public static TVShowEpisodeListFragment newInstance(int tvshowId, int season, String seasonPosterUrl) {
         TVShowEpisodeListFragment fragment = new TVShowEpisodeListFragment();
 
         Bundle args = new Bundle();
         args.putInt(TVSHOWID, tvshowId);
         args.putInt(TVSHOWSEASON, season);
+        args.putString(TVSHOWSEASONPOSTERURL, seasonPosterUrl);
         fragment.setArguments(args);
         return fragment;
     }
@@ -101,6 +106,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         Bundle args = getArguments();
         tvshowId = (args == null) ? -1 : args.getInt(TVSHOWID, -1);
         tvshowSeason = (args == null) ? -1 : args.getInt(TVSHOWSEASON, -1);
+        tvshowSeasonPosterUrl = (args == null) ? null : args.getString(TVSHOWSEASONPOSTERURL, null);
         if ((tvshowId == -1) || (tvshowSeason == -1)) {
             // There's nothing to show
             return null;
@@ -217,19 +223,12 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
 
     private class SeasonsEpisodesAdapter extends RecyclerViewCursorAdapter {
 
-        private final int themeAccentColor;
+        private final int statusWatchedColor;
         private final HostManager hostManager;
         private final int artWidth, artHeight;
 
         SeasonsEpisodesAdapter(Context context) {
-            // Get the default accent color
-            Resources.Theme theme = context.getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.colorAccent
-            });
-            themeAccentColor = styledAttributes.getColor(styledAttributes.getIndex(0), getResources().getColor(R.color.default_accent));
-            styledAttributes.recycle();
-
+            statusWatchedColor = MaterialColors.getColor(context, R.attr.colorFinished, Color.WHITE);
             hostManager = HostManager.getInstance(context);
 
             // Get the art dimensions
@@ -244,10 +243,10 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
         @Override
         public RecyclerViewCursorAdapter.CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(requireContext())
-                                      .inflate(R.layout.list_item_episode, parent, false);
-            return new ViewHolder(view, requireContext(), themeAccentColor,
+                                      .inflate(R.layout.item_tvshow_episode, parent, false);
+            return new ViewHolder(view, requireContext(), statusWatchedColor,
                                   contextlistItemMenuClickListener, hostManager,
-                                  artWidth, artHeight);
+                                  artWidth, artHeight, tvshowSeasonPosterUrl);
         }
 
         protected int getSectionColumnIdx() { return EpisodesListQuery.TITLE; }
@@ -259,33 +258,35 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
         TextView titleView;
         TextView detailsView;
-        TextView episodenumberView;
+        TextView durationView;
         ImageView contextMenuView;
-        ImageView checkmarkView;
+        ImageView watchedCheckView;
         ImageView artView;
         HostManager hostManager;
         int artWidth;
         int artHeight;
         Context context;
-        int themeAccentColor;
+        int statusWatchedColor;
+        String tvshowSeasonPosterUrl;
 
         AbstractFragment.DataHolder dataHolder = new AbstractFragment.DataHolder(0);
 
-        ViewHolder(View itemView, Context context, int themeAccentColor,
+        ViewHolder(View itemView, Context context, int statusWatchedColor,
                    View.OnClickListener contextlistItemMenuClickListener,
                    HostManager hostManager,
-                   int artWidth, int artHeight) {
+                   int artWidth, int artHeight, String tvshowSeasonPosterUrl) {
             super(itemView);
             this.context = context;
-            this.themeAccentColor = themeAccentColor;
+            this.statusWatchedColor = statusWatchedColor;
             this.hostManager = hostManager;
             this.artWidth = artWidth;
             this.artHeight = artHeight;
+            this.tvshowSeasonPosterUrl = tvshowSeasonPosterUrl;
             titleView = itemView.findViewById(R.id.title);
             detailsView = itemView.findViewById(R.id.details);
-            episodenumberView = itemView.findViewById(R.id.episode_number);
+            durationView = itemView.findViewById(R.id.duration);
             contextMenuView = itemView.findViewById(R.id.list_context_menu);
-            checkmarkView = itemView.findViewById(R.id.checkmark);
+            watchedCheckView = itemView.findViewById(R.id.watched_check);
             artView = itemView.findViewById(R.id.art);
             contextMenuView.setOnClickListener(contextlistItemMenuClickListener);
         }
@@ -295,23 +296,26 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
             // Save the episode id
             dataHolder.setId(cursor.getInt(EpisodesListQuery.EPISODEID));
             dataHolder.setTitle(cursor.getString(EpisodesListQuery.TITLE));
+            dataHolder.setPosterUrl(tvshowSeasonPosterUrl);
 
-            episodenumberView.setText(
-                    String.format(context.getString(R.string.episode_number),
-                                  cursor.getInt(EpisodesListQuery.EPISODE)));
+            String title = cursor.getString(EpisodesListQuery.TITLE);
+            String seasonEpisode = String.format(context.getString(R.string.episode_number),
+                                                 cursor.getInt(EpisodesListQuery.EPISODE));
             int runtime = cursor.getInt(EpisodesListQuery.RUNTIME) / 60;
             String duration = runtime > 0 ?
                               String.format(context.getString(R.string.minutes_abbrev), String.valueOf(runtime)) +
                               "  |  " + cursor.getString(EpisodesListQuery.FIRSTAIRED) :
                               cursor.getString(EpisodesListQuery.FIRSTAIRED);
-            titleView.setText(cursor.getString(EpisodesListQuery.TITLE));
-            detailsView.setText(duration);
+
+            titleView.setText(title);
+            detailsView.setText(seasonEpisode);
+            durationView.setText(duration);
 
             if (cursor.getInt(EpisodesListQuery.PLAYCOUNT) > 0) {
-                checkmarkView.setVisibility(View.VISIBLE);
-                checkmarkView.setColorFilter(themeAccentColor);
+                watchedCheckView.setVisibility(View.VISIBLE);
+                watchedCheckView.setColorFilter(statusWatchedColor);
             } else {
-                checkmarkView.setVisibility(View.INVISIBLE);
+                watchedCheckView.setVisibility(View.INVISIBLE);
             }
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,

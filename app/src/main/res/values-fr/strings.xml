@@ -211,7 +211,6 @@
     <string name="remaining_cast_count">%d de plus</string>
     <string name="general_error_executing_action">Erreur d\'exécution de l\'action\u00A0: %1$s</string>
     <string name="error_getting_playlist">Erreur lors de la récupération des informations de la liste de lecture</string>
-    <string name="error_message">Message d\'erreur\u00A0: %1$s</string>
     <string name="playlist_empty">Liste de lecture vide</string>
     <string name="source_empty">Source multimédia vide</string>
     <string name="clear_playlist">Effacer la liste de lecture</string>
@@ -247,7 +246,6 @@
     <string name="item_sent_to_kodi">Envoyé à Kodi</string>
     <string name="no_suitable_playlist">Aucune liste de lecture appropriée trouvée pour ce type de media.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Visualisé</string>
     <string name="download">Téléchargé</string>
     <string name="confirm_movie_download">Êtes-vous sûr de vouloir télécharger ce film ?\nLe film sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
     <string name="confirm_episode_download">Êtes-vous sûr de vouloir télécharger cet épisode \?
@@ -280,7 +278,6 @@
     <string name="enable_disable">Activer/Désactiver une extension</string>
     <string name="addon_enabled">Extension activée</string>
     <string name="addon_disabled">Extension désactivée</string>
-    <string name="pin_unpin">Épingler/Annuler l\'épinglage de l\'extension</string>
     <string name="addon_pinned">Extension épinglée</string>
     <string name="addon_unpinned">Épinglage de l\'extension annulé</string>
     <!-- Filters on list menus -->
@@ -303,7 +300,6 @@
     <string name="theme">Thème</string>
     <string name="theme_night">Nuit</string>
     <string name="theme_day">Jour</string>
-    <string name="theme_mist">Brouillard</string>
     <string name="theme_sunrise">Lever de soleil</string>
     <string name="theme_sunset">Coucher de soleil</string>
     <string name="switch_to_remote">Basculer sur la télécommande après le début de la lecture</string>
@@ -312,9 +308,6 @@
     <string name="show_notification">Afficher les notifications pendant la lecture</string>
     <string name="show_now_playing_panel">Volet \"Lecture en cours\"</string>
     <string name="show_now_playing_panel_summary">Afficher un volet extensible en bas de l\'écran lors de la lecture de médias</string>
-    <string name="notification_seek_jump">Utiliser les sauts lors de la navigation</string>
-    <string name="notification_seek_jump_speed">Modifier la vitesse de lecture lors de la navigation depuis la notification</string>
-    <string name="notification_seek_jump_step">Utiliser les sauts lors de la navigation depuis la notification</string>
     <string name="pause_during_calls">Mettre en pause lors des appels téléphoniques</string>
     <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
     <string name="vibrate_on_remote">Vibrer à l\'appui</string>
@@ -367,12 +360,9 @@
     <string name="no_item_available_to_play">Erreur : Aucun élément à lire.</string>
     <string name="Refreshing_not_implemented_for_this_item">Impossible d\'actualise cet élément</string>
     <string name="no_songs_found_refresh">Aucune piste musicale trouvée\\n\\n Glissez vers le bas pour actualiser</string>
-    <string name="not_implemented">Non installé</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Ouvrir/Fermer</string>
-    <string name="play_locally">Lecture locale</string>
-    <string name="disable_local_playback_support">Support de la lecture locale</string>
-    <string name="disable_local_playback_support_summary">Désactive la prise en charge de la lecture locale de média sur l\'appareil exécutant Kore.</string>
+    <string name="stream_action">Lecture locale</string>
     <string name="language">Langue</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobile</string>

@@ -33,9 +33,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        setTheme(UIUtils.getThemeResourceId(
-                prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
-
+        setTheme(UIUtils.getThemeResourceId(prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
+        UIUtils.tintSystemBars(this);
         Utils.setPreferredLocale(this);
         super.onCreate(savedInstanceState);
     }

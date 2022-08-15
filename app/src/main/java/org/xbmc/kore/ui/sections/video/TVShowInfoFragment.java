@@ -27,6 +27,8 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
@@ -35,7 +37,6 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.LogUtils;
 
 /**
@@ -73,19 +74,19 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
+    protected boolean setupInfoActionsBar() {
         return false;
     }
 
     @Override
-    protected boolean setupFAB(FABSpeedDial FAB) {
+    protected boolean setupFAB(FloatingActionButton fab) {
         return false;
     }
 
     @Override
     protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {
         TVShowProgressFragment tvShowProgressFragment = new TVShowProgressFragment();
-        tvShowProgressFragment.setArgs(getDataHolder().getId(), getDataHolder().getTitle());
+        tvShowProgressFragment.setArgs(getDataHolder().getId(), getDataHolder().getTitle(), getDataHolder().getPosterUrl());
         return tvShowProgressFragment;
     }
 
@@ -109,30 +110,28 @@ public class TVShowInfoFragment extends AbstractInfoFragment
                 case LOADER_TVSHOW:
                     cursor.moveToFirst();
 
+                    String tvshowTitle = cursor.getString(TVShowDetailsQuery.TITLE);
                     DataHolder dataHolder = getDataHolder();
 
                     dataHolder.setFanArtUrl(cursor.getString(TVShowDetailsQuery.FANART));
 
                     dataHolder.setPosterUrl(cursor.getString(TVShowDetailsQuery.THUMBNAIL));
                     dataHolder.setRating(cursor.getDouble(TVShowDetailsQuery.RATING));
-                    dataHolder.setMaxRating(10);
+                    dataHolder.setVotes(cursor.getString(TVShowDetailsQuery.VOTES));
 
                     String premiered = cursor.getString(TVShowDetailsQuery.PREMIERED);
                     String studio = cursor.getString(TVShowDetailsQuery.STUDIO);
-
                     dataHolder.setDetails(String.format(getString(R.string.premiered), premiered) + "  |  " + studio +
                                           "\n" +
                                           cursor.getString(TVShowDetailsQuery.GENRES));
 
-                    dataHolder.setTitle(cursor.getString(TVShowDetailsQuery.TITLE));
-
+                    dataHolder.setTitle(tvshowTitle);
                     int numEpisodes = cursor.getInt(TVShowDetailsQuery.EPISODE),
                             watchedEpisodes = cursor.getInt(TVShowDetailsQuery.WATCHEDEPISODES);
-
                     dataHolder.setUndertitle(String.format(getString(R.string.num_episodes),
                                                            numEpisodes, numEpisodes - watchedEpisodes));
-
                     dataHolder.setDescription(cursor.getString(TVShowDetailsQuery.PLOT));
+                    dataHolder.setSearchTerms(tvshowTitle + " tv show");
 
                     updateView(dataHolder);
                     checkOutdatedTVShowDetails(cursor);
@@ -187,6 +186,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
                 MediaContract.TVShows.IMDBNUMBER,
                 MediaContract.TVShows.GENRES,
                 MediaContract.SyncColumns.UPDATED,
+                MediaContract.TVShows.VOTES,
                 };
 
         int ID = 0;
@@ -203,5 +203,6 @@ public class TVShowInfoFragment extends AbstractInfoFragment
         int IMDBNUMBER = 11;
         int GENRES = 12;
         int UPDATED = 13;
+        int VOTES = 14;
     }
 }

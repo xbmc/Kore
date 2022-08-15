@@ -18,6 +18,7 @@ package org.xbmc.kore.ui.sections.hosts;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -35,16 +36,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentHostListBinding;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
@@ -92,9 +95,8 @@ public class HostListFragment extends Fragment {
 
         // Setup the adapter
         binding.list.setEmptyView(binding.empty);
-        adapter = new HostListAdapter(context, R.layout.grid_item_host, hostInfoRows);
+        adapter = new HostListAdapter(context, R.layout.item_host, hostInfoRows);
         binding.list.setAdapter(adapter);
-        binding.list.setItemChecked(currentHostPosition, true);
         binding.list.setOnItemClickListener((parent, view, position, itemId) -> {
             HostInfoRow clickedHostRow = hostInfoRows.get(position);
 
@@ -193,7 +195,7 @@ public class HostListFragment extends Fragment {
         Intent launchIntent = new Intent(getActivity(), AddHostActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(launchIntent);
-		requireActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+		requireActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
     }
 
     /**
@@ -232,7 +234,7 @@ public class HostListFragment extends Fragment {
                         .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                         .putExtra(HostFragmentManualConfiguration.HOST_ID, hostInfo.getId());
                 startActivity(launchIntent);
-                requireActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+                requireActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 return true;
             } else if (itemId == R.id.action_wake_up) {
                 // Send WoL magic packet on a new thread
@@ -248,15 +250,20 @@ public class HostListFragment extends Fragment {
      * Adapter used to show the hosts in the {@link GridView}
      */
     private class HostListAdapter extends ArrayAdapter<HostInfoRow> {
+        private final int kodiStatusConnectingColor, kodiStatusConnectedColor, kodiStatusUnavailableColor;
         public HostListAdapter(Context context, int resource, List<HostInfoRow> objects) {
             super(context, resource, objects);
+
+            kodiStatusConnectingColor = MaterialColors.getColor(requireContext(), R.attr.kodiStatusConnecting, null);
+            kodiStatusConnectedColor = MaterialColors.getColor(requireContext(), R.attr.kodiStatusConnected, null);
+            kodiStatusUnavailableColor = MaterialColors.getColor(requireContext(), R.attr.kodiStatusUnavailable, null);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity())
-                        .inflate(R.layout.grid_item_host, parent, false);
+                        .inflate(R.layout.item_host, parent, false);
             }
 
             final HostInfoRow item = this.getItem(position);
@@ -265,27 +272,21 @@ public class HostListFragment extends Fragment {
             ((TextView)convertView.findViewById(R.id.host_address)).setText(hostAddress);
 
             ImageView statusIndicator = convertView.findViewById(R.id.status_indicator);
-            // TODO: Change this colors to depend on the current theme
-//            int statusText;
             int statusColor;
             switch (item.status) {
                 case HostInfoRow.HOST_STATUS_CONNECTING:
-                    statusColor = requireActivity().getResources().getColor(R.color.host_status_connecting);
-//                    statusText = R.string.connecting_to_xbmc;
+                    statusColor = kodiStatusConnectingColor;
                     break;
                 case HostInfoRow.HOST_STATUS_UNAVAILABLE:
-                    statusColor = requireActivity().getResources().getColor(R.color.host_status_unavailable);
-//                    statusText = item.isCurrentHost? R.string.unable_to_connect_to_xbmc : R.string.xbmc_unavailable;
+                    statusColor = kodiStatusUnavailableColor;
                     break;
                 case HostInfoRow.HOST_STATUS_AVAILABLE:
-                    statusColor = requireActivity().getResources().getColor(R.color.host_status_available);
-//                    statusText = item.isCurrentHost? R.string.connected_to_xbmc : R.string.xbmc_available;
+                    statusColor = kodiStatusConnectedColor;
                     break;
                 default:
                     throw new RuntimeException("Invalid host status");
             }
             statusIndicator.setColorFilter(statusColor);
-//            ((TextView)convertView.findViewById(R.id.status_text)).setText(statusText);
 
             // For the popupmenu
             ImageView contextMenu = convertView.findViewById(R.id.list_context_menu);
@@ -341,7 +342,7 @@ public class HostListFragment extends Fragment {
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return new AlertDialog.Builder(requireActivity())
+            return new MaterialAlertDialogBuilder(requireActivity())
                     .setTitle(R.string.delete_xbmc)
                     .setMessage(R.string.delete_xbmc_confirm)
                     .setPositiveButton(android.R.string.ok, (dialog, id) -> mListener.onDialogPositiveClick())

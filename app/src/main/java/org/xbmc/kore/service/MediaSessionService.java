@@ -142,7 +142,7 @@ public class MediaSessionService extends Service
         // Create the notification channel and the default notification
         if (Utils.isOreoOrLater()) createNotificationChannel();
         nothingPlayingNotification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
-                .setSmallIcon(R.drawable.ic_devices_white_24dp)
+                .setSmallIcon(R.drawable.ic_round_devices_24)
                 .setShowWhen(false)
                 .setOngoing(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -372,7 +372,7 @@ public class MediaSessionService extends Service
                 title = getItemResult.title;
                 underTitle = getItemResult.tagline;
                 poster = getItemResult.art.poster;
-                smallIcon = R.drawable.ic_movie_white_24dp;
+                smallIcon = R.drawable.ic_round_movie_24;
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
                 title = getItemResult.title;
@@ -380,31 +380,31 @@ public class MediaSessionService extends Service
                                                      getItemResult.season, getItemResult.episode);
                 underTitle = String.format("%s | %s", getItemResult.showtitle, seasonEpisode);
                 poster = getItemResult.art.poster;
-                smallIcon = R.drawable.ic_tv_white_24dp;
+                smallIcon = R.drawable.ic_round_tv_24;
                 break;
             case ListType.ItemsAll.TYPE_SONG:
                 title = getItemResult.title;
                 underTitle = getItemResult.displayartist + " | " + getItemResult.album;
                 poster = getItemResult.thumbnail;
-                smallIcon = R.drawable.ic_headset_white_24dp;
+                smallIcon = R.drawable.ic_round_headphones_24;
                 break;
             case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
                 title = getItemResult.title;
                 underTitle = Utils.listStringConcat(getItemResult.artist, ", ") + " | " + getItemResult.album;
                 poster = getItemResult.thumbnail;
-                smallIcon = R.drawable.ic_headset_white_24dp;
+                smallIcon = R.drawable.ic_round_headphones_24;
                 break;
             case ListType.ItemsAll.TYPE_CHANNEL:
                 title = getItemResult.label;
                 underTitle = getItemResult.title;
                 poster = getItemResult.thumbnail;
-                smallIcon = R.drawable.ic_dvr_white_24dp;
+                smallIcon = R.drawable.ic_round_dvr_24;
                 break;
             default:
                 title = getItemResult.label;
                 underTitle = getItemResult.title;
                 poster = getItemResult.thumbnail;
-                smallIcon = R.drawable.ic_devices_white_24dp;
+                smallIcon = R.drawable.ic_round_devices_24;
                 break;
         }
 
@@ -427,7 +427,7 @@ public class MediaSessionService extends Service
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, getPropertiesResult.totaltime.toMiliseconds())
                 .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, poster);
 
-        playPauseIcon = (getPropertiesResult.speed == 1) ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp;
+        playPauseIcon = (getPropertiesResult.speed == 1) ? R.drawable.ic_round_pause_24 : R.drawable.ic_round_play_arrow_24;
 
         // See explanation of the creating/handling of this Pending Intents in onStartCommand
         PendingIntent skippreviousPI = MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS),
@@ -447,11 +447,11 @@ public class MediaSessionService extends Service
                 .setContentIntent(remoteStartPendingIntent)
                 .setContentTitle(title)
                 .setContentText(underTitle)
-                .addAction(R.drawable.ic_skip_previous_white_24dp, this.getString(R.string.rewind), skippreviousPI)
-                .addAction(R.drawable.ic_fast_rewind_white_24dp, this.getString(R.string.rewind), rewindPI)
+                .addAction(R.drawable.ic_round_skip_previous_24, this.getString(R.string.previous), skippreviousPI)
+                .addAction(R.drawable.ic_round_fast_rewind_24, this.getString(R.string.rewind), rewindPI)
                 .addAction(playPauseIcon, this.getString(R.string.play), playPausePI)
-                .addAction(R.drawable.ic_fast_forward_white_24dp, this.getString(R.string.fast_forward), fastforwardPI)
-                .addAction(R.drawable.ic_skip_next_white_24dp, this.getString(R.string.fast_forward), skipnextPI)
+                .addAction(R.drawable.ic_round_fast_forward_24, this.getString(R.string.fast_forward), fastforwardPI)
+                .addAction(R.drawable.ic_round_skip_next_24, this.getString(R.string.next), skipnextPI)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                                   .setMediaSession(mediaSession.getSessionToken())
                                   .setShowActionsInCompactView(actionsInCompactView));
@@ -473,8 +473,8 @@ public class MediaSessionService extends Service
         // 4. We specifically resize the image to the same dimensions used in the remote, so that Picasso reuses it in
         // the remote and here from the cache
         Resources resources = this.getResources();
-        final int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_poster_width);
-        final int posterHeight = Utils.isROrLater() || isSong ? posterWidth : resources.getDimensionPixelOffset(R.dimen.now_playing_poster_height);
+        final int posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width);
+        final int posterHeight = Utils.isROrLater() || isSong ? posterWidth : resources.getDimensionPixelOffset(R.dimen.info_poster_height);
         if (picassoTarget == null ) {
             picassoTarget = new Target() {
                 @Override

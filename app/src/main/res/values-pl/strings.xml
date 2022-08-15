@@ -29,7 +29,7 @@
     <string name="dcim">DCIM</string>
     <string name="external_storage">Magazyn</string>
     <string name="addons">Dodatki</string>
-    <string name="files">Pliki</string>
+    <string name="files">Pliki Kodi</string>
     <string name="local_files">Pliki lokalne</string>
     <string name="video">Film</string>
     <string name="videos">Filmy</string>
@@ -37,7 +37,7 @@
     <string name="window">Okno</string>
     <string name="script">Scenariusz</string>
     <string name="unknown">Nieznany</string>
-    <string name="file_browser">Przeglądarka plików</string>
+    <string name="file_browser">Przeglądarka plików Kodi</string>
     <string name="local_file_browser">Lokalna przeglądarka plików</string>
     <string name="pvr">Telewizja</string>
     <string name="favourites">Ulubione</string>
@@ -167,28 +167,27 @@
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Sezon %1$02d | Odcinek %2$02d</string>
     <string name="season_number">Sezon %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Odcinek %1$d</string>
     <string name="votes">%1$s głosów</string>
     <string name="fanart">Fototapeta</string>
     <string name="poster">Plakat</string>
     <string name="thumbnail">Miniaturka</string>
     <string name="error_getting_properties">Nie można pobrać opcji Kodi.
-\n Kod błędu: %1$s.</string>
+\nKomunikat o błędzie:%1$s.</string>
     <string name="error_executing_subtitles">Nie można aktywować dodatku napisów.
-\n Kod błędu: %1$s.</string>
+\nKomunikat o błędzie: %1$s.</string>
     <string name="error_getting_addon_info">Nie można wyświetlić informacji o dodatku.
-\n Kod błędu: %1$s.</string>
+\nKomunikat o błędzie: %1$s.</string>
     <string name="error_getting_source_info">Nie można przeglądać plików.
-\n Kod błędu: %1$s.</string>
+\nKomunikat o błędzie: %1$s.</string>
     <string name="error_play_media_file">Nie można odtworzyć pliku multimedialnego.
-\n Kod błędu: %1$s.</string>
-    <string name="error_play_local_file">Nie można odtworzyć lokalnego pliku multimedialnego.\n
-    	Kod błędu:
-        %1$s.</string>
+\nKomunikat o błędzie: %1$s.</string>
+    <string name="error_play_local_file">Nie można odtworzyć lokalnego pliku multimedialnego.
+\nKomunikat o błędzie: %1$s.</string>
     <string name="error_queue_media_file">Nie można umieścić w kolejce pliku multimedialnego.
-\n Kod błędu: %1$s.</string>
+\nKomunikat o błędzie: %1$s.</string>
     <string name="error_get_active_player">Błąd podczas wybierania domyślnego odtwarzacza.
-\n Kod błędu: %1$s.</string>
+\nKomunikat o błędzie: %1$s.</string>
     <string name="error_share_video">Nie można udostępnić filmu do Kodi.</string>
     <string name="error_reading_local_storage">Nie można odczytać lokalnego magazynu. Czy zezwoliłeś Kore na dostęp do przechowywania plików?</string>
     <string name="error_starting_http_server">Nie można utworzyć lub uruchomić serwera HTTP.</string>
@@ -201,24 +200,47 @@
     <string name="remaining_cast_count">oraz %d innych</string>
     <string name="general_error_executing_action">Błąd podczas wykonywania akcji: %1$s</string>
     <string name="error_getting_playlist">Błąd pobierania listy odtwarzania</string>
-    <string name="error_message">Kod błędu: %1$s</string>
     <string name="playlist_empty">Lista jest pusta</string>
     <string name="clear_playlist">Wyczyść listę</string>
     <string name="source_empty">Źródło jest puste</string>
     <string name="swipe_down_to_refresh">Przesuń w dół, aby odświeżyć</string>
-    <string name="no_movies_found_refresh">Brak filmów\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_tvshows_found_refresh">Brak seriali\n\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_movies_found_refresh">Brak filmów
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_tvshows_found_refresh">Brak seriali
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
     <string name="no_episodes_found">Brak odcinków</string>
-    <string name="no_artists_found_refresh">Brak wykonawców\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_albums_found_refresh">Brak albumów\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_genres_found_refresh">Brak gatunków\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_addons_found_refresh">Brak dodatków lub niepodłączony\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_music_videos_found_refresh">Brak teledysków\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_channel_groups_found_refresh">Brak grup kanałów.\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_channels_found_refresh">Brak kanałów.\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_favourites_found_refresh">Brak ulubionych.\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_recordings_found_refresh">Brak nagrań.\n\nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_broadcasts_found_refresh">Brak audycji.\n\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_artists_found_refresh">Brak wykonawców
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_albums_found_refresh">Brak albumów
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_genres_found_refresh">Brak gatunków
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_addons_found_refresh">Brak dodatków lub niepodłączony
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_music_videos_found_refresh">Brak teledysków
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_channel_groups_found_refresh">Brak grup kanałów
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_channels_found_refresh">Brak kanałów
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_favourites_found_refresh">Brak ulubionych
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_recordings_found_refresh">Brak nagrań
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
+    <string name="no_broadcasts_found_refresh">Brak audycji
+\n
+\nPrzesuń w dół, aby odświeżyć</string>
     <string name="pull_to_refresh">Pociągnij, aby odświeżyć</string>
     <string name="no_cast_info">Brak informacji o obsadzie</string>
     <string name="minutes_abbrev">%1$s min</string>
@@ -237,7 +259,6 @@
     <string name="item_sent_to_kodi">Wysłane do Kodi</string>
     <string name="no_suitable_playlist">Brak pasującej listy odtwarzania dla tego typu pliku.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Obejrzany</string>
     <string name="download">Pobierz</string>
     <string name="confirm_movie_download">Czy na pewno chcesz pobrać ten film\?
 \nFilm będzie pobierany w tle, a to może zająć trochę czasu.</string>
@@ -274,7 +295,6 @@
     <string name="enable_disable">Włącz/Wyłącz dodatek</string>
     <string name="addon_enabled">Dodatek włączony</string>
     <string name="addon_disabled">Dodatek wyłączony</string>
-    <string name="pin_unpin">Przypnij/Odepnij dodatek</string>
     <string name="addon_pinned">Dodatek przypięty</string>
     <string name="addon_unpinned">Dodatek odpięty</string>
     <!-- Filters on list menus -->
@@ -296,30 +316,21 @@
     <string name="theme">Motyw</string>
     <string name="theme_night">Noc</string>
     <string name="theme_day">Dzień</string>
-    <string name="theme_mist">Mgła</string>
     <string name="theme_sunrise">Wschód słońca</string>
     <string name="theme_sunset">Zachód słońca</string>
     <string name="switch_to_remote">Przełącz do zdalnego sterowania po uruchomieniu odtwarzania</string>
     <string name="keep_remote_above_lockscreen">Pilot nad blokadą ekranu</string>
     <string name="pref_keep_screen_on">Nie wyłączaj ekranu podczas używania pilota</string>
     <string name="show_notification">Pokaż powiadomienie podczas odtwarzania</string>
-    <string name="show_now_playing_panel">Pokaż panel odtwarzania podczas odtwarzania</string>
-    <string name="show_now_playing_panel_summary">Wyświetla rozwijany panel u dołu ekranu podczas odtwarzania multimediów</string>
-    <string name="notification_seek_jump">Użyj kroków do szukania</string>
-    <string name="notification_seek_jump_speed">Zmienia prędkość odtwarzania podczas wyszukiwania z powiadomienia</string>
-    <string name="notification_seek_jump_step">Użyj kroków pomijania podczas wyszukiwania z powiadomienia</string>
+    <string name="show_now_playing_panel">Pokaż teraz panel odtwarzania</string>
+    <string name="show_now_playing_panel_summary">Wyświetla panel u dołu ekranu podczas odtwarzania multimediów</string>
     <string name="pause_during_calls">Zatrzymaj odtwarzanie podczas rozmowy</string>
     <string name="use_hardware_volume_keys">Używaj klawiszy głośności do regulacji głośności</string>
     <string name="vibrate_on_remote">Wibruj po naciśnięciu klawiszy pilota</string>
     <string name="remote_bar_items">Dolny pasek skrótów</string>
     <string name="nav_drawer_items">Boczne skróty</string>
     <string name="about">O aplikacji</string>
-    <string name="about_desc"><![CDATA[
-        \u00A9 2018 XBMC Foundation<br><br>
-         Proszę, oceń nas na <b><a href=\"market://details?id=org.xbmc.kore\">Google Play</a></b><br><br>
-
-         Jeśli potrzebujesz pomocy, odwiedź nasze <b><a href=\"http://forum.kodi.tv/forumdisplay.php?fid=129\">forum</a></b>
-    ]]></string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Proszę, oceń nas na &lt;b&gt;&lt;a href=\"market://details\?id=org.xbmc.kore\"&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Jeśli potrzebujesz pomocy, odwiedź nasze &lt;b&gt;&lt;a href=\"http://forum.kodi.tv/forumdisplay.php\?fid=129\"&gt;forum&lt;/a&gt;</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
@@ -369,18 +380,26 @@
     <string name="muted">wyciszony</string>
     <string name="no_item_available_to_play">Błąd: brak pozycji do odtworzenia.</string>
     <string name="Refreshing_not_implemented_for_this_item">Odświeżanie nie zostało zaimplementowane dla tej pozycji</string>
-    <string name="no_songs_found_refresh">Nie znaleziono utworów
+    <string name="no_songs_found_refresh">Brak utworów
 \n
 \nPrzesuń w dół, aby odświeżyć</string>
-    <string name="not_implemented">Nie zaimplementowano</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Rozwiń/Zwiń</string>
-    <string name="play_locally">Odtwarzaj lokalnie</string>
-    <string name="disable_local_playback_support">Wyłącz odtwarzanie na urządzeniu</string>
-    <string name="disable_local_playback_support_summary">Wyłącza odtwarzanie multimediów na urządzeniu przy uruchomieniu Kore.</string>
+    <string name="stream_action">Odtwarzaj lokalnie</string>
     <string name="language">Język</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobilna</string>
     <string name="any_network">Dowolna</string>
-    <string name="always_sendtokodi_addon">Zawsze preferuj dodatek SendToKodi</string>
+    <string name="always_sendtokodi_addon">Preferuj dodatek SendToKodi</string>
+    <string name="party_mode">Tryb imprezy</string>
+    <string name="theme_sun_dynamic">Dynamiczny wschód/zachód Słońca</string>
+    <string name="theme_default_dynamic">Dynamiczny dzień/noc</string>
+    <string name="queue_action">Kolejkuj</string>
+    <string name="download_action">Pobierz</string>
+    <string name="disabled_status">Wyłączone</string>
+    <string name="enabled_status">Włączone</string>
+    <string name="unpinned_status">Odpięte</string>
+    <string name="pinned_status">Przypięte</string>
+    <string name="unwatched_status">Nieobejrzane</string>
+    <string name="watched_status">Obejrzane</string>
 </resources>

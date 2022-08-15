@@ -19,8 +19,8 @@ package org.xbmc.kore.ui.sections.video;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,7 +38,10 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.color.MaterialColors;
+
 import org.xbmc.kore.R;
+import org.xbmc.kore.databinding.ItemTvshowBinding;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
@@ -55,26 +57,29 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
     public static final String BUNDLE_ITEM_ID = "itemid";
     public static final String BUNDLE_TITLE = "title";
+    public static final String BUNDLE_POSTER_URL = "poster_url";
 
     private static final int NEXT_EPISODES_COUNT = 2;
     private int itemId = -1;
+    private String showTitle, showPosterUrl;
     private CastFragment castFragment;
 
     public static final int LOADER_NEXT_EPISODES = 1,
             LOADER_SEASONS = 2;
 
     public interface TVShowProgressActionListener {
-        void onSeasonSelected(int tvshowId, int season);
+        void onSeasonSelected(int tvshowId, int season, String seasonPoster);
         void onNextEpisodeSelected(int tvshowId, AbstractInfoFragment.DataHolder dataHolder);
     }
 
     // Activity listener
     private TVShowProgressActionListener listenerActivity;
 
-    public void setArgs(int itemId, String showTitle) {
+    public void setArgs(int itemId, String showTitle, String showPosterUrl) {
         Bundle bundle = new Bundle();
         bundle.putInt(BUNDLE_ITEM_ID, itemId);
         bundle.putString(BUNDLE_TITLE, showTitle);
+        bundle.putString(BUNDLE_POSTER_URL, showPosterUrl);
         setArguments(bundle);
     }
 
@@ -86,12 +91,13 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             throw new IllegalStateException("Use setArgs to set required item id");
         }
         this.itemId = arguments.getInt(BUNDLE_ITEM_ID);
-        String title = arguments.getString(BUNDLE_TITLE);
+        this.showTitle = arguments.getString(BUNDLE_TITLE);
+        this.showPosterUrl = arguments.getString(BUNDLE_POSTER_URL);
 
         View view = inflater.inflate(R.layout.fragment_tvshow_progress, container, false);
 
         castFragment = new CastFragment();
-        castFragment.setArgs(this.itemId, title, CastFragment.TYPE.TVSHOW);
+        castFragment.setArgs(this.itemId, this.showTitle, CastFragment.TYPE.TVSHOW);
         requireActivity().getSupportFragmentManager()
                          .beginTransaction()
                          .add(R.id.cast_fragment, castFragment)
@@ -178,10 +184,12 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     private void displayNextEpisodeList(Cursor cursor) {
         TextView nextEpisodeTitle = requireActivity().findViewById(R.id.next_episode_title);
         GridLayout nextEpisodeList = requireActivity().findViewById(R.id.next_episode_list);
+        View nextEpisodeDivider = requireActivity().findViewById(R.id.next_episode_divider);
 
         if (cursor.moveToFirst()) {
             nextEpisodeTitle.setVisibility(View.VISIBLE);
             nextEpisodeList.setVisibility(View.VISIBLE);
+            nextEpisodeDivider.setVisibility(View.VISIBLE);
 
             HostManager hostManager = HostManager.getInstance(requireContext());
 
@@ -192,9 +200,9 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
             // Get the art dimensions
             Resources resources = requireContext().getResources();
-            int artWidth = (int)(resources.getDimension(R.dimen.detail_poster_width_square) /
+            int artWidth = (int)(resources.getDimension(R.dimen.info_poster_width_square) /
                                  UIUtils.IMAGE_RESIZE_FACTOR);
-            int artHeight = (int)(resources.getDimension(R.dimen.detail_poster_height_square) /
+            int artHeight = (int)(resources.getDimension(R.dimen.info_poster_height_square) /
                                   UIUtils.IMAGE_RESIZE_FACTOR);
 
             nextEpisodeList.removeAllViews();
@@ -212,16 +220,18 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 String thumbnail = cursor.getString(NextEpisodesListQuery.THUMBNAIL);
 
                 View episodeView = LayoutInflater.from(requireContext())
-                                                 .inflate(R.layout.list_item_next_episode, nextEpisodeList, false);
+                                                 .inflate(R.layout.item_tvshow_episode, nextEpisodeList, false);
 
                 ImageView artView = episodeView.findViewById(R.id.art);
                 TextView titleView = episodeView.findViewById(R.id.title);
                 TextView detailsView = episodeView.findViewById(R.id.details);
                 TextView durationView = episodeView.findViewById(R.id.duration);
+                ImageView watchedCheckView = episodeView.findViewById(R.id.watched_check);
 
                 titleView.setText(title);
                 detailsView.setText(seasonEpisode);
                 durationView.setText(duration);
+                watchedCheckView.setVisibility(View.GONE);
 
                 UIUtils.loadImageWithCharacterAvatar(requireContext(), hostManager,
                                                      thumbnail, title,
@@ -230,6 +240,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 AbstractInfoFragment.DataHolder vh = new AbstractInfoFragment.DataHolder(episodeId);
                 vh.setTitle(title);
                 vh.setUndertitle(seasonEpisode);
+                vh.setPosterUrl(this.showPosterUrl);
                 episodeView.setTag(vh);
                 episodeView.setOnClickListener(episodeClickListener);
 
@@ -244,6 +255,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             // No episodes, hide views
             nextEpisodeTitle.setVisibility(View.GONE);
             nextEpisodeList.setVisibility(View.GONE);
+            nextEpisodeDivider.setVisibility(View.GONE);
         }
     }
 
@@ -255,14 +267,14 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     private void displaySeasonList(Cursor cursor) {
         TextView seasonsListTitle = requireActivity().findViewById(R.id.seasons_title);
         GridLayout seasonsList = requireActivity().findViewById(R.id.seasons_list);
+        View seasonsDivider = requireActivity().findViewById(R.id.seasons_divider);
 
         if (cursor.moveToFirst()) {
             seasonsListTitle.setVisibility(View.VISIBLE);
             seasonsList.setVisibility(View.VISIBLE);
+            seasonsDivider.setVisibility(View.VISIBLE);
 
             HostManager hostManager = HostManager.getInstance(requireContext());
-
-            View.OnClickListener seasonListClickListener = v -> listenerActivity.onSeasonSelected(itemId, (int)v.getTag());
 
             // Get the art dimensions
             Resources resources = requireContext().getResources();
@@ -272,15 +284,10 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                                   UIUtils.IMAGE_RESIZE_FACTOR);
 
             // Get theme colors
-            Resources.Theme theme = requireContext().getTheme();
-            TypedArray styledAttributes = theme.obtainStyledAttributes(new int[] {
-                    R.attr.colorInProgress,
-                    R.attr.colorFinished
-            });
-
-            int inProgressColor = styledAttributes.getColor(styledAttributes.getIndex(0), resources.getColor(R.color.orange_500));
-            int finishedColor = styledAttributes.getColor(styledAttributes.getIndex(1), resources.getColor(R.color.green_400));
-            styledAttributes.recycle();
+            ColorStateList inProgressColor = ColorStateList.valueOf(
+                    MaterialColors.getColor(requireContext(), R.attr.colorInProgress, Color.GREEN));
+            ColorStateList finishedColor = ColorStateList.valueOf(
+                    MaterialColors.getColor(requireContext(), R.attr.colorFinished, Color.WHITE));
 
             seasonsList.removeAllViews();
             do {
@@ -289,35 +296,33 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
                 int numEpisodes = cursor.getInt(SeasonsListQuery.EPISODE);
                 int watchedEpisodes = cursor.getInt(SeasonsListQuery.WATCHEDEPISODES);
 
-                View seasonView = LayoutInflater.from(requireContext()).inflate(R.layout.grid_item_season, seasonsList, false);
+                ItemTvshowBinding binding = ItemTvshowBinding.inflate(LayoutInflater.from(requireContext()),
+                                                                      seasonsList, false);
 
-                ImageView seasonPictureView = seasonView.findViewById(R.id.art);
-                TextView seasonNumberView = seasonView.findViewById(R.id.season);
-                TextView seasonEpisodesView = seasonView.findViewById(R.id.episodes);
-                ProgressBar seasonProgressBar = seasonView.findViewById(R.id.season_progress_bar);
-
-                seasonNumberView.setText(String.format(requireContext().getString(R.string.season_number), seasonNumber));
-                seasonEpisodesView.setText(String.format(requireContext().getString(R.string.num_episodes),
-                                                         numEpisodes, numEpisodes - watchedEpisodes));
-                seasonProgressBar.setMax(numEpisodes);
-                seasonProgressBar.setProgress(watchedEpisodes);
-
-                int watchedColor = (numEpisodes - watchedEpisodes == 0) ? finishedColor : inProgressColor;
-                seasonProgressBar.setProgressTintList(ColorStateList.valueOf(watchedColor));
+                binding.title.setText(String.format(requireContext().getString(R.string.season_number), seasonNumber));
+                binding.details.setText(String.format(requireContext().getString(R.string.num_episodes),
+                                                      numEpisodes, numEpisodes - watchedEpisodes));
+                binding.tvShowsProgressBar.setMax(numEpisodes);
+                binding.tvShowsProgressBar.setProgress(watchedEpisodes);
+                ColorStateList watchedColor = (numEpisodes - watchedEpisodes == 0) ? finishedColor : inProgressColor;
+                binding.tvShowsProgressBar.setProgressTintList(watchedColor);
+                binding.otherInfo.setVisibility(View.GONE);
 
                 UIUtils.loadImageWithCharacterAvatar(requireContext(), hostManager,
                                                      thumbnail,
                                                      String.valueOf(seasonNumber),
-                                                     seasonPictureView, artWidth, artHeight);
+                                                     binding.art, artWidth, artHeight);
 
+                View seasonView = binding.getRoot();
                 seasonView.setTag(seasonNumber);
-                seasonView.setOnClickListener(seasonListClickListener);
+                seasonView.setOnClickListener(v -> listenerActivity.onSeasonSelected(itemId, seasonNumber, thumbnail));
                 seasonsList.addView(seasonView);
             } while (cursor.moveToNext());
         } else {
             // No seasons, hide views
             seasonsListTitle.setVisibility(View.GONE);
             seasonsList.setVisibility(View.GONE);
+            seasonsDivider.setVisibility(View.GONE);
         }
     }
 

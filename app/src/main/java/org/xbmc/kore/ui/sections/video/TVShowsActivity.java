@@ -127,12 +127,12 @@ public class TVShowsActivity extends BaseMediaActivity
      * @param tvshowId tv show id
      * @param seasonId season number
      */
-    public void onSeasonSelected(int tvshowId, int seasonId) {
+    public void onSeasonSelected(int tvshowId, int seasonId, String seasonPoster) {
         selectedSeason = seasonId;
 
         // Replace fragment
         TVShowEpisodeListFragment fragment =
-                TVShowEpisodeListFragment.newInstance(selectedTVShowId, seasonId);
+                TVShowEpisodeListFragment.newInstance(selectedTVShowId, seasonId, seasonPoster);
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0)

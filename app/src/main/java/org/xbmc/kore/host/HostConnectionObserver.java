@@ -579,12 +579,12 @@ public class HostConnectionObserver
         if (isCheckingPlaylist)
             return;
 
+        if (HostConnection.LOG_REQUESTS) LogUtils.LOGD(TAG, "Checking playlists");
         isCheckingPlaylist = true;
 
         new GetPlaylist().execute(connection, new ApiCallback<ArrayList<GetPlaylist.GetPlaylistResult>>() {
             @Override
             public void onSuccess(ArrayList<GetPlaylist.GetPlaylistResult> result) {
-                LogUtils.LOGD(TAG, "Checked playlist, got results: " + result.size());
                 isCheckingPlaylist = false;
 
                 if (result.isEmpty()) {
@@ -648,11 +648,11 @@ public class HostConnectionObserver
         // We don't properly protect this against race conditions because it's
         // not worth the trouble - we can safely call Kodi multiple times.
         if (checkingWhatsPlaying) {
-            LogUtils.LOGD(TAG, "Already checking whats playing, returning");
+            LogUtils.LOGD(TAG, "Already checking what's playing, returning");
             return;
         }
         checkingWhatsPlaying = true;
-        LogUtils.LOGD(TAG, "Checking whats playing");
+        if (HostConnection.LOG_REQUESTS) LogUtils.LOGD(TAG, "Checking what's playing");
 
         // Start the calls: Player.GetActivePlayers -> Player.GetProperties -> Player.GetItem
         chainCallGetActivePlayers();
@@ -668,7 +668,7 @@ public class HostConnectionObserver
             @Override
             public void onSuccess(ArrayList<PlayerType.GetActivePlayersReturnType> result) {
                 if (result.isEmpty()) {
-                    LogUtils.LOGD(TAG, "Nothing is playing");
+                    if (HostConnection.LOG_REQUESTS) LogUtils.LOGD(TAG, "Nothing is playing");
                     notifyNothingIsPlaying(playerEventsObservers);
                     return;
                 }

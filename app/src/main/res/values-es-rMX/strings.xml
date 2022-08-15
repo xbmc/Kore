@@ -223,7 +223,6 @@
     <string name="remaining_cast_count">%d más</string>
     <string name="general_error_executing_action">Error ejecutando acción: %1$s</string>
     <string name="error_getting_playlist">Error obteniendo lista de reproducción</string>
-    <string name="error_message">Mensaje de error: %1$s</string>
     <string name="playlist_empty">Lista de reproducción vacía</string>
     <string name="clear_playlist">Vaciar lista de reproducción</string>
     <string name="source_empty">Origen de medios vacío</string>
@@ -271,7 +270,6 @@
     <string name="item_sent_to_kodi">Enviado a Kodi</string>
     <string name="no_suitable_playlist">No se encontró ninguna lista de reproducción apropiada para agregar el medio.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Visto</string>
     <string name="download">Descargar</string>
     <string name="confirm_movie_download">¿Estás seguro que quieres descargar esta película?\n
     	La película se descargará en segundo plano, pero puede que tome un rato en terminar.</string>
@@ -311,7 +309,6 @@
     <string name="enable_disable">Activar/Desactivar complemento</string>
     <string name="addon_enabled">Complemento activado</string>
     <string name="addon_disabled">Complemento desactivado</string>
-    <string name="pin_unpin">Anclar/Desanclar complemento</string>
     <string name="addon_pinned">Complemento anclado</string>
     <string name="addon_unpinned">Complemento desanclado</string>
     <!-- Filters on list menus -->
@@ -333,7 +330,6 @@
     <string name="theme">Tema</string>
     <string name="theme_night">Noche</string>
     <string name="theme_day">Día</string>
-    <string name="theme_mist">Neblina</string>
     <string name="theme_sunrise">Amanecer</string>
     <string name="theme_sunset">Puesta de sol</string>
     <string name="switch_to_remote">Mostrar al iniciar medios</string>
@@ -342,9 +338,6 @@
     <string name="show_notification">Mostrar notificación durante la reproducción</string>
     <string name="show_now_playing_panel">Mostrar panel reproduciendo ahora durante la reproducción</string>
     <string name="show_now_playing_panel_summary">Muestra un panel expansible en la parte inferior de la pantalla durante la reproducción de medios</string>
-    <string name="notification_seek_jump">Utilizar pasos para buscar</string>
-    <string name="notification_seek_jump_speed">Cambiar velocidad de reproducción al buscar desde la notificación</string>
-    <string name="notification_seek_jump_step">Utilizar pasos de salto al buscar desde la notificación</string>
     <string name="pause_during_calls">Pausar durante llamadas</string>
     <string name="use_hardware_volume_keys">Utilizar teclas de volumen del dispositivo</string>
     <string name="vibrate_on_remote">Vibrar al tocar</string>
@@ -409,12 +402,9 @@
     <string name="Refreshing_not_implemented_for_this_item">Actualización no implementada para este elemento</string>
     <string name="no_songs_found_refresh">No se encontraron canciones\n\n
     	Desliza hacia abajo para actualizar</string>
-    <string name="not_implemented">No implementado</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Expandir/Contraer</string>
-    <string name="play_locally">Reproducir localmente</string>
-    <string name="disable_local_playback_support">Desactivar soporte para reproducción local</string>
-    <string name="disable_local_playback_support_summary">Desactiva el soporte para reproducir medios almacenados en el dispositivo ejecutando Kore.</string>
+    <string name="stream_action">Reproducir localmente</string>
     <string name="language">Idioma</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Datos móviles</string>

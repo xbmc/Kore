@@ -35,7 +35,7 @@
     <string name="dcim">DCIM</string>
     <string name="external_storage">Storage</string>
     <string name="addons">Addons</string>
-    <string name="files">Files</string>
+    <string name="files">Kodi Files</string>
     <string name="local_files">Local Files</string>
     <string name="video">Video</string>
     <string name="videos">Videos</string>
@@ -43,7 +43,7 @@
     <string name="window">Window</string>
     <string name="script">Script</string>
     <string name="unknown">Unknown</string>
-    <string name="file_browser">File Browser</string>
+    <string name="file_browser">Kodi File Browser</string>
     <string name="local_file_browser">Local File Browser</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Favourites</string>
@@ -211,39 +211,22 @@
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Season %1$02d | Episode %2$02d</string>
     <string name="season_number">Season %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Episode %1$d</string>
 
     <string name="votes">%1$s votes</string>
-    <string name="max_rating" translatable="false">/%1$s</string>
-    <string name="max_rating_video" translatable="false">/10</string>
 
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
     <string name="thumbnail">Thumbnail</string>
 
-    <string name="error_getting_properties">Couldn\'t get Kodi properties.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\n
-    	Error message: %1$s.</string>
-    <string name="error_getting_addon_info">Couldn\'t get Addon information.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_getting_source_info">Couldn\'t browse files.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_play_media_file">Couldn\'t play media file.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_play_local_file">Couldn\'t play local media file.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_queue_media_file">Couldn\'t queue media file.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_get_active_player">Couldn\'t get active player.\n
-    	Error message:
-        %1$s.</string>
+    <string name="error_getting_properties">Couldn\'t get Kodi properties.\nError message:%1$s.</string>
+    <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\nError message: %1$s.</string>
+    <string name="error_getting_addon_info">Couldn\'t get Addon information.\nError message:%1$s.</string>
+    <string name="error_getting_source_info">Couldn\'t browse files.\nError message:%1$s.</string>
+    <string name="error_play_media_file">Couldn\'t play media file.\nError message:%1$s.</string>
+    <string name="error_play_local_file">Couldn\'t play local media file.\nError message:%1$s.</string>
+    <string name="error_queue_media_file">Couldn\'t queue media file.\nError message:%1$s.</string>
+    <string name="error_get_active_player">Couldn\'t get active player.\nError message:%1$s.</string>
     <string name="error_share_video">Couldn\'t share video to Kodi.</string>
     <string name="error_reading_local_storage">Couldn\'t read the local storage. Did you give Kore permission to access file storage?</string>
     <string name="error_starting_http_server">Couldn\'t create or start HTTP server.</string>
@@ -258,37 +241,25 @@
 
     <string name="general_error_executing_action">Error executing action: %1$s</string>
     <string name="error_getting_playlist">Error fetching playlist</string>
-    <string name="error_message">Error message: %1$s</string>
     <string name="playlist_empty">Playlist empty</string>
     <string name="clear_playlist">Clear playlist</string>
     <string name="source_empty">Media source empty</string>
 
     <string name="swipe_down_to_refresh">Swipe down to refresh</string>
-    <string name="no_movies_found_refresh">No movies found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_tvshows_found_refresh">No TV Shows found\n\n
-    	Swipe down to refresh</string>
+    <string name="no_movies_found_refresh">No movies found\n\nSwipe down to refresh</string>
+    <string name="no_tvshows_found_refresh">No TV Shows found\n\nSwipe down to refresh</string>
     <string name="no_episodes_found">No episodes found</string>
-    <string name="no_artists_found_refresh">No artists found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_albums_found_refresh">No albums found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_genres_found_refresh">No genres found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_addons_found_refresh">No addons found or not connected\n\n
-    	Swipe down to refresh</string>
-    <string name="no_music_videos_found_refresh">No videos found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_channel_groups_found_refresh">No channel groups found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_channels_found_refresh">No channels found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_favourites_found_refresh">No favourites found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_recordings_found_refresh">No recordings found\n\n
-    	Swipe down to refresh</string>
-    <string name="no_broadcasts_found_refresh">No broadcasts found\n\n
-    	Swipe down to refresh</string>
+    <string name="no_artists_found_refresh">No artists found\n\nSwipe down to refresh</string>
+    <string name="no_albums_found_refresh">No albums found\n\nSwipe down to refresh</string>
+    <string name="no_genres_found_refresh">No genres found\n\nSwipe down to refresh</string>
+    <string name="no_songs_found_refresh">No songs found\n\nSwipe down to refresh</string>
+    <string name="no_addons_found_refresh">No addons found or not connected\n\nSwipe down to refresh</string>
+    <string name="no_music_videos_found_refresh">No videos found\n\nSwipe down to refresh</string>
+    <string name="no_channel_groups_found_refresh">No channel groups found\n\nSwipe down to refresh</string>
+    <string name="no_channels_found_refresh">No channels found\n\nSwipe down to refresh</string>
+    <string name="no_favourites_found_refresh">No favourites found\n\nSwipe down to refresh</string>
+    <string name="no_recordings_found_refresh">No recordings found\n\nSwipe down to refresh</string>
+    <string name="no_broadcasts_found_refresh">No broadcasts found\n\nSwipe down to refresh</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_cast_info">No cast info to display</string>
 
@@ -309,11 +280,21 @@
     <string name="item_added_to_playlist">Added to playlist</string>
     <string name="item_sent_to_kodi">Sent to Kodi</string>
     <string name="no_suitable_playlist">No suitable playlist found to add media type.</string>
-
-    <string name="imdb">IMDb</string>
-    <string name="seen">Seen</string>
     <string name="download">Download</string>
 
+    <!-- Buttons on Info fragment -->
+    <string name="imdb" translatable="false">IMDb</string>
+    <string name="watched_status">Watched</string>
+    <string name="unwatched_status">Unwatched</string>
+    <string name="pinned_status">Pinned</string>
+    <string name="unpinned_status">Unpinned</string>
+    <string name="enabled_status">Enabled</string>
+    <string name="disabled_status">Disabled</string>
+    <string name="download_action">Download</string>
+    <string name="queue_action">Queue</string>
+    <string name="stream_action">Stream</string>
+
+    <!-- Download dialog messages -->
     <string name="confirm_movie_download">Are you sure you want to download this movie?\n
     	The movie will be downloaded in the background, but it can take a while to finish.</string>
     <string name="confirm_episode_download">Are you sure you want to download this episode?\n
@@ -359,7 +340,6 @@
     <string name="enable_disable">Enable/Disable Addon</string>
     <string name="addon_enabled">Addon enabled</string>
     <string name="addon_disabled">Addon disabled</string>
-    <string name="pin_unpin">Pin/Unpin Addon</string>
     <string name="addon_pinned">Addon pinned</string>
     <string name="addon_unpinned">Addon unpinned</string>
 
@@ -382,9 +362,10 @@
     <string name="application">Application</string>
 
     <string name="theme">Theme</string>
+    <string name="theme_default_dynamic">Day/Night Dynamic</string>
     <string name="theme_night">Night</string>
     <string name="theme_day">Day</string>
-    <string name="theme_mist">Mist</string>
+    <string name="theme_sun_dynamic">Sunrise/Sunset Dynamic</string>
     <string name="theme_sunrise">Sunrise</string>
     <string name="theme_sunset">Sunset</string>
 
@@ -392,36 +373,23 @@
     <string name="keep_remote_above_lockscreen">Show over lockscreen</string>
     <string name="pref_keep_screen_on">Stay awake</string>
     <string name="show_notification">Show notification while playing</string>
-    <string name="show_now_playing_panel">Show now playing panel while playing</string>
-    <string name="show_now_playing_panel_summary">Displays an expandable panel at the bottom of the screen when media is playing</string>
-    <string name="notification_seek_jump">Use steps for seeking</string>
-    <string name="notification_seek_jump_speed">Change playback speed when seeking from notification</string>
-    <string name="notification_seek_jump_step">Use skip steps when seeking from notification</string>
+    <string name="show_now_playing_panel">Show now playing panel</string>
+    <string name="show_now_playing_panel_summary">Display a panel at the bottom of the screen when media is playing</string>
     <string name="pause_during_calls">Pause during phone call</string>
     <string name="use_hardware_volume_keys">Use device volume keys</string>
     <string name="vibrate_on_remote">Vibrate on touch</string>
-    <string name="always_sendtokodi_addon">Always prefer SendToKodi addon</string>
+    <string name="always_sendtokodi_addon">Prefer SendToKodi addon</string>
     <string name="remote_bar_items">Bottom bar shortcuts</string>
     <string name="nav_drawer_items">Side menu shortcuts</string>
+    <string name="download_network_types_title">Restrict media downloads</string>
+    <string name="download_network_types_summary">Select network types over which media downloads are allowed</string>
 
     <string name="about">About</string>
     <string name="about_desc"><![CDATA[
         \u00A9 2018 XBMC Foundation<br><br>
         Please rate us on <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
-        If you need help, check our <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a><
+        If you need help, check our <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a>
     ]]></string>
-
-    <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
-    <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
-    <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
-    <!--<string name="thanks_for_coffe">Thanks for the coffee!</string>-->
-    <!--<string name="remove_coffee_message">Tap to hide this setting</string>-->
-    <!--<string name="buy_coffee_to_unlock_themes">Please buy me a coffee to unlock more themes</string>-->
-
-    <!--<string name="error_setting_up_billing">Couldn\'t setup Google Play Billing Service:\n%s</string>-->
-    <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
-    <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
-    <!--<string name="purchase_thanks">Thanks for your support!</string>-->
 
     <string name="play_on_kodi">Play on Kodi</string>
     <string name="queue_on_kodi">Queue on Kodi</string>
@@ -454,8 +422,6 @@
     <string name="single_column">Single column</string>
     <string name="multi_column">Multi-column</string>
 
-    <string name="download_network_types_title">Restrict media downloads</string>
-    <string name="download_network_types_summary">Select network types over which media downloads are allowed</string>
     <string name="songs">Songs</string>
 
     <string name="read_phone_state_permission_denied">Permission denied. Won\'t be able to pause playback during calls.</string>
@@ -469,21 +435,16 @@
     <string name="muted">muted</string>
     <string name="no_item_available_to_play">Error: no item available to play.</string>
     <string name="Refreshing_not_implemented_for_this_item">Refreshing not implemented for this item</string>
-    <string name="no_songs_found_refresh">No songs found\n\n
-    	Swipe down to refresh</string>
-    <string name="not_implemented">Not implemented</string>
     <string name="zeroprogress">0:00</string>
 
     <string name="toggle_expand">Expand/Collapse</string>
-    <string name="play_locally">Play Locally</string>
 
-    <string name="disable_local_playback_support">Disable local playback support</string>
-    <string name="disable_local_playback_support_summary">Disables support for playing media locally on the device running Kore.</string>
     <string name="language">Language</string>
 
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobile</string>
     <string name="any_network">Any</string>
-    <string name="max_rating_music" translatable="false">/5</string>
+
+    <string name="web_search">Web Search</string>
 
 </resources>

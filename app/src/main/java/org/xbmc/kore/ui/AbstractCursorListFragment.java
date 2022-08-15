@@ -238,7 +238,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
             boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
                 syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
             if (!silentRefresh)
-                UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
+				binding.swipeRefreshLayout.setRefreshing(true);
         }
     }
 
@@ -256,7 +256,7 @@ public abstract class AbstractCursorListFragment extends AbstractListFragment
 
 	@Override
     public void onRefresh() {
-		UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
+		binding.swipeRefreshLayout.setRefreshing(true);
 		Intent syncIntent = new Intent(this.getActivity(), LibrarySyncService.class);
         syncIntent.putExtra(getListSyncType(), true);
 

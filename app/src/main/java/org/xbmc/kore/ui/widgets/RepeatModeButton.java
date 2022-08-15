@@ -17,10 +17,10 @@ package org.xbmc.kore.ui.widgets;
 
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.jsonrpc.type.PlayerType;
 
 public class RepeatModeButton extends HighlightButton {
     public enum MODE {
@@ -30,7 +30,6 @@ public class RepeatModeButton extends HighlightButton {
     }
 
     private MODE mode;
-    private static TypedArray styledAttributes;
 
     public RepeatModeButton(Context context) {
         super(context);
@@ -47,20 +46,30 @@ public class RepeatModeButton extends HighlightButton {
         setStyle(context);
     }
 
+    public void setMode(String mode) {
+        if (mode.equals(PlayerType.Repeat.OFF)) {
+            setMode(RepeatModeButton.MODE.OFF);
+        } else if (mode.equals(PlayerType.Repeat.ONE)) {
+            setMode(RepeatModeButton.MODE.ONE);
+        } else {
+            setMode(RepeatModeButton.MODE.ALL);
+        }
+    }
+
     public void setMode(MODE mode) {
         this.mode = mode;
 
         switch (mode) {
             case OFF:
-                setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
+                setImageResource(R.drawable.ic_round_repeat_24);
                 setHighlight(false);
                 break;
             case ONE:
-                setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(2), R.drawable.ic_repeat_one_white_24dp));
+                setImageResource(R.drawable.ic_round_repeat_one_on_24);
                 setHighlight(true);
                 break;
             case ALL:
-                setImageResource(styledAttributes.getResourceId(styledAttributes.getIndex(1), R.drawable.ic_repeat_white_24dp));
+                setImageResource(R.drawable.ic_round_repeat_on_24);
                 setHighlight(true);
                 break;
         }
@@ -71,9 +80,5 @@ public class RepeatModeButton extends HighlightButton {
     }
 
     private void setStyle(Context context) {
-        styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{
-                R.attr.colorAccent,
-                R.attr.iconRepeat,
-                R.attr.iconRepeatOne});
     }
 }

@@ -178,7 +178,6 @@
     <string name="cast_list_text">%1$s as %2$s</string>
     <string name="general_error_executing_action">Errore durante l\'operazione: %1$s</string>
     <string name="error_getting_playlist">Errore nella lettura della playlist</string>
-    <string name="error_message">Messaggio di errore: %1$s</string>
     <string name="playlist_empty">Playlist vuota</string>
     <string name="clear_playlist">Pulisci playlist</string>
     <string name="source_empty">Media source vuoto</string>
@@ -205,7 +204,6 @@
     <string name="item_added_to_playlist">Aggiunto alla playlist</string>
     <string name="no_suitable_playlist">Nessuna playlist disponibile per aggiungere il media.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Visto</string>
     <string name="download">Scaricato</string>
     <string name="confirm_movie_download">Sei sicuro di voler scaricare questo film?\nIl film sarà scaricato in background, ma questo può richiedere un po\' di tempo.</string>
     <string name="confirm_episode_download">Sei sicuro di voler scaricare questo episodio?\nL\'episodio sarà scaricato in background, ma questo può richiedere un po\' di tempo..</string>
@@ -240,7 +238,6 @@
     <string name="theme">Tema</string>
     <string name="theme_night">Notte</string>
     <string name="theme_day">Giorno</string>
-    <string name="theme_mist">Nebbia</string>
     <string name="switch_to_remote">Cambia a remoto dopo l\'avvio del file</string>
     <string name="show_notification">Mostra le notifiche durante l\'esecuzione</string>
     <string name="use_hardware_volume_keys">Usa i tasti volume per cambiare il volume</string>

@@ -15,131 +15,25 @@
    limitations under the License.
 -->
 <resources>
-    <attr name="appTextColorPrimary" format="reference|color" />
-    <attr name="appTextColorSecondary" format="reference|color" />
-
-    <attr name="textColorOverPrimary" format="reference|color" />
-    <attr name="buttonColorOverPrimary" format="reference|color" />
-
-    <attr name="colorAccentLight" format="reference|color" />
-
-    <attr name="contentBackgroundColor" format="reference|color" />
-    <attr name="appCardBackgroundColor" format="reference|color" />
-    <attr name="appSelectedCardBackgroundColor" format="reference|color" />
-    <attr name="buttonBarBackgroundColor" format="reference|color" />
-
-    <attr name="colorToolbar" format="reference|color" />
-
-    <attr name="fabColorNormal" format="reference|color" />
-    <attr name="fabColorFocused" format="reference|color" />
-    <attr name="fabColorPressed" format="reference|color" />
-
-    <attr name="fabLabelColorNormal" format="reference|color" />
-    <attr name="fabLabelColorFocused" format="reference|color" />
-    <attr name="fabLabelColorPressed" format="reference|color" />
-
-    <attr name="fabLabelTextColor" format="reference|color" />
-
+    <!-- Custom color resources -->
     <attr name="colorInProgress" format="reference|color" />
     <attr name="colorFinished" format="reference|color" />
+    <attr name="colorWizardTitleText" format="reference|color" />
+    <attr name="colorWizardTitleBackground" format="reference|color" />
 
-    <attr name="separatorColor" format="reference|color" />
-    <attr name="fastscrollHandleColor" format="reference|color" />
-
-    <attr name="drawerBackgroundColor" format="reference|color" />
-
-    <attr name="remoteButtonColorFilter" format="reference|color" />
-    <attr name="defaultButtonColorFilter" format="reference|color" />
-    <!--<attr name="remoteBackgroundColorFilter" format="reference|color" />-->
-
-    <attr name="ratingBarStarBackgroundColor" format="reference|color"/>
-    <attr name="ratingBarStarForegroundColor" format="reference|color"/>
+    <attr name="kodiStatusConnecting" format="reference|color" />
+    <attr name="kodiStatusConnected" format="reference|color" />
+    <attr name="kodiStatusUnavailable" format="reference|color" />
 
     <!-- Icons -->
-    <attr name="iconHosts" format="reference" />
-    <attr name="iconRemote" format="reference" />
-    <attr name="iconRemoteToolbar" format="reference" />
-    <attr name="iconMovies" format="reference" />
-    <attr name="iconTvShows" format="reference" />
-    <attr name="iconRemoteDevice" format="reference" />
-    <attr name="iconMusic" format="reference" />
-    <attr name="iconPicture" format="reference" />
-    <attr name="iconHome" format="reference" />
-    <attr name="iconAddons" format="reference" />
-    <attr name="iconFiles" format="reference" />
-    <attr name="iconVideo" format="reference" />
-    <attr name="iconPVR" format="reference" />
-    <attr name="iconFavourites" format="reference" />
-    <attr name="iconWeather" format="reference" />
-    <attr name="iconSystem" format="reference" />
-
-    <attr name="iconNew" format="reference" />
-    <attr name="iconOnOff" format="reference" />
-    <attr name="iconKeyboard" format="reference" />
-
-    <attr name="iconSettings" format="reference" />
-
-    <attr name="iconPlay" format="reference" />
-    <attr name="iconPause" format="reference" />
-    <attr name="iconStop" format="reference" />
-    <attr name="iconFastForward" format="reference" />
-    <attr name="iconRewind" format="reference" />
-    <attr name="iconNext" format="reference" />
-    <attr name="iconPrevious" format="reference" />
-    <attr name="iconSkipForward" format="reference" />
-    <attr name="iconSkipBackward" format="reference" />
-
-    <attr name="iconInfo" format="reference" />
-    <attr name="iconBack" format="reference" />
-    <attr name="iconMenu" format="reference" />
-    <attr name="iconContext" format="reference" />
-
-    <attr name="iconLeft" format="reference" />
-    <attr name="iconRight" format="reference" />
-    <attr name="iconUp" format="reference" />
-    <attr name="iconDown" format="reference" />
-    <attr name="iconSelect" format="reference" />
-
-    <attr name="iconVolumeUp" format="reference" />
-    <attr name="iconVolumeDown" format="reference" />
-    <attr name="iconRepeat" format="reference" />
-    <attr name="iconRepeatOne" format="reference" />
-    <attr name="iconShuffle" format="reference" />
-    <attr name="iconVolumeMute" format="reference" />
-
-    <attr name="iconSubtitles" format="reference" />
-    <attr name="iconAudiostreams" format="reference" />
-    <attr name="iconCelebration" format="reference" />
-
     <attr name="iconOverflow" format="reference" />
 
-    <attr name="iconAddToQueue" format="reference" />
-    <attr name="iconInfoWWW" format="reference" />
-    <attr name="iconSeen" format="reference" />
-    <attr name="iconDisabled" format="reference" />
-    <attr name="iconRating" format="reference" />
-
-    <attr name="iconCollapse" format="reference" />
-    <attr name="iconExpand" format="reference" />
-
-    <attr name="iconSearch" format="reference" />
-
-    <attr name="iconDownload" format="reference" />
-
-    <attr name="iconChevronLeft" format="reference" />
-    <attr name="iconChevronRight" format="reference" />
-
-    <attr name="iconOpenInNew" format="reference" />
-    <attr name="iconBookmark" format="reference" />
-
-    <attr name="iconFABDialsOpenClose" format="reference" />
-    <attr name="iconFABDefault" format="reference" />
-    <attr name="iconFABDial" format="integer"/>
-
+    <!-- Square Grid Layout Widget -->
     <declare-styleable name="SquareGridLayout">
         <attr name="columnCount" format="integer"/>
     </declare-styleable>
 
+    <!-- Ranting Bar Widget -->
     <declare-styleable name="RatingBar">
         <attr name="backgroundColor" format="reference|color"/>
         <attr name="foregroundColor" format="reference|color"/>
@@ -147,14 +41,48 @@
         <attr name="icon" format="reference"/>
     </declare-styleable>
 
-    <attr name="dimmedNeutralColor" format="reference|color" />
-
+    <!-- Media Playback Bar Widget -->
     <declare-styleable name="MediaPlaybackBar">
         <attr name="view_mode" format="enum">
             <enum name="full" value="0" />
             <enum name="no_stop_button" value="1" />
             <enum name="single_movement_buttons" value="2" />
         </attr>
+    </declare-styleable>
+
+    <!-- Dynamic List View -->
+    <declare-styleable name="DynamicListView">
+        <attr name="hoverLineTickness" format="reference|dimension"/>
+        <attr name="hoverLineColor" format="reference|color"/>
+    </declare-styleable>
+
+    <!-- Circle Page Indicator Widget -->
+    <declare-styleable name="ViewPagerIndicator">
+        <!-- Style of the circle indicator. -->
+        <attr name="vpiCirclePageIndicatorStyle" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="CirclePageIndicator">
+        <!-- Whether or not the indicators should be centered. -->
+        <attr name="centered" format="boolean" />
+        <!-- Color of the filled circle that represents the current page. -->
+        <attr name="fillColor" format="color" />
+        <!-- Color of the filled circles that represents pages. -->
+        <attr name="pageColor" format="color" />
+        <!-- Orientation of the indicator. -->
+        <attr name="android:orientation"/>
+        <!-- Radius of the circles. This is also the spacing between circles. -->
+        <attr name="radius" format="dimension" />
+        <!-- Whether or not the selected indicator snaps to the circles. -->
+        <attr name="snap" format="boolean" />
+        <!-- Color of the open circles. -->
+        <attr name="strokeColor" format="color" />
+        <!-- Width of the stroke used to draw the circles. -->
+        <attr name="strokeWidth" format="dimension" />
+        <!-- View background -->
+        <attr name="android:background"/>
+        <!-- Spacing between the circles. -->
+        <attr name="circleGapWidth" format="dimension" />
     </declare-styleable>
 
 </resources>

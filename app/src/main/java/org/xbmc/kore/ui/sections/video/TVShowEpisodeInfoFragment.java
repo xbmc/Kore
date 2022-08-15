@@ -26,10 +26,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -41,7 +43,6 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -68,7 +69,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     // Displayed episode
     private int tvshowId = -1;
 
-    private Cursor cursor;
+    private int episodePlaycount = 0;
 
     FileDownloadHelper.TVShowInfo fileDownloadHelper;
 
@@ -91,18 +92,17 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnDownloadListener(view -> downloadEpisode());
+    protected boolean setupInfoActionsBar() {
+        setOnDownloadClickListener(view -> downloadEpisode());
 
-        setOnAddToPlaylistListener(view -> {
+        setOnQueueClickListener(view -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.episodeid = getDataHolder().getId();
             MediaPlayerUtils.queue(TVShowEpisodeInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
         });
 
-        setOnSeenListener(view -> {
-            int playcount = cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT);
-            int newPlaycount = (playcount > 0) ? 0 : 1;
+        setOnWatchedClickListener(view -> {
+            int newPlaycount = (episodePlaycount > 0) ? 0 : 1;
 
             VideoLibrary.SetEpisodeDetails action =
                     new VideoLibrary.SetEpisodeDetails(getDataHolder().getId(), newPlaycount, null);
@@ -112,6 +112,8 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                     // Force a refresh, but don't show a message
                     if (!isAdded()) return;
                     getRefreshItem().startSync(true);
+                    episodePlaycount = newPlaycount;
+                    setWatchedButtonState(newPlaycount > 0);
                 }
 
                 @Override
@@ -119,23 +121,17 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
             }, callbackHandler);
         });
 
+        setOnStreamClickListener(v -> streamItemFromKodi(fileDownloadHelper.getMediaUrl(getHostInfo()), "video/*"));
+
         return true;
     }
 
     @Override
-    protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnDialItemClickListener(new FABSpeedDial.DialListener() {
-            @Override
-            public void onLocalPlayClicked() {
-                playItemLocally(fileDownloadHelper.getMediaUrl(getHostInfo()), "video/*");
-            }
-
-            @Override
-            public void onRemotePlayClicked() {
-                PlaylistType.Item item = new PlaylistType.Item();
-                item.episodeid = getDataHolder().getId();
-                playItemOnKodi(item);
-            }
+    protected boolean setupFAB(FloatingActionButton fab) {
+        fab.setOnClickListener(v -> {
+            PlaylistType.Item item = new PlaylistType.Item();
+            item.episodeid = getDataHolder().getId();
+            playItemOnKodi(item);
         });
         return true;
     }
@@ -178,14 +174,15 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
             switch (cursorLoader.getId()) {
                 case LOADER_EPISODE:
                     cursor.moveToFirst();
-                    this.cursor = cursor;
+                    episodePlaycount = cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT);
+                    String showTitle = cursor.getString(EpisodeDetailsQuery.SHOWTITLE),
+                            episodeTitle = cursor.getString(EpisodeDetailsQuery.TITLE);
 
                     DataHolder dataHolder = getDataHolder();
 
-                    dataHolder.setPosterUrl(cursor.getString(EpisodeDetailsQuery.THUMBNAIL));
-
+                    dataHolder.setFanArtUrl(cursor.getString(EpisodeDetailsQuery.THUMBNAIL));
                     dataHolder.setRating(cursor.getDouble(EpisodeDetailsQuery.RATING));
-                    dataHolder.setMaxRating(10);
+                    dataHolder.setVotes(cursor.getString(EpisodeDetailsQuery.VOTES));
 
                     String director = cursor.getString(EpisodeDetailsQuery.DIRECTOR);
                     if (!TextUtils.isEmpty(director)) {
@@ -200,30 +197,30 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                                                   cursor.getInt(EpisodeDetailsQuery.SEASON),
                                                   cursor.getInt(EpisodeDetailsQuery.EPISODE));
 
-                    dataHolder.setDetails(durationPremiered + "\n" + season + "\n" + director);
+                    dataHolder.setDetails(durationPremiered + "\n" + director);
 
                     fileDownloadHelper = new FileDownloadHelper.TVShowInfo(
-                            cursor.getString(EpisodeDetailsQuery.SHOWTITLE),
+                            showTitle,
                             cursor.getInt(EpisodeDetailsQuery.SEASON),
                             cursor.getInt(EpisodeDetailsQuery.EPISODE),
-                            cursor.getString(EpisodeDetailsQuery.TITLE),
+                            episodeTitle,
                             cursor.getString(EpisodeDetailsQuery.FILE));
 
                     setDownloadButtonState(fileDownloadHelper.downloadFileExists());
 
-                    setSeenButtonState(cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT) > 0);
+                    setWatchedButtonState(cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT) > 0);
 
-                    getDataHolder().setTitle(cursor.getString(EpisodeDetailsQuery.TITLE));
-                    getDataHolder().setUndertitle(cursor.getString(EpisodeDetailsQuery.SHOWTITLE));
+                    getDataHolder().setTitle(episodeTitle);
+                    getDataHolder().setUndertitle(season);
                     setExpandDescription(true);
                     getDataHolder().setDescription(cursor.getString(EpisodeDetailsQuery.PLOT));
+
+                    dataHolder.setSearchTerms(showTitle + " " + episodeTitle);
 
                     updateView(dataHolder);
                     break;
             }
         }
-
-        getFabButton().enableLocalPlay(fileDownloadHelper != null);
     }
 
     /** {@inheritDoc} */
@@ -236,7 +233,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
         // Check if the directory exists and whether to overwrite it
         File file = new File(fileDownloadHelper.getAbsoluteFilePath());
         if (file.exists()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
             builder.setTitle(R.string.download)
                    .setMessage(R.string.download_file_exists)
                    .setPositiveButton(R.string.overwrite,
@@ -251,7 +248,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                    .show();
         } else {
             // Confirm that the user really wants to download the file
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
             builder.setTitle(R.string.download)
                    .setMessage(R.string.confirm_episode_download)
                    .setPositiveButton(android.R.string.ok,
@@ -289,6 +286,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                 MediaContract.Episodes.DIRECTOR,
                 MediaContract.Episodes.WRITER,
                 MediaContract.Episodes.FILE,
+                MediaContract.Episodes.VOTES,
                 };
 
         int ID = 0;
@@ -306,5 +304,6 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
         int DIRECTOR = 12;
         int WRITER = 13;
         int FILE = 14;
+        int VOTES = 15;
     }
 }

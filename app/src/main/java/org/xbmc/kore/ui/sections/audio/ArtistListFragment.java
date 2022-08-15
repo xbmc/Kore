@@ -84,7 +84,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
         // Get the artist id from the tag
         ViewHolder tag = (ViewHolder) view.getTag();
         // Notify the activity
-        listenerActivity.onArtistSelected(tag.dataHolder, tag.artView);
+        listenerActivity.onArtistSelected(tag.dataHolder, tag.art);
     }
 
     @Override
@@ -146,15 +146,15 @@ public class ArtistListFragment extends AbstractCursorListFragment {
 
             // Get the art dimensions
             Resources resources = fragment.requireContext().getResources();
-            artWidth = (int)(resources.getDimension(R.dimen.detail_poster_width_square));
-            artHeight = (int)(resources.getDimension(R.dimen.detail_poster_height_square));
+            artWidth = (int)(resources.getDimension(R.dimen.info_poster_width_square));
+            artHeight = (int)(resources.getDimension(R.dimen.info_poster_height_square));
         }
 
         @NonNull
         @Override
         public CursorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(fragment.getContext())
-                    .inflate(R.layout.grid_item_artist, parent, false);
+                    .inflate(R.layout.item_music_generic, parent, false);
 
             return new ViewHolder(view, fragment.getContext(), hostManager, artWidth, artHeight, artistlistItemMenuClickListener);
         }
@@ -191,9 +191,10 @@ public class ArtistListFragment extends AbstractCursorListFragment {
      * View holder pattern
      */
     public static class ViewHolder extends RecyclerViewCursorAdapter.CursorViewHolder {
-        TextView nameView;
-        TextView genresView;
-        ImageView artView;
+        TextView title;
+        TextView details;
+        TextView otherInfo;
+        ImageView art;
         HostManager hostManager;
         int artWidth;
         int artHeight;
@@ -208,9 +209,10 @@ public class ArtistListFragment extends AbstractCursorListFragment {
             this.hostManager = hostManager;
             this.artWidth = artWidth;
             this.artHeight = artHeight;
-            nameView = itemView.findViewById(R.id.name);
-            genresView = itemView.findViewById(R.id.genres);
-            artView = itemView.findViewById(R.id.art);
+            title = itemView.findViewById(R.id.title);
+            details = itemView.findViewById(R.id.details);
+            otherInfo = itemView.findViewById(R.id.other_info);
+            art = itemView.findViewById(R.id.art);
 
             ImageView contextMenu = itemView.findViewById(R.id.list_context_menu);
             contextMenu.setTag(this);
@@ -225,15 +227,16 @@ public class ArtistListFragment extends AbstractCursorListFragment {
             dataHolder.setDescription(cursor.getString(ArtistListQuery.DESCRIPTION));
             dataHolder.setFanArtUrl(cursor.getString(ArtistListQuery.FANART));
 
-            nameView.setText(cursor.getString(ArtistListQuery.ARTIST));
-            genresView.setText(cursor.getString(ArtistListQuery.GENRE));
+            title.setText(cursor.getString(ArtistListQuery.ARTIST));
+            details.setText(cursor.getString(ArtistListQuery.GENRE));
+            otherInfo.setVisibility(View.GONE);
             dataHolder.setPosterUrl(cursor.getString(ArtistListQuery.THUMBNAIL));
 
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  dataHolder.getPosterUrl(), dataHolder.getTitle(),
-                                                 artView, artWidth, artHeight);
+                                                 art, artWidth, artHeight);
 
-            artView.setTransitionName("ar"+dataHolder.getId());
+            art.setTransitionName("ar" + dataHolder.getId());
         }
     }
 }

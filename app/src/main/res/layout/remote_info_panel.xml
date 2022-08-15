@@ -16,23 +16,26 @@
 -->
 
 <!-- For when nothing is playing or something not recognized is playing -->
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/info_panel"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/remote_poster_height"
-    android:layout_alignParentStart="true"
-    android:paddingTop="@dimen/remote_page_indicator_height"
-    android:layout_marginLeft="@dimen/remote_content_hmargin"
-    android:layout_marginRight="@dimen/remote_content_hmargin">
-    <!--android:background="?attr/cardBackground">-->
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/remote_viewpager_height"
+    android:layout_marginLeft="@dimen/info_panel_horiz_margin"
+    android:layout_marginRight="@dimen/info_panel_horiz_margin"
+    android:gravity="center_horizontal">
 
     <TextView
         android:id="@+id/info_title"
-        style="@style/TextAppearance.Info.Title"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Kore.TextView.InfoTitle"/>
 
     <TextView
         android:id="@+id/info_message"
-        style="@style/TextAppearance.Info.Details"
-        android:layout_below="@id/info_title"/>
-</RelativeLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Kore.TextView.InfoDetails"/>
+</LinearLayout>

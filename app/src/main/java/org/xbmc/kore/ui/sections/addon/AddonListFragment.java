@@ -169,7 +169,7 @@ public class AddonListFragment extends AbstractListFragment {
     private void callGetAddonsAndSetup() {
         final AddonsAdapter adapter = (AddonsAdapter) getAdapter();
 
-        UIUtils.showRefreshAnimation(binding.swipeRefreshLayout);
+        binding.swipeRefreshLayout.setRefreshing(true);
 
         // Get the addon list, this is done asyhnchronously
         String[] properties = new String[] {
@@ -249,15 +249,15 @@ public class AddonListFragment extends AbstractListFragment {
             // Use the same dimensions as in the details fragment, so that it hits Picasso's cache when
             // the user transitions to that fragment, avoiding another call and imediatelly showing the image
             Resources resources = context.getResources();
-            artWidth = resources.getDimensionPixelOffset(R.dimen.detail_poster_width_square);
-            artHeight = resources.getDimensionPixelOffset(R.dimen.detail_poster_height_square);
+            artWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
+            artHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height_square);
         }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context)
-                                      .inflate(R.layout.grid_item_addon, parent, false);
+                                      .inflate(R.layout.item_addon, parent, false);
 
             return new ViewHolder(view, context, hostManager, artWidth, artHeight);
         }

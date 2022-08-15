@@ -191,7 +191,6 @@
     <string name="remaining_cast_count">ještě %d</string>
     <string name="general_error_executing_action">Chyba provedení akce: %1$s</string>
     <string name="error_getting_playlist">Chyba načtení playlistu</string>
-    <string name="error_message">Chyba: %1$s</string>
     <string name="playlist_empty">Seznam prázdný</string>
     <string name="clear_playlist">Vyčistit seznam</string>
     <string name="source_empty">Zdroj médií prázdný</string>
@@ -225,7 +224,6 @@
     <string name="item_added_to_playlist">Přidáno do seznamu</string>
     <string name="no_suitable_playlist">Pro tento typ médií nebyl nalezen žádný seznam.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Shlédnuto</string>
     <string name="download">Stáhnout</string>
     <string name="confirm_movie_download">Přejete si stáhnout tento film?\nFilm bude stahován na pozadí, chvíli to potrvá.</string>
     <string name="confirm_episode_download">Přejete si stáhnout tuto epizodu?\nEpizoda bude stahována na pozadí, chvíli to potrvá.</string>
@@ -274,7 +272,6 @@
     <string name="theme">Motiv</string>
     <string name="theme_night">Noc</string>
     <string name="theme_day">Den</string>
-    <string name="theme_mist">Mlha</string>
     <string name="pref_keep_screen_on">Zůstat vzhůru</string>
     <string name="show_notification">Zobrazit oznámení během přehrávání</string>
     <string name="show_now_playing_panel">Zobrazit panel probíhajícího přehrávání během přehrávání</string>
@@ -317,9 +314,7 @@
     <string name="by_artist_and_year">Podle umělce a roku</string>
     <string name="no_songs_found_refresh">Žádné skladby nenalezeny\n\nObnovit tahem dolů</string>
     <string name="zeroprogress">0:00</string>
-    <string name="play_locally">Přehát místně</string>
-    <string name="disable_local_playback_support">Zakázat podporu pro místní přehrávání</string>
-    <string name="disable_local_playback_support_summary">Zakázat podporu pro přehrávání médií na zařízení, kde běží Kore.</string>
+    <string name="stream_action">Přehát místně</string>
     <string name="pvr_epg">Program</string>
     <string name="record">Záznam</string>
     <string name="radio_channels">Rozhlasové kanály</string>
@@ -330,7 +325,6 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="language">Jazyk</string>
     <string name="toggle_expand">Rozbalit/Zabalit</string>
-    <string name="not_implemented">Není implementováno</string>
     <string name="Refreshing_not_implemented_for_this_item">Obnovení pro tuto položku není implementováno</string>
     <string name="no_item_available_to_play">Chyba: žádné položky k přehrání.</string>
     <string name="muted">ztlumeno</string>
@@ -352,9 +346,6 @@
     <string name="queue_on_kodi">Fronta na Kodi</string>
     <string name="always_sendtokodi_addon">Vždy upřednostňovat doplněk SendToKodi</string>
     <string name="vibrate_on_remote">Vibrovat při dotyku</string>
-    <string name="notification_seek_jump_step">Použít přeskakování kroků při hledání z upozornění</string>
-    <string name="notification_seek_jump_speed">Změnit rychlost přehrávání při hledání z upozornění</string>
-    <string name="notification_seek_jump">Použít krokování při hledání</string>
     <string name="keep_remote_above_lockscreen">Zobrazit na zamykací obrazovce</string>
     <string name="switch_to_remote">Zobrazit při spuštění multimédia</string>
     <string name="theme_sunset">Západ slunce</string>
@@ -363,7 +354,6 @@
     <string name="sort_by_last_played">Podle naposledy přehrávaných</string>
     <string name="addon_unpinned">Doplněk odepnutý</string>
     <string name="addon_pinned">Doplněk připnutý</string>
-    <string name="pin_unpin">Připnout/Odepnout doplněk</string>
     <string name="item_sent_to_kodi">Odesláno do Kodi</string>
     <string name="no_cast_info">Žádné informace o obsazení k zobrazení</string>
     <string name="error_starting_http_server">Nelze vytvořit nebo spustit HTTP server.</string>

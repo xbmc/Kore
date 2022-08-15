@@ -55,6 +55,7 @@ public class AllCastActivity extends BaseActivity {
     // Extras to be passed to this activity: title and the cast list
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String EXTRA_CAST_LIST = "EXTRA_CAST_LIST";
+    public static final float ART_HEIGHT_RATIO = 1.6f;
 
     // Passed arguments
     private String movie_tvshow_title;
@@ -106,7 +107,7 @@ public class AllCastActivity extends BaseActivity {
         binding.castList.setEmptyView(binding.includeEmptyView.empty);
         binding.castList.setOnItemClickListener((parent, view, position, id) -> {
             // Get the name from the tag
-            Utils.openImdbForPerson(AllCastActivity.this, ((ViewHolder)view.getTag()).castName);
+            Utils.launchWebSearchForTerms(AllCastActivity.this, ((ViewHolder)view.getTag()).castName);
         });
 
         CastArrayAdapter arrayAdapter = new CastArrayAdapter(this, castArrayList);
@@ -162,7 +163,7 @@ public class AllCastActivity extends BaseActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext())
-                                            .inflate(R.layout.grid_item_cast, parent, false);
+                                            .inflate(R.layout.item_cast, parent, false);
 
                 if (artWidth == -1) {
                     Resources resources = getContext().getResources();
@@ -175,8 +176,7 @@ public class AllCastActivity extends BaseActivity {
                     int numColumns = resources.getInteger(R.integer.cast_grid_view_columns);
 
                     artWidth = (displayMetrics.widthPixels - (2 + numColumns - 1) * imageMarginPx) / numColumns;
-                    artHeight = (int) (artWidth * 1.5);
-                    LogUtils.LOGD(TAG, "width: " + artWidth);
+                    artHeight = (int) (artWidth * ART_HEIGHT_RATIO);
                 }
 
                 // Setup View holder pattern

@@ -20,6 +20,6 @@
     <alpha
         android:fromAlpha="0.0"
         android:toAlpha="1.0"
-        android:interpolator="@android:anim/decelerate_interpolator"/>
+        android:interpolator="@anim/fast_decelerate_interpolator"/>
 
 </set>

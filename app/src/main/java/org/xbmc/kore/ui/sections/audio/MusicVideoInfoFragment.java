@@ -25,10 +25,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
@@ -38,7 +40,6 @@ import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
-import org.xbmc.kore.ui.widgets.fabspeeddial.FABSpeedDial;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -59,7 +60,7 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
     // Handler on which to post RPC callbacks
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
-    private Cursor cursor;
+    private String musicVideoFile;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,21 +82,21 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupMediaActionBar() {
-        setOnAddToPlaylistListener(view -> {
+    protected boolean setupInfoActionsBar() {
+        setOnQueueClickListener(view -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.musicvideoid = getDataHolder().getId();
             MediaPlayerUtils.queue(MusicVideoInfoFragment.this, item, PlaylistType.GetPlaylistsReturnType.VIDEO);
         });
 
-        setOnDownloadListener(view -> download());
+        setOnDownloadClickListener(view -> download());
 
         return true;
     }
 
     @Override
-    protected boolean setupFAB(FABSpeedDial FAB) {
-        FAB.setOnFabClickListener(v -> {
+    protected boolean setupFAB(FloatingActionButton fab) {
+        fab.setOnClickListener(v -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.musicvideoid = getDataHolder().getId();
             playItemOnKodi(item);
@@ -134,8 +135,11 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
         if (cursor != null && cursor.getCount() > 0) {
             switch (cursorLoader.getId()) {
                 case LOADER_MUSIC_VIDEO:
-                    this.cursor = cursor;
                     cursor.moveToFirst();
+                    musicVideoFile = cursor.getString(MusicVideoDetailsQuery.FILE);
+                    String artist = cursor.getString(MusicVideoDetailsQuery.ARTIST),
+                            title = cursor.getString(MusicVideoDetailsQuery.TITLE);
+
                     DataHolder dataHolder = getDataHolder();
 
                     dataHolder.setFanArtUrl(cursor.getString(MusicVideoDetailsQuery.FANART));
@@ -148,11 +152,10 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
                                      String.valueOf(year);
                     dataHolder.setDetails(details + "\n" + cursor.getString(MusicVideoDetailsQuery.GENRES));
 
-                    dataHolder.setTitle(cursor.getString(MusicVideoDetailsQuery.TITLE));
-                    dataHolder.setUndertitle(cursor.getString(MusicVideoDetailsQuery.ARTIST)
-                                             + " | " +
-                                             cursor.getString(MusicVideoDetailsQuery.ALBUM));
+                    dataHolder.setTitle(title);
+                    dataHolder.setUndertitle(artist + " | " + cursor.getString(MusicVideoDetailsQuery.ALBUM));
                     dataHolder.setDescription(cursor.getString(MusicVideoDetailsQuery.PLOT));
+                    dataHolder.setSearchTerms(artist + " " + title);
 
                     FileDownloadHelper.MusicVideoInfo musicVideoDownloadInfo = new FileDownloadHelper.MusicVideoInfo(
                             dataHolder.getTitle(), cursor.getString(MusicVideoDetailsQuery.FILE));
@@ -172,12 +175,12 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
 
     protected void download() {
         final FileDownloadHelper.MusicVideoInfo musicVideoDownloadInfo = new FileDownloadHelper.MusicVideoInfo(
-                getDataHolder().getTitle(), cursor.getString(MusicVideoDetailsQuery.FILE));
+                getDataHolder().getTitle(), musicVideoFile);
 
         // Check if the directory exists and whether to overwrite it
         File file = new File(musicVideoDownloadInfo.getAbsoluteFilePath());
         if (file.exists()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
             builder.setTitle(R.string.download)
                    .setMessage(R.string.download_file_exists)
                    .setPositiveButton(R.string.overwrite,
