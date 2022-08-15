@@ -53,7 +53,8 @@ import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
-public abstract class BaseMediaActivity extends BaseActivity
+public abstract class BaseMediaActivity
+        extends BaseActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
                    HostConnectionObserver.PlayerEventsObserver {
     private static final String TAG = LogUtils.makeLogTag(BaseMediaActivity.class);

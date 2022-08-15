@@ -53,10 +53,11 @@ import org.xbmc.kore.utils.UIUtils;
 
 import de.greenrobot.event.EventBus;
 
-public abstract class AbstractCursorListFragment extends AbstractListFragment
+public abstract class AbstractCursorListFragment
+		extends AbstractListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor>,
-		SyncUtils.OnServiceListener,
-		SearchView.OnQueryTextListener {
+				   SyncUtils.OnServiceListener,
+				   SearchView.OnQueryTextListener {
     private static final String TAG = LogUtils.makeLogTag(AbstractCursorListFragment.class);
 
 	private final String BUNDLE_KEY_SEARCH_QUERY = "search_query";

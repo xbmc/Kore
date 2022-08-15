@@ -72,7 +72,8 @@ import org.xbmc.kore.utils.Utils;
 
 import java.util.Locale;
 
-abstract public class AbstractInfoFragment extends AbstractFragment
+abstract public class AbstractInfoFragment
+        extends AbstractFragment
         implements SwipeRefreshLayout.OnRefreshListener,
                    SyncUtils.OnServiceListener,
                    SharedElementTransition.SharedElement {

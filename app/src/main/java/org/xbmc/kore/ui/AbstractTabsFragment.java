@@ -34,7 +34,8 @@ import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
 
-abstract public class AbstractTabsFragment extends AbstractFragment
+abstract public class AbstractTabsFragment
+        extends AbstractFragment
         implements SharedElementTransition.SharedElement {
     private static final String TAG = LogUtils.makeLogTag(AbstractTabsFragment.class);
     public static final String PREFERENCES_NAME = "AbstractTabsFragmentPreferences";
