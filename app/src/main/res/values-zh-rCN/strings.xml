@@ -214,7 +214,6 @@
     <string name="remaining_cast_count">%d 更多</string>
     <string name="general_error_executing_action">执行操作错误：%1$s</string>
     <string name="error_getting_playlist">获取播放列表错误</string>
-    <string name="error_message">错误信息：%1$s</string>
     <string name="playlist_empty">播放列表为空</string>
     <string name="clear_playlist">清空播放列表</string>
     <string name="source_empty">媒体源为空</string>
@@ -250,7 +249,6 @@
     <string name="item_sent_to_kodi">发送到Kodi</string>
     <string name="no_suitable_playlist">找不到适合添加媒体类型的播放列表。</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">看过</string>
     <string name="download">下载</string>
     <string name="confirm_movie_download">确认下载该电影吗？
 \n电影将在后台下载，需要一段时间才能完成。</string>
@@ -290,7 +288,6 @@
     <string name="enable_disable">禁用/启用 插件</string>
     <string name="addon_enabled">启用的插件</string>
     <string name="addon_disabled">禁用的插件</string>
-    <string name="pin_unpin">驻留/不驻留插件</string>
     <string name="addon_pinned">驻留的插件</string>
     <string name="addon_unpinned">不驻留的插件</string>
     <!-- Filters on list menus -->
@@ -312,7 +309,6 @@
     <string name="theme">主题</string>
     <string name="theme_night">夜间</string>
     <string name="theme_day">白日</string>
-    <string name="theme_mist">迷雾</string>
     <string name="theme_sunrise">日出</string>
     <string name="theme_sunset">日落</string>
     <string name="switch_to_remote">媒体播放开始时显示</string>
@@ -321,9 +317,6 @@
     <string name="show_notification">播放时显示通知</string>
     <string name="show_now_playing_panel">播放时显示“正在播放”面板</string>
     <string name="show_now_playing_panel_summary">播放媒体时在屏幕底部显示可展开面板</string>
-    <string name="notification_seek_jump">使用步骤查找</string>
-    <string name="notification_seek_jump_speed">从通知中查找时更改播放速度</string>
-    <string name="notification_seek_jump_step">从通知中查找时使用跳过步骤</string>
     <string name="pause_during_calls">通话时暂停</string>
     <string name="use_hardware_volume_keys">使用设备音量键</string>
     <string name="vibrate_on_remote">触感振动</string>
@@ -386,12 +379,9 @@
     <string name="no_item_available_to_play">错误：无可播放项目。</string>
     <string name="Refreshing_not_implemented_for_this_item">未对此项目执行刷新</string>
     <string name="no_songs_found_refresh">未找到歌曲\n\n下拉刷新</string>
-    <string name="not_implemented">未执行</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">展开/折叠</string>
     <string name="stream_action">本地播放</string>
-    <string name="disable_local_playback_support">禁用本地回放支持</string>
-    <string name="disable_local_playback_support_summary">禁用在运行Kore的设备上本地播放媒体的支持。</string>
     <string name="language">语言</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">移动数据网</string>

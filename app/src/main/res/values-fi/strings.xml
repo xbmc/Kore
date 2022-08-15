@@ -196,7 +196,6 @@
     <string name="remaining_cast_count">%d lisää</string>
     <string name="general_error_executing_action">Virhe suoritettaessa toimintoa: %1$s</string>
     <string name="error_getting_playlist">Virhe noudettaessa toistolistaa</string>
-    <string name="error_message">Virheilmoitus: %1$s</string>
     <string name="playlist_empty">Toistolista on tyhjä</string>
     <string name="clear_playlist">Tyhjennä toistolista</string>
     <string name="source_empty">Medialähde on tyhjä</string>
@@ -256,7 +255,6 @@
     <string name="item_sent_to_kodi">Välitettiin Kodiin</string>
     <string name="no_suitable_playlist">Mediatyypille sopivaa toistolistaa ei löytynyt.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Katsottu</string>
     <string name="download">Lataa</string>
     <string name="confirm_movie_download">Haluatko varmasti ladata elokuvan\?
 \n Lataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
@@ -296,7 +294,6 @@
     <string name="enable_disable">Ota lisäosa käyttöön tai poista se käytöstä</string>
     <string name="addon_enabled">Lisäosa otettiin käyttöön</string>
     <string name="addon_disabled">Lisäosa ei ole käytössä</string>
-    <string name="pin_unpin">Kiinnitä lisäosa tai poista kiinnitys</string>
     <string name="addon_pinned">Lisäosa kiinnitettiin</string>
     <string name="addon_unpinned">Lisäosan kiinnitys poistettiin</string>
     <!-- Filters on list menus -->
@@ -318,7 +315,6 @@
     <string name="theme">Teema</string>
     <string name="theme_night">Yö</string>
     <string name="theme_day">Päivä</string>
-    <string name="theme_mist">Sumu</string>
     <string name="theme_sunrise">Auringonnousu</string>
     <string name="theme_sunset">Auringonlasku</string>
     <string name="switch_to_remote">Näytä käynnistettäessä toisto Koresta</string>
@@ -327,9 +323,6 @@
     <string name="show_notification">Näytä toiston aikana ilmoitus</string>
     <string name="show_now_playing_panel">Näytä \"Toistetaan parhaillaan\" -paneeli toiston aikana</string>
     <string name="show_now_playing_panel_summary">Näyttää ruudun alalaidassa laajennettavan paneelin, kun mediaa toistetaan</string>
-    <string name="notification_seek_jump">Siirrä toistokohtaa pykälittäin</string>
-    <string name="notification_seek_jump_speed">Muuta toistonopeutta, kun toistokohtaa siirretään ilmoituksesta</string>
-    <string name="notification_seek_jump_step">Käytä siirtopykäliä, kun toistokohtaa siirretään ilmoituksesta</string>
     <string name="pause_during_calls">Tauota puhelun ajaksi</string>
     <string name="use_hardware_volume_keys">Käytä laitteen äänenvoimakkuuspainikkeita</string>
     <string name="vibrate_on_remote">Värise kosketettaessa</string>
@@ -391,12 +384,9 @@
     <string name="no_songs_found_refresh">Kappaleita ei löytynyt
 \n
 \n Päivitä vetämällä alas</string>
-    <string name="not_implemented">Ei toteutettu</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Laajenna/supista</string>
     <string name="stream_action">Toista paikallisesti</string>
-    <string name="disable_local_playback_support">Älä tue paikallista toistoa</string>
-    <string name="disable_local_playback_support_summary">Poistaa paikallisten toistomahdollisuuden käytöstä laitteessa, jossa Korea käytetään.</string>
     <string name="language">Kieli</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Matkapuhelin</string>

@@ -191,7 +191,6 @@
     <string name="remaining_cast_count">Mais %d</string>
     <string name="general_error_executing_action">Erro ao executar a ação: %1$s</string>
     <string name="error_getting_playlist">Error ao obter lista de reprodução</string>
-    <string name="error_message">Mensagem de erro: %1$s</string>
     <string name="playlist_empty">Lista de reprodução vazia</string>
     <string name="clear_playlist">Limpar lista de reprodução</string>
     <string name="source_empty">Fonte de mídia vazia</string>
@@ -220,7 +219,6 @@
     <string name="item_added_to_playlist">Adicionado à lista de reprodução</string>
     <string name="no_suitable_playlist">Não foi encontrada nenhuma lista de reprodução adequada para este tipo de mídia.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Visto</string>
     <string name="download">Baixar</string>
     <string name="confirm_movie_download">Tem certeza que quer baixar este filme?\nO download será feito em segundo plano, mas pode demorar para ser concluído.</string>
     <string name="confirm_episode_download">Tem certeza que quer baixar este episódio?\nO download será feito em segundo plano, mas pode demorar para ser concluído.</string>
@@ -255,7 +253,6 @@
     <string name="theme">Tema</string>
     <string name="theme_night">Noite</string>
     <string name="theme_day">Dia</string>
-    <string name="theme_mist">Neblina</string>
     <string name="switch_to_remote">Mudar para o controle remoto ao iniciar reprodução</string>
     <string name="show_notification">Mostrar notificação enquanto estiver em reprodução</string>
     <string name="use_hardware_volume_keys">Usar as teclas de volume para controlar o volume</string>

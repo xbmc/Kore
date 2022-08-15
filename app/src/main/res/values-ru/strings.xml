@@ -217,7 +217,6 @@
     <string name="remaining_cast_count">ещё %d</string>
     <string name="general_error_executing_action">Ошибка при выполнении действия: %1$s</string>
     <string name="error_getting_playlist">Ошибка при получении списка воспроизведения</string>
-    <string name="error_message">Ошибка: %1$s</string>
     <string name="playlist_empty">Список воспроизведения пуст</string>
     <string name="clear_playlist">Очистить список</string>
     <string name="source_empty">Медиаисточник пуст</string>
@@ -266,7 +265,6 @@
     <string name="item_sent_to_kodi">Отправить в Kodi</string>
     <string name="no_suitable_playlist">Не был найден список воспроизведения, подходящий для этого типа медиа.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Просмотрен</string>
     <string name="download">Загрузить</string>
     <string name="confirm_movie_download">Вы уверены, что хотите загрузить этот фильм?\n
     Фильм будет загружаться в фоне, это может занять некоторое время.</string>
@@ -306,7 +304,6 @@
     <string name="enable_disable">Переключить дополнение</string>
     <string name="addon_enabled">Дополнение включено</string>
     <string name="addon_disabled">Дополнение выключено</string>
-    <string name="pin_unpin">Закрепить дополнение</string>
     <string name="addon_pinned">Дополнение закреплено</string>
     <string name="addon_unpinned">Дополнение откреплено</string>
     <!-- Filters on list menus -->
@@ -328,7 +325,6 @@
     <string name="theme">Тема</string>
     <string name="theme_night">Ночь</string>
     <string name="theme_day">День</string>
-    <string name="theme_mist">Туман</string>
     <string name="theme_sunrise">Восход</string>
     <string name="theme_sunset">Закат</string>
     <string name="switch_to_remote">Показывать при произведении</string>
@@ -337,9 +333,6 @@
     <string name="show_notification">Показывать уведомление при воспроизведении</string>
     <string name="show_now_playing_panel">Показыть панель «Сейчас воспроизводится» во время воспроизведения</string>
     <string name="show_now_playing_panel_summary">Показывать выдвижную панель внизу экрана во время вопсроизведения</string>
-    <string name="notification_seek_jump">Перематывать рывками</string>
-    <string name="notification_seek_jump_speed">Изменяет скорость воспроизведения при управлении через уведомление</string>
-    <string name="notification_seek_jump_step">Перематывает рывками при управлении через уведомление</string>
     <string name="pause_during_calls">Ставить на паузу во время звонков</string>
     <string name="use_hardware_volume_keys">Использовать кнопки громкости устройства</string>
     <string name="vibrate_on_remote">Вибрировать при нажатии</string>
@@ -401,12 +394,9 @@
     <string name="Refreshing_not_implemented_for_this_item">Для этого элемента обновление ещё не реализовано</string>
     <string name="no_songs_found_refresh">Песен нет\n\n
     Потяние вниз, чтобы обновить</string>
-    <string name="not_implemented">Не реализовано</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Развернуть/свернуть</string>
     <string name="stream_action">Воспроизвести локально</string>
-    <string name="disable_local_playback_support">Отключить локальное воспроизведение</string>
-    <string name="disable_local_playback_support_summary">Отключает локальное воспроизведения медиаданных на устройстве с работающим Kore.</string>
     <string name="language">Язык</string>
     <string name="any_network">Все</string>
     <string name="mobile_network">Мобильная сеть</string>

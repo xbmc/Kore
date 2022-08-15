@@ -208,7 +208,6 @@
     <string name="remaining_cast_count">ešte %d</string>
     <string name="general_error_executing_action">Chyba pri uskutočnení akcie: %1$s</string>
     <string name="error_getting_playlist">Chyba pri načítaní zoznamu</string>
-    <string name="error_message">Chybové hlásenie: %1$s</string>
     <string name="playlist_empty">Zoznam je prázdny</string>
     <string name="clear_playlist">Vyčistiť zoznam</string>
     <string name="source_empty">Zdroj médií je prázdny</string>
@@ -244,7 +243,6 @@
     <string name="item_sent_to_kodi">Poslané do Kodi</string>
     <string name="no_suitable_playlist">Pre tento typ média nebol nájdený žiadny zoznam.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Počet videní</string>
     <string name="download">Stiahnuť</string>
     <string name="confirm_movie_download">Určite chcete stiahnuť tento film?\nFilm bude stiahnutý na pozadí, ale môže to chvíľu trvať.</string>
     <string name="confirm_episode_download">Určite chcete stiahnuť túto epizódu?\nEpizóda bude stiahnutá na pozadí, ale môže to chvíľu trvať.</string>
@@ -276,7 +274,6 @@
     <string name="enable_disable">Povoliť/Zakázať rozšírenie</string>
     <string name="addon_enabled">Rozšírenie povolené</string>
     <string name="addon_disabled">Rozšírenie zakázané</string>
-    <string name="pin_unpin">Pripnpť/Odopnúť rozšírenie</string>
     <string name="addon_pinned">Rozšírenie pripnuté</string>
     <string name="addon_unpinned">Rozšírenie odopnuté</string>
     <!-- Filters on list menus -->
@@ -298,7 +295,6 @@
     <string name="theme">Vzhľad</string>
     <string name="theme_night">Noc</string>
     <string name="theme_day">Deň</string>
-    <string name="theme_mist">Hmla</string>
     <string name="theme_sunrise">Východ slnka</string>
     <string name="theme_sunset">Západ slnka</string>
     <string name="switch_to_remote">Zobraziť pri spustení multimédia</string>
@@ -307,9 +303,6 @@
     <string name="show_notification">Zobrazovať upozornenia počas prehrávania</string>
     <string name="show_now_playing_panel">Zobraziť panel prebiehajúceho prehrávania počas prehrávania</string>
     <string name="show_now_playing_panel_summary">Zobraziť prídavný panel v dolnej časti obrazovky počas prehrávania</string>
-    <string name="notification_seek_jump">Použiť krokovanie pri hľadaní</string>
-    <string name="notification_seek_jump_speed">Zmeniť rýchlosť prehrávania, keď sa hľadá z upozornenia</string>
-    <string name="notification_seek_jump_step">Použiť preskakovanie krokov, keď sa hľadá z upozornenia</string>
     <string name="pause_during_calls">Počas telefonovania pozastaviť</string>
     <string name="use_hardware_volume_keys">Použiť tlačidlá hlasitosti zaradenia</string>
     <string name="vibrate_on_remote">Pri dotyku vybrovať</string>
@@ -374,12 +367,9 @@
     <string name="no_songs_found_refresh">Nenašli sa žiadne skladby
 \n
 \n Obnovte potiahnutím nadol</string>
-    <string name="not_implemented">Nie je funkčné</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Rozbaliť/Zbaliť</string>
     <string name="stream_action">Prehať lokálne</string>
-    <string name="disable_local_playback_support">Zakázať podporu lokálneho prehrávania</string>
-    <string name="disable_local_playback_support_summary">Zakáže podporu prehrávania multimédií lokálne na zariadení s nainštalovaným diaľkovým ovládačom Kore.</string>
     <string name="language">Jazyk</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobil</string>

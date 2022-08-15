@@ -193,7 +193,6 @@
     <string name="remaining_cast_count">Dar %d</string>
     <string name="general_error_executing_action">Klaida vykdant veiksmą: %1$s</string>
     <string name="error_getting_playlist">Klaida gaunant grojaraštį</string>
-    <string name="error_message">Klaidos pranešimas: %1$s</string>
     <string name="playlist_empty">Grojaraštis tuščias</string>
     <string name="clear_playlist">Išvalyti grojaraštį</string>
     <string name="source_empty">Media šaltinis tuščias</string>
@@ -227,7 +226,6 @@
     <string name="item_added_to_playlist">Pridėta į grojaraštį</string>
     <string name="no_suitable_playlist">Nerastas tinkamas grojaraštis šio media tipo pridėjimui.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Matytas</string>
     <string name="download">Atsisiųsti</string>
     <string name="confirm_movie_download">Ar tikrai norite atsisiųsti šį filmą?\nFilmas bus atsiųstas fone, tačiau tai gali užtrukti.</string>
     <string name="confirm_episode_download">Ar tikrai norite atsisiųsti šį epizodą?\nEpizodas bus atsiųstas fone, tačiau tai gali užtrukti.</string>
@@ -259,7 +257,6 @@
     <string name="enable_disable">Įjungti/išjungti priedą</string>
     <string name="addon_enabled">Priedas įjungtas</string>
     <string name="addon_disabled">Priedas išjungtas</string>
-    <string name="pin_unpin">Prisegti/Atsegti priedą</string>
     <string name="addon_pinned">Priedas prisegtas</string>
     <string name="addon_unpinned">Priedas atsegtas</string>
     <!-- Filters on list menus -->
@@ -276,7 +273,6 @@
     <string name="theme">Tema</string>
     <string name="theme_night">Naktis</string>
     <string name="theme_day">Diena</string>
-    <string name="theme_mist">Rūkas</string>
     <string name="switch_to_remote">Atidaryti pultą paleidus media</string>
     <string name="keep_remote_above_lockscreen">Rodyti pultą užrakintame ekrane</string>
     <string name="pref_keep_screen_on">Laikyti ekraną įjungtą naudojant pultą</string>

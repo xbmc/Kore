@@ -199,7 +199,6 @@
     <string name="remaining_cast_count">%d ще</string>
     <string name="general_error_executing_action">Помилка виконання дії: %1$s</string>
     <string name="error_getting_playlist">Помилка отримання плейлісту</string>
-    <string name="error_message">Помилка: %1$s</string>
     <string name="playlist_empty">Плейліст пустий</string>
     <string name="clear_playlist">Очистити плейліст</string>
     <string name="source_empty">Джерело медіа пусте</string>
@@ -235,7 +234,6 @@
     <string name="item_sent_to_kodi">Надіслано в Kodi</string>
     <string name="no_suitable_playlist">Не знайдено плейлісту, що підходить для цього типу медіа.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Переглянуто</string>
     <string name="download">Завантажити</string>
     <string name="confirm_movie_download">Ви впевнені що хочете завантажити цей фільм?\nФільм буде завантажено в фоні, але це може зайняти деякий час.</string>
     <string name="confirm_episode_download">Ви впевнені що хочете завантажити цю серію?\nСерію буде завантажено в фоні, але це може зайняти деякий час.</string>
@@ -267,7 +265,6 @@
     <string name="enable_disable">Увімкнути/Вимкнути надбудову</string>
     <string name="addon_enabled">Надбудову увімкнено</string>
     <string name="addon_disabled">Надбудову вимкнено</string>
-    <string name="pin_unpin">Прикріпити/Відкріпити надбудову</string>
     <string name="addon_pinned">Надбудову закріплено</string>
     <string name="addon_unpinned">Надбудову відкріплено</string>
     <!-- Filters on list menus -->
@@ -289,7 +286,6 @@
     <string name="theme">Тема</string>
     <string name="theme_night">Ніч</string>
     <string name="theme_day">День</string>
-    <string name="theme_mist">Туман</string>
     <string name="theme_sunrise">Схід сонця</string>
     <string name="theme_sunset">Захід сонця</string>
     <string name="switch_to_remote">Відображати при початку відтворення</string>
@@ -298,9 +294,6 @@
     <string name="show_notification">Відображати сповіщення під час відтворення</string>
     <string name="show_now_playing_panel">Показати панель відтворення під час відтворення</string>
     <string name="show_now_playing_panel_summary">Відображає панель, що розгортається в нижній частині екрана під час відтворення медіа</string>
-    <string name="notification_seek_jump">Використовувати кроки для пошуку</string>
-    <string name="notification_seek_jump_speed">Змінювати швидкість відтворення під час пошуку зі сповіщення</string>
-    <string name="notification_seek_jump_step">Використовувати кроки пропуску під час пошуку зі сповіщення</string>
     <string name="pause_during_calls">Призупиняти під час дзвінків</string>
     <string name="use_hardware_volume_keys">Використовувати кнопки гучності</string>
     <string name="vibrate_on_remote">Вібрувати при натисканні</string>
@@ -365,12 +358,9 @@
     <string name="no_songs_found_refresh">Треків не знайдено
 \n
 \nПроведіть пальцем вниз для оновлення</string>
-    <string name="not_implemented">Не реалізовано</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Розгорнути/Згорнути</string>
     <string name="stream_action">Відтворити локально</string>
-    <string name="disable_local_playback_support">Вимкнути підтримку локального відтворення</string>
-    <string name="disable_local_playback_support_summary">Відключає відтворення мультимедіа на пристрої під час роботи Kore.</string>
     <string name="language">Мова</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Мобільна мережа</string>

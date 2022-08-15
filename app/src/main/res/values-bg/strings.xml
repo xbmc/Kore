@@ -189,7 +189,6 @@
     <string name="remaining_cast_count">Още %d</string>
     <string name="general_error_executing_action">Грешка при изпълнение на действие: %1$s</string>
     <string name="error_getting_playlist">Грешка при свалянето на плейлист</string>
-    <string name="error_message">Грешка: %1$s</string>
     <string name="playlist_empty">Празен плейлист</string>
     <string name="clear_playlist">Изчисти плейлиста</string>
     <string name="source_empty">Източникът на медия е празен</string>
@@ -222,7 +221,6 @@
     <string name="item_added_to_playlist">Добавен към плейлист</string>
     <string name="no_suitable_playlist">Няма подходяща плейлиста за добавяне на медията.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Гледан</string>
     <string name="download">Сваляне</string>
     <string name="confirm_movie_download">Желаете ли да свалите филма?\nСвалянето ще започне на заден фон и най-вероятно ще отнеме известно време.</string>
     <string name="confirm_episode_download">Желаете ли да свалите епизода?\nСвалянето ще започне на заден фон и най-вероятно ще отнеме известно време.</string>
@@ -250,7 +248,6 @@
     <string name="enable_disable">Вкл./Изкл. на добавката</string>
     <string name="addon_enabled">Добавката е включена</string>
     <string name="addon_disabled">Добавката е изключена</string>
-    <string name="pin_unpin">Закачи/Откачи добавка</string>
     <string name="addon_pinned">Добавката е закачена</string>
     <string name="addon_unpinned">Добавката е откачена</string>
     <!-- Filters on list menus -->
@@ -266,7 +263,6 @@
     <string name="theme">Тема</string>
     <string name="theme_night">Нощ</string>
     <string name="theme_day">Ден</string>
-    <string name="theme_mist">Мъгла</string>
     <string name="switch_to_remote">Към дистанционното след стартиране</string>
     <string name="keep_remote_above_lockscreen">Показвай дистанционното над заключения екран</string>
     <string name="show_notification">Показвай известия и при възпроизвеждане</string>

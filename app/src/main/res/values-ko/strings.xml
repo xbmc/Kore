@@ -204,7 +204,6 @@
     <string name="remaining_cast_count">이외 %d명</string>
     <string name="general_error_executing_action">실행 오류: %1$s</string>
     <string name="error_getting_playlist">재생목록 가져오기 오류</string>
-    <string name="error_message">오류 내용: %1$s</string>
     <string name="playlist_empty">재생목록 없음</string>
     <string name="clear_playlist">재생목록 지우기</string>
     <string name="source_empty">미디어 소스 없음</string>
@@ -240,7 +239,6 @@
     <string name="item_sent_to_kodi">코디로 보냄</string>
     <string name="no_suitable_playlist">미디어를 추가할 재생목록을 찾을 수 없습니다.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">시청함</string>
     <string name="download">내려받기</string>
     <string name="confirm_movie_download">이 영화를 내려받을까요?\n이 영화를 백그라운드에서 내려받는 데에 시간이 걸립니다.</string>
     <string name="confirm_episode_download">이 에피소드를 내려받을까요?\n이 에피소드를 백그라운드에서 내려받는 데에 시간이 걸립니다.</string>
@@ -272,7 +270,6 @@
     <string name="enable_disable">애드온 사용함/안 함</string>
     <string name="addon_enabled">애드온 사용함</string>
     <string name="addon_disabled">애드온 사용 안 함</string>
-    <string name="pin_unpin">애드온 고정함/안 함</string>
     <string name="addon_pinned">애드온 고정</string>
     <string name="addon_unpinned">애드온 고정 안 함</string>
     <!-- Filters on list menus -->
@@ -294,7 +291,6 @@
     <string name="theme">테마</string>
     <string name="theme_night">밤</string>
     <string name="theme_day">낮</string>
-    <string name="theme_mist">안개</string>
     <string name="theme_sunrise">해돋이</string>
     <string name="theme_sunset">해넘이</string>
     <string name="switch_to_remote">미디어 시작 시 보기</string>
@@ -303,9 +299,6 @@
     <string name="show_notification">재생 중에 알림 보기</string>
     <string name="show_now_playing_panel">재생 중에 지금 재생 중인 패널 보기</string>
     <string name="show_now_playing_panel_summary">미디어 재생 중에 화면 아래에 확장 패널 보기</string>
-    <string name="notification_seek_jump">탐색에 스텝 사용</string>
-    <string name="notification_seek_jump_speed">알림에서 탐색할 때 재생 속도 바꾸기</string>
-    <string name="notification_seek_jump_step">알림에서 탐색할 때 건너뛰는 스텝 사용</string>
     <string name="pause_during_calls">통화 중에 잠시 멈춤</string>
     <string name="use_hardware_volume_keys">장치의 음량 키 사용</string>
     <string name="vibrate_on_remote">터치 시에 진동</string>
@@ -367,12 +360,9 @@
     <string name="no_songs_found_refresh">곡을 찾을 수 없음
 \n
 \n 내려서 다시 읽기</string>
-    <string name="not_implemented">사용할 수 없음</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">펼치기/접기</string>
     <string name="stream_action">로컬 재생</string>
-    <string name="disable_local_playback_support">로컬 재생 사용 안 함</string>
-    <string name="disable_local_playback_support_summary">Kore를 실행 중인 장치에 로컬 재생 지원을 사용하지 않습니다.</string>
     <string name="language">언어</string>
     <string name="wifi_network">WiFi</string>
     <string name="mobile_network">데이터</string>

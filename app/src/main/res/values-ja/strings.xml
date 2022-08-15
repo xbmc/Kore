@@ -193,7 +193,6 @@
     <string name="remaining_cast_count">%d さらに</string>
     <string name="general_error_executing_action">操作実行時にエラー: %1$s</string>
     <string name="error_getting_playlist">プレイリストの取得時にエラー</string>
-    <string name="error_message">エラーメッセージ: %1$s</string>
     <string name="playlist_empty">プレイリストは空です</string>
     <string name="clear_playlist">プレイリストをクリア</string>
     <string name="source_empty">メディアソースは空です</string>
@@ -227,7 +226,6 @@
     <string name="item_added_to_playlist">プレイリストに追加しました</string>
     <string name="no_suitable_playlist">メディアタイプに追加するのに適したプレイリストが見つかりません。</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">視聴済</string>
     <string name="download">ダウンロード</string>
     <string name="confirm_movie_download">この映画をダウンロードしてもよろしいですか?\n映画はバックグラウンドでダウンロードされますが、完了するまでに時間がかかることがあります。</string>
     <string name="confirm_episode_download">このエピソードをダウンロードしてもよろしいですか?\nエピソードはバックグラウンドでダウンロードされますが、完了するまでに時間がかかることがあります。</string>
@@ -259,7 +257,6 @@
     <string name="enable_disable">アドオンを有効/無効</string>
     <string name="addon_enabled">アドオンを有効にしました</string>
     <string name="addon_disabled">アドオンを無効にしました</string>
-    <string name="pin_unpin">アドオンをピン止め/ピン止め解除</string>
     <string name="addon_pinned">アドオンをピン止めしました</string>
     <string name="addon_unpinned">アドオンのピン止めを解除しました</string>
     <!-- Filters on list menus -->
@@ -276,7 +273,6 @@
     <string name="theme">テーマ</string>
     <string name="theme_night">夜間</string>
     <string name="theme_day">日中</string>
-    <string name="theme_mist">ミスト</string>
     <string name="switch_to_remote">メディア開始時に表示</string>
     <string name="keep_remote_above_lockscreen">ロック画面上に表示</string>
     <string name="pref_keep_screen_on">画面オンのままにする</string>
