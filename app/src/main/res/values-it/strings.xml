@@ -270,4 +270,5 @@
     <string name="favourites">Preferiti</string>
     <string name="unknown">sconosciuto</string>
     <string name="videos">Video</string>
+    <string name="queue_action">Accoda</string>
 </resources>

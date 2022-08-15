@@ -322,4 +322,5 @@
     <string name="script">Skripta</string>
     <string name="media">Mediji</string>
     <string name="external_storage">Pohrana</string>
+    <string name="queue_action">Stavi u red</string>
 </resources>

@@ -400,4 +400,5 @@
     <string name="mobile_network">Gailu mugikorra</string>
     <string name="any_network">Edozein</string>
     <string name="always_sendtokodi_addon">Beti lehenetsi SendToKodi gehigarria</string>
+    <string name="queue_action">Ilara</string>
 </resources>

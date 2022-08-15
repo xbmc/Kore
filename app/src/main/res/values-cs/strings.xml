@@ -369,4 +369,5 @@
     <string name="local_files">Místní soubory</string>
     <string name="external_storage">Úložiště</string>
     <string name="dcim">DCIM</string>
+    <string name="queue_action">Fronta</string>
 </resources>

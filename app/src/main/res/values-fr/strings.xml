@@ -368,4 +368,5 @@
     <string name="mobile_network">Mobile</string>
     <string name="any_network">Tous</string>
     <string name="always_sendtokodi_addon">Toujours préférer l\'extension \\\"SendToKodi\\\"</string>
+    <string name="queue_action">Ajouter à la queue</string>
 </resources>

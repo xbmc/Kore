@@ -361,4 +361,5 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
     <string name="mobile_network">Rede Móvel</string>
     <string name="any_network">Todas</string>
     <string name="always_sendtokodi_addon">Preferir sempre a extensão SendToKodi</string>
+    <string name="queue_action">Fila</string>
 </resources>
