@@ -393,4 +393,5 @@
     <string name="any_network">Mikä tahansa</string>
     <string name="always_sendtokodi_addon">Käytä ensisijaisesti SendToKodi-lisäosaa</string>
     <string name="party_mode">Jukeboksi</string>
+    <string name="queue_action">Jono</string>
 </resources>

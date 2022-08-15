@@ -365,4 +365,5 @@
     <string name="any_network">Elke</string>
     <string name="genres">Genres</string>
     <string name="albums">Albums</string>
+    <string name="queue_action">Toevoegen</string>
 </resources>

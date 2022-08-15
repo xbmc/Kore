@@ -314,4 +314,5 @@
     <string name="write_storage_permission_denied">Достъпът е отказан. Няма да може да бъдат сваляни файлове.</string>
     <string name="favourites">Любими</string>
     <string name="videos">Видео</string>
+    <string name="queue_action">На опашката</string>
 </resources>

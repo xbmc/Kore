@@ -374,4 +374,5 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobil</string>
     <string name="any_network">Ľubovoľné</string>
+    <string name="queue_action">Fronta</string>
 </resources>

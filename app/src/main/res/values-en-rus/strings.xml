@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+--><resources>
+    <string name="app_name" translatable="false">Kore</string>
+    <!-- Navigation drawer tips -->
+    <!-- String used in add host wizard -->
+    <!-- Main view tabs -->
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <!-- Buttons on Info fragment -->
+    <string name="imdb" translatable="false">IMDb</string>
+    <!-- Download dialog messages -->
+    <!-- Filters on list menus -->
+    <!-- Preferences strings -->
+    <string name="songs">Songs</string>
+    <string name="record">Record</string>
+    <string name="recordings">Recordings</string>
+    <string name="radio">Radio</string>
+    <string name="music_videos">Videos</string>
+    <string name="genres">Genres</string>
+    <string name="albums">Albums</string>
+    <string name="artists">Artists</string>
+    <string name="queue_action">Queue</string>
+    <string name="action_search">Search</string>
+    <string name="playlist">Playlist</string>
+    <string name="play_file">Play</string>
+    <string name="queue_file">Queue</string>
+    <string name="edit">Edit</string>
+    <string name="subtitles">Subtitles</string>
+    <string name="play">Play</string>
+    <string name="wizard_xbmc_password">Password</string>
+    <string name="quit">Quit</string>
+    <string name="favourites">Favorites</string>
+    <string name="unknown">Unknown</string>
+    <string name="videos">Videos</string>
+    <string name="video">Video</string>
+    <string name="pictures">Pictures</string>
+    <string name="music">Music</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="movies">Movies</string>
+    <string name="wizard_xbmc_username">Username</string>
+    <string name="reboot">Reboot</string>
+    <string name="suspend">Suspend</string>
+</resources>

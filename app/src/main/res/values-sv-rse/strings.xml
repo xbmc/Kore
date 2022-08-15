@@ -61,4 +61,5 @@
     <string name="movies">Filmer</string>
     <string name="music_videos">Videor</string>
     <string name="videos">Videor</string>
+    <string name="queue_action">Kölägg</string>
 </resources>

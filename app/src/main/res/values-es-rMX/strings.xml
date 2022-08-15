@@ -410,4 +410,5 @@
     <string name="mobile_network">Datos móviles</string>
     <string name="any_network">Cualquiera</string>
     <string name="always_sendtokodi_addon">Siempre preferir el complemento SendToKodi</string>
+    <string name="queue_action">Encolar</string>
 </resources>
