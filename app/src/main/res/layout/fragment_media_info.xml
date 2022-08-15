@@ -88,20 +88,6 @@
                         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.Poster"
                         android:elevation="@dimen/kore_elevation_level2"/>
 
-                    <ImageView
-                        android:id="@+id/imdb_link"
-                        style="@style/Widget.Kore.Button.Borderless"
-                        android:layout_width="@dimen/small_icon_size"
-                        android:layout_height="@dimen/small_icon_size"
-                        android:layout_marginEnd="@dimen/small_padding"
-                        android:layout_marginBottom="@dimen/small_padding"
-                        app:layout_constraintEnd_toEndOf="@id/poster"
-                        app:layout_constraintBottom_toBottomOf="@id/poster"
-                        android:contentDescription="@string/imdb"
-                        android:src="@drawable/ic_round_open_in_new_24"
-                        android:elevation="@dimen/kore_elevation_level2"
-                        android:visibility="invisible"/>
-
                     <TextView
                         android:id="@+id/rating"
                         style="@style/Widget.Kore.TextView.MediaRating"

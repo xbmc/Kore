@@ -258,7 +258,7 @@ public class UIUtils {
         HostManager hostManager = HostManager.getInstance(activity);
         Resources resources = activity.getResources();
 
-        View.OnClickListener castListClickListener = v -> Utils.openImdbForPerson(activity, (String)v.getTag());
+        View.OnClickListener castListClickListener = v -> Utils.launchWebSearchForTerms(activity, (String)v.getTag());
 
         castListView.removeAllViews();
         int numColumns = castListView.getColumnCount();

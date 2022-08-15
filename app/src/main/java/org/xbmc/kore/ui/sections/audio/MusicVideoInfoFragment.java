@@ -137,6 +137,9 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
                 case LOADER_MUSIC_VIDEO:
                     cursor.moveToFirst();
                     musicVideoFile = cursor.getString(MusicVideoDetailsQuery.FILE);
+                    String artist = cursor.getString(MusicVideoDetailsQuery.ARTIST),
+                            title = cursor.getString(MusicVideoDetailsQuery.TITLE);
+
                     DataHolder dataHolder = getDataHolder();
 
                     dataHolder.setFanArtUrl(cursor.getString(MusicVideoDetailsQuery.FANART));
@@ -149,11 +152,10 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
                                      String.valueOf(year);
                     dataHolder.setDetails(details + "\n" + cursor.getString(MusicVideoDetailsQuery.GENRES));
 
-                    dataHolder.setTitle(cursor.getString(MusicVideoDetailsQuery.TITLE));
-                    dataHolder.setUndertitle(cursor.getString(MusicVideoDetailsQuery.ARTIST)
-                                             + " | " +
-                                             cursor.getString(MusicVideoDetailsQuery.ALBUM));
+                    dataHolder.setTitle(title);
+                    dataHolder.setUndertitle(artist + " | " + cursor.getString(MusicVideoDetailsQuery.ALBUM));
                     dataHolder.setDescription(cursor.getString(MusicVideoDetailsQuery.PLOT));
+                    dataHolder.setSearchTerms(artist + " " + title);
 
                     FileDownloadHelper.MusicVideoInfo musicVideoDownloadInfo = new FileDownloadHelper.MusicVideoInfo(
                             dataHolder.getTitle(), cursor.getString(MusicVideoDetailsQuery.FILE));

@@ -370,7 +370,7 @@ abstract public class AbstractInfoFragment extends AbstractFragment
     }
 
     /**
-     * Call this when you are ready to provide the titleTextView, undertitle, details, descriptionExpandableTextView, etc. etc.
+     * Call this when ready to provide the title, undertitle, details, description, etc.
      */
     @SuppressLint("StringFormatInvalid")
     protected void updateView(DataHolder dataHolder) {
@@ -414,10 +414,9 @@ abstract public class AbstractInfoFragment extends AbstractFragment
                                        dataHolder.getPosterUrl() : dataHolder.getFanArtUrl(),
                                        binding.art, artWidth, artHeight);
 
-        if (!TextUtils.isEmpty(dataHolder.getImdbNumber())) {
-            binding.imdbLink.setVisibility(View.VISIBLE);
+        if (!TextUtils.isEmpty(dataHolder.getSearchTerms())) {
             binding.poster.setOnClickListener(v -> {
-                Utils.openImdbForMovie(requireContext(), dataHolder.getImdbNumber());
+                Utils.launchWebSearchForTerms(requireContext(), dataHolder.getSearchTerms());
             });
         }
 

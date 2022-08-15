@@ -445,6 +445,8 @@
     <string name="mobile_network">Mobile</string>
     <string name="any_network">Any</string>
 
+    <string name="web_search">Web Search</string>
+
     <string name="error_message">Not used, to be removed</string>
     <string name="not_implemented">Not used, to be removed</string>
     <string name="max_rating" translatable="false">Not used, to be removed</string>

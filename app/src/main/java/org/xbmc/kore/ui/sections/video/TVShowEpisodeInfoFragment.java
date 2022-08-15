@@ -175,6 +175,8 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                 case LOADER_EPISODE:
                     cursor.moveToFirst();
                     episodePlaycount = cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT);
+                    String showTitle = cursor.getString(EpisodeDetailsQuery.SHOWTITLE),
+                            episodeTitle = cursor.getString(EpisodeDetailsQuery.TITLE);
 
                     DataHolder dataHolder = getDataHolder();
 
@@ -195,23 +197,25 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                                                   cursor.getInt(EpisodeDetailsQuery.SEASON),
                                                   cursor.getInt(EpisodeDetailsQuery.EPISODE));
 
-                    dataHolder.setDetails(season + "\n" + durationPremiered + "\n" + director);
+                    dataHolder.setDetails(durationPremiered + "\n" + director);
 
                     fileDownloadHelper = new FileDownloadHelper.TVShowInfo(
-                            cursor.getString(EpisodeDetailsQuery.SHOWTITLE),
+                            showTitle,
                             cursor.getInt(EpisodeDetailsQuery.SEASON),
                             cursor.getInt(EpisodeDetailsQuery.EPISODE),
-                            cursor.getString(EpisodeDetailsQuery.TITLE),
+                            episodeTitle,
                             cursor.getString(EpisodeDetailsQuery.FILE));
 
                     setDownloadButtonState(fileDownloadHelper.downloadFileExists());
 
                     setWatchedButtonState(cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT) > 0);
 
-                    getDataHolder().setTitle(cursor.getString(EpisodeDetailsQuery.TITLE));
-                    getDataHolder().setUndertitle(cursor.getString(EpisodeDetailsQuery.SHOWTITLE));
+                    getDataHolder().setTitle(episodeTitle);
+                    getDataHolder().setUndertitle(season);
                     setExpandDescription(true);
                     getDataHolder().setDescription(cursor.getString(EpisodeDetailsQuery.PLOT));
+
+                    dataHolder.setSearchTerms(showTitle + " " + episodeTitle);
 
                     updateView(dataHolder);
                     break;

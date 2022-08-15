@@ -110,6 +110,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
                 case LOADER_TVSHOW:
                     cursor.moveToFirst();
 
+                    String tvshowTitle = cursor.getString(TVShowDetailsQuery.TITLE);
                     DataHolder dataHolder = getDataHolder();
 
                     dataHolder.setFanArtUrl(cursor.getString(TVShowDetailsQuery.FANART));
@@ -117,24 +118,20 @@ public class TVShowInfoFragment extends AbstractInfoFragment
                     dataHolder.setPosterUrl(cursor.getString(TVShowDetailsQuery.THUMBNAIL));
                     dataHolder.setRating(cursor.getDouble(TVShowDetailsQuery.RATING));
                     dataHolder.setVotes(cursor.getString(TVShowDetailsQuery.VOTES));
-                    dataHolder.setImdbNumber(cursor.getString(TVShowDetailsQuery.IMDBNUMBER));
 
                     String premiered = cursor.getString(TVShowDetailsQuery.PREMIERED);
                     String studio = cursor.getString(TVShowDetailsQuery.STUDIO);
-
                     dataHolder.setDetails(String.format(getString(R.string.premiered), premiered) + "  |  " + studio +
                                           "\n" +
                                           cursor.getString(TVShowDetailsQuery.GENRES));
 
-                    dataHolder.setTitle(cursor.getString(TVShowDetailsQuery.TITLE));
-
+                    dataHolder.setTitle(tvshowTitle);
                     int numEpisodes = cursor.getInt(TVShowDetailsQuery.EPISODE),
                             watchedEpisodes = cursor.getInt(TVShowDetailsQuery.WATCHEDEPISODES);
-
                     dataHolder.setUndertitle(String.format(getString(R.string.num_episodes),
                                                            numEpisodes, numEpisodes - watchedEpisodes));
-
                     dataHolder.setDescription(cursor.getString(TVShowDetailsQuery.PLOT));
+                    dataHolder.setSearchTerms(tvshowTitle + " tv show");
 
                     updateView(dataHolder);
                     checkOutdatedTVShowDetails(cursor);

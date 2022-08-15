@@ -107,7 +107,7 @@ public class AllCastActivity extends BaseActivity {
         binding.castList.setEmptyView(binding.includeEmptyView.empty);
         binding.castList.setOnItemClickListener((parent, view, position, id) -> {
             // Get the name from the tag
-            Utils.openImdbForPerson(AllCastActivity.this, ((ViewHolder)view.getTag()).castName);
+            Utils.launchWebSearchForTerms(AllCastActivity.this, ((ViewHolder)view.getTag()).castName);
         });
 
         CastArrayAdapter arrayAdapter = new CastArrayAdapter(this, castArrayList);
