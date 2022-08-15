@@ -447,18 +447,4 @@
 
     <string name="web_search">Web Search</string>
 
-    <string name="error_message">Not used, to be removed</string>
-    <string name="not_implemented">Not used, to be removed</string>
-    <string name="max_rating" translatable="false">Not used, to be removed</string>
-    <string name="max_rating_music" translatable="false">Not used, to be removed</string>
-    <string name="max_rating_video" translatable="false">Not used, to be removed</string>
-    <string name="seen">Not used, to be removed</string>
-    <string name="pin_unpin">Not used, to be removed</string>
-    <string name="theme_mist">Not used, to be removed</string>
-    <string name="notification_seek_jump">Not used, to be removed</string>
-    <string name="notification_seek_jump_speed">Not used, to be removed</string>
-    <string name="notification_seek_jump_step">Not used, to be removed</string>
-    <string name="disable_local_playback_support">Not used, to be removed</string>
-    <string name="disable_local_playback_support_summary">Not used, to be removed</string>
-
 </resources>

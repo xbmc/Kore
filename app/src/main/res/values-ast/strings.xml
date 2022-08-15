@@ -182,7 +182,6 @@
     <string name="remaining_cast_count">%d más</string>
     <string name="general_error_executing_action">Hebo un fallu al executar l\'aición: %1$s</string>
     <string name="error_getting_playlist">Hebo un fallu al dir en cata de la llista de reproducción</string>
-    <string name="error_message">Mensaxe de fallu: %1$s</string>
     <string name="playlist_empty">La llista ta balera</string>
     <string name="clear_playlist">Llimpiar la llista de reproducción</string>
     <string name="source_empty">L\'orixe multimedia ta baleru</string>
@@ -242,7 +241,6 @@
     <string name="item_sent_to_kodi">Unvióse a Kodi</string>
     <string name="no_suitable_playlist">Nun s\'atopó nenguna llista de reproducción afayadiza p\'amestar el tipu de multimedia.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Vióse</string>
     <string name="download">Baxar</string>
     <string name="confirm_movie_download">¿De xuru que quies baxar esti filme\?
 \n El filme va baxase en segundu planu mas pue tardar un ratu en finar.</string>
@@ -282,7 +280,6 @@
     <string name="enable_disable">Des/activar el complementu</string>
     <string name="addon_enabled">Activóse\'l complementu</string>
     <string name="addon_disabled">Desactivóse\'l complementu</string>
-    <string name="pin_unpin">Des/fixar el complementu</string>
     <string name="addon_pinned">Fixóse\'l complementu</string>
     <string name="addon_unpinned">Desfixóse\'l complementu</string>
     <!-- Filters on list menus -->
@@ -304,7 +301,6 @@
     <string name="theme">Estilu</string>
     <string name="theme_night">Nueche</string>
     <string name="theme_day">Día</string>
-    <string name="theme_mist">Nublina</string>
     <string name="theme_sunrise">Alborecer</string>
     <string name="theme_sunset">Atapecer</string>
     <string name="switch_to_remote">Amosar al aniciar la reproducción</string>
@@ -313,9 +309,6 @@
     <string name="show_notification">Amosar un avisu mentanto se reproduz</string>
     <string name="show_now_playing_panel">Amosar el panel «En reproducción» mentanto se reproduz</string>
     <string name="show_now_playing_panel_summary">Amuesa un panel espandible no baxero de la pantalla al reproducir multimedia</string>
-    <string name="notification_seek_jump">Usar pasos al guetar</string>
-    <string name="notification_seek_jump_speed">Camuda la velocidá de reproducción al guetar dende l\'avisu</string>
-    <string name="notification_seek_jump_step">Usar saltos al guetar dende l\'avisu</string>
     <string name="pause_during_calls">Posar la reproducción nes llamaes</string>
     <string name="use_hardware_volume_keys">Usar los botones de volume del preséu</string>
     <string name="vibrate_on_remote">Vibrar al tocar</string>
@@ -377,12 +370,9 @@
     <string name="no_songs_found_refresh">Nun s\'atoparon grabaciones
 \n
 \n Esliza p\'abaxo pa refrescar</string>
-    <string name="not_implemented">Nun s\'implementó</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Espander/Recoyer</string>
     <string name="stream_action">Reproducir llocalmente</string>
-    <string name="disable_local_playback_support">Desactivar la reproducción llocal</string>
-    <string name="disable_local_playback_support_summary">Desactiva\'l sofitu pa reproducir multimedia nel preséu qu\'executa Kore.</string>
     <string name="language">Llingua</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Móvil</string>

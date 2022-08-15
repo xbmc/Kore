@@ -18,8 +18,6 @@
     <!-- Navigation drawer tips -->
     <!-- String used in add host wizard -->
     <!-- Main view tabs -->
-    <string name="max_rating" translatable="false">/%1$s</string>
-    <string name="max_rating_video" translatable="false">/10</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
     <!-- Filters on list menus -->
     <!-- Preferences strings -->
@@ -33,7 +31,6 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
-    <string name="max_rating_music" translatable="false">/5</string>
     <string name="radio">Радыё</string>
     <string name="music_videos">Музычныя відэа</string>
     <string name="favourites">Улюбёныя</string>
@@ -46,7 +43,6 @@
     <string name="source_empty">Крыніца пустая</string>
     <string name="clear_playlist">Ачысціць спіс прайгравання</string>
     <string name="playlist_empty">Спіс прайгравання пусты</string>
-    <string name="error_message">Паведамленне памылкі: %1$s</string>
     <string name="error_getting_playlist">Не ўдалося атрымаць спіс прайгравання</string>
     <string name="general_error_executing_action">Не ўдалося выканаць дзеянне: %1$s</string>
     <string name="remaining_cast_count">яшчэ %d</string>
@@ -220,7 +216,6 @@
     <string name="settings">Налады</string>
     <string name="votes">%1$s ацэнак</string>
     <string name="download">Спампаваць</string>
-    <string name="seen">Прагледжана</string>
     <string name="imdb">IMDb</string>
     <string name="no_suitable_playlist">Не знойдзены спіс прайгравання, які пасуе для гэтага тыпу медыяфайлаў.</string>
     <string name="item_sent_to_kodi">Адправіць у Kodi</string>
@@ -279,13 +274,10 @@
     <string name="any_network">Любая сетка</string>
     <string name="mobile_network">Мабільная сетка</string>
     <string name="wifi_network">Wi-Fi</string>
-    <string name="disable_local_playback_support_summary">Адключае лакальнае прайграванне медыяфайлаў на прыладзе з запушчанай праграмай Kore.</string>
     <string name="language">Мова</string>
-    <string name="disable_local_playback_support">Адключыць лакальнае прайграванне</string>
     <string name="stream_action">Прайграць лакальна</string>
     <string name="toggle_expand">Разгарнуць/згарнуць</string>
     <string name="zeroprogress">0:00</string>
-    <string name="not_implemented">Не рэалізавана</string>
     <string name="no_songs_found_refresh">Няма песень
 \n
 \n Правядзіце ўніз, каб абнавіць</string>
@@ -337,9 +329,6 @@
     <string name="vibrate_on_remote">Вібрацыя пры націсканні</string>
     <string name="use_hardware_volume_keys">Выкарыстоўваць кнопкі гучнасці прылады</string>
     <string name="pause_during_calls">Прыпыняць падчас тэлефонных выклікаў</string>
-    <string name="notification_seek_jump_speed">Змяняць хуткасць прайгравання пры перамотванні з дапамогай апавяшчэння</string>
-    <string name="notification_seek_jump_step">Выкарыстоўваць пакрокавае перамотванне пры перамотванні з дапамогай апавяшчэння</string>
-    <string name="notification_seek_jump">Выкарыстоўваць пакрокавае перамотванне</string>
     <string name="show_now_playing_panel_summary">Паказваць высоўную панэль унізе экрана падчас прайгравання</string>
     <string name="show_now_playing_panel">Паказваць панэль прайгравання падчас прайгравання</string>
     <string name="show_notification">Паказваць апавяшчэнне падчас прайгравання</string>
@@ -348,7 +337,6 @@
     <string name="switch_to_remote">Паказваць падчас прайгравання</string>
     <string name="theme_sunset">Заход сонца</string>
     <string name="theme_sunrise">Світанак</string>
-    <string name="theme_mist">Туман</string>
     <string name="theme_day">Дзень</string>
     <string name="theme_night">Ноч</string>
     <string name="theme">Тэма</string>
@@ -368,7 +356,6 @@
     <string name="hide_watched">Схаваць прагледжаныя</string>
     <string name="addon_unpinned">Дапаўненне адмацавана</string>
     <string name="addon_pinned">Дапаўненне замацавана</string>
-    <string name="pin_unpin">Замацаваць/адмацаваць дапаўненне</string>
     <string name="addon_disabled">Дапаўненне адключана</string>
     <string name="addon_enabled">Дапаўненне ўключана</string>
     <string name="enable_disable">Уключыць/адключыць дапаўненне</string>

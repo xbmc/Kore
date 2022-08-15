@@ -192,7 +192,6 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="remaining_cast_count">Mais %d</string>
     <string name="general_error_executing_action">Erro ao executar ação: %1$s</string>
     <string name="error_getting_playlist">Erro ao obter lista</string>
-    <string name="error_message">Mensagem de erro: %1$s</string>
     <string name="playlist_empty">Lista de reprodução vazia</string>
     <string name="clear_playlist">Limpar lista de reprodução</string>
     <string name="source_empty">Fonte sem items</string>
@@ -230,7 +229,6 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="item_sent_to_kodi">Enviado para o Kodi</string>
     <string name="no_suitable_playlist">Não foi encontrada nenhuma lista de reprodução válida para adicionar este tipo de mídia.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Visto</string>
     <string name="download">Transferir</string>
     <string name="confirm_movie_download">Tem a certeza que pretende transferir este filme?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
     <string name="confirm_episode_download">Tem a certeza que pretende transferir este episódio?\nA transferência será efetuada em segundo plano, mas poderá demorar algum tempo até estar completa.</string>
@@ -262,7 +260,6 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="enable_disable">Ativar/desativar Extensão</string>
     <string name="addon_enabled">Extensão activada</string>
     <string name="addon_disabled">Extensão desactivada</string>
-    <string name="pin_unpin">Afixar</string>
     <string name="addon_pinned">Extensão afixada na lista de extensões</string>
     <string name="addon_unpinned">Estensão desafixada da lista de extensões</string>
     <!-- Filters on list menus -->
@@ -284,7 +281,6 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="theme">Tema</string>
     <string name="theme_night">Noite</string>
     <string name="theme_day">Dia</string>
-    <string name="theme_mist">Neblina</string>
     <string name="theme_sunrise">Madrugada</string>
     <string name="theme_sunset">Crepúsculo</string>
     <string name="switch_to_remote">Mostrar ao iniciar reprodução</string>
@@ -293,9 +289,6 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="show_notification">Mostrar notificações</string>
     <string name="show_now_playing_panel">Mostrar painel \"Em reprodução\"</string>
     <string name="show_now_playing_panel_summary">Apresenta um painel de controlo na base do écran quando algo está em reprodução</string>
-    <string name="notification_seek_jump">Avançar/Recuar por passos</string>
-    <string name="notification_seek_jump_speed">Mudar velocidade de reprodução a partir da notificação</string>
-    <string name="notification_seek_jump_step">Usar passos para avançar/recuar a partir da notificação</string>
     <string name="pause_during_calls">Parar reprodução durante chamadas</string>
     <string name="use_hardware_volume_keys">Usar teclas de volume</string>
     <string name="vibrate_on_remote">Vibrar ao pressionar botões</string>
@@ -360,12 +353,9 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
     <string name="no_songs_found_refresh">Nenhuma música encontrada
 \n
 \n Puxe para baixo para atualizar</string>
-    <string name="not_implemented">Não implementado</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Expandir/Colapsar</string>
     <string name="stream_action">Reproduzir localmente</string>
-    <string name="disable_local_playback_support">Desativar reprodução local</string>
-    <string name="disable_local_playback_support_summary">Desativa o suporte para reproduzir localmente os media no aparelho que executa Kore.</string>
     <string name="language">Idioma</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Rede Móvel</string>

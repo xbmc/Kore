@@ -197,7 +197,6 @@
     <string name="remaining_cast_count">%d mehr</string>
     <string name="general_error_executing_action">Fehler beim Ausführen der Aktion: %1$s</string>
     <string name="error_getting_playlist">Fehler beim Holen der Wiedergabeliste</string>
-    <string name="error_message">Fehlermeldung: %1$s</string>
     <string name="playlist_empty">Wiedergabeliste leer</string>
     <string name="clear_playlist">Wiedergabeliste leeren</string>
     <string name="source_empty">Medienquelle leer</string>
@@ -232,7 +231,6 @@
     <string name="item_added_to_playlist">Zur Wiedergabeliste hinzugefügt</string>
     <string name="no_suitable_playlist">Keine passende Wiedergabeliste für Medientyp gefunden.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Gesehen</string>
     <string name="download">Herunterladen</string>
     <string name="confirm_movie_download">Wollen Sie diesen Film herunterladen?\nDer Film wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
     <string name="confirm_episode_download">Wollen Sie diese Folge herunterladen?\nDie Folge wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
@@ -264,7 +262,6 @@
     <string name="enable_disable">Erweiterung aktivieren/deaktivieren</string>
     <string name="addon_enabled">Erweiterung aktiviert</string>
     <string name="addon_disabled">Erweiterung deaktiviert</string>
-    <string name="pin_unpin">Erweiterung anheften/loslösen</string>
     <string name="addon_pinned">Erweiterung angeheftet</string>
     <string name="addon_unpinned">Erweiterung losgelöst</string>
     <!-- Filters on list menus -->
@@ -284,14 +281,11 @@
     <string name="theme">Thema</string>
     <string name="theme_night">Nacht</string>
     <string name="theme_day">Tag</string>
-    <string name="theme_mist">Nebel</string>
     <string name="switch_to_remote">Nach dem Abspielen eines Mediums zur Fernbedienung wechseln</string>
     <string name="keep_remote_above_lockscreen">Fernbedienung auf dem Sperrbildschirm anzeigen</string>
     <string name="pref_keep_screen_on">Bildschirm nicht während der Nutzung als Fernbedienung ausschalten</string>
     <string name="show_notification">Nachricht mit aktueller Wiedergabe anzeigen</string>
     <string name="show_now_playing_panel_summary">Zeigt ein ausklappbares Feld am unteren Rand des Bildschirms an, während Medien wiedergegeben werden</string>
-    <string name="notification_seek_jump">Benutze Schritte zum Suchen</string>
-    <string name="notification_seek_jump_speed">Während des Suchens von einer Benachrichtigung die Wiedergabegeschwindigkeit ändern</string>
     <string name="pause_during_calls">Bei Anruf Wiedergabe pausieren</string>
     <string name="use_hardware_volume_keys">Lautstärketasten verwenden</string>
     <string name="vibrate_on_remote">Auf Fernbedienungs-Knopfdruck vibrieren</string>
@@ -350,11 +344,8 @@
     <string name="no_songs_found_refresh">Keine Lieder gefunden
 \n
 \n Nach unten wischen zum Aktualisieren</string>
-    <string name="not_implemented">Nicht implementiert</string>
     <string name="toggle_expand">Ausklappen/Einklappen</string>
     <string name="stream_action">Lokal abspielen</string>
-    <string name="disable_local_playback_support">Lokale Unterstützung für die Wiedergabe deaktivieren</string>
-    <string name="disable_local_playback_support_summary">Deaktiviert die Unterstützung für das lokale Abspielen von Medien auf dem Gerät, auf dem Kore ausgeführt wird.</string>
     <string name="wifi_network">WLAN</string>
     <string name="mobile_network">Mobiles Internet</string>
     <string name="any_network">Beliebig</string>

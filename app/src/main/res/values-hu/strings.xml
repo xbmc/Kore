@@ -83,7 +83,6 @@
     <string name="settings">Beállítások</string>
     <string name="send">Küldés</string>
     <string name="select">Kiválasztás</string>
-    <string name="seen">Láttad</string>
     <string name="season_number">%1$02d évad</string>
     <string name="searching">Keresés…</string>
     <string name="wizard_welcome_message"><![CDATA[     Először is adj hozzá egy média központot. Fontos, hogy a Kodi/XBMC fusson, megfelelően legyen beállítva és az eszközöddel azonos hálózaton legyen.<br/><br/>     A beállításhoz segítséget találsz <a href="http://syncedsynapse.com/kore/kore-faq/">itt</a>.<br/><br/>     Ha készen állsz, nyomj a  <b><i>Következő</i></b>-re.     ]]></string>
@@ -175,7 +174,6 @@
     <string name="sync_successful">Sikeres szinkronizálás </string>
     <string name="text_to_send">Küldendő szöveg</string>
     <string name="theme_day">Nappal</string>
-    <string name="theme_mist">Köd</string>
     <string name="thumbnail">Miniatűr</string>
     <string name="votes">%1$s szavazat</string>
     <string name="pull_to_refresh">Húzd lefelé a frissítéshez</string>
@@ -209,7 +207,6 @@
     <string name="error_getting_properties">Nem érem el a Kodi/XBMC beállításokat.\nHibaüzenet:         %1$s.</string>
     <string name="error_getting_pvr_info">Hiba történt pvr info betöltése közben: %1$s</string>
     <string name="error_getting_source_info">Nem tallózhatóak a fájlok.\nHibaüzenet:         %1$s.</string>
-    <string name="error_message">Hibaüzenet: %1$s</string>
     <string name="error_play_media_file">Nem játszható le a média fájl.\nHibaüzenet:         %1$s.</string>
     <string name="error_queue_media_file">Nem vehető fel a lejátszási sorba a média fájl.\nHibaüzenet:         %1$s.</string>
     <string name="error_share_video">Nem tudom megosztani a videót a Kodi-val/XMBC-vel.</string>
@@ -229,7 +226,6 @@
     <string name="num_episodes">%1$d epizód  |  %2$d nincs megtekintve</string>
     <string name="pause_during_calls">Lejátszás szüneteltetése hívás közben</string>
     <string name="pictures">Képek</string>
-    <string name="pin_unpin">Kiegészítő kitűzése/levétele</string>
     <string name="playlist_empty">Lejátszási lista üres</string>
     <string name="poster">Poszter</string>
     <string name="premiered">Premier: %1$s</string>

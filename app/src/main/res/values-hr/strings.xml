@@ -187,7 +187,6 @@
     <string name="remaining_cast_count">%d više</string>
     <string name="general_error_executing_action">Greška kod izvađanja akcije: %1$s</string>
     <string name="error_getting_playlist">Greška kod dohvaćanje liste za reproduciranje</string>
-    <string name="error_message">Poruka greške: %1$s</string>
     <string name="playlist_empty">Lista za reproduciranje je prazna</string>
     <string name="clear_playlist">Očisti listu za reproduciranje</string>
     <string name="source_empty">Izvor medija je prazan</string>
@@ -221,7 +220,6 @@
     <string name="item_added_to_playlist">Dodano na listu za reproduciranje</string>
     <string name="no_suitable_playlist">Nije pronađena prikladna lista za reproduciranje na koju bi dodao vrsta medija.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Viđeno</string>
     <string name="download">Preuzmi</string>
     <string name="confirm_movie_download">Jeste li sigurni da želite preuzeti ovaj film?\nFilm će biti preuzet u pozadini, ali može potrajati dok ne bude preuzet.</string>
     <string name="confirm_episode_download">Jeste li sigurni da želite preuzeti ovu epizodu?\nEpizoda će biti preuzeta u pozadini, ali može potrajati dok ne bude preuzeta.</string>
@@ -249,7 +247,6 @@
     <string name="enable_disable">Uključi/Isključi dodatak</string>
     <string name="addon_enabled">Dodatak uključen</string>
     <string name="addon_disabled">Dodatak isključen</string>
-    <string name="pin_unpin">Zakvači/Otkvači dodatak</string>
     <string name="addon_pinned">Dodatak zakvačen</string>
     <string name="addon_unpinned">Dodatak otkvačen</string>
     <!-- Filters on list menus -->
@@ -265,7 +262,6 @@
     <string name="theme">Tema</string>
     <string name="theme_night">Noć</string>
     <string name="theme_day">Dan</string>
-    <string name="theme_mist">Izmaglica</string>
     <string name="switch_to_remote">Prebaci na daljinski nakon pokretanja medija</string>
     <string name="keep_remote_above_lockscreen">Zadrži daljinski iznad zaslona zaključavanja</string>
     <string name="show_notification">Prikaži obavijest za vrijeme reproduciranja</string>

@@ -200,7 +200,6 @@
     <string name="remaining_cast_count">oraz %d innych</string>
     <string name="general_error_executing_action">Błąd podczas wykonywania akcji: %1$s</string>
     <string name="error_getting_playlist">Błąd pobierania listy odtwarzania</string>
-    <string name="error_message">Kod błędu: %1$s</string>
     <string name="playlist_empty">Lista jest pusta</string>
     <string name="clear_playlist">Wyczyść listę</string>
     <string name="source_empty">Źródło jest puste</string>
@@ -260,7 +259,6 @@
     <string name="item_sent_to_kodi">Wysłane do Kodi</string>
     <string name="no_suitable_playlist">Brak pasującej listy odtwarzania dla tego typu pliku.</string>
     <string name="imdb">IMDb</string>
-    <string name="seen">Obejrzany</string>
     <string name="download">Pobierz</string>
     <string name="confirm_movie_download">Czy na pewno chcesz pobrać ten film\?
 \nFilm będzie pobierany w tle, a to może zająć trochę czasu.</string>
@@ -297,7 +295,6 @@
     <string name="enable_disable">Włącz/Wyłącz dodatek</string>
     <string name="addon_enabled">Dodatek włączony</string>
     <string name="addon_disabled">Dodatek wyłączony</string>
-    <string name="pin_unpin">Przypnij/Odepnij dodatek</string>
     <string name="addon_pinned">Dodatek przypięty</string>
     <string name="addon_unpinned">Dodatek odpięty</string>
     <!-- Filters on list menus -->
@@ -319,7 +316,6 @@
     <string name="theme">Motyw</string>
     <string name="theme_night">Noc</string>
     <string name="theme_day">Dzień</string>
-    <string name="theme_mist">Mgła</string>
     <string name="theme_sunrise">Wschód słońca</string>
     <string name="theme_sunset">Zachód słońca</string>
     <string name="switch_to_remote">Przełącz do zdalnego sterowania po uruchomieniu odtwarzania</string>
@@ -328,9 +324,6 @@
     <string name="show_notification">Pokaż powiadomienie podczas odtwarzania</string>
     <string name="show_now_playing_panel">Pokaż teraz panel odtwarzania</string>
     <string name="show_now_playing_panel_summary">Wyświetla panel u dołu ekranu podczas odtwarzania multimediów</string>
-    <string name="notification_seek_jump">Użyj kroków do szukania</string>
-    <string name="notification_seek_jump_speed">Zmienia prędkość odtwarzania podczas wyszukiwania z powiadomienia</string>
-    <string name="notification_seek_jump_step">Użyj kroków pomijania podczas wyszukiwania z powiadomienia</string>
     <string name="pause_during_calls">Zatrzymaj odtwarzanie podczas rozmowy</string>
     <string name="use_hardware_volume_keys">Używaj klawiszy głośności do regulacji głośności</string>
     <string name="vibrate_on_remote">Wibruj po naciśnięciu klawiszy pilota</string>
@@ -390,12 +383,9 @@
     <string name="no_songs_found_refresh">Brak utworów
 \n
 \nPrzesuń w dół, aby odświeżyć</string>
-    <string name="not_implemented">Nie zaimplementowano</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Rozwiń/Zwiń</string>
     <string name="stream_action">Odtwarzaj lokalnie</string>
-    <string name="disable_local_playback_support">Wyłącz odtwarzanie na urządzeniu</string>
-    <string name="disable_local_playback_support_summary">Wyłącza odtwarzanie multimediów na urządzeniu przy uruchomieniu Kore.</string>
     <string name="language">Język</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobilna</string>
