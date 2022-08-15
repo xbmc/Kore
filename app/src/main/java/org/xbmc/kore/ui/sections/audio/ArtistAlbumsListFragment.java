@@ -99,6 +99,12 @@ public class ArtistAlbumsListFragment extends AbstractAdditionalInfoFragment
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {

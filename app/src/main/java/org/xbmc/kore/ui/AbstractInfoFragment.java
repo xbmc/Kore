@@ -136,10 +136,8 @@ abstract public class AbstractInfoFragment extends AbstractFragment
         DataHolder dataHolder = getDataHolder();
 
         if(!dataHolder.getSquarePoster()) {
-            binding.poster.getLayoutParams().width =
-                    resources.getDimensionPixelSize(R.dimen.info_poster_width);
-            binding.poster.getLayoutParams().height =
-                    resources.getDimensionPixelSize(R.dimen.info_poster_height);
+            binding.poster.getLayoutParams().width = resources.getDimensionPixelSize(R.dimen.info_poster_width);
+            binding.poster.getLayoutParams().height = resources.getDimensionPixelSize(R.dimen.info_poster_height);
         }
 
         if(getRefreshItem() != null) {
