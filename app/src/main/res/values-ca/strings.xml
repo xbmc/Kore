@@ -36,9 +36,9 @@
     <string name="finish_after_send">Acaba després d\'enviar</string>
     <string name="library_actions">Manteniment de la mediateca</string>
     <string name="clean_video_library">Esborra videoteca</string>
-    <string name="clean_audio_library">Esborra fonoteca</string>
+    <string name="clean_audio_library">Esborra la biblioteca d\'àudio</string>
     <string name="update_video_library">Actualitza videoteca</string>
-    <string name="update_audio_library">Actualitza fonoteca</string>
+    <string name="update_audio_library">Actualitza la biblioteca d\'àudio</string>
     <string name="toggle_fullscreen">A tota pantalla</string>
     <string name="connected_to">Connectat amb %1$s</string>
     <string name="connecting">Connectant…</string>
@@ -313,7 +313,7 @@
     <string name="might_not_have_pvr">S\'ha produït un error mentre s\'obtenia informació dels canals, probablement el Centre Multimèdia no tingui un sintonitzador configurat.
 \n
 \n Si és aquest cas, haurieu d\'eliminar aquesta entrada del menú lateral, podeu fer-ho des de la Configuració.</string>
-    <string name="error_starting_channel">S\'ha produït un error en reproduir el canal: %1$s</string>
+    <string name="error_starting_channel">S\'ha produït un error al iniciar la reproducció del canal: %1$s</string>
     <string name="error_starting_recording">S\'ha produït un error en enregistrar: %1$s</string>
     <string name="error_starting_to_record">S\'ha produït un error en reproduir el canal: %1$s</string>
     <string name="channel_switching">Canviant al canal %1$s</string>
