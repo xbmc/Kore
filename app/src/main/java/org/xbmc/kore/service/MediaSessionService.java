@@ -8,10 +8,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -31,15 +33,16 @@ import com.squareup.picasso.Target;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.CharacterDrawable;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.RemoteVolumeProviderCompat;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
@@ -56,7 +59,7 @@ import org.xbmc.kore.utils.Utils;
  * state. This singleton should be the same as used in the app's activities
  */
 public class MediaSessionService extends Service
-        implements HostConnectionObserver.PlayerEventsObserver {
+        implements HostConnectionObserver.PlayerEventsObserver, SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String TAG = LogUtils.makeLogTag(MediaSessionService.class);
 
     public static final int NOTIFICATION_ID = 1;
@@ -76,6 +79,8 @@ public class MediaSessionService extends Service
     private MediaSessionCompat mediaSession;
     private PlaybackStateCompat.Builder stateBuilder;
     private MediaMetadataCompat.Builder metadataBuilder;
+
+    private RemoteVolumeProviderCompat remoteVolumePC;
 
     private CallStateListener callStateListener = null;
 
@@ -128,6 +133,8 @@ public class MediaSessionService extends Service
         // connection observer can be shared with the app, and notify it on the UI thread
         notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
         hostConnection = HostManager.getInstance(this).getConnection();
+        remoteVolumePC = new RemoteVolumeProviderCompat(hostConnection);
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
         // Create the intent to start the remote when the user taps the notification
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -163,6 +170,10 @@ public class MediaSessionService extends Service
                             PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
                             PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS);
         mediaSession.setPlaybackState(stateBuilder.build());
+
+        if (hardwareVolumeKeysEnabled()) {
+            mediaSession.setPlaybackToRemote(remoteVolumePC);
+        }
         metadataBuilder = new MediaMetadataCompat.Builder();
     }
 
@@ -198,6 +209,7 @@ public class MediaSessionService extends Service
             if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
             hostConnectionObserver = connectionObserver;
             hostConnectionObserver.registerPlayerObserver(this);
+            hostConnectionObserver.registerApplicationObserver(remoteVolumePC);
         }
 
 
@@ -514,5 +526,27 @@ public class MediaSessionService extends Service
         mediaSession.setPlaybackState(stateBuilder.build());
 
         notificationManager.notify(NOTIFICATION_ID, nothingPlayingNotification);
+    }
+
+    private boolean hardwareVolumeKeysEnabled() {
+        return PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
+                        Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+    }
+
+    /**
+     * listen for changes on SharedPreferences and handle them
+     * @param sharedPreferences preferences set by user
+     * @param key key of the changed setting
+     */
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS.equals(key)) {
+            if (hardwareVolumeKeysEnabled()) {
+                mediaSession.setPlaybackToRemote(remoteVolumePC);
+            } else {
+                mediaSession.setPlaybackToLocal(AudioManager.STREAM_MUSIC);
+            }
+        }
     }
 }
