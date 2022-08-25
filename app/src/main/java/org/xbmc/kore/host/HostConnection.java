@@ -39,6 +39,7 @@ import org.xbmc.kore.utils.LogUtils;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.ProtocolException;
 import java.net.Socket;
@@ -532,10 +533,13 @@ public class HostConnection {
             return client.newCall(request).execute();
         } catch (ProtocolException e) {
             LogUtils.LOGW(TAG, "Got a Protocol Exception when trying to send OkHttp request. " +
-                            "Trying again without connection pooling to try to circunvent this", e);
+                               "Trying again without connection pooling to try to circunvent this", e);
             // Hack to circumvent a Protocol Exception that occurs when the server returns bogus Status Line
             // http://forum.kodi.tv/showthread.php?tid=224288
             httpClient = getNewOkHttpClientNoKeepAlive();
+            throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
+        } catch (ConnectException e) {
+            LogUtils.LOGD(TAG, "Failed to connect to kodi.");
             throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
         } catch (IOException e) {
             LogUtils.LOGW(TAG, "Failed to send OkHttp request.", e);

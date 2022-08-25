@@ -55,6 +55,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.databinding.FragmentMediaInfoBinding;
+import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
@@ -70,13 +71,15 @@ import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
+import java.util.List;
 import java.util.Locale;
 
 abstract public class AbstractInfoFragment
         extends AbstractFragment
         implements SwipeRefreshLayout.OnRefreshListener,
                    SyncUtils.OnServiceListener,
-                   SharedElementTransition.SharedElement {
+                   SharedElementTransition.SharedElement,
+                   HostConnectionObserver.ConnectionStatusObserver {
     private static final String TAG = LogUtils.makeLogTag(AbstractInfoFragment.class);
 
     private FragmentMediaInfoBinding binding;
@@ -183,6 +186,7 @@ abstract public class AbstractInfoFragment
         /* Setup dim the fanart when scroll changes */
         onScrollChangedListener = UIUtils.createInfoPanelScrollChangedListener(requireContext(), binding.mediaPanel, binding.art, binding.mediaPanelGroup);
         binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
+        hostManager.getHostConnectionObserver().registerConnectionStatusObserver(this);
     }
 
     @Override
@@ -224,6 +228,7 @@ abstract public class AbstractInfoFragment
     @Override
     public void onDestroyView() {
         binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(onScrollChangedListener);
+        hostManager.getHostConnectionObserver().unregisterConnectionStatusObserver(this);
         super.onDestroyView();
         binding = null;
     }
@@ -275,6 +280,65 @@ abstract public class AbstractInfoFragment
                 binding.swipeRefreshLayout.setRefreshing(true);
             refreshItem.setSwipeRefreshLayout(binding.swipeRefreshLayout);
             refreshItem.register();
+        }
+    }
+
+    private int lastConnectionStatusResult = CONNECTION_NO_RESULT;
+
+    /**
+     * Hide/Disable UI elements that don't make sense without a connection
+     */
+    @Override
+    public void connectionStatusOnError(int errorCode, String description) {
+        LogUtils.LOGD(TAG, "Connection Status Error, disabling buttons");
+        if (lastConnectionStatusResult == CONNECTION_ERROR) return;
+
+        lastConnectionStatusResult = CONNECTION_ERROR;
+        binding.fabPlay.setEnabled(false);
+        if (binding.fabPlay.isShown())
+            binding.fabPlay.hide();
+        binding.swipeRefreshLayout.setEnabled(false);
+        setInfoActionButtonsEnabledState(false);
+    }
+
+    /**
+     * Show/Enable UI elements relevant when there's a connection
+     */
+    @Override
+    public void connectionStatusOnSuccess() {
+        // Only update views if transitioning from error state.
+        // If transitioning from Sucess or No results the enabled UI is already being shown
+        if (lastConnectionStatusResult == CONNECTION_ERROR) {
+            LogUtils.LOGD(TAG, "Connection Status Success, enabling buttons");
+            updateView(getDataHolder());
+
+            binding.fabPlay.setEnabled(true);
+            if (!binding.fabPlay.isShown())
+                binding.fabPlay.show();
+            binding.swipeRefreshLayout.setEnabled(true);
+            setInfoActionButtonsEnabledState(true);
+        }
+        lastConnectionStatusResult = CONNECTION_SUCCESS;
+    }
+
+    @Override
+    public void connectionStatusNoResultsYet() {
+        // Do nothing, by default the enabled UI is shown while there are no results
+        lastConnectionStatusResult = CONNECTION_NO_RESULT;
+    }
+
+    private void setInfoActionButtonsEnabledState(boolean enabled) {
+        setButtonEnabledState(binding.infoActionDownload, enabled);
+        setButtonEnabledState(binding.infoActionEnable, enabled);
+        setButtonEnabledState(binding.infoActionPin, enabled);
+        setButtonEnabledState(binding.infoActionStream, enabled);
+        setButtonEnabledState(binding.infoActionQueue, enabled);
+        setButtonEnabledState(binding.infoActionWatched, enabled);
+    }
+
+    private void setButtonEnabledState(MaterialButton button, boolean enabled) {
+        if (button.getVisibility() == View.VISIBLE) {
+            button.setEnabled(enabled);
         }
     }
 
