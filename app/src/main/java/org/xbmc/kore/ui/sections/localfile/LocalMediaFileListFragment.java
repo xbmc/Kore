@@ -141,6 +141,19 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         binding.swipeRefreshLayout.setRefreshing(false);
     }
 
+    /**
+     * Override parent Connection Status callbacks, so that they don't disable the SwipreRefreshLayout.
+     * In this fragment a refresh should be always available as it is local only
+     */
+    @Override
+    public void connectionStatusOnError(int errorCode, String description) {}
+
+    @Override
+    public void connectionStatusOnSuccess() {}
+
+    @Override
+    public void connectionStatusNoResultsYet() {}
+
     private void checkReadStoragePermission() {
         boolean hasStoragePermission =
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
