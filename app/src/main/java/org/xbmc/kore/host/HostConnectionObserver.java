@@ -157,6 +157,35 @@ public class HostConnectionObserver
     }
 
     /**
+     * Interface that an observer has to implement to receive the connection status
+     */
+    public interface ConnectionStatusObserver {
+        /**
+         * Constants for the status
+         */
+        int CONNECTION_NO_RESULT = 0,
+                CONNECTION_ERROR = 1,
+                CONNECTION_SUCCESS = 2;
+
+        /**
+         * Notifies that we don't have a result yet
+         */
+        void connectionStatusNoResultsYet();
+
+        /**
+         * Notifies that we're successfully connected
+         */
+        void connectionStatusOnSuccess();
+
+        /**
+         * Called when we get a connection error
+         * @param errorCode Code
+         * @param description Description
+         */
+        void connectionStatusOnError(int errorCode, String description);
+    }
+
+    /**
      * The connection on which to listen
      */
     private final HostConnection connection;
@@ -167,6 +196,7 @@ public class HostConnectionObserver
     private final List<PlayerEventsObserver> playerEventsObservers = new ArrayList<>();
     private final List<ApplicationEventsObserver> applicationEventsObservers = new ArrayList<>();
     private final List<PlaylistEventsObserver> playlistEventsObservers = new ArrayList<>();
+    private final List<ConnectionStatusObserver> connectionStatusObservers = new ArrayList<>();
 
     // This controls the frequency with wich the playlist is checked.
     // It's checked everytime it reaches 0, being reset afterwards
@@ -179,9 +209,10 @@ public class HostConnectionObserver
         public void run() {
             final int HTTP_NOTIFICATION_CHECK_INTERVAL = 2000;
             // If no one is listening to this, just exit
-            if (playerEventsObservers.isEmpty()
-                && applicationEventsObservers.isEmpty()
-                && playlistEventsObservers.isEmpty())
+            if (playerEventsObservers.isEmpty() &&
+                applicationEventsObservers.isEmpty() &&
+                playlistEventsObservers.isEmpty() &&
+                connectionStatusObservers.isEmpty())
                 return;
 
             if (!playerEventsObservers.isEmpty())
@@ -200,6 +231,10 @@ public class HostConnectionObserver
                 }
             }
 
+            if (!connectionStatusObservers.isEmpty()) {
+                checkConnectionStatus();
+            }
+
             checkerHandler.postDelayed(this, HTTP_NOTIFICATION_CHECK_INTERVAL);
         }
     };
@@ -208,12 +243,14 @@ public class HostConnectionObserver
         @Override
         public void run() {
             // If no one is listening to this, just exit
-            if (playerEventsObservers.isEmpty() && applicationEventsObservers.isEmpty() &&
-                playlistEventsObservers.isEmpty())
+            if (playerEventsObservers.isEmpty() &&
+                applicationEventsObservers.isEmpty() &&
+                playlistEventsObservers.isEmpty() &&
+                connectionStatusObservers.isEmpty())
                 return;
 
             final int PING_AFTER_ERROR_CHECK_INTERVAL = 2000,
-                    PING_AFTER_SUCCESS_CHECK_INTERVAL = 10000;
+                    PING_AFTER_SUCCESS_CHECK_INTERVAL = 5000;
             JSONRPC.Ping ping = new JSONRPC.Ping();
             ping.execute(connection, new ApiCallback<String>() {
                 @Override
@@ -221,15 +258,19 @@ public class HostConnectionObserver
                     // Ok, we've got a ping, if there are playerEventsObservers and
                     // we were in a error or uninitialized state, update
                     if ((!playerEventsObservers.isEmpty()) &&
-                        ((hostState.lastCallResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
-                         (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR))) {
+                        ((hostState.lastPlayerEventsResult == PlayerEventsObserver.PLAYER_NO_RESULT) ||
+                         (hostState.lastPlayerEventsResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR))) {
                         LogUtils.LOGD(TAG, "Checking what's playing because we don't have info about it");
                         checkWhatsPlaying();
                     }
 
                     if ((!playlistEventsObservers.isEmpty()) &&
-                        (hostState.lastCallResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR)) {
+                        (hostState.lastPlayerEventsResult == PlayerEventsObserver.PLAYER_CONNECTION_ERROR)) {
                         checkPlaylist();
+                    }
+
+                    if (!connectionStatusObservers.isEmpty()) {
+                        notifyConnectionStatusSucess(connectionStatusObservers);
                     }
 
                     checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_SUCCESS_CHECK_INTERVAL);
@@ -239,6 +280,7 @@ public class HostConnectionObserver
                 public void onError(int errorCode, String description) {
                     // Notify a connection error
                     notifyConnectionError(errorCode, description, playerEventsObservers);
+                    notifyConnectionStatusError(errorCode, description, connectionStatusObservers);
                     checkerHandler.postDelayed(tcpCheckerRunnable, PING_AFTER_ERROR_CHECK_INTERVAL);
                 }
             }, checkerHandler);
@@ -246,15 +288,18 @@ public class HostConnectionObserver
     };
 
     private static class HostState {
-        int lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+        int lastPlayerEventsResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+        int lastPlayerEventsErrorCode;
+        String lastPlayerEventsErrorDescription;
         PlayerType.GetActivePlayersReturnType lastGetActivePlayerResult = null;
         PlayerType.PropertyValue lastGetPropertiesResult = null;
         ListType.ItemsAll lastGetItemResult = null;
         boolean volumeMuted = false;
         int volumeLevel = -1;  // -1 indicates no volumeLevel known
-        int lastErrorCode;
-        String lastErrorDescription;
         ArrayList<GetPlaylist.GetPlaylistResult> lastGetPlaylistResults = null;
+        int lastConnectionStatusResult = ConnectionStatusObserver.CONNECTION_NO_RESULT;
+        int lastConnectionStatusErrorCode;
+        String lastConnectionStatusErrorDescription;
     }
     private HostState hostState;
 
@@ -312,7 +357,7 @@ public class HostConnectionObserver
                 connection.unregisterSystemNotificationsObserver(this);
                 connection.unregisterInputNotificationsObserver(this);
             }
-            hostState.lastCallResult = PlayerEventsObserver.PLAYER_NO_RESULT;
+            hostState.lastPlayerEventsResult = PlayerEventsObserver.PLAYER_NO_RESULT;
         }
     }
 
@@ -409,6 +454,39 @@ public class HostConnectionObserver
     }
 
     /**
+     * Registers a new observer that will be notified about connection status
+     * @param observer Observer
+     */
+    public void registerConnectionStatusObserver(ConnectionStatusObserver observer) {
+        if (this.connection == null || observer == null) return;
+
+        if (!connectionStatusObservers.contains(observer))
+            connectionStatusObservers.add(observer);
+
+        LogUtils.LOGD(TAG, "Register Connection Status Observer " + observer.getClass().getSimpleName() +
+                           ". Got " + connectionStatusObservers.size() + " observers.");
+
+        // Reply immediatelly
+        replyWithLastResult(observer);
+        startCheckerHandler();
+    }
+
+    /**
+     * Unregisters a previously registered observer
+     * @param observer Observer to unregister
+     */
+    public void unregisterConnectionStatusObserver(ConnectionStatusObserver observer) {
+        if (this.connection == null || observer == null) return;
+
+        connectionStatusObservers.remove(observer);
+
+        LogUtils.LOGD(TAG, "Unregister Connection Status Observer " + observer.getClass().getSimpleName() +
+                           ((connectionStatusObservers.size() > 0) ?
+                            ". Got " + connectionStatusObservers.size() + " observers." :
+                            ". No observers left."));
+    }
+
+    /**
      * Unregisters all observers
      */
     public void stopObserving() {
@@ -418,6 +496,7 @@ public class HostConnectionObserver
         playerEventsObservers.clear();
         playlistEventsObservers.clear();
         applicationEventsObservers.clear();
+        connectionStatusObservers.clear();
 
         if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
             connection.unregisterPlayerNotificationsObserver(this);
@@ -651,6 +730,48 @@ public class HostConnectionObserver
     }
 
     /**
+     * Checks the connection status and notifies observers
+     */
+    private void checkConnectionStatus() {
+        if (HostConnection.LOG_REQUESTS) LogUtils.LOGD(TAG, "Checking connection status");
+        JSONRPC.Ping ping = new JSONRPC.Ping();
+        ping.execute(connection, new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                notifyConnectionStatusSucess(connectionStatusObservers);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                notifyConnectionStatusError(errorCode, description, connectionStatusObservers);
+            }
+        }, checkerHandler);
+    }
+
+    private void notifyConnectionStatusSucess(List<ConnectionStatusObserver> observers) {
+        // Reply if different from last result
+        if (hostState.lastConnectionStatusResult != ConnectionStatusObserver.CONNECTION_SUCCESS) {
+            hostState.lastConnectionStatusResult = ConnectionStatusObserver.CONNECTION_SUCCESS;
+            for (final ConnectionStatusObserver observer : observers) {
+                observer.connectionStatusOnSuccess();
+            }
+        }
+    }
+
+    private void notifyConnectionStatusError(int errorCode, String description, List<ConnectionStatusObserver> observers) {
+        // Reply if different from last result
+        if (hostState.lastConnectionStatusResult != ConnectionStatusObserver.CONNECTION_ERROR ||
+            hostState.lastConnectionStatusErrorCode != errorCode) {
+            hostState.lastConnectionStatusResult = ConnectionStatusObserver.CONNECTION_ERROR;
+            hostState.lastConnectionStatusErrorCode = errorCode;
+            hostState.lastConnectionStatusErrorDescription = description;
+            for (final ConnectionStatusObserver observer : observers) {
+                observer.connectionStatusOnError(errorCode, description);
+            }
+        }
+    }
+
+    /**
      * Indicator set when we are calling Kodi to check what's playing, so that we don't call it
      * while there are still pending calls
      */
@@ -812,11 +933,11 @@ public class HostConnectionObserver
         checkingWhatsPlaying = false;
         // Reply if different from last result
         if (forceReply ||
-            (hostState.lastCallResult != PlayerEventsObserver.PLAYER_CONNECTION_ERROR) ||
-            (hostState.lastErrorCode != errorCode)) {
-            hostState.lastCallResult = PlayerEventsObserver.PLAYER_CONNECTION_ERROR;
-            hostState.lastErrorCode = errorCode;
-            hostState.lastErrorDescription = description;
+            (hostState.lastPlayerEventsResult != PlayerEventsObserver.PLAYER_CONNECTION_ERROR) ||
+            (hostState.lastPlayerEventsErrorCode != errorCode)) {
+            hostState.lastPlayerEventsResult = PlayerEventsObserver.PLAYER_CONNECTION_ERROR;
+            hostState.lastPlayerEventsErrorCode = errorCode;
+            hostState.lastPlayerEventsErrorDescription = description;
             forceReply = false;
             // Copy list to prevent ConcurrentModificationExceptions
             List<PlayerEventsObserver> allObservers = new ArrayList<>(observers);
@@ -846,8 +967,8 @@ public class HostConnectionObserver
         checkingWhatsPlaying = false;
         // Reply if forced or different from last result
         if (forceReply ||
-            (hostState.lastCallResult != PlayerEventsObserver.PLAYER_IS_STOPPED)) {
-            hostState.lastCallResult = PlayerEventsObserver.PLAYER_IS_STOPPED;
+            (hostState.lastPlayerEventsResult != PlayerEventsObserver.PLAYER_IS_STOPPED)) {
+            hostState.lastPlayerEventsResult = PlayerEventsObserver.PLAYER_IS_STOPPED;
             forceReply = false;
             // Copy list to prevent ConcurrentModificationExceptions
             List<PlayerEventsObserver> allObservers = new ArrayList<>(observers);
@@ -897,10 +1018,10 @@ public class HostConnectionObserver
                                 PlayerEventsObserver.PLAYER_IS_PAUSED : PlayerEventsObserver.PLAYER_IS_PLAYING;
 
         if (forceReply ||
-            (hostState.lastCallResult != currentCallResult) ||
+            (hostState.lastPlayerEventsResult != currentCallResult) ||
             getPropertiesResultChanged(getPropertiesResult) ||
             getItemResultChanged(getItemResult)) {
-            hostState.lastCallResult = currentCallResult;
+            hostState.lastPlayerEventsResult = currentCallResult;
             hostState.lastGetActivePlayerResult = getActivePlayersResult;
             hostState.lastGetPropertiesResult = getPropertiesResult;
             hostState.lastGetItemResult = getItemResult;
@@ -956,9 +1077,9 @@ public class HostConnectionObserver
      * @param observer Player observer to call with last result
      */
     private void replyWithLastResult(PlayerEventsObserver observer) {
-        switch (hostState.lastCallResult) {
+        switch (hostState.lastPlayerEventsResult) {
             case PlayerEventsObserver.PLAYER_CONNECTION_ERROR:
-                notifyConnectionError(hostState.lastErrorCode, hostState.lastErrorDescription, observer);
+                notifyConnectionError(hostState.lastPlayerEventsErrorCode, hostState.lastPlayerEventsErrorDescription, observer);
                 break;
             case PlayerEventsObserver.PLAYER_IS_STOPPED:
                 notifyNothingIsPlaying(observer);
@@ -985,6 +1106,7 @@ public class HostConnectionObserver
             observer.applicationOnVolumeChanged(hostState.volumeLevel, hostState.volumeMuted);
         }
     }
+
     /**
      * Replies to the playlist observer with the last result we got.
      * If we have no result, nothing will be called on the observer interface.
@@ -995,6 +1117,24 @@ public class HostConnectionObserver
             observer.playlistsAvailable(hostState.lastGetPlaylistResults);
         else
             checkPlaylist();
+    }
+
+    /**
+     * Replies to the connection status observer with the last result we got.
+     * @param observer Connection Status observer to call with last result
+     */
+    private void replyWithLastResult(ConnectionStatusObserver observer) {
+        switch (hostState.lastConnectionStatusResult) {
+            case ConnectionStatusObserver.CONNECTION_ERROR:
+                observer.connectionStatusOnError(hostState.lastConnectionStatusErrorCode, hostState.lastConnectionStatusErrorDescription);
+                break;
+            case ConnectionStatusObserver.CONNECTION_SUCCESS:
+                observer.connectionStatusOnSuccess();
+                break;
+            case PlayerEventsObserver.PLAYER_NO_RESULT:
+                observer.connectionStatusNoResultsYet();
+                break;
+        }
     }
 
     /**
