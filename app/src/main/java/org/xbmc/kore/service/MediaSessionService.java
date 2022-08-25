@@ -133,7 +133,6 @@ public class MediaSessionService extends Service
         // connection observer can be shared with the app, and notify it on the UI thread
         notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
         hostConnection = HostManager.getInstance(this).getConnection();
-        remoteVolumePC = new RemoteVolumeProviderCompat(hostConnection);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
         // Create the intent to start the remote when the user taps the notification
@@ -172,6 +171,7 @@ public class MediaSessionService extends Service
         mediaSession.setPlaybackState(stateBuilder.build());
 
         if (hardwareVolumeKeysEnabled()) {
+            remoteVolumePC = new RemoteVolumeProviderCompat(hostConnection);
             mediaSession.setPlaybackToRemote(remoteVolumePC);
         }
         metadataBuilder = new MediaMetadataCompat.Builder();
@@ -206,10 +206,10 @@ public class MediaSessionService extends Service
         HostConnectionObserver connectionObserver = HostManager.getInstance(this).getHostConnectionObserver();
         if (hostConnectionObserver == null || hostConnectionObserver != connectionObserver) {
             // New connection or there has been a change in hosts, in which case we need to unregister the previous one
-            if (hostConnectionObserver != null) hostConnectionObserver.unregisterPlayerObserver(this);
+            if (hostConnectionObserver != null) unregisterObservers();
             hostConnectionObserver = connectionObserver;
             hostConnectionObserver.registerPlayerObserver(this);
-            hostConnectionObserver.registerApplicationObserver(remoteVolumePC);
+            if (remoteVolumePC != null) hostConnectionObserver.registerApplicationObserver(remoteVolumePC);
         }
 
 
@@ -240,7 +240,7 @@ public class MediaSessionService extends Service
         isRunning = false;
         mediaSession.release();
         if (hostConnectionObserver != null) {
-            hostConnectionObserver.unregisterPlayerObserver(this);
+            unregisterObservers();
         }
         if (callStateListener != null) {
             callStateListener.stopListening();
@@ -351,7 +351,7 @@ public class MediaSessionService extends Service
         // Stop service
         LogUtils.LOGD(TAG, "Stopping media session service. Reason: " + reason);
         if (hostConnectionObserver != null) {
-            hostConnectionObserver.unregisterPlayerObserver(this);
+            unregisterObservers();
         }
         notificationManager.cancel(NOTIFICATION_ID);
         stopForeground(true);
@@ -543,10 +543,19 @@ public class MediaSessionService extends Service
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS.equals(key)) {
             if (hardwareVolumeKeysEnabled()) {
+                remoteVolumePC = new RemoteVolumeProviderCompat(hostConnection);
                 mediaSession.setPlaybackToRemote(remoteVolumePC);
+                hostConnectionObserver.registerApplicationObserver(remoteVolumePC);
             } else {
                 mediaSession.setPlaybackToLocal(AudioManager.STREAM_MUSIC);
+                hostConnectionObserver.unregisterApplicationObserver(remoteVolumePC);
+                remoteVolumePC = null;
             }
         }
+    }
+
+    private void unregisterObservers() {
+        hostConnectionObserver.unregisterPlayerObserver(this);
+        if (remoteVolumePC != null) hostConnectionObserver.unregisterApplicationObserver(remoteVolumePC);
     }
 }
