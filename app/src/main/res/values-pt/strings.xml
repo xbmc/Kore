@@ -29,7 +29,7 @@
     <string name="dcim">DCIM</string>
     <string name="external_storage">Armazenamento</string>
     <string name="addons">Extensões</string>
-    <string name="files">Ficheiros</string>
+    <string name="files">Ficheiros Kodi</string>
     <string name="local_files">Ficheiros Locais</string>
     <string name="video">Vídeo</string>
     <string name="videos">Vídeos</string>
@@ -37,7 +37,7 @@
     <string name="window">Janela</string>
     <string name="script">Script</string>
     <string name="unknown">Desconhecido</string>
-    <string name="file_browser">Ficheiros</string>
+    <string name="file_browser">Explorador de Ficheiros Kodi</string>
     <string name="local_file_browser">Explorador de Ficheiros</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Favoritos</string>
@@ -165,21 +165,19 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Temporada %1$02d | Episódio %2$02d</string>
     <string name="season_number">Temporada %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Episódio %1$d</string>
     <string name="votes">%1$s votos</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Cartaz</string>
     <string name="thumbnail">Miniatura</string>
-    <string name="error_getting_properties">Não foi possível obter as propriedades do Kodi/XBMC.\nMensagem de erro: %1$s.</string>
-    <string name="error_executing_subtitles">Não foi possível executar a extensão de legendas.\nMensagem de erro: %1$s.</string>
-    <string name="error_getting_addon_info">Não foi possível obter informação relativa à Extensão.\nMensagem de erro: %1$s.</string>
-    <string name="error_getting_source_info">Não foi possível navegar no sistema de ficheiros.\n Mensagem:  %1$s.</string>
-    <string name="error_play_media_file">Não foi possível reproduzir o ficheiro multimédia.
-\n Mensagem de erro: %1$s.</string>
-    <string name="error_play_local_file">Não foi possível reproduzir o ficheiro multimédia local.
-\n Mensagem de erro: %1$s.</string>
-    <string name="error_queue_media_file">Não foi possível colocar o ficheiro na fila.\n Mensagem:  %1$s.</string>
-    <string name="error_get_active_player">Não foi possível obter o que está a ser reproduzido.\n Mensagem:  %1$s.</string>
+    <string name="error_getting_properties">"Não foi possível obter  propriedades do Kodi. Mensagem de erro: %1$s."</string>
+    <string name="error_executing_subtitles">Não foi possível executar a extensão. Mensagem de erro: %1$s.</string>
+    <string name="error_getting_addon_info">Não foi possível obter informação relativa à extensão. Mensagem de erro: %1$s.</string>
+    <string name="error_getting_source_info">Não foi possível navegar no sistema de ficheiros. Mensagem: %1$s.</string>
+    <string name="error_play_media_file">Não foi possível reproduzir o ficheiro multimédia. Mensagem de erro: %1$s.</string>
+    <string name="error_play_local_file">Não foi possível reproduzir o ficheiro multimédia local. Mensagem de erro: %1$s.</string>
+    <string name="error_queue_media_file">Não foi possível colocar o ficheiro na lista de reprodução. Mensagem: %1$s.</string>
+    <string name="error_get_active_player">Não foi possível obter o que está a ser reproduzido. Mensagem: %1$s.</string>
     <string name="error_share_video">Não foi possível enviar o vídeo a Kodi.</string>
     <string name="error_reading_local_storage">Não foi possível aceder ao armazenamento local. Deu permissão à Kore para aceder ao armazenamento de ficheiros\?</string>
     <string name="error_starting_http_server">Não foi possível criar ou inicializar o servidor de HTTP.</string>
@@ -196,8 +194,12 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="clear_playlist">Limpar lista de reprodução</string>
     <string name="source_empty">Fonte sem items</string>
     <string name="swipe_down_to_refresh">Puxe para actualizar</string>
-    <string name="no_movies_found_refresh">Nenhum filme encontrado\n\nPuxe para baixo para actualizar</string>
-    <string name="no_tvshows_found_refresh">Nenhum programa de TV encontrado\n\nPuxe para baixo para actualizar</string>
+    <string name="no_movies_found_refresh">Nenhum filme encontrado
+\n
+\nPuxe para baixo para actualizar</string>
+    <string name="no_tvshows_found_refresh">Nenhum programa de TV encontrado
+\n
+\nPuxe para baixo para actualizar</string>
     <string name="no_episodes_found">Nenhum episódio encontrado</string>
     <string name="no_artists_found_refresh">Nenhum artista encontrado\n\nPuxe para baixo para actualizar</string>
     <string name="no_albums_found_refresh">Nenhum álbum encontrado\n\nPuxe para baixo para actualizar</string>
@@ -355,11 +357,22 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
 \n Puxe para baixo para atualizar</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Expandir/Colapsar</string>
-    <string name="stream_action">Reproduzir localmente</string>
+    <string name="stream_action">Transmitir</string>
     <string name="language">Idioma</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Rede Móvel</string>
     <string name="any_network">Todas</string>
     <string name="always_sendtokodi_addon">Preferir sempre a extensão SendToKodi</string>
-    <string name="queue_action">Fila</string>
+    <string name="queue_action">Em Fila</string>
+    <string name="web_search">Procurar</string>
+    <string name="theme_sun_dynamic">Madrugada/Crepúsculo Dinâmico</string>
+    <string name="theme_default_dynamic">Dia/Noite Dinâmico</string>
+    <string name="download_action">Transferir</string>
+    <string name="disabled_status">Inactivo</string>
+    <string name="enabled_status">Activo</string>
+    <string name="unpinned_status">N. Marcado</string>
+    <string name="pinned_status">Marcado</string>
+    <string name="unwatched_status">N. Visto</string>
+    <string name="watched_status">Visto</string>
+    <string name="party_mode">Modo Festa</string>
 </resources>

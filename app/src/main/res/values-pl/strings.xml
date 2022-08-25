@@ -402,4 +402,5 @@
     <string name="pinned_status">Przypięte</string>
     <string name="unwatched_status">Nieobejrzane</string>
     <string name="watched_status">Obejrzane</string>
+    <string name="web_search">Wyszukiwanie w sieci</string>
 </resources>

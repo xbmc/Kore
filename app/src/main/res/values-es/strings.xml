@@ -29,7 +29,7 @@
     <string name="dcim">Cámara (DCIM)</string>
     <string name="external_storage">Almacenamiento</string>
     <string name="addons">Complementos</string>
-    <string name="files">Archivos</string>
+    <string name="files">Archivos Kodi</string>
     <string name="local_files">Archivos locales</string>
     <string name="video">Vídeo</string>
     <string name="videos">Vídeos</string>
@@ -37,7 +37,7 @@
     <string name="window">Ventana</string>
     <string name="script">Script</string>
     <string name="unknown">Desconocido</string>
-    <string name="file_browser">Explorador de archivos</string>
+    <string name="file_browser">Explorador de Archivos Kodi</string>
     <string name="local_file_browser">Explorador de archivos local</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Favoritos</string>
@@ -173,23 +173,27 @@
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Temporada %1$02d | Episodio %2$02d</string>
     <string name="season_number">Temporada %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Episodio %1$d</string>
     <string name="votes">%1$s votos</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
     <string name="thumbnail">Miniatura</string>
-    <string name="error_getting_properties">No se pudieron obtener las propiedades de  Kodi/XBMC.\nMensaje de error:
-        %1$s.</string>
-    <string name="error_executing_subtitles">No se pudo ejecutar el complemento de subtitulos.\nError message: %1$s.</string>
-    <string name="error_getting_addon_info">No se pudo obtener información del complemento.\nError message:
-        %1$s.</string>
-    <string name="error_getting_source_info">Ningún archivo encontrado. \nError mensaje: %1$s.</string>
-    <string name="error_play_media_file">Imposible reproducir archivo. \nError mensaje: %1$s.</string>
-    <string name="error_play_local_file">No se pudo reproducir el archivo de medios local.\n
-    	Mensaje de error:
-        %1$s.</string>
-    <string name="error_queue_media_file">Imposible añadir a la cola. \nError: %1$s.</string>
-    <string name="error_get_active_player">Ningún reproductor activo. \nError: %1$s.</string>
+    <string name="error_getting_properties">No se pudieron obtener propiedades de Kodi.
+\nMensaje de error: %1$s.</string>
+    <string name="error_executing_subtitles">No se pudo ejecutar el Addon de subtítulos.
+\nMensaje de error: %1$s.</string>
+    <string name="error_getting_addon_info">No se pudo obtener información del Addon.
+\nMensaje de error: %1$s.</string>
+    <string name="error_getting_source_info">Ningún archivo encontrado.
+\nMensaje de error: %1$s.</string>
+    <string name="error_play_media_file">No se puede reproducir el archivo.
+\nMensaje de error: %1$s.</string>
+    <string name="error_play_local_file">No se pudo reproducir el archivo local.
+\nMensaje de error: %1$s.</string>
+    <string name="error_queue_media_file">Imposible añadir el archivo a la lista.
+\nMensaje de error: %1$s.</string>
+    <string name="error_get_active_player">Ningún reproductor activo.
+\nMensaje de error: %1$s.</string>
     <string name="error_share_video">No se pudo compartir el vídeo con Kodi.</string>
     <string name="error_reading_local_storage">No se pudo leer el almacenamiento local. ¿Otorgó a Kore permisos de almacenamiento?</string>
     <string name="error_starting_http_server">No se pudo crear o iniciar el servidor HTTP</string>
@@ -206,26 +210,43 @@
     <string name="clear_playlist">Borrar lista de reproducción</string>
     <string name="source_empty">Fuente vacía</string>
     <string name="swipe_down_to_refresh">Desliza hacia abajo para actualizar</string>
-    <string name="no_movies_found_refresh">No se encontraron películas\n\nDesliza hacia abajo para actualizar</string>
-    <string name="no_tvshows_found_refresh">No se encontraron series de TV\n\nDesliza hacia abajo para actualizar</string>
+    <string name="no_movies_found_refresh">No se encontraron películas
+\n
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_tvshows_found_refresh">No se encontraron series de TV
+\n
+\nArrastra hacia abajo para actualizar</string>
     <string name="no_episodes_found">No se encontraron episodios</string>
     <string name="no_artists_found_refresh">No se encontraron intérpretes
 \n
-\nDesliza hacia abajo para actualizar</string>
-    <string name="no_albums_found_refresh">No se encontraron albums\n\nDesliza hacia abajo para actualizar</string>
-    <string name="no_genres_found_refresh">No se encontraron géneros\n\nDesliza hacia abajo para actualizar</string>
-    <string name="no_addons_found_refresh">No se encontraron complementos o no está conectado\n\nDesliza hacia abajo para actualizar</string>
-    <string name="no_music_videos_found_refresh">No se encontraron videos\n\nDesliza hacia abajo para actualizar</string>
-    <string name="no_channel_groups_found_refresh">No se encontraron grupos de canales\n\n
-    	Desliza hacia abajo para actualizar</string>
-    <string name="no_channels_found_refresh">No se encontraron canales\n\n
-    	Desliza hacia abajo para actualizar</string>
-    <string name="no_favourites_found_refresh">No se encontraron favoritos\n\n
-    	Desliza hacia abajo para actualizar</string>
-    <string name="no_recordings_found_refresh">No se encontraron grabaciones\n\n
-    	Desliza hacia abajo para actualizar</string>
-    <string name="no_broadcasts_found_refresh">No se encontraron transmisiones\n\n
-    	Desliza hacia abajo para actualizar</string>
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_albums_found_refresh">No se encontraron álbumes
+\n
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_genres_found_refresh">No se encontraron géneros
+\n
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_addons_found_refresh">No se encontraron Addons o no está conectado
+\n
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_music_videos_found_refresh">No se encontraron vídeos
+\n
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_channel_groups_found_refresh">No se encontraron grupos de canales
+\n
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_channels_found_refresh">No se encontraron canales
+\n
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_favourites_found_refresh">No se encontraron favoritos
+\n
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_recordings_found_refresh">No se encontraron grabaciones
+\n
+\nArrastra hacia abajo para actualizar</string>
+    <string name="no_broadcasts_found_refresh">No se encontraron transmisiones
+\n
+\nArrastra hacia abajo para actualizar</string>
     <string name="pull_to_refresh">Desliza para actualizar</string>
     <string name="no_cast_info">No hay información de reparto para mostrar</string>
     <string name="minutes_abbrev">%1$s min</string>
@@ -305,15 +326,15 @@
     <string name="keep_remote_above_lockscreen">Mostrar sobre la pantalla de bloqueo</string>
     <string name="pref_keep_screen_on">Mantener pantalla encendida</string>
     <string name="show_notification">Mostrar notificaciones durante la reproducción</string>
-    <string name="show_now_playing_panel">Mostrar el panel reproduciendo ahora durante la reproducción</string>
-    <string name="show_now_playing_panel_summary">Muestra un panel expandible en la parte inferior de la pantalla durante la reproducción</string>
+    <string name="show_now_playing_panel">Mostrar el panel reproduciendo ahora</string>
+    <string name="show_now_playing_panel_summary">Muestra un panel en la parte inferior de la pantalla durante la reproducción</string>
     <string name="pause_during_calls">Pausar durante llamadas</string>
     <string name="use_hardware_volume_keys">Usar las teclas de volumen para el control de volumen</string>
     <string name="vibrate_on_remote">Vibrar al tocar</string>
     <string name="remote_bar_items">Atajos de la barra inferior</string>
     <string name="nav_drawer_items">Atajos del menú lateral</string>
     <string name="about">Acerca de</string>
-    <string name="about_desc"><![CDATA[         \u00A9 2018 XBMC Foundation <br><br>Por favor calificanos en <b><a href="market://details?id=org.xbmc.kore"> Google Play</a></b> <br><br>Si necesitas ayuda, visita nuestro <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129"> foro</a></b>     ]]></string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation &lt;br&gt;&lt;br&gt;Por favor calificanos en &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt; Google Play&lt;/a&gt;&lt;/b&gt; &lt;br&gt;&lt;br&gt;Si necesitas ayuda, visita nuestro &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;foro&lt;/a&gt;</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
@@ -364,8 +385,9 @@
     <string name="muted">silenciado</string>
     <string name="no_item_available_to_play">Error: no hay elementos para reproducir</string>
     <string name="Refreshing_not_implemented_for_this_item">Actualización no implementada para este elemento</string>
-    <string name="no_songs_found_refresh">No se encontraron canciones\n\n
-    	Desliza hacia abajo para actualizar</string>
+    <string name="no_songs_found_refresh">No se encontraron canciones
+\n
+\nArrastra hacia abajo para actualizar</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Expandir/Contraer</string>
     <string name="stream_action">Reproducir localmente</string>
@@ -373,7 +395,17 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Datos móviles</string>
     <string name="any_network">Cualquiera</string>
-    <string name="always_sendtokodi_addon">Preferir siempre addon SendToKodi</string>
+    <string name="always_sendtokodi_addon">Preferir Addon SendToKodi</string>
     <string name="party_mode">Modo fiesta</string>
     <string name="queue_action">Cola</string>
+    <string name="web_search">Buscar en Web</string>
+    <string name="theme_sun_dynamic">Amanecer/Atardecer Dinámico</string>
+    <string name="theme_default_dynamic">Día/Noche Dinámico</string>
+    <string name="download_action">Descarga</string>
+    <string name="disabled_status">Desactivado</string>
+    <string name="enabled_status">Activado</string>
+    <string name="unpinned_status">No anclado</string>
+    <string name="pinned_status">Anclado</string>
+    <string name="unwatched_status">No visto</string>
+    <string name="watched_status">Visto</string>
 </resources>
