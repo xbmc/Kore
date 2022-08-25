@@ -30,7 +30,7 @@
     <string name="dcim">DCIM</string>
     <string name="external_storage">저장장치</string>
     <string name="addons">애드온</string>
-    <string name="files">파일</string>
+    <string name="files">코디 파일</string>
     <string name="local_files">로컬 파일</string>
     <string name="video">비디오</string>
     <string name="videos">비디오</string>
@@ -38,7 +38,7 @@
     <string name="window">창</string>
     <string name="script">스크립트</string>
     <string name="unknown">모름</string>
-    <string name="file_browser">파일 열기</string>
+    <string name="file_browser">코디 파일 열기</string>
     <string name="local_file_browser">로컬 파일 열기</string>
     <string name="pvr">PVR</string>
     <string name="favourites">즐겨찾기</string>
@@ -171,26 +171,27 @@
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">시즌 %1$02d | 에피소드 %2$02d</string>
     <string name="season_number">시즌 %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">에피소드 %1$d</string>
     <string name="votes">%1$s 투표</string>
     <string name="fanart">팬아트</string>
     <string name="poster">포스터</string>
     <string name="thumbnail">섬네일</string>
-    <string name="error_getting_properties">Kodi/XBMC 속성을 알 수 없습니다.\n오류 내용:
-        %1$s.</string>
-    <string name="error_executing_subtitles">자막 애드온을 실행할 수 없습니다.\n오류 내용: %1$s.</string>
-    <string name="error_getting_addon_info">애드온 정보를 알 수 없습니다.\n오류 내용:
-        %1$s.</string>
-    <string name="error_getting_source_info">파일을 열 수 없습니다.\n오류 내용:
-        %1$s.</string>
-    <string name="error_play_media_file">미디어 파일을 재생할 수 없습니다.\n오류 내용:
-        %1$s.</string>
-    <string name="error_play_local_file">로컬 미디어 파일을 재생할 수 없습니다.\n오류 내용:
-        %1$s.</string>
-    <string name="error_queue_media_file">미디어 파일을 순서에 넣을 수 없습니다.\n오류 내용:
-        %1$s.</string>
-    <string name="error_get_active_player">재생기를 알 수 없습니다.\n오류 내용:
-        %1$s.</string>
+    <string name="error_getting_properties">코디 속성을 알 수 없습니다.
+\n오류 내용:%1$s.</string>
+    <string name="error_executing_subtitles">자막 애드온을 실행할 수 없습니다.
+\n오류 내용: %1$s.</string>
+    <string name="error_getting_addon_info">애드온 정보를 알 수 없습니다.
+\n오류 내용:%1$s.</string>
+    <string name="error_getting_source_info">파일을 열 수 없습니다.
+\n오류 내용:%1$s.</string>
+    <string name="error_play_media_file">미디어 파일을 재생할 수 없습니다.
+\n오류 내용:%1$s.</string>
+    <string name="error_play_local_file">로컬 미디어 파일을 재생할 수 없습니다.
+\n오류 내용:%1$s.</string>
+    <string name="error_queue_media_file">미디어 파일을 순서에 넣을 수 없습니다.
+\n오류 내용:%1$s.</string>
+    <string name="error_get_active_player">재생기를 알 수 없습니다.
+\n오류 내용:%1$s.</string>
     <string name="error_share_video">비디오를 Kodi/XBMC에 공유할 수 없습니다..</string>
     <string name="error_reading_local_storage">로컬 저장장치를 읽을 수 없습니다.
         저장장치의 파일을 읽을 수 있는 권한이 있습니까?</string>
@@ -207,20 +208,44 @@
     <string name="playlist_empty">재생목록 없음</string>
     <string name="clear_playlist">재생목록 지우기</string>
     <string name="source_empty">미디어 소스 없음</string>
-    <string name="no_movies_found_refresh">영화를 찾을 수 없음\n\n내려서 다시 읽기</string>
-    <string name="no_tvshows_found_refresh">TV 쇼를 찾을 수 없음\n\n내려서 다시 읽기</string>
+    <string name="no_movies_found_refresh">영화를 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_tvshows_found_refresh">TV 프로그램을 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
     <string name="no_episodes_found">에피소드를 찾을 수 없음</string>
     <string name="swipe_down_to_refresh">내려서 다시 읽기</string>
-    <string name="no_artists_found_refresh">아티스트를 찾을 수 없음\n\n내려서 다시 읽기</string>
-    <string name="no_albums_found_refresh">음반을 찾을 수 없음\n\n내려서 다시 읽기</string>
-    <string name="no_genres_found_refresh">장르를 찾을 수 없음\n\n내려서 다시 읽기</string>
-    <string name="no_addons_found_refresh">애드온이 없거나 연결 안 됨\n\n내려서 다시 읽기</string>
-    <string name="no_music_videos_found_refresh">비디오를 찾을 수 없음\n\n내려서 다시 읽기</string>
-    <string name="no_channel_groups_found_refresh">채널 그룹을 찾을 수 없음\n\n내려서 다시 읽기</string>
-    <string name="no_channels_found_refresh">채널을 찾을 수 없음\n\n내려서 다시 읽기</string>
-    <string name="no_favourites_found_refresh">즐겨찾기를 찾을 수 없음\n\n내려서 다시 읽기</string>
-    <string name="no_recordings_found_refresh">녹화를 찾을 수 없음\n\n내려서 다시 읽기</string>
-    <string name="no_broadcasts_found_refresh">방송을 찾을 수 없음\n\n내려서 다시 읽기</string>
+    <string name="no_artists_found_refresh">아티스트를 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_albums_found_refresh">음반을 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_genres_found_refresh">장르를 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_addons_found_refresh">애드온이 없거나 연결 안 됨
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_music_videos_found_refresh">비디오를 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_channel_groups_found_refresh">채널 그룹을 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_channels_found_refresh">채널을 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_favourites_found_refresh">즐겨찾기를 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_recordings_found_refresh">녹화를 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
+    <string name="no_broadcasts_found_refresh">방송을 찾을 수 없음
+\n
+\n내려서 다시 읽기</string>
     <string name="pull_to_refresh">당겨서 다시 읽기</string>
     <string name="no_cast_info">표시할 배역이 없음</string>
     <string name="minutes_abbrev">%1$s 분</string>
@@ -297,15 +322,15 @@
     <string name="keep_remote_above_lockscreen">화면 잠금 위에 보기</string>
     <string name="pref_keep_screen_on">깨어 있기</string>
     <string name="show_notification">재생 중에 알림 보기</string>
-    <string name="show_now_playing_panel">재생 중에 지금 재생 중인 패널 보기</string>
-    <string name="show_now_playing_panel_summary">미디어 재생 중에 화면 아래에 확장 패널 보기</string>
+    <string name="show_now_playing_panel">지금 재생 중인 패널 보기</string>
+    <string name="show_now_playing_panel_summary">미디어 재생 중에 화면 아래 패널에 보기</string>
     <string name="pause_during_calls">통화 중에 잠시 멈춤</string>
     <string name="use_hardware_volume_keys">장치의 음량 키 사용</string>
     <string name="vibrate_on_remote">터치 시에 진동</string>
     <string name="remote_bar_items">아래 막대 단축키</string>
     <string name="nav_drawer_items">옆 메뉴 단축키</string>
     <string name="about">정보</string>
-    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt;에서 평가해 주세요. 도움이 필요하면, 우리 &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;포럼&lt;/a&gt;&lt;/b&gt;을 확인하세요</string>
+    <string name="about_desc">\\0A9 2018 XBMC 재단&lt;br&gt;&lt;br&gt; &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;에서 평가해 주세요. br&gt; 도움이 필요하면 &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;포럼&lt;/a&gt;을 확인하세요</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
@@ -359,7 +384,7 @@
     <string name="Refreshing_not_implemented_for_this_item">이 항목에는 다시 읽기가 없음</string>
     <string name="no_songs_found_refresh">곡을 찾을 수 없음
 \n
-\n 내려서 다시 읽기</string>
+\n내려서 다시 읽기</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">펼치기/접기</string>
     <string name="stream_action">로컬 재생</string>
@@ -367,8 +392,18 @@
     <string name="wifi_network">WiFi</string>
     <string name="mobile_network">데이터</string>
     <string name="any_network">모두</string>
-    <string name="always_sendtokodi_addon">항상 SendToKodi 애드온 선호</string>
+    <string name="always_sendtokodi_addon">SendToKodi 애드온 선호</string>
     <string name="wizard_xbmc_direct_share">공유 시트에 표시</string>
     <string name="party_mode">파티 모드</string>
     <string name="queue_action">순서</string>
+    <string name="web_search">웹 찾기</string>
+    <string name="theme_sun_dynamic">일출/일몰 다이나믹</string>
+    <string name="theme_default_dynamic">주/야간 다이나믹</string>
+    <string name="download_action">내려받기</string>
+    <string name="disabled_status">사용 안 함</string>
+    <string name="enabled_status">사용함</string>
+    <string name="unpinned_status">고정 안 함</string>
+    <string name="pinned_status">고정함</string>
+    <string name="unwatched_status">시청 안 함</string>
+    <string name="watched_status">시청함</string>
 </resources>

@@ -29,7 +29,7 @@
     <string name="dcim">DCIM</string>
     <string name="external_storage">Tallennusmedia</string>
     <string name="addons">Lisäosat</string>
-    <string name="files">Tiedostot</string>
+    <string name="files">Kodin tiedostot</string>
     <string name="local_files">Paikalliset tiedostot</string>
     <string name="video">Video</string>
     <string name="videos">Videot</string>
@@ -37,7 +37,7 @@
     <string name="window">Ikkuna</string>
     <string name="script">Komentosarja</string>
     <string name="unknown">Tuntematon</string>
-    <string name="file_browser">Tiedostoselain</string>
+    <string name="file_browser">Kodin tiedostojen selain</string>
     <string name="local_file_browser">Paikallisten tiedostojen selain</string>
     <string name="pvr">Tallennin</string>
     <string name="favourites">Suosikit</string>
@@ -163,27 +163,27 @@
     <string name="season_episode_abbrev">K%1$02dJ%2$02d</string>
     <string name="season_episode">Kausi %1$02d | Jakso %2$02d</string>
     <string name="season_number">Kausi %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Jakso %1$d</string>
     <string name="votes">%1$s ääntä</string>
     <string name="fanart">Fanitaide</string>
     <string name="poster">Juliste</string>
     <string name="thumbnail">Pienoiskuva</string>
     <string name="error_getting_properties">Kodin ominaisuuksia ei voitu noutaa.
-\n Virheilmoitus: %1$s.</string>
+\nVirheilmoitus: %1$s.</string>
     <string name="error_executing_subtitles">Teksityslisäosaa ei voitu suorittaa.
-\n Virheilmoitus: %1$s.</string>
-    <string name="error_getting_addon_info">Lisäosan itetoja ei voitu noutaa.
-\n Virheilmoitus: %1$s.</string>
+\nVirheilmoitus: %1$s.</string>
+    <string name="error_getting_addon_info">Lisäosan tietoja ei voitu noutaa.
+\nVirheilmoitus: %1$s.</string>
     <string name="error_getting_source_info">Tiedostoja ei voitu selata.
-\n Virheilmoitus: %1$s.</string>
+\nVirheilmoitus: %1$s.</string>
     <string name="error_play_media_file">Mediatiedostoa ei voitu toistaa.
-\n Virheilmoitus: %1$s.</string>
+\nVirheilmoitus: %1$s.</string>
     <string name="error_play_local_file">Paikallista mediatiedostoa ei voitu toistaa.
-\n Virheilmoitus: %1$s.</string>
+\nVirheilmoitus: %1$s.</string>
     <string name="error_queue_media_file">Mediatiedostoa ei voitu lisätä jonoon.
-\n Virheilmoitus: %1$s.</string>
+\nVirheilmoitus: %1$s.</string>
     <string name="error_get_active_player">Aktiivista soitinta ei voitu selvittää.
-\n Virheilmoitus: %1$s.</string>
+\nVirheilmoitus: %1$s.</string>
     <string name="error_share_video">Videota ei voitu välittää Kodille.</string>
     <string name="error_reading_local_storage">Paikallista tallennusmediaa ei voitu lukea. Onko Korelle myönnetty tiedostojen käyttöoikeus\?</string>
     <string name="error_starting_http_server">HTTP-palvelinta ei voitu luoda tai käynnistää.</string>
@@ -202,41 +202,41 @@
     <string name="swipe_down_to_refresh">Päivitä vetämällä alas</string>
     <string name="no_movies_found_refresh">Elokuvia ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_tvshows_found_refresh">Sarjoja ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_episodes_found">Jaksoja ei löytynyt</string>
     <string name="no_artists_found_refresh">Esittäjiä ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_albums_found_refresh">Albumeita ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_genres_found_refresh">Lajityyppejä ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_addons_found_refresh">Lisäosia ei löytynyt tai ei ole yhteyttä
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_music_videos_found_refresh">Videoita ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_channel_groups_found_refresh">Kanavaryhmiä ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_channels_found_refresh">Kanavia ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
-    <string name="no_favourites_found_refresh">Suosikkeja ei löytynyt.
+\nPäivitä vetämällä alas</string>
+    <string name="no_favourites_found_refresh">Suosikkeja ei löytynyt
 \n
-\nPäivitä alaspyyhkäisyllä</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_recordings_found_refresh">Tallenteita ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="no_broadcasts_found_refresh">Lähetyksiä ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="pull_to_refresh">Päivitä vetämällä</string>
     <string name="no_cast_info">Näyttelijätietoja ei ole</string>
     <string name="minutes_abbrev">%1$s min</string>
@@ -257,24 +257,24 @@
     <string name="imdb">IMDb</string>
     <string name="download">Lataa</string>
     <string name="confirm_movie_download">Haluatko varmasti ladata elokuvan\?
-\n Lataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
+\nLataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
     <string name="confirm_episode_download">Haluatko varmasti ladata jakson\?
-\n Lataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
+\nLataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
     <string name="confirm_album_download">Haluatko varmasti ladata albumin\?
-\n Lataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
+\nLataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
     <string name="confirm_artist_download">Haluatko varmasti ladata albumit\?
-\n Lataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
+\nLataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
     <string name="confirm_songs_download">Haluatko varmasti ladata %1$d kappaletta\?
-\n Lataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
+\nLataus suoritetaan taustalla, mutta se voi kestää pitkäänkin.</string>
     <string name="download_file_exists">Tiedosto on jo olemassa.
-\n Haluatko korvata sen vai nimetä latauksen uudelleen\?</string>
+\nHaluatko korvata sen vai nimetä latauksen uudelleen\?</string>
     <string name="download_dir_exists">Latauskansio on jo olemassa.
-\n Jos kansio sisältää jo saman nimisiä tiedostoja, haluatko korvata ne, vai nimetä lataukset uudelleen\?</string>
+\nJos kansio sisältää jo saman nimisiä tiedostoja, haluatko korvata ne, vai nimetä lataukset uudelleen\?</string>
     <string name="download_files_exists">Yksi tai useampi tiedosto on jo olemassa.
-\n Jos havaitaan saman nimisiä tiedostoja, haluatko korvata ne, vai nimetä lataukset uudelleen\?</string>
+\nJos havaitaan saman nimisiä tiedostoja, haluatko korvata ne, vai nimetä lataukset uudelleen\?</string>
     <string name="overwrite">Korvaa</string>
     <string name="download_with_new_name">Nimeä uudelleen</string>
-    <string name="download_file_description">Ladattu mediakeskuksesta</string>
+    <string name="download_file_description">Ladattu mediakeskukselta</string>
     <string name="num_episodes">%1$d jaksoa | %2$d katsomatonta</string>
     <string name="premiered">Ensiesitys: %1$s</string>
     <string name="tvshow_overview">Yhteenveto</string>
@@ -317,19 +317,19 @@
     <string name="theme_day">Päivä</string>
     <string name="theme_sunrise">Auringonnousu</string>
     <string name="theme_sunset">Auringonlasku</string>
-    <string name="switch_to_remote">Näytä käynnistettäessä toisto Koresta</string>
-    <string name="keep_remote_above_lockscreen">Näytä lukitusnäytössä</string>
-    <string name="pref_keep_screen_on">Pysy hereillä</string>
-    <string name="show_notification">Näytä toiston aikana ilmoitus</string>
-    <string name="show_now_playing_panel">Näytä \"Toistetaan parhaillaan\" -paneeli toiston aikana</string>
-    <string name="show_now_playing_panel_summary">Näyttää ruudun alalaidassa laajennettavan paneelin, kun mediaa toistetaan</string>
+    <string name="switch_to_remote">Näytä median alkaessa</string>
+    <string name="keep_remote_above_lockscreen">Näytä lukitusnäytön päällä</string>
+    <string name="pref_keep_screen_on">Pidä näyttö päällä</string>
+    <string name="show_notification">Näytä ilmoitus toiston aikana</string>
+    <string name="show_now_playing_panel">Näytä \"Toistetaan parhaillaan\" -paneeli</string>
+    <string name="show_now_playing_panel_summary">Näytä mediaa toistettaessa laajennettava paneeli ruudun alalaidassa</string>
     <string name="pause_during_calls">Tauota puhelun ajaksi</string>
     <string name="use_hardware_volume_keys">Käytä laitteen äänenvoimakkuuspainikkeita</string>
     <string name="vibrate_on_remote">Värise kosketettaessa</string>
     <string name="remote_bar_items">Alapalkin pikavalinnat</string>
     <string name="nav_drawer_items">Sivuvalikon pikavalinnat</string>
     <string name="about">Tietoja</string>
-    <string name="about_desc">\\0A9 2018 Kodi-säätiö&lt;br&gt;&lt;br&gt;Arvioi meidät &lt;b&gt;&lt;a href=\"market://details\?id=org.xbmc.kore\"&gt;Google Play Kaupassa&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt;Tukea saat &lt;a href=\"http://forum.kodi.tv/forumdisplay.php\?fid=129\"&gt;keskustelualueeltamme&lt;/a&gt;&lt;</string>
+    <string name="about_desc">\\0A9 2018 XBMC-säätiö&lt;br&gt;&lt;br&gt;Arvioi meidät &lt;b&gt;&lt;a href=\"market://details\?id=org.xbmc.kore\"&gt;Google Play Kaupassa&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt;Tukea saat &lt;a href=\"http://forum.kodi.tv/forumdisplay.php\?fid=129\"&gt;keskustelualueeltamme&lt;/a&gt;</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
@@ -345,7 +345,7 @@
     <string name="pause_call_incoming_title">Saapuva puhelu</string>
     <string name="pause_call_incoming_message">Katso puhelintasi, joku soittaa</string>
     <string name="error_getting_pvr_info">Virhe noudettaessa tallentimen tietoja: %1$s</string>
-    <string name="might_not_have_pvr">Virhe noudettaessa kanavatietoja, mahdollisesti sen vuoksi, ettei mediakeskus sisällä viritinlaitteistoa tai sitä ei ole määritetty.
+    <string name="might_not_have_pvr">Virhe noudettaessa kanavatietoja, todennäköisesti sen vuoksi, että mediakeskus ei sisällä viritinlaitteistoa tai sitä ei ole määritetty.
 \n
 \nMikäli näin on, voidaan sovelluksen asetustuksissa poistaa tämä osio sivuvalikosta.</string>
     <string name="error_starting_channel">Virhe aloitettaessa kanavan toistoa: %1$s</string>
@@ -368,8 +368,8 @@
     <string name="no_connection_type_selected">Yhteystyyppiä ei ole määritetty</string>
     <string name="single_column">Yksi sarakkeinen</string>
     <string name="multi_column">Monisarakkeinen</string>
-    <string name="download_network_types_title">Rajoita median latausta</string>
-    <string name="download_network_types_summary">Valitse verkot, joiden välityksellä median lataus sallitaan</string>
+    <string name="download_network_types_title">Rajoita medialatauksia</string>
+    <string name="download_network_types_summary">Valitse verkot, joiden välityksellä medialataukset sallitaan</string>
     <string name="songs">Kappaleet</string>
     <string name="read_phone_state_permission_denied">Käyttöoikeutta ei myönnetty, eikä toiston tauotus puheluiden ajaksi ole tämän vuoksi mahdollista.</string>
     <string name="write_storage_permission_denied">Käyttöoikeutta ei myönnetty, eikä tiedostojen lataus ole tämän vuoksi mahdollista.</string>
@@ -383,15 +383,25 @@
     <string name="Refreshing_not_implemented_for_this_item">Päivitystoimintoa ei ole toteutettu tälle kohteelle</string>
     <string name="no_songs_found_refresh">Kappaleita ei löytynyt
 \n
-\n Päivitä vetämällä alas</string>
+\nPäivitä vetämällä alas</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Laajenna/supista</string>
-    <string name="stream_action">Toista paikallisesti</string>
+    <string name="stream_action">Suoratoista</string>
     <string name="language">Kieli</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Matkapuhelin</string>
     <string name="any_network">Mikä tahansa</string>
     <string name="always_sendtokodi_addon">Käytä ensisijaisesti SendToKodi-lisäosaa</string>
     <string name="party_mode">Jukeboksi</string>
-    <string name="queue_action">Jono</string>
+    <string name="queue_action">Lisää jonoon</string>
+    <string name="unpinned_status">Kiinnittämätön</string>
+    <string name="web_search">Etsi Internetistä</string>
+    <string name="theme_sun_dynamic">Dynaaminen auringon nousu/lasku</string>
+    <string name="theme_default_dynamic">Dynaaminen päivä/yö</string>
+    <string name="download_action">Lataa</string>
+    <string name="disabled_status">Ei käytössä</string>
+    <string name="enabled_status">Käytössä</string>
+    <string name="pinned_status">Kiinnitetty</string>
+    <string name="unwatched_status">Katsomaton</string>
+    <string name="watched_status">Katsottu</string>
 </resources>
