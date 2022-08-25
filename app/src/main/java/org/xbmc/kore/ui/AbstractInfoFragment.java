@@ -291,8 +291,6 @@ abstract public class AbstractInfoFragment
     @Override
     public void connectionStatusOnError(int errorCode, String description) {
         LogUtils.LOGD(TAG, "Connection Status Error, disabling buttons");
-        if (lastConnectionStatusResult == CONNECTION_ERROR) return;
-
         lastConnectionStatusResult = CONNECTION_ERROR;
         binding.fabPlay.setEnabled(false);
         if (binding.fabPlay.isShown())

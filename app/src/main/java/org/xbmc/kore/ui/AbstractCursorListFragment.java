@@ -34,7 +34,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -49,7 +48,6 @@ import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.UIUtils;
 
 import de.greenrobot.event.EventBus;
 

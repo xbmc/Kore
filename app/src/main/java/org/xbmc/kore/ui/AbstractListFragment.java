@@ -18,7 +18,6 @@ package org.xbmc.kore.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,18 +29,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.databinding.FragmentMediaListBinding;
+import org.xbmc.kore.host.HostConnectionObserver;
+import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
 
 public abstract class AbstractListFragment
 		extends Fragment
-		implements SwipeRefreshLayout.OnRefreshListener {
+		implements SwipeRefreshLayout.OnRefreshListener,
+				   HostConnectionObserver.ConnectionStatusObserver {
 	private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
 	private RecyclerView.Adapter<?> adapter;
 
@@ -66,7 +69,7 @@ public abstract class AbstractListFragment
 		binding.list.setOnItemClickListener(createOnItemClickListener());
 
 		if (PreferenceManager
-				.getDefaultSharedPreferences(getActivity())
+				.getDefaultSharedPreferences(requireContext())
 				.getBoolean(Settings.KEY_PREF_SINGLE_COLUMN,
 							Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
 			binding.list.setColumnCount(1);
@@ -80,7 +83,18 @@ public abstract class AbstractListFragment
 	}
 
 	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		HostManager.getInstance(requireContext())
+				   .getHostConnectionObserver()
+				   .registerConnectionStatusObserver(this);
+	}
+
+	@Override
 	public void onDestroyView() {
+		HostManager.getInstance(requireContext())
+				   .getHostConnectionObserver()
+				   .unregisterConnectionStatusObserver(this);
 		super.onDestroyView();
 		binding = null;
 	}
@@ -91,7 +105,7 @@ public abstract class AbstractListFragment
 
 		if(binding.list.isMultiColumnSupported()) {
 			if (PreferenceManager
-					.getDefaultSharedPreferences(getActivity())
+					.getDefaultSharedPreferences(requireContext())
 					.getBoolean(Settings.KEY_PREF_SINGLE_COLUMN,
 								Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
 				binding.list.setColumnCount(1);
@@ -121,7 +135,7 @@ public abstract class AbstractListFragment
 
 	private void toggleAmountOfColumns(MenuItem item) {
 		SharedPreferences.Editor editor = PreferenceManager
-				.getDefaultSharedPreferences(getActivity()).edit();
+				.getDefaultSharedPreferences(requireContext()).edit();
 		if (binding.list.getColumnCount() == 1) {
 			editor.putBoolean(Settings.KEY_PREF_SINGLE_COLUMN, false);
 			item.setTitle(R.string.single_column);
@@ -149,5 +163,36 @@ public abstract class AbstractListFragment
 	 */
 	public TextView getEmptyView() {
 		return binding.includeEmptyView.empty;
+	}
+
+
+	private int lastConnectionStatusResult = CONNECTION_NO_RESULT;
+	/**
+	 * Disable Swipe refresh as, by default it doesn't make sense without a connection
+	 * Override in subclasses if this isn't the intended behaviour
+	 */
+	@Override
+	public void connectionStatusOnError(int errorCode, String description) {
+		lastConnectionStatusResult = CONNECTION_ERROR;
+		binding.swipeRefreshLayout.setEnabled(false);
+	}
+
+	/**
+	 * Enable swipe refresh when there's a connection
+	 */
+	@Override
+	public void connectionStatusOnSuccess() {
+		// Only update views if transitioning from error state.
+		// If transitioning from Sucess or No results the enabled UI is already being shown
+		if (lastConnectionStatusResult == CONNECTION_ERROR) {
+			binding.swipeRefreshLayout.setEnabled(true);
+		}
+		lastConnectionStatusResult = CONNECTION_SUCCESS;
+	}
+
+	@Override
+	public void connectionStatusNoResultsYet() {
+		// Do nothing, by default the enabled UI is shown while there are no results
+		lastConnectionStatusResult = CONNECTION_NO_RESULT;
 	}
 }
