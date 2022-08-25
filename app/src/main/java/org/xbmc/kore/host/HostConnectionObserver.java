@@ -268,11 +268,13 @@ public class HostConnectionObserver
      * @param observer Observer
      */
     public void registerPlayerObserver(PlayerEventsObserver observer) {
-        if (this.connection == null)
-            return;
+        if (this.connection == null || observer == null) return;
 
         if (!playerEventsObservers.contains(observer))
             playerEventsObservers.add(observer);
+
+        LogUtils.LOGD(TAG, "Register Player Observer " + observer.getClass().getSimpleName() +
+                            ". Got " + playerEventsObservers.size() + " observers.");
 
         // Reply immediatelly
         replyWithLastResult(observer);
@@ -294,11 +296,14 @@ public class HostConnectionObserver
      * @param observer Observer to unregister
      */
     public void unregisterPlayerObserver(PlayerEventsObserver observer) {
+        if (this.connection == null || observer == null) return;
+
         playerEventsObservers.remove(observer);
 
-        LogUtils.LOGD(TAG, "Unregistering player observer " + observer.getClass().getSimpleName() +
-                           ". Still got " + playerEventsObservers.size() +
-                           " observers.");
+        LogUtils.LOGD(TAG, "Unregister Player Observer " + observer.getClass().getSimpleName() +
+                           ((playerEventsObservers.size() > 0) ?
+                            ". Got " + playerEventsObservers.size() + " observers." :
+                            ". No observers left."));
 
         if (playerEventsObservers.isEmpty()) {
             // No more observers. If through TCP unregister us from the host connection
@@ -316,11 +321,13 @@ public class HostConnectionObserver
      * @param observer Observer
      */
     public void registerApplicationObserver(ApplicationEventsObserver observer) {
-        if (this.connection == null)
-            return;
+        if (this.connection == null || observer == null) return;
 
         if (!applicationEventsObservers.contains(observer))
             applicationEventsObservers.add(observer);
+
+        LogUtils.LOGD(TAG, "Register Application Observer " + observer.getClass().getSimpleName() +
+                           ". Got " + applicationEventsObservers.size() + " observers.");
 
         // Reply immediatelly
         replyWithLastResult(observer);
@@ -340,11 +347,14 @@ public class HostConnectionObserver
      * @param observer Observer to unregister
      */
     public void unregisterApplicationObserver(ApplicationEventsObserver observer) {
+        if (this.connection == null || observer == null) return;
+
         applicationEventsObservers.remove(observer);
 
-        LogUtils.LOGD(TAG, "Unregistering application observer " + observer.getClass().getSimpleName() +
-                           ". Still got " + applicationEventsObservers.size() +
-                           " observers.");
+        LogUtils.LOGD(TAG, "Unregister Application Observer " + observer.getClass().getSimpleName() +
+                           ((applicationEventsObservers.size() > 0) ?
+                            ". Got " + applicationEventsObservers.size() + " observers." :
+                            ". No observers left."));
 
         if (applicationEventsObservers.isEmpty()) {
             // No more observers. If through TCP unregister us from the host connection
@@ -359,12 +369,14 @@ public class HostConnectionObserver
      * @param observer Observer
      */
     public void registerPlaylistObserver(PlaylistEventsObserver observer) {
-        if (this.connection == null)
-            return;
+        if (this.connection == null || observer == null) return;
 
         if (!playlistEventsObservers.contains(observer) ) {
             playlistEventsObservers.add(observer);
         }
+
+        LogUtils.LOGD(TAG, "Register Playlist Observer " + observer.getClass().getSimpleName() +
+                           ". Got " + playlistEventsObservers.size() + " observers.");
 
         // Reply immediatelly
         replyWithLastResult(observer);
@@ -378,11 +390,14 @@ public class HostConnectionObserver
     }
 
     public void unregisterPlaylistObserver(PlaylistEventsObserver observer) {
+        if (this.connection == null || observer == null) return;
+
         playlistEventsObservers.remove(observer);
 
-        LogUtils.LOGD(TAG, "Unregistering playlist observer " + observer.getClass().getSimpleName() +
-                           ". Still got " + playlistEventsObservers.size() +
-                           " observers.");
+        LogUtils.LOGD(TAG, "Unregister Playlist Observer " + observer.getClass().getSimpleName() +
+                           ((playlistEventsObservers.size() > 0) ?
+                            ". Got " + playlistEventsObservers.size() + " observers." :
+                            ". No observers left."));
 
         if (playlistEventsObservers.isEmpty()) {
             // No more observers. If through TCP unregister us from the host connection
