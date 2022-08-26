@@ -279,7 +279,9 @@ public abstract class BaseMediaActivity
     }
 
     @Override
-    public void playerOnConnectionError(int errorCode, String description) {}
+    public void playerOnConnectionError(int errorCode, String description) {
+        binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+    }
 
     @Override
     public void playerNoResultsYet() {}

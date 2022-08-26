@@ -37,8 +37,10 @@ import androidx.appcompat.widget.SearchView;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiException;
@@ -55,7 +57,9 @@ public abstract class AbstractCursorListFragment
 		extends AbstractListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor>,
 				   SyncUtils.OnServiceListener,
-				   SearchView.OnQueryTextListener {
+				   SearchView.OnQueryTextListener,
+				   SwipeRefreshLayout.OnRefreshListener,
+				   HostConnectionObserver.ConnectionStatusObserver {
     private static final String TAG = LogUtils.makeLogTag(AbstractCursorListFragment.class);
 
 	private final String BUNDLE_KEY_SEARCH_QUERY = "search_query";
@@ -401,5 +405,24 @@ public abstract class AbstractCursorListFragment
 		if(!loaderLoading) {
 			LoaderManager.getInstance(this).restartLoader(LOADER, null, this);
 		}
+	}
+
+	/**
+	 * Override parent methods to only disable Swipe Refresh, as the list can be shown without a connection
+	 */
+	@Override
+	public void connectionStatusOnError(int errorCode, String description) {
+		lastConnectionStatusResult = CONNECTION_ERROR;
+		binding.swipeRefreshLayout.setEnabled(false);
+	}
+
+	@Override
+	public void connectionStatusOnSuccess() {
+		// Only update views if transitioning from error state.
+		// If transitioning from Sucess or No results the enabled UI is already being shown
+		if (lastConnectionStatusResult == CONNECTION_ERROR) {
+			binding.swipeRefreshLayout.setEnabled(true);
+		}
+		lastConnectionStatusResult = CONNECTION_SUCCESS;
 	}
 }

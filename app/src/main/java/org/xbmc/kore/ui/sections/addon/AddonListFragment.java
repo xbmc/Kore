@@ -15,6 +15,7 @@
  */
 package org.xbmc.kore.ui.sections.addon;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -94,9 +95,6 @@ public class AddonListFragment extends AbstractListFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-
-        if (getAdapter().getItemCount() == 0)
-            callGetAddonsAndSetup();
     }
 
     @Override
@@ -113,6 +111,16 @@ public class AddonListFragment extends AbstractListFragment {
     public void onDetach() {
         super.onDetach();
         listenerActivity = null;
+    }
+
+    /**
+     * Show the addons
+     */
+    @Override
+    public void connectionStatusOnSuccess() {
+        boolean refresh = (lastConnectionStatusResult != CONNECTION_SUCCESS);
+        super.connectionStatusOnSuccess();
+        if (refresh) onRefresh();
     }
 
     @Override
@@ -182,6 +190,7 @@ public class AddonListFragment extends AbstractListFragment {
         Addons.GetAddons action = new Addons.GetAddons(properties);
         action.execute(HostManager.getInstance(requireContext()).getConnection(),
                        new ApiCallback<List<AddonType.Details>>() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onSuccess(List<AddonType.Details> result) {
                     if (!isAdded()) return;
@@ -202,21 +211,17 @@ public class AddonListFragment extends AbstractListFragment {
                         }
                     }
 
+                    getEmptyView().setText(R.string.no_addons_found_refresh);
                     adapter.notifyDataSetChanged();
                     hideRefreshAnimation();
-
-                    if (adapter.getItemCount() == 0) {
-                        getEmptyView().setText(R.string.no_addons_found_refresh);
-                    }
                 }
 
                 @Override
                 public void onError(int errorCode, String description) {
                     if (!isAdded()) return;
-
-                    Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_getting_addon_info), description),
-                        Toast.LENGTH_SHORT).show();
+                    LogUtils.LOGD(TAG, "Error getting addons: " + description);
+                    getEmptyView().setVisibility(View.VISIBLE);
+                    getEmptyView().setText(getString(R.string.error_getting_addon_info, description));
                     hideRefreshAnimation();
                 }
             },

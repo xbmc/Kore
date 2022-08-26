@@ -35,6 +35,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostConnectionObserver;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiList;
@@ -51,7 +53,10 @@ import org.xbmc.kore.utils.UIUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavouritesListFragment extends AbstractListFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FavouritesListFragment
+        extends AbstractListFragment
+        implements SwipeRefreshLayout.OnRefreshListener,
+                   HostConnectionObserver.ConnectionStatusObserver {
     private static final String TAG = "FavouritesListFragment";
 
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
@@ -59,7 +64,6 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getFavourites();
     }
 
     @Override
@@ -106,6 +110,16 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
         return new FavouritesAdapter(requireContext(), HostManager.getInstance(requireContext()));
     }
 
+    /**
+     * Show the favourites
+     */
+    @Override
+    public void connectionStatusOnSuccess() {
+        boolean refresh = (lastConnectionStatusResult != CONNECTION_SUCCESS);
+        super.connectionStatusOnSuccess();
+        if (refresh) onRefresh();
+    }
+
     @Override
     public void onRefresh() {
         getFavourites();
@@ -119,8 +133,6 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
             @Override
             public void onSuccess(ApiList<FavouriteType.DetailsFavourite> result) {
                 if (!isAdded()) return;
-                LogUtils.LOGD(TAG, "Got Favourites");
-
                 // To prevent the empty text from appearing on the first load, set it now
                 getEmptyView().setText(getString(R.string.no_favourites_found_refresh));
                 ((FavouritesAdapter) getAdapter()).setFavouriteItems(result.items);
@@ -131,10 +143,8 @@ public class FavouritesListFragment extends AbstractListFragment implements Swip
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting favourites: " + description);
-
+                getEmptyView().setVisibility(View.VISIBLE);
                 getEmptyView().setText(getString(R.string.error_favourites, description));
-                Toast.makeText(getActivity(), getString(R.string.error_favourites, description),
-                        Toast.LENGTH_SHORT).show();
                 hideRefreshAnimation();
             }
         }, callbackHandler);

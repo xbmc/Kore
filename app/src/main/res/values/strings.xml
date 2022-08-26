@@ -221,7 +221,7 @@
 
     <string name="error_getting_properties">Couldn\'t get Kodi properties.\nError message:%1$s.</string>
     <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\nError message: %1$s.</string>
-    <string name="error_getting_addon_info">Couldn\'t get Addon information.\nError message:%1$s.</string>
+    <string name="error_getting_addon_info">Couldn\'t get addons list.\nError message:%1$s.</string>
     <string name="error_getting_source_info">Couldn\'t browse files.\nError message:%1$s.</string>
     <string name="error_play_media_file">Couldn\'t play media file.\nError message:%1$s.</string>
     <string name="error_play_local_file">Couldn\'t play local media file.\nError message:%1$s.</string>
@@ -253,7 +253,7 @@
     <string name="no_albums_found_refresh">No albums found\n\nSwipe down to refresh</string>
     <string name="no_genres_found_refresh">No genres found\n\nSwipe down to refresh</string>
     <string name="no_songs_found_refresh">No songs found\n\nSwipe down to refresh</string>
-    <string name="no_addons_found_refresh">No addons found or not connected\n\nSwipe down to refresh</string>
+    <string name="no_addons_found_refresh">No addons found\n\nSwipe down to refresh</string>
     <string name="no_music_videos_found_refresh">No videos found\n\nSwipe down to refresh</string>
     <string name="no_channel_groups_found_refresh">No channel groups found\n\nSwipe down to refresh</string>
     <string name="no_channels_found_refresh">No channels found\n\nSwipe down to refresh</string>
@@ -400,11 +400,11 @@
     <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\n
     	If that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
     <string name="error_starting_channel">An error occurred starting channel playback: %1$s</string>
-    <string name="error_favourites">An error occurred while getting the favourites with description: %1$s</string>
     <string name="error_starting_recording">An error occurred starting a recording: %1$s</string>
     <string name="error_starting_to_record">An error occurred while recording: %1$s</string>
     <string name="channel_switching">Switching to channel %1$s</string>
     <string name="starting_recording">Starting recording %1$s</string>
+    <string name="error_favourites">Couldn\'t get favourites\n\nError description: %1$s</string>
     <string name="refresh">Refresh</string>
 
     <string name="tv">TV</string>
