@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Inet4Address;
@@ -99,6 +100,8 @@ public class NetUtils {
         }
         if (ipHostAddress == null) return null;
 
+        // Try to read the arp cache. This is only possible on Android < 10
+        // https://developer.android.com/about/versions/10/privacy/changes#proc-net-filesystem
         try {
             // Read the arp cache
             BufferedReader br = new BufferedReader(new FileReader("/proc/net/arp"));
@@ -115,6 +118,32 @@ public class NetUtils {
         } catch (IOException e) {
             LogUtils.LOGD(TAG, "Couldn check ARP cache.", e);
         }
+
+        // Couldn't read arp cache, try to exec ip neigh show
+        // This apparently only works up until Android 11...
+        try {
+            String cmd = "ip neigh show";
+            Process process = Runtime.getRuntime().exec(cmd);
+            int res = process.waitFor();
+            BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            LogUtils.LOGD(TAG, cmd + " res: " + res + ", output:\n");
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                LogUtils.LOGD(TAG, line);
+                if (line.startsWith(ipHostAddress)) {
+                    // Ok, this is the line, get the MAC Address
+                    br.close();
+                    LogUtils.LOGD(TAG, "Located line: " + line + ", returning " + line.split("\\s+")[4].toUpperCase(Locale.US));
+                    return line.split("\\s+")[4].toUpperCase(Locale.US); // 4th element
+                }
+            }
+            br.close();
+        } catch (IOException | InterruptedException e) {
+            LogUtils.LOGD(TAG, "Couldn't execute 'ip neigh show' to get the Mac Address", e);
+        }
+
+
         return null;
     }
 
