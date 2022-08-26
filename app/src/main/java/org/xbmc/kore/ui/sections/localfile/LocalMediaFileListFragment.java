@@ -142,8 +142,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     }
 
     /**
-     * Override parent Connection Status callbacks, so that they don't disable the SwipreRefreshLayout.
-     * In this fragment a refresh should be always available as it is local only
+     * Override parent Connection Status callbacks, so that they don't disable the SwipeRefreshLayout and the list.
+     * This fragment doesn't need a Kodi connection to show results
      */
     @Override
     public void connectionStatusOnError(int errorCode, String description) {}

@@ -16,12 +16,13 @@
 -->
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@android:id/empty"
-          android:textAppearance="@style/TextAppearance.Kore.Title"
-          android:layout_height="match_parent"
-          android:layout_width="match_parent"
-          android:layout_gravity="center"
-          android:gravity="center"
-          android:visibility="gone"
-          android:text="@string/loading"/>
+    android:id="@android:id/empty"
+    android:textAppearance="@style/TextAppearance.Kore.Title"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:visibility="gone"
+    android:padding="@dimen/large_padding"
+    android:text="@string/loading"/>
 

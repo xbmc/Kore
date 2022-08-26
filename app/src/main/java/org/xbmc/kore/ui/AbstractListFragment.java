@@ -37,6 +37,7 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.databinding.FragmentMediaListBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
 import org.xbmc.kore.utils.LogUtils;
@@ -165,20 +166,24 @@ public abstract class AbstractListFragment
 		return binding.includeEmptyView.empty;
 	}
 
-
-	private int lastConnectionStatusResult = CONNECTION_NO_RESULT;
+	protected int lastConnectionStatusResult = CONNECTION_NO_RESULT;
 	/**
-	 * Disable Swipe refresh as, by default it doesn't make sense without a connection
-	 * Override in subclasses if this isn't the intended behaviour
+	 * Disable Swipe refresh, hide the list and show an error message. By default, this is what make sense without a
+	 * connection. Override in subclasses if this isn't the intended behaviour
 	 */
 	@Override
 	public void connectionStatusOnError(int errorCode, String description) {
 		lastConnectionStatusResult = CONNECTION_ERROR;
 		binding.swipeRefreshLayout.setEnabled(false);
+		binding.list.setVisibility(View.GONE);
+		getEmptyView().setVisibility(View.VISIBLE);
+		HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
+		getEmptyView().setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
 	}
 
 	/**
-	 * Enable swipe refresh when there's a connection
+	 * Enable swipe refresh and show the list when there's a connection
+	 * In subclasses make sure you populate the list
 	 */
 	@Override
 	public void connectionStatusOnSuccess() {
@@ -186,6 +191,8 @@ public abstract class AbstractListFragment
 		// If transitioning from Sucess or No results the enabled UI is already being shown
 		if (lastConnectionStatusResult == CONNECTION_ERROR) {
 			binding.swipeRefreshLayout.setEnabled(true);
+			getEmptyView().setVisibility(View.GONE);
+			binding.list.setVisibility(View.VISIBLE);
 		}
 		lastConnectionStatusResult = CONNECTION_SUCCESS;
 	}
