@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
@@ -124,8 +125,14 @@ public class RemoteFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRemoteBinding.inflate(inflater, container, false);
-        ViewGroup root = binding.getRoot();
+        return binding.getRoot();
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Setup view
         binding.remote.setOnPadButtonsListener(this);
         binding.mediaActionsBar.completeSetup(requireContext(), this.getParentFragmentManager());
 
@@ -136,7 +143,7 @@ public class RemoteFragment extends Fragment
         Set<String> shownItems = PreferenceManager
                 .getDefaultSharedPreferences(requireContext())
                 .getStringSet(Settings.getRemoteBarItemsPrefKey(hostInfo.getId()),
-                        new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.default_values_remote_bar_items))));
+                              new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.default_values_remote_bar_items))));
         ImageButton[] buttons = {
                 binding.home, binding.movies, binding.tvShows, binding.music, binding.pvr, binding.pictures,
                 binding.videos, binding.addons, binding.weather, binding.system
@@ -164,13 +171,11 @@ public class RemoteFragment extends Fragment
         UIUtils.tintElevatedView(binding.sectionsButtonBar);
         binding.title.setClickable(true);
         binding.title.setOnClickListener(v -> v.setSelected(!v.isSelected()));
-
-        return root;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         hostConnectionObserver.registerPlayerObserver(this);
         hostConnectionObserver.registerApplicationObserver(this);
         if (eventServerConnection == null)
@@ -178,14 +183,14 @@ public class RemoteFragment extends Fragment
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
         hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver.unregisterApplicationObserver(this);
         if (eventServerConnection != null) {
             eventServerConnection.quit();
             eventServerConnection = null;
         }
+        super.onStop();
     }
 
     @Override
@@ -351,11 +356,9 @@ public class RemoteFragment extends Fragment
         binding.mediaActionsBar.setPlaybackState(getActivePlayerResult,
                                                  getPropertiesResult);
 
-        if (binding.poster != null) {
-            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                                                 thumbnailUrl, title,
-                                                 binding.poster, binding.poster.getWidth(), binding.poster.getHeight());
-        }
+        UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                                             thumbnailUrl, title,
+                                             binding.poster, binding.poster.getWidth(), binding.poster.getHeight());
 
         // For some smaller screens their height isn't enough to display all controls. Hide the superfluous
         // bottom button bar during playback if that's the case

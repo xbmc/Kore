@@ -30,7 +30,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.TextDirectionHeuristicsCompat;
 import androidx.preference.PreferenceManager;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -108,17 +108,16 @@ public class RemoteActivity extends BaseActivity
             navigationDrawerFragment.setUp(R.id.navigation_drawer, findViewById(R.id.drawer_layout));
 
         // Set up pager and fragments
-        TabsAdapter tabsAdapter = new TabsAdapter(this, getSupportFragmentManager())
+        TabsAdapter tabsAdapter = new TabsAdapter(this)
                 .addTab(NowPlayingFragment.class, null, R.string.now_playing, NOWPLAYING_FRAGMENT_ID)
                 .addTab(RemoteFragment.class, null, R.string.remote, REMOTE_FRAGMENT_ID)
                 .addTab(PlaylistFragment.class, null, R.string.playlist, PLAYLIST_FRAGMENT_ID);
 
         binding.pager.setAdapter(tabsAdapter);
-        binding.pagerIndicator.setViewPager(binding.pager);
-        binding.pagerIndicator.setOnPageChangeListener(defaultOnPageChangeListener);
-
-        binding.pager.setCurrentItem(1);
+        binding.pager.setCurrentItem(1, false);
         binding.pager.setOffscreenPageLimit(2);
+        binding.pager.registerOnPageChangeCallback(defaultOnPageChangeCallback);
+        binding.pagerIndicator.setViewPager(binding.pager);
 
         setupActionBar();
 
@@ -300,17 +299,11 @@ public class RemoteActivity extends BaseActivity
 
 
     // Default page change listener, that doesn't scroll images
-    ViewPager.OnPageChangeListener defaultOnPageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
-
+    ViewPager2.OnPageChangeCallback defaultOnPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
             setToolbarTitle(binding.includeToolbar.defaultToolbar, position);
         }
-
-        @Override
-        public void onPageScrollStateChanged(int state) { }
     };
 
     /**
@@ -336,7 +329,7 @@ public class RemoteActivity extends BaseActivity
                     int offsetX =  (binding.pager.getCurrentItem() - 1) * pixelsPerPage;
                     binding.backgroundImage.scrollTo(offsetX, 0);
 
-                    binding.pagerIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    binding.pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                         @Override
                         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                             int offsetX = (int) ((position - 1 + positionOffset) * pixelsPerPage);
@@ -347,9 +340,6 @@ public class RemoteActivity extends BaseActivity
                         public void onPageSelected(int position) {
                             setToolbarTitle(binding.includeToolbar.defaultToolbar, position);
                         }
-
-                        @Override
-                        public void onPageScrollStateChanged(int state) { }
                     });
 
                     return true;
@@ -357,7 +347,7 @@ public class RemoteActivity extends BaseActivity
             });
         } else {
             binding.backgroundImage.setImageDrawable(null);
-            binding.pagerIndicator.setOnPageChangeListener(defaultOnPageChangeListener);
+            binding.pager.registerOnPageChangeCallback(defaultOnPageChangeCallback);
         }
     }
 

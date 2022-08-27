@@ -124,13 +124,20 @@ public class PlaylistFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPlaylistBinding.inflate(inflater, container, false);
-        ViewGroup root = binding.getRoot();
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // We have options
+        setHasOptionsMenu(true);
 
         playListAdapter = new PlayListAdapter();
         binding.playlist.setAdapter(playListAdapter);
 
         // When clicking on an item, play it
-        binding.playlist.setOnItemClickListener((parent, view, position, id) -> {
+        binding.playlist.setOnItemClickListener((parent, v, position, id) -> {
             PlaylistHolder holder = playlists.get(binding.playlistsBar.getSelectedPlaylistType());
             if (holder != null) {
                 Player.Open action = new Player.Open(Player.Open.TYPE_PLAYLIST, holder.getPlaylistId(), position);
@@ -155,31 +162,20 @@ public class PlaylistFragment extends Fragment
                     playlistHolder.setListViewPosition(binding.playlist.getFirstVisiblePosition(), top);
             }
         });
-
-        return root;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // We have options
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
+    public void onStart() {
+        super.onStart();
         hostConnectionObserver.registerPlayerObserver(this);
         hostConnectionObserver.registerPlaylistObserver(this);
     }
 
     @Override
-    public void onPause() {
+    public void onStop() {
         hostConnectionObserver.unregisterPlayerObserver(this);
         hostConnectionObserver.unregisterPlaylistObserver(this);
-
-        super.onPause();
+        super.onStop();
     }
 
     @Override

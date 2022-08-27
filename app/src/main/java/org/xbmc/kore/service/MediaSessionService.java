@@ -179,8 +179,6 @@ public class MediaSessionService extends Service
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LogUtils.LOGD(TAG, "onStartCommand. Intent action: " + intent.getAction());
-
         // Given that the documentation for {@link MediaSessionCompat} and {@link MediaButtonReceiver} is somewhat
         // confusing, here's an explanation for the flow of creating/handling Media Button events from a notification
         // Media Button events are directly sent to {@link MediaSessionCompat}, calling its callbacks, but when creating

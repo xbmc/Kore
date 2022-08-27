@@ -16,6 +16,7 @@
 
 package org.xbmc.kore.testhelpers.action;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.PerformException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
@@ -23,8 +24,7 @@ import androidx.test.espresso.action.MotionEvents;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.util.HumanReadables;
 import androidx.test.espresso.util.TreeIterables;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.View;
 import android.widget.SeekBar;
@@ -37,6 +37,8 @@ import java.util.concurrent.TimeoutException;
 
 import static androidx.test.espresso.action.ViewActions.actionWithAssertions;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+
+import com.google.android.material.tabs.TabLayout;
 
 public final class ViewActions {
 
@@ -166,7 +168,7 @@ public final class ViewActions {
                 return new TypeSafeMatcher<View>() {
                     @Override
                     protected boolean matchesSafely(View item) {
-                        return item instanceof ViewPager;
+                        return item instanceof TabLayout;
                     }
 
                     @Override
@@ -183,12 +185,11 @@ public final class ViewActions {
 
             @Override
             public void perform(UiController uiController, View view) {
-                ViewPager viewPager = (ViewPager) view;
+                TabLayout tabLayout = (TabLayout) view;
                 String expectedTitle = view.getResources().getString(pageTitleResourceId);
-                PagerAdapter pagerAdapter = viewPager.getAdapter();
-                for(int i = 0; i < pagerAdapter.getCount(); i++) {
-                    if (expectedTitle.contentEquals(pagerAdapter.getPageTitle(i))) {
-                        viewPager.setCurrentItem(i);
+                for(int i = 0; i < tabLayout.getTabCount(); i++) {
+                    if (expectedTitle.contentEquals(tabLayout.getTabAt(i).getText())) {
+                        tabLayout.getTabAt(i).select();
                         return;
                     }
                 }

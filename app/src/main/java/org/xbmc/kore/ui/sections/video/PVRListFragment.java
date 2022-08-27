@@ -49,7 +49,7 @@ public class PVRListFragment extends AbstractTabsFragment
         tvArgs.putInt(PVR_LIST_TYPE_KEY, LIST_TV_CHANNELS);
         radioArgs.putInt(PVR_LIST_TYPE_KEY, LIST_RADIO_CHANNELS);
 
-        return new TabsAdapter(requireContext(), getChildFragmentManager())
+        return new TabsAdapter(this)
                 .addTab(PVRChannelsListFragment.class, tvArgs, R.string.tv_channels, 1)
                 .addTab(PVRChannelsListFragment.class, radioArgs, R.string.radio_channels, 2)
                 .addTab(PVRRecordingsListFragment.class, getArguments(), R.string.recordings, 3);
@@ -57,13 +57,9 @@ public class PVRListFragment extends AbstractTabsFragment
 
     @Override
     public boolean onBackPressed() {
-        TabsAdapter adapter = ((TabsAdapter)getViewPager().getAdapter());
-        if (adapter != null) {
-            // Tell current fragment to move up one directory, if possible
-            Fragment visibleFragment = adapter.getStoredFragment(getViewPager().getCurrentItem());
-            if (visibleFragment instanceof OnBackPressedListener) {
-                return ((OnBackPressedListener) visibleFragment).onBackPressed();
-            }
+        Fragment visibleFragment = getCurrentSelectedFragment();
+        if (visibleFragment instanceof OnBackPressedListener) {
+            return ((OnBackPressedListener) visibleFragment).onBackPressed();
         }
 
         // Not handled, let the activity handle it

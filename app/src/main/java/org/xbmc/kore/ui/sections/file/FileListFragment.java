@@ -49,7 +49,7 @@ public class FileListFragment extends AbstractTabsFragment
         pictureFileListArgs.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.PICTURES);
         pictureFileListArgs.putParcelable(MediaFileListFragment.SORT_METHOD, sortMethod);
 
-        return new TabsAdapter(getActivity(), getChildFragmentManager())
+        return new TabsAdapter(this)
                 .addTab(MediaFileListFragment.class, videoFileListArgs, R.string.video, 1)
                 .addTab(MediaFileListFragment.class, musicFileListArgs, R.string.music, 2)
                 .addTab(MediaFileListFragment.class, pictureFileListArgs, R.string.pictures, 3);
@@ -68,15 +68,12 @@ public class FileListFragment extends AbstractTabsFragment
 
     @Override
     public boolean onBackPressed() {
-        if (getViewPager().getAdapter() == null) return false;
         // Tell current fragment to move up one directory, if possible
-        MediaFileListFragment curPage = (MediaFileListFragment)((TabsAdapter)getViewPager().getAdapter())
-                .getStoredFragment(getViewPager().getCurrentItem());
-        if ((curPage != null) && !curPage.atRootDirectory()) {
+        MediaFileListFragment curPage = (MediaFileListFragment)getCurrentSelectedFragment();
+        if (curPage != null && !curPage.atRootDirectory()) {
             curPage.onBackPressed();
             return true;
         }
-
         // Not handled, let the activity handle it
         return false;
     }

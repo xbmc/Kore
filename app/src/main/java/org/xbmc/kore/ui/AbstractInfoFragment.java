@@ -71,7 +71,6 @@ import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
-import java.util.List;
 import java.util.Locale;
 
 abstract public class AbstractInfoFragment
@@ -124,33 +123,16 @@ abstract public class AbstractInfoFragment
         super.onCreate(savedInstanceState);
         hostManager = HostManager.getInstance(requireContext());
         hostInfo = hostManager.getHostInfo();
+
+        seenButtonLabels = new String[] { getString(R.string.unwatched_status), getString(R.string.watched_status) };
+        pinButtonLabels = new String[] { getString(R.string.unpinned_status), getString(R.string.pinned_status) };
+        enableButtonLabels = new String[] { getString(R.string.disabled_status), getString(R.string.enabled_status) };
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (container == null) {
-            // We're not being shown or there's nothing to show
-            return null;
-        }
         binding = FragmentMediaInfoBinding.inflate(inflater, container, false);
-
-        Resources resources = requireActivity().getResources();
-
-        DataHolder dataHolder = getDataHolder();
-
-        if(!dataHolder.getSquarePoster()) {
-            binding.poster.getLayoutParams().width = resources.getDimensionPixelSize(R.dimen.info_poster_width);
-            binding.poster.getLayoutParams().height = resources.getDimensionPixelSize(R.dimen.info_poster_height);
-        }
-
-        if(getRefreshItem() != null) {
-            binding.swipeRefreshLayout.setOnRefreshListener(this);
-        } else {
-            binding.swipeRefreshLayout.setEnabled(false);
-        }
-
-        binding.poster.setTransitionName(dataHolder.getPosterTransitionName());
 
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getChildFragmentManager();
@@ -164,18 +146,6 @@ abstract public class AbstractInfoFragment
                 }
             }
         }
-
-        seenButtonLabels = new String[] { getString(R.string.unwatched_status), getString(R.string.watched_status) };
-        pinButtonLabels = new String[] { getString(R.string.unpinned_status), getString(R.string.pinned_status) };
-        enableButtonLabels = new String[] { getString(R.string.disabled_status), getString(R.string.enabled_status) };
-
-        boolean hasButtons = setupInfoActionsBar();
-        binding.infoActionsBar.setVisibility(hasButtons ? View.VISIBLE : View.GONE);
-
-        boolean hasFAB = setupFAB(binding.fabPlay);
-        binding.fabPlay.setVisibility(hasFAB? View.VISIBLE : View.GONE);
-
-        updateView(dataHolder);
         return binding.getRoot();
     }
 
@@ -183,10 +153,31 @@ abstract public class AbstractInfoFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+
+        Resources resources = requireActivity().getResources();
+        DataHolder dataHolder = getDataHolder();
+        if(!dataHolder.getSquarePoster()) {
+            binding.poster.getLayoutParams().width = resources.getDimensionPixelSize(R.dimen.info_poster_width);
+            binding.poster.getLayoutParams().height = resources.getDimensionPixelSize(R.dimen.info_poster_height);
+        }
+        binding.poster.setTransitionName(dataHolder.getPosterTransitionName());
+
+        if(getRefreshItem() != null) {
+            binding.swipeRefreshLayout.setOnRefreshListener(this);
+        } else {
+            binding.swipeRefreshLayout.setEnabled(false);
+        }
+
+        boolean hasButtons = setupInfoActionsBar();
+        binding.infoActionsBar.setVisibility(hasButtons ? View.VISIBLE : View.GONE);
+
+        boolean hasFAB = setupFAB(binding.fabPlay);
+        binding.fabPlay.setVisibility(hasFAB? View.VISIBLE : View.GONE);
+
         /* Setup dim the fanart when scroll changes */
         onScrollChangedListener = UIUtils.createInfoPanelScrollChangedListener(requireContext(), binding.mediaPanel, binding.art, binding.mediaPanelGroup);
         binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
-        hostManager.getHostConnectionObserver().registerConnectionStatusObserver(this);
+        updateView(dataHolder);
     }
 
     @Override
@@ -198,6 +189,7 @@ abstract public class AbstractInfoFragment
     @Override
     public void onStart() {
         super.onStart();
+        hostManager.getHostConnectionObserver().registerConnectionStatusObserver(this);
         serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
     }
 
@@ -221,16 +213,16 @@ abstract public class AbstractInfoFragment
 
     @Override
     public void onStop() {
-        super.onStop();
+        hostManager.getHostConnectionObserver().unregisterConnectionStatusObserver(this);
         SyncUtils.disconnectFromLibrarySyncService(requireContext(), serviceConnection);
+        super.onStop();
     }
 
     @Override
     public void onDestroyView() {
         binding.mediaPanel.getViewTreeObserver().removeOnScrollChangedListener(onScrollChangedListener);
-        hostManager.getHostConnectionObserver().unregisterConnectionStatusObserver(this);
-        super.onDestroyView();
         binding = null;
+        super.onDestroyView();
     }
 
     @Override

@@ -17,22 +17,22 @@ package org.xbmc.kore.utils;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * This is a helper class that implements the management of tabs and all
  * details of connecting a ViewPager with associated TabHost.
  */
-public class TabsAdapter extends FragmentPagerAdapter {
+public class TabsAdapter extends FragmentStateAdapter {
     private final Context context;
+    private final FragmentManager fragmentManager;
     private final ArrayList<TabInfo> tabInfos;
 
     public static final class TabInfo {
@@ -58,9 +58,17 @@ public class TabsAdapter extends FragmentPagerAdapter {
         }
     }
 
-    public TabsAdapter(Context context, FragmentManager fragmentManager) {
-        super(fragmentManager);
-        this.context = context;
+    public TabsAdapter(Fragment fragment) {
+        super(fragment);
+        this.fragmentManager = fragment.getChildFragmentManager();
+        this.context = fragment.getContext();
+        this.tabInfos = new ArrayList<>();
+    }
+
+    public TabsAdapter(FragmentActivity fragmentActivity) {
+        super(fragmentActivity);
+        this.fragmentManager = fragmentActivity.getSupportFragmentManager();
+        this.context = fragmentActivity;
         this.tabInfos = new ArrayList<>();
     }
 
@@ -77,49 +85,22 @@ public class TabsAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return tabInfos.size();
     }
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
+    public Fragment createFragment(int position) {
         TabInfo info = tabInfos.get(position);
-        return Fragment.instantiate(context, info.fragmentClass.getName(), info.args);
-    }
-
-    /**
-     * Store the created fragments, so that it is possible to get them by position later
-     */
-    private final HashMap<Integer, Fragment> createdFragments = new HashMap<>(5);
-
-    @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        Fragment fragment = (Fragment)super.instantiateItem(container, position);
-        createdFragments.put(position, fragment);
+        Fragment fragment = fragmentManager.getFragmentFactory().instantiate(context.getClassLoader(), info.fragmentClass.getName());
+        fragment.setArguments(info.args);
         return fragment;
     }
 
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        super.destroyItem(container, position, object);
-        createdFragments.remove(position);
-    }
-
-    public Fragment getStoredFragment(int position) {
-        return createdFragments.get(position);
-    }
-    @Override
-    public long getItemId(int position) {
-        return tabInfos.get(position).fragmentId;
-    }
-
-    @Override
     public CharSequence getPageTitle(int position) {
         TabInfo tabInfo = tabInfos.get(position);
         if (tabInfo != null) {
-//            return context.getString(tabInfo.titleRes).toUpperCase(Locale.getDefault());
             return tabInfo.titleString == null? context.getString(tabInfo.titleRes) : tabInfo.titleString;
         }
         return null;

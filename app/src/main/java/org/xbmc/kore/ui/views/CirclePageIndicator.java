@@ -35,7 +35,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import org.xbmc.kore.R;
 
@@ -43,7 +43,7 @@ import org.xbmc.kore.R;
  * Draws circles (one for each view). The current view position is filled and
  * others are only stroked.
  */
-public class CirclePageIndicator extends View implements PageIndicator {
+public class CirclePageIndicator extends View {
     private static final int INVALID_POINTER = -1;
 
     private float mGapWidth;
@@ -51,8 +51,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
     private final Paint mPaintPageFill = new Paint(ANTI_ALIAS_FLAG);
     private final Paint mPaintStroke = new Paint(ANTI_ALIAS_FLAG);
     private final Paint mPaintFill = new Paint(ANTI_ALIAS_FLAG);
-    private ViewPager mViewPager;
-    private ViewPager.OnPageChangeListener mListener;
+    private ViewPager2 mViewPager;
     private int mCurrentPage;
     private int mSnapPage;
     private float mPageOffset;
@@ -65,7 +64,6 @@ public class CirclePageIndicator extends View implements PageIndicator {
     private float mLastMotionX = -1;
     private int mActivePointerId = INVALID_POINTER;
     private boolean mIsDragging;
-
 
     public CirclePageIndicator(Context context) {
         this(context, null);
@@ -216,7 +214,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         if (mViewPager == null || mViewPager.getAdapter() == null) {
             return;
         }
-        final int count = mViewPager.getAdapter().getCount();
+        final int count = mViewPager.getAdapter().getItemCount();
         if (count == 0) {
             return;
         }
@@ -298,7 +296,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         if (super.onTouchEvent(ev)) {
             return true;
         }
-        if (mViewPager == null || mViewPager.getAdapter() == null || mViewPager.getAdapter().getCount() == 0) {
+        if (mViewPager == null || mViewPager.getAdapter() == null || mViewPager.getAdapter().getItemCount() == 0) {
             return false;
         }
 
@@ -332,7 +330,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 if (!mIsDragging) {
-                    final int count = mViewPager.getAdapter().getCount();
+                    final int count = mViewPager.getAdapter().getItemCount();
                     final int width = getWidth();
                     final float halfWidth = width / 2f;
                     final float sixthWidth = width / 6f;
@@ -376,29 +374,21 @@ public class CirclePageIndicator extends View implements PageIndicator {
         return true;
     }
 
-    @Override
-    public void setViewPager(ViewPager view) {
+    public void setViewPager(ViewPager2 view) {
         if (mViewPager == view) {
             return;
         }
         if (mViewPager != null) {
-            mViewPager.removeOnPageChangeListener(this);
+            mViewPager.unregisterOnPageChangeCallback(onPageChangeCallbackWrapper);
         }
         if (view.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
         }
         mViewPager = view;
-        mViewPager.addOnPageChangeListener(this);
+        mViewPager.registerOnPageChangeCallback(onPageChangeCallbackWrapper);
         invalidate();
     }
 
-    @Override
-    public void setViewPager(ViewPager view, int initialPosition) {
-        setViewPager(view);
-        setCurrentItem(initialPosition);
-    }
-
-    @Override
     public void setCurrentItem(int item) {
         if (mViewPager == null) {
             throw new IllegalStateException("ViewPager has not been bound.");
@@ -408,48 +398,32 @@ public class CirclePageIndicator extends View implements PageIndicator {
         invalidate();
     }
 
-    @Override
     public void notifyDataSetChanged() {
         invalidate();
     }
 
-    @Override
-    public void onPageScrollStateChanged(int state) {
-        mScrollState = state;
-
-        if (mListener != null) {
-            mListener.onPageScrollStateChanged(state);
+    private final ViewPager2.OnPageChangeCallback onPageChangeCallbackWrapper = new ViewPager2.OnPageChangeCallback() {
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            mScrollState = state;
         }
-    }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        mCurrentPage = position;
-        mPageOffset = positionOffset;
-        invalidate();
-
-        if (mListener != null) {
-            mListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
-        }
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        if (mSnap || mScrollState == ViewPager.SCROLL_STATE_IDLE) {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             mCurrentPage = position;
-            mSnapPage = position;
+            mPageOffset = positionOffset;
             invalidate();
         }
 
-        if (mListener != null) {
-            mListener.onPageSelected(position);
+        @Override
+        public void onPageSelected(int position) {
+            if (mSnap || mScrollState == ViewPager2.SCROLL_STATE_IDLE) {
+                mCurrentPage = position;
+                mSnapPage = position;
+                invalidate();
+            }
         }
-    }
-
-    @Override
-    public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        mListener = listener;
-    }
+    };
 
     /*
      * (non-Javadoc)
@@ -482,7 +456,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
             result = specSize;
         } else {
             //Calculate the width according the views count
-            final int count = mViewPager.getAdapter().getCount();
+            final int count = mViewPager.getAdapter().getItemCount();
             result = (int)(getPaddingLeft() + getPaddingRight()
                            + (count * 2 * mRadius) + (count - 1) * mRadius + 1);
             //Respect AT_MOST value if that was what is called for by measureSpec
