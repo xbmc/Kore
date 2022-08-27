@@ -221,6 +221,7 @@ public class RemoteFragment extends Fragment
 
     @Override
     public void onPlayerPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         binding.mediaActionsBar.setRepeatShuffleState(notificationsData.property.repeatMode,
                                                       notificationsData.property.shuffled,
                                                       notificationsData.property.partymode);
@@ -232,16 +233,19 @@ public class RemoteFragment extends Fragment
     public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void onPlayerStop() {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -250,6 +254,7 @@ public class RemoteFragment extends Fragment
     }
 
     public void onPlayerConnectionError(int errorCode, String description) {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -264,6 +269,7 @@ public class RemoteFragment extends Fragment
     }
 
     public void onPlayerNoResultsYet() {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         // Initialize info panel
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -281,6 +287,7 @@ public class RemoteFragment extends Fragment
 
     @Override
     public void onApplicationVolumeChanged(int volume, boolean muted) {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         binding.mediaActionsBar.setVolumeState(volume, muted);
     }
 
