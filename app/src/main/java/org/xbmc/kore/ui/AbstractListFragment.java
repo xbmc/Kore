@@ -177,7 +177,7 @@ public abstract class AbstractListFragment
 	 * connection. Override in subclasses if this isn't the intended behaviour
 	 */
 	@Override
-	public void connectionStatusOnError(int errorCode, String description) {
+	public void onConnectionStatusError(int errorCode, String description) {
 		lastConnectionStatusResult = CONNECTION_ERROR;
 		binding.swipeRefreshLayout.setEnabled(false);
 		binding.list.setVisibility(View.GONE);
@@ -191,7 +191,7 @@ public abstract class AbstractListFragment
 	 * In subclasses make sure you populate the list
 	 */
 	@Override
-	public void connectionStatusOnSuccess() {
+	public void onConnectionStatusSuccess() {
 		// Only update views if transitioning from error state.
 		// If transitioning from Sucess or No results the enabled UI is already being shown
 		if (lastConnectionStatusResult == CONNECTION_ERROR) {
@@ -203,7 +203,7 @@ public abstract class AbstractListFragment
 	}
 
 	@Override
-	public void connectionStatusNoResultsYet() {
+	public void onConnectionStatusNoResultsYet() {
 		// Do nothing, by default the enabled UI is shown while there are no results
 		lastConnectionStatusResult = CONNECTION_NO_RESULT;
 	}

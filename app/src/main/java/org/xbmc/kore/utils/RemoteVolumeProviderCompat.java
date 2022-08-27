@@ -54,7 +54,7 @@ public class RemoteVolumeProviderCompat extends VolumeProviderCompat implements 
     }
 
     @Override
-    public void applicationOnVolumeChanged(int volume, boolean muted) {
+    public void onApplicationVolumeChanged(int volume, boolean muted) {
         setCurrentVolume(volume);
     }
 }

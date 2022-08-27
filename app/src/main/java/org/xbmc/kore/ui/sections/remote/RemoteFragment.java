@@ -220,7 +220,7 @@ public class RemoteFragment extends Fragment
     }
 
     @Override
-    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+    public void onPlayerPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
         binding.mediaActionsBar.setRepeatShuffleState(notificationsData.property.repeatMode,
                                                       notificationsData.property.shuffled,
                                                       notificationsData.property.partymode);
@@ -229,19 +229,19 @@ public class RemoteFragment extends Fragment
     /**
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
      */
-    public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+    public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
-    public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+    public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
-    public void playerOnStop() {
+    public void onPlayerStop() {
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -249,7 +249,7 @@ public class RemoteFragment extends Fragment
         binding.includeInfoPanel.infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
     }
 
-    public void playerOnConnectionError(int errorCode, String description) {
+    public void onPlayerConnectionError(int errorCode, String description) {
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -263,7 +263,7 @@ public class RemoteFragment extends Fragment
         }
     }
 
-    public void playerNoResultsYet() {
+    public void onPlayerNoResultsYet() {
         // Initialize info panel
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -275,19 +275,19 @@ public class RemoteFragment extends Fragment
         binding.includeInfoPanel.infoMessage.setText(null);
     }
 
-    public void systemOnQuit() {
-        playerNoResultsYet();
+    public void onSystemQuit() {
+        onPlayerNoResultsYet();
     }
 
     @Override
-    public void applicationOnVolumeChanged(int volume, boolean muted) {
+    public void onApplicationVolumeChanged(int volume, boolean muted) {
         binding.mediaActionsBar.setVolumeState(volume, muted);
     }
 
 
     // Ignore this
-    public void inputOnInputRequested(String title, String type, String value) {}
-    public void observerOnStopObserving() {}
+    public void onInputRequested(String title, String type, String value) {}
+    public void onObserverStopObserving() {}
 
     /**
      * Sets whats playing information

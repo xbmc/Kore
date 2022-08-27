@@ -142,7 +142,7 @@ public class AddonsActivity extends BaseMediaActivity
     }
 
     @Override
-    public void inputOnInputRequested(String title, String type, String value) {
+    public void onInputRequested(String title, String type, String value) {
         final SendTextDialogFragment dialog =
                 SendTextDialogFragment.newInstance(title);
         dialog.show(getSupportFragmentManager(), null);

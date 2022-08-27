@@ -141,7 +141,7 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     }
 
     @Override
-    public void applicationOnVolumeChanged(int volume, boolean muted) {
+    public void onApplicationVolumeChanged(int volume, boolean muted) {
         binding.vcdVolumeLevelIndicator.setVolume(muted, volume);
 
         binding.vcdVolumeMutedIndicator.setVisibility(muted ? View.VISIBLE : View.GONE);

@@ -146,13 +146,13 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
      * This fragment doesn't need a Kodi connection to show results
      */
     @Override
-    public void connectionStatusOnError(int errorCode, String description) {}
+    public void onConnectionStatusError(int errorCode, String description) {}
 
     @Override
-    public void connectionStatusOnSuccess() {}
+    public void onConnectionStatusSuccess() {}
 
     @Override
-    public void connectionStatusNoResultsYet() {}
+    public void onConnectionStatusNoResultsYet() {}
 
     private void checkReadStoragePermission() {
         boolean hasStoragePermission =

@@ -281,7 +281,7 @@ abstract public class AbstractInfoFragment
      * Hide/Disable UI elements that don't make sense without a connection
      */
     @Override
-    public void connectionStatusOnError(int errorCode, String description) {
+    public void onConnectionStatusError(int errorCode, String description) {
         LogUtils.LOGD(TAG, "Connection Status Error, disabling buttons");
         lastConnectionStatusResult = CONNECTION_ERROR;
         binding.fabPlay.setEnabled(false);
@@ -295,7 +295,7 @@ abstract public class AbstractInfoFragment
      * Show/Enable UI elements relevant when there's a connection
      */
     @Override
-    public void connectionStatusOnSuccess() {
+    public void onConnectionStatusSuccess() {
         // Only update views if transitioning from error state.
         // If transitioning from Sucess or No results the enabled UI is already being shown
         if (lastConnectionStatusResult == CONNECTION_ERROR) {
@@ -312,7 +312,7 @@ abstract public class AbstractInfoFragment
     }
 
     @Override
-    public void connectionStatusNoResultsYet() {
+    public void onConnectionStatusNoResultsYet() {
         // Do nothing, by default the enabled UI is shown while there are no results
         lastConnectionStatusResult = CONNECTION_NO_RESULT;
     }
