@@ -53,7 +53,7 @@ public class AddonDetailsFragment extends AbstractTabsFragment {
     protected TabsAdapter createTabsAdapter(AbstractInfoFragment.DataHolder dataHolder) {
         long baseFragmentId = 1000;
         Bundle args = getArguments();
-        return new TabsAdapter(getActivity(), getChildFragmentManager())
+        return new TabsAdapter(this)
                 .addTab(AddonInfoFragment.class, args, R.string.addon_overview, baseFragmentId++)
                 .addTab(MediaFileListFragment.class, contentArgs(args), R.string.addon_content, baseFragmentId++)
                 ;

@@ -263,7 +263,7 @@ public class EspressoTestUtils {
      * @param stringResourceId text displayed in Tab that should be clicked
      */
     public static void clickTab(int stringResourceId) {
-        onView(withId(R.id.pager)).perform(ViewActions.setCurrentViewPagerItem(stringResourceId));
+        onView(withId(R.id.tab_layout)).perform(ViewActions.setCurrentViewPagerItem(stringResourceId));
     }
 
     /**

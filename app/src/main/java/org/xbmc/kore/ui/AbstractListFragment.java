@@ -63,39 +63,44 @@ public abstract class AbstractListFragment
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = FragmentMediaListBinding.inflate(inflater, container, false);
-
-		binding.swipeRefreshLayout.setOnRefreshListener(this);
-
-		binding.list.setEmptyView(binding.includeEmptyView.empty);
-		binding.list.setOnItemClickListener(createOnItemClickListener());
-
-		if (PreferenceManager
-				.getDefaultSharedPreferences(requireContext())
-				.getBoolean(Settings.KEY_PREF_SINGLE_COLUMN,
-							Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
-			binding.list.setColumnCount(1);
-		}
-
-		binding.list.setAdapter(adapter);
-
-		setHasOptionsMenu(true);
-
 		return binding.getRoot();
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		setHasOptionsMenu(true);
+
+		binding.swipeRefreshLayout.setOnRefreshListener(this);
+		binding.list.setEmptyView(binding.includeEmptyView.empty);
+		binding.list.setOnItemClickListener(createOnItemClickListener());
+
+		if (PreferenceManager.getDefaultSharedPreferences(requireContext())
+							 .getBoolean(Settings.KEY_PREF_SINGLE_COLUMN, Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
+			binding.list.setColumnCount(1);
+		}
+
+		binding.list.setAdapter(adapter);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
 		HostManager.getInstance(requireContext())
 				   .getHostConnectionObserver()
 				   .registerConnectionStatusObserver(this);
 	}
 
 	@Override
-	public void onDestroyView() {
+	public void onStop() {
 		HostManager.getInstance(requireContext())
 				   .getHostConnectionObserver()
 				   .unregisterConnectionStatusObserver(this);
+		super.onStop();
+	}
+
+	@Override
+	public void onDestroyView() {
 		super.onDestroyView();
 		binding = null;
 	}

@@ -62,7 +62,7 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
 
         int hostId = HostManager.getInstance(requireContext()).getHostInfo().getId();
 
-        TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager());
+        TabsAdapter tabsAdapter = new TabsAdapter(this);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         Set<String> bookmarked = prefs.getStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), Collections.emptySet());
         long baseFragmentId = 70 + bookmarked.size() * 100L;

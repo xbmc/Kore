@@ -16,13 +16,12 @@
 package org.xbmc.kore.ui.sections.audio;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
@@ -36,55 +35,30 @@ import org.xbmc.kore.utils.TabsAdapter;
 public class MusicListFragment extends AbstractTabsFragment {
     private static final String TAG = LogUtils.makeLogTag(MusicListFragment.class);
 
-    private int currentItem;
-    private TabsAdapter tabsAdapter;
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        if (view == null) return null;
-
-        currentItem = getViewPager().getCurrentItem();
-
-        getViewPager().addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                AbstractCursorListFragment f =
-                        ((AbstractCursorListFragment) tabsAdapter.getStoredFragment(currentItem));
-                if (f != null) {
-                    f.saveSearchState();
-                }
-                currentItem = getViewPager().getCurrentItem();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-        return view;
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
+
+        getViewPager().registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fragment = getCurrentSelectedFragment();
+                if (fragment instanceof AbstractCursorListFragment) {
+                    ((AbstractCursorListFragment)fragment).saveSearchState();
+                }
+            }
+        });
     }
 
     @Override
     protected TabsAdapter createTabsAdapter(DataHolder dataHolder) {
-        tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
+        return new TabsAdapter(this)
                 .addTab(ArtistListFragment.class, getArguments(), R.string.artists, 1)
                 .addTab(AlbumListFragment.class, getArguments(), R.string.albums, 2)
                 .addTab(AudioGenresListFragment.class, getArguments(), R.string.genres, 3)
                 .addTab(SongsListFragment.class, getArguments(), R.string.songs, 4)
                 .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 5);
-        return tabsAdapter;
     }
 
     @Override

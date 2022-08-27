@@ -16,7 +16,6 @@
 package org.xbmc.kore.ui.sections.remote;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -70,27 +69,9 @@ public class NowPlayingFragment extends Fragment
      */
     private HostConnectionObserver hostConnectionObserver;
 
-    /**
-     * Listener for events on this fragment
-     */
-    private NowPlayingListener nowPlayingListener;
-
     private ViewTreeObserver.OnScrollChangedListener onScrollChangedListener;
 
     private FragmentNowPlayingBinding binding;
-
-    private int pixelsToTransparent;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        // Try to cast the enclosing activity to the listener interface
-        try {
-            nowPlayingListener = (NowPlayingListener)context;
-        } catch (ClassCastException e) {
-            nowPlayingListener = null;
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,16 +97,16 @@ public class NowPlayingFragment extends Fragment
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         hostConnectionObserver.registerPlayerObserver(this);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
         stopNowPlayingInfo();
         hostConnectionObserver.unregisterPlayerObserver(this);
+        super.onStop();
     }
 
     @Override

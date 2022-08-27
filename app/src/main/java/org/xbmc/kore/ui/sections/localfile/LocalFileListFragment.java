@@ -60,7 +60,7 @@ public class LocalFileListFragment extends AbstractTabsFragment
         externalStorageFileListArgs.putString(LocalMediaFileListFragment.ROOT_PATH_LOCATION, externalStorage);
         externalStorageFileListArgs.putParcelable(LocalMediaFileListFragment.SORT_METHOD, sortMethod);
 
-        TabsAdapter tabsAdapter = new TabsAdapter(getActivity(), getChildFragmentManager())
+        TabsAdapter tabsAdapter = new TabsAdapter(this)
                 .addTab(LocalMediaFileListFragment.class, dcimFileListArgs, R.string.dcim, 1)
                 .addTab(LocalMediaFileListFragment.class, directoryMusicFileListArgs, R.string.music, 2)
                 .addTab(LocalMediaFileListFragment.class, directoryMoviesFileListArgs, R.string.movies, 3)
@@ -98,13 +98,10 @@ public class LocalFileListFragment extends AbstractTabsFragment
     @Override
     public boolean onBackPressed() {
         // Tell current fragment to move up one directory, if possible
-        TabsAdapter adapter = (TabsAdapter)getViewPager().getAdapter();
-        if (adapter != null) {
-            LocalMediaFileListFragment curPage = (LocalMediaFileListFragment)adapter.getStoredFragment(getViewPager().getCurrentItem());
-            if ((curPage != null) && !curPage.atRootDirectory()) {
-                curPage.onBackPressed();
-                return true;
-            }
+        LocalMediaFileListFragment curPage = (LocalMediaFileListFragment)getCurrentSelectedFragment();
+        if (curPage != null && !curPage.atRootDirectory()) {
+            curPage.onBackPressed();
+            return true;
         }
         // Not handled, let the activity handle it
         return false;

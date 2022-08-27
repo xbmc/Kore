@@ -25,7 +25,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentDefaultViewPagerBinding;
@@ -55,20 +58,27 @@ abstract public class AbstractTabsFragment
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (container == null) {
-            // We're not being shown or there's nothing to show
-            return null;
-        }
-
         preferences = requireContext().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        binding = FragmentDefaultViewPagerBinding.inflate(inflater, container, false);
 
-        binding.pager.setAdapter(createTabsAdapter(getDataHolder()));
+        binding = FragmentDefaultViewPagerBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(false);
+
+        binding.pager.setOffscreenPageLimit(getOffscreenPageLimit());
+        TabsAdapter tabsAdapter = createTabsAdapter(getDataHolder());
+        binding.pager.setAdapter(tabsAdapter);
+        new TabLayoutMediator(binding.tabLayout, binding.pager,
+                              (tab, position) -> tab.setText(tabsAdapter.getPageTitle(position)))
+                .attach();
 
         if (shouldRememberLastTab()) {
             binding.pager.setCurrentItem(preferences.getInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), 0), false);
         }
-        return binding.getRoot();
     }
 
     @Override
@@ -76,15 +86,9 @@ abstract public class AbstractTabsFragment
         super.onStop();
         if (shouldRememberLastTab()) {
             preferences.edit()
-                    .putInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), binding.pager.getCurrentItem())
-                    .apply();
+                       .putInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), binding.pager.getCurrentItem())
+                       .apply();
         }
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(false);
     }
 
     @Override
@@ -109,8 +113,20 @@ abstract public class AbstractTabsFragment
                UIUtils.isViewInBounds(scrollView, artView);
     }
 
-    protected ViewPager getViewPager() {
+    protected Fragment getCurrentSelectedFragment() {
+        return getChildFragmentManager().findFragmentByTag("f" + binding.pager.getCurrentItem());
+    }
+
+    protected ViewPager2 getViewPager() {
         return binding.pager;
+    }
+
+    /**
+     * Override to specify the OffscreenPageLimit to set on the ViewPager2
+     * @return OffscreenPageLimit to set on the ViewPager2
+     */
+    protected int getOffscreenPageLimit() {
+        return 2;
     }
 
     /**
