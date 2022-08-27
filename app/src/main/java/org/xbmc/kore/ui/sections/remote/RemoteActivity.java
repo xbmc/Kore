@@ -357,40 +357,37 @@ public class RemoteActivity extends BaseActivity
     private String lastImageUrl = null;
 
     @Override
-    public void onPlayerPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
-
-    }
+    public void onPlayerPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {}
 
     public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         String imageUrl = (TextUtils.isEmpty(getItemResult.fanart)) ?
-                getItemResult.thumbnail : getItemResult.fanart;
+                          getItemResult.thumbnail : getItemResult.fanart;
         if ((imageUrl != null) && !imageUrl.equals(lastImageUrl)) {
             setImageViewBackground(imageUrl);
         }
         lastImageUrl = imageUrl;
-
         MediaSessionService.startIfNotRunning(this);
     }
 
     public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         onPlayerPlay(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void onPlayerStop() {
-        LogUtils.LOGD(TAG, "Player stopping");
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         if (lastImageUrl != null) {
             setImageViewBackground(null);
         }
         lastImageUrl = null;
     }
 
-    public void onPlayerNoResultsYet() {
-        // Do nothing
-    }
+    public void onPlayerNoResultsYet() { }
 
     public void onPlayerConnectionError(int errorCode, String description) {
         onPlayerStop();
@@ -402,6 +399,7 @@ public class RemoteActivity extends BaseActivity
     }
 
     public void onInputRequested(String title, String type, String value) {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
         SendTextDialogFragment dialog =
                 SendTextDialogFragment.newInstance(title);
         dialog.show(getSupportFragmentManager(), null);

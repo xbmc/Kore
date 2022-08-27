@@ -282,6 +282,8 @@ abstract public class AbstractInfoFragment
      */
     @Override
     public void onConnectionStatusError(int errorCode, String description) {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
+
         LogUtils.LOGD(TAG, "Connection Status Error, disabling buttons");
         lastConnectionStatusResult = CONNECTION_ERROR;
         binding.fabPlay.setEnabled(false);
@@ -296,6 +298,8 @@ abstract public class AbstractInfoFragment
      */
     @Override
     public void onConnectionStatusSuccess() {
+        if (binding == null) return; // If receiving this after onDestroy, ignore
+
         // Only update views if transitioning from error state.
         // If transitioning from Sucess or No results the enabled UI is already being shown
         if (lastConnectionStatusResult == CONNECTION_ERROR) {
