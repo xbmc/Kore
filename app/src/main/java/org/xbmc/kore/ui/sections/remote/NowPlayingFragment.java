@@ -117,25 +117,25 @@ public class NowPlayingFragment extends Fragment
     }
 
     @Override
-    public void playerOnPropertyChanged(Player.NotificationsData notificationsData) {
+    public void onPlayerPropertyChanged(Player.NotificationsData notificationsData) {
     }
 
     /**
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
      */
-    public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+    public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
-    public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+    public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
         setNowPlayingInfo(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
-    public void playerOnStop() {
+    public void onPlayerStop() {
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -143,7 +143,7 @@ public class NowPlayingFragment extends Fragment
         binding.includeInfoPanel.infoMessage.setText(String.format(getString(R.string.connected_to), hostInfo.getName()));
     }
 
-    public void playerOnConnectionError(int errorCode, String description) {
+    public void onPlayerConnectionError(int errorCode, String description) {
         stopNowPlayingInfo();
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -157,7 +157,7 @@ public class NowPlayingFragment extends Fragment
         }
     }
 
-    public void playerNoResultsYet() {
+    public void onPlayerNoResultsYet() {
         // Initialize info panel
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -169,13 +169,13 @@ public class NowPlayingFragment extends Fragment
         binding.includeInfoPanel.infoMessage.setText(null);
     }
 
-    public void systemOnQuit() {
-        playerNoResultsYet();
+    public void onSystemQuit() {
+        onPlayerNoResultsYet();
     }
 
     // Ignore this
-    public void inputOnInputRequested(String title, String type, String value) {}
-    public void observerOnStopObserving() {}
+    public void onInputRequested(String title, String type, String value) {}
+    public void onObserverStopObserving() {}
 
     /**
      * Sets whats playing information

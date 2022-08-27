@@ -261,13 +261,13 @@ public class MediaSessionService extends Service
 
     /* Ignore this */
     @Override
-    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {}
+    public void onPlayerPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {}
 
     /**
      * HostConnectionObserver.PlayerEventsObserver interface callbacks
      */
     @Override
-    public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+    public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
         notifyPlaying(getActivePlayerResult, getPropertiesResult, getItemResult);
@@ -277,7 +277,7 @@ public class MediaSessionService extends Service
     }
 
     @Override
-    public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+    public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
         notifyPlaying(getActivePlayerResult, getPropertiesResult, getItemResult);
@@ -288,7 +288,7 @@ public class MediaSessionService extends Service
 
     private final Handler stopHandler = new Handler(Looper.myLooper());
     @Override
-    public void playerOnStop() {
+    public void onPlayerStop() {
         notifyNothingPlaying();
 
         // Stop service if nothing starts in a couple of seconds
@@ -299,26 +299,26 @@ public class MediaSessionService extends Service
     }
 
     @Override
-    public void playerNoResultsYet() {
+    public void onPlayerNoResultsYet() {
         notifyNothingPlaying();
     }
 
     @Override
-    public void playerOnConnectionError(int errorCode, String description) {
+    public void onPlayerConnectionError(int errorCode, String description) {
         stop("Connection Error: " + description);
     }
 
     @Override
-    public void systemOnQuit() {
+    public void onSystemQuit() {
         stop("System quit");
     }
 
     // Ignore
     @Override
-    public void inputOnInputRequested(String title, String type, String value) {}
+    public void onInputRequested(String title, String type, String value) {}
 
     @Override
-    public void observerOnStopObserving() {
+    public void onObserverStopObserving() {
         stop("Stop observing");
     }
 

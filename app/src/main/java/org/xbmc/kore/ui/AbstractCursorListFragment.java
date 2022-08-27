@@ -411,13 +411,13 @@ public abstract class AbstractCursorListFragment
 	 * Override parent methods to only disable Swipe Refresh, as the list can be shown without a connection
 	 */
 	@Override
-	public void connectionStatusOnError(int errorCode, String description) {
+	public void onConnectionStatusError(int errorCode, String description) {
 		lastConnectionStatusResult = CONNECTION_ERROR;
 		binding.swipeRefreshLayout.setEnabled(false);
 	}
 
 	@Override
-	public void connectionStatusOnSuccess() {
+	public void onConnectionStatusSuccess() {
 		// Only update views if transitioning from error state.
 		// If transitioning from Sucess or No results the enabled UI is already being shown
 		if (lastConnectionStatusResult == CONNECTION_ERROR) {

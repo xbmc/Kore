@@ -41,7 +41,7 @@ import java.util.List;
  * to enable to get notifications not only through TCP but also through HTTP.
  * Depending on the connection protocol this class registers itself as an observer for
  * {@link HostConnection.PlayerNotificationsObserver} and forwards the notifications it gets,
- * or, if through HTTP, starts a periodic polling of XBMC, and tries to discern when a change in
+ * or, if through HTTP, starts a periodic polling of Kodi, and tries to discern when a change in
  * the player has occurred, notifying the listeners
  *
  * NOTE: An object of this class should always be called from the same thread.
@@ -59,20 +59,20 @@ public class HostConnectionObserver
          * Notifies that a playlist has been cleared
          * @param playlistId of playlist that has been cleared
          */
-        void playlistOnClear(int playlistId);
+        void onPlaylistClear(int playlistId);
 
         /**
          * Notifies about the available playlists on Kodi
          * @param playlists Available playlists
          */
-        void playlistsAvailable(ArrayList<GetPlaylist.GetPlaylistResult> playlists);
+        void onPlaylistsAvailable(ArrayList<GetPlaylist.GetPlaylistResult> playlists);
 
         /**
          * Notifies that an error occured when fetching playlists
          * @param errorCode Error code
          * @param description Error description
          */
-        void playlistOnError(int errorCode, String description);
+        void onPlaylistError(int errorCode, String description);
     }
 
     /**
@@ -84,7 +84,7 @@ public class HostConnectionObserver
          * @param volume Volume level
          * @param muted Is muted
          */
-        void applicationOnVolumeChanged(int volume, boolean muted);
+        void onApplicationVolumeChanged(int volume, boolean muted);
     }
 
     /**
@@ -101,7 +101,7 @@ public class HostConnectionObserver
                 PLAYER_IS_PAUSED = 3,
                 PLAYER_IS_STOPPED = 4;
 
-        void playerOnPropertyChanged(NotificationsData notificationsData);
+        void onPlayerPropertyChanged(NotificationsData notificationsData);
 
         /**
          * Notifies that something is playing
@@ -109,7 +109,7 @@ public class HostConnectionObserver
          * @param getPropertiesResult Properties obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetProperties}
          * @param getItemResult Currently playing item, obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
          */
-        void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+        void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                           PlayerType.PropertyValue getPropertiesResult,
                           ListType.ItemsAll getItemResult);
 
@@ -119,41 +119,41 @@ public class HostConnectionObserver
          * @param getPropertiesResult Properties obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetProperties}
          * @param getItemResult Currently paused item, obtained by a call to {@link org.xbmc.kore.jsonrpc.method.Player.GetItem}
          */
-        void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+        void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                            PlayerType.PropertyValue getPropertiesResult,
                            ListType.ItemsAll getItemResult);
 
         /**
          * Notifies that media is stopped/nothing is playing
          */
-        void playerOnStop();
+        void onPlayerStop();
 
         /**
          * Called when we get a connection error
          * @param errorCode Code
          * @param description Description
          */
-        void playerOnConnectionError(int errorCode, String description);
+        void onPlayerConnectionError(int errorCode, String description);
 
         /**
          * Notifies that we don't have a result yet
          */
-        void playerNoResultsYet();
+        void onPlayerNoResultsYet();
 
         /**
-         * Notifies that XBMC has quit/shutdown/sleep
+         * Notifies that Kodi has quit/shutdown/sleep
          */
-        void systemOnQuit();
+        void onSystemQuit();
 
         /**
-         * Notifies that XBMC has requested input
+         * Notifies that Kodi has requested input
          */
-        void inputOnInputRequested(String title, String type, String value);
+        void onInputRequested(String title, String type, String value);
 
         /**
          * Notifies the observer that it this is stopping
          */
-        void observerOnStopObserving();
+        void onObserverStopObserving();
     }
 
     /**
@@ -170,19 +170,19 @@ public class HostConnectionObserver
         /**
          * Notifies that we don't have a result yet
          */
-        void connectionStatusNoResultsYet();
+        void onConnectionStatusNoResultsYet();
 
         /**
          * Notifies that we're successfully connected
          */
-        void connectionStatusOnSuccess();
+        void onConnectionStatusSuccess();
 
         /**
          * Called when we get a connection error
          * @param errorCode Code
          * @param description Description
          */
-        void connectionStatusOnError(int errorCode, String description);
+        void onConnectionStatusError(int errorCode, String description);
     }
 
     /**
@@ -491,7 +491,7 @@ public class HostConnectionObserver
      */
     public void stopObserving() {
         for (final PlayerEventsObserver observer : playerEventsObservers)
-            observer.observerOnStopObserving();
+            observer.onObserverStopObserving();
 
         playerEventsObservers.clear();
         playlistEventsObservers.clear();
@@ -513,7 +513,7 @@ public class HostConnectionObserver
     public void onPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.OnPropertyChanged notification) {
         List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
         for (final PlayerEventsObserver observer : allObservers) {
-            observer.playerOnPropertyChanged(notification.data);
+            observer.onPlayerPropertyChanged(notification.data);
         }
     }
 
@@ -572,7 +572,7 @@ public class HostConnectionObserver
         // Copy list to prevent ConcurrentModificationExceptions
         List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
         for (final PlayerEventsObserver observer : allObservers) {
-            observer.systemOnQuit();
+            observer.onSystemQuit();
         }
     }
 
@@ -580,7 +580,7 @@ public class HostConnectionObserver
         // Copy list to prevent ConcurrentModificationExceptions
         List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
         for (final PlayerEventsObserver observer : allObservers) {
-            observer.systemOnQuit();
+            observer.onSystemQuit();
         }
     }
 
@@ -588,7 +588,7 @@ public class HostConnectionObserver
         // Copy list to prevent ConcurrentModificationExceptions
         List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
         for (final PlayerEventsObserver observer : allObservers) {
-            observer.systemOnQuit();
+            observer.onSystemQuit();
         }
     }
 
@@ -596,7 +596,7 @@ public class HostConnectionObserver
         // Copy list to prevent ConcurrentModificationExceptions
         List<PlayerEventsObserver> allObservers = new ArrayList<>(playerEventsObservers);
         for (final PlayerEventsObserver observer : allObservers) {
-            observer.inputOnInputRequested(notification.title, notification.type, notification.value);
+            observer.onInputRequested(notification.title, notification.type, notification.value);
         }
     }
 
@@ -606,7 +606,7 @@ public class HostConnectionObserver
         hostState.volumeLevel = notification.volume;
 
         for (ApplicationEventsObserver observer : applicationEventsObservers) {
-            observer.applicationOnVolumeChanged(notification.volume, notification.muted);
+            observer.onApplicationVolumeChanged(notification.volume, notification.muted);
         }
     }
 
@@ -618,7 +618,7 @@ public class HostConnectionObserver
             hostState.lastGetPlaylistResults = new ArrayList<>();
 
         for (PlaylistEventsObserver observer : playlistEventsObservers) {
-            observer.playlistOnClear(notification.playlistId);
+            observer.onPlaylistClear(notification.playlistId);
         }
     }
 
@@ -656,7 +656,7 @@ public class HostConnectionObserver
                 hostState.volumeLevel = result.volume;
 
                 for (ApplicationEventsObserver observer : applicationEventsObservers) {
-                    observer.applicationOnVolumeChanged(result.volume, result.muted);
+                    observer.onApplicationVolumeChanged(result.volume, result.muted);
                 }
             }
 
@@ -690,7 +690,7 @@ public class HostConnectionObserver
                 if (!(hostState.lastGetPlaylistResults != null &&
                     hostState.lastGetPlaylistResults.equals(result))) {
                     for (PlaylistEventsObserver observer : playlistEventsObservers) {
-                        observer.playlistsAvailable(result);
+                        observer.onPlaylistsAvailable(result);
                     }
                 }
 
@@ -714,7 +714,7 @@ public class HostConnectionObserver
                 isCheckingPlaylist = false;
 
                 for (PlaylistEventsObserver observer : playlistEventsObservers) {
-                    observer.playlistOnError(errorCode, description);
+                    observer.onPlaylistError(errorCode, description);
                 }
             }
         }, checkerHandler);
@@ -724,7 +724,7 @@ public class HostConnectionObserver
         if (clearedPlaylists == null) return;
         for (GetPlaylist.GetPlaylistResult getPlaylistResult : clearedPlaylists) {
             for (PlaylistEventsObserver observer : playlistEventsObservers) {
-                observer.playlistOnClear(getPlaylistResult.id);
+                observer.onPlaylistClear(getPlaylistResult.id);
             }
         }
     }
@@ -753,7 +753,7 @@ public class HostConnectionObserver
         if (hostState.lastConnectionStatusResult != ConnectionStatusObserver.CONNECTION_SUCCESS) {
             hostState.lastConnectionStatusResult = ConnectionStatusObserver.CONNECTION_SUCCESS;
             for (final ConnectionStatusObserver observer : observers) {
-                observer.connectionStatusOnSuccess();
+                observer.onConnectionStatusSuccess();
             }
         }
     }
@@ -766,7 +766,7 @@ public class HostConnectionObserver
             hostState.lastConnectionStatusErrorCode = errorCode;
             hostState.lastConnectionStatusErrorDescription = description;
             for (final ConnectionStatusObserver observer : observers) {
-                observer.connectionStatusOnError(errorCode, description);
+                observer.onConnectionStatusError(errorCode, description);
             }
         }
     }
@@ -955,11 +955,11 @@ public class HostConnectionObserver
      * @param observer Observers
      */
     private void notifyConnectionError(final int errorCode, final String description, PlayerEventsObserver observer) {
-        observer.playerOnConnectionError(errorCode, description);
+        observer.onPlayerConnectionError(errorCode, description);
     }
 
     /**
-     * Nothing is playing, notify observers calling playerOnStop
+     * Nothing is playing, notify observers calling onPlayerStop
      * Only notifies them if the result is different from the last one
      * @param observers List of observers
      */
@@ -984,7 +984,7 @@ public class HostConnectionObserver
      * @param observer Observer
      */
     private void notifyNothingIsPlaying(PlayerEventsObserver observer) {
-        observer.playerOnStop();
+        observer.onPlayerStop();
     }
 
     private boolean getPropertiesResultChanged(PlayerType.PropertyValue getPropertiesResult) {
@@ -1064,10 +1064,10 @@ public class HostConnectionObserver
                                           PlayerEventsObserver observer) {
         if (getPropertiesResult.speed == 0) {
             // Paused
-            observer.playerOnPause(getActivePlayersResult, getPropertiesResult, getItemResult);
+            observer.onPlayerPause(getActivePlayersResult, getPropertiesResult, getItemResult);
         } else {
             // Playing
-            observer.playerOnPlay(getActivePlayersResult, getPropertiesResult, getItemResult);
+            observer.onPlayerPlay(getActivePlayersResult, getPropertiesResult, getItemResult);
         }
     }
 
@@ -1089,7 +1089,7 @@ public class HostConnectionObserver
                 notifySomethingIsPlaying(hostState.lastGetActivePlayerResult, hostState.lastGetPropertiesResult, hostState.lastGetItemResult, observer);
                 break;
             case PlayerEventsObserver.PLAYER_NO_RESULT:
-                observer.playerNoResultsYet();
+                observer.onPlayerNoResultsYet();
                 break;
         }
     }
@@ -1103,7 +1103,7 @@ public class HostConnectionObserver
         if (hostState.volumeLevel == -1) {
             getApplicationProperties();
         } else {
-            observer.applicationOnVolumeChanged(hostState.volumeLevel, hostState.volumeMuted);
+            observer.onApplicationVolumeChanged(hostState.volumeLevel, hostState.volumeMuted);
         }
     }
 
@@ -1114,7 +1114,7 @@ public class HostConnectionObserver
      */
     private void replyWithLastResult(PlaylistEventsObserver observer) {
         if (hostState.lastGetPlaylistResults != null && !hostState.lastGetPlaylistResults.isEmpty())
-            observer.playlistsAvailable(hostState.lastGetPlaylistResults);
+            observer.onPlaylistsAvailable(hostState.lastGetPlaylistResults);
         else
             checkPlaylist();
     }
@@ -1126,13 +1126,13 @@ public class HostConnectionObserver
     private void replyWithLastResult(ConnectionStatusObserver observer) {
         switch (hostState.lastConnectionStatusResult) {
             case ConnectionStatusObserver.CONNECTION_ERROR:
-                observer.connectionStatusOnError(hostState.lastConnectionStatusErrorCode, hostState.lastConnectionStatusErrorDescription);
+                observer.onConnectionStatusError(hostState.lastConnectionStatusErrorCode, hostState.lastConnectionStatusErrorDescription);
                 break;
             case ConnectionStatusObserver.CONNECTION_SUCCESS:
-                observer.connectionStatusOnSuccess();
+                observer.onConnectionStatusSuccess();
                 break;
             case PlayerEventsObserver.PLAYER_NO_RESULT:
-                observer.connectionStatusNoResultsYet();
+                observer.onConnectionStatusNoResultsYet();
                 break;
         }
     }

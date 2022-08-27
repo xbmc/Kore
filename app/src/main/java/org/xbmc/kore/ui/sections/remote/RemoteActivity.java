@@ -357,11 +357,11 @@ public class RemoteActivity extends BaseActivity
     private String lastImageUrl = null;
 
     @Override
-    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+    public void onPlayerPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
 
     }
 
-    public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+    public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
         String imageUrl = (TextUtils.isEmpty(getItemResult.fanart)) ?
@@ -374,13 +374,13 @@ public class RemoteActivity extends BaseActivity
         MediaSessionService.startIfNotRunning(this);
     }
 
-    public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+    public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
-        playerOnPlay(getActivePlayerResult, getPropertiesResult, getItemResult);
+        onPlayerPlay(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
-    public void playerOnStop() {
+    public void onPlayerStop() {
         LogUtils.LOGD(TAG, "Player stopping");
         if (lastImageUrl != null) {
             setImageViewBackground(null);
@@ -388,26 +388,26 @@ public class RemoteActivity extends BaseActivity
         lastImageUrl = null;
     }
 
-    public void playerNoResultsYet() {
+    public void onPlayerNoResultsYet() {
         // Do nothing
     }
 
-    public void playerOnConnectionError(int errorCode, String description) {
-        playerOnStop();
+    public void onPlayerConnectionError(int errorCode, String description) {
+        onPlayerStop();
     }
 
-    public void systemOnQuit() {
+    public void onSystemQuit() {
         Toast.makeText(this, R.string.xbmc_quit, Toast.LENGTH_SHORT).show();
-        playerOnStop();
+        onPlayerStop();
     }
 
-    public void inputOnInputRequested(String title, String type, String value) {
+    public void onInputRequested(String title, String type, String value) {
         SendTextDialogFragment dialog =
                 SendTextDialogFragment.newInstance(title);
         dialog.show(getSupportFragmentManager(), null);
     }
 
-    public void observerOnStopObserving() {}
+    public void onObserverStopObserving() {}
 
     /**
      * Now playing fragment listener

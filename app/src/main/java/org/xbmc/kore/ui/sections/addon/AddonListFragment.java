@@ -117,9 +117,9 @@ public class AddonListFragment extends AbstractListFragment {
      * Show the addons
      */
     @Override
-    public void connectionStatusOnSuccess() {
+    public void onConnectionStatusSuccess() {
         boolean refresh = (lastConnectionStatusResult != CONNECTION_SUCCESS);
-        super.connectionStatusOnSuccess();
+        super.onConnectionStatusSuccess();
         if (refresh) onRefresh();
     }
 

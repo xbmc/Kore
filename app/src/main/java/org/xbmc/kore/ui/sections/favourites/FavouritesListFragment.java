@@ -36,7 +36,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostConnectionObserver;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiList;
@@ -114,9 +113,9 @@ public class FavouritesListFragment
      * Show the favourites
      */
     @Override
-    public void connectionStatusOnSuccess() {
+    public void onConnectionStatusSuccess() {
         boolean refresh = (lastConnectionStatusResult != CONNECTION_SUCCESS);
-        super.connectionStatusOnSuccess();
+        super.onConnectionStatusSuccess();
         if (refresh) onRefresh();
     }
 

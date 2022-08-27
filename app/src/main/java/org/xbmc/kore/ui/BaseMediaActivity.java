@@ -246,19 +246,19 @@ public abstract class BaseMediaActivity
     }
 
     @Override
-    public void applicationOnVolumeChanged(int volume, boolean muted) {
+    public void onApplicationVolumeChanged(int volume, boolean muted) {
         binding.nowPlayingPanel.setVolumeState(volume, muted);
     }
 
     @Override
-    public void playerOnPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
+    public void onPlayerPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
         binding.nowPlayingPanel.setRepeatShuffleState(notificationsData.property.repeatMode,
                                                       notificationsData.property.shuffled,
                                                       notificationsData.property.partymode);
     }
 
     @Override
-    public void playerOnPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
+    public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
         updateNowPlayingPanel(getActivePlayerResult, getPropertiesResult, getItemResult);
@@ -267,37 +267,37 @@ public abstract class BaseMediaActivity
     }
 
     @Override
-    public void playerOnPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult, PlayerType.PropertyValue getPropertiesResult, ListType.ItemsAll getItemResult) {
+    public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult, PlayerType.PropertyValue getPropertiesResult, ListType.ItemsAll getItemResult) {
         updateNowPlayingPanel(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     @Override
-    public void playerOnStop() {
+    public void onPlayerStop() {
         // Delay hiding the panel to prevent hiding it when playing the next item in a playlist
         callbackHandler.removeCallbacks(hidePanelRunnable);
         callbackHandler.postDelayed(hidePanelRunnable, 1000);
     }
 
     @Override
-    public void playerOnConnectionError(int errorCode, String description) {
+    public void onPlayerConnectionError(int errorCode, String description) {
         binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
-    public void playerNoResultsYet() {}
+    public void onPlayerNoResultsYet() {}
 
     @Override
-    public void observerOnStopObserving() {
+    public void onObserverStopObserving() {
         binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
-    public void systemOnQuit() {
+    public void onSystemQuit() {
         binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
-    public void inputOnInputRequested(String title, String type, String value) {}
+    public void onInputRequested(String title, String type, String value) {}
 
     private void updateNowPlayingPanel(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                                        PlayerType.PropertyValue getPropertiesResult,
