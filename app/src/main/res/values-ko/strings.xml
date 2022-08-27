@@ -180,7 +180,7 @@
 \n오류 내용:%1$s.</string>
     <string name="error_executing_subtitles">자막 애드온을 실행할 수 없습니다.
 \n오류 내용: %1$s.</string>
-    <string name="error_getting_addon_info">애드온 정보를 알 수 없습니다.
+    <string name="error_getting_addon_info">애드온 항목을 가져올 수 없습니다.
 \n오류 내용:%1$s.</string>
     <string name="error_getting_source_info">파일을 열 수 없습니다.
 \n오류 내용:%1$s.</string>
@@ -225,7 +225,7 @@
     <string name="no_genres_found_refresh">장르를 찾을 수 없음
 \n
 \n내려서 다시 읽기</string>
-    <string name="no_addons_found_refresh">애드온이 없거나 연결 안 됨
+    <string name="no_addons_found_refresh">애드온을 찾을 수 없습니다
 \n
 \n내려서 다시 읽기</string>
     <string name="no_music_videos_found_refresh">비디오를 찾을 수 없음
@@ -350,7 +350,9 @@
 \n
 \n 그렇다면 설정에서 옆 메뉴의 이 항목을 사용하지 않도록 설정할 수 있습니다.</string>
     <string name="error_starting_channel">채널 재생 중에 발생한 오류: %1$s</string>
-    <string name="error_favourites">즐겨찾기를 찾는 중에 발생한 오류: %1$s</string>
+    <string name="error_favourites">즐겨찾기를 가져 올 수 없습니다
+\n
+\n오류 내용: %1$s</string>
     <string name="error_starting_recording">녹화를 시작하면서 발생한 오류: %1$s</string>
     <string name="error_starting_to_record">녹화 중에 발생한 오류: %1$s</string>
     <string name="channel_switching">%1$s 채널로 바꿈</string>

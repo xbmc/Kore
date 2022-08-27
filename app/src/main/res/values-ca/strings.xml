@@ -156,7 +156,7 @@
 \nMissatge d\'error:%1$s.</string>
     <string name="error_executing_subtitles">No es pot executar el complement dels subtítols.
 \nMissatge d\'error: %1$s.</string>
-    <string name="error_getting_addon_info">No es pot obtenir la informació del Complement.
+    <string name="error_getting_addon_info">No es pot obtenir la llista dels complements.
 \nMissatge d\'error:%1$s.</string>
     <string name="error_getting_source_info">No es pot navegar pels fitxers.
 \nMissatge d\'error:%1$s.</string>
@@ -195,7 +195,7 @@
     <string name="no_genres_found_refresh">No s\'ha trobat cap gènere.
 \n
 \nLlisqueu avall per actualitzar</string>
-    <string name="no_addons_found_refresh">No s\'ha trobat cap complement o no està connectat
+    <string name="no_addons_found_refresh">No s\'ha trobat cap complement
 \n
 \nLlisqueu avall per actualitzar</string>
     <string name="no_music_videos_found_refresh">No s\'ha trobat cap vídeo.
@@ -332,7 +332,9 @@
     <string name="read_phone_state_permission_denied">Permís denegat. No podreu aturar les reproduccions mentre truqueu.</string>
     <string name="write_storage_permission_denied">Permís denegat. No podreu descarregar fitxers.</string>
     <string name="show_now_playing_panel_summary">Mostra un panell a la part inferior de la pantalla quan el contingut s\'està reproduint</string>
-    <string name="error_favourites">S\'ha produït un error mentre s\'obtenia els preferits amb descripció: %1$s</string>
+    <string name="error_favourites">No s\'han pogut obtenir els preferits
+\n
+\nDescripció d\'error: %1$s</string>
     <string name="no_songs_to_download">Cap cançó per descarregar</string>
     <string name="by_album">Per àlbum</string>
     <string name="by_artist">Per artista</string>

@@ -176,7 +176,7 @@
 \nKomunikat o błędzie:%1$s.</string>
     <string name="error_executing_subtitles">Nie można aktywować dodatku napisów.
 \nKomunikat o błędzie: %1$s.</string>
-    <string name="error_getting_addon_info">Nie można wyświetlić informacji o dodatku.
+    <string name="error_getting_addon_info">Nie udało się uzyskać listy dodatków.
 \nKomunikat o błędzie: %1$s.</string>
     <string name="error_getting_source_info">Nie można przeglądać plików.
 \nKomunikat o błędzie: %1$s.</string>
@@ -220,7 +220,7 @@
     <string name="no_genres_found_refresh">Brak gatunków
 \n
 \nPrzesuń w dół, aby odświeżyć</string>
-    <string name="no_addons_found_refresh">Brak dodatków lub niepodłączony
+    <string name="no_addons_found_refresh">Nie znaleziono dodatków
 \n
 \nPrzesuń w dół, aby odświeżyć</string>
     <string name="no_music_videos_found_refresh">Brak teledysków
@@ -348,7 +348,9 @@
     <string name="error_getting_pvr_info">Wystąpił błąd podczas pobierania informacji telewizji: %1$s</string>
     <string name="might_not_have_pvr">Wystąpił błąd podczas odczytywania listy kanałów, prawdopodobnie odtwarzacz nie posiada tunera lub jest nieskonfigurowany.\n\nGdybyś chciał usunąć ten wpis z bocznego menu, możesz zrobić to w Ustawieniach.</string>
     <string name="error_starting_channel">Błąd podczas przełączania kanału: %1$s</string>
-    <string name="error_favourites">Wystąpił błąd podczas pobierania ulubionych z opisem: %1$s</string>
+    <string name="error_favourites">Nie udało się uzyskać ulubionych
+\n
+\nOpis błędu: %1$s</string>
     <string name="error_starting_recording">Wystąpił błąd podczas startu nagrywania: %1$s</string>
     <string name="error_starting_to_record">Wystąpił błąd podczas nagrywania: %1$s</string>
     <string name="channel_switching">Przełączam na kanał %1$s</string>
