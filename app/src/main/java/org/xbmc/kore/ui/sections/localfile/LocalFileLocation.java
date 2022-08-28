@@ -34,11 +34,6 @@ public class LocalFileLocation implements Parcelable {
     public final String fullPath;
     public final boolean isDirectory;
     public final boolean hasParent;
-    private boolean isRoot;
-
-
-    public boolean isRootDir() { return this.isRoot; }
-    public void setRootDir(boolean root) { this.isRoot = root; }
 
     public LocalFileLocation(String fileName, String path, boolean isDir) {
         this(fileName, path, isDir, null, null);
@@ -51,8 +46,6 @@ public class LocalFileLocation implements Parcelable {
         this.isDirectory = isDir;
         this.hasParent = !noParent.matcher(path).matches();
 
-        this.isRoot = false;
-
         this.details = details;
         this.sizeDuration = sizeDuration;
     }
@@ -62,8 +55,6 @@ public class LocalFileLocation implements Parcelable {
         this.fullPath = in.readString();
         this.isDirectory = (in.readInt() != 0);
         this.hasParent = (in.readInt() != 0);
-        this.isRoot = (in.readInt() != 0);
-
         this.details = in.readString();
         this.sizeDuration = in.readString();
     }
@@ -77,8 +68,6 @@ public class LocalFileLocation implements Parcelable {
         out.writeString(fullPath);
         out.writeInt(isDirectory ? 1 : 0);
         out.writeInt(hasParent ? 1 : 0);
-        out.writeInt(isRoot ? 1 : 0);
-
         out.writeString(details);
         out.writeString(sizeDuration);
     }

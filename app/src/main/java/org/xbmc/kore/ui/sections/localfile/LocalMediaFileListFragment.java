@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,10 +46,8 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.method.Files;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
-import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
@@ -68,54 +68,76 @@ import java.util.List;
 public class LocalMediaFileListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(LocalMediaFileListFragment.class);
 
-    public static final String MEDIA_TYPE = "mediaType";
-    public static final String SORT_METHOD = "sortMethod";
-    public static final String PATH_CONTENTS = "pathContents";
-    public static final String ROOT_PATH_CONTENTS = "rootPathContents";
-    public static final String ROOT_VISITED = "rootVisited";
-    public static final String ROOT_PATH_LOCATION = "rootPath";
+    public static final String CURRENT_DIR_LOCATION = "currentDirLocation";
+    public static final String ROOT_PATH = "rootPath";
 
-    private String rootPathLocation = null;
-
+    private HttpApp http_app = null;
     private HostManager hostManager;
     /**
      * Handler on which to post RPC callbacks
      */
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
-    private LocalFileLocation currentDirectory = null;
-
-    String mediaType = Files.Media.FILES;
-    ListType.Sort sortMethod = null;
-    String parentDirectory = null;
-    boolean browseRootAlready = false;
-
-    ArrayList<LocalFileLocation> rootFileLocation = new ArrayList<>();
+    private String rootPath = null;
+    private LocalFileLocation currentDirLocation = null;
 
     // Permission check callback
     private final ActivityResultLauncher<String> filesPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    browseSources();
+                    browseDirectory(currentDirLocation);
                 } else {
-                    Toast.makeText(getActivity(), R.string.read_storage_permission_denied, Toast.LENGTH_SHORT)
-                         .show();
+                    showErrorMessage(getString(R.string.read_storage_permission_denied));
                 }
             });
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        hostManager = HostManager.getInstance(requireContext());
+
+        try {
+            http_app = HttpApp.getInstance(getContext(), 8080);
+        } catch (IOException ioe) {
+            showErrorMessage(getString(R.string.error_starting_http_server));
+        }
+
+        Bundle args = getArguments();
+        rootPath = (args != null)?
+                   args.getString(ROOT_PATH) :
+                   (savedInstanceState != null) ?
+                   savedInstanceState.getParcelable(ROOT_PATH) :
+                   Environment.getExternalStorageDirectory().getAbsolutePath();
+        if (rootPath != null && !rootPath.endsWith("/")) rootPath += "/";
+        currentDirLocation = (savedInstanceState != null) ?
+                             savedInstanceState.getParcelable(CURRENT_DIR_LOCATION) :
+                             new LocalFileLocation(".", rootPath, true);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getEmptyView().setOnClickListener(v -> browseDirectory(currentDirLocation));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (checkReadStoragePermission())
+            browseDirectory(currentDirLocation);
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(MEDIA_TYPE, mediaType);
-        outState.putParcelable(SORT_METHOD, sortMethod);
-        try {
-            outState.putParcelableArrayList(PATH_CONTENTS, (ArrayList<LocalFileLocation>) ((MediaPictureListAdapter) getAdapter()).getFileItemList());
-        } catch (NullPointerException npe) {
-            // adapter is null probably nothing was save in bundle because the directory is empty
-            // ignore this so that the empty message would display later on
-        }
-        outState.putParcelableArrayList(ROOT_PATH_CONTENTS, rootFileLocation);
-        outState.putBoolean(ROOT_VISITED, browseRootAlready);
+        outState.putParcelable(CURRENT_DIR_LOCATION, currentDirLocation);
+        outState.putString(ROOT_PATH, rootPath);
+    }
+
+    @Override
+    public void onRefresh() {
+        browseDirectory(currentDirLocation);
+        hideRefreshAnimation();
     }
 
     @Override
@@ -131,16 +153,6 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         return new MediaPictureListAdapter(requireContext(), R.layout.item_file);
     }
 
-    @Override
-    public void onRefresh() {
-        if (currentDirectory == null) {
-            browseSources();
-        } else {
-            browseDirectory(currentDirectory);
-        }
-        binding.swipeRefreshLayout.setRefreshing(false);
-    }
-
     /**
      * Override parent Connection Status callbacks, so that they don't disable the SwipeRefreshLayout and the list.
      * This fragment doesn't need a Kodi connection to show results
@@ -154,181 +166,67 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     @Override
     public void onConnectionStatusNoResultsYet() {}
 
-    private void checkReadStoragePermission() {
+    private void showErrorMessage(String message) {
+        binding.list.setVisibility(View.GONE);
+        getEmptyView().setVisibility(View.VISIBLE);
+        getEmptyView().setText(message);
+    }
+
+    private boolean checkReadStoragePermission() {
         boolean hasStoragePermission =
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
         if (!hasStoragePermission) {
             filesPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateView(inflater, container, savedInstanceState);
-        Bundle args = getArguments();
-
-        checkReadStoragePermission();
-
-        try {
-            if (http_app == null) {
-                http_app = HttpApp.getInstance(getContext(), 8080);
-            }
-        } catch (IOException ioe) {
-            Toast.makeText(getContext(),
-                    getString(R.string.error_starting_http_server),
-                    Toast.LENGTH_LONG).show();
-        }
-
-        if (args != null) {
-            this.rootPathLocation = args.getString(ROOT_PATH_LOCATION);
-            mediaType = args.getString(MEDIA_TYPE, Files.Media.FILES);
-            sortMethod = args.getParcelable(SORT_METHOD);
-        }
-
-        hostManager = HostManager.getInstance(requireContext());
-
-        getEmptyView().setOnClickListener(v -> {
-            if (!atRootDirectory())
-                browseSources();
-        });
-
-        if (savedInstanceState != null) {
-            mediaType = savedInstanceState.getString(MEDIA_TYPE, Files.Media.FILES);
-            //currentPath = savedInstanceState.getString(CURRENT_PATH);
-            sortMethod = savedInstanceState.getParcelable(SORT_METHOD);
-            ArrayList<LocalFileLocation> list = savedInstanceState.getParcelableArrayList(PATH_CONTENTS);
-            rootFileLocation = savedInstanceState.getParcelableArrayList(ROOT_PATH_CONTENTS);
-            browseRootAlready = savedInstanceState.getBoolean(ROOT_VISITED);
-            ((MediaPictureListAdapter) getAdapter()).setFilelistItems(list);
-        } else {
-            browseSources();
-        }
-        return root;
+        return hasStoragePermission;
     }
 
     void handleFileSelect(LocalFileLocation f) {
         // if selection is a directory, browse the the level below
         if (f.isDirectory) {
-            if (f.isRootDir() && !browseRootAlready) {
-                browseSources();
-            } else {
-                browseDirectory(f);
-            }
+            browseDirectory(f);
         } else {
             playMediaFile(f, null);
         }
     }
 
-    public void onBackPressed() {
+    public void navigateToParentDir() {
+        if (isRootDirectory(currentDirLocation)) return;
+
         // Emulate a click on ..
         LocalFileLocation selection = ((MediaPictureListAdapter) getAdapter()).getItem(0);
         if (selection != null) handleFileSelect(selection);
     }
 
-    public boolean atRootDirectory() {
-        return currentDirectory.fullPath.equals(rootPathLocation);
+    public boolean isRootDirectory(LocalFileLocation dir) {
+        return dir.fullPath.equals(rootPath);
     }
-
-    /**
-     * Gets and presents the list of media sources
-     */
-    private void browseSources() {
-        File directory;
-        if (rootFileLocation != null) {
-            directory = new File(rootPathLocation);
-        } else {
-            return;
-        }
-        File[] files = directory.listFiles();
-
-        if (files == null) {
-            Toast.makeText(getActivity(),
-                    getString(R.string.error_reading_local_storage),
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-        Arrays.sort(files);
-
-        rootFileLocation.clear();
-        browseRootAlready = true;
-        for (File file : files) {
-            boolean isDir = file.isDirectory();
-            rootFileLocation.add(
-                    new LocalFileLocation(file.getName(), file.getAbsolutePath(), isDir)
-            );
-        }
-        ((MediaPictureListAdapter) getAdapter()).setFilelistItems(rootFileLocation);
-    }
-
 
     /**
      * Gets and presents the files of the specified directory
      * @param dir Directory to browse
      */
     private void browseDirectory(final LocalFileLocation dir) {
-        if (dir.isRootDir()) {
-            // this is a root directory
-            parentDirectory = dir.fullPath;
-        } else {
-            // check to make sure that this is not our root path
-            String rootPath = null;
-            String path;
-            for (LocalFileLocation fl : rootFileLocation) {
-                path = fl.fullPath;
-                if ((path != null) && (dir.fullPath != null) &&
-                    (dir.fullPath.contentEquals(path))) {
-                    rootPath = fl.fullPath;
-                    break;
-                }
-            }
-            if (rootPath != null) {
-                parentDirectory = rootPath;
-                dir.setRootDir(true);
-            } else if (dir.fullPath != null) {
-                parentDirectory = getParentDirectory(dir.fullPath);
-            }
-        }
-
-        currentDirectory = dir;
-
         File[] files = (dir.fullPath == null) ? null : (new File(dir.fullPath)).listFiles();
         if (files == null) {
-            Toast.makeText(
-                getContext(),
-                String.format(getString(R.string.error_getting_source_info), "listFiles() failed"),
-                Toast.LENGTH_LONG).show();
+            showErrorMessage(String.format(getString(R.string.error_getting_source_info), "listFiles() failed"));
             return;
         }
-        Arrays.sort(files);
 
-        ArrayList<LocalFileLocation> dir_list = new ArrayList<>();
+        currentDirLocation = dir;
+        Arrays.sort(files);
         ArrayList<LocalFileLocation> file_list = new ArrayList<>();
 
-        if (dir.hasParent) {
-            // insert the parent directory as the first item in the list
-            parentDirectory = getParentDirectory(dir.fullPath);
-            LocalFileLocation fl = new LocalFileLocation("..", parentDirectory, true);
-            fl.setRootDir(dir.isRootDir());
-            dir_list.add(0, fl);
+        // insert the parent directory as the first item in the list
+        if (dir.hasParent && !isRootDirectory(dir)) {
+            file_list.add(0, new LocalFileLocation("..", getParentDirectory(dir.fullPath), true));
         }
 
         for (File file : files) {
-            LocalFileLocation fl = new LocalFileLocation(file.getName(), file.getAbsolutePath(), file.isDirectory());
-            if (fl.isDirectory) {
-                dir_list.add(fl);
-            } else {
-                file_list.add(fl);
-            }
+            file_list.add(new LocalFileLocation(file.getName(), file.getAbsolutePath(), file.isDirectory()));
         }
-
-        // TODO: use sortMethod here
-        ArrayList<LocalFileLocation> full_list = new ArrayList<>();
-        full_list.addAll(dir_list);
-        full_list.addAll(file_list);
-
-        ((MediaPictureListAdapter) getAdapter()).setFilelistItems(full_list);
-        browseRootAlready = false;
+        ((MediaPictureListAdapter) getAdapter()).setFilelistItems(file_list);
     }
 
     /**
@@ -647,6 +545,4 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
                 v.setText(UIUtils.applyMarkup(context, text));
         }
     }
-
-    HttpApp http_app = null;
 }
