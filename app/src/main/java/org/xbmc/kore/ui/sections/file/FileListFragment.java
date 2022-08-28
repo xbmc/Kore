@@ -30,7 +30,8 @@ import org.xbmc.kore.utils.TabsAdapter;
 /**
  * Manages the viewpager of files
  */
-public class FileListFragment extends AbstractTabsFragment
+public class FileListFragment
+        extends AbstractTabsFragment
         implements OnBackPressedListener {
 
     @Override
@@ -71,7 +72,7 @@ public class FileListFragment extends AbstractTabsFragment
         // Tell current fragment to move up one directory, if possible
         MediaFileListFragment curPage = (MediaFileListFragment)getCurrentSelectedFragment();
         if (curPage != null && !curPage.atRootDirectory()) {
-            curPage.onBackPressed();
+            curPage.navigateToParentDir();
             return true;
         }
         // Not handled, let the activity handle it

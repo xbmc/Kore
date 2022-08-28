@@ -155,12 +155,22 @@ public abstract class AbstractListFragment
 		adapter.notifyDataSetChanged(); //force gridView to redraw
 	}
 
+	public void showRefreshAnimation() {
+		binding.swipeRefreshLayout.setRefreshing(true);
+	}
+
 	public void hideRefreshAnimation() {
 		binding.swipeRefreshLayout.setRefreshing(false);
 	}
 
 	public RecyclerView.Adapter<?> getAdapter() {
 		return adapter;
+	}
+
+	protected void showErrorMessage(String message) {
+		binding.list.setVisibility(View.GONE);
+		getEmptyView().setVisibility(View.VISIBLE);
+		getEmptyView().setText(message);
 	}
 
 	/**
