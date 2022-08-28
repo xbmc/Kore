@@ -166,12 +166,6 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     @Override
     public void onConnectionStatusNoResultsYet() {}
 
-    private void showErrorMessage(String message) {
-        binding.list.setVisibility(View.GONE);
-        getEmptyView().setVisibility(View.VISIBLE);
-        getEmptyView().setText(message);
-    }
-
     private boolean checkReadStoragePermission() {
         boolean hasStoragePermission =
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
