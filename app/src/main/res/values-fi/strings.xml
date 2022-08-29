@@ -168,21 +168,21 @@
     <string name="fanart">Fanitaide</string>
     <string name="poster">Juliste</string>
     <string name="thumbnail">Pienoiskuva</string>
-    <string name="error_getting_properties">Kodin ominaisuuksia ei voitu noutaa.
+    <string name="error_getting_properties">Kodi-ominaisuuksien nouto ei onnistunut.
 \nVirheilmoitus: %1$s.</string>
-    <string name="error_executing_subtitles">Teksityslisäosaa ei voitu suorittaa.
+    <string name="error_executing_subtitles">Teksityslisäosan suoritus ei onnistunut.
 \nVirheilmoitus: %1$s.</string>
-    <string name="error_getting_addon_info">Lisäosan tietoja ei voitu noutaa.
+    <string name="error_getting_addon_info">Lisäosalistauksen nouto ei onnistunut.
 \nVirheilmoitus: %1$s.</string>
-    <string name="error_getting_source_info">Tiedostoja ei voitu selata.
+    <string name="error_getting_source_info">Tiedostojen selaus ei onnistunut.
 \nVirheilmoitus: %1$s.</string>
-    <string name="error_play_media_file">Mediatiedostoa ei voitu toistaa.
+    <string name="error_play_media_file">Mediatiedoston toisto ei onnistunut.
 \nVirheilmoitus: %1$s.</string>
-    <string name="error_play_local_file">Paikallista mediatiedostoa ei voitu toistaa.
+    <string name="error_play_local_file">Paikallisen mediatiedoston toisto ei onnistunut.
 \nVirheilmoitus: %1$s.</string>
-    <string name="error_queue_media_file">Mediatiedostoa ei voitu lisätä jonoon.
+    <string name="error_queue_media_file">Mediatiedoston lisäys jonoon ei onnistunut.
 \nVirheilmoitus: %1$s.</string>
-    <string name="error_get_active_player">Aktiivista soitinta ei voitu selvittää.
+    <string name="error_get_active_player">Aktiivisen soittimen selvitys ei onnistunut.
 \nVirheilmoitus: %1$s.</string>
     <string name="error_share_video">Videota ei voitu välittää Kodille.</string>
     <string name="error_reading_local_storage">Paikallista tallennusmediaa ei voitu lukea. Onko Korelle myönnetty tiedostojen käyttöoikeus\?</string>
@@ -216,8 +216,7 @@
     <string name="no_genres_found_refresh">Lajityyppejä ei löytynyt
 \n
 \nPäivitä vetämällä alas</string>
-    <string name="no_addons_found_refresh">Lisäosia ei löytynyt tai ei ole yhteyttä
-\n
+    <string name="no_addons_found_refresh">Lisäosia ei löytynyt.
 \nPäivitä vetämällä alas</string>
     <string name="no_music_videos_found_refresh">Videoita ei löytynyt
 \n
@@ -349,7 +348,8 @@
 \n
 \nMikäli näin on, voidaan sovelluksen asetustuksissa poistaa tämä osio sivuvalikosta.</string>
     <string name="error_starting_channel">Virhe aloitettaessa kanavan toistoa: %1$s</string>
-    <string name="error_favourites">Virhe noudettaessa suosikkeja kuvauksineen: %1$s</string>
+    <string name="error_favourites">Suosikkien nouto ei onnistunut.
+\nVirheilmoitus: %1$s</string>
     <string name="error_starting_recording">Virhe aloitettaessa tallennusta: %1$s</string>
     <string name="error_starting_to_record">Virhe tallennettaessa: %1$s</string>
     <string name="channel_switching">Vaihdetaan kanavalle %1$s</string>
