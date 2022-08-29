@@ -318,4 +318,26 @@
     Če potrebujete pomoč, obiščite naš <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
     ]]></string>
     <string name="queue_action">Vrsta</string>
+    <string name="download_action">Prenesi</string>
+    <string name="disabled_status">Onemogočeno</string>
+    <string name="enabled_status">Omogočeno</string>
+    <string name="unwatched_status">Neogledanih</string>
+    <string name="watched_status">Ogledanih</string>
+    <string name="party_mode">Način zabave</string>
+    <string name="web_search">Spletno iskanje</string>
+    <string name="any_network">Katerokoli omrežje</string>
+    <string name="mobile_network">Mobilno omrežje</string>
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="language">Jezik</string>
+    <string name="read_storage_permission_denied">Ni ustreznih dovoljenj. Branje datotek ne bo mogoče.</string>
+    <string name="queue_on_kodi">Uvrsti za predvajanje s Kodi</string>
+    <string name="always_sendtokodi_addon">Prednostno uporabi razširitev SendToKodi</string>
+    <string name="theme_sunset">Način sončnega zahoda</string>
+    <string name="theme_sunrise">Način sončnega vzhoda</string>
+    <string name="theme_sun_dynamic">Prilagodljivo po dnevnem ritmu</string>
+    <string name="theme_default_dynamic">Prilagodljiv dnevno nočni način</string>
+    <string name="local_file_browser">Krajevni brskalnik</string>
+    <string name="local_files">Krajevne datoteke</string>
+    <string name="external_storage">Shramba</string>
+    <string name="dcim">Digitalne slike</string>
 </resources>

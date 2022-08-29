@@ -379,4 +379,6 @@
     <string name="any_network">Cualesquiera</string>
     <string name="always_sendtokodi_addon">Preferir el complementu SendToKodi</string>
     <string name="queue_action">Amestar a la cola</string>
+    <string name="download_action">Descargues</string>
+    <string name="disabled_status">Desactivóse</string>
 </resources>
