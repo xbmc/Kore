@@ -142,8 +142,7 @@ public class FavouritesListFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting favourites: " + description);
-                getEmptyView().setVisibility(View.VISIBLE);
-                getEmptyView().setText(getString(R.string.error_favourites, description));
+                showErrorMessage(getString(R.string.error_favourites, description));
                 hideRefreshAnimation();
             }
         }, callbackHandler);
