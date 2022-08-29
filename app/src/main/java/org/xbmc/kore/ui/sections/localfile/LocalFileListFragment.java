@@ -91,13 +91,8 @@ public class LocalFileListFragment extends AbstractTabsFragment
     @Override
     public boolean onBackPressed() {
         // Tell current fragment to move up one directory, if possible
-        LocalMediaFileListFragment curPage = (LocalMediaFileListFragment)getCurrentSelectedFragment();
-        if (curPage != null) {
-            curPage.navigateToParentDir();
-            return true;
-        }
-        // Not handled, let the activity handle it
-        return false;
+        LocalMediaFileListFragment frag = (LocalMediaFileListFragment)getCurrentSelectedFragment();
+        return (frag != null) && frag.navigateToParentDir();
     }
 
     @Override

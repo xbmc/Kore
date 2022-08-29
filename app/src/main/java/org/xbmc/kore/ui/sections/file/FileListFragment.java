@@ -70,13 +70,8 @@ public class FileListFragment
     @Override
     public boolean onBackPressed() {
         // Tell current fragment to move up one directory, if possible
-        MediaFileListFragment curPage = (MediaFileListFragment)getCurrentSelectedFragment();
-        if (curPage != null && !curPage.atRootDirectory()) {
-            curPage.navigateToParentDir();
-            return true;
-        }
-        // Not handled, let the activity handle it
-        return false;
+        MediaFileListFragment frag = (MediaFileListFragment)getCurrentSelectedFragment();
+        return (frag != null) && frag.navigateToParentDir();
     }
 
     @Override
