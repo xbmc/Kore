@@ -71,7 +71,8 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
             Bundle args = (Bundle) arguments.clone();
             String name = prefs.getString(Settings.getNameBookmarkedAddonsPrefKey(hostId) + path, Settings.DEFAULT_PREF_NAME_BOOKMARKED_ADDON);
             args.putParcelable(MediaFileListFragment.CURRENT_LOCATION,
-                                    new MediaFileListFragment.FileLocation(name, "plugin://" + path, true));
+                               new MediaFileListFragment.FileLocation(name, "plugin://" + path, true, null, true));
+            args.putBoolean(MediaFileListFragment.DELAY_LOAD, true);
             args.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.FILES);
             tabsAdapter.addTab(MediaFileListFragment.class, args, name, ++baseFragmentId);
         }

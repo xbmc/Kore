@@ -185,12 +185,17 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         }
     }
 
-    public void navigateToParentDir() {
-        if (isRootDirectory(currentDirLocation)) return;
+    /**
+     * Tries to navigate to the parent directory, returning whether it is possible
+     * @return Whether it is possible to navigate
+     */
+    public boolean navigateToParentDir() {
+        if (isRootDirectory(currentDirLocation)) return false;
 
         // Emulate a click on ..
         LocalFileLocation selection = ((MediaPictureListAdapter) getAdapter()).getItem(0);
         if (selection != null) handleFileSelect(selection);
+        return true;
     }
 
     public boolean isRootDirectory(LocalFileLocation dir) {

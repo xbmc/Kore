@@ -36,9 +36,8 @@ public class AddonDetailsFragment extends AbstractTabsFragment {
         String name = dataHolder.getTitle();
         String path = details.getString(AddonInfoFragment.BUNDLE_KEY_ADDONID);
 
-        MediaFileListFragment.FileLocation rootPath = new MediaFileListFragment.FileLocation(name, "plugin://" + path, true);
-        rootPath.setRootDir(true);
-        details.putParcelable(MediaFileListFragment.CURRENT_LOCATION, rootPath);
+        details.putParcelable(MediaFileListFragment.CURRENT_LOCATION,
+                              new MediaFileListFragment.FileLocation(name, "plugin://" + path, true, null, true));
         details.putBoolean(MediaFileListFragment.DELAY_LOAD, true);
         return details;
     }

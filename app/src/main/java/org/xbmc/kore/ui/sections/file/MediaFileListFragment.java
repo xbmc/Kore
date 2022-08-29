@@ -38,9 +38,9 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Files;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.method.Playlist;
@@ -58,9 +58,7 @@ import org.xbmc.kore.utils.Utils;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Queue;
-import java.util.regex.Pattern;
 
 /**
  * Presents a list of files of different types (Video/Music)
@@ -70,10 +68,9 @@ public class MediaFileListFragment extends AbstractListFragment {
 
     public static final String MEDIA_TYPE = "mediaType";
     public static final String SORT_METHOD = "sortMethod";
-    public static final String ROOT_PATH_CONTENTS = "rootPathContents";
-    public static final String ROOT_VISITED = "rootVisited";
     public static final String CURRENT_LOCATION = "currentLocation";
     public static final String DELAY_LOAD = "delayLoad";
+
     private static final String ADDON_SOURCE = "addons:";
 
     private HostManager hostManager;
@@ -84,11 +81,15 @@ public class MediaFileListFragment extends AbstractListFragment {
 
     String mediaType = Files.Media.FILES;
     ListType.Sort sortMethod = null;
-    boolean rootVisited = false;
+    /**
+     * The current location we're browsing. Can be null, if we're at the main Sources level
+     */
     FileLocation currentLocation = null;
+    /**
+     * Whether to delay loading until onResume, instead of when we get a valid connection
+     */
     boolean delayLoad = false;
 
-    ArrayList<FileLocation> rootPathContents = new ArrayList<>();
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
 
     @Override
@@ -113,8 +114,6 @@ public class MediaFileListFragment extends AbstractListFragment {
             mediaType = savedInstanceState.getString(MEDIA_TYPE, Files.Media.FILES);
             sortMethod = savedInstanceState.getParcelable(SORT_METHOD);
             currentLocation = savedInstanceState.getParcelable(CURRENT_LOCATION);
-            rootPathContents = savedInstanceState.getParcelableArrayList(ROOT_PATH_CONTENTS);
-            rootVisited = savedInstanceState.getBoolean(ROOT_VISITED);
         }
 
         getEmptyView().setOnClickListener(v -> {
@@ -126,7 +125,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        // If we were asked to delay the load, only load now
+        // If we were asked to delay the load, only load now, as we're only visible now
         if (delayLoad) {
             delayLoad = false;
             if (currentLocation != null && lastConnectionStatusResult == CONNECTION_SUCCESS)
@@ -140,8 +139,6 @@ public class MediaFileListFragment extends AbstractListFragment {
         outState.putString(MEDIA_TYPE, mediaType);
         outState.putParcelable(SORT_METHOD, sortMethod);
         outState.putParcelable(CURRENT_LOCATION, currentLocation);
-        outState.putParcelableArrayList(ROOT_PATH_CONTENTS, rootPathContents);
-        outState.putBoolean(ROOT_VISITED, rootVisited);
     }
 
     @Override
@@ -149,6 +146,7 @@ public class MediaFileListFragment extends AbstractListFragment {
         boolean refresh = lastConnectionStatusResult != CONNECTION_SUCCESS;
         super.onConnectionStatusSuccess();
 
+        // Refresh contents if we're not asked to delay and if we're transioning to a successful connection
         if (delayLoad || !refresh) return;
         onRefresh();
     }
@@ -173,40 +171,26 @@ public class MediaFileListFragment extends AbstractListFragment {
     }
 
     void handleFileSelect(FileLocation f) {
-        if (f == null) return;
-        // if selection is a directory, browse the the level below
-        if (f.isDirectory) {
-            // a directory - store the path of this directory so that we can reverse travel if
-            // we want to
-            if (f.isRootDir()) {
-                if (rootVisited)
-                    browseDirectory(f);
-                else {
-                    browseSources();
-                }
-            } else {
-                browseDirectory(f);
-            }
+        if (f == null || f.file == null) {
+            // If at first level, browse Sources
+            browseSources();
+        } else if (f.isDirectory) {
+            browseDirectory(f);
         } else {
             playMediaFile(f.file);
         }
     }
 
-    public void navigateToParentDir() {
-        // Emulate a click on back
-        handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(0));
+    public boolean navigateToParentDir() {
+        if (currentLocation != null && !currentLocation.isRoot) {
+            handleFileSelect(currentLocation.parentDirectory);
+            return true;
+        }
+        return false;
     }
 
     public boolean atRootDirectory() {
-        if (getAdapter().getItemCount() == 0)
-            return true;
-        FileLocation fl = ((MediaFileListAdapter) getAdapter()).getItem(0);
-        if (fl == null)
-            return true;
-        else
-            // if we still see "..", it is not the real root directory
-            return fl.isRootDir() &&
-                   (fl.title != null) && !fl.title.contentEquals("..");
+        return (currentLocation == null || currentLocation.isRoot);
     }
 
     private int getPlaylistId(String mediaType) {
@@ -230,21 +214,15 @@ public class MediaFileListFragment extends AbstractListFragment {
             public void onSuccess(List<ItemType.Source> result) {
                 if (!isAdded()) return;
                 hideRefreshAnimation();
-                // save this to compare when the user select a node
-                rootPathContents.clear();
-                FileLocation fl;
+                // Add the sources, setting no parent dir as it doesn't exist but not setting them as root
+                List<FileLocation> rootContents = new ArrayList<>();
                 for (ItemType.Source item : result) {
-                    if ((item.file != null) &&
-                        (!item.file.contains(ADDON_SOURCE))) {
-                        fl = new FileLocation(item.label, item.file, true);
-                        fl.setRootDir(true);
-                        rootPathContents.add(fl);
+                    if ((item.file != null) && (!item.file.contains(ADDON_SOURCE))) {
+                        rootContents.add(new FileLocation(item.label, item.file, true, null, false));
                     }
                 }
-
-                rootVisited = true;
                 getEmptyView().setText(getString(R.string.source_empty));
-                ((MediaFileListAdapter) getAdapter()).setFilelistItems(rootPathContents);
+                ((MediaFileListAdapter) getAdapter()).setFilelistItems(rootContents);
             }
 
             @Override
@@ -261,31 +239,6 @@ public class MediaFileListFragment extends AbstractListFragment {
      * @param dir Directory to browse
      */
     private void browseDirectory(final FileLocation dir) {
-        LogUtils.LOGD(TAG, "Browsing directory: " + dir.file);
-        final String parentDirectory;
-        if (dir.isRootDir()) {
-            // this is a root directory
-            parentDirectory = dir.file;
-        } else {
-            // check to make sure that this is not our root path
-            String rootPath = null;
-            String path;
-            for (FileLocation fl : rootPathContents) {
-                path = fl.file;
-                if ((path != null) && (dir.file != null) &&
-                    (dir.file.contentEquals(path))) {
-                    rootPath = fl.file;
-                    break;
-                }
-            }
-            if (rootPath != null) {
-                parentDirectory = rootPath;
-                dir.setRootDir(true);
-            } else {
-                parentDirectory = getParentDirectory(dir.file);
-            }
-        }
-
         String[] properties = new String[] {
                 ListType.FieldsFiles.TITLE, ListType.FieldsFiles.ARTIST,
                 //ListType.FieldsFiles.ALBUMARTIST, ListType.FieldsFiles.GENRE,
@@ -331,19 +284,23 @@ public class MediaFileListFragment extends AbstractListFragment {
                 if (!isAdded()) return;
                 currentLocation = dir;
                 hideRefreshAnimation();
-                ArrayList<FileLocation> flList = new ArrayList<>();
 
-                if (dir.hasParent) {
-                    // insert the parent directory as the first item in the list
-                    FileLocation fl = new FileLocation("..", parentDirectory, true);
-                    fl.setRootDir(dir.isRootDir());
+                ArrayList<FileLocation> flList = new ArrayList<>();
+                if (!dir.isRoot) {
+                    // Insert the parent directory as the first item in the list
+                    // If it doesn't exist, create a fake one just to show, and set it as root, will browse sources instead
+                    FileLocation fl = dir.parentDirectory;
+                    if (fl == null) {
+                        fl = new FileLocation("..", null, true, null, true);
+                    } else {
+                        fl.title = "..";
+                    }
                     flList.add(0, fl);
                 }
-                for (ListType.ItemFile i : result) {
-                    flList.add(FileLocation.newInstanceFromItemFile(getActivity(), i));
+                for (ListType.ItemFile item : result) {
+                    flList.add(FileLocation.newInstanceFromItemFile(getActivity(), item, currentLocation));
                 }
                 ((MediaFileListAdapter) getAdapter()).setFilelistItems(flList);
-                rootVisited = false;
             }
 
             @Override
@@ -496,31 +453,6 @@ public class MediaFileListFragment extends AbstractListFragment {
             }
         }, callbackHandler);
 
-    }
-
-    /**
-     * return the path of the parent based on path
-     * @param path of the current media file
-     * @return path of the parent
-     */
-    public static String getParentDirectory(final String path) {
-        if (path == null) return null;
-        String p = path;
-        String pathSymbol = "/";        // unix style
-        if (path.contains("\\")) {
-            pathSymbol = "\\";          // windows style
-        }
-
-        // if path ends with /, remove it before removing the directory name
-        if (path.endsWith(pathSymbol)) {
-            p = path.substring(0, path.length() - 1);
-        }
-
-        if (p.lastIndexOf(pathSymbol) != -1) {
-            p = p.substring(0, p.lastIndexOf(pathSymbol));
-        }
-        p = p + pathSymbol;            // add it back to make it look like path
-        return p;
     }
 
     /**
@@ -722,38 +654,38 @@ public class MediaFileListFragment extends AbstractListFragment {
     }
 
     public static class FileLocation implements Parcelable {
-        public final String title;
+        // Text to show on the list
+        public String title;
         public final String details;
         public final String sizeDuration;
         public final String artUrl;
 
         public final String file;
         public final boolean isDirectory;
-        public final boolean hasParent;
-        private boolean isRoot;
+        // This location parent, can be null
+        public final FileLocation parentDirectory;
+        // Whether this location should be considered root, in which case its not possible to go up
+        public final boolean isRoot;
 
-        public boolean isRootDir() { return this.isRoot; }
-        public void setRootDir(boolean root) { this.isRoot = root; }
-
-        public FileLocation(String title, String path, boolean isDir) {
-            this(title, path, isDir, null, null, null);
+        public FileLocation(String title, String path, boolean isDir, FileLocation parentDirectory, boolean isRoot) {
+            this(title, path, isDir, parentDirectory, isRoot, null, null, null);
         }
 
-        static final Pattern noParent = Pattern.compile("plugin://[^/]*/?");
-        public FileLocation(String title, String path, boolean isDir, String details, String sizeDuration, String artUrl) {
+        public FileLocation(String title, String path, boolean isDir, FileLocation parentDirectory, boolean isRoot,
+                            String details, String sizeDuration, String artUrl) {
             this.title = title;
             this.file = path;
             this.isDirectory = isDir;
-            this.hasParent = !noParent.matcher(path).matches();
-
-            this.isRoot = false;
+            this.parentDirectory = parentDirectory;
+            this.isRoot = isRoot;
 
             this.details = details;
             this.sizeDuration = sizeDuration;
             this.artUrl = artUrl;
         }
 
-        public static FileLocation newInstanceFromItemFile(Context context, ListType.ItemFile itemFile) {
+
+        public static FileLocation newInstanceFromItemFile(Context context, ListType.ItemFile itemFile, FileLocation parentDirectory) {
             String DELIMITER = "  |  ";
             String title, details;
             int duration;
@@ -799,6 +731,7 @@ public class MediaFileListFragment extends AbstractListFragment {
                                   (duration > 0)? UIUtils.formatTime(duration) : null;
             return new FileLocation(title, itemFile.file,
                                     itemFile.filetype.equalsIgnoreCase(ListType.ItemFile.FILETYPE_DIRECTORY),
+                                    parentDirectory, false,
                                     details, sizeDuration, artUrl);
         }
 
@@ -806,12 +739,13 @@ public class MediaFileListFragment extends AbstractListFragment {
             this.title = in.readString();
             this.file = in.readString();
             this.isDirectory = (in.readInt() != 0);
-            this.hasParent = (in.readInt() != 0);
-            this.isRoot = (in.readInt() != 0);
 
             this.details = in.readString();
             this.sizeDuration = in.readString();
             this.artUrl = in.readString();
+
+            this.isRoot = (in.readInt() != 0);
+            this.parentDirectory = in.readParcelable(getClass().getClassLoader());
         }
 
         public int describeContents() {
@@ -822,12 +756,13 @@ public class MediaFileListFragment extends AbstractListFragment {
             out.writeString(title);
             out.writeString(file);
             out.writeInt(isDirectory ? 1 : 0);
-            out.writeInt(hasParent ? 1 : 0);
-            out.writeInt(isRoot ? 1 : 0);
 
             out.writeString(details);
             out.writeString(sizeDuration);
             out.writeString(artUrl);
+
+            out.writeInt(isRoot ? 1 : 0);
+            out.writeParcelable(parentDirectory, flags);
         }
 
         public static final Parcelable.Creator<FileLocation> CREATOR = new Parcelable.Creator<FileLocation>() {
