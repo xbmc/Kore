@@ -43,6 +43,7 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
@@ -60,7 +61,8 @@ import java.util.Locale;
 /**
  * Fragment that presents the PVR recordings list
  */
-public class PVRRecordingsListFragment extends AbstractSearchableFragment
+public class PVRRecordingsListFragment
+        extends AbstractSearchableFragment
         implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = LogUtils.makeLogTag(PVRRecordingsListFragment.class);
 
@@ -79,15 +81,13 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
 
             // Start the recording
             Toast.makeText(requireContext(),
-                    String.format(getString(R.string.starting_recording), tag.title),
-                    Toast.LENGTH_SHORT).show();
+                           String.format(getString(R.string.starting_recording), tag.title),
+                           Toast.LENGTH_SHORT)
+                 .show();
             Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
             action.execute(hostManager.getConnection(), new ApiCallback<String>() {
                 @Override
-                public void onSuccess(String result) {
-                    if (!isAdded()) return;
-                    LogUtils.LOGD(TAG, "Started recording");
-                }
+                public void onSuccess(String result) { }
 
                 @Override
                 public void onError(int errorCode, String description) {
@@ -95,8 +95,9 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                     LogUtils.LOGD(TAG, "Error starting recording: " + description);
 
                     Toast.makeText(requireContext(),
-                            String.format(getString(R.string.error_starting_recording), description),
-                            Toast.LENGTH_SHORT).show();
+                                   String.format(getString(R.string.error_starting_recording), description),
+                                   Toast.LENGTH_SHORT)
+                         .show();
 
                 }
             }, callbackHandler);
@@ -111,31 +112,16 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setSupportsSearch(true);
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateView(inflater, container, savedInstanceState);
-
         hostManager = HostManager.getInstance(requireContext());
-
-        return root;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setSupportsSearch(true);
         setHasOptionsMenu(true);
-        browseRecordings();
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
@@ -173,12 +159,6 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
-    @Override
-    public void refreshList() {
-       onRefresh();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
@@ -212,12 +192,23 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
         return super.onOptionsItemSelected(item);
     }
 
-    /*
-     * Swipe refresh layout callback
-     */
     /** {@inheritDoc} */
     @Override
     public void onRefresh () {
+        refreshList();
+    }
+
+    // Got a connection, refresh now
+    @Override
+    public void onConnectionStatusSuccess() {
+        // Only refresh if we're transitioning from an error or initial state
+        boolean refresh = (lastConnectionStatusResult != CONNECTION_SUCCESS);
+        super.onConnectionStatusSuccess();
+        if (refresh) refreshList();
+    }
+
+    @Override
+    public void refreshList() {
         if (hostManager.getHostInfo() != null) {
             browseRecordings();
         } else {
@@ -239,8 +230,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
                 LogUtils.LOGD(TAG, "Got recordings");
 
                 // To prevent the empty text from appearing on the first load, set it now
-                TextView emptyView = getEmptyView();
-                emptyView.setText(getString(R.string.no_recordings_found_refresh));
+                getEmptyView().setText(getString(R.string.no_recordings_found_refresh));
 
                 // As the JSON RPC API does not support sorting or filter parameters for PVR.GetRecordings
                 // we apply the sorting and filtering right here.
@@ -343,13 +333,7 @@ public class PVRRecordingsListFragment extends AbstractSearchableFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting recordings: " + description);
-
-                // To prevent the empty text from appearing on the first load, set it now
-                TextView emptyView = getEmptyView();
-                emptyView.setText(String.format(getString(R.string.error_getting_pvr_info), description));
-                Toast.makeText(requireContext(),
-                               String.format(getString(R.string.error_getting_pvr_info), description),
-                               Toast.LENGTH_SHORT).show();
+                showErrorMessage(getString(R.string.might_not_have_pvr));
                 hideRefreshAnimation();
             }
         }, callbackHandler);

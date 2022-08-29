@@ -56,8 +56,10 @@ import java.util.Locale;
 /**
  * Fragment that presents the movie list
  */
-public class PVRChannelsListFragment extends AbstractSearchableFragment
-        implements SwipeRefreshLayout.OnRefreshListener, OnBackPressedListener {
+public class PVRChannelsListFragment
+        extends AbstractSearchableFragment
+        implements SwipeRefreshLayout.OnRefreshListener,
+                   OnBackPressedListener {
     private static final String TAG = LogUtils.makeLogTag(PVRChannelsListFragment.class);
 
     public static final String CHANNELGROUPID = "channelgroupid";
@@ -85,6 +87,7 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hostManager = HostManager.getInstance(requireContext());
     }
 
     @Override
@@ -101,14 +104,10 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
             singleChannelGroup = savedInstanceState.getBoolean(SINGLECHANNELGROUP);
         }
 
-        hostManager = HostManager.getInstance(requireContext());
-
         Bundle args = getArguments();
         currentListType = (args == null) ?
                           PVRListFragment.LIST_TV_CHANNELS :
                           args.getInt(PVRListFragment.PVR_LIST_TYPE_KEY, PVRListFragment.LIST_TV_CHANNELS);
-
-        getEmptyView().setOnClickListener(v -> onRefresh());
 
         return root;
     }
@@ -117,17 +116,7 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSupportsSearch(true);
-
-        if (selectedChannelGroupId == -1) {
-
-            ChannelAdapter adapter = (ChannelAdapter) getAdapter();
-
-            if ((adapter == null) ||
-                    (adapter.getGroupItemCount() == 0))
-                browseChannelGroups();
-        } else {
-            browseChannels(selectedChannelGroupId);
-        }
+        getEmptyView().setOnClickListener(v -> onRefresh());
     }
 
     @Override
@@ -147,35 +136,29 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(CHANNELGROUPID, selectedChannelGroupId);
         outState.putBoolean(SINGLECHANNELGROUP, singleChannelGroup);
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onRefresh () {
+        refreshList();
+    }
+
+    // Got a connection, refresh now
+    @Override
+    public void onConnectionStatusSuccess() {
+        // Only refresh if we're transitioning from an error or initial state
+        boolean refresh = (lastConnectionStatusResult != CONNECTION_SUCCESS);
+        super.onConnectionStatusSuccess();
+        if (refresh) refreshList();
     }
 
     @Override
     protected void refreshList() {
-        onRefresh();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void onRefresh () {
         if (hostManager.getHostInfo() != null) {
             if (selectedChannelGroupId == -1) {
                 browseChannelGroups();
@@ -215,7 +198,6 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
             @Override
             public void onSuccess(List<PVRType.DetailsChannelGroup> result) {
                 if (!isAdded()) return;
-                LogUtils.LOGD(TAG, "Got channel groups");
 
                 if (result.size() == 1) {
                     // Single channel group, go directly to channel list
@@ -234,15 +216,7 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting channel groups: " + description);
-
-                if (errorCode == ApiException.API_ERROR) {
-                    getEmptyView().setText(getString(R.string.might_not_have_pvr));
-                } else {
-                    getEmptyView().setText(String.format(getString(R.string.error_getting_pvr_info), description));
-                }
-                Toast.makeText(requireContext(),
-                               String.format(getString(R.string.error_getting_pvr_info), description),
-                               Toast.LENGTH_SHORT).show();
+                showErrorMessage(getString(R.string.might_not_have_pvr));
                 hideRefreshAnimation();
             }
         }, callbackHandler);
@@ -305,15 +279,13 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
 
                 // Start the channel
                 Toast.makeText(requireContext(),
-                        String.format(getString(R.string.channel_switching), holder.channelName),
-                        Toast.LENGTH_SHORT).show();
+                               String.format(getString(R.string.channel_switching), holder.channelName),
+                               Toast.LENGTH_SHORT)
+                     .show();
                 Player.Open action = new Player.Open(Player.Open.TYPE_CHANNEL, holder.channelId);
                 action.execute(hostManager.getConnection(), new ApiCallback<String>() {
                     @Override
-                    public void onSuccess(String result) {
-                        if (!isAdded()) return;
-                        LogUtils.LOGD(TAG, "Started channel");
-                    }
+                    public void onSuccess(String result) { }
 
                     @Override
                     public void onError(int errorCode, String description) {
@@ -321,8 +293,9 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
                         LogUtils.LOGD(TAG, "Error starting channel: " + description);
 
                         Toast.makeText(requireContext(),
-                                String.format(getString(R.string.error_starting_channel), description),
-                                Toast.LENGTH_SHORT).show();
+                                       String.format(getString(R.string.error_starting_channel), description),
+                                       Toast.LENGTH_SHORT)
+                             .show();
 
                     }
                 }, callbackHandler);
@@ -353,7 +326,6 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
             @Override
             public void onSuccess(List<PVRType.DetailsChannel> result) {
                 if (!isAdded()) return;
-                LogUtils.LOGD(TAG, "Got channels");
 
                 // To prevent the empty text from appearing on the first load, set it now
                 getEmptyView().setText(getString(R.string.no_channels_found_refresh));
@@ -368,12 +340,7 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting channels: " + description);
-
-                // To prevent the empty text from appearing on the first load, set it now
-                getEmptyView().setText(String.format(getString(R.string.error_getting_pvr_info), description));
-                Toast.makeText(requireContext(),
-                               String.format(getString(R.string.error_getting_pvr_info), description),
-                               Toast.LENGTH_SHORT).show();
+                showErrorMessage(getString(R.string.might_not_have_pvr));
                 hideRefreshAnimation();
             }
         }, callbackHandler);
@@ -495,10 +462,7 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
                         PVR.Record action = new PVR.Record(channelId);
                         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
                             @Override
-                            public void onSuccess(String result) {
-                                if (!isAdded()) return;
-                                LogUtils.LOGD(TAG, "Started recording");
-                            }
+                            public void onSuccess(String result) { }
 
                             @Override
                             public void onError(int errorCode, String description) {
@@ -507,7 +471,8 @@ public class PVRChannelsListFragment extends AbstractSearchableFragment
 
                                 Toast.makeText(requireContext(),
                                                String.format(getString(R.string.error_starting_to_record), description),
-                                               Toast.LENGTH_SHORT).show();
+                                               Toast.LENGTH_SHORT)
+                                     .show();
 
                             }
                         }, callbackHandler);

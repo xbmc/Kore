@@ -396,12 +396,11 @@
     <string name="pause_call_incoming_title">Incoming call</string>
     <string name="pause_call_incoming_message">Check your phone, someone is calling you</string>
 
-    <string name="error_getting_pvr_info">An error occurred while getting pvr info: %1$s</string>
-    <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\n
-    	If that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
-    <string name="error_starting_channel">An error occurred starting channel playback: %1$s</string>
-    <string name="error_starting_recording">An error occurred starting a recording: %1$s</string>
-    <string name="error_starting_to_record">An error occurred while recording: %1$s</string>
+    <string name="error_getting_pvr_info">Couldn\'t get PVR information\n\nError description: %1$s</string>
+    <string name="might_not_have_pvr">Couldn\'t get PVR information.\n\nYour media center might not have a tuner or it isn\'t configured. If you\'d like to remove this entry from the side menu, you can do it in the Settings screen.</string>
+    <string name="error_starting_channel">An error occurred starting channel playback\nDescription: %1$s</string>
+    <string name="error_starting_recording">An error occurred playing a recording\nDescription: %1$s</string>
+    <string name="error_starting_to_record">An error occurred while recording\nDescription: %1$s</string>
     <string name="channel_switching">Switching to channel %1$s</string>
     <string name="starting_recording">Starting recording %1$s</string>
     <string name="error_favourites">Couldn\'t get favourites\n\nError description: %1$s</string>
