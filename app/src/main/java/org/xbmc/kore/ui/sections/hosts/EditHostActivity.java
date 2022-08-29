@@ -90,6 +90,7 @@ public class EditHostActivity extends BaseActivity implements
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, editFragment)
+                    .setReorderingAllowed(true)
                     .commit();
         }
         setupActionBar();

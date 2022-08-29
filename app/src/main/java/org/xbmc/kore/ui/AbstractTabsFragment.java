@@ -49,8 +49,7 @@ abstract public class AbstractTabsFragment
     private SharedPreferences preferences;
 
     /**
-     * Use {@link #setDataHolder(AbstractInfoFragment.DataHolder)} to provide the required info
-     * after creating a new instance of this Fragment
+     * Set args with {@link #(AbstractInfoFragment.DataHolder)} to provide the required info
      */
     public AbstractTabsFragment() {
         super();

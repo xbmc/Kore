@@ -50,8 +50,9 @@ public class SettingsActivity extends BaseActivity {
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag("settings-fragment") == null) {
             fm.beginTransaction()
-                    .replace(R.id.fragment_container, new SettingsFragment(), "settings-fragment")
-                    .commit();
+              .replace(R.id.fragment_container, SettingsFragment.class, null, "settings-fragment")
+              .setReorderingAllowed(true)
+              .commit();
         }
     }
 

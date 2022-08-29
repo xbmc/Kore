@@ -109,10 +109,7 @@ public class MoviesActivity extends BaseMediaActivity
         selectedMovieId = vh.dataHolder.getId();
 
         final MovieInfoFragment movieInfoFragment = new MovieInfoFragment();
-        movieInfoFragment.setDataHolder(vh.dataHolder);
-
         showFragment(movieInfoFragment, vh.artView, vh.dataHolder);
-
         updateActionBar(selectedMovieTitle, true);
     }
 }
