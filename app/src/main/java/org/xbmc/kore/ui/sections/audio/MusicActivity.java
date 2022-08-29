@@ -176,11 +176,8 @@ public class MusicActivity extends BaseMediaActivity
 
         // Replace list fragment
         final ArtistInfoFragment artistInfoFragment = new ArtistInfoFragment();
-        artistInfoFragment.setDataHolder(dataHolder);
         dataHolder.setSquarePoster(true);
-
         showFragment(artistInfoFragment, sharedImageView, dataHolder);
-
         updateActionBar(selectedArtistName, true);
     }
 
@@ -191,10 +188,7 @@ public class MusicActivity extends BaseMediaActivity
         // Replace list fragment
         final AbstractInfoFragment albumInfoFragment = new AlbumInfoFragment();
         dataHolder.setSquarePoster(true);
-        albumInfoFragment.setDataHolder(dataHolder);
-
         showFragment(albumInfoFragment, sharedImageView, dataHolder);
-
         updateActionBar(selectedAlbumTitle, true);
     }
 
@@ -211,6 +205,7 @@ public class MusicActivity extends BaseMediaActivity
                 .setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0)
                 .replace(R.id.fragment_container, albumListFragment)
                 .addToBackStack(null)
+                .setReorderingAllowed(true)
                 .commit();
 
         updateActionBar(selectedGenreTitle, true);
@@ -223,10 +218,7 @@ public class MusicActivity extends BaseMediaActivity
         // Replace list fragment
         final MusicVideoInfoFragment musicVideoInfoFragment = new MusicVideoInfoFragment();
         dataHolder.setSquarePoster(true);
-        musicVideoInfoFragment.setDataHolder(dataHolder);
-
         showFragment(musicVideoInfoFragment, sharedImageView, dataHolder);
-
         updateActionBar(selectedMusicVideoTitle, true);
     }
 }

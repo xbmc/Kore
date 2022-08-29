@@ -168,6 +168,7 @@ public class PVRActivity extends BaseMediaActivity
 
         fragTrans.replace(R.id.fragment_container, pvrEPGFragment)
                  .addToBackStack(null)
+                 .setReorderingAllowed(true)
                  .commit();
         updateActionBar(getActionBarTitle(), true);
     }

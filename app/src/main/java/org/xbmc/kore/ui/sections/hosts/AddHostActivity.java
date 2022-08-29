@@ -55,6 +55,7 @@ public class AddHostActivity extends BaseActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, firstStep)
+                    .setReorderingAllowed(true)
                     .commit();
         }
 
@@ -163,6 +164,7 @@ public class AddHostActivity extends BaseActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
+                .setReorderingAllowed(true)
                 .commit();
     }
 }

@@ -111,8 +111,7 @@ abstract public class AbstractInfoFragment
             });
 
     /**
-     * Use {@link #setDataHolder(DataHolder)}
-     * to provide the required info after creating a new instance of this Fragment
+     * Set args with {@link DataHolder} to provide the required info after creating a new instance of this Fragment
      */
     public AbstractInfoFragment() {
         super();

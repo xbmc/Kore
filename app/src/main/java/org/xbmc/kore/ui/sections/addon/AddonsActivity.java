@@ -130,10 +130,8 @@ public class AddonsActivity extends BaseMediaActivity
         // Replace list fragment
         final AbstractFragment addonDetailsFragment =
                 bundle.getBoolean(AddonInfoFragment.BUNDLE_KEY_BROWSABLE)
-            ? new AddonDetailsFragment()
-            : new AddonInfoFragment()
-            ;
-        addonDetailsFragment.setDataHolder(vh.dataHolder);
+                ? new AddonDetailsFragment()
+                : new AddonInfoFragment();
         vh.dataHolder.setSquarePoster(true);
         vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
         showFragment(addonDetailsFragment, vh.artView, vh.dataHolder);

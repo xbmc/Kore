@@ -15,6 +15,8 @@
  */
 package org.xbmc.kore.ui.sections.video;
 
+import static org.xbmc.kore.ui.sections.video.TVShowEpisodeInfoFragment.BUNDLE_KEY_TVSHOWID;
+
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
@@ -117,7 +119,6 @@ public class TVShowsActivity extends BaseMediaActivity
 
         // Replace list fragment
         final TVShowInfoFragment tvshowDetailsFragment = new TVShowInfoFragment();
-        tvshowDetailsFragment.setDataHolder(vh.dataHolder);
         showFragment(tvshowDetailsFragment, vh.artView, vh.dataHolder);
         updateActionBar(selectedTVShowTitle, true);
     }
@@ -138,6 +139,7 @@ public class TVShowsActivity extends BaseMediaActivity
                 .setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0)
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
+                .setReorderingAllowed(true)
                 .commit();
         selectedSeasonTitle = String.format(getString(R.string.season_number), seasonId);
         updateActionBar(selectedSeasonTitle, true);
@@ -152,9 +154,8 @@ public class TVShowsActivity extends BaseMediaActivity
 
         // Replace list fragment
         TVShowEpisodeInfoFragment fragment = new TVShowEpisodeInfoFragment();
-        fragment.setDataHolder(dh);
-        fragment.setTvshowId(tvshowId);
-        startFragment(fragment);
+        dh.getBundle().putInt(BUNDLE_KEY_TVSHOWID, tvshowId);
+        startFragment(fragment, dh);
         updateActionBar(selectedTVShowTitle, true);
     }
 
@@ -165,23 +166,24 @@ public class TVShowsActivity extends BaseMediaActivity
                                   TVShowEpisodeListFragment.ViewHolder viewHolder) {
         selectedEpisodeId = viewHolder.dataHolder.getId();
         TVShowEpisodeInfoFragment fragment = new TVShowEpisodeInfoFragment();
-        fragment.setDataHolder(viewHolder.dataHolder);
-        fragment.setTvshowId(tvshowId);
-        startFragment(fragment);
+        viewHolder.dataHolder.getBundle().putInt(BUNDLE_KEY_TVSHOWID, tvshowId);
+        startFragment(fragment, viewHolder.dataHolder);
         updateActionBar(selectedTVShowTitle, true);
     }
 
-    private void startFragment(AbstractFragment fragment) {
+    private void startFragment(AbstractFragment fragment, AbstractFragment.DataHolder dataHolder) {
+        fragment.setArguments(dataHolder.getBundle());
         // Replace list fragment
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
-            fragment.setEnterTransition(TransitionInflater.from(this)
-                                                          .inflateTransition(R.transition.media_details));
+        fragment.setEnterTransition(TransitionInflater.from(this)
+                                                      .inflateTransition(R.transition.media_details));
         fragment.setReturnTransition(null);
 
         fragTrans.replace(R.id.fragment_container, fragment)
                  .addToBackStack(null)
+                 .setReorderingAllowed(true)
                  .commit();
     }
 

@@ -131,6 +131,7 @@ public abstract class BaseMediaActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, fragment, fragmentTitle)
+                    .setReorderingAllowed(true)
                     .commit();
         }
 
@@ -234,6 +235,7 @@ public abstract class BaseMediaActivity
     }
 
     protected void showFragment(AbstractFragment fragment, ImageView sharedImageView, AbstractFragment.DataHolder dataHolder) {
+        fragment.setArguments(dataHolder.getBundle());
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
         // Set up transitions
@@ -242,6 +244,7 @@ public abstract class BaseMediaActivity
 
         fragTrans.replace(R.id.fragment_container, fragment, getActionBarTitle())
                  .addToBackStack(null)
+                 .setReorderingAllowed(true)
                  .commit();
     }
 

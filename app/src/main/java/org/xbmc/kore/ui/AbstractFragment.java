@@ -25,16 +25,6 @@ public class AbstractFragment extends Fragment {
 
     private DataHolder dataHolder;
 
-    public void setDataHolder(DataHolder dataHolder) {
-        this.dataHolder = dataHolder;
-        Bundle bundle = getArguments();
-        if (bundle == null) {
-            setArguments(dataHolder.getBundle());
-        } else {
-            bundle.putAll(dataHolder.getBundle());
-        }
-    }
-
     public DataHolder getDataHolder() {
         return dataHolder;
     }
@@ -42,12 +32,7 @@ public class AbstractFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if( this.dataHolder == null ) {
-            this.dataHolder = new DataHolder(-1);
-        }
-
-        this.dataHolder.setBundle(getArguments());
+        this.dataHolder = new DataHolder(getArguments());
     }
 
     public static class DataHolder {

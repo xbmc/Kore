@@ -71,7 +71,7 @@
         app:dividerInsetStart="@dimen/default_padding"
         app:dividerInsetEnd="@dimen/default_padding"/>
 
-    <FrameLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/cast_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

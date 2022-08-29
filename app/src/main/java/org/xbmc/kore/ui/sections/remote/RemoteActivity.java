@@ -55,10 +55,11 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 import org.xbmc.kore.utils.UIUtils;
 
-public class RemoteActivity extends BaseActivity
+public class RemoteActivity
+        extends BaseActivity
         implements HostConnectionObserver.PlayerEventsObserver,
-        NowPlayingFragment.NowPlayingListener,
-        SendTextDialogFragment.SendTextDialogListener {
+                   NowPlayingFragment.NowPlayingListener,
+                   SendTextDialogFragment.SendTextDialogListener {
     private static final String TAG = LogUtils.makeLogTag(RemoteActivity.class);
 
     private static final int NOWPLAYING_FRAGMENT_ID = 1;
