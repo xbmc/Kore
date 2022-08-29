@@ -47,14 +47,14 @@
     <string name="weather">Vejr</string>
     <string name="pvr">PVR</string>
     <string name="local_file_browser">Lokal filbrowser</string>
-    <string name="file_browser">Filbrowser</string>
+    <string name="file_browser">Kodi filbrowser</string>
     <string name="unknown">Ukendt</string>
     <string name="script">Script</string>
     <string name="window">Vindue</string>
     <string name="media">Medie</string>
     <string name="video">Video</string>
     <string name="local_files">Lokale filer</string>
-    <string name="files">Filer</string>
+    <string name="files">Kodi filer</string>
     <string name="addons">Add-ons</string>
     <string name="external_storage">Lager</string>
     <string name="dcim">DCIM</string>
