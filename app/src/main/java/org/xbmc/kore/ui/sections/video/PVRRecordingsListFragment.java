@@ -43,12 +43,11 @@ import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
 import org.xbmc.kore.ui.AbstractSearchableFragment;
-import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -74,7 +73,7 @@ public class PVRRecordingsListFragment
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     @Override
-    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
         return (view, position) -> {
             // Get the id from the tag
             RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
@@ -109,6 +108,9 @@ public class PVRRecordingsListFragment
     protected RecyclerView.Adapter<RecordingViewHolder> createAdapter() {
         return new RecordingsAdapter(requireContext());
     }
+
+    @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_recordings_found_refresh); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -229,9 +231,6 @@ public class PVRRecordingsListFragment
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Got recordings");
 
-                // To prevent the empty text from appearing on the first load, set it now
-                getEmptyView().setText(getString(R.string.no_recordings_found_refresh));
-
                 // As the JSON RPC API does not support sorting or filter parameters for PVR.GetRecordings
                 // we apply the sorting and filtering right here.
                 // See https://kodi.wiki/view/JSON-RPC_API/v9#PVR.GetRecordings
@@ -333,7 +332,7 @@ public class PVRRecordingsListFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting recordings: " + description);
-                showErrorMessage(getString(R.string.might_not_have_pvr));
+                showStatusMessage(null, getString(R.string.might_not_have_pvr));
                 hideRefreshAnimation();
             }
         }, callbackHandler);

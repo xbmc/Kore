@@ -68,6 +68,9 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
     }
 
     @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_genres_found_refresh); }
+
+    @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new AudioGenresAdapter(getActivity());
     }

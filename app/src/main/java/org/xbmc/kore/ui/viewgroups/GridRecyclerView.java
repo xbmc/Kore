@@ -27,20 +27,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 /**
- * <p>A Recycler view using a grid layout that supports auto sizing and showing an empty view when the adapter
- * has no items.
- * </p>
- * <p>
+ * Recycler View using a grid layout that supports auto sizing and showing an empty view when the adapter has no items.
  * You can set the column width and column count using styleables:
- * </p>
- * <ul>
- *  <li>android:columnWidth=INTEGER</li>
- *  <li>android:columnCount=INTEGER</li>
- * </ul>
+ *  android:columnWidth=INTEGER
+ *  android:columnCount=INTEGER
  *
  * Inspired by <a href="http://blog.sqisland.com/2014/12/recyclerview-autofit-grid.html">RecyclerView: Autofit grid</a>
  */
-public class RecyclerViewEmptyViewSupport extends FastScrollRecyclerView {
+public class GridRecyclerView extends FastScrollRecyclerView {
 
     public final static int AUTO_FIT = -1;
 
@@ -55,16 +49,16 @@ public class RecyclerViewEmptyViewSupport extends FastScrollRecyclerView {
         void onItemClick(View v, int position);
     }
 
-    public RecyclerViewEmptyViewSupport(Context context) {
+    public GridRecyclerView(Context context) {
         this(context, null);
     }
 
-    public RecyclerViewEmptyViewSupport(Context context, @Nullable AttributeSet attrs) {
+    public GridRecyclerView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
     @SuppressWarnings("ResourceType")
-    public RecyclerViewEmptyViewSupport(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public GridRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         setSaveEnabled(true);
@@ -100,11 +94,9 @@ public class RecyclerViewEmptyViewSupport extends FastScrollRecyclerView {
                     return;
 
                 if (adapter.getItemCount() == 0) {
-                    emptyView.setVisibility(View.VISIBLE);
-                    setVisibility(View.GONE);
+                    showEmptyView();
                 } else {
-                    emptyView.setVisibility(View.GONE);
-                    setVisibility(View.VISIBLE);
+                    hideEmptyView();
                 }
             }
         });
@@ -128,6 +120,22 @@ public class RecyclerViewEmptyViewSupport extends FastScrollRecyclerView {
         } else {
             gridLayoutManager.setSpanCount(columnCount);
         }
+    }
+
+    /**
+     * Makes the empty view visible, hiding the list
+     */
+    public void showEmptyView() {
+        emptyView.setVisibility(View.VISIBLE);
+        setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * Hides the empty view, showing the list
+     */
+    public void hideEmptyView() {
+        emptyView.setVisibility(View.GONE);
+        setVisibility(View.VISIBLE);
     }
 
     public boolean isMultiColumnSupported() {

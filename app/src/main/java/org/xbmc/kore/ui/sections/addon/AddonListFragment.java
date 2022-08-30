@@ -46,7 +46,7 @@ import org.xbmc.kore.jsonrpc.method.Addons;
 import org.xbmc.kore.jsonrpc.type.AddonType;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.AbstractListFragment;
-import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -77,7 +77,7 @@ public class AddonListFragment extends AbstractListFragment {
     private static boolean hideDisabledAddons;
 
     @Override
-    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
         return (view, position) -> {
             // Get the movie id from the tag
             ViewHolder tag = (ViewHolder) view.getTag();
@@ -90,6 +90,9 @@ public class AddonListFragment extends AbstractListFragment {
     protected RecyclerView.Adapter<ViewHolder> createAdapter() {
         return new AddonsAdapter(getActivity());
     }
+
+    @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_addons_found_refresh); }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -177,7 +180,7 @@ public class AddonListFragment extends AbstractListFragment {
     private void callGetAddonsAndSetup() {
         final AddonsAdapter adapter = (AddonsAdapter) getAdapter();
 
-        binding.swipeRefreshLayout.setRefreshing(true);
+        showRefreshAnimation();
 
         // Get the addon list, this is done asyhnchronously
         String[] properties = new String[] {
@@ -211,7 +214,6 @@ public class AddonListFragment extends AbstractListFragment {
                         }
                     }
 
-                    getEmptyView().setText(R.string.no_addons_found_refresh);
                     adapter.notifyDataSetChanged();
                     hideRefreshAnimation();
                 }
@@ -220,8 +222,7 @@ public class AddonListFragment extends AbstractListFragment {
                 public void onError(int errorCode, String description) {
                     if (!isAdded()) return;
                     LogUtils.LOGD(TAG, "Error getting addons: " + description);
-                    getEmptyView().setVisibility(View.VISIBLE);
-                    getEmptyView().setText(getString(R.string.error_getting_addon_info, description));
+                    showStatusMessage(null, getString(R.string.error_getting_addon_info, description));
                     hideRefreshAnimation();
                 }
             },

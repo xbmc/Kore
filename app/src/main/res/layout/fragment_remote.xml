@@ -22,7 +22,7 @@
 
     <include
         android:id="@+id/include_info_panel"
-        layout="@layout/remote_info_panel" />
+        layout="@layout/info_panel" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/media_panel"

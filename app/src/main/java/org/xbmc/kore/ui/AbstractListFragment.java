@@ -24,7 +24,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +38,7 @@ import org.xbmc.kore.databinding.FragmentMediaListBinding;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 
 public abstract class AbstractListFragment
@@ -51,8 +50,9 @@ public abstract class AbstractListFragment
 
 	protected FragmentMediaListBinding binding;
 
-	abstract protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener();
-	abstract protected RecyclerViewEmptyViewSupport.Adapter<?> createAdapter();
+	abstract protected GridRecyclerView.OnItemClickListener createOnItemClickListener();
+	abstract protected GridRecyclerView.Adapter<?> createAdapter();
+	abstract protected String getEmptyResultsTitle();
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public abstract class AbstractListFragment
 		setHasOptionsMenu(true);
 
 		binding.swipeRefreshLayout.setOnRefreshListener(this);
-		binding.list.setEmptyView(binding.includeEmptyView.empty);
+		binding.list.setEmptyView(binding.includeEmptyView.statusPanel);
 		binding.list.setOnItemClickListener(createOnItemClickListener());
 
 		if (PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -145,7 +145,7 @@ public abstract class AbstractListFragment
 		if (binding.list.getColumnCount() == 1) {
 			editor.putBoolean(Settings.KEY_PREF_SINGLE_COLUMN, false);
 			item.setTitle(R.string.single_column);
-			binding.list.setColumnCount(RecyclerViewEmptyViewSupport.AUTO_FIT);
+			binding.list.setColumnCount(GridRecyclerView.AUTO_FIT);
 		} else {
 			editor.putBoolean(Settings.KEY_PREF_SINGLE_COLUMN, true);
 			item.setTitle(R.string.multi_column);
@@ -167,18 +167,25 @@ public abstract class AbstractListFragment
 		return adapter;
 	}
 
-	protected void showErrorMessage(String message) {
-		binding.list.setVisibility(View.GONE);
-		getEmptyView().setVisibility(View.VISIBLE);
-		getEmptyView().setText(message);
+	/**
+	 * Sets the information displayed by the empty view, whether to show an error or info situation or when
+	 * there's no items to show on the adapter
+	 * @param title Title
+	 * @param message Message
+	 */
+	protected void setupEmptyView(String title, String message) {
+		binding.includeEmptyView.statusTitle.setText(title);
+		binding.includeEmptyView.statusMessage.setText(message);
 	}
 
 	/**
-	 * Returns the view that is displayed when the gridview has no items to show
-	 * @return Empty view
+	 * Shows a status message on the info view, setting up a clickListener that refreshes the list
+	 * @param title Title
+	 * @param message Message
 	 */
-	public TextView getEmptyView() {
-		return binding.includeEmptyView.empty;
+	protected void showStatusMessage(String title, String message) {
+		binding.list.showEmptyView();
+		setupEmptyView(title, message);
 	}
 
 	protected int lastConnectionStatusResult = CONNECTION_NO_RESULT;
@@ -188,14 +195,11 @@ public abstract class AbstractListFragment
 	 */
 	@Override
 	public void onConnectionStatusError(int errorCode, String description) {
-		if (binding == null) return; // If receiving this after onDestroy, ignore
-
 		lastConnectionStatusResult = CONNECTION_ERROR;
 		binding.swipeRefreshLayout.setEnabled(false);
-		binding.list.setVisibility(View.GONE);
-		getEmptyView().setVisibility(View.VISIBLE);
 		HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
-		getEmptyView().setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
+		showStatusMessage(getString(R.string.not_connected),
+						  String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
 	}
 
 	/**
@@ -204,15 +208,14 @@ public abstract class AbstractListFragment
 	 */
 	@Override
 	public void onConnectionStatusSuccess() {
-		if (binding == null) return; // If receiving this after onDestroy, ignore
-
 		// Only update views if transitioning from error state.
 		// If transitioning from Sucess or No results the enabled UI is already being shown
 		if (lastConnectionStatusResult == CONNECTION_ERROR) {
 			binding.swipeRefreshLayout.setEnabled(true);
-			getEmptyView().setVisibility(View.GONE);
-			binding.list.setVisibility(View.VISIBLE);
+			binding.list.hideEmptyView();
 		}
+		// To prevent the empty text from appearing on the first load, only set it now
+		setupEmptyView(getEmptyResultsTitle(), getString(R.string.pull_to_refresh));
 		lastConnectionStatusResult = CONNECTION_SUCCESS;
 	}
 
@@ -220,5 +223,6 @@ public abstract class AbstractListFragment
 	public void onConnectionStatusNoResultsYet() {
 		// Do nothing, by default the enabled UI is shown while there are no results
 		lastConnectionStatusResult = CONNECTION_NO_RESULT;
+		showStatusMessage(getString(R.string.connecting), null);
 	}
 }

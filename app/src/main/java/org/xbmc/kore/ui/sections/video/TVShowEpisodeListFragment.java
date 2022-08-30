@@ -123,6 +123,9 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     }
 
     @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_episodes_found); }
+
+    @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new SeasonsEpisodesAdapter(requireContext());
     }

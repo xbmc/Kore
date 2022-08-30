@@ -49,7 +49,7 @@ import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
-import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -115,11 +115,6 @@ public class MediaFileListFragment extends AbstractListFragment {
             sortMethod = savedInstanceState.getParcelable(SORT_METHOD);
             currentLocation = savedInstanceState.getParcelable(CURRENT_LOCATION);
         }
-
-        getEmptyView().setOnClickListener(v -> {
-            if (!atRootDirectory())
-                browseSources();
-        });
     }
 
     @Override
@@ -146,6 +141,8 @@ public class MediaFileListFragment extends AbstractListFragment {
         boolean refresh = lastConnectionStatusResult != CONNECTION_SUCCESS;
         super.onConnectionStatusSuccess();
 
+        if (delayLoad) showStatusMessage(getString(R.string.loading), null);
+
         // Refresh contents if we're not asked to delay and if we're transioning to a successful connection
         if (delayLoad || !refresh) return;
         onRefresh();
@@ -161,7 +158,7 @@ public class MediaFileListFragment extends AbstractListFragment {
     }
 
     @Override
-    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
         return (view, position) -> handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(position));
     }
 
@@ -169,6 +166,9 @@ public class MediaFileListFragment extends AbstractListFragment {
     protected RecyclerView.Adapter<ViewHolder> createAdapter() {
         return new MediaFileListAdapter(requireContext(), R.layout.item_file);
     }
+
+    @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.source_empty); }
 
     void handleFileSelect(FileLocation f) {
         if (f == null || f.file == null) {
@@ -221,7 +221,6 @@ public class MediaFileListFragment extends AbstractListFragment {
                         rootContents.add(new FileLocation(item.label, item.file, true, null, false));
                     }
                 }
-                getEmptyView().setText(getString(R.string.source_empty));
                 ((MediaFileListAdapter) getAdapter()).setFilelistItems(rootContents);
             }
 
@@ -229,7 +228,7 @@ public class MediaFileListFragment extends AbstractListFragment {
             public void onError(int errorCode, String description) {
                 if (!isResumed()) return;
                 hideRefreshAnimation();
-                showErrorMessage(String.format(getString(R.string.error_getting_source_info), description));
+                showStatusMessage(null, String.format(getString(R.string.error_getting_source_info), description));
             }
         }, callbackHandler);
     }
@@ -307,7 +306,7 @@ public class MediaFileListFragment extends AbstractListFragment {
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 hideRefreshAnimation();
-                showErrorMessage(String.format(getString(R.string.error_getting_source_info), description));
+                showStatusMessage(null, String.format(getString(R.string.error_getting_source_info), description));
             }
         }, callbackHandler);
 

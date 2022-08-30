@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
@@ -35,8 +34,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.loader.content.CursorLoader;
 import androidx.preference.PreferenceManager;
-
-import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -80,6 +77,9 @@ public class MovieListFragment extends AbstractCursorListFragment {
         // Notify the activity
         listenerActivity.onMovieSelected(tag);
     }
+
+    @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_movies_found_refresh); }
 
     @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {

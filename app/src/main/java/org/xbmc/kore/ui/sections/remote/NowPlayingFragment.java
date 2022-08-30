@@ -151,8 +151,7 @@ public class NowPlayingFragment extends Fragment
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
         if (hostInfo != null) {
-            binding.includeInfoPanel.infoTitle.setText(R.string.connecting);
-            // TODO: check error code
+            binding.includeInfoPanel.infoTitle.setText(R.string.not_connected);
             binding.includeInfoPanel.infoMessage.setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
         } else {
             binding.includeInfoPanel.infoTitle.setText(R.string.no_xbmc_configured);

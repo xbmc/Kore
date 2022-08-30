@@ -80,6 +80,9 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     }
 
     @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_tvshows_found_refresh); }
+
+    @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new TVShowsAdapter(requireContext());
     }

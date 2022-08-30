@@ -104,7 +104,7 @@ public class AllCastActivity extends BaseActivity {
         //LogUtils.LOGD(TAG, "Showing cast for: " + movie_tvshow_title);
 
         // Configure the grid
-        binding.castList.setEmptyView(binding.includeEmptyView.empty);
+        binding.castList.setEmptyView(binding.includeEmptyView.statusPanel);
         binding.castList.setOnItemClickListener((parent, view, position, id) -> {
             // Get the name from the tag
             Utils.launchWebSearchForTerms(AllCastActivity.this, ((ViewHolder)view.getTag()).castName);

@@ -98,6 +98,9 @@ public class SongsListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_songs_found_refresh); }
+
+    @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
         if (albumId != -1 ) {
             return new AlbumSongsAdapter(getContext(), this::showPopupMenu);

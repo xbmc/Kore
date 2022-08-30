@@ -44,7 +44,7 @@ import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.type.FavouriteType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
-import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -66,7 +66,7 @@ public class FavouritesListFragment
     }
 
     @Override
-    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
         final ApiCallback<String> genericApiCallback = new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -109,6 +109,9 @@ public class FavouritesListFragment
         return new FavouritesAdapter(requireContext(), HostManager.getInstance(requireContext()));
     }
 
+    @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_favourites_found_refresh); }
+
     /**
      * Show the favourites
      */
@@ -132,8 +135,6 @@ public class FavouritesListFragment
             @Override
             public void onSuccess(ApiList<FavouriteType.DetailsFavourite> result) {
                 if (!isAdded()) return;
-                // To prevent the empty text from appearing on the first load, set it now
-                getEmptyView().setText(getString(R.string.no_favourites_found_refresh));
                 ((FavouritesAdapter) getAdapter()).setFavouriteItems(result.items);
                 hideRefreshAnimation();
             }
@@ -142,7 +143,7 @@ public class FavouritesListFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting favourites: " + description);
-                showErrorMessage(getString(R.string.error_favourites, description));
+                showStatusMessage(null, getString(R.string.error_favourites, description));
                 hideRefreshAnimation();
             }
         }, callbackHandler);

@@ -51,7 +51,7 @@ import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
-import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.CharacterDrawable;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -87,7 +87,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
                 if (isGranted) {
                     browseDirectory(currentDirLocation);
                 } else {
-                    showErrorMessage(getString(R.string.read_storage_permission_denied));
+                    showStatusMessage(null, getString(R.string.read_storage_permission_denied));
                 }
             });
 
@@ -99,7 +99,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         try {
             http_app = HttpApp.getInstance(getContext(), 8080);
         } catch (IOException ioe) {
-            showErrorMessage(getString(R.string.error_starting_http_server));
+            showStatusMessage(null, getString(R.string.error_starting_http_server));
         }
 
         Bundle args = getArguments();
@@ -117,7 +117,6 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getEmptyView().setOnClickListener(v -> browseDirectory(currentDirLocation));
     }
 
     @Override
@@ -141,7 +140,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     }
 
     @Override
-    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
         return (view, position) -> {
             LocalFileLocation selection = ((MediaPictureListAdapter) getAdapter()).getItem(position);
             if (selection != null) handleFileSelect(selection);
@@ -152,6 +151,9 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     protected MediaPictureListAdapter createAdapter() {
         return new MediaPictureListAdapter(requireContext(), R.layout.item_file);
     }
+
+    @Override
+    protected String getEmptyResultsTitle() { return null; }
 
     /**
      * Override parent Connection Status callbacks, so that they don't disable the SwipeRefreshLayout and the list.
@@ -209,7 +211,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     private void browseDirectory(final LocalFileLocation dir) {
         File[] files = (dir.fullPath == null) ? null : (new File(dir.fullPath)).listFiles();
         if (files == null) {
-            showErrorMessage(String.format(getString(R.string.error_getting_source_info), "listFiles() failed"));
+            showStatusMessage(null, String.format(getString(R.string.error_getting_source_info), "listFiles() failed"));
             return;
         }
 

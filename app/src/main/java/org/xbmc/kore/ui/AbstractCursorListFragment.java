@@ -48,7 +48,7 @@ import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
-import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 
 import de.greenrobot.event.EventBus;
@@ -141,7 +141,7 @@ public abstract class AbstractCursorListFragment
 	}
 
 	@Override
-	protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+	protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
 		return (view, position) -> {
 			saveSearchState();
 			onListItemClicked(view);
@@ -324,8 +324,8 @@ public abstract class AbstractCursorListFragment
 	public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
 		((RecyclerViewCursorAdapter) getAdapter()).swapCursor(cursor);
 		if (TextUtils.isEmpty(searchFilter)) {
-			// To prevent the empty text from appearing on the first load, set it now
-			binding.includeEmptyView.empty.setText(getString(R.string.swipe_down_to_refresh));
+			// To prevent the empty text from appearing on the first load, only set it now
+			setupEmptyView(getEmptyResultsTitle(), getString(R.string.pull_to_refresh));
 		}
 		loaderLoading = false;
 	}
@@ -412,14 +412,12 @@ public abstract class AbstractCursorListFragment
 	 */
 	@Override
 	public void onConnectionStatusError(int errorCode, String description) {
-		if (binding == null) return; // If receiving this after onDestroy, ignore
 		lastConnectionStatusResult = CONNECTION_ERROR;
 		binding.swipeRefreshLayout.setEnabled(false);
 	}
 
 	@Override
 	public void onConnectionStatusSuccess() {
-		if (binding == null) return; // If receiving this after onDestroy, ignore
 		// Only update views if transitioning from error state.
 		// If transitioning from Sucess or No results the enabled UI is already being shown
 		if (lastConnectionStatusResult == CONNECTION_ERROR) {

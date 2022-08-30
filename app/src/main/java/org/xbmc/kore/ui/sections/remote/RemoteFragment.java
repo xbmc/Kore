@@ -259,7 +259,7 @@ public class RemoteFragment extends Fragment
         switchToPanel(R.id.info_panel);
         HostInfo hostInfo = hostManager.getHostInfo();
         if (hostInfo != null) {
-            binding.includeInfoPanel.infoTitle.setText(R.string.connecting);
+            binding.includeInfoPanel.infoTitle.setText(R.string.not_connected);
             // TODO: check error code
             binding.includeInfoPanel.infoMessage.setText(String.format(getString(R.string.connecting_to), hostInfo.getName(), hostInfo.getAddress()));
         } else {
