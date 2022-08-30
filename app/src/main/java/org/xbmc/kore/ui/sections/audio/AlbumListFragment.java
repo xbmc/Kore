@@ -196,6 +196,9 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_albums_found_refresh); }
+
+    @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new AlbumsAdapter(this);
     }

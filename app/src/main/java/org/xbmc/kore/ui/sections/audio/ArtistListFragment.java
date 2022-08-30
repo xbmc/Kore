@@ -87,6 +87,10 @@ public class ArtistListFragment extends AbstractCursorListFragment {
         listenerActivity.onArtistSelected(tag.dataHolder, tag.art);
     }
 
+
+    @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_artists_found_refresh); }
+
     @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new ArtistsAdapter(this);

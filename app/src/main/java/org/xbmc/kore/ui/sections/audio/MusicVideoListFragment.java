@@ -84,6 +84,9 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
     }
 
     @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_music_videos_found_refresh); }
+
+    @Override
     protected RecyclerViewCursorAdapter createCursorAdapter() {
         return new MusicVideosAdapter(getActivity());
     }

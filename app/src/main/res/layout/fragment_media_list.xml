@@ -21,13 +21,13 @@
 
     <include
         android:id="@+id/include_empty_view"
-        layout="@layout/empty_view"/>
+        layout="@layout/list_status_panel"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport
+        <org.xbmc.kore.ui.viewgroups.GridRecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

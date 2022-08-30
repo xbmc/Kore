@@ -75,9 +75,10 @@
 
     <string name="toggle_fullscreen">Toggle fullscreen</string>
 
+    <string name="not_connected">Not connected</string>
     <string name="connected_to">Connected to %1$s</string>
     <string name="connecting">Connecting…</string>
-    <string name="connecting_to">Connecting to %1$s (%2$s)…</string>
+    <string name="connecting_to">Couldn\'t connect to %1$s (%2$s)\nRetrying…</string>
 
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Welcome</string>
@@ -219,14 +220,15 @@
     <string name="poster">Poster</string>
     <string name="thumbnail">Thumbnail</string>
 
-    <string name="error_getting_properties">Couldn\'t get Kodi properties.\nError message:%1$s.</string>
-    <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\nError message: %1$s.</string>
-    <string name="error_getting_addon_info">Couldn\'t get addons list.\nError message:%1$s.</string>
-    <string name="error_getting_source_info">Couldn\'t browse files.\nError message:%1$s.</string>
-    <string name="error_play_media_file">Couldn\'t play media file.\nError message:%1$s.</string>
-    <string name="error_play_local_file">Couldn\'t play local media file.\nError message:%1$s.</string>
-    <string name="error_queue_media_file">Couldn\'t queue media file.\nError message:%1$s.</string>
-    <string name="error_get_active_player">Couldn\'t get active player.\nError message:%1$s.</string>
+    <string name="error_favourites">Couldn\'t get favourites\nError description: %1$s</string>
+    <string name="error_getting_properties">Couldn\'t get Kodi properties.\nError message: %1$s</string>
+    <string name="error_executing_subtitles">Couldn\'t execute subtitles addon.\nError message: %1$s</string>
+    <string name="error_getting_addon_info">Couldn\'t get addons list.\nError message: %1$s</string>
+    <string name="error_getting_source_info">Couldn\'t browse files.\nError message: %1$s</string>
+    <string name="error_play_media_file">Couldn\'t play media file.\nError message: %1$s</string>
+    <string name="error_play_local_file">Couldn\'t play local media file.\nError message: %1$s</string>
+    <string name="error_queue_media_file">Couldn\'t queue media file.\nError message: %1$s</string>
+    <string name="error_get_active_player">Couldn\'t get active player.\nError message: %1$s</string>
     <string name="error_share_video">Couldn\'t share video to Kodi.</string>
     <string name="error_reading_local_storage">Couldn\'t read the local storage. Did you give Kore permission to access file storage?</string>
     <string name="error_starting_http_server">Couldn\'t create or start HTTP server.</string>
@@ -246,20 +248,20 @@
     <string name="source_empty">Media source empty</string>
 
     <string name="swipe_down_to_refresh">Swipe down to refresh</string>
-    <string name="no_movies_found_refresh">No movies found\n\nSwipe down to refresh</string>
-    <string name="no_tvshows_found_refresh">No TV Shows found\n\nSwipe down to refresh</string>
+    <string name="no_movies_found_refresh">No movies found</string>
+    <string name="no_tvshows_found_refresh">No TV Shows found</string>
     <string name="no_episodes_found">No episodes found</string>
-    <string name="no_artists_found_refresh">No artists found\n\nSwipe down to refresh</string>
-    <string name="no_albums_found_refresh">No albums found\n\nSwipe down to refresh</string>
-    <string name="no_genres_found_refresh">No genres found\n\nSwipe down to refresh</string>
-    <string name="no_songs_found_refresh">No songs found\n\nSwipe down to refresh</string>
-    <string name="no_addons_found_refresh">No addons found\n\nSwipe down to refresh</string>
-    <string name="no_music_videos_found_refresh">No videos found\n\nSwipe down to refresh</string>
-    <string name="no_channel_groups_found_refresh">No channel groups found\n\nSwipe down to refresh</string>
-    <string name="no_channels_found_refresh">No channels found\n\nSwipe down to refresh</string>
-    <string name="no_favourites_found_refresh">No favourites found\n\nSwipe down to refresh</string>
-    <string name="no_recordings_found_refresh">No recordings found\n\nSwipe down to refresh</string>
-    <string name="no_broadcasts_found_refresh">No broadcasts found\n\nSwipe down to refresh</string>
+    <string name="no_artists_found_refresh">No artists found</string>
+    <string name="no_albums_found_refresh">No albums found</string>
+    <string name="no_genres_found_refresh">No genres found</string>
+    <string name="no_songs_found_refresh">No songs found</string>
+    <string name="no_addons_found_refresh">No addons found</string>
+    <string name="no_music_videos_found_refresh">No videos found</string>
+    <string name="no_channel_groups_found_refresh">No channel groups found</string>
+    <string name="no_channels_found_refresh">No channels found</string>
+    <string name="no_favourites_found_refresh">No favourites found</string>
+    <string name="no_recordings_found_refresh">No recordings found</string>
+    <string name="no_broadcasts_found_refresh">No broadcasts found</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_cast_info">No cast info to display</string>
 
@@ -403,7 +405,6 @@
     <string name="error_starting_to_record">An error occurred while recording\nDescription: %1$s</string>
     <string name="channel_switching">Switching to channel %1$s</string>
     <string name="starting_recording">Starting recording %1$s</string>
-    <string name="error_favourites">Couldn\'t get favourites\n\nError description: %1$s</string>
     <string name="refresh">Refresh</string>
 
     <string name="tv">TV</string>

@@ -21,7 +21,7 @@
 
     <include
         android:id="@+id/include_info_panel"
-        layout="@layout/remote_info_panel" />
+        layout="@layout/info_panel" />
 
     <org.xbmc.kore.ui.widgets.PlaylistsBar
         android:id="@+id/playlists_bar"

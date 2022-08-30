@@ -37,14 +37,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
-import org.xbmc.kore.jsonrpc.ApiException;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.ItemType;
 import org.xbmc.kore.jsonrpc.type.PVRType;
 import org.xbmc.kore.ui.AbstractSearchableFragment;
 import org.xbmc.kore.ui.OnBackPressedListener;
-import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -96,6 +95,14 @@ public class PVRChannelsListFragment
     }
 
     @Override
+    protected String getEmptyResultsTitle() {
+        if (selectedChannelGroupId == -1)
+            return getString(R.string.no_channel_groups_found_refresh);
+        else
+            return getString(R.string.no_channels_found_refresh);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -116,7 +123,6 @@ public class PVRChannelsListFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSupportsSearch(true);
-        getEmptyView().setOnClickListener(v -> onRefresh());
     }
 
     @Override
@@ -205,8 +211,6 @@ public class PVRChannelsListFragment
                     selectedChannelGroupId = result.get(0).channelgroupid;
                     browseChannels(selectedChannelGroupId);
                 } else {
-                    // To prevent the empty text from appearing on the first load, set it now
-                    getEmptyView().setText(getString(R.string.no_channel_groups_found_refresh));
                     setupChannelGroupsGridview(result);
                     hideRefreshAnimation();
                 }
@@ -216,7 +220,7 @@ public class PVRChannelsListFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting channel groups: " + description);
-                showErrorMessage(getString(R.string.might_not_have_pvr));
+                showStatusMessage(null, getString(R.string.might_not_have_pvr));
                 hideRefreshAnimation();
             }
         }, callbackHandler);
@@ -258,7 +262,7 @@ public class PVRChannelsListFragment
     }
 
     @Override
-    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
         return (view, position) -> {
             Object tag = view.getTag();
 
@@ -327,9 +331,6 @@ public class PVRChannelsListFragment
             public void onSuccess(List<PVRType.DetailsChannel> result) {
                 if (!isAdded()) return;
 
-                // To prevent the empty text from appearing on the first load, set it now
-                getEmptyView().setText(getString(R.string.no_channels_found_refresh));
-
                 List<PVRType.DetailsChannel> finalResult = filter(result);
 
                 setupChannelsGridview(finalResult);
@@ -340,7 +341,7 @@ public class PVRChannelsListFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting channels: " + description);
-                showErrorMessage(getString(R.string.might_not_have_pvr));
+                showStatusMessage(null, getString(R.string.might_not_have_pvr));
                 hideRefreshAnimation();
             }
         }, callbackHandler);

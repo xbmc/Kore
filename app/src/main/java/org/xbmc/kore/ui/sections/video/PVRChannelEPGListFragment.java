@@ -38,7 +38,7 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.type.PVRType;
 import org.xbmc.kore.ui.AbstractSearchableFragment;
-import org.xbmc.kore.ui.viewgroups.RecyclerViewEmptyViewSupport;
+import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -79,7 +79,7 @@ public class PVRChannelEPGListFragment
     }
 
     @Override
-    protected RecyclerViewEmptyViewSupport.OnItemClickListener createOnItemClickListener() {
+    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
         return (view, position) -> {
         };
     }
@@ -88,6 +88,9 @@ public class PVRChannelEPGListFragment
     protected RecyclerView.Adapter<BroadcastViewHolder> createAdapter() {
         return new BoadcastsAdapter(requireContext());
     }
+
+    @Override
+    protected String getEmptyResultsTitle() { return getString(R.string.no_broadcasts_found_refresh); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,7 +117,6 @@ public class PVRChannelEPGListFragment
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         setSupportsSearch(true);
-        getEmptyView().setOnClickListener(v -> onRefresh());
         browseEPG();
     }
 
@@ -149,9 +151,6 @@ public class PVRChannelEPGListFragment
             @Override
             public void onSuccess(List<PVRType.DetailsBroadcast> result) {
                 if (!isAdded()) return;
-                // To prevent the empty text from appearing on the first load, set it now
-                TextView emptyView = getEmptyView();
-                emptyView.setText(getString(R.string.no_broadcasts_found_refresh));
 
                 List<PVRType.DetailsBroadcast> finalResult = filter(result);
 
@@ -163,7 +162,7 @@ public class PVRChannelEPGListFragment
             public void onError(int errorCode, String description) {
                 if (!isAdded()) return;
                 LogUtils.LOGD(TAG, "Error getting broadcasts: " + description);
-                showErrorMessage(String.format(getString(R.string.error_getting_pvr_info), description));
+                showStatusMessage(null, String.format(getString(R.string.error_getting_pvr_info), description));
                 hideRefreshAnimation();
             }
         }, callbackHandler);
