@@ -250,13 +250,11 @@ public abstract class BaseMediaActivity
 
     @Override
     public void onApplicationVolumeChanged(int volume, boolean muted) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         binding.nowPlayingPanel.setVolumeState(volume, muted);
     }
 
     @Override
     public void onPlayerPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         binding.nowPlayingPanel.setRepeatShuffleState(notificationsData.property.repeatMode,
                                                       notificationsData.property.shuffled,
                                                       notificationsData.property.partymode);
@@ -266,7 +264,6 @@ public abstract class BaseMediaActivity
     public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         updateNowPlayingPanel(getActivePlayerResult, getPropertiesResult, getItemResult);
         // Start the MediaSession service
         MediaSessionService.startIfNotRunning(this);
@@ -274,7 +271,6 @@ public abstract class BaseMediaActivity
 
     @Override
     public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult, PlayerType.PropertyValue getPropertiesResult, ListType.ItemsAll getItemResult) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         updateNowPlayingPanel(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
@@ -287,7 +283,6 @@ public abstract class BaseMediaActivity
 
     @Override
     public void onPlayerConnectionError(int errorCode, String description) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
@@ -296,13 +291,11 @@ public abstract class BaseMediaActivity
 
     @Override
     public void onObserverStopObserving() {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
     public void onSystemQuit() {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 

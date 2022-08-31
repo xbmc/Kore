@@ -362,7 +362,6 @@ public class RemoteActivity
     public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         String imageUrl = (TextUtils.isEmpty(getItemResult.fanart)) ?
                           getItemResult.thumbnail : getItemResult.fanart;
         if ((imageUrl != null) && !imageUrl.equals(lastImageUrl)) {
@@ -375,12 +374,10 @@ public class RemoteActivity
     public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         onPlayerPlay(getActivePlayerResult, getPropertiesResult, getItemResult);
     }
 
     public void onPlayerStop() {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         if (lastImageUrl != null) {
             setImageViewBackground(null);
         }
@@ -399,7 +396,6 @@ public class RemoteActivity
     }
 
     public void onInputRequested(String title, String type, String value) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         SendTextDialogFragment dialog =
                 SendTextDialogFragment.newInstance(title);
         dialog.show(getSupportFragmentManager(), null);
