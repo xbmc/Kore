@@ -326,7 +326,9 @@ public abstract class AbstractCursorListFragment
 		((RecyclerViewCursorAdapter) getAdapter()).swapCursor(cursor);
 		if (TextUtils.isEmpty(searchFilter)) {
 			// To prevent the empty text from appearing on the first load, only set it now
-			setupEmptyView(getEmptyResultsTitle(), getString(R.string.pull_to_refresh));
+			setupEmptyView(getEmptyResultsTitle(),
+						   (lastConnectionStatusResult == CONNECTION_SUCCESS) ?
+						   getString(R.string.pull_to_refresh) : null);
 		}
 		loaderLoading = false;
 	}
@@ -425,5 +427,11 @@ public abstract class AbstractCursorListFragment
 			binding.swipeRefreshLayout.setEnabled(true);
 		}
 		lastConnectionStatusResult = CONNECTION_SUCCESS;
+	}
+
+	@Override
+	public void onConnectionStatusNoResultsYet() {
+		// Do nothing, by default the enabled UI is shown while there are no results
+		lastConnectionStatusResult = CONNECTION_NO_RESULT;
 	}
 }
