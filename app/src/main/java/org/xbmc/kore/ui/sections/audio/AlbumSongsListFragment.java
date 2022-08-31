@@ -33,7 +33,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -124,9 +123,8 @@ public class AlbumSongsListFragment extends AbstractAdditionalInfoFragment
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if (! data.moveToFirst()) {
-            Toast.makeText(getActivity(), R.string.no_songs_found_refresh,
-                           Toast.LENGTH_SHORT).show();
+        if (!data.moveToFirst()) {
+            UIUtils.showSnackbar(getView(), R.string.no_songs_found_refresh);
             return;
         }
         displaySongs(data);

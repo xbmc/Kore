@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -172,9 +171,7 @@ public class PVRChannelsListFragment
                 browseChannels(selectedChannelGroupId);
             }
         } else {
-            hideRefreshAnimation();
-            Toast.makeText(requireContext(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                 .show();
+            UIUtils.showSnackbar(getView(), R.string.no_xbmc_configured);
         }
     }
 
@@ -282,10 +279,7 @@ public class PVRChannelsListFragment
                 ChannelViewHolder holder = (ChannelViewHolder) tag;
 
                 // Start the channel
-                Toast.makeText(requireContext(),
-                               String.format(getString(R.string.channel_switching), holder.channelName),
-                               Toast.LENGTH_SHORT)
-                     .show();
+                UIUtils.showSnackbar(getView(), String.format(getString(R.string.channel_switching), holder.channelName));
                 Player.Open action = new Player.Open(Player.Open.TYPE_CHANNEL, holder.channelId);
                 action.execute(hostManager.getConnection(), new ApiCallback<String>() {
                     @Override
@@ -293,14 +287,9 @@ public class PVRChannelsListFragment
 
                     @Override
                     public void onError(int errorCode, String description) {
-                        if (!isAdded()) return;
+                        if (!isResumed()) return;
                         LogUtils.LOGD(TAG, "Error starting channel: " + description);
-
-                        Toast.makeText(requireContext(),
-                                       String.format(getString(R.string.error_starting_channel), description),
-                                       Toast.LENGTH_SHORT)
-                             .show();
-
+                        UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_starting_channel), description));
                     }
                 }, callbackHandler);
             }
@@ -467,14 +456,9 @@ public class PVRChannelsListFragment
 
                             @Override
                             public void onError(int errorCode, String description) {
-                                if (!isAdded()) return;
+                                if (!isResumed()) return;
                                 LogUtils.LOGD(TAG, "Error starting to record: " + description);
-
-                                Toast.makeText(requireContext(),
-                                               String.format(getString(R.string.error_starting_to_record), description),
-                                               Toast.LENGTH_SHORT)
-                                     .show();
-
+                                UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_starting_to_record), description));
                             }
                         }, callbackHandler);
                         return true;

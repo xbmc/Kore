@@ -24,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -395,7 +394,7 @@ public class RemoteActivity
     }
 
     public void onSystemQuit() {
-        Toast.makeText(this, R.string.xbmc_quit, Toast.LENGTH_SHORT).show();
+        UIUtils.showSnackbar(findViewById(android.R.id.content), R.string.xbmc_quit);
         onPlayerStop();
     }
 

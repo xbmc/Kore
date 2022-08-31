@@ -31,7 +31,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -594,8 +593,7 @@ public class PlaylistFragment extends Fragment
 
             if (lastGetItemResult != null &&
                 playlistItems.get(finalPosition).id == lastGetItemResult.id) {
-                Toast.makeText(getActivity(), R.string.cannot_move_playing_item, Toast.LENGTH_SHORT)
-                     .show();
+                UIUtils.showSnackbar(PlaylistFragment.this.getView(), R.string.cannot_move_playing_item);
                 rollbackSwappedItems(originalPosition, finalPosition);
                 notifyDataSetChanged();
                 return;
@@ -616,25 +614,23 @@ public class PlaylistFragment extends Fragment
 
                         @Override
                         public void onError(int errorCode, String description) {
+                            if (!isResumed()) return;
                             //Remove succeeded but insert failed, so we need to remove item from playlist at final position
                             playlistItems.remove(finalPosition);
                             notifyDataSetChanged();
-                            if (!isAdded()) return;
-                            // Got an error, show toast
-                            Toast.makeText(getActivity(), R.string.unable_to_move_item, Toast.LENGTH_SHORT)
-                                 .show();
+                            // Got an error, show message
+                            UIUtils.showSnackbar(PlaylistFragment.this.getView(), R.string.unable_to_move_item);
                         }
                     }, callbackHandler);
                 }
 
                 @Override
                 public void onError(int errorCode, String description) {
+                    if (!isResumed()) return;
                     rollbackSwappedItems(originalPosition, finalPosition);
                     notifyDataSetChanged();
-                    if (!isAdded()) return;
-                    // Got an error, show toast
-                    Toast.makeText(getActivity(), R.string.unable_to_move_item, Toast.LENGTH_SHORT)
-                         .show();
+                    // Got an error, show message
+                    UIUtils.showSnackbar(PlaylistFragment.this.getView(), R.string.unable_to_move_item);
                 }
             }, callbackHandler);
         }

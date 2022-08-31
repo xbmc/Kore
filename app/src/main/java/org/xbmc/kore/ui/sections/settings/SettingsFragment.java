@@ -26,7 +26,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -44,6 +43,7 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.service.MediaSessionService;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.lang.reflect.Method;
@@ -62,8 +62,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private final ActivityResultLauncher<String> phonePermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (!isGranted) {
-                    Toast.makeText(requireContext(), R.string.read_phone_state_permission_denied, Toast.LENGTH_SHORT)
-                         .show();
+                    UIUtils.showSnackbar(getListView(),
+                                         R.string.read_phone_state_permission_denied);
                     TwoStatePreference pauseCallPreference = findPreference(Settings.KEY_PREF_PAUSE_DURING_CALLS);
                     if (pauseCallPreference != null) pauseCallPreference.setChecked(false);
                 }

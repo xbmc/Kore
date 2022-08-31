@@ -25,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -132,8 +131,7 @@ public class PVRChannelEPGListFragment
             browseEPG();
         } else {
             hideRefreshAnimation();
-            Toast.makeText(requireContext(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                 .show();
+            UIUtils.showSnackbar(getView(), R.string.no_xbmc_configured);
         }
     }
 
