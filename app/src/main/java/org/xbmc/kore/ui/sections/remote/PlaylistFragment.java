@@ -239,7 +239,6 @@ public class PlaylistFragment extends Fragment
 
     @Override
     public void onPlayerPropertyChanged(org.xbmc.kore.jsonrpc.notification.Player.NotificationsData notificationsData) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         if (notificationsData.property.shuffled != null)
             refreshPlaylist(new GetPlaylist(lastGetActivePlayerResult.type));
     }
@@ -251,7 +250,6 @@ public class PlaylistFragment extends Fragment
     public void onPlayerPlay(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                              PlayerType.PropertyValue getPropertiesResult,
                              ListType.ItemsAll getItemResult) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         playerState = PLAYER_STATE.PLAYING;
 
         lastGetItemResult = getItemResult;
@@ -277,7 +275,6 @@ public class PlaylistFragment extends Fragment
     public void onPlayerPause(PlayerType.GetActivePlayersReturnType getActivePlayerResult,
                               PlayerType.PropertyValue getPropertiesResult,
                               ListType.ItemsAll getItemResult) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         playerState = PLAYER_STATE.PAUSED;
 
         lastGetItemResult = getItemResult;
@@ -292,7 +289,6 @@ public class PlaylistFragment extends Fragment
 
     @Override
     public void onPlayerStop() {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         playerState = PLAYER_STATE.STOPPED;
 
         if (lastGetActivePlayerResult != null)
@@ -305,7 +301,6 @@ public class PlaylistFragment extends Fragment
 
     @Override
     public void onPlayerConnectionError(int errorCode, String description) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         playerState = PLAYER_STATE.CONNECTION_ERROR;
 
         HostInfo hostInfo = hostManager.getHostInfo();
@@ -322,7 +317,6 @@ public class PlaylistFragment extends Fragment
 
     @Override
     public void onPlayerNoResultsYet() {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         playerState = PLAYER_STATE.NO_RESULTS_YET;
 
         // Initialize info panel
@@ -350,7 +344,6 @@ public class PlaylistFragment extends Fragment
 
     @Override
     public void onPlaylistClear(int playlistId) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         Iterator<String> it = playlists.keySet().iterator();
         while (it.hasNext()) {
             String key = it.next();
@@ -366,7 +359,6 @@ public class PlaylistFragment extends Fragment
 
     @Override
     public void onPlaylistsAvailable(ArrayList<GetPlaylist.GetPlaylistResult> playlists) {
-        if (binding == null) return; // If receiving this after onDestroy, ignore
         updatePlaylists(playlists);
 
         if ((playerState == PLAYER_STATE.PLAYING) &&
