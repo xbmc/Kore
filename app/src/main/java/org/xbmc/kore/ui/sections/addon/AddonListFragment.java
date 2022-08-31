@@ -21,8 +21,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
-
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,10 +30,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.xbmc.kore.R;
@@ -132,8 +130,7 @@ public class AddonListFragment extends AbstractListFragment {
             callGetAddonsAndSetup();
         } else {
             hideRefreshAnimation();
-            Toast.makeText(getActivity(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                 .show();
+            UIUtils.showSnackbar(getView(), R.string.no_xbmc_configured);
         }
     }
 

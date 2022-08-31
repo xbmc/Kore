@@ -31,7 +31,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -253,10 +252,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_play_local_file), description),
-                        Toast.LENGTH_SHORT).show();
+                if (!isResumed()) return;
+                UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_play_local_file), description));
             }
         }, callbackHandler);
     }
@@ -281,10 +278,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_queue_media_file), description),
-                        Toast.LENGTH_SHORT).show();
+                if (!isResumed()) return;
+                UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_queue_media_file), description));
             }
         }, callbackHandler);
     }
@@ -311,10 +306,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
                         @Override
                         public void onError(int errorCode, String description) {
-                            if (!isAdded()) return;
-                            Toast.makeText(getActivity(),
-                                    String.format(getString(R.string.error_play_media_file), description),
-                                    Toast.LENGTH_SHORT).show();
+                            if (!isResumed()) return;
+                            UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_play_media_file), description));
                         }
                     }, callbackHandler);
                 }
@@ -322,10 +315,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                Toast.makeText(getActivity(),
-                        String.format(getString(R.string.error_get_active_player), description),
-                        Toast.LENGTH_SHORT).show();
+                if (!isResumed()) return;
+                UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_get_active_player), description));
             }
         }, callbackHandler);
 

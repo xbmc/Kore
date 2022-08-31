@@ -44,11 +44,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.core.widget.TextViewCompat;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.elevation.SurfaceColors;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -766,4 +768,27 @@ public class UIUtils {
             }
         };
     }
+
+    /**
+     * Show a generic snackbar with a short length
+     * @param view View to find parent of snackbar
+     * @param resId message
+     */
+    public static void showSnackbar(View view, @StringRes int resId) {
+        if (view == null) return;
+        Snackbar.make(view, resId, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    /**
+     * Show a generic snackbar with a short length
+     * @param view View to find parent of snackbar
+     * @param message message
+     */
+    public static void showSnackbar(View view, String message) {
+        if (view == null) return;
+        Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
 }

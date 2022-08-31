@@ -31,7 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,10 +40,11 @@ import com.google.android.material.color.MaterialColors;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentAddHostZeroconfBinding;
-import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostConnection;
+import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.NetUtils;
+import org.xbmc.kore.utils.UIUtils;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -238,8 +238,7 @@ public class AddHostFragmentZeroconf extends Fragment {
             String[] addresses = selectedServiceInfo.getHostAddresses();
             if (addresses.length == 0) {
                 // Couldn't get any address
-                Toast.makeText(getActivity(), R.string.wizard_zeroconf_cant_connect_no_host_address, Toast.LENGTH_LONG)
-                        .show();
+                UIUtils.showSnackbar(getView(), R.string.wizard_zeroconf_cant_connect_no_host_address);
                 return;
             }
             String hostName = selectedServiceInfo.getName();

@@ -26,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,7 +74,8 @@ public class FavouritesListFragment
 
             @Override
             public void onError(int errorCode, String description) {
-                Toast.makeText(getActivity(), description, Toast.LENGTH_SHORT).show();
+                if (!isResumed()) return;
+                UIUtils.showSnackbar(getView(), description);
             }
         };
         return (view, position) -> {
@@ -98,8 +98,7 @@ public class FavouritesListFragment
                 playlistItem.file = detailsFavourite.path;
                 MediaPlayerUtils.play(FavouritesListFragment.this, playlistItem);
             } else {
-                Toast.makeText(getActivity(), R.string.unable_to_play_favourite_item, Toast.LENGTH_SHORT)
-                     .show();
+                UIUtils.showSnackbar(getView(), R.string.unable_to_play_favourite_item);
             }
         };
     }

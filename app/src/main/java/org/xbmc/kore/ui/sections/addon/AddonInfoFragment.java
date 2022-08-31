@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +37,7 @@ import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.UIUtils;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -104,10 +104,9 @@ public class AddonInfoFragment extends AbstractInfoFragment {
 
                 @Override
                 public void onError(int errorCode, String description) {
-                    if (!isAdded()) return;
+                    if (!isResumed()) return;
                     // Got an error, show toast
-                    Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                         .show();
+                    UIUtils.showSnackbar(getView(), R.string.unable_to_connect_to_xbmc);
                 }
             }, callbackHandler);
         });
@@ -122,20 +121,17 @@ public class AddonInfoFragment extends AbstractInfoFragment {
             action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    if (!isAdded()) return;
+                    if (!isResumed()) return;
                     int messageResId = (!isEnabled) ? R.string.addon_enabled : R.string.addon_disabled;
-                    Toast.makeText(requireContext(), messageResId, Toast.LENGTH_SHORT).show();
+                    UIUtils.showSnackbar(getView(), messageResId);
                     setEnableButtonState(!isEnabled);
                     setFabState(!isEnabled);
                 }
 
                 @Override
                 public void onError(int errorCode, String description) {
-                    if (!isAdded()) return;
-                    Toast.makeText(requireContext(),
-                                   String.format(getString(R.string.general_error_executing_action), description),
-                                   Toast.LENGTH_SHORT)
-                         .show();
+                    if (!isResumed()) return;
+                    UIUtils.showSnackbar(getView(), String.format(getString(R.string.general_error_executing_action), description));
                 }
             }, callbackHandler);
         });
@@ -149,17 +145,15 @@ public class AddonInfoFragment extends AbstractInfoFragment {
         action.execute(getHostManager().getConnection(), new ApiCallback<AddonType.Details>() {
             @Override
             public void onSuccess(AddonType.Details result) {
-                if (!isAdded()) return;
+                if (!isResumed()) return;
                 setEnableButtonState(result.enabled);
                 setFabState(result.enabled);
             }
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!isAdded()) return;
-                Toast.makeText(getActivity(),
-                               String.format(getString(R.string.error_getting_addon_info), description),
-                               Toast.LENGTH_SHORT).show();
+                if (!isResumed()) return;
+                UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_getting_addon_info), description));
             }
         }, callbackHandler);
     }
@@ -182,7 +176,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
                  .putStringSet(Settings.getBookmarkedAddonsPrefKey(hostId), bookmarks)
                  .putString(Settings.getNameBookmarkedAddonsPrefKey(hostId) + path, name)
                  .apply();
-            Toast.makeText(getActivity(), !isBookmarked ? R.string.addon_pinned : R.string.addon_unpinned, Toast.LENGTH_SHORT).show();
+            UIUtils.showSnackbar(getView(), !isBookmarked ? R.string.addon_pinned : R.string.addon_unpinned);
             setPinButtonState(!isBookmarked);
         });
 

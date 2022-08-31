@@ -24,24 +24,25 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentAddHostManualConfigurationBinding;
 import org.xbmc.kore.eventclient.EventServerConnection;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.ApiException;
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.method.JSONRPC;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.NetUtils;
+import org.xbmc.kore.utils.UIUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -187,6 +188,11 @@ public class HostFragmentManualConfiguration extends Fragment {
         return port > 0 && port <= 65535;
     }
 
+    private void showMessage(@StringRes int messageResId) {
+        if (getView() == null) return;
+        UIUtils.showSnackbar(getView(), messageResId);
+    }
+
     /**
      * Tests a connection with the values set in the UI.
      * Checks whether the values are correctly set, and then tries to make
@@ -234,14 +240,14 @@ public class HostFragmentManualConfiguration extends Fragment {
 
         if (implicitPort != null) {
             if (!isValidPort(implicitPort)) {
-                Toast.makeText(requireContext(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT).show();
+                showMessage(R.string.wizard_invalid_http_port_specified);
                 binding.kodiHttpPort.requestFocus();
                 return;
             }
             kodiHttpPort = implicitPort;
         } else if (explicitPort != null) {
             if (!isValidPort(explicitPort)) {
-                Toast.makeText(requireContext(), R.string.wizard_invalid_http_port_specified, Toast.LENGTH_SHORT).show();
+                showMessage(R.string.wizard_invalid_http_port_specified);
                 binding.kodiHttpPort.requestFocus();
                 return;
             }
@@ -281,19 +287,19 @@ public class HostFragmentManualConfiguration extends Fragment {
 
         // Check Kodi name and address
         if (TextUtils.isEmpty(kodiName)) {
-            Toast.makeText(requireContext(), R.string.wizard_no_name_specified, Toast.LENGTH_SHORT).show();
+            showMessage(R.string.wizard_no_name_specified);
             binding.kodiName.requestFocus();
             return;
         } else if (TextUtils.isEmpty(kodiAddress)) {
-            Toast.makeText(requireContext(), R.string.wizard_no_address_specified, Toast.LENGTH_SHORT).show();
+            showMessage(R.string.wizard_no_address_specified);
             binding.kodiIpAddress.requestFocus();
             return;
         } else if (kodiTcpPort <= 0) {
-            Toast.makeText(requireContext(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
+            showMessage(R.string.wizard_invalid_tcp_port_specified);
             binding.kodiTcpPort.requestFocus();
             return;
         } else if (kodiEventServerPort <= 0) {
-            Toast.makeText(requireContext(), R.string.wizard_invalid_tcp_port_specified, Toast.LENGTH_SHORT).show();
+            showMessage(R.string.wizard_invalid_tcp_port_specified);
             binding.kodiEventServerPort.requestFocus();
             return;
         }
@@ -469,13 +475,11 @@ public class HostFragmentManualConfiguration extends Fragment {
                 } else {
                     messageResourceId = R.string.wizard_incorrect_authentication;
                 }
-                Toast.makeText(requireContext(), messageResourceId, Toast.LENGTH_SHORT).show();
+                showMessage(messageResourceId);
                 binding.kodiUsername.requestFocus();
                 break;
             default:
-                Toast.makeText(requireContext(),
-                        R.string.wizard_error_connecting,
-                        Toast.LENGTH_SHORT).show();
+                showMessage(R.string.wizard_error_connecting);
                 break;
         }
     }

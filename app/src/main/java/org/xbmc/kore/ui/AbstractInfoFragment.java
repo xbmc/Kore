@@ -37,7 +37,6 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -105,8 +104,7 @@ abstract public class AbstractInfoFragment
                 if (isGranted) {
                     binding.infoActionDownload.performClick();
                 } else {
-                    Toast.makeText(getActivity(), R.string.write_storage_permission_denied, Toast.LENGTH_SHORT)
-                         .show();
+                    UIUtils.showSnackbar(getView(), R.string.write_storage_permission_denied);
                 }
             });
 
@@ -245,8 +243,7 @@ abstract public class AbstractInfoFragment
     @Override
     public void onRefresh () {
         if (getRefreshItem() == null) {
-            Toast.makeText(getActivity(), R.string.Refreshing_not_implemented_for_this_item,
-                           Toast.LENGTH_SHORT).show();
+            UIUtils.showSnackbar(getView(), R.string.Refreshing_not_implemented_for_this_item);
             binding.swipeRefreshLayout.setRefreshing(false);
             return;
         }
@@ -348,7 +345,7 @@ abstract public class AbstractInfoFragment
 
     protected void playItemOnKodi(PlaylistType.Item item) {
         if (item == null) {
-            Toast.makeText(getActivity(), R.string.no_item_available_to_play, Toast.LENGTH_SHORT).show();
+            UIUtils.showSnackbar(getView(), R.string.no_item_available_to_play);
             return;
         }
 
@@ -363,10 +360,8 @@ abstract public class AbstractInfoFragment
 
                     @Override
                     public void onError(int errorCode, String description) {
-                        if (!isAdded()) return;
-                        // Got an error, show toast
-                        Toast.makeText(getActivity(), R.string.unable_to_connect_to_xbmc, Toast.LENGTH_SHORT)
-                             .show();
+                        if (!isResumed()) return;
+                        UIUtils.showSnackbar(getView(), R.string.unable_to_connect_to_xbmc);
                     }
                 },
                 callbackHandler);
@@ -545,7 +540,7 @@ abstract public class AbstractInfoFragment
                     listener.onClick(view);
                     setToggleButtonState(binding.infoActionDownload, true);
                 } else {
-                    Toast.makeText(getActivity(), R.string.no_connection_type_selected, Toast.LENGTH_SHORT).show();
+                    UIUtils.showSnackbar(getView(), R.string.no_connection_type_selected);
                 }
             }
         });

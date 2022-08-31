@@ -29,7 +29,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +49,7 @@ import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.utils.UIUtils;
 
 import de.greenrobot.event.EventBus;
 
@@ -211,6 +211,8 @@ public abstract class AbstractCursorListFragment
 	 * @param event Media Sync Event
 	 */
 	protected void onSyncProcessEnded(MediaSyncEvent event) {
+		if (!isResumed() || getView() == null) return;
+
         boolean silentSync = false;
         if (event.syncExtras != null) {
             silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
@@ -221,14 +223,13 @@ public abstract class AbstractCursorListFragment
 			if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
 				refreshList();
                 if (!silentSync) {
-                    Toast.makeText(getActivity(), R.string.sync_successful, Toast.LENGTH_SHORT)
-                        .show();
+					UIUtils.showSnackbar(getView(), R.string.sync_successful);
                 }
             } else if (!silentSync) {
-			    String msg = (event.errorCode == ApiException.API_ERROR) ?
-					String.format(getString(R.string.error_while_syncing), event.errorMessage) :
-					getString(R.string.unable_to_connect_to_xbmc);
-				Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+				String msg = (event.errorCode == ApiException.API_ERROR) ?
+							 String.format(getString(R.string.error_while_syncing), event.errorMessage) :
+							 getString(R.string.unable_to_connect_to_xbmc);
+				UIUtils.showSnackbar(getView(), msg);
 			}
 		}
 	}

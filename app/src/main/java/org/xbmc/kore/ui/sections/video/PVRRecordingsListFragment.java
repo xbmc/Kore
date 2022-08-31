@@ -32,7 +32,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,10 +78,7 @@ public class PVRRecordingsListFragment
             RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
 
             // Start the recording
-            Toast.makeText(requireContext(),
-                           String.format(getString(R.string.starting_recording), tag.title),
-                           Toast.LENGTH_SHORT)
-                 .show();
+            UIUtils.showSnackbar(getView(), String.format(getString(R.string.starting_recording), tag.title));
             Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
             action.execute(hostManager.getConnection(), new ApiCallback<String>() {
                 @Override
@@ -90,14 +86,9 @@ public class PVRRecordingsListFragment
 
                 @Override
                 public void onError(int errorCode, String description) {
-                    if (!isAdded()) return;
+                    if (!isResumed()) return;
                     LogUtils.LOGD(TAG, "Error starting recording: " + description);
-
-                    Toast.makeText(requireContext(),
-                                   String.format(getString(R.string.error_starting_recording), description),
-                                   Toast.LENGTH_SHORT)
-                         .show();
-
+                    UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_starting_recording), description));
                 }
             }, callbackHandler);
 
@@ -215,8 +206,7 @@ public class PVRRecordingsListFragment
             browseRecordings();
         } else {
             hideRefreshAnimation();
-            Toast.makeText(requireContext(), R.string.no_xbmc_configured, Toast.LENGTH_SHORT)
-                 .show();
+            UIUtils.showSnackbar(getView(), R.string.no_xbmc_configured);
         }
     }
 
