@@ -19,12 +19,10 @@ package org.xbmc.kore.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
-
 import android.os.Looper;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -55,7 +53,7 @@ public class MediaPlayerUtils {
         action.execute(hostManager.getConnection(), new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                if (!fragment.isAdded()) return;
+                if (!fragment.isResumed()) return;
                 boolean switchToRemote = PreferenceManager
                         .getDefaultSharedPreferences(context)
                         .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
@@ -64,18 +62,14 @@ public class MediaPlayerUtils {
                     Intent launchIntent = new Intent(context, RemoteActivity.class);
                     context.startActivity(launchIntent);
                 } else {
-                    Toast.makeText(context, R.string.now_playing, Toast.LENGTH_SHORT)
-                         .show();
+                    UIUtils.showSnackbar(fragment.getView(), R.string.now_playing);
                 }
             }
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!fragment.isAdded()) return;
-                // Got an error, show toast
-                String errorMessage = context.getString(R.string.error_play_media_file, description);
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
-                     .show();
+                if (!fragment.isResumed()) return;
+                UIUtils.showSnackbar(fragment.getView(), context.getString(R.string.error_play_media_file, description));
             }
         }, callbackHandler);
     }
@@ -98,7 +92,7 @@ public class MediaPlayerUtils {
         getPlaylists.execute(hostManager.getConnection(), new ApiCallback<ArrayList<PlaylistType.GetPlaylistsReturnType>>() {
             @Override
             public void onSuccess(ArrayList<PlaylistType.GetPlaylistsReturnType> result) {
-                if (!fragment.isAdded()) return;
+                if (!fragment.isResumed()) return;
                 // Ok, loop through the playlists, looking for the correct one
                 int playlistId = -1;
                 for (PlaylistType.GetPlaylistsReturnType playlist : result) {
@@ -113,33 +107,27 @@ public class MediaPlayerUtils {
                     action.execute(hostManager.getConnection(), new ApiCallback<String>() {
                         @Override
                         public void onSuccess(String result) {
-                            if (!fragment.isAdded()) return;
-                            Toast.makeText(context, R.string.item_added_to_playlist, Toast.LENGTH_SHORT)
-                                 .show();
+                            if (!fragment.isResumed()) return;
+                            UIUtils.showSnackbar(fragment.getView(), R.string.item_added_to_playlist);
                         }
 
                         @Override
                         public void onError(int errorCode, String description) {
-                            if (!fragment.isAdded()) return;
-                            // Got an error, show toast
+                            if (!fragment.isResumed()) return;
                             String errorMessage = context.getString(R.string.error_queue_media_file, description);
-                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
-                                 .show();
+                            UIUtils.showSnackbar(fragment.getView(), errorMessage);
                         }
                     }, callbackHandler);
                 } else {
-                    Toast.makeText(context, R.string.no_suitable_playlist, Toast.LENGTH_SHORT)
-                         .show();
+                    UIUtils.showSnackbar(fragment.getView(), R.string.no_suitable_playlist);
                 }
             }
 
             @Override
             public void onError(int errorCode, String description) {
-                if (!fragment.isAdded()) return;
-                // Got an error, show toast
+                if (!fragment.isResumed()) return;
                 String errorMessage = context.getString(R.string.error_queue_media_file, description);
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
-                     .show();
+                UIUtils.showSnackbar(fragment.getView(), errorMessage);
             }
         }, callbackHandler);
     }
