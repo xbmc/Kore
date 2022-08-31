@@ -40,26 +40,26 @@ public class SyncMovies extends SyncItem {
 
     private final int hostId;
     private final int movieId;
-    private final Bundle syncExtras;
+    private final Bundle syncParams;
 
     /**
      * Syncs all the movies on selected XBMC to the local database
      * @param hostId XBMC host id
      */
-    public SyncMovies(final int hostId, Bundle syncExtras) {
+    public SyncMovies(final int hostId, Bundle syncParams) {
         this.hostId = hostId;
         this.movieId = -1;
-        this.syncExtras = syncExtras;
+        this.syncParams = syncParams;
     }
 
     /**
      * Syncs a specific movie on selected XBMC to the local database
      * @param hostId XBMC host id
      */
-    public SyncMovies(final int hostId, final int movieId, Bundle syncExtras) {
+    public SyncMovies(final int hostId, final int movieId, Bundle syncParams) {
         this.hostId = hostId;
         this.movieId = movieId;
-        this.syncExtras = syncExtras;
+        this.syncParams = syncParams;
     }
 
     /** {@inheritDoc} */
@@ -76,8 +76,8 @@ public class SyncMovies extends SyncItem {
     }
 
     /** {@inheritDoc} */
-    public Bundle getSyncExtras() {
-        return syncExtras;
+    public Bundle getSyncParams() {
+        return syncParams;
     }
 
     /** {@inheritDoc} */
@@ -160,11 +160,10 @@ public class SyncMovies extends SyncItem {
                     // First call, delete movies from DB
                     deleteMovies(contentResolver, hostId, -1);
                 }
-                if (!result.items.isEmpty()) {
+                if (result != null && !result.items.isEmpty()) {
                     insertMovies(orchestrator, contentResolver, result.items);
                 }
 
-                LogUtils.LOGD(TAG, "syncAllMovies, movies gotten: " + result.items.size());
                 if (SyncUtils.moreItemsAvailable(limitsReturned)) {
                     // Max limit returned, there may be some more movies
                     // As we're going to recurse, these result objects can add up, so

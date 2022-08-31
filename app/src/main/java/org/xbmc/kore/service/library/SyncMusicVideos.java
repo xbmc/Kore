@@ -34,15 +34,15 @@ public class SyncMusicVideos extends SyncItem {
     public static final String TAG = LogUtils.makeLogTag(SyncMusicVideos.class);
 
     private final int hostId;
-    private final Bundle syncExtras;
+    private final Bundle syncParams;
 
     /**
      * Syncs all the music videos on XBMC, to the local database
      * @param hostId XBMC host id
      */
-    public SyncMusicVideos(final int hostId, Bundle syncExtras) {
+    public SyncMusicVideos(final int hostId, Bundle syncParams) {
         this.hostId = hostId;
-        this.syncExtras = syncExtras;
+        this.syncParams = syncParams;
     }
 
     /** {@inheritDoc} */
@@ -56,8 +56,8 @@ public class SyncMusicVideos extends SyncItem {
     }
 
     /** {@inheritDoc} */
-    public Bundle getSyncExtras() {
-        return syncExtras;
+    public Bundle getSyncParams() {
+        return syncParams;
     }
 
     /** {@inheritDoc} */
