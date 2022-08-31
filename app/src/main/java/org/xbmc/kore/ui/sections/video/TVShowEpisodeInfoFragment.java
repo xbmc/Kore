@@ -42,7 +42,6 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
-import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -78,17 +77,22 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected RefreshItem createRefreshItem() {
-        RefreshItem refreshItem = new RefreshItem(requireContext(),
-                                                  LibrarySyncService.SYNC_SINGLE_TVSHOW);
-        refreshItem.setSyncItem(LibrarySyncService.SYNC_TVSHOWID, tvshowId);
-        refreshItem.setListener(event -> {
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                LoaderManager.getInstance(this).restartLoader(LOADER_EPISODE, null,
-                                                 TVShowEpisodeInfoFragment.this);
-            }
-        });
-        return refreshItem;
+    protected String getSyncType() {
+        return LibrarySyncService.SYNC_SINGLE_TVSHOW;
+    }
+
+    @Override
+    protected Bundle getSyncExtras() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(LibrarySyncService.SYNC_TVSHOWID, tvshowId);
+        return bundle;
+    }
+
+    @Override
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
+        if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+            LoaderManager.getInstance(this).restartLoader(LOADER_EPISODE, null, this);
+        }
     }
 
     @Override
@@ -111,7 +115,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                 public void onSuccess(String result) {
                     // Force a refresh, but don't show a message
                     if (!isAdded()) return;
-                    getRefreshItem().startSync(true);
+                    startSync(true);
                     episodePlaycount = newPlaycount;
                     setWatchedButtonState(newPlaycount > 0);
                 }

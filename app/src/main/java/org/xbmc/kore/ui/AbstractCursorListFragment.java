@@ -65,7 +65,6 @@ public abstract class AbstractCursorListFragment
 	private final String BUNDLE_KEY_SEARCH_QUERY = "search_query";
 
 	private ServiceConnection serviceConnection;
-
 	private EventBus bus;
 
 	// Loader IDs
@@ -78,7 +77,6 @@ public abstract class AbstractCursorListFragment
 	private boolean supportsSearch;
 
 	private SearchView searchView;
-	private boolean isPaused;
 
 	abstract protected void onListItemClicked(View view);
 	abstract protected CursorLoader createCursorLoader();
@@ -113,16 +111,14 @@ public abstract class AbstractCursorListFragment
 
 	@Override
 	public void onResume() {
-		bus.register(this);
 		super.onResume();
-		isPaused = false;
+		bus.register(this);
 	}
 
 	@Override
 	public void onPause() {
 		bus.unregister(this);
 		super.onPause();
-		isPaused = true;
 	}
 
 	@Override
@@ -174,8 +170,7 @@ public abstract class AbstractCursorListFragment
 	}
 
 	/**
-	 * Should return the {@link LibrarySyncService} SyncType that
-	 * this list initiates
+	 * Should return the {@link LibrarySyncService} SyncType that this list initiates
 	 * @return {@link LibrarySyncService} SyncType
 	 */
 	abstract protected String getListSyncType();
@@ -199,49 +194,40 @@ public abstract class AbstractCursorListFragment
 
 	/**
 	 * Event bus post. Called when the syncing process ended
-	 *
-	 * @param event Refreshes data
-	 */
-	public void onEventMainThread(MediaSyncEvent event) {
-		onSyncProcessEnded(event);
-	}
-
-	/**
-	 * Called each time a MediaSyncEvent is received.
 	 * @param event Media Sync Event
 	 */
-	protected void onSyncProcessEnded(MediaSyncEvent event) {
-		if (!isResumed() || getView() == null) return;
+	public void onEventMainThread(MediaSyncEvent event) {
+		if (!isResumed() ||
+			!event.syncType.equals(getListSyncType()))
+			return;
 
-        boolean silentSync = false;
-        if (event.syncExtras != null) {
-            silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
-        }
+		boolean silentSync = false;
+		if (event.syncExtras != null) {
+			silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
+		}
 
-		if (event.syncType.equals(getListSyncType())) {
-			hideRefreshAnimation();
-			if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-				refreshList();
-                if (!silentSync) {
-					UIUtils.showSnackbar(getView(), R.string.sync_successful);
-                }
-            } else if (!silentSync) {
-				String msg = (event.errorCode == ApiException.API_ERROR) ?
-							 String.format(getString(R.string.error_while_syncing), event.errorMessage) :
-							 getString(R.string.unable_to_connect_to_xbmc);
-				UIUtils.showSnackbar(getView(), msg);
+		hideRefreshAnimation();
+		if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+			refreshList();
+			if (!silentSync) {
+				UIUtils.showSnackbar(getView(), R.string.sync_successful);
 			}
+		} else if (!silentSync) {
+			String msg = (event.errorCode == ApiException.API_ERROR) ?
+						 String.format(getString(R.string.error_while_syncing), event.errorMessage) :
+						 getString(R.string.unable_to_connect_to_xbmc);
+			UIUtils.showSnackbar(getView(), msg);
 		}
 	}
 
     @Override
     public void onServiceConnected(LibrarySyncService librarySyncService) {
-        HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
-        SyncItem syncItem = SyncUtils.getCurrentSyncItem(librarySyncService, hostInfo, getListSyncType());
-        if (syncItem != null) {
-            boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
-                syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
-            if (!silentRefresh)
+		HostInfo hostInfo = HostManager.getInstance(requireContext()).getHostInfo();
+		SyncItem syncItem = SyncUtils.getCurrentSyncItem(librarySyncService, hostInfo, getListSyncType());
+		if (syncItem != null) {
+			boolean silentRefresh = syncItem.getSyncParams() != null &&
+									syncItem.getSyncParams().getBoolean(LibrarySyncService.SILENT_SYNC, false);
+			if (!silentRefresh)
 				binding.swipeRefreshLayout.setRefreshing(true);
         }
     }
@@ -292,8 +278,7 @@ public abstract class AbstractCursorListFragment
 		 * will use the empty search filter. This is due to the fact that we don't restart the
 		 * loader when it is still loading after its been created.
 		 */
-		if (isPaused)
-			return true;
+		if (!isResumed()) return true;
 
 		searchFilter = newText;
 

@@ -36,7 +36,6 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
-import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.utils.LogUtils;
 
 /**
@@ -60,17 +59,23 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected RefreshItem createRefreshItem() {
-        RefreshItem refreshItem = new RefreshItem(requireContext(), LibrarySyncService.SYNC_SINGLE_TVSHOW);
-        refreshItem.setSyncItem(LibrarySyncService.SYNC_TVSHOWID, getDataHolder().getId());
-        refreshItem.setListener(event -> {
-            if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-                LoaderManager.getInstance(this).restartLoader(LOADER_TVSHOW, null, TVShowInfoFragment.this);
-                refreshAdditionInfoFragment();
-            }
-        });
+    protected String getSyncType() {
+        return LibrarySyncService.SYNC_SINGLE_TVSHOW;
+    }
 
-        return refreshItem;
+    @Override
+    protected Bundle getSyncExtras() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(LibrarySyncService.SYNC_TVSHOWID, getDataHolder().getId());
+        return bundle;
+    }
+
+    @Override
+    protected void onSyncProcessEnded(MediaSyncEvent event) {
+        if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+            LoaderManager.getInstance(this).restartLoader(LOADER_TVSHOW, null, TVShowInfoFragment.this);
+            refreshAdditionInfoFragment();
+        }
     }
 
     @Override
@@ -163,7 +168,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
         if (System.currentTimeMillis() > lastUpdated + Settings.DB_UPDATE_INTERVAL) {
             // Trigger a silent refresh
             hasIssuedOutdatedRefresh = true;
-            getRefreshItem().startSync(true);
+            startSync(true);
         }
     }
 

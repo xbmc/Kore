@@ -51,9 +51,9 @@ public abstract class SyncItem {
     abstract public String getSyncType();
 
     /**
-     * Returns the extras that were passed during creation.
+     * Returns the params that were passed during creation.
      * Allows the caller to pass parameters that will be sent back to him
      * @return Sync extras passed during construction
      */
-    abstract public Bundle getSyncExtras();
+    abstract public Bundle getSyncParams();
 }

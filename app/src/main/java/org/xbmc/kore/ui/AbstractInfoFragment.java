@@ -58,12 +58,13 @@ import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.ApiException;
+import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
-import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.SharedElementTransition;
@@ -71,6 +72,8 @@ import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.util.Locale;
+
+import de.greenrobot.event.EventBus;
 
 abstract public class AbstractInfoFragment
         extends AbstractFragment
@@ -85,7 +88,7 @@ abstract public class AbstractInfoFragment
     private HostManager hostManager;
     private HostInfo hostInfo;
     private ServiceConnection serviceConnection;
-    private RefreshItem refreshItem;
+    private EventBus eventBus;
     private boolean expandDescription;
     private ViewTreeObserver.OnScrollChangedListener onScrollChangedListener;
 
@@ -120,6 +123,7 @@ abstract public class AbstractInfoFragment
         super.onCreate(savedInstanceState);
         hostManager = HostManager.getInstance(requireContext());
         hostInfo = hostManager.getHostInfo();
+        eventBus = EventBus.getDefault();
 
         seenButtonLabels = new String[] { getString(R.string.unwatched_status), getString(R.string.watched_status) };
         pinButtonLabels = new String[] { getString(R.string.unpinned_status), getString(R.string.pinned_status) };
@@ -159,7 +163,7 @@ abstract public class AbstractInfoFragment
         }
         binding.poster.setTransitionName(dataHolder.getPosterTransitionName());
 
-        if(getRefreshItem() != null) {
+        if(getSyncType() != null) {
             binding.swipeRefreshLayout.setOnRefreshListener(this);
         } else {
             binding.swipeRefreshLayout.setEnabled(false);
@@ -192,19 +196,15 @@ abstract public class AbstractInfoFragment
 
     @Override
     public void onResume() {
+        super.onResume();
+        eventBus.register(this);
         // Force the exit view to invisible
         binding.exitTransitionView.setVisibility(View.INVISIBLE);
-        if (refreshItem != null) {
-            refreshItem.register();
-        }
-        super.onResume();
     }
 
     @Override
     public void onPause() {
-        if (refreshItem != null) {
-            refreshItem.unregister();
-        }
+        eventBus.unregister(this);
         super.onPause();
     }
 
@@ -242,37 +242,106 @@ abstract public class AbstractInfoFragment
     /** {@inheritDoc} */
     @Override
     public void onRefresh () {
-        if (getRefreshItem() == null) {
-            UIUtils.showSnackbar(getView(), R.string.Refreshing_not_implemented_for_this_item);
+        if (getSyncType() == null) {
             binding.swipeRefreshLayout.setRefreshing(false);
             return;
         }
-
-        refreshItem.setSwipeRefreshLayout(binding.swipeRefreshLayout);
-        refreshItem.startSync(false);
+        startSync(false);
     }
 
-    @Override
-    public void onServiceConnected(LibrarySyncService librarySyncService) {
-        if (getRefreshItem() == null) {
+    protected void startSync(boolean silentRefresh) {
+        LogUtils.LOGD(TAG, "Starting sync. Silent? " + silentRefresh);
+
+        if (hostInfo == null) {
+            binding.swipeRefreshLayout.setRefreshing(false);
+            UIUtils.showSnackbar(getView(), R.string.no_xbmc_configured);
             return;
         }
 
+        if (!silentRefresh)
+            binding.swipeRefreshLayout.setRefreshing(true);
+        // Start the syncing process
+        Intent syncIntent = new Intent(requireContext(), LibrarySyncService.class);
+        syncIntent.putExtra(getSyncType(), true);
+        Bundle syncExtras = getSyncExtras();
+        if (syncExtras != null) {
+            syncIntent.putExtras(syncExtras);
+        }
+
+        Bundle syncItemParams = new Bundle();
+        syncItemParams.putBoolean(LibrarySyncService.SILENT_SYNC, silentRefresh);
+        syncIntent.putExtra(LibrarySyncService.SYNC_ITEM_PARAMS, syncItemParams);
+
+        requireContext().startService(syncIntent);
+    }
+
+    /**
+     * Should return the {@link LibrarySyncService} SyncType that a refresh initiates.
+     * Setting it to null disables syncing
+     * @return {@link LibrarySyncService} SyncType
+     */
+    protected abstract String getSyncType();
+
+    /**
+     * Should return the extras to pass to syncing process. Specifically, if syncing a sinle item, should return
+     * the {@link LibrarySyncService} syncID and itemId for the item.
+     * @return Extras to pass to {@link LibrarySyncService}
+     */
+    protected Bundle getSyncExtras() {
+        return null;
+    }
+
+    /**
+     * Called when a sync process ends, overwrite to refresh information
+     * @param event MediaSyncEvent that just ended
+     */
+    protected void onSyncProcessEnded(MediaSyncEvent event) { }
+
+    @Override
+    public void onServiceConnected(LibrarySyncService librarySyncService) {
+        if (getSyncType() == null)
+            return;
+
         SyncItem syncItem = SyncUtils.getCurrentSyncItem(librarySyncService,
-            HostManager.getInstance(requireContext()).getHostInfo(),
-            refreshItem.getSyncType());
+                                                         hostManager.getHostInfo(),
+                                                         getSyncType());
         if (syncItem != null) {
-            boolean silentRefresh = (syncItem.getSyncExtras() != null) &&
-                syncItem.getSyncExtras().getBoolean(LibrarySyncService.SILENT_SYNC, false);
+            boolean silentRefresh = syncItem.getSyncParams() != null &&
+                                    syncItem.getSyncParams().getBoolean(LibrarySyncService.SILENT_SYNC, false);
             if (!silentRefresh)
                 binding.swipeRefreshLayout.setRefreshing(true);
-            refreshItem.setSwipeRefreshLayout(binding.swipeRefreshLayout);
-            refreshItem.register();
+        }
+    }
+
+    /**
+     * Event bus post. Called when the syncing process ended
+     * @param event Media Sync Event
+     */
+    public void onEventMainThread(MediaSyncEvent event) {
+        if (!isResumed() || !event.syncType.equals(getSyncType()))
+            return;
+
+        boolean silentSync = false;
+        if (event.syncExtras != null) {
+            silentSync = event.syncExtras.getBoolean(LibrarySyncService.SILENT_SYNC, false);
+        }
+
+        binding.swipeRefreshLayout.setRefreshing(false);
+        onSyncProcessEnded(event);
+
+        if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
+            if (!silentSync) {
+                UIUtils.showSnackbar(getView(), R.string.sync_successful);
+            }
+        } else if (!silentSync) {
+            String msg = (event.errorCode == ApiException.API_ERROR) ?
+                         String.format(getString(R.string.error_while_syncing), event.errorMessage) :
+                         getString(R.string.unable_to_connect_to_xbmc);
+            UIUtils.showSnackbar(getView(), msg);
         }
     }
 
     private int lastConnectionStatusResult = CONNECTION_NO_RESULT;
-
     /**
      * Hide/Disable UI elements that don't make sense without a connection
      */
@@ -648,27 +717,11 @@ abstract public class AbstractInfoFragment
         return true;
     }
 
-    protected RefreshItem getRefreshItem() {
-        if (refreshItem == null) {
-            refreshItem = createRefreshItem();
-        }
-        return refreshItem;
-    }
-
     protected void setExpandDescription(boolean expandDescription) {
         this.expandDescription = expandDescription;
     }
 
     abstract protected AbstractAdditionalInfoFragment getAdditionalInfoFragment();
-
-    /**
-     * Called when user commands the information to be renewed. Either through a swipe down
-     * or a menu call.
-     * <br/>
-     * Note, that {@link AbstractAdditionalInfoFragment#refresh()} will be called for an
-     * additional fragment, if available, automatically.
-     */
-    abstract protected RefreshItem createRefreshItem();
 
     /**
      * Called when the media action bar actions are available and

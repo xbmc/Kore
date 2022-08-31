@@ -24,6 +24,7 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Process;
 
+import org.xbmc.kore.BuildConfig;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.host.HostConnection;
@@ -36,29 +37,35 @@ import java.util.ArrayList;
  */
 public class LibrarySyncService extends Service {
     public static final String TAG = LogUtils.makeLogTag(LibrarySyncService.class);
+    private static final String PACKAGE_NAME = BuildConfig.APPLICATION_ID;
 
     /**
-     * Possible requests to sync
+     * Possible requests to sync, where more than one can be specified.
+     * Include a boolean extra in the start intent with these identifiers to set the type of requests to sync
      */
-    public static final String SYNC_ALL_MOVIES = "sync_all_movies";
-    public static final String SYNC_SINGLE_MOVIE = "sync_single_movie";
-    public static final String SYNC_ALL_TVSHOWS = "sync_all_tvshows";
-    public static final String SYNC_SINGLE_TVSHOW = "sync_single_tvshow";
-    public static final String SYNC_ALL_MUSIC = "sync_all_music";
-    public static final String SYNC_ALL_MUSIC_VIDEOS = "sync_all_music_videos";
+    public static final String SYNC_ALL_MOVIES = PACKAGE_NAME + ".sync_all_movies";
+    public static final String SYNC_SINGLE_MOVIE = PACKAGE_NAME + ".sync_single_movie";
+    public static final String SYNC_ALL_TVSHOWS = PACKAGE_NAME + ".sync_all_tvshows";
+    public static final String SYNC_SINGLE_TVSHOW = PACKAGE_NAME + ".sync_single_tvshow";
+    public static final String SYNC_ALL_MUSIC = PACKAGE_NAME + ".sync_all_music";
+    public static final String SYNC_ALL_MUSIC_VIDEOS = PACKAGE_NAME + ".sync_all_music_videos";
 
-    public static final String SYNC_MOVIEID = "sync_movieid";
-    public static final String SYNC_TVSHOWID = "sync_tvshowid";
+    /**
+     * If a single movie or tv show is requested to be synced, specify its id in the intent by including an
+     * integer extra with these identifiers
+     */
+    public static final String SYNC_MOVIEID = PACKAGE_NAME + ".sync_movieid";
+    public static final String SYNC_TVSHOWID = PACKAGE_NAME + ".sync_tvshowid";
 
     /**
      * Extra used to pass parameters that will be sent back to the caller
      */
-    public static final String SYNC_EXTRAS = "sync_extras";
+    public static final String SYNC_ITEM_PARAMS = PACKAGE_NAME + ".sync_item_params";
 
     /**
      * Constant for UI to use to signal a silent sync (pass these in SYNC_EXTRAS)
      */
-    public static final String SILENT_SYNC = "silent_sync";
+    public static final String SILENT_SYNC = PACKAGE_NAME + ".silent_sync";
 
     /**
      * Our handler to post callbacks from {@link HostConnection} calls
@@ -98,12 +105,12 @@ public class LibrarySyncService extends Service {
         syncOrchestrators.add(syncOrchestrator);
 
         // Get the request parameters that we should pass when calling back the caller
-        Bundle syncExtras = intent.getBundleExtra(SYNC_EXTRAS);
+        Bundle syncItemParams = intent.getBundleExtra(SYNC_ITEM_PARAMS);
 
         // Sync all movies
         boolean syncAllMovies = intent.getBooleanExtra(SYNC_ALL_MOVIES, false);
         if (syncAllMovies) {
-            syncOrchestrator.addSyncItem(new SyncMovies(hostInfo.getId(), syncExtras));
+            syncOrchestrator.addSyncItem(new SyncMovies(hostInfo.getId(), syncItemParams));
         }
 
         // Sync a single movie
@@ -111,14 +118,14 @@ public class LibrarySyncService extends Service {
         if (syncSingleMovie) {
             int movieId = intent.getIntExtra(SYNC_MOVIEID, -1);
             if (movieId != -1) {
-                syncOrchestrator.addSyncItem(new SyncMovies(hostInfo.getId(), movieId, syncExtras));
+                syncOrchestrator.addSyncItem(new SyncMovies(hostInfo.getId(), movieId, syncItemParams));
             }
         }
 
         // Sync all tvshows
         boolean syncAllTVShows = intent.getBooleanExtra(SYNC_ALL_TVSHOWS, false);
         if (syncAllTVShows) {
-            syncOrchestrator.addSyncItem(new SyncTVShows(hostInfo.getId(), syncExtras));
+            syncOrchestrator.addSyncItem(new SyncTVShows(hostInfo.getId(), syncItemParams));
         }
 
         // Sync a single tvshow
@@ -126,20 +133,20 @@ public class LibrarySyncService extends Service {
         if (syncSingleTVShow) {
             int tvshowId = intent.getIntExtra(SYNC_TVSHOWID, -1);
             if (tvshowId != -1) {
-                syncOrchestrator.addSyncItem(new SyncTVShows(hostInfo.getId(), tvshowId, syncExtras));
+                syncOrchestrator.addSyncItem(new SyncTVShows(hostInfo.getId(), tvshowId, syncItemParams));
             }
         }
 
         // Sync all music
         boolean syncAllMusic = intent.getBooleanExtra(SYNC_ALL_MUSIC, false);
         if (syncAllMusic) {
-            syncOrchestrator.addSyncItem(new SyncMusic(syncExtras));
+            syncOrchestrator.addSyncItem(new SyncMusic(syncItemParams));
         }
 
         // Sync all music videos
         boolean syncAllMusicVideos = intent.getBooleanExtra(SYNC_ALL_MUSIC_VIDEOS, false);
         if (syncAllMusicVideos) {
-            syncOrchestrator.addSyncItem(new SyncMusicVideos(hostInfo.getId(), syncExtras));
+            syncOrchestrator.addSyncItem(new SyncMusicVideos(hostInfo.getId(), syncItemParams));
         }
 
         // Start syncing

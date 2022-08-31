@@ -35,7 +35,6 @@ import org.xbmc.kore.jsonrpc.method.Addons;
 import org.xbmc.kore.jsonrpc.type.AddonType;
 import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
-import org.xbmc.kore.ui.generic.RefreshItem;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -77,7 +76,8 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     @Override
-    protected RefreshItem createRefreshItem() {
+    protected String getSyncType() {
+        // Don't start refresh on details screen
         return null;
     }
 
@@ -145,16 +145,12 @@ public class AddonInfoFragment extends AbstractInfoFragment {
         action.execute(getHostManager().getConnection(), new ApiCallback<AddonType.Details>() {
             @Override
             public void onSuccess(AddonType.Details result) {
-                if (!isResumed()) return;
                 setEnableButtonState(result.enabled);
                 setFabState(result.enabled);
             }
 
             @Override
-            public void onError(int errorCode, String description) {
-                if (!isResumed()) return;
-                UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_getting_addon_info), description));
-            }
+            public void onError(int errorCode, String description) { }
         }, callbackHandler);
     }
 

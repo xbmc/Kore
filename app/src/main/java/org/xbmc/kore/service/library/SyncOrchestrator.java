@@ -135,7 +135,7 @@ public class SyncOrchestrator {
 
         EventBus.getDefault()
                 .post(new MediaSyncEvent(currentSyncItem.getSyncType(),
-                                         currentSyncItem.getSyncExtras(),
+                                         currentSyncItem.getSyncParams(),
                                          MediaSyncEvent.STATUS_SUCCESS));
 
         syncItems.remove(currentSyncItem);
@@ -156,7 +156,7 @@ public class SyncOrchestrator {
         //hostConnection.disconnect();
         EventBus.getDefault()
                 .post(new MediaSyncEvent(currentSyncItem.getSyncType(),
-                                         currentSyncItem.getSyncExtras(),
+                                         currentSyncItem.getSyncParams(),
                                          MediaSyncEvent.STATUS_FAIL, errorCode, description));
         // Keep syncing till the end
         nextSync();

@@ -41,16 +41,16 @@ public class SyncTVShows extends SyncItem {
 
     private final int hostId;
     private final int tvshowId;
-    private final Bundle syncExtras;
+    private final Bundle syncParams;
 
     /**
      * Syncs all the TVShows on selected XBMC to the local database
      * @param hostId XBMC host id
      */
-    public SyncTVShows(final int hostId, Bundle syncExtras) {
+    public SyncTVShows(final int hostId, Bundle syncParams) {
         this.hostId = hostId;
         this.tvshowId = -1;
-        this.syncExtras = syncExtras;
+        this.syncParams = syncParams;
     }
 
     /**
@@ -58,10 +58,10 @@ public class SyncTVShows extends SyncItem {
      * @param hostId XBMC host id
      * @param tvshowId Show to sync
      */
-    public SyncTVShows(final int hostId, final int tvshowId, Bundle syncExtras) {
+    public SyncTVShows(final int hostId, final int tvshowId, Bundle syncParams) {
         this.hostId = hostId;
         this.tvshowId = tvshowId;
-        this.syncExtras = syncExtras;
+        this.syncParams = syncParams;
     }
 
     /** {@inheritDoc} */
@@ -78,8 +78,8 @@ public class SyncTVShows extends SyncItem {
     }
 
     /** {@inheritDoc} */
-    public Bundle getSyncExtras() {
-        return syncExtras;
+    public Bundle getSyncParams() {
+        return syncParams;
     }
 
     private final static String[] getTVShowsProperties = {

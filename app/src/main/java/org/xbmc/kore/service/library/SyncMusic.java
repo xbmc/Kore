@@ -41,13 +41,13 @@ public class SyncMusic extends SyncItem {
     private static final int LIMIT_SYNC_ALBUMS = 300;
     private static final int LIMIT_SYNC_SONGS = 600;
 
-    private final Bundle syncExtras;
+    private final Bundle syncParams;
 
     /**
      * Syncs all the music to the local database
      */
-    public SyncMusic(Bundle syncExtras) {
-        this.syncExtras = syncExtras;
+    public SyncMusic(Bundle syncParams) {
+        this.syncParams = syncParams;
     }
 
     /** {@inheritDoc} */
@@ -59,8 +59,8 @@ public class SyncMusic extends SyncItem {
     public String getSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     /** {@inheritDoc} */
-    public Bundle getSyncExtras() {
-        return syncExtras;
+    public Bundle getSyncParams() {
+        return syncParams;
     }
 
     /** {@inheritDoc} */
