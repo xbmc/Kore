@@ -20,6 +20,7 @@ import android.os.Looper;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.view.Gravity;
 import android.view.KeyEvent;
 
 import androidx.core.app.NotificationCompat;
@@ -511,6 +512,7 @@ public class MediaSessionService extends Service
             hostManager.getPicasso()
                        .load(hostManager.getHostInfo().getImageUrl(poster))
                        .resize(posterWidth, posterHeight)
+                       .centerCrop(Gravity.CENTER)
                        .into(picassoTarget);
         }
     }
