@@ -74,9 +74,13 @@ public class AddonListFragment extends AbstractListFragment {
 
     private static boolean hideDisabledAddons;
 
+    private boolean forceRefreshAddons = false;
+
     @Override
     protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
         return (view, position) -> {
+            // If we get back here after showing an addon, force a refresh, as its enabled state might have changed
+            forceRefreshAddons = true;
             // Get the movie id from the tag
             ViewHolder tag = (ViewHolder) view.getTag();
             // Notify the activity
@@ -121,7 +125,8 @@ public class AddonListFragment extends AbstractListFragment {
     public void onConnectionStatusSuccess() {
         boolean refresh = (lastConnectionStatusResult != CONNECTION_SUCCESS);
         super.onConnectionStatusSuccess();
-        if (refresh) onRefresh();
+        if (refresh || forceRefreshAddons) onRefresh();
+        forceRefreshAddons = false;
     }
 
     @Override
