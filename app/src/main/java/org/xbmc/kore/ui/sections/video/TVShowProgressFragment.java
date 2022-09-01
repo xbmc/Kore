@@ -52,17 +52,24 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
-public class TVShowProgressFragment extends AbstractAdditionalInfoFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class TVShowProgressFragment
+        extends AbstractAdditionalInfoFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(TVShowProgressFragment.class);
 
     public static final String BUNDLE_ITEM_ID = "itemid";
     public static final String BUNDLE_TITLE = "title";
     public static final String BUNDLE_POSTER_URL = "poster_url";
 
+    private final String BUNDLE_KEY_FORCE_RESTART_LOADER = "force_restart_loader";
+
     private static final int NEXT_EPISODES_COUNT = 2;
     private int itemId = -1;
     private String showTitle, showPosterUrl;
     private CastFragment castFragment;
+    // Do a restartLoader instead of initLoader if we get out of this fragment, so that any changes to the episodes
+    // status is reflected on the next episodes and seasons lists
+    private boolean forceRestartLoader = false;
 
     public static final int LOADER_NEXT_EPISODES = 1,
             LOADER_SEASONS = 2;
@@ -94,14 +101,18 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
         this.showTitle = arguments.getString(BUNDLE_TITLE);
         this.showPosterUrl = arguments.getString(BUNDLE_POSTER_URL);
 
+        if (savedInstanceState != null) {
+            forceRestartLoader = savedInstanceState.getBoolean(BUNDLE_KEY_FORCE_RESTART_LOADER);
+        }
+
         View view = inflater.inflate(R.layout.fragment_tvshow_progress, container, false);
 
         castFragment = new CastFragment();
         castFragment.setArgs(this.itemId, this.showTitle, CastFragment.TYPE.TVSHOW);
-        requireActivity().getSupportFragmentManager()
-                         .beginTransaction()
-                         .add(R.id.cast_fragment, castFragment)
-                         .commit();
+        getParentFragmentManager()
+                .beginTransaction()
+                .add(R.id.cast_fragment, castFragment)
+                .commit();
         return view;
     }
 
@@ -109,8 +120,14 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LoaderManager lm = LoaderManager.getInstance(this);
-        lm.initLoader(LOADER_NEXT_EPISODES, null, this);
-        lm.initLoader(LOADER_SEASONS, null, this);
+        if (forceRestartLoader) {
+            lm.restartLoader(LOADER_NEXT_EPISODES, null, this);
+            lm.restartLoader(LOADER_SEASONS, null, this);
+            forceRestartLoader = false;
+        } else {
+            lm.initLoader(LOADER_NEXT_EPISODES, null, this);
+            lm.initLoader(LOADER_SEASONS, null, this);
+        }
     }
 
     @Override
@@ -127,6 +144,12 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
     public void onDetach() {
         super.onDetach();
         listenerActivity = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(BUNDLE_KEY_FORCE_RESTART_LOADER, forceRestartLoader);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -194,6 +217,7 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
             HostManager hostManager = HostManager.getInstance(requireContext());
 
             View.OnClickListener episodeClickListener = v -> {
+                forceRestartLoader = true;
                 DataHolder vh = (DataHolder) v.getTag();
                 listenerActivity.onNextEpisodeSelected(itemId, vh);
             };
@@ -315,7 +339,10 @@ public class TVShowProgressFragment extends AbstractAdditionalInfoFragment imple
 
                 View seasonView = binding.getRoot();
                 seasonView.setTag(seasonNumber);
-                seasonView.setOnClickListener(v -> listenerActivity.onSeasonSelected(itemId, seasonNumber, thumbnail));
+                seasonView.setOnClickListener(v -> {
+                    forceRestartLoader = true;
+                    listenerActivity.onSeasonSelected(itemId, seasonNumber, thumbnail);
+                });
                 seasonsList.addView(seasonView);
             } while (cursor.moveToNext());
         } else {
