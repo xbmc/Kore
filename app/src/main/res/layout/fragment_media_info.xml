@@ -45,7 +45,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/default_padding">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/media_panel_group"
