@@ -34,7 +34,7 @@ import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.service.library.LibrarySyncService;
-import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -74,7 +74,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     protected void onSyncProcessEnded(MediaSyncEvent event) {
         if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
             LoaderManager.getInstance(this).restartLoader(LOADER_TVSHOW, null, TVShowInfoFragment.this);
-            refreshAdditionInfoFragment();
+            ((TVShowProgressFragment)getAdditionalInfoFragment()).refresh();
         }
     }
 
@@ -89,7 +89,7 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {
+    protected AbstractFragment getAdditionalInfoFragment() {
         TVShowProgressFragment tvShowProgressFragment = new TVShowProgressFragment();
         tvShowProgressFragment.setArgs(getDataHolder().getId(), getDataHolder().getTitle(), getDataHolder().getPosterUrl());
         return tvShowProgressFragment;
