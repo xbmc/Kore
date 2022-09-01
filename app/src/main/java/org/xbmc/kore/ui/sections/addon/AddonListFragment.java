@@ -60,6 +60,8 @@ import java.util.Locale;
 public class AddonListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(AddonListFragment.class);
 
+    private final String BUNDLE_KEY_FORCE_REFRESH_ADDONS = "force_refresh_addons";
+
     public interface OnAddonSelectedListener {
         void onAddonSelected(ViewHolder vh);
     }
@@ -100,6 +102,9 @@ public class AddonListFragment extends AbstractListFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+        if (savedInstanceState != null) {
+            forceRefreshAddons = savedInstanceState.getBoolean(BUNDLE_KEY_FORCE_REFRESH_ADDONS);
+        }
     }
 
     @Override
@@ -116,6 +121,12 @@ public class AddonListFragment extends AbstractListFragment {
     public void onDetach() {
         super.onDetach();
         listenerActivity = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(BUNDLE_KEY_FORCE_REFRESH_ADDONS, forceRefreshAddons);
+        super.onSaveInstanceState(outState);
     }
 
     /**

@@ -60,7 +60,8 @@ public abstract class AbstractCursorListFragment
 				   HostConnectionObserver.ConnectionStatusObserver {
     private static final String TAG = LogUtils.makeLogTag(AbstractCursorListFragment.class);
 
-	private final String BUNDLE_KEY_SEARCH_QUERY = "search_query";
+	private final String BUNDLE_KEY_SEARCH_QUERY = "search_query",
+			BUNDLE_KEY_FORCE_RESTART_LOADER = "force_restart_loader";
 
 	private ServiceConnection serviceConnection;
 	private EventBus bus;
@@ -69,7 +70,7 @@ public abstract class AbstractCursorListFragment
 	private static final int LOADER = 0;
 
 	// Whether we've been previously stopped, to init or restart a loader
-	private boolean hasBeenStopped = false;
+	private boolean forceRestartLoader = false;
 
 	// The search filter to use in the loader
 	private String searchFilter = null;
@@ -89,6 +90,7 @@ public abstract class AbstractCursorListFragment
 
 		if (savedInstanceState != null) {
 			savedSearchFilter = savedInstanceState.getString(BUNDLE_KEY_SEARCH_QUERY);
+			forceRestartLoader = savedInstanceState.getBoolean(BUNDLE_KEY_FORCE_RESTART_LOADER);
 		}
 		searchFilter = savedSearchFilter;
 	}
@@ -97,7 +99,7 @@ public abstract class AbstractCursorListFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		// If we've navigated out of this fragment before, restart the loader as the database might have changed
-		if (hasBeenStopped)
+		if (forceRestartLoader)
 			restartLoader();
 		else
 			LoaderManager.getInstance(this).initLoader(LOADER, null, this);
@@ -115,7 +117,7 @@ public abstract class AbstractCursorListFragment
 		super.onStop();
 		bus.unregister(this);
 		SyncUtils.disconnectFromLibrarySyncService(requireContext(), serviceConnection);
-		hasBeenStopped = true;
+		forceRestartLoader = true;
 	}
 
 	@Override
@@ -124,6 +126,7 @@ public abstract class AbstractCursorListFragment
 			savedSearchFilter = searchFilter;
 		}
 		outState.putString(BUNDLE_KEY_SEARCH_QUERY, savedSearchFilter);
+		outState.putBoolean(BUNDLE_KEY_FORCE_RESTART_LOADER, forceRestartLoader);
 		super.onSaveInstanceState(outState);
 	}
 
