@@ -190,7 +190,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
             preferences.edit()
                        .putBoolean(Settings.KEY_PREF_TVSHOW_EPISODES_FILTER_HIDE_WATCHED, item.isChecked())
                        .apply();
-            refreshList();
+            restartLoader();
         }
 
         return super.onOptionsItemSelected(item);

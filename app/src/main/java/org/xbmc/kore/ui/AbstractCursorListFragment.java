@@ -22,12 +22,10 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -70,9 +68,11 @@ public abstract class AbstractCursorListFragment
 	// Loader IDs
 	private static final int LOADER = 0;
 
+	// Whether we've been previously stopped, to init or restart a loader
+	private boolean hasBeenStopped = false;
+
 	// The search filter to use in the loader
 	private String searchFilter = null;
-	private boolean loaderLoading;
 	private String savedSearchFilter;
 	private boolean supportsSearch;
 
@@ -82,49 +82,40 @@ public abstract class AbstractCursorListFragment
 	abstract protected CursorLoader createCursorLoader();
 	abstract protected RecyclerViewCursorAdapter createCursorAdapter();
 
-	@Nullable
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View root = super.onCreateView(inflater, container, savedInstanceState);
-
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		bus = EventBus.getDefault();
 
 		if (savedInstanceState != null) {
 			savedSearchFilter = savedInstanceState.getString(BUNDLE_KEY_SEARCH_QUERY);
 		}
 		searchFilter = savedSearchFilter;
-
-		return root;
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		LoaderManager.getInstance(this).initLoader(LOADER, null, this);
+		// If we've navigated out of this fragment before, restart the loader as the database might have changed
+		if (hasBeenStopped)
+			restartLoader();
+		else
+			LoaderManager.getInstance(this).initLoader(LOADER, null, this);
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
 		serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
 		bus.register(this);
-	}
-
-	@Override
-	public void onPause() {
-		bus.unregister(this);
-		super.onPause();
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
+		bus.unregister(this);
 		SyncUtils.disconnectFromLibrarySyncService(requireContext(), serviceConnection);
+		hasBeenStopped = true;
 	}
 
 	@Override
@@ -208,7 +199,7 @@ public abstract class AbstractCursorListFragment
 
 		hideRefreshAnimation();
 		if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
-			refreshList();
+			restartLoader();
 			if (!silentSync) {
 				UIUtils.showSnackbar(getView(), R.string.sync_successful);
 			}
@@ -281,7 +272,6 @@ public abstract class AbstractCursorListFragment
 		if (!isResumed()) return true;
 
 		searchFilter = newText;
-
 		restartLoader();
 
 		return true;
@@ -301,7 +291,6 @@ public abstract class AbstractCursorListFragment
 	@NonNull
 	@Override
 	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-		loaderLoading = true;
 		return createCursorLoader();
 	}
 
@@ -315,7 +304,6 @@ public abstract class AbstractCursorListFragment
 						   (lastConnectionStatusResult == CONNECTION_SUCCESS) ?
 						   getString(R.string.pull_to_refresh) : null);
 		}
-		loaderLoading = false;
 	}
 
 	/** {@inheritDoc} */
@@ -339,10 +327,10 @@ public abstract class AbstractCursorListFragment
 	}
 
 	/**
-	 * Use this to reload the items in the list
+	 * Restarts the current loader
 	 */
-	public void refreshList() {
-		restartLoader();
+	public void restartLoader() {
+		LoaderManager.getInstance(this).restartLoader(LOADER, null, this);
 	}
 
 	private void setupSearchMenuItem(Menu menu, MenuInflater inflater) {
@@ -384,14 +372,6 @@ public abstract class AbstractCursorListFragment
 				searchFilter = savedSearchFilter = "";
 				restartLoader();
 			});
-		}
-	}
-
-	private void restartLoader() {
-		//When loader is restarted while current loader hasn't finished yet,
-		//it may result in none of the loaders finishing.
-		if(!loaderLoading) {
-			LoaderManager.getInstance(this).restartLoader(LOADER, null, this);
 		}
 	}
 
