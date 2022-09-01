@@ -473,12 +473,6 @@ abstract public class AbstractInfoFragment
         }
     }
 
-    protected void refreshAdditionInfoFragment() {
-        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.media_additional_info);
-        if (fragment != null)
-            ((AbstractAdditionalInfoFragment) fragment).refresh();
-    }
-
     protected HostManager getHostManager() {
         return hostManager;
     }
@@ -721,7 +715,7 @@ abstract public class AbstractInfoFragment
         this.expandDescription = expandDescription;
     }
 
-    abstract protected AbstractAdditionalInfoFragment getAdditionalInfoFragment();
+    abstract protected AbstractFragment getAdditionalInfoFragment();
 
     /**
      * Called when the media action bar actions are available and

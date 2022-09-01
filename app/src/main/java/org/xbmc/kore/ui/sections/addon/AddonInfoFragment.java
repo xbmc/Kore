@@ -33,7 +33,7 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Addons;
 import org.xbmc.kore.jsonrpc.type.AddonType;
-import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -71,7 +71,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     @Override
-    protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {
+    protected AbstractFragment getAdditionalInfoFragment() {
         return null;
     }
 

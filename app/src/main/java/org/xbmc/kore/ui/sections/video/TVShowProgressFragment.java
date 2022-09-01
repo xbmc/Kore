@@ -45,7 +45,7 @@ import org.xbmc.kore.databinding.ItemTvshowBinding;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.CastFragment;
 import org.xbmc.kore.utils.LogUtils;
@@ -53,7 +53,7 @@ import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
 
 public class TVShowProgressFragment
-        extends AbstractAdditionalInfoFragment
+        extends AbstractFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(TVShowProgressFragment.class);
 
@@ -152,7 +152,6 @@ public class TVShowProgressFragment
         super.onSaveInstanceState(outState);
     }
 
-    @Override
     public void refresh() {
         LoaderManager lm = LoaderManager.getInstance(this);
         lm.restartLoader(LOADER_NEXT_EPISODES, null, this);

@@ -36,7 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
@@ -63,7 +63,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected AbstractAdditionalInfoFragment getAdditionalInfoFragment() {
+    protected AbstractFragment getAdditionalInfoFragment() {
         DataHolder dataHolder = getDataHolder();
         albumSongsListFragment = new AlbumSongsListFragment();
         albumSongsListFragment.setAlbum(dataHolder.getId(), dataHolder.getTitle());

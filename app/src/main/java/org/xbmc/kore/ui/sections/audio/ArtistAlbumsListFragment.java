@@ -40,7 +40,7 @@ import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.ui.AbstractAdditionalInfoFragment;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -48,7 +48,8 @@ import org.xbmc.kore.utils.UIUtils;
 /**
  * Fragment that presents a list of albums of an artist
  */
-public class ArtistAlbumsListFragment extends AbstractAdditionalInfoFragment
+public class ArtistAlbumsListFragment
+        extends AbstractFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = LogUtils.makeLogTag(ArtistAlbumsListFragment.class);
 
@@ -211,9 +212,4 @@ public class ArtistAlbumsListFragment extends AbstractAdditionalInfoFragment
         });
         popupMenu.show();
     };
-
-    @Override
-    public void refresh() {
-        LoaderManager.getInstance(this).restartLoader(LOADER, null, this);
-    }
 }
