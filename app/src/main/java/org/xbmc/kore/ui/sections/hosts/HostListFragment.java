@@ -18,14 +18,10 @@ package org.xbmc.kore.ui.sections.hosts;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -105,7 +101,7 @@ public class HostListFragment extends Fragment {
             Intent intent = new Intent(context, RemoteActivity.class);
             context.startActivity(intent);
         });
-        binding.actionAddHost.setOnClickListener(this::onAddHostClicked);
+        binding.fabAddHost.setOnClickListener(this::onAddHostClicked);
 
         return binding.getRoot();
     }
@@ -114,8 +110,7 @@ public class HostListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Indicate that this fragment would like to influence the set of actions in the action bar.
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(false);
     }
 
     @Override
@@ -166,22 +161,6 @@ public class HostListFragment extends Fragment {
                     adapter.notifyDataSetChanged();
             }
         }, callbackHandler);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.host_manager, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.action_add_host) {
-            startAddHostWizard();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void onAddHostClicked(View v) {
@@ -268,25 +247,33 @@ public class HostListFragment extends Fragment {
 
             final HostInfoRow item = this.getItem(position);
             ((TextView)convertView.findViewById(R.id.host_name)).setText(item.hostInfo.getName());
-            String hostAddress = item.hostInfo.getAddress() + ":" + item.hostInfo.getHttpPort();
-            ((TextView)convertView.findViewById(R.id.host_address)).setText(hostAddress);
+            String hostInfo = item.hostInfo.getAddress() + ":" + item.hostInfo.getHttpPort() + " - " +
+                              item.hostInfo.getKodiVersionDesc();
+            ((TextView)convertView.findViewById(R.id.host_info)).setText(hostInfo);
 
             ImageView statusIndicator = convertView.findViewById(R.id.status_indicator);
-            int statusColor;
+            int statusColor, statusDescription;
             switch (item.status) {
                 case HostInfoRow.HOST_STATUS_CONNECTING:
                     statusColor = kodiStatusConnectingColor;
+                    statusDescription = R.string.connecting;
                     break;
                 case HostInfoRow.HOST_STATUS_UNAVAILABLE:
                     statusColor = kodiStatusUnavailableColor;
+                    statusDescription = R.string.not_connected;
                     break;
                 case HostInfoRow.HOST_STATUS_AVAILABLE:
                     statusColor = kodiStatusConnectedColor;
+                    statusDescription = R.string.connected_to_xbmc;
                     break;
                 default:
                     throw new RuntimeException("Invalid host status");
             }
             statusIndicator.setColorFilter(statusColor);
+
+            TextView hostConnectionStatus = convertView.findViewById(R.id.host_connection_status);
+            hostConnectionStatus.setText(statusDescription);
+            hostConnectionStatus.setTextColor(statusColor);
 
             // For the popupmenu
             ImageView contextMenu = convertView.findViewById(R.id.list_context_menu);

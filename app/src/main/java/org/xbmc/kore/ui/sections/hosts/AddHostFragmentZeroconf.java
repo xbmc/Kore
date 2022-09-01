@@ -302,7 +302,10 @@ public class AddHostFragmentZeroconf extends Fragment {
             } else {
                 hostAddress = getString(R.string.wizard_zeroconf_no_host_address);
             }
-            ((TextView) convertView.findViewById(R.id.host_address)).setText(hostAddress);
+            ((TextView) convertView.findViewById(R.id.host_info)).setText(hostAddress);
+            TextView hostConnectionStatus = convertView.findViewById(R.id.host_connection_status);
+            hostConnectionStatus.setText(R.string.connected_to_xbmc);
+            hostConnectionStatus.setTextColor(kodiStatusConnectedColor);
 
             ImageView statusIndicator = convertView.findViewById(R.id.status_indicator);
             statusIndicator.setColorFilter(kodiStatusConnectedColor);

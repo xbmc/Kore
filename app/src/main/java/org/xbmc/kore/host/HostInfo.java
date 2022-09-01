@@ -20,6 +20,9 @@ import org.xbmc.kore.utils.LogUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * XBMC Host information container.
@@ -61,12 +64,26 @@ public class HostInfo {
 	public static final int KODI_V16_JARVIS = 16;
 	public static final int KODI_V17_KRYPTON = 17;
 	public static final int KODI_V18_LEIA = 18;
+	public static final int KODI_V19_MATRIX = 19;
+	public static final int KODI_V20_NEXUS = 20;
 
 	public static final int DEFAULT_KODI_VERSION_MAJOR = KODI_V16_JARVIS;
     public static final int DEFAULT_KODI_VERSION_MINOR = 1;
     public static final String DEFAULT_KODI_VERSION_REVISION = "Unknown";
     public static final String DEFAULT_KODI_VERSION_TAG = "stable";
 
+	public static Map<Integer, String> versionNames = new HashMap<>();
+	static {
+		versionNames.put(KODI_V12_FRODO, "Frodo");
+		versionNames.put(KODI_V13_GOTHAM, "Gotham");
+		versionNames.put(KODI_V14_HELIX, "Helix");
+		versionNames.put(KODI_V15_ISENGARD, "Isengard");
+		versionNames.put(KODI_V16_JARVIS, "Jarvis");
+		versionNames.put(KODI_V17_KRYPTON, "Kripton");
+		versionNames.put(KODI_V18_LEIA, "Leia");
+		versionNames.put(KODI_V19_MATRIX, "Matrix");
+		versionNames.put(KODI_V20_NEXUS, "Nexus");
+	}
 
     /**
 	 * Internal id of the host
@@ -274,6 +291,14 @@ public class HostInfo {
     public String getKodiVersionTag() {
         return kodiVersionTag;
     }
+
+	public String getKodiVersionDesc() {
+		if (versionNames.containsKey(kodiVersionMajor)) {
+			return String.format(Locale.getDefault(), "%s (%d.%d)", versionNames.get(kodiVersionMajor), kodiVersionMajor, kodiVersionMinor);
+		} else {
+			return String.format(Locale.getDefault(), "%d.%d", kodiVersionMajor, kodiVersionMinor);
+		}
+	}
 
     public long getUpdated() {
         return updated;
