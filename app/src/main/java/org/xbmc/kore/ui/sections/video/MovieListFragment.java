@@ -214,63 +214,63 @@ public class MovieListFragment extends AbstractCursorListFragment {
             preferences.edit()
                        .putBoolean(Settings.KEY_PREF_MOVIES_FILTER_HIDE_WATCHED, item.isChecked())
                        .apply();
-            refreshList();
+            restartLoader();
         } else if (itemId == R.id.action_show_watched_status) {
             item.setChecked(!item.isChecked());
             preferences.edit()
                        .putBoolean(Settings.KEY_PREF_MOVIES_SHOW_WATCHED_STATUS, item.isChecked())
                        .apply();
             showWatchedStatus = item.isChecked();
-            refreshList();
+            restartLoader();
         } else if (itemId == R.id.action_show_rating) {
             item.setChecked(!item.isChecked());
             preferences.edit()
                        .putBoolean(Settings.KEY_PREF_MOVIES_SHOW_RATING, item.isChecked())
                        .apply();
             showRating = item.isChecked();
-            refreshList();
+            restartLoader();
         } else if (itemId == R.id.action_ignore_prefixes) {
             item.setChecked(!item.isChecked());
             preferences.edit()
                        .putBoolean(Settings.KEY_PREF_MOVIES_IGNORE_PREFIXES, item.isChecked())
                        .apply();
-            refreshList();
+            restartLoader();
         } else if (itemId == R.id.action_sort_by_name) {
             item.setChecked(true);
             preferences.edit()
                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_NAME)
                        .apply();
-            refreshList();
+            restartLoader();
         } else if (itemId == R.id.action_sort_by_year) {
             item.setChecked(true);
             preferences.edit()
                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_YEAR)
                        .apply();
-            refreshList();
+            restartLoader();
         } else if (itemId == R.id.action_sort_by_rating) {
             item.setChecked(true);
             preferences.edit()
                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_RATING)
                        .apply();
-            refreshList();
+            restartLoader();
         } else if (itemId == R.id.action_sort_by_date_added) {
             item.setChecked(true);
             preferences.edit()
                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_DATE_ADDED)
                        .apply();
-            refreshList();
+            restartLoader();
         } else if (itemId == R.id.action_sort_by_last_played) {
             item.setChecked(true);
             preferences.edit()
                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_LAST_PLAYED)
                        .apply();
-            refreshList();
+            restartLoader();
         } else if (itemId == R.id.action_sort_by_length) {
             item.setChecked(true);
             preferences.edit()
                        .putInt(Settings.KEY_PREF_MOVIES_SORT_ORDER, Settings.SORT_BY_LENGTH)
                        .apply();
-            refreshList();
+            restartLoader();
         }
 
         return super.onOptionsItemSelected(item);
