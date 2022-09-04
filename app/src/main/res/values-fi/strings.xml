@@ -64,7 +64,8 @@
     <string name="toggle_fullscreen">Kytke koko ruutu</string>
     <string name="connected_to">Yhdistetty mediakeskukseen %1$s</string>
     <string name="connecting">Yhdistetään…</string>
-    <string name="connecting_to">Yhdistetään mediakeskukseen %1$s (%2$s)…</string>
+    <string name="connecting_to">Mediakeskukseen %1$s (%2$s) ei saatu yhteyttä.
+\nYrityetään uudelleen…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Tervetuloa</string>
     <string name="wizard_welcome_message">Aloitetaan lisäämällä mediakeskus. Varmista, että Kodi on käynnissä, määritetty käyttövalmiiksi ja on samassa lähiverkossa tämän laitteen kanssa.&lt;br/&gt;&lt;br/&gt;Määritysohjeita saat &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;täältä&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Kun olet valmis, paina &lt;b&gt;Seuraava&lt;/b&gt;.</string>
@@ -168,22 +169,22 @@
     <string name="fanart">Fanitaide</string>
     <string name="poster">Juliste</string>
     <string name="thumbnail">Pienoiskuva</string>
-    <string name="error_getting_properties">Kodi-ominaisuuksien nouto ei onnistunut.
-\nVirheilmoitus: %1$s.</string>
-    <string name="error_executing_subtitles">Teksityslisäosan suoritus ei onnistunut.
-\nVirheilmoitus: %1$s.</string>
-    <string name="error_getting_addon_info">Lisäosalistauksen nouto ei onnistunut.
-\nVirheilmoitus: %1$s.</string>
-    <string name="error_getting_source_info">Tiedostojen selaus ei onnistunut.
-\nVirheilmoitus: %1$s.</string>
-    <string name="error_play_media_file">Mediatiedoston toisto ei onnistunut.
-\nVirheilmoitus: %1$s.</string>
-    <string name="error_play_local_file">Paikallisen mediatiedoston toisto ei onnistunut.
-\nVirheilmoitus: %1$s.</string>
-    <string name="error_queue_media_file">Mediatiedoston lisäys jonoon ei onnistunut.
-\nVirheilmoitus: %1$s.</string>
-    <string name="error_get_active_player">Aktiivisen soittimen selvitys ei onnistunut.
-\nVirheilmoitus: %1$s.</string>
+    <string name="error_getting_properties">Kodi-ominaisuuksia ei voitu noutaa.
+\nSelitys: %1$s</string>
+    <string name="error_executing_subtitles">Teksityslisäosaa ei voitu suorittaa.
+\nSelitys: %1$s</string>
+    <string name="error_getting_addon_info">Lisäosalistausta ei voitu noutaa.
+\nSelitys: %1$s</string>
+    <string name="error_getting_source_info">Tiedostoja ei voitu selata.
+\nSelitys: %1$s</string>
+    <string name="error_play_media_file">Mediatiedosta ei voitu toistaa.
+\nSelitys: %1$s</string>
+    <string name="error_play_local_file">Paikallista mediatiedostoa ei voitu toistaa.
+\nSelitys: %1$s</string>
+    <string name="error_queue_media_file">Mediatiedostoa ei voitu lisätä jonoon.
+\nSelitys: %1$s</string>
+    <string name="error_get_active_player">Aktiivista soitinta ei voitu selvittää.
+\nSelitys: %1$s</string>
     <string name="error_share_video">Videota ei voitu välittää Kodille.</string>
     <string name="error_reading_local_storage">Paikallista tallennusmediaa ei voitu lukea. Onko Korelle myönnetty tiedostojen käyttöoikeus\?</string>
     <string name="error_starting_http_server">HTTP-palvelinta ei voitu luoda tai käynnistää.</string>
@@ -200,42 +201,19 @@
     <string name="clear_playlist">Tyhjennä toistolista</string>
     <string name="source_empty">Medialähde on tyhjä</string>
     <string name="swipe_down_to_refresh">Päivitä vetämällä alas</string>
-    <string name="no_movies_found_refresh">Elokuvia ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
-    <string name="no_tvshows_found_refresh">Sarjoja ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
+    <string name="no_movies_found_refresh">Elokuvia ei löytynyt</string>
+    <string name="no_tvshows_found_refresh">Sarjoja ei löytynyt</string>
     <string name="no_episodes_found">Jaksoja ei löytynyt</string>
-    <string name="no_artists_found_refresh">Esittäjiä ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
-    <string name="no_albums_found_refresh">Albumeita ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
-    <string name="no_genres_found_refresh">Lajityyppejä ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
-    <string name="no_addons_found_refresh">Lisäosia ei löytynyt.
-\nPäivitä vetämällä alas</string>
-    <string name="no_music_videos_found_refresh">Videoita ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
-    <string name="no_channel_groups_found_refresh">Kanavaryhmiä ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
-    <string name="no_channels_found_refresh">Kanavia ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
-    <string name="no_favourites_found_refresh">Suosikkeja ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
-    <string name="no_recordings_found_refresh">Tallenteita ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
-    <string name="no_broadcasts_found_refresh">Lähetyksiä ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
+    <string name="no_artists_found_refresh">Esittäjiä ei löytynyt</string>
+    <string name="no_albums_found_refresh">Albumeita ei löytynyt</string>
+    <string name="no_genres_found_refresh">Lajityyppejä ei löytynyt</string>
+    <string name="no_addons_found_refresh">Lisäosia ei löytynyt</string>
+    <string name="no_music_videos_found_refresh">Videoita ei löytynyt</string>
+    <string name="no_channel_groups_found_refresh">Kanavaryhmiä ei löytynyt</string>
+    <string name="no_channels_found_refresh">Kanavia ei löytynyt</string>
+    <string name="no_favourites_found_refresh">Suosikkeja ei löytynyt</string>
+    <string name="no_recordings_found_refresh">Tallenteita ei löytynyt</string>
+    <string name="no_broadcasts_found_refresh">Lähetyksiä ei löytynyt</string>
     <string name="pull_to_refresh">Päivitä vetämällä</string>
     <string name="no_cast_info">Näyttelijätietoja ei ole</string>
     <string name="minutes_abbrev">%1$s min</string>
@@ -343,15 +321,19 @@
     <string name="queue_on_kodi">Lisää Kodin jonoon</string>
     <string name="pause_call_incoming_title">Saapuva puhelu</string>
     <string name="pause_call_incoming_message">Katso puhelintasi, joku soittaa</string>
-    <string name="error_getting_pvr_info">Virhe noudettaessa tallentimen tietoja: %1$s</string>
-    <string name="might_not_have_pvr">Virhe noudettaessa kanavatietoja, todennäköisesti sen vuoksi, että mediakeskus ei sisällä viritinlaitteistoa tai sitä ei ole määritetty.
+    <string name="error_getting_pvr_info">Tallentimen tietoja ei voitu noutaa.
+\nSelitys: %1$s</string>
+    <string name="might_not_have_pvr">Tallentimen tietoja ei saatu.
 \n
-\nMikäli näin on, voidaan sovelluksen asetustuksissa poistaa tämä osio sivuvalikosta.</string>
-    <string name="error_starting_channel">Virhe aloitettaessa kanavan toistoa: %1$s</string>
-    <string name="error_favourites">Suosikkien nouto ei onnistunut.
-\nVirheilmoitus: %1$s</string>
-    <string name="error_starting_recording">Virhe aloitettaessa tallennusta: %1$s</string>
-    <string name="error_starting_to_record">Virhe tallennettaessa: %1$s</string>
+\nMediakeskus ei ehkä sisällä viritinlaitteistoa tai sitä ei ole määritetty. Tarvittaessa tämä osio voidaan poistaa sivuvalikosta sovelluksen asetuksista.</string>
+    <string name="error_starting_channel">Virhe aloitettaessa kanavan toistoa.
+\nSelitys: %1$s</string>
+    <string name="error_favourites">Suosikkeja ei voitu noutaa.
+\nSelitys: %1$s</string>
+    <string name="error_starting_recording">Virhe toistettaessa tallennusta.
+\nSelitys: %1$s</string>
+    <string name="error_starting_to_record">Virhe tallennettaessa.
+\nSelitys: %1$s</string>
     <string name="channel_switching">Vaihdetaan kanavalle %1$s</string>
     <string name="starting_recording">Aloitetaan tallennus %1$s</string>
     <string name="refresh">Päivitä</string>
@@ -381,9 +363,7 @@
     <string name="muted">mykistetty</string>
     <string name="no_item_available_to_play">Virhe: toistettavaa kohdetta ei ole.</string>
     <string name="Refreshing_not_implemented_for_this_item">Päivitystoimintoa ei ole toteutettu tälle kohteelle</string>
-    <string name="no_songs_found_refresh">Kappaleita ei löytynyt
-\n
-\nPäivitä vetämällä alas</string>
+    <string name="no_songs_found_refresh">Kappaleita ei löytynyt</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Laajenna/supista</string>
     <string name="stream_action">Suoratoista</string>
@@ -404,4 +384,5 @@
     <string name="pinned_status">Kiinnitetty</string>
     <string name="unwatched_status">Katsomaton</string>
     <string name="watched_status">Katsottu</string>
+    <string name="not_connected">Ei yhteyttä</string>
 </resources>

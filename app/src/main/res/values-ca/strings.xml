@@ -42,7 +42,8 @@
     <string name="toggle_fullscreen">A tota pantalla</string>
     <string name="connected_to">Connectat amb %1$s</string>
     <string name="connecting">Connectant…</string>
-    <string name="connecting_to">Connectant amb %1$s (%2$s)…</string>
+    <string name="connecting_to">No s\'ha pogut connectar a %1$s (%2$s)
+\nTornant a provar…</string>
     <string name="wizard_welcome">Us donem la benvinguda</string>
     <string name="wol_sent">Desperta el Centre Multimèdia.</string>
     <string name="no_network_connection">Sense connexió a la xarxa</string>
@@ -153,19 +154,19 @@
     <string name="poster">Pòster</string>
     <string name="thumbnail">Miniatura</string>
     <string name="error_getting_properties">No es poden obtenir les propietats del Kodi.
-\nMissatge d\'error:%1$s.</string>
+\nMissatge d\'error: %1$s</string>
     <string name="error_executing_subtitles">No es pot executar el complement dels subtítols.
-\nMissatge d\'error: %1$s.</string>
+\nMissatge d\'error: %1$s</string>
     <string name="error_getting_addon_info">No es pot obtenir la llista dels complements.
-\nMissatge d\'error:%1$s.</string>
+\nMissatge d\'error: %1$s</string>
     <string name="error_getting_source_info">No es pot navegar pels fitxers.
-\nMissatge d\'error:%1$s.</string>
+\nMissatge d\'error: %1$s</string>
     <string name="error_play_media_file">No es poden reproduir fitxers.
-\nMissatge d\'error:%1$s.</string>
+\nMissatge d\'error: %1$s</string>
     <string name="error_queue_media_file">No es poden posar fitxers a la cua.
-\nMissatge d\'error:%1$s.</string>
+\nMissatge d\'error: %1$s</string>
     <string name="error_get_active_player">No es pot obtenir el reproductor actiu.
-\nMissatge d\'error:%1$s.</string>
+\nMissatge d\'error: %1$s</string>
     <string name="error_share_video">No es pot compartir el vídeo amb el Kodi/XBMC.</string>
     <string name="directors">Directors:</string>
     <string name="studio">Productora:</string>
@@ -178,44 +179,20 @@
     <string name="playlist_empty">Llista buida</string>
     <string name="clear_playlist">Esborra llista</string>
     <string name="source_empty">Dispositiu font buit</string>
-    <string name="no_movies_found_refresh">No s\'ha trobat cap pel·lícula.
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_tvshows_found_refresh">No s\'ha trobat cap episodi.
-\n
-\nLlisqueu avall per actualitzar</string>
+    <string name="no_movies_found_refresh">No s\'ha trobat cap pel·lícula</string>
+    <string name="no_tvshows_found_refresh">No s\'ha trobat cap episodi</string>
     <string name="no_episodes_found">No s\'ha trobat cap episodi</string>
     <string name="swipe_down_to_refresh">Llisqueu avall per actualitzar</string>
-    <string name="no_artists_found_refresh">No s\'ha trobat cap artista.
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_albums_found_refresh">No s\'ha trobat cap àlbum.
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_genres_found_refresh">No s\'ha trobat cap gènere.
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_addons_found_refresh">No s\'ha trobat cap complement
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_music_videos_found_refresh">No s\'ha trobat cap vídeo.
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_channel_groups_found_refresh">No s\'ha trobat cap canal de grup
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_channels_found_refresh">No s\'ha trobat cap canal
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_favourites_found_refresh">No s\'ha trobat cap preferit
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_recordings_found_refresh">No s\'ha trobat cap enregistrament
-\n
-\nLlisqueu avall per actualitzar</string>
-    <string name="no_broadcasts_found_refresh">No s\'ha trobat cap emissora
-\n
-\nLlisqueu avall per actualitzar</string>
+    <string name="no_artists_found_refresh">No s\'ha trobat cap artista</string>
+    <string name="no_albums_found_refresh">No s\'ha trobat cap àlbum</string>
+    <string name="no_genres_found_refresh">No s\'ha trobat cap gènere</string>
+    <string name="no_addons_found_refresh">No s\'ha trobat cap complement</string>
+    <string name="no_music_videos_found_refresh">No s\'ha trobat cap vídeo</string>
+    <string name="no_channel_groups_found_refresh">No s\'ha trobat cap canal de grup</string>
+    <string name="no_channels_found_refresh">No s\'ha trobat cap canal</string>
+    <string name="no_favourites_found_refresh">No s\'ha trobat cap preferit</string>
+    <string name="no_recordings_found_refresh">No s\'ha trobat cap enregistrament</string>
+    <string name="no_broadcasts_found_refresh">No s\'ha trobat cap emissora</string>
     <string name="pull_to_refresh">Llisqueu amunt per actualitzar</string>
     <string name="no_cast_info">Cap informació del repartiment per mostrar</string>
     <string name="sync_successful">Sincronització enllestida</string>
@@ -305,13 +282,18 @@
     <string name="play_on_kodi">Reprodueix al Kodi</string>
     <string name="pause_call_incoming_title">Trucada entrant</string>
     <string name="pause_call_incoming_message">Algú està trucant, comproveu-ho al telèfon</string>
-    <string name="error_getting_pvr_info">S\'ha produït un error metre s\'obtenia informació del PVR: %1$s</string>
-    <string name="might_not_have_pvr">S\'ha produït un error mentre s\'obtenia informació dels canals, probablement el Centre Multimèdia no tingui un sintonitzador configurat.
+    <string name="error_getting_pvr_info">No s\'ha pogut obtenir informació del PVR
 \n
-\n Si és aquest cas, haurieu d\'eliminar aquesta entrada del menú lateral, podeu fer-ho des de la Configuració.</string>
-    <string name="error_starting_channel">S\'ha produït un error al iniciar la reproducció del canal: %1$s</string>
-    <string name="error_starting_recording">S\'ha produït un error en enregistrar: %1$s</string>
-    <string name="error_starting_to_record">S\'ha produït un error en reproduir el canal: %1$s</string>
+\nDescripció de l\'error: %1$s</string>
+    <string name="might_not_have_pvr">No s\'ha pogut obtenir la informació del PVR.
+\n
+\nÉs possible que el vostre centre multimèdia no tingui un sintonitzador o que no estigui configurat. Si voleu eliminar aquesta entrada del menú lateral, podeu fer-ho a la pantalla de configuració.</string>
+    <string name="error_starting_channel">S\'ha produït un error al iniciar la reproducció del canal
+\nDescripció: %1$s</string>
+    <string name="error_starting_recording">S\'ha produït un error al reproduir una gravació
+\nDescripció: %1$s</string>
+    <string name="error_starting_to_record">S\'ha produït un error durant la gravació
+\nDescripció: %1$s</string>
     <string name="channel_switching">Canviant al canal %1$s</string>
     <string name="starting_recording">Iniciant l\'enregistrament %1$s</string>
     <string name="refresh">Actualitza</string>
@@ -333,16 +315,13 @@
     <string name="write_storage_permission_denied">Permís denegat. No podreu descarregar fitxers.</string>
     <string name="show_now_playing_panel_summary">Mostra un panell a la part inferior de la pantalla quan el contingut s\'està reproduint</string>
     <string name="error_favourites">No s\'han pogut obtenir els preferits
-\n
 \nDescripció d\'error: %1$s</string>
     <string name="no_songs_to_download">Cap cançó per descarregar</string>
     <string name="by_album">Per àlbum</string>
     <string name="by_artist">Per artista</string>
     <string name="by_artist_and_year">Per artista i any</string>
     <string name="muted">silenciat</string>
-    <string name="no_songs_found_refresh">No s\'ha trobat cap cançó
-\n
-\nLlisqueu avall per actualitzar</string>
+    <string name="no_songs_found_refresh">No s\'ha trobat cap cançó</string>
     <string name="toggle_expand">Desplega/Plega</string>
     <string name="stream_action">Reprodueix localment</string>
     <string name="remote_bar_items">Barra inferior de dreceres</string>
@@ -373,7 +352,7 @@
     <string name="error_starting_http_server">No s\'ha pogut crear ni iniciar el servidor HTTP.</string>
     <string name="error_reading_local_storage">No s\'ha pogut llegir l\'emmagatzematge local. Heu donat permís a Kore per accedir a l’emmagatzematge de fitxers\?</string>
     <string name="error_play_local_file">No s\'ha pogut reproduir el fitxer multimèdia local.
-\nMissatge d\'error:%1$s.</string>
+\nMissatge d\'error: %1$s</string>
     <string name="wizard_xbmc_direct_share">Mostra a la pantalla per compartir</string>
     <string name="local_file_browser">Explorador de fitxers local</string>
     <string name="local_files">Fitxers locals</string>
@@ -391,4 +370,5 @@
     <string name="pinned_status">Fixat</string>
     <string name="unwatched_status">Sense mirar</string>
     <string name="watched_status">Mirat</string>
+    <string name="not_connected">No connectat</string>
 </resources>

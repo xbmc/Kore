@@ -52,7 +52,8 @@
     <string name="toggle_fullscreen">Passa a schermo intero</string>
     <string name="connected_to">Connesso a %1$s</string>
     <string name="connecting">Connessione…</string>
-    <string name="connecting_to">Connessione a %1$s (%2$s)…</string>
+    <string name="connecting_to">Impossibile connettersi a %1$s (%2$s) 
+\nRiprova…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Benvenuto</string>
     <string name="wizard_welcome_message">Cominciamo aggiungendo un media center. Assicurati che il tuo Kodi sia in esecuzione, correttamente configurato e sulla stessa rete del tuo dispositivo.&lt;br/&gt;&lt;br/&gt; Puoi trovare aiuto per la configurazione &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;qui&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Quando sei pronto premi su &lt;b&gt;&lt;i&gt;Avanti&lt;/i&gt;&lt;/b&gt;.</string>
@@ -152,19 +153,19 @@
     <string name="poster">Poster</string>
     <string name="thumbnail">Miniatura</string>
     <string name="error_getting_properties">Non posso leggere i parametri di Kodi.
-\nMessaggio di errore:%1$s.</string>
-    <string name="error_executing_subtitles">Non posso eseguire l\'Add-on per i sottotitoli.
-\nMessaggio di errore: %1$s.</string>
-    <string name="error_getting_addon_info">Non posso acquisire informazioni sull\'Add-on.
-\nMessaggio di errore: %1$s.</string>
+\nMessaggio di errore:%1$s</string>
+    <string name="error_executing_subtitles">Non posso eseguire l\'add-on per i sottotitoli.
+\nMessaggio di errore: %1$s</string>
+    <string name="error_getting_addon_info">Non posso acquisire informazioni sull\'add-on.
+\nMessaggio di errore: %1$s</string>
     <string name="error_getting_source_info">Impossibile sfogliare i file.
-\nMessaggio di errore:%1$s.</string>
+\nMessaggio di errore:%1$s</string>
     <string name="error_play_media_file">Impossibile riprodurre il file multimediale.
-\nMessaggio di errore:%1$s.</string>
+\nMessaggio di errore:%1$s</string>
     <string name="error_queue_media_file">Impossibile mettere in coda il file multimediale.
-\nMessaggio di errore:%1$s.</string>
+\nMessaggio di errore:%1$s</string>
     <string name="error_get_active_player">Impossibile trovare un riproduttore attivo
-\nMessaggio di errore:%1$s.</string>
+\nMessaggio di errore:%1$s</string>
     <string name="directors">Registi:</string>
     <string name="studio">Studio:</string>
     <string name="additional_cast">Cast aggiuntivo</string>
@@ -174,28 +175,14 @@
     <string name="playlist_empty">Playlist vuota</string>
     <string name="clear_playlist">Pulisci playlist</string>
     <string name="source_empty">Sorgente multimediale vuota</string>
-    <string name="no_movies_found_refresh">Nessun film trovato
-\n
-\nScorri verso il basso per aggiornare</string>
-    <string name="no_tvshows_found_refresh">Nessun programma TV trovato
-\n
-\nScorri verso il basso per aggiornare</string>
+    <string name="no_movies_found_refresh">Nessun film trovato</string>
+    <string name="no_tvshows_found_refresh">Nessun programma TV trovato</string>
     <string name="no_episodes_found">Nessun episodio trovato</string>
-    <string name="no_artists_found_refresh">Nessun artista trovato
-\n
-\nScorri verso il basso per aggiornare</string>
-    <string name="no_albums_found_refresh">Nessim album trovato
-\n
-\nScorri verso il basso per aggiornare</string>
-    <string name="no_genres_found_refresh">Nessun genere trovato
-\n
-\nScorri verso il basso per aggiornare</string>
-    <string name="no_addons_found_refresh">Nessun Add-on trovato o connesso
-\n
-\nScorri verso il basso per aggiornare</string>
-    <string name="no_music_videos_found_refresh">Nessun video trovato
-\n
-\nScorri verso il basso per aggiornare</string>
+    <string name="no_artists_found_refresh">Nessun artista trovato</string>
+    <string name="no_albums_found_refresh">Nessun album trovato</string>
+    <string name="no_genres_found_refresh">Nessun genere trovato</string>
+    <string name="no_addons_found_refresh">Nessun add-on trovato</string>
+    <string name="no_music_videos_found_refresh">Nessun video trovato</string>
     <string name="pull_to_refresh">Premi per aggiornare</string>
     <string name="minutes_abbrev">%1$s min</string>
     <string name="sync_successful">Sincronizzazione riuscita</string>
@@ -286,18 +273,14 @@
     <string name="wizard_xbmc_direct_share">Mostra nel pannello di condivisione</string>
     <string name="local_file_browser">Esplora file locali</string>
     <string name="cast">Cast</string>
-    <string name="no_broadcasts_found_refresh">Nessuna trasmissione trovata
-\n
-\nScorri verso il basso per aggiornare</string>
-    <string name="no_songs_found_refresh">Nessuna canzone trovata
-\n
-\nScorri verso il basso per aggiornare</string>
+    <string name="no_broadcasts_found_refresh">Nessuna trasmissione trovata</string>
+    <string name="no_songs_found_refresh">Nessuna canzone trovata</string>
     <string name="swipe_down_to_refresh">Scorri verso il basso per aggiornare</string>
     <string name="error_starting_http_server">Impossibile creare o avviare il server HTTP.</string>
     <string name="error_reading_local_storage">Impossibile leggere la memoria locale. Hai concesso a Kore il permesso di accedere all\'archiviazione file\?</string>
     <string name="error_share_video">Impossibile condividere il video su Kodi.</string>
     <string name="error_play_local_file">Impossibile riprodurre file multimediale locale.
-\nMessaggio di errore:%1$s.</string>
+\nMessaggio di errore:%1$s</string>
     <string name="select">Seleziona</string>
     <string name="party_mode">Modalità party</string>
     <string name="wizard_invalid_es_port_specified">Specifica una porta EventServer valida per questo media center.</string>
@@ -320,18 +303,10 @@
     <string name="unpinned_status">Appuntato off</string>
     <string name="pinned_status">Appuntato on</string>
     <string name="no_cast_info">Nessuna informazione sul cast</string>
-    <string name="no_recordings_found_refresh">Nessuna registrazione trovata
-\n
-\nScorri verso il basso per aggiornare</string>
-    <string name="no_favourites_found_refresh">Nessun preferito trovato
-\n
-\nScorri verso il basso per aggiornare</string>
-    <string name="no_channels_found_refresh">Nessun canale trovato
-\n
-\nScorri verso il basso per aggiornare</string>
-    <string name="no_channel_groups_found_refresh">Nessun gruppo di canali trovato
-\n
-\nScorri verso il basso per aggiornare</string>
+    <string name="no_recordings_found_refresh">Nessuna registrazione trovata</string>
+    <string name="no_favourites_found_refresh">Nessun preferito trovato</string>
+    <string name="no_channels_found_refresh">Nessun canale trovato</string>
+    <string name="no_channel_groups_found_refresh">Nessun gruppo di canali trovato</string>
     <string name="web_search">Ricerca web</string>
     <string name="any_network">Qualunque</string>
     <string name="mobile_network">Mobile</string>
@@ -361,7 +336,6 @@
     <string name="tv">TV</string>
     <string name="refresh">Ricarica</string>
     <string name="error_favourites">Impossibile recuperare i preferiti
-\n
 \nDescrizione errore: %1$s</string>
     <string name="starting_recording">Inizio registrazione %1$s</string>
     <string name="channel_switching">Cambia al canale %1$s</string>
@@ -400,4 +374,17 @@
     <string name="tvshow_next_episode">Prossimi episodi</string>
     <string name="tvshow_seasons">Stagioni</string>
     <string name="remaining_cast_count">%d in più</string>
+    <string name="error_starting_recording">Errore durante la riproduzione di una registrazione
+\nDescrizione: %1$s</string>
+    <string name="error_starting_to_record">Errore durante la registrazione
+\nDescrizione: %1$s</string>
+    <string name="error_starting_channel">Errore durante l\'avvio della riproduzione del canale
+\nDescrizione: %1$s</string>
+    <string name="might_not_have_pvr">Impossibile ottenere informazioni PVR.
+\n
+\nIl tuo media center potrebbe non avere un sintonizzatore o non è configurato. Se desideri rimuovere questa voce dal menu laterale, puoi farlo nella schermata Impostazioni.</string>
+    <string name="error_getting_pvr_info">Impossibile ottenere informazioni PVR
+\n
+\nDescrizione errore: %1$s</string>
+    <string name="not_connected">Non connesso</string>
 </resources>

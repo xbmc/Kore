@@ -64,7 +64,8 @@
     <string name="toggle_fullscreen">Cambiar a pantalla completa</string>
     <string name="connected_to">Conectado a %1$s</string>
     <string name="connecting">Conectando…</string>
-    <string name="connecting_to">Conectando a %1$s (%2$s)…</string>
+    <string name="connecting_to">No puedo conectar con %1$s (%2$s)
+\nReintentando…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bienvenido</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -75,13 +76,11 @@
     <string name="wizard_search_message"><![CDATA[
     Buscando centros multimedia en tu red local…<br/>
     ]]></string>
-    <string name="wizard_search_no_host_found"><![CDATA[     No se encontraron centrosequipos en tu red. <br/> Si necesitas ayuda para configurarlo, Pulsa <a href="http://syncedsynapse.com/kore/kore-faq/">aquí</a>.<br/><br/>
-    Pulsa <i>Buscar</i> para buscar de nuevo o <i>Siguiente</i> para configuración manual.
-        ]]></string>
+    <string name="wizard_search_no_host_found">No se encontraron equipos en la red. &lt;br/&gt; Si necesitas ayuda para configurarlo, Pulsa &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aquí&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Pulsa &lt;b&gt;Buscar&lt;/ib para buscar de nuevo o &lt;b&gt;Siguiente&lt;/b&gt; para configuración manual.</string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     	Por favor, activa una conexión de red antes de buscar centros multimedia.<br/>
     ]]></string>
-    <string name="wizard_search_host_found"><![CDATA[Se encontraron estos centros multimedia en su red.<br/><br/>Seleccione uno para añadir o presione <i>Siguiente</i> para añadir manualmente uno.]]></string>
+    <string name="wizard_search_host_found">Se encontraron estos centros multimedia en la red.<br/><br/>Selecciona alguno para añadirlo o pulsa <b>Siguiente</b> para añadir otro manualmente.</string>
     <string name="no_network_connection">No hay conexión de red</string>
     <string name="searching">Buscando…</string>
     <string name="no_xbmc_found">No se encontró ningún centro multimedia</string>
@@ -105,7 +104,7 @@
     <string name="wizard_no_address_specified">Por favor escribe la dirección IP de este centro multimedia para que lo pueda localizar.</string>
     <string name="wizard_invalid_http_port_specified">Por favor indica un puerto HTTP válido para este centro multimedia para que lo pueda localizar.</string>
     <string name="wizard_invalid_tcp_port_specified">Por favor indica un puerto TCP válido para este centro multimedia para que lo pueda localizar.</string>
-    <string name="wizard_invalid_es_port_specified">Por favor, especifica un puerto EventServer válido para este centro multimedia</string>
+    <string name="wizard_invalid_es_port_specified">Por favor, especifica un puerto EventServer válido para este centro multimedia.</string>
     <string name="wizard_connecting_to_xbmc_title">Conectando a %1$s…</string>
     <string name="wizard_connecting_to_xbmc_message">Por favor, espera mientras intento conectar a tu equipo…</string>
     <string name="wizard_empty_authentication">Kodi/XBMC necesita autentificación. \nPor favor escribe un nombre de usuario y contraseña.</string>
@@ -113,10 +112,7 @@
     <string name="wizard_success_connecting">Conectado a Kodi/XBMC.</string>
     <string name="wizard_error_connecting">No pudo conectarse a Kodi/XBMC.\nPor favor comprueba la configuración.</string>
     <string name="wizard_done">Todo listo!</string>
-    <string name="wizard_done_message"><![CDATA[    Tu centro multimedia esta configurado.<br/>
-    Ahora puedes usar el control remoto para manejarlo. Tu biblioteca se está sincronizando y debería estar lista en unos momentos.<br/><br/>
-    Presiona <b><i>Finalizar</i></b> para comenzar a usar el control remoto.
-    ]]></string>
+    <string name="wizard_done_message">Tu centro multimedia está configurado.<br/> Ahora puedes usar el control remoto para manejarlo. Tu colección se está sincronizando y debería estar lista en unos momentos.<br/><br/> Pulsa <b>Finalizar</b> para comenzar a usar el control remoto.</string>
     <string name="wizard_zeroconf_no_host_address">¡No se ha encontrado la IP de este centro multimedia!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">No se puede conectar a este media center porque no se ha encontrado su dirección.</string>
     <string name="play">Reproducir</string>
@@ -176,27 +172,27 @@
     <string name="episode_number">Episodio %1$d</string>
     <string name="votes">%1$s votos</string>
     <string name="fanart">Fanart</string>
-    <string name="poster">Poster</string>
+    <string name="poster">Cartel</string>
     <string name="thumbnail">Miniatura</string>
     <string name="error_getting_properties">No se pudieron obtener propiedades de Kodi.
-\nMensaje de error: %1$s.</string>
+\nMensaje de error: %1$s</string>
     <string name="error_executing_subtitles">No se pudo ejecutar el Addon de subtítulos.
-\nMensaje de error: %1$s.</string>
+\nMensaje de error: %1$s</string>
     <string name="error_getting_addon_info">No se pudo obtener información del Addon.
-\nMensaje de error: %1$s.</string>
+\nMensaje de error: %1$s</string>
     <string name="error_getting_source_info">Ningún archivo encontrado.
-\nMensaje de error: %1$s.</string>
+\nMensaje de error: %1$s</string>
     <string name="error_play_media_file">No se puede reproducir el archivo.
-\nMensaje de error: %1$s.</string>
+\nMensaje de error: %1$s</string>
     <string name="error_play_local_file">No se pudo reproducir el archivo local.
-\nMensaje de error: %1$s.</string>
+\nMensaje de error: %1$s</string>
     <string name="error_queue_media_file">Imposible añadir el archivo a la lista.
-\nMensaje de error: %1$s.</string>
+\nMensaje de error: %1$s</string>
     <string name="error_get_active_player">Ningún reproductor activo.
-\nMensaje de error: %1$s.</string>
+\nMensaje de error: %1$s</string>
     <string name="error_share_video">No se pudo compartir el vídeo con Kodi.</string>
     <string name="error_reading_local_storage">No se pudo leer el almacenamiento local. ¿Otorgó a Kore permisos de almacenamiento?</string>
-    <string name="error_starting_http_server">No se pudo crear o iniciar el servidor HTTP</string>
+    <string name="error_starting_http_server">No se pudo crear o iniciar el servidor HTTP.</string>
     <string name="directors">Directores:</string>
     <string name="studio">Estudio:</string>
     <string name="cast">Reparto</string>
@@ -210,43 +206,19 @@
     <string name="clear_playlist">Borrar lista de reproducción</string>
     <string name="source_empty">Fuente vacía</string>
     <string name="swipe_down_to_refresh">Desliza hacia abajo para actualizar</string>
-    <string name="no_movies_found_refresh">No se encontraron películas
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_tvshows_found_refresh">No se encontraron series de TV
-\n
-\nArrastra hacia abajo para actualizar</string>
+    <string name="no_movies_found_refresh">No se encontraron películas</string>
+    <string name="no_tvshows_found_refresh">No se encontraron series de TV</string>
     <string name="no_episodes_found">No se encontraron episodios</string>
-    <string name="no_artists_found_refresh">No se encontraron intérpretes
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_albums_found_refresh">No se encontraron álbumes
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_genres_found_refresh">No se encontraron géneros
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_addons_found_refresh">No se encontraron Addons o no está conectado
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_music_videos_found_refresh">No se encontraron vídeos
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_channel_groups_found_refresh">No se encontraron grupos de canales
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_channels_found_refresh">No se encontraron canales
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_favourites_found_refresh">No se encontraron favoritos
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_recordings_found_refresh">No se encontraron grabaciones
-\n
-\nArrastra hacia abajo para actualizar</string>
-    <string name="no_broadcasts_found_refresh">No se encontraron transmisiones
-\n
-\nArrastra hacia abajo para actualizar</string>
+    <string name="no_artists_found_refresh">No se encontraron intérpretes</string>
+    <string name="no_albums_found_refresh">No se encontraron álbumes</string>
+    <string name="no_genres_found_refresh">No se encontraron géneros</string>
+    <string name="no_addons_found_refresh">No se encontraron Addons</string>
+    <string name="no_music_videos_found_refresh">No se encontraron vídeos</string>
+    <string name="no_channel_groups_found_refresh">No se encontraron grupos de canales</string>
+    <string name="no_channels_found_refresh">No se encontraron canales</string>
+    <string name="no_favourites_found_refresh">No se encontraron favoritos</string>
+    <string name="no_recordings_found_refresh">No se encontraron grabaciones</string>
+    <string name="no_broadcasts_found_refresh">No se encontraron transmisiones</string>
     <string name="pull_to_refresh">Desliza para actualizar</string>
     <string name="no_cast_info">No hay información de reparto para mostrar</string>
     <string name="minutes_abbrev">%1$s min</string>
@@ -349,13 +321,20 @@
     <string name="queue_on_kodi">Encolar en Kodi</string>
     <string name="pause_call_incoming_title">Llamada entrante</string>
     <string name="pause_call_incoming_message">Mira tu teléfono, alguien te está llamando</string>
-    <string name="error_getting_pvr_info">Error al obtener información de PVR: %1$s</string>
-    <string name="might_not_have_pvr">Ocurrió un error al obtener la información de canales, probablemente porque tu centro multimedia no tiene un sintonizador o este no está configurado.\n\n
-    	Si ese es el caso y te gustaría quitar esta entrada del menú lateral, puedes hacerlo en los ajustes</string>
-    <string name="error_starting_channel">Error al reproducir canal: %1$s</string>
-    <string name="error_favourites">Error obteniendo los favoritos con descripción: %1$s</string>
-    <string name="error_starting_recording">Error iniciando una grabación: %1$s</string>
-    <string name="error_starting_to_record">Error al grabar; %1$s</string>
+    <string name="error_getting_pvr_info">No se pudo obtener información de PVR
+\n
+\nDescripción del error: %1$s</string>
+    <string name="might_not_have_pvr">No se pudo obtener información de PVR.
+\n
+\nTu centro multimedia no tiene un sintonizador o este no está configurado. Si quieres quitar esta entrada del menú lateral, puedes hacerlo en la pantalla Ajustes.</string>
+    <string name="error_starting_channel">Ocurrió un error al reproducir canal
+\nDescripción: %1$s</string>
+    <string name="error_favourites">Error obteniendo los favoritos
+\nDescripción del error: %1$s</string>
+    <string name="error_starting_recording">Ocurrió un error al reproducir una grabación
+\nDescripción: %1$s</string>
+    <string name="error_starting_to_record">Ocurrió un error al grabar
+\nDescripción: %1$s</string>
     <string name="channel_switching">Cambiando al canal: %1$s</string>
     <string name="starting_recording">Iniciando grabación %1$s</string>
     <string name="refresh">Actualizar</string>
@@ -375,19 +354,17 @@
     <string name="download_network_types_title">Restringir descargas multimedia</string>
     <string name="download_network_types_summary">Selecciona los tipos de red en los que se permitirán las descargas multimedia</string>
     <string name="songs">Canciones</string>
-    <string name="read_phone_state_permission_denied">Permiso denegado. No se podrá pausar la reproducción durante llamadas</string>
-    <string name="write_storage_permission_denied">Permiso denegado. No se podrán descargar archivos</string>
-    <string name="read_storage_permission_denied">Permiso denegado. No se podrán abrir archivos</string>
+    <string name="read_phone_state_permission_denied">Permiso denegado. No se podrá pausar la reproducción durante las llamadas.</string>
+    <string name="write_storage_permission_denied">Permiso denegado. No se podrán descargar archivos.</string>
+    <string name="read_storage_permission_denied">Permiso denegado. No se podrán abrir archivos.</string>
     <string name="no_songs_to_download">No hay canciones para descargar</string>
     <string name="by_album">Por álbum</string>
     <string name="by_artist">Por intérprete</string>
     <string name="by_artist_and_year">Por intérprete y año</string>
     <string name="muted">silenciado</string>
-    <string name="no_item_available_to_play">Error: no hay elementos para reproducir</string>
+    <string name="no_item_available_to_play">Error: no hay elementos para reproducir.</string>
     <string name="Refreshing_not_implemented_for_this_item">Actualización no implementada para este elemento</string>
-    <string name="no_songs_found_refresh">No se encontraron canciones
-\n
-\nArrastra hacia abajo para actualizar</string>
+    <string name="no_songs_found_refresh">No se encontraron canciones</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Expandir/Contraer</string>
     <string name="stream_action">Reproducir localmente</string>
@@ -408,4 +385,5 @@
     <string name="pinned_status">Anclado</string>
     <string name="unwatched_status">No visto</string>
     <string name="watched_status">Visto</string>
+    <string name="not_connected">No conectado</string>
 </resources>

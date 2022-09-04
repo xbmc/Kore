@@ -65,7 +65,8 @@
     <string name="toggle_fullscreen">전체화면 오가기</string>
     <string name="connected_to">%1$s 연결됨</string>
     <string name="connecting">연결 중…</string>
-    <string name="connecting_to">%1$s (%2$s) 연결 중…</string>
+    <string name="connecting_to">%1$s(%2$s)에 연결할 수 없습니다.
+\n재시도 중…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">환영합니다</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -177,21 +178,21 @@
     <string name="poster">포스터</string>
     <string name="thumbnail">섬네일</string>
     <string name="error_getting_properties">코디 속성을 알 수 없습니다.
-\n오류 내용:%1$s.</string>
-    <string name="error_executing_subtitles">자막 애드온을 실행할 수 없습니다.
-\n오류 내용: %1$s.</string>
-    <string name="error_getting_addon_info">애드온 항목을 가져올 수 없습니다.
-\n오류 내용:%1$s.</string>
-    <string name="error_getting_source_info">파일을 열 수 없습니다.
-\n오류 내용:%1$s.</string>
-    <string name="error_play_media_file">미디어 파일을 재생할 수 없습니다.
-\n오류 내용:%1$s.</string>
-    <string name="error_play_local_file">로컬 미디어 파일을 재생할 수 없습니다.
-\n오류 내용:%1$s.</string>
-    <string name="error_queue_media_file">미디어 파일을 순서에 넣을 수 없습니다.
-\n오류 내용:%1$s.</string>
-    <string name="error_get_active_player">재생기를 알 수 없습니다.
-\n오류 내용:%1$s.</string>
+\n오류 내용: %1$s</string>
+    <string name="error_executing_subtitles">자막 애드온을 실행할 수 없습니다. 
+\n오류 내용: %1$s</string>
+    <string name="error_getting_addon_info">애드온 항목을 가져올 수 없습니다. 
+\n오류 내용: %1$s</string>
+    <string name="error_getting_source_info">파일을 열 수 없습니다. 
+\n오류 내용: %1$s</string>
+    <string name="error_play_media_file">미디어 파일을 재생할 수 없습니다. 
+\n오류 내용: %1$s</string>
+    <string name="error_play_local_file">로컬 미디어 파일을 재생할 수 없습니다. 
+\n오류 내용: %1$s</string>
+    <string name="error_queue_media_file">미디어 파일을 순서에 넣을 수 없습니다. 
+\n오류 내용: %1$s</string>
+    <string name="error_get_active_player">재생기를 알 수 없습니다. 
+\n오류 내용: %1$s</string>
     <string name="error_share_video">비디오를 Kodi/XBMC에 공유할 수 없습니다..</string>
     <string name="error_reading_local_storage">로컬 저장장치를 읽을 수 없습니다.
         저장장치의 파일을 읽을 수 있는 권한이 있습니까?</string>
@@ -208,44 +209,20 @@
     <string name="playlist_empty">재생목록 없음</string>
     <string name="clear_playlist">재생목록 지우기</string>
     <string name="source_empty">미디어 소스 없음</string>
-    <string name="no_movies_found_refresh">영화를 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_tvshows_found_refresh">TV 프로그램을 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
+    <string name="no_movies_found_refresh">영화를 찾을 수 없음</string>
+    <string name="no_tvshows_found_refresh">TV 프로그램을 찾을 수 없음</string>
     <string name="no_episodes_found">에피소드를 찾을 수 없음</string>
     <string name="swipe_down_to_refresh">내려서 다시 읽기</string>
-    <string name="no_artists_found_refresh">아티스트를 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_albums_found_refresh">음반을 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_genres_found_refresh">장르를 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_addons_found_refresh">애드온을 찾을 수 없습니다
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_music_videos_found_refresh">비디오를 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_channel_groups_found_refresh">채널 그룹을 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_channels_found_refresh">채널을 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_favourites_found_refresh">즐겨찾기를 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_recordings_found_refresh">녹화를 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
-    <string name="no_broadcasts_found_refresh">방송을 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
+    <string name="no_artists_found_refresh">아티스트를 찾을 수 없음</string>
+    <string name="no_albums_found_refresh">음반을 찾을 수 없음</string>
+    <string name="no_genres_found_refresh">장르를 찾을 수 없음</string>
+    <string name="no_addons_found_refresh">애드온을 찾을 수 없음</string>
+    <string name="no_music_videos_found_refresh">비디오를 찾을 수 없음</string>
+    <string name="no_channel_groups_found_refresh">채널 그룹을 찾을 수 없음</string>
+    <string name="no_channels_found_refresh">채널을 찾을 수 없음</string>
+    <string name="no_favourites_found_refresh">즐겨찾기를 찾을 수 없음</string>
+    <string name="no_recordings_found_refresh">녹화를 찾을 수 없음</string>
+    <string name="no_broadcasts_found_refresh">방송을 찾을 수 없음</string>
     <string name="pull_to_refresh">당겨서 다시 읽기</string>
     <string name="no_cast_info">표시할 배역이 없음</string>
     <string name="minutes_abbrev">%1$s 분</string>
@@ -345,16 +322,20 @@
     <string name="queue_on_kodi">코디에 추가</string>
     <string name="pause_call_incoming_title">걸려온 전화</string>
     <string name="pause_call_incoming_message">누군가 전화를 걸고 있으니, 전화를 확인하세요</string>
-    <string name="error_getting_pvr_info">pvr 정보를 찾는 중에 발생한 오류: %1$s</string>
-    <string name="might_not_have_pvr">채널 정보를 찾는 중에 오류가 발생했는데, 아마 미디어 센터에 튜너가 없거나 설정이 되지 않아서 일 수 있습니다.
-\n
-\n 그렇다면 설정에서 옆 메뉴의 이 항목을 사용하지 않도록 설정할 수 있습니다.</string>
-    <string name="error_starting_channel">채널 재생 중에 발생한 오류: %1$s</string>
-    <string name="error_favourites">즐겨찾기를 가져 올 수 없습니다
+    <string name="error_getting_pvr_info">PVR 정보를 찾을 수 없습니다
 \n
 \n오류 내용: %1$s</string>
-    <string name="error_starting_recording">녹화를 시작하면서 발생한 오류: %1$s</string>
-    <string name="error_starting_to_record">녹화 중에 발생한 오류: %1$s</string>
+    <string name="might_not_have_pvr">PVR 정보를 가져올 수 없습니다.
+\n
+\n미디어 센터에 튜너가 없거나 구성되지 않았을 수 있습니다. 사이드 메뉴에서 이 항목을 제거하려면 설정 화면에서 제거할 수 있습니다.</string>
+    <string name="error_starting_channel">채널 재생을 시작하는 동안 오류가 발생했습니다.
+\n설명: %1$s</string>
+    <string name="error_favourites">즐겨찾기를 가져 올 수 없습니다 
+\n오류 내용: %1$s</string>
+    <string name="error_starting_recording">녹음을 재생하는 동안 오류가 발생했습니다.
+\n설명: %1$s</string>
+    <string name="error_starting_to_record">녹음 중 오류가 발생했습니다.
+\n설명: %1$s</string>
     <string name="channel_switching">%1$s 채널로 바꿈</string>
     <string name="starting_recording">%1$s 녹화 시작</string>
     <string name="refresh">다시 읽기</string>
@@ -384,9 +365,7 @@
     <string name="muted">조용히</string>
     <string name="no_item_available_to_play">오류: 재생할 항목이 없습니다.</string>
     <string name="Refreshing_not_implemented_for_this_item">이 항목에는 다시 읽기가 없음</string>
-    <string name="no_songs_found_refresh">곡을 찾을 수 없음
-\n
-\n내려서 다시 읽기</string>
+    <string name="no_songs_found_refresh">곡을 찾을 수 없음</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">펼치기/접기</string>
     <string name="stream_action">로컬 재생</string>
@@ -408,4 +387,5 @@
     <string name="pinned_status">고정함</string>
     <string name="unwatched_status">시청 안 함</string>
     <string name="watched_status">시청함</string>
+    <string name="not_connected">연결 안 됨</string>
 </resources>
