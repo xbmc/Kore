@@ -20,8 +20,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
-
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -35,6 +33,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -46,7 +45,6 @@ import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.method.Player;
 import org.xbmc.kore.jsonrpc.type.PVRType;
 import org.xbmc.kore.ui.AbstractSearchableFragment;
-import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -72,27 +70,24 @@ public class PVRRecordingsListFragment
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     @Override
-    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
-        return (view, position) -> {
-            // Get the id from the tag
-            RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
+    protected void onListItemClicked(View view, int position) {
+        // Get the id from the tag
+        RecordingViewHolder tag = (RecordingViewHolder) view.getTag();
 
-            // Start the recording
-            UIUtils.showSnackbar(getView(), String.format(getString(R.string.starting_recording), tag.title));
-            Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
-            action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-                @Override
-                public void onSuccess(String result) { }
+        // Start the recording
+        UIUtils.showSnackbar(getView(), String.format(getString(R.string.starting_recording), tag.title));
+        Player.Open action = new Player.Open(Player.Open.TYPE_RECORDING, tag.recordingId);
+        action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String result) { }
 
-                @Override
-                public void onError(int errorCode, String description) {
-                    if (!isResumed()) return;
-                    LogUtils.LOGD(TAG, "Error starting recording: " + description);
-                    UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_starting_recording), description));
-                }
-            }, callbackHandler);
-
-        };
+            @Override
+            public void onError(int errorCode, String description) {
+                if (!isResumed()) return;
+                LogUtils.LOGD(TAG, "Error starting recording: " + description);
+                UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_starting_recording), description));
+            }
+        }, callbackHandler);
     }
 
     @Override

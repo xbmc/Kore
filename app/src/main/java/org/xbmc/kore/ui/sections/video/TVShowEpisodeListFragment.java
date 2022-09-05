@@ -61,7 +61,7 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowEpisodeListFragment.class);
 
     public interface OnEpisodeSelectedListener {
-        void onEpisodeSelected(int tvshowId, ViewHolder viewHolder);
+        void onEpisodeSelected(int tvshowId, AbstractFragment.DataHolder dataHolder);
     }
 
     public static final String TVSHOWID = "tvshow_id";
@@ -75,20 +75,6 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
 
     // Activity listener
     private OnEpisodeSelectedListener listenerActivity;
-
-    /**
-     * Create a new instance of this, initialized to show tvshowId
-     */
-    public static TVShowEpisodeListFragment newInstance(int tvshowId, int season, String seasonPosterUrl) {
-        TVShowEpisodeListFragment fragment = new TVShowEpisodeListFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(TVSHOWID, tvshowId);
-        args.putInt(TVSHOWSEASON, season);
-        args.putString(TVSHOWSEASONPOSTERURL, seasonPosterUrl);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     protected String getListSyncType() { return LibrarySyncService.SYNC_SINGLE_TVSHOW; }
@@ -115,11 +101,12 @@ public class TVShowEpisodeListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    protected void onListItemClicked(View view) {
+    protected void onListItemClicked(View view, int position) {
+        super.onListItemClicked(view, position);
         // Get the movie id from the tag
         ViewHolder tag = (ViewHolder) view.getTag();
         // Notify the activity
-        listenerActivity.onEpisodeSelected(tvshowId, tag);
+        listenerActivity.onEpisodeSelected(tvshowId, tag.dataHolder);
     }
 
     @Override

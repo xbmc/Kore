@@ -28,8 +28,8 @@ import org.xbmc.kore.ui.sections.file.MediaFileListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 
-public class AddonDetailsFragment extends AbstractTabsFragment {
-    private static final String TAG = LogUtils.makeLogTag(AddonDetailsFragment.class);
+public class AddonTabsFragment extends AbstractTabsFragment {
+    private static final String TAG = LogUtils.makeLogTag(AddonTabsFragment.class);
 
     public Bundle contentArgs(Bundle details) {
         AbstractInfoFragment.DataHolder dataHolder = new AbstractInfoFragment.DataHolder(details);

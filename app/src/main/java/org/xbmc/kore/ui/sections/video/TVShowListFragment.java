@@ -48,6 +48,7 @@ import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.RecyclerViewCursorAdapter;
 import org.xbmc.kore.utils.LogUtils;
@@ -60,7 +61,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(TVShowListFragment.class);
 
     public interface OnTVShowSelectedListener {
-        void onTVShowSelected(TVShowListFragment.ViewHolder vh);
+        void onTVShowSelected(AbstractFragment.DataHolder dataHolder, ImageView sharedImageView);
     }
 
     // Activity listener
@@ -72,11 +73,12 @@ public class TVShowListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_TVSHOWS; }
 
     @Override
-    protected void onListItemClicked(View view) {
+    protected void onListItemClicked(View view, int position) {
+        super.onListItemClicked(view, position);
         // Get the movie id from the tag
         ViewHolder tag = (ViewHolder) view.getTag();
         // Notify the activity
-        listenerActivity.onTVShowSelected(tag);
+        listenerActivity.onTVShowSelected(tag.dataHolder, tag.artView);
     }
 
     @Override
@@ -337,7 +339,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         }
 
         protected int getSectionColumnIdx() {
-            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(requireContext())
                     .getInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.DEFAULT_PREF_TVSHOWS_SORT_ORDER);
             if (sortOrder == Settings.SORT_BY_YEAR) {
                 return TVShowListQuery.PREMIERED;
@@ -347,7 +349,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
         }
 
         protected int getSectionType() {
-            int sortOrder = PreferenceManager.getDefaultSharedPreferences(getContext())
+            int sortOrder = PreferenceManager.getDefaultSharedPreferences(requireContext())
                     .getInt(Settings.KEY_PREF_TVSHOWS_SORT_ORDER, Settings.DEFAULT_PREF_TVSHOWS_SORT_ORDER);
             if (sortOrder == Settings.SORT_BY_YEAR) {
                 return RecyclerViewCursorAdapter.SECTION_TYPE_DATE_STRING;
@@ -398,7 +400,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             dataHolder.setId(cursor.getInt(TVShowListQuery.TVSHOWID));
             dataHolder.setTitle(cursor.getString(TVShowListQuery.TITLE));
             dataHolder.setDescription(cursor.getString(TVShowListQuery.PLOT));
-            dataHolder.setRating(cursor.getInt(TVShowListQuery.RATING));
+            dataHolder.setRating(cursor.getDouble(TVShowListQuery.RATING));
             int numEpisodes = cursor.getInt(TVShowListQuery.EPISODE);
             int watchedEpisodes = cursor.getInt(TVShowListQuery.WATCHEDEPISODES);
 
@@ -427,7 +429,7 @@ public class TVShowListFragment extends AbstractCursorListFragment {
             } else {
                 watchedProgressView.setVisibility(View.INVISIBLE);
             }
-            artView.setTransitionName("a" + dataHolder.getId());
+            artView.setTransitionName("show" + dataHolder.getId());
         }
     }
 }

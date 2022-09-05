@@ -42,9 +42,9 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Addons;
 import org.xbmc.kore.jsonrpc.type.AddonType;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.AbstractListFragment;
-import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -60,10 +60,8 @@ import java.util.Locale;
 public class AddonListFragment extends AbstractListFragment {
     private static final String TAG = LogUtils.makeLogTag(AddonListFragment.class);
 
-    private final String BUNDLE_KEY_FORCE_REFRESH_ADDONS = "force_refresh_addons";
-
     public interface OnAddonSelectedListener {
-        void onAddonSelected(ViewHolder vh);
+        void onAddonSelected(AbstractFragment.DataHolder dataHolder, ImageView sharedImageView);
     }
 
     // Activity listener
@@ -76,18 +74,12 @@ public class AddonListFragment extends AbstractListFragment {
 
     private static boolean hideDisabledAddons;
 
-    private boolean forceRefreshAddons = false;
-
     @Override
-    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
-        return (view, position) -> {
-            // If we get back here after showing an addon, force a refresh, as its enabled state might have changed
-            forceRefreshAddons = true;
-            // Get the movie id from the tag
-            ViewHolder tag = (ViewHolder) view.getTag();
-            // Notify the activity
-            listenerActivity.onAddonSelected(tag);
-        };
+    protected void onListItemClicked(View view, int position) {
+        // Get the movie id from the tag
+        ViewHolder tag = (ViewHolder) view.getTag();
+        // Notify the activity
+        listenerActivity.onAddonSelected(tag.dataHolder, tag.artView);
     }
 
     @Override
@@ -102,9 +94,6 @@ public class AddonListFragment extends AbstractListFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        if (savedInstanceState != null) {
-            forceRefreshAddons = savedInstanceState.getBoolean(BUNDLE_KEY_FORCE_REFRESH_ADDONS);
-        }
     }
 
     @Override
@@ -125,7 +114,6 @@ public class AddonListFragment extends AbstractListFragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putBoolean(BUNDLE_KEY_FORCE_REFRESH_ADDONS, forceRefreshAddons);
         super.onSaveInstanceState(outState);
     }
 
@@ -136,14 +124,13 @@ public class AddonListFragment extends AbstractListFragment {
     public void onConnectionStatusSuccess() {
         boolean refresh = (lastConnectionStatusResult != CONNECTION_SUCCESS);
         super.onConnectionStatusSuccess();
-        if (refresh || forceRefreshAddons) onRefresh();
-        forceRefreshAddons = false;
+        if (refresh || hasNavigatedToDetail) onRefresh();
     }
 
     @Override
     public void onRefresh () {
         if (HostManager.getInstance(requireContext()).getHostInfo() != null) {
-            callGetAddonsAndSetup();
+            getAddonsAndSetup();
         } else {
             hideRefreshAnimation();
             UIUtils.showSnackbar(getView(), R.string.no_xbmc_configured);
@@ -175,7 +162,7 @@ public class AddonListFragment extends AbstractListFragment {
                        .putBoolean(Settings.KEY_PREF_ADDONS_FILTER_HIDE_DISABLED, item.isChecked())
                        .apply();
             hideDisabledAddons = item.isChecked();
-            callGetAddonsAndSetup();
+            getAddonsAndSetup();
         }
 
         return super.onOptionsItemSelected(item);
@@ -190,10 +177,8 @@ public class AddonListFragment extends AbstractListFragment {
     /**
      * Get the addons list and setup the gridview
      */
-    private void callGetAddonsAndSetup() {
+    private void getAddonsAndSetup() {
         final AddonsAdapter adapter = (AddonsAdapter) getAdapter();
-
-        showRefreshAnimation();
 
         // Get the addon list, this is done asyhnchronously
         String[] properties = new String[] {
@@ -228,7 +213,8 @@ public class AddonListFragment extends AbstractListFragment {
                     }
 
                     adapter.notifyDataSetChanged();
-                    hideRefreshAnimation();
+                    // Notify parent that list view is setup
+                    notifyListSetupComplete();
                 }
 
                 @Override
@@ -236,7 +222,6 @@ public class AddonListFragment extends AbstractListFragment {
                     if (!isAdded()) return;
                     LogUtils.LOGD(TAG, "Error getting addons: " + description);
                     showStatusMessage(null, getString(R.string.error_getting_addon_info, description));
-                    hideRefreshAnimation();
                 }
             },
                        callbackHandler);
@@ -361,7 +346,7 @@ public class AddonListFragment extends AbstractListFragment {
                                                  addonDetails.thumbnail, dataHolder.getTitle(),
                                                  artView, artWidth, artHeight);
 
-            artView.setTransitionName("a"+addonDetails.addonid);
+            artView.setTransitionName("addon" + addonDetails.addonid);
         }
     }
 }

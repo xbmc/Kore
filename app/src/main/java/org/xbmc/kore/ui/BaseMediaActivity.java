@@ -21,19 +21,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.transition.TransitionInflater;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
+import androidx.transition.Transition;
+import androidx.transition.TransitionInflater;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -49,7 +49,6 @@ import org.xbmc.kore.ui.generic.NavigationDrawerFragment;
 import org.xbmc.kore.ui.generic.VolumeControllerDialogFragmentListener;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
@@ -62,10 +61,11 @@ public abstract class BaseMediaActivity
     private static final String NAVICON_ISARROW = "navstate";
     private static final String ACTIONBAR_TITLE = "actionbartitle";
 
+    public static final String IMAGE_TRANS_NAME = "IMAGE_TRANS_NAME";
+
     ActivityGenericMediaBinding binding;
 
     private NavigationDrawerFragment navigationDrawerFragment;
-    private final SharedElementTransition sharedElementTransition = new SharedElementTransition();
 
     private boolean drawerIndicatorIsArrow;
 
@@ -88,8 +88,6 @@ public abstract class BaseMediaActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Request transitions on lollipop
-        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
 
         binding = ActivityGenericMediaBinding.inflate(getLayoutInflater());
@@ -119,23 +117,17 @@ public abstract class BaseMediaActivity
             updateActionBar(actionBarTitle, naviconIsArrow);
         }
 
-        String fragmentTitle = getActionBarTitle();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment == null) {
             fragment = createFragment();
 
-            fragment.setExitTransition(null);
-            fragment.setReenterTransition(TransitionInflater.from(this)
-                                                            .inflateTransition(android.R.transition.fade));
-
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, fragment, fragmentTitle)
+                    .add(R.id.fragment_container, fragment, getActionBarTitle())
                     .setReorderingAllowed(true)
                     .commit();
         }
 
-        sharedElementTransition.setupExitTransition(this, fragment);
         hostManager = HostManager.getInstance(this);
         hostConnectionObserver = hostManager.getHostConnectionObserver();
     }
@@ -229,23 +221,84 @@ public abstract class BaseMediaActivity
             Intent launchIntent = new Intent(this, RemoteActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(launchIntent);
+            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    protected void showFragment(AbstractFragment fragment, ImageView sharedImageView, AbstractFragment.DataHolder dataHolder) {
-        fragment.setArguments(dataHolder.getBundle());
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+    /**
+     * Replaces the fragment with the given one, showing a Shared Element transition based on the image view specified
+     * The entering fragment must postpone its enter transition and call startPostponedEnterTransition when it's
+     * all setup, so that the shared element transition works
+     * For the reenter transition (pop the back stack) to the current fragment, the current fragment must:
+     * - postpone its enter transition as it is being asked to by the flag shouldPostponeReenterTransition
+     * - launch an Event Bus message ListFragmentSetupComplete when it's fully set up, so that the postponed
+     * transition is allowed to run.
+     * Notice that the fragment postponing and starting the postponed transition might be different than the one
+     * launching the Event Bus message, as is the case if the current fragment is a Tabs Fragment: the Tabs Fragment
+     * postpones the transition, a child of his should launch the Event Bus message, which is caught by the Tabs
+     * Fragment to start the postponed transition
+     * @param fragment Fragment to add
+     * @param args Arguments to the fragment
+     * @param sharedImageView Image view to use in a Shared Element transition
+     */
+    protected void showFragment(Class<? extends Fragment> fragment, Bundle args, ImageView sharedImageView) {
+        args.putString(IMAGE_TRANS_NAME, sharedImageView.getTransitionName());
 
-        // Set up transitions
-        dataHolder.setPosterTransitionName(sharedImageView.getTransitionName());
-        sharedElementTransition.setupEnterTransition(this, fragTrans, fragment, sharedImageView);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof AbstractFragment) {
+            int startDelay = getResources().getInteger(R.integer.fragment_enter_start_offset),
+                    enterDuration = getResources().getInteger(R.integer.fragment_enter_animation_duration),
+                    exitDuration = getResources().getInteger(R.integer.fragment_exit_animation_duration);
 
-        fragTrans.replace(R.id.fragment_container, fragment, getActionBarTitle())
-                 .addToBackStack(null)
-                 .setReorderingAllowed(true)
-                 .commit();
+            Transition exitTransition = TransitionInflater.from(this)
+                                                          .inflateTransition(R.transition.fragment_list_exit);
+            exitTransition.excludeTarget(sharedImageView, true);
+            currentFragment.setExitTransition(exitTransition.setDuration(exitDuration)
+                                                            .setStartDelay(0));
+            currentFragment.setReenterTransition(exitTransition.clone()
+                                                               .setDuration(enterDuration)
+                                                               .setStartDelay(startDelay));
+            // Postpone reenter transition to allow for shared element loading
+            ((AbstractFragment) currentFragment).setPostponeReenterTransition(true);
+        }
+
+        fragmentManager.beginTransaction()
+                       .setReorderingAllowed(true)
+                       .addSharedElement(sharedImageView, sharedImageView.getTransitionName())
+                       .replace(R.id.fragment_container, fragment, args, getActionBarTitle())
+                       .addToBackStack(null)
+                       .commit();
+    }
+
+    /**
+     * Replaces the fragment with the given one, with a generic animation
+     * @param fragment Fragment to add
+     * @param args Arguments to the fragment
+     */
+    protected void showFragment(Class<? extends Fragment> fragment, Bundle args) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof AbstractFragment) {
+            // This is to unset previously set transitions with the overloaded showFragment function.
+            // This can happen in Tabs Fragment, where fragments on one tab want to use transitions (with the
+            // overloaded showFragment), and fragments on another tab want to use the animations provided in here.
+            // If an item on the other tab is clicked and the transitions are set on the Tabs Fragment, then the
+            // animations set here (on the same Tabs Fragment) won't run, unless we unset the transitions
+            currentFragment.setExitTransition(null);
+            currentFragment.setReenterTransition(null);
+            ((AbstractFragment) currentFragment).setPostponeReenterTransition(false);
+        }
+        // Replace fragment
+        fragmentManager
+                .beginTransaction()
+                .setReorderingAllowed(true)
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_popenter, R.anim.fragment_popexit)
+                .replace(R.id.fragment_container, fragment, args)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

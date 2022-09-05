@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-   Copyright 2015 Synced Synapse. All rights reserved.
+   Copyright 2022 Synced Synapse. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,24 +15,7 @@
    limitations under the License.
 -->
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
-    <fade>
-        <targets>
-            <target android:targetId="@id/art"/>
-            <target android:targetId="@id/pager"/>
-        </targets>
-    </fade>
 
-    <slide android:slideEdge="bottom">
-        <targets>
-            <target android:excludeId="@id/art"/>
-            <target android:excludeId="@id/fab_play"/>
-            <target android:excludeId="@id/pager"/>
-        </targets>
-    </slide>
-
-    <slide android:slideEdge="bottom" android:startDelay="@integer/fab_animation_start_delay">
-        <targets>
-            <target android:targetId="@id/fab_play"/>
-        </targets>
-    </slide>
+    <fade/>
+<!--    <slide android:slideEdge="top" />-->
 </transitionSet>

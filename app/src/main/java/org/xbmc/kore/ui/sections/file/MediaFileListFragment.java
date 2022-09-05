@@ -48,7 +48,6 @@ import org.xbmc.kore.jsonrpc.type.ListType;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
-import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.FileDownloadHelper;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -157,8 +156,8 @@ public class MediaFileListFragment extends AbstractListFragment {
     }
 
     @Override
-    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
-        return (view, position) -> handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(position));
+    protected void onListItemClicked(View view, int position) {
+        handleFileSelect(((MediaFileListAdapter) getAdapter()).getItem(position));
     }
 
     @Override

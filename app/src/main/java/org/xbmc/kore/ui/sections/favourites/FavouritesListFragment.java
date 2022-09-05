@@ -43,7 +43,6 @@ import org.xbmc.kore.jsonrpc.method.GUI;
 import org.xbmc.kore.jsonrpc.type.FavouriteType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
-import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
 import org.xbmc.kore.utils.UIUtils;
@@ -65,7 +64,7 @@ public class FavouritesListFragment
     }
 
     @Override
-    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
+    protected void onListItemClicked(View view, int position) {
         final ApiCallback<String> genericApiCallback = new ApiCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -78,29 +77,28 @@ public class FavouritesListFragment
                 UIUtils.showSnackbar(getView(), description);
             }
         };
-        return (view, position) -> {
-            final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
-            final HostManager hostManager = HostManager.getInstance(requireContext());
 
-            final FavouriteType.DetailsFavourite detailsFavourite =
-                    favouritesAdapter.getItem(position);
-            if (detailsFavourite == null) {
-                return;
-            }
-            if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.WINDOW) &&
-                !TextUtils.isEmpty(detailsFavourite.window)) {
-                GUI.ActivateWindow activateWindow =
-                        new GUI.ActivateWindow(detailsFavourite.window, detailsFavourite.windowParameter);
-                activateWindow.execute(hostManager.getConnection(), genericApiCallback, callbackHandler);
-            } else if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.MEDIA) &&
-                       !TextUtils.isEmpty(detailsFavourite.path)) {
-                final PlaylistType.Item playlistItem = new PlaylistType.Item();
-                playlistItem.file = detailsFavourite.path;
-                MediaPlayerUtils.play(FavouritesListFragment.this, playlistItem);
-            } else {
-                UIUtils.showSnackbar(getView(), R.string.unable_to_play_favourite_item);
-            }
-        };
+        final FavouritesAdapter favouritesAdapter = (FavouritesAdapter) getAdapter();
+        final HostManager hostManager = HostManager.getInstance(requireContext());
+
+        final FavouriteType.DetailsFavourite detailsFavourite =
+                favouritesAdapter.getItem(position);
+        if (detailsFavourite == null) {
+            return;
+        }
+        if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.WINDOW) &&
+            !TextUtils.isEmpty(detailsFavourite.window)) {
+            GUI.ActivateWindow activateWindow =
+                    new GUI.ActivateWindow(detailsFavourite.window, detailsFavourite.windowParameter);
+            activateWindow.execute(hostManager.getConnection(), genericApiCallback, callbackHandler);
+        } else if (detailsFavourite.type.equals(FavouriteType.FavouriteTypeEnum.MEDIA) &&
+                   !TextUtils.isEmpty(detailsFavourite.path)) {
+            final PlaylistType.Item playlistItem = new PlaylistType.Item();
+            playlistItem.file = detailsFavourite.path;
+            MediaPlayerUtils.play(FavouritesListFragment.this, playlistItem);
+        } else {
+            UIUtils.showSnackbar(getView(), R.string.unable_to_play_favourite_item);
+        }
     }
 
     @Override

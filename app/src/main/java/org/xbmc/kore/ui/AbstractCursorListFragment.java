@@ -45,11 +45,8 @@ import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 import org.xbmc.kore.service.library.LibrarySyncService;
 import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
-import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
-
-import de.greenrobot.event.EventBus;
 
 public abstract class AbstractCursorListFragment
 		extends AbstractListFragment
@@ -60,17 +57,12 @@ public abstract class AbstractCursorListFragment
 				   HostConnectionObserver.ConnectionStatusObserver {
     private static final String TAG = LogUtils.makeLogTag(AbstractCursorListFragment.class);
 
-	private final String BUNDLE_KEY_SEARCH_QUERY = "search_query",
-			BUNDLE_KEY_FORCE_RESTART_LOADER = "force_restart_loader";
+	private final String BUNDLE_KEY_SEARCH_QUERY = "search_query";
 
 	private ServiceConnection serviceConnection;
-	private EventBus bus;
 
 	// Loader IDs
 	private static final int LOADER = 0;
-
-	// Whether we've been previously stopped, to init or restart a loader
-	private boolean forceRestartLoader = false;
 
 	// The search filter to use in the loader
 	private String searchFilter = null;
@@ -79,18 +71,15 @@ public abstract class AbstractCursorListFragment
 
 	private SearchView searchView;
 
-	abstract protected void onListItemClicked(View view);
 	abstract protected CursorLoader createCursorLoader();
 	abstract protected RecyclerViewCursorAdapter createCursorAdapter();
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		bus = EventBus.getDefault();
 
 		if (savedInstanceState != null) {
 			savedSearchFilter = savedInstanceState.getString(BUNDLE_KEY_SEARCH_QUERY);
-			forceRestartLoader = savedInstanceState.getBoolean(BUNDLE_KEY_FORCE_RESTART_LOADER);
 		}
 		searchFilter = savedSearchFilter;
 	}
@@ -99,25 +88,23 @@ public abstract class AbstractCursorListFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		// If we've navigated out of this fragment before, restart the loader as the database might have changed
-		if (forceRestartLoader)
+		if (hasNavigatedToDetail) {
 			restartLoader();
-		else
+		} else {
 			LoaderManager.getInstance(this).initLoader(LOADER, null, this);
+		}
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
 		serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
-		bus.register(this);
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		bus.unregister(this);
 		SyncUtils.disconnectFromLibrarySyncService(requireContext(), serviceConnection);
-		forceRestartLoader = true;
 	}
 
 	@Override
@@ -126,16 +113,12 @@ public abstract class AbstractCursorListFragment
 			savedSearchFilter = searchFilter;
 		}
 		outState.putString(BUNDLE_KEY_SEARCH_QUERY, savedSearchFilter);
-		outState.putBoolean(BUNDLE_KEY_FORCE_RESTART_LOADER, forceRestartLoader);
 		super.onSaveInstanceState(outState);
 	}
 
 	@Override
-	protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
-		return (view, position) -> {
-			saveSearchState();
-			onListItemClicked(view);
-		};
+	protected void onListItemClicked(View view, int position) {
+		saveSearchState();
 	}
 
 	@Override
@@ -307,6 +290,8 @@ public abstract class AbstractCursorListFragment
 						   (lastConnectionStatusResult == CONNECTION_SUCCESS) ?
 						   getString(R.string.pull_to_refresh) : null);
 		}
+		// Notify parent that list view is setup
+		notifyListSetupComplete();
 	}
 
 	/** {@inheritDoc} */

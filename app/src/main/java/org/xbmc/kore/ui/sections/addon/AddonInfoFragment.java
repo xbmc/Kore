@@ -68,6 +68,7 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
+        updateView(getDataHolder());
     }
 
     @Override

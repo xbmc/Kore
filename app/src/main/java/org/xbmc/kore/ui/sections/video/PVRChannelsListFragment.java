@@ -42,7 +42,6 @@ import org.xbmc.kore.jsonrpc.type.ItemType;
 import org.xbmc.kore.jsonrpc.type.PVRType;
 import org.xbmc.kore.ui.AbstractSearchableFragment;
 import org.xbmc.kore.ui.OnBackPressedListener;
-import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -259,41 +258,36 @@ public class PVRChannelsListFragment
     }
 
     @Override
-    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
-        return (view, position) -> {
-            Object tag = view.getTag();
+    protected void onListItemClicked(View view, int position) {
+        Object tag = view.getTag();
 
-            if (tag == null)
-            {
-                return;
-            }
+        if (tag == null) return;
 
-            if (tag instanceof ChannelGroupViewHolder) {
-                // Get the id from the tag
-                ChannelGroupViewHolder holder = (ChannelGroupViewHolder) view.getTag();
-                selectedChannelGroupId = holder.channelGroupId;
-                // Notify the activity and show the channels
-                listenerActivity.onChannelGroupSelected(holder.channelGroupId, holder.channelGroupName);
-                browseChannels(holder.channelGroupId);
-            } else {
-                ChannelViewHolder holder = (ChannelViewHolder) tag;
+        if (tag instanceof ChannelGroupViewHolder) {
+            // Get the id from the tag
+            ChannelGroupViewHolder holder = (ChannelGroupViewHolder) view.getTag();
+            selectedChannelGroupId = holder.channelGroupId;
+            // Notify the activity and show the channels
+            listenerActivity.onChannelGroupSelected(holder.channelGroupId, holder.channelGroupName);
+            browseChannels(holder.channelGroupId);
+        } else {
+            ChannelViewHolder holder = (ChannelViewHolder) tag;
 
-                // Start the channel
-                UIUtils.showSnackbar(getView(), String.format(getString(R.string.channel_switching), holder.channelName));
-                Player.Open action = new Player.Open(Player.Open.TYPE_CHANNEL, holder.channelId);
-                action.execute(hostManager.getConnection(), new ApiCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) { }
+            // Start the channel
+            UIUtils.showSnackbar(getView(), String.format(getString(R.string.channel_switching), holder.channelName));
+            Player.Open action = new Player.Open(Player.Open.TYPE_CHANNEL, holder.channelId);
+            action.execute(hostManager.getConnection(), new ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result) { }
 
-                    @Override
-                    public void onError(int errorCode, String description) {
-                        if (!isResumed()) return;
-                        LogUtils.LOGD(TAG, "Error starting channel: " + description);
-                        UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_starting_channel), description));
-                    }
-                }, callbackHandler);
-            }
-        };
+                @Override
+                public void onError(int errorCode, String description) {
+                    if (!isResumed()) return;
+                    LogUtils.LOGD(TAG, "Error starting channel: " + description);
+                    UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_starting_channel), description));
+                }
+            }, callbackHandler);
+        }
     }
 
     /**

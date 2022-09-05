@@ -110,7 +110,8 @@ public class SongsListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    protected void onListItemClicked(View view) {
+    protected void onListItemClicked(View view, int position) {
+        super.onListItemClicked(view, position);
         ImageView contextMenu = view.findViewById(R.id.list_context_menu);
         showPopupMenu(contextMenu);
     }

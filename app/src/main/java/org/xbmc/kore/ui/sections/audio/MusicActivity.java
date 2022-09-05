@@ -22,9 +22,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.transition.MaterialFadeThrough;
-
 import org.xbmc.kore.R;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.utils.LogUtils;
@@ -170,25 +169,26 @@ public class MusicActivity extends BaseMediaActivity
         super.onBackPressed();
     }
 
-    public void onArtistSelected(AbstractInfoFragment.DataHolder dataHolder, ImageView sharedImageView) {
+    public void onArtistSelected(AbstractFragment.DataHolder dataHolder, ImageView sharedImageView) {
         selectedArtistId = dataHolder.getId();
         selectedArtistName = dataHolder.getTitle();
 
         // Replace list fragment
-        final ArtistInfoFragment artistInfoFragment = new ArtistInfoFragment();
         dataHolder.setSquarePoster(true);
-        showFragment(artistInfoFragment, sharedImageView, dataHolder);
+        showFragment(ArtistInfoFragment.class, dataHolder.getBundle(), sharedImageView);
         updateActionBar(selectedArtistName, true);
     }
 
-    public void onAlbumSelected(AbstractInfoFragment.DataHolder dataHolder, ImageView sharedImageView) {
+    public void onAlbumSelected(AbstractFragment.DataHolder dataHolder, ImageView sharedImageView) {
         selectedAlbumId = dataHolder.getId();
         selectedAlbumTitle = dataHolder.getTitle();
 
         // Replace list fragment
-        final AbstractInfoFragment albumInfoFragment = new AlbumInfoFragment();
         dataHolder.setSquarePoster(true);
-        showFragment(albumInfoFragment, sharedImageView, dataHolder);
+        if (sharedImageView != null)
+            showFragment(AlbumInfoFragment.class, dataHolder.getBundle(), sharedImageView);
+        else
+            showFragment(AlbumInfoFragment.class, dataHolder.getBundle());
         updateActionBar(selectedAlbumTitle, true);
     }
 
@@ -197,16 +197,9 @@ public class MusicActivity extends BaseMediaActivity
         selectedGenreTitle = genreTitle;
 
         // Replace list fragment
-        AlbumListFragment albumListFragment = new AlbumListFragment();
-        albumListFragment.setGenre(genreId);
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_details_enter, 0, R.anim.fragment_list_popenter, 0)
-                .replace(R.id.fragment_container, albumListFragment)
-                .addToBackStack(null)
-                .setReorderingAllowed(true)
-                .commit();
+        Bundle args = new Bundle();
+        args.putInt(AlbumListFragment.BUNDLE_KEY_GENREID, genreId);
+        showFragment(AlbumListFragment.class, args);
 
         updateActionBar(selectedGenreTitle, true);
     }
@@ -216,9 +209,8 @@ public class MusicActivity extends BaseMediaActivity
         selectedMusicVideoTitle = dataHolder.getTitle();
 
         // Replace list fragment
-        final MusicVideoInfoFragment musicVideoInfoFragment = new MusicVideoInfoFragment();
         dataHolder.setSquarePoster(true);
-        showFragment(musicVideoInfoFragment, sharedImageView, dataHolder);
+        showFragment(MusicVideoInfoFragment.class, dataHolder.getBundle(), sharedImageView);
         updateActionBar(selectedMusicVideoTitle, true);
     }
 }

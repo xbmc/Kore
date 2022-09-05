@@ -17,26 +17,98 @@
 package org.xbmc.kore.ui;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import de.greenrobot.event.EventBus;
 
 public class AbstractFragment extends Fragment {
 
+    private final String BUNDLE_KEY_POSTPONE_TRANSITION = "BUNDLE_KEY_POSTPONE_TRANSITION";
+
+    protected boolean shouldPostponeReenterTransition = false;
     private DataHolder dataHolder;
 
-    public DataHolder getDataHolder() {
-        return dataHolder;
-    }
+    /**
+     * This is a EventBus message that should be sent by list fragments when their setup is complete, which allows for
+     * controlling a reenter shared element transition.
+     * If specified by shouldPostponeReenterTransition the list fragment should postpone its enter transition in
+     * onViewCreated, and when it is fully setup, launch this Event Bus message, so that the postponed transition
+     * is started here.
+     * This framework allows for a shared element transition from a list to a details fragment to work, as well as
+     * supporting Tabs Fragments. When using a Tabs Fragment, it needs to postponed its reenter transition, and be
+     * notified when the *child* list fragment is completly set up, so that the postponed transition starts. With this
+     * framework, the *child* list fragment sends this Event Bus message, which is caught and acted upon by the
+     * Tabs Fragment (instead of by the child list fragment, as it doesn't have the shouldPostponeReenterTransition set)
+     */
+    public static class ListFragmentSetupComplete {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.dataHolder = new DataHolder(getArguments());
+        if (savedInstanceState != null) {
+            shouldPostponeReenterTransition = savedInstanceState.getBoolean(BUNDLE_KEY_POSTPONE_TRANSITION);
+        }
+    }
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault()
+                .register(this);
+    }
+    @Override
+    public void onStop() {
+        EventBus.getDefault()
+                .unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(BUNDLE_KEY_POSTPONE_TRANSITION, shouldPostponeReenterTransition);
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Call this to set a flag indicating to postpone the reenter transition. This is useful in reenter transitions
+     * after a pop of the back stack, as it allows control of when the return shared element transition should play.
+     * Make sure that a ListFragmentSetupComplete Event Bus message is sent when the transition should run
+     * (shared element is loaded and ready)
+     */
+    public void setPostponeReenterTransition(boolean val) {
+        shouldPostponeReenterTransition = val;
+    }
+
+    /**
+     * Event bus callback when a fragment notifies that it's setup is complete
+     * This is used in list fragments, so that we can start a previously postponed reenter transitions
+     * @param event Event
+     */
+    public void onEventMainThread(ListFragmentSetupComplete event) {
+        if (shouldPostponeReenterTransition) {
+            // We postponed the enter transition, launch it now
+            View rootView = requireView();
+            rootView.getViewTreeObserver()
+                    .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            rootView.getViewTreeObserver().removeOnPreDrawListener(this);
+                            startPostponedEnterTransition();
+                            return true;
+                        }
+                    });
+            shouldPostponeReenterTransition = false;
+        }
+    }
+
+    public DataHolder getDataHolder() {
+        return dataHolder;
     }
 
     public static class DataHolder {
-        static final String POSTER_TRANS_NAME = "POSTER_TRANS_NAME";
         static final String BUNDLE_KEY_ID = "id";
         static final String BUNDLE_KEY_TITLE = "title";
         static final String BUNDLE_KEY_UNDERTITLE = "undertitle";
@@ -49,23 +121,15 @@ public class AbstractFragment extends Fragment {
         static final String BUNDLE_KEY_VOTES = "votes";
         static final String BUNDLE_KEY_SEARCH_TERMS = "searchterms";
 
-        private Bundle bundle;
+        private final Bundle bundle;
 
         public DataHolder(Bundle bundle) {
-            setBundle(bundle);
+            this.bundle = bundle;
         }
 
         public DataHolder(int itemId) {
             bundle = new Bundle();
             bundle.putInt(BUNDLE_KEY_ID, itemId);
-        }
-
-        public void setBundle(Bundle bundle) {
-            this.bundle = bundle;
-        }
-
-        public void setPosterTransitionName(String posterTransitionName) {
-            bundle.putString(POSTER_TRANS_NAME, posterTransitionName);
         }
 
         public void setSquarePoster(boolean squarePoster) {
@@ -110,10 +174,6 @@ public class AbstractFragment extends Fragment {
 
         public void setId(int id) {
             bundle.putInt(BUNDLE_KEY_ID, id);
-        }
-
-        public String getPosterTransitionName() {
-            return bundle.getString(POSTER_TRANS_NAME);
         }
 
         public boolean getSquarePoster() {

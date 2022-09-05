@@ -139,11 +139,9 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     }
 
     @Override
-    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
-        return (view, position) -> {
-            LocalFileLocation selection = ((MediaPictureListAdapter) getAdapter()).getItem(position);
-            if (selection != null) handleFileSelect(selection);
-        };
+    protected void onListItemClicked(View view, int position) {
+        LocalFileLocation selection = ((MediaPictureListAdapter) getAdapter()).getItem(position);
+        if (selection != null) handleFileSelect(selection);
     }
 
     @Override

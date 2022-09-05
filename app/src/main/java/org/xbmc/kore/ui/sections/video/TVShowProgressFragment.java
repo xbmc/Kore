@@ -46,7 +46,6 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.ui.AbstractFragment;
-import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.generic.CastFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.MediaPlayerUtils;
@@ -76,7 +75,7 @@ public class TVShowProgressFragment
 
     public interface TVShowProgressActionListener {
         void onSeasonSelected(int tvshowId, int season, String seasonPoster);
-        void onNextEpisodeSelected(int tvshowId, AbstractInfoFragment.DataHolder dataHolder);
+        void onNextEpisodeSelected(int tvshowId, DataHolder dataHolder);
     }
 
     // Activity listener
@@ -217,8 +216,7 @@ public class TVShowProgressFragment
 
             View.OnClickListener episodeClickListener = v -> {
                 forceRestartLoader = true;
-                DataHolder vh = (DataHolder) v.getTag();
-                listenerActivity.onNextEpisodeSelected(itemId, vh);
+                listenerActivity.onNextEpisodeSelected(itemId, (DataHolder)v.getTag());
             };
 
             // Get the art dimensions
@@ -259,12 +257,13 @@ public class TVShowProgressFragment
                 UIUtils.loadImageWithCharacterAvatar(requireContext(), hostManager,
                                                      thumbnail, title,
                                                      artView, artWidth, artHeight);
+                artView.setTransitionName("episode" + episodeId);
 
-                AbstractInfoFragment.DataHolder vh = new AbstractInfoFragment.DataHolder(episodeId);
-                vh.setTitle(title);
-                vh.setUndertitle(seasonEpisode);
-                vh.setPosterUrl(this.showPosterUrl);
-                episodeView.setTag(vh);
+                DataHolder dataHolder = new DataHolder(episodeId);
+                dataHolder.setTitle(title);
+                dataHolder.setUndertitle(seasonEpisode);
+                dataHolder.setPosterUrl(this.showPosterUrl);
+                episodeView.setTag(dataHolder);
                 episodeView.setOnClickListener(episodeClickListener);
 
                 // For the popupmenu
