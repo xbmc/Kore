@@ -55,27 +55,27 @@
     <string name="error_reading_local_storage">Не ўдалося атрымаць доступ да лакальнага сховішча. Вы далі Kore дазвол на доступ да сховішча файлаў\?</string>
     <string name="error_share_video">Не ўдалося адправіць відэа ў Kodi.</string>
     <string name="error_get_active_player">Не ўдалося атрымаць актыўны прайгравальнік.
-\n Паведамленне памылкі: %1$s.</string>
+\n Паведамленне памылкі: %1$s</string>
     <string name="error_queue_media_file">Не ўдалося дадаць медыяфайл у чаргу.
-\n Паведамленне памылкі: %1$s.</string>
+\n Паведамленне памылкі: %1$s</string>
     <string name="error_play_local_file">Не ўдалося прайграць лакальны медыяфайл.
-\n Паведамленне памылкі: %1$s.</string>
+\n Паведамленне памылкі: %1$s</string>
     <string name="error_play_media_file">Не ўдалося прайграць медыяфайл.
-\n Паведамленне памылкі: %1$s.</string>
+\n Паведамленне памылкі: %1$s</string>
     <string name="error_getting_source_info">Не ўдалося знайсці файлы.
-\n Паведамленне памылкі: %1$s.</string>
+\n Паведамленне памылкі: %1$s</string>
     <string name="error_getting_addon_info">Не ўдалося атрымаць звесткі пра дапаўненне.
-\n Паведамленне памылкі: %1$s.</string>
+\n Паведамленне памылкі: %1$s</string>
     <string name="error_executing_subtitles">Не ўдалося запусціць дапаўненне для субцітраў.
-\n Паведамленне памылкі: %1$s.</string>
+\n Паведамленне памылкі: %1$s</string>
     <string name="error_getting_properties">Не ўдалося атрымаць уласцівасці Kodi.
-\n Паведамленне памылкі: %1$s.</string>
+\n Паведамленне памылкі: %1$s</string>
     <string name="playlist">Спіс прайгравання</string>
     <string name="fast_forward">Перамотка ўперад</string>
     <string name="thumbnail">Мініяцюра</string>
     <string name="poster">Постар</string>
     <string name="fanart">Аматарская ілюстрацыя</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Эпізод %1$d</string>
     <string name="season_number">Сезон %1$02d</string>
     <string name="season_episode">Сезон %1$02d | эпізод %2$02d</string>
     <string name="season_episode_abbrev">С%1$02dэ%2$02d</string>
@@ -170,7 +170,8 @@
     <string name="wizard_search_message">Пошук медыяцэнтраў у лакальнай сетцы…<br/></string>
     <string name="wizard_welcome_message">Спачатку трэба дадаць медыяцэнтр. Праверце, што Kodi запушчаны, правільна наладжаны і падлучаны да той жа сеткі, што і гэтая прылада.&lt;br/&gt;&lt;br/&gt; Падрабязныя звесткі пра наладжванне можна знайсці &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;тут&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Калі будзеце гатовыя, націсніце &lt;b&gt;Далей&lt;/b&gt;.</string>
     <string name="wizard_welcome">Вітаем!</string>
-    <string name="connecting_to">Падлучэнне да %1$s (%2$s)…</string>
+    <string name="connecting_to">Не ўдалося падлучыцца да %1$s (%2$s)
+\nПаўтарэнне спробы…</string>
     <string name="connecting">Падлучэнне…</string>
     <string name="connected_to">Падлучана да %1$s</string>
     <string name="toggle_fullscreen">Пераключыць поўнаэкранны рэжым</string>
@@ -196,14 +197,14 @@
     <string name="weather">Надвор\'е</string>
     <string name="pvr">Тэлебачанне</string>
     <string name="local_file_browser">Лакальныя файлы</string>
-    <string name="file_browser">Агляд файлаў</string>
+    <string name="file_browser">Агляд файлаў Kodi</string>
     <string name="unknown">Невядома</string>
     <string name="script">Скрыпт</string>
     <string name="window">Акно</string>
     <string name="media">Медыя</string>
     <string name="video">Відэа</string>
     <string name="local_files">Лакальныя файлы</string>
-    <string name="files">Файлы</string>
+    <string name="files">Файлы Kodi</string>
     <string name="addons">Дапаўненні</string>
     <string name="external_storage">Сховішча</string>
     <string name="dcim">Фотаздымкі</string>
@@ -234,43 +235,19 @@
     <string name="minutes_abbrev">%1$s хв</string>
     <string name="no_cast_info">Няма звестак пра трансляцыю</string>
     <string name="pull_to_refresh">Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_broadcasts_found_refresh">Няма трансляцый
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_recordings_found_refresh">Няма запісаў
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_favourites_found_refresh">Няма ўлюбёных
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_channels_found_refresh">Няма каналаў
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_channel_groups_found_refresh">Няма групаў каналаў
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_music_videos_found_refresh">Няма музычных відэа
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_addons_found_refresh">Няма дапаўненняў або яны не падлучаныя
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_genres_found_refresh">Няма жанраў
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_albums_found_refresh">Няма альбомаў
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_artists_found_refresh">Няма выканаўцаў
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
+    <string name="no_broadcasts_found_refresh">Не знойдзена трансляцый</string>
+    <string name="no_recordings_found_refresh">Не знойдзена запісаў</string>
+    <string name="no_favourites_found_refresh">Не знойдзена ўлюбёных</string>
+    <string name="no_channels_found_refresh">Не знойдзена каналаў</string>
+    <string name="no_channel_groups_found_refresh">Не знойдзена групаў каналаў</string>
+    <string name="no_music_videos_found_refresh">Не знойдзена музычных відэа</string>
+    <string name="no_addons_found_refresh">Не знойдзена дапаўненняў</string>
+    <string name="no_genres_found_refresh">Не знойдзена жанраў</string>
+    <string name="no_albums_found_refresh">Не знойдзена альбомаў</string>
+    <string name="no_artists_found_refresh">Не знойдзена выканаўцаў</string>
     <string name="no_episodes_found">Няма эпізодаў</string>
-    <string name="no_tvshows_found_refresh">Няма серыялаў
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
-    <string name="no_movies_found_refresh">Няма фільмаў
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
+    <string name="no_tvshows_found_refresh">Не знойдзена серыялаў</string>
+    <string name="no_movies_found_refresh">Не знойдзена фільмаў</string>
     <string name="any_network">Любая сетка</string>
     <string name="mobile_network">Мабільная сетка</string>
     <string name="wifi_network">Wi-Fi</string>
@@ -278,9 +255,7 @@
     <string name="stream_action">Прайграць лакальна</string>
     <string name="toggle_expand">Разгарнуць/згарнуць</string>
     <string name="zeroprogress">0:00</string>
-    <string name="no_songs_found_refresh">Няма песень
-\n
-\n Правядзіце ўніз, каб абнавіць</string>
+    <string name="no_songs_found_refresh">Не знойдзена песень</string>
     <string name="Refreshing_not_implemented_for_this_item">Для гэтага элемента яшчэ не зробленая функцыя абнаўлення</string>
     <string name="no_item_available_to_play">Памылка: няма чаго прайграваць.</string>
     <string name="muted">абязгучана</string>
@@ -309,28 +284,34 @@
     <string name="refresh">Абнавіць</string>
     <string name="starting_recording">Запуск запісу %1$s</string>
     <string name="channel_switching">Пераключэнне на канал \"%1$s\"</string>
-    <string name="error_starting_to_record">Падчас выканання запісу адбылася памылка: %1$s</string>
-    <string name="error_starting_recording">Падчас запуску запісу адбылася памылка: %1$s</string>
-    <string name="error_favourites">Падчас атрымання ўлюбёных адбылася памылка: %1$s</string>
-    <string name="error_starting_channel">Падчас прайгравання канала адбылася памылка: %1$s</string>
-    <string name="might_not_have_pvr">Падчас атрымання звестак пра каналы адбылася памылка. Магчыма, ваш медыяцэнтр не мае цюнара або ён не наладжаны.
+    <string name="error_starting_to_record">Падчас выканання запісу адбылася памылка
+\nАпісанне: %1$s</string>
+    <string name="error_starting_recording">Падчас прайгравання запісу адбылася памылка
+\nАпісанне: %1$s</string>
+    <string name="error_favourites">Не ўдалося атрымаць улюбёныя
+\nАпісанне памылкі: %1$s</string>
+    <string name="error_starting_channel">Падчас прайгравання канала адбылася
+\nАпісанне: %1$s</string>
+    <string name="might_not_have_pvr">Не ўдалося атрымаць звесткі PVR.
 \n
-\n Калі гэта так, то гэты пункт можна прыбраць з бакавога меню, гэта можна зрабіць у наладах.</string>
-    <string name="error_getting_pvr_info">Падчас атрымання звестак pvr адбылася памылка: %1$s</string>
+\nМагчыма, ваш медыяцэнтр не мае цюнара або ён не наладжаны. Калі гэта так, то гэты пункт можна прыбраць з бакавога меню, гэта можна зрабіць у наладах.</string>
+    <string name="error_getting_pvr_info">Не ўдалося атрымаць звесткі PVR
+\n
+\nАпісанне памылкі: %1$s</string>
     <string name="pause_call_incoming_message">Праверце тэлефон, вам тэлефануюць</string>
     <string name="pause_call_incoming_title">Уваходны выклік</string>
     <string name="queue_on_kodi">Адправіць у чаргу ў Kodi</string>
     <string name="play_on_kodi">Прайграць у Kodi</string>
-    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Калі ласка, ацаніце нас у &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Калі вам патрэбная дапамога, наведайце &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;форум&lt;/a&gt;&lt;</string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Калі ласка, ацаніце нас у &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Калі вам патрэбная дапамога, наведайце &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;форум&lt;/a&gt;</string>
     <string name="about">Пра праграму</string>
     <string name="nav_drawer_items">Значкі бакавой панэлі</string>
     <string name="remote_bar_items">Значкі ніжняй панэлі</string>
-    <string name="always_sendtokodi_addon">Заўсёды аддаваць перавагу дапаўненню SendToKodi</string>
+    <string name="always_sendtokodi_addon">Аддаваць перавагу дапаўненню SendToKodi</string>
     <string name="vibrate_on_remote">Вібрацыя пры націсканні</string>
     <string name="use_hardware_volume_keys">Выкарыстоўваць кнопкі гучнасці прылады</string>
     <string name="pause_during_calls">Прыпыняць падчас тэлефонных выклікаў</string>
-    <string name="show_now_playing_panel_summary">Паказваць высоўную панэль унізе экрана падчас прайгравання</string>
-    <string name="show_now_playing_panel">Паказваць панэль прайгравання падчас прайгравання</string>
+    <string name="show_now_playing_panel_summary">Паказваць панэль унізе экрана падчас прайгравання</string>
+    <string name="show_now_playing_panel">Паказваць панэль прайгравання</string>
     <string name="show_notification">Паказваць апавяшчэнне падчас прайгравання</string>
     <string name="pref_keep_screen_on">Не адключаць экран</string>
     <string name="keep_remote_above_lockscreen">Паказваць па-над экранам блакавання</string>
@@ -394,4 +375,16 @@
     <string name="confirm_movie_download">Сапраўды хочаце спампаваць гэты фільм\?
 \n Фільм будзе спампоўвацца ў фоне, гэта можа заняць пэўны час.</string>
     <string name="queue_action">У чаргу</string>
+    <string name="web_search">Пошук у сеціве</string>
+    <string name="theme_sun_dynamic">Дынамічныя ўсход/заход</string>
+    <string name="theme_default_dynamic">Дынамічныя дзень/ноч</string>
+    <string name="download_action">Спампаваць</string>
+    <string name="disabled_status">Адключана</string>
+    <string name="enabled_status">Уключана</string>
+    <string name="unpinned_status">Адмацавана</string>
+    <string name="pinned_status">Замацавана</string>
+    <string name="unwatched_status">Непрагледжана</string>
+    <string name="watched_status">Прагледжана</string>
+    <string name="party_mode">Рэжым гулянкі</string>
+    <string name="not_connected">Не падлучана</string>
 </resources>
