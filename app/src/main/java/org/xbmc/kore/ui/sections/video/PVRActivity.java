@@ -16,12 +16,10 @@
 package org.xbmc.kore.ui.sections.video;
 
 import android.os.Bundle;
-import android.transition.TransitionInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.BaseMediaActivity;
@@ -158,18 +156,10 @@ public class PVRActivity extends BaseMediaActivity
         this.singleChannelGroup = singleChannelGroup;
 
         // Replace list fragment
-        PVRChannelEPGListFragment pvrEPGFragment = PVRChannelEPGListFragment.newInstance(channelId);
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+        Bundle args = new Bundle();
+        args.putInt(PVRChannelEPGListFragment.BUNDLE_KEY_CHANNELID, channelId);
+        showFragment(PVRChannelEPGListFragment.class, args);
 
-        // Set up transitions
-        pvrEPGFragment.setEnterTransition(TransitionInflater.from(this)
-                                                            .inflateTransition(R.transition.media_details));
-        pvrEPGFragment.setReturnTransition(null);
-
-        fragTrans.replace(R.id.fragment_container, pvrEPGFragment)
-                 .addToBackStack(null)
-                 .setReorderingAllowed(true)
-                 .commit();
         updateActionBar(getActionBarTitle(), true);
     }
 

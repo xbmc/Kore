@@ -30,16 +30,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import org.xbmc.kore.R;
 import org.xbmc.kore.databinding.FragmentDefaultViewPagerBinding;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.TabsAdapter;
-import org.xbmc.kore.utils.UIUtils;
 
 abstract public class AbstractTabsFragment
-        extends AbstractFragment
-        implements SharedElementTransition.SharedElement {
+        extends AbstractFragment {
     private static final String TAG = LogUtils.makeLogTag(AbstractTabsFragment.class);
     public static final String PREFERENCES_NAME = "AbstractTabsFragmentPreferences";
     private static final String PREFERENCE_PREFIX_LAST_TAB = "lastTab_";
@@ -78,6 +74,15 @@ abstract public class AbstractTabsFragment
         if (shouldRememberLastTab()) {
             binding.pager.setCurrentItem(preferences.getInt(PREFERENCE_PREFIX_LAST_TAB + getClass().getName(), 0), false);
         }
+
+        if (shouldPostponeReenterTransition) {
+            // We are in a reenter transition with a shared element transition
+            // Note that the shared element will be made available in a *child* fragment of the ViewPager, but the
+            // postponing is done here, otherwise it doesn't work.
+            // The child fragment needs to send the Event Bus message ListFragmentSetupComplete so that we can
+            // start the postponed transition (done in AbstractFragment)
+            postponeEnterTransition();
+        }
     }
 
     @Override
@@ -94,22 +99,6 @@ abstract public class AbstractTabsFragment
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    @Override
-    public boolean isSharedElementVisible() {
-        View view = getView();
-        if (view == null)
-            return false;
-
-        //Note: this works as R.id.poster is only used in *InfoFragment.
-        //If the same id is used in other fragments in the TabsAdapter we
-        //need to check which fragment is currently displayed
-        View artView = view.findViewById(R.id.poster);
-        View scrollView = view.findViewById(R.id.media_panel);
-        return (artView != null) &&
-               (scrollView != null) &&
-               UIUtils.isViewInBounds(scrollView, artView);
     }
 
     protected Fragment getCurrentSelectedFragment() {

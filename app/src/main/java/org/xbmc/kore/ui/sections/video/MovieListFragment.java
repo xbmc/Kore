@@ -58,7 +58,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
     private static final String TAG = LogUtils.makeLogTag(MovieListFragment.class);
 
     public interface OnMovieSelectedListener {
-        void onMovieSelected(ViewHolder vh);
+        void onMovieSelected(AbstractFragment.DataHolder dataHolder, ImageView sharedImageView);
     }
 
     // Activity listener
@@ -71,11 +71,12 @@ public class MovieListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MOVIES; }
 
     @Override
-    protected void onListItemClicked(View view) {
+    protected void onListItemClicked(View view, int position) {
+        super.onListItemClicked(view, position);
         // Get the movie id from the tag
         ViewHolder tag = (ViewHolder) view.getTag();
         // Notify the activity
-        listenerActivity.onMovieSelected(tag);
+        listenerActivity.onMovieSelected(tag.dataHolder, tag.artView);
     }
 
     @Override
@@ -433,7 +434,7 @@ public class MovieListFragment extends AbstractCursorListFragment {
                 checkmarkView.setVisibility(View.GONE);
             }
 
-            artView.setTransitionName("a" + dataHolder.getId());
+            artView.setTransitionName("movie" + dataHolder.getId());
         }
 
         private String getMetaInfo(Cursor cursor) {

@@ -60,7 +60,8 @@ public class AudioGenresListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     @Override
-    protected void onListItemClicked(View view) {
+    protected void onListItemClicked(View view, int position) {
+        super.onListItemClicked(view, position);
         // Get the movie id from the tag
         ViewHolder tag = (ViewHolder) view.getTag();
         // Notify the activity

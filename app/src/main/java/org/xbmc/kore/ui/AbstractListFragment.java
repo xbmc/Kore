@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -41,16 +40,23 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 
+import de.greenrobot.event.EventBus;
+
 public abstract class AbstractListFragment
-		extends Fragment
+		extends AbstractFragment
 		implements SwipeRefreshLayout.OnRefreshListener,
 				   HostConnectionObserver.ConnectionStatusObserver {
 	private static final String TAG = LogUtils.makeLogTag(AbstractListFragment.class);
+	private static final String BUNDLE_KEY_HAS_NAVIGATED_TO_DETAILS = "BUNDLE_KEY_HAS_NAVIGATED_TO_DETAILS";
+
 	private RecyclerView.Adapter<?> adapter;
 
 	protected FragmentMediaListBinding binding;
 
-	abstract protected GridRecyclerView.OnItemClickListener createOnItemClickListener();
+	// Whether we've nacigated to the details view, maybe to force a refresh of this list on reenter
+	protected boolean hasNavigatedToDetail = false;
+
+	abstract protected void onListItemClicked(View view, int position);
 	abstract protected GridRecyclerView.Adapter<?> createAdapter();
 	abstract protected String getEmptyResultsTitle();
 
@@ -58,6 +64,9 @@ public abstract class AbstractListFragment
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		adapter = createAdapter();
+		if (savedInstanceState != null) {
+			hasNavigatedToDetail = savedInstanceState.getBoolean(BUNDLE_KEY_HAS_NAVIGATED_TO_DETAILS);
+		}
 	}
 
 	@Override
@@ -73,7 +82,10 @@ public abstract class AbstractListFragment
 
 		binding.swipeRefreshLayout.setOnRefreshListener(this);
 		binding.list.setEmptyView(binding.includeEmptyView.statusPanel);
-		binding.list.setOnItemClickListener(createOnItemClickListener());
+		binding.list.setOnItemClickListener((v, position) -> {
+			hasNavigatedToDetail = true;
+			onListItemClicked(v, position);
+		});
 
 		if (PreferenceManager.getDefaultSharedPreferences(requireContext())
 							 .getBoolean(Settings.KEY_PREF_SINGLE_COLUMN, Settings.DEFAULT_PREF_SINGLE_COLUMN)) {
@@ -81,6 +93,11 @@ public abstract class AbstractListFragment
 		}
 
 		binding.list.setAdapter(adapter);
+		if (shouldPostponeReenterTransition) {
+			// If this is set, we should be in a reenter transition, where we need to postpone the return shared
+			// element transition, until the list is loaded
+			postponeEnterTransition();
+		}
 	}
 
 	@Override
@@ -103,6 +120,12 @@ public abstract class AbstractListFragment
 	public void onDestroyView() {
 		super.onDestroyView();
 		binding = null;
+	}
+
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		outState.putBoolean(BUNDLE_KEY_HAS_NAVIGATED_TO_DETAILS, hasNavigatedToDetail);
+		super.onSaveInstanceState(outState);
 	}
 
 	@Override
@@ -186,6 +209,14 @@ public abstract class AbstractListFragment
 	protected void showStatusMessage(String title, String message) {
 		binding.list.showEmptyView();
 		setupEmptyView(title, message);
+	}
+
+	/**
+	 * Call this when the list view has been fully setup, with all the items added, to notify any listeners
+	 * that setup is complete, and give them the change to start any postponed transitions
+	 */
+	protected void notifyListSetupComplete() {
+		EventBus.getDefault().post(new ListFragmentSetupComplete());
 	}
 
 	protected int lastConnectionStatusResult = CONNECTION_NO_RESULT;

@@ -80,7 +80,8 @@ public class ArtistListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
     @Override
-    protected void onListItemClicked(View view) {
+    protected void onListItemClicked(View view, int position) {
+        super.onListItemClicked(view, position);
         // Get the artist id from the tag
         ViewHolder tag = (ViewHolder) view.getTag();
         // Notify the activity
@@ -240,7 +241,7 @@ public class ArtistListFragment extends AbstractCursorListFragment {
                                                  dataHolder.getPosterUrl(), dataHolder.getTitle(),
                                                  art, artWidth, artHeight);
 
-            art.setTransitionName("ar" + dataHolder.getId());
+            art.setTransitionName("artist" + dataHolder.getId());
         }
     }
 }

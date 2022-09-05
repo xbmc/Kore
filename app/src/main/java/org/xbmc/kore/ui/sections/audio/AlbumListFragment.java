@@ -75,26 +75,6 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     @Override
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC; }
 
-    /**
-     * Use this to display all albums for a specific artist
-     * @param artistId Id
-     */
-    public void setArtist(int artistId) {
-        Bundle args = new Bundle();
-        args.putInt(BUNDLE_KEY_ARTISTID, artistId);
-        setArguments(args);
-    }
-
-    /**
-     * Use this to display all albums for a specific genre
-     * @param genreId genre id
-     */
-    public void setGenre(int genreId) {
-        Bundle args = new Bundle();
-        args.putInt(BUNDLE_KEY_GENREID, genreId);
-        setArguments(args);
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
@@ -188,7 +168,8 @@ public class AlbumListFragment extends AbstractCursorListFragment {
     }
 
     @Override
-    protected void onListItemClicked(View view) {
+    protected void onListItemClicked(View view, int position) {
+        super.onListItemClicked(view, position);
         // Get the movie id from the tag
         ViewHolder tag = (ViewHolder) view.getTag();
         // Notify the activity
@@ -403,7 +384,7 @@ public class AlbumListFragment extends AbstractCursorListFragment {
                                                  dataHolder.getTitle(),
                                                  artView, artWidth, artHeight);
 
-            artView.setTransitionName("al"+dataHolder.getId());
+            artView.setTransitionName("album" + dataHolder.getId());
         }
     }
 }

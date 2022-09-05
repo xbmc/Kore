@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-   Copyright 2015 Synced Synapse. All rights reserved.
+   Copyright 2022 Synced Synapse. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,25 +14,20 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="@integer/activity_exit_animation_duration"
+    android:duration="@integer/fragment_exit_animation_duration"
     android:shareInterpolator="true"
     android:interpolator="@anim/kore_accelerate_interpolator" >
 
-        <alpha
-            android:fromAlpha="1.0"
-            android:toAlpha="0.0" />
+    <alpha
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0" />
 
-<!--    <scale-->
-<!--        android:pivotX="50%"-->
-<!--        android:pivotY="50%"-->
-<!--        android:fromXScale="1.0"-->
-<!--        android:fromYScale="1.0"-->
-<!--        android:toXScale="0.94"-->
-<!--        android:toYScale="0.94" />-->
-
-        <translate
-            android:fromYDelta="0%"
-            android:toYDelta="-5%" />
+    <scale
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:fromXScale="1.0"
+        android:fromYScale="1.0"
+        android:toXScale="0.92"
+        android:toYScale="0.92" />
 </set>

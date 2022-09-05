@@ -19,14 +19,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.core.text.TextDirectionHeuristicsCompat;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.host.HostConnection;
+import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.method.Input;
 import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;
@@ -42,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AddonsActivity extends BaseMediaActivity
         implements AddonListFragment.OnAddonSelectedListener,
-        SendTextDialogFragment.SendTextDialogListener  {
+                   SendTextDialogFragment.SendTextDialogListener {
     private static final String TAG = LogUtils.makeLogTag(AddonsActivity.class);
 
     public static final String ADDONID = "addon_id";
@@ -122,19 +123,20 @@ public class AddonsActivity extends BaseMediaActivity
      * Callback from list fragment when a addon is selected.
      * Switch fragment in portrait
      */
-    public void onAddonSelected(AddonListFragment.ViewHolder vh) {
-        Bundle bundle = vh.dataHolder.getBundle();
+    public void onAddonSelected(AbstractFragment.DataHolder dataHolder, ImageView sharedImageView) {
+        Bundle bundle = dataHolder.getBundle();
         selectedAddonId = bundle.getString(AddonInfoFragment.BUNDLE_KEY_ADDONID);
-        selectedAddonTitle = vh.dataHolder.getTitle();
+        selectedAddonTitle = dataHolder.getTitle();
 
         // Replace list fragment
-        final AbstractFragment addonDetailsFragment =
-                bundle.getBoolean(AddonInfoFragment.BUNDLE_KEY_BROWSABLE)
-                ? new AddonDetailsFragment()
-                : new AddonInfoFragment();
-        vh.dataHolder.setSquarePoster(true);
-        vh.dataHolder.setPosterTransitionName(vh.artView.getTransitionName());
-        showFragment(addonDetailsFragment, vh.artView, vh.dataHolder);
+        dataHolder.setSquarePoster(true);
+        if (bundle.getBoolean(AddonInfoFragment.BUNDLE_KEY_BROWSABLE)) {
+            // No shared element transition to tabs fragment
+            showFragment(AddonTabsFragment.class, dataHolder.getBundle());
+        } else {
+            // Use shared element transition to info fragment
+            showFragment(AddonInfoFragment.class, dataHolder.getBundle(), sharedImageView);
+        }
 
         updateActionBar(getActionBarTitle(), true);
     }

@@ -15,11 +15,16 @@
    limitations under the License.
 -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-     android:duration="@integer/fragment_animation_duration">
+    android:duration="@integer/fragment_exit_animation_duration"
+    android:shareInterpolator="true"
+    android:interpolator="@anim/kore_accelerate_interpolator">
 
     <alpha
-        android:fromAlpha="0.0"
-        android:toAlpha="1.0"
-        android:interpolator="@anim/fast_decelerate_interpolator"/>
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0" />
+
+    <translate
+        android:fromYDelta="0%"
+        android:toYDelta="10%" />
 
 </set>

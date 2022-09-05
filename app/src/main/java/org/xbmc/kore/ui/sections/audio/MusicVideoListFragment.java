@@ -76,7 +76,8 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
     protected String getListSyncType() { return LibrarySyncService.SYNC_ALL_MUSIC_VIDEOS; }
 
     @Override
-    protected void onListItemClicked(View view) {
+    protected void onListItemClicked(View view, int position) {
+        super.onListItemClicked(view, position);
         // Get the movie id from the tag
         ViewHolder tag = (ViewHolder)view.getTag();
         // Notify the activity
@@ -218,7 +219,7 @@ public class MusicVideoListFragment extends AbstractCursorListFragment {
             UIUtils.loadImageWithCharacterAvatar(context, hostManager, posterUrl
                     , dataHolder.getTitle(), artView, artWidth, artHeight);
             contextMenu.setVisibility(View.GONE);
-            artView.setTransitionName("a"+dataHolder.getId());
+            artView.setTransitionName("music_video"+dataHolder.getId());
         }
     }
 }

@@ -15,8 +15,14 @@
    limitations under the License.
 -->
 <resources>
-    <integer name="fragment_animation_duration">200</integer>
-    <integer name="button_touch_animation_duration_half">25</integer>
+    <integer name="fragment_exit_animation_duration">200</integer>
+    <integer name="fragment_enter_start_offset">100</integer>
+    <integer name="fragment_enter_animation_duration">200</integer>
+
+    <integer name="activity_enter_animation_duration">200</integer>
+    <integer name="activity_enter_start_offset">100</integer>
+    <integer name="activity_exit_animation_duration">200</integer>
+
     <integer name="button_touch_animation_duration">50</integer>
 
     <integer name="cast_grid_view_columns">3</integer>
@@ -25,6 +31,5 @@
 
     <integer name="info_grid_view_columns">1</integer>
 
-    <integer name="fab_animation_start_delay">100</integer>
     <integer name="expandable_textview_animation_duration">200</integer>
 </resources>

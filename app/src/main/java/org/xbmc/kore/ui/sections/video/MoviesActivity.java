@@ -17,11 +17,13 @@ package org.xbmc.kore.ui.sections.video;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.ui.AbstractFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -101,15 +103,12 @@ public class MoviesActivity extends BaseMediaActivity
 
     /**
      * Callback from movielist fragment when a movie is selected.
-     * Switch fragment in portrait
-     * @param vh ViewHolder holding movie info of item clicked
      */
-    public void onMovieSelected(MovieListFragment.ViewHolder vh) {
-        selectedMovieTitle = vh.dataHolder.getTitle();
-        selectedMovieId = vh.dataHolder.getId();
+    public void onMovieSelected(AbstractFragment.DataHolder dataHolder, ImageView sharedImageView) {
+        selectedMovieTitle = dataHolder.getTitle();
+        selectedMovieId = dataHolder.getId();
 
-        final MovieInfoFragment movieInfoFragment = new MovieInfoFragment();
-        showFragment(movieInfoFragment, vh.artView, vh.dataHolder);
+        showFragment(MovieInfoFragment.class, dataHolder.getBundle(), sharedImageView);
         updateActionBar(selectedMovieTitle, true);
     }
 }

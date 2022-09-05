@@ -37,7 +37,6 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.PVR;
 import org.xbmc.kore.jsonrpc.type.PVRType;
 import org.xbmc.kore.ui.AbstractSearchableFragment;
-import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
 
@@ -63,24 +62,10 @@ public class PVRChannelEPGListFragment
      */
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
-    private static final String BUNDLE_KEY_CHANNELID = "bundle_key_channelid";
-
-    /**
-     * Create a new instance of this, initialized to show the current channel
-     */
-    public static PVRChannelEPGListFragment newInstance(Integer channelId) {
-        PVRChannelEPGListFragment fragment = new PVRChannelEPGListFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(BUNDLE_KEY_CHANNELID, channelId);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public static final String BUNDLE_KEY_CHANNELID = "bundle_key_channelid";
 
     @Override
-    protected GridRecyclerView.OnItemClickListener createOnItemClickListener() {
-        return (view, position) -> {
-        };
+    protected void onListItemClicked(View view, int position) {
     }
 
     @Override

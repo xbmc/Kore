@@ -47,6 +47,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.transition.Transition;
+import androidx.transition.TransitionInflater;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -67,19 +69,15 @@ import org.xbmc.kore.service.library.SyncItem;
 import org.xbmc.kore.service.library.SyncUtils;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
-import org.xbmc.kore.utils.SharedElementTransition;
 import org.xbmc.kore.utils.UIUtils;
 import org.xbmc.kore.utils.Utils;
 
 import java.util.Locale;
 
-import de.greenrobot.event.EventBus;
-
 abstract public class AbstractInfoFragment
         extends AbstractFragment
         implements SwipeRefreshLayout.OnRefreshListener,
                    SyncUtils.OnServiceListener,
-                   SharedElementTransition.SharedElement,
                    HostConnectionObserver.ConnectionStatusObserver {
     private static final String TAG = LogUtils.makeLogTag(AbstractInfoFragment.class);
 
@@ -88,7 +86,6 @@ abstract public class AbstractInfoFragment
     private HostManager hostManager;
     private HostInfo hostInfo;
     private ServiceConnection serviceConnection;
-    private EventBus eventBus;
     private boolean expandDescription;
     private ViewTreeObserver.OnScrollChangedListener onScrollChangedListener;
 
@@ -123,7 +120,6 @@ abstract public class AbstractInfoFragment
         super.onCreate(savedInstanceState);
         hostManager = HostManager.getInstance(requireContext());
         hostInfo = hostManager.getHostInfo();
-        eventBus = EventBus.getDefault();
 
         seenButtonLabels = new String[] { getString(R.string.unwatched_status), getString(R.string.watched_status) };
         pinButtonLabels = new String[] { getString(R.string.unpinned_status), getString(R.string.pinned_status) };
@@ -155,13 +151,35 @@ abstract public class AbstractInfoFragment
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-        Resources resources = requireActivity().getResources();
-        DataHolder dataHolder = getDataHolder();
-        if(!dataHolder.getSquarePoster()) {
-            binding.poster.getLayoutParams().width = resources.getDimensionPixelSize(R.dimen.info_poster_width);
-            binding.poster.getLayoutParams().height = resources.getDimensionPixelSize(R.dimen.info_poster_height);
+        Bundle args = getArguments();
+        String transitionName = (args == null) ? null :
+                                args.getString(BaseMediaActivity.IMAGE_TRANS_NAME, null);
+
+        if (transitionName != null) {
+            // If we are passed a transition name, setup up the shared element enter/return and this fragment
+            // enter/return transition, and postpone them
+            int startDelay = getResources().getInteger(R.integer.fragment_enter_start_offset),
+                    enterDuration = getResources().getInteger(R.integer.fragment_enter_animation_duration),
+                    exitDuration = getResources().getInteger(R.integer.fragment_exit_animation_duration);
+
+            TransitionInflater transitionInflater = TransitionInflater.from(requireContext());
+            Transition seTransition = transitionInflater.inflateTransition(R.transition.shared_element_image_enter);
+            setSharedElementEnterTransition(seTransition.setDuration(startDelay + enterDuration)
+                                                        .setStartDelay(0));
+            setSharedElementReturnTransition(seTransition.clone()
+                                                         .setDuration(startDelay + exitDuration)
+                                                         .setStartDelay(0));
+            binding.poster.setTransitionName(transitionName);
+
+            Transition fragmentTransition = transitionInflater.inflateTransition(R.transition.fragment_info_poster_enter);
+            setEnterTransition(fragmentTransition.setDuration(enterDuration)
+                                                 .setStartDelay(startDelay));
+            setReturnTransition(fragmentTransition.clone()
+                                                  .setDuration(exitDuration)
+                                                  .setStartDelay(0));
+
+            postponeEnterTransition();
         }
-        binding.poster.setTransitionName(dataHolder.getPosterTransitionName());
 
         if(getSyncType() != null) {
             binding.swipeRefreshLayout.setOnRefreshListener(this);
@@ -176,9 +194,8 @@ abstract public class AbstractInfoFragment
         binding.fabPlay.setVisibility(hasFAB? View.VISIBLE : View.GONE);
 
         /* Setup dim the fanart when scroll changes */
-        onScrollChangedListener = UIUtils.createInfoPanelScrollChangedListener(requireContext(), binding.mediaPanel, binding.art, binding.mediaPanelGroup);
+        onScrollChangedListener = UIUtils.createInfoPanelScrollChangedListener(requireContext(), binding.mediaPanel, binding.mediaArt, binding.mediaPanelGroup);
         binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
-        updateView(dataHolder);
     }
 
     @Override
@@ -192,20 +209,8 @@ abstract public class AbstractInfoFragment
         super.onStart();
         hostManager.getHostConnectionObserver().registerConnectionStatusObserver(this);
         serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        eventBus.register(this);
         // Force the exit view to invisible
         binding.exitTransitionView.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void onPause() {
-        eventBus.unregister(this);
-        super.onPause();
     }
 
     @Override
@@ -432,11 +437,6 @@ abstract public class AbstractInfoFragment
                 callbackHandler);
     }
 
-    @Override
-    public boolean isSharedElementVisible() {
-        return UIUtils.isViewInBounds(binding.mediaPanel, binding.poster);
-    }
-
     /**
      * Check wether the remote should be shown and animate the switch to it
      */
@@ -496,40 +496,30 @@ abstract public class AbstractInfoFragment
 
         Resources resources = requireActivity().getResources();
 
-        if (!TextUtils.isEmpty(dataHolder.getPosterUrl())) {
-            binding.poster.setVisibility(View.VISIBLE);
-            int posterWidth;
-            int posterHeight;
-            if (dataHolder.getSquarePoster()) {
-                posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
-                posterHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height_square);
-            } else {
-                posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width);
-                posterHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height);
-            }
-
-            UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
-                                                 dataHolder.getPosterUrl(), dataHolder.getTitle(),
-                                                 binding.poster, posterWidth, posterHeight);
+        int posterWidth, posterHeight;
+        if (dataHolder.getSquarePoster()) {
+            posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
+            posterHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height_square);
         } else {
-            binding.poster.setVisibility(View.GONE);
-            int padding = requireContext().getResources().getDimensionPixelSize(R.dimen.default_padding);
-            binding.mediaTitle.setPadding(padding, padding, 0, 0);
-            binding.mediaUndertitle.setPadding(padding, padding, 0, 0);
+            posterWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width);
+            posterHeight = resources.getDimensionPixelOffset(R.dimen.info_poster_height);
         }
+        binding.poster.getLayoutParams().width = posterWidth;
+        binding.poster.getLayoutParams().height = posterHeight;
+        UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager,
+                                             dataHolder.getPosterUrl(), dataHolder.getTitle(),
+                                             binding.poster, posterWidth, posterHeight);
 
         int artHeight = resources.getDimensionPixelOffset(R.dimen.info_art_height);
-        int artWidth = binding.art.getWidth(); // displayMetrics.widthPixels;
+        int artWidth = binding.mediaArt.getWidth(); // displayMetrics.widthPixels;
 
         UIUtils.loadImageIntoImageview(hostManager,
                                        TextUtils.isEmpty(dataHolder.getFanArtUrl()) ?
                                        dataHolder.getPosterUrl() : dataHolder.getFanArtUrl(),
-                                       binding.art, artWidth, artHeight);
+                                       binding.mediaArt, artWidth, artHeight);
 
         if (!TextUtils.isEmpty(dataHolder.getSearchTerms())) {
-            binding.poster.setOnClickListener(v -> {
-                Utils.launchWebSearchForTerms(requireContext(), dataHolder.getSearchTerms());
-            });
+            binding.poster.setOnClickListener(v -> Utils.launchWebSearchForTerms(requireContext(), dataHolder.getSearchTerms()));
         }
 
         int sectionVisibility;
@@ -544,10 +534,11 @@ abstract public class AbstractInfoFragment
                 binding.showAll.setImageResource(binding.mediaDescription.isExpanded() ? iconCollapseResId : iconExpandResId);
             });
             binding.mediaDescription.setText(dataHolder.getDescription());
-            if (expandDescription) {
-                binding.mediaDescription.expand();
-                binding.showAll.setImageResource(iconExpandResId);
-            }
+            // Expand interferes with transitions, so ignore it
+//            if (expandDescription) {
+//                binding.mediaDescription.expand();
+//                binding.showAll.setImageResource(iconExpandResId);
+//            }
         } else {
             sectionVisibility = View.GONE;
         }
@@ -584,6 +575,8 @@ abstract public class AbstractInfoFragment
             binding.divider1.setVisibility(View.GONE);
             binding.divider2.setVisibility(View.GONE);
         }
+
+        startPostponedEnterTransition();
     }
 
     /**

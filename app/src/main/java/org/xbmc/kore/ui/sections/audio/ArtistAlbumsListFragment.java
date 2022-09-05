@@ -23,9 +23,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -150,7 +148,7 @@ public class ArtistAlbumsListFragment
 
         HostManager hostManager = HostManager.getInstance(requireContext());
         View.OnClickListener albumListClickListener = v ->
-                listenerActivity.onAlbumSelected((DataHolder) v.getTag(), v.findViewById(R.id.art));
+                listenerActivity.onAlbumSelected((DataHolder) v.getTag(), null);
 
         Resources resources = requireContext().getResources();
         int artWidth = resources.getDimensionPixelOffset(R.dimen.info_poster_width_square);
@@ -177,7 +175,7 @@ public class ArtistAlbumsListFragment
                                                  dataHolder.getPosterUrl(),
                                                  dataHolder.getTitle(),
                                                  itemBinding.art, artWidth, artHeight);
-            itemBinding.art.setTransitionName("al"+dataHolder.getId());
+            itemBinding.art.setTransitionName("artist_album" + dataHolder.getId());
             itemBinding.listContextMenu.setTag(dataHolder);
             itemBinding.listContextMenu.setOnClickListener(albumContextMenuClickListener);
 
