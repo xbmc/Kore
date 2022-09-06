@@ -53,6 +53,8 @@ import androidx.transition.TransitionInflater;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.databinding.FragmentMediaInfoBinding;
@@ -323,7 +325,8 @@ abstract public class AbstractInfoFragment
      * Event bus post. Called when the syncing process ended
      * @param event Media Sync Event
      */
-    public void onEventMainThread(MediaSyncEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventBusPost(MediaSyncEvent event) {
         if (!isResumed() || !event.syncType.equals(getSyncType()))
             return;
 

@@ -14,10 +14,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.xbmc.kore.R;
-import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
 
 public abstract class AbstractSearchableFragment
         extends AbstractListFragment
@@ -189,19 +187,7 @@ public abstract class AbstractSearchableFragment
         super.onSaveInstanceState(outState);
     }
 
-    /**
-     * Event bus post. Called when the syncing process ended
-     *
-     * @param event Refreshes data
-     */
-    public void onEventMainThread(MediaSyncEvent event) {
-        onSyncProcessEnded(event);
-    }
-
-    protected void onSyncProcessEnded(MediaSyncEvent event) {
-    }
-
-    /**
+     /**
      * Use this to reload the items in the list
      */
     protected abstract void refreshList();
