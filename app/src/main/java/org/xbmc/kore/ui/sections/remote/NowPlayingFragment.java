@@ -94,6 +94,9 @@ public class NowPlayingFragment extends Fragment
         /* Setup dim the fanart when scroll changes */
         onScrollChangedListener = UIUtils.createInfoPanelScrollChangedListener(requireContext(), binding.mediaPanel, binding.art, binding.mediaPanelGroup);
         binding.mediaPanel.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
+
+        binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
+        binding.mediaPanel.setVisibility(View.GONE);
     }
 
     @Override
@@ -187,10 +190,10 @@ public class NowPlayingFragment extends Fragment
         final String title, underTitle, art, poster, genreSeason, year, descriptionPlot, votes;
         double rating;
 
+        switchToPanel(R.id.media_panel);
+
         switch (getItemResult.type) {
             case ListType.ItemsAll.TYPE_MOVIE:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.title;
                 underTitle = getItemResult.tagline;
                 art = getItemResult.art.fanart;
@@ -203,8 +206,6 @@ public class NowPlayingFragment extends Fragment
                 votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.title;
                 underTitle = getItemResult.showtitle;
                 art = getItemResult.thumbnail;
@@ -217,8 +218,6 @@ public class NowPlayingFragment extends Fragment
                 votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
                 break;
             case ListType.ItemsAll.TYPE_SONG:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.title;
                 underTitle = getItemResult.displayartist + " | " + getItemResult.album;
                 art = getItemResult.fanart;
@@ -231,8 +230,6 @@ public class NowPlayingFragment extends Fragment
                 votes = (TextUtils.isEmpty(getItemResult.votes)) ? "" : String.format(getString(R.string.votes), getItemResult.votes);
                 break;
             case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.title;
                 underTitle = Utils.listStringConcat(getItemResult.artist, ", ")
                              + " | " + getItemResult.album;
@@ -246,8 +243,6 @@ public class NowPlayingFragment extends Fragment
                 votes = null;
                 break;
             case ListType.ItemsAll.TYPE_CHANNEL:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.label;
                 underTitle = getItemResult.title;
                 art = getItemResult.fanart;
@@ -261,8 +256,6 @@ public class NowPlayingFragment extends Fragment
                 break;
             default:
                 // Other type, just present basic info
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.label;
                 underTitle = "";
                 art = getItemResult.fanart;
@@ -382,18 +375,23 @@ public class NowPlayingFragment extends Fragment
         binding.progressInfo.stopUpdating();
     }
 
+    private int shortAnimationDuration = -1;
+
     /**
      * Switches the info panel shown (they are exclusive)
      * @param panelResId The panel to show
      */
     private void switchToPanel(int panelResId) {
-        if (panelResId == R.id.info_panel) {
-            binding.mediaPanel.setVisibility(View.GONE);
+        if (shortAnimationDuration == -1)
+            shortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        if (panelResId == R.id.info_panel && binding.includeInfoPanel.infoPanel.getVisibility() != View.VISIBLE) {
+            UIUtils.fadeOutView(binding.mediaPanel, shortAnimationDuration, 0);
+            UIUtils.fadeInView(binding.includeInfoPanel.infoPanel, shortAnimationDuration, shortAnimationDuration);
             binding.art.setVisibility(View.GONE);
-            binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
-        } else if (panelResId == R.id.media_panel) {
-            binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
-            binding.mediaPanel.setVisibility(View.VISIBLE);
+        } else if (panelResId == R.id.media_panel && binding.mediaPanel.getVisibility() != View.VISIBLE) {
+            UIUtils.fadeOutView(binding.includeInfoPanel.infoPanel, shortAnimationDuration, 0);
+            UIUtils.fadeInView(binding.mediaPanel, shortAnimationDuration, shortAnimationDuration);
             binding.art.setVisibility(View.VISIBLE);
         }
     }
