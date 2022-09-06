@@ -15,6 +15,8 @@
  */
 package org.xbmc.kore.utils;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -791,4 +793,27 @@ public class UIUtils {
                 .show();
     }
 
+    public static void fadeOutView(View view, int duration, int startDelay) {
+        view.animate()
+                    .alpha(0f)
+                    .setStartDelay(startDelay)
+                    .setDuration(duration)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            view.setVisibility(View.GONE);
+                        }
+                    });
+    }
+
+    public static void fadeInView(View view, int duration, int startDelay) {
+        view.setAlpha(0f);
+        view.setVisibility(View.VISIBLE);
+        view.animate()
+                  .alpha(1f)
+                  .setStartDelay(startDelay)
+                  .setDuration(duration)
+                  .setListener(null);
+    }
 }

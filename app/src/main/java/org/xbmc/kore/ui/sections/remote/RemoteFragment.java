@@ -171,6 +171,8 @@ public class RemoteFragment extends Fragment
         UIUtils.tintElevatedView(binding.sectionsButtonBar);
         binding.title.setClickable(true);
         binding.title.setOnClickListener(v -> v.setSelected(!v.isSelected()));
+        binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
+        binding.mediaPanel.setVisibility(View.GONE);
     }
 
     @Override
@@ -298,45 +300,35 @@ public class RemoteFragment extends Fragment
                                    ListType.ItemsAll getItemResult) {
         String title, underTitle, thumbnailUrl;
 
+        switchToPanel(R.id.media_panel);
         switch (getItemResult.type) {
             case ListType.ItemsAll.TYPE_MOVIE:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.title;
                 underTitle = getItemResult.tagline;
                 thumbnailUrl = getItemResult.art.poster;
                 break;
             case ListType.ItemsAll.TYPE_EPISODE:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.title;
                 String season = String.format(getString(R.string.season_episode_abbrev), getItemResult.season, getItemResult.episode);
                 underTitle = String.format("%s | %s", getItemResult.showtitle, season);
                 thumbnailUrl = getItemResult.art.poster;
                 break;
             case ListType.ItemsAll.TYPE_SONG:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.title;
                 underTitle = getItemResult.displayartist + " | " + getItemResult.album;
                 thumbnailUrl = getItemResult.thumbnail;
                 break;
             case ListType.ItemsAll.TYPE_MUSIC_VIDEO:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.title;
                 underTitle = Utils.listStringConcat(getItemResult.artist, ", ") + " | " + getItemResult.album;
                 thumbnailUrl = getItemResult.thumbnail;
                 break;
             case ListType.ItemsAll.TYPE_CHANNEL:
-                switchToPanel(R.id.media_panel);
-
                 title = getItemResult.label;
                 underTitle = getItemResult.title;
                 thumbnailUrl = getItemResult.thumbnail;
                 break;
             default:
-                switchToPanel(R.id.media_panel);
                 title = getItemResult.label;
                 underTitle = "";
                 thumbnailUrl = getItemResult.thumbnail;
@@ -378,17 +370,22 @@ public class RemoteFragment extends Fragment
         binding.sectionsButtonBar.setVisibility(View.VISIBLE);
     }
 
+    private int shortAnimationDuration = -1;
+
     /**
      * Switches the info panel shown (they are exclusive)
-     * @param panelResId The panel to show
+     * @param newPanelId The panel to show
      */
-    private void switchToPanel(int panelResId) {
-        if (panelResId == R.id.info_panel) {
-            binding.mediaPanel.setVisibility(View.GONE);
-            binding.includeInfoPanel.infoPanel.setVisibility(View.VISIBLE);
-        } else if (panelResId == R.id.media_panel) {
-            binding.includeInfoPanel.infoPanel.setVisibility(View.GONE);
-            binding.mediaPanel.setVisibility(View.VISIBLE);
+    private void switchToPanel(int newPanelId) {
+        if (shortAnimationDuration == -1)
+            shortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        if (newPanelId == R.id.info_panel && binding.includeInfoPanel.infoPanel.getVisibility() != View.VISIBLE) {
+            UIUtils.fadeOutView(binding.mediaPanel, shortAnimationDuration, 0);
+            UIUtils.fadeInView(binding.includeInfoPanel.infoPanel, shortAnimationDuration, shortAnimationDuration);
+        } else if (newPanelId == R.id.media_panel && binding.mediaPanel.getVisibility() != View.VISIBLE) {
+            UIUtils.fadeOutView(binding.includeInfoPanel.infoPanel, shortAnimationDuration, 0);
+            UIUtils.fadeInView(binding.mediaPanel, shortAnimationDuration, shortAnimationDuration);
         }
     }
 
