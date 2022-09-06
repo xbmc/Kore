@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
-    android:transitionOrdering="together">
+    android:transitionOrdering="together"
+    android:interpolator="@anim/kore_decelerate_interpolator">
 
     <fade>
         <targets>
-            <target android:targetId="@id/media_art"/>
+<!--            <target android:targetId="@id/media_art"/>-->
 
-<!--            <target android:excludeId="@id/media_additional_info"/>-->
-<!--            <target android:excludeId="@id/fab_play"/>-->
+            <target android:excludeId="@id/media_additional_info"/>
+            <target android:excludeId="@id/fab_play"/>
         </targets>
     </fade>
 
     <slide android:slideEdge="bottom">
         <targets>
-            <target android:excludeId="@id/media_art"/>
+<!--            <target android:excludeId="@id/media_art"/>-->
 
-<!--            <target android:targetId="@id/media_additional_info"/>-->
-<!--            <target android:targetId="@id/fab_play"/>-->
+            <target android:targetId="@id/media_additional_info"/>
+            <target android:targetId="@id/fab_play"/>
         </targets>
     </slide>
 

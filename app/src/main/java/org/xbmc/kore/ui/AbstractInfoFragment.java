@@ -160,14 +160,15 @@ abstract public class AbstractInfoFragment
             // enter/return transition, and postpone them
             int startDelay = getResources().getInteger(R.integer.fragment_enter_start_offset),
                     enterDuration = getResources().getInteger(R.integer.fragment_enter_animation_duration),
-                    exitDuration = getResources().getInteger(R.integer.fragment_exit_animation_duration);
+                    exitDuration = getResources().getInteger(R.integer.fragment_exit_animation_duration),
+                    seDuration = Math.max(startDelay + enterDuration, startDelay + exitDuration);
 
             TransitionInflater transitionInflater = TransitionInflater.from(requireContext());
             Transition seTransition = transitionInflater.inflateTransition(R.transition.shared_element_image_enter);
-            setSharedElementEnterTransition(seTransition.setDuration(startDelay + enterDuration)
+            setSharedElementEnterTransition(seTransition.setDuration(seDuration)
                                                         .setStartDelay(0));
             setSharedElementReturnTransition(seTransition.clone()
-                                                         .setDuration(startDelay + exitDuration)
+                                                         .setDuration(seDuration)
                                                          .setStartDelay(0));
             binding.poster.setTransitionName(transitionName);
 
