@@ -36,6 +36,8 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xbmc.kore.R;
 import org.xbmc.kore.host.HostConnectionObserver;
 import org.xbmc.kore.host.HostInfo;
@@ -173,7 +175,8 @@ public abstract class AbstractCursorListFragment
 	 * Event bus post. Called when the syncing process ended
 	 * @param event Media Sync Event
 	 */
-	public void onEventMainThread(MediaSyncEvent event) {
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onEventBusPost(MediaSyncEvent event) {
 		if (!isResumed() ||
 			!event.syncType.equals(getListSyncType()))
 			return;

@@ -23,7 +23,10 @@ import android.view.ViewTreeObserver;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import de.greenrobot.event.EventBus;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class AbstractFragment extends Fragment {
 
@@ -54,11 +57,13 @@ public class AbstractFragment extends Fragment {
             shouldPostponeReenterTransition = savedInstanceState.getBoolean(BUNDLE_KEY_POSTPONE_TRANSITION);
         }
     }
+
     public void onStart() {
         super.onStart();
         EventBus.getDefault()
                 .register(this);
     }
+
     @Override
     public void onStop() {
         EventBus.getDefault()
@@ -87,7 +92,8 @@ public class AbstractFragment extends Fragment {
      * This is used in list fragments, so that we can start a previously postponed reenter transitions
      * @param event Event
      */
-    public void onEventMainThread(ListFragmentSetupComplete event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventBusPost(ListFragmentSetupComplete event) {
         if (shouldPostponeReenterTransition) {
             // We postponed the enter transition, launch it now
             View rootView = requireView();

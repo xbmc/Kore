@@ -23,6 +23,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -74,7 +75,10 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     protected void onSyncProcessEnded(MediaSyncEvent event) {
         if (event.status == MediaSyncEvent.STATUS_SUCCESS) {
             LoaderManager.getInstance(this).restartLoader(LOADER_TVSHOW, null, TVShowInfoFragment.this);
-            ((TVShowProgressFragment)getAdditionalInfoFragment()).refresh();
+            Fragment fragment = getChildFragmentManager().findFragmentById(R.id.media_additional_info);
+            if (fragment instanceof TVShowProgressFragment) {
+                ((TVShowProgressFragment)fragment).refresh();
+            }
         }
     }
 
