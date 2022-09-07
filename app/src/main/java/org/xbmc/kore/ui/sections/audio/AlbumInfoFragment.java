@@ -152,7 +152,7 @@ public class AlbumInfoFragment extends AbstractInfoFragment
 
                     FileDownloadHelper.SongInfo songInfo = new FileDownloadHelper.SongInfo
                             (dataHolder.getUnderTitle(), dataHolder.getTitle(), 0, 0, null, null);
-                    setDownloadButtonState(songInfo.downloadDirectoryExists());
+                    //setDownloadButtonState(songInfo.downloadDirectoryExists());
 
                     updateView(dataHolder);
                     break;

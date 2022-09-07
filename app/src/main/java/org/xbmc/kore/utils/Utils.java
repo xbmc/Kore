@@ -121,15 +121,7 @@ public class Utils {
         return bitmap;
     }
 
-    public static void setPreferredLocale(Context context) {
-        String preferredLocale = PreferenceManager.getDefaultSharedPreferences(context)
-                                                  .getString(Settings.KEY_PREF_SELECTED_LANGUAGE, "");
-        if (! preferredLocale.isEmpty()) {
-            Utils.setLocale(context, preferredLocale);
-        }
-    }
-
-    private static void setLocale(Context context, String localeName) {
+    public static void setLocale(Context context, String localeName) {
         Locale locale = getLocale(localeName);
 
         Locale.setDefault(locale);

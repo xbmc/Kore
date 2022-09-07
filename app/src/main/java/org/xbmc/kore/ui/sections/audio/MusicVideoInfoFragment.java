@@ -157,7 +157,7 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
 
                     FileDownloadHelper.MusicVideoInfo musicVideoDownloadInfo = new FileDownloadHelper.MusicVideoInfo(
                             dataHolder.getTitle(), cursor.getString(MusicVideoDetailsQuery.FILE));
-                    setDownloadButtonState(musicVideoDownloadInfo.downloadFileExists());
+                    //setDownloadButtonState(musicVideoDownloadInfo.downloadFileExists());
 
                     updateView(dataHolder);
                     break;

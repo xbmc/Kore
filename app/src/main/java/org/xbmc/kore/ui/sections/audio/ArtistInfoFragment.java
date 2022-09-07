@@ -140,7 +140,7 @@ public class ArtistInfoFragment extends AbstractInfoFragment
 
                     FileDownloadHelper.SongInfo songInfo = new FileDownloadHelper.SongInfo(
                             cursor.getString(DetailsQuery.ARTIST),null, -1, -1, null, null);
-                    setDownloadButtonState(songInfo.downloadDirectoryExists());
+                    //setDownloadButtonState(songInfo.downloadDirectoryExists());
 
                     String artist = cursor.getString(DetailsQuery.ARTIST);
 
