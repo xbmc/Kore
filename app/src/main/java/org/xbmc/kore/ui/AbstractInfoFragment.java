@@ -160,26 +160,10 @@ abstract public class AbstractInfoFragment
         if (transitionName != null) {
             // If we are passed a transition name, setup up the shared element enter/return and this fragment
             // enter/return transition, and postpone them
-            int startDelay = getResources().getInteger(R.integer.fragment_enter_start_offset),
-                    enterDuration = getResources().getInteger(R.integer.fragment_enter_animation_duration),
-                    exitDuration = getResources().getInteger(R.integer.fragment_exit_animation_duration),
-                    seDuration = Math.max(startDelay + enterDuration, startDelay + exitDuration);
-
             TransitionInflater transitionInflater = TransitionInflater.from(requireContext());
-            Transition seTransition = transitionInflater.inflateTransition(R.transition.shared_element_image_enter);
-            setSharedElementEnterTransition(seTransition.setDuration(seDuration)
-                                                        .setStartDelay(0));
-            setSharedElementReturnTransition(seTransition.clone()
-                                                         .setDuration(seDuration)
-                                                         .setStartDelay(0));
+            setSharedElementEnterTransition(transitionInflater.inflateTransition(R.transition.shared_element_image_enter));
             binding.poster.setTransitionName(transitionName);
-
-            Transition fragmentTransition = transitionInflater.inflateTransition(R.transition.fragment_info_poster_enter);
-            setEnterTransition(fragmentTransition.setDuration(enterDuration)
-                                                 .setStartDelay(startDelay));
-            setReturnTransition(fragmentTransition.clone()
-                                                  .setDuration(exitDuration)
-                                                  .setStartDelay(0));
+            setEnterTransition(transitionInflater.inflateTransition(R.transition.fragment_info_poster_enter));
 
             postponeEnterTransition();
         }
