@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="@integer/fragment_exit_animation_duration"
+    android:duration="@integer/fragment_popexit_animation_duration"
     android:shareInterpolator="true"
     android:interpolator="@anim/kore_accelerate_interpolator">
 

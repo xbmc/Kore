@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:startOffset="@integer/fragment_enter_start_offset"
-    android:duration="@integer/fragment_enter_animation_duration"
+    android:startOffset="@integer/fragment_enter_after_exit_start_offset"
+    android:duration="@integer/fragment_enter_after_exit_animation_duration"
     android:shareInterpolator="true"
     android:interpolator="@anim/kore_decelerate_interpolator" >
 
