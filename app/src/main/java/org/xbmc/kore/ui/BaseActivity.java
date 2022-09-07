@@ -17,6 +17,9 @@ package org.xbmc.kore.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.text.TextUtils;
+
 import androidx.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,10 +35,26 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                                           .detectDiskReads()
+//                                           .detectDiskWrites()
+//                                           .detectNetwork()   // or .detectAll() for all detectable problems
+//                                           .penaltyLog()
+//                                           .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//                                       .detectLeakedSqlLiteObjects()
+//                                       .detectLeakedClosableObjects()
+//                                       .penaltyLog()
+//                                       .penaltyDeath()
+//                                       .build());
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         setTheme(UIUtils.getThemeResourceId(prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
+        String preferredLocale = prefs.getString(Settings.KEY_PREF_SELECTED_LANGUAGE, null);
+        if (!TextUtils.isEmpty(preferredLocale))
+            Utils.setLocale(this, preferredLocale);
+
         UIUtils.tintSystemBars(this);
-        Utils.setPreferredLocale(this);
         super.onCreate(savedInstanceState);
     }
 }

@@ -238,7 +238,7 @@ public class MovieInfoFragment extends AbstractInfoFragment
 
                     movieDownloadInfo = new FileDownloadHelper.MovieInfo(
                             dataHolder.getTitle(), cursor.getString(MovieDetailsQuery.FILE));
-                    setDownloadButtonState(movieDownloadInfo.downloadDirectoryExists());
+                    //setDownloadButtonState(movieDownloadInfo.downloadDirectoryExists());
                     setWatchedButtonState(cursor.getInt(MovieDetailsQuery.PLAYCOUNT) > 0);
                     updateView(dataHolder);
                     checkOutdatedMovieDetails(cursor);

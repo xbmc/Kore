@@ -578,7 +578,6 @@ abstract public class AbstractInfoFragment
             if (checkStoragePermission()) {
                 if (Settings.allowedDownloadNetworkTypes(getActivity()) != 0) {
                     listener.onClick(view);
-                    setToggleButtonState(binding.infoActionDownload, true);
                 } else {
                     UIUtils.showSnackbar(getView(), R.string.no_connection_type_selected);
                 }

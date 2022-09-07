@@ -210,7 +210,7 @@ public class TVShowEpisodeInfoFragment extends AbstractInfoFragment
                             episodeTitle,
                             cursor.getString(EpisodeDetailsQuery.FILE));
 
-                    setDownloadButtonState(fileDownloadHelper.downloadFileExists());
+                    //setDownloadButtonState(fileDownloadHelper.downloadFileExists());
 
                     setWatchedButtonState(cursor.getInt(EpisodeDetailsQuery.PLAYCOUNT) > 0);
 

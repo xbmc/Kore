@@ -259,6 +259,7 @@ public abstract class Packet {
 			p.setPort(port);
 			s.send(p);
 		}
+		s.close();
 	}
 	
 	/**
