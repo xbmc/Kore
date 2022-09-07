@@ -20,6 +20,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -88,6 +89,18 @@ public abstract class BaseMediaActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                                           .detectDiskReads()
+//                                           .detectDiskWrites()
+//                                           .detectNetwork()   // or .detectAll() for all detectable problems
+//                                           .penaltyLog()
+//                                           .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//                                       .detectLeakedSqlLiteObjects()
+//                                       .detectLeakedClosableObjects()
+//                                       .penaltyLog()
+//                                       .penaltyDeath()
+//                                       .build());
         super.onCreate(savedInstanceState);
 
         binding = ActivityGenericMediaBinding.inflate(getLayoutInflater());
@@ -249,18 +262,6 @@ public abstract class BaseMediaActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
         if (currentFragment instanceof AbstractFragment) {
-            int startDelay = getResources().getInteger(R.integer.fragment_enter_start_offset),
-                    enterDuration = getResources().getInteger(R.integer.fragment_enter_animation_duration),
-                    exitDuration = getResources().getInteger(R.integer.fragment_exit_animation_duration);
-
-            Transition exitTransition = TransitionInflater.from(this)
-                                                          .inflateTransition(R.transition.fragment_list_exit);
-            exitTransition.excludeTarget(sharedImageView, true);
-            currentFragment.setExitTransition(exitTransition.setDuration(exitDuration)
-                                                            .setStartDelay(0));
-            currentFragment.setReenterTransition(exitTransition.clone()
-                                                               .setDuration(enterDuration)
-                                                               .setStartDelay(startDelay));
             // Postpone reenter transition to allow for shared element loading
             ((AbstractFragment) currentFragment).setPostponeReenterTransition(true);
         }
@@ -279,6 +280,7 @@ public abstract class BaseMediaActivity
      * @param args Arguments to the fragment
      */
     protected void showFragment(Class<? extends Fragment> fragment, Bundle args) {
+        args.putString(IMAGE_TRANS_NAME, null);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
         if (currentFragment instanceof AbstractFragment) {
