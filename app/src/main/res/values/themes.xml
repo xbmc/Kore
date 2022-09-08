@@ -21,7 +21,7 @@
     <style name="Theme.Kore.Default.Dark" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:windowActivityTransitions">true</item>
 
-        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
 
         <!-- Icons -->

@@ -16,18 +16,19 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/media_art"
         android:layout_width="match_parent"
         android:layout_height="@dimen/info_art_height"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/small_padding"
         android:layout_marginLeft="@dimen/info_panel_horiz_margin"
         android:layout_marginRight="@dimen/info_panel_horiz_margin"
-        android:contentDescription="@string/thumbnail" />
+        android:contentDescription="@string/thumbnail"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.MediaArt"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
@@ -45,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
                 android:orientation="vertical"
+                android:layout_marginTop="@dimen/small_padding"
                 android:layout_marginBottom="@dimen/default_padding">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -259,7 +261,7 @@
                         android:src="@drawable/ic_round_expand_more_24" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <FrameLayout
+                <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/media_additional_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
