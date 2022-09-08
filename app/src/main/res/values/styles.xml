@@ -49,7 +49,7 @@
     <!-- Toolbar -->
     <style name="Widget.Kore.Toolbar" parent="Widget.Material3.Toolbar.Surface">
         <item name="android:elevation">@dimen/kore_elevation_level2</item>
-        <item name="android:background">?attr/colorSurface</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="Widget.Kore.DrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -170,6 +170,11 @@
 
     <style name="ShapeAppearanceOverlay.Kore.Image.Poster" parent="ShapeAppearanceOverlay.Kore.Image">
         <item name="cornerSize">@dimen/corner_radius_image_poster</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Kore.Image.MediaArt" parent="ShapeAppearanceOverlay.Kore.Image">
+        <item name="cornerSizeTopLeft">@dimen/corner_radius_image_poster</item>
+        <item name="cornerSizeTopRight">@dimen/corner_radius_image_poster</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.Kore.Image.PosterRemote" parent="ShapeAppearanceOverlay.Kore.Image">

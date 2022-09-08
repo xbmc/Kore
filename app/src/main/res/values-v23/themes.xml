@@ -3,7 +3,7 @@
 
     <style name="Theme.Kore.Default.LightBase" parent="Theme.Material3.Light.NoActionBar">
         <!-- Set status bar color only on v23, given that light style was only available from then on -->
-        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 

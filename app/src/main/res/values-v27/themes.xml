@@ -3,7 +3,7 @@
 
     <style name="Theme.Kore.Default.LightBase" parent="Theme.Material3.Light.NoActionBar">
         <!-- Copy from v23-->
-        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
 
         <!-- Set nav bar color only on v27, given that light style was only available from then on -->

@@ -23,7 +23,7 @@
         android:id="@+id/include_info_panel"
         layout="@layout/info_panel" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/art"
         android:layout_width="match_parent"
         android:layout_height="@dimen/info_art_height"
@@ -31,7 +31,9 @@
         android:layout_marginRight="@dimen/info_panel_horiz_margin"
         android:contentDescription="@string/thumbnail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/remote_viewpager_height"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.MediaArt"/>
 
     <ScrollView
         android:id="@+id/media_panel"
@@ -46,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/info_panel_horiz_margin"
             android:layout_marginRight="@dimen/info_panel_horiz_margin"
+            android:layout_marginTop="@dimen/remote_viewpager_height"
             android:clipChildren="false"
             android:orientation="vertical">
 

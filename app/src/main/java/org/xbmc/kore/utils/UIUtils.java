@@ -334,8 +334,8 @@ public class UIUtils {
      */
     public static void tintSystemBars(Activity activity) {
         int color = SurfaceColors.SURFACE_2.getColor(activity);
-        if (Utils.isMOrLater())
-            activity.getWindow().setStatusBarColor(color);
+//        if (Utils.isMOrLater())
+//            activity.getWindow().setStatusBarColor(color);
         color = SurfaceColors.SURFACE_1.getColor(activity);
         if (Utils.isOreoMR1OrLater())
             activity.getWindow().setNavigationBarColor(color);
