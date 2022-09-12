@@ -37,7 +37,7 @@
     <org.xbmc.kore.ui.viewgroups.DynamicListView
         android:id="@+id/playlist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:choiceMode="singleChoice"
         android:clipToPadding="false"
         android:divider="@null"
