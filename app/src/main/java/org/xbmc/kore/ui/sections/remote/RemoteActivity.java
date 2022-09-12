@@ -22,12 +22,17 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
 import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -86,9 +91,6 @@ public class RemoteActivity
        // Set default values for the preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        binding = ActivityRemoteBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
         hostManager = HostManager.getInstance(this);
 
         // Check if we have any hosts setup
@@ -101,7 +103,29 @@ public class RemoteActivity
             return;
         }
 
-       // Set up the drawer.
+        binding = ActivityRemoteBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        // Set activity to full screen and protect the top app bar and the content from the top/bottom insets
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.defaultToolbar, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            mlp.topMargin = insets.top;
+            v.setLayoutParams(mlp);
+            return windowInsets.inset(0, insets.top, 0, 0);
+        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.pager, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            mlp.bottomMargin = insets.bottom;
+            v.setLayoutParams(mlp);
+            return windowInsets.inset(0, 0, 0, insets.bottom);
+        });
+
+        // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         if (navigationDrawerFragment != null)
@@ -273,8 +297,8 @@ public class RemoteActivity
 
 
     private void setupActionBar() {
-        setToolbarTitle(binding.includeToolbar.defaultToolbar, NOWPLAYING_FRAGMENT_ID);
-        setSupportActionBar(binding.includeToolbar.defaultToolbar);
+        setToolbarTitle(binding.defaultToolbar, NOWPLAYING_FRAGMENT_ID);
+        setSupportActionBar(binding.defaultToolbar);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) return;
@@ -302,7 +326,7 @@ public class RemoteActivity
     ViewPager2.OnPageChangeCallback defaultOnPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
-            setToolbarTitle(binding.includeToolbar.defaultToolbar, position);
+            setToolbarTitle(binding.defaultToolbar, position);
         }
     };
 
@@ -338,7 +362,7 @@ public class RemoteActivity
 
                         @Override
                         public void onPageSelected(int position) {
-                            setToolbarTitle(binding.includeToolbar.defaultToolbar, position);
+                            setToolbarTitle(binding.defaultToolbar, position);
                         }
                     });
 

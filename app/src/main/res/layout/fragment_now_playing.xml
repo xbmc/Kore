@@ -14,7 +14,7 @@
    limitations under the License.
 -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -30,17 +30,13 @@
         android:layout_marginLeft="@dimen/info_panel_horiz_margin"
         android:layout_marginRight="@dimen/info_panel_horiz_margin"
         android:contentDescription="@string/thumbnail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/remote_viewpager_height"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.MediaArt"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/media_panel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
         <!-- Media playing information -->
         <LinearLayout
@@ -188,8 +184,8 @@
                 android:useDefaultMargins="true" />
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!--<include layout="@layout/bottom_media_bar"/>-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

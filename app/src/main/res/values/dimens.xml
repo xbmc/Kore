@@ -46,7 +46,7 @@
     <dimen name="control_pad_icon_size">67dp</dimen>
     <dimen name="control_pad_size">202dp</dimen>
 
-    <dimen name="remote_viewpager_height">24dp</dimen>
+    <dimen name="remote_viewpager_height">16dp</dimen>
     <dimen name="info_panel_horiz_margin">8dp</dimen>
     <dimen name="remote_margin_bottom">4dp</dimen>
 
