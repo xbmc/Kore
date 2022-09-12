@@ -26,7 +26,7 @@ import android.widget.TextView;
 import androidx.preference.PreferenceManager;
 import androidx.test.rule.ActivityTestRule;
 
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,6 +41,7 @@ import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.response.methods.Playe
 import org.xbmc.kore.testutils.tcpserver.handlers.jsonrpc.response.methods.Playlist;
 import org.xbmc.kore.ui.sections.audio.MusicActivity;
 import org.xbmc.kore.ui.widgets.HighlightButton;
+import org.xbmc.kore.ui.widgets.NowPlayingPanel;
 import org.xbmc.kore.ui.widgets.RepeatModeButton;
 
 import java.util.concurrent.TimeoutException;
@@ -95,7 +96,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         getPlayerHandler().setPlaylists(getPlaylistHandler().getPlaylists());
         getPlayerHandler().startPlay(Playlist.playlistID.AUDIO, 0);
 
-        waitForPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        waitForPanelState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     /**
@@ -108,7 +109,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     @Test
     public void panelTitleTest() {
         Player.GetItem item = getPlayerHandler().getMediaItem();
-        onView(withId(R.id.npp_title)).check(matches(withText(item.getTitle())));
+        onView(withId(R.id.title)).check(matches(withText(item.getTitle())));
     }
 
     /**
@@ -120,9 +121,9 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
      */
     @Test
     public void panelButtonsMusicTest() {
-        onView(withId(R.id.npp_next)).check(matches(isDisplayed()));
-        onView(withId(R.id.npp_previous)).check(matches(isDisplayed()));
-        onView(withId(R.id.npp_play)).check(matches(isDisplayed()));
+        onView(withId(R.id.next)).check(matches(isDisplayed()));
+        onView(withId(R.id.previous)).check(matches(isDisplayed()));
+        onView(withId(R.id.play)).check(matches(isDisplayed()));
     }
 
     /**
@@ -138,16 +139,16 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         Player.GetItem item = getPlayerHandler().getMediaItem();
         final String title = item.getTitle();
         onView(isRoot()).perform(ViewActions.waitForView(
-                R.id.npp_title, new ViewActions.CheckStatus() {
+                R.id.title, new ViewActions.CheckStatus() {
                     @Override
                     public boolean check(View v) {
                         return title.contentEquals(((TextView) v).getText());
                     }
                 }, 10000));
 
-        onView(withId(R.id.npp_next)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.npp_previous)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.npp_play)).check(matches(isDisplayed()));
+        onView(withId(R.id.next)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.previous)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.play)).check(matches(isDisplayed()));
     }
 
     /**
@@ -163,16 +164,16 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         Player.GetItem item = getPlayerHandler().getMediaItem();
         final String title = item.getTitle();
         onView(isRoot()).perform(ViewActions.waitForView(
-                R.id.npp_title, new ViewActions.CheckStatus() {
+                R.id.title, new ViewActions.CheckStatus() {
                     @Override
                     public boolean check(View v) {
                         return title.contentEquals(((TextView) v).getText());
                     }
                 }, 10000));
 
-        onView(withId(R.id.npp_next)).check(matches(isDisplayed()));
-        onView(withId(R.id.npp_previous)).check(matches(isDisplayed()));
-        onView(withId(R.id.npp_play)).check(matches(isDisplayed()));
+        onView(withId(R.id.next)).check(matches(isDisplayed()));
+        onView(withId(R.id.previous)).check(matches(isDisplayed()));
+        onView(withId(R.id.play)).check(matches(isDisplayed()));
     }
 
     /**
@@ -188,9 +189,9 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     public void panelButtonsShuffleTest() {
         expandPanel();
 
-        onView(withId(R.id.npp_shuffle)).perform(click());
+        onView(withId(R.id.shuffle)).perform(click());
 
-        onView(isRoot()).perform(ViewActions.waitForView(R.id.npp_shuffle, new ViewActions.CheckStatus() {
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.shuffle, new ViewActions.CheckStatus() {
             @Override
             public boolean check(View v) {
                 return ((HighlightButton) v).isHighlighted();
@@ -216,7 +217,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         expandPanel();
 
         //Initial state should be OFF
-        onView(isRoot()).perform(ViewActions.waitForView(R.id.npp_repeat, new ViewActions.CheckStatus() {
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.repeat, new ViewActions.CheckStatus() {
             @Override
             public boolean check(View v) {
                 return ((RepeatModeButton) v).getMode() == RepeatModeButton.MODE.OFF;
@@ -224,8 +225,8 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         }, 10000));
 
         // Test if repeat mode is set to ONE after first click
-        onView(withId(R.id.npp_repeat)).perform(click());
-        onView(isRoot()).perform(ViewActions.waitForView(R.id.npp_repeat, new ViewActions.CheckStatus() {
+        onView(withId(R.id.repeat)).perform(click());
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.repeat, new ViewActions.CheckStatus() {
             @Override
             public boolean check(View v) {
                 return ((RepeatModeButton) v).getMode() == RepeatModeButton.MODE.ONE;
@@ -233,8 +234,8 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         }, 10000));
 
         // Test if repeat mode is set to ALL after second click
-        onView(withId(R.id.npp_repeat)).perform(click());
-        onView(isRoot()).perform(ViewActions.waitForView(R.id.npp_repeat, new ViewActions.CheckStatus() {
+        onView(withId(R.id.repeat)).perform(click());
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.repeat, new ViewActions.CheckStatus() {
             @Override
             public boolean check(View v) {
                 return ((RepeatModeButton) v).getMode() == RepeatModeButton.MODE.ALL;
@@ -243,8 +244,8 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
 
 
         // Test if repeat mode is set to OFF after third click
-        onView(withId(R.id.npp_repeat)).perform(click());
-        onView(isRoot()).perform(ViewActions.waitForView(R.id.npp_repeat, new ViewActions.CheckStatus() {
+        onView(withId(R.id.repeat)).perform(click());
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.repeat, new ViewActions.CheckStatus() {
             @Override
             public boolean check(View v) {
                 return ((RepeatModeButton) v).getMode() == RepeatModeButton.MODE.OFF;
@@ -264,7 +265,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     public void keepCollapsedOnRotate() {
         rotateDevice(getActivity());
 
-        waitForPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        waitForPanelState(BottomSheetBehavior.STATE_COLLAPSED;
     }
 
     /**
@@ -282,7 +283,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
 
         rotateDevice(getActivity());
 
-        waitForPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+        waitForPanelState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     /**
@@ -298,11 +299,11 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     @Test
     public void restoreRepeatButtonStateOnRotate() {
         expandPanel();
-        onView(withId(R.id.npp_repeat)).perform(click());
+        onView(withId(R.id.repeat)).perform(click());
 
         rotateDevice(getActivity());
 
-        onView(isRoot()).perform(ViewActions.waitForView(R.id.npp_repeat, new ViewActions.CheckStatus() {
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.repeat, new ViewActions.CheckStatus() {
             @Override
             public boolean check(View v) {
                 return ((RepeatModeButton) v).getMode() == RepeatModeButton.MODE.ONE;
@@ -323,9 +324,9 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     public void setShuffleButtonState() {
         expandPanel();
 
-        onView(withId(R.id.npp_shuffle)).perform(click()); //Set state to shuffled
+        onView(withId(R.id.shuffle)).perform(click()); //Set state to shuffled
 
-        onView(withId(R.id.npp_shuffle)).check(matches(withHighlightState(true)));
+        onView(withId(R.id.shuffle)).check(matches(withHighlightState(true)));
     }
 
     /**
@@ -341,12 +342,12 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     @Test
     public void restoreShuffleButtonStateOnRotate() {
         expandPanel();
-        onView(withId(R.id.npp_shuffle)).perform(click()); //Set state to shuffled
+        onView(withId(R.id.shuffle)).perform(click()); //Set state to shuffled
 
         rotateDevice(getActivityTestRule().getActivity());
 
         //Using waitForView as we need to wait for the rotate to finish
-        onView(isRoot()).perform(ViewActions.waitForView(R.id.npp_shuffle, new ViewActions.CheckStatus() {
+        onView(isRoot()).perform(ViewActions.waitForView(R.id.shuffle, new ViewActions.CheckStatus() {
             @Override
             public boolean check(View v) {
                 return ((HighlightButton) v).isHighlighted();
@@ -445,7 +446,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         final int progress = 16;
         final String progressText = "0:16";
         expandPanel();
-        onView(withId(R.id.npp_play)).perform(click()); //Pause playback
+        onView(withId(R.id.play)).perform(click()); //Pause playback
 
         onView(withId(R.id.mpi_seek_bar)).perform(ViewActions.slideSeekBar(progress));
 
@@ -469,7 +470,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         final int progress = 16;
         final String progressText = "0:16";
         expandPanel();
-        onView(withId(R.id.npp_play)).perform(click()); //Pause playback
+        onView(withId(R.id.play)).perform(click()); //Pause playback
 
         onView(withId(R.id.mpi_seek_bar)).perform(ViewActions.slideSeekBar(progress));
         rotateDevice(getActivity());
@@ -496,7 +497,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
     public void pauseSetProgressionPlay() {
         expandPanel();
 
-        onView(withId(R.id.npp_play)).perform(click()); //Pause playback
+        onView(withId(R.id.play)).perform(click()); //Pause playback
         onView(withId(R.id.mpi_seek_bar)).perform(ViewActions.slideSeekBar(16));
         getPlayerHandler().startPlay();
 
@@ -552,7 +553,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         Utils.openDrawer(getActivityTestRule());
         clickAdapterViewItem(2, R.id.navigation_drawer); //select movie activity
 
-        waitForPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        waitForPanelState(BottomSheetBehavior.STATE_COLLAPSED);
         expandPanel();
 
         onView(isRoot()).perform(ViewActions.waitForView(R.id.mpi_seek_bar, new ViewActions.CheckStatus() {
@@ -574,7 +575,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
      */
     @Test
     public void pausePlayback() {
-        onView(withId(R.id.npp_play)).perform(click());
+        onView(withId(R.id.play)).perform(click());
 
         assertSame(getPlayerHandler().getPlayState(), PlayerHandler.PLAY_STATE.PAUSED);
 
@@ -609,7 +610,7 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         edit.apply();
         pressBack();
 
-        waitForPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        waitForPanelState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     /**
@@ -639,19 +640,19 @@ public class SlideUpPanelTests extends AbstractTestClass<MusicActivity> {
         edit.apply();
         pressBack();
 
-        waitForPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        waitForPanelState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     private void expandPanel() {
         int tries = 10;
         while (tries-- > 0) {
             try {
-                onView(withId(R.id.npp_title)).perform(click());
+                onView(withId(R.id.title)).perform(click());
 
                 onView(isRoot()).perform(ViewActions.waitForView(R.id.now_playing_panel, new ViewActions.CheckStatus() {
                     @Override
                     public boolean check(View v) {
-                        return ((SlidingUpPanelLayout) v).getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED;
+                        return ((NowPlayingPanel) v).getPanelState() == BottomSheetBehavior.STATE_EXPANDED;
                     }
                 }, 1000));
 

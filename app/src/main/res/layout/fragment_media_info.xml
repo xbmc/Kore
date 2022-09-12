@@ -14,7 +14,7 @@
    limitations under the License.
 -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -23,7 +23,6 @@
         android:id="@+id/media_art"
         android:layout_width="match_parent"
         android:layout_height="@dimen/info_art_height"
-        android:layout_alignParentStart="true"
         android:layout_marginTop="@dimen/small_padding"
         android:layout_marginLeft="@dimen/info_panel_horiz_margin"
         android:layout_marginRight="@dimen/info_panel_horiz_margin"
@@ -274,22 +273,6 @@
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/fab_normal_margin"
-        android:visibility="gone"
-        android:contentDescription="@string/play"
-        app:fabSize="normal"
-        app:useCompatPadding="true"
-        style="?attr/floatingActionButtonPrimaryStyle"
-        app:layout_anchor="@id/media_panel"
-        app:layout_anchorGravity="bottom|end"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:layout_behavior="org.xbmc.kore.ui.behaviors.HideOnVerticalScrollBehavior"
-        app:srcCompat="@drawable/ic_round_play_arrow_24"/>
-
     <!-- View that will be shown with the circularReveal when user presses the FAB -->
     <View
         android:id="@+id/exit_transition_view"
@@ -297,4 +280,4 @@
         android:layout_height="match_parent"
         android:background="?attr/colorPrimaryContainer"
         android:visibility="invisible" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

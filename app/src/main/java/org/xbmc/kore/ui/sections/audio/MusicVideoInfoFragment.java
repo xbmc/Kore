@@ -30,7 +30,6 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
@@ -93,13 +92,12 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(FloatingActionButton fab) {
-        fab.setOnClickListener(v -> {
+    protected View.OnClickListener getFABClickListener() {
+        return (v -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.musicvideoid = getDataHolder().getId();
             playItemOnKodi(item);
         });
-        return true;
     }
 
     @Override
@@ -155,8 +153,8 @@ public class MusicVideoInfoFragment extends AbstractInfoFragment
                     dataHolder.setDescription(cursor.getString(MusicVideoDetailsQuery.PLOT));
                     dataHolder.setSearchTerms(artist + " " + title);
 
-                    FileDownloadHelper.MusicVideoInfo musicVideoDownloadInfo = new FileDownloadHelper.MusicVideoInfo(
-                            dataHolder.getTitle(), cursor.getString(MusicVideoDetailsQuery.FILE));
+                    //FileDownloadHelper.MusicVideoInfo musicVideoDownloadInfo = new FileDownloadHelper.MusicVideoInfo(
+                    //        dataHolder.getTitle(), cursor.getString(MusicVideoDetailsQuery.FILE));
                     //setDownloadButtonState(musicVideoDownloadInfo.downloadFileExists());
 
                     updateView(dataHolder);

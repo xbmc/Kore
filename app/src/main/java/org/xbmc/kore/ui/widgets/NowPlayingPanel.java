@@ -23,10 +23,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import org.xbmc.kore.databinding.NowPlayingPanelBinding;
 import org.xbmc.kore.host.HostConnection;
@@ -38,14 +40,16 @@ import org.xbmc.kore.utils.UIUtils;
 
 /**
  * Shows a pannel of what's playing, which can be dragged up by the user to show actions on the content
- * This panel needs to be setup by calling {@link NowPlayingPanel#completeSetup(Context, FragmentManager)}
+ * This panel needs to be setup by calling {@link NowPlayingPanel#completeSetup(Context, FragmentManager, View)}
  * by the enclosing Activity/Fragment, and needs to be kept updated by calling the various Set* functions when
  * playback state changes.
  */
-public class NowPlayingPanel extends SlidingUpPanelLayout {
+public class NowPlayingPanel extends LinearLayout {
 
     int activePlayerId = -1;
     NowPlayingPanelBinding binding;
+
+    BottomSheetBehavior<View> bottomSheetBehavior = null;
 
     public NowPlayingPanel(Context context) {
         super(context);
@@ -64,14 +68,48 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
     private void initializeView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         binding = NowPlayingPanelBinding.inflate(inflater, this);
-        setDragView(binding.collapsedView);
-        UIUtils.tintElevatedView(binding.panelContainer);
         final HostConnection connection = HostManager.getInstance(context).getConnection();
         binding.play.setOnClickListener(v -> new Player.PlayPause(activePlayerId)
                 .execute(connection, null, null));
         binding.volumeMutedIndicator.setOnClickListener(v -> new Application.SetMute()
                 .execute(connection, null, null));
+        binding.getRoot().setOnClickListener(null);
+        binding.collapsedView.setOnClickListener(v -> {
+            if (bottomSheetBehavior == null) return;
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED)
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        });
     }
+
+    public int getPanelState() {
+        if (bottomSheetBehavior == null)
+            return BottomSheetBehavior.STATE_HIDDEN;
+        return bottomSheetBehavior.getState();
+    }
+
+    public void setPanelState(int state) {
+        if (bottomSheetBehavior != null)
+            bottomSheetBehavior.setState(state);
+    }
+
+    public void showPanel() {
+        if (bottomSheetBehavior == null) return;
+        // Only set state to collapsed if panel is currently hidden.
+        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            bottomSheetBehavior.setHideable(false);
+        }
+    }
+
+    public void hidePanel() {
+        if (bottomSheetBehavior == null) return;
+        bottomSheetBehavior.setHideable(true);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
 
     /**
      * This completes the panel's setup, needed to be called separately to provide a FragmentManager, used to
@@ -79,13 +117,55 @@ public class NowPlayingPanel extends SlidingUpPanelLayout {
      * @param context Context
      * @param fragmentManager FragmentManager needed to show a Dialog
      */
-    public void completeSetup(final Context context, final FragmentManager fragmentManager) {
+    public void completeSetup(final Context context, final FragmentManager fragmentManager, View dependentView) {
+        bottomSheetBehavior = BottomSheetBehavior.from(this);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        if (dependentView != null) {
+            if (bottomSheetCallback != null) bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback);
+
+            bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    int collapseHeight = binding.collapsedView.getHeight();
+                    ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) dependentView.getLayoutParams();
+                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                        layoutParams.bottomMargin = 0;
+                    } else if (newState == BottomSheetBehavior.STATE_COLLAPSED ||
+                               newState == BottomSheetBehavior.STATE_EXPANDED) {
+                        layoutParams.bottomMargin = collapseHeight;
+                    }
+                    dependentView.requestLayout();
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//                    if (dependentView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+//                        int collapseHeight = binding.collapsedView.getHeight(), expandedHeight = getHeight();
+//                        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) dependentView.getLayoutParams();
+//                        layoutParams.bottomMargin = (int)((slideOffset <= 0) ?
+//                                                          (slideOffset + 1) * collapseHeight :
+//                                                          collapseHeight + slideOffset * (expandedHeight - collapseHeight));
+//                        dependentView.requestLayout();
+//                    }
+                }
+            };
+            bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+        }
         binding.mediaActionsBar.completeSetup(context, fragmentManager);
+    }
+
+    public void freeResources() {
+        if (bottomSheetBehavior != null && bottomSheetCallback != null) {
+            bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback);
+            bottomSheetCallback = null;
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        freeResources();
         binding = null;
     }
 

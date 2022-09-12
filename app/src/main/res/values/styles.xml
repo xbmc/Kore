@@ -128,10 +128,10 @@
         <item name="android:background">@drawable/background_round_alpha</item>
     </style>
 
-    <style name="Widget.Kore.BottomPanel" parent="Widget.Kore">
+    <style name="Widget.Kore.BottomPanel" parent="Widget.Material3.BottomSheet">
         <item name="android:background">?attr/colorSurface</item>
 <!--        <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>-->
-        <item name="android:elevation">@dimen/kore_elevation_level1</item>
+        <item name="android:elevation">@dimen/kore_elevation_level3</item>
     </style>
 
     <style name="Widget.Kore.RatingBar" parent="Widget.Kore">

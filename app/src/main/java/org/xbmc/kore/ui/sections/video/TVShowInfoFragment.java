@@ -28,8 +28,6 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.jsonrpc.event.MediaSyncEvent;
@@ -88,8 +86,8 @@ public class TVShowInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(FloatingActionButton fab) {
-        return false;
+    protected View.OnClickListener getFABClickListener() {
+        return null;
     }
 
     @Override

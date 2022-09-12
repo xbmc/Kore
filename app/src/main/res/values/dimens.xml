@@ -56,11 +56,20 @@
 	<dimen name="navigation_drawer_item_height">48dp</dimen>
     <dimen name="navigation_drawer_item_hosts_height">168dp</dimen>
 
+    <!-- Image sizes on Kodi
+    banner: 1000 x 185
+    clearart: 1000 x 562
+    clearlogo: 800 x 310
+    fanart: 1920 x 1080 (1.778)
+    poster: 505 x 720 (1.452)
+    thumb: 720 x 405 || 720 x 306
+    -->
+
     <dimen name="remote_poster_width">98dp</dimen>
-    <dimen name="remote_poster_height">140dp</dimen>
+    <dimen name="remote_poster_height">142dp</dimen>
 
     <dimen name="info_poster_width">112dp</dimen>
-    <dimen name="info_poster_height">160dp</dimen>
+    <dimen name="info_poster_height">162dp</dimen>
     <dimen name="info_poster_width_square">112dp</dimen>
     <dimen name="info_poster_height_square">112dp</dimen>
 
@@ -116,11 +125,11 @@
 
     <dimen name="epg_time_width">56dp</dimen>
 
-    <dimen name="now_playing_panel_art_heigth">64dp</dimen>
-    <dimen name="now_playing_panel_art_width">52dp</dimen>
+    <dimen name="now_playing_panel_heigth">80dp</dimen>
+    <dimen name="now_playing_panel_art_heigth">80dp</dimen>
+    <dimen name="now_playing_panel_art_width">56dp</dimen>
 
-    <dimen name="fab_normal_margin">8dp</dimen>
-    <dimen name="fab_mini_margin">16dp</dimen>
+    <dimen name="fab_normal_margin">16dp</dimen>
 
     <!-- Elevation for views, copied from Material 3 -->
     <dimen name="kore_elevation_level0">0dp</dimen>

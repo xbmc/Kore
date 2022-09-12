@@ -47,7 +47,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.transition.Transition;
 import androidx.transition.TransitionInflater;
 
 import com.google.android.material.button.MaterialButton;
@@ -83,7 +82,12 @@ abstract public class AbstractInfoFragment
                    HostConnectionObserver.ConnectionStatusObserver {
     private static final String TAG = LogUtils.makeLogTag(AbstractInfoFragment.class);
 
+    public interface fabPlayProvider {
+        FloatingActionButton getFABPlay();
+    }
+
     private FragmentMediaInfoBinding binding;
+    private FloatingActionButton fabPlay = null;
 
     private HostManager hostManager;
     private HostInfo hostInfo;
@@ -168,17 +172,11 @@ abstract public class AbstractInfoFragment
             postponeEnterTransition();
         }
 
-        if(getSyncType() != null) {
-            binding.swipeRefreshLayout.setOnRefreshListener(this);
-        } else {
-            binding.swipeRefreshLayout.setEnabled(false);
-        }
+        binding.swipeRefreshLayout.setOnRefreshListener(this);
+        binding.swipeRefreshLayout.setEnabled(getSyncType() != null);
 
         boolean hasButtons = setupInfoActionsBar();
         binding.infoActionsBar.setVisibility(hasButtons ? View.VISIBLE : View.GONE);
-
-        boolean hasFAB = setupFAB(binding.fabPlay);
-        binding.fabPlay.setVisibility(hasFAB? View.VISIBLE : View.GONE);
 
         /* Setup dim the fanart when scroll changes */
         onScrollChangedListener = UIUtils.createInfoPanelScrollChangedListener(requireContext(), binding.mediaPanel, binding.mediaArt, binding.mediaPanelGroup);
@@ -194,15 +192,34 @@ abstract public class AbstractInfoFragment
     @Override
     public void onStart() {
         super.onStart();
-        hostManager.getHostConnectionObserver().registerConnectionStatusObserver(this);
         serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
         // Force the exit view to invisible
         binding.exitTransitionView.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void onStop() {
+    public void onResume() {
+        super.onResume();
+        View.OnClickListener listener = getFABClickListener();
+        if (getActivity() instanceof fabPlayProvider && listener != null) {
+            fabPlay = ((fabPlayProvider) getActivity()).getFABPlay();
+            fabPlay.setOnClickListener(listener);
+        }
+        hostManager.getHostConnectionObserver().registerConnectionStatusObserver(this);
+    }
+
+    @Override
+    public void onPause() {
+        if (fabPlay != null) {
+            fabPlay.setOnClickListener(null);
+            fabPlay.hide();
+        }
         hostManager.getHostConnectionObserver().unregisterConnectionStatusObserver(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
         SyncUtils.disconnectFromLibrarySyncService(requireContext(), serviceConnection);
         super.onStop();
     }
@@ -334,17 +351,16 @@ abstract public class AbstractInfoFragment
         }
     }
 
-    private int lastConnectionStatusResult = CONNECTION_NO_RESULT;
     /**
      * Hide/Disable UI elements that don't make sense without a connection
      */
     @Override
     public void onConnectionStatusError(int errorCode, String description) {
-        LogUtils.LOGD(TAG, "Connection Status Error, disabling buttons");
-        lastConnectionStatusResult = CONNECTION_ERROR;
-        binding.fabPlay.setEnabled(false);
-        if (binding.fabPlay.isShown())
-            binding.fabPlay.hide();
+        if (fabPlay != null) {
+            fabPlay.setEnabled(false);
+            if (fabPlay.isOrWillBeShown())
+                fabPlay.hide();
+        }
         binding.swipeRefreshLayout.setEnabled(false);
         setInfoActionButtonsEnabledState(false);
     }
@@ -354,25 +370,19 @@ abstract public class AbstractInfoFragment
      */
     @Override
     public void onConnectionStatusSuccess() {
-        // Only update views if transitioning from error state.
-        // If transitioning from Sucess or No results the enabled UI is already being shown
-        if (lastConnectionStatusResult == CONNECTION_ERROR) {
-            LogUtils.LOGD(TAG, "Connection Status Success, enabling buttons");
-            updateView(getDataHolder());
-
-            binding.fabPlay.setEnabled(true);
-            if (!binding.fabPlay.isShown())
-                binding.fabPlay.show();
-            binding.swipeRefreshLayout.setEnabled(true);
-            setInfoActionButtonsEnabledState(true);
+        if (fabPlay != null) {
+            fabPlay.setEnabled(true);
+            fabPlay.setTranslationY(0);
+            if (fabPlay.isOrWillBeHidden()) {
+                fabPlay.show();
+            }
         }
-        lastConnectionStatusResult = CONNECTION_SUCCESS;
+        binding.swipeRefreshLayout.setEnabled(getSyncType() != null);
+        setInfoActionButtonsEnabledState(true);
     }
 
     @Override
     public void onConnectionStatusNoResultsYet() {
-        // Do nothing, by default the enabled UI is shown while there are no results
-        lastConnectionStatusResult = CONNECTION_NO_RESULT;
     }
 
     private void setInfoActionButtonsEnabledState(boolean enabled) {
@@ -391,7 +401,9 @@ abstract public class AbstractInfoFragment
     }
 
     protected void setFabState(boolean enabled) {
-        binding.fabPlay.setEnabled(enabled);
+        if (fabPlay != null) {
+            fabPlay.setEnabled(enabled);
+        }
     }
 
     protected void streamItemFromKodi(String url, String type) {
@@ -433,9 +445,9 @@ abstract public class AbstractInfoFragment
                 .getDefaultSharedPreferences(requireContext())
                 .getBoolean(Settings.KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START,
                             Settings.DEFAULT_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START);
-        if (switchToRemote) {
-            int cx = (binding.fabPlay.getLeft() + binding.fabPlay.getRight()) / 2;
-            int cy = (binding.fabPlay.getTop() + binding.fabPlay.getBottom()) / 2;
+        if (switchToRemote && fabPlay != null) {
+            int cx = (fabPlay.getLeft() + fabPlay.getRight()) / 2;
+            int cy = (fabPlay.getTop() + fabPlay.getBottom()) / 2;
             final Intent launchIntent = new Intent(requireContext(), RemoteActivity.class);
 
             // Show the animation
@@ -448,7 +460,7 @@ abstract public class AbstractInfoFragment
                 public void onAnimationStart(Animator animation) {}
 
                 @Override
-                public void onAnimationEnd(Animator animation) { requireContext().startActivity(launchIntent );}
+                public void onAnimationEnd(Animator animation) { requireContext().startActivity(launchIntent);}
 
                 @Override
                 public void onAnimationCancel(Animator animation) {}
@@ -710,8 +722,9 @@ abstract public class AbstractInfoFragment
     abstract protected boolean setupInfoActionsBar();
 
     /**
-     * Called when the fab button is available
-     * @return true to enable the Floating Action Button, false otherwise
+     * Called to get the click listener to set on the FAB
+     * Return null to disable the FAB
+     * @return Click listener to set on the FAB, null to disable
      */
-    abstract protected boolean setupFAB(FloatingActionButton fab);
+    abstract protected View.OnClickListener getFABClickListener();
 }

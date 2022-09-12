@@ -100,12 +100,20 @@ ext {
 dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.preference:preference:1.2.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-google-shortcuts:1.0.1'
     implementation 'androidx.media:media:1.6.0'
     implementation "androidx.viewpager2:viewpager2:1.1.0-beta01"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    implementation "androidx.fragment:fragment:1.5.2"
+    implementation "androidx.fragment:fragment-ktx:1.5.2"
+
+//    Dependency resolution
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.1"
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
@@ -113,7 +121,6 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.3.1'
     implementation 'org.jmdns:jmdns:3.5.7'
     implementation 'at.blogc:expandabletextview:1.0.5'
-    implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.1'
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
 

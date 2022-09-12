@@ -31,7 +31,6 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -157,13 +156,12 @@ public class MovieInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(FloatingActionButton fab) {
-        fab.setOnClickListener(v -> {
+    protected View.OnClickListener getFABClickListener() {
+        return (v -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.movieid = getDataHolder().getId();
             playItemOnKodi(item);
         });
-        return true;
     }
 
     @Override
