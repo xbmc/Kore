@@ -30,8 +30,6 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.provider.MediaContract;
 import org.xbmc.kore.provider.MediaDatabase;
@@ -100,13 +98,12 @@ public class ArtistInfoFragment extends AbstractInfoFragment
     }
 
     @Override
-    protected boolean setupFAB(FloatingActionButton fab) {
-        fab.setOnClickListener(v -> {
+    protected View.OnClickListener getFABClickListener() {
+        return (v -> {
             PlaylistType.Item item = new PlaylistType.Item();
             item.artistid = getDataHolder().getId();
             playItemOnKodi(item);
         });
-        return true;
     }
 
     /*
@@ -138,8 +135,8 @@ public class ArtistInfoFragment extends AbstractInfoFragment
                 case LOADER_ARTIST:
                     cursor.moveToFirst();
 
-                    FileDownloadHelper.SongInfo songInfo = new FileDownloadHelper.SongInfo(
-                            cursor.getString(DetailsQuery.ARTIST),null, -1, -1, null, null);
+                    //FileDownloadHelper.SongInfo songInfo = new FileDownloadHelper.SongInfo(
+                    //        cursor.getString(DetailsQuery.ARTIST),null, -1, -1, null, null);
                     //setDownloadButtonState(songInfo.downloadDirectoryExists());
 
                     String artist = cursor.getString(DetailsQuery.ARTIST);

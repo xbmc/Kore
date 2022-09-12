@@ -213,6 +213,7 @@ public class AddonListFragment extends AbstractListFragment {
                     }
 
                     adapter.notifyDataSetChanged();
+                    hideRefreshAnimation();
                     // Notify parent that list view is setup
                     notifyListSetupComplete();
                 }
@@ -221,6 +222,7 @@ public class AddonListFragment extends AbstractListFragment {
                 public void onError(int errorCode, String description) {
                     if (!isAdded()) return;
                     LogUtils.LOGD(TAG, "Error getting addons: " + description);
+                    hideRefreshAnimation();
                     showStatusMessage(null, getString(R.string.error_getting_addon_info, description));
                 }
             },

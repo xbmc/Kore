@@ -25,8 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.host.HostManager;
@@ -94,8 +92,8 @@ public class AddonInfoFragment extends AbstractInfoFragment {
     }
 
     @Override
-    protected boolean setupFAB(FloatingActionButton fab) {
-        fab.setOnClickListener(v -> {
+    protected View.OnClickListener getFABClickListener() {
+        return (v -> {
             Addons.ExecuteAddon action = new Addons.ExecuteAddon(addonId);
             action.execute(getHostManager().getConnection(), new ApiCallback<String>() {
                 @Override
@@ -111,7 +109,6 @@ public class AddonInfoFragment extends AbstractInfoFragment {
                 }
             }, callbackHandler);
         });
-        return true;
     }
 
     private void setupEnabledButton() {

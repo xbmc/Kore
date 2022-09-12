@@ -35,10 +35,11 @@
         style="@style/Widget.Kore.TextView.MediaList.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_padding"
         app:layout_constraintEnd_toStartOf="@id/list_context_menu"
         app:layout_constraintStart_toEndOf="@id/art"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/details"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/details"
@@ -47,17 +48,18 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/list_context_menu"
         app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/duration"/>
 
     <TextView
         android:id="@+id/duration"
         style="@style/Widget.Kore.TextView.MediaList.Info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/small_padding"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/list_context_menu"
-        app:layout_constraintStart_toStartOf="@id/title" />
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/details"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
         android:id="@+id/list_context_menu"

@@ -33,7 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -53,7 +53,8 @@ import org.xbmc.kore.utils.Utils;
 public abstract class BaseMediaActivity
         extends BaseActivity
         implements HostConnectionObserver.ApplicationEventsObserver,
-                   HostConnectionObserver.PlayerEventsObserver {
+                   HostConnectionObserver.PlayerEventsObserver,
+                   AbstractInfoFragment.fabPlayProvider {
     private static final String TAG = LogUtils.makeLogTag(BaseMediaActivity.class);
 
     private static final String NAVICON_ISARROW = "navstate";
@@ -80,7 +81,7 @@ public abstract class BaseMediaActivity
     private final Runnable hidePanelRunnable = new Runnable() {
         @Override
         public void run() {
-            binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            binding.nowPlayingPanel.hidePanel();
         }
     };
 
@@ -150,17 +151,15 @@ public abstract class BaseMediaActivity
         showNowPlayingPanel = PreferenceManager.getDefaultSharedPreferences(this)
                                                .getBoolean(Settings.KEY_PREF_SHOW_NOW_PLAYING_PANEL,
                                                            Settings.DEFAULT_PREF_SHOW_NOW_PLAYING_PANEL);
-
         if (showNowPlayingPanel) {
             hostConnectionObserver.registerApplicationObserver(this);
             hostConnectionObserver.registerPlayerObserver(this);
             hostConnectionObserver.refreshWhatsPlaying();
-            binding.nowPlayingPanel.completeSetup(this, this.getSupportFragmentManager());
+            binding.nowPlayingPanel.completeSetup(this, this.getSupportFragmentManager(), binding.fragmentContainer);
         } else {
             //Hide it in case we were displaying the panel and user disabled showing the panel in Settings
-            binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            binding.nowPlayingPanel.hidePanel();
         }
-
     }
 
     @Override
@@ -169,6 +168,7 @@ public abstract class BaseMediaActivity
         if (showNowPlayingPanel) {
             hostConnectionObserver.unregisterApplicationObserver(this);
             hostConnectionObserver.unregisterPlayerObserver(this);
+            binding.nowPlayingPanel.freeResources();
         }
     }
 
@@ -250,13 +250,13 @@ public abstract class BaseMediaActivity
             // Postpone reenter transition to allow for shared element loading
             ((AbstractFragment) currentFragment).setPostponeReenterTransition(true);
         }
-
         fragmentManager.beginTransaction()
                        .setReorderingAllowed(true)
                        .addSharedElement(sharedImageView, sharedImageView.getTransitionName())
                        .replace(R.id.fragment_container, fragment, args, getActionBarTitle())
                        .addToBackStack(null)
                        .commit();
+        binding.topAppBarLayout.setExpanded(true);
     }
 
     /**
@@ -323,7 +323,7 @@ public abstract class BaseMediaActivity
 
     @Override
     public void onPlayerConnectionError(int errorCode, String description) {
-        binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        binding.nowPlayingPanel.hidePanel();
     }
 
     @Override
@@ -331,12 +331,12 @@ public abstract class BaseMediaActivity
 
     @Override
     public void onObserverStopObserving() {
-        binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        binding.nowPlayingPanel.hidePanel();
     }
 
     @Override
     public void onSystemQuit() {
-        binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        binding.nowPlayingPanel.hidePanel();
     }
 
     @Override
@@ -351,11 +351,7 @@ public abstract class BaseMediaActivity
 
         callbackHandler.removeCallbacks(hidePanelRunnable);
 
-        // Only set state to collapsed if panel is currently hidden. This prevents collapsing the panel when the user
-        // expanded the panel and started playing the item from a paused state
-        if (binding.nowPlayingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
-            binding.nowPlayingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        }
+        binding.nowPlayingPanel.showPanel();
 
         binding.nowPlayingPanel.setPlaybackState(getActivePlayerResult, getPropertiesResult);
 
@@ -412,14 +408,21 @@ public abstract class BaseMediaActivity
         int posterWidth = resources.getDimensionPixelOffset(R.dimen.now_playing_panel_art_width);
         int posterHeight = resources.getDimensionPixelOffset(R.dimen.now_playing_panel_art_heigth);
 
-        // If not video, change aspect ration of poster to a square
-        boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
-                          (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE));
-
-        binding.nowPlayingPanel.setSquarePoster(!isVideo);
-
         UIUtils.loadImageWithCharacterAvatar(this, hostManager, poster, title,
                                              binding.nowPlayingPanel.getPoster(),
-                                             (isVideo) ? posterWidth : posterHeight, posterHeight);
+                                             posterWidth, posterHeight);
+
+//        // If not video, change aspect ration of poster to a square
+//        boolean isVideo = (getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) ||
+//                          (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE));
+//        binding.nowPlayingPanel.setSquarePoster(!isVideo);
+//        UIUtils.loadImageWithCharacterAvatar(this, hostManager, poster, title,
+//                                             binding.nowPlayingPanel.getPoster(),
+//                                             (isVideo) ? posterWidth : posterHeight, posterHeight);
+    }
+
+    @Override
+    public FloatingActionButton getFABPlay() {
+        return binding.fabPlay;
     }
 }

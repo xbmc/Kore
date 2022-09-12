@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    Copyright 2017 Martijn Brekhof. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,111 +13,116 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<merge
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <LinearLayout
-        android:id="@+id/panel_container"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/collapsed_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        style="@style/Widget.Kore.BottomPanel"
-        android:background="@drawable/background_round_top">
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/collapsed_view"
-            android:layout_width="match_parent"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/poster"
+            android:layout_width="@dimen/now_playing_panel_art_width"
+            android:layout_height="@dimen/now_playing_panel_art_heigth"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/poster"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.NowPlayingArt" />
+
+        <ImageView
+            android:id="@+id/drag_handle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/ic_bottom_sheet_drag_handle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnSurfaceVariant"
+            android:alpha="0.4" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/poster"
-                android:layout_width="@dimen/now_playing_panel_art_width"
-                android:layout_height="@dimen/now_playing_panel_art_heigth"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/poster"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kore.Image.NowPlayingArt"/>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/poster"
+            app:layout_constraintEnd_toStartOf="@id/volume_muted_indicator"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/details"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:layout_marginStart="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/small_padding"
+            android:gravity="center_horizontal"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.Kore.NowPlaying.Title" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/small_padding"
+            android:gravity="center_horizontal"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.Kore.NowPlaying.Details" />
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/small_padding"
-                    android:paddingRight="@dimen/small_padding"
-                    android:textAppearance="@style/TextAppearance.Kore.NowPlaying.Title"
-                    android:singleLine="true"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
-                    android:gravity="center_vertical"/>
+        <org.xbmc.kore.ui.widgets.HighlightButton
+            android:id="@+id/volume_muted_indicator"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/play"
+            android:contentDescription="@string/volume_mute"
+            android:src="@drawable/ic_round_volume_off_24"
+            android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/small_padding"
-                    android:paddingRight="@dimen/small_padding"
-                    android:textAppearance="@style/TextAppearance.Kore.NowPlaying.Details"
-                    android:singleLine="true"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
-                    android:gravity="center_vertical"/>
-            </LinearLayout>
+        <ImageButton
+            android:id="@+id/play"
+            style="@style/Widget.Kore.Button.Borderless"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/play"
+            android:src="@drawable/ic_round_play_arrow_24" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <org.xbmc.kore.ui.widgets.HighlightButton
-                android:id="@+id/volume_muted_indicator"
-                android:layout_width="@dimen/default_icon_size"
-                android:layout_height="@dimen/default_icon_size"
-                android:layout_gravity="center_vertical"
-                style="@style/Widget.Kore.Button.Borderless"
-                android:src="@drawable/ic_round_volume_off_24"
-                android:contentDescription="@string/volume_mute"
-                android:visibility="gone"/>
+    <!-- Progress bar -->
+    <org.xbmc.kore.ui.widgets.MediaProgressIndicator
+        android:id="@+id/progress_info"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/buttonbar_height"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding" />
 
-            <ImageButton
-                android:id="@+id/play"
-                android:layout_width="@dimen/default_icon_size"
-                android:layout_height="@dimen/default_icon_size"
-                android:layout_gravity="center_vertical"
-                style="@style/Widget.Kore.Button.Borderless"
-                android:src="@drawable/ic_round_play_arrow_24"
-                android:contentDescription="@string/play" />
-        </LinearLayout>
+    <!-- Media playback control buttons -->
+    <org.xbmc.kore.ui.widgets.MediaPlaybackBar
+        android:id="@+id/media_playback_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/buttonbar_height"
+        android:orientation="horizontal"
+        app:view_mode="full" />
 
-        <!-- Progress bar -->
-        <org.xbmc.kore.ui.widgets.MediaProgressIndicator
-            android:id="@+id/progress_info"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/buttonbar_height"
-            android:paddingRight="@dimen/default_padding"
-            android:paddingLeft="@dimen/default_padding"
-            android:orientation="horizontal"/>
-
-        <!-- Media playback control buttons -->
-        <org.xbmc.kore.ui.widgets.MediaPlaybackBar
-            android:id="@+id/media_playback_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/buttonbar_height"
-            android:orientation="horizontal"
-            app:view_mode="full" />
-
-        <!-- Media action buttons -->
-        <org.xbmc.kore.ui.widgets.MediaActionsBar
-            android:id="@+id/media_actions_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/buttonbar_height"
-            android:orientation="horizontal" />
-    </LinearLayout>
+    <!-- Media action buttons -->
+    <org.xbmc.kore.ui.widgets.MediaActionsBar
+        android:id="@+id/media_actions_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/buttonbar_height"
+        android:orientation="horizontal" />
 </merge>

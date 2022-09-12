@@ -17,16 +17,15 @@
 package org.xbmc.kore.ui.behaviors;
 
 import android.content.Context;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
-import android.util.AttributeSet;
-import android.view.View;
 
 public class HideOnVerticalScrollBehavior extends CoordinatorLayout.Behavior<View> {
-
-    private boolean hide;
 
     public HideOnVerticalScrollBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,11 +42,11 @@ public class HideOnVerticalScrollBehavior extends CoordinatorLayout.Behavior<Vie
     public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull final View child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
 
-        if (dyConsumed > 0 && !hide) {
-            hide = true;
-            ViewCompat.animate(child).translationY(child.getHeight());
-        } else if (dyConsumed < 0 && hide) {
-            hide = false;
+        boolean hidden = child.getTranslationY() != 0;
+        if (dyConsumed > 0 && !hidden) {
+            DisplayMetrics dm = child.getContext().getResources().getDisplayMetrics();
+            ViewCompat.animate(child).translationY(dm.heightPixels - child.getTop());
+        } else if (dyConsumed < 0 && hidden) {
             ViewCompat.animate(child).translationY(0);
         }
     }

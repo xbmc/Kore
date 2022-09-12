@@ -27,9 +27,12 @@
         android:layout_height="wrap_content"
         app:tabMode="auto"
         app:tabIndicatorFullWidth="true"
-        android:background="?attr/colorSurface"
-        android:elevation="@dimen/kore_elevation_level2"
+        android:background="@android:color/transparent"
+        android:elevation="@dimen/kore_elevation_level0"
         app:tabTextAppearance="@style/TextAppearance.Kore.TabLayout" />
+    <!--        android:elevation="@dimen/kore_elevation_level2"-->
+    <!--        android:outlineAmbientShadowColor="@android:color/transparent"-->
+    <!--        android:outlineSpotShadowColor="@android:color/transparent"-->
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"

@@ -19,8 +19,6 @@
     <style name="Theme.Kore.Default.Dynamic" parent="Theme.Kore.Default.Light"/>
 
     <style name="Theme.Kore.Default.Dark" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:windowActivityTransitions">true</item>
-
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
 
@@ -76,7 +74,6 @@
 
     <!-- Base Light theme, allowing for customization based on the Android version -->
     <style name="Theme.Kore.Default.LightBase" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="Theme.Kore.Default.Light" parent="Theme.Kore.Default.LightBase">

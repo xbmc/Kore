@@ -35,6 +35,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import org.hamcrest.Matcher;
 import org.xbmc.kore.R;
 import org.xbmc.kore.testhelpers.action.ViewActions;
+import org.xbmc.kore.ui.widgets.NowPlayingPanel;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -360,11 +361,11 @@ public class EspressoTestUtils {
      *
      * @param panelState desired state of panel
      */
-    public static void waitForPanelState(final SlidingUpPanelLayout.PanelState panelState) {
+    public static void waitForPanelState(final int panelState) {
         onView(isRoot()).perform(ViewActions.waitForView(R.id.now_playing_panel, new ViewActions.CheckStatus() {
             @Override
             public boolean check(View v) {
-                return ((SlidingUpPanelLayout) v).getPanelState() == panelState;
+                return ((NowPlayingPanel)v).getPanelState() == panelState;
             }
         }, 10000));
     }

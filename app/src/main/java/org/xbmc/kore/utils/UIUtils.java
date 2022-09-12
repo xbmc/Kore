@@ -333,10 +333,11 @@ public class UIUtils {
      * @param activity Activity
      */
     public static void tintSystemBars(Activity activity) {
-        int color = SurfaceColors.SURFACE_2.getColor(activity);
+        int color;
+//        color = SurfaceColors.SURFACE_2.getColor(activity);
 //        if (Utils.isMOrLater())
 //            activity.getWindow().setStatusBarColor(color);
-        color = SurfaceColors.SURFACE_1.getColor(activity);
+        color = SurfaceColors.SURFACE_3.getColor(activity);
         if (Utils.isOreoMR1OrLater())
             activity.getWindow().setNavigationBarColor(color);
     }
