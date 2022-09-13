@@ -28,8 +28,8 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
 import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -110,20 +110,21 @@ public class RemoteActivity
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.defaultToolbar, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
             ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            mlp.topMargin = insets.top;
+            mlp.topMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
             v.setLayoutParams(mlp);
-            return windowInsets.inset(0, insets.top, 0, 0);
+            return windowInsets;
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.pager, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+        OnApplyWindowInsetsListener bottomInsetsListener = (v, windowInsets) -> {
             ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            mlp.bottomMargin = insets.bottom;
+            mlp.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
             v.setLayoutParams(mlp);
-            return windowInsets.inset(0, 0, 0, insets.bottom);
-        });
+            return windowInsets;
+        };
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.pager, bottomInsetsListener);
+        ViewCompat.setOnApplyWindowInsetsListener(binding.navigationDrawer, bottomInsetsListener);
 
         // Set up the drawer.
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
