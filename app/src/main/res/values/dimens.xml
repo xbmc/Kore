@@ -43,8 +43,7 @@
     <dimen name="fastscroll_popup_size">80dp</dimen>
     <dimen name="fastscroll_text_size">36sp</dimen>
 
-    <dimen name="control_pad_icon_size">67dp</dimen>
-    <dimen name="control_pad_size">202dp</dimen>
+    <dimen name="control_pad_size">216dp</dimen>
 
     <dimen name="remote_viewpager_height">16dp</dimen>
     <dimen name="info_panel_horiz_margin">8dp</dimen>
@@ -65,18 +64,18 @@
     thumb: 720 x 405 || 720 x 306
     -->
 
-    <dimen name="remote_poster_width">98dp</dimen>
-    <dimen name="remote_poster_height">142dp</dimen>
+    <dimen name="remote_poster_width">88dp</dimen>
+    <dimen name="remote_poster_height">128dp</dimen>
 
-    <dimen name="info_poster_width">112dp</dimen>
-    <dimen name="info_poster_height">162dp</dimen>
-    <dimen name="info_poster_width_square">112dp</dimen>
-    <dimen name="info_poster_height_square">112dp</dimen>
+    <dimen name="info_poster_width">88dp</dimen>
+    <dimen name="info_poster_height">128dp</dimen>
+    <dimen name="info_poster_width_square">@dimen/info_poster_width</dimen>
+    <dimen name="info_poster_height_square">@dimen/info_poster_width</dimen>
 
     <dimen name="info_art_height">216dp</dimen>
-    <dimen name="info_title_margin_top">216dp</dimen>
-    <dimen name="info_poster_width_plus_padding">144dp</dimen>
-
+    <dimen name="info_title_margin_top">@dimen/info_art_height</dimen>
+    <!-- This should be = info_poster_height_square (info_poster_width) + default_paddig -->
+    <dimen name="info_poster_bottom_guideline">96dp</dimen>
 
     <dimen name="default_grid_column_width">300dp</dimen>
     <dimen name="playlist_grid_vertical_spacing">8dp</dimen>
@@ -125,9 +124,9 @@
 
     <dimen name="epg_time_width">56dp</dimen>
 
-    <dimen name="now_playing_panel_heigth">80dp</dimen>
-    <dimen name="now_playing_panel_art_heigth">80dp</dimen>
-    <dimen name="now_playing_panel_art_width">56dp</dimen>
+    <dimen name="now_playing_panel_heigth">72dp</dimen>
+    <dimen name="now_playing_panel_art_heigth">72dp</dimen>
+    <dimen name="now_playing_panel_art_width">50dp</dimen>
 
     <dimen name="fab_normal_margin">16dp</dimen>
 

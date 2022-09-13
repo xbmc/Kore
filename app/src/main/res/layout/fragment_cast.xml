@@ -24,9 +24,7 @@
         android:id="@+id/casts_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.Kore.TextView.MediaTitle"
-        android:layout_marginStart="@dimen/default_padding"
-        android:layout_marginEnd="@dimen/default_padding"
+        style="@style/Widget.Kore.TextView.SectionTitle"
         android:text="@string/cast"/>
 
     <GridLayout

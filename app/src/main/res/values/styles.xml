@@ -178,10 +178,11 @@
     </style>
 
     <style name="ShapeAppearanceOverlay.Kore.Image.PosterRemote" parent="ShapeAppearanceOverlay.Kore.Image">
-        <item name="cornerSizeTopLeft">@dimen/corner_radius_image_poster</item>
-        <item name="cornerSizeTopRight">0dp</item>
-        <item name="cornerSizeBottomRight">@dimen/corner_radius_image_poster</item>
-        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSize">@dimen/corner_radius_image_poster</item>
+<!--        <item name="cornerSizeTopLeft">@dimen/corner_radius_image_poster</item>-->
+<!--        <item name="cornerSizeTopRight">0dp</item>-->
+<!--        <item name="cornerSizeBottomRight">@dimen/corner_radius_image_poster</item>-->
+<!--        <item name="cornerSizeBottomLeft">0dp</item>-->
     </style>
 
     <style name="ShapeAppearanceOverlay.Kore.Image.NowPlayingArt" parent="ShapeAppearanceOverlay.Kore.Image">
@@ -216,9 +217,9 @@
     </style>
 
     <style name="Widget.Kore.TextView.MediaTitle" parent="Widget.Kore.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:paddingTop">@dimen/default_padding</item>
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">marquee</item>
@@ -226,14 +227,7 @@
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:scrollHorizontally">true</item>
-    </style>
-
-    <style name="Widget.Kore.TextView.MediaTitle.Remote" parent="Widget.Kore.TextView.MediaTitle">
-        <item name="android:paddingStart">@dimen/small_padding</item>
-        <item name="android:paddingEnd">@dimen/small_padding</item>
-        <item name="android:paddingTop">@dimen/small_padding</item>
-        <item name="android:paddingBottom">@dimen/small_padding</item>
-        <item name="android:singleLine">true</item>
+<!--        <item name="android:textColor">?attr/colorTertiary</item>-->
     </style>
 
     <style name="Widget.Kore.TextView.MediaDetails" parent="Widget.Kore.TextView">
@@ -244,8 +238,16 @@
         <item name="android:maxLines">2</item>
     </style>
 
+    <style name="Widget.Kore.TextView.MediaTitle.Remote" parent="Widget.Kore.TextView.MediaTitle">
+        <item name="android:paddingStart">@dimen/default_padding</item>
+        <item name="android:paddingEnd">@dimen/small_padding</item>
+        <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:paddingBottom">@dimen/small_padding</item>
+        <item name="android:singleLine">true</item>
+    </style>
     <style name="Widget.Kore.TextView.MediaDetails.Remote" parent="Widget.Kore.TextView.MediaDetails">
-        <item name="android:paddingStart">@dimen/small_padding</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingStart">@dimen/default_padding</item>
         <item name="android:paddingEnd">@dimen/small_padding</item>
         <item name="android:maxLines">1</item>
     </style>
@@ -275,6 +277,12 @@
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
         <item name="android:paddingTop">@dimen/default_padding</item>
         <item name="android:paddingBottom">@dimen/default_padding</item>
+    </style>
+
+    <style name="Widget.Kore.TextView.SectionTitle" parent="Widget.Kore.TextView.MediaTitle">
+        <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:paddingStart">@dimen/small_padding</item>
+        <item name="android:paddingEnd">@dimen/small_padding</item>
     </style>
 
     <style name="Widget.Kore.SeekBar" parent="Widget.Kore">
