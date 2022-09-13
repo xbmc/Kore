@@ -36,7 +36,7 @@
             android:id="@+id/drag_handle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="7dp"
             android:layout_marginBottom="4dp"
             android:src="@drawable/ic_bottom_sheet_drag_handle"
             app:layout_constraintStart_toStartOf="parent"

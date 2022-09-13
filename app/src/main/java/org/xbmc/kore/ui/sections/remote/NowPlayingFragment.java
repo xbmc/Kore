@@ -334,29 +334,12 @@ public class NowPlayingFragment extends Fragment
                                                  poster, title,
                                                  binding.poster, posterWidth, posterHeight);
             UIUtils.loadImageIntoImageview(hostManager, art, binding.art, artWidth, artHeight);
-
-            // Reset padding
-            int paddingLeft = resources.getDimensionPixelOffset(R.dimen.info_poster_width_plus_padding),
-                    paddingRight = binding.mediaTitle.getPaddingRight(),
-                    paddingTop = binding.mediaTitle.getPaddingTop(),
-                    paddingBottom = binding.mediaTitle.getPaddingBottom();
-            binding.mediaTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-            binding.mediaUndertitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         } else {
             // No fanart, just present the poster
             binding.poster.setVisibility(View.GONE);
             UIUtils.loadImageWithCharacterAvatar(getActivity(), hostManager, poster, title, binding.art, artWidth, artHeight);
-            // Reset padding
-            int paddingLeft = binding.mediaTitle.getPaddingRight(),
-                    paddingRight = binding.mediaTitle.getPaddingRight(),
-                    paddingTop = binding.mediaTitle.getPaddingTop(),
-                    paddingBottom = binding.mediaTitle.getPaddingBottom();
-            binding.mediaTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-            binding.mediaUndertitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         }
 
-//        if (getItemResult.type.equals(ListType.ItemsAll.TYPE_EPISODE) ||
-//            getItemResult.type.equals(ListType.ItemsAll.TYPE_MOVIE)) {
         if (getPropertiesResult.type.equals(PlayerType.PropertyValue.TYPE_VIDEO)) {
             binding.castList.setVisibility(View.VISIBLE);
             UIUtils.setupCastInfo(getActivity(), getItemResult.cast, binding.castList,

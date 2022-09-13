@@ -25,10 +25,7 @@
         android:id="@+id/albums_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.Kore.TextView.MediaTitle"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding"
-        android:paddingTop="@dimen/default_padding"
+        style="@style/Widget.Kore.TextView.SectionTitle"
         android:text="@string/albums"/>
 
     <GridLayout

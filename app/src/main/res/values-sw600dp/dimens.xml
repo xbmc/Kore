@@ -17,19 +17,18 @@
 <resources>
     <dimen name="wizard_title">216dp</dimen>
 
-    <dimen name="control_pad_icon_size">126dp</dimen>
     <dimen name="control_pad_size">378dp</dimen>
     <dimen name="remote_margin_bottom">16dp</dimen>
 
-    <dimen name="remote_poster_width">96dp</dimen>
+    <dimen name="remote_poster_width">110dp</dimen>
     <dimen name="remote_poster_height">162dp</dimen>
 
-    <dimen name="info_poster_width">140dp</dimen>
-    <dimen name="info_poster_height">200dp</dimen>
+    <dimen name="info_poster_width">110dp</dimen>
+    <dimen name="info_poster_height">162dp</dimen>
     <dimen name="info_art_height">324dp</dimen>
 
-    <dimen name="info_title_margin_top">324dp</dimen>
-    <dimen name="info_poster_width_plus_padding">180dp</dimen>
+    <!-- This should be = info_poster_height_square (info_poster_width) + default_paddig -->
+    <dimen name="info_poster_bottom_guideline">118dp</dimen>
 
     <dimen name="default_grid_column_width">250dp</dimen>
 
