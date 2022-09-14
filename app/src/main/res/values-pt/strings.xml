@@ -64,7 +64,8 @@
     <string name="toggle_fullscreen">Mudar modo de ecrã</string>
     <string name="connected_to">Conectado a %1$s</string>
     <string name="connecting">A conectar…</string>
-    <string name="connecting_to">Conectando a %1$s (%2$s)…</string>
+    <string name="connecting_to">Não foi possível ligar a %1$s (%2$s)
+\nA tentar novamente…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bem-vindo</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -170,14 +171,22 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="fanart">Fanart</string>
     <string name="poster">Cartaz</string>
     <string name="thumbnail">Miniatura</string>
-    <string name="error_getting_properties">"Não foi possível obter  propriedades do Kodi. Mensagem de erro: %1$s."</string>
-    <string name="error_executing_subtitles">Não foi possível executar a extensão. Mensagem de erro: %1$s.</string>
-    <string name="error_getting_addon_info">Não foi possível obter informação relativa à extensão. Mensagem de erro: %1$s.</string>
-    <string name="error_getting_source_info">Não foi possível navegar no sistema de ficheiros. Mensagem: %1$s.</string>
-    <string name="error_play_media_file">Não foi possível reproduzir o ficheiro multimédia. Mensagem de erro: %1$s.</string>
-    <string name="error_play_local_file">Não foi possível reproduzir o ficheiro multimédia local. Mensagem de erro: %1$s.</string>
-    <string name="error_queue_media_file">Não foi possível colocar o ficheiro na lista de reprodução. Mensagem: %1$s.</string>
-    <string name="error_get_active_player">Não foi possível obter o que está a ser reproduzido. Mensagem: %1$s.</string>
+    <string name="error_getting_properties">Não foi possível obter propriedades do Kodi.
+\nMensagem de erro: %1$s</string>
+    <string name="error_executing_subtitles">Não foi possível executar a extensão.
+\nMensagem de erro: %1$s</string>
+    <string name="error_getting_addon_info">Não foi possível obter a lista de extensões.
+\nMensagem de erro: %1$s</string>
+    <string name="error_getting_source_info">Não foi possível navegar no sistema de ficheiros.
+\nMensagem de erro: %1$s</string>
+    <string name="error_play_media_file">Não foi possível reproduzir o ficheiro multimédia.
+\nMensagem de erro: %1$s</string>
+    <string name="error_play_local_file">Não foi possível reproduzir o ficheiro multimédia local.
+\nMensagem de erro: %1$s</string>
+    <string name="error_queue_media_file">Não foi possível colocar o ficheiro na lista de reprodução.
+\nMensagem de erro: %1$s</string>
+    <string name="error_get_active_player">Não foi possível obter o que está a ser reproduzido.
+\nMensagem de erro: %1$s</string>
     <string name="error_share_video">Não foi possível enviar o vídeo a Kodi.</string>
     <string name="error_reading_local_storage">Não foi possível aceder ao armazenamento local. Deu permissão à Kore para aceder ao armazenamento de ficheiros\?</string>
     <string name="error_starting_http_server">Não foi possível criar ou inicializar o servidor de HTTP.</string>
@@ -194,25 +203,19 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="clear_playlist">Limpar lista de reprodução</string>
     <string name="source_empty">Fonte sem items</string>
     <string name="swipe_down_to_refresh">Puxe para actualizar</string>
-    <string name="no_movies_found_refresh">Nenhum filme encontrado
-\n
-\nPuxe para baixo para actualizar</string>
-    <string name="no_tvshows_found_refresh">Nenhum programa de TV encontrado
-\n
-\nPuxe para baixo para actualizar</string>
+    <string name="no_movies_found_refresh">Nenhum filme encontrado</string>
+    <string name="no_tvshows_found_refresh">Nenhum programa de TV encontrado</string>
     <string name="no_episodes_found">Nenhum episódio encontrado</string>
-    <string name="no_artists_found_refresh">Nenhum artista encontrado\n\nPuxe para baixo para actualizar</string>
-    <string name="no_albums_found_refresh">Nenhum álbum encontrado\n\nPuxe para baixo para actualizar</string>
-    <string name="no_genres_found_refresh">Nenhum género encontrado\n\nPuxe para baixo para actualizar</string>
-    <string name="no_addons_found_refresh">Nenhuma extensão encontrada\n\nPuxe para baixo para actualizar</string>
-    <string name="no_music_videos_found_refresh">Nenhum vídeo encontrado\n\nPuxe para baixo para actualizar</string>
-    <string name="no_channel_groups_found_refresh">Nenhum grupo encontrado.\n\nPuxe para actualizar</string>
-    <string name="no_channels_found_refresh">Nenhum canal encontrado.\n\nPuxe para actualizar</string>
-    <string name="no_favourites_found_refresh">Nenhum favorito encontrado
-\n
-\n Puxe para baixo para atualizar</string>
-    <string name="no_recordings_found_refresh">Nenhuma gravação encontrada.\n\nPuxe para actualizar</string>
-    <string name="no_broadcasts_found_refresh">Guia não disponível.\n\nPuxe para actualizar</string>
+    <string name="no_artists_found_refresh">Nenhum artista encontrado</string>
+    <string name="no_albums_found_refresh">Nenhum álbum encontrado</string>
+    <string name="no_genres_found_refresh">Nenhum género musical encontrado</string>
+    <string name="no_addons_found_refresh">Nenhuma extensão encontrada</string>
+    <string name="no_music_videos_found_refresh">Nenhum vídeo encontrado</string>
+    <string name="no_channel_groups_found_refresh">Nenhum grupo encontrado</string>
+    <string name="no_channels_found_refresh">Nenhum canal encontrado</string>
+    <string name="no_favourites_found_refresh">Nenhum favorito encontrado</string>
+    <string name="no_recordings_found_refresh">Nenhuma gravação encontrada</string>
+    <string name="no_broadcasts_found_refresh">Guia não disponível</string>
     <string name="pull_to_refresh">Puxe para atualizar</string>
     <string name="no_cast_info">Não existe informação sobre o elenco</string>
     <string name="minutes_abbrev">%1$s min</string>
@@ -297,12 +300,7 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="remote_bar_items">Atalhos da barra inferior</string>
     <string name="nav_drawer_items">Atalhos do menu lateral</string>
     <string name="about">Sobre</string>
-    <string name="about_desc"><![CDATA[
-        \u00A9 2018 XBMC Foundation<br><br>
-Por favor classifique-nos na <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
-
-Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
-]]></string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Por favor classifique-nos na &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Se necessitar de ajuda, visite o nosso &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;forum&lt;/a&gt;&lt;/b&gt;</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
@@ -317,12 +315,19 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
     <string name="queue_on_kodi">Colocar na fila</string>
     <string name="pause_call_incoming_title">Chamada pendente</string>
     <string name="pause_call_incoming_message">Verifique o seu telefone, está uma chamada pendente</string>
-    <string name="error_getting_pvr_info">Ocorreram erros ao obter informações do PVR: %1$s</string>
-    <string name="might_not_have_pvr">Ocorreram erros ao obter a lista de canais, provavelmente porque o seu media centar não tem hardware de PVR ou não está configurado.\n\nSe for esse o caso e pretender remover esta entrada do menu lateral, pode fazê-lo nas configurações.</string>
-    <string name="error_starting_channel">Ocorreram erros ao iniciar o canal: %1$s</string>
-    <string name="error_favourites">Ocorreram erros ao obter os favoritos: %1$s</string>
-    <string name="error_starting_recording">Ocorreram erros ao iniciar a gravação: %1$s</string>
-    <string name="error_starting_to_record">Ocorreram erros ao gravar: %1$s</string>
+    <string name="error_getting_pvr_info">Ocorreram erros ao obter informações do PVR.
+\n
+\nMensagem de erro: %1$s</string>
+    <string name="might_not_have_pvr">Não foi possível obter informações do PVR.
+\n
+\nO seu media centar provavelmente não tem hardware de PVR ou não está configurado. Se pretender remover esta entrada do menu lateral pode fazê-lo nas configurações.</string>
+    <string name="error_starting_channel">Ocorreram erros ao iniciar o canal. Descriçao: %1$s</string>
+    <string name="error_favourites">Ocorreram erros ao obter favoritos.
+\nDescriçao: %1$s</string>
+    <string name="error_starting_recording">Ocorreram erros ao iniciar a gravação.
+\nMensagem de erro: %1$s</string>
+    <string name="error_starting_to_record">Ocorreram erros ao gravar.
+\nMensagem de erro: %1$s</string>
     <string name="channel_switching">A mudar para o canal %1$s</string>
     <string name="starting_recording">A iniciar gravação %1$s</string>
     <string name="refresh">Actualizar</string>
@@ -352,9 +357,7 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
     <string name="muted">Silêncio</string>
     <string name="no_item_available_to_play">Nenhum item disponível para reprodução.</string>
     <string name="Refreshing_not_implemented_for_this_item">Refrescamento não implementado para este item</string>
-    <string name="no_songs_found_refresh">Nenhuma música encontrada
-\n
-\n Puxe para baixo para atualizar</string>
+    <string name="no_songs_found_refresh">Nenhuma música encontrada</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Expandir/Colapsar</string>
     <string name="stream_action">Transmitir</string>
@@ -375,4 +378,5 @@ Se necessitar de ajuda, visite o nosso <b><a href="http://forum.kodi.tv/forumdis
     <string name="unwatched_status">N. Visto</string>
     <string name="watched_status">Visto</string>
     <string name="party_mode">Modo Festa</string>
+    <string name="not_connected">Desligado</string>
 </resources>
