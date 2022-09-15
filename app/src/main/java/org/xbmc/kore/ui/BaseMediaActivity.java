@@ -32,8 +32,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
+import androidx.transition.Transition;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.transition.MaterialElevationScale;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.Settings;
@@ -249,6 +251,18 @@ public abstract class BaseMediaActivity
         if (currentFragment instanceof AbstractFragment) {
             // Postpone reenter transition to allow for shared element loading
             ((AbstractFragment) currentFragment).setPostponeReenterTransition(true);
+            Transition exitTransition = new MaterialElevationScale(false),
+                    reenterTransition = new MaterialElevationScale(true);
+            int exitDuration = getResources().getInteger(R.integer.fragment_exit_animation_duration),
+                    reenterDuration = getResources().getInteger(R.integer.fragment_popenter_animation_duration),
+                    reenterStartDelay = getResources().getInteger(R.integer.fragment_popenter_start_offset);
+            exitTransition.setDuration(exitDuration);
+            // Unfortunately we can't do a startDelay on reenter, as the reentering fragment becomes visible
+            // during that delay, which ruins the transition
+            reenterTransition.setDuration(reenterDuration + reenterStartDelay);
+            reenterTransition.setStartDelay(0);
+            currentFragment.setExitTransition(exitTransition);
+            currentFragment.setReenterTransition(reenterTransition);
         }
         fragmentManager.beginTransaction()
                        .setReorderingAllowed(true)

@@ -25,6 +25,6 @@
 
     <translate
         android:fromYDelta="0%"
-        android:toYDelta="10%" />
+        android:toYDelta="15%" />
 
 </set>
