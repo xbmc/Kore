@@ -18,6 +18,7 @@ app/keystore.properties
 
 # Keystores
 *.keystore
+*.jks
 
 # Windows
 .DS_Store
