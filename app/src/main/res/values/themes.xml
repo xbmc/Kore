@@ -16,7 +16,7 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Kore.Default.Dynamic" parent="Theme.Kore.Default.Light"/>
+    <style name="Theme.Kore.Default.Auto" parent="Theme.Kore.Default.Light"/>
 
     <style name="Theme.Kore.Default.Dark" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -126,7 +126,7 @@
         <item name="kodiStatusUnavailable">?attr/colorError</item>
     </style>
 
-    <style name="Theme.Kore.Sun.Dynamic" parent="Theme.Kore.Sun.Light"/>
+    <style name="Theme.Kore.Sun.Auto" parent="Theme.Kore.Sun.Light"/>
 
     <!-- Sunrise theme. -->
     <style name="Theme.Kore.Sun.Light" parent="Theme.Kore.Default.Light">

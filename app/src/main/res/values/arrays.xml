@@ -43,6 +43,40 @@
         <item>5</item>
     </string-array>
 
+    <!-- Theme colors -->
+    <string-array name="theme_colors_array">
+        <item>@string/theme_color_kore</item>
+        <item>@string/theme_color_sun</item>
+        <item>@string/theme_color_system_colors</item>
+    </string-array>
+    <string-array translatable="false" name="theme_colors_values_array">
+        <item>kore</item>
+        <item>sun</item>
+        <item>system_colors</item>
+    </string-array>
+
+    <!-- For pre Android S (31) remove the System Colors option as its not applicable -->
+    <string-array name="theme_colors_array_pre_S">
+        <item>@string/theme_color_kore</item>
+        <item>@string/theme_color_sun</item>
+    </string-array>
+    <string-array translatable="false" name="theme_colors_values_array_pre_S">
+        <item>kore</item>
+        <item>sun</item>
+    </string-array>
+
+    <!-- Theme variants -->
+    <string-array name="theme_variants_array">
+        <item>@string/theme_variant_auto</item>
+        <item>@string/theme_variant_light</item>
+        <item>@string/theme_variant_dark</item>
+    </string-array>
+    <string-array translatable="false" name="theme_variants_values_array">
+        <item>auto</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
     <!-- Remote Bar items -->
     <string-array name="entries_remote_bar_items">
         <item>@string/home</item>

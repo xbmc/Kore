@@ -390,29 +390,6 @@ public class UIUtils {
         return (alpha << 24) | (color & 0x00ffffff);
     }
 
-    /**
-     * Returns a theme resource Id given the value stored in Shared Preferences
-     * @param prefThemeValue Shared Preferences value for the theme
-     * @return Android resource id of the theme
-     */
-    public static int getThemeResourceId(String prefThemeValue) {
-        switch (Integer.parseInt(prefThemeValue)) {
-            case 1:
-                return R.style.Theme_Kore_Default_Light;
-            case 2:
-                return R.style.Theme_Kore_Default_Dark;
-            case 3:
-                return R.style.Theme_Kore_Sun_Dynamic;
-            case 4:
-                return R.style.Theme_Kore_Sun_Light;
-            case 5:
-                return R.style.Theme_Kore_Sun_Dark;
-            case 0:
-            default:
-                return R.style.Theme_Kore_Default_Dynamic;
-        }
-    }
-
     public static void handleVibration(Context context) {
         if(context == null) return;
 

@@ -52,14 +52,24 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/application">
+    <PreferenceCategory android:title="@string/theme">
         <ListPreference
-            android:key="pref_theme"
-            android:title="@string/theme"
-            android:entries="@array/themes_array"
-            android:entryValues="@array/themes_values_array"
-            android:defaultValue="9"/>
+            android:key="pref_theme_color"
+            android:title="@string/theme_color"
+            android:entries="@array/theme_colors_array"
+            android:entryValues="@array/theme_colors_values_array"
+            android:defaultValue="0"/>
 
+        <ListPreference
+            android:key="pref_theme_variant"
+            android:title="@string/theme_variant"
+            android:entries="@array/theme_variants_array"
+            android:entryValues="@array/theme_variants_values_array"
+            android:defaultValue="0"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/application">
         <ListPreference
             android:key="pref_language"
             android:title="@string/language"/>
