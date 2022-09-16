@@ -59,8 +59,12 @@ public class Settings {
      */
 
     // Theme
-    public static final String KEY_PREF_THEME = "pref_theme";
-    public static final String DEFAULT_PREF_THEME = "0";
+    public static final String KEY_PREF_THEME_COLOR = "pref_theme_color";
+    public static final String DEFAULT_PREF_THEME_COLOR = "kore";
+    public static final String VALUE_PREF_THEME_COLOR_SYSTEM_COLORS = "system_colors";
+
+    public static final String KEY_PREF_THEME_VARIANT = "pref_theme_variant";
+    public static final String DEFAULT_PREF_THEME_VARIANT = "auto";
 
     // Switch to remote
     public static final String KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = "pref_switch_to_remote_after_media_start";
@@ -212,4 +216,32 @@ public class Settings {
     }
     public static final String DEFAULT_PREF_NAME_BOOKMARKED_ADDON = "Content";
 
+    /**
+     * Returns a theme resource Id given the value stored in Shared Preferences
+     * @param prefThemeColor Shared Preferences colour for the theme
+     * @param prefThemeVariant Shared Preferences variant for the theme
+     * @return Android resource id of the theme
+     */
+    public static int getThemeResourceId(String prefThemeColor, String prefThemeVariant) {
+        switch (prefThemeColor) {
+            case "sun":
+                switch (prefThemeVariant) {
+                    case "light":
+                        return R.style.Theme_Kore_Sun_Light;
+                    case "dark":
+                        return R.style.Theme_Kore_Sun_Dark;
+                    default:
+                        return R.style.Theme_Kore_Sun_Auto;
+                }
+            default:  // "kore" and "system_colors" share this
+                switch (prefThemeVariant) {
+                    case "light":
+                        return R.style.Theme_Kore_Default_Light;
+                    case "dark":
+                        return R.style.Theme_Kore_Default_Dark;
+                    default:
+                        return R.style.Theme_Kore_Default_Auto;
+                }
+        }
+    }
 }

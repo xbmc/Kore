@@ -17,12 +17,12 @@ package org.xbmc.kore.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.TextUtils;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.color.DynamicColors;
 
 import org.xbmc.kore.Settings;
 import org.xbmc.kore.utils.UIUtils;
@@ -49,7 +49,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 //                                       .build());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        setTheme(UIUtils.getThemeResourceId(prefs.getString(Settings.KEY_PREF_THEME, Settings.DEFAULT_PREF_THEME)));
+
+        String themeColor = prefs.getString(Settings.KEY_PREF_THEME_COLOR, Settings.DEFAULT_PREF_THEME_COLOR),
+                themeVariant = prefs.getString(Settings.KEY_PREF_THEME_VARIANT, Settings.DEFAULT_PREF_THEME_VARIANT);
+        setTheme(Settings.getThemeResourceId(themeColor, themeVariant));
+        if (Utils.isSOrLater() && themeColor.equals(Settings.VALUE_PREF_THEME_COLOR_SYSTEM_COLORS)) {
+            DynamicColors.applyToActivityIfAvailable(this);
+        }
+
         String preferredLocale = prefs.getString(Settings.KEY_PREF_SELECTED_LANGUAGE, null);
         if (!TextUtils.isEmpty(preferredLocale))
             Utils.setLocale(this, preferredLocale);
