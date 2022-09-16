@@ -58,14 +58,14 @@
             android:title="@string/theme_color"
             android:entries="@array/theme_colors_array"
             android:entryValues="@array/theme_colors_values_array"
-            android:defaultValue="0"/>
+            android:defaultValue="kore"/>
 
         <ListPreference
             android:key="pref_theme_variant"
             android:title="@string/theme_variant"
             android:entries="@array/theme_variants_array"
             android:entryValues="@array/theme_variants_values_array"
-            android:defaultValue="0"/>
+            android:defaultValue="auto"/>
 
     </PreferenceCategory>
 
