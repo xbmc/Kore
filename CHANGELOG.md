@@ -1,6 +1,31 @@
 Changelog
 ---------
 
+Version 3.0.0
+-------------
+Major changes in this version, bringing Kore up to date with the current Android platform (well, except for migrating to Kotlin, which to be honest wouldn't bring that much benefits, given that only replacing the syntax without taking advantage of the newer facilities provided by Kotlin/Android wouldn't bring major benefits).
+Anyway, the major changes since the last version are:
+- Migrate to Android's Material 3 UI guidelines, namely:
+  - Review themes and colors, adding support for light and dark modes based on the device's settings
+  - Add support for dynamic colors, which change depending on the user's wallpaper (on Android 12+)
+  - Use images with round corners and update buttons, text boxes, etc to current standards
+- Update media notifications and integrate them with Android's Media Session. 
+  Note: if the media notification disappears after a few minutes, even though something is playing on Kodi, that's caused by the some aggressive battery optimization settings which forcefully stop the notification. This happens with some manufaturers that don't follow Android's guidelines, in a futile and artificial attempt to extent the battery life (Xiaomi, OnePlus, Samsung, etc), and the solution is to not restrict Kore's battery usage (the way to do it depends on the specific device, more info can be obtained at https://dontkillmyapp.com/)
+- Redesign most of Kore's screens, the major changes being:
+  - The Remote screen, adding the current playback state and better media controls allow for more control of what's playing
+  - The Now Playing panel, adding the current playback state and media control buttons
+  - The Movies, TV Shows, Music and Addons information screens, doing a complete redesign, particularly on the button actions section. The IMDb link has been removed as it was seldom broken and replaced with a generic Google search, where appropriate.
+    Note, the "Play locally" function is now called "Stream", which is more appropriate and concise
+  - The Artist details screen, to show the artist albums beneath its general information
+  - Review all icons, updating them to current ones
+  - Improve showing the connection status (connecting, not connected or connected) on the various screens
+  - Make top app bar collapsable, and on the remote screen allow the background image to use up all the screen
+- Improve the screen transitions
+- Fix access to media storage in current Android versions
+- General code cleaning, remove deprecated code and update current library versions
+- Lots of other small bug fixes
+
+
 Version 2.5.3
 -------------
 - Add support for SendToKodi
