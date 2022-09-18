@@ -216,6 +216,8 @@ public class Settings {
     }
     public static final String DEFAULT_PREF_NAME_BOOKMARKED_ADDON = "Content";
 
+    public static final String THEME_VARIANT_LIGHT = "light", THEME_VARIANT_DARK = "dark";
+
     /**
      * Returns a theme resource Id given the value stored in Shared Preferences
      * @param prefThemeColor Shared Preferences colour for the theme
@@ -224,20 +226,38 @@ public class Settings {
      */
     public static int getThemeResourceId(String prefThemeColor, String prefThemeVariant) {
         switch (prefThemeColor) {
-            case "sun":
+            case "yellow":
                 switch (prefThemeVariant) {
-                    case "light":
-                        return R.style.Theme_Kore_Sun_Light;
-                    case "dark":
-                        return R.style.Theme_Kore_Sun_Dark;
+                    case THEME_VARIANT_LIGHT:
+                        return R.style.Theme_Kore_Yellow_Light;
+                    case THEME_VARIANT_DARK:
+                        return R.style.Theme_Kore_Yellow_Dark;
                     default:
-                        return R.style.Theme_Kore_Sun_Auto;
+                        return R.style.Theme_Kore_Yellow_Auto;
+                }
+            case "purple":
+                switch (prefThemeVariant) {
+                    case THEME_VARIANT_LIGHT:
+                        return R.style.Theme_Kore_Purple_Light;
+                    case THEME_VARIANT_DARK:
+                        return R.style.Theme_Kore_Purple_Dark;
+                    default:
+                        return R.style.Theme_Kore_Purple_Auto;
+                }
+            case "green":
+                switch (prefThemeVariant) {
+                    case THEME_VARIANT_LIGHT:
+                        return R.style.Theme_Kore_Green_Light;
+                    case THEME_VARIANT_DARK:
+                        return R.style.Theme_Kore_Green_Dark;
+                    default:
+                        return R.style.Theme_Kore_Green_Auto;
                 }
             default:  // "kore" and "system_colors" share this
                 switch (prefThemeVariant) {
-                    case "light":
+                    case THEME_VARIANT_LIGHT:
                         return R.style.Theme_Kore_Default_Light;
-                    case "dark":
+                    case THEME_VARIANT_DARK:
                         return R.style.Theme_Kore_Default_Dark;
                     default:
                         return R.style.Theme_Kore_Default_Auto;

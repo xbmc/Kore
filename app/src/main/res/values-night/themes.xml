@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Kore.Default.Auto" parent="Theme.Kore.Default.Dark"/>
-    <style name="Theme.Kore.Sun.Auto" parent="Theme.Kore.Sun.Dark"/>
+    <style name="Theme.Kore.Yellow.Auto" parent="Theme.Kore.Yellow.Dark"/>
+    <style name="Theme.Kore.Purple.Auto" parent="Theme.Kore.Purple.Dark"/>
+    <style name="Theme.Kore.Green.Auto" parent="Theme.Kore.Green.Dark"/>
 </resources>

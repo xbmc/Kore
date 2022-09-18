@@ -46,23 +46,31 @@
     <!-- Theme colors -->
     <string-array name="theme_colors_array">
         <item>@string/theme_color_kore</item>
-        <item>@string/theme_color_sun</item>
+        <item>@string/theme_color_green</item>
+        <item>@string/theme_color_yellow</item>
+        <item>@string/theme_color_purple</item>
         <item>@string/theme_color_system_colors</item>
     </string-array>
     <string-array translatable="false" name="theme_colors_values_array">
         <item>kore</item>
-        <item>sun</item>
+        <item>green</item>
+        <item>yellow</item>
+        <item>purple</item>
         <item>system_colors</item>
     </string-array>
 
     <!-- For pre Android S (31) remove the System Colors option as its not applicable -->
     <string-array name="theme_colors_array_pre_S">
         <item>@string/theme_color_kore</item>
-        <item>@string/theme_color_sun</item>
+        <item>@string/theme_color_green</item>
+        <item>@string/theme_color_yellow</item>
+        <item>@string/theme_color_purple</item>
     </string-array>
     <string-array translatable="false" name="theme_colors_values_array_pre_S">
         <item>kore</item>
-        <item>sun</item>
+        <item>green</item>
+        <item>yellow</item>
+        <item>purple</item>
     </string-array>
 
     <!-- Theme variants -->
