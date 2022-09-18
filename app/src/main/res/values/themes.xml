@@ -126,66 +126,188 @@
         <item name="kodiStatusUnavailable">?attr/colorError</item>
     </style>
 
-    <style name="Theme.Kore.Sun.Auto" parent="Theme.Kore.Sun.Light"/>
 
-    <!-- Sunrise theme. -->
-    <style name="Theme.Kore.Sun.Light" parent="Theme.Kore.Default.Light">
-        <item name="colorPrimary">@color/theme_kore_sun_light_primary</item>
-        <item name="colorOnPrimary">@color/theme_kore_sun_light_onPrimary</item>
-        <item name="colorPrimaryContainer">@color/theme_kore_sun_light_primaryContainer</item>
-        <item name="colorOnPrimaryContainer">@color/theme_kore_sun_light_onPrimaryContainer</item>
-        <item name="colorSecondary">@color/theme_kore_sun_light_secondary</item>
-        <item name="colorOnSecondary">@color/theme_kore_sun_light_onSecondary</item>
-        <item name="colorSecondaryContainer">@color/theme_kore_sun_light_secondaryContainer</item>
-        <item name="colorOnSecondaryContainer">@color/theme_kore_sun_light_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/theme_kore_sun_light_tertiary</item>
-        <item name="colorOnTertiary">@color/theme_kore_sun_light_onTertiary</item>
-        <item name="colorTertiaryContainer">@color/theme_kore_sun_light_tertiaryContainer</item>
-        <item name="colorOnTertiaryContainer">@color/theme_kore_sun_light_onTertiaryContainer</item>
-        <item name="colorError">@color/theme_kore_sun_light_error</item>
-        <item name="colorErrorContainer">@color/theme_kore_sun_light_errorContainer</item>
-        <item name="colorOnError">@color/theme_kore_sun_light_onError</item>
-        <item name="colorOnErrorContainer">@color/theme_kore_sun_light_onErrorContainer</item>
-        <item name="android:colorBackground">@color/theme_kore_sun_light_background</item>
-        <item name="colorOnBackground">@color/theme_kore_sun_light_onBackground</item>
-        <item name="colorSurface">@color/theme_kore_sun_light_surface</item>
-        <item name="colorOnSurface">@color/theme_kore_sun_light_onSurface</item>
-        <item name="colorSurfaceVariant">@color/theme_kore_sun_light_surfaceVariant</item>
-        <item name="colorOnSurfaceVariant">@color/theme_kore_sun_light_onSurfaceVariant</item>
-        <item name="colorOutline">@color/theme_kore_sun_light_outline</item>
-        <item name="colorOnSurfaceInverse">@color/theme_kore_sun_light_inverseOnSurface</item>
-        <item name="colorSurfaceInverse">@color/theme_kore_sun_light_inverseSurface</item>
-        <item name="colorPrimaryInverse">@color/theme_kore_sun_light_inversePrimary</item>
+    <!-- Yellow theme -->
+    <style name="Theme.Kore.Yellow.Auto" parent="Theme.Kore.Yellow.Light"/>
+
+    <style name="Theme.Kore.Yellow.Light" parent="Theme.Kore.Default.Light">
+        <item name="colorPrimary">@color/theme_kore_yellow_light_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_yellow_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_yellow_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_yellow_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_yellow_light_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_yellow_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_yellow_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_yellow_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_yellow_light_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_yellow_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_yellow_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_yellow_light_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_yellow_light_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_yellow_light_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_yellow_light_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_yellow_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_yellow_light_background</item>
+        <item name="colorOnBackground">@color/theme_kore_yellow_light_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_yellow_light_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_yellow_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_yellow_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_yellow_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_yellow_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_yellow_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_yellow_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_yellow_light_inversePrimary</item>
     </style>
 
-    <!-- Sunset theme. -->
-    <style name="Theme.Kore.Sun.Dark" parent="Theme.Kore.Default.Dark">
-        <item name="colorPrimary">@color/theme_kore_sun_dark_primary</item>
-        <item name="colorOnPrimary">@color/theme_kore_sun_dark_onPrimary</item>
-        <item name="colorPrimaryContainer">@color/theme_kore_sun_dark_primaryContainer</item>
-        <item name="colorOnPrimaryContainer">@color/theme_kore_sun_dark_onPrimaryContainer</item>
-        <item name="colorSecondary">@color/theme_kore_sun_dark_secondary</item>
-        <item name="colorOnSecondary">@color/theme_kore_sun_dark_onSecondary</item>
-        <item name="colorSecondaryContainer">@color/theme_kore_sun_dark_secondaryContainer</item>
-        <item name="colorOnSecondaryContainer">@color/theme_kore_sun_dark_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/theme_kore_sun_dark_tertiary</item>
-        <item name="colorOnTertiary">@color/theme_kore_sun_dark_onTertiary</item>
-        <item name="colorTertiaryContainer">@color/theme_kore_sun_dark_tertiaryContainer</item>
-        <item name="colorOnTertiaryContainer">@color/theme_kore_sun_dark_onTertiaryContainer</item>
-        <item name="colorError">@color/theme_kore_sun_dark_error</item>
-        <item name="colorErrorContainer">@color/theme_kore_sun_dark_errorContainer</item>
-        <item name="colorOnError">@color/theme_kore_sun_dark_onError</item>
-        <item name="colorOnErrorContainer">@color/theme_kore_sun_dark_onErrorContainer</item>
-        <item name="android:colorBackground">@color/theme_kore_sun_dark_background</item>
-        <item name="colorOnBackground">@color/theme_kore_sun_dark_onBackground</item>
-        <item name="colorSurface">@color/theme_kore_sun_dark_surface</item>
-        <item name="colorOnSurface">@color/theme_kore_sun_dark_onSurface</item>
-        <item name="colorSurfaceVariant">@color/theme_kore_sun_dark_surfaceVariant</item>
-        <item name="colorOnSurfaceVariant">@color/theme_kore_sun_dark_onSurfaceVariant</item>
-        <item name="colorOutline">@color/theme_kore_sun_dark_outline</item>
-        <item name="colorOnSurfaceInverse">@color/theme_kore_sun_dark_inverseOnSurface</item>
-        <item name="colorSurfaceInverse">@color/theme_kore_sun_dark_inverseSurface</item>
-        <item name="colorPrimaryInverse">@color/theme_kore_sun_dark_inversePrimary</item>
+    <style name="Theme.Kore.Yellow.Dark" parent="Theme.Kore.Default.Dark">
+        <item name="colorPrimary">@color/theme_kore_yellow_dark_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_yellow_dark_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_yellow_dark_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_yellow_dark_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_yellow_dark_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_yellow_dark_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_yellow_dark_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_yellow_dark_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_yellow_dark_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_yellow_dark_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_yellow_dark_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_yellow_dark_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_yellow_dark_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_yellow_dark_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_yellow_dark_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_yellow_dark_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_yellow_dark_background</item>
+        <item name="colorOnBackground">@color/theme_kore_yellow_dark_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_yellow_dark_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_yellow_dark_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_yellow_dark_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_yellow_dark_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_yellow_dark_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_yellow_dark_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_yellow_dark_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_yellow_dark_inversePrimary</item>
+    </style>
+
+    <!-- Purple theme -->
+    <style name="Theme.Kore.Purple.Auto" parent="Theme.Kore.Purple.Light"/>
+
+    <style name="Theme.Kore.Purple.Light" parent="Theme.Kore.Default.Light">
+        <item name="colorPrimary">@color/theme_kore_purple_light_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_purple_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_purple_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_purple_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_purple_light_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_purple_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_purple_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_purple_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_purple_light_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_purple_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_purple_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_purple_light_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_purple_light_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_purple_light_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_purple_light_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_purple_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_purple_light_background</item>
+        <item name="colorOnBackground">@color/theme_kore_purple_light_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_purple_light_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_purple_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_purple_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_purple_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_purple_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_purple_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_purple_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_purple_light_inversePrimary</item>
+    </style>
+
+    <style name="Theme.Kore.Purple.Dark" parent="Theme.Kore.Default.Dark">
+        <item name="colorPrimary">@color/theme_kore_purple_dark_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_purple_dark_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_purple_dark_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_purple_dark_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_purple_dark_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_purple_dark_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_purple_dark_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_purple_dark_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_purple_dark_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_purple_dark_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_purple_dark_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_purple_dark_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_purple_dark_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_purple_dark_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_purple_dark_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_purple_dark_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_purple_dark_background</item>
+        <item name="colorOnBackground">@color/theme_kore_purple_dark_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_purple_dark_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_purple_dark_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_purple_dark_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_purple_dark_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_purple_dark_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_purple_dark_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_purple_dark_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_purple_dark_inversePrimary</item>
+    </style>
+
+    <!-- Green theme -->
+    <style name="Theme.Kore.Green.Auto" parent="Theme.Kore.Green.Light"/>
+
+    <style name="Theme.Kore.Green.Light" parent="Theme.Kore.Default.Light">
+        <item name="colorPrimary">@color/theme_kore_green_light_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_green_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_green_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_green_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_green_light_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_green_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_green_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_green_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_green_light_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_green_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_green_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_green_light_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_green_light_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_green_light_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_green_light_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_green_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_green_light_background</item>
+        <item name="colorOnBackground">@color/theme_kore_green_light_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_green_light_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_green_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_green_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_green_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_green_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_green_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_green_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_green_light_inversePrimary</item>
+    </style>
+
+    <style name="Theme.Kore.Green.Dark" parent="Theme.Kore.Default.Dark">
+        <item name="colorPrimary">@color/theme_kore_green_dark_primary</item>
+        <item name="colorOnPrimary">@color/theme_kore_green_dark_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_kore_green_dark_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_kore_green_dark_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_kore_green_dark_secondary</item>
+        <item name="colorOnSecondary">@color/theme_kore_green_dark_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_kore_green_dark_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_kore_green_dark_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_kore_green_dark_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_kore_green_dark_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_kore_green_dark_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_kore_green_dark_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_kore_green_dark_error</item>
+        <item name="colorErrorContainer">@color/theme_kore_green_dark_errorContainer</item>
+        <item name="colorOnError">@color/theme_kore_green_dark_onError</item>
+        <item name="colorOnErrorContainer">@color/theme_kore_green_dark_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_kore_green_dark_background</item>
+        <item name="colorOnBackground">@color/theme_kore_green_dark_onBackground</item>
+        <item name="colorSurface">@color/theme_kore_green_dark_surface</item>
+        <item name="colorOnSurface">@color/theme_kore_green_dark_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_kore_green_dark_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_kore_green_dark_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_kore_green_dark_outline</item>
+        <item name="colorOnSurfaceInverse">@color/theme_kore_green_dark_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/theme_kore_green_dark_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_kore_green_dark_inversePrimary</item>
     </style>
 
 </resources>
