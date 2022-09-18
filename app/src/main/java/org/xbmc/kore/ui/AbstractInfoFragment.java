@@ -163,24 +163,20 @@ abstract public class AbstractInfoFragment
                                 args.getString(BaseMediaActivity.IMAGE_TRANS_NAME, null);
 
         if (transitionName != null) {
-            // If we are passed a transition name, setup up the shared element enter/return and this fragment
-            // enter/return transition, and postpone them
+            // If there's a transition name setup up the shared element and fragment transition, and postpone them
             TransitionInflater transitionInflater = TransitionInflater.from(requireContext());
-            Transition seEnterTransition = transitionInflater.inflateTransition(R.transition.shared_element_image_enter),
-                    seReturnTransition = transitionInflater.inflateTransition(R.transition.shared_element_image_enter);
-            int seEnterDuration = getResources().getInteger(R.integer.fragment_enter_animation_duration),
-                    seReturnDuration = getResources().getInteger(R.integer.fragment_popexit_animation_duration);
-            seEnterTransition.setDuration(seEnterDuration);
-            seReturnTransition.setDuration(seReturnDuration);
+
+            // Shared element transition
+            Transition seEnterTransition = transitionInflater.inflateTransition(R.transition.shared_element_image_enter);
             setSharedElementEnterTransition(seEnterTransition);
-            setSharedElementReturnTransition(seReturnTransition);
             binding.poster.setTransitionName(transitionName);
 
+            // Fragment enter and return transition
             Transition enterTransition = transitionInflater.inflateTransition(R.transition.fragment_info_poster_enter),
                     returnTransition = transitionInflater.inflateTransition(R.transition.fragment_info_poster_enter);
-            int enterDuration = getResources().getInteger(R.integer.fragment_enter_after_exit_animation_duration);
-            int startDelay = getResources().getInteger(R.integer.fragment_enter_after_exit_start_offset);
-            int returnDuration = getResources().getInteger(R.integer.fragment_popexit_animation_duration);
+            int enterDuration = getResources().getInteger(R.integer.fragment_enter_after_exit_animation_duration),
+                    startDelay = getResources().getInteger(R.integer.fragment_enter_after_exit_start_offset),
+                    returnDuration = getResources().getInteger(R.integer.fragment_popexit_animation_duration);
             enterTransition.setDuration(enterDuration);
             enterTransition.setStartDelay(startDelay);
             returnTransition.setDuration(returnDuration);
