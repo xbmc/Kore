@@ -162,4 +162,16 @@
         <item>5</item>
     </string-array>
 
+    <!-- Constants for the Use hardware volume keys setting in preferences -->
+    <string-array name="use_hw_vol_keys_array">
+        <item>@string/use_hardware_volume_keys_never</item>
+        <item>@string/use_hardware_volume_keys_always</item>
+        <item>@string/use_hardware_volume_keys_when_in_foreground</item>
+    </string-array>
+    <string-array translatable="false" name="use_hw_vol_keys_array_values_array">
+        <item>never</item>
+        <item>always</item>
+        <item>when_in_foreground</item>
+    </string-array>
+
 </resources>

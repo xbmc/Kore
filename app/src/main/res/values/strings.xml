@@ -391,7 +391,6 @@
     <string name="show_now_playing_panel">Show now playing panel</string>
     <string name="show_now_playing_panel_summary">Display a panel at the bottom of the screen when media is playing</string>
     <string name="pause_during_calls">Pause during phone call</string>
-    <string name="use_hardware_volume_keys">Use device volume keys</string>
     <string name="vibrate_on_remote">Vibrate on touch</string>
     <string name="always_sendtokodi_addon">Prefer SendToKodi addon</string>
     <string name="remote_bar_items">Bottom bar shortcuts</string>
@@ -459,5 +458,11 @@
     <string name="any_network">Any</string>
 
     <string name="web_search">Web Search</string>
+
+    <!-- Strings for the Use hardware volume keys setting -->
+    <string name="use_hardware_volume_keys">Use device volume keys</string>
+    <string name="use_hardware_volume_keys_never">Never</string>
+    <string name="use_hardware_volume_keys_always">Always</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">When Kore is in the foreground</string>
 
 </resources>
