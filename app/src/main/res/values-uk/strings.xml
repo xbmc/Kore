@@ -368,4 +368,6 @@
     <string name="wizard_xbmc_direct_share">Відображати у списку поділитися</string>
     <string name="always_sendtokodi_addon">Надати перевагу SendToKodi</string>
     <string name="queue_action">Додати до черги</string>
+    <string name="theme_variant_dark">темний</string>
+    <string name="theme_variant_light">невелик.</string>
 </resources>

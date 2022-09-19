@@ -407,4 +407,5 @@
     <string name="any_network">כל רשת</string>
     <string name="always_sendtokodi_addon">תמיד להעדיף את התוסף SendToKodi</string>
     <string name="queue_action">הוספה לתור</string>
+    <string name="theme_variant_light">קל</string>
 </resources>

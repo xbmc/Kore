@@ -387,4 +387,14 @@
     <string name="watched_status">Obejrzane</string>
     <string name="web_search">Wyszukiwanie w sieci</string>
     <string name="not_connected">Niepołączony</string>
+    <string name="theme_variant_dark">Ciemny</string>
+    <string name="theme_variant_light">Jasny</string>
+    <string name="theme_variant_auto">Domyślny systemu</string>
+    <string name="theme_variant">Wariant</string>
+    <string name="theme_color_kore">Niebieski aksamit</string>
+    <string name="theme_color_system_colors">Kolory systemowe</string>
+    <string name="theme_color">Schemat kolorów</string>
+    <string name="theme_color_purple">Purpurowy deszcz</string>
+    <string name="theme_color_yellow">Żółta łódź podwodna</string>
+    <string name="theme_color_green">Zielona mila</string>
 </resources>

@@ -39,4 +39,5 @@
     <string name="music">Cerddoriaeth</string>
     <string name="tv_shows">Rhaglenni teledu</string>
     <string name="movies">Ffilmiau</string>
+    <string name="theme_variant_light">Ysgafn</string>
 </resources>

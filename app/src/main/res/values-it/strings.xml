@@ -387,4 +387,11 @@
 \n
 \nDescrizione errore: %1$s</string>
     <string name="not_connected">Non connesso</string>
+    <string name="theme_variant_auto">Predefinito del sistema</string>
+    <string name="theme_variant">Variante</string>
+    <string name="theme_color_kore">Kore</string>
+    <string name="theme_color_system_colors">Colori di sistema</string>
+    <string name="theme_color">Schema colori</string>
+    <string name="theme_variant_dark">Scuro</string>
+    <string name="theme_variant_light">Chiaro</string>
 </resources>

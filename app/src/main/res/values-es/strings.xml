@@ -386,4 +386,14 @@
     <string name="unwatched_status">No visto</string>
     <string name="watched_status">Visto</string>
     <string name="not_connected">No conectado</string>
+    <string name="theme_variant_dark">Oscuro</string>
+    <string name="theme_variant_light">Claro</string>
+    <string name="theme_variant_auto">Por defecto del Sistema</string>
+    <string name="theme_variant">Variante</string>
+    <string name="theme_color_purple">Lluvia Púrpura</string>
+    <string name="theme_color_yellow">Submarino Amarillo</string>
+    <string name="theme_color_green">Milla Verde</string>
+    <string name="theme_color_kore">Terciopelo Azul</string>
+    <string name="theme_color_system_colors">Colores del Sistema</string>
+    <string name="theme_color">Esquema de Color</string>
 </resources>

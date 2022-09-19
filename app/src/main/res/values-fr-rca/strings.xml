@@ -39,4 +39,5 @@
     <string name="music">Musique</string>
     <string name="tv_shows">Émissions de télé</string>
     <string name="movies">Films</string>
+    <string name="theme_variant_light">Légère</string>
 </resources>

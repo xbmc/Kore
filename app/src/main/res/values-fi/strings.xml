@@ -385,4 +385,14 @@
     <string name="unwatched_status">Katsomaton</string>
     <string name="watched_status">Katsottu</string>
     <string name="not_connected">Ei yhteyttä</string>
+    <string name="theme_variant">Variantti</string>
+    <string name="theme_variant_auto">Järjestelmän oletus</string>
+    <string name="theme_color_kore">Vesi</string>
+    <string name="theme_color_system_colors">Järjestelmän värit</string>
+    <string name="theme_color">Väriteema</string>
+    <string name="theme_variant_dark">Tumma</string>
+    <string name="theme_variant_light">Vaalea</string>
+    <string name="theme_color_purple">Ilma</string>
+    <string name="theme_color_yellow">Tuli</string>
+    <string name="theme_color_green">Maa</string>
 </resources>

@@ -370,4 +370,5 @@
     <string name="external_storage">Úložiště</string>
     <string name="dcim">DCIM</string>
     <string name="queue_action">Fronta</string>
+    <string name="theme_variant_light">Lehký</string>
 </resources>

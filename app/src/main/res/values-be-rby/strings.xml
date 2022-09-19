@@ -387,4 +387,6 @@
     <string name="watched_status">Прагледжана</string>
     <string name="party_mode">Рэжым гулянкі</string>
     <string name="not_connected">Не падлучана</string>
+    <string name="theme_variant_dark">Цёмны</string>
+    <string name="theme_variant_light">Светлы</string>
 </resources>

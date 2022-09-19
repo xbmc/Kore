@@ -39,4 +39,5 @@
     <string name="music">Μουσική</string>
     <string name="tv_shows">Τηλ. Σειρές</string>
     <string name="movies">Ταινίες</string>
+    <string name="theme_variant_light">Ασθενής</string>
 </resources>

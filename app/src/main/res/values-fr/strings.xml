@@ -369,4 +369,6 @@
     <string name="any_network">Tous</string>
     <string name="always_sendtokodi_addon">Toujours préférer l\'extension \\\"SendToKodi\\\"</string>
     <string name="queue_action">Ajouter à la queue</string>
+    <string name="theme_variant_dark">Sombre</string>
+    <string name="theme_variant_light">Légère</string>
 </resources>
