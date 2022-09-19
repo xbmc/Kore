@@ -45,15 +45,11 @@ If you want to run tests, execute `gradle testDebugUnitTest`.
 
 **Libraries used**
 - [Jackson](https://github.com/FasterXML/jackson)
-- [Butterknife](http://jakewharton.github.io/butterknife/)
 - [Picasso](http://square.github.io/picasso/)
 - [OkHttp](http://square.github.io/okhttp/)
 - [EventBus](https://github.com/greenrobot/EventBus)
 - [JmDNS](https://github.com/jmdns/jmdns)
-- [PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip)
-- [FloatingActionButton](https://github.com/makovkastar/FloatingActionButton)
 - [ExpandableTextView](https://github.com/Blogcat/Android-ExpandableTextView)
-- [AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel)
 
 ## Links
 
