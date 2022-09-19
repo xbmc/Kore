@@ -275,4 +275,5 @@
     <string name="external_storage">Tároló</string>
     <string name="dcim">DCIM</string>
     <string name="queue_action">Sor</string>
+    <string name="theme_variant_light">Enyhe</string>
 </resources>

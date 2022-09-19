@@ -405,4 +405,6 @@
     <string name="unwatched_status">未观看</string>
     <string name="watched_status">已观看</string>
     <string name="not_connected">未连接</string>
+    <string name="theme_variant_dark">暗</string>
+    <string name="theme_variant_light">小</string>
 </resources>

@@ -388,4 +388,11 @@
     <string name="unwatched_status">시청 안 함</string>
     <string name="watched_status">시청함</string>
     <string name="not_connected">연결 안 됨</string>
+    <string name="theme_color_kore">Kore</string>
+    <string name="theme_variant_auto">시스템 기본</string>
+    <string name="theme_variant">변종</string>
+    <string name="theme_color_system_colors">시스템 색상</string>
+    <string name="theme_color">색상</string>
+    <string name="theme_variant_dark">Dark 모드</string>
+    <string name="theme_variant_light">번개</string>
 </resources>

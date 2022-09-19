@@ -29,7 +29,7 @@
     <string name="dcim">Cámara (DCIM)</string>
     <string name="external_storage">Almacenamiento</string>
     <string name="addons">Complementos</string>
-    <string name="files">Archivos</string>
+    <string name="files">Archivos de Kodi</string>
     <string name="local_files">Archivos locales</string>
     <string name="video">Video</string>
     <string name="videos">Videos</string>
@@ -37,7 +37,7 @@
     <string name="window">Ventana</string>
     <string name="script">Script</string>
     <string name="unknown">Desconocido</string>
-    <string name="file_browser">Explorador de archivos</string>
+    <string name="file_browser">Navegador de archivos de Kodi</string>
     <string name="local_file_browser">Explorador de archivos locales</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Favoritos</string>
@@ -64,7 +64,8 @@
     <string name="toggle_fullscreen">Cambiar a pantalla completa</string>
     <string name="connected_to">Conectado a %1$s</string>
     <string name="connecting">Conectando…</string>
-    <string name="connecting_to">Conectando a %1$s (%2$s)…</string>
+    <string name="connecting_to">No se pudo conectar con %1$s (%2$s)
+\nReintentando…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bienvenido</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -182,29 +183,23 @@
     <string name="season_episode_abbrev">t%1$02de%2$02d</string>
     <string name="season_episode">Temporada %1$02d | Episodio %2$02d</string>
     <string name="season_number">Temporada %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Episodio %1$d</string>
     <string name="votes">%1$s votos</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Póster</string>
     <string name="thumbnail">Miniatura</string>
-    <string name="error_getting_properties">No se pudieron obtener las propiedades de Kodi.\n
-    	Mensaje de error:
-        %1$s.</string>
-    <string name="error_executing_subtitles">No se pudo ejecutar el complemento de subtítulos.\n
-    	Mensaje de error:
-        %1$s.</string>
-    <string name="error_getting_addon_info">No se pudo obtener información de complemento.\n
-    	Mensaje de error:
-        %1$s.</string>
-    <string name="error_getting_source_info">No se pudo navegar los archivos.\n
-    	Mensaje de error:
-        %1$s.</string>
-    <string name="error_play_media_file">No se pudo reproducir un archivo.\n
-    	Mensaje de error:
-        %1$s.</string>
-    <string name="error_play_local_file">No se pudo reproducir un archivo local.\n
-    	Mensaje de error:
-        %1$s.</string>
+    <string name="error_getting_properties">No se pudieron obtener las propiedades de Kodi.
+\nMensaje de error: %1$s</string>
+    <string name="error_executing_subtitles">No se pudo ejecutar el complemento de subtítulos.
+\nMensaje de error: %1$s</string>
+    <string name="error_getting_addon_info">No se pudo obtener información sobre el complemento.
+\nMensaje de error: %1$s</string>
+    <string name="error_getting_source_info">No se pudo navegar los archivos.
+\nMensaje de error: %1$s.</string>
+    <string name="error_play_media_file">No se pudo reproducir un archivo.
+\nMensaje de error: %1$s</string>
+    <string name="error_play_local_file">No se pudo reproducir un archivo local.
+\nMensaje de error: %1$s</string>
     <string name="error_queue_media_file">No se pudo encolar un archivo.\n
     	Mensaje de error:
         %1$s.</string>
@@ -368,7 +363,8 @@
 \n
 \n Si ese es el caso y te gustaría quitar esta entrada del menú lateral, puedes hacerlo en los ajustes.</string>
     <string name="error_starting_channel">Ocurrió un error al intentar iniciar la reproducción de canal: %1$s</string>
-    <string name="error_favourites">Ocurrió un error al intentar obtener los favoritos con descripción: %1$s</string>
+    <string name="error_favourites">No se pudieron obtener los favoritos
+\nDescripción del error: %1$s</string>
     <string name="error_starting_recording">Ocurrió un error al intentar iniciar una grabación: %1$s</string>
     <string name="error_starting_to_record">Ocurrió un error al grabar: %1$s</string>
     <string name="channel_switching">Cambiando al canal %1$s</string>
@@ -411,4 +407,8 @@
     <string name="any_network">Cualquiera</string>
     <string name="always_sendtokodi_addon">Siempre preferir el complemento SendToKodi</string>
     <string name="queue_action">Encolar</string>
+    <string name="party_mode">Modo fiesta</string>
+    <string name="not_connected">No conectado</string>
+    <string name="theme_variant_dark">Oscuro</string>
+    <string name="theme_variant_light">Débil</string>
 </resources>

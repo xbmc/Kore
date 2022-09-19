@@ -279,4 +279,6 @@
     <string name="favourites">Favoritos</string>
     <string name="videos">Vídeos</string>
     <string name="queue_action">Colocar na fila</string>
+    <string name="theme_variant_dark">Escuro</string>
+    <string name="theme_variant_light">Leve</string>
 </resources>

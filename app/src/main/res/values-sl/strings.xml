@@ -340,4 +340,5 @@
     <string name="local_files">Krajevne datoteke</string>
     <string name="external_storage">Shramba</string>
     <string name="dcim">Digitalne slike</string>
+    <string name="theme_variant_light">Rahel</string>
 </resources>

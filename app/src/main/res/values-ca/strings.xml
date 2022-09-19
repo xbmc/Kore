@@ -371,4 +371,6 @@
     <string name="unwatched_status">Sense mirar</string>
     <string name="watched_status">Mirat</string>
     <string name="not_connected">No connectat</string>
+    <string name="theme_variant_dark">Fosc</string>
+    <string name="theme_variant_light">Clar</string>
 </resources>

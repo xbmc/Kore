@@ -405,4 +405,6 @@
     <string name="wizard_xbmc_direct_share">Показать в общем листе</string>
     <string name="party_mode">Режим вечеринки</string>
     <string name="queue_action">В очередь</string>
+    <string name="theme_variant_dark">тёмное</string>
+    <string name="theme_variant_light">небольшой</string>
 </resources>

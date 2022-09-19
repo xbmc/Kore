@@ -366,4 +366,6 @@
     <string name="genres">Genres</string>
     <string name="albums">Albums</string>
     <string name="queue_action">Toevoegen</string>
+    <string name="theme_variant_dark">Donker</string>
+    <string name="theme_variant_light">Lichte</string>
 </resources>

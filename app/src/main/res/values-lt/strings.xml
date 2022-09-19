@@ -334,4 +334,5 @@
     <string name="favourites">Mėgstamiausi</string>
     <string name="videos">Vaizdo įrašai</string>
     <string name="queue_action">Eilė</string>
+    <string name="theme_variant_light">Lengvas</string>
 </resources>

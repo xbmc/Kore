@@ -62,4 +62,6 @@
     <string name="music_videos">Videor</string>
     <string name="videos">Videor</string>
     <string name="queue_action">Kölägg</string>
+    <string name="theme_variant_dark">Mörk</string>
+    <string name="theme_variant_light">Ljust</string>
 </resources>

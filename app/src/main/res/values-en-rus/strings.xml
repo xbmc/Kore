@@ -53,4 +53,6 @@
     <string name="wizard_xbmc_username">Username</string>
     <string name="reboot">Reboot</string>
     <string name="suspend">Suspend</string>
+    <string name="theme_variant_dark">Dark</string>
+    <string name="theme_variant_light">Light</string>
 </resources>

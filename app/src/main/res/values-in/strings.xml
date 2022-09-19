@@ -386,4 +386,5 @@
     <string name="loading">Memuat…</string>
     <string name="action_options">Opsi</string>
     <string name="settings">Pengaturan</string>
+    <string name="theme_variant_light">Ringan</string>
 </resources>

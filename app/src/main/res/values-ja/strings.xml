@@ -334,4 +334,5 @@
     <string name="favourites">お気に入り</string>
     <string name="videos">ビデオ</string>
     <string name="queue_action">キュー</string>
+    <string name="theme_variant_light">小</string>
 </resources>
