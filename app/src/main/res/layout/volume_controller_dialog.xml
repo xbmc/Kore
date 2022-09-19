@@ -4,6 +4,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/default_padding"
+    android:paddingBottom="@dimen/default_padding"
+    android:paddingStart="@dimen/small_padding"
+    android:paddingEnd="@dimen/small_padding"
     android:background="?attr/colorSurface"
     android:minWidth="200dp">
 
@@ -15,20 +19,10 @@
         android:contentDescription="@string/volume_mute"
         android:src="@drawable/ic_round_volume_off_24"/>
 
-    <org.xbmc.kore.ui.widgets.HighlightButton
-        android:id="@+id/vcd_volume_muted_indicator"
-        style="@style/Widget.Kore.Button.Borderless"
-        android:layout_width="@dimen/default_icon_size"
-        android:layout_height="@dimen/default_icon_size"
-        android:contentDescription="@string/volume_mute"
-        android:src="@drawable/ic_round_volume_off_24"
-        android:visibility="gone"/>
-
     <org.xbmc.kore.ui.widgets.VolumeLevelIndicator
         android:id="@+id/vcd_volume_level_indicator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/vcd_volume_mute"
         android:orientation="vertical">
     </org.xbmc.kore.ui.widgets.VolumeLevelIndicator>
