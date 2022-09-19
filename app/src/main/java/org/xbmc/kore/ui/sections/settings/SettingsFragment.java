@@ -213,6 +213,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
             });
         }
 
+        // Use hardware volume keys
+        ListPreference useHWVolKeysPref = findPreference(Settings.KEY_PREF_USE_HW_VOL_KEYS);
+        if (useHWVolKeysPref != null) {
+            useHWVolKeysPref.setSummary(useHWVolKeysPref.getEntry());
+        }
+
         // About preference
         String nameAndVersion = context.getString(R.string.app_name);
         try {

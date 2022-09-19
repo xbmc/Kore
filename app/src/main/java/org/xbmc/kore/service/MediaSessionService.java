@@ -51,7 +51,7 @@ import org.xbmc.kore.utils.Utils;
  * This service creates and updates a {@link android.support.v4.media.session.MediaSessionCompat} and a
  * {@link android.app.Notification} while playback is playing on Kodi.
  *
- * It should be started as soon as playback is detected (tipically by an activity that receives callbacks
+ * It should be started as soon as playback is detected (typically by an activity that receives callbacks
  * from {@link HostConnectionObserver}).
  * The service keeps running in the foreground while something is playing, and stops itself as soon as playback
  * stops or a connection error is detected.
@@ -186,7 +186,7 @@ public class MediaSessionService extends Service
         // a notification, we need to set a {@link PendingIntent} with a Media Button event, and the way to do it is by
         // calling buildMediaButtonPendingIntent on MediaButtonReceiver. This will return a Pending Intent with the
         // given action, that directly calls the {@link MediaButtonReceiver} broadcast receiver (hence the need for
-        // declaring androidx.media.session.MediaButtonReceiver on the Manifest), not routing throug MediaSession.
+        // declaring androidx.media.session.MediaButtonReceiver on the Manifest), not routing through MediaSession.
         // That broadcast receiver tries to find a service on the Application that handles Intent.ACTION_MEDIA_BUTTON,
         // which is this service (hence the intent filter on the Manifest), and starts it, passing the intent.
         // Here we need to forward it to the callbacks defined on the {@link MediaSessionCompat}, which can be done
@@ -212,7 +212,7 @@ public class MediaSessionService extends Service
         }
 
 
-        // Check whether we should react to phone state changes and wether we have permissions to do so
+        // Check whether we should react to phone state changes and weather we have permissions to do so
         boolean shouldPause = PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .getBoolean(Settings.KEY_PREF_PAUSE_DURING_CALLS, Settings.DEFAULT_PREF_PAUSE_DURING_CALLS);
@@ -468,7 +468,7 @@ public class MediaSessionService extends Service
         // Using targets is a lot more efficient than letting Picasso load it directly into the notification imageview,
         // which causes a lot of flickering
         //
-        // 2. The target needs to be static, because Picasso only keeps a weak reference to it, so we need to keed a
+        // 2. The target needs to be static, because Picasso only keeps a weak reference to it, so we need to keep a
         // strong reference and reset it to null when we're done. We also need to check if it is not null in case a
         // previous request hasn't finished yet.
         //
@@ -529,9 +529,10 @@ public class MediaSessionService extends Service
     }
 
     private boolean hardwareVolumeKeysEnabled() {
-        return PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
-                        Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+        String useHWVolKeysPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+                                                          .getString(Settings.KEY_PREF_USE_HW_VOL_KEYS,
+                                                                     Settings.DEFAULT_PREF_USE_HW_VOL_KEYS);
+        return useHWVolKeysPreferences.equals(Settings.USE_HW_VOL_KEYS_ALWAYS);
     }
 
     /**
@@ -541,7 +542,7 @@ public class MediaSessionService extends Service
      */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS.equals(key)) {
+        if (Settings.KEY_PREF_USE_HW_VOL_KEYS.equals(key)) {
             if (hardwareVolumeKeysEnabled()) {
                 remoteVolumePC = new RemoteVolumeProviderCompat(hostConnection);
                 mediaSession.setPlaybackToRemote(remoteVolumePC);

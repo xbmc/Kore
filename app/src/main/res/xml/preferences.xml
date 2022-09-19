@@ -28,10 +28,12 @@
             android:title="@string/keep_remote_above_lockscreen"
             android:defaultValue="false"/>
 
-        <SwitchPreferenceCompat
-            android:key="pref_use_hardware_volume_keys"
+        <ListPreference
+            android:key="pref_use_hw_vol_keys"
             android:title="@string/use_hardware_volume_keys"
-            android:defaultValue="true"/>
+            android:entries="@array/use_hw_vol_keys_array"
+            android:entryValues="@array/use_hw_vol_keys_array_values_array"
+            android:defaultValue="never"/>
 
         <SwitchPreferenceCompat
             android:key="pref_vibrate_remote_buttons"

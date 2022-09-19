@@ -150,8 +150,11 @@ public class Settings {
     public static final boolean DEFAULT_PREF_ADDONS_FILTER_HIDE_DISABLED = false;
 
     // Use hardware volume keys to control volume
-    public static final String KEY_PREF_USE_HARDWARE_VOLUME_KEYS = "pref_use_hardware_volume_keys";
-    public static final boolean DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS = true;
+    public static final String USE_HW_VOL_KEYS_NEVER = "never", USE_HW_VOL_KEYS_ALWAYS = "always",
+            USE_HW_VOL_KEYS_WHEN_IN_FOREGROUND = "when_in_foreground";
+
+    public static final String KEY_PREF_USE_HW_VOL_KEYS = "pref_use_hw_vol_keys";
+    public static final String DEFAULT_PREF_USE_HW_VOL_KEYS = USE_HW_VOL_KEYS_NEVER;
 
     // Vibrate on remote button press
     public static final String KEY_PREF_VIBRATE_REMOTE_BUTTONS = "pref_vibrate_remote_buttons";

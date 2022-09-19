@@ -166,10 +166,11 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     }
 
     public static boolean handleVolumeKeyEvent(Context context, KeyEvent event) {
-        boolean shouldInterceptKey =
-                PreferenceManager.getDefaultSharedPreferences(context)
-                        .getBoolean(Settings.KEY_PREF_USE_HARDWARE_VOLUME_KEYS,
-                                Settings.DEFAULT_PREF_USE_HARDWARE_VOLUME_KEYS);
+        String useHWVolKeysPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+                                                          .getString(Settings.KEY_PREF_USE_HW_VOL_KEYS,
+                                                                     Settings.DEFAULT_PREF_USE_HW_VOL_KEYS);
+        boolean shouldInterceptKey = useHWVolKeysPreferences.equals(Settings.USE_HW_VOL_KEYS_ALWAYS) ||
+                                     useHWVolKeysPreferences.equals(Settings.USE_HW_VOL_KEYS_WHEN_IN_FOREGROUND);
 
         if (shouldInterceptKey) {
             int action = event.getAction();
