@@ -374,10 +374,10 @@
     <!-- New theme strings -->
     <string name="theme_color">Colour Scheme</string>
     <string name="theme_color_system_colors">System Colours</string>
-    <string name="theme_color_kore">Water</string>
-    <string name="theme_color_green">Earth</string>
-    <string name="theme_color_yellow">Fire</string>
-    <string name="theme_color_purple">Air</string>
+    <string name="theme_color_kore">Blue Velvet</string>
+    <string name="theme_color_green">Green Mile</string>
+    <string name="theme_color_yellow">Yellow Submarine</string>
+    <string name="theme_color_purple">Purple Rain</string>
 
     <string name="theme_variant">Variant</string>
     <string name="theme_variant_auto">System Default</string>
