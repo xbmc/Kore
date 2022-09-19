@@ -58,13 +58,17 @@ public class Settings {
      * Make sure these are the same as in preferences.xml
      */
 
+    //Theme color and variant constants, keep in sync to the defined in arrays.xml
+    public static final String THEME_VARIANT_LIGHT = "light", THEME_VARIANT_DARK = "dark", THEME_VARIANT_SYSTEM = "auto";
+    public static final String THEME_COLOR_KORE = "kore", THEME_COLOR_GREEN = "green",
+            THEME_COLOR_YELLOW = "yellow", THEME_COLOR_PURPLE = "purple", THEME_COLOR_SYSTEM = "system_colors";
+
     // Theme
     public static final String KEY_PREF_THEME_COLOR = "pref_theme_color";
-    public static final String DEFAULT_PREF_THEME_COLOR = "kore";
-    public static final String VALUE_PREF_THEME_COLOR_SYSTEM_COLORS = "system_colors";
+    public static final String DEFAULT_PREF_THEME_COLOR = THEME_COLOR_KORE;
 
     public static final String KEY_PREF_THEME_VARIANT = "pref_theme_variant";
-    public static final String DEFAULT_PREF_THEME_VARIANT = "auto";
+    public static final String DEFAULT_PREF_THEME_VARIANT = THEME_VARIANT_SYSTEM;
 
     // Switch to remote
     public static final String KEY_PREF_SWITCH_TO_REMOTE_AFTER_MEDIA_START = "pref_switch_to_remote_after_media_start";
@@ -216,8 +220,6 @@ public class Settings {
     }
     public static final String DEFAULT_PREF_NAME_BOOKMARKED_ADDON = "Content";
 
-    public static final String THEME_VARIANT_LIGHT = "light", THEME_VARIANT_DARK = "dark";
-
     /**
      * Returns a theme resource Id given the value stored in Shared Preferences
      * @param prefThemeColor Shared Preferences colour for the theme
@@ -226,7 +228,7 @@ public class Settings {
      */
     public static int getThemeResourceId(String prefThemeColor, String prefThemeVariant) {
         switch (prefThemeColor) {
-            case "yellow":
+            case THEME_COLOR_YELLOW:
                 switch (prefThemeVariant) {
                     case THEME_VARIANT_LIGHT:
                         return R.style.Theme_Kore_Yellow_Light;
@@ -235,7 +237,7 @@ public class Settings {
                     default:
                         return R.style.Theme_Kore_Yellow_Auto;
                 }
-            case "purple":
+            case THEME_COLOR_PURPLE:
                 switch (prefThemeVariant) {
                     case THEME_VARIANT_LIGHT:
                         return R.style.Theme_Kore_Purple_Light;
@@ -244,7 +246,7 @@ public class Settings {
                     default:
                         return R.style.Theme_Kore_Purple_Auto;
                 }
-            case "green":
+            case THEME_COLOR_GREEN:
                 switch (prefThemeVariant) {
                     case THEME_VARIANT_LIGHT:
                         return R.style.Theme_Kore_Green_Light;

@@ -53,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         String themeColor = prefs.getString(Settings.KEY_PREF_THEME_COLOR, Settings.DEFAULT_PREF_THEME_COLOR),
                 themeVariant = prefs.getString(Settings.KEY_PREF_THEME_VARIANT, Settings.DEFAULT_PREF_THEME_VARIANT);
         setTheme(Settings.getThemeResourceId(themeColor, themeVariant));
-        if (Utils.isSOrLater() && themeColor.equals(Settings.VALUE_PREF_THEME_COLOR_SYSTEM_COLORS)) {
+        if (Utils.isSOrLater() && themeColor.equals(Settings.THEME_COLOR_SYSTEM)) {
             DynamicColors.applyToActivityIfAvailable(this);
         }
 
