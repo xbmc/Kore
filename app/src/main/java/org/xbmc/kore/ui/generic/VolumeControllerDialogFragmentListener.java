@@ -129,7 +129,6 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
 
     private void setListeners() {
         binding.vcdVolumeMute.setOnClickListener(onMuteToggleOnClickListener);
-        binding.vcdVolumeMutedIndicator.setOnClickListener(onMuteToggleOnClickListener);
 
         binding.vcdVolumeLevelIndicator.setOnVolumeChangeListener(
                 volume -> {
@@ -143,10 +142,6 @@ public class VolumeControllerDialogFragmentListener extends AppCompatDialogFragm
     @Override
     public void onApplicationVolumeChanged(int volume, boolean muted) {
         binding.vcdVolumeLevelIndicator.setVolume(muted, volume);
-
-        binding.vcdVolumeMutedIndicator.setVisibility(muted ? View.VISIBLE : View.GONE);
-        binding.vcdVolumeMutedIndicator.setHighlight(muted);
-
         binding.vcdVolumeMute.setHighlight(muted);
     }
 
