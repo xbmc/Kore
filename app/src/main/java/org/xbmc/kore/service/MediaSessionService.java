@@ -193,7 +193,7 @@ public class MediaSessionService extends Service
         // by calling MediaButtonReceiver.handleIntent(mediaSession, intent)
         // Note that other Media Button events are directly sent to the MediaSession callbacks, like for instance
         // button presses from a Android Wear connected phone.
-        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_MEDIA_BUTTON)) {
+        if (intent != null && intent.getAction() != null && intent.getAction().equals(Intent.ACTION_MEDIA_BUTTON)) {
             KeyEvent ke = MediaButtonReceiver.handleIntent(mediaSession, intent);
             LogUtils.LOGD(TAG, "Got a Media Button Event: " + ke.toString());
             return super.onStartCommand(intent, flags, startId);

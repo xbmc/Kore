@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -98,7 +99,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         try {
             http_app = HttpApp.getInstance(getContext(), 8080);
         } catch (IOException ioe) {
-            showStatusMessage(null, getString(R.string.error_starting_http_server));
+            Toast.makeText(requireContext(), getString(R.string.error_starting_http_server), Toast.LENGTH_LONG)
+                 .show();
         }
 
         Bundle args = getArguments();
@@ -232,6 +234,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
      * @param localFileLocation LocalFileLocation to start playing
      */
     private void playMediaFile(final LocalFileLocation localFileLocation, ArrayList<LocalFileLocation> queuedFiles) {
+        if (http_app == null) return;
+
         http_app.addLocalFilePath(localFileLocation);
         String url = http_app.getLinkToFile();
 
@@ -261,6 +265,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
      * @param localFileLocation LocalFileLocation to queue
      */
     private void queueMediaFile(final LocalFileLocation localFileLocation) {
+        if (http_app == null) return;
+
         http_app.addLocalFilePath(localFileLocation);
         String url = http_app.getLinkToFile();
 
