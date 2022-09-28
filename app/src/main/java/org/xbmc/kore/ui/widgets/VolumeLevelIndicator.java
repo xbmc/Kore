@@ -110,6 +110,7 @@ public class VolumeLevelIndicator extends LinearLayout {
      * @param volume Volume
      */
     public void setVolume(boolean muted, int volume) {
+        if (binding == null) return;
         if (muted) {
             binding.vliVolumeText.setText(R.string.muted);
             binding.vliSeekBar.setProgress(0);
