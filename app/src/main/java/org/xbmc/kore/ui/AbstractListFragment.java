@@ -182,7 +182,8 @@ public abstract class AbstractListFragment
 	}
 
 	public void hideRefreshAnimation() {
-		binding.swipeRefreshLayout.setRefreshing(false);
+		if (binding != null)
+			binding.swipeRefreshLayout.setRefreshing(false);
 	}
 
 	public RecyclerView.Adapter<?> getAdapter() {

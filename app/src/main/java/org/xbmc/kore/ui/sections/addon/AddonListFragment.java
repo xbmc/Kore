@@ -194,7 +194,7 @@ public class AddonListFragment extends AbstractListFragment {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onSuccess(List<AddonType.Details> result) {
-                    if (!isAdded()) return;
+                    if (!isResumed()) return;
 
                     for (AddonType.Details addon : result) {
                         String regex = "\\[.*?\\]";
