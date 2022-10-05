@@ -41,7 +41,6 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.provider.MediaContract;
-import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.NetUtils;
 
@@ -171,7 +170,7 @@ public class HostManager {
             }
             cursor.close();
         }
-		return hosts;
+        return hosts;
 	}
 
 	/**
@@ -191,8 +190,8 @@ public class HostManager {
                     currentHostInfo = hosts.get(0);
                     currentHostId = currentHostInfo.getId();
                     prefs.edit()
-                            .putInt(Settings.KEY_PREF_CURRENT_HOST_ID, currentHostId)
-                            .apply();
+                         .putInt(Settings.KEY_PREF_CURRENT_HOST_ID, currentHostId)
+                         .apply();
                 }
             } else {
                 for (HostInfo host : hosts) {

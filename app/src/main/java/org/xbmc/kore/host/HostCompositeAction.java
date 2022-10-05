@@ -46,6 +46,9 @@ public abstract class HostCompositeAction<T> {
      */
     public void execute(HostConnection hostConnection, ApiCallback<T> callback, Handler handler) {
         this.hostConnection = hostConnection;
+        // Just a protection
+        if (hostConnection == null) return;
+
         hostConnection.getExecutorService().execute(() -> {
             try {
                 T result = execInBackground();
