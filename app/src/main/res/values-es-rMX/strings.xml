@@ -200,9 +200,8 @@
 \nMensaje de error: %1$s</string>
     <string name="error_play_local_file">No se pudo reproducir un archivo local.
 \nMensaje de error: %1$s</string>
-    <string name="error_queue_media_file">No se pudo encolar un archivo.\n
-    	Mensaje de error:
-        %1$s.</string>
+    <string name="error_queue_media_file">No se pudo añadir a la fila un archivo
+\nMensaje de error: %1$s</string>
     <string name="error_get_active_player">No se pudo obtener el reproductor activo.\n
     	Mensaje de error:
         %1$s.</string>

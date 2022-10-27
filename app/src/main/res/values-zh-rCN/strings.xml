@@ -407,4 +407,5 @@
     <string name="not_connected">未连接</string>
     <string name="theme_variant_dark">暗</string>
     <string name="theme_variant_light">小</string>
+    <string name="use_hardware_volume_keys_never">从不</string>
 </resources>

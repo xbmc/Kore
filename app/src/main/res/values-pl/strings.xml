@@ -199,7 +199,7 @@
     <string name="cast_list_text">%1$s jako %2$s</string>
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
     <string name="remaining_cast_count">oraz %d innych</string>
-    <string name="general_error_executing_action">Błąd podczas wykonywania akcji: %1$s</string>
+    <string name="general_error_executing_action">Błąd podczas wykonywania czynności: %1$s</string>
     <string name="error_getting_playlist">Błąd pobierania listy odtwarzania</string>
     <string name="playlist_empty">Lista jest pusta</string>
     <string name="clear_playlist">Wyczyść listę</string>
@@ -397,4 +397,7 @@
     <string name="theme_color_purple">Purpurowy deszcz</string>
     <string name="theme_color_yellow">Żółta łódź podwodna</string>
     <string name="theme_color_green">Zielona mila</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Kiedy Kore jest na pierwszym planie</string>
+    <string name="use_hardware_volume_keys_always">Zawsze</string>
+    <string name="use_hardware_volume_keys_never">Nigdy</string>
 </resources>

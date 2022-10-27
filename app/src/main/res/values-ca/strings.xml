@@ -373,4 +373,5 @@
     <string name="not_connected">No connectat</string>
     <string name="theme_variant_dark">Fosc</string>
     <string name="theme_variant_light">Clar</string>
+    <string name="use_hardware_volume_keys_never">Mai</string>
 </resources>

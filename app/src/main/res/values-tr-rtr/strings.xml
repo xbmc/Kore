@@ -62,4 +62,7 @@
     <string name="music_videos">Videolar</string>
     <string name="videos">Videolar</string>
     <string name="queue_action">Kuyruğa Ekle</string>
+    <string name="use_hardware_volume_keys_never">Asla</string>
+    <string name="theme_variant_dark">Karanlık</string>
+    <string name="theme_variant_light">Hafif</string>
 </resources>

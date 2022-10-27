@@ -389,9 +389,15 @@
     <string name="not_connected">Non connesso</string>
     <string name="theme_variant_auto">Predefinito del sistema</string>
     <string name="theme_variant">Variante</string>
-    <string name="theme_color_kore">Kore</string>
+    <string name="theme_color_kore">Velluto blu</string>
     <string name="theme_color_system_colors">Colori di sistema</string>
     <string name="theme_color">Schema colori</string>
     <string name="theme_variant_dark">Scuro</string>
     <string name="theme_variant_light">Chiaro</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Quando Kore è in primo piano</string>
+    <string name="use_hardware_volume_keys_always">Sempre</string>
+    <string name="theme_color_purple">Pioggia viola</string>
+    <string name="theme_color_yellow">Sottomarino giallo</string>
+    <string name="theme_color_green">Miglio verde</string>
+    <string name="use_hardware_volume_keys_never">Mai</string>
 </resources>
