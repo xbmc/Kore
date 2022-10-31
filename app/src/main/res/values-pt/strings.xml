@@ -381,9 +381,14 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="not_connected">Desligado</string>
     <string name="theme_variant_auto">Definido pelo sistema</string>
     <string name="theme_variant">Variante</string>
-    <string name="theme_color_kore">Kore</string>
     <string name="theme_color_system_colors">Cores do Sistema</string>
     <string name="theme_color">Esquema de Côr</string>
-    <string name="theme_variant_light">Leve</string>
+    <string name="theme_variant_light">Claro</string>
     <string name="theme_variant_dark">Escuro</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Quando o Kore está activo</string>
+    <string name="use_hardware_volume_keys_always">Sempre</string>
+    <string name="use_hardware_volume_keys_never">Nunca</string>
+    <string name="theme_color_yellow">Submarino Amarelo</string>
+    <string name="theme_color_green">Lanterna Verde</string>
+    <string name="theme_color_kore">Veludo Azul</string>
 </resources>

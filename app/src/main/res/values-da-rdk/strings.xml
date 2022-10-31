@@ -32,7 +32,8 @@
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
     <string name="wizard_welcome">Velkommen</string>
-    <string name="connecting_to">Forbinder til %1$s (%2$s)…</string>
+    <string name="connecting_to">Kunne ikke oprette forbindelse til %1$s (%2$s)
+\nPrøver igen…</string>
     <string name="connecting">Forbinder…</string>
     <string name="connected_to">Forbundet til %1$s</string>
     <string name="navigation_drawer_open">Åbn navigationsboksen</string>
@@ -91,4 +92,6 @@
     <string name="playlist">Playliste</string>
     <string name="play_file">Afspil</string>
     <string name="play">Afspil</string>
+    <string name="theme_variant_dark">Mørk</string>
+    <string name="theme_variant_light">Lys</string>
 </resources>

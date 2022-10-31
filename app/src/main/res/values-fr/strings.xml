@@ -30,7 +30,7 @@
     <string name="dcim">Photos</string>
     <string name="external_storage">Espace de stockage</string>
     <string name="addons">Extensions</string>
-    <string name="files">Fichiers</string>
+    <string name="files">Fichiers Kodi</string>
     <string name="local_files">Fichiers locaux</string>
     <string name="video">Vidéo</string>
     <string name="videos">Vidéos</string>
@@ -38,7 +38,7 @@
     <string name="window">Fenêtre</string>
     <string name="script">Script</string>
     <string name="unknown">Inconnu</string>
-    <string name="file_browser">Fichiers</string>
+    <string name="file_browser">Navigateur de fichiers Kodi</string>
     <string name="local_file_browser">Navigateur de fichier local</string>
     <string name="pvr">Magnétoscope</string>
     <string name="favourites">Favoris</string>
@@ -65,7 +65,8 @@
     <string name="toggle_fullscreen">Plein écran</string>
     <string name="connected_to">Connecté à %1$s</string>
     <string name="connecting">Connexion en cours\u2026</string>
-    <string name="connecting_to">Connexion à %1$s (%2$s) en cours\u2026</string>
+    <string name="connecting_to">Impossible de se connecter à %1$s (%2$s)
+\nRéessayer…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bienvenue</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -178,27 +179,28 @@
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Saison %1$02d | Épisode %2$02d</string>
     <string name="season_number">Saison %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Episode %1$d</string>
     <string name="votes">%1$s votes</string>
     <!-- Fanart/Poster untranslated in Kodi/XBMC (french) -->
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
     <string name="thumbnail">Miniature</string>
-    <string name="error_getting_properties">Impossible d\'obtenir les propriétés de Kodi.\nMessage d\'erreur\u00A0:
-        %1$s.</string>
-    <string name="error_executing_subtitles">Impossible d\'exécuter l\'extension des sous-titres.\nMessage d\'erreur\u00A0: %1$s.</string>
-    <string name="error_getting_addon_info">Impossible d\'obtenir les informations de l\'extension.\nMessage d\'erreur\u00A0:
-        %1$s.</string>
-    <string name="error_getting_source_info">Impossible de parcourir les fichiers.\nMessage d\'erreur\u00A0:
-        %1$s.</string>
-    <string name="error_play_media_file">Impossible de lire ce fichier multimédia.\nMessage d\'erreur\u00A0:
-        %1$s.</string>
-    <string name="error_play_local_file">Impossible de lire ce fichier multimédia.\nMessage d\'erreur\u00A0:
-        %1$s.</string>
-    <string name="error_queue_media_file">Impossible d\'ajouter ce fichier multimédia à la liste de lecture.\nMessage d\'erreur\u00A0:
-        %1$s.</string>
-    <string name="error_get_active_player">Impossible de récupérer le lecteur actif.\nMessage d\'erreur\u00A0:
-        %1$s.</string>
+    <string name="error_getting_properties">Impossible d’obtenir les propriétés de Kodi. 
+\nMessage d’erreur: %1$s</string>
+    <string name="error_executing_subtitles">Impossible d’exécuter l’addon de sous-titres. 
+\nMessage d’erreur: %1$s</string>
+    <string name="error_getting_addon_info">Impossible d\'obtenir les informations de l\'extension. 
+\nMessage d\'erreur: %1$s.</string>
+    <string name="error_getting_source_info">Impossible de parcourir les fichiers. 
+\nMessage d\'erreur: %1$s.</string>
+    <string name="error_play_media_file">Impossible de lire le fichier multimédia. 
+\nMessage d’erreur : %1$s</string>
+    <string name="error_play_local_file">Impossible de lire le fichier multimédia local. 
+\nMessage d’erreur: %1$s</string>
+    <string name="error_queue_media_file">Impossible de mettre en file d’attente le fichier multimédia. 
+\nMessage d’erreur : %1$s</string>
+    <string name="error_get_active_player">Impossible d’obtenir un lecteur actif.
+\nMessage d’erreur : %1$s</string>
     <string name="error_share_video">Impossible de partager la vidéo avec Kodi.</string>
     <string name="error_reading_local_storage">Impossible de lire le stockage local.
         Avez-vous autorisé Kore à accéder au stockage de fichiers ?</string>
@@ -214,20 +216,20 @@
     <string name="playlist_empty">Liste de lecture vide</string>
     <string name="source_empty">Source multimédia vide</string>
     <string name="clear_playlist">Effacer la liste de lecture</string>
-    <string name="no_movies_found_refresh">Aucun film trouvé\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_tvshows_found_refresh">Aucune Série TV trouvée\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_movies_found_refresh">Aucun film trouvé</string>
+    <string name="no_tvshows_found_refresh">Aucune série TV trouvée</string>
     <string name="no_episodes_found">Aucun épisode trouvé</string>
     <string name="swipe_down_to_refresh">Glissez vers le bas pour actualiser</string>
-    <string name="no_artists_found_refresh">Aucun artiste trouvé\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_albums_found_refresh">Aucun album trouvé\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_genres_found_refresh">Aucun genre trouvé\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_addons_found_refresh">Aucune extension trouvée ou connectée\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_music_videos_found_refresh">Aucune vidéo trouvée\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_channel_groups_found_refresh">Aucun groupe de chaînes trouvés.\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_channels_found_refresh">Aucune chaîne trouvée.\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_favourites_found_refresh">Aucun favori trouvé.\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_recordings_found_refresh">Aucun enregistrement trouvé.\n\nGlissez vers le bas pour actualiser</string>
-    <string name="no_broadcasts_found_refresh">Aucune émission trouvée.\n\nGlissez vers le bas pour actualiser</string>
+    <string name="no_artists_found_refresh">Aucun artiste trouvé</string>
+    <string name="no_albums_found_refresh">Aucun album trouvé</string>
+    <string name="no_genres_found_refresh">Aucun genre trouvé</string>
+    <string name="no_addons_found_refresh">Aucun addons trouvé</string>
+    <string name="no_music_videos_found_refresh">Aucune vidéo trouvée</string>
+    <string name="no_channel_groups_found_refresh">Aucun groupe de canaux trouvé</string>
+    <string name="no_channels_found_refresh">Aucun canal trouvé</string>
+    <string name="no_favourites_found_refresh">Aucun favori trouvé</string>
+    <string name="no_recordings_found_refresh">Aucun enregistrement trouvé</string>
+    <string name="no_broadcasts_found_refresh">Aucune diffusion trouvée</string>
     <string name="pull_to_refresh">Glissez vers le bas pour actualiser</string>
     <string name="no_cast_info">Aucune information de casting à afficher</string>
     <string name="minutes_abbrev">%1$s min</string>
@@ -306,30 +308,33 @@
     <string name="keep_remote_above_lockscreen">Conserver la télécommande sur l\'écran de déverrouillage</string>
     <string name="pref_keep_screen_on">Conserver l\'écran allumé lors de l\'utilisation de la télécommande</string>
     <string name="show_notification">Afficher les notifications pendant la lecture</string>
-    <string name="show_now_playing_panel">Volet \"Lecture en cours\"</string>
-    <string name="show_now_playing_panel_summary">Afficher un volet extensible en bas de l\'écran lors de la lecture de médias</string>
+    <string name="show_now_playing_panel">Afficher le panneau de lecture en cours</string>
+    <string name="show_now_playing_panel_summary">Afficher un panneau en bas de l’écran lorsque le média est en cours de lecture</string>
     <string name="pause_during_calls">Mettre en pause lors des appels téléphoniques</string>
     <string name="use_hardware_volume_keys">Contrôler le volume avec les boutons du volume de l\'appareil</string>
     <string name="vibrate_on_remote">Vibrer à l\'appui</string>
     <string name="remote_bar_items">Raccourcis de la barre inférieure</string>
     <string name="nav_drawer_items">Raccourcis du volet de navigation</string>
     <string name="about">À propos</string>
-    <string name="about_desc"><![CDATA[
-        \u00A9 2018 XBMC Foundation<br><br>
-        Évaluez-nous sur <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
-
-        Si vous avez besoin d\'aide, consultez notre <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
-    ]]></string>
+    <string name="about_desc">\\0A9 2018 Fondation&lt;br&gt;&lt;br&gt; XBMC Veuillez nous évaluer sur &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Si vous avez besoin d’aide, consulter notre &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;forum&lt;/a&gt;</string>
     <string name="play_on_kodi">Lire sur Kodi</string>
     <string name="queue_on_kodi">Ajouter à la liste de lecture sur Kodi</string>
     <string name="pause_call_incoming_title">Appel entrant</string>
     <string name="pause_call_incoming_message">Vérifiez votre téléphone, quelqu\'un vous appelle</string>
-    <string name="error_getting_pvr_info">Erreur lors de l\'obtention des informations du magnétoscope numérique : %1$s</string>
-    <string name="might_not_have_pvr">Erreur lors de l\'obtention des informations des chaînes, soit parce que votre Centre Multimédia n\'est pas équipé d\'un \"tuner\" soit parce qu\'il n\'est pas configuré.\n\nSi c\'est le cas et que vous souhaitez supprimer cette entrée du volet de navigation, vous pouvez le faire dans les Paramètres.</string>
-    <string name="error_starting_channel">Erreur au démarrage de la lecture de la chaîne : %1$s</string>
-    <string name="error_favourites">Erreur lors de l\'obtention des favoris : %1$s</string>
-    <string name="error_starting_recording">Erreur au démarrage de l\'enregistrement : %1$s</string>
-    <string name="error_starting_to_record">Erreur lors de l\'enregistrement : %1$s</string>
+    <string name="error_getting_pvr_info">Impossible d’obtenir des informations PVR
+\n
+\nDescription de l’erreur : %1$s</string>
+    <string name="might_not_have_pvr">Impossible d’obtenir des informations PVR.
+\n
+\nVotre Media Center n’a peut-être pas de tuner ou n’est pas configuré. Si vous souhaitez supprimer cette entrée du menu latéral, vous pouvez le faire dans l’écran Paramètres.</string>
+    <string name="error_starting_channel">Une erreur s’est produite au démarrage de la lecture du canal
+\nDescription : %1$s</string>
+    <string name="error_favourites">"Impossible d’obtenir des favoris  
+\nDescription de l’erreur : %1$s"</string>
+    <string name="error_starting_recording">Une erreur s’est produite lors de la lecture d’un enregistrement
+\nDescription : %1$s</string>
+    <string name="error_starting_to_record">Une erreur s’est produite lors de l’enregistrement
+\nDescription : %1$s</string>
     <string name="channel_switching">Passez à la chaîne %1$s</string>
     <string name="starting_recording">Démarrage de l\'enregistrement de %1$s</string>
     <string name="refresh">Actualiser</string>
@@ -359,7 +364,7 @@
     <string name="muted">en sourdine</string>
     <string name="no_item_available_to_play">Erreur : Aucun élément à lire.</string>
     <string name="Refreshing_not_implemented_for_this_item">Impossible d\'actualise cet élément</string>
-    <string name="no_songs_found_refresh">Aucune piste musicale trouvée\\n\\n Glissez vers le bas pour actualiser</string>
+    <string name="no_songs_found_refresh">Aucune chanson trouvée</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Ouvrir/Fermer</string>
     <string name="stream_action">Lecture locale</string>
@@ -367,8 +372,31 @@
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mobile</string>
     <string name="any_network">Tous</string>
-    <string name="always_sendtokodi_addon">Toujours préférer l\'extension \\\"SendToKodi\\\"</string>
+    <string name="always_sendtokodi_addon">Préférer l’addon SendToKodi</string>
     <string name="queue_action">Ajouter à la queue</string>
     <string name="theme_variant_dark">Sombre</string>
     <string name="theme_variant_light">Légère</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Quand Kore est au premier plan</string>
+    <string name="use_hardware_volume_keys_always">Toujours</string>
+    <string name="web_search">Recherche sur le Web</string>
+    <string name="theme_variant_auto">Système par défaut</string>
+    <string name="theme_variant">Variante</string>
+    <string name="theme_color_purple">Pluie pourpre</string>
+    <string name="theme_color_yellow">Yellow Submarine</string>
+    <string name="theme_color_green">Green Mile</string>
+    <string name="theme_color_kore">Velours Bleu</string>
+    <string name="theme_color_system_colors">Couleurs du système</string>
+    <string name="theme_color">Couleurs</string>
+    <string name="theme_sun_dynamic">Dynamique Lever/Coucher de Soleil</string>
+    <string name="theme_default_dynamic">Dynamique Jour/Nuit</string>
+    <string name="download_action">Téléchargement</string>
+    <string name="disabled_status">Désactivé</string>
+    <string name="enabled_status">Activer</string>
+    <string name="unpinned_status">Non épinglé</string>
+    <string name="pinned_status">Épinglé</string>
+    <string name="unwatched_status">Non vu</string>
+    <string name="watched_status">Vu</string>
+    <string name="party_mode">Mode Fête</string>
+    <string name="not_connected">Non connecté</string>
+    <string name="use_hardware_volume_keys_never">Jamais</string>
 </resources>

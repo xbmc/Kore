@@ -38,4 +38,5 @@
     <string name="pictures">ပုံများ</string>
     <string name="music">သီချင်း</string>
     <string name="movies">ရုပ်ရှင်များ</string>
+    <string name="theme_variant_light">အလင်း</string>
 </resources>

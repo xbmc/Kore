@@ -368,4 +368,5 @@
     <string name="queue_action">Toevoegen</string>
     <string name="theme_variant_dark">Donker</string>
     <string name="theme_variant_light">Lichte</string>
+    <string name="use_hardware_volume_keys_never">Nooit</string>
 </resources>

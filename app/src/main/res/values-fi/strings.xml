@@ -39,7 +39,7 @@
     <string name="unknown">Tuntematon</string>
     <string name="file_browser">Kodin tiedostojen selain</string>
     <string name="local_file_browser">Paikallisten tiedostojen selain</string>
-    <string name="pvr">Tallennin</string>
+    <string name="pvr">Televisio</string>
     <string name="favourites">Suosikit</string>
     <string name="weather">Sää</string>
     <string name="system">Järjestelmä</string>
@@ -55,7 +55,7 @@
     <string name="send">Lähetä</string>
     <string name="send_text">Lähetä mediakeskukselle tekstiä</string>
     <string name="text_to_send">Lähetettävä teksti</string>
-    <string name="finish_after_send">Lopeta lähetyksen jälkeen</string>
+    <string name="finish_after_send">Lopeta tekstinsyöttö lähetyksen jälkeen</string>
     <string name="library_actions">Kirjaston ylläpito</string>
     <string name="clean_video_library">Siivoa videokirjasto</string>
     <string name="clean_audio_library">Siivoa äänikirjasto</string>
@@ -159,7 +159,7 @@
     <string name="nothing_playing">Mitään ei toisteta</string>
     <!-- Main view tabs -->
     <string name="now_playing">Toistetaan parhaillaan</string>
-    <string name="remote">Kauko-ohjain</string>
+    <string name="remote">Kaukosäädin</string>
     <string name="playlist">Toistolista</string>
     <string name="season_episode_abbrev">K%1$02dJ%2$02d</string>
     <string name="season_episode">Kausi %1$02d | Jakso %2$02d</string>
@@ -289,24 +289,24 @@
     <string name="show_rating">Näytä arviot</string>
     <!-- Preferences strings -->
     <string name="application">Sovellus</string>
-    <string name="theme">Teema</string>
+    <string name="theme">Ulkoasu</string>
     <string name="theme_night">Yö</string>
     <string name="theme_day">Päivä</string>
     <string name="theme_sunrise">Auringonnousu</string>
     <string name="theme_sunset">Auringonlasku</string>
-    <string name="switch_to_remote">Näytä median alkaessa</string>
+    <string name="switch_to_remote">Näytä toiston alkaessa</string>
     <string name="keep_remote_above_lockscreen">Näytä lukitusnäytön päällä</string>
     <string name="pref_keep_screen_on">Pidä näyttö päällä</string>
     <string name="show_notification">Näytä ilmoitus toiston aikana</string>
     <string name="show_now_playing_panel">Näytä \"Toistetaan parhaillaan\" -paneeli</string>
-    <string name="show_now_playing_panel_summary">Näytä mediaa toistettaessa laajennettava paneeli ruudun alalaidassa</string>
+    <string name="show_now_playing_panel_summary">Näytä toiston aikana laajennettava paneeli ruudun alalaidassa.</string>
     <string name="pause_during_calls">Tauota puhelun ajaksi</string>
-    <string name="use_hardware_volume_keys">Käytä laitteen äänenvoimakkuuspainikkeita</string>
+    <string name="use_hardware_volume_keys">Käytä äänenvoimakkuuspainikkeita</string>
     <string name="vibrate_on_remote">Värise kosketettaessa</string>
     <string name="remote_bar_items">Alapalkin pikavalinnat</string>
     <string name="nav_drawer_items">Sivuvalikon pikavalinnat</string>
     <string name="about">Tietoja</string>
-    <string name="about_desc">\\0A9 2018 XBMC-säätiö&lt;br&gt;&lt;br&gt;Arvioi meidät &lt;b&gt;&lt;a href=\"market://details\?id=org.xbmc.kore\"&gt;Google Play Kaupassa&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt;Tukea saat &lt;a href=\"http://forum.kodi.tv/forumdisplay.php\?fid=129\"&gt;keskustelualueeltamme&lt;/a&gt;</string>
+    <string name="about_desc">\\0A9 2018 XBMC-säätiö&lt;br&gt;&lt;br&gt;Avioi meidät &lt;b&gt;&lt;a href=\"market://details\?id=org.xbmc.kore\"&gt;Google Play Kaupassa&lt;/a&gt;&lt;/b&gt;, kiitos.&lt;br&gt;&lt;br&gt;Jos tarvitset apua, tutustu &lt;a href=\"http://forum.kodi.tv/forumdisplay.php\?fid=129\"&gt;keskustelualueseemme&lt;/a&gt;.</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
@@ -351,7 +351,7 @@
     <string name="single_column">Yksi sarakkeinen</string>
     <string name="multi_column">Monisarakkeinen</string>
     <string name="download_network_types_title">Rajoita medialatauksia</string>
-    <string name="download_network_types_summary">Valitse verkot, joiden välityksellä medialataukset sallitaan</string>
+    <string name="download_network_types_summary">Valitse verkot, joiden välityksellä medialataukset sallitaan.</string>
     <string name="songs">Kappaleet</string>
     <string name="read_phone_state_permission_denied">Käyttöoikeutta ei myönnetty, eikä toiston tauotus puheluiden ajaksi ole tämän vuoksi mahdollista.</string>
     <string name="write_storage_permission_denied">Käyttöoikeutta ei myönnetty, eikä tiedostojen lataus ole tämän vuoksi mahdollista.</string>
@@ -387,12 +387,15 @@
     <string name="not_connected">Ei yhteyttä</string>
     <string name="theme_variant">Variantti</string>
     <string name="theme_variant_auto">Järjestelmän oletus</string>
-    <string name="theme_color_kore">Vesi</string>
+    <string name="theme_color_kore">Sininen sametti</string>
     <string name="theme_color_system_colors">Järjestelmän värit</string>
     <string name="theme_color">Väriteema</string>
     <string name="theme_variant_dark">Tumma</string>
     <string name="theme_variant_light">Vaalea</string>
-    <string name="theme_color_purple">Ilma</string>
-    <string name="theme_color_yellow">Tuli</string>
-    <string name="theme_color_green">Maa</string>
+    <string name="theme_color_purple">Violetti sade</string>
+    <string name="theme_color_yellow">Keltainen sukellusvene</string>
+    <string name="theme_color_green">Vihreä maili</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Koren ollessa edustalla</string>
+    <string name="use_hardware_volume_keys_always">Aina</string>
+    <string name="use_hardware_volume_keys_never">Ei koskaan</string>
 </resources>

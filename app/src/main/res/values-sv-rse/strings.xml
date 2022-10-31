@@ -64,4 +64,5 @@
     <string name="queue_action">Kölägg</string>
     <string name="theme_variant_dark">Mörk</string>
     <string name="theme_variant_light">Ljust</string>
+    <string name="use_hardware_volume_keys_never">Aldrig</string>
 </resources>

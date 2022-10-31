@@ -371,4 +371,5 @@
     <string name="dcim">DCIM</string>
     <string name="queue_action">Fronta</string>
     <string name="theme_variant_light">Lehký</string>
+    <string name="use_hardware_volume_keys_never">Nikdy</string>
 </resources>

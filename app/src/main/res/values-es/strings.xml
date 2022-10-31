@@ -396,4 +396,7 @@
     <string name="theme_color_kore">Terciopelo Azul</string>
     <string name="theme_color_system_colors">Colores del Sistema</string>
     <string name="theme_color">Esquema de Color</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Cuando Kore esté en primer plano</string>
+    <string name="use_hardware_volume_keys_always">Siempre</string>
+    <string name="use_hardware_volume_keys_never">Nunca</string>
 </resources>
