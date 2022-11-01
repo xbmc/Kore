@@ -151,8 +151,8 @@ public class NowPlayingPanel extends LinearLayout {
                 }
             };
             bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+            binding.mediaActionsBar.completeSetup(context, fragmentManager);
         }
-        binding.mediaActionsBar.completeSetup(context, fragmentManager);
     }
 
     public void freeResources() {

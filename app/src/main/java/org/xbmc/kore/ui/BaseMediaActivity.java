@@ -159,6 +159,7 @@ public abstract class BaseMediaActivity
             hostConnectionObserver.refreshWhatsPlaying();
             binding.nowPlayingPanel.completeSetup(this, this.getSupportFragmentManager(), binding.fragmentContainer);
         } else {
+            binding.nowPlayingPanel.completeSetup(this, this.getSupportFragmentManager(), null);
             //Hide it in case we were displaying the panel and user disabled showing the panel in Settings
             binding.nowPlayingPanel.hidePanel();
         }
@@ -167,10 +168,10 @@ public abstract class BaseMediaActivity
     @Override
     public void onPause() {
         super.onPause();
+        binding.nowPlayingPanel.freeResources();
         if (showNowPlayingPanel) {
             hostConnectionObserver.unregisterApplicationObserver(this);
             hostConnectionObserver.unregisterPlayerObserver(this);
-            binding.nowPlayingPanel.freeResources();
         }
     }
 
