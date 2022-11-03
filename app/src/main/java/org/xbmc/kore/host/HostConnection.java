@@ -485,6 +485,14 @@ public class HostConnection {
             if (callback != null) {
                 postOrRunNow(handler, () -> callback.onError(e.getCode(), e.getMessage()));
             }
+        } catch (final IllegalArgumentException e) {
+            LogUtils.LOGD(TAG, "Illegal argument exception on sending HTTP request: " + e);
+            // This happens because the host URL isn't valid
+            if (callback != null) {
+                String desc = "Illegal argument exception on sending HTTP request: " + e.getMessage() +
+                        ". Please check the media center URL.";
+                postOrRunNow(handler, () -> callback.onError(ApiException.HTTP_HOST_URL_INVALID, desc));
+            }
         }
     }
 

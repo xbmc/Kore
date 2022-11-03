@@ -61,6 +61,11 @@ public class ApiException extends Exception {
 	public static final int HTTP_RESPONSE_CODE_NOT_FOUND = 6;
 
 	/**
+	 *
+	 */
+	public static final int HTTP_HOST_URL_INVALID = 7;
+
+	/**
 	 * API returned an error
 	 */
 	public static int API_ERROR = 100;
