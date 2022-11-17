@@ -31,4 +31,7 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="music">موسیقی</string>
+    <string name="tv_shows">سریال‌ها</string>
+    <string name="movies">فیلم ها</string>
 </resources>

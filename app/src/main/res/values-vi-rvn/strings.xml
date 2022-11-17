@@ -31,4 +31,13 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="radio">Radio</string>
+    <string name="genres">Thể loại</string>
+    <string name="albums">Album</string>
+    <string name="artists">Ca sĩ</string>
+    <string name="favourites">Yêu thích</string>
+    <string name="pictures">Ảnh</string>
+    <string name="music">Âm nhạc</string>
+    <string name="tv_shows">Chương trình TV</string>
+    <string name="movies">Phim</string>
 </resources>
