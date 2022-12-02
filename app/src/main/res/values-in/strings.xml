@@ -387,4 +387,16 @@
     <string name="action_options">Opsi</string>
     <string name="settings">Pengaturan</string>
     <string name="theme_variant_light">Ringan</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Ketika Kore terbuka</string>
+    <string name="use_hardware_volume_keys_always">Selalu</string>
+    <string name="use_hardware_volume_keys_never">Tdk Akan</string>
+    <string name="theme_variant_dark">Gelap</string>
+    <string name="theme_variant_auto">Bawaan Sistem</string>
+    <string name="theme_variant">Variasi</string>
+    <string name="theme_color_purple">Ungu</string>
+    <string name="theme_color_yellow">Kuning Kapal selam</string>
+    <string name="theme_color_green">Hijau Mil</string>
+    <string name="theme_color_kore">Biru Velvet</string>
+    <string name="theme_color_system_colors">Warna Sistem</string>
+    <string name="theme_color">Skema Warna</string>
 </resources>

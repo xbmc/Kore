@@ -24,7 +24,7 @@
     <string name="xbmc_media_center">Media center</string>
     <string name="home">Home</string>
     <string name="movies">Film</string>
-    <string name="tv_shows">Programmi TV</string>
+    <string name="tv_shows">Serie TV</string>
     <string name="music">Musica</string>
     <string name="pictures">Immagini</string>
     <string name="addons">Add-on</string>
@@ -151,7 +151,7 @@
     <string name="votes">%1$s voti</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
-    <string name="thumbnail">Miniatura</string>
+    <string name="thumbnail">Miniature</string>
     <string name="error_getting_properties">Non posso leggere i parametri di Kodi.
 \nMessaggio di errore:%1$s</string>
     <string name="error_executing_subtitles">Non posso eseguire l\'add-on per i sottotitoli.
@@ -176,7 +176,7 @@
     <string name="clear_playlist">Pulisci playlist</string>
     <string name="source_empty">Sorgente multimediale vuota</string>
     <string name="no_movies_found_refresh">Nessun film trovato</string>
-    <string name="no_tvshows_found_refresh">Nessun programma TV trovato</string>
+    <string name="no_tvshows_found_refresh">Nessuna Serie TV trovata</string>
     <string name="no_episodes_found">Nessun episodio trovato</string>
     <string name="no_artists_found_refresh">Nessun artista trovato</string>
     <string name="no_albums_found_refresh">Nessun album trovato</string>
@@ -189,7 +189,7 @@
     <string name="error_while_syncing">Errore durante la sincronizzazione: %1$s</string>
     <string name="action_search">Cerca</string>
     <string name="action_search_movies">Cerca film</string>
-    <string name="action_search_tvshows">Cerca programmi TV</string>
+    <string name="action_search_tvshows">Cerca Serie TV</string>
     <string name="action_search_albums">Cerca album</string>
     <string name="action_search_artists">Cerca artisti</string>
     <string name="action_search_genres">Cerca generi</string>
@@ -199,18 +199,21 @@
     <string name="no_suitable_playlist">Nessuna playlist disponibile per aggiungere il tipo di media.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Scarica</string>
-    <string name="confirm_movie_download">Sei sicuro di voler scaricare questo film?\nIl film sarà scaricato in background, ma questo può richiedere un po\' di tempo.</string>
+    <string name="confirm_movie_download">Sei sicuro di voler scaricare questo film\?
+\nIl film sarà scaricato in background, ma questo può richiedere un po\' di tempo.</string>
     <string name="confirm_episode_download">Sei sicuro di voler scaricare questo episodio\?
 \n L\'episodio sarà scaricato in background, ma questo può richiedere un po\' di tempo.</string>
     <string name="confirm_album_download">Sei sicuro di voler scaricare questo album\?
 \n L\'album sarà scaricato in background, ma questo può richiedere un po\' di tempo.</string>
-    <string name="download_file_exists">File già esistente.\nVuoi sovrascriverlo o scaricarlo con un nuovo nome?</string>
-    <string name="download_dir_exists">Cartella download esistente.\nSe esistono file con lo stesso nome, vuoi sovrascriverli o scaricarli con un nuovo nome?</string>
+    <string name="download_file_exists">File già esistente.
+\n Vuoi sovrascriverlo o scaricarlo con un nuovo nome\?</string>
+    <string name="download_dir_exists">Cartella download esistente.
+\n Se esistono file con lo stesso nome, vuoi sovrascriverli o scaricarli con un nuovo nome\?</string>
     <string name="overwrite">Sovrascrivi</string>
     <string name="download_with_new_name">Nuovo nome</string>
     <string name="download_file_description">Scaricato dal tuo media center</string>
-    <string name="num_episodes">%1$d episodi  |  %2$d non visti</string>
-    <string name="premiered">Anteprima: %1$s</string>
+    <string name="num_episodes">%1$d episodi | %2$d non visti</string>
+    <string name="premiered">In anteprima: %1$s</string>
     <string name="tvshow_overview">Riepilogo</string>
     <string name="tvshow_episodes">Episodi</string>
     <string name="artists">Artisti</string>
@@ -218,12 +221,12 @@
     <string name="genres">Generi</string>
     <string name="music_videos">Video</string>
     <string name="no_files_to_download">Nessun file da scaricare.</string>
-    <string name="error_getting_file_information">Non posso ricevere informazioni per scaricare il file %1$s.</string>
+    <string name="error_getting_file_information">Impossibile ottenere informazioni per scaricare il file %1$s.</string>
     <string name="author">Autore:</string>
     <string name="version">Versione:</string>
-    <string name="enable_disable">Abilita/Disabilita Estensioni</string>
-    <string name="addon_enabled">Estensioni abilitate</string>
-    <string name="addon_disabled">Estensioni disabilitate</string>
+    <string name="enable_disable">Abilita/disabilita add-on</string>
+    <string name="addon_enabled">Add-on abilitato</string>
+    <string name="addon_disabled">Add-on disabilitato</string>
     <!-- Filters on list menus -->
     <string name="hide_watched">Nascondi già visti</string>
     <string name="sort_order">Ordina</string>
@@ -234,7 +237,7 @@
     <string name="theme">Tema</string>
     <string name="theme_night">Notte</string>
     <string name="theme_day">Giorno</string>
-    <string name="switch_to_remote">Cambia a remoto dopo l\'avvio del file</string>
+    <string name="switch_to_remote">Mostra all\'inizio dei media</string>
     <string name="show_notification">Mostra le notifiche durante l\'esecuzione</string>
     <string name="use_hardware_volume_keys">Usa i tasti volume per cambiare il volume</string>
     <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Per favore votaci su &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Se ti serve aiuto, controlla il &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;forum&lt;/a&gt;&lt;</string>
@@ -261,7 +264,7 @@
     <string name="favourites">Preferiti</string>
     <string name="unknown">sconosciuto</string>
     <string name="videos">Video</string>
-    <string name="queue_action">Accoda</string>
+    <string name="queue_action">Coda</string>
     <string name="stream_action">Stream</string>
     <string name="download_action">Scarica</string>
     <string name="disabled_status">Disabilitato</string>
@@ -294,9 +297,9 @@
     <string name="script">Script</string>
     <string name="window">Finestra</string>
     <string name="media">Media</string>
-    <string name="download_files_exists">Uno o più file esistono già. 
+    <string name="download_files_exists">Uno o più file esistono già.
 \n Se qualche file ha lo stesso nome, vuoi sovrascriverlo o scaricarlo con un nuovo nome\?</string>
-    <string name="confirm_songs_download">Sei sicuro di voler scaricare %1$d canzoni\? 
+    <string name="confirm_songs_download">Sei sicuro di voler scaricare %1$d canzoni\?
 \n Le canzoni saranno scaricate in background, ma questo può richiedere un po\' di tempo.</string>
     <string name="confirm_artist_download">Sei sicuro di voler scaricare tutti gli album\?
 \n Gli album saranno scaricati in background, ma questo può richiedere un po\' di tempo.</string>
@@ -336,7 +339,7 @@
     <string name="tv">TV</string>
     <string name="refresh">Ricarica</string>
     <string name="error_favourites">Impossibile recuperare i preferiti
-\nDescrizione errore: %1$s</string>
+\nDescrizione dell\'errore: %1$s</string>
     <string name="starting_recording">Inizio registrazione %1$s</string>
     <string name="channel_switching">Cambia al canale %1$s</string>
     <string name="pause_call_incoming_message">Controlla il tuo telefono, qualcuno ti sta chiamando</string>
