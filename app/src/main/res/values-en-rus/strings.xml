@@ -34,7 +34,6 @@
     <string name="artists">Artists</string>
     <string name="queue_action">Queue</string>
     <string name="action_search">Search</string>
-    <string name="playlist">Playlist</string>
     <string name="play_file">Play</string>
     <string name="queue_file">Queue</string>
     <string name="edit">Edit</string>
