@@ -69,7 +69,8 @@ public class HostFragmentManualConfiguration extends Fragment {
             HOST_DIRECT_SHARE = PREFIX + ".host_direct_share",
             HOST_PROTOCOL = PREFIX + ".host_protocol",
             HOST_USE_EVENT_SERVER = PREFIX + ".host_use_event_server",
-            HOST_EVENT_SERVER_PORT = PREFIX + ".host_event_server_port";
+            HOST_EVENT_SERVER_PORT = PREFIX + ".host_event_server_port",
+            HOST_IS_HTTPS = PREFIX + ".host_is_https";
     public static final String GO_STRAIGHT_TO_TEST = PREFIX + ".go_straight_to_test";
 
     /**
@@ -113,8 +114,12 @@ public class HostFragmentManualConfiguration extends Fragment {
         boolean directShare = getArguments().getBoolean(HOST_DIRECT_SHARE, true);
         boolean hostUseEventServer = getArguments().getBoolean(HOST_USE_EVENT_SERVER, true);
         int hostEventServerPort = getArguments().getInt(HOST_EVENT_SERVER_PORT, HostInfo.DEFAULT_EVENT_SERVER_PORT);
+        boolean hostIsHttps = getArguments().getBoolean(HOST_IS_HTTPS, false);
 
         if (hostAddress != null) {
+            // If https, add back the protocol so that it gets picked up on saving
+            if (hostIsHttps) hostAddress = "https://" + hostAddress;
+
             binding.kodiName.setText(hostName);
             binding.kodiIpAddress.setText(hostAddress);
             binding.kodiHttpPort.setText(String.valueOf(hostHttpPort));

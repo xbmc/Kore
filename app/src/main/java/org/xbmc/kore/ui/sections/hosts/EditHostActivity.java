@@ -83,6 +83,8 @@ public class EditHostActivity extends BaseActivity implements
                                     selectedHostInfo.getUseEventServer());
                     args.putInt(HostFragmentManualConfiguration.HOST_EVENT_SERVER_PORT,
                                     selectedHostInfo.getEventServerPort());
+                    args.putBoolean(HostFragmentManualConfiguration.HOST_IS_HTTPS,
+                            selectedHostInfo.isHttps);
                     editFragment.setArguments(args);
                 }
             }
