@@ -63,18 +63,18 @@ import okhttp3.ResponseBody;
  * Class responsible for communicating with the host.
  */
 public class HostConnection {
-	public static final String TAG = LogUtils.makeLogTag(HostConnection.class);
+    public static final String TAG = LogUtils.makeLogTag(HostConnection.class);
 
     protected static final boolean LOG_REQUESTS = false;
 
-	/**
-	 * Communicate via TCP
-	 */
-	public static final int PROTOCOL_TCP = 0;
-	/**
-	 * Communicate via HTTP
-	 */
-	public static final int PROTOCOL_HTTP = 1;
+    /**
+     * Communicate via TCP
+     */
+    public static final int PROTOCOL_TCP = 0;
+    /**
+     * Communicate via HTTP
+     */
+    public static final int PROTOCOL_HTTP = 1;
 
     /**
      * Interface that an observer must implement to be notified of player notifications
@@ -113,14 +113,16 @@ public class HostConnection {
 
     public interface PlaylistNotificationsObserver {
         void onPlaylistCleared(Playlist.OnClear notification);
+
         void onPlaylistItemAdded(Playlist.OnAdd notification);
+
         void onPlaylistItemRemoved(Playlist.OnRemove notification);
     }
 
     /**
-	 * Host to connect too
-	 */
-	private final HostInfo hostInfo;
+     * Host to connect too
+     */
+    private final HostInfo hostInfo;
 
     /**
      * The protocol to use: {@link #PROTOCOL_HTTP} or {@link #PROTOCOL_TCP}
@@ -131,21 +133,21 @@ public class HostConnection {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-	/**
-	 * Socket used to communicate through TCP
-	 */
-	private Socket socket = null;
+    /**
+     * Socket used to communicate through TCP
+     */
+    private Socket socket = null;
 
     /**
      * Listener thread that will be listening on the TCP socket
      */
     private Thread tcpListenerThread = null;
 
-	/**
-	 * {@link HashMap} that will hold the {@link MethodCallInfo} with the information
-	 * necessary to respond to clients (TCP only)
-	 */
-	private final HashMap<String, MethodCallInfo<?>> clientCallbacks = new HashMap<>();
+    /**
+     * {@link HashMap} that will hold the {@link MethodCallInfo} with the information
+     * necessary to respond to clients (TCP only)
+     */
+    private final HashMap<String, MethodCallInfo<?>> clientCallbacks = new HashMap<>();
 
     /**
      * The observers that will be notified of player notifications
@@ -199,15 +201,17 @@ public class HostConnection {
 
     /**
      * Creates a new host connection
+     *
      * @param hostInfo Host info object
      */
     public HostConnection(final HostInfo hostInfo) {
         this(hostInfo, DEFAULT_CONNECT_TIMEOUT);
-	}
+    }
 
     /**
      * Creates a new host connection
-     * @param hostInfo Host info object
+     *
+     * @param hostInfo       Host info object
      * @param connectTimeout Connection timeout in ms
      */
     public HostConnection(final HostInfo hostInfo, int connectTimeout) {
@@ -222,6 +226,7 @@ public class HostConnection {
 
     /**
      * Returns this connection protocol
+     *
      * @return {@link #PROTOCOL_HTTP} or {@link #PROTOCOL_TCP}
      */
     public int getProtocol() {
@@ -230,6 +235,7 @@ public class HostConnection {
 
     /**
      * Overrides the protocol for this connection
+     *
      * @param protocol {@link #PROTOCOL_HTTP} or {@link #PROTOCOL_TCP}
      */
     public synchronized void setProtocol(int protocol) {
@@ -245,6 +251,7 @@ public class HostConnection {
 
     /**
      * Returns this connection {@link HostInfo}
+     *
      * @return This connection {@link HostInfo}
      */
     public HostInfo getHostInfo() {
@@ -253,6 +260,7 @@ public class HostConnection {
 
     /**
      * Returns this default connection timeout
+     *
      * @return Connection timeout
      */
     public int getConnectTimeout() {
@@ -261,12 +269,14 @@ public class HostConnection {
 
     /**
      * Returns the {@link ExecutorService} that is being used to send remote method calls
+     *
      * @return The {@link ExecutorService} in use
      */
     public ExecutorService getExecutorService() { return executorService; }
 
     /**
      * Registers an observer for player notifications
+     *
      * @param observer The {@link PlayerNotificationsObserver}
      */
     public void registerPlayerNotificationsObserver(PlayerNotificationsObserver observer, Handler handler) {
@@ -275,6 +285,7 @@ public class HostConnection {
 
     /**
      * Unregisters and observer from the player notifications
+     *
      * @param observer The {@link PlayerNotificationsObserver} to unregister
      */
     public void unregisterPlayerNotificationsObserver(PlayerNotificationsObserver observer) {
@@ -283,6 +294,7 @@ public class HostConnection {
 
     /**
      * Registers an observer for system notifications
+     *
      * @param observer The {@link SystemNotificationsObserver}
      */
     public void registerSystemNotificationsObserver(SystemNotificationsObserver observer, Handler handler) {
@@ -291,6 +303,7 @@ public class HostConnection {
 
     /**
      * Unregisters and observer from the system notifications
+     *
      * @param observer The {@link SystemNotificationsObserver}
      */
     public void unregisterSystemNotificationsObserver(SystemNotificationsObserver observer) {
@@ -299,6 +312,7 @@ public class HostConnection {
 
     /**
      * Registers an observer for input notifications
+     *
      * @param observer The {@link InputNotificationsObserver}
      */
     public void registerInputNotificationsObserver(InputNotificationsObserver observer, Handler handler) {
@@ -307,6 +321,7 @@ public class HostConnection {
 
     /**
      * Unregisters and observer from the input notifications
+     *
      * @param observer The {@link InputNotificationsObserver}
      */
     public void unregisterInputNotificationsObserver(InputNotificationsObserver observer) {
@@ -315,6 +330,7 @@ public class HostConnection {
 
     /**
      * Registers an observer for application notifications
+     *
      * @param observer The {@link InputNotificationsObserver}
      */
     public void registerApplicationNotificationsObserver(ApplicationNotificationsObserver observer, Handler handler) {
@@ -323,6 +339,7 @@ public class HostConnection {
 
     /**
      * Unregisters and observer from the application notifications
+     *
      * @param observer The {@link InputNotificationsObserver}
      */
     public void unregisterApplicationNotificationsObserver(ApplicationNotificationsObserver observer) {
@@ -331,6 +348,7 @@ public class HostConnection {
 
     /**
      * Registers an observer for playlist notifications
+     *
      * @param observer The {@link InputNotificationsObserver}
      */
     public void registerPlaylistNotificationsObserver(PlaylistNotificationsObserver observer, Handler handler) {
@@ -339,6 +357,7 @@ public class HostConnection {
 
     /**
      * Unregisters and observer from the playlist notifications
+     *
      * @param observer The {@link InputNotificationsObserver}
      */
     public void unregisterPlaylistNotificationsObserver(PlaylistNotificationsObserver observer) {
@@ -346,23 +365,23 @@ public class HostConnection {
     }
 
     /**
-	 * Calls the remote method on the Kodi host asynchronously, using a background thread
-	 * The result of the call will be posted in the {@link ApiCallback callback} parameter, on the specified
+     * Calls the remote method on the Kodi host asynchronously, using a background thread
+     * The result of the call will be posted in the {@link ApiCallback callback} parameter, on the specified
      * {@link android.os.Handler}. If the results aren't needed, null can be passed for both parameters to ignore them
      * If the connection is through TCP and there's a need to update the callback and handler (e.g. due to a device
      * configuration change) use {@link #updateClientCallback(int, ApiCallback, Handler)}
      *
-     * @param method Method object that represents the method call
-	 * @param callback {@link ApiCallback} to post the response to
-	 * @param handler {@link Handler} to invoke callbacks on.
-     *                               Note that, if this is null, the callbacks are invoked on the same background
-     *                               thread as the request, which isn't appropriate for UI manipulations
-	 * @param <T> Method return type
-	 */
-	public <T> void execute(final ApiMethod<T> method, final ApiCallback<T> callback, final Handler handler) {
+     * @param method   Method object that represents the method call
+     * @param callback {@link ApiCallback} to post the response to
+     * @param handler  {@link Handler} to invoke callbacks on.
+     *                 Note that, if this is null, the callbacks are invoked on the same background
+     *                 thread as the request, which isn't appropriate for UI manipulations
+     * @param <T>      Method return type
+     */
+    public <T> void execute(final ApiMethod<T> method, final ApiCallback<T> callback, final Handler handler) {
 //		LogUtils.LOGD(TAG, "Starting method execute. Method: " + method.getMethodName() + " on : " + hostInfo.getJsonRpcHttpEndpoint());
 
-		// Launch background thread
+        // Launch background thread
         Runnable command = () -> {
             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 
@@ -376,7 +395,7 @@ public class HostConnection {
         };
 
         executorService.execute(command);
-	}
+    }
 
     /**
      * Calls the remote method on the Kodi host asynchronously, using a background thread, and returns a future
@@ -389,8 +408,8 @@ public class HostConnection {
      * {@link HostConnection#execute(ApiMethod, ApiCallback, Handler)} is preferrable, as it is slightly more efficient.
      *
      * @param method The remote method to invoke
-     * @param <T> The type of the return value of the method
-     * @return the future result of the method call. API errors will be wrapped in
+     * @param <T>    The type of the return value of the method
+     * @return       The future result of the method call. API errors will be wrapped in
      * an {@link ExecutionException} like regular futures.
      */
     public <T> Future<T> execute(ApiMethod<T> method) {
@@ -413,10 +432,11 @@ public class HostConnection {
      * Updates the client callback for the given {@link ApiMethod} if it is still pending.
      * This can be used when the activity or fragment has been destroyed and recreated and
      * you are still interested in the result of any pending {@link ApiMethod}
+     *
      * @param methodId for which a new callback needs to be attached
      * @param callback new callback that needs to be called for the new activity or fragment
-     * @param handler used to execute the callback on the UI thread
-     * @param <T> result type
+     * @param handler  used to execute the callback on the UI thread
+     * @param <T>      result type
      * @return true if the {@link ApiMethod} was still pending, false otherwise.
      */
     @SuppressWarnings("unchecked")
@@ -431,17 +451,18 @@ public class HostConnection {
                 clientCallbacks.put(id, new MethodCallInfo<>((ApiMethod<T>) methodCallInfo.method, callback, handler));
                 return true;
             }
-            return  false;
+            return false;
         }
     }
 
     /**
      * Stores the method and callback to handle asynchronous responses.
      * Note this is only needed for requests over TCP.
-     * @param method Method
+     *
+     * @param method   Method
      * @param callback Callback
-     * @param handler Handler
-     * @param <T> Method/Callback type
+     * @param handler  Handler
+     * @param <T>      Method/Callback type
      */
     private <T> void addClientCallback(final ApiMethod<T> method, final ApiCallback<T> callback, final Handler handler) {
         if (getProtocol() == PROTOCOL_HTTP)
@@ -452,7 +473,7 @@ public class HostConnection {
             if (clientCallbacks.containsKey(methodId)) {
                 if ((handler != null) && (callback != null)) {
                     handler.post(() -> callback.onError(ApiException.API_METHOD_WITH_SAME_ID_ALREADY_EXECUTING,
-                                                "A method with the same Id is already executing"));
+                            "A method with the same Id is already executing"));
                 }
                 return;
             }
@@ -512,14 +533,14 @@ public class HostConnection {
     public Authenticator getOkHttpAuthenticator() {
         return (route, response) -> {
             if (TextUtils.isEmpty(hostInfo.getUsername()) ||
-                (response.request().header("Authorization") != null)) {
+                    (response.request().header("Authorization") != null)) {
                 return null; // Give up, we've already attempted to authenticate.
             }
 
             String credential = Credentials.basic(hostInfo.getUsername(), hostInfo.getPassword());
             return response.request().newBuilder()
-                           .header("Authorization", credential)
-                           .build();
+                    .header("Authorization", credential)
+                    .build();
         };
     }
 
@@ -533,6 +554,7 @@ public class HostConnection {
 
     /**
      * Send an OkHttp POST request
+     *
      * @param request Request to send
      * @throws ApiException {@link ApiException} if request can't be sent
      */
@@ -541,7 +563,7 @@ public class HostConnection {
             return client.newCall(request).execute();
         } catch (ProtocolException e) {
             LogUtils.LOGW(TAG, "Got a Protocol Exception when trying to send OkHttp request. " +
-                               "Trying again without connection pooling to try to circunvent this", e);
+                    "Trying again without connection pooling to try to circunvent this", e);
             // Hack to circumvent a Protocol Exception that occurs when the server returns bogus Status Line
             // http://forum.kodi.tv/showthread.php?tid=224288
             httpClient = getNewOkHttpClientNoKeepAlive();
@@ -561,6 +583,7 @@ public class HostConnection {
 
     /**
      * Reads the response from the server
+     *
      * @param response Response from OkHttp
      * @return Response body string
      * @throws ApiException {@link ApiException} if response can't be read/processed
@@ -581,7 +604,7 @@ public class HostConnection {
                     } else {
                         LogUtils.LOGD(TAG, "OkHTTP response body is null: " + response);
                         throw new ApiException(ApiException.HTTP_RESPONSE_CODE_UNKNOWN,
-                                               "Server returned response code: " + response);
+                                "Server returned response code: " + response);
                     }
                 case 401:
                     LogUtils.LOGD(TAG, "OkHTTP response read error. Got a 401: " + response);
@@ -603,40 +626,41 @@ public class HostConnection {
     }
 
     /**
-	 * Parses the JSON response from the server.
-	 * If it is a valid result returns the JSON {@link com.fasterxml.jackson.databind.node.ObjectNode} that represents it.
-	 * If it is an error (contains the error tag), returns an {@link ApiException} with the info.
-	 * @param response JSON response
-	 * @return {@link com.fasterxml.jackson.databind.node.ObjectNode} constructed
-	 * @throws ApiException Exception trown if we can't parse the response
-	 */
-	private ObjectNode parseJsonResponse(String response) throws ApiException {
+     * Parses the JSON response from the server.
+     * If it is a valid result returns the JSON {@link com.fasterxml.jackson.databind.node.ObjectNode} that represents it.
+     * If it is an error (contains the error tag), returns an {@link ApiException} with the info.
+     *
+     * @param response JSON response
+     * @return {@link com.fasterxml.jackson.databind.node.ObjectNode} constructed
+     * @throws ApiException Exception trown if we can't parse the response
+     */
+    private ObjectNode parseJsonResponse(String response) throws ApiException {
 //		LogUtils.LOGD(TAG, "Parsing JSON response");
-		try {
-			ObjectNode jsonResponse = (ObjectNode) objectMapper.readTree(response);
+        try {
+            ObjectNode jsonResponse = (ObjectNode) objectMapper.readTree(response);
 
-			if (jsonResponse.has(ApiMethod.ERROR_NODE)) {
-				throw new ApiException(ApiException.API_ERROR, jsonResponse);
-			}
+            if (jsonResponse.has(ApiMethod.ERROR_NODE)) {
+                throw new ApiException(ApiException.API_ERROR, jsonResponse);
+            }
 
-			if (!jsonResponse.has(ApiMethod.RESULT_NODE)) {
-				// Something strange is going on
-				throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST,
-					"Result doesn't contain a result node.");
-			}
+            if (!jsonResponse.has(ApiMethod.RESULT_NODE)) {
+                // Something strange is going on
+                throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST,
+                        "Result doesn't contain a result node.");
+            }
 
-			return jsonResponse;
-		} catch (IOException e) {
-			LogUtils.LOGW(TAG, "Got an exception while parsing JSON response.", e);
-			throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
-		}
+            return jsonResponse;
+        } catch (IOException e) {
+            LogUtils.LOGW(TAG, "Got an exception while parsing JSON response.", e);
+            throw new ApiException(ApiException.INVALID_JSON_RESPONSE_FROM_HOST, e);
+        }
     }
 
-	/**
-	 * Sends the JSON RPC request through TCP
-	 * Keeps a background thread running, listening on a socket
-	 */
-	private <T> void executeThroughTcp(final ApiMethod<T> method) {
+    /**
+     * Sends the JSON RPC request through TCP
+     * Keeps a background thread running, listening on a socket
+     */
+    private <T> void executeThroughTcp(final ApiMethod<T> method) {
         String methodId = String.valueOf(method.getId());
         try {
             synchronized (this) {
@@ -649,55 +673,57 @@ public class HostConnection {
                 // Write request
                 sendTcpRequest(socket, method.toJsonString());
             }
-		} catch (final ApiException e) {
-			callErrorCallback(methodId, e);
-		}
-	}
+        } catch (final ApiException e) {
+            callErrorCallback(methodId, e);
+        }
+    }
 
-	/**
-	 * Auxiliary method to open the TCP {@link Socket}.
-	 * This method calls connect() so that any errors are cathced
-	 * @param hostInfo Host info
-	 * @return Connection set up
-	 * @throws ApiException Exception if open is unsucessful
-	 */
-	private Socket openTcpConnection(HostInfo hostInfo) throws ApiException {
-		try {
-			LogUtils.LOGD(TAG, "Opening TCP connection on host: " + hostInfo.getAddress());
+    /**
+     * Auxiliary method to open the TCP {@link Socket}.
+     * This method calls connect() so that any errors are cathced
+     *
+     * @param hostInfo Host info
+     * @return Connection set up
+     * @throws ApiException Exception if open is unsucessful
+     */
+    private Socket openTcpConnection(HostInfo hostInfo) throws ApiException {
+        try {
+            LogUtils.LOGD(TAG, "Opening TCP connection on host: " + hostInfo.getAddress());
 
-			Socket socket = new Socket();
-			final InetSocketAddress address = new InetSocketAddress(hostInfo.getAddress(), hostInfo.getTcpPort());
+            Socket socket = new Socket();
+            final InetSocketAddress address = new InetSocketAddress(hostInfo.getAddress(), hostInfo.getTcpPort());
             // We're setting a read timeout on the socket, so no need to explicitly close it
-			socket.setSoTimeout(TCP_READ_TIMEOUT);
-			socket.connect(address, connectTimeout);
+            socket.setSoTimeout(TCP_READ_TIMEOUT);
+            socket.connect(address, connectTimeout);
 
-			return socket;
-		} catch (IOException e) {
-			LogUtils.LOGW(TAG, "Failed to open TCP connection to host: " + hostInfo.getAddress());
-			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_CONNECTING, e);
-		}
-	}
+            return socket;
+        } catch (IOException e) {
+            LogUtils.LOGW(TAG, "Failed to open TCP connection to host: " + hostInfo.getAddress());
+            throw new ApiException(ApiException.IO_EXCEPTION_WHILE_CONNECTING, e);
+        }
+    }
 
-	/**
-	 * Send a TCP request
-	 * @param socket Socket to write to
-	 * @param request Request to send
-	 * @throws ApiException Exception if can't send
-	 */
-	private void sendTcpRequest(Socket socket, String request) throws ApiException {
-		try {
-			if (LOG_REQUESTS) LogUtils.LOGD(TAG, "TCP request: " + request);
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			writer.write(request);
-			writer.flush();
-		} catch (Exception e) {
-			LogUtils.LOGW(TAG, "Failed to send TCP request: " + request, e);
+    /**
+     * Send a TCP request
+     *
+     * @param socket  Socket to write to
+     * @param request Request to send
+     * @throws ApiException Exception if can't send
+     */
+    private void sendTcpRequest(Socket socket, String request) throws ApiException {
+        try {
+            if (LOG_REQUESTS) LogUtils.LOGD(TAG, "TCP request: " + request);
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            writer.write(request);
+            writer.flush();
+        } catch (Exception e) {
+            LogUtils.LOGW(TAG, "Failed to send TCP request: " + request, e);
             disconnect();
-			throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
-		}
-	}
+            throw new ApiException(ApiException.IO_EXCEPTION_WHILE_SENDING_REQUEST, e);
+        }
+    }
 
-	private void startListenerThread(final Socket socket) {
+    private void startListenerThread(final Socket socket) {
         tcpListenerThread = new Thread(() -> {
             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             try {
@@ -723,8 +749,8 @@ public class HostConnection {
                 disconnect();
             }
         });
-	    tcpListenerThread.start();
-	}
+        tcpListenerThread.start();
+    }
 
     private boolean shouldIgnoreTcpResponse(ObjectNode jsonResponse) {
         boolean ignore = false;
@@ -736,14 +762,14 @@ public class HostConnection {
         return ignore;
     }
 
-	private <T> void handleTcpResponse(ObjectNode jsonResponse) {
+    private <T> void handleTcpResponse(ObjectNode jsonResponse) {
         if (shouldIgnoreTcpResponse(jsonResponse))
             return;
 
-		if (!jsonResponse.has(ApiMethod.ID_NODE)) {
+        if (!jsonResponse.has(ApiMethod.ID_NODE)) {
             // It's a notification, notify observers
             String notificationName = jsonResponse.get(ApiNotification.METHOD_NODE).asText();
-            ObjectNode params = (ObjectNode)jsonResponse.get(ApiNotification.PARAMS_NODE);
+            ObjectNode params = (ObjectNode) jsonResponse.get(ApiNotification.PARAMS_NODE);
 
             switch (notificationName) {
                 case Player.OnPause.NOTIFICATION_NAME: {
@@ -890,22 +916,20 @@ public class HostConnection {
                 }
             }
             LogUtils.LOGD(TAG, "Got a notification: " + jsonResponse.get("method").textValue());
-		} else {
-			String methodId = jsonResponse.get(ApiMethod.ID_NODE).asText();
+        } else {
+            String methodId = jsonResponse.get(ApiMethod.ID_NODE).asText();
 
-			if (jsonResponse.has(ApiMethod.ERROR_NODE)) {
-				// Error response
-				callErrorCallback(methodId, new ApiException(ApiException.API_ERROR, jsonResponse));
-			} else {
-				// Success response
-				final MethodCallInfo<?> methodCallInfo = clientCallbacks.get(methodId);
+            if (jsonResponse.has(ApiMethod.ERROR_NODE)) {
+                // Error response
+                callErrorCallback(methodId, new ApiException(ApiException.API_ERROR, jsonResponse));
+            } else {
+                // Success response
+                final MethodCallInfo<?> methodCallInfo = clientCallbacks.get(methodId);
 
                 if (methodCallInfo != null) {
                     try {
-                        @SuppressWarnings("unchecked")
-                        final T result = (T) methodCallInfo.method.resultFromJson(jsonResponse);
-                        @SuppressWarnings("unchecked")
-                        final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
+                        @SuppressWarnings("unchecked") final T result = (T) methodCallInfo.method.resultFromJson(jsonResponse);
+                        @SuppressWarnings("unchecked") final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
 
                         if (callback != null) {
                             postOrRunNow(methodCallInfo.handler, () -> callback.onSuccess(result));
@@ -919,9 +943,9 @@ public class HostConnection {
                         callErrorCallback(methodId, e);
                     }
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
     private <T> void callErrorCallback(String methodId, final ApiException error) {
         synchronized (clientCallbacks) {
@@ -929,8 +953,7 @@ public class HostConnection {
                 // Send error back to client
                 final MethodCallInfo<?> methodCallInfo = clientCallbacks.get(methodId);
                 if (methodCallInfo != null) {
-                    @SuppressWarnings("unchecked")
-                    final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
+                    @SuppressWarnings("unchecked") final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
 
                     if (callback != null) {
                         postOrRunNow(methodCallInfo.handler, () -> callback.onError(error.getCode(), error.getMessage()));
@@ -942,8 +965,7 @@ public class HostConnection {
                 for (String id : clientCallbacks.keySet()) {
                     final MethodCallInfo<?> methodCallInfo = clientCallbacks.get(id);
                     if (methodCallInfo == null) continue;
-                    @SuppressWarnings("unchecked")
-                    final ApiCallback<T> callback = (ApiCallback<T>)methodCallInfo.callback;
+                    @SuppressWarnings("unchecked") final ApiCallback<T> callback = (ApiCallback<T>) methodCallInfo.callback;
 
                     if (callback != null) {
                         postOrRunNow(methodCallInfo.handler, () -> callback.onError(error.getCode(), error.getMessage()));
@@ -955,13 +977,13 @@ public class HostConnection {
         }
     }
 
-	/**
-	 * Cleans up used resources.
-	 * This method should always be called if the protocol used is TCP, so we can shutdown gracefully
-	 */
+    /**
+     * Cleans up used resources.
+     * This method should always be called if the protocol used is TCP, so we can shutdown gracefully
+     */
     public void disconnect() {
-		if (protocol == PROTOCOL_HTTP)
-			return;
+        if (protocol == PROTOCOL_HTTP)
+            return;
 
         Socket oldSocket = socket;
         socket = null;
@@ -981,7 +1003,7 @@ public class HostConnection {
                 }
             }
         });
-	}
+    }
 
     private static void postOrRunNow(Handler handler, Runnable r) {
         if (handler != null) {
@@ -991,19 +1013,20 @@ public class HostConnection {
         }
     }
 
-	/**
-	 * Helper class to aggregate a method, callback and handler
-	 * @param <T>
-	 */
-	private static class MethodCallInfo<T> {
-		public final ApiMethod<T> method;
-		public final ApiCallback<T> callback;
-		public final Handler handler;
+    /**
+     * Helper class to aggregate a method, callback and handler
+     *
+     * @param <T>
+     */
+    private static class MethodCallInfo<T> {
+        public final ApiMethod<T> method;
+        public final ApiCallback<T> callback;
+        public final Handler handler;
 
-		public MethodCallInfo(ApiMethod<T> method, ApiCallback<T> callback, Handler handler) {
-			this.method = method;
-			this.callback = callback;
-			this.handler = handler;
-		}
-	}
+        public MethodCallInfo(ApiMethod<T> method, ApiCallback<T> callback, Handler handler) {
+            this.method = method;
+            this.callback = callback;
+            this.handler = handler;
+        }
+    }
 }
