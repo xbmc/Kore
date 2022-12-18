@@ -165,7 +165,7 @@
     <!-- Main view tabs -->
     <string name="now_playing">Reproduciendo ahora</string>
     <string name="remote">Remoto</string>
-    <string name="playlist">Lista de reproducción</string>
+    <string name="playlist">Cola</string>
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Temporada %1$02d | Episodio %2$02d</string>
     <string name="season_number">Temporada %1$02d</string>
@@ -202,8 +202,8 @@
     <string name="remaining_cast_count">%d más</string>
     <string name="general_error_executing_action">Error al ejecutar la acción: %1$s</string>
     <string name="error_getting_playlist">Error obteniendo lista de reproducción</string>
-    <string name="playlist_empty">Lista de reproducción vacía</string>
-    <string name="clear_playlist">Borrar lista de reproducción</string>
+    <string name="playlist_empty">Cola vacía</string>
+    <string name="clear_playlist">Borrar cola</string>
     <string name="source_empty">Fuente vacía</string>
     <string name="swipe_down_to_refresh">Desliza hacia abajo para actualizar</string>
     <string name="no_movies_found_refresh">No se encontraron películas</string>
@@ -232,10 +232,10 @@
     <string name="action_search_artists">Buscar intérpretes</string>
     <string name="action_search_genres">Buscar géneros</string>
     <string name="action_search_music_videos">Buscar videos</string>
-    <string name="add_to_playlist">Añadir a la lista de reproducción</string>
-    <string name="item_added_to_playlist">Añadido a la lista de reproducción</string>
+    <string name="add_to_playlist">Añadir a la cola</string>
+    <string name="item_added_to_playlist">Añadido a la cola</string>
     <string name="item_sent_to_kodi">Enviar a Kodi</string>
-    <string name="no_suitable_playlist">No hay listas de reproducción adecuadas para añadir el medio.</string>
+    <string name="no_suitable_playlist">No hay colas adecuadas para añadir este tipo de contenido.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Descargar</string>
     <string name="confirm_movie_download">¿Seguro que quieres descargar esta película? \nSe descargará en segundo plano, puede tardar un tiempo en terminar.</string>

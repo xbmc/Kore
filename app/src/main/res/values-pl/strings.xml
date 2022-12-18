@@ -164,7 +164,7 @@
     <!-- Main view tabs -->
     <string name="now_playing">Odtwarzam</string>
     <string name="remote">Pilot</string>
-    <string name="playlist">Lista</string>
+    <string name="playlist">Kolejka</string>
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Sezon %1$02d | Odcinek %2$02d</string>
     <string name="season_number">Sezon %1$02d</string>
@@ -201,8 +201,8 @@
     <string name="remaining_cast_count">oraz %d innych</string>
     <string name="general_error_executing_action">Błąd podczas wykonywania czynności: %1$s</string>
     <string name="error_getting_playlist">Błąd pobierania listy odtwarzania</string>
-    <string name="playlist_empty">Lista jest pusta</string>
-    <string name="clear_playlist">Wyczyść listę</string>
+    <string name="playlist_empty">Kolejka pusta</string>
+    <string name="clear_playlist">Wyczyść kolejkę</string>
     <string name="source_empty">Źródło jest puste</string>
     <string name="swipe_down_to_refresh">Przesuń w dół, aby odświeżyć</string>
     <string name="no_movies_found_refresh">Nie znaleziono filmów</string>
@@ -231,10 +231,10 @@
     <string name="action_search_artists">Znajdź wykonawcę</string>
     <string name="action_search_genres">Znajdź gatunek</string>
     <string name="action_search_music_videos">Znajdź teledysk</string>
-    <string name="add_to_playlist">Dodaj do listy</string>
-    <string name="item_added_to_playlist">Dodano do listy</string>
+    <string name="add_to_playlist">Kolejkuj</string>
+    <string name="item_added_to_playlist">Dodano do kolejki odtwarzania</string>
     <string name="item_sent_to_kodi">Wysłane do Kodi</string>
-    <string name="no_suitable_playlist">Brak pasującej listy odtwarzania dla tego typu pliku.</string>
+    <string name="no_suitable_playlist">Nie znaleziono odpowiedniej kolejki odtwarzania, aby dodać typ multimediów.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Pobierz</string>
     <string name="confirm_movie_download">Czy na pewno chcesz pobrać ten film\?
