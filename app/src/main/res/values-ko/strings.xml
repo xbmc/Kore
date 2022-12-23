@@ -168,7 +168,7 @@
     <!-- Main view tabs -->
     <string name="now_playing">지금 재생</string>
     <string name="remote">원격</string>
-    <string name="playlist">재생목록</string>
+    <string name="playlist">대기열</string>
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">시즌 %1$02d | 에피소드 %2$02d</string>
     <string name="season_number">시즌 %1$02d</string>
@@ -206,8 +206,8 @@
     <string name="remaining_cast_count">이외 %d명</string>
     <string name="general_error_executing_action">실행 오류: %1$s</string>
     <string name="error_getting_playlist">재생목록 가져오기 오류</string>
-    <string name="playlist_empty">재생목록 없음</string>
-    <string name="clear_playlist">재생목록 지우기</string>
+    <string name="playlist_empty">대기열 비어 있음</string>
+    <string name="clear_playlist">대기열 지우기</string>
     <string name="source_empty">미디어 소스 없음</string>
     <string name="no_movies_found_refresh">영화를 찾을 수 없음</string>
     <string name="no_tvshows_found_refresh">TV 프로그램을 찾을 수 없음</string>
@@ -236,10 +236,10 @@
     <string name="action_search_artists">아티스트 찾기</string>
     <string name="action_search_genres">장르 찾기</string>
     <string name="action_search_music_videos">비디오 찾기</string>
-    <string name="add_to_playlist">재생목록에 추가</string>
-    <string name="item_added_to_playlist">재생목록에 추가됨</string>
+    <string name="add_to_playlist">대기열</string>
+    <string name="item_added_to_playlist">재생 대기열에 추가됨</string>
     <string name="item_sent_to_kodi">코디로 보냄</string>
-    <string name="no_suitable_playlist">미디어를 추가할 재생목록을 찾을 수 없습니다.</string>
+    <string name="no_suitable_playlist">미디어 유형을 추가하는 데 적합한 재생 대기열을 찾을 수 없습니다.</string>
     <string name="imdb">IMDb</string>
     <string name="download">내려받기</string>
     <string name="confirm_movie_download">이 영화를 내려받을까요?\n이 영화를 백그라운드에서 내려받는 데에 시간이 걸립니다.</string>

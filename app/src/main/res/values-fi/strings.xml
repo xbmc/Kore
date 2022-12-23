@@ -160,7 +160,7 @@
     <!-- Main view tabs -->
     <string name="now_playing">Toistetaan parhaillaan</string>
     <string name="remote">Kaukosäädin</string>
-    <string name="playlist">Toistolista</string>
+    <string name="playlist">Jono</string>
     <string name="season_episode_abbrev">K%1$02dJ%2$02d</string>
     <string name="season_episode">Kausi %1$02d | Jakso %2$02d</string>
     <string name="season_number">Kausi %1$02d</string>
@@ -197,8 +197,8 @@
     <string name="remaining_cast_count">%d lisää</string>
     <string name="general_error_executing_action">Virhe suoritettaessa toimintoa: %1$s</string>
     <string name="error_getting_playlist">Virhe noudettaessa toistolistaa</string>
-    <string name="playlist_empty">Toistolista on tyhjä</string>
-    <string name="clear_playlist">Tyhjennä toistolista</string>
+    <string name="playlist_empty">Jono on tyhjä</string>
+    <string name="clear_playlist">Tyhjennä jono</string>
     <string name="source_empty">Medialähde on tyhjä</string>
     <string name="swipe_down_to_refresh">Päivitä vetämällä alas</string>
     <string name="no_movies_found_refresh">Elokuvia ei löytynyt</string>
@@ -227,10 +227,10 @@
     <string name="action_search_artists">Hae esittäjiä</string>
     <string name="action_search_genres">Hae lajityyppejä</string>
     <string name="action_search_music_videos">Hae videoita</string>
-    <string name="add_to_playlist">Lisää toistolistalle</string>
-    <string name="item_added_to_playlist">Lisättiin toistolistalle</string>
+    <string name="add_to_playlist">Lisää jonoon</string>
+    <string name="item_added_to_playlist">Lisättiin jonoon</string>
     <string name="item_sent_to_kodi">Välitettiin Kodiin</string>
-    <string name="no_suitable_playlist">Mediatyypille sopivaa toistolistaa ei löytynyt.</string>
+    <string name="no_suitable_playlist">Mediatyypille sopivaa jonoa ei löytynyt.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Lataa</string>
     <string name="confirm_movie_download">Haluatko varmasti ladata elokuvan\?
