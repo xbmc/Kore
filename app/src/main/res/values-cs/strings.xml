@@ -28,12 +28,12 @@
     <string name="music">Hudba</string>
     <string name="pictures">Obrázky</string>
     <string name="addons">Doplňky</string>
-    <string name="files">Soubory</string>
+    <string name="files">Soubory Kodi</string>
     <string name="video">Video</string>
     <string name="videos">Videa</string>
     <string name="media">Media</string>
     <string name="script">Script</string>
-    <string name="file_browser">Průzkumník souborů</string>
+    <string name="file_browser">Průzkumník souborů Kodi</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Oblíbené</string>
     <string name="weather">Počasí</string>
@@ -59,7 +59,8 @@
     <string name="toggle_fullscreen">Režim celé obrazovky</string>
     <string name="connected_to">Připojeno k %1$s</string>
     <string name="connecting">Připojuje se…</string>
-    <string name="connecting_to">Připojuje se k %1$s (%2$s)…</string>
+    <string name="connecting_to">Nelze se připojit k %1$s (%2$s)
+\nOpakování…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Vítejte</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -159,29 +160,30 @@
     <!-- Main view tabs -->
     <string name="now_playing">Nyní hraje</string>
     <string name="remote">Ovládání</string>
-    <string name="playlist">Seznam</string>
+    <string name="playlist">Fronta</string>
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Série %1$02d | Epizoda %2$02d</string>
     <string name="season_number">Série %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Epizoda %1$d</string>
     <string name="votes">%1$s hlasů</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Plakát</string>
     <string name="thumbnail">Miniatura</string>
-    <string name="error_getting_properties">Nelze načíst nastavení Kodi/XBMC.\nChyba:
-        %1$s.</string>
-    <string name="error_executing_subtitles">Nelze spustit doplněk titulků.\nChyba: %1$s.</string>
-    <string name="error_getting_addon_info">Nelze načíst informace doplňku.\nChyba:
-        %1$s.</string>
-    <string name="error_getting_source_info">Nelze procházet soubory.\nChyba:
-        %1$s.</string>
-    <string name="error_play_media_file">Nelze přehrát soubor.\nChyba:
-        %1$s.</string>
-    <string name="error_queue_media_file">Nelze zařadit soubor do fronty.\nChyba:
-        %1$s.</string>
-    <string name="error_get_active_player">Nelze aktivovat přehrávač.\nChyba:
-        %1$s.</string>
-    <string name="error_share_video">Couldn\'t share video to Kodi/XBMC.</string>
+    <string name="error_getting_properties">Nelze načíst nastavení Kodi.
+\nChyba: %1$s</string>
+    <string name="error_executing_subtitles">Nelze spustit doplněk titulků.
+\nChyba: %1$s</string>
+    <string name="error_getting_addon_info">Nelze načíst seznam doplňků.
+\nChyba: %1$s</string>
+    <string name="error_getting_source_info">Nelze procházet soubory.
+\nChyba: %1$s</string>
+    <string name="error_play_media_file">Nelze přehrát multimediální soubor.
+\nChyba: %1$s</string>
+    <string name="error_queue_media_file">Nelze zařadit soubor do fronty.
+\nChyba: %1$s</string>
+    <string name="error_get_active_player">Nelze aktivovat přehrávač.
+\nChyba: %1$s</string>
+    <string name="error_share_video">Nelze nasdílet video do Kodi.</string>
     <string name="directors">Režie:</string>
     <string name="studio">Studio:</string>
     <string name="cast">Obsazení</string>
@@ -191,23 +193,23 @@
     <string name="remaining_cast_count">ještě %d</string>
     <string name="general_error_executing_action">Chyba provedení akce: %1$s</string>
     <string name="error_getting_playlist">Chyba načtení playlistu</string>
-    <string name="playlist_empty">Seznam prázdný</string>
-    <string name="clear_playlist">Vyčistit seznam</string>
+    <string name="playlist_empty">Fronta prázdná</string>
+    <string name="clear_playlist">Vymazat frontu</string>
     <string name="source_empty">Zdroj médií prázdný</string>
-    <string name="no_movies_found_refresh">Žádné filmy nenalezeny\n\nObnovit tahem dolů</string>
-    <string name="no_tvshows_found_refresh">Žádné seriály nenalezeny\n\nObnovit tahem dolů</string>
+    <string name="no_movies_found_refresh">Žádné filmy nenalezeny</string>
+    <string name="no_tvshows_found_refresh">Žádné seriály nenalezeny</string>
     <string name="no_episodes_found">Žádné epizody nenalezeny</string>
     <string name="swipe_down_to_refresh">Obnovit tahem dolů</string>
-    <string name="no_artists_found_refresh">Žádní umělci nenalezeni\n\nObnovit tahem dolů</string>
-    <string name="no_albums_found_refresh">Žádná alba nenalezena\n\nObnovit tahem dolů</string>
-    <string name="no_genres_found_refresh">Žádné žánry nenalezeny\n\nObnovit tahem dolů</string>
-    <string name="no_addons_found_refresh">Žádné doplňky nenalezeny nebo nepřipojeny\n\nObnovit tahem dolů</string>
-    <string name="no_music_videos_found_refresh">Žádná videa nenalezena\n\nObnovit tahem dolů</string>
-    <string name="no_channel_groups_found_refresh">Žádné skupiny kanálů nenalezeny\n\nObnovit tahem dolů</string>
-    <string name="no_channels_found_refresh">Žádné kanály nenalezeny\n\nObnovit tahem dolů</string>
-    <string name="no_favourites_found_refresh">No favourites found.\n\nSwipe down to refresh</string>
-    <string name="no_recordings_found_refresh">No recordings found.\n\nSwipe down to refresh</string>
-    <string name="no_broadcasts_found_refresh">No broadcasts found.\n\nSwipe down to refresh</string>
+    <string name="no_artists_found_refresh">Žádní umělci nenalezeni</string>
+    <string name="no_albums_found_refresh">Žádná alba nenalezena</string>
+    <string name="no_genres_found_refresh">Žádné žánry nenalezeny</string>
+    <string name="no_addons_found_refresh">Žádné doplňky nenalezeny</string>
+    <string name="no_music_videos_found_refresh">Žádná videa nenalezena</string>
+    <string name="no_channel_groups_found_refresh">Žádné skupiny kanálů nenalezeny</string>
+    <string name="no_channels_found_refresh">Žádné kanály nenalezeny</string>
+    <string name="no_favourites_found_refresh">Žádné oblíbené nenalezeny</string>
+    <string name="no_recordings_found_refresh">Žádné nahrávky nenalezeny</string>
+    <string name="no_broadcasts_found_refresh">No broadcasts found</string>
     <string name="pull_to_refresh">Obnovit tahem</string>
     <string name="minutes_abbrev">%1$s min</string>
     <string name="minutes_abbrev2">%1$sm</string>
@@ -220,9 +222,9 @@
     <string name="action_search_artists">Hledat umělce</string>
     <string name="action_search_genres">Hledat žánry</string>
     <string name="action_search_music_videos">Hledat videa</string>
-    <string name="add_to_playlist">Přidat do seznamu</string>
-    <string name="item_added_to_playlist">Přidáno do seznamu</string>
-    <string name="no_suitable_playlist">Pro tento typ médií nebyl nalezen žádný seznam.</string>
+    <string name="add_to_playlist">Přidat do fronty</string>
+    <string name="item_added_to_playlist">Přidáno do fronty</string>
+    <string name="no_suitable_playlist">Nebyla nalezena vhodná fronta pro přidání tohoto typu média.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Stáhnout</string>
     <string name="confirm_movie_download">Přejete si stáhnout tento film?\nFilm bude stahován na pozadí, chvíli to potrvá.</string>
@@ -274,19 +276,14 @@
     <string name="theme_day">Den</string>
     <string name="pref_keep_screen_on">Zůstat vzhůru</string>
     <string name="show_notification">Zobrazit oznámení během přehrávání</string>
-    <string name="show_now_playing_panel">Zobrazit panel probíhajícího přehrávání během přehrávání</string>
-    <string name="show_now_playing_panel_summary">Zobrazí přídavný panel na spodním okraji obrazovky během přehrávání médií</string>
+    <string name="show_now_playing_panel">Zobrazit panel probíhajícího přehrávání</string>
+    <string name="show_now_playing_panel_summary">Zobrazit panel na spodním okraji obrazovky během přehrávání médií</string>
     <string name="pause_during_calls">Pozastavit během telefonního hovoru</string>
     <string name="use_hardware_volume_keys">Použít tlačítka hlasitosti</string>
     <string name="remote_bar_items">Zástupci na spodní liště</string>
     <string name="nav_drawer_items">Zástupci v boční nabídce</string>
     <string name="about">O programu</string>
-    <string name="about_desc"><![CDATA[
-        \u00A9 2018 XBMC Foundation<br><br>
-        Žádáme o hodnocení <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
-
-        Pokud potřebujete pomoc, navštivte <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a></b>
-    ]]></string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Žádáme o hodnocení &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Pokud potřebujete pomoc, navštivte &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;forum&lt;/a&gt;&lt;/b&gt;</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
@@ -300,7 +297,9 @@
     <string name="play_on_kodi">Přehrát v Kodi</string>
     <string name="pause_call_incoming_title">Příchozí hovor</string>
     <string name="pause_call_incoming_message">Zkontrolujte si telefon, někdo vám volá</string>
-    <string name="might_not_have_pvr">An error occurred while getting channels info, probably because your media center doesn\'t have a tuner or it isn\'t configured.\n\nIf that\'s the case and you\'d like to remove this entry from the side menu, you can do it in the Settings.</string>
+    <string name="might_not_have_pvr">Nelze získat informace PVR.
+\n
+\nVaše multimediální centrum možná nemá tuner nebo není nastaven. Pokud chcete odstranit tuto položku z bočního menu, můžete to udělat z obrazovky Nastavení.</string>
     <string name="refresh">Obnovit</string>
     <string name="tv">TV</string>
     <string name="radio">Rádio</string>
@@ -312,7 +311,7 @@
     <string name="by_album">Podle alba</string>
     <string name="by_artist">Podle umělce</string>
     <string name="by_artist_and_year">Podle umělce a roku</string>
-    <string name="no_songs_found_refresh">Žádné skladby nenalezeny\n\nObnovit tahem dolů</string>
+    <string name="no_songs_found_refresh">Žádné skladby nenalezeny</string>
     <string name="zeroprogress">0:00</string>
     <string name="stream_action">Přehát místně</string>
     <string name="pvr_epg">Program</string>
@@ -338,13 +337,19 @@
     <string name="unable_to_move_item">Nepodařilo se přesunout položku</string>
     <string name="starting_recording">Spouští se nahrávání %1$s</string>
     <string name="channel_switching">Přepíná se na kanál %1$s</string>
-    <string name="error_starting_to_record">Při nahrávání došlo k chybě: %1$s</string>
-    <string name="error_starting_recording">Při spuštění nahrávaní došlo k chybě: %1$s</string>
-    <string name="error_favourites">Při získávání oblíbených s popisem došlo k chybě: %1$s</string>
-    <string name="error_starting_channel">Při přehrávaní kanálu došlo k chybě: %1$s</string>
-    <string name="error_getting_pvr_info">Při získávání pvr informací došlo k chybě: %1$s</string>
+    <string name="error_starting_to_record">Při nahrávání došlo k chybě
+\nPopis: %1$s</string>
+    <string name="error_starting_recording">Při přehrávání nahrávky došlo k chybě
+\nPopis: %1$s</string>
+    <string name="error_favourites">Nelze získat oblíbené
+\nChyba: %1$s</string>
+    <string name="error_starting_channel">Při přehrávaní kanálu došlo k chybě
+\nPopis: %1$s</string>
+    <string name="error_getting_pvr_info">Nelze získat informace PVR
+\n
+\nChyba: %1$s</string>
     <string name="queue_on_kodi">Fronta na Kodi</string>
-    <string name="always_sendtokodi_addon">Vždy upřednostňovat doplněk SendToKodi</string>
+    <string name="always_sendtokodi_addon">Upřednostnit doplněk SendToKodi</string>
     <string name="vibrate_on_remote">Vibrovat při dotyku</string>
     <string name="keep_remote_above_lockscreen">Zobrazit na zamykací obrazovce</string>
     <string name="switch_to_remote">Zobrazit při spuštění multimédia</string>
@@ -358,8 +363,8 @@
     <string name="no_cast_info">Žádné informace o obsazení k zobrazení</string>
     <string name="error_starting_http_server">Nelze vytvořit nebo spustit HTTP server.</string>
     <string name="error_reading_local_storage">Nelze načíst místní úložiště. Dali jste Kore oprávnění k přístupu k úložišti souborů\?</string>
-    <string name="error_play_local_file">Nelze přehrát místní mediální soubor.
-\nChyba: %1$s.</string>
+    <string name="error_play_local_file">Nelze přehrát místní multimediální soubor.
+\nChyba: %1$s</string>
     <string name="wizard_invalid_es_port_specified">Prosím, zadejte platný EventServer port tohoto multimediálního centra.</string>
     <string name="wizard_xbmc_direct_share">Zobrazit v share sheetu</string>
     <string name="wizard_xbmc_use_event_server">Použít EventServer</string>
@@ -370,6 +375,27 @@
     <string name="external_storage">Úložiště</string>
     <string name="dcim">DCIM</string>
     <string name="queue_action">Fronta</string>
-    <string name="theme_variant_light">Lehký</string>
+    <string name="theme_variant_light">Světlá</string>
     <string name="use_hardware_volume_keys_never">Nikdy</string>
+    <string name="download_action">Stáhnout</string>
+    <string name="theme_sun_dynamic">Dynamicky východ/západ Slunce</string>
+    <string name="theme_default_dynamic">Dynamický denní/noční</string>
+    <string name="disabled_status">Nepovoleno</string>
+    <string name="enabled_status">Povoleno</string>
+    <string name="unwatched_status">Nezhlédnuto</string>
+    <string name="watched_status">Zhlédnuto</string>
+    <string name="not_connected">Nepřipojeno</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Pokud je Kore v popředí</string>
+    <string name="use_hardware_volume_keys_always">Vždy</string>
+    <string name="theme_variant_dark">Tmavá</string>
+    <string name="theme_variant_auto">Systémová</string>
+    <string name="theme_variant">Varianta</string>
+    <string name="theme_color_purple">Fialový déšť</string>
+    <string name="theme_color_yellow">Žlutá ponorka</string>
+    <string name="theme_color_green">Zelená míle</string>
+    <string name="theme_color_kore">Modrý samet</string>
+    <string name="theme_color_system_colors">Systémové barvy</string>
+    <string name="theme_color">Barevný motiv</string>
+    <string name="unpinned_status">Nepřipnuto</string>
+    <string name="pinned_status">Připnuto</string>
 </resources>

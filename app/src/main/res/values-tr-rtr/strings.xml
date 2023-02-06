@@ -65,4 +65,5 @@
     <string name="use_hardware_volume_keys_never">Asla</string>
     <string name="theme_variant_dark">Karanlık</string>
     <string name="theme_variant_light">Hafif</string>
+    <string name="add_to_playlist">Kuyruğa Ekle</string>
 </resources>

@@ -17,108 +17,97 @@
     <string name="app_name">Kore</string>
     <string name="settings">Einstellungen</string>
     <string name="action_options">Optionen</string>
-    <string name="loading">Lädt…</string>
+    <string name="loading">Lädt …</string>
     <!-- Navigation drawer tips -->
     <string name="navigation_drawer_open">Navigationsbereich öffnen</string>
     <string name="navigation_drawer_close">Navigationsbereich schließen</string>
-    <string name="xbmc_media_center">Media Center</string>
+    <string name="xbmc_media_center">Mediacenter</string>
     <string name="home">Startseite</string>
     <string name="movies">Filme</string>
     <string name="tv_shows">Serien</string>
     <string name="music">Musik</string>
     <string name="pictures">Bilder</string>
     <string name="addons">Anwendungen</string>
-    <string name="files">Dateien</string>
-    <string name="video">Videos</string>
+    <string name="files">Kodi-Dateien</string>
+    <string name="video">Video</string>
     <string name="window">Fenster</string>
     <string name="unknown">Unbekannt</string>
-    <string name="file_browser">Datei-Browser</string>
+    <string name="file_browser">Kodi Dateibrowser</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Favoriten</string>
     <string name="weather">Wetter</string>
-    <string name="no_xbmc_configured">Kein Media Center konfiguriert</string>
-    <string name="add_xbmc">Media Center hinzufügen</string>
-    <string name="xbmc_quit">Media Center wird geschlossen.</string>
-    <string name="wol_sent">Aufwachpaket wurde zum Media Center gesendet.</string>
+    <string name="no_xbmc_configured">Kein Mediacenter konfiguriert</string>
+    <string name="add_xbmc">Mediacenter hinzufügen</string>
+    <string name="xbmc_quit">Mediacenter wird geschlossen.</string>
+    <string name="wol_sent">Aufweckpaket wurde zum Mediacenter gesendet.</string>
     <string name="power">Ausschalten</string>
     <string name="quit">Verlassen</string>
     <string name="suspend">Bereitschaftsmodus</string>
-    <string name="reboot">Neustarten</string>
+    <string name="reboot">Neustart</string>
     <string name="shutdown">Herunterfahren</string>
     <string name="send">Senden</string>
-    <string name="send_text">Text zum Media Center senden</string>
+    <string name="send_text">Text zum Mediacenter senden</string>
     <string name="text_to_send">Zu sendender Text</string>
-    <string name="finish_after_send">Nach Absenden bestätigen</string>
-    <string name="library_actions">Bibliothek verwalten</string>
+    <string name="finish_after_send">Nach Absenden beenden</string>
+    <string name="library_actions">Bibliothekverwaltung</string>
     <string name="clean_video_library">Videobibliothek leeren</string>
     <string name="clean_audio_library">Musikbibliothek leeren</string>
-    <string name="update_video_library">Videobibliothek neu laden</string>
-    <string name="update_audio_library">Musikbibliothek neu laden</string>
+    <string name="update_video_library">Videobibliothek aktualisieren</string>
+    <string name="update_audio_library">Musikbibliothek aktualisieren</string>
     <string name="toggle_fullscreen">Vollbild ein/aus</string>
     <string name="connected_to">Verbunden mit %1$s</string>
-    <string name="connecting">Verbinden…</string>
-    <string name="connecting_to">Verbinden mit %1$s (%2$s)…</string>
+    <string name="connecting">Verbinden …</string>
+    <string name="connecting_to">Keine Verbindung zu %1$s (%2$s)
+\nErneuter Versuch …</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Willkommen</string>
-    <string name="wizard_welcome_message"><![CDATA[
-    Fügen Sie zuerst ein Media Center hinzu. Vergewissern Sie sich, dass ihr Kodi/XBMC läuft, konfiguriert ist und sich in einem Netzwerk mit ihrem Gerät befindet.<br/><br/>
-    <a href="http://syncedsynapse.com/kore/kore-faq/">Hier</a> können Sie Hilfe beim Konfigurieren bekommen.<br/><br/>
-    Wenn Sie bereit sind, drücken Sie <b><i>Weiter</i></b>.
-    ]]></string>
-    <string name="wizard_search_message"><![CDATA[
-    Suche nach Media Center im Netzwerk…<br/>
-    ]]></string>
-    <string name="wizard_search_no_host_found"><![CDATA[
-    Im lokalen Netzwerk konnte kein Media Center gefunden werden.<br/>Falls Sie Hilfe beim Konfigurieren brauchen, drücken Sie <a href="http://syncedsynapse.com/kore/kore-faq/">hier</a>.<br/><br/>
-    Drücken Sie <i>Suche</i> um nochmal zu Suchen oder <i>Weiter</i> für die manuelle Konfiguration.
-    ]]></string>
+    <string name="wizard_welcome_message">Beginnen wir mit dem Hinzufügen eines Mediacenters. Sicherstellen, dass Kodi läuft, richtig konfiguriert ist und sich im selben Netzwerk wie dieses Gerät befindet.&lt;br/&gt;&lt;br/&gt; &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;Hier&lt;/a&gt; bekommt man Hilfe beim Konfigurieren.&lt;br/&gt;&lt;br/&gt;Anschließend auf &lt;b&gt;&lt;i&gt;Weiter&lt;/i&gt;&lt;/b&gt; drücken. .</string>
+    <string name="wizard_search_message">Nach Mediacenter im Netzwerk suchen …<br/></string>
+    <string name="wizard_search_no_host_found">Im lokalen Netzwerk konnte kein Mediacenter gefunden werden.&lt;br/&gt;Falls Hilfe beim Konfigurieren benötigt wird, &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;hier&lt;/a&gt; drücken.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;Suche&lt;/i&gt; wählen, um nochmal zu suchen oder &lt;i&gt;Weiter&lt;/i&gt; für die manuelle Konfiguration.</string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     Bitte richten Sie eine Netzwerkverbindung ein, bevor Sie Media Center suchen.<br/>
     ]]></string>
-    <string name="wizard_search_host_found"><![CDATA[
-    Es wurden Geräte im Netzwerk gefunden.<br/><br/>Wählen Sie ein Media Center zum Hinzufügen aus oder drücken Sie <i>Weiter</i> für die manuelle Konfiguration.
-    ]]></string>
+    <string name="wizard_search_host_found">Es wurden Mediacenter im Netzwerk gefunden.<br/><br/>Ein Mediacenter zum Hinzufügen auswählen oder <b>Weiter</b> drücken für die manuelle Konfiguration.</string>
     <string name="no_network_connection">Keine Netzwerkverbindung</string>
-    <string name="searching">Suche…</string>
-    <string name="no_xbmc_found">Kein Media Center gefunden</string>
-    <string name="xbmc_found">Media Center gefunden</string>
+    <string name="searching">Suche läuft …</string>
+    <string name="no_xbmc_found">Kein Mediacenter gefunden</string>
+    <string name="xbmc_found">Mediacenter gefunden</string>
     <string name="wizard_manual_configuration">Manuelle Konfiguration</string>
-    <string name="wizard_manual_configuration_message">Geben Sie ihre Konfiguration ein:</string>
+    <string name="wizard_manual_configuration_message">Mediacenterkonfiguration eingeben:</string>
     <string name="wizard_manual_configuration_message_advanced">Erweiterte Konfiguration (leer lassen für Standardwerte)</string>
-    <string name="wizard_xbmc_name">Name des Media Center</string>
+    <string name="wizard_xbmc_name">Name des Mediacenters</string>
     <string name="wizard_xbmc_ip">Adresse</string>
     <string name="wizard_xbmc_port">Port</string>
     <string name="wizard_xbmc_username">Benutzername</string>
     <string name="wizard_xbmc_password">Passwort</string>
-    <string name="wizard_xbmc_tcp_port">TCP Port (9090)</string>
-    <string name="wizard_xbmc_mac_address">MAC Adresse</string>
-    <string name="wizard_xbmc_wol_port">WoL Port (9)</string>
+    <string name="wizard_xbmc_tcp_port">TCP-Port (9090)</string>
+    <string name="wizard_xbmc_mac_address">MAC-Adresse</string>
+    <string name="wizard_xbmc_wol_port">Wake-on-LAN-Port (9)</string>
     <string name="wizard_xbmc_use_tcp">TCP verwenden</string>
-    <string name="wizard_xbmc_event_server_port">ES Port (9777)</string>
+    <string name="wizard_xbmc_event_server_port">ES-Port (9777)</string>
     <string name="wizard_xbmc_use_event_server">EventServer verwenden</string>
-    <string name="wizard_no_name_specified">Bitte geben Sie einen Namen für das Media Center ein.</string>
-    <string name="wizard_no_address_specified">Bitte geben Sie die IP-Adresse des Media Center an.</string>
-    <string name="wizard_invalid_http_port_specified">Bitte geben Sie einen gültigen HTTP Port an.</string>
-    <string name="wizard_invalid_tcp_port_specified">Bitte geben Sie einen gültigen TCP Port an.</string>
-    <string name="wizard_invalid_es_port_specified">Bitte geben Sie einen gültigen EventServer Port an.</string>
-    <string name="wizard_connecting_to_xbmc_title">Verbinden mit %1$s…</string>
-    <string name="wizard_connecting_to_xbmc_message">Bitte warten Sie während die Verbindung zum Media Center aufgebaut wird…</string>
-    <string name="wizard_empty_authentication">Kodi/XBMC verlangt eine Authentifizierung.\nBitte geben Sie Benutzername und Passwort an.</string>
-    <string name="wizard_incorrect_authentication">Falscher Benutzername und/oder falsches Passwort .\nBitte überprüfen Sie ihre Eingaben.</string>
-    <string name="wizard_success_connecting">Mit Kodi/XBMC verbunden.</string>
-    <string name="wizard_error_connecting">Konnte keine Verbindung mit Kodi/XBMC herstellen.\nBitte überprüfen Sie ihre Konfiguration.</string>
+    <string name="wizard_no_name_specified">Bitte einen Namen für dieses Mediacenter eingeben, um es später identifizieren zu können.</string>
+    <string name="wizard_no_address_specified">Bitte die IP-Adresse des Mediacenter angeben, um es finden zu können.</string>
+    <string name="wizard_invalid_http_port_specified">Bitte einen gültigen HTTP-Port angeben.</string>
+    <string name="wizard_invalid_tcp_port_specified">Bitte einen gültigen TCP Port angeben.</string>
+    <string name="wizard_invalid_es_port_specified">Bitte einen gültigen EventServer-Port angeben.</string>
+    <string name="wizard_connecting_to_xbmc_title">Verbinden mit %1$s …</string>
+    <string name="wizard_connecting_to_xbmc_message">Bitte warten, die Verbindung zum Media Center wird aufgebaut …</string>
+    <string name="wizard_empty_authentication">Kodi verlangt eine Authentifizierung.
+\nBitte Benutzername und Passwort angeben.</string>
+    <string name="wizard_incorrect_authentication">Falscher Benutzername und/oder falsches Passwort .
+\nBitte die eigenen Angaben überprüfen.</string>
+    <string name="wizard_success_connecting">Mit Kodi verbunden.</string>
+    <string name="wizard_error_connecting">Verbindung zu Kodi nicht möglich.
+\nBitte die eigene Konfiguration überprüfen.</string>
     <string name="wizard_done">Fertig!</string>
-    <string name="wizard_done_message"><![CDATA[
-    Ihr Media Center ist jetzt konfiguriert.<br/>
-    Sie können es mit der Fernbedienung bedienen. Ihre Bibliothek wird synchronisiert und sollte in wenigen Augenblicken verfügbar sein.<br/><br/>
-    Drücken Sie <b><i>Fertig</i></b> um die Fernbedienung zu nutzen.
-    ]]></string>
-    <string name="wizard_zeroconf_no_host_address">Konnte Adresse des Media Center nicht ermitteln!</string>
+    <string name="wizard_done_message">Das Mediacenter ist jetzt konfiguriert.<br/>Es lässt sich nun über die Fernbedienung steuern. Die Bibliothek wird synchronisiert und sollte in wenigen Augenblicken verfügbar sein.<br/><br/><b>Fertig</b> drücken, um mit der Fernbedienung zu verwenden.</string>
+    <string name="wizard_zeroconf_no_host_address">Adresse des Mediacenters konnte nicht ermittelt werden!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Keine Verbindung zum Media Center möglich, weil die Adresse nicht ermittelt werden konnte.</string>
-    <string name="play">Abspielen</string>
+    <string name="play">Wiedergeben</string>
     <string name="pause">Pause</string>
-    <string name="stop">Stop</string>
-    <string name="fast_forward">schneller Vorlauf</string>
+    <string name="stop">Stopp</string>
+    <string name="fast_forward">Schneller Vorlauf</string>
     <string name="rewind">Zurückspulen</string>
     <string name="repeat">Wiederholen</string>
     <string name="shuffle">Zufallswiedergabe</string>
@@ -130,12 +119,12 @@
     <string name="no_audiostream">Kein Audiostream verfügbar</string>
     <string name="download_subtitle">Untertitel herunterladen</string>
     <string name="none">Keine</string>
-    <string name="audio_sync">Ton Synchronisieren</string>
-    <string name="subtitle_sync">Untertitel Synchronisieren</string>
+    <string name="audio_sync">Ton synchronisieren</string>
+    <string name="subtitle_sync">Untertitel synchronisieren</string>
     <string name="left">Links</string>
     <string name="right">Rechts</string>
     <string name="up">Hoch</string>
-    <string name="down">Herunter</string>
+    <string name="down">Runter</string>
     <string name="select">Auswählen</string>
     <string name="info">Info</string>
     <string name="codec_info">Codec</string>
@@ -143,51 +132,52 @@
     <string name="osd">Menü</string>
     <string name="back">Zurück</string>
     <string name="previous">Vorheriger</string>
-    <string name="next">Weiter</string>
+    <string name="next">Nächster</string>
     <string name="finish">Fertig</string>
     <string name="test_connection">Verbindungstest</string>
-    <string name="search_again">Erneut Suchen</string>
-    <string name="remove">Löschen</string>
+    <string name="search_again">Erneut suchen</string>
+    <string name="remove">Entfernen</string>
     <string name="edit">Bearbeiten</string>
     <string name="wake_up">Aufwecken</string>
-    <string name="edit_xbmc">Media Center bearbeiten</string>
-    <string name="delete_xbmc">Media Center löschen</string>
-    <string name="delete_xbmc_confirm">Möchten Sie dieses Media Center wirklich löschen?</string>
+    <string name="edit_xbmc">Mediacenter bearbeiten</string>
+    <string name="delete_xbmc">Mediacenter löschen</string>
+    <string name="delete_xbmc_confirm">Soll dieses Mediacenter wirklich gelöscht werden\?</string>
     <string name="queue_file">Warteschlange</string>
-    <string name="play_file">Abspielen</string>
-    <string name="play_from_here">Hier abspielen</string>
-    <string name="connecting_to_xbmc">Verbinden…</string>
-    <string name="unable_to_connect_to_xbmc">Konnte nicht mit Media Center verbinden</string>
+    <string name="play_file">Wiedergabe</string>
+    <string name="play_from_here">Von hier wiedergeben</string>
+    <string name="connecting_to_xbmc">Verbinden …</string>
+    <string name="unable_to_connect_to_xbmc">Verbindung zu Mediacenter nicht möglich</string>
     <string name="connected_to_xbmc">Verbunden</string>
     <string name="xbmc_available">Verfügbar</string>
-    <string name="xbmc_unavailable">Nicht Verfügbar</string>
+    <string name="xbmc_unavailable">Nicht verfügbar</string>
     <string name="nothing_playing">Keine Wiedergabe aktiv</string>
     <!-- Main view tabs -->
     <string name="now_playing">Aktuelle Wiedergabe</string>
     <string name="remote">Fernbedienung</string>
-    <string name="playlist">Wiedergabeliste</string>
+    <string name="playlist">Einreihen</string>
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Staffel %1$02d | Episode %2$02d</string>
     <string name="season_number">Staffel %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Episode %1$d</string>
     <string name="votes">%1$s Bewertungen</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
     <string name="thumbnail">Thumbnail</string>
-    <string name="error_getting_properties">Konnte keine Kodi/XBMC Eigenschaften holen.\nFehlermeldung:
-        %1$s.</string>
-    <string name="error_executing_subtitles">Konnte Untertitel-Erweiterung nicht auführen.\nFehlermeldung: %1$s.</string>
-    <string name="error_getting_addon_info">Konnte keine Erweiterungs-Informationen holen.\nFehlermeldung:
-        %1$s.</string>
-    <string name="error_getting_source_info">Konnte Dateien nicht durchsuchen.\nFehlermeldung:
-        %1$s.</string>
-    <string name="error_play_media_file">Konnte Datei nicht abspielen.\nFehlermeldung:
-        %1$s.</string>
-    <string name="error_queue_media_file">Konnte Datei nicht zur Warteschlange hinzufügen.\nFehlermeldung:
-        %1$s.</string>
-    <string name="error_get_active_player">Kein aktiver Player.\nFehlermeldung:
-        %1$s.</string>
-    <string name="error_share_video">Video konnte nicht zu Kodi/XBMC gesendet werden.</string>
+    <string name="error_getting_properties">Kodi-Eigenschaften konnten nicht abgerufen werden.
+\nFehlermeldung: %1$s</string>
+    <string name="error_executing_subtitles">Untertitel-Addon konnte nicht ausgeführt werden.
+\nFehlermeldung: %1$s</string>
+    <string name="error_getting_addon_info">Addon-Liste konnte nicht abgerufen werden.
+\nFehlermeldung: %1$s</string>
+    <string name="error_getting_source_info">Dateien konnten nicht durchsucht werden.
+\nFehlermeldung: %1$s</string>
+    <string name="error_play_media_file">Mediendatei konnte nicht abgespielt werden.
+\nFehlermeldung: %1$s</string>
+    <string name="error_queue_media_file">Datei konnte nicht eingereiht werden.
+\nFehlermeldung: %1$s</string>
+    <string name="error_get_active_player">Aktiver Player konnte nicht abgerufen werden.
+\nFehlermeldung: %1$s</string>
+    <string name="error_share_video">Video konnte nicht mit Kodi geteilt werden.</string>
     <string name="directors">Regisseure:</string>
     <string name="studio">Filmstudio:</string>
     <string name="cast">Besetzung</string>
@@ -196,24 +186,24 @@
     <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
     <string name="remaining_cast_count">%d mehr</string>
     <string name="general_error_executing_action">Fehler beim Ausführen der Aktion: %1$s</string>
-    <string name="error_getting_playlist">Fehler beim Holen der Wiedergabeliste</string>
+    <string name="error_getting_playlist">Fehler beim Abruf der Wiedergabeliste</string>
     <string name="playlist_empty">Wiedergabeliste leer</string>
     <string name="clear_playlist">Wiedergabeliste leeren</string>
     <string name="source_empty">Medienquelle leer</string>
-    <string name="no_movies_found_refresh">Kein Filme gefunden\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_tvshows_found_refresh">Keine Serien gefunden\n\nZum Aktualisieren herunterziehen</string>
+    <string name="no_movies_found_refresh">Kein Filme gefunden</string>
+    <string name="no_tvshows_found_refresh">Keine Serien gefunden</string>
     <string name="no_episodes_found">Keine Episoden gefunden</string>
-    <string name="swipe_down_to_refresh">Zum Aktualisieren herunterziehen</string>
-    <string name="no_artists_found_refresh">Keine Künstler gefunden\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_albums_found_refresh">Keine Alben gefunden\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_genres_found_refresh">Keine Genres gefunden\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_addons_found_refresh">Keine Erweiterungen gefunden oder nicht verbunden\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_music_videos_found_refresh">Keine Videos gefunden\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_channel_groups_found_refresh">Keine Kanalgruppen gefunden.\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_channels_found_refresh">Keine Kanäle gefunden.\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_favourites_found_refresh">Keine Favoriten gefunden.\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_recordings_found_refresh">Keine Aufnahmen gefunden.\n\nZum Aktualisieren herunterziehen</string>
-    <string name="no_broadcasts_found_refresh">Keine Sendungen gefunden.\n\nZum Aktualisieren herunterziehen</string>
+    <string name="swipe_down_to_refresh">Zum Aktualisieren herunterwischen</string>
+    <string name="no_artists_found_refresh">Keine Interpreten gefunden</string>
+    <string name="no_albums_found_refresh">Keine Alben gefunden</string>
+    <string name="no_genres_found_refresh">Keine Genres gefunden</string>
+    <string name="no_addons_found_refresh">Keine Addons gefunden</string>
+    <string name="no_music_videos_found_refresh">Keine Videos gefunden</string>
+    <string name="no_channel_groups_found_refresh">Keine Sendergruppen gefunden</string>
+    <string name="no_channels_found_refresh">Keine Sender gefunden</string>
+    <string name="no_favourites_found_refresh">Keine Favoriten gefunden</string>
+    <string name="no_recordings_found_refresh">Keine Aufnahmen gefunden</string>
+    <string name="no_broadcasts_found_refresh">Keine Sendungen gefunden</string>
     <string name="pull_to_refresh">Zum Aktualisieren ziehen</string>
     <string name="no_cast_info">Keine Informationen zur Besetzung</string>
     <string name="minutes_abbrev">%1$s Min.</string>
@@ -224,26 +214,34 @@
     <string name="action_search_movies">Filme suchen</string>
     <string name="action_search_tvshows">Serien suchen</string>
     <string name="action_search_albums">Alben suchen</string>
-    <string name="action_search_artists">Künstler suchen</string>
+    <string name="action_search_artists">Interpreten suchen</string>
     <string name="action_search_genres">Genres suchen</string>
     <string name="action_search_music_videos">Videos suchen</string>
-    <string name="add_to_playlist">Zur Wiedergabeliste hinzufügen</string>
+    <string name="add_to_playlist">Einreihen</string>
     <string name="item_added_to_playlist">Zur Wiedergabeliste hinzugefügt</string>
     <string name="no_suitable_playlist">Keine passende Wiedergabeliste für Medientyp gefunden.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Herunterladen</string>
-    <string name="confirm_movie_download">Wollen Sie diesen Film herunterladen?\nDer Film wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
-    <string name="confirm_episode_download">Wollen Sie diese Folge herunterladen?\nDie Folge wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
-    <string name="confirm_album_download">Wollen Sie dieses Album herunterladen?\nDas Album wird dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
-    <string name="confirm_artist_download">Wollen Sie alle Alben herunterladen?\nDie Alben werden dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
-    <string name="confirm_songs_download">Wollen Sie %1$d Lieder herunterladen?\nDiese Lieder werden dann im Hintergrund geladen, es kann aber eine Weile dauern.</string>
-    <string name="download_file_exists">Datei existiert bereits.\nÜberschreiben oder unter neuem Namen speichern?</string>
-    <string name="download_dir_exists">Download Ordner existiert bereits.\nBei Dateikonflikten überschreiben oder unter neuem Namen speichern?</string>
-    <string name="download_files_exists">Eine oder mehr Dateien existieren bereits.\nBei Dateikonflikten überschreiben oder unter neuem Namen speichern?</string>
+    <string name="confirm_movie_download">Soll dieser Film heruntergeladen werden\?
+\nDer Film wird im Hintergrund geladen, es kann aber eine Weile dauern.</string>
+    <string name="confirm_episode_download">Soll diese Episode heruntergeladen werden\?
+\nDie Episode wird im Hintergrund geladen, es kann aber eine Weile dauern.</string>
+    <string name="confirm_album_download">Soll dieses Album heruntergeladen werden\?
+\nDas Album wird im Hintergrund geladen, es kann aber eine Weile dauern.</string>
+    <string name="confirm_artist_download">Sollen alle Alben heruntergeladen werden\?
+\nDie Alben werden im Hintergrund geladen, es kann aber eine Weile dauern.</string>
+    <string name="confirm_songs_download">Sollen %1$d Songs heruntergeladen werden\?
+\nDie Songs werden im Hintergrund geladen, es kann aber eine Weile dauern.</string>
+    <string name="download_file_exists">Datei existiert bereits.
+\nÜberschreiben oder unter neuem Namen herunterladen\?</string>
+    <string name="download_dir_exists">Downloadordner existiert bereits.
+\nBei Dateikonflikten überschreiben oder unter neuem Namen herunterladen\?</string>
+    <string name="download_files_exists">Eine oder mehr Dateien existieren bereits.
+\nBei Dateikonflikten überschreiben oder unter neuem Namen herunterladen\?</string>
     <string name="overwrite">Überschreiben</string>
     <string name="download_with_new_name">Neuer Name</string>
-    <string name="download_file_description">Heruntergeladen von meinem Media Center</string>
-    <string name="num_episodes">%1$d Episoden  |  %2$d Ungesehen</string>
+    <string name="download_file_description">Heruntergeladen vom eigenen Mediacenter</string>
+    <string name="num_episodes">%1$d Episoden | %2$d ungesehen</string>
     <string name="premiered">Erstausstrahlung: %1$s</string>
     <string name="tvshow_overview">Übersicht</string>
     <string name="tvshow_episodes">Episoden</string>
@@ -251,52 +249,47 @@
     <string name="tvshow_next_episode">Nächste Episode</string>
     <string name="addon_overview">Übersicht</string>
     <string name="addon_content">Inhalt</string>
-    <string name="artists">Künstler</string>
+    <string name="artists">Interpreten</string>
     <string name="albums">Alben</string>
     <string name="genres">Genres</string>
     <string name="music_videos">Videos</string>
     <string name="no_files_to_download">Keine Dateien zum Herunterladen.</string>
-    <string name="error_getting_file_information">Konnte keine Informationen bekommen um die Datei %1$s herunterzuladen.</string>
-    <string name="author">Ersteller:</string>
+    <string name="error_getting_file_information">Es konnte keine Information abgerufen werden, um die Datei %1$s herunterzuladen.</string>
+    <string name="author">Autor:</string>
     <string name="version">Version:</string>
-    <string name="enable_disable">Erweiterung aktivieren/deaktivieren</string>
-    <string name="addon_enabled">Erweiterung aktiviert</string>
-    <string name="addon_disabled">Erweiterung deaktiviert</string>
-    <string name="addon_pinned">Erweiterung angeheftet</string>
-    <string name="addon_unpinned">Erweiterung losgelöst</string>
+    <string name="enable_disable">Addon aktivieren/deaktivieren</string>
+    <string name="addon_enabled">Addon aktiviert</string>
+    <string name="addon_disabled">Addon deaktiviert</string>
+    <string name="addon_pinned">Addon angeheftet</string>
+    <string name="addon_unpinned">Addon losgeheftet</string>
     <!-- Filters on list menus -->
-    <string name="hide_watched">Gesehene verbergen</string>
-    <string name="hide_disabled">Deaktivierte verbergen</string>
-    <string name="sort_order">Sortierung</string>
+    <string name="hide_watched">Gesehene ausblenden</string>
+    <string name="hide_disabled">Deaktivierte ausblenden</string>
+    <string name="sort_order">Sortieren</string>
     <string name="sort_by_name">Nach Name</string>
     <string name="sort_by_year">Nach Jahr</string>
     <string name="sort_by_rating">Nach Bewertung</string>
     <string name="sort_by_length">Nach Länge</string>
-    <string name="sort_by_date_added">Nach Hinzufügungsdatum</string>
+    <string name="sort_by_date_added">Nach Hinzufügedatum</string>
     <string name="sort_by_last_played">Zuletzt gespielt</string>
-    <string name="unsorted">Nicht sortiert</string>
+    <string name="unsorted">Unsortiert</string>
     <string name="ignore_prefixes">Präfixe ignorieren</string>
     <!-- Preferences strings -->
-    <string name="application">Applikation</string>
+    <string name="application">Anwendung</string>
     <string name="theme">Thema</string>
     <string name="theme_night">Nacht</string>
     <string name="theme_day">Tag</string>
-    <string name="switch_to_remote">Nach dem Abspielen eines Mediums zur Fernbedienung wechseln</string>
-    <string name="keep_remote_above_lockscreen">Fernbedienung auf dem Sperrbildschirm anzeigen</string>
-    <string name="pref_keep_screen_on">Bildschirm nicht während der Nutzung als Fernbedienung ausschalten</string>
-    <string name="show_notification">Nachricht mit aktueller Wiedergabe anzeigen</string>
-    <string name="show_now_playing_panel_summary">Zeigt ein ausklappbares Feld am unteren Rand des Bildschirms an, während Medien wiedergegeben werden</string>
-    <string name="pause_during_calls">Bei Anruf Wiedergabe pausieren</string>
+    <string name="switch_to_remote">Beim Medienstart anzeigen</string>
+    <string name="keep_remote_above_lockscreen">Auf Sperrbildschirm anzeigen</string>
+    <string name="pref_keep_screen_on">Wach bleiben</string>
+    <string name="show_notification">Benachrichtigung während der Wiedergabe anzeigen</string>
+    <string name="show_now_playing_panel_summary">Während der Medienwiedergabe ein Panel unten am Bildschirmrand anzeigen</string>
+    <string name="pause_during_calls">Bei Telefonanruf Wiedergabe pausieren</string>
     <string name="use_hardware_volume_keys">Lautstärketasten verwenden</string>
-    <string name="vibrate_on_remote">Auf Fernbedienungs-Knopfdruck vibrieren</string>
-    <string name="nav_drawer_items">Seitenmenü-Verknüpfungen</string>
+    <string name="vibrate_on_remote">Bei Berührung vibrieren</string>
+    <string name="nav_drawer_items">Verknüpfungen in Seitenmenü</string>
     <string name="about">Über</string>
-    <string name="about_desc"><![CDATA[
-        \u00A9 2018 XBMC Foundation<br><br>
-        Bitte bewerten Sie uns bei <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
-
-        Wenn Sie Hilfe brauchen, schauen Sie in unserem <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">Forum</a></b> vorbei.
-    ]]></string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Bitte uns bei &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt; bewerten.&lt;br&gt;&lt;br&gt; Wenn Hilfe benötigt wird, einfach mal in unserem &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;Forum&lt;/a&gt;&lt;/b&gt; vorbeischauen</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Kaufen Sie mir einen Kaffee</string>-->
     <!--<string name="expresso_please">Espresso, bitte. Danke!</string>-->
@@ -307,53 +300,59 @@
     <!--<string name="error_querying_inventory">Fehler bei Überprüfung.</string>-->
     <!--<string name="error_during_purchased">Ein Fehler trat beim Kauf auf.</string>-->
     <!--<string name="purchase_thanks">Danke für ihre Unterstützung!</string>-->
-    <string name="play_on_kodi">Mit Kodi abspielen</string>
+    <string name="play_on_kodi">Mit Kodi wiedergeben</string>
     <string name="pause_call_incoming_title">Eingehender Anruf</string>
-    <string name="pause_call_incoming_message">Schauen Sie auf ihr Telefon, jemand ruft Sie an</string>
-    <string name="error_getting_pvr_info">Ein Fehler ist aufgetreten während des Empfangens der PVR Informationen: %1$s</string>
-    <string name="might_not_have_pvr">Ein Fehler ist während des Empfangens der Kanalinformationen aufgetreten, möglicherweise weil Ihr Media Center keinen Empfänger hat oder dieser falsch konfiguriert ist.\n\nWenn das der Fall ist und Sie diesen Eintrag aus dem Seitenmenü entfernen möchten, können Sie es in den Einstellungen tun.</string>
-    <string name="error_starting_channel">Ein Fehler ist beim Starten des Abspielens aufgetreten: %1$s</string>
-    <string name="error_favourites">Ein Fehler ist während des Empfangens der Favoriten und deren Informationen aufgetreten: %1$s</string>
-    <string name="error_starting_recording">Ein Fehler ist beim Starten der Aufnahme aufgetreten: %1$s</string>
-    <string name="error_starting_to_record">Während der Aufnahme ist ein Fehler aufgetreten: %1$s</string>
-    <string name="channel_switching">Wechseln zum Kanal %1$s</string>
-    <string name="starting_recording">Aufnahme von %1$s starten</string>
+    <string name="pause_call_incoming_message">Telefon prüfen, es ruft jemand an</string>
+    <string name="error_getting_pvr_info">PVR-Information konnte nicht abgerufen werden.
+\n
+\nFehlerbeschreibung: %1$s</string>
+    <string name="might_not_have_pvr">PVR-Informationen konnten sich abgerufen werden.
+\n
+\nDas Mediacenter verfügt möglicherweise nicht über einen Tuner oder er ist nicht konfiguriert. Wenn dieser Eintrag aus dem Seitenmenü entfernt werden soll, kann dies über die Einstellungen erfolgen.</string>
+    <string name="error_starting_channel">Beim Starten der Senderwiedergabe ist ein Fehler aufgetreten.
+\nBeschreibung: %1$s</string>
+    <string name="error_favourites">Es konnten keine Favoriten abgerufen werden.
+\nFehlerbeschreibung: %1$s</string>
+    <string name="error_starting_recording">Fehler bei Wiedergabe einer Aufnahme.
+\nBeschreibung: %1$s</string>
+    <string name="error_starting_to_record">Fehler bei der Aufnahme.
+\nBeschreibung: %1$s</string>
+    <string name="channel_switching">Zum Sender %1$s wechseln</string>
+    <string name="starting_recording">Aufnahme %1$s wird gestartet</string>
     <string name="refresh">Aktualisieren</string>
     <string name="tv">TV</string>
     <string name="radio">Radio</string>
     <string name="recordings">Aufnahmen</string>
-    <string name="tv_channels">TV-Kanäle</string>
+    <string name="tv_channels">TV-Sender</string>
     <string name="radio_channels">Radiosender</string>
     <string name="record">Aufnehmen</string>
-    <string name="pvr_epg">Guide</string>
+    <string name="pvr_epg">EPG</string>
     <string name="unable_to_move_item">Element kann nicht verschoben werden</string>
-    <string name="cannot_move_playing_item">Gerade wiedergegebenes Element kann nicht verschoben werden</string>
+    <string name="cannot_move_playing_item">Aktuell abgespieltes/pausiertes Element kann nicht verschoben werden</string>
     <string name="no_connection_type_selected">Keine Verbindungsart in den Einstellungen ausgewählt</string>
     <string name="single_column">Einspaltig</string>
     <string name="multi_column">Mehrspaltig</string>
-    <string name="download_network_types_title">Netzwerkart zum Herunterladen</string>
-    <string name="download_network_types_summary">Netzwerkarten zum Herunterladen von Medien</string>
+    <string name="download_network_types_title">Mediendownloads einschränken</string>
+    <string name="download_network_types_summary">Netzwerktypen auswählen, über die Mediendownloads erlaubt sind</string>
     <string name="songs">Songs</string>
-    <string name="read_phone_state_permission_denied">Erlaubnis verweigert. Wiedergabe kann nicht während Anrufen pausiert werden.</string>
-    <string name="write_storage_permission_denied">Erlaubnis verweigert. Kann keine Dateien herunterladen.</string>
-    <string name="no_songs_to_download">Keine Lieder zum Download</string>
+    <string name="read_phone_state_permission_denied">Erlaubnis verweigert. Wiedergabe kann während Anrufen nicht pausiert werden.</string>
+    <string name="write_storage_permission_denied">Erlaubnis verweigert. Es kann keine Dateien heruntergeladen werden.</string>
+    <string name="no_songs_to_download">Keine Songs zum Download</string>
     <string name="by_album">Nach Album</string>
-    <string name="by_artist">Nach Künstler</string>
-    <string name="by_artist_and_year">Nach Künstler und Jahr</string>
+    <string name="by_artist">Nach Interpret</string>
+    <string name="by_artist_and_year">Nach Interpret und Jahr</string>
     <string name="muted">stumm geschaltet</string>
-    <string name="no_songs_found_refresh">Keine Lieder gefunden
-\n
-\n Nach unten wischen zum Aktualisieren</string>
+    <string name="no_songs_found_refresh">Keine Songs gefunden</string>
     <string name="toggle_expand">Ausklappen/Einklappen</string>
-    <string name="stream_action">Lokal abspielen</string>
+    <string name="stream_action">Streamen</string>
     <string name="wifi_network">WLAN</string>
     <string name="mobile_network">Mobiles Internet</string>
     <string name="any_network">Beliebig</string>
-    <string name="error_reading_local_storage">Lokaler Speicher konnte nicht gelesen werden. Kore Berechtigung zum Zugriff auf den Dateispeicher geben\?</string>
-    <string name="read_storage_permission_denied">Erlaubnis verweigert. Kann keine Dateien lesen.</string>
+    <string name="error_reading_local_storage">Lokaler Speicher konnte nicht gelesen werden. Wurde Kore die Zugriffsberechtigung für den Dateispeicher erteilt\?</string>
+    <string name="read_storage_permission_denied">Erlaubnis verweigert. Es können keine Dateien gelesen werden.</string>
     <string name="videos">Videos</string>
     <string name="error_play_local_file">Lokale Mediendatei konnte nicht wiedergegeben werden.
-\nFehlermeldung: %1$s.</string>
+\nFehlermeldung: %1$s</string>
     <string name="wizard_xbmc_direct_share">Im Teilen-Menü anzeigen</string>
     <string name="system">System</string>
     <string name="local_file_browser">Browser für lokale Dateien</string>
@@ -361,20 +360,46 @@
     <string name="media">Medien</string>
     <string name="local_files">Lokale Dateien</string>
     <string name="external_storage">Speicherplatz</string>
-    <string name="show_now_playing_panel">„Aktuelle Wiedergabe“ anzeigen</string>
+    <string name="show_now_playing_panel">Gerade-läuft-Panel anzeigen</string>
     <string name="theme_sunset">Sonnenuntergang</string>
     <string name="theme_sunrise">Sonnenaufgang</string>
     <string name="show_rating">Bewertung anzeigen</string>
     <string name="show_watched_status">Gesehen-Status anzeigen</string>
     <string name="item_sent_to_kodi">An Kodi gesendet</string>
-    <string name="error_starting_http_server">HTTP Server konnte nicht angelegt oder gestartet werden.</string>
-    <string name="always_sendtokodi_addon">SendToKodi-Addon immer bevorzugen</string>
-    <string name="remote_bar_items">Verknüpfungen in der Fußleiste</string>
-    <string name="unable_to_play_favourite_item">Kann Favoritenelement nicht wiedergeben. Nicht unterstützter Typ</string>
-    <string name="queue_on_kodi">Zu Kodi-Warteschlange hinzufügen</string>
+    <string name="error_starting_http_server">HTTP-Server konnte nicht angelegt oder gestartet werden.</string>
+    <string name="always_sendtokodi_addon">SendToKodi-Addon bevorzugen</string>
+    <string name="remote_bar_items">Verknüpfungen in Fußleiste</string>
+    <string name="unable_to_play_favourite_item">Favoriteneintrag kann nicht wiedergeben werden. Nicht unterstützter Typ</string>
+    <string name="queue_on_kodi">In Kodi einreihen</string>
     <string name="no_item_available_to_play">Fehler: Kein Element für Wiedergabe vorhanden.</string>
-    <string name="Refreshing_not_implemented_for_this_item">Aktualisieren für dieses Element nicht möglich</string>
+    <string name="Refreshing_not_implemented_for_this_item">Aktualisieren für dieses Element nicht implementiert</string>
     <string name="zeroprogress">0:00</string>
     <string name="dcim">DCIM</string>
     <string name="language">Sprache</string>
+    <string name="download_action">Herunterladen</string>
+    <string name="disabled_status">deaktiviert</string>
+    <string name="enabled_status">Aktiviert</string>
+    <string name="unpinned_status">Ungepinnt</string>
+    <string name="pinned_status">Angepinnt</string>
+    <string name="unwatched_status">Ungesehen</string>
+    <string name="watched_status">Gesehen</string>
+    <string name="party_mode">Party-Modus</string>
+    <string name="not_connected">Nicht verbunden</string>
+    <string name="queue_action">Einreihen</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Wenn Kore im Vordergrund ist</string>
+    <string name="use_hardware_volume_keys_always">Immer</string>
+    <string name="use_hardware_volume_keys_never">NIemals</string>
+    <string name="web_search">Websuche</string>
+    <string name="theme_variant_dark">Dunkel</string>
+    <string name="theme_variant_light">Hell</string>
+    <string name="theme_variant_auto">Systemstandard</string>
+    <string name="theme_variant">Variante</string>
+    <string name="theme_color_kore">Blue Velvet</string>
+    <string name="theme_color_green">Green Mile</string>
+    <string name="theme_color_yellow">Yellow Submarine</string>
+    <string name="theme_color_purple">Purple Rain</string>
+    <string name="theme_color_system_colors">Systemfarben</string>
+    <string name="theme_color">Farbschema</string>
+    <string name="theme_sun_dynamic">Sonnenaufgang/-untergang dynamisch</string>
+    <string name="theme_default_dynamic">Tag/Nacht dynamisch</string>
 </resources>
