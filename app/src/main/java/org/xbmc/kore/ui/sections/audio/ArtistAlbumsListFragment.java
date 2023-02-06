@@ -130,7 +130,7 @@ public class ArtistAlbumsListFragment
                                 uri,
                                 AlbumListFragment.AlbumListQuery.PROJECTION,
                                 null, null,
-                                AlbumListFragment.AlbumListQuery.SORT_BY_ALBUM);
+                                AlbumListFragment.AlbumListQuery.SORT_BY_YEAR);
     }
 
     @Override
