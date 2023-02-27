@@ -15,42 +15,49 @@
    limitations under the License.
 -->
 <!--suppress AndroidElementNotAllowed -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/remote">
         <SwitchPreferenceCompat
             android:key="pref_switch_to_remote_after_media_start"
             android:title="@string/switch_to_remote"
-            android:defaultValue="true"/>
+            android:defaultValue="true"
+            app:singleLineTitle="false"/>
 
         <SwitchPreferenceCompat
             android:key="pref_keep_remote_above_lockscreen"
             android:title="@string/keep_remote_above_lockscreen"
-            android:defaultValue="false"/>
+            android:defaultValue="false"
+            app:singleLineTitle="false"/>
 
         <ListPreference
             android:key="pref_use_hw_vol_keys"
             android:title="@string/use_hardware_volume_keys"
             android:entries="@array/use_hw_vol_keys_array"
             android:entryValues="@array/use_hw_vol_keys_array_values_array"
-            android:defaultValue="never"/>
+            android:defaultValue="never"
+            app:singleLineTitle="false"/>
 
         <SwitchPreferenceCompat
             android:key="pref_vibrate_remote_buttons"
             android:title="@string/vibrate_on_remote"
-            android:defaultValue="false"/>
+            android:defaultValue="false"
+            app:singleLineTitle="false"/>
 
         <MultiSelectListPreference
             android:key="pref_remote_bar_items"
             android:title="@string/remote_bar_items"
             android:entries="@array/entries_remote_bar_items"
             android:entryValues="@array/entry_values_remote_bar_items"
-            android:defaultValue="@array/default_values_remote_bar_items"/>
+            android:defaultValue="@array/default_values_remote_bar_items"
+            app:singleLineTitle="false"/>
 
         <SwitchPreferenceCompat
             android:key="pref_always_sendtokodi_addon"
             android:title="@string/always_sendtokodi_addon"
-            android:defaultValue="false"/>
+            android:defaultValue="false"
+            app:singleLineTitle="false"/>
 
     </PreferenceCategory>
 
@@ -60,44 +67,51 @@
             android:title="@string/theme_color"
             android:entries="@array/theme_colors_array"
             android:entryValues="@array/theme_colors_values_array"
-            android:defaultValue="kore"/>
+            android:defaultValue="kore"
+            app:singleLineTitle="false"/>
 
         <ListPreference
             android:key="pref_theme_variant"
             android:title="@string/theme_variant"
             android:entries="@array/theme_variants_array"
             android:entryValues="@array/theme_variants_values_array"
-            android:defaultValue="auto"/>
+            android:defaultValue="auto"
+            app:singleLineTitle="false"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/application">
         <ListPreference
             android:key="pref_language"
-            android:title="@string/language"/>
+            android:title="@string/language"
+            app:singleLineTitle="false"/>
         
         <SwitchPreferenceCompat
             android:key="pref_keep_screen_on"
             android:title="@string/pref_keep_screen_on"
-            android:defaultValue="false"/>
+            android:defaultValue="false"
+            app:singleLineTitle="false"/>
 
         <SwitchPreferenceCompat
             android:key="pref_pause_during_calls"
             android:title="@string/pause_during_calls"
-            android:defaultValue="false"/>
+            android:defaultValue="false"
+            app:singleLineTitle="false"/>
 
         <SwitchPreferenceCompat
             android:key="pref_show_nowplayingpanel"
             android:title="@string/show_now_playing_panel"
             android:summary="@string/show_now_playing_panel_summary"
-            android:defaultValue="true"/>
+            android:defaultValue="true"
+            app:singleLineTitle="false"/>
 
         <MultiSelectListPreference
             android:key="pref_nav_drawer_items"
             android:title="@string/nav_drawer_items"
             android:entries="@array/entries_nav_drawer_items"
             android:entryValues="@array/entry_values_nav_drawer_items"
-            android:defaultValue="@array/entry_values_nav_drawer_items"/>
+            android:defaultValue="@array/entry_values_nav_drawer_items"
+            app:singleLineTitle="false"/>
 
         <MultiSelectListPreference
             android:key="pref_download_conn_types"
@@ -105,7 +119,8 @@
             android:summary="@string/download_network_types_summary"
             android:entries="@array/entries_download_media_items"
             android:entryValues="@array/entry_values_download_media_items"
-            android:defaultValue="@array/default_values_download_media_items"/>
+            android:defaultValue="@array/default_values_download_media_items"
+            app:singleLineTitle="false"/>
 
         <Preference
             android:key="pref_about"
