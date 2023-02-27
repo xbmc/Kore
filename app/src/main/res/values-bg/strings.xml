@@ -157,7 +157,7 @@
     <!-- Main view tabs -->
     <string name="now_playing">Сега се възпроизвежда</string>
     <string name="remote">Дистанционно</string>
-    <string name="playlist">Плейлист</string>
+    <string name="playlist">На опашката</string>
     <string name="season_episode_abbrev">c%1$02de%2$02d</string>
     <string name="season_episode">Сезон %1$02d | Епизод %2$02d</string>
     <string name="season_number">Сезон %1$02d</string>
