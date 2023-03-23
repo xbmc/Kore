@@ -275,7 +275,7 @@ public class ShareOpenActivity extends Activity {
             } else if (host.endsWith("svtplay.se")) {
                 try {
                     Pattern pattern = Pattern.compile(
-                            "^(?:https?://)?(?:www\\.)?svtplay\\.se/video/(\\d+/.*)",
+                            "^(?:https?://)?(?:www\\.)?svtplay\\.se/video/(\\w+/.*)",
                             Pattern.CASE_INSENSITIVE);
                     Matcher matcher = pattern.matcher(playuri.toString());
                     if (matcher.matches()) {
