@@ -64,7 +64,8 @@
     <string name="toggle_fullscreen">Režim celej obrazovky</string>
     <string name="connected_to">Pripojené k %1$s</string>
     <string name="connecting">Pripája sa…</string>
-    <string name="connecting_to">Pripája sa k %1$s (%2$s)…</string>
+    <string name="connecting_to">Nedarí sa pripojiť ku %1$s (%2$s)
+\nOpätovný pokus…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Vitajte</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -176,26 +177,26 @@
     <string name="season_episode">Séria %1$02d | Epizóda %2$02d</string>
     <string name="season_number">Séria %1$02d</string>
     <string name="episode_number">%1$d</string>
-    <string name="votes">Hlasov: %1$s</string>
+    <string name="votes">%1$s hlasov</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Plagát</string>
     <string name="thumbnail">Miniatúra</string>
-    <string name="error_getting_properties">Nepodarilo sa načítať nastavenia Kodi/XBMC.\nChybové hlásenie:
-        %1$s.</string>
-    <string name="error_executing_subtitles">Nepodarilo sa spustiť rozšírenie pre titulky.\nChybové hlásenie: %1$s.</string>
-    <string name="error_getting_addon_info">Nepodarilo sa získať informácie o rozšírení.\nChybové hlásenie:
-        %1$s.</string>
-    <string name="error_getting_source_info">Nepodarilo sa načítať zoznam súborov.\nChybové hlásenie:
-        %1$s.</string>
-    <string name="error_play_media_file">Nepodarilo sa prehrať multimediálny súbor.\nChybové hlásenie:
-        %1$s.</string>
-    <string name="error_play_local_file">Nepodarilo sa prehrať lokálny multimediálny súbor.\n
-    	Chybové hlásenie:
-        %1$s.</string>
-    <string name="error_queue_media_file">Nepodarilo sa zaradiť súbor do fronty.\nChybové hlásenie:
-        %1$s.</string>
-    <string name="error_get_active_player">Nepodarilo sa aktivovať prehrávač.\nChybové hlásenie:
-        %1$s.</string>
+    <string name="error_getting_properties">Nepodarilo sa načítať nastavenia Kodi/XBMC.
+\nChybové hlásenie: %1$s</string>
+    <string name="error_executing_subtitles">Nepodarilo sa spustiť rozšírenie pre titulky.
+\nChybové hlásenie: %1$s</string>
+    <string name="error_getting_addon_info">Nepodarilo sa získať informácie o rozšírení.
+\nChybové hlásenie: %1$s</string>
+    <string name="error_getting_source_info">Nepodarilo sa načítať zoznam súborov.
+\nChybové hlásenie: %1$s</string>
+    <string name="error_play_media_file">Nepodarilo sa prehrať multimediálny súbor.
+\nChybové hlásenie: %1$s</string>
+    <string name="error_play_local_file">Nepodarilo sa prehrať lokálny multimediálny súbor.
+\nChybové hlásenie: %1$s</string>
+    <string name="error_queue_media_file">Nepodarilo sa zaradiť súbor do fronty.
+\nChybové hlásenie: %1$s</string>
+    <string name="error_get_active_player">Nepodarilo sa aktivovať prehrávač.
+\nChybové hlásenie: %1$s</string>
     <string name="error_share_video">Nepodarilo sa zdielať video do Kodi/XBMC.</string>
     <string name="error_reading_local_storage">Nepodarilo sa načítať lokálne úložisko. Dali ste Kore oprávnenia na prístup k lokálnemu úložisku?</string>
     <string name="error_starting_http_server">Nepodarilo sa vytvoriť alebo spustiť HTTP server.</string>
@@ -212,19 +213,19 @@
     <string name="clear_playlist">Vyčistiť zoznam</string>
     <string name="source_empty">Zdroj médií je prázdny</string>
     <string name="swipe_down_to_refresh">Obnovte potiahnutím dolu</string>
-    <string name="no_movies_found_refresh">Žiadne filmy\n\nObnovte potiahnutím dolu</string>
-    <string name="no_tvshows_found_refresh">Žiadne TV šou\n\nObnovte potiahnutím dolu</string>
+    <string name="no_movies_found_refresh">Nenašli sa žiadne filmy</string>
+    <string name="no_tvshows_found_refresh">Nenašli sa žiadne TV relácie</string>
     <string name="no_episodes_found">Žiadne epizódy</string>
-    <string name="no_artists_found_refresh">Žiadni umelci\n\nObnovte potiahnutím dolu</string>
-    <string name="no_albums_found_refresh">Žiadne albumy\n\nObnovte potiahnutím dolu</string>
-    <string name="no_genres_found_refresh">Žiadne žánre\n\nObnovte potiahnutím dolu</string>
-    <string name="no_addons_found_refresh">Žiadne rozšírenia alebo nepripojené\n\nObnovte potiahnutím dolu</string>
-    <string name="no_music_videos_found_refresh">Žiadne videá\n\nObnovte potiahnutím dolu</string>
-    <string name="no_channel_groups_found_refresh">Žiadne skupiny kanálov\n\nObnovte potiahnutím dolu</string>
-    <string name="no_channels_found_refresh">Žiadne kanály.\n\nObnovte potiahnutím dolu</string>
-    <string name="no_favourites_found_refresh">Žiadne obľúbené\n\nObnovte potiahnutím dolu</string>
-    <string name="no_recordings_found_refresh">Žiadne nahrávky\n\nObnovte potiahnutím dolu</string>
-    <string name="no_broadcasts_found_refresh">Žiadne vysielania\n\nObnovte potiahnutím dolu</string>
+    <string name="no_artists_found_refresh">Nenašli sa žiadni interpreti</string>
+    <string name="no_albums_found_refresh">Nenašli sa žiadne albumy</string>
+    <string name="no_genres_found_refresh">Nenašli sa žiadne žánre</string>
+    <string name="no_addons_found_refresh">Nenašli sa žiadne doplnky</string>
+    <string name="no_music_videos_found_refresh">Nenašli sa žiadne videá</string>
+    <string name="no_channel_groups_found_refresh">Nenašli sa žiadne skupiny kanálov</string>
+    <string name="no_channels_found_refresh">Nenašli sa žiadne kanály</string>
+    <string name="no_favourites_found_refresh">Nenašli sa žiadne obľúbené položky</string>
+    <string name="no_recordings_found_refresh">Nenašli sa žiadne nahrávky</string>
+    <string name="no_broadcasts_found_refresh">Nenašli sa žiadne vysielania</string>
     <string name="pull_to_refresh">Obnovte potiahnutím</string>
     <string name="no_cast_info">Žiadne informácie o obsadení</string>
     <string name="minutes_abbrev">%1$s min</string>
@@ -328,13 +329,19 @@
     <string name="play_on_kodi">Prehrať v Kodi</string>
     <string name="queue_on_kodi">Fronta na Kodi</string>
     <string name="pause_call_incoming_title">Prichádzajúci hovor</string>
-    <string name="pause_call_incoming_message">Pozrite sa na váš telefón, niekto vám volá.</string>
-    <string name="error_getting_pvr_info">Počas preberania pvr informácií nastala chyba: %1$s</string>
+    <string name="pause_call_incoming_message">Skontrolujte svoj telefón, niekto vám volá</string>
+    <string name="error_getting_pvr_info">Nepodarilo sa získať informácie o PVR
+\n
+\nPopis chyby: %1$s</string>
     <string name="might_not_have_pvr">Počas preberania informácií o kanáloch nastala chyba. Vaše multimediálne centrum pravdepodobne nemá tuner alebo tuner nie je nastavený\n\nAk je to tak, odoberte túto položku z bočného menu v nastaveniach.</string>
-    <string name="error_starting_channel">Pri prehrávaní kanála došlo k chybe: %1$s</string>
-    <string name="error_favourites">Počas preberania obľúbených s popisom došlo k chybe: %1$s</string>
-    <string name="error_starting_recording">Pri nahrávaní došlo k chybe: %1$s</string>
-    <string name="error_starting_to_record">Počas nahrávania došlo k chybe: %1$s</string>
+    <string name="error_starting_channel">Pri spustení prehrávania kanála došlo k chybe
+\nPopis: %1$s</string>
+    <string name="error_favourites">Nemožno získať obľúbené
+\nPopis chyby: %1$s</string>
+    <string name="error_starting_recording">Pri prehrávaní nahrávky došlo k chybe
+\nPopis: %1$s</string>
+    <string name="error_starting_to_record">Pri nahrávaní došlo k chybe
+\nPopis: %1$s</string>
     <string name="channel_switching">Prepína sa na kanál %1$s</string>
     <string name="starting_recording">Začína nahrávanie %1$s</string>
     <string name="refresh">Obnoviť</string>
@@ -346,7 +353,7 @@
     <string name="record">Nahrať</string>
     <string name="pvr_epg">Návod</string>
     <string name="unable_to_move_item">Nepodarilo sa premiestniť položku</string>
-    <string name="unable_to_play_favourite_item">Nepodarilo sa prehrať obľúbenú položku. Nepodporovaný typ.</string>
+    <string name="unable_to_play_favourite_item">Nepodarilo sa prehrať obľúbenú položku. Nepodporovaný typ</string>
     <string name="cannot_move_playing_item">Nie je možné premiestniť aktuálne prehrávanú/pozastavenú položku</string>
     <string name="no_connection_type_selected">V nastaveniach nebol zvolený typ pripojenia</string>
     <string name="single_column">Jeden stĺpec</string>
@@ -364,9 +371,7 @@
     <string name="muted">stlmené</string>
     <string name="no_item_available_to_play">Chyba: žiadne položka na prehrávanie.</string>
     <string name="Refreshing_not_implemented_for_this_item">Obnovenie nie je funkčné pre túto položku</string>
-    <string name="no_songs_found_refresh">Nenašli sa žiadne skladby
-\n
-\n Obnovte potiahnutím nadol</string>
+    <string name="no_songs_found_refresh">Nenašli sa žiadne skladby</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Rozbaliť/Zbaliť</string>
     <string name="stream_action">Prehať lokálne</string>
