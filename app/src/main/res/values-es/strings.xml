@@ -118,7 +118,7 @@
     <string name="play">Reproducir</string>
     <string name="pause">Pausa</string>
     <string name="stop">Detener</string>
-    <string name="fast_forward">Avanzar</string>
+    <string name="fast_forward">Avance rápido</string>
     <string name="rewind">Retroceder</string>
     <string name="repeat">Repetir</string>
     <string name="shuffle">Aleatorio</string>

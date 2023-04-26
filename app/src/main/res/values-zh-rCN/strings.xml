@@ -179,7 +179,7 @@
     <!-- Main view tabs -->
     <string name="now_playing">正在播放</string>
     <string name="remote">遥控器</string>
-    <string name="playlist">播放列表</string>
+    <string name="playlist">播放队列</string>
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">第 %1$02d 季 | 第 %2$02d 集</string>
     <string name="season_number">第 %1$02d 季</string>
@@ -216,8 +216,8 @@
     <string name="remaining_cast_count">%d 更多</string>
     <string name="general_error_executing_action">执行操作错误：%1$s</string>
     <string name="error_getting_playlist">获取播放列表错误</string>
-    <string name="playlist_empty">播放列表为空</string>
-    <string name="clear_playlist">清空播放列表</string>
+    <string name="playlist_empty">播放队列为空</string>
+    <string name="clear_playlist">清空播放队列</string>
     <string name="source_empty">媒体源为空</string>
     <string name="swipe_down_to_refresh">下拉刷新</string>
     <string name="no_movies_found_refresh">未找到电影</string>
@@ -246,10 +246,10 @@
     <string name="action_search_artists">搜索歌手</string>
     <string name="action_search_genres">搜索风格</string>
     <string name="action_search_music_videos">搜索视频</string>
-    <string name="add_to_playlist">加入到播放列表</string>
-    <string name="item_added_to_playlist">已加入到播放列表</string>
+    <string name="add_to_playlist">加入到播放队列</string>
+    <string name="item_added_to_playlist">已加入到播放队列</string>
     <string name="item_sent_to_kodi">发送到Kodi</string>
-    <string name="no_suitable_playlist">找不到适合添加媒体类型的播放列表。</string>
+    <string name="no_suitable_playlist">找不到适合添加媒体类型的播放队列。</string>
     <string name="imdb">IMDb</string>
     <string name="download">下载</string>
     <string name="confirm_movie_download">确认下载该电影吗？
@@ -408,4 +408,14 @@
     <string name="theme_variant_dark">暗</string>
     <string name="theme_variant_light">小</string>
     <string name="use_hardware_volume_keys_never">从不</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">当 Kore 在前台时</string>
+    <string name="use_hardware_volume_keys_always">总是</string>
+    <string name="theme_variant_auto">系统默认</string>
+    <string name="theme_variant">可变</string>
+    <string name="theme_color_purple">紫雨</string>
+    <string name="theme_color_yellow">黄色潜水艇</string>
+    <string name="theme_color_green">绿里</string>
+    <string name="theme_color_kore">蓝丝绒</string>
+    <string name="theme_color_system_colors">系统颜色</string>
+    <string name="theme_color">色彩搭配</string>
 </resources>

@@ -29,7 +29,7 @@
     <string name="dcim">DCIM</string>
     <string name="external_storage">Biltegia</string>
     <string name="addons">Gehigarriak</string>
-    <string name="files">Fitxategiak</string>
+    <string name="files">Kodi fitxategiak</string>
     <string name="local_files">Fitxategi lokalak</string>
     <string name="video">Bideoa</string>
     <string name="videos">Bideoak</string>
@@ -37,7 +37,7 @@
     <string name="window">Leihoa</string>
     <string name="script">Script-a</string>
     <string name="unknown">Ezezaguna</string>
-    <string name="file_browser">Fitxategi arakatzailea</string>
+    <string name="file_browser">Kodi fitxategi arakatzailea</string>
     <string name="local_file_browser">Fitxategi lokalen arakatzailea</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Gogokoak</string>
@@ -64,7 +64,8 @@
     <string name="toggle_fullscreen">Txandakatu pantaila osoa</string>
     <string name="connected_to">Konektatu %1$s(e)ra</string>
     <string name="connecting">Konektatzen…</string>
-    <string name="connecting_to">%1$s(e)ra konektatzen (%2$s)…</string>
+    <string name="connecting_to">Ezin izan da %1$s-(e)ra konektatu (%2$s)
+\nBerriro saiatzen…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Ongi etorri</string>
     <string name="wizard_welcome_message"><![CDATA[
@@ -170,38 +171,31 @@
     <!-- Main view tabs -->
     <string name="now_playing">Orain erreproduzitzen</string>
     <string name="remote">Urrunekoa</string>
-    <string name="playlist">Erreprodukzio-zerrenda</string>
+    <string name="playlist">Ilara</string>
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">%1$02d denboraldia | %2$02d atala</string>
     <string name="season_number">%1$02d denboraldia</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">%1$d. atala</string>
     <string name="votes">%1$s boto</string>
     <string name="fanart">Zaleen irudiak</string>
     <string name="poster">Horma-irudia</string>
     <string name="thumbnail">Koadro-txikia</string>
-    <string name="error_getting_properties">Ezin izan dira Kodi/XBMC propietateak eskuratu.\n
-    	Errore-mezua:
-        %1$s.</string>
-    <string name="error_executing_subtitles">Ezin izan da azpitituluen gehigarria exekutatu.\n
-    	Errore-mezua: %1$s.</string>
-    <string name="error_getting_addon_info">Ezin izan da gehigarriaren informazioa eskuratu.\n
-    	Errore-mezua:
-        %1$s.</string>
-    <string name="error_getting_source_info">Ezin izan dira fitxategiak arakatu.\n
-    	Errore-mezua:
-        %1$s.</string>
-    <string name="error_play_media_file">Ezin izan da multimedia-fitxategia erreproduzitu.\n
-    	Errore-mezua:
-        %1$s.</string>
-    <string name="error_play_local_file">Ezin izan da multimedia-fitxategi lokala erreproduzitu.\n
-    	Error message:
-        %1$s.</string>
-    <string name="error_queue_media_file">Ezin izan da multimedia-fitxategia ilaran gehitu.\n
-    	Errore-mezua:
-        %1$s.</string>
-    <string name="error_get_active_player">Ezin izan da erreproduzigailu aktiboa eskuratu.\n
-    	Errore-mezua:
-        %1$s.</string>
+    <string name="error_getting_properties">Ezin izan dira Kodiren ezaugarriak eskuratu.
+\nErrorearen mezua: %1$s</string>
+    <string name="error_executing_subtitles">Ezin izan da azpitituluen gehigarria exekutatu.
+\nErrorearen mezua: %1$s</string>
+    <string name="error_getting_addon_info">Ezin izan da gehigarrien zerrenda eskuratu.
+\nErrorearen mezua: %1$s</string>
+    <string name="error_getting_source_info">Ezin izan dira fitxategiak arakatu.
+\nErrorearen mezua: %1$s</string>
+    <string name="error_play_media_file">Ezin izan da eduki-fitxategia erreproduzitu.
+\nErrorearen mezua: %1$s</string>
+    <string name="error_play_local_file">Ezin izan da bertako eduki-fitxategia erreproduzitu.
+\nErrorearen mezua: %1$s</string>
+    <string name="error_queue_media_file">Ezin izan da eduki-fitxategia ilarara gehitu.
+\nErrorearen mezua: %1$s</string>
+    <string name="error_get_active_player">Ezin izan da erreproduzigailu aktiboa eskuratu.
+\nErrorearen mezua: %1$s</string>
     <string name="error_share_video">Ezin izan da bideoa Kodi/XBMCrekin partekatu.</string>
     <string name="error_reading_local_storage">Ezin izan da biltegi lokala irakurri. Kore-ri biltegi lokalean sartzeko baimena eman diozu?</string>
     <string name="error_starting_http_server">Ezin izan da HTTP zerbitzaria sortu edo abiarazi.</string>
@@ -214,35 +208,23 @@
     <string name="remaining_cast_count">%d gehiago</string>
     <string name="general_error_executing_action">Errorea ekintza exekutatzean: %1$s</string>
     <string name="error_getting_playlist">Error erreprodukzio-zerrenda eskuratzean</string>
-    <string name="playlist_empty">Erreprodukzio-zerrenda hutsik</string>
-    <string name="clear_playlist">Garbitu erreprodukzio-zerrenda</string>
+    <string name="playlist_empty">Ilara hutsik</string>
+    <string name="clear_playlist">Garbitu ilara</string>
     <string name="source_empty">Multimedia-iturburua hutsik</string>
     <string name="swipe_down_to_refresh">Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_movies_found_refresh">Ez da filmik aurkitu.\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_tvshows_found_refresh">Ez da TB saiorik aurkitu\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_movies_found_refresh">Ez da filmik aurkitu</string>
+    <string name="no_tvshows_found_refresh">Ez da TB saiorik aurkitu</string>
     <string name="no_episodes_found">Ez da atalik aurkitu</string>
-    <string name="no_artists_found_refresh">Ez da artistarik aurkitu\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_albums_found_refresh">Ez da albumik aurkitu\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_genres_found_refresh">Ez da generorik aurkitu\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_addons_found_refresh">Ez da gehigarririk aurkitu edo ez dago konektatuta\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_music_videos_found_refresh">Ez da bideorik aurkitu\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_channel_groups_found_refresh">Ez da kanal talderik aurkitu.\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_channels_found_refresh">Ez da kanalik aurkitu.\n\n
-    	Swipe down to refresh</string>
-    <string name="no_favourites_found_refresh">Ez da gogokorik aurkitu.\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_recordings_found_refresh">Ez da grabaziorik aurkitu.\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
-    <string name="no_broadcasts_found_refresh">Ez da transmisiorik aurkitu.\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_artists_found_refresh">Ez da artistarik aurkitu</string>
+    <string name="no_albums_found_refresh">Ez da albumik aurkitu</string>
+    <string name="no_genres_found_refresh">Ez da generorik aurkitu</string>
+    <string name="no_addons_found_refresh">Ez da gehigarririk aurkitu</string>
+    <string name="no_music_videos_found_refresh">Ez da bideorik aurkitu</string>
+    <string name="no_channel_groups_found_refresh">Ez da kanal talderik aurkitu</string>
+    <string name="no_channels_found_refresh">Ez da kanalik aurkitu</string>
+    <string name="no_favourites_found_refresh">Ez da gogokorik aurkitu</string>
+    <string name="no_recordings_found_refresh">Ez da grabaziorik aurkitu</string>
+    <string name="no_broadcasts_found_refresh">Ez da transmisiorik aurkitu</string>
     <string name="pull_to_refresh">Tira freskatzeko</string>
     <string name="no_cast_info">Ez dago transmisioaren informaziorik</string>
     <string name="minutes_abbrev">%1$s min</string>
@@ -256,10 +238,10 @@
     <string name="action_search_artists">Bilatu artistak</string>
     <string name="action_search_genres">Bilatu generoak</string>
     <string name="action_search_music_videos">Bilatu bideoak</string>
-    <string name="add_to_playlist">Gehitu erreprodukzio-zerrendara</string>
-    <string name="item_added_to_playlist">Erreprodukzio-zerrendara gehituta</string>
+    <string name="add_to_playlist">Ilarara gehitu</string>
+    <string name="item_added_to_playlist">Ilarara gehitua</string>
     <string name="item_sent_to_kodi">Kodi-ra bidalia</string>
-    <string name="no_suitable_playlist">Ez da erreprodukzio-zerrenda egokirik aurkitu multimedia mota gehitzeko.</string>
+    <string name="no_suitable_playlist">Ez da ilara egokirik aurkitu eduki-mota hau gehitzeko.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Deskargatu</string>
     <string name="confirm_movie_download">Ziur zaude film hau deskargatu nahi duzula?\n
@@ -327,19 +309,15 @@
     <string name="keep_remote_above_lockscreen">Erakutsi blokeatutako pantailaren gainean</string>
     <string name="pref_keep_screen_on">Mantendu aktibo</string>
     <string name="show_notification">Erakutsi jakinarazpenak erreproduzitzean</string>
-    <string name="show_now_playing_panel">Erakutsi orain erreproduzitzen panela erreproduzitzean</string>
-    <string name="show_now_playing_panel_summary">Panel zabalgarri bat erakusten du pantailaren behekaldean multimedia erreproduzitzean</string>
+    <string name="show_now_playing_panel">Erakutsi orain erreproduzitzen panela</string>
+    <string name="show_now_playing_panel_summary">Panel bat erakusten du pantailaren behealdean edukia erreproduzitzean</string>
     <string name="pause_during_calls">Pausatu telefono deietan</string>
     <string name="use_hardware_volume_keys">Erabili bolumen teklak bolumena kontrolatzeko</string>
     <string name="vibrate_on_remote">Bibratu ukitzean</string>
     <string name="remote_bar_items">Beheko barrako lasterbideak</string>
     <string name="nav_drawer_items">Alboko menuko lasterbideak</string>
     <string name="about">Honi buruz</string>
-    <string name="about_desc"><![CDATA[
-        \u00A9 2018 XBMC Foundation<br><br>
-        Mesedez balora gaitzazu <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b>n<br><br>
-        Laguntza behar baduzu, begiratu gure <b><a href="http://forum.kodi.tv/forumdisplay.php?fid=129">foroa</a></b>
-    ]]></string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Mesedez balora gaitzazu &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;n&lt;br&gt;&lt;br&gt; Laguntza behar baduzu, begira gure &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;foroa&lt;/a&gt;</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->
@@ -354,11 +332,13 @@
     <string name="queue_on_kodi">Ilaratu Kodi-n</string>
     <string name="pause_call_incoming_title">Sarrerako deia</string>
     <string name="pause_call_incoming_message">Begiratu zure telefonoa, norbait deitzen ari zaizu</string>
-    <string name="error_getting_pvr_info">Errore bat gertatu da pvr informazioa eskuratzean: %1$s</string>
+    <string name="error_getting_pvr_info">Ezin izan da PVR informazioa eskuratu
+\nErrorearen mezua: %1$s</string>
     <string name="might_not_have_pvr">Errore bat gertatu da kanalen informazioa eskuratzean, seguraski zure multimedia zentroak sintonizadorerik ez daukalako edo ez dagoelako konfiguratuta..\n\n
     	Hala bada eta sarrera hau alboko menutik kendu nahi baduzu, Ezarpenetan egin dezakezu.</string>
     <string name="error_starting_channel">Errore bat gertatu da kanalaren erreprodukzioa hastean: %1$s</string>
-    <string name="error_favourites">Errore bat gertatu da gogokoak deskribapenarekin eskuratzean: %1$s</string>
+    <string name="error_favourites">Ezin izan dira gogokoak eskuratu
+\nErrorearen deskribapena: %1$s</string>
     <string name="error_starting_recording">Errore bat gertatu da grabazioa hastean: %1$s</string>
     <string name="error_starting_to_record">Errore bat gertatu da grabatzean: %1$s</string>
     <string name="channel_switching">%1$s kanalera aldatzen</string>
@@ -390,8 +370,7 @@
     <string name="muted">mututa</string>
     <string name="no_item_available_to_play">Errorea: ez dago elementurik erabilgarri erreproduzitzeko.</string>
     <string name="Refreshing_not_implemented_for_this_item">Freskatzea inplementatu gabe dago elementu honentzat</string>
-    <string name="no_songs_found_refresh">Ez da kantarik aurkitu\n\n
-    	Pasa hatza goitik behera freskatzeko</string>
+    <string name="no_songs_found_refresh">Ez da abestirik aurkitu</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Zabaldu/Batu</string>
     <string name="stream_action">Erreproduzitu lokalki</string>
@@ -399,7 +378,27 @@
     <string name="wifi_network">Wi-Fia</string>
     <string name="mobile_network">Gailu mugikorra</string>
     <string name="any_network">Edozein</string>
-    <string name="always_sendtokodi_addon">Beti lehenetsi SendToKodi gehigarria</string>
+    <string name="always_sendtokodi_addon">Nahiago SendToKodi gehigarria</string>
     <string name="queue_action">Ilara</string>
     <string name="theme_variant_light">Argia</string>
+    <string name="theme_variant_dark">Ilun</string>
+    <string name="theme_variant_auto">Sistemako lehenetsia</string>
+    <string name="theme_variant">Bestelako</string>
+    <string name="theme_color_purple">Euri purpura</string>
+    <string name="theme_color_yellow">Itsaspeko horia</string>
+    <string name="theme_color_green">Milia berdea</string>
+    <string name="theme_color_kore">Belus-urdina</string>
+    <string name="theme_color_system_colors">Sistemako koloreak</string>
+    <string name="theme_color">Kolorearen eskema</string>
+    <string name="theme_sun_dynamic">Egunsentia/Ilunabarra Dinamikoa</string>
+    <string name="theme_default_dynamic">Eguna/Gaua Dinamikoa</string>
+    <string name="download_action">Deskargatu</string>
+    <string name="disabled_status">Desgaitua</string>
+    <string name="enabled_status">Gaitua</string>
+    <string name="unpinned_status">Finkatu gabea</string>
+    <string name="pinned_status">Finkatua</string>
+    <string name="unwatched_status">Ikusi gabea</string>
+    <string name="watched_status">Ikusia</string>
+    <string name="party_mode">Festa modua</string>
+    <string name="not_connected">Deskonektatuta</string>
 </resources>
