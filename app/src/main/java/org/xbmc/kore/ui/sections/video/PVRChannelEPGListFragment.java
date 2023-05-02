@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,6 +68,18 @@ public class PVRChannelEPGListFragment
 
     @Override
     protected void onListItemClicked(View view, int position) {
+        // Show full plot when guide item is clicked
+        BoadcastsAdapter adapter = (BoadcastsAdapter) getAdapter();
+        EPGListRow row = adapter.getItem(position);
+        Context context = getContext();
+        if (row == null || context == null) {
+            return;
+        }
+        new MaterialAlertDialogBuilder(context)
+                .setTitle(row.detailsBroadcast.title)
+                .setMessage(row.detailsBroadcast.getFullPlot('\n'))
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     @Override
@@ -305,7 +319,8 @@ public class PVRChannelEPGListFragment
                 title = broadcastDetails.title;
 
                 titleView.setText(UIUtils.applyMarkup(context, broadcastDetails.title));
-                detailsView.setText(UIUtils.applyMarkup(context, broadcastDetails.plot));
+                detailsView.setText(UIUtils.applyMarkup(context,
+                        broadcastDetails.getFullPlot(' ')));
                 String duration = context.getString(R.string.minutes_abbrev2,
                         String.valueOf(broadcastDetails.runtime));
 

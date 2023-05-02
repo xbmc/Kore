@@ -161,6 +161,24 @@ public class PVRType {
             }
         }
 
+        /**
+         * Returns both the plot outline and the plot, leaving each empty if absent.
+         *
+         * @param delimiter character to insert between outline and plot, if both are present
+         */
+        public String getFullPlot(char delimiter) {
+            StringBuilder builder = new StringBuilder();
+            if (plotoutline != null) {
+                builder.append(plotoutline);
+            }
+            if (plot != null) {
+                if (builder.length() != 0) {
+                    builder.append(delimiter);
+                }
+                builder.append(plot);
+            }
+            return builder.toString();
+        }
     }
 
     /**
