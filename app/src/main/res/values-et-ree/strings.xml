@@ -40,4 +40,121 @@
     <string name="tv_shows">Seriaalid</string>
     <string name="movies">Filmid</string>
     <string name="theme_variant_light">Kerge</string>
+    <string name="playlist_empty">Järjekord on tühi</string>
+    <string name="error_getting_playlist">Viga esitusloendi hankimisel</string>
+    <string name="general_error_executing_action">Viga teostades toimingut: %1$s</string>
+    <string name="remaining_cast_count">%d veel</string>
+    <string name="cast_list_text">%1$s on %2$s</string>
+    <string name="additional_cast">Teised osatäitjad</string>
+    <string name="cast">Osatäitjad</string>
+    <string name="studio">Stuudio:</string>
+    <string name="directors">Lavastajad:</string>
+    <string name="error_starting_http_server">HTTP serveri loomine või käivitamine nurjus.</string>
+    <string name="error_reading_local_storage">Kohalikku salvestusruumi lugemine nurjus. Kas Kore on saanud failidele ligipääsuks loa\?</string>
+    <string name="error_share_video">Video jagamine Kodiga nurjus.</string>
+    <string name="error_get_active_player">Aktiivse pleieri leidmine nurjus.
+\nViga: %1$s</string>
+    <string name="error_queue_media_file">Meediafaili järjekorda panek nurjus
+\nViga: %1$s</string>
+    <string name="error_play_local_file">Kohaliku meediafaili esitus nurjus.
+\nViga: %1$s</string>
+    <string name="error_play_media_file">Meediafaili esitus nurjus.
+\nViga: %1$s</string>
+    <string name="error_getting_source_info">Failide sirvimine nurjus.
+\nViga: %1$s</string>
+    <string name="error_getting_addon_info">Lisamoodulite loendi toomine nurjus.
+\nViga: %1$s</string>
+    <string name="error_executing_subtitles">Subtiitrite lisamooduli käivitamine nurjus.
+\nViga: %1$s</string>
+    <string name="error_getting_properties">Kodi suvandite toomine nurjus.
+\nViga: %1$s</string>
+    <string name="error_favourites">Lemmikute toomine nurjus
+\nViga: %1$s</string>
+    <string name="thumbnail">Pisipilt</string>
+    <string name="poster">Plakat</string>
+    <string name="fanart">Fännipildid</string>
+    <string name="votes">%1$s häält</string>
+    <string name="episode_number">Episood %1$d</string>
+    <string name="season_number">Hooaeg %1$02d</string>
+    <string name="season_episode">Hooaeg %1$02d | episood %2$02d</string>
+    <string name="season_episode_abbrev">h%1$02de%2$02d</string>
+    <string name="playlist">Järjekord</string>
+    <string name="now_playing">Hetkel mängib</string>
+    <string name="nothing_playing">Midagi ei esitata</string>
+    <string name="xbmc_unavailable">Kättesaamatu</string>
+    <string name="xbmc_available">Saadaval</string>
+    <string name="connected_to_xbmc">Ühendatud</string>
+    <string name="unable_to_connect_to_xbmc">Ühendumine meediakeskusega nurjus</string>
+    <string name="connecting_to_xbmc">Ühendumine…</string>
+    <string name="play_from_here">Esita siit alates</string>
+    <string name="play_file">Esita</string>
+    <string name="queue_file">Järjekord</string>
+    <string name="delete_xbmc_confirm">Kas soovid selle meediakeskuse kustutada\?</string>
+    <string name="delete_xbmc">Kustuta meediakeskus</string>
+    <string name="edit_xbmc">Muuda meediakeskust</string>
+    <string name="wake_up">Äratus</string>
+    <string name="edit">Muuda</string>
+    <string name="remove">Eemalda</string>
+    <string name="search_again">Otsi uuesti</string>
+    <string name="test_connection">Proovi</string>
+    <string name="finish">Lõpeta</string>
+    <string name="next">Järgmine</string>
+    <string name="previous">Eelmine</string>
+    <string name="back">Tagasi</string>
+    <string name="osd">Menüü</string>
+    <string name="context">Kontekst</string>
+    <string name="wizard_manual_configuration_message">Sisesta oma meediakeskuse seadistus:</string>
+    <string name="wizard_manual_configuration">Käsitsi seadistamine</string>
+    <string name="xbmc_found">Leiti meediakeskus</string>
+    <string name="no_xbmc_found">Meediakeskust ei leitud</string>
+    <string name="searching">Otsimine…</string>
+    <string name="no_network_connection">Võrguühendus puudub</string>
+    <string name="wizard_search_host_found">Võrgust leiti need meediakeskused.<br/><br/> Vali üks lisamiseks või vajuta <b>Järgmine</b> käsitsi uue lisamiseks.</string>
+    <string name="wizard_search_no_network_connection">Enne meediakeskuste otsimist luba võrguühendus.<br/></string>
+    <string name="wizard_search_no_host_found">Võrgust ei leitud ühtegi meediakeskust.&lt;br/&gt;Abi saamiseks vaata&lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;siia&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Klõpsa &lt;b&gt;Otsi uuesti&lt;/b&gt; või &lt;b&gt;Järgmine&lt;/b&gt; fkäsitsi seadistamiseks.</string>
+    <string name="wizard_search_message">Meediakeskuste otsimine kohalikus võrgus...<br/></string>
+    <string name="wizard_welcome_message">Alustuseks lisame meediakeskuse. Veendu, et Kodi on töös, seadistatud ja selle seadmega samas võrgus.&lt;br/&gt;&lt;br/&gt; Abi seadistamisel leiab &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;here&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Kui oled valmis, vajuta &lt;b&gt;Järgmine&lt;/b&gt;.</string>
+    <string name="wizard_welcome">Tere</string>
+    <string name="connecting_to">Meediakeskusega %1$s (%2$s) ei saada ühendust
+\nProovime uuesti…</string>
+    <string name="connecting">Ühendumine…</string>
+    <string name="connected_to">Ühendatud meediakeskusesse %1$s</string>
+    <string name="not_connected">Pole ühendatud</string>
+    <string name="toggle_fullscreen">Täisekraani lüliti</string>
+    <string name="clean_video_library">Puhasta videokogu</string>
+    <string name="update_audio_library">Uuenda muusikakogu</string>
+    <string name="update_video_library">Uuenda videokogu</string>
+    <string name="clean_audio_library">Puhasta meediakogu</string>
+    <string name="library_actions">Meediakogu hooldus</string>
+    <string name="finish_after_send">Lõpeta pärast saatmist</string>
+    <string name="text_to_send">Saadetav tekst</string>
+    <string name="send_text">Saada tekst meediakeskusesse</string>
+    <string name="send">Saada</string>
+    <string name="shutdown">Seiska</string>
+    <string name="reboot">Taaskäivitus</string>
+    <string name="suspend">Ooteseisund</string>
+    <string name="quit">Sulge</string>
+    <string name="power">Toide</string>
+    <string name="wol_sent">Meediakeskusesse saadeti äratuskäsk.</string>
+    <string name="xbmc_quit">Meediakeskus suletakse.</string>
+    <string name="add_xbmc">Lisa meediakeskus</string>
+    <string name="no_xbmc_configured">Meediakeskusi pole seatud</string>
+    <string name="system">Süsteem</string>
+    <string name="weather">Ilm</string>
+    <string name="file_browser">Kodi failide haldur</string>
+    <string name="local_file_browser">Kohalike failide haldur</string>
+    <string name="unknown">Teadmata</string>
+    <string name="script">Skript</string>
+    <string name="window">Aken</string>
+    <string name="media">Meedia</string>
+    <string name="video">Video</string>
+    <string name="local_files">Kohalikud failid</string>
+    <string name="files">Kodi failid</string>
+    <string name="addons">Lisad</string>
+    <string name="dcim">DCIM</string>
+    <string name="home">Avakuva</string>
+    <string name="xbmc_media_center">Meediakeskus</string>
+    <string name="loading">Laadimine…</string>
+    <string name="action_options">Suvandid</string>
+    <string name="settings">Seaded</string>
 </resources>

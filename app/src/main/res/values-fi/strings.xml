@@ -21,7 +21,7 @@
     <string name="navigation_drawer_open">Avaa sivuvalikko</string>
     <string name="navigation_drawer_close">Sulje sivuvalikko</string>
     <string name="xbmc_media_center">Mediakeskus</string>
-    <string name="home">Päävalikko</string>
+    <string name="home">Aloitusnäyttö</string>
     <string name="movies">Elokuvat</string>
     <string name="tv_shows">Sarjat</string>
     <string name="music">Musiikki</string>

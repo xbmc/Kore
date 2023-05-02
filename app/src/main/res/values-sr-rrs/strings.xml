@@ -31,4 +31,15 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="radio">Радио</string>
+    <string name="genres">Жанрови</string>
+    <string name="albums">Албуми</string>
+    <string name="artists">Извођачи</string>
+    <string name="reboot">Поново покрени</string>
+    <string name="suspend">Стање спавања</string>
+    <string name="favourites">Омиљено</string>
+    <string name="pictures">Слике</string>
+    <string name="music">Музика</string>
+    <string name="tv_shows">ТВ серије</string>
+    <string name="movies">Филмови</string>
 </resources>

@@ -162,7 +162,7 @@
     <string name="votes">%1$s Bewertungen</string>
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
-    <string name="thumbnail">Thumbnail</string>
+    <string name="thumbnail">Vorschaubild</string>
     <string name="error_getting_properties">Kodi-Eigenschaften konnten nicht abgerufen werden.
 \nFehlermeldung: %1$s</string>
     <string name="error_executing_subtitles">Untertitel-Addon konnte nicht ausgeführt werden.
@@ -334,7 +334,7 @@
     <string name="multi_column">Mehrspaltig</string>
     <string name="download_network_types_title">Mediendownloads einschränken</string>
     <string name="download_network_types_summary">Netzwerktypen auswählen, über die Mediendownloads erlaubt sind</string>
-    <string name="songs">Songs</string>
+    <string name="songs">Titel</string>
     <string name="read_phone_state_permission_denied">Erlaubnis verweigert. Wiedergabe kann während Anrufen nicht pausiert werden.</string>
     <string name="write_storage_permission_denied">Erlaubnis verweigert. Es kann keine Dateien heruntergeladen werden.</string>
     <string name="no_songs_to_download">Keine Songs zum Download</string>
