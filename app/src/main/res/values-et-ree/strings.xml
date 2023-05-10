@@ -157,4 +157,7 @@
     <string name="loading">Laadimine…</string>
     <string name="action_options">Suvandid</string>
     <string name="settings">Seaded</string>
+    <string name="queue_action">Järjekord</string>
+    <string name="add_to_playlist">Järjekord</string>
+    <string name="play">Esita</string>
 </resources>
