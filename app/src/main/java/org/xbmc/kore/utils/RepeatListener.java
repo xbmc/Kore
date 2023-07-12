@@ -113,9 +113,9 @@ public class RepeatListener implements View.OnTouchListener {
      * @return Wether the event was consumed
      */
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        UIUtils.handleVibration(context, view, motionEvent.getAction());
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                UIUtils.handleVibration(context);
                 repeatHandler.removeCallbacks(handlerRunnable);
                 if (initialInterval >= 0) {
                     repeatHandler.postDelayed(handlerRunnable, initialInterval);
