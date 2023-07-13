@@ -58,7 +58,7 @@
     <string name="finish_after_send">Terminar después de enviar</string>
     <string name="library_actions">Mantenimiento de biblioteca</string>
     <string name="clean_video_library">Limpiar biblioteca de vídeos</string>
-    <string name="clean_audio_library">Limpiar biblioteca de música</string>
+    <string name="clean_audio_library">Limpiar biblioteca de audio</string>
     <string name="update_video_library">Actualizar biblioteca de vídeo</string>
     <string name="update_audio_library">Actualizar biblioteca de música</string>
     <string name="toggle_fullscreen">Cambiar a pantalla completa</string>
@@ -119,7 +119,7 @@
     <string name="pause">Pausa</string>
     <string name="stop">Detener</string>
     <string name="fast_forward">Avance rápido</string>
-    <string name="rewind">Retroceder</string>
+    <string name="rewind">Rebobinar</string>
     <string name="repeat">Repetir</string>
     <string name="shuffle">Aleatorio</string>
     <string name="volume_up">Subir volumen</string>
