@@ -86,6 +86,7 @@ android {
             enableSplit = false
         }
     }
+    namespace 'org.xbmc.kore'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
