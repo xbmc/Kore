@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
   xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.xbmc.kore">
+    xmlns:tools="http://schemas.android.com/tools">
   
   <!-- For espresso testing purposes, this is removed in live builds, but not in dev builds -->
   <uses-permission android:name="android.permission.SET_ANIMATION_SCALE"
