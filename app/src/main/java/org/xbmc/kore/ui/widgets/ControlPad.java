@@ -153,9 +153,9 @@ public class ControlPad extends SquareGridLayout
                                                            buttonInAnim, buttonOutAnim, getContext());
 
         OnTouchListener feedbackTouchListener = (v, event) -> {
-            UIUtils.handleVibration(context, v, event.getAction());
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    UIUtils.handleVibration(context, v);
                     buttonInAnim.setFillAfter(true);
                     v.startAnimation(buttonInAnim);
                     break;

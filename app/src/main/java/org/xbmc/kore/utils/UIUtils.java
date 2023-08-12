@@ -28,7 +28,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.text.Spannable;
@@ -39,7 +38,6 @@ import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -392,7 +390,7 @@ public class UIUtils {
         return (alpha << 24) | (color & 0x00ffffff);
     }
 
-    public static void handleVibration(Context context, View view, int action) {
+    public static void handleVibration(Context context, View view) {
         if(context == null) return;
 
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -404,13 +402,7 @@ public class UIUtils {
                 .getBoolean(Settings.KEY_PREF_VIBRATE_REMOTE_BUTTONS,
                             Settings.DEFAULT_PREF_VIBRATE_REMOTE_BUTTONS);
         if (vibrateOnPress) {
-            if (action == MotionEvent.ACTION_DOWN) {
-                view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-            } else if ((action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL)
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
-            ) {
-                view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY_RELEASE);
-            }
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         }
     }
 
