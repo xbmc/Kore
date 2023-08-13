@@ -38,6 +38,7 @@ import org.xbmc.kore.databinding.RemoteControlPadBinding;
 import org.xbmc.kore.ui.viewgroups.SquareGridLayout;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.RepeatListener;
+import org.xbmc.kore.utils.UIUtils;
 
 public class ControlPad extends SquareGridLayout
         implements View.OnClickListener, View.OnLongClickListener {
@@ -154,6 +155,7 @@ public class ControlPad extends SquareGridLayout
         OnTouchListener feedbackTouchListener = (v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    UIUtils.handleVibration(context, v);
                     buttonInAnim.setFillAfter(true);
                     v.startAnimation(buttonInAnim);
                     break;

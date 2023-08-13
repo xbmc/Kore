@@ -36,6 +36,7 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -78,7 +79,6 @@ public class UIUtils {
     public static final float IMAGE_RESIZE_FACTOR = 1.0f;
 
     public static final int buttonRepeatInterval = 80; // ms
-    public static final int buttonVibrationDuration = 50; //ms
 
     /**
      * Formats time based on seconds
@@ -390,7 +390,7 @@ public class UIUtils {
         return (alpha << 24) | (color & 0x00ffffff);
     }
 
-    public static void handleVibration(Context context) {
+    public static void handleVibration(Context context, View view) {
         if(context == null) return;
 
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -402,7 +402,7 @@ public class UIUtils {
                 .getBoolean(Settings.KEY_PREF_VIBRATE_REMOTE_BUTTONS,
                             Settings.DEFAULT_PREF_VIBRATE_REMOTE_BUTTONS);
         if (vibrateOnPress) {
-            vibrator.vibrate(UIUtils.buttonVibrationDuration);
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         }
     }
 
