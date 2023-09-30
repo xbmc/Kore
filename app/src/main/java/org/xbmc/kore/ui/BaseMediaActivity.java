@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -79,6 +80,8 @@ public abstract class BaseMediaActivity
     protected abstract Fragment createFragment();
 
     private final Handler callbackHandler = new Handler(Looper.getMainLooper());
+
+    private @Nullable OnBackPressedListener fragmentBackListener;
 
     private final Runnable hidePanelRunnable = new Runnable() {
         @Override
@@ -226,6 +229,23 @@ public abstract class BaseMediaActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setBackPressedListener(@Nullable OnBackPressedListener listener) {
+        fragmentBackListener = listener;
+    }
+
+    @Override
+    public void onBackPressed() {
+        // tell fragment to move up one directory
+        if (fragmentBackListener != null) {
+            boolean handled = fragmentBackListener.onBackPressed();
+            if (!handled)
+                super.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
+
     }
 
     /**

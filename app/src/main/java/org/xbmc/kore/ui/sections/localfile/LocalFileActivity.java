@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.BaseMediaActivity;
-import org.xbmc.kore.ui.OnBackPressedListener;
 
 /**
  * Handles listing of files fragments
@@ -34,23 +33,6 @@ public class LocalFileActivity extends BaseMediaActivity {
     @Override
     protected Fragment createFragment() {
         return new LocalFileListFragment();
-    }
-
-    OnBackPressedListener fragmentBackListener;
-
-    public void setBackPressedListener(OnBackPressedListener listener) {
-        fragmentBackListener = listener;
-    }
-
-    @Override
-    public void onBackPressed() {
-        // tell fragment to move up one directory
-        if (fragmentBackListener != null) {
-            boolean handled = fragmentBackListener.onBackPressed();
-            if (!handled)
-                super.onBackPressed();
-        }
-
     }
 }
 
