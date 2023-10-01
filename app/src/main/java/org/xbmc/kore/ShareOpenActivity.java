@@ -305,6 +305,17 @@ public class ShareOpenActivity extends Activity {
      */
     @Nullable
     private String toYouTubePluginUrl(Uri playuri) {
+        return toDefaultYouTubePluginUrl(playuri);
+    }
+
+    /**
+     * Converts a YouTube url to an URL for the default YouTube add-on (plugin.video.youtube)
+     *
+     * @param playuri some URL for YouTube
+     * @return plugin URL
+     */
+    @Nullable
+    private String toDefaultYouTubePluginUrl(Uri playuri) {
         String host = playuri.getHost();
 
         if (host.endsWith("youtube.com")) {
