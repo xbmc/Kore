@@ -173,6 +173,7 @@ public class Settings {
     public static final boolean DEFAULT_PREF_ALWAYS_SENDTOKODI_ADDON = false;
 
     public static final String KEY_PREF_YOUTUBE_ADDON_ID = "pref_youtube_addon_id";
+    public static final String DEFAULT_PREF_YOUTUBE_ADDON_ID = "plugin.video.youtube";
 
     public static final String KEY_PREF_NAV_DRAWER_ITEMS = "pref_nav_drawer_items";
     public static String getNavDrawerItemsPrefKey(int hostId) {

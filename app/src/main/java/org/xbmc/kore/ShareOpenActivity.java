@@ -305,7 +305,14 @@ public class ShareOpenActivity extends Activity {
      */
     @Nullable
     private String toYouTubePluginUrl(Uri playuri) {
-        return toDefaultYouTubePluginUrl(playuri);
+        String preferredYouTubeAddonId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                .getString(Settings.KEY_PREF_YOUTUBE_ADDON_ID, Settings.DEFAULT_PREF_YOUTUBE_ADDON_ID);
+
+        if (preferredYouTubeAddonId.equals("plugin.video.invidious")) {
+            return toInvidiousYouTubePluginUrl(playuri);
+        } else {
+            return toDefaultYouTubePluginUrl(playuri);
+        }
     }
 
     /**
@@ -344,6 +351,43 @@ public class ShareOpenActivity extends Activity {
         }
 
         return null;
+    }
+
+    /**
+     * Converts a YouTube url to an URL for the Invidious YouTube add-on (plugin.video.invidious)
+     *
+     * @param playuri some URL for YouTube
+     * @return plugin URL
+     */
+    @Nullable
+    private String toInvidiousYouTubePluginUrl(Uri playuri) {
+        String host = playuri.getHost();
+
+        Uri.Builder pluginUri = new Uri.Builder()
+                .scheme("plugin")
+                .authority("plugin.video.invidious")
+                .path("/")
+                .appendQueryParameter("action", "play_video");
+
+        String videoIdParameterKey = "video_id";
+
+        String videoId;
+        if (host.endsWith("youtube.com")) {
+            videoId = playuri.getQueryParameter("v");
+        } else if (host.endsWith("youtu.be")) {
+            videoId = playuri.getLastPathSegment();
+        } else {
+            return null;
+        }
+
+        if (videoId == null) {
+            return null;
+        }
+
+        return pluginUri
+                .appendQueryParameter(videoIdParameterKey, videoId)
+                .build()
+                .toString();
     }
 
     boolean isMediaFile(String mimeType) {
