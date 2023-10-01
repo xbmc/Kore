@@ -465,4 +465,9 @@
     <string name="use_hardware_volume_keys_always">Always</string>
     <string name="use_hardware_volume_keys_when_in_foreground">When Kore is in the foreground</string>
 
+    <!-- Strings for the Preferred YouTube addon setting -->
+    <string name="preferred_youtube_addon">Preferred YouTube addon</string>
+    <string name="preferred_youtube_addon_youtube">YouTube (plugin.video.youtube)</string>
+    <string name="preferred_youtube_addon_invidious">Invidious (plugin.video.invidious)</string>
+
 </resources>
