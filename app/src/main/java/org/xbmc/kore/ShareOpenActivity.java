@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.preference.PreferenceManager;
 
@@ -247,29 +248,8 @@ public class ShareOpenActivity extends Activity {
                                                     .getBoolean(Settings.KEY_PREF_ALWAYS_SENDTOKODI_ADDON,
                                                                 Settings.DEFAULT_PREF_ALWAYS_SENDTOKODI_ADDON);
         if (!alwaysSendToKodi) {
-            if (host.endsWith("youtube.com")) {
-                String videoId = playuri.getQueryParameter("v");
-                String playlistId = playuri.getQueryParameter("list");
-                Uri.Builder pluginUri = new Uri.Builder()
-                        .scheme("plugin")
-                        .authority("plugin.video.youtube")
-                        .path("play/");
-                boolean valid = false;
-                if (videoId != null) {
-                    valid = true;
-                    pluginUri.appendQueryParameter("video_id", videoId);
-                }
-                if (playlistId != null) {
-                    valid = true;
-                    pluginUri.appendQueryParameter("playlist_id", playlistId)
-                             .appendQueryParameter("order", "default");
-                }
-                if (valid) {
-                    return pluginUri.build().toString();
-                }
-            } else if (host.endsWith("youtu.be")) {
-                return "plugin://plugin.video.youtube/play/?video_id="
-                       + playuri.getLastPathSegment();
+            if (host.endsWith("youtube.com") || host.endsWith("youtu.be")) {
+                return toYouTubePluginUrl(playuri);
             } else if (host.endsWith("vimeo.com")) {
                 return PluginUrlUtils.toPluginUrlVimeo(playuri);
             } else if (host.endsWith("svtplay.se")) {
@@ -314,6 +294,44 @@ public class ShareOpenActivity extends Activity {
             // (in that case Kodi does not require an addon to play the link):
             return "plugin://plugin.video.sendtokodi/?" + playuri;
         }
+        return null;
+    }
+
+    /**
+     * Converts a YouTube url to a Kodi plugin URL.
+     *
+     * @param playuri some URL for YouTube
+     * @return plugin URL
+     */
+    @Nullable
+    private String toYouTubePluginUrl(Uri playuri) {
+        String host = playuri.getHost();
+
+        if (host.endsWith("youtube.com")) {
+            String videoId = playuri.getQueryParameter("v");
+            String playlistId = playuri.getQueryParameter("list");
+            Uri.Builder pluginUri = new Uri.Builder()
+                    .scheme("plugin")
+                    .authority("plugin.video.youtube")
+                    .path("play/");
+            boolean valid = false;
+            if (videoId != null) {
+                valid = true;
+                pluginUri.appendQueryParameter("video_id", videoId);
+            }
+            if (playlistId != null) {
+                valid = true;
+                pluginUri.appendQueryParameter("playlist_id", playlistId)
+                        .appendQueryParameter("order", "default");
+            }
+            if (valid) {
+                return pluginUri.build().toString();
+            }
+        } else if (host.endsWith("youtu.be")) {
+            return "plugin://plugin.video.youtube/play/?video_id="
+                    + playuri.getLastPathSegment();
+        }
+
         return null;
     }
 
