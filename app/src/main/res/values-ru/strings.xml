@@ -405,6 +405,17 @@
     <string name="wizard_xbmc_direct_share">Показать в общем листе</string>
     <string name="party_mode">Режим вечеринки</string>
     <string name="queue_action">В очередь</string>
-    <string name="theme_variant_dark">тёмное</string>
-    <string name="theme_variant_light">небольшой</string>
+    <string name="theme_variant_dark">Тёмный</string>
+    <string name="theme_variant_light">Светлый</string>
+    <string name="theme_color_system_colors">Системные цвета</string>
+    <string name="theme_color_kore">Синий бархат</string>
+    <string name="theme_variant">Вариант</string>
+    <string name="theme_variant_auto">Системный по умолчанию</string>
+    <string name="theme_color_green">Зеленая миля</string>
+    <string name="theme_color_yellow">Жёлтая субмарина</string>
+    <string name="theme_color_purple">Фиолетовый дождь</string>
+    <string name="use_hardware_volume_keys_never">Никогда</string>
+    <string name="use_hardware_volume_keys_always">Всегда</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Когда Kore на переднем плане</string>
+    <string name="theme_color">Цветовая схема</string>
 </resources>

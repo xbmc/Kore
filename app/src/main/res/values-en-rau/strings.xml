@@ -31,4 +31,14 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="radio">Radio</string>
+    <string name="music_videos">Videos</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="music">Music</string>
+    <string name="pictures">Pictures</string>
+    <string name="videos">Videos</string>
+    <string name="favourites">Favourites</string>
+    <string name="theme_variant_light">Light</string>
+    <string name="theme_variant_dark">Dark</string>
 </resources>

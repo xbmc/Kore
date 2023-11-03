@@ -34,4 +34,11 @@
     <string name="music">Música</string>
     <string name="tv_shows">Series TV</string>
     <string name="movies">Películas</string>
+    <string name="radio">Radio</string>
+    <string name="music_videos">Videos</string>
+    <string name="pictures">Imágenes</string>
+    <string name="videos">Videos</string>
+    <string name="favourites">Favoritos</string>
+    <string name="theme_variant_light">Débil</string>
+    <string name="theme_variant_dark">Oscuro</string>
 </resources>

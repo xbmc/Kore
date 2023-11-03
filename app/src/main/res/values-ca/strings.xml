@@ -35,8 +35,8 @@
     <string name="text_to_send">Text per enviar</string>
     <string name="finish_after_send">Acaba després d\'enviar</string>
     <string name="library_actions">Manteniment de la mediateca</string>
-    <string name="clean_video_library">Esborra videoteca</string>
-    <string name="clean_audio_library">Esborra la biblioteca d\'àudio</string>
+    <string name="clean_video_library">Neteja videoteca</string>
+    <string name="clean_audio_library">Neteja la biblioteca d\'àudio</string>
     <string name="update_video_library">Actualitza videoteca</string>
     <string name="update_audio_library">Actualitza la biblioteca d\'àudio</string>
     <string name="toggle_fullscreen">A tota pantalla</string>
@@ -144,7 +144,7 @@
     <string name="nothing_playing">Res reproduint</string>
     <string name="now_playing">Reproduint ara</string>
     <string name="remote">Remot</string>
-    <string name="playlist">Llista de reproducció</string>
+    <string name="playlist">Cua</string>
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
     <string name="season_episode">Temporada %1$02d | Episodi %2$02d</string>
     <string name="season_number">Temporada  %1$02d</string>
@@ -176,8 +176,8 @@
     <string name="remaining_cast_count">%d més</string>
     <string name="general_error_executing_action">S\'ha produït un error en executar l\'acció: %1$s</string>
     <string name="error_getting_playlist">S\'ha produït un error en obtenir la llista de reproducció</string>
-    <string name="playlist_empty">Llista buida</string>
-    <string name="clear_playlist">Esborra llista</string>
+    <string name="playlist_empty">Cua buida</string>
+    <string name="clear_playlist">Neteja cua</string>
     <string name="source_empty">Dispositiu font buit</string>
     <string name="no_movies_found_refresh">No s\'ha trobat cap pel·lícula</string>
     <string name="no_tvshows_found_refresh">No s\'ha trobat cap episodi</string>
@@ -204,9 +204,9 @@
     <string name="action_search_artists">Cerca artista</string>
     <string name="action_search_genres">Cerca gèneres</string>
     <string name="action_search_music_videos">Cerca vídeos</string>
-    <string name="add_to_playlist">Afegeix a la llista</string>
-    <string name="item_added_to_playlist">Afegit a la llista</string>
-    <string name="no_suitable_playlist">No s\'ha trobat cap llista adequada per afegir tipus de fitxer.</string>
+    <string name="add_to_playlist">Afegeix a la cua</string>
+    <string name="item_added_to_playlist">Afegit a la cua</string>
+    <string name="no_suitable_playlist">No s\'ha trobat cap cua adequada per afegir tipus de fitxer.</string>
     <string name="download">Descarrega</string>
     <string name="confirm_movie_download">Voleu descarregar aquesta pel·lícula\?
 \n Es farà en segon pla i pot trigar una bona estona.</string>
@@ -374,4 +374,14 @@
     <string name="theme_variant_dark">Fosc</string>
     <string name="theme_variant_light">Clar</string>
     <string name="use_hardware_volume_keys_never">Mai</string>
+    <string name="theme_color_system_colors">Colors del sistema</string>
+    <string name="theme_color_kore">Vellut Blau</string>
+    <string name="theme_variant">Variant</string>
+    <string name="theme_variant_auto">Per defecte del sistema</string>
+    <string name="theme_color_green">Milla Verda</string>
+    <string name="theme_color_yellow">Submarí Groc</string>
+    <string name="theme_color_purple">Pluja Porpra</string>
+    <string name="use_hardware_volume_keys_always">Sempre</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Quan Kore està en primer pla</string>
+    <string name="theme_color">Esquema de color</string>
 </resources>
