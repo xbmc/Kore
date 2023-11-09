@@ -31,4 +31,9 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="music">இசை</string>
+    <string name="pictures">படங்கள்</string>
+    <string name="favourites">விருப்பமானவை</string>
+    <string name="movies">திரைப்படங்கள்</string>
+    <string name="tv_shows">தொலைக்காட்சி நிகழ்ச்சிகள்</string>
 </resources>

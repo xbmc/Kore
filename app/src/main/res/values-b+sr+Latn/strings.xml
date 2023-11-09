@@ -31,4 +31,10 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="tv_shows">TV SERIJE</string>
+    <string name="music">Muzika</string>
+    <string name="radio">Radio</string>
+    <string name="movies">Filmovi</string>
+    <string name="pictures">Слике</string>
+    <string name="favourites">Omiljeno</string>
 </resources>

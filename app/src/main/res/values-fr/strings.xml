@@ -321,8 +321,9 @@
 \nVotre Media Center n’a peut-être pas de tuner ou n’est pas configuré. Si vous souhaitez supprimer cette entrée du menu latéral, vous pouvez le faire dans l’écran Paramètres.</string>
     <string name="error_starting_channel">Une erreur s’est produite au démarrage de la lecture du canal
 \nDescription : %1$s</string>
-    <string name="error_favourites">"Impossible d’obtenir des favoris  
-\nDescription de l’erreur : %1$s"</string>
+    <string name="error_favourites">Impossible d’obtenir des favoris 
+\n
+\nDescription de l’erreur : %1$s</string>
     <string name="error_starting_recording">Une erreur s’est produite lors de la lecture d’un enregistrement
 \nDescription : %1$s</string>
     <string name="error_starting_to_record">Une erreur s’est produite lors de l’enregistrement

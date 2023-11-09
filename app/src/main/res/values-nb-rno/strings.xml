@@ -31,4 +31,21 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="play_file">Spill av</string>
+    <string name="artists">Artister</string>
+    <string name="genres">Sjangre</string>
+    <string name="music_videos">Videoer</string>
+    <string name="radio">Radio</string>
+    <string name="play">Spill av</string>
+    <string name="songs">Låter</string>
+    <string name="music">Musikk</string>
+    <string name="pictures">Bilder</string>
+    <string name="suspend">Hvilemodus</string>
+    <string name="reboot">Omstart</string>
+    <string name="theme_variant_light">lett</string>
+    <string name="movies">Filmer</string>
+    <string name="tv_shows">TV-series</string>
+    <string name="videos">Videoer</string>
+    <string name="favourites">Favoritter</string>
+    <string name="quit">Avslutt</string>
 </resources>

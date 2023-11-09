@@ -40,4 +40,8 @@
     <string name="tv_shows">የቲቪ ትርኢት</string>
     <string name="movies">ሙቪዎች</string>
     <string name="theme_variant_light">ቀላል</string>
+    <string name="artists">ከያኒዎች</string>
+    <string name="albums">አልበም</string>
+    <string name="suspend">ማገጃ</string>
+    <string name="reboot">እንደገና ማስነሻ</string>
 </resources>

@@ -174,10 +174,10 @@
     <string name="unwatched_status">Blm ditonton</string>
     <string name="watched_status">Ditonton</string>
     <string name="download">Unduh</string>
-    <string name="no_suitable_playlist">Tidak ditemukan daftar putar yang cocok untuk menambahkan jenis media.</string>
+    <string name="no_suitable_playlist">Tidak ditemukan antrean pemutaran yang cocok untuk menambahkan jenis media.</string>
     <string name="item_sent_to_kodi">Kirim ke Kodi</string>
-    <string name="item_added_to_playlist">Ditambahkan ke daftar putar</string>
-    <string name="add_to_playlist">Tambahkan ke daftar putar</string>
+    <string name="item_added_to_playlist">Ditambahkan ke antrian</string>
+    <string name="add_to_playlist">Antrian</string>
     <string name="action_search_music_videos">Cari video</string>
     <string name="action_search_genres">Cari aliran</string>
     <string name="action_search_artists">Cari artis</string>
@@ -207,8 +207,8 @@
     <string name="no_movies_found_refresh">Tidak ada film yang ditemukan</string>
     <string name="swipe_down_to_refresh">Geser ke bawah untuk menyegarkan</string>
     <string name="source_empty">Sumber media kosong</string>
-    <string name="clear_playlist">Hapus daftar putar</string>
-    <string name="playlist_empty">Daftar putar kosong</string>
+    <string name="clear_playlist">Hapus antrian</string>
+    <string name="playlist_empty">Antrian kosong</string>
     <string name="error_getting_playlist">Terjadi kesalahan saat mengambil daftar putar</string>
     <string name="general_error_executing_action">Kesalahan saat menjalankan tindakan: %1$s</string>
     <string name="remaining_cast_count">lebih %d</string>
@@ -246,7 +246,7 @@
     <string name="season_number">Musim %1$02d</string>
     <string name="season_episode">Musim %1$02d | Episode %2$02d</string>
     <string name="season_episode_abbrev">M%1$02dE%2$02d</string>
-    <string name="playlist">Daftarputar</string>
+    <string name="playlist">Antrian</string>
     <string name="remote">Remot</string>
     <string name="now_playing">Sedang diputar</string>
     <string name="nothing_playing">Tdk ada yng diputar</string>
@@ -369,7 +369,7 @@
     <string name="pvr">PVR</string>
     <string name="local_file_browser">Peramban Berkas Lokal</string>
     <string name="file_browser">Peramban Berkas Kodi</string>
-    <string name="unknown">Tidak dikenal</string>
+    <string name="unknown">Tdk Diketahui</string>
     <string name="script">Skrip</string>
     <string name="window">Jendela</string>
     <string name="media">Media</string>

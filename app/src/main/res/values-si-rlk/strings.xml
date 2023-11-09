@@ -31,4 +31,11 @@
     <!--<string name="error_querying_inventory">Failed to query inventory.</string>-->
     <!--<string name="error_during_purchased">An error occurred during purchase.</string>-->
     <!--<string name="purchase_thanks">Thanks for your support!</string>-->
+    <string name="music_videos">වීඩියෝ</string>
+    <string name="movies">චිත්‍රපට</string>
+    <string name="music">සංගීත</string>
+    <string name="pictures">පින්තූර</string>
+    <string name="videos">වීඩියෝ</string>
+    <string name="favourites">ප්‍රියතම</string>
+    <string name="theme_variant_light">එළිය</string>
 </resources>
