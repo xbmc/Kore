@@ -10,7 +10,7 @@ def getVersionName = { ->
 }
 
 android {
-    compileSdkVersion 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "org.xbmc.kore"
@@ -99,27 +99,27 @@ ext {
 }
 
 dependencies {
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.preference:preference:1.2.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation('androidx.core:core-google-shortcuts:1.0.1') {
+    implementation('androidx.core:core-google-shortcuts:1.1.0') {
         exclude group:'com.google.android.gms'
     }
     implementation 'androidx.media:media:1.6.0'
-    implementation "androidx.viewpager2:viewpager2:1.1.0-beta01"
+    implementation "androidx.viewpager2:viewpager2:1.1.0-beta02"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-    implementation "androidx.fragment:fragment:1.5.2"
-    implementation "androidx.fragment:fragment-ktx:1.5.2"
+    implementation "androidx.fragment:fragment:1.6.2"
+    implementation "androidx.fragment:fragment-ktx:1.6.2"
 
 //    Dependency resolution
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.6.2"
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'org.greenrobot:eventbus:3.3.1'
     implementation 'org.jmdns:jmdns:3.5.7'
@@ -129,24 +129,25 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test:rules:1.4.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
     androidTestImplementation 'androidx.legacy:legacy-support-v13:1.0.0'
     androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
     androidTestImplementation 'junit:junit:4.13.2'
-    androidTestUtil 'androidx.test:orchestrator:1.4.1'
+    androidTestUtil 'androidx.test:orchestrator:1.4.2'
 
     testImplementation 'org.robolectric:robolectric:4.8.1'
-    testImplementation 'androidx.test:core:1.4.0'
-    testImplementation 'androidx.test.ext:junit:1.1.3'
+    testImplementation 'androidx.test:core:1.5.0'
+    testImplementation 'androidx.test.ext:junit:1.1.5'
     debugImplementation 'junit:junit:4.13.2'
 }
 
 def adb = android.getAdbExecutable().toString()
 afterEvaluate {
-    task grantAnimationPermissionDev(type: Exec, dependsOn: installDebug) {
+    tasks.register('grantAnimationPermissionDev', Exec) {
+        dependsOn installDebug
         doFirst {
             println("Executing: $adb shell pm grant $android.defaultConfig.applicationId android.permission.SET_ANIMATION_SCALE")
             commandLine "$adb shell pm grant $android.defaultConfig.applicationId android.permission.SET_ANIMATION_SCALE".split(' ')
@@ -162,12 +163,12 @@ afterEvaluate {
 /**
  * Makes sure assets are copied before running the unit tests
  */
-tasks.whenTaskAdded { task ->
+tasks.configureEach { task ->
     if (task.name.contains("testDebugUnitTest")) {
         task.dependsOn assembleDebug
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << '-Xlint:unchecked' // << '-Xlint:deprecation'
 }

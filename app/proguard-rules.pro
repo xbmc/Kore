@@ -18,11 +18,6 @@
 # okio via OkHttp
 -dontwarn okio.**
 
-# Butterknife
--dontwarn butterknife.internal.**
--keep class **$$ViewBinder { *; }
--keepnames class * { @butterknife.BindView *;}
-
 # Jackson
 -dontskipnonpubliclibraryclassmembers
 -keepattributes EnclosingMethod, Signature
