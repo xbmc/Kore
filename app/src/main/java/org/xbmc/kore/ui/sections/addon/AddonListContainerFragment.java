@@ -15,8 +15,11 @@
  */
 package org.xbmc.kore.ui.sections.addon;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import android.view.View;
 
@@ -29,6 +32,8 @@ import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.jsonrpc.method.Files;
 import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.AbstractTabsFragment;
+import org.xbmc.kore.ui.BaseMediaActivity;
+import org.xbmc.kore.ui.OnBackPressedListener;
 import org.xbmc.kore.ui.sections.file.MediaFileListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
@@ -36,7 +41,10 @@ import org.xbmc.kore.utils.TabsAdapter;
 import java.util.Collections;
 import java.util.Set;
 
-public class AddonListContainerFragment extends AbstractTabsFragment {
+public class AddonListContainerFragment
+        extends AbstractTabsFragment
+        implements OnBackPressedListener {
+
     private static final String TAG = LogUtils.makeLogTag(AddonListContainerFragment.class);
 
     @Override
@@ -78,6 +86,39 @@ public class AddonListContainerFragment extends AbstractTabsFragment {
         }
 
         return tabsAdapter;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            BaseMediaActivity listenerActivity = (BaseMediaActivity) context;
+            listenerActivity.setBackPressedListener(this);
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context + " unable to register BackPressedListener");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        try {
+            BaseMediaActivity listenerActivity = (BaseMediaActivity) getContext();
+            assert listenerActivity != null;
+            listenerActivity.setBackPressedListener(null);
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getContext() + " unable to unregister BackPressedListener");
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        // Tell current fragment to move up one directory, if possible
+        Fragment fragment = getCurrentSelectedFragment();
+        if (fragment instanceof MediaFileListFragment) {
+            return ((MediaFileListFragment) fragment).navigateToParentDir();
+        }
+        return false;
     }
 
     @Override
