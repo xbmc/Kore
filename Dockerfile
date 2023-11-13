@@ -4,14 +4,14 @@
 FROM ubuntu:20.04
 
 # Install Java
-ARG JDK_VERSION=11
+ARG JDK_VERSION=17
 RUN apt-get update && \
     apt-get install -y --no-install-recommends openjdk-${JDK_VERSION}-jdk && \
     apt-get install -y --no-install-recommends git wget unzip
 
 # Install Gradle
 # https://services.gradle.org/distributions/
-ARG GRADLE_VERSION=7.3.3
+ARG GRADLE_VERSION=8.4
 ARG GRADLE_DIST=bin
 RUN cd /opt && \
     wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-${GRADLE_DIST}.zip && \
