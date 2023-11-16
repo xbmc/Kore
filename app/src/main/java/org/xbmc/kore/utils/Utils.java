@@ -40,14 +40,6 @@ import java.util.Locale;
 public class Utils {
     private static final String TAG = LogUtils.makeLogTag(Utils.class);
 
-    public static boolean isMOrLater() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    }
-
-    public static boolean isNOrLater() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
-    }
-
     public static boolean isOreoOrLater() { return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O; }
 
     public static boolean isOreoMR1OrLater() { return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1; }

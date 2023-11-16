@@ -294,13 +294,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     private Locale getSystemLocale() {
-        return Utils.isNOrLater() ?
-               Resources.getSystem().getConfiguration().getLocales().get(0) :
-               Resources.getSystem().getConfiguration().locale;
+        return Resources.getSystem().getConfiguration().getLocales().get(0);
     }
 
     private Locale getCurrentLocale() {
-        return Utils.isNOrLater() ?
-               getResources().getConfiguration().getLocales().get(0) :
-               getResources().getConfiguration().locale;
+        return getResources().getConfiguration().getLocales().get(0);
     }}
