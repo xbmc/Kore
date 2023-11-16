@@ -139,7 +139,7 @@ public class MediaSessionService extends Service
         // Create the intent to start the remote when the user taps the notification
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(new Intent(this, RemoteActivity.class));
-        int flags = Utils.isMOrLater() ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT : PendingIntent.FLAG_UPDATE_CURRENT;
+        int flags = PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
         remoteStartPendingIntent = stackBuilder.getPendingIntent(0, flags);
 
         // Create the notification channel and the default notification
