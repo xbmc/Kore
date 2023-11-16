@@ -52,6 +52,10 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU;
     }
 
+    public static boolean isUpsideDownCakeOrLater() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
+    }
+
     /**
      * Concats a list of strings
      * @param list List to concatenate
