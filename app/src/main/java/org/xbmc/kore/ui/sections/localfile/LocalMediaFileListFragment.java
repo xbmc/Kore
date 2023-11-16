@@ -51,10 +51,10 @@ import org.xbmc.kore.jsonrpc.method.Playlist;
 import org.xbmc.kore.jsonrpc.type.PlayerType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.AbstractListFragment;
-import org.xbmc.kore.ui.viewgroups.GridRecyclerView;
 import org.xbmc.kore.utils.CharacterDrawable;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.UIUtils;
+import org.xbmc.kore.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,13 +82,10 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     private LocalFileLocation currentDirLocation = null;
 
     // Permission check callback
-    private final ActivityResultLauncher<String> filesPermissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                if (isGranted) {
-                    browseDirectory(currentDirLocation);
-                } else {
-                    showStatusMessage(null, getString(R.string.read_storage_permission_denied));
-                }
+    private final ActivityResultLauncher<String[]> filesPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permissionsGranted -> {
+                // Call on refresh, which checks if premissions were granted and shows results
+                onRefresh();
             });
 
     @Override
@@ -107,7 +104,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
         rootPath = (args != null)?
                    args.getString(ROOT_PATH) :
                    (savedInstanceState != null) ?
-                   savedInstanceState.getParcelable(ROOT_PATH) :
+                   savedInstanceState.getString(ROOT_PATH) :
                    Environment.getExternalStorageDirectory().getAbsolutePath();
         if (rootPath != null && !rootPath.endsWith("/")) rootPath += "/";
         currentDirLocation = (savedInstanceState != null) ?
@@ -123,7 +120,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (checkReadStoragePermission())
+        if (checkReadStoragePermission(true))
             browseDirectory(currentDirLocation);
     }
 
@@ -136,7 +133,11 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
 
     @Override
     public void onRefresh() {
-        browseDirectory(currentDirLocation);
+        if (checkReadStoragePermission(false)){
+            browseDirectory(currentDirLocation);
+        } else {
+            showStatusMessage(null, getString(R.string.read_storage_permission_denied));
+        }
         hideRefreshAnimation();
     }
 
@@ -167,12 +168,18 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     @Override
     public void onConnectionStatusNoResultsYet() {}
 
-    private boolean checkReadStoragePermission() {
-        boolean hasStoragePermission =
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    private boolean checkReadStoragePermission(boolean askIfNotGranted) {
+        String[] permissions = Utils.isTiramisuOrLater() ?
+                               new String[]{Manifest.permission.READ_MEDIA_AUDIO,
+                                            Manifest.permission.READ_MEDIA_VIDEO,
+                                            Manifest.permission.READ_MEDIA_IMAGES} :
+                               new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
 
-        if (!hasStoragePermission) {
-            filesPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+        boolean hasStoragePermission = Arrays.stream(permissions)
+                .allMatch(p -> ContextCompat.checkSelfPermission(requireContext(), p) == PackageManager.PERMISSION_GRANTED);
+
+        if (!hasStoragePermission && askIfNotGranted) {
+            filesPermissionLauncher.launch(permissions);
         }
         return hasStoragePermission;
     }
@@ -200,7 +207,7 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
     }
 
     public boolean isRootDirectory(LocalFileLocation dir) {
-        return dir.fullPath.equals(rootPath);
+        return (dir.fullPath != null) && (dir.fullPath.equals(rootPath));
     }
 
     /**
@@ -333,10 +340,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
      */
     public static String getParentDirectory(final String path) {
         String p = path;
-        String pathSymbol = "/";        // unix style
-        if (path.contains("\\")) {
-            pathSymbol = "\\";          // windows style
-        }
+        // windows / unix style
+        String pathSymbol = (path.contains("\\")) ? "\\" : "/";
 
         // if path ends with /, remove it before removing the directory name
         if (path.endsWith(pathSymbol)) {
@@ -357,10 +362,8 @@ public class LocalMediaFileListFragment extends AbstractListFragment {
      */
     public static String getFilenameFromPath(final String path) {
         String p = path;
-        String pathSymbol = "/";        // unix style
-        if (path.contains("\\")) {
-            pathSymbol = "\\";          // windows style
-        }
+        // windows / unix style
+        String pathSymbol = (path.contains("\\")) ? "\\" : "/";
         // if path ends with /, remove it
         if (path.endsWith(pathSymbol)) {
             p = path.substring(0, path.length() - 1);
