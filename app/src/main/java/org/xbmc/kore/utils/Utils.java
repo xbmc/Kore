@@ -27,10 +27,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 
-import androidx.preference.PreferenceManager;
-
-import org.xbmc.kore.Settings;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -50,6 +46,10 @@ public class Utils {
 
     public static boolean isSOrLater() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    }
+
+    public static boolean isTiramisuOrLater() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU;
     }
 
     /**
