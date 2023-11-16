@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -200,7 +201,11 @@ public class MediaSessionService extends Service
         }
 
         // Request foreground and show default notification, will update later
-        startForeground(NOTIFICATION_ID, nothingPlayingNotification);
+        if (Utils.isUpsideDownCakeOrLater()) {
+            startForeground(NOTIFICATION_ID, nothingPlayingNotification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
+        } else {
+            startForeground(NOTIFICATION_ID, nothingPlayingNotification);
+        }
 
         HostConnectionObserver connectionObserver = HostManager.getInstance(this).getHostConnectionObserver();
         if (hostConnectionObserver == null || hostConnectionObserver != connectionObserver) {
