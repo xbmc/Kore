@@ -83,16 +83,43 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Welcome</string>
     <string name="wizard_welcome_message"><![CDATA[
-	    Let\'s start by adding a media center. Make sure your Kodi is running, properly configured and on the same network as your device.<br/><br/>
-	    You can get help configuring it <a href="http://syncedsynapse.com/kore/kore-faq/">here</a>.<br/><br/>
+	    Let\'s start by adding a media center.
+	    <br/>
+	    Make sure that Kodi is running and properly configured. Specifically check the following under Kodi\'s <b>Settings</b>:
+	    <br/><br/>
+	    Select <b>Services</b>, then <b>Control</b> and:
+	    <br/>
+        1. Enable <b>Allow remote control via HTTP</b>;
+        <br/>
+	    2. Enable both options <b>Allow remote control from applications on this system</b> and <b>Allow remote control from applications on other systems</b>;
+	    <br/><br/>
+	    Select <b>Services</b>, then <b>General</b> and:
+	    <br>
+	    1. Enable <b>Announce services to other systems</b>;
+	    <br/><br/>
+	    You can get additional help <a href="http://syncedsynapse.com/kore/kore-faq/">here</a>.
+	    <br/><br/>
 	    When you\'re ready press <b>Next</b>.
     ]]></string>
     <string name="wizard_search_message"><![CDATA[
     	Searching for media centers on your local network…<br/>
     ]]></string>
     <string name="wizard_search_no_host_found"><![CDATA[
-	    I couldn\'t find any media center on your network.<br/>
-	    If you need help configuring it, check <a href="http://syncedsynapse.com/kore/kore-faq/">here</a>.<br/><br/>
+	    I couldn\'t find any media center on your network.<br/><br/>
+	    Please make sure that Kodi is running and properly configured, specifically check the following under Kodi\'s <b>Settings</b>:
+	    <br/><br/>
+	    Select <b>Services</b>, then <b>Control</b> and:
+	    <br/>
+        1. Enable <b>Allow remote control via HTTP</b>;
+        <br/>
+	    2. Enable both options <b>Allow remote control from applications on this system</b> and <b>Allow remote control from applications on other systems</b>;
+	    <br/><br/>
+	    Select <b>Services</b>, then <b>General</b> and:
+	    <br>
+	    1. Enable <b>Announce services to other systems</b>;
+	    <br/><br/>
+	    You can get additional help <a href="http://syncedsynapse.com/kore/kore-faq/">here</a>.
+	    <br/><br/>
 	    Click <b>Search again</b> or <b>Next</b> for manual configuration.
     ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[
