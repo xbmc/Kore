@@ -28,18 +28,13 @@ android {
                 supportedLocales.join("\",\"")+"\"}"
     }
 
-    File keystoreFile = file('keystore.properties')
-
     signingConfigs {
         release {
-            if (keystoreFile.exists()) {
-                Properties keyProps = new Properties()
-                keyProps.load(new FileInputStream(keystoreFile))
-
-                storeFile file(keyProps["store"])
-                keyAlias keyProps["alias"]
-                storePassword keyProps["storePass"]
-                keyPassword keyProps["pass"]
+            if (System.getenv("KODI_ANDROID_STORE_FILE") != null) {
+                keyAlias System.getenv("KODI_ANDROID_KEY_ALIAS")
+                keyPassword System.getenv("KODI_ANDROID_KEY_PASSWORD")
+                storeFile file(System.getenv("KODI_ANDROID_STORE_FILE"))
+                storePassword System.getenv("KODI_ANDROID_STORE_PASSWORD")
             }
         }
     }
@@ -51,14 +46,9 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     buildTypes {
         release {
-            if (keystoreFile.exists()) {
+            if (System.getenv("KODI_ANDROID_STORE_FILE") != null) {
                 signingConfig signingConfigs.release
             }
             minifyEnabled true
