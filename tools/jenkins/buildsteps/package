@@ -1,7 +1,6 @@
 WORKSPACE=${WORKSPACE:-$( cd $(dirname $0)/../../.. ; pwd -P )}
 
-# Signing done by Gradle, no need to run separate sign step
-#$RUN_SIGNSTEP
+$RUN_SIGNSTEP
 
 function getBranchName ()
 {
@@ -53,4 +52,4 @@ function getBuildRevDateStr ()
 #rename for upload
 #e.x. kore-20130314-8c2fb31.apk.
 UPLOAD_FILENAME="kore-$(getBuildRevDateStr).apk"
-cd $WORKSPACE;mv app/build/outputs/apk/release/kore-release.apk $UPLOAD_FILENAME
+cd $WORKSPACE;mv kore-release.apk $UPLOAD_FILENAME
