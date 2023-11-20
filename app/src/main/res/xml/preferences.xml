@@ -59,6 +59,14 @@
             android:defaultValue="false"
             app:singleLineTitle="false"/>
 
+        <ListPreference
+            android:key="pref_youtube_addon_id"
+            android:title="@string/preferred_youtube_addon"
+            android:entries="@array/preferred_youtube_addon_keys_array"
+            android:entryValues="@array/preferred_youtube_addon_values_array"
+            android:defaultValue="plugin.video.youtube"
+            app:singleLineTitle="false"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/theme">

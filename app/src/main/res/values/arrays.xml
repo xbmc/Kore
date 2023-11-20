@@ -174,4 +174,14 @@
         <item>when_in_foreground</item>
     </string-array>
 
+    <!-- Constants for the Preferred Youtube addon setting in preferences -->
+    <string-array name="preferred_youtube_addon_keys_array">
+        <item>@string/preferred_youtube_addon_youtube</item>
+        <item>@string/preferred_youtube_addon_invidious</item>
+    </string-array>
+    <string-array translatable="false" name="preferred_youtube_addon_values_array">
+        <item>plugin.video.youtube</item>
+        <item>plugin.video.invidious</item>
+    </string-array>
+
 </resources>

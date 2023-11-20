@@ -219,6 +219,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
             useHWVolKeysPref.setSummary(useHWVolKeysPref.getEntry());
         }
 
+        // Preferred YouTube addon
+        ListPreference preferredYouTubeAddonPref = findPreference(Settings.KEY_PREF_YOUTUBE_ADDON_ID);
+        if (preferredYouTubeAddonPref != null) {
+            preferredYouTubeAddonPref.setSummary(preferredYouTubeAddonPref.getEntry());
+        }
+
         // About preference
         String nameAndVersion = context.getString(R.string.app_name);
         try {
