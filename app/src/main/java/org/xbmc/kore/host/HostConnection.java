@@ -510,8 +510,8 @@ public class HostConnection {
             LogUtils.LOGD(TAG, "Illegal argument exception on sending HTTP request: " + e);
             // This happens because the host URL isn't valid
             if (callback != null) {
-                String desc = "Illegal argument exception on sending HTTP request: " + e.getMessage() +
-                        ". Please check the media center URL.";
+                String desc = "Illegal argument exception on sending HTTP request.\n" +
+                              "Please check the media center address on the configuration screen.";
                 postOrRunNow(handler, () -> callback.onError(ApiException.HTTP_HOST_URL_INVALID, desc));
             }
         }
