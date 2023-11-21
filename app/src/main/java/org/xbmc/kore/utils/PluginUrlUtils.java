@@ -17,6 +17,11 @@ package org.xbmc.kore.utils;
 
 import android.net.Uri;
 
+import androidx.annotation.Nullable;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,11 +29,89 @@ import java.util.regex.Pattern;
  * Misc util methods for use with plugin URL
  */
 public class PluginUrlUtils {
+    private static final String TAG = LogUtils.makeLogTag(PluginUrlUtils.class);
+
+    /**
+     * Converts a YouTube url to an URL for the default YouTube add-on (plugin.video.youtube)
+     *
+     * @param playUri some URL for YouTube
+     * @return plugin URL
+     */
+    @Nullable
+    public static String toDefaultYouTubePluginUrl(Uri playUri) {
+        String host = playUri.getHost();
+
+        if (host.endsWith("youtube.com")) {
+            String videoId = playUri.getQueryParameter("v");
+            String playlistId = playUri.getQueryParameter("list");
+            Uri.Builder pluginUri = new Uri.Builder()
+                    .scheme("plugin")
+                    .authority("plugin.video.youtube")
+                    .path("play/");
+            boolean valid = false;
+            if (videoId != null) {
+                valid = true;
+                pluginUri.appendQueryParameter("video_id", videoId);
+            }
+            if (playlistId != null) {
+                valid = true;
+                pluginUri.appendQueryParameter("playlist_id", playlistId)
+                        .appendQueryParameter("order", "default");
+            }
+            if (valid) {
+                return pluginUri.build().toString();
+            }
+        } else if (host.endsWith("youtu.be")) {
+            return "plugin://plugin.video.youtube/play/?video_id="
+                   + playUri.getLastPathSegment();
+        }
+
+        return null;
+    }
+
+    /**
+     * Converts a YouTube url to an URL for the Invidious YouTube add-on (plugin.video.invidious)
+     *
+     * @param playUri some URL for YouTube
+     * @return plugin URL
+     */
+    @Nullable
+    public static String toInvidiousYouTubePluginUrl(Uri playUri) {
+        String host = playUri.getHost();
+
+        Uri.Builder pluginUri = new Uri.Builder()
+                .scheme("plugin")
+                .authority("plugin.video.invidious")
+                .path("/")
+                .appendQueryParameter("action", "play_video");
+
+        String videoIdParameterKey = "video_id";
+
+        String videoId;
+        if (host.endsWith("youtube.com")) {
+            videoId = playUri.getQueryParameter("v");
+        } else if (host.endsWith("youtu.be")) {
+            videoId = playUri.getLastPathSegment();
+        } else {
+            return null;
+        }
+
+        if (videoId == null) {
+            return null;
+        }
+
+        return pluginUri
+                .appendQueryParameter(videoIdParameterKey, videoId)
+                .build()
+                .toString();
+    }
+
+
     public static boolean isHostArte(String host) {
         return host.equals("www.arte.tv");
     }
 
-    public static String toPluginUrlArte(Uri playUri) {
+    public static String toArtePluginUrl(Uri playUri) {
         Pattern pattern = Pattern.compile("^https://www.arte.tv/[a-z]{2}/videos/([0-9]{6}-[0-9]{3}-[A-Z])/.*$");
         Matcher matcher = pattern.matcher(playUri.toString());
         if (matcher.matches()) {
@@ -39,7 +122,7 @@ public class PluginUrlUtils {
         return null;
     }
 
-    public static String toPluginUrlTwitch(Uri playUri) {
+    public static String toTwitchPluginUrl(Uri playUri) {
         Matcher twitchStreamMatcher = Pattern.compile("twitch\\.tv/(\\w+)$").matcher(playUri.toString());
         if (twitchStreamMatcher.find()) {
             return "plugin://plugin.video.twitch/?mode=play&channel_name=" + twitchStreamMatcher.group(1);
@@ -51,7 +134,7 @@ public class PluginUrlUtils {
         return null;
     }
 
-    public static String toPluginUrlVimeo(Uri playUri) {
+    public static String toVimeoPluginUrl(Uri playUri) {
         String route = playUri.getPath();
         String[] routePatterns = {
             "^\\/(?<id>\\d+)$",
@@ -72,6 +155,44 @@ public class PluginUrlUtils {
             }
         }
 
+        return null;
+    }
+
+    /**
+     * Converts a SvtPlay uri to an uri for the the respective plugin
+     *
+     * @param playUri some URL for svtplay
+     * @return plugin URI
+     */
+    public static String toSvtPlayPluginUrl(Uri playUri) {
+        try {
+            Pattern pattern = Pattern.compile(
+                    "^(?:https?://)?(?:www\\.)?svtplay\\.se/video/(\\w+/.*)",
+                    Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(playUri.toString());
+            if (matcher.matches()) {
+                return "plugin://plugin.video.svtplay/?id=%2Fvideo%2F"
+                       + URLEncoder.encode(matcher.group(1), StandardCharsets.UTF_8.name()) + "&mode=video";
+            }
+        } catch (UnsupportedEncodingException e) {
+            LogUtils.LOGD(TAG, "Unsuported Encoding Exception: " + e);
+        }
+        return null;
+    }
+
+    /**
+     * Converts a Soundcloud uri to an uri for the the respective plugin
+     *
+     * @param playUri some URL for soundcloud
+     * @return plugin URI
+     */
+    public static String toSoundCloudPluginUrl(Uri playUri) {
+        try {
+            return "plugin://plugin.audio.soundcloud/play/?url="
+                   + URLEncoder.encode(playUri.toString(), StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            LogUtils.LOGD(TAG, "Unsuported Encoding Exception: " + e);
+        }
         return null;
     }
 }

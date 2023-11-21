@@ -53,20 +53,6 @@
             android:defaultValue="@array/default_values_remote_bar_items"
             app:singleLineTitle="false"/>
 
-        <SwitchPreferenceCompat
-            android:key="pref_always_sendtokodi_addon"
-            android:title="@string/always_sendtokodi_addon"
-            android:defaultValue="false"
-            app:singleLineTitle="false"/>
-
-        <ListPreference
-            android:key="pref_youtube_addon_id"
-            android:title="@string/preferred_youtube_addon"
-            android:entries="@array/preferred_youtube_addon_keys_array"
-            android:entryValues="@array/preferred_youtube_addon_values_array"
-            android:defaultValue="plugin.video.youtube"
-            app:singleLineTitle="false"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/theme">
@@ -128,6 +114,20 @@
             android:entries="@array/entries_download_media_items"
             android:entryValues="@array/entry_values_download_media_items"
             android:defaultValue="@array/default_values_download_media_items"
+            app:singleLineTitle="false"/>
+
+        <SwitchPreferenceCompat
+            android:key="pref_always_sendtokodi_addon"
+            android:title="@string/always_sendtokodi_addon"
+            android:defaultValue="false"
+            app:singleLineTitle="false"/>
+
+        <ListPreference
+            android:key="pref_youtube_addon_id"
+            android:title="@string/preferred_youtube_addon"
+            android:entries="@array/preferred_youtube_addon_keys_array"
+            android:entryValues="@array/preferred_youtube_addon_values_array"
+            android:defaultValue="plugin.video.youtube"
             app:singleLineTitle="false"/>
 
         <Preference
