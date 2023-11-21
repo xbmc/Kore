@@ -10,11 +10,9 @@ import android.os.Looper;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.preference.PreferenceManager;
 
-import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.host.actions.OpenSharedUrl;
@@ -26,11 +24,8 @@ import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.PluginUrlUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -98,7 +93,7 @@ public class ShareOpenActivity extends Activity {
         }
 
         Uri videoUri;
-        if (action.equals(Intent.ACTION_SEND) && intentType.equals("text/plain")) {
+        if (action.equals(Intent.ACTION_SEND) && intentType != null && intentType.equals("text/plain")) {
             // Get the URI, which is stored in Extras
             videoUri = getPlainTextUri(intent.getStringExtra(Intent.EXTRA_TEXT));
         } else {
@@ -142,21 +137,22 @@ public class ShareOpenActivity extends Activity {
         final Context context = this;
         new OpenSharedUrl(this, url, title, text, queue, playlistType)
                 .execute(hostManager.getConnection(),
-                         new ApiCallback<Boolean>() {
-                             @Override
-                             public void onSuccess(Boolean wasAlreadyPlaying) {
-                                 String msg = queue && wasAlreadyPlaying ? getString(R.string.item_added_to_playlist) : getString(R.string.item_sent_to_kodi);
-                                 Toast.makeText(context, msg, Toast.LENGTH_SHORT)
-                                      .show();
-                             }
+                        new ApiCallback<>() {
+                            @Override
+                            public void onSuccess(Boolean wasAlreadyPlaying) {
+                                String msg = queue && wasAlreadyPlaying ? getString(R.string.item_added_to_playlist)
+                                                                        : getString(R.string.item_sent_to_kodi);
+                                Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+                                        .show();
+                            }
 
-                             @Override
-                             public void onError(int errorCode, String description) {
-                                 LogUtils.LOGE(TAG, "Share failed: " + description);
-                                 Toast.makeText(context, description, Toast.LENGTH_SHORT)
-                                      .show();
-                             }
-                         }, new Handler(Looper.getMainLooper()));
+                            @Override
+                            public void onError(int errorCode, String description) {
+                                LogUtils.LOGE(TAG, "Share failed: " + description);
+                                Toast.makeText(context, description, Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        }, new Handler(Looper.getMainLooper()));
 
         // Don't display Kore after queueing from another app, otherwise start the remote
         if (!queue)
@@ -244,40 +240,33 @@ public class ShareOpenActivity extends Activity {
         String host = playuri.getHost();
         String extension = MimeTypeMap.getFileExtensionFromUrl(playuri.toString());
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+
+        if (host == null)
+            return null;
+
         boolean alwaysSendToKodi = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                                     .getBoolean(Settings.KEY_PREF_ALWAYS_SENDTOKODI_ADDON,
                                                                 Settings.DEFAULT_PREF_ALWAYS_SENDTOKODI_ADDON);
+
         if (!alwaysSendToKodi) {
             if (host.endsWith("youtube.com") || host.endsWith("youtu.be")) {
-                return toYouTubePluginUrl(playuri);
+                String preferredYouTubeAddonId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                        .getString(Settings.KEY_PREF_YOUTUBE_ADDON_ID, Settings.DEFAULT_PREF_YOUTUBE_ADDON_ID);
+                if (preferredYouTubeAddonId.equals("plugin.video.invidious")) {
+                    return PluginUrlUtils.toInvidiousYouTubePluginUrl(playuri);
+                } else {
+                    return PluginUrlUtils.toDefaultYouTubePluginUrl(playuri);
+                }
             } else if (host.endsWith("vimeo.com")) {
-                return PluginUrlUtils.toPluginUrlVimeo(playuri);
+                return PluginUrlUtils.toVimeoPluginUrl(playuri);
             } else if (host.endsWith("svtplay.se")) {
-                try {
-                    Pattern pattern = Pattern.compile(
-                            "^(?:https?://)?(?:www\\.)?svtplay\\.se/video/(\\w+/.*)",
-                            Pattern.CASE_INSENSITIVE);
-                    Matcher matcher = pattern.matcher(playuri.toString());
-                    if (matcher.matches()) {
-                        return "plugin://plugin.video.svtplay/?id=%2Fvideo%2F"
-                               + URLEncoder.encode(matcher.group(1), StandardCharsets.UTF_8.name()) + "&mode=video";
-                    }
-                } catch (UnsupportedEncodingException e) {
-                    LogUtils.LOGD(TAG, "Unsuported Encoding Exception: " + e);
-                    return null;
-                }
+                return PluginUrlUtils.toSvtPlayPluginUrl(playuri);
             } else if (host.endsWith("soundcloud.com")) {
-                try {
-                    return "plugin://plugin.audio.soundcloud/play/?url="
-                           + URLEncoder.encode(playuri.toString(), StandardCharsets.UTF_8.name());
-                } catch (UnsupportedEncodingException e) {
-                    LogUtils.LOGD(TAG, "Unsuported Encoding Exception: " + e);
-                    return null;
-                }
+                return PluginUrlUtils.toSoundCloudPluginUrl(playuri);
             } else if (host.endsWith("twitch.tv")) {
-                return PluginUrlUtils.toPluginUrlTwitch(playuri);
+                return PluginUrlUtils.toTwitchPluginUrl(playuri);
             } else if (PluginUrlUtils.isHostArte(host)) {
-                return PluginUrlUtils.toPluginUrlArte(playuri);
+                return PluginUrlUtils.toArtePluginUrl(playuri);
             }
         }
         if (host.startsWith("app.primevideo.com")) {
@@ -295,99 +284,6 @@ public class ShareOpenActivity extends Activity {
             return "plugin://plugin.video.sendtokodi/?" + playuri;
         }
         return null;
-    }
-
-    /**
-     * Converts a YouTube url to a Kodi plugin URL.
-     *
-     * @param playuri some URL for YouTube
-     * @return plugin URL
-     */
-    @Nullable
-    private String toYouTubePluginUrl(Uri playuri) {
-        String preferredYouTubeAddonId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                .getString(Settings.KEY_PREF_YOUTUBE_ADDON_ID, Settings.DEFAULT_PREF_YOUTUBE_ADDON_ID);
-
-        if (preferredYouTubeAddonId.equals("plugin.video.invidious")) {
-            return toInvidiousYouTubePluginUrl(playuri);
-        } else {
-            return toDefaultYouTubePluginUrl(playuri);
-        }
-    }
-
-    /**
-     * Converts a YouTube url to an URL for the default YouTube add-on (plugin.video.youtube)
-     *
-     * @param playuri some URL for YouTube
-     * @return plugin URL
-     */
-    @Nullable
-    private String toDefaultYouTubePluginUrl(Uri playuri) {
-        String host = playuri.getHost();
-
-        if (host.endsWith("youtube.com")) {
-            String videoId = playuri.getQueryParameter("v");
-            String playlistId = playuri.getQueryParameter("list");
-            Uri.Builder pluginUri = new Uri.Builder()
-                    .scheme("plugin")
-                    .authority("plugin.video.youtube")
-                    .path("play/");
-            boolean valid = false;
-            if (videoId != null) {
-                valid = true;
-                pluginUri.appendQueryParameter("video_id", videoId);
-            }
-            if (playlistId != null) {
-                valid = true;
-                pluginUri.appendQueryParameter("playlist_id", playlistId)
-                        .appendQueryParameter("order", "default");
-            }
-            if (valid) {
-                return pluginUri.build().toString();
-            }
-        } else if (host.endsWith("youtu.be")) {
-            return "plugin://plugin.video.youtube/play/?video_id="
-                    + playuri.getLastPathSegment();
-        }
-
-        return null;
-    }
-
-    /**
-     * Converts a YouTube url to an URL for the Invidious YouTube add-on (plugin.video.invidious)
-     *
-     * @param playuri some URL for YouTube
-     * @return plugin URL
-     */
-    @Nullable
-    private String toInvidiousYouTubePluginUrl(Uri playuri) {
-        String host = playuri.getHost();
-
-        Uri.Builder pluginUri = new Uri.Builder()
-                .scheme("plugin")
-                .authority("plugin.video.invidious")
-                .path("/")
-                .appendQueryParameter("action", "play_video");
-
-        String videoIdParameterKey = "video_id";
-
-        String videoId;
-        if (host.endsWith("youtube.com")) {
-            videoId = playuri.getQueryParameter("v");
-        } else if (host.endsWith("youtu.be")) {
-            videoId = playuri.getLastPathSegment();
-        } else {
-            return null;
-        }
-
-        if (videoId == null) {
-            return null;
-        }
-
-        return pluginUri
-                .appendQueryParameter(videoIdParameterKey, videoId)
-                .build()
-                .toString();
     }
 
     boolean isMediaFile(String mimeType) {
