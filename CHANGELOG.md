@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+Version 3.1.0
+-------------
+Minor update, primarily aimed at ensuring Kore remains up to date with the latest Android versions, while also addressing a few bugs along the way.
+
 Version 3.0.0
 -------------
 Major changes in this version, bringing Kore up to date with the current Android platform (well, except for migrating to Kotlin, which to be honest wouldn't bring that much benefits, given that only replacing the syntax without taking advantage of the newer facilities provided by Kotlin/Android wouldn't bring major benefits).
