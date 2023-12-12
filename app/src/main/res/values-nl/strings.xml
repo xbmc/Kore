@@ -369,4 +369,6 @@
     <string name="theme_variant_dark">Donker</string>
     <string name="theme_variant_light">Lichte</string>
     <string name="use_hardware_volume_keys_never">Nooit</string>
+    <string name="not_connected">Niet verbonden</string>
+    <string name="navigation_drawer_open">Open menu</string>
 </resources>

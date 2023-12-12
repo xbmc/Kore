@@ -69,18 +69,11 @@
 \n재시도 중…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">환영합니다</string>
-    <string name="wizard_welcome_message"><![CDATA[
-    미디어 센터를 추가하고 시작합니다. Kodi/XBMC가 실행 중이고, 제대로 설정되고, 이 장치와 같은 네트워크에 있어야 합니다.<br/><br/>
-    설정 도움은 <a href="http://syncedsynapse.com/kore/kore-faq/">여기</a>에서 받을 수 있습니다.<br/><br/>
-    준비되면 <b><i>다음</i></b>을 누릅니다.
-    ]]></string>
+    <string name="wizard_welcome_message">미디어 센터를 추가하고 시작합니다. &lt;br/&gt; Kodi가 실행 중이고, 제대로 설정되어 있는지 확인하세요. 특히 Kodi의 &lt;b&gt;설정&lt;/b&gt;에서 다음을 확인하세요. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;서비스&lt;/b&gt;를 선택한 다음 &lt;b&gt;제어&lt;/b&gt;를 선택하고 다음을 실행하세요. &lt;br/&gt; 1. &lt;b&gt;HTTP를 통한 원격 제어 허용&lt;/b&gt;을 사용합니다. &lt;br/&gt; 2. &lt;b&gt;이 시스템의 애플리케이션에서 원격 제어 허용&lt;/b&gt; 및 &lt;b&gt;다른 시스템의 애플리케이션에서 원격 제어 허용&lt;/b&gt; 옵션을 모두 사용합니다. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;서비스&lt;/b&gt;를 선택한 다음 &lt;b&gt;일반&lt;/b&gt;을 선택하고 다음을 실행합니다. &lt;br&gt; 1. &lt;b&gt;다른 시스템에 서비스 알림&lt;/b&gt;을 사용합니다. &lt;br/&gt;&lt;br/&gt; &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;여기&lt;/a&gt;에서 추가 도움을 받으실 수 있습니다. &lt;br/&gt;&lt;br/&gt; 준비되면 &lt;b&gt;다음&lt;/b&gt;을 누르세요.</string>
     <string name="wizard_search_message"><![CDATA[
     로컬 네트워크에서 미디어 센터를 찾는 중…<br/>
     ]]></string>
-    <string name="wizard_search_no_host_found"><![CDATA[
-    이 네트워크에서 미디어 센터를 찾을 수 없습니다.<br/>설정에 도움이 필요하면 <a href="http://syncedsynapse.com/kore/kore-faq/">여기</a>에서 얻을 수 있습니다.<br/><br/>
-    <i>찾기</i>를 눌러 다시 찾거나 <i>다음</i>으로 직접 설정합니다.
-    ]]></string>
+    <string name="wizard_search_no_host_found">네트워크에서 미디어 센터를 찾을 수 없습니다.&lt;br/&gt;&lt;br/&gt; Kodi가 실행 중이고, 제대로 설정되어 있는지 확인하세요. 특히 Kodi의 &lt;b&gt;설정&lt;/b&gt;에서 다음을 확인하세요. &lt;br/&gt; &lt;br/&gt; &lt;b&gt;서비스&lt;/b&gt;를 선택한 다음 &lt;b&gt;제어&lt;/b&gt;를 선택하고 다음을 실행합니다. &lt;br/&gt; 1. &lt;b&gt;HTTP를 통한 원격 제어 허용&lt;/b&gt;을 사용합니다. &lt;br/&gt; 2. &lt;b&gt;이 시스템의 애플리케이션에서 원격 제어 허용&lt;/b&gt; 및 &lt;b&gt;다른 시스템의 애플리케이션에서 원격 제어 허용&lt;/b&gt; 옵션을 모두 사용합니다. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;서비스&lt;/b&gt;를 선택한 다음 &lt;b&gt;일반&lt;/b&gt;을 선택하고 다음을 실행합니다. &lt;br&gt; 1. &lt;b&gt;다른 시스템에 서비스 알림&lt;/b&gt;을 사용합니다. &lt;br/&gt;&lt;br/&gt; &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;여기&lt;/a&gt;에서 추가 도움을 받으실 수 있습니다. &lt;br/&gt;&lt;br/&gt; 수동으로 구성하려면 &lt;b&gt;다시 검색&lt;/b&gt;을 클릭하거나 &lt;b&gt;다음&lt;/b&gt;을 클릭하세요.</string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     미디어 센터를 찾기 전에 네트워크가 연결되어야 합니다.<br/>
     ]]></string>
@@ -401,4 +394,5 @@
     <string name="theme_color_yellow">노란 잠수함</string>
     <string name="theme_color_green">그린마일</string>
     <string name="use_hardware_volume_keys_never">절대 안 함</string>
+    <string name="preferred_youtube_addon">선호하는 YouTube 애드온</string>
 </resources>
