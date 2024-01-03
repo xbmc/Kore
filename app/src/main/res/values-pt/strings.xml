@@ -14,7 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 --><resources>
-    <string name="settings">Opções</string>
+    <string name="settings">Definições</string>
     <string name="action_options">Opções</string>
     <string name="loading">A carregar…</string>
     <!-- Navigation drawer tips -->
@@ -68,14 +68,9 @@
 \nA tentar novamente…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bem-vindo</string>
-    <string name="wizard_welcome_message"><![CDATA[
-    Comecemos por adicionar um centro multimédia. Verifique que o seu Kodi/XBMC está a correr, propriamente configurado e na mesma rede que este aparelho.<br/><br/>
-    Pode obter ajuda na configuração <a href="http://syncedsynapse.com/kore/kore-faq/">aqui</a>.<br/><br/>
-    Quanto estiver pronto pressione <b><i>Seguinte</i></b>.
-    ]]></string>
+    <string name="wizard_welcome_message">Comecemos por adicionar um centro multimédia. &lt;br/&gt;Verifique que o Kodi está a correr e corretamente configurado. Especificamente nas &lt;b&gt;Definições&lt;/b&gt; do Kodi verifique:&lt;br/&gt;&lt;br/&gt; Em &lt;b&gt;Serviços&lt;/b&gt;, seleccione &lt;b&gt;Controlo&lt;/b&gt; e: &lt;br/&gt; 1. Active a opção &lt;b&gt;Permitir controlo remoto via HTTP&lt;/b&gt;; &lt;br/&gt; 2. Active as opções &lt;b&gt;Permitir controlo remoto a partir das aplicações neste sistema&lt;/b&gt; e &lt;b&gt;Permitir controlo remoto a partir das aplicações de outros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Em &lt;b&gt;Serviços&lt;/b&gt;, seleccione &lt;b&gt;Geral&lt;/b&gt; e: &lt;br&gt; 1. Active &lt;b&gt;Anunciar serviço a outros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Pode obter ajuda adicional &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aqui&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Pressione &lt;b&gt;&lt;i&gt;Seguinte&lt;/i&gt;&lt;/b&gt; para continuar.</string>
     <string name="wizard_search_message"><![CDATA[Procurando centros multimédia na rede…<br/>]]></string>
-    <string name="wizard_search_no_host_found"><![CDATA[Não consegui encontrar nenhum centro multimédia na rede.<br/>Se necessitar de ajuda para as configurações, visite a <a href="http://syncedsynapse.com/kore/kore-faq/">FAQ</a><br/><br/>
-Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuração manual.]]></string>
+    <string name="wizard_search_no_host_found">Não foi encontrado nenhum centro multimédia na rede.&lt;br/&gt;&lt;br/&gt;Verifique que o Kodi está a correr e corretamente configurado. Especificamente nas &lt;b&gt;Definições&lt;/b&gt; do Kodi verifique:&lt;br/&gt;&lt;br/&gt; Em &lt;b&gt;Serviços&lt;/b&gt;, seleccione &lt;b&gt;Controlo&lt;/b&gt; e: &lt;br/&gt; 1. Active a opção &lt;b&gt;Permitir controlo remoto via HTTP&lt;/b&gt;; &lt;br/&gt; 2. Active as opções &lt;b&gt;Permitir controlo remoto a partir das aplicações neste sistema&lt;/b&gt; e &lt;b&gt;Permitir controlo remoto a partir das aplicações de outros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Em &lt;b&gt;Serviços&lt;/b&gt;, seleccione &lt;b&gt;Geral&lt;/b&gt; e: &lt;br&gt; 1. Active &lt;b&gt;Anunciar serviço a outros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Pode obter ajuda adicional &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aqui&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt;Clique &lt;i&gt;Procurar&lt;/i&gt; para tentar novamente ou &lt;i&gt;Seguinte&lt;/i&gt; para configuração manual.</string>
     <string name="wizard_search_no_network_connection">Por favor ative uma conexão de rede antes de pesquisar por centros multimídia.<br/></string>
     <string name="wizard_search_host_found">Encontrei estes centros multimédia na sua rede.<br/><br/> Seleccione um para adicionar ou pressione <b>Seguinte</b> para adicionar um novo manualmente.</string>
     <string name="no_network_connection">Nenhuma conexão de rede activa</string>
@@ -393,4 +388,5 @@ Clique <i>Procurar</i> para tentar novamente ou <i>Seguinte</i> para configuraç
     <string name="theme_color_green">Lanterna Verde</string>
     <string name="theme_color_kore">Veludo Azul</string>
     <string name="theme_color_purple">Chuva púrpura</string>
+    <string name="preferred_youtube_addon">Extensão de Youtube preferida</string>
 </resources>

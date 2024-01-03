@@ -68,11 +68,11 @@
 \nPonawiam próbę…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Witaj</string>
-    <string name="wizard_welcome_message">Zacznij od dodania odtwarzacza. Upewnij się, że Kodi działa, jest poprawnie skonfigurowany oraz znajduje się w tej samej sieci.&lt;br/&gt;&lt;br/&gt; Więcej na temat konfiguracji przeczytasz &lt;a href=\"http://syncedsynapse.com/kore/kore-faq/&gt;&lt;/a&gt;tutaj.&lt;br/&gt;&lt;br/&gt;Kiedy będziesz gotowy, naciśnij &lt;b&gt;Dalej&lt;/b&gt;.</string>
+    <string name="wizard_welcome_message">Zacznijmy od dodania centrum multimedialnego. &lt;br/&gt; Upewnij się, że Kodi działa i jest prawidłowo skonfigurowany. W szczególności sprawdź następujące opcje w &lt;b&gt;Ustawieniach&lt;/b&gt; Kodi: &lt;br/&gt;&lt;br/&gt; Wybierz &lt;b&gt;Usługi&lt;/b&gt;, następnie &lt;b&gt;Sterowanie&lt;/b&gt; i: &lt;br/&gt; 1. Włącz opcję &lt;b&gt;Zezwalaj na zdalne sterowanie przez HTTP&lt;/b&gt;; &lt;br/&gt; 2. Włącz obie opcje: &lt;b&gt;Zezwalaj lokalnym programom na sterowanie aplikacją&lt;/b&gt; i &lt;b&gt;Zezwalaj zdalnym programom na sterowanie aplikacją&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Wybierz &lt;b&gt;Usługi&lt;/b&gt;, następnie &lt;b&gt;Ogólne&lt;/b&gt; i: &lt;br&gt; 1. Włącz opcję &lt;b&gt;Rozgłaszaj usługi do innych systemów&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Dodatkową pomoc możesz uzyskać &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;tutaj&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Kiedy skończysz, naciśnij &lt;b&gt;Dalej&lt;/b&gt;.</string>
     <string name="wizard_search_message"><![CDATA[
      Wyszukiwanie odtwarzaczy w sieci lokalnej…<br/>
     ]]></string>
-    <string name="wizard_search_no_host_found">Nie znaleziono żadnych odtwarzaczy w sieci.&lt;br/&gt;Jeśli potrzebujesz pomocy w konfiguracji, wejdź &lt;a href=\"http://syncedsynapse.com/kore/kore-faq/&gt;tutaj&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Kliknij &lt;b&gt;Wyszukaj&lt;/b&gt;, aby wyszukać ponownie lub &lt;b&gt;Dalej&lt;/b&gt;, aby przejść do ręcznej konfiguracji.</string>
+    <string name="wizard_search_no_host_found">Nie znaleziono żadnego centrum multimedialnego w Twojej sieci.&lt;br/&gt;&lt;br/&gt; Upewnij się, że Kodi działa i jest prawidłowo skonfigurowany, a w szczególności sprawdź następujące opcje w &lt;b&gt;Ustawieniach&lt;/b&gt; Kodi: &lt;br/&gt; &lt;br/&gt; Wybierz &lt;b&gt;Usługi&lt;/b&gt;, następnie &lt;b&gt;Sterowanie&lt;/b&gt; i: &lt;br/&gt; 1. Włącz opcję &lt;b&gt;Zezwalaj na zdalne sterowanie przez HTTP&lt;/b&gt;; &lt;br/&gt; 2. Włącz obie opcje: &lt;b&gt;Zezwalaj lokalnym programom na sterowanie aplikacją&lt;/b&gt; i &lt;b&gt;Zezwalaj zdalnym programom na sterowanie aplikacją&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Wybierz &lt;b&gt;Usługi&lt;/b&gt;, następnie &lt;b&gt;Ogólne&lt;/b&gt; i: &lt;br&gt; 1. Włącz opcję &lt;b&gt;Rozgłaszaj usługi do innych systemów&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Dodatkową pomoc możesz uzyskać &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;tutaj&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Kliknij &lt;b&gt;Szukaj ponownie&lt;/b&gt; lub &lt;b&gt;Dalej&lt;/b&gt;, aby przeprowadzić konfigurację ręczną.</string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     Przed wyszukiwaniem odtwarzaczy włącz połączenie sieciowe.<br/>
     ]]></string>
@@ -400,4 +400,7 @@
     <string name="use_hardware_volume_keys_when_in_foreground">Kiedy Kore jest na pierwszym planie</string>
     <string name="use_hardware_volume_keys_always">Zawsze</string>
     <string name="use_hardware_volume_keys_never">Nigdy</string>
+    <string name="preferred_youtube_addon">Preferowany dodatek YouTube</string>
+    <string name="preferred_youtube_addon_youtube">YouTube (plugin.video.youtube)</string>
+    <string name="preferred_youtube_addon_invidious">Invidious (plugin.video.invidious)</string>
 </resources>

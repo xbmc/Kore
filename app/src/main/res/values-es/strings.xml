@@ -68,15 +68,11 @@
 \nReintentando…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bienvenido</string>
-    <string name="wizard_welcome_message"><![CDATA[
-    Empecemos añadiendo un centro multimedia. Asegúrate que Kodi/XBMC está correctamente configurado y funcionando y en la misma red que este dispositivo.<br/><br/>
-    Puedes obtener ayuda para configurarlo <a href="http://syncedsynapse.com/kore/kore-faq/">aquí</a>.<br/><br/>
-    Cuando estés listo pulsa <b><i>Siguiente</i></b>.
-    ]]></string>
+    <string name="wizard_welcome_message">Empecemos añadiendo un centro multimedia. &lt;br/&gt; Asegúrate de que Kodi se está ejecutando y está configurado correctamente. En concreto, comprueba lo siguiente en la &lt;b&gt;Configuración&lt;/b&gt; de Kodi: &lt;br/&gt;&lt;br/&gt; Seleccionar &lt;b&gt;Servicios&lt;/b&gt;, y luego &lt;b&gt;Control&lt;/b&gt; y: &lt;br/&gt; 1. Activar &lt;b&gt;Permitir el control remoto a través de HTTP&lt;/b&gt;; &lt;br/&gt; 2. Activar ambas opciones &lt;b&gt;Permitir el control remoto desde aplicaciones en este sistema&lt;/b&gt; y &lt;b&gt;Permitir el control remoto desde aplicaciones en otros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Seleccione &lt;b&gt;Servicios&lt;/b&gt;, luego &lt;b&gt;General&lt;/b&gt; y: &lt;br&gt; 1. Activar &lt;b&gt;Anunciar servicios a otros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Puedes obtener ayuda adicional &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aqui&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Cuando estés listo pulsa &lt;b&gt;Siguiente&lt;/b&gt;.</string>
     <string name="wizard_search_message"><![CDATA[
     Buscando centros multimedia en tu red local…<br/>
     ]]></string>
-    <string name="wizard_search_no_host_found">No se encontraron equipos en la red. &lt;br/&gt; Si necesitas ayuda para configurarlo, Pulsa &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aquí&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Pulsa &lt;b&gt;Buscar&lt;/ib para buscar de nuevo o &lt;b&gt;Siguiente&lt;/b&gt; para configuración manual.</string>
+    <string name="wizard_search_no_host_found">No pude encontrar ningún centro multimedia en tu red.&lt;br/&gt;&lt;br/&gt; Por favor, asegúrate de que Kodi está funcionando y está configurado correctamente, en concreto comprueba lo siguiente en la &lt;b&gt;Configuración&lt;/b&gt; de Kodi: &lt;br/&gt;&lt;br/&gt; Selecciona &lt;b&gt;Servicios&lt;/b&gt;, luego &lt;b&gt;Control&lt;/b&gt; y: &lt;br/&gt; 1. Activar &lt;b&gt;Permitir el control remoto a través de HTTP&lt;/b&gt;; &lt;br/&gt; 2. Activar ambas opciones &lt;b&gt;Permitir el control remoto desde aplicaciones en este sistema&lt;/b&gt; y &lt;b&gt;Permitir el control remoto desde aplicaciones en otros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Selecciona &lt;b&gt;Servicios&lt;/b&gt;, luego &lt;b&gt;General&lt;/b&gt; y: &lt;br&gt; 1. Activar &lt;b&gt;Anunciar servicios a otros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Puedes obtener ayuda adicional &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aqui&lt;/a&gt; &lt;br/&gt;&lt;br/&gt; Haz clic en &lt;b&gt;Buscar&lt;/b&gt; de nuevo o en &lt;b&gt;Siguiente&lt;/b&gt; para configurarlo manualmente.</string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     	Por favor, activa una conexión de red antes de buscar centros multimedia.<br/>
     ]]></string>
@@ -399,4 +395,5 @@
     <string name="use_hardware_volume_keys_when_in_foreground">Cuando Kore esté en primer plano</string>
     <string name="use_hardware_volume_keys_always">Siempre</string>
     <string name="use_hardware_volume_keys_never">Nunca</string>
+    <string name="preferred_youtube_addon">Complemento preferido de YouTube</string>
 </resources>

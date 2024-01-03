@@ -94,4 +94,7 @@
     <string name="play">Afspil</string>
     <string name="theme_variant_dark">Mørk</string>
     <string name="theme_variant_light">Lys</string>
+    <string name="queue_file">Sæt i kø</string>
+    <string name="add_to_playlist">Sæt i kø</string>
+    <string name="queue_action">Sæt i kø</string>
 </resources>

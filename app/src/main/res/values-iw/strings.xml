@@ -409,4 +409,5 @@
     <string name="use_hardware_volume_keys_when_in_foreground">כאשר Kore בחזית</string>
     <string name="party_mode">מצב מסיבה</string>
     <string name="not_connected">לא מחובר</string>
+    <string name="preferred_youtube_addon">תוספת YouTube מועדפת</string>
 </resources>
