@@ -122,7 +122,7 @@
     <string name="volume_down">Bajar volumen</string>
     <string name="volume_mute">Silencio</string>
     <string name="subtitles">Subtítulos</string>
-    <string name="audiostreams">Streams de audio</string>
+    <string name="audiostreams">Transmisiones de audio</string>
     <string name="no_audiostream">No hay stream de audio disponible</string>
     <string name="download_subtitle">Descargar subtítulos</string>
     <string name="none">Ninguno</string>
