@@ -206,7 +206,9 @@ abstract public class AbstractInfoFragment
     @Override
     public void onStart() {
         super.onStart();
-        serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
+        if (getSyncType() != null) {
+            serviceConnection = SyncUtils.connectToLibrarySyncService(getActivity(), this);
+        }
         // Force the exit view to invisible
         binding.exitTransitionView.setVisibility(View.INVISIBLE);
     }
@@ -234,7 +236,9 @@ abstract public class AbstractInfoFragment
 
     @Override
     public void onStop() {
-        SyncUtils.disconnectFromLibrarySyncService(requireContext(), serviceConnection);
+        if (getSyncType() != null) {
+            SyncUtils.disconnectFromLibrarySyncService(requireContext(), serviceConnection);
+        }
         super.onStop();
     }
 
