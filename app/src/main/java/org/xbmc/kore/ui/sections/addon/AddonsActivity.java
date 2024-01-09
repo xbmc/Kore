@@ -131,11 +131,9 @@ public class AddonsActivity extends BaseMediaActivity
         // Replace list fragment
         dataHolder.setSquarePoster(true);
         if (bundle.getBoolean(AddonInfoFragment.BUNDLE_KEY_BROWSABLE)) {
-            // No shared element transition to tabs fragment
             showFragment(AddonTabsFragment.class, dataHolder.getBundle());
         } else {
-            // Use shared element transition to info fragment
-            showFragment(AddonInfoFragment.class, dataHolder.getBundle(), sharedImageView);
+            showFragment(AddonInfoFragment.class, dataHolder.getBundle());
         }
 
         updateActionBar(getActionBarTitle(), true);

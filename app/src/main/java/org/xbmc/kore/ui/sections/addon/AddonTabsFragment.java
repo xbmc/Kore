@@ -31,6 +31,7 @@ import org.xbmc.kore.ui.OnBackPressedListener;
 import org.xbmc.kore.ui.sections.file.MediaFileListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
+import org.xbmc.kore.utils.Utils;
 
 public class AddonTabsFragment
         extends AbstractTabsFragment
@@ -65,18 +66,18 @@ public class AddonTabsFragment
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+    public void onResume() {
+        super.onResume();
         try {
-            BaseMediaActivity listenerActivity = (BaseMediaActivity) context;
+            BaseMediaActivity listenerActivity = (BaseMediaActivity) requireContext();
             listenerActivity.setBackPressedListener(this);
         } catch (ClassCastException e) {
-            throw new ClassCastException(context + " unable to register BackPressedListener");
+            throw new ClassCastException(requireContext() + " unable to register BackPressedListener");
         }
     }
 
     @Override
-    public void onDestroy() {
+    public void onPause() {
         try {
             BaseMediaActivity listenerActivity = (BaseMediaActivity) getContext();
             assert listenerActivity != null;
@@ -84,7 +85,7 @@ public class AddonTabsFragment
         } catch (ClassCastException e) {
             throw new ClassCastException(getContext() + " unable to unregister BackPressedListener");
         }
-        super.onDestroy();
+        super.onPause();
     }
 
     @Override
