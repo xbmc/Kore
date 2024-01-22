@@ -30,7 +30,7 @@
     <string name="dcim">Фотографии</string>
     <string name="external_storage">Хранилище</string>
     <string name="addons">Дополнения</string>
-    <string name="files">Файлы</string>
+    <string name="files">Файлы Kodi</string>
     <string name="local_files">Локальные файлы</string>
     <string name="video">Видео</string>
     <string name="videos">Видео</string>
@@ -38,7 +38,7 @@
     <string name="window">Окно</string>
     <string name="script">Скрипт</string>
     <string name="unknown">Неизвестно</string>
-    <string name="file_browser">Файлы</string>
+    <string name="file_browser">Браузер файлов Kodi</string>
     <string name="local_file_browser">Локальные файлы</string>
     <string name="pvr">Запись эфира</string>
     <string name="favourites">Избранное</string>
@@ -65,10 +65,11 @@
     <string name="toggle_fullscreen">Переключить полный экран</string>
     <string name="connected_to">Подключён к %1$s</string>
     <string name="connecting">Подключается…</string>
-    <string name="connecting_to">Подключается к %1$s (%2$s)…</string>
+    <string name="connecting_to">Невозможно подключиться к %1$s (%2$s)
+\nПовторная попытка…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Добро пожаловать</string>
-    <string name="wizard_welcome_message">Начнём с добавления медиацентра. Убедитесь, что Kodi включён, настроен и находится в той же сети, что и это устройство.&lt;br/&gt;&lt;br/&gt; Получить справку по настройке вы можете &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;здесь&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Когда будете готовы, нажмите &lt;b&gt;Далее&lt;/b&gt;.</string>
+    <string name="wizard_welcome_message">Начнём с добавления медиацентра. &lt;br/&gt; Убедитесь, что Kodi запущен и правильно настроен. В частности, проверьте следующее в разделе &lt;b&gt;Настройки&lt;/b&gt; Kodi : &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Сервисы&lt;/b&gt;, затем &lt;b&gt;Управление&lt;/b&gt; и: &lt;br/&gt; 1. Включите &lt;b&gt;Разрешить удаленное управление через HTTP&lt;/b&gt;; &lt;br/&gt; 2. Включите обе опции &lt;b&gt;Разрешить дистанционное управление из приложений в этой системе&lt;/b&gt; и &lt;b&gt;Разрешить дистанционное управление из приложений на других системах&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Сервисы&lt;/b&gt;, затем &lt;b&gt;Общие&lt;/b&gt; и: &lt;br&gt; 1. Включите &lt;b&gt;Анонсировать сервисы для других систем&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Вы можете получить дополнительную помощь &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;здесь&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Когда вы будете готовы, нажмите &lt;b&gt;Следующее&lt;/b&gt;.</string>
     <string name="wizard_search_message">Идёт поиск медиацентров в локальной сети…<br/></string>
     <string name="wizard_search_no_host_found"><![CDATA[
     Не удалось найти ни одного медиацентра в вашей сети.<br/>
@@ -181,30 +182,22 @@
     <string name="fanart">Фанарт</string>
     <string name="poster">Постер</string>
     <string name="thumbnail">Миниатюра</string>
-    <string name="error_getting_properties">Не удалось получить параметры Kodi.\n
-    Ошибка:
-    %1$s.</string>
-    <string name="error_executing_subtitles">Не удалось запустить дополнение для субтитров.\n
-    Ошибка:
-    %1$s.</string>
-    <string name="error_getting_addon_info">Не удалось получить данные о дополнении.\n
-    Ошибка:
-    %1$s.</string>
-    <string name="error_getting_source_info">Не удалось получить список файлов.\n
-    Ошибка:
-    %1$s.</string>
-    <string name="error_play_media_file">Не удалось воспроизвести медиафайл.\n
-    Ошибка:
-    %1$s.</string>
-    <string name="error_play_local_file">Не удалось воспроизвести локальный медиафайл.\n
-    Ошибка:
-    %1$s.</string>
-    <string name="error_queue_media_file">Не удалось добавить медиафайл в очередь.\n
-    Ошибка:
-    %1$s.</string>
-    <string name="error_get_active_player">Не удалось получить активный плеер.\n
-    Ошибка:
-    %1$s.</string>
+    <string name="error_getting_properties">Не удалось получить параметры Kodi.
+\nОшибка: %1$s</string>
+    <string name="error_executing_subtitles">Не удалось запустить дополнение для субтитров.
+\nОшибка: %1$s</string>
+    <string name="error_getting_addon_info">Не удалось получить данные о дополнении.
+\n Ошибка: %1$s</string>
+    <string name="error_getting_source_info">Не удается просмотреть файлы.
+\n Ошибка: %1$s</string>
+    <string name="error_play_media_file">Не удалось воспроизвести медиафайл.
+\n Ошибка: %1$s</string>
+    <string name="error_play_local_file">Не удалось воспроизвести локальный медиафайл.
+\n Ошибка: %1$s</string>
+    <string name="error_queue_media_file">Не удалось добавить медиафайл в очередь.
+\n Ошибка: %1$s</string>
+    <string name="error_get_active_player">Не удалось получить активный плеер.
+\n Ошибка: %1$s</string>
     <string name="error_share_video">Не удалось отправить видео в Kodi.</string>
     <string name="error_reading_local_storage">Не удалось получить доступ к локальному хранилищу. Вы предоставили Kore права доступа к хранилищу?</string>
     <string name="error_starting_http_server">Не удалось создать или запустить HTTP-сервер.</string>
@@ -221,32 +214,19 @@
     <string name="clear_playlist">Очистить список</string>
     <string name="source_empty">Медиаисточник пуст</string>
     <string name="swipe_down_to_refresh">Потяните вниз, чтобы обновить</string>
-    <string name="no_movies_found_refresh">Фильмов нет\n\n
-    Потяните вниз, чтобы обновить</string>
-    <string name="no_tvshows_found_refresh">Сериалов нет\n\n
-    Потяните вниз, чтобы обновить</string>
+    <string name="no_movies_found_refresh">Фильмы не найдены</string>
+    <string name="no_tvshows_found_refresh">Телешоу не найдены</string>
     <string name="no_episodes_found">Серий нет</string>
-    <string name="no_artists_found_refresh">Исполнителей нет\n\n
-    Потяните вниз, чтобы обновить</string>
-    <string name="no_albums_found_refresh">Альбомов нет\n\n
-    Потяните вниз, чтобы обновить</string>
-    <string name="no_genres_found_refresh">Жанров нет\n\n
-    Потяните вниз, чтобы обновить</string>
-    <string name="no_addons_found_refresh">Дополнений нет\n\n
-    Потяните вниз, чтобы обновить</string>
-    <string name="no_music_videos_found_refresh">Клипов нет\n\n
-    Потяните вниз, чтобы обновить</string>
-    <string name="no_channel_groups_found_refresh">Групп каналов нет\n\n
-    Потяните вниз, чтобы обновить</string>
-    <string name="no_channels_found_refresh">Каналов нет\n\n
-    Потяните вниз, чтобы обновить</string>
-    <string name="no_favourites_found_refresh">Избранных нет
-\n
-\n Проведите вниз для обновления</string>
-    <string name="no_recordings_found_refresh">Записей нет\n\n
-    Потяните вниз, чтобы обновить</string>
-    <string name="no_broadcasts_found_refresh">Передач нет\n\n
-    Потяните вниз, чтобы обновить</string>
+    <string name="no_artists_found_refresh">Исполнители не найдены</string>
+    <string name="no_albums_found_refresh">Альбомы не найдены</string>
+    <string name="no_genres_found_refresh">Жанры не найдены</string>
+    <string name="no_addons_found_refresh">Дополнения не найдены</string>
+    <string name="no_music_videos_found_refresh">Клипы не найдены</string>
+    <string name="no_channel_groups_found_refresh">Группы каналов не найдены</string>
+    <string name="no_channels_found_refresh">Каналы не найдены</string>
+    <string name="no_favourites_found_refresh">Избранное не найдено</string>
+    <string name="no_recordings_found_refresh">Записи не найдены</string>
+    <string name="no_broadcasts_found_refresh">Трансляции не найдены</string>
     <string name="pull_to_refresh">Потяните вниз, чтобы обновить</string>
     <string name="no_cast_info">Нет информации</string>
     <string name="minutes_abbrev">%1$s мин.</string>
@@ -355,14 +335,20 @@
     <string name="queue_on_kodi">В очередь в Kodi</string>
     <string name="pause_call_incoming_title">Входящий звонок</string>
     <string name="pause_call_incoming_message">Проверьте ваш телефон, вам звонят</string>
-    <string name="error_getting_pvr_info">При получения информации о записи произошла ошибка: %1$s</string>
+    <string name="error_getting_pvr_info">Не удалось получить информацию о PVR
+\n
+\nОписание ошибки: %1$s</string>
     <string name="might_not_have_pvr">Во время получения информации о каналах произошла ошибка. Возможно, у вашего медиацентра нет тюнера, или он не настроен.
 \n
 \n Если это так, этот пункт можно убрать из бокового меню. Это можно сделать в настройках.</string>
-    <string name="error_starting_channel">При включении канала произошла ошибка: %1$s</string>
-    <string name="error_favourites">При получении избранных произошла ошибка: %1$s</string>
-    <string name="error_starting_recording">При начале записи произошла ошибка: %1$s</string>
-    <string name="error_starting_to_record">Во время записи произошла ошибка: %1$s</string>
+    <string name="error_starting_channel">Возникла ошибка при воспроизведении канала
+\nОписание: %1$s</string>
+    <string name="error_favourites">Не удалось получить избранное
+\nОписание ошибки: %1$s</string>
+    <string name="error_starting_recording">Произошла ошибка при воспроизведении записи
+\nОписание: %1$s</string>
+    <string name="error_starting_to_record">Во время записи произошла ошибка
+\nОписание: %1$s</string>
     <string name="channel_switching">Переключается на канал %1$s</string>
     <string name="starting_recording">Начинается запись %1$s</string>
     <string name="refresh">Обновить</string>
@@ -392,8 +378,7 @@
     <string name="muted">Звук выключен</string>
     <string name="no_item_available_to_play">Ошибка: нечего воспроизводить.</string>
     <string name="Refreshing_not_implemented_for_this_item">Для этого элемента обновление ещё не реализовано</string>
-    <string name="no_songs_found_refresh">Песен нет\n\n
-    Потяние вниз, чтобы обновить</string>
+    <string name="no_songs_found_refresh">Песни не найдены</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Развернуть/свернуть</string>
     <string name="stream_action">Воспроизвести локально</string>
@@ -418,4 +403,16 @@
     <string name="use_hardware_volume_keys_always">Всегда</string>
     <string name="use_hardware_volume_keys_when_in_foreground">Когда Kore на переднем плане</string>
     <string name="theme_color">Цветовая схема</string>
+    <string name="watched_status">Просмотрено</string>
+    <string name="unwatched_status">Непросмотрено</string>
+    <string name="pinned_status">Прикреплено</string>
+    <string name="enabled_status">Включено</string>
+    <string name="theme_default_dynamic">Дневная/ночная динамика</string>
+    <string name="theme_sun_dynamic">Динамика восхода/заката</string>
+    <string name="unpinned_status">Неприкреплено</string>
+    <string name="disabled_status">Выключено</string>
+    <string name="download_action">Закачка</string>
+    <string name="web_search">Веб поиск</string>
+    <string name="preferred_youtube_addon">Предпочитаемый аддон YouTube</string>
+    <string name="not_connected">Не подключено</string>
 </resources>
