@@ -40,8 +40,9 @@ public class PluginUrlUtils {
     @Nullable
     public static String toDefaultYouTubePluginUrl(Uri playUri) {
         String host = playUri.getHost();
+        String path = playUri.getPath();
 
-        if (host.endsWith("youtube.com")) {
+        if (host.endsWith("youtube.com") && path.equals("/watch")) {
             String videoId = playUri.getQueryParameter("v");
             String playlistId = playUri.getQueryParameter("list");
             Uri.Builder pluginUri = new Uri.Builder()
@@ -61,7 +62,10 @@ public class PluginUrlUtils {
             if (valid) {
                 return pluginUri.build().toString();
             }
-        } else if (host.endsWith("youtu.be")) {
+        } else if (host.endsWith("youtu.be") ||
+            (host.endsWith("youtube.com") && (
+                path.startsWith("/live/") || path.startsWith("/shorts/")))
+        ) {
             return "plugin://plugin.video.youtube/play/?video_id="
                    + playUri.getLastPathSegment();
         }
@@ -78,6 +82,7 @@ public class PluginUrlUtils {
     @Nullable
     public static String toInvidiousYouTubePluginUrl(Uri playUri) {
         String host = playUri.getHost();
+        String path = playUri.getPath();
 
         Uri.Builder pluginUri = new Uri.Builder()
                 .scheme("plugin")
@@ -88,9 +93,11 @@ public class PluginUrlUtils {
         String videoIdParameterKey = "video_id";
 
         String videoId;
-        if (host.endsWith("youtube.com")) {
+        if (host.endsWith("youtube.com") && path.equals("/watch")) {
             videoId = playUri.getQueryParameter("v");
-        } else if (host.endsWith("youtu.be")) {
+        } else if (host.endsWith("youtu.be") ||
+            (host.endsWith("youtube.com") && (
+                path.startsWith("/live/") || path.startsWith("/shorts/")))) {
             videoId = playUri.getLastPathSegment();
         } else {
             return null;
