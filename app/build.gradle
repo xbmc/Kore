@@ -26,6 +26,10 @@ android {
                 "ko", "lt", "nl", "pl", "pt", "pt-BR", "ru", "sk", "sl", "zh-CN"]
         buildConfigField "String[]", "SUPPORTED_LOCALES", "new String[]{\""+
                 supportedLocales.join("\",\"")+"\"}"
+
+        // Allow distinguishing between release and debug app when installed
+        // simultaneously (see below).
+        manifestPlaceholders = [appLabel: "@string/app_name"]
     }
 
     signingConfigs {
@@ -57,6 +61,12 @@ android {
             }
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            // Allow installing debug version in parallel.
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [appLabel: "Kore (Debug)"]
         }
     }
 
