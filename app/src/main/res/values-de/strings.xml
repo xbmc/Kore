@@ -402,4 +402,5 @@
     <string name="theme_color">Farbschema</string>
     <string name="theme_sun_dynamic">Dämmerungsdynamik</string>
     <string name="theme_default_dynamic">Tag/Nacht Dynamik</string>
+    <string name="preferred_youtube_addon">Bevorzugtes YouTube Addon</string>
 </resources>
