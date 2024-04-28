@@ -83,14 +83,14 @@
 \nTentando de novo…</string>
     <string name="wizard_welcome">Benvido</string>
     <string name="wizard_search_message">Buscando centros multimedia na túa rede local...<br/></string>
-    <string name="wizard_search_no_host_found">Non atopei ningún centro multimedia na túa rede.&lt;br/&gt; Se precisas axuda para configuralo, consulta &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aquí&lt;/a&gt;.&lt; br/&gt;&lt;br/&gt; Fai clic en &lt;b&gt;Procurar de novo&lt;/b&gt; ou en &lt;b&gt;Seguinte&lt;/b&gt; para a configuración manual.</string>
+    <string name="wizard_search_no_host_found">Non atopei ningún centro multimedia na túa rede.&lt;br/&gt;&lt;br/&gt; Asegúrache de que Kodi está a funcionar e está configurado correctamente, en concreto comproba o seguinte na &lt;b&gt;Configuración&lt;/b&gt; de Kodi: &lt;br/&gt;&lt; br/&gt; Seleccione &lt;b&gt;Servizos&lt;/b&gt;, logo &lt;b&gt;Control&lt;/b&gt; e: &lt;br/&gt; 1. Activar &lt;b&gt;Permitir o control remoto a través de HTTP&lt;/b &gt;; &lt;br/&gt; 2. Activa ambas as opcións &lt;b&gt;Permitir o control remoto desde aplicacións neste sistema&lt;/b&gt; e &lt;b&gt;Permitir o control remoto desde aplicacións noutros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Seleccione &lt;b&gt;Servizos&lt;/b&gt;, logo &lt;b&gt;Xeneral&lt;/b&gt; e: &lt;br&gt; 1. Activar &lt;b&gt;Anunciar servizos a outros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Podes obter axuda adicional &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aquí&lt;/a&gt; &lt;br/&gt;&lt;br/&gt; Fai clic en &lt;b&gt;Buscar&lt;/b&gt; de novo ou &lt;b&gt;Seguinte&lt;/b&gt; para configuralo manualmente.</string>
     <string name="wizard_search_no_network_connection">Por favor, activa unha conexión de rede antes de buscar centros multimedia.<br/></string>
     <string name="local_files">Ficheiros locais</string>
     <string name="file_browser">Explorador de ficheiros Kodi</string>
     <string name="weather">Clima</string>
     <string name="no_xbmc_configured">Non hai centros multimedia configurados</string>
     <string name="clean_video_library">Limpar biblioteca de vídeo</string>
-    <string name="wizard_welcome_message">Comecemos engadindo un centro multimedia. Asegúrache de que Kodi está a executarse, está configurado adecuadamente e está na mesma rede que o teu dispositivo.&lt;br/&gt;&lt;br/&gt; Podes obter axuda para configuralo &lt;a href=http://syncedsynapse.com/kore/kore-faq/ &gt;aquí&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Cuando estés listo, presiona &lt;b&gt;Seguinte&lt;/b&gt;.</string>
+    <string name="wizard_welcome_message">Comecemos engadindo un centro multimedia. &lt;br/&gt;Asegúrache de que Kodi está a executarse e está configurado correctamente. En concreto, comproba o seguinte na &lt;b&gt;Configuración&lt;/b&gt; de Kodi:&lt;br/&gt;&lt;br/&gt; Seleccionar &lt;b&gt;Servizos&lt;/b&gt;, e logo &lt;b&gt;Control&lt;/b&gt; e: &lt;br/&gt; 1. Activar &lt;b&gt;Permitir o control remoto a través de HTTP&lt;/b&gt;; &lt;br/&gt; 2. Activar ambas as opcións &lt;b&gt;ermitir o control remoto desde aplicacións neste sistema&lt;/b&gt; e &lt;b&gt;Permitir o control remoto desde aplicacións noutros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Seleccione &lt;b&gt;Servizos&lt;/b&gt;, logo &lt;b&gt;Xeneral&lt;/b&gt; e: &lt;br&gt; 1. Activar &lt;b&gt;Anunciar servizos a outros sistemas&lt;/b&gt;;&lt;br/&gt;&lt;br/&gt; Podes obter axuda adicional &lt;a href=http://syncedsynapse.com/kore/kore-faq/ &gt;aqui&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Cando esteas listo pulsa &lt;b&gt;Seguinte&lt;/b&gt;.</string>
     <string name="party_mode">Modo festa</string>
     <string name="up">Arriba</string>
     <string name="down">Abaixo</string>
@@ -399,4 +399,5 @@
     <string name="might_not_have_pvr">Non foi posible obter a información do PVR.
 \n
 \nÉ posible que o teu centro multimedia non teña un sintonizador ou non estea configurado. Se queres borrar esta entrada do menú lateral, podes facelo na pantalla de Configuración.</string>
+    <string name="preferred_youtube_addon">Complemento preferido de YouTube</string>
 </resources>
