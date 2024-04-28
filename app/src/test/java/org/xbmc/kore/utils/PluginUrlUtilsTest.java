@@ -63,4 +63,48 @@ public class PluginUrlUtilsTest {
         String pluginUrlUnlisted = PluginUrlUtils.toVimeoPluginUrl(playUriUnlisted);
         assertEquals("plugin://plugin.video.vimeo/play/?video_id=1234:hash", pluginUrlUnlisted);
     }
+
+    @Test
+    public void toDefaultYouTubePluginUrl() throws Exception {
+        // Some test cases come from youtube-dl/yt-dlp.
+
+        Uri playUriNormal = Uri.parse("https://www.youtube.com/watch?v=BaW_jenozKc&t=1s&end=9");
+        String pluginUriNormal = PluginUrlUtils.toDefaultYouTubePluginUrl(playUriNormal);
+        assertEquals("plugin://plugin.video.youtube/play/?video_id=BaW_jenozKc", pluginUriNormal);
+
+        Uri playUriWithPlaylist = Uri.parse("https://www.youtube.com/watch?v=LHpQExw47xg&list=PLfMKdAHATthHKCZ-WMjC7-Ks-9UxrxocQ");
+        String pluginUriWithPlaylist = PluginUrlUtils.toDefaultYouTubePluginUrl(playUriWithPlaylist);
+        assertEquals(
+            "plugin://plugin.video.youtube/play/?video_id=LHpQExw47xg&playlist_id=PLfMKdAHATthHKCZ-WMjC7-Ks-9UxrxocQ&order=default",
+            pluginUriWithPlaylist);
+
+        Uri playUriLive = Uri.parse("https://www.youtube.com/live/qVv6vCqciTM");
+        String pluginUriLive = PluginUrlUtils.toDefaultYouTubePluginUrl(playUriLive);
+        assertEquals("plugin://plugin.video.youtube/play/?video_id=qVv6vCqciTM", pluginUriLive);
+
+        Uri playUriShorts = Uri.parse("https://www.youtube.com/shorts/BGQWPY4IigY");
+        String pluginUriShorts = PluginUrlUtils.toDefaultYouTubePluginUrl(playUriShorts);
+        assertEquals("plugin://plugin.video.youtube/play/?video_id=BGQWPY4IigY", pluginUriShorts);
+    }
+
+    @Test
+    public void toInvidiousYouTubePluginUrl() throws Exception {
+        Uri playUriNormal = Uri.parse("https://www.youtube.com/watch?v=BaW_jenozKc&t=1s&end=9");
+        String pluginUriNormal = PluginUrlUtils.toInvidiousYouTubePluginUrl(playUriNormal);
+        assertEquals("plugin://plugin.video.invidious/?action=play_video&video_id=BaW_jenozKc", pluginUriNormal);
+
+        Uri playUriWithPlaylist = Uri.parse("https://www.youtube.com/watch?v=LHpQExw47xg&list=PLfMKdAHATthHKCZ-WMjC7-Ks-9UxrxocQ");
+        String pluginUriWithPlaylist = PluginUrlUtils.toInvidiousYouTubePluginUrl(playUriWithPlaylist);
+        assertEquals(
+            "plugin://plugin.video.invidious/?action=play_video&video_id=LHpQExw47xg",
+            pluginUriWithPlaylist);
+
+        Uri playUriLive = Uri.parse("https://www.youtube.com/live/qVv6vCqciTM");
+        String pluginUriLive = PluginUrlUtils.toInvidiousYouTubePluginUrl(playUriLive);
+        assertEquals("plugin://plugin.video.invidious/?action=play_video&video_id=qVv6vCqciTM", pluginUriLive);
+
+        Uri playUriShorts = Uri.parse("https://www.youtube.com/shorts/BGQWPY4IigY");
+        String pluginUriShorts = PluginUrlUtils.toInvidiousYouTubePluginUrl(playUriShorts);
+        assertEquals("plugin://plugin.video.invidious/?action=play_video&video_id=BGQWPY4IigY", pluginUriShorts);
+    }
 }
