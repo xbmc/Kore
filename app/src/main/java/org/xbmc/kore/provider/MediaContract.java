@@ -18,12 +18,14 @@ package org.xbmc.kore.provider;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import org.xbmc.kore.BuildConfig;
+
 /**
  * Contract class for interacting with {@link MediaProvider}.
  */
 public class MediaContract {
 
-    public static final String CONTENT_AUTHORITY = "org.xbmc.kore.provider";
+    public static final String CONTENT_AUTHORITY = BuildConfig.APPLICATION_ID + ".provider";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
