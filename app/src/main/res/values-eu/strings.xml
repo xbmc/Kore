@@ -68,18 +68,11 @@
 \nBerriro saiatzen…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Ongi etorri</string>
-    <string name="wizard_welcome_message"><![CDATA[
-    Hasteko multimedia zentro bat gehitu behar duzu. Ziurtatu zure Kodi/XBMC martxan, behar bezala konfiguratuta eta zure gailuaren sare berean dagoela.<br/><br/>
-    Konfiguratzen laguntzeko informazioa eskura dezakezu <a href="http://syncedsynapse.com/kore/kore-faq/">hemen</a>.<br/><br/>
-    Prest zaudenean sakatu <b><i>Hurrengoa</i></b>.
-    ]]></string>
+    <string name="wizard_welcome_message">Hasteko multimedia zentro bat gehitu behar duzu. &lt;br/&gt; Ziurtatu Kodi/XBMC martxan eta behar bezala konfiguratuta dagoela. Zehazki egiaztatu itzazu sistemako Kodi aplikazioaren hurrengoak: &lt;b&gt;Ezarpenak&lt;/b&gt;: &lt;br/&gt;&lt;br/&gt; Aukeratu &lt;b&gt;Zerbitzuak&lt;/b&gt;, then &lt;b&gt;Kontrola&lt;/b&gt; and: &lt;br/&gt; 1. Gaitu &lt;b&gt;Baimendu HTTP bidezko urruneko kontrola&lt;/b&gt;; &lt;br/&gt; 2. Gaitu bi aukerak &lt;b&gt;Baimendu urruneko kontrola sistemako aplikazioetatik&lt;/b&gt; eta &lt;b&gt;Baimendu urruneko kontrola beste sistemetako aplikazioetatik&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Aukeratu &lt;b&gt;Zerbitzuak&lt;/b&gt;, ondoren &lt;b&gt;Orokorra&lt;/b&gt; eta: &lt;br&gt; 1. Gaitu &lt;b&gt;Iragarri zerbitzuak beste sistemei&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Informazio gehigarria eskura dezakezu &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;hemen&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Prest zaudenean sakatu &lt;b&gt;&lt;i&gt;Hurrengoa&lt;/i&gt;&lt;/b&gt;.</string>
     <string name="wizard_search_message"><![CDATA[
     Multimedia zentroen bila zure sare lokalean…<br/>
     ]]></string>
-    <string name="wizard_search_no_host_found"><![CDATA[
-    Ezin izan dut multimedia zentrorik aurkitu zure sarean.<br/>Konfiguratzeko laguntza behar baduzu, begiratu <a href="http://syncedsynapse.com/kore/kore-faq/">hau</a>.<br/><br/>
-    Klikatu <i>Bilatu</i> berriz bilatzeko edo <i>Hurrengoa</i> eskuz konfiguratzeko.
-    ]]></string>
+    <string name="wizard_search_no_host_found">Ezin izan dut multimedia zentrorik aurkitu zure sarean.&lt;br/&gt;&lt;br/&gt; Ziurtatu ezazu Kodi martxan eta ondo konfiguratuta dagoela, zehazki egiaztatu itzazu sistemako Kodi aplikazioaren hurrengoak: &lt;b&gt;Ezarpenak&lt;/b&gt;: &lt;br/&gt;&lt;br/&gt; Aukeratu &lt;b&gt;Zerbitzuak&lt;/b&gt;, then &lt;b&gt;Kontrola&lt;/b&gt; and: &lt;br/&gt; 1. Gaitu &lt;b&gt;Baimendu HTTP bidezko urruneko kontrola&lt;/b&gt;; &lt;br/&gt; 2. Gaitu bi aukerak &lt;b&gt;Baimendu urruneko kontrola sistemako aplikazioetatik&lt;/b&gt; eta &lt;b&gt;Baimendu urruneko kontrola beste sistemetako aplikazioetatik&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Aukeratu &lt;b&gt;Zerbitzuak&lt;/b&gt;, ondoren &lt;b&gt;Orokorra&lt;/b&gt; eta: &lt;br&gt; 1. Gaitu &lt;b&gt;Iragarri zerbitzuak beste sistemei&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Laguntza gehigarria lortu dezakezu &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;hemen&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Egin klik &lt;i&gt;Bilatu&lt;/i&gt; berriz bilatzeko edo &lt;i&gt;Hurrengoa&lt;/i&gt; eskuz konfiguratzeko.</string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     Gaitu sareko konexio bat multimedia zentroak bilatu aurretik.<br/>
     ]]></string>
@@ -333,14 +326,19 @@
     <string name="pause_call_incoming_title">Sarrerako deia</string>
     <string name="pause_call_incoming_message">Begiratu zure telefonoa, norbait deitzen ari zaizu</string>
     <string name="error_getting_pvr_info">Ezin izan da PVR informazioa eskuratu
+\n
 \nErrorearen mezua: %1$s</string>
-    <string name="might_not_have_pvr">Errore bat gertatu da kanalen informazioa eskuratzean, seguraski zure multimedia zentroak sintonizadorerik ez daukalako edo ez dagoelako konfiguratuta..\n\n
-    	Hala bada eta sarrera hau alboko menutik kendu nahi baduzu, Ezarpenetan egin dezakezu.</string>
-    <string name="error_starting_channel">Errore bat gertatu da kanalaren erreprodukzioa hastean: %1$s</string>
+    <string name="might_not_have_pvr">Ezin izan da PVR informazioa eskuratu.
+\n
+\nBaliteke zure multimedia-zentroak tuner bat ez izatea edo konfiguratu gabe egotea. Sarrera hau alboko menutik kendu nahi baduzu, Ezarpenak pantailan egin dezakezu.</string>
+    <string name="error_starting_channel">Errore bat gertatu da kanalaren erreprodukzioa hastean
+\nDeskribapena: %1$s</string>
     <string name="error_favourites">Ezin izan dira gogokoak eskuratu
 \nErrorearen deskribapena: %1$s</string>
-    <string name="error_starting_recording">Errore bat gertatu da grabazioa hastean: %1$s</string>
-    <string name="error_starting_to_record">Errore bat gertatu da grabatzean: %1$s</string>
+    <string name="error_starting_recording">Errore bat gertatu da grabazioa erreproduzitzean
+\nDeskribapena: %1$s</string>
+    <string name="error_starting_to_record">Errore bat gertatu da grabatzean
+\nDeskribapena: %1$s</string>
     <string name="channel_switching">%1$s kanalera aldatzen</string>
     <string name="starting_recording">%1$s grabazioa hasten</string>
     <string name="refresh">Freskatu</string>
@@ -401,4 +399,9 @@
     <string name="watched_status">Ikusia</string>
     <string name="party_mode">Festa modua</string>
     <string name="not_connected">Deskonektatuta</string>
+    <string name="web_search">Web Bilaketa</string>
+    <string name="use_hardware_volume_keys_always">Beti</string>
+    <string name="use_hardware_volume_keys_never">Inoiz ez</string>
+    <string name="preferred_youtube_addon">Hobetsitako YouTube gehigarria</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Kore lehen planoan dagoenean</string>
 </resources>

@@ -41,8 +41,8 @@
     <string name="movies">Фільмы</string>
     <string name="swipe_down_to_refresh">Правядзіце ўніз, каб абнавіць</string>
     <string name="source_empty">Крыніца пустая</string>
-    <string name="clear_playlist">Ачысціць спіс прайгравання</string>
-    <string name="playlist_empty">Спіс прайгравання пусты</string>
+    <string name="clear_playlist">Ачысціць чаргу</string>
+    <string name="playlist_empty">Чарга пустая</string>
     <string name="error_getting_playlist">Не ўдалося атрымаць спіс прайгравання</string>
     <string name="general_error_executing_action">Не ўдалося выканаць дзеянне: %1$s</string>
     <string name="remaining_cast_count">яшчэ %d</string>
@@ -70,7 +70,7 @@
 \n Паведамленне памылкі: %1$s</string>
     <string name="error_getting_properties">Не ўдалося атрымаць уласцівасці Kodi.
 \n Паведамленне памылкі: %1$s</string>
-    <string name="playlist">Спіс прайгравання</string>
+    <string name="playlist">Чарга</string>
     <string name="fast_forward">Перамотка ўперад</string>
     <string name="thumbnail">Мініяцюра</string>
     <string name="poster">Постар</string>
@@ -166,9 +166,9 @@
     <string name="no_network_connection">Не падлучана да сеткі</string>
     <string name="wizard_search_host_found">У вашай сетцы знойдзеныя медыяцэнтры.<br/><br/> Абярыце адзін, каб дадаць або націсніце <b>Далей</b>, каб дадаць уласнаручна.</string>
     <string name="wizard_search_no_network_connection">Перад тым, як пачаць пошук, трэба падлучыцца да сеткі.<br/></string>
-    <string name="wizard_search_no_host_found">У вашай сетцы не выяўлена медыяцэнтраў.&lt;br/&gt; Даведнік па наладжванні можна паглядзець &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;тут&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Націсніце &lt;b&gt;Шукаць зноў&lt;/b&gt; або &lt;b&gt;Далей&lt;/b&gt;, каб наладзіць уласнаручна.</string>
+    <string name="wizard_search_no_host_found">У вашай сетцы не выяўлена медыяцэнтраў.&lt;br/&gt;&lt;br/&gt; Пераканайцеся, што Kodi запушчаны і правільна наладжаны. Праверце наступныя параметры ў &lt;b&gt;Наладах&lt;/b&gt; Kodi: &lt;br/&gt;&lt;br/&gt; Абярыце &lt;b&gt;Службы&lt;/b&gt;, потым &lt;b&gt;Кіраванне&lt;/b&gt; і: &lt;br/&gt; 1. Уключыце &lt;b &gt;Дазволіць адлеглае кіраванне праз HTTP&lt;/b&gt;; &lt;br/&gt; 2. Уключыце абодва варыянты &lt;b&gt;Дазволіць адлеглае кіраванне з праграм у гэтай сістэме&lt;/b&gt; і &lt;b&gt;Дазволіць адлеглае кіраванне з праграм у іншых сістэмах&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Абярыце &lt;b&gt;Службы&lt;/b&gt;, потым &lt;b&gt;Асноўныя&lt;/b&gt; і: &lt;br&gt; 1. Уключыце &lt;b&gt;Апавяшчаць іншыя сістэмы пра службы&lt;/b&gt;; &lt;br/&gt; Даведнік па наладжванні можна паглядзець &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;тут&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Націсніце &lt;b&gt;Шукаць зноў&lt;/b&gt; або &lt;b&gt;Далей&lt;/b&gt;, каб наладзіць уласнаручна.</string>
     <string name="wizard_search_message">Пошук медыяцэнтраў у лакальнай сетцы…<br/></string>
-    <string name="wizard_welcome_message">Спачатку трэба дадаць медыяцэнтр. Праверце, што Kodi запушчаны, правільна наладжаны і падлучаны да той жа сеткі, што і гэтая прылада.&lt;br/&gt;&lt;br/&gt; Падрабязныя звесткі пра наладжванне можна знайсці &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;тут&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Калі будзеце гатовыя, націсніце &lt;b&gt;Далей&lt;/b&gt;.</string>
+    <string name="wizard_welcome_message">Спачатку трэба дадаць медыяцэнтр. Праверце, што Kodi запушчаны і правільна наладжаны.&lt;br/&gt;&lt;br/&gt; Праверце наступныя параметры ў &lt;b&gt;Наладах&lt;/b&gt; Kodi: &lt;br/&gt;&lt;br/&gt; Абярыце &lt;b&gt;Службы&lt;/b&gt;, потым &lt;b&gt;Кіраванне&lt;/b&gt; і: &lt;br/&gt; 1. Уключыце &lt;b &gt;Дазволіць адлеглае кіраванне праз HTTP&lt;/b&gt;; &lt;br/&gt; 2. Уключыце абодва варыянты &lt;b&gt;Дазволіць адлеглае кіраванне з праграм у гэтай сістэме&lt;/b&gt; і &lt;b&gt;Дазволіць адлеглае кіраванне з праграм у іншых сістэмах&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Абярыце &lt;b&gt;Службы&lt;/b&gt;, потым &lt;b&gt;Асноўныя&lt;/b&gt; і: &lt;br&gt; 1. Уключыце &lt;b&gt;Апавяшчаць іншыя сістэмы пра службы&lt;/b&gt;; &lt;br/&gt;Падрабязныя звесткі пра наладжванне можна знайсці &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;тут&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Калі будзеце гатовыя, націсніце &lt;b&gt;Далей&lt;/b&gt;.</string>
     <string name="wizard_welcome">Вітаем!</string>
     <string name="connecting_to">Не ўдалося падлучыцца да %1$s (%2$s)
 \nПаўтарэнне спробы…</string>
@@ -218,10 +218,10 @@
     <string name="votes">%1$s ацэнак</string>
     <string name="download">Спампаваць</string>
     <string name="imdb">IMDb</string>
-    <string name="no_suitable_playlist">Не знойдзены спіс прайгравання, які пасуе для гэтага тыпу медыяфайлаў.</string>
+    <string name="no_suitable_playlist">Не знойдзена чарга, якая пасуе для гэтага тыпу медыяфайлаў.</string>
     <string name="item_sent_to_kodi">Адправіць у Kodi</string>
-    <string name="item_added_to_playlist">Дададзена ў спіс прайгравання</string>
-    <string name="add_to_playlist">Дадаць у спіс прайгравання</string>
+    <string name="item_added_to_playlist">Дададзена ў чаргу</string>
+    <string name="add_to_playlist">Дадаць у чаргу</string>
     <string name="action_search_music_videos">Пошук музычных відэа</string>
     <string name="action_search_genres">Пошук жанраў</string>
     <string name="action_search_artists">Пошук выканаўцаў</string>
@@ -389,4 +389,16 @@
     <string name="not_connected">Не падлучана</string>
     <string name="theme_variant_dark">Цёмны</string>
     <string name="theme_variant_light">Светлы</string>
+    <string name="theme_color_system_colors">Сістэмныя колеры</string>
+    <string name="theme_variant">Варыянт</string>
+    <string name="theme_color_green">Зялёная міля</string>
+    <string name="theme_color_yellow">Жоўтая субмарына</string>
+    <string name="use_hardware_volume_keys_never">Ніколі</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Калі Kore працуе на першым плане</string>
+    <string name="theme_variant_auto">Прадвызначаная сістэмная</string>
+    <string name="use_hardware_volume_keys_always">Заўсёды</string>
+    <string name="theme_color">Схема колераў</string>
+    <string name="theme_color_kore">Сіні аксаміт</string>
+    <string name="theme_color_purple">Пурпурны дождж</string>
+    <string name="preferred_youtube_addon">Пераважнае дапаўненне YouTube</string>
 </resources>

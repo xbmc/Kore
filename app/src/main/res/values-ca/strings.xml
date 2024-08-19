@@ -384,4 +384,5 @@
     <string name="use_hardware_volume_keys_always">Sempre</string>
     <string name="use_hardware_volume_keys_when_in_foreground">Quan Kore està en primer pla</string>
     <string name="theme_color">Esquema de color</string>
+    <string name="preferred_youtube_addon">Complement de YouTube preferit</string>
 </resources>
