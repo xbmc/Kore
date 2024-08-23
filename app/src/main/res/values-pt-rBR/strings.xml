@@ -281,4 +281,136 @@
     <string name="queue_action">Colocar na fila</string>
     <string name="theme_variant_dark">Escuro</string>
     <string name="theme_variant_light">Leve</string>
+    <string name="local_file_browser">Navegador de Arquivos Locais</string>
+    <string name="external_storage">Armazenamento</string>
+    <string name="local_files">Arquivos Locais</string>
+    <string name="media">Mídia</string>
+    <string name="window">Janela</string>
+    <string name="script">Script</string>
+    <string name="unknown">Desconhecido</string>
+    <string name="pvr">PVR</string>
+    <string name="weather">Clima</string>
+    <string name="system">Sistema</string>
+    <string name="not_connected">Não conectado</string>
+    <string name="wizard_xbmc_direct_share">Mostrar na planilha de compartilhamento</string>
+    <string name="party_mode">Modo festa</string>
+    <string name="dcim">DCIM</string>
+    <string name="error_favourites">Não foi possível obter favoritos
+\nDescrição do erro: %1$s</string>
+    <string name="error_play_local_file">Não foi possível reproduzir o arquivo de mídia local.
+\nMensagem de erro: %1$s</string>
+    <string name="error_share_video">Não foi possível compartilhar o vídeo com o Kodi.</string>
+    <string name="error_reading_local_storage">Não foi possível ler o armazenamento local. Você deu permissão ao Kore para acessar o armazenamento de arquivos?</string>
+    <string name="error_starting_http_server">Não foi possível criar ou iniciar o servidor HTTP.</string>
+    <string name="no_songs_found_refresh">Nenhuma música encontrada</string>
+    <string name="no_channel_groups_found_refresh">Nenhum grupo de canais encontrado</string>
+    <string name="no_channels_found_refresh">Nenhum canal encontrado</string>
+    <string name="no_favourites_found_refresh">Nenhum favorito encontrado</string>
+    <string name="no_recordings_found_refresh">Nenhuma gravação encontrada</string>
+    <string name="no_broadcasts_found_refresh">Nenhuma transmissão encontrada</string>
+    <string name="minutes_abbrev2">%1$sm</string>
+    <string name="item_sent_to_kodi">Enviar para o Kodi</string>
+    <string name="watched_status">Assistido</string>
+    <string name="unwatched_status">Não Assistido</string>
+    <string name="pinned_status">Fixado</string>
+    <string name="unpinned_status">Não Fixado</string>
+    <string name="enabled_status">Habilitado</string>
+    <string name="disabled_status">Desabilitado</string>
+    <string name="download_action">Baixar</string>
+    <string name="stream_action">Transmitir</string>
+    <string name="confirm_artist_download">Tem certeza de que deseja baixar todos os álbuns?
+\nOs álbuns serão baixados em segundo plano, mas pode demorar um pouco para terminar.</string>
+    <string name="confirm_songs_download">Tem certeza de que deseja baixar %1$d músicas?
+\n As músicas serão baixadas em segundo plano, mas pode demorar um pouco para terminar.</string>
+    <string name="download_files_exists">Já existe um ou mais arquivos.
+\n Se algum arquivo tiver o mesmo nome, deseja substituí-lo ou baixá-lo com um novo nome?</string>
+    <string name="tvshow_seasons">Temporadas</string>
+    <string name="tvshow_next_episode">Próximos Episódios</string>
+    <string name="addon_overview">Visão Geral</string>
+    <string name="addon_content">Conteúdo</string>
+    <string name="addon_pinned">Addon fixado</string>
+    <string name="addon_unpinned">Addon não fixado</string>
+    <string name="hide_disabled">Ocultar desabilitado</string>
+    <string name="sort_by_year">Por ano</string>
+    <string name="sort_by_rating">Por avaliação</string>
+    <string name="sort_by_length">Por duração</string>
+    <string name="sort_by_last_played">Por último reproduzido</string>
+    <string name="unsorted">Não ordenado</string>
+    <string name="show_watched_status">Mostrar status de assistido</string>
+    <string name="show_rating">Mostrar avaliação</string>
+    <string name="application">Aplicativo</string>
+    <string name="theme_default_dynamic">Dinâmico Dia/Noite</string>
+    <string name="theme_sun_dynamic">Nascer/Pôr do Sol Dinâmico</string>
+    <string name="theme_sunrise">Nascer do sol</string>
+    <string name="theme_sunset">Pôr do sol</string>
+    <string name="theme_color">Esquema de Cores</string>
+    <string name="theme_color_system_colors">Cores do Sistema</string>
+    <string name="theme_color_kore">Veludo Azul</string>
+    <string name="theme_color_green">Milha Verde</string>
+    <string name="theme_color_yellow">Submarino Amarelo</string>
+    <string name="theme_color_purple">Chuva Púrpura</string>
+    <string name="theme_variant">Variante</string>
+    <string name="theme_variant_auto">Padrão do Sistema</string>
+    <string name="keep_remote_above_lockscreen">Mostrar na tela de bloqueio</string>
+    <string name="pref_keep_screen_on">Ficar acordado</string>
+    <string name="show_now_playing_panel">Mostrar painel de reproduzindo agora</string>
+    <string name="show_now_playing_panel_summary">Exibir um painel na parte inferior da tela quando a mídia estiver sendo reproduzida</string>
+    <string name="pause_during_calls">Pausar durante chamada telefônica</string>
+    <string name="always_sendtokodi_addon">Prefirir o addon SendToKodi</string>
+    <string name="remote_bar_items">Atalhos da barra inferior</string>
+    <string name="nav_drawer_items">Atalhos do menu lateral</string>
+    <string name="download_network_types_title">Restringir downloads de mídia</string>
+    <string name="download_network_types_summary">Selecione os tipos de rede nos quais os downloads de mídia são permitidos</string>
+    <string name="queue_on_kodi">Fila no Kodi</string>
+    <string name="pause_call_incoming_title">Chamada recebida</string>
+    <string name="pause_call_incoming_message">Verifique seu telefone, alguém está ligando para você</string>
+    <string name="error_getting_pvr_info">Não foi possível obter informações de PVR
+\n
+\nDescrição do erro: %1$s</string>
+    <string name="might_not_have_pvr">Não foi possível obter informações de PVR.
+\n
+\nSua central multimídia pode não ter um sintonizador ou não estar configurada. Se desejar remover esta entrada do menu lateral, você pode fazê-lo na tela Configurações.</string>
+    <string name="error_starting_channel">Ocorreu um erro ao iniciar a reprodução do canal
+\nDescrição: %1$s</string>
+    <string name="error_starting_recording">Ocorreu um erro ao reproduzir uma gravação
+\nDescrição: %1$s</string>
+    <string name="error_starting_to_record">Ocorreu um erro durante a gravação
+\nDescrição: %1$s</string>
+    <string name="channel_switching">Mudando para o canal 1%1$s</string>
+    <string name="starting_recording">Começando a gravar 1%1$s</string>
+    <string name="refresh">Atualizar</string>
+    <string name="tv">TV</string>
+    <string name="recordings">Gravações</string>
+    <string name="tv_channels">Canais de TV</string>
+    <string name="radio_channels">Canais de Rádio</string>
+    <string name="record">Gravar</string>
+    <string name="pvr_epg">Guia</string>
+    <string name="unable_to_move_item">Não foi possível mover o item</string>
+    <string name="unable_to_play_favourite_item">Não foi possível reproduzir o item favorito. Tipo Não Suportado</string>
+    <string name="cannot_move_playing_item">Não foi possível mover o item atualmente em reprodução/pausado</string>
+    <string name="no_connection_type_selected">Nenhum tipo de conexão selecionado nas configurações</string>
+    <string name="single_column">Coluna única</string>
+    <string name="multi_column">Multicoluna</string>
+    <string name="songs">Canções</string>
+    <string name="read_phone_state_permission_denied">Permissão negada. Não será possível pausar a reprodução durante as chamadas.</string>
+    <string name="write_storage_permission_denied">Permissão negada. Não será possível baixar arquivos.</string>
+    <string name="read_storage_permission_denied">Permissão negada. Não será possível ler arquivos.</string>
+    <string name="no_songs_to_download">Não há músicas para baixar</string>
+    <string name="by_album">Por álbum</string>
+    <string name="by_artist">Por artista</string>
+    <string name="by_artist_and_year">Por artista e ano</string>
+    <string name="muted">silenciado</string>
+    <string name="no_item_available_to_play">Erro: nenhum item disponível para reproduzir.</string>
+    <string name="Refreshing_not_implemented_for_this_item">Atualização não implementada para este item</string>
+    <string name="zeroprogress">0:00</string>
+    <string name="toggle_expand">Expandir/Recolher</string>
+    <string name="language">Idioma</string>
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="mobile_network">Móvel</string>
+    <string name="any_network">Qualquer</string>
+    <string name="web_search">Pesquisa na Web</string>
+    <string name="use_hardware_volume_keys_never">Nunca</string>
+    <string name="use_hardware_volume_keys_always">Sempre</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Quando o Kore está em segundo plano</string>
+    <string name="preferred_youtube_addon">Preferir addon do Youtube</string>
 </resources>
