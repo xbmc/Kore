@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2015 Synced Synapse. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources>
+  
+    <string name="app_name" translatable="false">کور</string>
+    <string name="settings">تنظیمات</string>
+    <string name="action_options">گزینه‌ها</string>
+  
+    <string name="loading">در حال بارگذاری…</string>
+  
+    <!-- Navigation drawer tips -->
+    <string name="navigation_drawer_open">باز کردن منوی ناوبری</string>
+    <string name="navigation_drawer_close">بستن منوی ناوبری</string>
+  
+    <string name="xbmc_media_center">مرکز رسانه‌ای</string>
+    <string name="home">خانه</string>
+    <string name="movies">فیلم‌ها</string>
+    <string name="tv_shows">سریال‌ها</string>
+    <string name="music">موسیقی</string>
+    <string name="pictures">تصاویر</string>
+    <string name="dcim">DCIM</string>
+    <string name="external_storage">حافظه ذخیره‌سازی</string>
+    <string name="addons">افزونه‌ها</string>
+    <string name="files">پرونده‌های کودی</string>
+    <string name="local_files">پرونده‌های محلی</string>
+    <string name="video">ویدئو</string>
+    <string name="videos">ویدئوها</string>
+    <string name="media">رسانه</string>
+    <string name="window">پنجره</string>
+    <string name="script">اسکریپت</string>
+    <string name="unknown">ناشناس</string>
+    <string name="file_browser">مرورگر پرونده کودی</string>
+    <string name="local_file_browser">مرورگر پرونده محلی</string>
+    <string name="pvr">PVR</string>
+    <string name="favourites">علاقه‌مندی‌ها</string>
+    <string name="weather">آب و هوا</string>
+    <string name="system">سامانه</string>
+  
+    <string name="no_xbmc_configured">هیچ مرکز رسانه‌ای پیکربندی نشده</string>
+    <string name="add_xbmc">افزودن مرکز رسانه‌ای</string>
+  
+    <string name="xbmc_quit">مرکز رسانه‌ای در حال بسته شدن است.</string>
+    <string name="wol_sent">درخواست روشن شدن به مرکز رسانه‌ای فرستاده شد.</string>
+  
+    <string name="power">نیرو</string>
+    <string name="quit">خروج</string>
+    <string name="suspend">تعلیق</string>
+    <string name="reboot">باز راه‌اندازی</string>
+    <string name="shutdown">خاموش کردن</string>
+  
+    <string name="send">فرستادن</string>
+    <string name="send_text">فرستادن متن به مرکز رسانه‌ای</string>
+    <string name="text_to_send">متن برای فرستادن</string>
+  
+    <string name="finish_after_send">پس از فرستادن تمام شود</string>
+    <string name="library_actions">نگهداری کتابخانه</string>
+    <string name="clean_video_library">پاک کردن کتابخانه ویدئو</string>
+    <string name="clean_audio_library">پاک کردن کتابخانه صوت</string>
+    <string name="update_video_library">به‌روزرسانی کتابخانه ویدئو</string>
+    <string name="update_audio_library">به‌روزرسانی کتابخانه صوت</string>
+  
+    <string name="toggle_fullscreen">تغییر حالت تمام‌صفحه</string>
+  
+    <string name="not_connected">متصل نیست</string>
+    <string name="connected_to">متصل به %1$s</string>
+    <string name="connecting">در حال اتصال…</string>
+    <string name="connecting_to">نمی‌توان به %1$s (%2$s) متصل شد\nدر حال تلاش دوباره</string>
+  
+    <!-- String used in add host wizard -->
+    <string name="wizard_welcome">خوش آمدید</string>
+    <string name="wizard_welcome_message"><![CDATA[
+        بیایید با افزودن یک مرکز رسانه‌ای آغاز کنیم.
+        <br/>
+        بررسی کنید که کودی در حال اجرا است و به درستی پیکربندی شده است. به ویژه گزینه‌های زیر را در تنظیمات کودی بررسی کنید:
+        <br/><br/>
+        <b>خدمات</b> را انتخاب کنید، سپس <b>کنترل</b> و:
+        <br/>
+        1. <b>اجازه کنترل از راه دور از طریق HTTP</b> را روشن کنید;
+        <br/>
+        2. هر دو گزینه <b>اجازه کنترل از راه دور از برنامه‌های این سامانه</b> و <b>اجازه کنترل از راه دور از برنامه‌های سامانه‌های دیگر</b> را روشن کنید;
+        <br/><br/>
+        <b>خدمات</b> را انتخاب کنید، سپس <b>عمومی</b> و:
+        <br>
+        1. <b>اعلان خدمات به سامانه‌های دیگر</b> را روشن کنید;
+        <br/><br/>
+        می‌توانید کمک بیشتری <a href="http://syncedsynapse.com/kore/kore-faq/">اینجا</a> دریافت کنید.
+        <br/><br/>
+        وقتی آماده هستید، روی <b>بعدی</b> کلیک کنید.
+    ]]></string>
+    <string name="wizard_search_message"><![CDATA[
+        در حال جستجوی مراکز رسانه‌ای در شبکه محلی شما…<br/>
+    ]]></string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+        هیچ مرکز رسانه‌ای در شبکه شما پیدا نشد.<br/><br/>
+        بررسی کنید که کودی در حال اجرا است و به درستی پیکربندی شده است، به ویژه موارد زیر را در تنظیمات کودی بررسی کنید:
+        <br/><br/>
+        <b>خدمات</b> را انتخاب کنید، سپس <b>کنترل</b> و:
+        <br/>
+        1. <b>اجازه کنترل از راه دور با HTTP</b> را روشن کنید;
+        <br/>
+        2. هر دو گزینه <b>اجازه کنترل از راه دور از برنامه‌های این سامانه</b> و <b>اجازه کنترل از راه دور از برنامه‌های سامانه‌های دیگر</b> را روشن کنید;
+        <br/><br/>
+        <b>خدمات</b> را انتخاب کنید، سپس <b>عمومی</b> و:
+        <br>
+        1. <b>اعلان خدمات به سامانه‌های دیگر</b> را روشن کنید;
+        <br/><br/>
+        می‌توانید کمک بیشتری <a href="http://syncedsynapse.com/kore/kore-faq/">اینجا</a> دریافت کنید.
+        <br/><br/>
+        روی <b>دوباره جستجو</b> کلیک کنید یا <b>بعدی</b> را برای پیکربندی دستی انتخاب کنید.
+    ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+        لطفاً پیش از جستجوی مراکز رسانه‌ای، اتصال به شبکه را روشن کنید.<br/>
+    ]]></string>
+    <string name="wizard_search_host_found"><![CDATA[
+        مراکز رسانه‌ای زیر را در شبکه شما پیدا کردم.<br/><br/>
+        یکی را برای اضافه کردن انتخاب کنید یا روی <b>بعدی</b> کلیک کنید تا یکی را به صورت دستی اضافه کنید.
+    ]]></string>
+    <string name="no_network_connection">به شبکه متصل نیست</string>
+    <string name="searching">در حال جستجو…</string>
+    <string name="no_xbmc_found">هیچ مرکز رسانه‌ای پیدا نشد</string>
+    <string name="xbmc_found">مرکز رسانه‌ای پیدا شد</string>
+    <string name="wizard_manual_configuration">پیکربندی دستی</string>
+    <string name="wizard_manual_configuration_message">پیکربندی مرکز رسانه‌ای خود را وارد کنید:</string>
+    <string name="wizard_manual_configuration_message_advanced">پیکربندی پیشرفته (برای مقادیر پیش‌فرض خالی بگذارید)</string>
+    <string name="wizard_xbmc_name">نام مرکز رسانه‌ای</string>
+    <string name="wizard_xbmc_ip">آدرس</string>
+    <string name="wizard_xbmc_port">پورت</string>
+    <string name="wizard_xbmc_username">نام کاربری</string>
+    <string name="wizard_xbmc_password">رمز عبور</string>
+    <string name="wizard_xbmc_tcp_port">پورت TCP (9090)</string>
+    <string name="wizard_xbmc_mac_address">آدرس MAC</string>
+    <string name="wizard_xbmc_wol_port">پورت WoL (9)</string>
+    <string name="wizard_xbmc_use_tcp">استفاده از TCP</string>
+    <string name="wizard_xbmc_event_server_port">پورت ES (9777)</string>
+    <string name="wizard_xbmc_use_event_server">استفاده از EventServer</string>
+    <string name="wizard_xbmc_direct_share">نمایش در منوی اشتراک</string>
+  
+    <string name="wizard_no_name_specified">لطفاً یک نام برای این مرکز رسانه‌ای مشخص کنید تا بعداً بتوانید آن را شناسایی کنید.</string>
+    <string name="wizard_no_address_specified">لطفاً آدرس این مرکز رسانه‌ای را مشخص کنید تا بتوانم آن را پیدا کنم.</string>
+    <string name="wizard_invalid_http_port_specified">لطفاً یک پورت HTTP معتبر برای این مرکز رسانه‌ای مشخص کنید.</string>
+    <string name="wizard_invalid_tcp_port_specified">لطفاً یک پورت TCP معتبر برای این مرکز رسانه‌ای مشخص کنید.</string>
+    <string name="wizard_invalid_es_port_specified">لطفاً یک پورت EventServer معتبر برای این مرکز رسانه‌ای مشخص کنید.</string>
+  
+    <string name="wizard_connecting_to_xbmc_title">در حال اتصال به %1$s…</string>
+    <string name="wizard_connecting_to_xbmc_message">لطفاً صبر کنید تا تلاش کنم به مرکز رسانه‌ای شما متصل شوم…</string>
+  
+    <string name="wizard_empty_authentication">کودی نیاز به تأیید هویت دارد.
+        لطفاً یک نام کاربری و رمز عبور مشخص کنید.</string>
+    <string name="wizard_incorrect_authentication">نام کاربری و/یا رمز عبور اشتباه است.
+        لطفاً اطلاعات ورود خود را بررسی کنید.</string>
+    <string name="wizard_success_connecting">به کودی متصل شد.</string>
+    <string name="wizard_error_connecting">نمی‌توان به کودی متصل شد.
+        لطفاً پیکربندی را بررسی کنید.</string>
+  
+    <string name="wizard_done">همه کارها انجام شد!</string>
+    <string name="wizard_done_message"><![CDATA[
+        مرکز رسانه‌ای شما پیکربندی شد.<br/>
+        اکنون می‌توانید از هدایت‌گر برای کنترل آن استفاده کنید. کتابخانه شما در حال همگام‌سازی است و باید در عرض چند لحظه در دسترس باشد.<br/><br/>
+        روی <b>پایان</b> کلیک کنید تا شروع به استفاده از هدایت‌گر کنید.
+    ]]></string>
+  
+    <string name="wizard_zeroconf_no_host_address">نمی‌توان آدرس این مرکز رسانه‌ای را دریافت کرد!</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">نمی‌توان به این مرکز رسانه‌ای متصل شد زیرا نتوانستم آدرس آن را کشف کنم.</string>
+  
+    <string name="play">پخش</string>
+    <string name="pause">توقف موقت</string>
+    <string name="stop">توقف</string>
+    <string name="fast_forward">پیش‌برد سریع</string>
+    <string name="rewind">عقب‌برد سریع</string>
+  
+    <string name="repeat">تکرار</string>
+    <string name="shuffle">تصادفی</string>
+    <string name="volume_up">افزایش صدا</string>
+    <string name="volume_down">کاهش صدا</string>
+    <string name="volume_mute">بی‌صدا</string>
+    <string name="subtitles">زیرنویس‌ها</string>
+    <string name="audiostreams">جریان‌های صدا</string>
+    <string name="no_audiostream">هیچ جریان صدایی موجود نیست</string>
+    <string name="download_subtitle">دریافت زیرنویس</string>
+    <string name="none">هیچ‌کدام</string>
+    <string name="audio_sync">هماهنگی صدا</string>
+    <string name="subtitle_sync">هماهنگی زیرنویس</string>
+    <string name="party_mode">حالت مهمانی</string>
+  
+    <string name="left">چپ</string>
+    <string name="right">راست</string>
+    <string name="up">بالا</string>
+    <string name="down">پایین</string>
+    <string name="select">انتخاب</string>
+    <string name="info">درباره</string>
+    <string name="codec_info">کُدِک</string>
+    <string name="context">زمینه</string>
+    <string name="osd">منو</string>
+    <string name="back">بازگشت</string>
+  
+    <string name="previous">پیشین</string>
+    <string name="next">پسین</string>
+    <string name="finish">پایان</string>
+    <string name="test_connection">بررسی</string>
+    <string name="search_again">جست‌وجو دوباره</string>
+  
+    <string name="remove">برداشتن</string>
+    <string name="edit">ویرایش</string>
+    <string name="wake_up">برانگیختن</string>
+    <string name="edit_xbmc">ویرایش مرکز رسانه‌ای</string>
+    <string name="delete_xbmc">پاک‌کردن مرکز رسانه‌ای</string>
+    <string name="delete_xbmc_confirm">آیا مطمئن هستید که می‌خواهید این مرکز رسانه‌ای را پاک کنید؟</string>
+    <string name="queue_file">صف</string>
+    <string name="play_file">پخش</string>
+    <string name="play_from_here">پخش از اینجا</string>
+  
+    <string name="connecting_to_xbmc">در حال اتصال…</string>
+    <string name="unable_to_connect_to_xbmc">نمی‌توان به مرکز رسانه‌ای متصل شد</string>
+    <string name="connected_to_xbmc">متصل شد</string>
+    <string name="xbmc_available">در دسترس</string>
+    <string name="xbmc_unavailable">در دسترس نیست</string>
+  
+    <string name="nothing_playing">چیزی پخش نمی‌شود</string>
+  
+    <!-- Main view tabs -->
+    <string name="now_playing">در حال پخش</string>
+    <string name="remote">هدایت‌گر</string>
+    <string name="playlist">صف پخش</string>
+  
+    <string name="season_episode_abbrev">s%1$02de%2$02d</string>
+    <string name="season_episode">فصل %1$02d | قسمت %2$02d</string>
+    <string name="season_number">فصل %1$02d</string>
+    <string name="episode_number">قسمت %1$d</string>
+  
+    <string name="votes">%1$s رای</string>
+  
+    <string name="fanart">هنر طرفداری</string>
+    <string name="poster">پوستر</string>
+    <string name="thumbnail">تصویر کوچک</string>
+  
+    <string name="error_favourites">نمی‌توان علاقه‌مندی‌ها را دریافت کرد
+توضیح خطا: %1$s</string>
+    <string name="error_getting_properties">نمی‌توان ویژگی‌های کودی را دریافت کرد.
+پیام خطا: %1$s</string>
+    <string name="error_executing_subtitles">نمی‌توان افزونه زیرنویس را اجرا کرد.
+پیام خطا: %1$s</string>
+    <string name="error_getting_addon_info">نمی‌توان لیست افزونه‌ها را دریافت کرد.
+پیام خطا: %1$s</string>
+    <string name="error_getting_source_info">نمی‌توان پرونده‌ها را مرور کرد.
+پیام خطا: %1$s</string>
+    <string name="error_play_media_file">نمی‌توان پرونده رسانه‌ای را پخش کرد.
+پیام خطا: %1$s</string>
+    <string name="error_play_local_file">نمی‌توان پرونده رسانه‌ای محلی را پخش کرد.
+پیام خطا: %1$s</string>
+    <string name="error_queue_media_file">نمی‌توان پرونده رسانه‌ای را به صف اضافه کرد.
+پیام خطا: %1$s</string>
+    <string name="error_get_active_player">نمی‌توان پخش‌کننده فعال را دریافت کرد.
+پیام خطا: %1$s</string>
+    <string name="error_share_video">نمی‌توان ویدئو را به کودی اشتراک گذاشت.</string>
+    <string name="error_reading_local_storage">نمی‌توان حافظه محلی را خواند. آیا مجوز دسترسی به حافظه پرونده را به کور داده‌اید؟</string>
+    <string name="error_starting_http_server">نمی‌توان سرور HTTP ایجاد یا راه‌اندازی کرد.</string>
+  
+    <string name="directors">کارگردانان:</string>
+    <string name="studio">استودیو:</string>
+    <string name="cast">بازیگران</string>
+    <string name="additional_cast">بازیگران دیگر</string>
+    <string name="cast_list_text">%1$s در نقش %2$s</string>
+    <!-- String to be used as the text on the cast grid view, when there is more actors than are shown -->
+    <string name="remaining_cast_count">%d بازیگر دیگر</string>
+  
+    <string name="general_error_executing_action">خطا در اجرای عملیات: %1$s</string>
+    <string name="error_getting_playlist">خطا در دریافت صف پخش</string>
+    <string name="playlist_empty">صف پخش خالی است</string>
+    <string name="clear_playlist">پاک کردن صف پخش</string>
+    <string name="source_empty">منبع رسانه‌ای خالی است</string>
+  
+    <string name="swipe_down_to_refresh">برای تازه‌سازی به پایین بکشید</string>
+    <string name="no_movies_found_refresh">هیچ فیلمی پیدا نشد</string>
+    <string name="no_tvshows_found_refresh">هیچ سریالی پیدا نشد</string>
+    <string name="no_episodes_found">هیچ قسمتی پیدا نشد</string>
+    <string name="no_artists_found_refresh">هیچ هنرمندی پیدا نشد</string>
+    <string name="no_albums_found_refresh">هیچ آلبومی پیدا نشد</string>
+    <string name="no_genres_found_refresh">هیچ ژانری پیدا نشد</string>
+    <string name="no_songs_found_refresh">هیچ آهنگی پیدا نشد</string>
+    <string name="no_addons_found_refresh">هیچ افزونه‌ای پیدا نشد</string>
+    <string name="no_music_videos_found_refresh">هیچ ویدئویی پیدا نشد</string>
+    <string name="no_channel_groups_found_refresh">هیچ گروه کانالی پیدا نشد</string>
+    <string name="no_channels_found_refresh">هیچ کانالی پیدا نشد</string>
+    <string name="no_favourites_found_refresh">هیچ علاقه‌مندی‌ای پیدا نشد</string>
+    <string name="no_recordings_found_refresh">هیچ ضبطی پیدا نشد</string>
+    <string name="no_broadcasts_found_refresh">هیچ پخشی پیدا نشد</string>
+    <string name="pull_to_refresh">برای تازه‌سازی بکشید</string>
+    <string name="no_cast_info">هیچ داده‌ای از بازیگران برای نمایش نیست</string>
+  
+    <string name="minutes_abbrev">%1$s دقیقه</string>
+    <string name="minutes_abbrev2">%1$sm</string>
+    <string name="sync_successful">هماهنگ‌سازی موفقیت‌آمیز بود</string>
+    <string name="error_while_syncing">هنگام هماهنگ‌سازی خطایی رخ داد: %1$s</string>
+  
+    <string name="action_search">جستجو</string>
+    <string name="action_search_movies">جستجوی فیلم‌ها</string>
+    <string name="action_search_tvshows">جستجوی سریال‌ها</string>
+    <string name="action_search_albums">جستجوی آلبوم‌ها</string>
+    <string name="action_search_artists">جستجوی هنرمندان</string>
+    <string name="action_search_genres">جستجوی ژانرها</string>
+    <string name="action_search_music_videos">جستجوی ویدئوها</string>
+  
+    <string name="add_to_playlist">افزودن به صف</string>
+    <string name="item_added_to_playlist">به صف پخش اضافه شد</string>
+    <string name="item_sent_to_kodi">به کودی فرستاده شد</string>
+    <string name="no_suitable_playlist">صف پخش مناسبی برای اضافه کردن نوع رسانه‌ای پیدا نشد.</string>
+    <string name="download">دریافت</string>
+  
+    <!-- Buttons on Info fragment -->
+    <string name="imdb" translatable="false">IMDb</string>
+    <string name="watched_status">دیده‌شده</string>
+    <string name="unwatched_status">دیده‌نشده</string>
+    <string name="pinned_status">ثابت‌شده</string>
+    <string name="unpinned_status">آزادشده</string>
+    <string name="enabled_status">روشن‌شده</string>
+    <string name="disabled_status">خاموش‌شده</string>
+    <string name="download_action">دریافت</string>
+    <string name="queue_action">صف</string>
+    <string name="stream_action">پخش زنده</string>
+  
+    <!-- Download dialog messages -->
+    <string name="confirm_movie_download">آیا مطمئن هستید که می‌خواهید این فیلم را دریافت کنید؟
+        فیلم در پس‌زمینه دریافت خواهد شد، اما ممکن است مدتی طول بکشد تا کامل شود.</string>
+    <string name="confirm_episode_download">آیا مطمئن هستید که می‌خواهید این قسمت را دریافت کنید؟
+        قسمت در پس‌زمینه دریافت خواهد شد، اما ممکن است مدتی طول بکشد تا کامل شود.</string>
+    <string name="confirm_album_download">آیا مطمئن هستید که می‌خواهید این آلبوم را دریافت کنید؟
+        آلبوم در پس‌زمینه دریافت خواهد شد، اما ممکن است مدتی طول بکشد تا کامل شود.</string>
+    <string name="confirm_artist_download">آیا مطمئن هستید که می‌خواهید همه آلبوم‌ها را دریافت کنید؟
+        آلبوم‌ها در پس‌زمینه دریافت خواهند شد، اما ممکن است مدتی طول بکشد تا کامل شوند.</string>
+    <string name="confirm_songs_download">آیا مطمئن هستید که می‌خواهید %1$d آهنگ دریافت کنید؟
+        آهنگ‌ها در پس‌زمینه دریافت خواهند شد، اما ممکن است مدتی طول بکشد تا کامل شوند.</string>
+  
+    <string name="download_file_exists">پرونده از پیش وجود دارد.
+        آیا می‌خواهید آن را جایگزین کنید یا با نام جدیدی دریافت کنید؟</string>
+    <string name="download_dir_exists">پوشه دریافت از پیش وجود دارد.
+        اگر پرونده‌هایی با نام مشابه وجود دارند، آیا می‌خواهید آن‌ها را جایگزین کنید یا با نام جدیدی دریافت کنید؟</string>
+    <string name="download_files_exists">یک یا چند پرونده از پیش وجود دارند.
+        اگر پرونده‌هایی با نام مشابه وجود دارند، آیا می‌خواهید آن‌ها را جایگزین کنید یا با نام جدیدی دریافت کنید؟</string>
+    <string name="overwrite">جایگزین کردن</string>
+    <string name="download_with_new_name">نام جدید</string>
+    <string name="download_file_description">از مرکز رسانه‌ای شما دریافت شده است</string>
+  
+    <string name="num_episodes">%1$d قسمت | %2$d دیده‌نشده</string>
+    <string name="premiered">اکران: %1$s</string>
+  
+    <string name="tvshow_overview">خلاصه</string>
+    <string name="tvshow_episodes">قسمت‌ها</string>
+    <string name="tvshow_seasons">فصل‌ها</string>
+    <string name="tvshow_next_episode">قسمت‌های بعدی</string>
+  
+    <string name="addon_overview">خلاصه</string>
+    <string name="addon_content">محتوا</string>
+  
+    <string name="artists">هنرمندان</string>
+    <string name="albums">آلبوم‌ها</string>
+    <string name="genres">ژانرها</string>
+    <string name="music_videos">ویدئوها</string>
+  
+    <string name="no_files_to_download">هیچ برونده‌ای برای دریافت نیست.</string>
+    <string name="error_getting_file_information">نمی‌توان اطلاعات پرونده %1$s را برای دریافت دریافت کرد.</string>
+  
+    <string name="author">نویسنده:</string>
+    <string name="version">نسخه:</string>
+    <string name="enable_disable">روشن/خاموش کردن افزونه</string>
+    <string name="addon_enabled">افزونه روشن شد</string>
+    <string name="addon_disabled">افزونه خاموش شد</string>
+    <string name="addon_pinned">افزونه ثابت شد</string>
+    <string name="addon_unpinned">افزونه آزاد شد</string>
+  
+    <!-- Filters on list menus -->
+    <string name="hide_watched">پنهان کردن دیده‌شده‌ها</string>
+    <string name="hide_disabled">پنهان کردن خاموش‌ها</string>
+    <string name="sort_order">مرتب‌سازی</string>
+    <string name="sort_by_name">بر پایه نام</string>
+    <string name="sort_by_year">بر پایه سال</string>
+    <string name="sort_by_rating">بر پایه امتیاز</string>
+    <string name="sort_by_length">بر پایه طول</string>
+    <string name="sort_by_date_added">بر پایه تاریخ اضافه شدن</string>
+    <string name="sort_by_last_played">بر پایه آخرین پخش</string>
+    <string name="unsorted">بدون مرتب‌سازی</string>
+    <string name="ignore_prefixes">چشم‌پوشی از پیشوندها</string>
+    <string name="show_watched_status">نمایش وضعیت دیده‌شده</string>
+    <string name="show_rating">نمایش امتیاز</string>
+  
+    <!-- Preferences strings -->
+    <string name="application">برنامه</string>
+  
+    <string name="theme">پوسته</string>
+    <string name="theme_default_dynamic">روز/شب پویا</string>
+    <string name="theme_night">شب</string>
+    <string name="theme_day">روز</string>
+    <string name="theme_sun_dynamic">طلوع/غروب خورشید پویا</string>
+    <string name="theme_sunrise">طلوع خورشید</string>
+    <string name="theme_sunset">غروب خورشید</string>
+  
+    <!-- New theme strings -->
+    <string name="theme_color">طرح رنگی</string>
+    <string name="theme_color_system_colors">رنگ‌های سامانه</string>
+    <string name="theme_color_kore">آبی مخملی</string>
+    <string name="theme_color_green">سبز مایل</string>
+    <string name="theme_color_yellow">زرد زیردریایی</string>
+    <string name="theme_color_purple">بنفش بارانی</string>
+  
+    <string name="theme_variant">ویرایش</string>
+    <string name="theme_variant_auto">پیش‌فرض سامانه</string>
+    <string name="theme_variant_light">روشن</string>
+    <string name="theme_variant_dark">تیره</string>
+  
+    <string name="switch_to_remote">نمایش هنگام آغاز رسانه</string>
+    <string name="keep_remote_above_lockscreen">نمایش روی صفحه قفل</string>
+    <string name="pref_keep_screen_on">پنجره را روشن نگه دار</string>
+    <string name="show_notification">نمایش اعلان در حین پخش</string>
+    <string name="show_now_playing_panel">نمایش پنل حال پخش</string>
+    <string name="show_now_playing_panel_summary">هنگام پخش رسانه، یک پنل در پایین صفحه نمایش داده می‌شود</string>
+    <string name="pause_during_calls">در حین تماس تلفنی متوقف شود</string>
+    <string name="vibrate_on_remote">لرزش هنگام لمس هدایت‌گر</string>
+    <string name="always_sendtokodi_addon">ترجیح افزونه SendToKodi</string>
+    <string name="remote_bar_items">میانبرهای نوار پایین</string>
+    <string name="nav_drawer_items">میانبرهای منوی کناری</string>
+    <string name="download_network_types_title">محدود کردن دریافت رسانه‌ها</string>
+    <string name="download_network_types_summary">انتخاب نوع شبکه‌هایی که اجازه دریافت رسانه‌ها را دارند</string>
+  
+    <string name="about">درباره</string>
+    <string name="about_desc"><![CDATA[
+        \u00A9 2018 بنیاد XBMC<br><br>
+        لطفاً ما را در <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b> امتیاز دهید<br><br>
+        اگر به کمک نیاز دارید، <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">انجمن</a> ما را بررسی کنید.
+    ]]></string>
+  
+    <string name="play_on_kodi">پخش در کودی</string>
+    <string name="queue_on_kodi">صف در کودی</string>
+    <string name="pause_call_incoming_title">تماس ورودی</string>
+    <string name="pause_call_incoming_message">تلفن خود را بررسی کنید، کسی در حال تماس با شماست.</string>
+  
+    <string name="error_getting_pvr_info">نمی‌توان داده‌های PVR را دریافت کرد.
+توضیح خطا: %1$s</string>
+    <string name="might_not_have_pvr">نمی‌توان داده‌های PVR را دریافت کرد.
+ممکن است مرکز رسانه‌ای شما تیونر نداشته باشد یا پیکربندی نشده باشد. اگر می‌خواهید این مورد را از منوی کناری پاک کنید، می‌توانید آن را در صفحه تنظیمات انجام دهید.</string>
+    <string name="error_starting_channel">هنگام شروع پخش کانال خطایی رخ داد.
+توضیح: %1$s</string>
+    <string name="error_starting_recording">هنگام پخش ضبط خطایی رخ داد.
+توضیح: %1$s</string>
+    <string name="error_starting_to_record">هنگام ضبط خطایی رخ داد.
+توضیح: %1$s</string>
+    <string name="channel_switching">در حال تغییر به کانال %1$s</string>
+    <string name="starting_recording">در حال شروع ضبط %1$s</string>
+    <string name="refresh">تازه‌سازی</string>
+  
+    <string name="tv">تلویزیون</string>
+    <string name="radio">رادیو</string>
+    <string name="recordings">ضبط‌ها</string>
+    <string name="tv_channels">کانال‌های تلویزیونی</string>
+    <string name="radio_channels">کانال‌های رادیویی</string>
+  
+    <string name="record">ضبط</string>
+    <string name="pvr_epg">راهنمای برنامه‌ها</string>
+    <string name="unable_to_move_item">نمی‌توان مورد را جابجا کرد</string>
+    <string name="unable_to_play_favourite_item">نمی‌توان مورد علاقه‌مندی را پخش کرد. نوع پشتیبانی نشده</string>
+    <string name="cannot_move_playing_item">نمی‌توان مورد در حال پخش/توقف موقت را جابجا کرد</string>
+    <string name="no_connection_type_selected">هیچ نوع اتصالی در تنظیمات انتخاب نشده است</string>
+    <string name="single_column">ستون تکی</string>
+    <string name="multi_column">چند ستونی</string>
+  
+    <string name="songs">آهنگ‌ها</string>
+  
+    <string name="read_phone_state_permission_denied">اجازه داده نشده است. نمی‌توان پخش را در حین تماس متوقف کرد.</string>
+    <string name="write_storage_permission_denied">اجازه داده نشده است. نمی‌توان فایل‌ها را دریافت کرد.</string>
+    <string name="read_storage_permission_denied">اجازه داده نشده است. نمی‌توان فایل‌ها را خواند.</string>
+  
+    <string name="no_songs_to_download">هیچ آهنگی برای دریافت نیست</string>
+    <string name="by_album">بر پایه آلبوم</string>
+    <string name="by_artist">بر پایه هنرمند</string>
+    <string name="by_artist_and_year">بر پایه هنرمند و سال</string>
+    <string name="muted">بی‌صدا</string>
+    <string name="no_item_available_to_play">خطا: چیزی برای پخش نیست.</string>
+    <string name="Refreshing_not_implemented_for_this_item">تازه‌سازی برای این مورد پیاده‌سازی نشده است.</string>
+    <string name="zeroprogress">0:00</string>
+  
+    <string name="toggle_expand">گسترش/جمع‌کردن</string>
+  
+    <string name="language">زبان</string>
+  
+    <string name="wifi_network">شبکه Wi-Fi</string>
+    <string name="mobile_network">شبکه موبایل</string>
+    <string name="any_network">هر شبکه‌ای</string>
+  
+    <string name="web_search">جستجوی وب</string>
+  
+    <!-- Strings for the Use hardware volume keys setting -->
+    <string name="use_hardware_volume_keys">استفاده از کلیدهای حجم دستگاه</string>
+    <string name="use_hardware_volume_keys_never">هرگز</string>
+    <string name="use_hardware_volume_keys_always">همیشه</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">هنگامی که Kore یاز شده است</string>
+  
+    <!-- Strings for the Preferred YouTube addon setting -->
+    <string name="preferred_youtube_addon">افزونه YouTube ترجیحی</string>
+    <string name="preferred_youtube_addon_youtube" translatable="false">YouTube</string>
+    <string name="preferred_youtube_addon_invidious" translatable="false">Invidious</string>
+  
+</resources>
