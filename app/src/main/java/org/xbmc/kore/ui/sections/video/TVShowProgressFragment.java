@@ -387,7 +387,7 @@ public class TVShowProgressFragment
                 MediaContract.Episodes.FIRSTAIRED,
                 };
 
-        String SORT = MediaContract.Episodes.EPISODEID + " ASC";
+        String SORT = MediaContract.Episodes.SEASON + " ASC, " + MediaContract.Episodes.EPISODE + " ASC";
 
         int ID = 0;
         int EPISODEID = 1;
