@@ -68,9 +68,9 @@
 \nYrityetään uudelleen…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Tervetuloa</string>
-    <string name="wizard_welcome_message">Aloitetaan lisäämällä mediakeskus. Varmista, että Kodi on käynnissä, määritetty käyttövalmiiksi ja on samassa lähiverkossa tämän laitteen kanssa.&lt;br/&gt;&lt;br/&gt;Määritysohjeita saat &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;täältä&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Kun olet valmis, paina &lt;b&gt;Seuraava&lt;/b&gt;.</string>
+    <string name="wizard_welcome_message">Aloitetaan lisäämällä mediakeskus. Varmista, että Kodi on käynnissä ja oikein määritetty. Tarkista sen asetuksista erityisesti:&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Palvelut&lt;/b&gt; &gt; &lt;b&gt;Ohjaus&lt;b&gt; ja:&lt;br/&gt;1. Aktivoi &lt;b&gt;Salli etäohjaus HTTP-protokollan välityksellä&lt;/b&gt;&lt;br/&gt;2. Aktivoi &lt;b&gt;Salli etäohjaus tämän järjestelmän sovelluksista&lt;/b&gt; ja &lt;b&gt;Salli etäohjaus muiden järjestelmien sovelluksista&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Palvelut&lt;/b&gt; &gt; &lt;b&gt;Yleiset&lt;/b&gt; ja:&lt;br/&gt;1. Aktivoi &lt;b&gt;Ilmoita palvelut muille järjestelmille&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Määritysohjeita saat &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;täältä&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Kun olet valmis, paina &lt;b&gt;Seuraava&lt;/b&gt;.</string>
     <string name="wizard_search_message">Etsitään mediakeskuksia lähiverkosta…<br/></string>
-    <string name="wizard_search_no_host_found">Lähiverkosta ei löytynyt mediakeskuksia.<br/> Määritysohjeita löydät <a href="http://syncedsynapse.com/kore/kore-faq/">täältä</a>.<br/><br/>Paina <b>Etsi uudelleen</b> tai määritä mediakeskus manuaalisesti painamalla <b>Seuraava</b>.</string>
+    <string name="wizard_search_no_host_found">Verkosta ei löytynyt mediakeskuksia.&lt;br/&gt;&lt;br/&gt;Varmista, että Kodi on käynnissä ja oikein määritetty. Tarkista sen asetuksista erityisesti:&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Palvelut&lt;/b&gt; &gt; &lt;b&gt;Ohjaus&lt;b&gt; ja:&lt;br/&gt;1. Aktivoi &lt;b&gt;Salli etäohjaus HTTP-protokollan välityksellä&lt;/b&gt;&lt;br/&gt;2. Aktivoi &lt;b&gt;Salli etäohjaus tämän järjestelmän sovelluksista&lt;/b&gt; ja &lt;b&gt;Salli etäohjaus muiden järjestelmien sovelluksista&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Palvelut&lt;/b&gt; &gt; &lt;b&gt;Yleiset&lt;/b&gt; ja:&lt;br/&gt;1. Aktivoi &lt;b&gt;Ilmoita palvelut muille järjestelmille&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Määritysohjeita saat &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;täältä&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Paina &lt;b&gt;Etsi uudelleen&lt;/b&gt; tai määritä mediakeskus manuaalisesti painamalla &lt;b&gt;Seuraava&lt;/b&gt;.</string>
     <string name="wizard_search_no_network_connection">Ota verkkoyhteys käyttöön ennen mediakeskuksien etsintää.<br/></string>
     <string name="wizard_search_host_found">Lähiverkosta löytyi seuraavat mediakeskukset.<br/><br/>Valitse yksi lisättävä tai lisää muu mediakeskus manuaalisesti painamalla <b>Seuraava</b>.</string>
     <string name="no_network_connection">Ei verkkoyhteyttä</string>
@@ -398,4 +398,5 @@
     <string name="use_hardware_volume_keys_when_in_foreground">Koren ollessa edustalla</string>
     <string name="use_hardware_volume_keys_always">Aina</string>
     <string name="use_hardware_volume_keys_never">Ei koskaan</string>
+    <string name="preferred_youtube_addon">Ensisijainen YouTube-lisäosa</string>
 </resources>
