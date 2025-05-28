@@ -368,7 +368,7 @@
     <string name="always_sendtokodi_addon">Préférer l’addon SendToKodi</string>
     <string name="queue_action">Ajouter à la queue</string>
     <string name="theme_variant_dark">Sombre</string>
-    <string name="theme_variant_light">Légère</string>
+    <string name="theme_variant_light">Claire</string>
     <string name="use_hardware_volume_keys_when_in_foreground">Quand Kore est au premier plan</string>
     <string name="use_hardware_volume_keys_always">Toujours</string>
     <string name="web_search">Recherche sur le Web</string>

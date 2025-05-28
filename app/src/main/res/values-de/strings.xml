@@ -27,7 +27,7 @@
     <string name="tv_shows">Serien</string>
     <string name="music">Musik</string>
     <string name="pictures">Bilder</string>
-    <string name="addons">Anwendungen</string>
+    <string name="addons">Erweiterungen</string>
     <string name="files">Kodi-Dateien</string>
     <string name="video">Video</string>
     <string name="window">Fenster</string>
@@ -50,8 +50,8 @@
     <string name="text_to_send">Zu sendender Text</string>
     <string name="finish_after_send">Nach Absenden beenden</string>
     <string name="library_actions">Bibliothekverwaltung</string>
-    <string name="clean_video_library">Videobibliothek leeren</string>
-    <string name="clean_audio_library">Musikbibliothek leeren</string>
+    <string name="clean_video_library">Videobibliothek bereinigen</string>
+    <string name="clean_audio_library">Musikbibliothek bereinigen</string>
     <string name="update_video_library">Videobibliothek aktualisieren</string>
     <string name="update_audio_library">Musikbibliothek aktualisieren</string>
     <string name="toggle_fullscreen">Vollbild ein/aus</string>
@@ -64,9 +64,7 @@
     <string name="wizard_welcome_message">Beginnen wir mit dem Hinzufügen eines Mediacenters. Sicherstellen, dass Kodi läuft, richtig konfiguriert ist und sich im selben Netzwerk wie dieses Gerät befindet.&lt;br/&gt;&lt;br/&gt; &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;Hier&lt;/a&gt; bekommt man Hilfe beim Konfigurieren.&lt;br/&gt;&lt;br/&gt;Anschließend auf &lt;b&gt;&lt;i&gt;Weiter&lt;/i&gt;&lt;/b&gt; drücken. .</string>
     <string name="wizard_search_message">Nach Mediacenter im Netzwerk suchen …<br/></string>
     <string name="wizard_search_no_host_found">Im lokalen Netzwerk konnte kein Mediacenter gefunden werden.&lt;br/&gt;Falls Hilfe beim Konfigurieren benötigt wird, &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;hier&lt;/a&gt; drücken.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;Suche&lt;/i&gt; wählen, um nochmal zu suchen oder &lt;i&gt;Weiter&lt;/i&gt; für die manuelle Konfiguration.</string>
-    <string name="wizard_search_no_network_connection"><![CDATA[
-    Bitte richten Sie eine Netzwerkverbindung ein, bevor Sie Media Center suchen.<br/>
-    ]]></string>
+    <string name="wizard_search_no_network_connection">Vor der Suche nach Mediacentern bitte eine Netzwerkverbindung einrichten.<br/></string>
     <string name="wizard_search_host_found">Es wurden Mediacenter im Netzwerk gefunden.<br/><br/>Ein Mediacenter zum Hinzufügen auswählen oder <b>Weiter</b> drücken für die manuelle Konfiguration.</string>
     <string name="no_network_connection">Keine Netzwerkverbindung</string>
     <string name="searching">Suche läuft …</string>
@@ -92,7 +90,7 @@
     <string name="wizard_invalid_tcp_port_specified">Bitte einen gültigen TCP Port angeben.</string>
     <string name="wizard_invalid_es_port_specified">Bitte einen gültigen EventServer-Port angeben.</string>
     <string name="wizard_connecting_to_xbmc_title">Verbinden mit %1$s …</string>
-    <string name="wizard_connecting_to_xbmc_message">Bitte warten, die Verbindung zum Media Center wird aufgebaut …</string>
+    <string name="wizard_connecting_to_xbmc_message">Bitte warten, die Verbindung zum Mediacenter wird aufgebaut …</string>
     <string name="wizard_empty_authentication">Kodi verlangt eine Authentifizierung.
 \nBitte Benutzername und Passwort angeben.</string>
     <string name="wizard_incorrect_authentication">Falscher Benutzername und/oder falsches Passwort .
@@ -103,7 +101,7 @@
     <string name="wizard_done">Fertig!</string>
     <string name="wizard_done_message">Das Mediacenter ist jetzt konfiguriert.<br/>Es lässt sich nun über die Fernbedienung steuern. Die Bibliothek wird synchronisiert und sollte in wenigen Augenblicken verfügbar sein.<br/><br/><b>Fertig</b> drücken, um mit der Fernbedienung zu verwenden.</string>
     <string name="wizard_zeroconf_no_host_address">Adresse des Mediacenters konnte nicht ermittelt werden!</string>
-    <string name="wizard_zeroconf_cant_connect_no_host_address">Keine Verbindung zum Media Center möglich, weil die Adresse nicht ermittelt werden konnte.</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Keine Verbindung zum Mediacenter möglich, weil die Adresse nicht ermittelt werden konnte.</string>
     <string name="play">Wiedergeben</string>
     <string name="pause">Pause</string>
     <string name="stop">Stopp</string>
@@ -152,7 +150,7 @@
     <string name="xbmc_unavailable">Nicht verfügbar</string>
     <string name="nothing_playing">Keine Wiedergabe aktiv</string>
     <!-- Main view tabs -->
-    <string name="now_playing">Aktuelle Wiedergabe</string>
+    <string name="now_playing">Gerade läuft</string>
     <string name="remote">Fernbedienung</string>
     <string name="playlist">Einreihen</string>
     <string name="season_episode_abbrev">s%1$02de%2$02d</string>
@@ -379,7 +377,7 @@
     <string name="download_action">Herunterladen</string>
     <string name="disabled_status">Deaktiviert</string>
     <string name="enabled_status">Aktiviert</string>
-    <string name="unpinned_status">Nicht angepinnt</string>
+    <string name="unpinned_status">Nicht gemerkt</string>
     <string name="pinned_status">Gemerkt</string>
     <string name="unwatched_status">Ungesehen</string>
     <string name="watched_status">Gesehen</string>
