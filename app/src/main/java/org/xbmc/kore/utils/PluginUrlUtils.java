@@ -83,9 +83,9 @@ public class PluginUrlUtils {
                 .scheme("plugin")
                 .authority("plugin.video.invidious")
                 .path("/")
-                .appendQueryParameter("action", "play_video");
+                .appendQueryParameter("action", "play");
 
-        String videoIdParameterKey = "video_id";
+        String videoIdParameterKey = "videoId";
 
         String videoId;
         if (host.endsWith("youtube.com")) {
