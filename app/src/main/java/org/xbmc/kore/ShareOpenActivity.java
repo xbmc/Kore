@@ -254,6 +254,8 @@ public class ShareOpenActivity extends Activity {
                         .getString(Settings.KEY_PREF_YOUTUBE_ADDON_ID, Settings.DEFAULT_PREF_YOUTUBE_ADDON_ID);
                 if (preferredYouTubeAddonId.equals("plugin.video.invidious")) {
                     return PluginUrlUtils.toInvidiousYouTubePluginUrl(playuri);
+                } else if (preferredYouTubeAddonId.equals("plugin.video.piped")) {
+                    return PluginUrlUtils.toPipedYouTubePluginUrl(playuri);
                 } else {
                     return PluginUrlUtils.toDefaultYouTubePluginUrl(playuri);
                 }

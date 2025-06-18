@@ -510,5 +510,6 @@
     <string name="preferred_youtube_addon">افزونه YouTube ترجیحی</string>
     <string name="preferred_youtube_addon_youtube" translatable="false">YouTube</string>
     <string name="preferred_youtube_addon_invidious" translatable="false">Invidious</string>
+    <string name="preferred_youtube_addon_piped" translatable="false">Piped</string>
   
 </resources>

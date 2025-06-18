@@ -178,10 +178,12 @@
     <string-array name="preferred_youtube_addon_keys_array">
         <item>@string/preferred_youtube_addon_youtube</item>
         <item>@string/preferred_youtube_addon_invidious</item>
+        <item>@string/preferred_youtube_addon_piped</item>
     </string-array>
     <string-array translatable="false" name="preferred_youtube_addon_values_array">
         <item>plugin.video.youtube</item>
         <item>plugin.video.invidious</item>
+        <item>plugin.video.piped</item>
     </string-array>
 
 </resources>
