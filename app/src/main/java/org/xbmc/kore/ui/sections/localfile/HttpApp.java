@@ -186,17 +186,6 @@ public class HttpApp extends NanoHTTPD {
             }
         }
 
-        // If the mimeType determined by Andoid is not equal to the one determined by
-        // the filename, add an extra extension to make sure Kodi recognizes the file type:
-        String mimeType = applicationContext.getContentResolver().getType(contentUri);
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        String extensionFromFilename = mimeTypeMap.getMimeTypeFromExtension(
-                MimeTypeMap.getFileExtensionFromUrl(fileName));
-        if (
-                (extensionFromFilename == null) || (!extensionFromFilename.equals(mimeType))
-        ) {
-            fileName += "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
-        }
         return fileName;
     }
 
