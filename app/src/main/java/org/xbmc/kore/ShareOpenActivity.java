@@ -15,7 +15,7 @@ import androidx.preference.PreferenceManager;
 
 import org.xbmc.kore.host.HostInfo;
 import org.xbmc.kore.host.HostManager;
-import org.xbmc.kore.host.actions.OpenSharedUrl;
+import org.xbmc.kore.host.actions.OpenSharedUrls;
 import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.sections.localfile.HttpApp;
@@ -26,6 +26,8 @@ import org.xbmc.kore.utils.PluginUrlUtils;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +38,7 @@ import java.util.regex.Pattern;
  */
 public class ShareOpenActivity extends Activity {
     private static final String TAG = LogUtils.makeLogTag(ShareOpenActivity.class);
+    private HttpApp httpApp;
 
     // ACTION to be used with the shortcut API that directly opens the remote
     public static final String DEFAULT_OPEN_ACTION = "org.xbmc.kore.OPEN_REMOTE_VIEW";
@@ -86,24 +89,41 @@ public class ShareOpenActivity extends Activity {
         if (action == null ||
             hostManager.getConnection() == null ||
             action.equals(DEFAULT_OPEN_ACTION) ||
-            !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_VIEW))) {
+            !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_SEND_MULTIPLE) ||
+              action.equals(Intent.ACTION_VIEW))) {
             startActivity(new Intent(this, RemoteActivity.class));
             finish();
             return;
         }
 
-        Uri uri = extractUriFromIntent(intent);
-        if (uri == null) {
-            // Failed to extract a URI
+        // Extract one or more uris from the intent, and store them in a list
+        List<Uri> uris = null;
+        if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
+            uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+        } else {
+            Uri uri = extractUriFromIntent(intent);
+            if (uri != null) {
+                uris = List.of(uri);
+            }
+        }
+
+        if (uris == null || uris.isEmpty()) {
             finish();
             return;
         }
 
-        String url = toPluginUrl(uri);
-
-        // todo: convert content:// Uri to Url
-        if (url == null) {
-            url = uri.toString();
+        // Convert URIs to a list of URLs
+        List<String> urls = new ArrayList<>();
+        for (Uri uri : uris) {
+            String url = toUrl(uri);
+            if (url == null) {
+                Toast.makeText(getApplicationContext(),
+                               getString(R.string.error_starting_http_server),
+                               Toast.LENGTH_LONG).show();
+                finish();
+                return;
+            }
+            urls.add(url);
         }
 
         // Determine which playlist to use
@@ -124,7 +144,7 @@ public class ShareOpenActivity extends Activity {
         String title = getString(R.string.app_name);
         String text = getString(R.string.item_added_to_playlist);
         final Context context = this;
-        new OpenSharedUrl(this, url, title, text, queue, playlistType)
+        new OpenSharedUrls(this, urls, title, text, queue, playlistType)
                 .execute(hostManager.getConnection(),
                         new ApiCallback<>() {
                             @Override
@@ -133,6 +153,8 @@ public class ShareOpenActivity extends Activity {
                                                                         : getString(R.string.item_sent_to_kodi);
                                 Toast.makeText(context, msg, Toast.LENGTH_SHORT)
                                         .show();
+                                // Always finish as we don't have anything to show
+                                finish();
                             }
 
                             @Override
@@ -140,6 +162,7 @@ public class ShareOpenActivity extends Activity {
                                 LogUtils.LOGE(TAG, "Share failed: " + description);
                                 Toast.makeText(context, description, Toast.LENGTH_SHORT)
                                         .show();
+                                finish();
                             }
                         }, new Handler(Looper.getMainLooper()));
 
@@ -147,8 +170,6 @@ public class ShareOpenActivity extends Activity {
         if (!queue)
             startActivity(new Intent(this, RemoteActivity.class)
                                   .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
-        // Always finish as we don't have anything to show
-        finish();
     }
 
     /**
@@ -221,6 +242,30 @@ public class ShareOpenActivity extends Activity {
         return null;
     }
 
+
+    /**
+     * Transform a given URI to a URL. Initiates a HTTP server to
+     * serve content:// URIs, such as local files.
+     *
+     * @param uri Uri to transform to a URL
+     * @return String A http(s) URL, or null if the HTTP server encountered an error
+     */
+    private String toUrl(Uri uri) {
+        if ("content".equals(uri.getScheme())) {
+            HttpApp httpApp = getHttpApp();
+            if (httpApp == null) return null;
+
+            httpApp.addUri(uri);
+            return httpApp.getLinkToFile();
+        } else {
+            String url = toPluginUrl(uri);
+            if (url == null) {
+                url = uri.toString();
+            }
+            return url;
+        }
+    }
+
     /**
      * Converts a video url to a Kodi plugin URL.
      *
@@ -290,4 +335,14 @@ public class ShareOpenActivity extends Activity {
         return false;
     }
 
+    private HttpApp getHttpApp() {
+        if (httpApp == null) {
+            try {
+                httpApp = HttpApp.getInstance(this, 8080);
+            } catch (IOException ioe) {
+                return null;
+            }
+        }
+        return httpApp;
+    }
 }

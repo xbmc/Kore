@@ -2,6 +2,7 @@ package org.xbmc.kore.ui.sections.localfile;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -93,8 +94,20 @@ public class HttpApp extends NanoHTTPD {
                 mimeType = localFileLocation.getMimeType();
             } else if (params.containsKey("uri")) {
                 int uri_number = Integer.parseInt(params.get("uri").get(0));
+                Uri uri = localUriList.get(uri_number);
 
-                fis = (FileInputStream) applicationContext.getContentResolver().openInputStream(localUriList.get(uri_number));
+                try {
+                    // ensure that we can read the URI's content, even if the component
+                    // that originally provided this permission has died
+                    applicationContext.grantUriPermission(applicationContext.getPackageName(),
+                                                          uri,
+                                                          Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } catch (SecurityException e) {
+                    LogUtils.LOGE(LogUtils.makeLogTag(HttpApp.class), e.toString());
+                    return forbidden;
+                }
+
+                fis = (FileInputStream) applicationContext.getContentResolver().openInputStream(uri);
             } else {
                 return forbidden;
             }
