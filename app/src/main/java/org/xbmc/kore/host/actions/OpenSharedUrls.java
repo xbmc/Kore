@@ -84,7 +84,7 @@ public class OpenSharedUrls extends HostCompositeAction<Boolean> {
                 // If playback is currently active, notify the user about the updated queue.
                 // If not, start playback of queued items.
                 if (mediaIsPlaying) {
-                    // (no get() to ignore the exception that will be thrown by OkHttp)
+                    // no get() to ignore the exception that will be thrown by OkHttp
                     hostConnection.execute(new Player.Notification(notificationTitle, notificationText));
                 } else {
                     stage = R.string.error_play_media_file;
