@@ -35,9 +35,9 @@ public class OpenSharedUrls extends HostCompositeAction<Boolean> {
     /**
      * Creates the composite action
      * @param context Context
-     * @param notificationTitle The title of the notification to be shown when the host is currently playing a video
-     * @param notificationText The notification to be shown when the host is currently playing a video
      * @param urls The urls to play or queue
+     * @param notificationTitle The title of the notification to be shown when Kodi is already playing something
+     * @param notificationText The notification to be shown when Kodi is already playing something
      * @param queue Whether to open or queue the items
      * @param playlistType Playlist type to queue to
      */
@@ -64,13 +64,7 @@ public class OpenSharedUrls extends HostCompositeAction<Boolean> {
             List<PlayerType.GetActivePlayersReturnType> players =
                     hostConnection.execute(new Player.GetActivePlayers())
                                   .get();
-            boolean mediaIsPlaying = false;
-            for (PlayerType.GetActivePlayersReturnType player : players) {
-                if (player.type.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
-                    mediaIsPlaying = true;
-                    break;
-                }
-            }
+            boolean mediaIsPlaying = !players.isEmpty();
 
             stage = R.string.error_queue_media_file;
             if (!mediaIsPlaying) {
