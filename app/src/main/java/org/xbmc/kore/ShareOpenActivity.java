@@ -92,29 +92,18 @@ public class ShareOpenActivity extends Activity {
             return;
         }
 
-        Uri videoUri;
-        if (action.equals(Intent.ACTION_SEND) && intentType != null && intentType.equals("text/plain")) {
-            // Get the URI, which is stored in Extras
-            videoUri = getPlainTextUri(intent.getStringExtra(Intent.EXTRA_TEXT));
-        } else {
-            videoUri = intent.getData();
-        }
-
-        if (videoUri == null) {
-            // Check if `intent` contains a URL or a link to a local file:
-            videoUri = getShareLocalUriOrHiddenUri(intent);
-        }
-
-        if (videoUri == null) {
-            // Couldn't understand the URI
+        Uri uri = extractUriFromIntent(intent);
+        if (uri == null) {
+            // Failed to extract a URI
             finish();
             return;
         }
 
-        String url = toPluginUrl(videoUri);
+        String url = toPluginUrl(uri);
 
+        // todo: convert content:// Uri to Url
         if (url == null) {
-            url = videoUri.toString();
+            url = uri.toString();
         }
 
         // Determine which playlist to use
@@ -162,6 +151,34 @@ public class ShareOpenActivity extends Activity {
         finish();
     }
 
+    /**
+     * Returns a shared Uri from the given intent, if present. Since
+     * intents can store Uris in different ways, multiple extraction
+     * strategies are tried.
+     *
+     * @param intent The intent to extract a shared Uri from
+     * @return The Uri extracted from the intent, or null if none was found
+     */
+    private Uri extractUriFromIntent(Intent intent) {
+        Uri uri = null;
+
+        if ("text/plain".equals(intent.getType())) {
+            uri = getPlainTextUri(intent.getStringExtra(Intent.EXTRA_TEXT));
+        } else {
+            uri = intent.getData();
+        }
+
+        if (uri == null) {
+            uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        }
+
+        if (uri == null) {
+            uri = getUrlInsideIntent(intent);
+        }
+
+        return uri;
+    }
+
     private Uri getUrlInsideIntent(Intent intent) {
         // Some apps hide the link in the clip, try to detect any link by casting the intent
         // to string a looking with a regular expression:
@@ -176,32 +193,6 @@ public class ShareOpenActivity extends Activity {
             return Uri.parse(matchedString);
         }
         return null;
-    }
-
-    private Uri getShareLocalUriOrHiddenUri(Intent intent) {
-        Uri contentUri = intent.getData();
-
-        if (contentUri == null) {
-            Bundle bundle = intent.getExtras();
-            contentUri = (Uri) bundle.get(Intent.EXTRA_STREAM);
-        }
-        if (contentUri == null) {
-            return getUrlInsideIntent(intent);
-        }
-
-        HttpApp http_app;
-        try {
-            http_app = HttpApp.getInstance(getApplicationContext(), 8080);
-        } catch (IOException ioe) {
-            Toast.makeText(getApplicationContext(),
-                           getString(R.string.error_starting_http_server),
-                           Toast.LENGTH_LONG).show();
-            return null;
-        }
-        http_app.addUri(contentUri);
-        String url = http_app.getLinkToFile();
-
-        return Uri.parse(url);
     }
 
     /**
