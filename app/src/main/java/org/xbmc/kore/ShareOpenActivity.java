@@ -173,12 +173,12 @@ public class ShareOpenActivity extends Activity {
     }
 
     /**
-     * Returns a shared Uri from the given intent, if present. Since
-     * intents can store Uris in different ways, multiple extraction
+     * Returns a shared URI from the given intent, if present. Since
+     * intents can store URIs in different ways, multiple extraction
      * strategies are tried.
      *
-     * @param intent The intent to extract a shared Uri from
-     * @return The Uri extracted from the intent, or null if none was found
+     * @param intent The intent to extract a shared URI from
+     * @return The URI extracted from the intent, or null if none was found
      */
     private Uri extractUriFromIntent(Intent intent) {
         Uri uri = null;
