@@ -94,13 +94,13 @@ public class OpenSharedUrls extends HostCompositeAction<Boolean> {
                 stage = R.string.error_play_media_file;
                 LogUtils.LOGD(TAG, "Playing " + urls.size() + "item(s)");
 
-                // play first url immediately, then queue the rest
+                // play first url immediately
                 String url = urls.get(0);
                 PlaylistType.Item item = new PlaylistType.Item();
                 item.file = url;
                 hostConnection.execute(new Player.Open(item)).get();
 
-                // queue remaining
+                // queue the rest
                 for (int i = 1; i < urls.size(); i++) {
                     item = new PlaylistType.Item();
                     item.file = urls.get(i);
