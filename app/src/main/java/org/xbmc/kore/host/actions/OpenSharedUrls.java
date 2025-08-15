@@ -81,13 +81,14 @@ public class OpenSharedUrls extends HostCompositeAction<Boolean> {
                     hostConnection.execute(new Playlist.Add(playlistType, item)).get();
                 }
 
-                // start playlist if nothing was alreay playing playlist; otherwise show notification
-                if (!mediaIsPlaying) {
+                // If playback is currently active, notify the user about the updated queue.
+                // If not, start playback of queued items.
+                if (mediaIsPlaying) {
+                    // (no get() to ignore the exception that will be thrown by OkHttp)
+                    hostConnection.execute(new Player.Notification(notificationTitle, notificationText));
+                } else {
                     stage = R.string.error_play_media_file;
                     hostConnection.execute(new Player.Open(Player.Open.TYPE_PLAYLIST, playlistType)).get();
-                } else {
-                    // no get() to ignore the exception that will be thrown by OkHttp
-                    hostConnection.execute(new Player.Notification(notificationTitle, notificationText));
                 }
             } else {
                 stage = R.string.error_play_media_file;
