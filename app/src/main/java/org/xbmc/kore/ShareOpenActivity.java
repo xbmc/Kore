@@ -137,7 +137,7 @@ public class ShareOpenActivity extends Activity {
         } else if (intentType.matches("image.*")) {
             playlistType = PlaylistType.PICTURE_PLAYLISTID;
         } else {
-            // Generic links? Default to video:
+            // Generic link or unknown type? Default to video:
             playlistType = PlaylistType.VIDEO_PLAYLISTID;
         }
 
