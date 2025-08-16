@@ -153,6 +153,10 @@ public class ShareOpenActivity extends Activity {
                                                                         : getString(R.string.item_sent_to_kodi);
                                 Toast.makeText(context, msg, Toast.LENGTH_SHORT)
                                         .show();
+                                // Don't display Kore after queueing from another app, otherwise start the remote
+                                if (!queue)
+                                    startActivity(new Intent(context, RemoteActivity.class)
+                                                  .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
                                 // Always finish as we don't have anything to show
                                 finish();
                             }
@@ -165,11 +169,6 @@ public class ShareOpenActivity extends Activity {
                                 finish();
                             }
                         }, new Handler(Looper.getMainLooper()));
-
-        // Don't display Kore after queueing from another app, otherwise start the remote
-        if (!queue)
-            startActivity(new Intent(this, RemoteActivity.class)
-                                  .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     /**
