@@ -78,7 +78,8 @@ public class OpenSharedUrls extends HostCompositeAction<Boolean> {
                 for (String u : urls) {
                     PlaylistType.Item item = new PlaylistType.Item();
                     item.file = u;
-                    hostConnection.execute(new Playlist.Add(playlistType, item)).get();
+                    hostConnection.execute(new Playlist.Add(playlistType, item))
+                                  .get();
                 }
 
                 // If playback is currently active, notify the user about the updated queue.
@@ -88,7 +89,8 @@ public class OpenSharedUrls extends HostCompositeAction<Boolean> {
                     hostConnection.execute(new Player.Notification(notificationTitle, notificationText));
                 } else {
                     stage = R.string.error_play_media_file;
-                    hostConnection.execute(new Player.Open(Player.Open.TYPE_PLAYLIST, playlistType)).get();
+                    hostConnection.execute(new Player.Open(Player.Open.TYPE_PLAYLIST, playlistType))
+                                  .get();
                 }
             } else {
                 stage = R.string.error_play_media_file;
@@ -98,13 +100,15 @@ public class OpenSharedUrls extends HostCompositeAction<Boolean> {
                 String url = urls.get(0);
                 PlaylistType.Item item = new PlaylistType.Item();
                 item.file = url;
-                hostConnection.execute(new Player.Open(item)).get();
+                hostConnection.execute(new Player.Open(item))
+                              .get();
 
                 // queue the rest
                 for (int i = 1; i < urls.size(); i++) {
                     item = new PlaylistType.Item();
                     item.file = urls.get(i);
-                    hostConnection.execute(new Playlist.Add(playlistType, item)).get();
+                    hostConnection.execute(new Playlist.Add(playlistType, item))
+                                  .get();
                 }
             }
             return mediaIsPlaying;
