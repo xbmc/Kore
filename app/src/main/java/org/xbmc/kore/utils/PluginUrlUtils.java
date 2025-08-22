@@ -106,6 +106,39 @@ public class PluginUrlUtils {
                 .toString();
     }
 
+    /**
+     * Converts a YouTube url to an URL for the Piped YouTube add-on (plugin.video.piped)
+     *
+     * @param playUri some URL for YouTube
+     * @return plugin URL
+     */
+    @Nullable
+    public static String toPipedYouTubePluginUrl(Uri playUri) {
+        String host = playUri.getHost();
+
+        Uri.Builder pluginUri = new Uri.Builder()
+                .scheme("plugin")
+                .authority("plugin.video.piped");
+
+        String videoId;
+        if (host.endsWith("youtube.com")) {
+            videoId = playUri.getQueryParameter("v");
+        } else if (host.endsWith("youtu.be")) {
+            videoId = playUri.getLastPathSegment();
+        } else {
+            return null;
+        }
+
+        if (videoId == null) {
+            return null;
+        }
+
+        return pluginUri
+                .path("/watch/" + videoId)
+                .build()
+                .toString();
+    }
+
 
     public static boolean isHostArte(String host) {
         return host.equals("www.arte.tv");
