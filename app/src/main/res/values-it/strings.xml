@@ -57,9 +57,9 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Benvenuto</string>
     <string name="wizard_welcome_message">Iniziamo aggiungendo un media center. &lt;br/&gt; Assicurati che Kodi sia in esecuzione e configurato correttamente. Controlla in particolare quanto segue nelle &lt;b&gt;Impostazioni&lt;/b&gt; di Kodi: &lt;br/&gt;&lt;br/&gt; Seleziona &lt;b&gt;Servizi&lt;/b&gt;, quindi &lt;b&gt;Controllo&lt;/b&gt; e: &lt;br/&gt; 1. Abilita &lt;b&gt;Consenti controllo remoto tramite HTTP&lt;/b&gt;; &lt;br/&gt; 2. Abilita entrambe le opzioni &lt;b&gt;Consenti controllo remoto dai programmi di questo sistema&lt;/b&gt; e &lt;b&gt;Consenti il controllo remoto da programmi di altri sistemi&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Seleziona &lt;b&gt;Servizi&lt;/b&gt;, quindi &lt;b&gt;Generale&lt;/b&gt; e: &lt;br&gt; 1. Abilita &lt;b&gt;Annuncia servizi ad altri sistemi&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Puoi ottenere ulteriore aiuto &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;qui&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Quando sei pronto, premi &lt;b&gt;Successivo&lt;/b&gt;.</string>
-    <string name="wizard_search_message">Ricerca dei media center sulla tua rete locale…<br/></string>
+    <string name="wizard_search_message">Ricerca dei media center sulla tua rete locale…<br></br></string>
     <string name="wizard_search_no_host_found">Non sono riuscito a trovare nessun media center sulla tua rete.&lt;br/&gt; Assicurati che Kodi sia in esecuzione e configurato correttamente. Controlla in particolare quanto segue nelle &lt;b&gt;Impostazioni&lt;/b&gt; di Kodi: &lt;br/&gt;&lt;br/&gt; Seleziona &lt;b&gt;Servizi&lt;/b&gt;, quindi &lt;b&gt;Controllo&lt;/b&gt; e: &lt;br/&gt; 1. Abilita &lt;b&gt;Consenti controllo remoto tramite HTTP&lt;/b&gt;; &lt;br/&gt; 2. Abilita entrambe le opzioni &lt;b&gt;Consenti controllo remoto dai programmi di questo sistema&lt;/b&gt; e &lt;b&gt;Consenti il controllo remoto da programmi di altri sistemi&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Seleziona &lt;b&gt;Servizi&lt;/b&gt;, quindi &lt;b&gt;Generale&lt;/b&gt; e: &lt;br&gt; 1. Abilita &lt;b&gt;Annuncia servizi ad altri sistemi&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Puoi ottenere ulteriore aiuto &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;qui&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Fai clic su &lt;b&gt;Cerca di nuovo&lt;/b&gt; o &lt;b&gt;Successivo&lt;/b&gt; per la configurazione manuale.</string>
-    <string name="wizard_search_host_found">Ho trovato questi media center sulla tua rete.<br/><br/>Selezionane uno da aggiungere o premi <b>Successivo</b> per aggiungerne uno manualmente.</string>
+    <string name="wizard_search_host_found">Ho trovato questi media center sulla tua rete.<br></br><br></br>Selezionane uno da aggiungere o premi <b>Successivo</b> per aggiungerne uno manualmente.</string>
     <string name="searching">Ricerca…</string>
     <string name="no_xbmc_found">Nessun media center trovato</string>
     <string name="xbmc_found">Media center trovato</string>
@@ -89,7 +89,7 @@
     <string name="wizard_error_connecting">Impossibile connettersi a Kodi.
 \nPer favore verifica la configurazione.</string>
     <string name="wizard_done">Tutto fatto!</string>
-    <string name="wizard_done_message">Il tuo media center è configurato.<br/> Ora potrai usare il telecomando per controllarlo. La libreria si sta sincronizzando e dovrebbe essere disponibile fra poco.<br/><br/> Premi <b>Fine</b> per cominciare a usare il telecomando.</string>
+    <string name="wizard_done_message">Il tuo media center è configurato.<br></br> Ora potrai usare il telecomando per controllarlo. La libreria si sta sincronizzando e dovrebbe essere disponibile fra poco.<br></br><br></br> Premi <b>Fine</b> per cominciare a usare il telecomando.</string>
     <string name="wizard_zeroconf_no_host_address">Impossibile ottenere questo indirizzo del media center!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Impossibile connettersi a questo media center perché non sono riuscito a trovarne l\'indirizzo.</string>
     <string name="pause">Pausa</string>
@@ -236,7 +236,7 @@
     <string name="switch_to_remote">Mostra all\'inizio dei media</string>
     <string name="show_notification">Mostra notifiche durante la riproduzione</string>
     <string name="use_hardware_volume_keys">Usa tasti del volume del dispositivo</string>
-    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Per favore votaci su &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Se ti serve aiuto, controlla il &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;forum&lt;/a&gt;&lt;</string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Per favore votaci su &lt;b&gt;&lt;a href=market://details?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Se ti serve aiuto, controlla il &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php?fid=129&gt;forum&lt;/a&gt;&lt;</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Offrimi un caffè</string>-->
     <!--<string name="expresso_please">Un espresso, per favore. Grazie!</string>-->
@@ -286,7 +286,7 @@
     <string name="wizard_xbmc_use_event_server">Usa EventServer</string>
     <string name="wizard_xbmc_event_server_port">Porta ES (9777)</string>
     <string name="no_network_connection">Nessuna connessione di rete</string>
-    <string name="wizard_search_no_network_connection">Abilita una connessione di rete prima di cercare i media center.<br/></string>
+    <string name="wizard_search_no_network_connection">Abilita una connessione di rete prima di cercare i media center.<br></br></string>
     <string name="system">Sistema</string>
     <string name="weather">Meteo</string>
     <string name="pvr">PVR</string>

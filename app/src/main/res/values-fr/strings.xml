@@ -70,10 +70,10 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bienvenue</string>
     <string name="wizard_welcome_message">Commençons par ajouter un centre multimédia. &lt;br/&gt; Assurez-vous que Kodi est en cours d\'exécution et correctement configuré. Vérifiez spécifiquement les éléments suivants sous les &lt;b&gt;Paramètres&lt;/b&gt; de Kodi : &lt;br/&gt;&lt;br/&gt; Sélectionnez &lt;b&gt;Services&lt;/b&gt;, puis &lt;b&gt;Contrôle&lt;/b&gt; et : &lt;br/&gt; 1. Activez &lt;b&gt;Autoriser le contrôle à distance via HTTP&lt;/b&gt; ; &lt;br/&gt; 2. Activez les deux options &lt;b&gt;Autoriser le contrôle à distance depuis les applications sur ce système&lt;/b&gt; et &lt;b&gt;Autoriser le contrôle à distance depuis les applications sur d\'autres systèmes&lt;/b&gt; ; &lt;br/&gt;&lt;br/&gt; Sélectionnez &lt;b&gt;Services&lt;/b&gt;, puis &lt;b&gt;Général&lt;/b&gt; et : &lt;br&gt; 1. Activez &lt;b&gt;Annoncer les services à d\'autres systèmes&lt;/b&gt; ; &lt;br/&gt;&lt;br/&gt; Vous pouvez obtenir une aide supplémentaire &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;ici&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Lorsque vous êtes prêt, appuyez sur &lt;b&gt;Suivant&lt;/b&gt;.</string>
-    <string name="wizard_search_message">Recherche de Centres Multimédia sur votre réseau local en cours…<br/></string>
+    <string name="wizard_search_message">Recherche de Centres Multimédia sur votre réseau local en cours…<br></br></string>
     <string name="wizard_search_no_host_found">Je n\'ai trouvé aucun centre multimédia sur votre réseau.&lt;br/&gt;&lt;br/&gt; Veuillez vous assurer que Kodi est en cours d\'exécution et correctement configuré, vérifiez spécifiquement les éléments suivants sous les &lt;b&gt;Paramètres&lt;/b&gt; de Kodi : &lt;br/&gt; &lt;br/&gt; Sélectionnez &lt;b&gt;Services&lt;/b&gt;, puis &lt;b&gt;Contrôle&lt;/b&gt; et : &lt;br/&gt; 1. Activez &lt;b&gt;Autoriser le contrôle à distance via HTTP&lt;/b&gt; ; &lt;br/&gt; 2. Activez les deux options &lt;b&gt;Autoriser le contrôle à distance depuis les applications sur ce système&lt;/b&gt; et &lt;b&gt;Autoriser le contrôle à distance depuis les applications sur d\'autres systèmes&lt;/b&gt; ; &lt;br/&gt;&lt;br/&gt; Sélectionnez &lt;b&gt;Services&lt;/b&gt;, puis &lt;b&gt;Général&lt;/b&gt; et : &lt;br&gt; 1. Activez &lt;b&gt;Annoncer les services à d\'autres systèmes&lt;/b&gt; ; &lt;br/&gt;&lt;br/&gt; Vous pouvez obtenir une aide supplémentaire &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;ici&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Cliquez sur &lt;b&gt;Rechercher à nouveau&lt;/b&gt; ou &lt;b&gt;Suivant&lt;/b&gt; pour une configuration manuelle.</string>
-    <string name="wizard_search_no_network_connection">Activez une connexion réseau avant de rechercher un Centre Multimédia.<br/></string>
-    <string name="wizard_search_host_found">J\\\'ai trouvé ce(s) Centre(s) Multimédia sur votre réseau.<br/><br/>Sélectionnez-en un à ajouter ou appuyez sur <i>Suivant</i> pour en ajouter un nouveau manuellement.</string>
+    <string name="wizard_search_no_network_connection">Activez une connexion réseau avant de rechercher un Centre Multimédia.<br></br></string>
+    <string name="wizard_search_host_found">J\\\'ai trouvé ce(s) Centre(s) Multimédia sur votre réseau.<br></br><br></br>Sélectionnez-en un à ajouter ou appuyez sur <i>Suivant</i> pour en ajouter un nouveau manuellement.</string>
     <string name="no_network_connection">Aucune connexion réseau</string>
     <string name="searching">Recherche en cours…</string>
     <string name="no_xbmc_found">Aucun Centre Multimédia trouvé</string>
@@ -108,7 +108,7 @@
     <string name="wizard_error_connecting">Impossible de se connecter à Kodi.
 \nVérifiez la configuration.</string>
     <string name="wizard_done">Terminé !</string>
-    <string name="wizard_done_message">Votre Centre Multimédia est configuré.<br/> Vous pouvez maintenant utiliser la télécommande pour le contrôler. Votre médiathèque est en cours de synchronisation, et devrait être disponible dans quelques instants.<br/><br/> Appuyez sur <b><i>Terminé</i></b> pour commencer à utiliser la télécommande.</string>
+    <string name="wizard_done_message">Votre Centre Multimédia est configuré.<br></br> Vous pouvez maintenant utiliser la télécommande pour le contrôler. Votre médiathèque est en cours de synchronisation, et devrait être disponible dans quelques instants.<br></br><br></br> Appuyez sur <b><i>Terminé</i></b> pour commencer à utiliser la télécommande.</string>
     <string name="wizard_zeroconf_no_host_address">Impossible de récupérer l\'adresse de ce Centre Multimédia !</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Connexion à ce Centre Multimédia impossible car l\'adresse est introuvable.</string>
     <string name="play">Lecture</string>
@@ -308,7 +308,7 @@
     <string name="remote_bar_items">Raccourcis de la barre inférieure</string>
     <string name="nav_drawer_items">Raccourcis du volet de navigation</string>
     <string name="about">À propos</string>
-    <string name="about_desc">\\0A9 2018 Fondation&lt;br&gt;&lt;br&gt; XBMC Veuillez nous évaluer sur &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Si vous avez besoin d’aide, consulter notre &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;forum&lt;/a&gt;</string>
+    <string name="about_desc">\\0A9 2018 Fondation&lt;br&gt;&lt;br&gt; XBMC Veuillez nous évaluer sur &lt;b&gt;&lt;a href=market://details?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Si vous avez besoin d’aide, consulter notre &lt;a href=http://forum.kodi.tv/forumdisplay.php?fid=129&gt;forum&lt;/a&gt;</string>
     <string name="play_on_kodi">Lire sur Kodi</string>
     <string name="queue_on_kodi">Ajouter à la liste de lecture sur Kodi</string>
     <string name="pause_call_incoming_title">Appel entrant</string>

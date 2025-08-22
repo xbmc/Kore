@@ -268,7 +268,7 @@
     <string name="pref_keep_screen_on">Estigues pendent</string>
     <string name="show_notification">Mostra notificacions mentre s\'està reproduint</string>
     <string name="show_now_playing_panel">Mostra ara el panell de reproducció</string>
-    <string name="wizard_done_message">El Centre Multimèdia està configurat.<br/> Ara podeu controlar-lo amb el control remot. La mediateca s\'està sincronitzant, i en breu estarà disponible.<br/><br/> Premeu <b>Acaba</b> per començar a utilitzar el control remot.</string>
+    <string name="wizard_done_message">El Centre Multimèdia està configurat.<br></br> Ara podeu controlar-lo amb el control remot. La mediateca s\'està sincronitzant, i en breu estarà disponible.<br></br><br></br> Premeu <b>Acaba</b> per començar a utilitzar el control remot.</string>
     <string name="pvr">PVR</string>
     <string name="wizard_zeroconf_no_host_address">No s\'ha pogut obtenir aquesta adreça del centre multimèdia!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">No s\'ha pogut connectar amb aquest Centre Multimèdia perquè no s\'ha pogut descobrir l\'adreça.</string>
@@ -278,7 +278,7 @@
     <string name="vibrate_on_remote">Vibra al prémer</string>
     <string name="nav_drawer_items">Menú lateral de dreceres</string>
     <string name="about">Quant a</string>
-    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Valoreu-nos, si us plau, en el &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Si necessiteu ajuda, adreceu-vos al nostre &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;forum&lt;/a&gt;</string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Valoreu-nos, si us plau, en el &lt;b&gt;&lt;a href=market://details?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Si necessiteu ajuda, adreceu-vos al nostre &lt;a href=http://forum.kodi.tv/forumdisplay.php?fid=129&gt;forum&lt;/a&gt;</string>
     <string name="play_on_kodi">Reprodueix al Kodi</string>
     <string name="pause_call_incoming_title">Trucada entrant</string>
     <string name="pause_call_incoming_message">Algú està trucant, comproveu-ho al telèfon</string>
@@ -332,7 +332,7 @@
     <string name="wizard_search_message"><![CDATA[     Cercant Centres Multimèdia per la xarxa local…<br/>     ]]></string>
     <string name="wizard_search_no_host_found">No he pogut trobar cap centre multimèdia a la vostra xarxa.&lt;br/&gt;&lt;br/&gt; Assegureu-vos que Kodi s\'executa i està configurat correctament, comproveu específicament el següent a &lt;b&gt;Configuració&lt;/b&gt; de Kodi:&lt;br/&gt;&lt;br/&gt; Seleccioneu &lt;b&gt;Serveis&lt;/b&gt;, després &lt;b&gt;Control&lt;/b&gt; i:&lt;br/&gt; 1. Activeu &lt;b&gt;Permetre el control remot via HTTP&lt;/b&gt;;&lt;br/&gt; 2. Activeu les dues opcions &lt;b&gt;Permetre el control remot des de les aplicacions d\'aquest sistema&lt;/b&gt; i &lt;b&gt;Permetre el control remot des de les aplicacions d\'altres sistemes&lt;/b&gt;;&lt;br/&gt;&lt;br/&gt; Seleccioneu &lt;b&gt;Serveis&lt;/b&gt;, després &lt;b&gt;General&lt;/b&gt; i:&lt;br&gt; 1. Activeu &lt;b&gt;Anunciar serveis a altres sistemes&lt;/b&gt;;&lt;br/&gt;&lt;br/&gt; Podeu obtenir ajuda addicional &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aquí&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Feu clic a &lt;b&gt;Torna a cercar&lt;/b&gt; o a &lt;b&gt;Següent&lt;/b&gt; per a la configuració manual.</string>
     <string name="wizard_search_no_network_connection"><![CDATA[     Activeu la connexió a la xarxa abans de cerecar Centgres Multimèdia.<br/>     ]]></string>
-    <string name="wizard_search_host_found">S\'han trobat aquets Centres Multimèdia en la xarxa.<br/><br/>Seleccioneu un o premeu <b>Següent</b> per afegir-ne un manualment.</string>
+    <string name="wizard_search_host_found">S\'han trobat aquets Centres Multimèdia en la xarxa.<br></br><br></br>Seleccioneu un o premeu <b>Següent</b> per afegir-ne un manualment.</string>
     <string name="wifi_network">Wi-Fi</string>
     <string name="mobile_network">Mòbil</string>
     <string name="any_network">Qualsevol</string>

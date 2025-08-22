@@ -62,10 +62,10 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Willkommen</string>
     <string name="wizard_welcome_message">Beginnen wir mit dem Hinzufügen eines Mediacenters. Sicherstellen, dass Kodi läuft, richtig konfiguriert ist und sich im selben Netzwerk wie dieses Gerät befindet.&lt;br/&gt;&lt;br/&gt; &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;Hier&lt;/a&gt; bekommt man Hilfe beim Konfigurieren.&lt;br/&gt;&lt;br/&gt;Anschließend auf &lt;b&gt;&lt;i&gt;Weiter&lt;/i&gt;&lt;/b&gt; drücken. .</string>
-    <string name="wizard_search_message">Nach Mediacenter im Netzwerk suchen …<br/></string>
+    <string name="wizard_search_message">Nach Mediacenter im Netzwerk suchen …<br></br></string>
     <string name="wizard_search_no_host_found">Im lokalen Netzwerk konnte kein Mediacenter gefunden werden.&lt;br/&gt;Falls Hilfe beim Konfigurieren benötigt wird, &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;hier&lt;/a&gt; drücken.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;Suche&lt;/i&gt; wählen, um nochmal zu suchen oder &lt;i&gt;Weiter&lt;/i&gt; für die manuelle Konfiguration.</string>
-    <string name="wizard_search_no_network_connection">Vor der Suche nach Mediacentern bitte eine Netzwerkverbindung einrichten.<br/></string>
-    <string name="wizard_search_host_found">Es wurden Mediacenter im Netzwerk gefunden.<br/><br/>Ein Mediacenter zum Hinzufügen auswählen oder <b>Weiter</b> drücken für die manuelle Konfiguration.</string>
+    <string name="wizard_search_no_network_connection">Vor der Suche nach Mediacentern bitte eine Netzwerkverbindung einrichten.<br></br></string>
+    <string name="wizard_search_host_found">Es wurden Mediacenter im Netzwerk gefunden.<br></br><br></br>Ein Mediacenter zum Hinzufügen auswählen oder <b>Weiter</b> drücken für die manuelle Konfiguration.</string>
     <string name="no_network_connection">Keine Netzwerkverbindung</string>
     <string name="searching">Suche läuft …</string>
     <string name="no_xbmc_found">Kein Mediacenter gefunden</string>
@@ -99,7 +99,7 @@
     <string name="wizard_error_connecting">Verbindung zu Kodi nicht möglich.
 \nBitte die eigene Konfiguration überprüfen.</string>
     <string name="wizard_done">Fertig!</string>
-    <string name="wizard_done_message">Das Mediacenter ist jetzt konfiguriert.<br/>Es lässt sich nun über die Fernbedienung steuern. Die Bibliothek wird synchronisiert und sollte in wenigen Augenblicken verfügbar sein.<br/><br/><b>Fertig</b> drücken, um mit der Fernbedienung zu verwenden.</string>
+    <string name="wizard_done_message">Das Mediacenter ist jetzt konfiguriert.<br></br>Es lässt sich nun über die Fernbedienung steuern. Die Bibliothek wird synchronisiert und sollte in wenigen Augenblicken verfügbar sein.<br></br><br></br><b>Fertig</b> drücken, um mit der Fernbedienung zu verwenden.</string>
     <string name="wizard_zeroconf_no_host_address">Adresse des Mediacenters konnte nicht ermittelt werden!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Keine Verbindung zum Mediacenter möglich, weil die Adresse nicht ermittelt werden konnte.</string>
     <string name="play">Wiedergeben</string>
@@ -287,7 +287,7 @@
     <string name="vibrate_on_remote">Bei Berührung vibrieren</string>
     <string name="nav_drawer_items">Verknüpfungen in Seitenmenü</string>
     <string name="about">Über</string>
-    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Bitte uns bei &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt; bewerten.&lt;br&gt;&lt;br&gt; Wenn Hilfe benötigt wird, einfach mal in unserem &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;Forum&lt;/a&gt;&lt;/b&gt; vorbeischauen</string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Bitte uns bei &lt;b&gt;&lt;a href=market://details?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt; bewerten.&lt;br&gt;&lt;br&gt; Wenn Hilfe benötigt wird, einfach mal in unserem &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php?fid=129&gt;Forum&lt;/a&gt;&lt;/b&gt; vorbeischauen</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Kaufen Sie mir einen Kaffee</string>-->
     <!--<string name="expresso_please">Espresso, bitte. Danke!</string>-->

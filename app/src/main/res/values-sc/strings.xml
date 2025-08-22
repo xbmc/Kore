@@ -58,10 +58,10 @@
     <string name="wizard_manual_configuration" modified="true">Cunfiguratzione manuale</string>
     <string name="sync_successful" modified="true">Sincronizatzione fata cun sutzessu</string>
     <string name="theme_default_dynamic" modified="true">Dinàmicu Die/Note</string>
-    <string name="wizard_search_no_host_found" modified="true">Non so resessidu a atzapare perunu tzentru multimediale in sa rete tua.&lt;br/&gt; 	    Si tenes bisòngiu de agiudu pro lu cunfigurare pòmpia·ti &lt;a href="http://syncedsynapse.com/kore/kore-faq/"&gt;custu&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; 	    Incarca in &lt;b&gt;Torra a chircare&lt;/b&gt; o in &lt;b&gt;Imbeniente&lt;/b&gt; pro sa cunfiguratzione manuale.</string>
+    <string name="wizard_search_no_host_found" modified="true">Non so resessidu a atzapare perunu tzentru multimediale in sa rete tua.&lt;br/&gt; Si tenes bisòngiu de agiudu pro lu cunfigurare pòmpia·ti &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;custu&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Incarca in &lt;b&gt;Torra a chircare&lt;/b&gt; o in &lt;b&gt;Imbeniente&lt;/b&gt; pro sa cunfiguratzione manuale.</string>
     <string name="remote_bar_items" modified="true">Incurtzadas de s\'istanga de suta</string>
     <string name="wizard_manual_configuration_message_advanced" modified="true">Cunfiguratzione avantzada (lassa bòidu pro sos valores predefinidos)</string>
-    <string name="wizard_welcome_message" modified="true">Incumintzamus annanghende unu tzentru multimediale. Assegura·ti chi su Kodi tuo siat in esecutzione, cunfiguradu comente si tocat e in sa matessi rete de su dispositivu tuo.&lt;br/&gt;&lt;br/&gt; 	    Podes atzapare agiudu pro lu cunfigurare &lt;a href="http://syncedsynapse.com/kore/kore-faq/"&gt;inoghe&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; 	    Cando ses prontu incarca in &lt;b&gt;Imbeniente&lt;/b&gt;.</string>
+    <string name="wizard_welcome_message" modified="true">Incumintzamus annanghende unu tzentru multimediale. Assegura·ti chi su Kodi tuo siat in esecutzione, cunfiguradu comente si tocat e in sa matessi rete de su dispositivu tuo.&lt;br/&gt;&lt;br/&gt; Podes atzapare agiudu pro lu cunfigurare &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;inoghe&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Cando ses prontu incarca in &lt;b&gt;Imbeniente&lt;/b&gt;.</string>
     <string name="poster" modified="true">Locandina</string>
     <string name="tvshow_episodes" modified="true">Episòdios</string>
     <string name="wizard_xbmc_password" modified="true">Crae de intrada</string>
@@ -70,11 +70,16 @@
     <string name="wizard_invalid_es_port_specified" modified="true">Ispetzìfica una ghenna EventServer vàlida pro custu tzentru multimediale.</string>
     <string name="show_watched_status" modified="true">Mustra s\'istadu de abbistada</string>
     <string name="use_hardware_volume_keys_when_in_foreground" modified="true">Cando Kore est in primu pianu</string>
-    <string-array name="entry_values_download_media_items"><item modified="true" index="1">1</item><item index="0">0</item><item modified="true" index="2">2</item></string-array><string name="error_executing_subtitles" modified="true">No at fatu a esecutare su cumplementu de sos sutatìtulos.\n
+    <string-array name="entry_values_download_media_items">
+        <item modified="true" index="1">1</item>
+        <item index="0">0</item>
+        <item modified="true" index="2">2</item>
+    </string-array>
+    <string name="error_executing_subtitles" modified="true">No at fatu a esecutare su cumplementu de sos sutatìtulos.\n
                      Messàgiu de errore: %1$s</string>
     <string name="stream_action" modified="true">Flussu</string>
     <string name="queue_on_kodi" modified="true">Lista in Kodi</string>
-    <string name="wizard_done_message" modified="true">Su tzentru multimediale tuo est cunfiguradu.&lt;br/&gt; 	    Como podes impreare su telecumandu pro lu controllare. Sa biblioteca tua est in sincronizatzione, e diat dèpere èssere a disponimentu intre pagu.&lt;br/&gt;&lt;br/&gt; 	    Incarca &lt;b&gt;Acabba&lt;/b&gt; pro incumintzare a impreare su telecumandu.</string>
+    <string name="wizard_done_message" modified="true">Su tzentru multimediale tuo est cunfiguradu.<br></br> Como podes impreare su telecumandu pro lu controllare. Sa biblioteca tua est in sincronizatzione, e diat dèpere èssere a disponimentu intre pagu.<br></br><br></br> Incarca <b>Acabba</b> pro incumintzare a impreare su telecumandu.</string>
     <string name="error_queue_media_file" modified="true">No at fatu a pònnere in lista su documentu multimediale.\n
                 Messàgiu de errore: %1$s</string>
     <string name="confirm_artist_download" modified="true">Ses seguru chi boles iscarrigare totu sos albums?\n
@@ -175,7 +180,7 @@
                            	Si bi sunt documentos cun su matessi nùmene los boles subraiscrìere o iscarrigare cun unu nùmene nou?</string>
     <string name="now_playing" modified="true">Como in riprodutzione</string>
     <string name="genres" modified="true">Gèneres</string>
-    <string name="wizard_search_no_network_connection" modified="true">Pro praghere abìlita una connessione de rete in antis de chircare tzentros multimediales.&lt;br/&gt;</string>
+    <string name="wizard_search_no_network_connection" modified="true">Pro praghere abìlita una connessione de rete in antis de chircare tzentros multimediales.<br></br></string>
     <string name="play_from_here" modified="true">Riprodui dae inoghe</string>
     <string name="play_on_kodi" modified="true">Riprodui in Kodi</string>
     <string name="sort_order" modified="true">Òrdina</string>
@@ -226,7 +231,14 @@
     <string name="context" modified="true">Cuntestu</string>
     <string name="weather" modified="true">Mèteu</string>
     <string name="update_audio_library" modified="true">Atualiza sa biblioteca àudio</string>
-    <string-array name="default_values_remote_bar_items"><item modified="true" index="3">3</item><item modified="true" index="2">2</item><item modified="true" index="4">5</item><item modified="true" index="1">1</item><item index="0">0</item></string-array><string name="unable_to_play_favourite_item" modified="true">Non faghet a riproduire s\'elementu preferidu. Casta non suportada</string>
+    <string-array name="default_values_remote_bar_items">
+        <item modified="true" index="3">3</item>
+        <item modified="true" index="2">2</item>
+        <item modified="true" index="4">5</item>
+        <item modified="true" index="1">1</item>
+        <item index="0">0</item>
+    </string-array>
+    <string name="unable_to_play_favourite_item" modified="true">Non faghet a riproduire s\'elementu preferidu. Casta non suportada</string>
     <string name="action_search" modified="true">Chirca</string>
     <string name="wizard_no_address_specified" modified="true">Ispetzìfica s\'indiritzu de custu tzentru multimediale, in manera chi deo lu potza atzapare.</string>
     <string name="switch_to_remote" modified="true">Mustra a s\'incumintzu de sos mèdios</string>
@@ -254,7 +266,7 @@
     <string name="error_favourites" modified="true">Recùperu de sos preferidos fallidu\n
                    Descritzione de s\'errore: %1$s</string>
     <string name="audio_sync" modified="true">Sincroniza s\'àudio</string>
-    <string name="about_desc" modified="true">\\00A9 2018 Fundatzione XBMC&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;         Pro praghere vota·nos in &amp;lt;b&amp;gt;&amp;lt;a href=\"market://details?id=org.xbmc.kore\"&amp;gt;Google Play&amp;lt;/a&amp;gt;&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;         Si tenes bisòngiu de agiudu, pòmpia·ti su &amp;lt;a href=\"http://forum.kodi.tv/forumdisplay.php?fid=129\"&amp;gt;forum&amp;lt;/a&amp;gt; nostru</string>
+    <string name="about_desc" modified="true">\\00A9 2018 Fundatzione XBMC&lt;br&gt;&lt;br&gt; Pro praghere vota·nos in &lt;b&gt;&lt;a href=\"market://details?id=org.xbmc.kore\"&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Si tenes bisòngiu de agiudu, pòmpia·ti su &lt;a href=\"http://forum.kodi.tv/forumdisplay.php?fid=129\"&gt;forum&lt;/a&gt; nostru</string>
     <string name="download_action" modified="true">Iscàrriga</string>
     <string name="test_connection" modified="true">Proa</string>
     <string name="no_episodes_found" modified="true">Perunu episòdiu atzapadu</string>
@@ -321,7 +333,7 @@
                    Messàgiu de errore: %1$s</string>
     <string name="library_actions" modified="true">Manutentzione de sa biblioteca</string>
     <string name="radio_channels" modified="true">Canales ràdiu</string>
-    <string name="wizard_search_host_found" modified="true">Apo atzapadu custos tzentros multimediales in sa rete tua.&lt;br/&gt;&lt;br/&gt;     	Seletziona·nde unu pro l\'annaghere o incarca in &lt;b&gt;Imbeniente&lt;/b&gt; pro nde agiùnghere unu in manera manuale.</string>
+    <string name="wizard_search_host_found" modified="true">Apo atzapadu custos tzentros multimediales in sa rete tua.<br></br><br></br> Seletziona·nde unu pro l\'annaghere o incarca in <b>Imbeniente</b> pro nde agiùnghere unu in manera manuale.</string>
     <string name="action_search_tvshows" modified="true">Chirca programmas TV</string>
     <string name="pause" modified="true">Pàusa</string>
     <string name="wizard_invalid_tcp_port_specified" modified="true">Ispetzìfica una ghenna TCP vàlida pro custu tzentru multimediale.</string>
@@ -342,7 +354,10 @@
     <string name="wizard_zeroconf_cant_connect_no_host_address" modified="true">Non faghet a si connètere a custu tzentru multimediale ca non so istadu in gradu de iscobèrrere s\'indiritzu suo.</string>
     <string name="error_while_syncing" modified="true">B\'at àpidu un\'errore sicronizende: %1$s</string>
     <string name="volume_mute" modified="true">A sa muda</string>
-    <string-array name="default_values_download_media_items"><item index="0">0</item></string-array><string name="sort_by_year" modified="true">Pro annu</string>
+    <string-array name="default_values_download_media_items">
+        <item index="0">0</item>
+    </string-array>
+    <string name="sort_by_year" modified="true">Pro annu</string>
     <string name="addon_overview" modified="true">Panoràmica</string>
     <string name="theme_color_system_colors" modified="true">Colores de sistema</string>
     <string name="media" modified="true">Multimèdia</string>
@@ -370,7 +385,7 @@
     <string name="season_number" modified="true">Istajone %1$02d</string>
     <string name="read_phone_state_permission_denied" modified="true">Permissu negadu. No as a pòdere pònnere in pàusa sa riprodutzione durante sas telefonadas.</string>
     <string name="external_storage" modified="true">Memòria</string>
-    <string name="wizard_search_message" modified="true">Chirchende tzentros multimediales in sa rete locale tua…&lt;br/&gt;</string>
+    <string name="wizard_search_message" modified="true">Chirchende tzentros multimediales in sa rete locale tua…<br></br></string>
     <string name="connected_to_xbmc" modified="true">Collegadu</string>
     <string name="unsorted" modified="true">No ordinadu</string>
     <string name="download_subtitle" modified="true">Iscàrriga sutatìtulos</string>
@@ -382,4 +397,4 @@
     <string name="show_now_playing_panel_summary" modified="true">Mustra unu pannellu in fundu a s\'ischermu cando b\'at unu mèdiu in riprodutzione</string>
     <string name="xbmc_available" modified="true">A disponimentu</string>
     <string name="no_favourites_found_refresh" modified="true">Perunu preferidu atzapadu</string>
-    </resources>
+</resources>
