@@ -69,10 +69,10 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Vitajte</string>
     <string name="wizard_welcome_message">Začnime tým, že pridáme mediálne centrum. &lt;br/&gt; Uistite sa, že je Kodi spustený a správne nakonfigurovaný. Konkrétne skontrolujte nasledujúce položky v Kodi: &lt;b&gt;Nastavenia&lt;/b&gt;: &lt;br/&gt;&lt;br/&gt; Vyberte &lt;b&gt;Služby&lt;/b&gt;, potom &lt;b&gt;Ovládanie&lt;/b&gt; a: &lt;br/&gt; 1. Povoľte &lt;b&gt;Povoliť vzdialené ovládanie cez HTTP&lt;/b&gt;; &lt;br/&gt; 2. Povoľte obe možnosti &lt;b&gt;Povoliť vzdialené ovládanie z aplikácií v tomto systéme&lt;/b&gt; a &lt;b&gt;Povoliť vzdialené ovládanie z aplikácií v iných systémoch&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Vyberte &lt;b&gt;Služby&lt;/b&gt;, potom &lt;b&gt;Všeobecné&lt;/b&gt; a: &lt;br&gt; 1. Povoľte &lt;b&gt;Oznamovať služby iným systémom&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Ďalšiu pomoc môžete získať &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;tu&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Keď ste pripravení, stlačte &lt;b&gt;Ďalej&lt;/b&gt;.</string>
-    <string name="wizard_search_message">Vyhľadávajú sa multimediálne centrá v lokálnej sieti...<br/></string>
+    <string name="wizard_search_message">Vyhľadávajú sa multimediálne centrá v lokálnej sieti...<br></br></string>
     <string name="wizard_search_no_host_found">Vo vašej sieti sme nenašli žiadne mediálne centrum.&lt;br/&gt;&lt;br/&gt; Uistite sa, že je Kodi spustené a správne nakonfigurované, konkrétne skontrolujte nasledujúce položky: &lt;b&gt;Nastavenia&lt;/b&gt;: &lt;br/&gt;&lt;br/&gt; Vyberte &lt;b&gt;Služby&lt;/b&gt;, potom &lt;b&gt;Ovládanie&lt;/b&gt; a: &lt;br/&gt; 1. Povoľte &lt;b&gt;Povoliť vzdialené ovládanie cez HTTP&lt;/b&gt;; &lt;br/&gt; 2. Povoľte obe možnosti &lt;b&gt;Povoliť vzdialené ovládanie z aplikácií v tomto systéme&lt;/b&gt; a &lt;b&gt;Povoliť vzdialené ovládanie z aplikácií v iných systémoch&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Vyberte &lt;b&gt;Služby&lt;/b&gt;, potom &lt;b&gt;Všeobecné&lt;/b&gt; a: &lt;br&gt; 1. Povoľte &lt;b&gt;Oznamovať služby iným systémom&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Ďalšiu pomoc môžete získať &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;tu&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Kliknite na &lt;b&gt;Znovu vyhľadávať&lt;/b&gt; alebo &lt;b&gt;Ďalej&lt;/b&gt; pre manuálnu konfiguráciu.</string>
-    <string name="wizard_search_no_network_connection">Pred vyhľadávaním multimediálnych centier povoľte prosím sieťové pripojenie.<br/></string>
-    <string name="wizard_search_host_found">Vo vašej sieti sme našli tieto mediálne centrá.<br/><br/>Vyberte jedno, ktoré chcete pridať, alebo stlačte <b>Ďalej</b> pre nové manuálne pridanie.</string>
+    <string name="wizard_search_no_network_connection">Pred vyhľadávaním multimediálnych centier povoľte prosím sieťové pripojenie.<br></br></string>
+    <string name="wizard_search_host_found">Vo vašej sieti sme našli tieto mediálne centrá.<br></br><br></br>Vyberte jedno, ktoré chcete pridať, alebo stlačte <b>Ďalej</b> pre nové manuálne pridanie.</string>
     <string name="no_network_connection">Žiadne sieťové pripojenie</string>
     <string name="searching">Vyhľadávanie…</string>
     <string name="no_xbmc_found">Mediálne centrum nenájdené</string>
@@ -105,7 +105,7 @@
     <string name="wizard_success_connecting">Pripojené ku Kodi.</string>
     <string name="wizard_error_connecting">Nepodarilo sa pripojiť ku Kodi.
 \nSkontrolujte prosím konfiguráciu.</string>
-    <string name="wizard_done_message">Vaše mediálne centrum je nakonfigurované.<br/> Teraz ho môžete ovládať pomocou diaľkového ovládača. Vaša knižnica sa synchronizuje a mala by byť k dispozícii za niekoľko okamihov.<br/><br/> Stlačte <b>Dokončiť</b> a začnite používať diaľkový ovládač.</string>
+    <string name="wizard_done_message">Vaše mediálne centrum je nakonfigurované.<br></br> Teraz ho môžete ovládať pomocou diaľkového ovládača. Vaša knižnica sa synchronizuje a mala by byť k dispozícii za niekoľko okamihov.<br></br><br></br> Stlačte <b>Dokončiť</b> a začnite používať diaľkový ovládač.</string>
     <string name="wizard_zeroconf_no_host_address">Nepodarilo sa získať adresu tohto multimediálneho centra!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">K tomuto multimediálnemu centru sa nebolo možné pripojiť, pretože sa nepodarilo nájsť jeho adresu.</string>
     <string name="play">Prehrať</string>
