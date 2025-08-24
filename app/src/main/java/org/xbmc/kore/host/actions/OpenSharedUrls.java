@@ -20,13 +20,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Opens or queues a video URL on Kodi.
+ * Opens or queues one or more URLs on Kodi.
  */
-public class OpenSharedUrl extends HostCompositeAction<Boolean> {
-    private static final String TAG = LogUtils.makeLogTag(OpenSharedUrl.class);
+public class OpenSharedUrls extends HostCompositeAction<Boolean> {
+    private static final String TAG = LogUtils.makeLogTag(OpenSharedUrls.class);
 
     private final Context context;
-    private final String url;
+    private final List<String> urls;
     private final String notificationTitle;
     private final String notificationText;
     private final boolean queue;
@@ -35,15 +35,15 @@ public class OpenSharedUrl extends HostCompositeAction<Boolean> {
     /**
      * Creates the composite action
      * @param context Context
-     * @param url The url to play
-     * @param notificationTitle The title of the notification to be shown when the host is currently playing a video
-     * @param notificationText The notification to be shown when the host is currently playing a video
-     * @param queue Whether to open or queue the item
+     * @param urls The urls to play or queue
+     * @param notificationTitle The title of the notification to be shown when Kodi is already playing something
+     * @param notificationText The notification to be shown when Kodi is already playing something
+     * @param queue Whether to open or queue the items
      * @param playlistType Playlist type to queue to
      */
-    public OpenSharedUrl(Context context, String url, String notificationTitle, String notificationText, boolean queue, int playlistType) {
+    public OpenSharedUrls(Context context, List<String> urls, String notificationTitle, String notificationText, boolean queue, int playlistType) {
         this.context = context;
-        this.url = url;
+        this.urls = urls;
         this.notificationTitle = notificationTitle;
         this.notificationText = notificationText;
         this.queue = queue;
@@ -51,8 +51,8 @@ public class OpenSharedUrl extends HostCompositeAction<Boolean> {
     }
 
     /**
-     * @return whether the host is currently playing a video. If so, the shared url
-     * is added to the playlist and not played immediately.
+     * @return whether Kodi is currently playing something. If so, the shared URLs
+     * are added to the playlist and not played immediately.
      * @throws Error when any of the commands sent fails
      * @throws InterruptedException when {@code cancel(true)} is called on the resulting
      * future while waiting on one of the internal futures.
@@ -64,13 +64,7 @@ public class OpenSharedUrl extends HostCompositeAction<Boolean> {
             List<PlayerType.GetActivePlayersReturnType> players =
                     hostConnection.execute(new Player.GetActivePlayers())
                                   .get();
-            boolean mediaIsPlaying = false;
-            for (PlayerType.GetActivePlayersReturnType player : players) {
-                if (player.type.equals(PlayerType.GetActivePlayersReturnType.VIDEO)) {
-                    mediaIsPlaying = true;
-                    break;
-                }
-            }
+            boolean mediaIsPlaying = !players.isEmpty();
 
             stage = R.string.error_queue_media_file;
             if (!mediaIsPlaying) {
@@ -79,29 +73,44 @@ public class OpenSharedUrl extends HostCompositeAction<Boolean> {
                               .get();
             }
 
-            PlaylistType.Item item = new PlaylistType.Item();
-            item.file = url;
             if (queue) {
-                // Queue media file to playlist:
-                LogUtils.LOGD(TAG, "Queueing file");
-                hostConnection.execute(new Playlist.Add(playlistType, item))
-                              .get();
+                LogUtils.LOGD(TAG, "Queueing " + urls.size() + " item(s)");
+                for (String u : urls) {
+                    PlaylistType.Item item = new PlaylistType.Item();
+                    item.file = u;
+                    hostConnection.execute(new Playlist.Add(playlistType, item))
+                                  .get();
+                }
 
-                if (!mediaIsPlaying) {
+                // If playback is currently active, notify the user about the updated queue.
+                // If not, start playback of queued items.
+                if (mediaIsPlaying) {
+                    // no get() to ignore the exception that will be thrown by OkHttp
+                    hostConnection.execute(new Player.Notification(notificationTitle, notificationText));
+                } else {
                     stage = R.string.error_play_media_file;
                     hostConnection.execute(new Player.Open(Player.Open.TYPE_PLAYLIST, playlistType))
                                   .get();
-                } else {
-                    // no get() to ignore the exception that will be thrown by OkHttp
-                    hostConnection.execute(new Player.Notification(notificationTitle, notificationText));
                 }
             } else {
-                // Don't queue, just play the media file directly:
                 stage = R.string.error_play_media_file;
+                LogUtils.LOGD(TAG, "Playing " + urls.size() + "item(s)");
+
+                // play first url immediately
+                String url = urls.get(0);
+                PlaylistType.Item item = new PlaylistType.Item();
+                item.file = url;
                 hostConnection.execute(new Player.Open(item))
                               .get();
-            }
 
+                // queue the rest
+                for (int i = 1; i < urls.size(); i++) {
+                    item = new PlaylistType.Item();
+                    item.file = urls.get(i);
+                    hostConnection.execute(new Playlist.Add(playlistType, item))
+                                  .get();
+                }
+            }
             return mediaIsPlaying;
         } catch (ExecutionException e) {
             throw new ExecutionException(context.getString(stage, e.getMessage()), e.getCause());

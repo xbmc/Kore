@@ -2,6 +2,7 @@ package org.xbmc.kore.ui.sections.localfile;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -28,9 +29,9 @@ import static android.content.Context.WIFI_SERVICE;
 
 public class HttpApp extends NanoHTTPD {
 
-    private HttpApp(Context applicationContext, int port) throws IOException {
+    private HttpApp(Context context, int port) throws IOException {
         super(port);
-        this.applicationContext = applicationContext;
+        this.context = context;
         this.localFileLocationList = new LinkedList<>();
         this.localUriList = new LinkedList<>();
         this.token = generateToken();
@@ -58,7 +59,7 @@ public class HttpApp extends NanoHTTPD {
         return token.toString();
     }
 
-    private final Context applicationContext;
+    private final Context context;
     private final LinkedList<LocalFileLocation> localFileLocationList;
     private final LinkedList<Uri> localUriList;
     private int currentIndex;
@@ -93,8 +94,19 @@ public class HttpApp extends NanoHTTPD {
                 mimeType = localFileLocation.getMimeType();
             } else if (params.containsKey("uri")) {
                 int uri_number = Integer.parseInt(params.get("uri").get(0));
+                Uri uri = localUriList.get(uri_number);
 
-                fis = (FileInputStream) applicationContext.getContentResolver().openInputStream(localUriList.get(uri_number));
+                try {
+                    // ensure that we can read the URI's content, even if the component
+                    // that originally provided this permission has died
+                    context.grantUriPermission(context.getPackageName(), uri,
+                                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } catch (SecurityException e) {
+                    LogUtils.LOGE(LogUtils.makeLogTag(HttpApp.class), e.toString());
+                    return forbidden;
+                }
+
+                fis = (FileInputStream) context.getContentResolver().openInputStream(uri);
             } else {
                 return forbidden;
             }
@@ -128,7 +140,7 @@ public class HttpApp extends NanoHTTPD {
     }
 
     private String getIpAddress() throws UnknownHostException {
-        WifiManager wm = (WifiManager) applicationContext.getApplicationContext().getSystemService(WIFI_SERVICE);
+        WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
         byte[] byte_address = BigInteger.valueOf(wm.getConnectionInfo().getIpAddress()).toByteArray();
         // Reverse `byte_address`:
         for (int i = 0; i < byte_address.length/2; i++) {
@@ -173,7 +185,7 @@ public class HttpApp extends NanoHTTPD {
         if (contentUri.toString().startsWith("content://")) {
             Cursor cursor = null;
             try {
-                cursor = applicationContext.getContentResolver().query(contentUri, null, null, null, null);
+                cursor = context.getContentResolver().query(contentUri, null, null, null, null);
                 if (cursor != null && cursor.moveToFirst()) {
                     // Unrolled to prevent error on lint
                     int colIdx = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
@@ -191,11 +203,11 @@ public class HttpApp extends NanoHTTPD {
 
     private static HttpApp http_app = null;
 
-    public static HttpApp getInstance(Context applicationContext, int port) throws IOException {
+    public static HttpApp getInstance(Context context, int port) throws IOException {
         if (http_app == null) {
             synchronized (HttpApp.class) {
                 if (http_app == null) {
-                    http_app = new HttpApp(applicationContext, port);
+                    http_app = new HttpApp(context, port);
                 }
             }
         }
