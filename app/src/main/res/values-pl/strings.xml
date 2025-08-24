@@ -403,4 +403,5 @@
     <string name="preferred_youtube_addon">Preferowany dodatek YouTube</string>
     <string name="preferred_youtube_addon_youtube">YouTube (plugin.video.youtube)</string>
     <string name="preferred_youtube_addon_invidious">Invidious (plugin.video.invidious)</string>
+    <string name="preferred_youtube_addon_piped">Piped (plugin.video.piped)</string>
 </resources>
