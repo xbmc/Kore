@@ -39,4 +39,387 @@
     <string name="music">Muzika</string>
     <string name="tv_shows">TV serije</string>
     <string name="movies">Filmovi</string>
+    <string name="settings">Podešavanja</string>
+    <string name="action_options">Opcije</string>
+    <string name="loading">Učitavanje…</string>
+    <string name="navigation_drawer_open">Otvori navigacijsku ladicu</string>
+    <string name="navigation_drawer_close">Zatvori navigacijsku ladicu</string>
+    <string name="xbmc_media_center">Medijski centar</string>
+    <string name="home">Početna</string>
+    <string name="dcim">DCIM</string>
+    <string name="external_storage">Skladište</string>
+    <string name="addons">Dodaci</string>
+    <string name="files">Kodi datoteke</string>
+    <string name="local_files">Lokalne datoteke</string>
+    <string name="video">Video</string>
+    <string name="media">Mediji</string>
+    <string name="window">Prozor</string>
+    <string name="script">Skripta</string>
+    <string name="unknown">Nepoznato</string>
+    <string name="file_browser">Kodi preglednik datoteka</string>
+    <string name="local_file_browser">Lokalni preglednik datoteka</string>
+    <string name="pvr">PVR</string>
+    <string name="weather">Vrijeme</string>
+    <string name="system">Sistem</string>
+    <string name="no_xbmc_configured">Nije konfiguriran medijski centar</string>
+    <string name="add_xbmc">Dodaj medijski centar</string>
+    <string name="xbmc_quit">Medijski centar se zatvara.</string>
+    <string name="wol_sent">Poziv za buđenje poslan je u vaš medijski centar.</string>
+    <string name="power">Moć</string>
+    <string name="quit">Odustani</string>
+    <string name="suspend">Obustavi</string>
+    <string name="reboot">Ponovno pokretanje</string>
+    <string name="shutdown">Gašenje</string>
+    <string name="send">Pošalji</string>
+    <string name="send_text">Pošalji tekst u medijski centar</string>
+    <string name="text_to_send">Tekst za slanje</string>
+    <string name="finish_after_send">Završi nakon slanja</string>
+    <string name="library_actions">Održavanje biblioteke</string>
+    <string name="clean_video_library">Čista videoteka</string>
+    <string name="clean_audio_library">Čista audio biblioteka</string>
+    <string name="update_video_library">Ažuriraj videoteku</string>
+    <string name="update_audio_library">Ažuriraj audio biblioteku</string>
+    <string name="toggle_fullscreen">Prikaz preko cijelog ekrana</string>
+    <string name="not_connected">Nije povezano</string>
+    <string name="connected_to">Povezano sa %1$s</string>
+    <string name="connecting">Povezivanje…</string>
+    <string name="connecting_to">Nije moguće povezivanje sa %1$s (%2$s)\nPonovni pokušaj…</string>
+    <string name="wizard_welcome">Dobrodošli</string>
+    <string name="no_network_connection">Nema mrežne veze</string>
+    <string name="searching">Pretraživanje…</string>
+    <string name="no_xbmc_found">Nije pronađen medijski centar</string>
+    <string name="xbmc_found">Pronađen medijski centar</string>
+    <string name="wizard_manual_configuration">Ručna konfiguracija</string>
+    <string name="wizard_manual_configuration_message">Unesite konfiguraciju vašeg medijskog centra:</string>
+    <string name="wizard_manual_configuration_message_advanced">Napredna konfiguracija (ostavite prazno za zadane postavke)</string>
+    <string name="wizard_xbmc_name">Naziv medijskog centra</string>
+    <string name="wizard_xbmc_ip">Adresa</string>
+    <string name="wizard_xbmc_port">Priključak</string>
+    <string name="wizard_xbmc_username">Korisničko ime</string>
+    <string name="wizard_xbmc_password">Lozinka</string>
+    <string name="wizard_xbmc_tcp_port">TCP priključak (9090)</string>
+    <string name="wizard_xbmc_mac_address">MAC adresa</string>
+    <string name="wizard_xbmc_wol_port">WoL priključak (9)</string>
+    <string name="wizard_xbmc_use_tcp">Koristi TCP</string>
+    <string name="wizard_xbmc_event_server_port">ES priključak (9777)</string>
+    <string name="wizard_xbmc_use_event_server">Koristi EventServer</string>
+    <string name="wizard_xbmc_direct_share">Prikaži u tabeli za dijeljenje</string>
+    <string name="wizard_no_name_specified">Molimo vas da navedete naziv za ovaj medijski centar kako biste ga kasnije mogli identificirati.</string>
+    <string name="wizard_no_address_specified">Molim vas, navedite adresu ovog medijskog centra, kako bih ga mogao pronaći.</string>
+    <string name="wizard_invalid_http_port_specified">Molimo Vas da navedete važeći HTTP priključak za ovaj medijski centar.</string>
+    <string name="wizard_invalid_tcp_port_specified">Molimo Vas da navedete važeći TCP priključak za ovaj medijski centar.</string>
+    <string name="wizard_invalid_es_port_specified">Molimo Vas da navedete važeći EventServer priključak za ovaj medijski centar.</string>
+    <string name="wizard_connecting_to_xbmc_title">Povezivanje sa %1$s…</string>
+    <string name="wizard_connecting_to_xbmc_message">Molimo pričekajte dok pokušam uspostaviti vezu s vašim medijskim centrom…</string>
+    <string name="wizard_empty_authentication">Kodi zahtijeva autentifikaciju.\n Molimo vas da navedete korisničko ime i lozinku.</string>
+    <string name="wizard_incorrect_authentication">Pogrešno korisničko ime i/ili lozinka.\n Molimo provjerite svoje akreditive.</string>
+    <string name="wizard_success_connecting">Povezan sa Kodi-jem.</string>
+    <string name="wizard_error_connecting">Nije moguće povezati se s Kodi-jem.\n Molimo provjerite konfiguraciju.</string>
+    <string name="wizard_done">Sve je svršeno!</string>
+    <string name="wizard_zeroconf_no_host_address">Nije moguće dobiti adresu ovog medijskog centra!</string>
+    <string name="wizard_zeroconf_cant_connect_no_host_address">Ne mogu se povezati s ovim medijskim centrom jer nisam uspio pronaći njegovu adresu.</string>
+    <string name="play">Pokrenuti</string>
+    <string name="pause">Pauziraj</string>
+    <string name="stop">Zaustavi</string>
+    <string name="fast_forward">Brzo naprijed</string>
+    <string name="rewind">Premotavanje unazad</string>
+    <string name="repeat">Ponovi</string>
+    <string name="shuffle">Razmjena</string>
+    <string name="volume_up">Pojačavanje zvuka</string>
+    <string name="volume_down">Smanji zvuk</string>
+    <string name="volume_mute">Isključi zvuk</string>
+    <string name="subtitles">Podnaslovi</string>
+    <string name="audiostreams">Audiostreamovi</string>
+    <string name="no_audiostream">Nema dostupnog audio streama</string>
+    <string name="download_subtitle">Preuzmi titlove</string>
+    <string name="none">Nema</string>
+    <string name="audio_sync">Sinhronizacija zvuka</string>
+    <string name="subtitle_sync">Sinhronizacija titlova</string>
+    <string name="party_mode">Način rada za zabavu</string>
+    <string name="left">Lijevo</string>
+    <string name="right">Desno</string>
+    <string name="up">Gore</string>
+    <string name="down">Dolje</string>
+    <string name="select">Odaberite</string>
+    <string name="info">Info</string>
+    <string name="codec_info">Kodek</string>
+    <string name="context">Kontekst</string>
+    <string name="osd">Meni</string>
+    <string name="back">Nazad</string>
+    <string name="previous">Prethodno</string>
+    <string name="next">Sljedeće</string>
+    <string name="finish">Završi</string>
+    <string name="test_connection">Test</string>
+    <string name="search_again">Pretraži ponovo</string>
+    <string name="remove">Ukloni</string>
+    <string name="edit">Uredi</string>
+    <string name="wake_up">Probudi se</string>
+    <string name="edit_xbmc">Uredi medijski centar</string>
+    <string name="delete_xbmc">Izbriši medijski centar</string>
+    <string name="delete_xbmc_confirm">Jeste li sigurni da želite izbrisati ovaj medijski centar?</string>
+    <string name="queue_file">Red čekanja</string>
+    <string name="play_file">Pokrenuti</string>
+    <string name="play_from_here">Reproduciraj odavde</string>
+    <string name="connecting_to_xbmc">Povezivanje…</string>
+    <string name="unable_to_connect_to_xbmc">Nije moguće povezati se s medijskim centrom</string>
+    <string name="connected_to_xbmc">Povezano</string>
+    <string name="xbmc_available">Dostupno</string>
+    <string name="xbmc_unavailable">Nedostupno</string>
+    <string name="nothing_playing">Ništa se ne reproducira</string>
+    <string name="now_playing">U tijeku</string>
+    <string name="remote">Daljinski</string>
+    <string name="playlist">Red čekanja</string>
+    <string name="season_episode_abbrev">s%1$02de%2$02d</string>
+    <string name="season_episode">Sezona %1$02d | Epizoda %2$02d</string>
+    <string name="season_number">Sezona %1$02d</string>
+    <string name="episode_number">Epizoda %1$d</string>
+    <string name="votes">%1$s glasova</string>
+    <string name="fanart">Umjetnost obožavatelja</string>
+    <string name="poster">Poster</string>
+    <string name="thumbnail">Sličica</string>
+    <string name="error_favourites">Nije moguće pronaći favorite\nOpis greške: %1$s</string>
+    <string name="error_getting_properties">Nije moguće dobiti Kodi svojstva.\nPoruka o grešci: %1$s</string>
+    <string name="error_executing_subtitles">Nije moguće izvršiti dodatak za titlove.\nPoruka o grešci: %1$s</string>
+    <string name="error_getting_addon_info">Nije moguće dobiti listu dodataka.\nPoruka o grešci: %1$s</string>
+    <string name="error_getting_source_info">Nije moguće pregledati datoteke.\nPoruka o grešci: %1$s</string>
+    <string name="error_play_media_file">Nije moguće reproducirati medijsku datoteku.\nPoruka o grešci: %1$s</string>
+    <string name="error_play_local_file">Nije moguće reproducirati lokalnu medijsku datoteku.\nPoruka o grešci: %1$s</string>
+    <string name="error_queue_media_file">Nije moguće dodati medijsku datoteku u red čekanja.\nPoruka o grešci: %1$s</string>
+    <string name="error_get_active_player">Nije moguće pronaći aktivnog igrača.\nPoruka o grešci: %1$s</string>
+    <string name="error_share_video">Nije moguće podijeliti video s Kodijem.</string>
+    <string name="error_reading_local_storage">Nije moguće pročitati lokalnu pohranu. Jeste li dali Kore dozvolu za pristup pohrani datoteka?</string>
+    <string name="error_starting_http_server">Nije moguće kreirati ili pokrenuti HTTP server.</string>
+    <string name="directors">Direktori:</string>
+    <string name="studio">Studio:</string>
+    <string name="cast">Postava</string>
+    <string name="additional_cast">Dodatna glumačka postava</string>
+    <string name="cast_list_text">%1$s kao %2$s</string>
+    <string name="remaining_cast_count">Još %d</string>
+    <string name="general_error_executing_action">Greška pri izvršavanju radnje: %1$s</string>
+    <string name="error_getting_playlist">Greška pri preuzimanju plejliste</string>
+    <string name="playlist_empty">Red je prazan</string>
+    <string name="clear_playlist">Obriši red čekanja</string>
+    <string name="source_empty">Izvor medija je prazan</string>
+    <string name="swipe_down_to_refresh">Prevucite prema dolje za osvježavanje</string>
+    <string name="no_movies_found_refresh">Nije pronađen nijedan film</string>
+    <string name="no_tvshows_found_refresh">Nije pronađena nijedna TV emisija</string>
+    <string name="no_episodes_found">Nije pronađena nijedna epizoda</string>
+    <string name="no_artists_found_refresh">Nije pronađen nijedan umjetnik</string>
+    <string name="no_albums_found_refresh">Nije pronađen nijedan album</string>
+    <string name="no_genres_found_refresh">Nisu pronađeni žanrovi</string>
+    <string name="no_songs_found_refresh">Nije pronađena nijedna pjesma</string>
+    <string name="no_addons_found_refresh">Nisu pronađeni dodaci</string>
+    <string name="no_music_videos_found_refresh">Nije pronađen nijedan video</string>
+    <string name="no_channel_groups_found_refresh">Nisu pronađene grupe kanala</string>
+    <string name="no_channels_found_refresh">Nije pronađen nijedan kanal</string>
+    <string name="no_favourites_found_refresh">Nije pronađen nijedan favorit</string>
+    <string name="no_recordings_found_refresh">Nisu pronađeni snimci</string>
+    <string name="no_broadcasts_found_refresh">Nisu pronađene emisije</string>
+    <string name="pull_to_refresh">Povucite za osvježavanje</string>
+    <string name="no_cast_info">Nema informacija o emitovanju za prikaz</string>
+    <string name="minutes_abbrev">%1$s min</string>
+    <string name="minutes_abbrev2">%1$sm</string>
+    <string name="sync_successful">Sinhronizacija uspješna</string>
+    <string name="error_while_syncing">Došlo je do greške prilikom sinhronizacije: %1$s</string>
+    <string name="action_search">Pretraži</string>
+    <string name="action_search_movies">Pretraži filmove</string>
+    <string name="action_search_tvshows">Pretraži TV emisije</string>
+    <string name="action_search_albums">Pretraži albume</string>
+    <string name="action_search_artists">Pretražite izvođače</string>
+    <string name="action_search_genres">Pretraži žanrove</string>
+    <string name="action_search_music_videos">Pretraži videozapise</string>
+    <string name="add_to_playlist">Red čekanja</string>
+    <string name="item_added_to_playlist">Dodano u red za reprodukciju</string>
+    <string name="item_sent_to_kodi">Poslano na Kodi</string>
+    <string name="no_suitable_playlist">Nije pronađen odgovarajući red za reprodukciju za dodavanje vrste medija.</string>
+    <string name="download">Preuzimanje</string>
+    <string name="watched_status">Gledano</string>
+    <string name="unwatched_status">Negledano</string>
+    <string name="pinned_status">Zakačeno</string>
+    <string name="unpinned_status">Otkvačeno</string>
+    <string name="enabled_status">Omogućeno</string>
+    <string name="disabled_status">Onemogućeno</string>
+    <string name="download_action">Preuzimanje</string>
+    <string name="queue_action">Red čekanja</string>
+    <string name="stream_action">Tok</string>
+    <string name="confirm_movie_download">Jeste li sigurni da želite preuzeti ovaj film?\nFilm će se preuzeti u pozadini, ali može proći neko vrijeme dok se ne završi.</string>
+    <string name="confirm_episode_download">Jeste li sigurni da želite preuzeti ovu epizodu?\nEpizoda će se preuzeti u pozadini, ali može proći neko vrijeme dok se ne završi.</string>
+    <string name="confirm_album_download">Jeste li sigurni da želite preuzeti ovaj album?\nAlbum će se preuzeti u pozadini, ali može potrajati neko vrijeme dok se ne završi.</string>
+    <string name="confirm_artist_download">Jeste li sigurni da želite preuzeti sve albume?\nAlbumi će se preuzeti u pozadini, ali preuzimanje može potrajati.</string>
+    <string name="confirm_songs_download">Jeste li sigurni da želite preuzeti %1$d pjesama?\nPjesme će se preuzeti u pozadini, ali preuzimanje može potrajati.</string>
+    <string name="download_file_exists">Datoteka već postoji.\n Želite li je prepisati ili preuzeti s novim imenom?</string>
+    <string name="download_dir_exists">Direktorij za preuzimanje već postoji.\nAko neke datoteke imaju isto ime, želite li ih prepisati ili preuzeti s novim imenom?</string>
+    <string name="download_files_exists">Jedna ili više datoteka već postoje.\nAko neke datoteke imaju isto ime, želite li ih prepisati ili preuzeti s novim imenom?</string>
+    <string name="overwrite">Prebriši</string>
+    <string name="download_with_new_name">Novo ime</string>
+    <string name="download_file_description">Preuzeto iz vašeg medijskog centra</string>
+    <string name="num_episodes">%1$d epizoda | %2$d nepogledanih</string>
+    <string name="premiered">Premijerno prikazano: %1$s</string>
+    <string name="tvshow_overview">Pregled</string>
+    <string name="tvshow_episodes">Epizode</string>
+    <string name="tvshow_seasons">Godišnja doba</string>
+    <string name="tvshow_next_episode">Sljedeće epizode</string>
+    <string name="addon_overview">Pregled</string>
+    <string name="addon_content">Sadržaj</string>
+    <string name="artists">Umjetnici</string>
+    <string name="albums">Albumi</string>
+    <string name="genres">Žanrovi</string>
+    <string name="no_files_to_download">Nema datoteka za preuzimanje.</string>
+    <string name="error_getting_file_information">Nije moguće dobiti informacije za preuzimanje datoteke %1$s.</string>
+    <string name="author">Autor:</string>
+    <string name="version">Verzija:</string>
+    <string name="enable_disable">Omogući/Onemogući dodatak</string>
+    <string name="addon_enabled">Dodatak omogućen</string>
+    <string name="addon_disabled">Dodatak je onemogućen</string>
+    <string name="addon_pinned">Dodatak je zakačen</string>
+    <string name="addon_unpinned">Dodatak je otkačen</string>
+    <string name="hide_watched">Sakrij gledano</string>
+    <string name="hide_disabled">Sakrij onemogućeno</string>
+    <string name="sort_order">Sortiraj</string>
+    <string name="sort_by_name">Po imenu</string>
+    <string name="sort_by_year">Po godini</string>
+    <string name="sort_by_rating">Po ocjeni</string>
+    <string name="sort_by_length">Po dužini</string>
+    <string name="sort_by_date_added">Po datumu dodavanja</string>
+    <string name="sort_by_last_played">Po posljednjem igranju</string>
+    <string name="unsorted">Nesortirano</string>
+    <string name="ignore_prefixes">Ignoriraj prefikse</string>
+    <string name="show_watched_status">Prikaži status gledanja</string>
+    <string name="show_rating">Prikaži ocjenu</string>
+    <string name="application">Aplikacija</string>
+    <string name="theme">Tema</string>
+    <string name="theme_default_dynamic">Dinamika dan/noć</string>
+    <string name="theme_night">Noć</string>
+    <string name="theme_day">Dan</string>
+    <string name="theme_sun_dynamic">Dinamika izlaska/zalaska sunca</string>
+    <string name="theme_sunrise">Izlazak sunca</string>
+    <string name="theme_sunset">Zalazak sunca</string>
+    <string name="theme_color">Šema boja</string>
+    <string name="theme_color_system_colors">Sistemske boje</string>
+    <string name="theme_color_kore">Plavi baršun</string>
+    <string name="theme_color_green">Zelena milja</string>
+    <string name="theme_color_yellow">Žuta podmornica</string>
+    <string name="theme_color_purple">Ljubičasta kiša</string>
+    <string name="theme_variant">Varijanta</string>
+    <string name="theme_variant_auto">Zadano sistemsko</string>
+    <string name="theme_variant_light">Svijetlo</string>
+    <string name="theme_variant_dark">Tamno</string>
+    <string name="switch_to_remote">Prikaži pri pokretanju medija</string>
+    <string name="keep_remote_above_lockscreen">Prikaži preko zaključanog ekrana</string>
+    <string name="pref_keep_screen_on">Ostani budan</string>
+    <string name="show_notification">Prikaži obavještenje tokom reprodukcije</string>
+    <string name="show_now_playing_panel">Prikaži panel \"Trenutno se reproducira\"</string>
+    <string name="show_now_playing_panel_summary">Prikaži panel na dnu ekrana tokom reprodukcije medija</string>
+    <string name="pause_during_calls">Pauza tokom telefonskog poziva</string>
+    <string name="vibrate_on_remote">Vibracija na dodir</string>
+    <string name="always_sendtokodi_addon">Preferiram dodatak SendToKodi</string>
+    <string name="remote_bar_items">Prečice u donjoj traci</string>
+    <string name="nav_drawer_items">Prečice u bočnom meniju</string>
+    <string name="download_network_types_title">Ograniči preuzimanje medijskih sadržaja</string>
+    <string name="download_network_types_summary">Odaberite tipove mreža preko kojih je dozvoljeno preuzimanje medijskih sadržaja</string>
+    <string name="about">O tome</string>
+    <string name="play_on_kodi">Igraj na Kodiju</string>
+    <string name="queue_on_kodi">Red na Kodiju</string>
+    <string name="pause_call_incoming_title">Dolazni poziv</string>
+    <string name="pause_call_incoming_message">Provjeri telefon, neko te zove</string>
+    <string name="error_getting_pvr_info">Nije moguće dobiti PVR informacije\n\nOpis greške: %1$s</string>
+    <string name="might_not_have_pvr">Nije moguće dobiti PVR informacije.\n\nVaš medijski centar možda nema tuner ili nije konfiguriran. Ako želite ukloniti ovu stavku iz bočnog menija, to možete učiniti na ekranu Postavke.</string>
+    <string name="error_starting_channel">Došlo je do greške prilikom pokretanja reprodukcije kanala\nOpis: %1$s</string>
+    <string name="error_starting_recording">Došlo je do greške prilikom reprodukcije snimka\nOpis: %1$s</string>
+    <string name="error_starting_to_record">Došlo je do greške prilikom snimanja\nOpis: %1$s</string>
+    <string name="channel_switching">Prebacivanje na kanal %1$s</string>
+    <string name="starting_recording">Početak snimanja %1$s</string>
+    <string name="refresh">Osvježi</string>
+    <string name="tv">TV</string>
+    <string name="recordings">Snimci</string>
+    <string name="tv_channels">TV kanali</string>
+    <string name="radio_channels">Radio kanali</string>
+    <string name="record">Zapis</string>
+    <string name="pvr_epg">Vodič</string>
+    <string name="unable_to_move_item">Nije moguće premjestiti stavku</string>
+    <string name="unable_to_play_favourite_item">Nije moguće reproducirati omiljenu stavku. Nepodržani tip</string>
+    <string name="cannot_move_playing_item">Nije moguće premjestiti stavku koja se trenutno reproducira/pauzira</string>
+    <string name="no_connection_type_selected">Nije odabrana vrsta veze u postavkama</string>
+    <string name="single_column">Jedna kolona</string>
+    <string name="multi_column">Više kolona</string>
+    <string name="songs">Pjesme</string>
+    <string name="read_phone_state_permission_denied">Dozvola odbijena. Neće biti moguće pauzirati reprodukciju tokom poziva.</string>
+    <string name="write_storage_permission_denied">Dozvola odbijena. Neće biti moguće preuzeti datoteke.</string>
+    <string name="read_storage_permission_denied">Dozvola odbijena. Neće biti moguće čitati datoteke.</string>
+    <string name="no_songs_to_download">Nema pjesama za preuzimanje</string>
+    <string name="by_album">Po albumu</string>
+    <string name="by_artist">Od umjetnika</string>
+    <string name="by_artist_and_year">Po umjetniku i godini</string>
+    <string name="muted">prigušeno</string>
+    <string name="no_item_available_to_play">Greška: nema dostupnih stavki za reprodukciju.</string>
+    <string name="Refreshing_not_implemented_for_this_item">Osvježavanje nije implementirano za ovu stavku</string>
+    <string name="zeroprogress">0:00</string>
+    <string name="toggle_expand">Proširi/Sažmi</string>
+    <string name="language">Jezik</string>
+    <string name="wifi_network">Wi-Fi</string>
+    <string name="mobile_network">Mobilna</string>
+    <string name="any_network">Bilo koji</string>
+    <string name="web_search">Web pretraga</string>
+    <string name="use_hardware_volume_keys">Koristite tipke za jačinu zvuka uređaja</string>
+    <string name="use_hardware_volume_keys_never">Nikad</string>
+    <string name="use_hardware_volume_keys_always">Uvijek</string>
+    <string name="use_hardware_volume_keys_when_in_foreground">Kada je Kore u prvom planu</string>
+    <string name="preferred_youtube_addon">Preferirani dodatak za YouTube</string>
+    <string name="wizard_welcome_message"><![CDATA[
+	    Počnimo dodavanjem medijskog centra.
+	    <br/>
+	    Provjerite da li je Kodi pokrenut i pravilno konfiguriran. Posebno provjerite sljedeće u Kodijevim <b>Postavke</b>:
+	    <br/><br/>
+	    Odaberite <b>Usluge</b>, zatim <b>Kontrola</b> i:
+	    <br/>
+        1. Omogućite <b>Dozvoli daljinsko upravljanje putem HTTP-a</b>;
+        <br/>
+	    2. Omogućite obje opcije <b>Dozvoli daljinsko upravljanje iz aplikacija na ovom sistemu</b> i <b>Dozvoli daljinsko upravljanje iz aplikacija na drugim sistemima</b>;
+	    <br/><br/>
+	    Odaberite <b>Usluge</b>, zatim <b>Općenito</b> i:
+	    <br>
+	    1. Omogućite <b>Objavi usluge drugim sistemima</b>;
+	    <br/><br/>
+	    Dodatnu pomoć možete dobiti <a href="http://syncedsynapse.com/kore/kore-faq/">ovdje</a>.
+	    <br/><br/>
+	    Kada budete spremni, pritisnite <b>Dalje</b>.
+    ]]></string>
+    <string name="wizard_search_message"><![CDATA[
+    	Traženje medijskih centara na vašoj lokalnoj mreži…<br/>
+    ]]></string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+	    Nisam mogao pronaći nijedan medijski centar na vašoj mreži.<br/><br/>
+	    Molimo vas da provjerite da li je Kodi pokrenut i pravilno konfiguriran, posebno provjerite sljedeće u Kodijevim <b>Postavke</b>:
+	    <br/><br/>
+	    Odaberite <b>Usluge</b>, zatim <b>Kontrola</b> i:
+	    <br/>
+        1. Omogućite <b>Dozvoli daljinsko upravljanje putem HTTP-a</b>;
+        <br/>
+	    2. Omogućite obje opcije <b>Dozvoli daljinsko upravljanje iz aplikacija na ovom sistemu</b> i <b>Dozvoli daljinsko upravljanje iz aplikacija na drugim sistemima</b>;
+	    <br/><br/>
+	    Odaberite <b>Usluge</b>, zatim <b>Općenito</b> i:
+	    <br>
+	    1. Omogućite <b>Objavi usluge drugim sistemima</b>;
+	    <br/><br/>
+	    Dodatnu pomoć možete dobiti <a href="http://syncedsynapse.com/kore/kore-faq/">ovdje</a>.
+	    <br/><br/>
+	    Kliknite na <b>Ponovo pretraži</b> ili <b>Dalje</b> za ručnu konfiguraciju.
+    ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    	Molimo omogućite mrežnu vezu prije pretraživanja medijskih centara.<br/>
+    ]]></string>
+    <string name="wizard_search_host_found"><![CDATA[
+    	Pronašli smo ove medijske centre na vašoj mreži.<br/><br/>
+    	Odaberite jedan za dodavanje ili pritisnite <b>Dalje</b> da ručno dodate novi.
+    ]]></string>
+    <string name="wizard_done_message"><![CDATA[
+	    Vaš medijski centar je konfiguriran.<br/>
+	    Sada možete koristiti daljinski upravljač za upravljanje. Vaša biblioteka se sinhronizira i trebala bi biti dostupna za nekoliko trenutaka.<br/><br/>
+	    Pritisnite <b>Završi</b> da biste počeli koristiti daljinski upravljač.
+    ]]></string>
+    <string name="about_desc"><![CDATA[
+        \u00A9 2018 XBMC fondacija<br><br>
+        Molimo vas da nas ocijenite na <b><a href="market://details?id=org.xbmc.kore">Google Play-u</a></b><br><br>
+        Ako vam je potrebna pomoć, posjetite naš <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a>
+    ]]></string>
 </resources>

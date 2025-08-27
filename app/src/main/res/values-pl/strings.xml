@@ -68,15 +68,53 @@
 \nPonawiam próbę…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Witaj</string>
-    <string name="wizard_welcome_message">Zacznijmy od dodania centrum multimedialnego. &lt;br/&gt; Upewnij się, że Kodi działa i jest prawidłowo skonfigurowany. W szczególności sprawdź następujące opcje w &lt;b&gt;Ustawieniach&lt;/b&gt; Kodi: &lt;br/&gt;&lt;br/&gt; Wybierz &lt;b&gt;Usługi&lt;/b&gt;, następnie &lt;b&gt;Sterowanie&lt;/b&gt; i: &lt;br/&gt; 1. Włącz opcję &lt;b&gt;Zezwalaj na zdalne sterowanie przez HTTP&lt;/b&gt;; &lt;br/&gt; 2. Włącz obie opcje: &lt;b&gt;Zezwalaj lokalnym programom na sterowanie aplikacją&lt;/b&gt; i &lt;b&gt;Zezwalaj zdalnym programom na sterowanie aplikacją&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Wybierz &lt;b&gt;Usługi&lt;/b&gt;, następnie &lt;b&gt;Ogólne&lt;/b&gt; i: &lt;br&gt; 1. Włącz opcję &lt;b&gt;Rozgłaszaj usługi do innych systemów&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Dodatkową pomoc możesz uzyskać &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;tutaj&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Kiedy skończysz, naciśnij &lt;b&gt;Dalej&lt;/b&gt;.</string>
+    <string name="wizard_welcome_message"><![CDATA[
+	    Zacznijmy od dodania centrum multimedialnego.
+	    <br/>
+	    Upewnij się, że Kodi działa i jest prawidłowo skonfigurowany. W szczególności sprawdź następujące opcje w <b>Ustawieniach</b> Kodi:
+	    <br/><br/>
+	    Wybierz <b>Usługi</b>, następnie <b>Sterowanie</b> i:
+	    <br/>
+	    1. Włącz opcję <b>Zezwalaj na zdalne sterowanie przez HTTP</b>;
+        <br/>
+	    2. Włącz obie opcje: <b>Zezwalaj lokalnym programom na sterowanie aplikacją</b> i <b>Zezwalaj zdalnym programom na sterowanie aplikacją</b>;
+	    <br/><br/>
+	    Wybierz <b>Usługi</b>, następnie <b>Ogólne</b> i:
+	    <br>
+	    1.  Włącz opcję <b>Rozgłaszaj usługi do innych systemów</b>;
+	    <br/><br/>
+	    Dodatkową pomoc możesz uzyskać <a href="http://syncedsynapse.com/kore/kore-faq/">tutaj</a>.
+	    <br/><br/>
+	    Kiedy skończysz, naciśnij <b>Dalej</b>.
+    ]]></string>
     <string name="wizard_search_message"><![CDATA[
      Wyszukiwanie odtwarzaczy w sieci lokalnej…<br/>
     ]]></string>
-    <string name="wizard_search_no_host_found">Nie znaleziono żadnego centrum multimedialnego w Twojej sieci.&lt;br/&gt;&lt;br/&gt; Upewnij się, że Kodi działa i jest prawidłowo skonfigurowany, a w szczególności sprawdź następujące opcje w &lt;b&gt;Ustawieniach&lt;/b&gt; Kodi: &lt;br/&gt; &lt;br/&gt; Wybierz &lt;b&gt;Usługi&lt;/b&gt;, następnie &lt;b&gt;Sterowanie&lt;/b&gt; i: &lt;br/&gt; 1. Włącz opcję &lt;b&gt;Zezwalaj na zdalne sterowanie przez HTTP&lt;/b&gt;; &lt;br/&gt; 2. Włącz obie opcje: &lt;b&gt;Zezwalaj lokalnym programom na sterowanie aplikacją&lt;/b&gt; i &lt;b&gt;Zezwalaj zdalnym programom na sterowanie aplikacją&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Wybierz &lt;b&gt;Usługi&lt;/b&gt;, następnie &lt;b&gt;Ogólne&lt;/b&gt; i: &lt;br&gt; 1. Włącz opcję &lt;b&gt;Rozgłaszaj usługi do innych systemów&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Dodatkową pomoc możesz uzyskać &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;tutaj&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Kliknij &lt;b&gt;Szukaj ponownie&lt;/b&gt; lub &lt;b&gt;Dalej&lt;/b&gt;, aby przeprowadzić konfigurację ręczną.</string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+	    Nie znaleziono żadnego centrum multimedialnego w tej sieci.<br/><br/>
+	    Upewnij się, że Kodi działa i jest prawidłowo skonfigurowany, a w szczególności sprawdź następujące opcje w <b>Ustawieniach</b> Kodi:
+	    <br/><br/>
+	    Wybierz <b>Usługi</b>, następnie <b>Sterowanie</b> i:
+	    <br/>
+        1. Włącz opcję <b>Zezwalaj na zdalne sterowanie przez HTTP</b>;
+        <br/>
+	    2. Włącz obie opcje: <b>Zezwalaj lokalnym programom na sterowanie aplikacją</b> i <b>Zezwalaj zdalnym programom na sterowanie aplikacją</b>;
+	    <br/><br/>
+	    Wybierz <b>Usługi</b>, następnie <b>Ogólne</b> i:
+	    <br>
+	    1. Włącz opcję <b>Rozgłaszaj usługi do innych systemów</b>;
+	    <br/><br/>
+	    Dodatkową pomoc możesz uzyskać <a href="http://syncedsynapse.com/kore/kore-faq/">tutaj</a>.
+	    <br/><br/>
+	    Kliknij <b>Szukaj ponownie</b> lub <b>Dalej</b>, aby przeprowadzić konfigurację ręczną.
+    ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     Przed wyszukiwaniem odtwarzaczy włącz połączenie sieciowe.<br/>
     ]]></string>
-    <string name="wizard_search_host_found">W sieci wykryto następujące odtwarzacze.<br/><br/>Wybierz jeden, aby dodać lub naciśnij <b>Dalej</b> , aby dodać ręcznie.</string>
+    <string name="wizard_search_host_found"><![CDATA[
+    	W sieci wykryto następujące odtwarzacze.<br/><br/>
+    	Wybierz jeden, aby dodać lub naciśnij <b>Dalej</b> , aby dodać ręcznie.
+    ]]></string>
     <string name="no_network_connection">Brak połączenia z siecią</string>
     <string name="searching">Szukam…</string>
     <string name="no_xbmc_found">Nie znaleziono żadnych odtwarzaczy</string>
@@ -111,7 +149,11 @@
     <string name="wizard_error_connecting">Nie można połączyć się z Kodi.
 \n Sprawdź konfigurację.</string>
     <string name="wizard_done">Gotowe!</string>
-    <string name="wizard_done_message">Odtwarzacz został skonfigurowany.<br/> Możesz teraz używać pilota do zdalnej kontroli. Twoja biblioteka jest zsynchronizowana i powinna być dostępna za chwilę.<br/><br/> Naciśnij <b>Zakończ</b>, aby rozpocząć korzystanie z pilota.</string>
+    <string name="wizard_done_message"><![CDATA[
+	    Odtwarzacz został skonfigurowany.<br/>
+	    Możesz teraz używać pilota do zdalnej kontroli. Twoja biblioteka jest zsynchronizowana i powinna być dostępna za chwilę.<br/><br/>
+	    Naciśnij <b>Zakończ</b>, aby rozpocząć korzystanie z pilota.
+    ]]></string>
     <string name="wizard_zeroconf_no_host_address">Nie można uzyskać adresu odtwarzacza!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Nie można połączyć się z odtwarzaczem, ponieważ jego adres jest nie widoczny.</string>
     <string name="play">Odtwórz</string>
@@ -307,7 +349,11 @@
     <string name="remote_bar_items">Dolny pasek skrótów</string>
     <string name="nav_drawer_items">Boczne skróty</string>
     <string name="about">O aplikacji</string>
-    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Proszę, oceń nas na &lt;b&gt;&lt;a href=\"market://details\?id=org.xbmc.kore\"&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Jeśli potrzebujesz pomocy, odwiedź nasze &lt;b&gt;&lt;a href=\"http://forum.kodi.tv/forumdisplay.php\?fid=129\"&gt;forum&lt;/a&gt;</string>
+    <string name="about_desc"><![CDATA[
+        \u00A9 2018 XBMC Foundation<br><br>
+        Oceń nas na <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
+        Jeśli potrzebujesz pomocy, odwiedź nasze <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a>
+    ]]></string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->

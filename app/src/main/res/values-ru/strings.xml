@@ -70,12 +70,10 @@
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Добро пожаловать</string>
     <string name="wizard_welcome_message">Начнём с добавления медиацентра. &lt;br/&gt; Убедитесь, что Kodi запущен и правильно настроен. В частности, проверьте следующее в разделе &lt;b&gt;Настройки&lt;/b&gt; Kodi : &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Сервисы&lt;/b&gt;, затем &lt;b&gt;Управление&lt;/b&gt; и: &lt;br/&gt; 1. Включите &lt;b&gt;Разрешить удаленное управление через HTTP&lt;/b&gt;; &lt;br/&gt; 2. Включите обе опции &lt;b&gt;Разрешить дистанционное управление из приложений в этой системе&lt;/b&gt; и &lt;b&gt;Разрешить дистанционное управление из приложений на других системах&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Сервисы&lt;/b&gt;, затем &lt;b&gt;Общие&lt;/b&gt; и: &lt;br&gt; 1. Включите &lt;b&gt;Анонсировать сервисы для других систем&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Вы можете получить дополнительную помощь &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;здесь&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Когда вы будете готовы, нажмите &lt;b&gt;Следующее&lt;/b&gt;.</string>
-    <string name="wizard_search_message">Идёт поиск медиацентров в локальной сети…<br/></string>
-    <string name="wizard_search_no_host_found"><![CDATA[
-    Не удалось найти ни одного медиацентра в вашей сети.<br/>
-    Для помощи в настройке обратитесь <a href="http://syncedsynapse.com/kore/kore-faq/">сюда</a>.<br/><br/>
-    Нажмите <b>Искать снова</b> или <b>Далее</b> для ручной настройки.
+    <string name="wizard_search_message"><![CDATA[
+    	Идёт поиск медиацентров в локальной сети…<br/>
     ]]></string>
+    <string name="wizard_search_no_host_found">Не удалось найти ни одного медиацентра в вашей сети.&lt;br/&gt;&lt;br/&gt; Убедитесь, что Kodi запущен и правильно настроен, в частности проверьте следующее в разделе &lt;b&gt;Настройки&lt;/b&gt; Kodi: &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Службы&lt;/b&gt;, затем &lt;b&gt;Управление&lt;/b&gt; и: &lt;br/&gt; 1. Включите &lt;b&gt;Разрешить удаленное управление через HTTP&lt;/b&gt;; &lt;br/&gt; 2. Включите оба параметра &lt;b&gt;Разрешить удаленное управление из приложений в этой системе&lt;/b&gt; и &lt;b&gt;Разрешить удаленное управление из приложений в других системах&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Службы&lt;/b&gt;, затем &lt;b&gt;Общие&lt;/b&gt; и: &lt;br&gt; 1. Включите &lt;b&gt;Объявлять службы другим системам&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Дополнительную помощь можно получить &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;здесь&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Нажмите &lt;b&gt;Повторить поиск&lt;/b&gt; или &lt;b&gt;Далее&lt;/b&gt; для ручной настройки.</string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     Перед поиском медиацентров подключитесь к сети.<br/>
     ]]></string>
@@ -173,11 +171,11 @@
     <!-- Main view tabs -->
     <string name="now_playing">Сейчас воспроизводится</string>
     <string name="remote">Пульт</string>
-    <string name="playlist">Список воспроизведения</string>
+    <string name="playlist">Очередь</string>
     <string name="season_episode_abbrev">С%1$02dс%2$02d</string>
     <string name="season_episode">Сезон %1$02d | серия %2$02d</string>
     <string name="season_number">Сезон %1$02d</string>
-    <string name="episode_number">%1$d</string>
+    <string name="episode_number">Эпизод %1$d</string>
     <string name="votes">%1$s оценок</string>
     <string name="fanart">Фанарт</string>
     <string name="poster">Постер</string>
@@ -210,10 +208,10 @@
     <string name="remaining_cast_count">ещё %d</string>
     <string name="general_error_executing_action">Ошибка при выполнении действия: %1$s</string>
     <string name="error_getting_playlist">Ошибка при получении списка воспроизведения</string>
-    <string name="playlist_empty">Список воспроизведения пуст</string>
-    <string name="clear_playlist">Очистить список</string>
+    <string name="playlist_empty">Очередь пуста</string>
+    <string name="clear_playlist">Очистить очередь</string>
     <string name="source_empty">Медиаисточник пуст</string>
-    <string name="swipe_down_to_refresh">Потяните вниз, чтобы обновить</string>
+    <string name="swipe_down_to_refresh">Проведите вниз, чтобы обновить</string>
     <string name="no_movies_found_refresh">Фильмы не найдены</string>
     <string name="no_tvshows_found_refresh">Телешоу не найдены</string>
     <string name="no_episodes_found">Серий нет</string>
@@ -227,7 +225,7 @@
     <string name="no_favourites_found_refresh">Избранное не найдено</string>
     <string name="no_recordings_found_refresh">Записи не найдены</string>
     <string name="no_broadcasts_found_refresh">Трансляции не найдены</string>
-    <string name="pull_to_refresh">Потяните вниз, чтобы обновить</string>
+    <string name="pull_to_refresh">Потяните, чтобы обновить</string>
     <string name="no_cast_info">Нет информации</string>
     <string name="minutes_abbrev">%1$s мин.</string>
     <string name="minutes_abbrev2">%1$s мин.</string>
@@ -240,10 +238,10 @@
     <string name="action_search_artists">Искать исполнителей</string>
     <string name="action_search_genres">Искать жанры</string>
     <string name="action_search_music_videos">Искать клипы</string>
-    <string name="add_to_playlist">Добавить в список воспроизведения</string>
-    <string name="item_added_to_playlist">Добавлен в список</string>
+    <string name="add_to_playlist">Очередь</string>
+    <string name="item_added_to_playlist">Добавлено в очередь воспроизведения</string>
     <string name="item_sent_to_kodi">Отправить в Kodi</string>
-    <string name="no_suitable_playlist">Не был найден список воспроизведения, подходящий для этого типа медиа.</string>
+    <string name="no_suitable_playlist">Не найдена подходящая очередь воспроизведения, для добавления этого типа мультимедиа.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Загрузить</string>
     <string name="confirm_movie_download">Вы уверены, что хотите загрузить этот фильм?\n
@@ -311,15 +309,19 @@
     <string name="keep_remote_above_lockscreen">Показывать поверх экрана блокировки</string>
     <string name="pref_keep_screen_on">Не отключать экран</string>
     <string name="show_notification">Показывать уведомление при воспроизведении</string>
-    <string name="show_now_playing_panel">Показыть панель «Сейчас воспроизводится» во время воспроизведения</string>
-    <string name="show_now_playing_panel_summary">Показывать выдвижную панель внизу экрана во время вопсроизведения</string>
+    <string name="show_now_playing_panel">Показыть панель «Сейчас воспроизводится»</string>
+    <string name="show_now_playing_panel_summary">Отображать панель внизу экрана во время воспроизведения медиафайлов</string>
     <string name="pause_during_calls">Ставить на паузу во время звонков</string>
     <string name="use_hardware_volume_keys">Использовать кнопки громкости устройства</string>
     <string name="vibrate_on_remote">Вибрировать при нажатии</string>
     <string name="remote_bar_items">Ярлыки нижней панели</string>
     <string name="nav_drawer_items">Ярлыки бокового меню</string>
     <string name="about">О приложении</string>
-    <string name="about_desc">\\0A9 2018 Фонд XBMC.&lt;br&gt;&lt;br&gt; Пожалуйста, оцените нас в &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt;у Если вам нужна помощь с приложением, зайдите на &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;наш форум&lt;/a&gt;&lt;/b&gt;</string>
+    <string name="about_desc"><![CDATA[
+        \u00A9 2018 XBMC Foundation<br><br>
+        Пожалуйста, оцените нас в <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
+        Если вам нужна помощь с приложением, зайдите на <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">наш форум</a>
+    ]]></string>
     <!-- &lt;!&ndash; String for coffee &ndash;&gt;
     <string name="buy_me_coffee">Buy me a coffee</string>
     <string name="expresso_please">Espresso, please. Thanks!</string>
@@ -338,9 +340,7 @@
     <string name="error_getting_pvr_info">Не удалось получить информацию о PVR
 \n
 \nОписание ошибки: %1$s</string>
-    <string name="might_not_have_pvr">Во время получения информации о каналах произошла ошибка. Возможно, у вашего медиацентра нет тюнера, или он не настроен.
-\n
-\n Если это так, этот пункт можно убрать из бокового меню. Это можно сделать в настройках.</string>
+    <string name="might_not_have_pvr">Не удалось получить информацию о PVR.\n\nВозможно, в вашем медиацентре нет тюнера или он не настроен. Если вы хотите удалить эту запись из бокового меню, это можно сделать на экране настроек.</string>
     <string name="error_starting_channel">Возникла ошибка при воспроизведении канала
 \nОписание: %1$s</string>
     <string name="error_favourites">Не удалось получить избранное
@@ -386,7 +386,7 @@
     <string name="any_network">Все</string>
     <string name="mobile_network">Мобильная сеть</string>
     <string name="wifi_network">Wi-Fi</string>
-    <string name="always_sendtokodi_addon">Всегда использовать дополнение SendToKodi</string>
+    <string name="always_sendtokodi_addon">Предпочитать дополнение SendToKodi</string>
     <string name="wizard_xbmc_direct_share">Показать в общем листе</string>
     <string name="party_mode">Режим вечеринки</string>
     <string name="queue_action">В очередь</string>

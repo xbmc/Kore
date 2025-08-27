@@ -88,7 +88,7 @@
     <string name="pause_call_incoming_title">Panggilan masuk</string>
     <string name="queue_on_kodi">Antri di Kodi</string>
     <string name="play_on_kodi">Putar di Kodi</string>
-    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Silakan menilai kami di &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Jika Anda membutuhkan bantuan, cek &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;forum&lt;/a&gt;kami</string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Silakan menilai kami di &lt;b&gt;&lt;a href=market://details?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Jika Anda membutuhkan bantuan, cek &lt;a href=http://forum.kodi.tv/forumdisplay.php?fid=129&gt;forum&lt;/a&gt;kami</string>
     <string name="about">Tentang</string>
     <string name="download_network_types_summary">Pilih jenis jaringan di mana unduhan media diizinkan</string>
     <string name="download_network_types_title">Batasi unduhan media</string>
@@ -299,7 +299,7 @@
     <string name="play">Putar</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Tidak dapat terhubung ke sentra media ini karena saya tidak dapat menemukan alamatnya.</string>
     <string name="wizard_zeroconf_no_host_address">Tidak bisa mendapatkan alamat sentra media ini!</string>
-    <string name="wizard_done_message">Sentra media Anda telah dikonfigurasi.<br/> Anda sekarang dapat menggunakan remote untuk mengontrolnya. Pustaka Anda sedang disinkronkan, dan akan tersedia dalam beberapa saat.<br/><br/> Tekan <b>Selesai</b> untuk mulai menggunakan remote.</string>
+    <string name="wizard_done_message">Sentra media Anda telah dikonfigurasi.<br></br> Anda sekarang dapat menggunakan remote untuk mengontrolnya. Pustaka Anda sedang disinkronkan, dan akan tersedia dalam beberapa saat.<br></br><br></br> Tekan <b>Selesai</b> untuk mulai menggunakan remote.</string>
     <string name="wizard_done">Selesai!</string>
     <string name="wizard_error_connecting">Tidak dapat terhubung ke Kodi.
 \nSilakan periksa konfigurasi.</string>
@@ -334,10 +334,10 @@
     <string name="no_xbmc_found">Tidak ada sentra media yang ditemukan</string>
     <string name="searching">Mencari…</string>
     <string name="no_network_connection">Tdk ada koneksi jaringan</string>
-    <string name="wizard_search_host_found">Saya menemukan sentra media ini di jaringan Anda.<br/><br/> Pilih satu untuk ditambahkan atau tekan <b>Berikutnya</b> untuk menambahkan yang baru secara manual.</string>
-    <string name="wizard_search_no_network_connection">Harap aktifkan koneksi jaringan sebelum mencari pusat media.<br/></string>
+    <string name="wizard_search_host_found">Saya menemukan sentra media ini di jaringan Anda.<br></br><br></br> Pilih satu untuk ditambahkan atau tekan <b>Berikutnya</b> untuk menambahkan yang baru secara manual.</string>
+    <string name="wizard_search_no_network_connection">Harap aktifkan koneksi jaringan sebelum mencari pusat media.<br></br></string>
     <string name="wizard_search_no_host_found">Saya tidak dapat mencari sentra media apa pun dalam jaringan. &lt;br/&gt;&lt;br/&gt; Pastikan bahwa Kodi sedang berjalan dan diatur dengan benar. Secara khusus, periksa berikut dalam &lt;b&gt;Pengaturan&lt;/b&gt; Kodi: &lt;br/&gt;&lt;br/&gt; Pilih &lt;b&gt;Layanan&lt;/b&gt;, lalu &lt;b&gt;Kontrol&lt;/b&gt; dan: &lt;br/&gt; 1. Aktifkan &lt;b&gt;Perbolehkan pengendalian jarak jauh melalui HTTP&lt;/b&gt;; &lt;br/&gt; 2. Aktifkan kedua opsi &lt;b&gt;Perbolehkan pengendalian jarak jauh dari aplikasi di sistem ini&lt;/b&gt; dan &lt;b&gt;Perbolehkan pengendalian jarak jauh dari aplikasi di sistem lain&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Pilih &lt;b&gt;Layanan&lt;/b&gt;, lalu &lt;b&gt;Umum&lt;/b&gt; dan: &lt;br&gt; 1. Aktifkan &lt;b&gt;Umumkan layanan ke sistem lain&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Anda dapat menerima bantuan tambahan &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;di sini&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Klik &lt;b&gt;Cari lagi&lt;/b&gt; atau &lt;b&gt;Berikutnya&lt;/b&gt; untuk konfigurasi manual.</string>
-    <string name="wizard_search_message">Mencari sentra media di jaringan lokal Anda…<br/></string>
+    <string name="wizard_search_message">Mencari sentra media di jaringan lokal Anda…<br></br></string>
     <string name="wizard_welcome_message">Mari kita mulai dengan menambahkan sentra media. &lt;br/&gt; Pastikan bahwa Kodi sedang berjalan dan diatur dengan benar. Secara khusus, periksa berikut dalam &lt;b&gt;Pengaturan&lt;/b&gt; Kodi: &lt;br/&gt;&lt;br/&gt; Pilih &lt;b&gt;Layanan&lt;/b&gt;, lalu &lt;b&gt;Kontrol&lt;/b&gt; dan: &lt;br/&gt; 1. Aktifkan &lt;b&gt;Perbolehkan pengendalian jarak jauh di sistem ini&lt;/b&gt;; &lt;br/&gt; 2. Aktifkan kedua opsi &lt;b&gt;Perbolehkan pengendalian jarak jauh dari aplikasi di sistem ini&lt;/b&gt; dan &lt;b&gt;Perbolehkan pengendalian jarak jauh dari aplikasi di sistem lain&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Pilih &lt;b&gt;Layanan&lt;/b&gt;, lalu &lt;b&gt;Umum&lt;/b&gt; dan: &lt;br&gt; 1. Aktifkan &lt;b&gt;Umumkan layanan ke sistem lain&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Anda dapat menerima bantuan tambahan &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;di sini&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Ketika Anda siap, tekan &lt;b&gt;Berikutnya&lt;/b&gt;.</string>
     <string name="wizard_welcome">Selamat datang</string>
     <string name="connecting_to">Tak bisa terhubung ke %1$s (%2$s)

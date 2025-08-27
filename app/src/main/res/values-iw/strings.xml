@@ -316,7 +316,7 @@
     <string name="remote_bar_items">קיצורי דרך בסרגל התחתון</string>
     <string name="nav_drawer_items">קיצורים בתפריט הצד</string>
     <string name="about">על אודות</string>
-    <string name="about_desc">\\0A9‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎ ‏2018 קרן XBMC&lt;br&gt;&lt;br&gt; נא לדרג אותנו ב־&lt;b&gt;&lt;a href=\"market://details\?id=org.xbmc.kore\"&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; לקבלת עזרה, כדאי לבקר ב&lt;b&gt;&lt;a href=\"http://forum.kodi.tv/forumdisplay.php\?fid=129\"&gt;פורום&lt;/a&gt;&lt;/b&gt; שלנו</string>
+    <string name="about_desc">\\0A9‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎ ‏2018 קרן XBMC&lt;br&gt;&lt;br&gt; נא לדרג אותנו ב־&lt;b&gt;&lt;a href=\"market://details?id=org.xbmc.kore\"&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; לקבלת עזרה, כדאי לבקר ב&lt;b&gt;&lt;a href=\"http://forum.kodi.tv/forumdisplay.php?fid=129\"&gt;פורום&lt;/a&gt;&lt;/b&gt; שלנו</string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Buy me a coffee</string>-->
     <!--<string name="expresso_please">Espresso, please. Thanks!</string>-->

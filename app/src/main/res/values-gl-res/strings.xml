@@ -82,9 +82,9 @@
     <string name="connecting_to">Non foi posible conectar a %1$s (%2$s)
 \nTentando de novo…</string>
     <string name="wizard_welcome">Benvido</string>
-    <string name="wizard_search_message">Buscando centros multimedia na túa rede local...<br/></string>
+    <string name="wizard_search_message">Buscando centros multimedia na túa rede local...<br></br></string>
     <string name="wizard_search_no_host_found">Non atopei ningún centro multimedia na túa rede.&lt;br/&gt;&lt;br/&gt; Asegúrache de que Kodi está a funcionar e está configurado correctamente, en concreto comproba o seguinte na &lt;b&gt;Configuración&lt;/b&gt; de Kodi: &lt;br/&gt;&lt; br/&gt; Seleccione &lt;b&gt;Servizos&lt;/b&gt;, logo &lt;b&gt;Control&lt;/b&gt; e: &lt;br/&gt; 1. Activar &lt;b&gt;Permitir o control remoto a través de HTTP&lt;/b &gt;; &lt;br/&gt; 2. Activa ambas as opcións &lt;b&gt;Permitir o control remoto desde aplicacións neste sistema&lt;/b&gt; e &lt;b&gt;Permitir o control remoto desde aplicacións noutros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Seleccione &lt;b&gt;Servizos&lt;/b&gt;, logo &lt;b&gt;Xeneral&lt;/b&gt; e: &lt;br&gt; 1. Activar &lt;b&gt;Anunciar servizos a outros sistemas&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Podes obter axuda adicional &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aquí&lt;/a&gt; &lt;br/&gt;&lt;br/&gt; Fai clic en &lt;b&gt;Buscar&lt;/b&gt; de novo ou &lt;b&gt;Seguinte&lt;/b&gt; para configuralo manualmente.</string>
-    <string name="wizard_search_no_network_connection">Por favor, activa unha conexión de rede antes de buscar centros multimedia.<br/></string>
+    <string name="wizard_search_no_network_connection">Por favor, activa unha conexión de rede antes de buscar centros multimedia.<br></br></string>
     <string name="local_files">Ficheiros locais</string>
     <string name="file_browser">Explorador de ficheiros Kodi</string>
     <string name="weather">Clima</string>
@@ -110,7 +110,7 @@
     <string name="sort_by_rating">Pola valoración</string>
     <string name="sort_by_length">Pola duración</string>
     <string name="by_artist_and_year">Polo artista e ano</string>
-    <string name="wizard_search_host_found">Atopei estes centros multimedia na túa rede.<br/><br/> Selecciona un para engadilo ou presione <b>Seguinte</b> para engadir un novo manualmente.</string>
+    <string name="wizard_search_host_found">Atopei estes centros multimedia na túa rede.<br></br><br></br> Selecciona un para engadilo ou presione <b>Seguinte</b> para engadir un novo manualmente.</string>
     <string name="no_network_connection">Non hai conexión de rede</string>
     <string name="searching">Buscando…</string>
     <string name="volume_mute">Silenciar</string>
@@ -368,7 +368,7 @@
     <string name="wizard_connecting_to_xbmc_message">Por favor, agarda mentres intento conectarme ao teu centro multimedia…</string>
     <string name="wizard_empty_authentication">Kodi require autenticación.
 \n Por favor, indica un nome de usuario e un contrasinal.</string>
-    <string name="wizard_done_message">O teu centro multimedia está configurado.<br/> Agora podes usar o control remoto para controlalo. A túa biblioteca está a ser sincronizada e debería estar dispoñible nuns momentos.<br/><br/> Presione <b>Acabar</b> para comezar a usar o control remoto.</string>
+    <string name="wizard_done_message">O teu centro multimedia está configurado.<br></br> Agora podes usar o control remoto para controlalo. A túa biblioteca está a ser sincronizada e debería estar dispoñible nuns momentos.<br></br><br></br> Presione <b>Acabar</b> para comezar a usar o control remoto.</string>
     <string name="volume_up">Subir o volume</string>
     <string name="right">Dereita</string>
     <string name="nav_drawer_items">Atallos do menú lateral</string>
@@ -394,7 +394,7 @@
 \n Queres sobreescribilo ou descargalo cun novo nome\?</string>
     <string name="zeroprogress">0:00</string>
     <string name="download_network_types_summary">Seleccione os tipos de rede nos que se permiten descargas multimedia</string>
-    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Califícanos en &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt; br&gt; Se precisas axuda, consulta o noso &lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;foro&lt;/a&gt;</string>
+    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Califícanos en &lt;b&gt;&lt;a href=market://details?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt; br&gt; Se precisas axuda, consulta o noso &lt;a href=http://forum.kodi.tv/forumdisplay.php?fid=129&gt;foro&lt;/a&gt;</string>
     <string name="pause_call_incoming_message">Comproba o teu teléfono, alguén te chama</string>
     <string name="might_not_have_pvr">Non foi posible obter a información do PVR.
 \n
