@@ -81,10 +81,10 @@
     <string name="addons">Aldonaĵoj</string>
     <string name="no_xbmc_configured">Neniu aŭdvida centro konfugirita</string>
     <string name="clean_video_library">Viŝi videaĵan bibliotekon</string>
-    <string name="wizard_search_message">Serĉas aŭdvidajn centrojn en via loka reto…<br/></string>
+    <string name="wizard_search_message">Serĉas aŭdvidajn centrojn en via loka reto…<br></br></string>
     <string name="suspend">Suspendi</string>
     <string name="reboot">Restartigi</string>
-    <string name="wizard_search_no_network_connection">Bonvole ŝaltu retan konekton antaŭ serĉado por aŭdvidaj centroj.<br/></string>
+    <string name="wizard_search_no_network_connection">Bonvole ŝaltu retan konekton antaŭ serĉado por aŭdvidaj centroj.<br></br></string>
     <string name="searching">Serĉas…</string>
     <string name="no_xbmc_found">Neniu aŭdvida centro trovita</string>
     <string name="xbmc_found">Aŭdvida centro trovita</string>
@@ -101,7 +101,7 @@
     <string name="wizard_xbmc_wol_port">WoL-pordo (9)</string>
     <string name="wizard_xbmc_use_tcp">Uzi TCP</string>
     <string name="wizard_xbmc_use_event_server">Uzi EvenServer</string>
-    <string name="wizard_search_host_found">Tiuj aŭdvidaj centroj estis trovitaj en via reto.<br/><br/>Elektu iun por aldoni, aŭ presu <b>Sekve</b> por aldoni permane iun novan.</string>
+    <string name="wizard_search_host_found">Tiuj aŭdvidaj centroj estis trovitaj en via reto.<br></br><br></br>Elektu iun por aldoni, aŭ presu <b>Sekve</b> por aldoni permane iun novan.</string>
     <string name="no_network_connection">Neniu reta konekto</string>
     <string name="wizard_xbmc_event_server_port">ES-pordo (9777)</string>
     <string name="ignore_prefixes">Ignori prefiksojn</string>

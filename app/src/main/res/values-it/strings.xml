@@ -52,14 +52,53 @@
     <string name="toggle_fullscreen">Passa a schermo intero</string>
     <string name="connected_to">Connesso a %1$s</string>
     <string name="connecting">Connessione…</string>
-    <string name="connecting_to">Impossibile connettersi a %1$s (%2$s)
-\nNuovo tentativo…</string>
+    <string name="connecting_to">Impossibile connettersi a %1$s (%2$s)\nNuovo tentativo…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Benvenuto</string>
-    <string name="wizard_welcome_message">Iniziamo aggiungendo un media center. &lt;br/&gt; Assicurati che Kodi sia in esecuzione e configurato correttamente. Controlla in particolare quanto segue nelle &lt;b&gt;Impostazioni&lt;/b&gt; di Kodi: &lt;br/&gt;&lt;br/&gt; Seleziona &lt;b&gt;Servizi&lt;/b&gt;, quindi &lt;b&gt;Controllo&lt;/b&gt; e: &lt;br/&gt; 1. Abilita &lt;b&gt;Consenti controllo remoto tramite HTTP&lt;/b&gt;; &lt;br/&gt; 2. Abilita entrambe le opzioni &lt;b&gt;Consenti controllo remoto dai programmi di questo sistema&lt;/b&gt; e &lt;b&gt;Consenti il controllo remoto da programmi di altri sistemi&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Seleziona &lt;b&gt;Servizi&lt;/b&gt;, quindi &lt;b&gt;Generale&lt;/b&gt; e: &lt;br&gt; 1. Abilita &lt;b&gt;Annuncia servizi ad altri sistemi&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Puoi ottenere ulteriore aiuto &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;qui&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Quando sei pronto, premi &lt;b&gt;Successivo&lt;/b&gt;.</string>
-    <string name="wizard_search_message">Ricerca dei media center sulla tua rete locale…<br/></string>
-    <string name="wizard_search_no_host_found">Non sono riuscito a trovare nessun media center sulla tua rete.&lt;br/&gt; Assicurati che Kodi sia in esecuzione e configurato correttamente. Controlla in particolare quanto segue nelle &lt;b&gt;Impostazioni&lt;/b&gt; di Kodi: &lt;br/&gt;&lt;br/&gt; Seleziona &lt;b&gt;Servizi&lt;/b&gt;, quindi &lt;b&gt;Controllo&lt;/b&gt; e: &lt;br/&gt; 1. Abilita &lt;b&gt;Consenti controllo remoto tramite HTTP&lt;/b&gt;; &lt;br/&gt; 2. Abilita entrambe le opzioni &lt;b&gt;Consenti controllo remoto dai programmi di questo sistema&lt;/b&gt; e &lt;b&gt;Consenti il controllo remoto da programmi di altri sistemi&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Seleziona &lt;b&gt;Servizi&lt;/b&gt;, quindi &lt;b&gt;Generale&lt;/b&gt; e: &lt;br&gt; 1. Abilita &lt;b&gt;Annuncia servizi ad altri sistemi&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Puoi ottenere ulteriore aiuto &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;qui&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Fai clic su &lt;b&gt;Cerca di nuovo&lt;/b&gt; o &lt;b&gt;Successivo&lt;/b&gt; per la configurazione manuale.</string>
-    <string name="wizard_search_host_found">Ho trovato questi media center sulla tua rete.<br/><br/>Selezionane uno da aggiungere o premi <b>Successivo</b> per aggiungerne uno manualmente.</string>
+    <string name="wizard_welcome_message"><![CDATA[
+        Iniziamo aggiungendo un media center.
+        <br/>
+        Assicurati che Kodi sia in esecuzione e configurato correttamente. Controlla in particolare quanto segue nelle <b>Impostazioni</b> di Kodi:
+        <br/><br/>
+        Seleziona <b>Servizi</b>, poi <b>Controllo</b> e:
+        <br/>
+        1. Abilita <b>Consenti controllo remoto tramite HTTP</b>;
+        <br/>
+        2. Abilita entrambe le opzioni <b>Consenti controllo remoto da applicazioni su questo sistema</b> e <b>Consenti controllo remoto da applicazioni su altri sistemi</b>;
+        <br/><br/>
+        Seleziona <b>Servizi</b>, poi <b>Generale</b> e:
+        <br>
+        1. Abilita <b>Annuncia servizi ad altri sistemi</b>;
+        <br/><br/>
+        Puoi ottenere ulteriore aiuto <a href="http://syncedsynapse.com/kore/kore-faq/">qui</a>.
+        <br/><br/>
+        Quando sei pronto, premi <b>Avanti</b>.
+    ]]></string>
+    <string name="wizard_search_message"><![CDATA[
+    	Ricerca di media center sulla tua rete locale…<br/>
+    ]]></string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+    	Non sono riuscito a trovare alcun media center sulla tua rete.<br/><br/>
+    	Assicurati che Kodi sia in esecuzione e configurato correttamente, in particolare controlla quanto segue nelle <b>Impostazioni</b> di Kodi:
+    	<br/><br/>
+    	Seleziona <b>Servizi</b>, poi <b>Controllo</b> e:
+    	<br/>
+        1. Abilita <b>Consenti controllo remoto tramite HTTP</b>;
+        <br/>
+    	2. Abilita entrambe le opzioni <b>Consenti controllo remoto da applicazioni su questo sistema</b> e <b>Consenti controllo remoto da applicazioni su altri sistemi</b>;
+    	<br/><br/>
+    	Seleziona <b>Servizi</b>, poi <b>Generale</b> e:
+    	<br>
+    	1. Abilita <b>Annuncia servizi ad altri sistemi</b>;
+    	<br/><br/>
+    	Puoi ottenere ulteriore aiuto <a href="http://syncedsynapse.com/kore/kore-faq/">qui</a>.
+    	<br/><br/>
+    	Fai clic su <b>Cerca di nuovo</b> o su <b>Avanti</b> per la configurazione manuale.
+    ]]></string>
+    <string name="wizard_search_host_found"><![CDATA[
+    	Ho trovato questi media center sulla tua rete.<br/><br/>
+    	Selezionane uno da aggiungere o premi <b>Avanti</b> per aggiungerne uno nuovo manualmente.
+    ]]></string>
     <string name="searching">Ricerca…</string>
     <string name="no_xbmc_found">Nessun media center trovato</string>
     <string name="xbmc_found">Media center trovato</string>
@@ -81,15 +120,16 @@
     <string name="wizard_invalid_tcp_port_specified">Specifica una porta TCP valida per questo media center.</string>
     <string name="wizard_connecting_to_xbmc_title">Connessione a %1$s…</string>
     <string name="wizard_connecting_to_xbmc_message">Per favore aspetta mentre provo a collegarmi al tuo media center…</string>
-    <string name="wizard_empty_authentication">Kodi richiede l\'autenticazione.
-\nPer favore specifica un nome utente e una password.</string>
-    <string name="wizard_incorrect_authentication">Nome utente e/o password non validi.
-\nPer favore controlla le tue credenziali.</string>
+    <string name="wizard_empty_authentication">Kodi richiede l\'autenticazione\nSpecifica un nome utente e una password.</string>
+    <string name="wizard_incorrect_authentication">Nome utente e/o password non validi.\nControlla le tue credenziali.</string>
     <string name="wizard_success_connecting">Connesso a Kodi.</string>
-    <string name="wizard_error_connecting">Impossibile connettersi a Kodi.
-\nPer favore verifica la configurazione.</string>
+    <string name="wizard_error_connecting">Impossibile connettersi a Kodi.\nVerifica la configurazione.</string>
     <string name="wizard_done">Tutto fatto!</string>
-    <string name="wizard_done_message">Il tuo media center è configurato.<br/> Ora potrai usare il telecomando per controllarlo. La libreria si sta sincronizzando e dovrebbe essere disponibile fra poco.<br/><br/> Premi <b>Fine</b> per cominciare a usare il telecomando.</string>
+    <string name="wizard_done_message"><![CDATA[
+    	Il tuo media center è configurato.<br/>
+    	Ora puoi usare il telecomando per controllarlo. La tua libreria è in fase di sincronizzazione e dovrebbe essere disponibile tra pochi istanti.<br/><br/>
+    	Premi <b>Fine</b> per iniziare a usare il telecomando.
+    ]]></string>
     <string name="wizard_zeroconf_no_host_address">Impossibile ottenere questo indirizzo del media center!</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Impossibile connettersi a questo media center perché non sono riuscito a trovarne l\'indirizzo.</string>
     <string name="pause">Pausa</string>
@@ -148,20 +188,13 @@
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
     <string name="thumbnail">Miniature</string>
-    <string name="error_getting_properties">Non posso leggere i parametri di Kodi.
-\nMessaggio di errore:%1$s</string>
-    <string name="error_executing_subtitles">Non posso eseguire l\'add-on per i sottotitoli.
-\nMessaggio di errore: %1$s</string>
-    <string name="error_getting_addon_info">Non posso acquisire informazioni sull\'add-on.
-\nMessaggio di errore: %1$s</string>
-    <string name="error_getting_source_info">Impossibile sfogliare i file.
-\nMessaggio di errore:%1$s</string>
-    <string name="error_play_media_file">Impossibile riprodurre il file multimediale.
-\nMessaggio di errore:%1$s</string>
-    <string name="error_queue_media_file">Impossibile mettere in coda il file multimediale.
-\nMessaggio di errore:%1$s</string>
-    <string name="error_get_active_player">Impossibile trovare un riproduttore attivo
-\nMessaggio di errore:%1$s</string>
+    <string name="error_getting_properties">Impossibile leggere i parametri di Kodi.\nMessaggio di errore: %1$s</string>
+    <string name="error_executing_subtitles">Impossibile eseguire l\'add-on per i sottotitoli.\nMessaggio di errore: %1$s</string>
+    <string name="error_getting_addon_info">Impossibile acquisire informazioni sull\'add-on.\nMessaggio di errore: %1$s</string>
+    <string name="error_getting_source_info">Impossibile sfogliare i file.\nMessaggio di errore: %1$s</string>
+    <string name="error_play_media_file">Impossibile riprodurre il file multimediale.\nMessaggio di errore: %1$s</string>
+    <string name="error_queue_media_file">Impossibile mettere in coda il file multimediale.\nMessaggio di errore: %1$s</string>
+    <string name="error_get_active_player">Impossibile trovare un riproduttore attivo \nMessaggio di errore: %1$s</string>
     <string name="directors">Registi:</string>
     <string name="studio">Studio:</string>
     <string name="additional_cast">Cast aggiuntivo</string>
@@ -195,16 +228,11 @@
     <string name="no_suitable_playlist">Nessuna coda di riproduzione trovata per aggiungere il tipo di media.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Scarica</string>
-    <string name="confirm_movie_download">Sei sicuro di voler scaricare questo Film\?
-\nIl Film sarà scaricato in background, ma questo potrà richiedere un po\' di tempo.</string>
-    <string name="confirm_episode_download">Sei sicuro di voler scaricare questo episodio\?
-\n L\'episodio sarà scaricato in background, ma questo potrà richiedere un po\' di tempo.</string>
-    <string name="confirm_album_download">Sei sicuro di voler scaricare questo Album\?
-\n L\'Album sarà scaricato in background, ma questo potrà richiedere un po\' di tempo.</string>
-    <string name="download_file_exists">File già esistente.
-\n Vuoi sovrascriverlo o scaricarlo con un nuovo nome\?</string>
-    <string name="download_dir_exists">Cartella download già esistente.
-\n Se esistono file con lo stesso nome, vuoi sovrascriverli o scaricarli con un nuovo nome\?</string>
+    <string name="confirm_movie_download">Sei sicuro di voler scaricare questo Film?\nIl Film sarà scaricato in background, ma questo potrà richiedere un po\' di tempo.</string>
+    <string name="confirm_episode_download">Sei sicuro di voler scaricare questo episodio?\nL\'episodio sarà scaricato in background, ma questo potrà richiedere un po\' di tempo.</string>
+    <string name="confirm_album_download">Sei sicuro di voler scaricare questo Album?\nL\'Album sarà scaricato in background, ma questo potrà richiedere un po\' di tempo.</string>
+    <string name="download_file_exists">File già esistente.\nVuoi sovrascriverlo o scaricarlo con un nuovo nome?</string>
+    <string name="download_dir_exists">Cartella download già esistente.\nSe esistono file con lo stesso nome, vuoi sovrascriverli o scaricarli con un nuovo nome?</string>
     <string name="overwrite">Sovrascrivi</string>
     <string name="download_with_new_name">Nuovo nome</string>
     <string name="download_file_description">Scaricato dal tuo media center</string>
@@ -236,7 +264,11 @@
     <string name="switch_to_remote">Mostra all\'inizio dei media</string>
     <string name="show_notification">Mostra notifiche durante la riproduzione</string>
     <string name="use_hardware_volume_keys">Usa tasti del volume del dispositivo</string>
-    <string name="about_desc">\\0A9 2018 XBMC Foundation&lt;br&gt;&lt;br&gt; Per favore votaci su &lt;b&gt;&lt;a href=market://details\?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Se ti serve aiuto, controlla il &lt;b&gt;&lt;a href=http://forum.kodi.tv/forumdisplay.php\?fid=129&gt;forum&lt;/a&gt;&lt;</string>
+    <string name="about_desc"><![CDATA[
+        © 2018 XBMC Foundation<br><br>
+        Valutaci su <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
+        Se hai bisogno di aiuto, controlla il nostro <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a>
+    ]]></string>
     <!--&lt;!&ndash; String for coffee &ndash;&gt;-->
     <!--<string name="buy_me_coffee">Offrimi un caffè</string>-->
     <!--<string name="expresso_please">Un espresso, per favore. Grazie!</string>-->
@@ -278,27 +310,25 @@
     <string name="error_starting_http_server">Impossibile creare o avviare il server HTTP.</string>
     <string name="error_reading_local_storage">Impossibile leggere la memoria locale. Hai concesso a Kore il permesso di accedere all\'archiviazione file\?</string>
     <string name="error_share_video">Impossibile condividere il Video su Kodi.</string>
-    <string name="error_play_local_file">Impossibile riprodurre file multimediale locale.
-\nMessaggio di errore:%1$s</string>
+    <string name="error_play_local_file">Impossibile riprodurre file multimediale locale.\nMessaggio di errore: %1$s</string>
     <string name="select">Seleziona</string>
     <string name="party_mode">Modalità party</string>
     <string name="wizard_invalid_es_port_specified">Specifica una porta EventServer valida per questo media center.</string>
     <string name="wizard_xbmc_use_event_server">Usa EventServer</string>
     <string name="wizard_xbmc_event_server_port">Porta ES (9777)</string>
     <string name="no_network_connection">Nessuna connessione di rete</string>
-    <string name="wizard_search_no_network_connection">Abilita una connessione di rete prima di cercare i media center.<br/></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    	Abilita una connessione di rete prima di cercare i media center.<br/>
+    ]]></string>
     <string name="system">Sistema</string>
     <string name="weather">Meteo</string>
     <string name="pvr">PVR</string>
     <string name="script">Script</string>
     <string name="window">Finestra</string>
     <string name="media">Media</string>
-    <string name="download_files_exists">Uno o più file già esistenti.
-\n Se qualche file ha lo stesso nome, vuoi sovrascriverlo o scaricarlo con un nuovo nome\?</string>
-    <string name="confirm_songs_download">Sei sicuro di voler scaricare %1$d brani\?
-\n I brani saranno scaricati in background, ma questo potrà richiedere un po\' di tempo.</string>
-    <string name="confirm_artist_download">Sei sicuro di voler scaricare tutti gli Album\?
-\n Gli Album saranno scaricati in background, ma questo potrà richiedere un po\' di tempo.</string>
+    <string name="download_files_exists">Uno o più file già esistenti.\nSe qualche file ha lo stesso nome, vuoi sovrascriverlo o scaricarlo con un nuovo nome?</string>
+    <string name="confirm_songs_download">Sei sicuro di voler scaricare %1$d brani?\nI brani saranno scaricati in background, ma questo potrà richiedere un po\' di tempo.</string>
+    <string name="confirm_artist_download">Sei sicuro di voler scaricare tutti gli Album?\nGli Album saranno scaricati in background, ma questo potrà richiedere un po\' di tempo.</string>
     <string name="unpinned_status">Appuntato off</string>
     <string name="pinned_status">Appuntato on</string>
     <string name="no_cast_info">Nessuna informazione sul cast</string>
@@ -334,8 +364,7 @@
     <string name="tv_channels">Canali TV</string>
     <string name="tv">TV</string>
     <string name="refresh">Ricarica</string>
-    <string name="error_favourites">Impossibile recuperare i preferiti
-\nDescrizione dell\'errore: %1$s</string>
+    <string name="error_favourites">Impossibile recuperare i preferiti\nDescrizione dell\'errore: %1$s</string>
     <string name="starting_recording">Avvio registrazione di %1$s</string>
     <string name="channel_switching">Passaggio al canale %1$s</string>
     <string name="pause_call_incoming_message">Controlla il tuo telefono, qualcuno ti sta chiamando</string>
@@ -373,18 +402,11 @@
     <string name="tvshow_next_episode">Episodi successivi</string>
     <string name="tvshow_seasons">Stagioni</string>
     <string name="remaining_cast_count">%d in più</string>
-    <string name="error_starting_recording">Errore durante la riproduzione di una registrazione
-\nDescrizione: %1$s</string>
-    <string name="error_starting_to_record">Errore durante la registrazione
-\nDescrizione: %1$s</string>
-    <string name="error_starting_channel">Errore durante l\'avvio della riproduzione del canale
-\nDescrizione: %1$s</string>
-    <string name="might_not_have_pvr">Impossibile ottenere informazioni PVR.
-\n
-\nIl tuo media center potrebbe non avere un sintonizzatore o non è configurato. Se desideri rimuovere questa voce dal menu laterale, puoi farlo nella schermata Impostazioni.</string>
-    <string name="error_getting_pvr_info">Impossibile ottenere informazioni PVR
-\n
-\nDescrizione errore: %1$s</string>
+    <string name="error_starting_recording">Errore durante la riproduzione di una registrazione\nDescrizione: %1$s</string>
+    <string name="error_starting_to_record">Errore durante la registrazione\nDescrizione: %1$s</string>
+    <string name="error_starting_channel">Errore durante l\'avvio della riproduzione del canale\nDescrizione: %1$s</string>
+    <string name="might_not_have_pvr">Impossibile ottenere informazioni PVR.\n\nIl tuo media center potrebbe non avere un sintonizzatore o non è configurato. Se desideri rimuovere questa voce dal menu laterale, puoi farlo nella schermata Impostazioni.</string>
+    <string name="error_getting_pvr_info">Impossibile ottenere informazioni PVR\n\nDescrizione errore: %1$s</string>
     <string name="not_connected">Non connesso</string>
     <string name="theme_variant_auto">Predefinito del sistema</string>
     <string name="theme_variant">Variante</string>
