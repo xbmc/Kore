@@ -69,11 +69,46 @@
 \nПовторная попытка…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Добро пожаловать</string>
-    <string name="wizard_welcome_message">Начнём с добавления медиацентра. &lt;br/&gt; Убедитесь, что Kodi запущен и правильно настроен. В частности, проверьте следующее в разделе &lt;b&gt;Настройки&lt;/b&gt; Kodi : &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Сервисы&lt;/b&gt;, затем &lt;b&gt;Управление&lt;/b&gt; и: &lt;br/&gt; 1. Включите &lt;b&gt;Разрешить удаленное управление через HTTP&lt;/b&gt;; &lt;br/&gt; 2. Включите обе опции &lt;b&gt;Разрешить дистанционное управление из приложений в этой системе&lt;/b&gt; и &lt;b&gt;Разрешить дистанционное управление из приложений на других системах&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Сервисы&lt;/b&gt;, затем &lt;b&gt;Общие&lt;/b&gt; и: &lt;br&gt; 1. Включите &lt;b&gt;Анонсировать сервисы для других систем&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Вы можете получить дополнительную помощь &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;здесь&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Когда вы будете готовы, нажмите &lt;b&gt;Следующее&lt;/b&gt;.</string>
+    <string name="wizard_welcome_message"><![CDATA[
+	    Начнём с добавления медиацентра.
+	    <br/>
+	    Убедитесь, что Kodi запущен и правильно настроен. В частности, проверьте следующее в разделе  <b>Настройки</b>:
+	    <br/><br/>
+	    Выберите <b>Сервисы</b>, затем <b>Управление</b> и:
+	    <br/>
+        1. Включите <b>Разрешить удаленное управление через HTTP</b>;
+        <br/>
+	    2. Включите обе опции <b>Разрешить дистанционное управление из приложений в этой системе</b> и <b>Разрешить дистанционное управление из приложений на других системах</b>;
+	    <br/><br/>
+	    Выберите <b>Сервисы</b>, затем <b>Общие</b> и:
+	    <br>
+	    1. Включите <b>Анонсировать сервисы для других систем</b>;
+	    <br/><br/>
+	    Вы можете получить дополнительную помощь <a href="http://syncedsynapse.com/kore/kore-faq/">здесь</a>.
+	    <br/><br/>
+	    Когда вы будете готовы, нажмите <b>Следующее</b>.
+    ]]></string>
     <string name="wizard_search_message"><![CDATA[
     	Идёт поиск медиацентров в локальной сети…<br/>
     ]]></string>
-    <string name="wizard_search_no_host_found">Не удалось найти ни одного медиацентра в вашей сети.&lt;br/&gt;&lt;br/&gt; Убедитесь, что Kodi запущен и правильно настроен, в частности проверьте следующее в разделе &lt;b&gt;Настройки&lt;/b&gt; Kodi: &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Службы&lt;/b&gt;, затем &lt;b&gt;Управление&lt;/b&gt; и: &lt;br/&gt; 1. Включите &lt;b&gt;Разрешить удаленное управление через HTTP&lt;/b&gt;; &lt;br/&gt; 2. Включите оба параметра &lt;b&gt;Разрешить удаленное управление из приложений в этой системе&lt;/b&gt; и &lt;b&gt;Разрешить удаленное управление из приложений в других системах&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Выберите &lt;b&gt;Службы&lt;/b&gt;, затем &lt;b&gt;Общие&lt;/b&gt; и: &lt;br&gt; 1. Включите &lt;b&gt;Объявлять службы другим системам&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Дополнительную помощь можно получить &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;здесь&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Нажмите &lt;b&gt;Повторить поиск&lt;/b&gt; или &lt;b&gt;Далее&lt;/b&gt; для ручной настройки.</string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+	    Не удалось найти ни одного медиацентра в вашей сети.<br/><br/>
+	    Убедитесь, что Kodi запущен и правильно настроен, в частности проверьте следующее в <b>Настройки</b>:
+	    <br/><br/>
+	    Выберите <b>Сервисы</b>, затем <b>Управление</b> and:
+	    <br/>
+        1. Включите <b>Разрешить удаленное управление через HTTP</b>;
+        <br/>
+	    2. Включите оба параметра <b>Разрешить удаленное управление из приложений в этой системе</b> и <b>Разрешить удаленное управление из приложений в других системах</b>;
+	    <br/><br/>
+	    Выберите <b>Сервисы</b>, затем <b>Общие</b> и:
+	    <br>
+	    1. Включите <b>Объявлять сервисы другим системам</b>;
+	    <br/><br/>
+	    Дополнительную помощь можно получить <a href="http://syncedsynapse.com/kore/kore-faq/">здесь</a>.
+	    <br/><br/>
+	    Нажмите <b>Повторить поиск</b> или <b>Далее</b> для ручной настройки.
+    ]]></string>
     <string name="wizard_search_no_network_connection"><![CDATA[
     Перед поиском медиацентров подключитесь к сети.<br/>
     ]]></string>
@@ -361,7 +396,7 @@
     <string name="pvr_epg">Телепрограмма</string>
     <string name="unable_to_move_item">Невозможно переместить объект</string>
     <string name="unable_to_play_favourite_item">Невозможно воспроизвести избранное. Тип не поддерживается</string>
-    <string name="cannot_move_playing_item">Невозможно переместить воспроизводимое</string>
+    <string name="cannot_move_playing_item">Невозможно переместить воспроизводимый/приостановленный элемент</string>
     <string name="no_connection_type_selected">В настройках не указан тип соединения</string>
     <string name="single_column">Один столбец</string>
     <string name="multi_column">Несколько столбцов</string>
@@ -377,7 +412,7 @@
     <string name="by_artist_and_year">По исполнителю и году</string>
     <string name="muted">Звук выключен</string>
     <string name="no_item_available_to_play">Ошибка: нечего воспроизводить.</string>
-    <string name="Refreshing_not_implemented_for_this_item">Для этого элемента обновление ещё не реализовано</string>
+    <string name="Refreshing_not_implemented_for_this_item">Обновление не реализовано для этого элемента</string>
     <string name="no_songs_found_refresh">Песни не найдены</string>
     <string name="zeroprogress">0:00</string>
     <string name="toggle_expand">Развернуть/свернуть</string>
