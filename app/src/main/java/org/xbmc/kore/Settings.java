@@ -90,6 +90,10 @@ public class Settings {
     public static final String KEY_PREF_PAUSE_DURING_CALLS = "pref_pause_during_calls";
     public static final boolean DEFAULT_PREF_PAUSE_DURING_CALLS = false;
 
+    // Show hidden local files
+    public static final String KEY_PREF_SHOW_HIDDEN_LOCAL_FILES = "pref_show_hidden_local_files";
+    public static final boolean DEFAULT_PREF_SHOW_HIDDEN_LOCAL_FILES = false;
+    
     // Other keys used in preferences.xml
     public static final String KEY_PREF_ABOUT = "pref_about";
 

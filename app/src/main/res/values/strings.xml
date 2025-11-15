@@ -373,6 +373,7 @@
     <string name="addon_unpinned">Addon unpinned</string>
 
     <!-- Filters on list menus -->
+    <string name="show_hidden">Show hidden</string>
     <string name="hide_watched">Hide watched</string>
     <string name="hide_disabled">Hide disabled</string>
     <string name="sort_order">Sort</string>
