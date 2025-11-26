@@ -41,29 +41,13 @@ public class PluginUrlUtils {
     public static String toDefaultYouTubePluginUrl(Uri playUri) {
         String host = playUri.getHost();
 
-        if (host.endsWith("youtube.com")) {
-            String videoId = playUri.getQueryParameter("v");
-            String playlistId = playUri.getQueryParameter("list");
+        if (host.endsWith("youtube.com") || host.endsWith("youtu.be")) {
             Uri.Builder pluginUri = new Uri.Builder()
                     .scheme("plugin")
                     .authority("plugin.video.youtube")
-                    .path("play/");
-            boolean valid = false;
-            if (videoId != null) {
-                valid = true;
-                pluginUri.appendQueryParameter("video_id", videoId);
-            }
-            if (playlistId != null) {
-                valid = true;
-                pluginUri.appendQueryParameter("playlist_id", playlistId)
-                        .appendQueryParameter("order", "default");
-            }
-            if (valid) {
-                return pluginUri.build().toString();
-            }
-        } else if (host.endsWith("youtu.be")) {
-            return "plugin://plugin.video.youtube/play/?video_id="
-                   + playUri.getLastPathSegment();
+                    .path("uri2addon/").
+                    appendQueryParameter("uri", playUri.toString());
+            return pluginUri.toString();
         }
 
         return null;
