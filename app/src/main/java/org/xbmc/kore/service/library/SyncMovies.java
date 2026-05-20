@@ -91,7 +91,7 @@ public class SyncMovies extends SyncItem {
             VideoType.FieldsMovie.DIRECTOR, VideoType.FieldsMovie.TRAILER,
             VideoType.FieldsMovie.TAGLINE, VideoType.FieldsMovie.PLOT,
             // VideoType.FieldsMovie.PLOTOUTLINE, VideoType.FieldsMovie.ORIGINALTITLE,
-            // VideoType.FieldsMovie.LASTPLAYED,
+            VideoType.FieldsMovie.LASTPLAYED,
             VideoType.FieldsMovie.PLAYCOUNT, VideoType.FieldsMovie.DATEADDED,
             VideoType.FieldsMovie.WRITER, VideoType.FieldsMovie.STUDIO,
             VideoType.FieldsMovie.MPAA, VideoType.FieldsMovie.CAST,

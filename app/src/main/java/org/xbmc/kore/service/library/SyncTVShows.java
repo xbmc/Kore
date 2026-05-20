@@ -91,7 +91,7 @@ public class SyncTVShows extends SyncItem {
             VideoType.FieldsTVShow.EPISODE, VideoType.FieldsTVShow.IMDBNUMBER,
             VideoType.FieldsTVShow.PREMIERED,
             VideoType.FieldsTVShow.VOTES,
-            //VideoType.FieldsTVShow.LASTPLAYED,
+            VideoType.FieldsTVShow.LASTPLAYED,
             VideoType.FieldsTVShow.ART,
             //VideoType.FieldsTVShow.FANART, VideoType.FieldsTVShow.THUMBNAIL,
             VideoType.FieldsTVShow.FILE,
