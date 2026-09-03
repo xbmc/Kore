@@ -24,7 +24,6 @@ import androidx.fragment.app.Fragment;
 
 import org.xbmc.kore.R;
 import org.xbmc.kore.ui.AbstractFragment;
-import org.xbmc.kore.ui.AbstractInfoFragment;
 import org.xbmc.kore.ui.BaseMediaActivity;
 import org.xbmc.kore.utils.LogUtils;
 
@@ -35,8 +34,7 @@ import org.xbmc.kore.utils.LogUtils;
 public class MusicActivity extends BaseMediaActivity
         implements ArtistListFragment.OnArtistSelectedListener,
                    AlbumListFragment.OnAlbumSelectedListener,
-                   AudioGenresListFragment.OnAudioGenreSelectedListener,
-                   MusicVideoListFragment.OnMusicVideoSelectedListener {
+                   AudioGenresListFragment.OnAudioGenreSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(MusicActivity.class);
 
     public static final String ALBUMID = "album_id";
@@ -45,17 +43,13 @@ public class MusicActivity extends BaseMediaActivity
     public static final String ARTISTNAME = "artist_name";
     public static final String GENREID = "genre_id";
     public static final String GENRETITLE = "genre_title";
-    public static final String MUSICVIDEOID = "music_video_id";
-    public static final String MUSICVIDEOTITLE = "music_video_title";
 
     private int selectedAlbumId = -1;
     private int selectedArtistId = -1;
     private int selectedGenreId = -1;
-    private int selectedMusicVideoId = -1;
     private String selectedAlbumTitle = null;
     private String selectedArtistName = null;
     private String selectedGenreTitle = null;
-    private String selectedMusicVideoTitle = null;
 
     @Override
     protected String getActionBarTitle() {
@@ -65,8 +59,6 @@ public class MusicActivity extends BaseMediaActivity
             return selectedArtistName;
         } else if (selectedGenreTitle != null) {
             return selectedGenreTitle;
-        } else if (selectedMusicVideoTitle != null) {
-            return selectedMusicVideoTitle;
         } else {
             return getResources().getString(R.string.music);
         }
@@ -83,11 +75,9 @@ public class MusicActivity extends BaseMediaActivity
             selectedAlbumId = savedInstanceState.getInt(ALBUMID, -1);
             selectedArtistId = savedInstanceState.getInt(ARTISTID, -1);
             selectedGenreId = savedInstanceState.getInt(GENREID, -1);
-            selectedMusicVideoId = savedInstanceState.getInt(MUSICVIDEOID, -1);
             selectedAlbumTitle = savedInstanceState.getString(ALBUMTITLE, null);
             selectedArtistName = savedInstanceState.getString(ARTISTNAME, null);
             selectedGenreTitle = savedInstanceState.getString(GENRETITLE, null);
-            selectedMusicVideoTitle = savedInstanceState.getString(MUSICVIDEOTITLE, null);
         }
         super.onCreate(savedInstanceState);
     }
@@ -98,11 +88,9 @@ public class MusicActivity extends BaseMediaActivity
         outState.putInt(ALBUMID, selectedAlbumId);
         outState.putInt(ARTISTID, selectedArtistId);
         outState.putInt(GENREID, selectedGenreId);
-        outState.putInt(MUSICVIDEOID, selectedMusicVideoId);
         outState.putString(ALBUMTITLE, selectedAlbumTitle);
         outState.putString(ARTISTNAME, selectedArtistName);
         outState.putString(GENRETITLE, selectedGenreTitle);
-        outState.putString(MUSICVIDEOTITLE, selectedMusicVideoTitle);
     }
 
     @Override
@@ -126,15 +114,10 @@ public class MusicActivity extends BaseMediaActivity
                     selectedGenreId = -1;
                     selectedGenreTitle = null;
                     respond = true;
-                } else if (selectedMusicVideoId != -1) {
-                    selectedMusicVideoId = -1;
-                    selectedMusicVideoTitle = null;
-                    respond = true;
                 }
                 if (respond) {
                     updateActionBar(getActionBarTitle(), selectedArtistId != -1 ||
-                                                         selectedGenreId != -1 ||
-                                                         selectedMusicVideoId != -1);
+                                                         selectedGenreId != -1);
                     getSupportFragmentManager().popBackStack();
                     return true;
                 }
@@ -158,14 +141,10 @@ public class MusicActivity extends BaseMediaActivity
         } else if (selectedGenreId != -1) {
             selectedGenreId = -1;
             selectedGenreTitle = null;
-        } else if (selectedMusicVideoId != -1) {
-            selectedMusicVideoId = -1;
-            selectedMusicVideoTitle = null;
         }
 
         updateActionBar(getActionBarTitle(), selectedArtistId != -1 ||
-                                             selectedGenreId != -1 ||
-                                             selectedMusicVideoId != -1);
+                                             selectedGenreId != -1);
         super.onBackPressed();
     }
 
@@ -202,15 +181,5 @@ public class MusicActivity extends BaseMediaActivity
         showFragment(AlbumListFragment.class, args);
 
         updateActionBar(selectedGenreTitle, true);
-    }
-
-    public void onMusicVideoSelected(AbstractInfoFragment.DataHolder dataHolder, ImageView sharedImageView) {
-        selectedMusicVideoId = dataHolder.getId();
-        selectedMusicVideoTitle = dataHolder.getTitle();
-
-        // Replace list fragment
-        dataHolder.setSquarePoster(true);
-        showFragment(MusicVideoInfoFragment.class, dataHolder.getBundle(), sharedImageView);
-        updateActionBar(selectedMusicVideoTitle, true);
     }
 }
