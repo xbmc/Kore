@@ -56,6 +56,7 @@ import org.xbmc.kore.utils.Utils;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 
 /**
@@ -68,6 +69,11 @@ public class MediaFileListFragment extends AbstractListFragment {
     public static final String SORT_METHOD = "sortMethod";
     public static final String CURRENT_LOCATION = "currentLocation";
     public static final String DELAY_LOAD = "delayLoad";
+    // Opt-in flag: only the Playlists tab sets this. Every other tab that
+    // reuses this fragment (Files > Video/Music/Pictures) keeps its original
+    // behavior untouched - playlist files there are browsed like any other
+    // "directory", never auto-played.
+    public static final String ENABLE_PLAYLIST_HANDLING = "enablePlaylistHandling";
 
     private static final String ADDON_SOURCE = "addons:";
 
@@ -87,6 +93,11 @@ public class MediaFileListFragment extends AbstractListFragment {
      * Whether to delay loading until onResume, instead of when we get a valid connection
      */
     boolean delayLoad = false;
+    /**
+     * Whether playlist files (.m3u/.pls/.xsp) should be played/queued on tap
+     * instead of browsed into. Only true for the Music section's Playlists tab.
+     */
+    boolean enablePlaylistHandling = false;
 
     Queue<FileLocation> mediaQueueFileLocation = new LinkedList<>();
 
@@ -106,6 +117,7 @@ public class MediaFileListFragment extends AbstractListFragment {
             sortMethod = args.getParcelable(SORT_METHOD);
             currentLocation = args.getParcelable(CURRENT_LOCATION);
             delayLoad = args.getBoolean(DELAY_LOAD, false);
+            enablePlaylistHandling = args.getBoolean(ENABLE_PLAYLIST_HANDLING, false);
         }
 
         if (savedInstanceState != null) {
@@ -124,6 +136,14 @@ public class MediaFileListFragment extends AbstractListFragment {
             if (currentLocation != null && lastConnectionStatusResult == CONNECTION_SUCCESS)
                 browseDirectory(currentLocation);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Invalidate any in-flight playlist play/queue operation - its callbacks
+        // will now see a mismatched id and stop instead of continuing in the background
+        playlistOperationId++;
     }
 
     @Override
@@ -172,11 +192,24 @@ public class MediaFileListFragment extends AbstractListFragment {
         if (f == null || f.file == null) {
             // If at first level, browse Sources
             browseSources();
+        } else if (enablePlaylistHandling && isPlaylistFile(f.file)) {
+            playPlaylistFile(f.file);
         } else if (f.isDirectory) {
             browseDirectory(f);
         } else {
             playMediaFile(f.file);
         }
+    }
+
+    /**
+     * Kodi marks saved playlist files (.m3u/.m3u8/.pls/.xsp) as "directories" in
+     * Files.GetDirectory results, since their contents can be browsed like a folder.
+     * We want tapping one to play it instead of browsing into it.
+     */
+    private static boolean isPlaylistFile(String file) {
+        String lower = file.toLowerCase(Locale.ROOT);
+        return lower.endsWith(".m3u") || lower.endsWith(".m3u8")
+                || lower.endsWith(".pls") || lower.endsWith(".xsp");
     }
 
     public boolean navigateToParentDir() {
@@ -333,6 +366,125 @@ public class MediaFileListFragment extends AbstractListFragment {
             }
         }, callbackHandler);
     }
+    /**
+     * Expands a saved playlist file into its individual tracks, queues them on
+     * Kodi's active music playlist, and starts playback from the first one - so
+     * Now Playing shows real track info instead of the raw playlist file.
+     */
+    // Bumped every time a new playlist play/queue operation starts, and again
+    // whenever the fragment is paused. Callbacks compare their captured value
+    // against this field before doing anything, so a stale or superseded
+    // operation's callbacks become no-ops instead of mutating Kodi's queue
+    // behind the user's back (e.g. after navigating away, or after starting
+    // a second playlist operation before the first one finished).
+    private int playlistOperationId = 0;
+
+    private boolean isValidPlaylistOperation(int operationId) {
+        return isAdded() && operationId == playlistOperationId;
+    }
+
+    private void playPlaylistFile(final String playlistFile) {
+        expandAndQueuePlaylist(playlistFile, true);
+    }
+
+    private void queuePlaylistFile(final String playlistFile) {
+        expandAndQueuePlaylist(playlistFile, false);
+    }
+
+    /**
+     * Fetches a saved playlist's tracks. If startPlayback is true, clears Kodi's
+     * active music playlist first and plays from the top once queued. If false,
+     * appends to the end of whatever's already queued, and only starts a player
+     * if nothing is currently playing (so we don't interrupt other music).
+     */
+    private void expandAndQueuePlaylist(final String playlistFile, final boolean startPlayback) {
+        final int operationId = ++playlistOperationId;
+
+        Files.GetDirectory action = new Files.GetDirectory(playlistFile, mediaType, null,
+                ListType.FieldsFiles.TITLE, ListType.FieldsFiles.ARTIST,
+                ListType.FieldsFiles.ALBUM, ListType.FieldsFiles.DURATION,
+                ListType.FieldsFiles.FILE);
+        action.execute(hostManager.getConnection(), new ApiCallback<List<ListType.ItemFile>>() {
+            @Override
+            public void onSuccess(List<ListType.ItemFile> result) {
+                if (!isValidPlaylistOperation(operationId) || result.isEmpty()) return;
+                final Queue<ListType.ItemFile> tracks = new LinkedList<>(result);
+                final HostConnection connection = hostManager.getConnection();
+
+                if (startPlayback) {
+                    Playlist.Clear clearAction = new Playlist.Clear(getPlaylistId(mediaType));
+                    clearAction.execute(connection, new ApiCallback<String>() {
+                        @Override
+                        public void onSuccess(String result) {
+                            if (!isValidPlaylistOperation(operationId)) return;
+                            queuePlaylistTracks(connection, tracks, true, operationId);
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String description) {
+                            if (!isValidPlaylistOperation(operationId) || !isResumed()) return;
+                            UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_queue_media_file), description));
+                        }
+                    }, callbackHandler);
+                } else {
+                    queuePlaylistTracks(connection, tracks, false, operationId);
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                if (!isValidPlaylistOperation(operationId) || !isResumed()) return;
+                UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_play_media_file), description));
+            }
+        }, callbackHandler);
+    }
+
+    // Adds tracks one at a time (same "queue is a to-do list" pattern as
+    // queueMediaQueueFileLocations above). Once done: starts playback from the
+    // top if startPlayback, otherwise only starts a player if nothing's playing.
+    private void queuePlaylistTracks(final HostConnection connection, final Queue<ListType.ItemFile> tracks,
+                                     final boolean startPlayback, final int operationId) {
+        if (!isValidPlaylistOperation(operationId)) return; // superseded or torn down
+
+        ListType.ItemFile track = tracks.poll();
+        if (track == null) {
+            if (startPlayback) {
+                Player.Open openAction = new Player.Open(Player.Open.TYPE_PLAYLIST, getPlaylistId(mediaType), 0);
+                openAction.execute(connection, new ApiCallback<String>() {
+                    @Override
+                    public void onSuccess(String result) { }
+
+                    @Override
+                    public void onError(int errorCode, String description) {
+                        if (!isValidPlaylistOperation(operationId) || !isResumed()) return;
+                        UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_play_media_file), description));
+                    }
+                }, callbackHandler);
+            } else {
+                startPlaylistIfNoActivePlayers(connection, getPlaylistId(mediaType), callbackHandler);
+            }
+            return;
+        }
+
+        PlaylistType.Item item = new PlaylistType.Item();
+        item.file = track.file;
+        Playlist.Add addAction = new Playlist.Add(getPlaylistId(mediaType), item);
+        addAction.execute(connection, new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                queuePlaylistTracks(connection, tracks, startPlayback, operationId);
+            }
+
+            @Override
+            public void onError(int errorCode, String description) {
+                if (!isValidPlaylistOperation(operationId)) return;
+                if (isResumed()) {
+                    UIUtils.showSnackbar(getView(), String.format(getString(R.string.error_queue_media_file), description));
+                }
+                queuePlaylistTracks(connection, tracks, startPlayback, operationId); // skip bad track
+            }
+        }, callbackHandler);
+    }
 
     private final Runnable queueMediaQueueFileLocations = new Runnable() {
         @Override
@@ -475,39 +627,54 @@ public class MediaFileListFragment extends AbstractListFragment {
             @Override
             public void onClick(View v) {
                 final int position = (Integer)v.getTag();
-                if (fileLocationItems != null) {
-                    final FileLocation loc = fileLocationItems.get(position);
-                    if (!loc.isDirectory) {
-                        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
-                        popupMenu.getMenuInflater().inflate(R.menu.file_list_item, popupMenu.getMenu());
-                        popupMenu.setOnMenuItemClickListener(item -> {
-                            int itemId = item.getItemId();
-                            if (itemId == R.id.action_queue_item) {
-                                queueMediaFile(loc.file);
-                                return true;
-                            } else if (itemId == R.id.action_play_item) {
-                                playMediaFile(loc.file);
-                                return true;
-                            } else if (itemId == R.id.action_play_local_item) {
-                                playMediaFileLocally(loc.file);
-                                return true;
-                            } else if (itemId == R.id.action_play_from_this_item) {
-                                mediaQueueFileLocation.clear();
-                                FileLocation fl;
-                                // start playing the selected one, then queue the rest
-                                for (int i = position + 1; i < fileLocationItems.size(); i++) {
-                                    fl = fileLocationItems.get(i);
-                                    if (!fl.isDirectory) {
-                                        mediaQueueFileLocation.add(fl);
-                                    }
+                if (fileLocationItems == null) return;
+                final FileLocation loc = fileLocationItems.get(position);
+
+                if (enablePlaylistHandling && isPlaylistFile(loc.file)) {
+                    final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+                    popupMenu.getMenuInflater().inflate(R.menu.playlist_list_item, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_queue_item) {
+                            queuePlaylistFile(loc.file);
+                            return true;
+                        } else if (itemId == R.id.action_play_item) {
+                            playPlaylistFile(loc.file);
+                            return true;
+                        }
+                        return false;
+                    });
+                    popupMenu.show();
+                } else if (!loc.isDirectory) {
+                    final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+                    popupMenu.getMenuInflater().inflate(R.menu.file_list_item, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_queue_item) {
+                            queueMediaFile(loc.file);
+                            return true;
+                        } else if (itemId == R.id.action_play_item) {
+                            playMediaFile(loc.file);
+                            return true;
+                        } else if (itemId == R.id.action_play_local_item) {
+                            playMediaFileLocally(loc.file);
+                            return true;
+                        } else if (itemId == R.id.action_play_from_this_item) {
+                            mediaQueueFileLocation.clear();
+                            FileLocation fl;
+                            // start playing the selected one, then queue the rest
+                            for (int i = position + 1; i < fileLocationItems.size(); i++) {
+                                fl = fileLocationItems.get(i);
+                                if (!fl.isDirectory) {
+                                    mediaQueueFileLocation.add(fl);
                                 }
-                                playMediaFile(loc.file);
-                                return true;
                             }
-                            return false;
-                        });
-                        popupMenu.show();
-                    }
+                            playMediaFile(loc.file);
+                            return true;
+                        }
+                        return false;
+                    });
+                    popupMenu.show();
                 }
             }
         };
@@ -556,8 +723,8 @@ public class MediaFileListFragment extends AbstractListFragment {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(ctx)
-                                      .inflate(resource, parent, false);
-            return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight, itemMenuClickListener);
+                    .inflate(resource, parent, false);
+            return new ViewHolder(view, getContext(), hostManager, artWidth, artHeight, enablePlaylistHandling, itemMenuClickListener);
         }
 
         @Override
@@ -595,14 +762,16 @@ public class MediaFileListFragment extends AbstractListFragment {
         int artWidth;
         int artHeight;
         Context context;
+        boolean enablePlaylistHandling;
 
         ViewHolder(View itemView, Context context, HostManager hostManager, int artWidth, int artHeight,
-                   View.OnClickListener itemMenuClickListener) {
+                   boolean enablePlaylistHandling, View.OnClickListener itemMenuClickListener) {
             super(itemView);
             this.context = context;
             this.hostManager = hostManager;
             this.artWidth = artWidth;
             this.artHeight = artHeight;
+            this.enablePlaylistHandling = enablePlaylistHandling;
             art = itemView.findViewById(R.id.art);
             title = itemView.findViewById(R.id.title);
             details = itemView.findViewById(R.id.details);
@@ -623,13 +792,16 @@ public class MediaFileListFragment extends AbstractListFragment {
             UIUtils.loadImageWithCharacterAvatar(context, hostManager,
                                                  fileLocation.artUrl, fileLocation.title,
                                                  art, artWidth, artHeight);
-            // For the popup menu
-            if (fileLocation.isDirectory) {
+
+            // For the popup menu - show it for regular files, and also for
+            // playlist files (when this fragment is configured to treat them
+            // as such) even though Kodi reports those as "directories"
+            boolean isPlaylistRow = enablePlaylistHandling && isPlaylistFile(fileLocation.file);
+            if (fileLocation.isDirectory && !isPlaylistRow) {
                 contextMenu.setVisibility(View.GONE);
             } else {
                 contextMenu.setVisibility(View.VISIBLE);
                 contextMenu.setTag(position);
-
             }
         }
 
