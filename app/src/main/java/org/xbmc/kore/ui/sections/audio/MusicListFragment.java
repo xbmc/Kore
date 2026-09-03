@@ -78,6 +78,7 @@ public class MusicListFragment extends AbstractTabsFragment {
     private Bundle createPlaylistsTabArgs() {
         Bundle args = new Bundle();
         args.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.MUSIC);
+        args.putBoolean(MediaFileListFragment.ENABLE_PLAYLIST_HANDLING, true);
         args.putParcelable(MediaFileListFragment.CURRENT_LOCATION,
                 new MediaFileListFragment.FileLocation(
                         getString(R.string.playlists), // title (not shown here - this location is the root of the tab)
