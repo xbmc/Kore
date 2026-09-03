@@ -49,6 +49,7 @@
     <string name="favourites">Favourites</string>
     <string name="weather">Weather</string>
     <string name="system">System</string>
+    <string name="playlists">Playlists</string>
 
     <string name="no_xbmc_configured">No media center configured</string>
     <string name="add_xbmc">Add Media Center</string>

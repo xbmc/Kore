@@ -24,8 +24,10 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.xbmc.kore.R;
+import org.xbmc.kore.jsonrpc.method.Files;
 import org.xbmc.kore.ui.AbstractCursorListFragment;
 import org.xbmc.kore.ui.AbstractTabsFragment;
+import org.xbmc.kore.ui.sections.file.MediaFileListFragment;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.TabsAdapter;
 
@@ -34,6 +36,9 @@ import org.xbmc.kore.utils.TabsAdapter;
  */
 public class MusicListFragment extends AbstractTabsFragment {
     private static final String TAG = LogUtils.makeLogTag(MusicListFragment.class);
+
+    // Kodi's special virtual folder that holds saved music playlists (.m3u/.pls files)
+    private static final String MUSIC_PLAYLISTS_PATH = "special://musicplaylists/";
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -58,7 +63,29 @@ public class MusicListFragment extends AbstractTabsFragment {
                 .addTab(AlbumListFragment.class, getArguments(), R.string.albums, 2)
                 .addTab(AudioGenresListFragment.class, getArguments(), R.string.genres, 3)
                 .addTab(SongsListFragment.class, getArguments(), R.string.songs, 4)
-                .addTab(MusicVideoListFragment.class, getArguments(), R.string.music_videos, 5);
+                .addTab(MediaFileListFragment.class, createPlaylistsTabArgs(), R.string.playlists, 5);
+    }
+
+    /**
+     * Builds the arguments that tell the reused {@link MediaFileListFragment} to start
+     * browsing directly inside Kodi's saved music playlists folder, instead of starting
+     * at the top-level file Sources list (which is what it does with no arguments).
+     *
+     * Tapping a playlist file plays it immediately (MediaFileListFragment's existing
+     * behaviour for any non-directory item) - see Player.Open being called from
+     * handleFileSelect()/playMediaFile() in that class.
+     */
+    private Bundle createPlaylistsTabArgs() {
+        Bundle args = new Bundle();
+        args.putString(MediaFileListFragment.MEDIA_TYPE, Files.Media.MUSIC);
+        args.putParcelable(MediaFileListFragment.CURRENT_LOCATION,
+                new MediaFileListFragment.FileLocation(
+                        getString(R.string.playlists), // title (not shown here - this location is the root of the tab)
+                        MUSIC_PLAYLISTS_PATH,           // Kodi's special path for saved music playlists
+                        true,                           // isDirectory
+                        null,                           // no parent - this is the top of this tab
+                        true));                          // isRoot - stops back-navigation going further up
+        return args;
     }
 
     @Override
