@@ -44,8 +44,8 @@
     <string name="osd">Meniu</string>
     <string name="back">Înapoi</string>
     <string name="previous">Precedentul</string>
-    <string name="next">Următorul</string>
-    <string name="finish">Finalizează</string>
+    <string name="next">Mai departe</string>
+    <string name="finish">Termină</string>
     <string name="search_again">Caută din nou</string>
     <string name="remove">Elimină</string>
     <string name="edit">Editare</string>
@@ -98,7 +98,10 @@
     <string name="error_favourites">Nu se pot obține elementele favorite
 \nDescrierea erorii: %1$s</string>
     <string name="no_audiostream">Niciun flux audio disponibil</string>
-    <string name="wizard_search_host_found">Au fost găsite aceste centre media în rețeaua dumneavoastră locală.<br></br><br></br> Alegeți unul pentru a fi adăugat sau apăsați <b>Următorul</b> pentru a adăuga manual unul.</string>
+    <string name="wizard_search_host_found"><![CDATA[
+    	Au fost găsite aceste centre media în rețeaua dumneavoastră.<br/><br/>
+    	Selectați unul pentru a-l adăuga sau apăsați <b>Mai departe</b> pentru a adăuga manual unul nou.
+    ]]></string>
     <string name="no_network_connection">Nicio conexiune la rețea</string>
     <string name="searching">Se caută…</string>
     <string name="no_xbmc_found">Nu a fost găsit niciun centru media</string>
@@ -271,8 +274,12 @@
     <string name="connecting_to">Imposibil de conectat la %1$s (%2$s)
 \nSe reîncearcă…</string>
     <string name="wizard_welcome">Bine ați venit</string>
-    <string name="wizard_search_message">Se caută centre media în rețeaua dumneavoastră locală…<br></br></string>
-    <string name="wizard_search_no_network_connection">Vă rugăm să activați o conexiune la rețea înainte de a începe căutarea după centre media.<br></br></string>
+    <string name="wizard_search_message"><![CDATA[
+    	Se caută centre media în rețeaua dumneavoastră locală…<br/>
+    ]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+    	Vă rugăm să activați o conexiune la rețea înainte de a începe căutarea după centre media.<br/>
+    ]]></string>
     <string name="wizard_manual_configuration_message_advanced">Configurare avansată (lăsați câmpurile goale pentru valorile implicite)</string>
     <string name="wizard_xbmc_name">Numele centrului media</string>
     <string name="wizard_xbmc_ip">Adresa</string>
@@ -370,7 +377,11 @@
 \n
 \nCentrul dumneavoastră media s-ar putea să nu aibă un prinzător (receptor) sau să nu fie configurat. Dacă doriți să eliminați această intrare din meniul lateral, o puteți face pe pagina de Configurări.</string>
     <string name="cannot_move_playing_item">Nu se poate muta elementul momentan redat/pauzat</string>
-    <string name="wizard_done_message">Centrul dumneavoastră media este configurat.<br></br> Puteți folosi telecomanda să îl controlați. Mediateca dumneavoastră este în curs de sincronizare, și ar trebui să fie disponibiliă în câteva momente.<br></br><br></br> Apăsați <b>Finalizează</b> pentru a începe să folosiți telecomanda.</string>
+    <string name="wizard_done_message"><![CDATA[
+	    Centrul dumneavoastră media este configurat.<br/>
+	    Acum puteți folosi telecomanda să îl controlați. Mdiateca dumneavoastră a fost sincronizată și ar trebui să fie disponibilă în câteva momente.<br/><br/>
+	    Apăsați <b>Termină</b> pentru a începe să folosiți telecomanda.
+    ]]></string>
     <string name="test_connection">Testează</string>
     <string name="edit_xbmc">Editare centru media</string>
     <string name="episode_number">Episodul %1$d</string>
@@ -380,7 +391,11 @@
     <string name="theme_color_green">Mila Verde</string>
     <string name="always_sendtokodi_addon">Preferă suplimentul TrimiteLaKodi (SendToKodi)</string>
     <string name="download_network_types_summary">Selectați tipurile de rețea peste care descărcările media sunt permise</string>
-    <string name="about_desc">\\0A9 2018 Fundația XBMC&lt;br&gt;&lt;br&gt; Vă rugăm să ne evaluați pe &lt;b&gt;&lt;a href=market://details?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Dacă aveți nevoie de ajutor, vizitați &lt;a href=http://forum.kodi.tv/forumdisplay.php?fid=129&gt;forumul nostru&lt;/a&gt;</string>
+    <string name="about_desc"><![CDATA[
+        \u00A9 2018 Fundația XBMC<br><br>
+        Vă rugăm să ne evaluați în magazinul <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
+        Dacă aveți nevoie de ajutor, aruncați o privire pe <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forumul nostru</a>
+    ]]></string>
     <string name="starting_recording">Se începe înregistrarea %1$s</string>
     <string name="tv">Televiziune</string>
     <string name="write_storage_permission_denied">Permisiune refuzată. Nu se vor putea descărca fișiere.</string>
@@ -392,12 +407,47 @@
 \nMesajul de eroare: %1$s</string>
     <string name="download_dir_exists">Dosarul de descărcare deja există.
 \n Dacă oricare din fișiere are același nume, doriți să le suprascrieți sau să le descărcați ca alt nume?</string>
-    <string name="wizard_welcome_message">Să începem adăugând un centru media. &lt;br/&gt; Asigurați-vă că programul Kodi rulează și este configurat cum trebuie. Mai exact, verificați următorii parametrii în pagina de &lt;b&gt;Configurări&lt;/b&gt; a lui Kodi: &lt;br/&gt;&lt;br/&gt; Selectați &lt;b&gt;Servicii&lt;/b&gt;, apoi &lt;b&gt;Control&lt;/b&gt; și: &lt;br/&gt; 1. Activați &lt;b&gt;Permite controlul de la distanță prin HTTP&lt;/b&gt;; &lt;br/&gt; 2. Activați ambele opțiuni &lt;b&gt;Permite controlul de la distanță de la aplicațiile de pe acest sistem&lt;/b&gt; and &lt;b&gt;Permite controlul de la distanță de la aplicațiile de pe alte sisteme&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Selectați &lt;b&gt;Servicii&lt;/b&gt;, then &lt;b&gt;General&lt;/b&gt; and: &lt;br&gt; 1. Activați &lt;b&gt;Anunță serviciile către alte sisteme&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Puteți obține ajutor adițional &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aici&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Când sunteți gata apăsați &lt;b&gt;Mai departe&lt;/b&gt;.</string>
+    <string name="wizard_welcome_message"><![CDATA[
+	    Să începem prin adăugarea unui centru media.
+	    <br/>
+	    Asigurați-vă că programul Kodi rulează și este configurat cum trebuie. Verificați în mod special următoarele  <b>Configurări</b>  (roata dințată în susul panoului din stânga) din Kodi:
+	    <br/><br/>
+	    Selectați <b>Servicii</b> (chenarul din mijloc-dreapta), apoi <b>Control</b> (din panoul din stânga) și:
+	    <br/>
+        1. Activați (comutator spre dreapta) <b>Permite controlul de la distanță prin protocolul HTTP</b>;
+        <br/>
+	    2. Activați ambele opțiuni <b>Permite controlul de la distanță de către programele de pe acest sistem</b> și <b>Permite controlul de la distanță de către programele de pe alte sisteme</b>;
+	    <br/><br/>
+	    Selectați <b>Servicii</b> (deci rămâneți pe aceeași pagină, dacă n-ați schimbat-o), apoi <b>Generale</b> și:
+	    <br>
+	    1. Activați (comutator spre dreapta) <b>Anunță serviciile către alte sisteme</b>;
+	    <br/><br/>
+	    Puteți obține ajutor adițional (în engleză) <a href="http://syncedsynapse.com/kore/kore-faq/">aici</a>.
+	    <br/><br/>
+	    Când sunteți gata, apăsați <b>Mai departe</b>.
+    ]]></string>
     <string name="confirm_songs_download">Sigur doriți să descărcați %1$d cântece?
 \n Cântecele vor fi descărcate pe fundal, dar poate să dureze ceva timp până se finalizează.</string>
     <string name="use_hardware_volume_keys">Folosește tastele sonor (volum) ale dispozitivului</string>
     <string name="zeroprogress">0:00</string>
     <string name="unable_to_play_favourite_item">Nu se poate reda elementul favorit. Tipul lui nu este sprijinit (compatibil)</string>
-    <string name="wizard_search_no_host_found">Nu a putut fi găsit niciun centru media în rețeau dumneavoastră locală.&lt;br/&gt;&lt;br/&gt; Vă rugăm să vă asigurați că programul Kodi rulează și este configurat cum trebuie, mai exact, verificați următorii parametrii în pagina de &lt;b&gt;Configurări&lt;/b&gt; a lui Kodi: &lt;br/&gt;&lt;br/&gt; Selectați &lt;b&gt;Servicii&lt;/b&gt;, apoi &lt;b&gt;Control&lt;/b&gt; și: &lt;br/&gt; 1. Activați &lt;b&gt;Permite controlul de la distanță prin HTTP&lt;/b&gt;; &lt;br/&gt; 2. Activați ambele opțiuni &lt;b&gt;Permite controlul de la distanță de la aplicații de pe acest sistem&lt;/b&gt; și &lt;b&gt;Permite controlul de la distanță de la aplicațiile de pe alte sisteme&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Selectați &lt;b&gt;Servicii&lt;/b&gt;, apoi &lt;b&gt;General&lt;/b&gt; și: &lt;br&gt; 1. Activați &lt;b&gt;Anunță serviciile către alte sisteme&lt;/b&gt;; &lt;br/&gt;&lt;br/&gt; Puteți obține ajutor adițional &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;aici&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Dați clic pe &lt;b&gt;Caută din nou&lt;/b&gt; sau &lt;b&gt;Următorul&lt;/b&gt; pentru configurarea manuală.</string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+	    Nu a putut fi găsit niciun centru media în rețeaua dumneavoastră.<br/><br/>
+	    Asigurați-vă că programul Kodi rulează (este deschis) și este configurat cum trebuie, verificați în mod special următoarele <b>Configurări</b> (roata dințată în susul panoului din stânga) din Kodi:
+	    <br/><br/>
+	    Selectați <b>Servicii</b> (chenarul din mijloc-dreapta), apoi <b>Control</b> (din panoul din stânga) și:
+	    <br/>
+        1. Activați (comutator spre dreapta) <b>Permite controlul de la distanță prin protocolul HTTP</b>;
+        <br/>
+	    2. Activați ambele opțiuni <b>Permite controlul de la distanță de către programele de pe acest sistem</b> and <b>Permite controlul de la distanță de către programele de pe alte sisteme</b>;
+	    <br/><br/>
+	    Selectați <b>Servicii</b> (deci rămâneți pe aceeași pagină, dacă n-ați schimbat-o), apoi <b>Generale</b> și:
+	    <br>
+	    1. Activați <b>Anunță serviciile către alte sisteme</b>;
+	    <br/><br/>
+	    Puteți obține ajutor adițional (în engleză) <a href="http://syncedsynapse.com/kore/kore-faq/">aici</a>.
+	    <br/><br/>
+	    Dați clic pe <b>Caută din nou</b> sau pe <b>Mai departe</b> pentru configurare manuală.
+    ]]></string>
     <string name="wizard_no_name_specified">Vă rugăm să specificați un nume pentru acest centru media, ca să îl puteți identifica mai târziu.</string>
 </resources>

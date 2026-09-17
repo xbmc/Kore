@@ -65,15 +65,56 @@
     <string name="toggle_fullscreen">Plein écran</string>
     <string name="connected_to">Connecté à %1$s</string>
     <string name="connecting">Connexion en cours…</string>
-    <string name="connecting_to">Impossible de se connecter à %1$s (%2$s)
-\nRéessayer…</string>
+    <string name="connecting_to">Impossible de se connecter à %1$s (%2$s) \nRéessayer…</string>
     <!-- String used in add host wizard -->
     <string name="wizard_welcome">Bienvenue</string>
-    <string name="wizard_welcome_message">Commençons par ajouter un centre multimédia. &lt;br/&gt; Assurez-vous que Kodi est en cours d\'exécution et correctement configuré. Vérifiez spécifiquement les éléments suivants sous les &lt;b&gt;Paramètres&lt;/b&gt; de Kodi : &lt;br/&gt;&lt;br/&gt; Sélectionnez &lt;b&gt;Services&lt;/b&gt;, puis &lt;b&gt;Contrôle&lt;/b&gt; et : &lt;br/&gt; 1. Activez &lt;b&gt;Autoriser le contrôle à distance via HTTP&lt;/b&gt; ; &lt;br/&gt; 2. Activez les deux options &lt;b&gt;Autoriser le contrôle à distance depuis les applications sur ce système&lt;/b&gt; et &lt;b&gt;Autoriser le contrôle à distance depuis les applications sur d\'autres systèmes&lt;/b&gt; ; &lt;br/&gt;&lt;br/&gt; Sélectionnez &lt;b&gt;Services&lt;/b&gt;, puis &lt;b&gt;Général&lt;/b&gt; et : &lt;br&gt; 1. Activez &lt;b&gt;Annoncer les services à d\'autres systèmes&lt;/b&gt; ; &lt;br/&gt;&lt;br/&gt; Vous pouvez obtenir une aide supplémentaire &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;ici&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Lorsque vous êtes prêt, appuyez sur &lt;b&gt;Suivant&lt;/b&gt;.</string>
-    <string name="wizard_search_message">Recherche de Centres Multimédia sur votre réseau local en cours…<br></br></string>
-    <string name="wizard_search_no_host_found">Je n\'ai trouvé aucun centre multimédia sur votre réseau.&lt;br/&gt;&lt;br/&gt; Veuillez vous assurer que Kodi est en cours d\'exécution et correctement configuré, vérifiez spécifiquement les éléments suivants sous les &lt;b&gt;Paramètres&lt;/b&gt; de Kodi : &lt;br/&gt; &lt;br/&gt; Sélectionnez &lt;b&gt;Services&lt;/b&gt;, puis &lt;b&gt;Contrôle&lt;/b&gt; et : &lt;br/&gt; 1. Activez &lt;b&gt;Autoriser le contrôle à distance via HTTP&lt;/b&gt; ; &lt;br/&gt; 2. Activez les deux options &lt;b&gt;Autoriser le contrôle à distance depuis les applications sur ce système&lt;/b&gt; et &lt;b&gt;Autoriser le contrôle à distance depuis les applications sur d\'autres systèmes&lt;/b&gt; ; &lt;br/&gt;&lt;br/&gt; Sélectionnez &lt;b&gt;Services&lt;/b&gt;, puis &lt;b&gt;Général&lt;/b&gt; et : &lt;br&gt; 1. Activez &lt;b&gt;Annoncer les services à d\'autres systèmes&lt;/b&gt; ; &lt;br/&gt;&lt;br/&gt; Vous pouvez obtenir une aide supplémentaire &lt;a href=http://syncedsynapse.com/kore/kore-faq/&gt;ici&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt; Cliquez sur &lt;b&gt;Rechercher à nouveau&lt;/b&gt; ou &lt;b&gt;Suivant&lt;/b&gt; pour une configuration manuelle.</string>
-    <string name="wizard_search_no_network_connection">Activez une connexion réseau avant de rechercher un Centre Multimédia.<br></br></string>
-    <string name="wizard_search_host_found">J\\\'ai trouvé ce(s) Centre(s) Multimédia sur votre réseau.<br></br><br></br>Sélectionnez-en un à ajouter ou appuyez sur <i>Suivant</i> pour en ajouter un nouveau manuellement.</string>
+    <string name="wizard_welcome_message"><![CDATA[
+Commençons par ajouter un centre multimédia.
+<br/>
+Assurez-vous que Kodi est en cours d'exécution et correctement configuré. Vérifiez plus précisément les points suivants dans les <b>Paramètres</b> de Kodi :
+<br/><br/>
+Sélectionnez <b>Services</b>, puis <b>Contrôle</b> et :
+<br/>
+1. Activez <b>Autoriser le contrôle à distance via HTTP</b> ;
+<br/>
+2. Activez les deux options <b>Autoriser le contrôle à distance depuis les applications de ce système</b> et <b>Autoriser le contrôle à distance depuis les applications d'autres systèmes</b> ;
+<br/><br/>
+Sélectionnez <b>Services</b>, puis <b>Général</b> et :
+<br>
+1. Activez <b>Annoncer les services aux autres systèmes</b> ;
+<br/><br/>
+Vous pouvez obtenir de l'aide supplémentaire <a href="http ://syncedsynapse.com/kore/kore-faq/">ici</a>.
+<br/><br/>
+Lorsque vous serez prêt, appuyez sur <b>Suivant</b>.
+]]></string>
+    <string name="wizard_search_message"><![CDATA[
+Recherche de centres multimédias sur votre réseau local…<br/>
+]]></string>
+    <string name="wizard_search_no_host_found"><![CDATA[
+Je n'ai trouvé aucun centre multimédia sur votre réseau.<br/><br/>
+Veuillez vous assurer que Kodi est en cours d'exécution et correctement configuré. Vérifiez notamment les points suivants dans les <b>Paramètres</b> de Kodi :
+<br/><br/>
+Sélectionnez <b>Services</b>, puis <b>Contrôle</b> et :
+<br/>
+1. Activez <b>Autoriser le contrôle à distance via HTTP</b> ;
+<br/>
+2. Activez les deux options <b>Autoriser le contrôle à distance depuis les applications de ce système</b> et <b>Autoriser le contrôle à distance depuis les applications d'autres systèmes</b> ;
+<br/><br/>
+Sélectionnez <b>Services</b>, puis <b>Général</b> et :
+<br>
+1. Activez <b>Annoncer les services aux autres systèmes</b> ;
+<br/><br/>
+Vous pouvez obtenir de l'aide supplémentaire <a href="http://syncedsynapse.com/kore/kore-faq/">ici</a>.
+<br/><br/>
+Cliquez sur <b>Rechercher à nouveau</b> ou sur <b>Suivant</b> pour une configuration manuelle.
+]]></string>
+    <string name="wizard_search_no_network_connection"><![CDATA[
+Veuillez activer une connexion réseau avant de rechercher des centres multimédias.<br/>
+]]></string>
+    <string name="wizard_search_host_found"><![CDATA[
+J'ai trouvé ces centres multimédias sur votre réseau.<br/><br/>
+Sélectionnez-en un à ajouter ou appuyez sur <b>Suivant</b> pour en ajouter un manuellement.
+]]></string>
     <string name="no_network_connection">Aucune connexion réseau</string>
     <string name="searching">Recherche en cours…</string>
     <string name="no_xbmc_found">Aucun Centre Multimédia trouvé</string>
@@ -100,15 +141,16 @@
     <string name="wizard_invalid_es_port_specified">Indiquez un port EventServer valide pour ce Centre Multimédia.</string>
     <string name="wizard_connecting_to_xbmc_title">Connexion sur %1$s en cours…</string>
     <string name="wizard_connecting_to_xbmc_message">Patientez pendant que j\'essaie de me connecter à votre Centre Multimédia…</string>
-    <string name="wizard_empty_authentication">Kodi requiert une authentification.
-\nIndiquez un nom d\'utilisateur et un mot de passe.</string>
-    <string name="wizard_incorrect_authentication">Mauvais nom d\'utilisateur et/ou mot de passe.
-\nVérifiez vos informations d\'identification.</string>
+    <string name="wizard_empty_authentication">Kodi requiert une authentification. \n Veuillez Indiquer un nom d\'utilisateur et un mot de passe.</string>
+    <string name="wizard_incorrect_authentication">Mauvais nom d\'utilisateur et/ou mot de passe. \n Vérifiez vos informations d\'identification.</string>
     <string name="wizard_success_connecting">Connecté à Kodi.</string>
-    <string name="wizard_error_connecting">Impossible de se connecter à Kodi.
-\nVérifiez la configuration.</string>
+    <string name="wizard_error_connecting">Impossible de se connecter à Kodi. \n Vérifiez la configuration.</string>
     <string name="wizard_done">Terminé !</string>
-    <string name="wizard_done_message">Votre Centre Multimédia est configuré.<br></br> Vous pouvez maintenant utiliser la télécommande pour le contrôler. Votre médiathèque est en cours de synchronisation, et devrait être disponible dans quelques instants.<br></br><br></br> Appuyez sur <b><i>Terminé</i></b> pour commencer à utiliser la télécommande.</string>
+    <string name="wizard_done_message"><![CDATA[
+Votre centre multimédia est configuré.<br/>
+Vous pouvez maintenant utiliser la télécommande pour le contrôler. Votre bibliothèque est en cours de synchronisation et sera disponible dans quelques instants.<br/><br/>
+Appuyez sur <b>Terminer</b> pour commencer à utiliser la télécommande.
+]]></string>
     <string name="wizard_zeroconf_no_host_address">Impossible de récupérer l\'adresse de ce Centre Multimédia !</string>
     <string name="wizard_zeroconf_cant_connect_no_host_address">Connexion à ce Centre Multimédia impossible car l\'adresse est introuvable.</string>
     <string name="play">Lecture</string>
@@ -171,22 +213,14 @@
     <string name="fanart">Fanart</string>
     <string name="poster">Poster</string>
     <string name="thumbnail">Miniature</string>
-    <string name="error_getting_properties">Impossible d’obtenir les propriétés de Kodi.
-\nMessage d’erreur: %1$s</string>
-    <string name="error_executing_subtitles">Impossible d’exécuter l’addon de sous-titres.
-\nMessage d’erreur: %1$s</string>
-    <string name="error_getting_addon_info">Impossible d\'obtenir les informations de l\'extension.
-\nMessage d\'erreur: %1$s.</string>
-    <string name="error_getting_source_info">Impossible de parcourir les fichiers.
-\nMessage d\'erreur: %1$s.</string>
-    <string name="error_play_media_file">Impossible de lire le fichier multimédia.
-\nMessage d’erreur : %1$s</string>
-    <string name="error_play_local_file">Impossible de lire le fichier multimédia local.
-\nMessage d’erreur: %1$s</string>
-    <string name="error_queue_media_file">Impossible de mettre en file d’attente le fichier multimédia.
-\nMessage d’erreur : %1$s</string>
-    <string name="error_get_active_player">Impossible d’obtenir un lecteur actif.
-\nMessage d’erreur : %1$s</string>
+    <string name="error_getting_properties">Impossible d’obtenir les propriétés de Kodi. \nMessage d’erreur: %1$s</string>
+    <string name="error_executing_subtitles">Impossible d’exécuter l’addon de sous-titres. \nMessage d’erreur : %1$s</string>
+    <string name="error_getting_addon_info">Impossible d\'obtenir les informations de l\'extension. \nMessage d\'erreur : %1$s.</string>
+    <string name="error_getting_source_info">Impossible de parcourir les fichiers. \nMessage d\'erreur : %1$s.</string>
+    <string name="error_play_media_file">Impossible de lire le fichier multimédia. \nMessage d’erreur : %1$s</string>
+    <string name="error_play_local_file">Impossible de lire le fichier multimédia local. \nMessage d’erreur : %1$s</string>
+    <string name="error_queue_media_file">Impossible de mettre en file d’attente le fichier multimédia. \nMessage d’erreur : %1$s</string>
+    <string name="error_get_active_player">Impossible d’obtenir un lecteur actif. \nMessage d’erreur : %1$s</string>
     <string name="error_share_video">Impossible de partager la vidéo avec Kodi.</string>
     <string name="error_reading_local_storage">Impossible de lire le stockage local. Avez-vous autorisé Kore à accéder au stockage de fichiers \?</string>
     <string name="error_starting_http_server">Impossible de créer ou de démarrer le serveur HTTP.</string>
@@ -204,7 +238,7 @@
     <string name="no_movies_found_refresh">Aucun film trouvé</string>
     <string name="no_tvshows_found_refresh">Aucune série TV trouvée</string>
     <string name="no_episodes_found">Aucun épisode trouvé</string>
-    <string name="swipe_down_to_refresh">Glissez vers le bas pour actualiser</string>
+    <string name="swipe_down_to_refresh">Glisser vers le bas pour actualiser</string>
     <string name="no_artists_found_refresh">Aucun artiste trouvé</string>
     <string name="no_albums_found_refresh">Aucun album trouvé</string>
     <string name="no_genres_found_refresh">Aucun genre trouvé</string>
@@ -215,7 +249,7 @@
     <string name="no_favourites_found_refresh">Aucun favori trouvé</string>
     <string name="no_recordings_found_refresh">Aucun enregistrement trouvé</string>
     <string name="no_broadcasts_found_refresh">Aucune diffusion trouvée</string>
-    <string name="pull_to_refresh">Glissez vers le bas pour actualiser</string>
+    <string name="pull_to_refresh">Glisser vers le bas pour actualiser</string>
     <string name="no_cast_info">Aucune information de casting à afficher</string>
     <string name="minutes_abbrev">%1$s min</string>
     <string name="minutes_abbrev2">%1$sm</string>
@@ -234,22 +268,14 @@
     <string name="no_suitable_playlist">Aucune liste de lecture appropriée n\'a été trouvée pour ajouter un type de média.</string>
     <string name="imdb">IMDb</string>
     <string name="download">Téléchargé</string>
-    <string name="confirm_movie_download">Êtes-vous sûr de vouloir télécharger ce film \?
-\nLe film sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
-    <string name="confirm_episode_download">Êtes-vous sûr de vouloir télécharger cet épisode \?
-\nL\'épisode sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
-    <string name="confirm_album_download">Êtes-vous sûr de vouloir télécharger cet album \?
-\nL\'album sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
-    <string name="confirm_artist_download">Êtes-vous sûr de vouloir télécharger tous les albums \?
-\nLes albums vont être téléchargés en arrière-plan, ce qui peut durer un certain temps.</string>
-    <string name="confirm_songs_download">Êtes-vous sûr de vouloir télécharger les pistes musicales de %1$d \?
-\nLes pistes musicales vont être téléchargées en arrière-plan, ce qui peut durer un certain temps.</string>
-    <string name="download_file_exists">Fichier déjà présent.
-\nVoulez-vous l\'écraser ou le télécharger avec un nouveau nom \?</string>
-    <string name="download_dir_exists">Répertoire de téléchargement déjà existant.
-\nSi des fichiers portent le même nom, voulez-vous les écraser ou les télécharger avec un nouveau nom \?</string>
-    <string name="download_files_exists">Un ou plusieurs fichier(s) sont déjà présent(s).
-\nSi des fichiers portent le même nom, voulez-vous les écraser ou les télécharger avec un nouveau nom \?</string>
+    <string name="confirm_movie_download">Êtes-vous sûr de vouloir télécharger ce film ? \n Le film sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
+    <string name="confirm_episode_download">Êtes-vous sûr de vouloir télécharger cet épisode ? \n L\'épisode sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
+    <string name="confirm_album_download">Êtes-vous sûr de vouloir télécharger cet album ? \n L\'album sera téléchargé en arrière-plan, ce qui peut durer un certain temps.</string>
+    <string name="confirm_artist_download">Êtes-vous sûr de vouloir télécharger tous les albums ? \n Les albums vont être téléchargés en arrière-plan, ce qui peut durer un certain temps.</string>
+    <string name="confirm_songs_download">Êtes-vous sûr de vouloir télécharger les pistes musicales de %1$d ? \n Les titres vont être téléchargées en arrière-plan, ce qui peut durer un certain temps.</string>
+    <string name="download_file_exists">Fichier déjà présent. \n Voulez-vous l\'écraser ou le télécharger avec un nouveau nom ?</string>
+    <string name="download_dir_exists">Répertoire de téléchargement déjà existant. \n Si des fichiers portent le même nom, voulez-vous les écraser ou les télécharger avec un nouveau nom ?</string>
+    <string name="download_files_exists">Un ou plusieurs fichier(s) sont déjà présent(s). \n Si des fichiers portent le même nom, voulez-vous les écraser ou les télécharger avec un nouveau nom ?</string>
     <string name="overwrite">Écraser</string>
     <string name="download_with_new_name">Nouveau nom</string>
     <string name="download_file_description">Téléchargé depuis votre Centre Multimédia</string>
@@ -308,26 +334,21 @@
     <string name="remote_bar_items">Raccourcis de la barre inférieure</string>
     <string name="nav_drawer_items">Raccourcis du volet de navigation</string>
     <string name="about">À propos</string>
-    <string name="about_desc">\\0A9 2018 Fondation&lt;br&gt;&lt;br&gt; XBMC Veuillez nous évaluer sur &lt;b&gt;&lt;a href=market://details?id=org.xbmc.kore&gt;Google Play&lt;/a&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt; Si vous avez besoin d’aide, consulter notre &lt;a href=http://forum.kodi.tv/forumdisplay.php?fid=129&gt;forum&lt;/a&gt;</string>
+    <string name="about_desc"><![CDATA[
+© 2018 Fondation XBMC<br><br>
+Veuillez nous évaluer sur <b><a href="market://details?id=org.xbmc.kore">Google Play</a></b><br><br>
+Si vous avez besoin d'aide, consultez notre <a href="http://forum.kodi.tv/forumdisplay.php?fid=129">forum</a>
+]]></string>
     <string name="play_on_kodi">Lire sur Kodi</string>
     <string name="queue_on_kodi">Ajouter à la liste de lecture sur Kodi</string>
     <string name="pause_call_incoming_title">Appel entrant</string>
     <string name="pause_call_incoming_message">Vérifiez votre téléphone, quelqu\'un vous appelle</string>
-    <string name="error_getting_pvr_info">Impossible d’obtenir des informations PVR
-\n
-\nDescription de l’erreur : %1$s</string>
-    <string name="might_not_have_pvr">Impossible d’obtenir des informations PVR.
-\n
-\nVotre Media Center n’a peut-être pas de tuner ou n’est pas configuré. Si vous souhaitez supprimer cette entrée du menu latéral, vous pouvez le faire dans l’écran Paramètres.</string>
-    <string name="error_starting_channel">Une erreur s’est produite au démarrage de la lecture du canal
-\nDescription : %1$s</string>
-    <string name="error_favourites">Impossible d’obtenir des favoris
-\n
-\nDescription de l’erreur : %1$s</string>
-    <string name="error_starting_recording">Une erreur s’est produite lors de la lecture d’un enregistrement
-\nDescription : %1$s</string>
-    <string name="error_starting_to_record">Une erreur s’est produite lors de l’enregistrement
-\nDescription : %1$s</string>
+    <string name="error_getting_pvr_info">Impossible d’obtenir des informations PVR \n \nDescription de l’erreur : %1$s</string>
+    <string name="might_not_have_pvr">Impossible d’obtenir des informations PVR. \n \nVotre Media Center n’a peut-être pas de tuner ou n’est pas configuré. Si vous souhaitez supprimer cette entrée du menu latéral, vous pouvez le faire dans l’écran Paramètres.</string>
+    <string name="error_starting_channel">Une erreur s’est produite au démarrage de la lecture du canal \nDescription : %1$s</string>
+    <string name="error_favourites">Impossible d’obtenir des favoris \nDescription de l’erreur : %1$s</string>
+    <string name="error_starting_recording">Une erreur s’est produite lors de la lecture d’un enregistrement \nDescription : %1$s</string>
+    <string name="error_starting_to_record">Une erreur s’est produite lors de l’enregistrement \nDescription : %1$s</string>
     <string name="channel_switching">Passez à la chaîne %1$s</string>
     <string name="starting_recording">Démarrage de l\'enregistrement de %1$s</string>
     <string name="refresh">Actualiser</string>
