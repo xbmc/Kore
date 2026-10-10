@@ -99,7 +99,7 @@ public class EventServerConnection {
         // Now, get the host InetAddress in the background
         commHandler.post(() -> {
             try {
-                hostInetAddress = NetUtils.getInet4AddressByName(hostInfo.getAddress());
+                hostInetAddress = NetUtils.getInetAddressByName(hostInfo.getAddress());
             } catch (UnknownHostException exc) {
                 LogUtils.LOGD(TAG, "Got an UnknownHostException, disabling EventServer");
                 hostInetAddress = null;
@@ -165,7 +165,7 @@ public class EventServerConnection {
             // Get the InetAddress
             final InetAddress hostInetAddress;
             try {
-                hostInetAddress = NetUtils.getInet4AddressByName(hostInfo.getAddress());
+                hostInetAddress = NetUtils.getInetAddressByName(hostInfo.getAddress());
             } catch (UnknownHostException exc) {
                 LogUtils.LOGD(TAG, "Couldn't get host InetAddress");
                 reportTestResult(callerHandler, callerCallback, false);

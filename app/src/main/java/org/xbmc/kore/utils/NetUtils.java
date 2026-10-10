@@ -40,18 +40,18 @@ public class NetUtils {
     private static final String TAG = LogUtils.makeLogTag(NetUtils.class);
 
     /**
-     * Gets an IPv4 address from a host name
+     * Gets an address from a host name, preferring IPv4 and falling back to IPv6
      * @param host The host to look up
-     * @return Inet4Address
+     * @return InetAddress
      */
-    public static Inet4Address getInet4AddressByName(String host) throws UnknownHostException {
+    public static InetAddress getInetAddressByName(String host) throws UnknownHostException {
         InetAddress[] addrs = InetAddress.getAllByName(host);
         for (InetAddress addr : addrs) {
             if (addr instanceof Inet4Address) {
-                return (Inet4Address)addr;
+                return addr;
             }
         }
-        throw new UnknownHostException("No ipv4 address found");
+        return addrs[0];
     }
 
     /**
