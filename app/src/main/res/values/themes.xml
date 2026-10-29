@@ -16,6 +16,15 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Keeps the share activity invisible so only its dialogs are shown -->
+    <style name="ThemeOverlay.Kore.ShareTranslucent" parent="">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
     <style name="Theme.Kore.Default.Auto" parent="Theme.Kore.Default.Light"/>
 
     <style name="Theme.Kore.Default.Dark" parent="Theme.Material3.Dark.NoActionBar">

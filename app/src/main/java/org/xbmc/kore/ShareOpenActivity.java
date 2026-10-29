@@ -1,8 +1,10 @@
 package org.xbmc.kore;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,21 +15,29 @@ import android.widget.Toast;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.color.DynamicColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.xbmc.kore.host.HostInfo;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.host.actions.OpenSharedUrls;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.method.Application;
+import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.sections.localfile.HttpApp;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.utils.PluginUrlUtils;
+import org.xbmc.kore.utils.Utils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +49,7 @@ import java.util.regex.Pattern;
 public class ShareOpenActivity extends Activity {
     private static final String TAG = LogUtils.makeLogTag(ShareOpenActivity.class);
     private HttpApp httpApp;
+    private Dialog hostCheckProgressDialog;
 
     // ACTION to be used with the shortcut API that directly opens the remote
     public static final String DEFAULT_OPEN_ACTION = "org.xbmc.kore.OPEN_REMOTE_VIEW";
@@ -47,9 +58,38 @@ public class ShareOpenActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        applyAppTheme();
         super.onCreate(savedInstanceState);
 
         handleStartIntent(getIntent());
+    }
+
+    /**
+     * Applies the user selected Kore theme, keeping the window transparent, so dialogs match the app
+     */
+    private void applyAppTheme() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String themeColor = prefs.getString(Settings.KEY_PREF_THEME_COLOR, Settings.DEFAULT_PREF_THEME_COLOR);
+        String themeVariant = prefs.getString(Settings.KEY_PREF_THEME_VARIANT, Settings.DEFAULT_PREF_THEME_VARIANT);
+        setTheme(Settings.getThemeResourceId(themeColor, themeVariant));
+        getTheme().applyStyle(R.style.ThemeOverlay_Kore_ShareTranslucent, true);
+        if (Utils.isSOrLater() && themeColor.equals(Settings.THEME_COLOR_SYSTEM)) {
+            DynamicColors.applyToActivityIfAvailable(this);
+        }
+    }
+
+    @Override
+    public void finish() {
+        LogUtils.LOGD(TAG, "finish() called", new Throwable("finish trace"));
+        super.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (hostCheckProgressDialog != null && hostCheckProgressDialog.isShowing()) {
+            hostCheckProgressDialog.dismiss();
+        }
+        super.onDestroy();
     }
 
     /**
@@ -71,12 +111,14 @@ public class ShareOpenActivity extends Activity {
 
         // If a host was passed from the intent switch to it
         String shortcutId = intent.getStringExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID);
+        HostInfo shortcutHost = null;
         if (shortcutId != null) {
             int hostId = Integer.parseInt(shortcutId);
             for (HostInfo host : hostManager.getHosts()) {
                 if (host.getId() == hostId) {
                     LogUtils.LOGD(TAG, "Switching hosts");
                     hostManager.switchHost(host);
+                    shortcutHost = host;
                     break;
                 }
             }
@@ -84,17 +126,126 @@ public class ShareOpenActivity extends Activity {
 
         final String action = intent.getAction();
         final String intentType = intent.getType();
-        // Check action: open the Remote activity if no action specified, no host connection (no hosts configured?),
-        // default open specified (switch host?) or any other action other than Send or View
+        // Open the Remote activity for non-share actions and host shortcuts.
         if (action == null ||
-            hostManager.getConnection() == null ||
             action.equals(DEFAULT_OPEN_ACTION) ||
             !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_SEND_MULTIPLE) ||
               action.equals(Intent.ACTION_VIEW))) {
-            startActivity(new Intent(this, RemoteActivity.class));
-            finish();
+            openRemote();
             return;
         }
+
+        List<HostInfo> hosts = hostManager.getHosts();
+        if (hosts.isEmpty()) {
+            openRemote();
+            return;
+        }
+
+        List<HostInfo> hostsToCheck = shortcutHost == null ? hosts : List.of(shortcutHost);
+        LogUtils.LOGD(TAG, "Checking " + hostsToCheck.size() + " host(s) (shortcut host: " + (shortcutHost != null) + ")");
+        checkAvailableHosts(intent, queue, hostManager, hostsToCheck);
+    }
+
+    private void checkAvailableHosts(Intent intent, boolean queue, HostManager hostManager,
+                                     List<HostInfo> hostsToCheck) {
+        hostCheckProgressDialog = new MaterialAlertDialogBuilder(this)
+                .setView(R.layout.dialog_checking_hosts)
+                .setOnCancelListener(dialog -> finish())
+                .show();
+        List<HostInfo> reachableHosts = new ArrayList<>();
+        AtomicInteger pendingChecks = new AtomicInteger(hostsToCheck.size());
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+
+        for (HostInfo host : hostsToCheck) {
+            HostConnection connection = new HostConnection(host);
+            connection.execute(new Application.GetProperties(Application.GetProperties.NAME),
+                               new ApiCallback<>() {
+                                   @Override
+                                   public void onSuccess(ApplicationType.PropertyValue result) {
+                                       completeHostCheck(connection, host, true, reachableHosts, pendingChecks,
+                                                        intent, queue, hostManager);
+                                   }
+
+                                   @Override
+                                   public void onError(int errorCode, String description) {
+                                       LogUtils.LOGD(TAG, "Kodi host is not reachable: " + host.getName() +
+                                                          " (" + description + ")");
+                                       completeHostCheck(connection, host, false, reachableHosts, pendingChecks,
+                                                        intent, queue, hostManager);
+                                   }
+                               }, mainHandler);
+        }
+    }
+
+    private void completeHostCheck(HostConnection connection, HostInfo host, boolean reachable,
+                                   List<HostInfo> reachableHosts, AtomicInteger pendingChecks,
+                                   Intent intent, boolean queue, HostManager hostManager) {
+        if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
+            connection.disconnect();
+        }
+
+        LogUtils.LOGD(TAG, "Host check finished: " + host.getName() + " reachable=" + reachable +
+                           ", pending=" + pendingChecks.get() + ", finishing=" + isFinishing());
+        if (isFinishing() || isDestroyed()) {
+            return;
+        }
+
+        if (reachable) {
+            reachableHosts.add(host);
+        }
+
+        if (pendingChecks.decrementAndGet() != 0) {
+            return;
+        }
+
+        if (hostCheckProgressDialog != null && hostCheckProgressDialog.isShowing()) {
+            hostCheckProgressDialog.dismiss();
+        }
+        hostCheckProgressDialog = null;
+
+        LogUtils.LOGD(TAG, "All host checks done. Reachable hosts: " + reachableHosts.size());
+        if (reachableHosts.isEmpty()) {
+            Toast.makeText(this, R.string.no_kodi_instances_available, Toast.LENGTH_LONG).show();
+            finish();
+        } else if (reachableHosts.size() == 1) {
+            selectHostAndShare(reachableHosts.get(0), intent, queue, hostManager);
+        } else {
+            showHostPicker(reachableHosts, intent, queue, hostManager);
+        }
+    }
+
+    private void showHostPicker(List<HostInfo> hosts, Intent intent, boolean queue, HostManager hostManager) {
+        String[] hostNames = new String[hosts.size()];
+        for (int i = 0; i < hosts.size(); i++) {
+            hostNames[i] = hosts.get(i).getName();
+        }
+
+        LogUtils.LOGD(TAG, "Showing host picker with " + hosts.size() + " host(s)");
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.select_kodi_instance)
+                .setItems(hostNames, (dialog, which) ->
+                        selectHostAndShare(hosts.get(which), intent, queue, hostManager))
+                .setOnCancelListener(dialog -> {
+                    LogUtils.LOGD(TAG, "Host picker cancelled");
+                    finish();
+                })
+                .show();
+    }
+
+    private void selectHostAndShare(HostInfo host, Intent intent, boolean queue, HostManager hostManager) {
+        LogUtils.LOGD(TAG, "Sharing to host: " + host.getName());
+        hostManager.switchHost(host);
+        handleShareIntent(intent, queue, hostManager);
+    }
+
+    private void openRemote() {
+        startActivity(new Intent(this, RemoteActivity.class));
+        finish();
+    }
+
+    private void handleShareIntent(Intent intent, boolean queue, HostManager hostManager) {
+        final String action = intent.getAction();
+        final String intentType = intent.getType();
 
         // Extract one or more uris from the intent, and store them in a list
         List<Uri> uris = null;
