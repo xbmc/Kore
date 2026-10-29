@@ -36,6 +36,7 @@ import org.xbmc.kore.utils.Utils;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -51,6 +52,7 @@ public class ShareOpenActivity extends Activity {
     private static final String TAG = LogUtils.makeLogTag(ShareOpenActivity.class);
     private HttpApp httpApp;
     private Dialog hostCheckProgressDialog;
+    private Dialog hostPickerDialog;
 
     // ACTION to be used with the shortcut API that directly opens the remote
     public static final String DEFAULT_OPEN_ACTION = "org.xbmc.kore.OPEN_REMOTE_VIEW";
@@ -80,15 +82,12 @@ public class ShareOpenActivity extends Activity {
     }
 
     @Override
-    public void finish() {
-        LogUtils.LOGD(TAG, "finish() called", new Throwable("finish trace"));
-        super.finish();
-    }
-
-    @Override
     protected void onDestroy() {
         if (hostCheckProgressDialog != null && hostCheckProgressDialog.isShowing()) {
             hostCheckProgressDialog.dismiss();
+        }
+        if (hostPickerDialog != null && hostPickerDialog.isShowing()) {
+            hostPickerDialog.dismiss();
         }
         super.onDestroy();
     }
@@ -107,7 +106,6 @@ public class ShareOpenActivity extends Activity {
      * @param queue Whether to queue the item
      */
     protected void handleStartIntent(Intent intent, boolean queue) {
-        LogUtils.LOGD(TAG, "Got Share Intent: " + intent);
         final HostManager hostManager = HostManager.getInstance(this);
 
         // If a host was passed from the intent switch to it
@@ -117,7 +115,6 @@ public class ShareOpenActivity extends Activity {
             int hostId = Integer.parseInt(shortcutId);
             for (HostInfo host : hostManager.getHosts()) {
                 if (host.getId() == hostId) {
-                    LogUtils.LOGD(TAG, "Switching hosts");
                     hostManager.switchHost(host);
                     shortcutHost = host;
                     break;
@@ -143,7 +140,6 @@ public class ShareOpenActivity extends Activity {
         }
 
         List<HostInfo> hostsToCheck = shortcutHost == null ? hosts : List.of(shortcutHost);
-        LogUtils.LOGD(TAG, "Checking " + hostsToCheck.size() + " host(s) (shortcut host: " + (shortcutHost != null) + ")");
         checkAvailableHosts(intent, queue, hostManager, hostsToCheck);
     }
 
@@ -169,8 +165,6 @@ public class ShareOpenActivity extends Activity {
 
                                    @Override
                                    public void onError(int errorCode, String description) {
-                                       LogUtils.LOGD(TAG, "Kodi host is not reachable: " + host.getName() +
-                                                          " (" + description + ")");
                                        completeHostCheck(connection, host, false, reachableHosts, pendingChecks,
                                                         intent, queue, hostManager);
                                    }
@@ -185,8 +179,6 @@ public class ShareOpenActivity extends Activity {
             connection.disconnect();
         }
 
-        LogUtils.LOGD(TAG, "Host check finished: " + host.getName() + " reachable=" + reachable +
-                           ", pending=" + pendingChecks.get() + ", finishing=" + isFinishing());
         if (isFinishing() || isDestroyed()) {
             return;
         }
@@ -204,7 +196,15 @@ public class ShareOpenActivity extends Activity {
         }
         hostCheckProgressDialog = null;
 
-        LogUtils.LOGD(TAG, "All host checks done. Reachable hosts: " + reachableHosts.size());
+        // Keep the configured host order regardless of which probe answered first
+        List<HostInfo> configuredHosts = hostManager.getHosts();
+        reachableHosts.sort(Comparator.comparingInt(h -> {
+            for (int i = 0; i < configuredHosts.size(); i++) {
+                if (configuredHosts.get(i).getId() == h.getId()) return i;
+            }
+            return Integer.MAX_VALUE;
+        }));
+
         if (reachableHosts.isEmpty()) {
             Toast.makeText(this, R.string.no_kodi_instances_available, Toast.LENGTH_LONG).show();
             finish();
@@ -233,9 +233,7 @@ public class ShareOpenActivity extends Activity {
                 break;
             }
         }
-        boolean use = !alwaysAsk && BaseActivity.isAppOpen() && currentReachable;
-        LogUtils.LOGD(TAG, "Use connected host: " + use + " (alwaysAsk=" + alwaysAsk + ")");
-        return use;
+        return !alwaysAsk && BaseActivity.isAppOpen() && currentReachable;
     }
 
     private void showHostPicker(List<HostInfo> hosts, Intent intent, boolean queue, HostManager hostManager) {
@@ -244,20 +242,15 @@ public class ShareOpenActivity extends Activity {
             hostNames[i] = hosts.get(i).getName();
         }
 
-        LogUtils.LOGD(TAG, "Showing host picker with " + hosts.size() + " host(s)");
-        new MaterialAlertDialogBuilder(this)
+        hostPickerDialog = new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.select_kodi_instance)
                 .setItems(hostNames, (dialog, which) ->
                         selectHostAndShare(hosts.get(which), intent, queue, hostManager))
-                .setOnCancelListener(dialog -> {
-                    LogUtils.LOGD(TAG, "Host picker cancelled");
-                    finish();
-                })
+                .setOnCancelListener(dialog -> finish())
                 .show();
     }
 
     private void selectHostAndShare(HostInfo host, Intent intent, boolean queue, HostManager hostManager) {
-        LogUtils.LOGD(TAG, "Sharing to host: " + host.getName());
         hostManager.switchHost(host);
         handleShareIntent(intent, queue, hostManager);
     }
