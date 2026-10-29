@@ -29,6 +29,7 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.sections.localfile.HttpApp;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.utils.PluginUrlUtils;
 import org.xbmc.kore.utils.Utils;
 
@@ -209,9 +210,32 @@ public class ShareOpenActivity extends Activity {
             finish();
         } else if (reachableHosts.size() == 1) {
             selectHostAndShare(reachableHosts.get(0), intent, queue, hostManager);
+        } else if (shouldUseConnectedHost(hostManager, reachableHosts)) {
+            selectHostAndShare(hostManager.getHostInfo(), intent, queue, hostManager);
         } else {
             showHostPicker(reachableHosts, intent, queue, hostManager);
         }
+    }
+
+    /**
+     * Kore is considered actively open and connected when one of its screens is open
+     * and the current host is reachable. Users can opt out through the "always ask" setting.
+     */
+    private boolean shouldUseConnectedHost(HostManager hostManager, List<HostInfo> reachableHosts) {
+        boolean alwaysAsk = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_ALWAYS_ASK_SHARE_TARGET,
+                            Settings.DEFAULT_PREF_ALWAYS_ASK_SHARE_TARGET);
+        HostInfo current = hostManager.getHostInfo();
+        boolean currentReachable = false;
+        for (HostInfo host : reachableHosts) {
+            if (current != null && host.getId() == current.getId()) {
+                currentReachable = true;
+                break;
+            }
+        }
+        boolean use = !alwaysAsk && BaseActivity.isAppOpen() && currentReachable;
+        LogUtils.LOGD(TAG, "Use connected host: " + use + " (alwaysAsk=" + alwaysAsk + ")");
+        return use;
     }
 
     private void showHostPicker(List<HostInfo> hosts, Intent intent, boolean queue, HostManager hostManager) {
