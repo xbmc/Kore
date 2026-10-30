@@ -32,6 +32,27 @@ import org.xbmc.kore.utils.Utils;
  * Base activity, where common behaviour is implemented
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    private static int openActivities = 0;
+    private static int pendingRecreations = 0;
+
+    /**
+     * @return true if Kore has at least one screen open (created and not destroyed), even if
+     * it is currently in the background
+     */
+    public static boolean isAppOpen() {
+        return openActivities > 0;
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Keep counting an activity that is being recreated due to a configuration change
+        if (isChangingConfigurations()) {
+            pendingRecreations++;
+        } else {
+            openActivities--;
+        }
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +69,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 //                                       .penaltyDeath()
 //                                       .build());
 
+        if (pendingRecreations > 0) {
+            pendingRecreations--;
+        } else {
+            openActivities++;
+        }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         String themeColor = prefs.getString(Settings.KEY_PREF_THEME_COLOR, Settings.DEFAULT_PREF_THEME_COLOR),

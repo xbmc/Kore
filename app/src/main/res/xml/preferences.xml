@@ -117,6 +117,13 @@
             app:singleLineTitle="false"/>
 
         <SwitchPreferenceCompat
+            android:key="pref_always_ask_share_target"
+            android:title="@string/always_ask_share_target"
+            android:summary="@string/always_ask_share_target_summary"
+            android:defaultValue="false"
+            app:singleLineTitle="false"/>
+
+        <SwitchPreferenceCompat
             android:key="pref_always_sendtokodi_addon"
             android:title="@string/always_sendtokodi_addon"
             android:defaultValue="false"

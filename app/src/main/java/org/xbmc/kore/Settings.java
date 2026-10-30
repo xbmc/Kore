@@ -83,6 +83,8 @@ public class Settings {
     public static final boolean DEFAULT_KEY_PREF_KEEP_SCREEN_ON = false;
 
     // Show now playing panel
+    public static final String KEY_PREF_ALWAYS_ASK_SHARE_TARGET = "pref_always_ask_share_target";
+    public static final boolean DEFAULT_PREF_ALWAYS_ASK_SHARE_TARGET = false;
     public static final String KEY_PREF_SHOW_NOW_PLAYING_PANEL = "pref_show_nowplayingpanel";
     public static final boolean DEFAULT_PREF_SHOW_NOW_PLAYING_PANEL = true;
 

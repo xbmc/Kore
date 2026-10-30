@@ -1,27 +1,46 @@
 package org.xbmc.kore;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.color.DynamicColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.xbmc.kore.host.HostInfo;
+import org.xbmc.kore.host.HostConnection;
 import org.xbmc.kore.host.HostManager;
 import org.xbmc.kore.host.actions.OpenSharedUrls;
 import org.xbmc.kore.jsonrpc.ApiCallback;
+import org.xbmc.kore.jsonrpc.method.Application;
+import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
+import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.sections.localfile.HttpApp;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.utils.HostProbeTracker;
 import org.xbmc.kore.utils.LogUtils;
+import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.utils.PluginUrlUtils;
+import org.xbmc.kore.utils.ShareHostSelector;
+import org.xbmc.kore.utils.Utils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,6 +58,15 @@ import java.util.regex.Pattern;
 public class ShareOpenActivity extends Activity {
     private static final String TAG = LogUtils.makeLogTag(ShareOpenActivity.class);
     private HttpApp httpApp;
+    private Dialog hostCheckProgressDialog;
+    private Dialog hostPickerDialog;
+    private boolean hostChosenExplicitly;
+    private Handler hostCheckHandler;
+    private Runnable hostCheckDeadline;
+    private Runnable hostCheckCancel;
+
+    /** Slightly longer than the connect timeout so normal failures report first */
+    private static final long HOST_CHECK_TIMEOUT_MS = 8000;
 
     // ACTION to be used with the shortcut API that directly opens the remote
     public static final String DEFAULT_OPEN_ACTION = "org.xbmc.kore.OPEN_REMOTE_VIEW";
@@ -47,9 +75,47 @@ public class ShareOpenActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        applyAppTheme();
         super.onCreate(savedInstanceState);
 
         handleStartIntent(getIntent());
+    }
+
+    /**
+     * Applies the user selected Kore theme, keeping the window transparent, so dialogs match the app
+     */
+    private void applyAppTheme() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String themeColor = prefs.getString(Settings.KEY_PREF_THEME_COLOR, Settings.DEFAULT_PREF_THEME_COLOR);
+        String themeVariant = prefs.getString(Settings.KEY_PREF_THEME_VARIANT, Settings.DEFAULT_PREF_THEME_VARIANT);
+        setTheme(Settings.getThemeResourceId(themeColor, themeVariant));
+        getTheme().applyStyle(R.style.ThemeOverlay_Kore_ShareTranslucent, true);
+        if (Utils.isSOrLater() && themeColor.equals(Settings.THEME_COLOR_SYSTEM)) {
+            DynamicColors.applyToActivityIfAvailable(this);
+        }
+    }
+
+    private void cancelHostCheckDeadline() {
+        if (hostCheckHandler != null && hostCheckDeadline != null) {
+            hostCheckHandler.removeCallbacks(hostCheckDeadline);
+        }
+        hostCheckDeadline = null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        cancelHostCheckDeadline();
+        if (hostCheckCancel != null) {
+            hostCheckCancel.run();
+            hostCheckCancel = null;
+        }
+        if (hostCheckProgressDialog != null && hostCheckProgressDialog.isShowing()) {
+            hostCheckProgressDialog.dismiss();
+        }
+        if (hostPickerDialog != null && hostPickerDialog.isShowing()) {
+            hostPickerDialog.dismiss();
+        }
+        super.onDestroy();
     }
 
     /**
@@ -66,17 +132,17 @@ public class ShareOpenActivity extends Activity {
      * @param queue Whether to queue the item
      */
     protected void handleStartIntent(Intent intent, boolean queue) {
-        LogUtils.LOGD(TAG, "Got Share Intent: " + intent);
         final HostManager hostManager = HostManager.getInstance(this);
 
         // If a host was passed from the intent switch to it
         String shortcutId = intent.getStringExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID);
+        HostInfo shortcutHost = null;
         if (shortcutId != null) {
             int hostId = Integer.parseInt(shortcutId);
             for (HostInfo host : hostManager.getHosts()) {
                 if (host.getId() == hostId) {
-                    LogUtils.LOGD(TAG, "Switching hosts");
                     hostManager.switchHost(host);
+                    shortcutHost = host;
                     break;
                 }
             }
@@ -84,22 +150,182 @@ public class ShareOpenActivity extends Activity {
 
         final String action = intent.getAction();
         final String intentType = intent.getType();
-        // Check action: open the Remote activity if no action specified, no host connection (no hosts configured?),
-        // default open specified (switch host?) or any other action other than Send or View
+        // Open the Remote activity for non-share actions and host shortcuts.
         if (action == null ||
-            hostManager.getConnection() == null ||
             action.equals(DEFAULT_OPEN_ACTION) ||
             !(action.equals(Intent.ACTION_SEND) || action.equals(Intent.ACTION_SEND_MULTIPLE) ||
               action.equals(Intent.ACTION_VIEW))) {
-            startActivity(new Intent(this, RemoteActivity.class));
-            finish();
+            openRemote();
             return;
         }
+
+        List<HostInfo> hosts = hostManager.getHosts();
+        if (hosts.isEmpty()) {
+            openRemote();
+            return;
+        }
+
+        hostChosenExplicitly = shortcutHost != null;
+        List<HostInfo> hostsToCheck = shortcutHost == null ? hosts : List.of(shortcutHost);
+        checkAvailableHosts(intent, queue, hostManager, hostsToCheck);
+    }
+
+    private void checkAvailableHosts(Intent intent, boolean queue, HostManager hostManager,
+                                     List<HostInfo> hostsToCheck) {
+        hostCheckProgressDialog = new MaterialAlertDialogBuilder(this)
+                .setView(R.layout.dialog_checking_hosts)
+                .setOnCancelListener(dialog -> finish())
+                .show();
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+
+        // Each probe is completed exactly once, either by its callback or by the deadline
+        HostProbeTracker tracker = new HostProbeTracker(
+                hostsToCheck, reachableHosts -> onHostChecksDone(reachableHosts, intent, queue, hostManager));
+        List<HostConnection> connections = new ArrayList<>();
+        List<Runnable> cancellations = new ArrayList<>();
+
+        for (int i = 0; i < hostsToCheck.size(); i++) {
+            final int index = i;
+            HostConnection connection = new HostConnection(hostsToCheck.get(i));
+            connections.add(connection);
+            // Each probe owns its connection. For HTTP, shutting down the executor drops a request that
+            // has not started yet and cancelAll aborts one in flight. Never do this for TCP: its
+            // listener thread still needs the executor to disconnect.
+            cancellations.add(() -> {
+                if (connection.getProtocol() == HostConnection.PROTOCOL_HTTP) {
+                    connection.getExecutorService().shutdownNow();
+                    connection.getOkHttpClient().dispatcher().cancelAll();
+                }
+            });
+            connection.execute(new Application.GetProperties(Application.GetProperties.NAME),
+                               new ApiCallback<>() {
+                                   @Override
+                                   public void onSuccess(ApplicationType.PropertyValue result) {
+                                       if (tracker.complete(index, true)) {
+                                           releaseProbe(connection);
+                                       }
+                                   }
+
+                                   @Override
+                                   public void onError(int errorCode, String description) {
+                                       if (tracker.complete(index, false)) {
+                                           releaseProbe(connection);
+                                       }
+                                   }
+                               }, mainHandler);
+        }
+
+        hostCheckHandler = mainHandler;
+        hostCheckCancel = () -> {
+            for (Runnable cancel : cancellations) {
+                cancel.run();
+            }
+        };
+        hostCheckDeadline = () -> {
+            for (int index : tracker.expireUnfinished()) {
+                releaseProbe(connections.get(index));
+            }
+            hostCheckCancel.run();
+        };
+        mainHandler.postDelayed(hostCheckDeadline, HOST_CHECK_TIMEOUT_MS);
+    }
+
+    private void releaseProbe(HostConnection connection) {
+        if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
+            connection.disconnect();
+        }
+    }
+
+    private void onHostChecksDone(List<HostInfo> reachableHosts, Intent intent, boolean queue,
+                                  HostManager hostManager) {
+        if (isFinishing() || isDestroyed()) {
+            return;
+        }
+
+        cancelHostCheckDeadline();
+
+        if (hostCheckProgressDialog != null && hostCheckProgressDialog.isShowing()) {
+            hostCheckProgressDialog.dismiss();
+        }
+        hostCheckProgressDialog = null;
+
+        boolean alwaysAsk = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(Settings.KEY_PREF_ALWAYS_ASK_SHARE_TARGET,
+                            Settings.DEFAULT_PREF_ALWAYS_ASK_SHARE_TARGET);
+        ShareHostSelector.Result result = ShareHostSelector.select(
+                hostManager.getHosts(), reachableHosts, hostManager.getHostInfo(),
+                BaseActivity.isAppOpen(), alwaysAsk, hostChosenExplicitly);
+        switch (result.action) {
+            case NONE:
+                showHostPicker(result.hosts, intent, queue, hostManager);
+                break;
+            case SHARE:
+                selectHostAndShare(result.host, intent, queue, hostManager);
+                break;
+            default:
+                showHostPicker(result.hosts, intent, queue, hostManager);
+        }
+    }
+
+    private void showHostPicker(List<HostInfo> hosts, Intent intent, boolean queue, HostManager hostManager) {
+        // The last row is the "Add a device" entry
+        ArrayAdapter<HostInfo> adapter = new ArrayAdapter<>(this, R.layout.item_share_host, R.id.host_name, hosts) {
+            @Override
+            public int getCount() {
+                return hosts.size() + 1;
+            }
+
+            @NonNull
+            @Override
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = convertView != null ? convertView
+                                                : getLayoutInflater().inflate(R.layout.item_share_host, parent, false);
+                boolean isAddDevice = position == hosts.size();
+                ((TextView) view.findViewById(R.id.host_name))
+                        .setText(isAddDevice ? getString(R.string.add_xbmc) : hosts.get(position).getName());
+                ((ImageView) view.findViewById(R.id.host_icon))
+                        .setImageResource(isAddDevice ? R.drawable.ic_round_add_24 : R.drawable.ic_round_tv_24);
+                return view;
+            }
+        };
+
+        hostPickerDialog = new MaterialAlertDialogBuilder(this)
+                .setTitle(hosts.isEmpty() ? R.string.no_kodi_instances_available
+                                           : R.string.select_kodi_instance)
+                .setAdapter(adapter, (dialog, which) -> {
+                    if (which == hosts.size()) {
+                        startActivity(new Intent(this, AddHostActivity.class)
+                                              .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        finish();
+                    } else {
+                        selectHostAndShare(hosts.get(which), intent, queue, hostManager);
+                    }
+                })
+                .setOnCancelListener(dialog -> finish())
+                .show();
+    }
+
+    private void selectHostAndShare(HostInfo host, Intent intent, boolean queue, HostManager hostManager) {
+        hostManager.switchHost(host);
+        handleShareIntent(intent, queue, hostManager);
+    }
+
+    private void openRemote() {
+        startActivity(new Intent(this, RemoteActivity.class));
+        finish();
+    }
+
+    @SuppressWarnings("deprecation") // Untyped extras getters are needed below API 33
+    private void handleShareIntent(Intent intent, boolean queue, HostManager hostManager) {
+        final String action = intent.getAction();
+        final String intentType = intent.getType();
 
         // Extract one or more uris from the intent, and store them in a list
         List<Uri> uris = null;
         if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
-            uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+            uris = Utils.isTiramisuOrLater()
+                   ? intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM, Uri.class)
+                   : intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         } else {
             Uri uri = extractUriFromIntent(intent);
             if (uri != null) {
@@ -179,6 +405,7 @@ public class ShareOpenActivity extends Activity {
      * @param intent The intent to extract a shared URI from
      * @return The URI extracted from the intent, or null if none was found
      */
+    @SuppressWarnings("deprecation") // Untyped extras getters are needed below API 33
     private Uri extractUriFromIntent(Intent intent) {
         Uri uri = null;
 
@@ -189,7 +416,9 @@ public class ShareOpenActivity extends Activity {
         }
 
         if (uri == null) {
-            uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            uri = Utils.isTiramisuOrLater()
+                  ? intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri.class)
+                  : intent.getParcelableExtra(Intent.EXTRA_STREAM);
         }
 
         if (uri == null) {
