@@ -22,52 +22,59 @@ public class ShareHostSelectorTest {
 
     @Test
     public void noReachableHostsReturnsNone() {
-        ShareHostSelector.Result r = ShareHostSelector.select(configured, Collections.emptyList(), a, true, false);
+        ShareHostSelector.Result r = ShareHostSelector.select(configured, Collections.emptyList(), a, true, false, false);
         assertEquals(ShareHostSelector.Action.NONE, r.action);
         assertNull(r.host);
     }
 
     @Test
-    public void singleReachableHostIsSharedEvenIfNotCurrent() {
-        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(c), a, false, true);
+    public void singleReachableHostStillPicksWhenAppClosed() {
+        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(c), a, false, false, false);
+        assertEquals(ShareHostSelector.Action.PICK, r.action);
+        assertEquals(Arrays.asList(c), r.hosts);
+    }
+
+    @Test
+    public void explicitlyChosenHostIsSharedWithoutPicker() {
+        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(c), a, false, true, true);
         assertEquals(ShareHostSelector.Action.SHARE, r.action);
         assertEquals(c, r.host);
     }
 
     @Test
     public void multipleHostsWhenAppOpenUsesCurrentHost() {
-        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), b, true, false);
+        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), b, true, false, false);
         assertEquals(ShareHostSelector.Action.SHARE, r.action);
         assertEquals(b, r.host);
     }
 
     @Test
     public void multipleHostsWhenAppClosedPicks() {
-        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), b, false, false);
+        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), b, false, false, false);
         assertEquals(ShareHostSelector.Action.PICK, r.action);
     }
 
     @Test
     public void alwaysAskForcesPickerWhenAppOpen() {
-        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), b, true, true);
+        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), b, true, true, false);
         assertEquals(ShareHostSelector.Action.PICK, r.action);
     }
 
     @Test
     public void currentHostNotReachablePicks() {
-        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), c, true, false);
+        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), c, true, false, false);
         assertEquals(ShareHostSelector.Action.PICK, r.action);
     }
 
     @Test
     public void nullCurrentHostPicks() {
-        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), null, true, false);
+        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(a, b), null, true, false, false);
         assertEquals(ShareHostSelector.Action.PICK, r.action);
     }
 
     @Test
     public void reachableHostsAreReturnedInConfiguredOrder() {
-        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(c, a, b), null, false, false);
+        ShareHostSelector.Result r = ShareHostSelector.select(configured, Arrays.asList(c, a, b), null, false, false, false);
         assertEquals(Arrays.asList(a, b, c), r.hosts);
     }
 }

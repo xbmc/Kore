@@ -9,9 +9,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.preference.PreferenceManager;
 
@@ -26,6 +32,7 @@ import org.xbmc.kore.jsonrpc.ApiCallback;
 import org.xbmc.kore.jsonrpc.method.Application;
 import org.xbmc.kore.jsonrpc.type.ApplicationType;
 import org.xbmc.kore.jsonrpc.type.PlaylistType;
+import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.sections.localfile.HttpApp;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
@@ -53,6 +60,7 @@ public class ShareOpenActivity extends Activity {
     private HttpApp httpApp;
     private Dialog hostCheckProgressDialog;
     private Dialog hostPickerDialog;
+    private boolean hostChosenExplicitly;
 
     // ACTION to be used with the shortcut API that directly opens the remote
     public static final String DEFAULT_OPEN_ACTION = "org.xbmc.kore.OPEN_REMOTE_VIEW";
@@ -139,6 +147,7 @@ public class ShareOpenActivity extends Activity {
             return;
         }
 
+        hostChosenExplicitly = shortcutHost != null;
         List<HostInfo> hostsToCheck = shortcutHost == null ? hosts : List.of(shortcutHost);
         checkAvailableHosts(intent, queue, hostManager, hostsToCheck);
     }
@@ -201,11 +210,10 @@ public class ShareOpenActivity extends Activity {
                             Settings.DEFAULT_PREF_ALWAYS_ASK_SHARE_TARGET);
         ShareHostSelector.Result result = ShareHostSelector.select(
                 hostManager.getHosts(), reachableHosts, hostManager.getHostInfo(),
-                BaseActivity.isAppOpen(), alwaysAsk);
+                BaseActivity.isAppOpen(), alwaysAsk, hostChosenExplicitly);
         switch (result.action) {
             case NONE:
-                Toast.makeText(this, R.string.no_kodi_instances_available, Toast.LENGTH_LONG).show();
-                finish();
+                showHostPicker(result.hosts, intent, queue, hostManager);
                 break;
             case SHARE:
                 selectHostAndShare(result.host, intent, queue, hostManager);
@@ -216,15 +224,39 @@ public class ShareOpenActivity extends Activity {
     }
 
     private void showHostPicker(List<HostInfo> hosts, Intent intent, boolean queue, HostManager hostManager) {
-        String[] hostNames = new String[hosts.size()];
-        for (int i = 0; i < hosts.size(); i++) {
-            hostNames[i] = hosts.get(i).getName();
-        }
+        // The last row is the "Add a device" entry
+        ArrayAdapter<HostInfo> adapter = new ArrayAdapter<>(this, R.layout.item_share_host, R.id.host_name, hosts) {
+            @Override
+            public int getCount() {
+                return hosts.size() + 1;
+            }
+
+            @NonNull
+            @Override
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = convertView != null ? convertView
+                                                : getLayoutInflater().inflate(R.layout.item_share_host, parent, false);
+                boolean isAddDevice = position == hosts.size();
+                ((TextView) view.findViewById(R.id.host_name))
+                        .setText(isAddDevice ? getString(R.string.add_a_device) : hosts.get(position).getName());
+                ((ImageView) view.findViewById(R.id.host_icon))
+                        .setImageResource(isAddDevice ? R.drawable.ic_round_add_24 : R.drawable.ic_round_tv_24);
+                return view;
+            }
+        };
 
         hostPickerDialog = new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.select_kodi_instance)
-                .setItems(hostNames, (dialog, which) ->
-                        selectHostAndShare(hosts.get(which), intent, queue, hostManager))
+                .setTitle(hosts.isEmpty() ? R.string.no_kodi_instances_available
+                                           : R.string.select_kodi_instance)
+                .setAdapter(adapter, (dialog, which) -> {
+                    if (which == hosts.size()) {
+                        startActivity(new Intent(this, AddHostActivity.class)
+                                              .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        finish();
+                    } else {
+                        selectHostAndShare(hosts.get(which), intent, queue, hostManager);
+                    }
+                })
                 .setOnCancelListener(dialog -> finish())
                 .show();
     }
@@ -239,6 +271,7 @@ public class ShareOpenActivity extends Activity {
         finish();
     }
 
+    @SuppressWarnings("deprecation") // Untyped extras getters are needed below API 33
     private void handleShareIntent(Intent intent, boolean queue, HostManager hostManager) {
         final String action = intent.getAction();
         final String intentType = intent.getType();
@@ -246,7 +279,9 @@ public class ShareOpenActivity extends Activity {
         // Extract one or more uris from the intent, and store them in a list
         List<Uri> uris = null;
         if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
-            uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+            uris = Utils.isTiramisuOrLater()
+                   ? intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM, Uri.class)
+                   : intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         } else {
             Uri uri = extractUriFromIntent(intent);
             if (uri != null) {
@@ -326,6 +361,7 @@ public class ShareOpenActivity extends Activity {
      * @param intent The intent to extract a shared URI from
      * @return The URI extracted from the intent, or null if none was found
      */
+    @SuppressWarnings("deprecation") // Untyped extras getters are needed below API 33
     private Uri extractUriFromIntent(Intent intent) {
         Uri uri = null;
 
@@ -336,7 +372,9 @@ public class ShareOpenActivity extends Activity {
         }
 
         if (uri == null) {
-            uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            uri = Utils.isTiramisuOrLater()
+                  ? intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri.class)
+                  : intent.getParcelableExtra(Intent.EXTRA_STREAM);
         }
 
         if (uri == null) {

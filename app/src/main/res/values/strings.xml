@@ -308,9 +308,10 @@
     <string name="add_to_playlist">Queue</string>
     <string name="item_added_to_playlist">Added to play queue</string>
     <string name="item_sent_to_kodi">Sent to Kodi</string>
-    <string name="checking_kodi_instances">Checking Kodi instances...</string>
-    <string name="select_kodi_instance">Select Kodi instance</string>
-    <string name="no_kodi_instances_available">No Kodi instances are currently reachable.</string>
+    <string name="checking_kodi_instances">Checking media centers...</string>
+    <string name="add_a_device">Add a device</string>
+    <string name="select_kodi_instance">Select media center</string>
+    <string name="no_kodi_instances_available">No media centers are currently reachable.</string>
     <string name="no_suitable_playlist">No suitable play queue found to add media type.</string>
     <string name="download">Download</string>
 
@@ -418,8 +419,8 @@
     <string name="keep_remote_above_lockscreen">Show over lockscreen</string>
     <string name="pref_keep_screen_on">Stay awake</string>
     <string name="show_notification">Show notification while playing</string>
-    <string name="always_ask_share_target">Always ask which Kodi instance to share to</string>
-    <string name="always_ask_share_target_summary">Show the Kodi instance picker when sharing, even if Kore is already open and connected</string>
+    <string name="always_ask_share_target">Always ask which media center to share to</string>
+    <string name="always_ask_share_target_summary">Show the media center picker when sharing, even if Kore is already open and connected</string>
     <string name="show_now_playing_panel">Show now playing panel</string>
     <string name="show_now_playing_panel_summary">Display a panel at the bottom of the screen when media is playing</string>
     <string name="pause_during_calls">Pause during phone call</string>

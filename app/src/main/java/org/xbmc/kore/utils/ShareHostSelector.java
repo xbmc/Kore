@@ -55,9 +55,11 @@ public final class ShareHostSelector {
      * @param currentHost Host Kore is currently using, may be null
      * @param appOpen Whether Kore currently has a screen open
      * @param alwaysAsk Whether the user wants the picker regardless of Kore's state
+     * @param hostChosenExplicitly Whether the user already picked the host, e.g. via a share shortcut
      */
     public static Result select(List<HostInfo> configuredHosts, List<HostInfo> reachableHosts,
-                                HostInfo currentHost, boolean appOpen, boolean alwaysAsk) {
+                                HostInfo currentHost, boolean appOpen, boolean alwaysAsk,
+                                boolean hostChosenExplicitly) {
         List<HostInfo> ordered = new ArrayList<>(reachableHosts);
         ordered.sort(Comparator.comparingInt(a -> indexOf(configuredHosts, a)));
         ordered = Collections.unmodifiableList(ordered);
@@ -65,7 +67,7 @@ public final class ShareHostSelector {
         if (ordered.isEmpty()) {
             return new Result(Action.NONE, null, ordered);
         }
-        if (ordered.size() == 1) {
+        if (hostChosenExplicitly) {
             return new Result(Action.SHARE, ordered.get(0), ordered);
         }
         if (!alwaysAsk && appOpen && currentHost != null) {
