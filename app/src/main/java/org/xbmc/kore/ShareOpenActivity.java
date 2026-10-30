@@ -35,6 +35,7 @@ import org.xbmc.kore.jsonrpc.type.PlaylistType;
 import org.xbmc.kore.ui.sections.hosts.AddHostActivity;
 import org.xbmc.kore.ui.sections.localfile.HttpApp;
 import org.xbmc.kore.ui.sections.remote.RemoteActivity;
+import org.xbmc.kore.utils.HostProbeTracker;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.utils.PluginUrlUtils;
@@ -46,9 +47,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,6 +63,7 @@ public class ShareOpenActivity extends Activity {
     private boolean hostChosenExplicitly;
     private Handler hostCheckHandler;
     private Runnable hostCheckDeadline;
+    private Runnable hostCheckCancel;
 
     /** Slightly longer than the connect timeout so normal failures report first */
     private static final long HOST_CHECK_TIMEOUT_MS = 8000;
@@ -106,6 +105,10 @@ public class ShareOpenActivity extends Activity {
     @Override
     protected void onDestroy() {
         cancelHostCheckDeadline();
+        if (hostCheckCancel != null) {
+            hostCheckCancel.run();
+            hostCheckCancel = null;
+        }
         if (hostCheckProgressDialog != null && hostCheckProgressDialog.isShowing()) {
             hostCheckProgressDialog.dismiss();
         }
@@ -173,62 +176,69 @@ public class ShareOpenActivity extends Activity {
                 .setView(R.layout.dialog_checking_hosts)
                 .setOnCancelListener(dialog -> finish())
                 .show();
-        List<HostInfo> reachableHosts = new ArrayList<>();
-        AtomicInteger pendingChecks = new AtomicInteger(hostsToCheck.size());
         Handler mainHandler = new Handler(Looper.getMainLooper());
 
         // Each probe is completed exactly once, either by its callback or by the deadline
-        List<Consumer<Boolean>> probes = new ArrayList<>();
+        HostProbeTracker tracker = new HostProbeTracker(
+                hostsToCheck, reachableHosts -> onHostChecksDone(reachableHosts, intent, queue, hostManager));
+        List<HostConnection> connections = new ArrayList<>();
+        List<Runnable> cancellations = new ArrayList<>();
 
-        for (HostInfo host : hostsToCheck) {
-            HostConnection connection = new HostConnection(host);
-            AtomicBoolean completed = new AtomicBoolean(false);
-            Consumer<Boolean> finishProbe = reachable -> {
-                if (completed.compareAndSet(false, true)) {
-                    completeHostCheck(connection, host, reachable, reachableHosts, pendingChecks,
-                                      intent, queue, hostManager);
+        for (int i = 0; i < hostsToCheck.size(); i++) {
+            final int index = i;
+            HostConnection connection = new HostConnection(hostsToCheck.get(i));
+            connections.add(connection);
+            // Each probe owns its connection. For HTTP, shutting down the executor drops a request that
+            // has not started yet and cancelAll aborts one in flight. Never do this for TCP: its
+            // listener thread still needs the executor to disconnect.
+            cancellations.add(() -> {
+                if (connection.getProtocol() == HostConnection.PROTOCOL_HTTP) {
+                    connection.getExecutorService().shutdownNow();
+                    connection.getOkHttpClient().dispatcher().cancelAll();
                 }
-            };
-            probes.add(finishProbe);
+            });
             connection.execute(new Application.GetProperties(Application.GetProperties.NAME),
                                new ApiCallback<>() {
                                    @Override
                                    public void onSuccess(ApplicationType.PropertyValue result) {
-                                       finishProbe.accept(true);
+                                       if (tracker.complete(index, true)) {
+                                           releaseProbe(connection);
+                                       }
                                    }
 
                                    @Override
                                    public void onError(int errorCode, String description) {
-                                       finishProbe.accept(false);
+                                       if (tracker.complete(index, false)) {
+                                           releaseProbe(connection);
+                                       }
                                    }
                                }, mainHandler);
         }
 
         hostCheckHandler = mainHandler;
-        hostCheckDeadline = () -> {
-            for (Consumer<Boolean> probe : probes) {
-                probe.accept(false);
+        hostCheckCancel = () -> {
+            for (Runnable cancel : cancellations) {
+                cancel.run();
             }
+        };
+        hostCheckDeadline = () -> {
+            for (int index : tracker.expireUnfinished()) {
+                releaseProbe(connections.get(index));
+            }
+            hostCheckCancel.run();
         };
         mainHandler.postDelayed(hostCheckDeadline, HOST_CHECK_TIMEOUT_MS);
     }
 
-    private void completeHostCheck(HostConnection connection, HostInfo host, boolean reachable,
-                                   List<HostInfo> reachableHosts, AtomicInteger pendingChecks,
-                                   Intent intent, boolean queue, HostManager hostManager) {
+    private void releaseProbe(HostConnection connection) {
         if (connection.getProtocol() == HostConnection.PROTOCOL_TCP) {
             connection.disconnect();
         }
+    }
 
+    private void onHostChecksDone(List<HostInfo> reachableHosts, Intent intent, boolean queue,
+                                  HostManager hostManager) {
         if (isFinishing() || isDestroyed()) {
-            return;
-        }
-
-        if (reachable) {
-            reachableHosts.add(host);
-        }
-
-        if (pendingChecks.decrementAndGet() != 0) {
             return;
         }
 
