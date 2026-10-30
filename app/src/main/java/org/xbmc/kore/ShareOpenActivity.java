@@ -31,12 +31,12 @@ import org.xbmc.kore.ui.sections.remote.RemoteActivity;
 import org.xbmc.kore.utils.LogUtils;
 import org.xbmc.kore.ui.BaseActivity;
 import org.xbmc.kore.utils.PluginUrlUtils;
+import org.xbmc.kore.utils.ShareHostSelector;
 import org.xbmc.kore.utils.Utils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -196,44 +196,23 @@ public class ShareOpenActivity extends Activity {
         }
         hostCheckProgressDialog = null;
 
-        // Keep the configured host order regardless of which probe answered first
-        List<HostInfo> configuredHosts = hostManager.getHosts();
-        reachableHosts.sort(Comparator.comparingInt(h -> {
-            for (int i = 0; i < configuredHosts.size(); i++) {
-                if (configuredHosts.get(i).getId() == h.getId()) return i;
-            }
-            return Integer.MAX_VALUE;
-        }));
-
-        if (reachableHosts.isEmpty()) {
-            Toast.makeText(this, R.string.no_kodi_instances_available, Toast.LENGTH_LONG).show();
-            finish();
-        } else if (reachableHosts.size() == 1) {
-            selectHostAndShare(reachableHosts.get(0), intent, queue, hostManager);
-        } else if (shouldUseConnectedHost(hostManager, reachableHosts)) {
-            selectHostAndShare(hostManager.getHostInfo(), intent, queue, hostManager);
-        } else {
-            showHostPicker(reachableHosts, intent, queue, hostManager);
-        }
-    }
-
-    /**
-     * Kore is considered actively open and connected when one of its screens is open
-     * and the current host is reachable. Users can opt out through the "always ask" setting.
-     */
-    private boolean shouldUseConnectedHost(HostManager hostManager, List<HostInfo> reachableHosts) {
         boolean alwaysAsk = PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(Settings.KEY_PREF_ALWAYS_ASK_SHARE_TARGET,
                             Settings.DEFAULT_PREF_ALWAYS_ASK_SHARE_TARGET);
-        HostInfo current = hostManager.getHostInfo();
-        boolean currentReachable = false;
-        for (HostInfo host : reachableHosts) {
-            if (current != null && host.getId() == current.getId()) {
-                currentReachable = true;
+        ShareHostSelector.Result result = ShareHostSelector.select(
+                hostManager.getHosts(), reachableHosts, hostManager.getHostInfo(),
+                BaseActivity.isAppOpen(), alwaysAsk);
+        switch (result.action) {
+            case NONE:
+                Toast.makeText(this, R.string.no_kodi_instances_available, Toast.LENGTH_LONG).show();
+                finish();
                 break;
-            }
+            case SHARE:
+                selectHostAndShare(result.host, intent, queue, hostManager);
+                break;
+            default:
+                showHostPicker(result.hosts, intent, queue, hostManager);
         }
-        return !alwaysAsk && BaseActivity.isAppOpen() && currentReachable;
     }
 
     private void showHostPicker(List<HostInfo> hosts, Intent intent, boolean queue, HostManager hostManager) {
