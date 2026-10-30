@@ -238,7 +238,7 @@ public class ShareOpenActivity extends Activity {
                                                 : getLayoutInflater().inflate(R.layout.item_share_host, parent, false);
                 boolean isAddDevice = position == hosts.size();
                 ((TextView) view.findViewById(R.id.host_name))
-                        .setText(isAddDevice ? getString(R.string.add_a_device) : hosts.get(position).getName());
+                        .setText(isAddDevice ? getString(R.string.add_xbmc) : hosts.get(position).getName());
                 ((ImageView) view.findViewById(R.id.host_icon))
                         .setImageResource(isAddDevice ? R.drawable.ic_round_add_24 : R.drawable.ic_round_tv_24);
                 return view;
