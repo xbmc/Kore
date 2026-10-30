@@ -309,7 +309,7 @@
     <string name="item_added_to_playlist">Added to play queue</string>
     <string name="item_sent_to_kodi">Sent to Kodi</string>
     <string name="checking_kodi_instances">Checking media centers...</string>
-    <string name="select_kodi_instance">Select media center</string>
+    <string name="select_kodi_instance">Select Media Center</string>
     <string name="no_kodi_instances_available">No media centers are currently reachable.</string>
     <string name="no_suitable_playlist">No suitable play queue found to add media type.</string>
     <string name="download">Download</string>
