@@ -46,7 +46,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,6 +63,11 @@ public class ShareOpenActivity extends Activity {
     private Dialog hostCheckProgressDialog;
     private Dialog hostPickerDialog;
     private boolean hostChosenExplicitly;
+    private Handler hostCheckHandler;
+    private Runnable hostCheckDeadline;
+
+    /** Slightly longer than the connect timeout so normal failures report first */
+    private static final long HOST_CHECK_TIMEOUT_MS = 8000;
 
     // ACTION to be used with the shortcut API that directly opens the remote
     public static final String DEFAULT_OPEN_ACTION = "org.xbmc.kore.OPEN_REMOTE_VIEW";
@@ -89,8 +96,16 @@ public class ShareOpenActivity extends Activity {
         }
     }
 
+    private void cancelHostCheckDeadline() {
+        if (hostCheckHandler != null && hostCheckDeadline != null) {
+            hostCheckHandler.removeCallbacks(hostCheckDeadline);
+        }
+        hostCheckDeadline = null;
+    }
+
     @Override
     protected void onDestroy() {
+        cancelHostCheckDeadline();
         if (hostCheckProgressDialog != null && hostCheckProgressDialog.isShowing()) {
             hostCheckProgressDialog.dismiss();
         }
@@ -162,23 +177,40 @@ public class ShareOpenActivity extends Activity {
         AtomicInteger pendingChecks = new AtomicInteger(hostsToCheck.size());
         Handler mainHandler = new Handler(Looper.getMainLooper());
 
+        // Each probe is completed exactly once, either by its callback or by the deadline
+        List<Consumer<Boolean>> probes = new ArrayList<>();
+
         for (HostInfo host : hostsToCheck) {
             HostConnection connection = new HostConnection(host);
+            AtomicBoolean completed = new AtomicBoolean(false);
+            Consumer<Boolean> finishProbe = reachable -> {
+                if (completed.compareAndSet(false, true)) {
+                    completeHostCheck(connection, host, reachable, reachableHosts, pendingChecks,
+                                      intent, queue, hostManager);
+                }
+            };
+            probes.add(finishProbe);
             connection.execute(new Application.GetProperties(Application.GetProperties.NAME),
                                new ApiCallback<>() {
                                    @Override
                                    public void onSuccess(ApplicationType.PropertyValue result) {
-                                       completeHostCheck(connection, host, true, reachableHosts, pendingChecks,
-                                                        intent, queue, hostManager);
+                                       finishProbe.accept(true);
                                    }
 
                                    @Override
                                    public void onError(int errorCode, String description) {
-                                       completeHostCheck(connection, host, false, reachableHosts, pendingChecks,
-                                                        intent, queue, hostManager);
+                                       finishProbe.accept(false);
                                    }
                                }, mainHandler);
         }
+
+        hostCheckHandler = mainHandler;
+        hostCheckDeadline = () -> {
+            for (Consumer<Boolean> probe : probes) {
+                probe.accept(false);
+            }
+        };
+        mainHandler.postDelayed(hostCheckDeadline, HOST_CHECK_TIMEOUT_MS);
     }
 
     private void completeHostCheck(HostConnection connection, HostInfo host, boolean reachable,
@@ -199,6 +231,8 @@ public class ShareOpenActivity extends Activity {
         if (pendingChecks.decrementAndGet() != 0) {
             return;
         }
+
+        cancelHostCheckDeadline();
 
         if (hostCheckProgressDialog != null && hostCheckProgressDialog.isShowing()) {
             hostCheckProgressDialog.dismiss();
