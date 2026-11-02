@@ -39,7 +39,7 @@
     <string name="script">Скрипт</string>
     <string name="unknown">Невідомо</string>
     <string name="file_browser">Менеджер файлів Kodi</string>
-    <string name="local_file_browser">Локальні файли</string>
+    <string name="local_file_browser">Огляд локальних файлів</string>
     <string name="pvr">PVR</string>
     <string name="favourites">Обране</string>
     <string name="weather">Погода</string>
